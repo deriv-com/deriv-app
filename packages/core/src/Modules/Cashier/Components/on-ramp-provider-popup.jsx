@@ -103,7 +103,7 @@ const OnRampProviderPopup = ({
                     <Button.Group>
                         <Button large onClick={() => setIsOnRampModalOpen(false)} secondary text={localize('Cancel')} />
                         <Button
-                            id='gtm-onramp-provider-continue--${selected_provider.name}'
+                            id={'gtm-onramp-provider-continue--${selected_provider.name}'}
                             large
                             onClick={onClickDisclaimerContinue}
                             primary

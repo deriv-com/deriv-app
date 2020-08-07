@@ -1,6 +1,6 @@
 import { action, observable, reaction } from 'mobx';
 import { SendbirdAPI, P2pStorage } from '@deriv/p2p/lib/utils';
-import { getPropertyValue, routes } from '@deriv/shared';
+import { routes } from '@deriv/shared';
 import { WS } from 'Services';
 import BaseStore from '../../base-store';
 

@@ -241,6 +241,9 @@ $modal_container_height: calc(100vh - 210px);
             padding: 25px;
             text-align: center;
             height: $modal_container_height;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
 
             > * {
                 margin: 0 auto;
@@ -378,7 +381,6 @@ $modal_container_height: calc(100vh - 210px);
                 }
             }
             .preview__workspace {
-                width: 100vw;
                 height: calc(100vh - 300px);
             }
         }

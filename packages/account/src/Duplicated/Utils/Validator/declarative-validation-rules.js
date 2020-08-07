@@ -16,7 +16,7 @@ const validRequired = (value /* , options, field */) => {
     return str.length > 0;
 };
 const validEmail = (value) => /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$/.test(value);
-export const validPassword = (value) => /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+/.test(value);
+export const validPassword = (value) => /^(?=.*[a-z])(?=.*[0-9])(?=.*[A-Z])[ -~]{8,25}$/.test(value);
 export const validLetterSymbol = (value) => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><,|\d]+/.test(value);
 const validGeneral = (value) => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><|]+/.test(value);
 export const validAddress = (value) => !/[`~!$%^&*_=+[}{\]\\"?><|]+/.test(value);

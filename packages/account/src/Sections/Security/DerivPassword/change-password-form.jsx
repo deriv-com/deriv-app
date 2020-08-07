@@ -52,13 +52,13 @@ class ChangePasswordForm extends React.Component {
         });
 
         if (values.new_password) {
-            if (!/^[ -~]{6,25}$/.test(values.new_password)) {
-                errors.new_password = localize('Password length should be between 6 to 25 characters.');
+            if (!/^[ -~]{8,25}$/.test(values.new_password)) {
+                errors.new_password = localize('Password length should be between 8 to 25 characters.');
             }
             if (values.old_password === values.new_password) {
                 errors.new_password = localize('Current password and new password cannot be the same.');
             }
-            if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+/.test(values.new_password)) {
+            if (!/^(?=.*[a-z])(?=.*[0-9])(?=.*[A-Z])[ -~]{8,25}$/.test(values.new_password)) {
                 errors.new_password = localize('Password should have lower and uppercase letters with numbers.');
             }
         }

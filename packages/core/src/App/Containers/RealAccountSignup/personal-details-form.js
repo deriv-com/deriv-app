@@ -123,7 +123,12 @@ const personal_details_config = ({ residence_list, account_settings }) => {
     ];
 };
 
-export const personalDetailsConfig = ({ real_account_signup_target, residence_list, account_settings }) => {
+export const personalDetailsConfig = ({
+    upgrade_info,
+    real_account_signup_target,
+    residence_list,
+    account_settings,
+}) => {
     const [config, disabled_items] = personal_details_config({ residence_list, account_settings });
     return {
         header: {
@@ -137,6 +142,7 @@ export const personalDetailsConfig = ({ real_account_signup_target, residence_li
                 real_account_signup_target,
                 transformConfig(config, { real_account_signup_target })
             ),
+            is_svg: upgrade_info?.can_upgrade_to === 'svg',
             account_opening_reason_list: [
                 {
                     text: localize('Hedging'),

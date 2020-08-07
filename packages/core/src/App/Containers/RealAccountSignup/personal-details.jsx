@@ -150,7 +150,12 @@ class PersonalDetails extends React.Component {
                                             {'first_name' in this.props.value && (
                                                 <FormInputField
                                                     name='first_name'
-                                                    label={localize('First name')}
+                                                    required={this.props.is_svg}
+                                                    label={
+                                                        this.props.is_svg
+                                                            ? localize('First name*')
+                                                            : localize('First name')
+                                                    }
                                                     disabled={this.props.disabled_items.includes('first_name')}
                                                     placeholder={localize('John')}
                                                 />
@@ -158,7 +163,12 @@ class PersonalDetails extends React.Component {
                                             {'last_name' in this.props.value && (
                                                 <FormInputField
                                                     name='last_name'
-                                                    label={localize('Last name')}
+                                                    required={this.props.is_svg}
+                                                    label={
+                                                        this.props.is_svg
+                                                            ? localize('Last name*')
+                                                            : localize('Last name')
+                                                    }
                                                     disabled={this.props.disabled_items.includes('last_name')}
                                                     placeholder={localize('Doe')}
                                                 />
@@ -167,7 +177,12 @@ class PersonalDetails extends React.Component {
                                             {'date_of_birth' in this.props.value && (
                                                 <DateOfBirthField
                                                     name='date_of_birth'
-                                                    label={localize('Date of birth')}
+                                                    required={this.props.is_svg}
+                                                    label={
+                                                        this.props.is_svg
+                                                            ? localize('Date of birth*')
+                                                            : localize('Date of birth')
+                                                    }
                                                     disabled={this.props.disabled_items.includes('date_of_birth')}
                                                     placeholder={localize('01-07-1999')}
                                                 />

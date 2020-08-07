@@ -125,8 +125,12 @@ class AddressDetails extends React.Component {
                                         >
                                             <InputField
                                                 name='address_line_1'
-                                                required
-                                                label={localize('First line of address')}
+                                                required={this.props.is_svg}
+                                                label={
+                                                    this.props.is_svg
+                                                        ? localize('First line of address*')
+                                                        : localize('First line of address')
+                                                }
                                                 placeholder={localize('First line of address')}
                                             />
                                             <InputField
@@ -136,8 +140,10 @@ class AddressDetails extends React.Component {
                                             />
                                             <InputField
                                                 name='address_city'
-                                                required
-                                                label={localize('Town/City')}
+                                                required={this.props.is_svg}
+                                                label={
+                                                    this.props.is_svg ? localize('Town/City*') : localize('Town/City')
+                                                }
                                                 placeholder={localize('Town/City')}
                                             />
                                             {this.should_render_address_state && (

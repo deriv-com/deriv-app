@@ -349,6 +349,7 @@ export default connect(({ client, ui }) => ({
     is_fully_authenticated: client.is_fully_authenticated,
     realAccountSignup: client.realAccountSignup,
     has_real_account: client.has_active_real_account,
+    upgrade_info: client.upgrade_info,
     real_account_signup_target: ui.real_account_signup_target,
     has_currency: !!client.currency,
     setAccountCurrency: client.setAccountCurrency,

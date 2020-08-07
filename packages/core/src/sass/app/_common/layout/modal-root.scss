@@ -18,4 +18,10 @@
         display: flex;
         opacity: 1;
     }
+
+    @include desktop {
+        & > * {
+            position: absolute;
+        }
+    }
 }

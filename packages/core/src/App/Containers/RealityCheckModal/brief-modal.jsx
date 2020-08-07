@@ -16,6 +16,7 @@ const BriefModal = ({
 }) => {
     return (
         <Modal
+            className='reality-check'
             enableApp={enableApp}
             is_open={is_visible}
             disableApp={disableApp}

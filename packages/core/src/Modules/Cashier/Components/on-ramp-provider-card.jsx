@@ -22,7 +22,7 @@ const OnRampProviderCard = ({ provider, setSelectedProvider }) => (
             </div>
         )}
         <Button
-            id='gtm-onramp-provider-select'
+            id='gtm-onramp-provider-select--${provider.name}'
             className='on-ramp__provider-button'
             type='button'
             has_effect

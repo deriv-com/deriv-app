@@ -58,6 +58,7 @@ Blockly.Workspace.prototype.getTradeDefinitionBlock = function() {
 
 Blockly.Workspace.prototype.waitForBlockEvent = function(block_id, opt_event_type = null) {
     const event_promise = new PendingPromise();
+
     if (!this.wait_events.some(event => event.blockId === block_id && event.type === opt_event_type)) {
         this.wait_events.push({
             blockId: block_id,
@@ -65,20 +66,21 @@ Blockly.Workspace.prototype.waitForBlockEvent = function(block_id, opt_event_typ
             type: opt_event_type,
         });
     }
+
     return event_promise;
 };
 
 Blockly.Workspace.prototype.dispatchBlockEventEffects = function(event) {
     this.wait_events.forEach((wait_event, idx) => {
-        const is_subscribed_event =
-            wait_event.blockId === event.blockId && (wait_event.type === null || event.type === wait_event.type);
+        const is_same_block_id = wait_event.blockId === event.blockId;
+        const is_same_event_type = wait_event.type === null || event.type === wait_event.type;
 
-        if (is_subscribed_event) {
+        if (is_same_block_id && is_same_event_type) {
             // TODO: Find proper solution, e.g. promise chain.
             setTimeout(() => {
                 wait_event.promise.resolve();
                 this.wait_events.splice(idx, 1);
-            }, 100);
+            }, 500);
         }
     });
 };

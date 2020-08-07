@@ -4,7 +4,6 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import { Button, Icon } from '@deriv/components';
 import { routes, formatMoney, getCurrencyDisplayCode } from '@deriv/shared';
-
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
@@ -32,15 +31,15 @@ class PaymentAgentTransferReceipt extends React.Component {
                                 <span className='cashier__text--bold'>
                                     {getCurrencyDisplayCode(this.props.currency)}
                                 </span>
-                                {this.props.loginid}
+                                <span className='cashier__text--faint'>{this.props.loginid}</span>
                             </span>
                         </span>
                         <Icon className='cashier__transferred-icon' icon='IcArrowLeftBold' />
                         <span className='account-transfer__transfer-details-to'>
-                            <Icon icon='IcUserOutline' />
+                            <Icon icon='IcClient' />
                             <span className='cashier__transferred-details'>
                                 <span className='cashier__text--bold'>{this.props.receipt.client_name}</span>
-                                &nbsp;{this.props.receipt.client_id}
+                                <span className='cashier__text--faint'>{this.props.receipt.client_id}</span>
                             </span>
                         </span>
                     </div>

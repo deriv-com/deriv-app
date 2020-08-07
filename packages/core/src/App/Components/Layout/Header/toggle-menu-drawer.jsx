@@ -9,6 +9,7 @@ import { NetworkStatus } from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
 import { BinaryLink } from 'App/Components/Routes';
 import getRoutesConfig from 'App/Constants/routes-config';
+import LiveChat from '../../Elements/live-chat.jsx';
 
 const MenuLink = ({ link_to, icon, is_disabled, suffix_icon, text, onClickLink }) => (
     <React.Fragment>
@@ -125,8 +126,7 @@ class ToggleMenuDrawer extends React.Component {
                             (route.path !== routes.cashier_pa || this.props.is_payment_agent_visible) &&
                             (route.path !== routes.cashier_pa_transfer ||
                                 this.props.is_payment_agent_transfer_visible) &&
-                            (route.path !== routes.cashier_p2p ||
-                                (this.props.is_p2p_visible && /show_p2p/.test(this.props.location.hash))) &&
+                            (route.path !== routes.cashier_p2p || this.props.is_p2p_visible) &&
                             (route.path !== routes.cashier_onramp || this.props.is_onramp_tab_visible)
                         ) {
                             return (
@@ -174,7 +174,7 @@ class ToggleMenuDrawer extends React.Component {
     processRoutes() {
         const routes_config = getRoutesConfig();
         const primary_routes = [routes.reports, routes.account, routes.cashier];
-        const secondary_routes = [routes.complaints_policy];
+        const secondary_routes = [];
 
         this.setState({
             primary_routes_config: this.getFilteredRoutesConfig(routes_config, primary_routes),
@@ -199,6 +199,7 @@ class ToggleMenuDrawer extends React.Component {
                     enableApp={this.props.enableApp}
                     disableApp={this.props.disableApp}
                     title={localize('Menu')}
+                    livechat={<LiveChat is_mobile_drawer />}
                     height='100vh'
                     width='295px'
                 >

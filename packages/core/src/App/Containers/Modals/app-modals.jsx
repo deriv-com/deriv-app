@@ -2,6 +2,7 @@ import React from 'react';
 import { isBot, isMT5, urlFor } from '@deriv/shared';
 
 import DenialOfServiceModal from 'App/Components/Elements/Modals/DenialOfServiceModal';
+import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-needed-modal.jsx';
 import { connect } from 'Stores/connect';
 
 const AccountSignupModal = React.lazy(() =>
@@ -13,9 +14,18 @@ const ResetPasswordModal = React.lazy(() =>
 const SetResidenceModal = React.lazy(() =>
     import(/* webpackChunkName: "set-residence-modal"  */ '../SetResidenceModal')
 );
+const RealityCheckModal = React.lazy(() =>
+    import(/* webpackChunkName: "reality-check-modal"  */ '../RealityCheckModal')
+);
+const AccountTypesModal = React.lazy(() =>
+    import(/* webpackChunkName: "account-types-modal"  */ '../AccountTypesModal')
+);
 
 const AppModals = ({
+    is_account_needed_modal_on,
+    is_account_types_modal_visible,
     is_denial_of_service_modal_visible,
+    is_reality_check_visible,
     is_set_residence_modal_visible,
     url_action_param,
     switchAccount,
@@ -30,6 +40,7 @@ const AppModals = ({
             ComponentToLoad = <AccountSignupModal />;
             break;
         default:
+            // TODO: [deriv-eu] Remove this pop up after EU merge into production
             if (is_denial_of_service_modal_visible) {
                 const denialOfServiceOnCancel = () => {
                     const trade_link = isMT5() ? 'user/metatrader' : 'trading';
@@ -54,12 +65,28 @@ const AppModals = ({
             break;
     }
 
+    if (is_account_types_modal_visible) {
+        ComponentToLoad = <AccountTypesModal />;
+    }
+
+    if (is_account_needed_modal_on) {
+        ComponentToLoad = <MT5AccountNeededModal />;
+    }
+
+    if (is_reality_check_visible) {
+        ComponentToLoad = <RealityCheckModal />;
+    }
+
     return ComponentToLoad ? <React.Suspense fallback={<div />}>{ComponentToLoad}</React.Suspense> : null;
 };
 
 export default connect(({ client, ui }) => ({
+    is_account_types_modal_visible: ui.is_account_types_modal_visible,
+    is_account_needed_modal_on: ui.is_account_needed_modal_on,
     is_set_residence_modal_visible: ui.is_set_residence_modal_visible,
+    is_real_acc_signup_on: ui.is_real_acc_signup_on,
     is_denial_of_service_modal_visible: !client.is_client_allowed_to_visit,
+    is_reality_check_visible: client.is_reality_check_visible,
     switchAccount: client.switchAccount,
     virtual_account_loginid: client.virtual_account_loginid,
 }))(AppModals);

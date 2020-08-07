@@ -14,6 +14,7 @@ export default class UIStore extends BaseStore {
     @observable is_notifications_visible = false;
     @observable is_positions_drawer_on = false;
     @observable is_reports_visible = false;
+    @observable reports_route_tab_index = 0;
     @observable is_cashier_visible = false;
     @observable is_history_tab_active = false;
     @observable is_window_loaded = false;
@@ -53,6 +54,8 @@ export default class UIStore extends BaseStore {
     @observable pwa_prompt_event = null;
 
     @observable screen_width = window.innerWidth;
+    @observable screen_height = window.innerHeight;
+    @observable is_keyboard_active = false;
 
     @observable notifications = [];
     @observable notification_messages = [];
@@ -78,7 +81,11 @@ export default class UIStore extends BaseStore {
 
     // real account signup
     @observable is_real_acc_signup_on = false;
+    @observable real_account_signup_target = undefined;
     @observable has_real_account_signup_ended = false;
+
+    // account types modal
+    @observable is_account_types_modal_visible = false;
 
     // set currency modal
     @observable is_set_currency_modal_visible = false;
@@ -104,6 +111,9 @@ export default class UIStore extends BaseStore {
     // UI Focus retention
     @observable current_focus = null;
 
+    // Enabling EU users
+    @observable is_eu_enabled = false; // TODO: [deriv-eu] - Remove this constant when all EU sections are done.
+
     // Mobile
     @observable should_show_toast_error = false;
     @observable mobile_toast_error = '';
@@ -114,6 +124,14 @@ export default class UIStore extends BaseStore {
 
     @observable prompt_when = false;
     @observable promptFn = () => {};
+
+    // MT5 account needed modal
+    @observable is_account_needed_modal_on = false;
+    @observable account_needed_modal_props = {
+        target: '',
+        target_label: '',
+        target_dmt5_label: '',
+    };
 
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
@@ -148,7 +166,10 @@ export default class UIStore extends BaseStore {
                 this.is_window_loaded = true;
             })
         );
-      
+
+        // TODO: [deiv-eu] remove this manual enabler
+        this.is_eu_enabled = !!+localStorage.getItem('is_eu_enabled');
+
         window.addEventListener('resize', this.handleResize);
         autorun(() => {
             // TODO: [disable-dark-bot] Delete this condition when Bot is ready
@@ -200,7 +221,12 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     handleResize() {
+        if (this.is_mobile) {
+            this.is_keyboard_active =
+                window.innerWidth === this.screen_width && this.screen_height > window.innerHeight;
+        }
         this.screen_width = window.innerWidth;
+        this.screen_height = window.innerHeight;
         if (this.is_mobile) {
             this.is_positions_drawer_on = false;
         }
@@ -355,8 +381,9 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    openRealAccountSignup() {
+    openRealAccountSignup(target = this.root_store.client.upgradeable_landing_companies?.[0]) {
         this.is_real_acc_signup_on = true;
+        this.real_account_signup_target = target;
         this.is_accounts_switcher_on = false;
     }
 
@@ -367,6 +394,26 @@ export default class UIStore extends BaseStore {
             this.resetRealAccountSignupParams();
             this.setRealAccountSignupEnd(true);
         }, 300);
+    }
+
+    @action.bound
+    openAccountNeededModal(target, target_label, target_dmt5_label) {
+        this.is_account_needed_modal_on = true;
+        this.account_needed_modal_props = {
+            target,
+            target_label,
+            target_dmt5_label,
+        };
+    }
+
+    @action.bound
+    closeAccountNeededModal() {
+        this.is_account_needed_modal_on = false;
+        this.account_needed_modal_props = {
+            target: '',
+            target_label: '',
+            target_dmt5_label: '',
+        };
     }
 
     @action.bound
@@ -584,5 +631,20 @@ export default class UIStore extends BaseStore {
     @action.bound
     setIsNativepickerVisible(is_nativepicker_visible) {
         this.is_nativepicker_visible = is_nativepicker_visible;
+    }
+
+    @action.bound
+    setReportsTabIndex(tab_index = 0) {
+        this.reports_route_tab_index = tab_index;
+    }
+
+    @action.bound
+    toggleAccountTypesModal(is_visible = !this.is_account_types_modal_visible) {
+        this.is_account_types_modal_visible = is_visible;
+    }
+
+    @action.bound
+    showAccountTypesModalForEuropean() {
+        this.toggleAccountTypesModal(this.root_store.client.is_uk);
     }
 }

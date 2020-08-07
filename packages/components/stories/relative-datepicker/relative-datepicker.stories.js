@@ -1,10 +1,10 @@
 import { storiesOf } from '@storybook/react';
 import { boolean, withKnobs } from '@storybook/addon-knobs';
-import { toMoment } from '@deriv/shared/src/utils/date/date-time';
+import { toMoment } from '@deriv/shared';
 import { withInfo } from '@storybook/addon-info';
 import React from 'react';
-import RelativeDatepicker from 'Components/relative-datepicker';
 import { action } from '@storybook/addon-actions';
+import RelativeDatepicker from 'Components/relative-datepicker';
 import Theme from '../shared/theme';
 
 const stories = storiesOf('Relative datepicker', module);

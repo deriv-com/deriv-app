@@ -20,6 +20,10 @@
         width: 50%;
         background-color: var(--state-normal);
 
+        /* postcss-bem-linter: ignore */
+        .dc-btn__text {
+            display: contents;
+        }
         &:hover:not(.dc-button-menu__button--active) {
             background-color: var(--state-hover) !important;
         }
@@ -38,6 +42,9 @@
                 color: var(--text-prominent);
             }
         }
+    }
+    &__counter {
+        margin-left: 0.4rem;
     }
     &__wrapper {
         position: relative;

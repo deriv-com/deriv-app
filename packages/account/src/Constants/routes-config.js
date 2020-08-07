@@ -13,7 +13,10 @@ import {
     TwoFactorAuthentication,
     SelfExclusion,
     Account,
+    DeactivateAccount,
+    ConnectedApps,
     LoginHistory,
+    AccountDeactivated,
 } from 'Sections';
 
 // Error Routes
@@ -21,6 +24,12 @@ const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/P
 
 // Order matters
 const initRoutesConfig = () => [
+    {
+        path: routes.account_deactivated,
+        component: AccountDeactivated,
+        is_authenticated: false,
+        title: localize('Account deactivated'),
+    },
     {
         path: routes.account,
         component: Account,
@@ -91,9 +100,19 @@ const initRoutesConfig = () => [
                         title: localize('API token'),
                     },
                     {
+                        path: routes.connected_apps,
+                        component: ConnectedApps,
+                        title: localize('Connected apps'),
+                    },
+                    {
                         path: routes.two_factor_authentication,
                         component: TwoFactorAuthentication,
                         title: localize('Two-factor authentication'),
+                    },
+                    {
+                        path: routes.deactivate_account,
+                        component: DeactivateAccount,
+                        title: localize('Deactivate account'),
                     },
                 ],
             },

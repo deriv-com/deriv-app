@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import ButtonLink from 'Components/button-link/button-link.jsx';
-import DesktopWrapper from 'Components/desktop-wrapper/desktop-wrapper.jsx';
+import ButtonLink from '../button-link/button-link.jsx';
+import DesktopWrapper from '../desktop-wrapper/desktop-wrapper.jsx';
 
 const PageError = ({ buttonOnClick, classNameImage, header, image_url, messages, redirect_label, redirect_url }) => (
     // if image_url is passed we should split the page to two columns and left-align messages

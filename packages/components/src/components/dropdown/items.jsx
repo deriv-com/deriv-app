@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { getCurrencyDisplayCode } from '@deriv/shared';
-import Popover from 'Components/popover';
+import Popover from '../popover';
 
 const Items = ({ items, ...props }) =>
     items.map((item, idx) => {

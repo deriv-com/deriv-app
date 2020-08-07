@@ -1,5 +1,5 @@
-import { Checkbox } from '@deriv/components';
 import React from 'react';
+import { Checkbox } from '@deriv/components';
 
 /*
  * This component is used with Formik's Field component.

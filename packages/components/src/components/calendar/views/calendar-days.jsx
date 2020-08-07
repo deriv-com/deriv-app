@@ -12,8 +12,8 @@ import {
     padLeft,
 } from '@deriv/shared';
 
-import Popover from 'Components/popover';
 import { CommonPropTypes } from './types';
+import Popover from '../../popover';
 import { getDaysOfTheWeek, week_headers_abbr } from '../helpers';
 
 const getDays = ({

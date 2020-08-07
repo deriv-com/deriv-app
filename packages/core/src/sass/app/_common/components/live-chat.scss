@@ -1,0 +1,14 @@
+.livechat {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 1.6rem;
+
+    &__icon {
+        margin-right: 0.8rem;
+    }
+    &__title {
+        @include typeface(--paragraph-left-normal-black);
+    }
+}

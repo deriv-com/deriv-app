@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Icon from 'Components/icon';
-import Input from 'Components/input';
+import Icon from '../icon';
+import Input from '../input';
 
 const DatePickerIcon = ({ icon, ...props }) => <Icon className='dc-datepicker__icon' icon={icon} {...props} />;
 

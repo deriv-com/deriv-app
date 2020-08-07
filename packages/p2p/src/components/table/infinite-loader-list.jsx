@@ -72,5 +72,5 @@ InfiniteLoaderList.propTypes = {
     loadMore: PropTypes.func,
     RenderComponent: PropTypes.any,
     row_actions: PropTypes.object,
-    RowLoader: PropTypes.any.isRequired,
+    RowLoader: PropTypes.any,
 };

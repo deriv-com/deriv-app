@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
-import Calendar from 'Components/calendar';
+import Calendar from '../calendar';
 
 const DatePickerCalendar = React.forwardRef(({ alignment, is_datepicker_visible, portal_id, ...props }, ref) => {
     const css_transition_classnames = {

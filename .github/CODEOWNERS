@@ -40,7 +40,6 @@
 #  balakrishna-binary
 #  carol-binary
 #  mahdiaryayi-fs
-#  mahdipourziaei-binary
 #  mehrzad-fs
 #  mustofa-binary
 #  negar-binary
@@ -48,7 +47,6 @@
 #  nijil-binary
 #  oskar-binary
 #  reza-fs
-#  sam-binary
 #  zaki-binary
 
 
@@ -82,7 +80,7 @@
 #   - carol-binary
 #   - mehrzad-fs
 #   - nijil-binary
-#   - sam-binary
+#   - negarn
 
 # ==============================================================
 #  binary-com/deriv-core
@@ -90,7 +88,7 @@
 #  Used for approving all relevant changes to Core
 #
 #   - aaron-binary
-#   - mahdipourziaei-binary
+#   - balakrishna-binary
 
 
 # ==============================================================
@@ -99,7 +97,6 @@
 #  Used for approving all relevant changes to P2P
 #
 #   - aaron-binary
-#   - mahdipourziaei-binary
 #   - mustofa-binary
 #   - negarn
 #   - oskar-binary
@@ -123,7 +120,6 @@
 #
 #   - balakrishna-binary
 #   - mahdiaryayi-fs
-#   - mahdipourziaei-binary
 #   - negarn
 #   - oskar-binary
 #   - reza-fs

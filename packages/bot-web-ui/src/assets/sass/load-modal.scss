@@ -180,7 +180,7 @@ $modal_container_height: calc(100vh - 210px);
             display: flex;
             flex-direction: column;
             justify-content: center;
-            border: dashed 3px var(--border-normal);
+            border: dashed 0.2rem var(--border-normal);
             border-radius: $BORDER_RADIUS;
             padding: 50px;
             height: 100%;
@@ -239,14 +239,22 @@ $modal_container_height: calc(100vh - 210px);
     &-google-drive {
         &__container {
             padding: 25px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            text-align: center;
             height: $modal_container_height;
 
             > * {
                 margin: 0 auto;
             }
+        }
+        &__box {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: dashed 0.2rem var(--border-normal);
+            border-radius: $BORDER_RADIUS;
+            padding: 50px;
+            height: 100%;
         }
         &__text {
             margin-top: 16px;
@@ -281,11 +289,10 @@ $modal_container_height: calc(100vh - 210px);
     &__wrapper {
         @include mobile {
             position: fixed;
-            z-index: 5;
-            top: 40px;
+            z-index: 6;
             width: 100%;
             left: 0px;
-            height: calc(100vh - 40px);
+            top: 8rem;
             background: var(--general-main-1);
 
             &--is-mobile {
@@ -296,13 +303,20 @@ $modal_container_height: calc(100vh - 210px);
             }
             & .dc {
                 &-tabs {
+                    display: flex;
+                    flex-direction: column;
+                    height: 100%;
                     max-height: calc(100vh - 80px);
 
                     &__list {
                         width: 100%;
+                        height: 4rem;
                     }
                     &__item {
                         width: 50%;
+                    }
+                    &__content {
+                        height: calc(100% - 4rem);
                     }
                 }
                 &-btn {
@@ -313,6 +327,8 @@ $modal_container_height: calc(100vh - 210px);
                     }
                 }
                 &-page-overlay {
+                    margin-top: -4rem;
+
                     &__header {
                         position: fixed;
                         top: 4rem;
@@ -320,9 +336,7 @@ $modal_container_height: calc(100vh - 210px);
                         height: 4rem;
                     }
                     &__content {
-                        margin-top: 40px;
-                        height: calc(100vh - 120px);
-                        overflow: overlay;
+                        margin-top: 4rem;
 
                         & .modal__content {
                             padding: 1.6rem;
@@ -340,7 +354,6 @@ $modal_container_height: calc(100vh - 210px);
                     max-height: calc(100vh - 120px);
                 }
                 &__dragndrop {
-                    height: calc(100vh - 200px);
                     overflow: overlay;
                 }
                 &__footer {
@@ -355,10 +368,10 @@ $modal_container_height: calc(100vh - 210px);
             }
             & .load-google-drive {
                 &__container {
-                    width: calc(100vw - 3.2rem);
-                    margin: 1.6rem;
-                    border: dashed 0.2rem var(--border-normal);
-                    height: calc(100vh - 200px);
+                    width: calc(100vw);
+                    padding: 1.6rem;
+                    height: 100%;
+                    max-height: calc(100vh - 120px);
                 }
                 &__buttons > * {
                     margin: 0rem 0.4rem;

@@ -2,13 +2,13 @@
     $strategy-modal: 'modal--strategy';
 
     &__container {
-        max-height: 57.1rem !important;
-
-        .modal__scrollbar {
-            max-height: 516px;
-            margin-bottom: 75px;
-        }
         &_#{$strategy-modal} {
+            max-height: 57.1rem !important;
+
+            .modal__scrollbar {
+                max-height: 516px;
+                margin-bottom: 75px;
+            }
             .modal__content {
                 padding: 1.6rem 2.4rem;
                 height: calc(100% - 200px);

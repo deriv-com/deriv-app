@@ -27,9 +27,6 @@ export default class FlyoutHelpStore {
         const block_type = block_node.getAttribute('type');
         const title = Blockly.Blocks[block_type].meta().display_name;
 
-        /* TODO break each help-string a separate chunk and load it on demand, for this we need to loop
-        through the folder in bot-skeleton webpack and create entrypoint of each file. then import them as :
-        const help_string_obj = await import(/* webpackChunkName: `[request]` `@deriv/bot-skeleton/${block_type}`; */
         const help_string_obj = await import(/* webpackChunkName: `[request]` */ '@deriv/bot-skeleton');
         const start_scale = config.workspaces.flyoutWorkspacesStartScale;
 
@@ -42,12 +39,35 @@ export default class FlyoutHelpStore {
             this.block_node = block_node;
             this.block_type = block_type;
             this.title = title;
-            this.help_string = help_string_obj.default[block_type];
+            this.help_string = help_string_obj[block_type];
         });
 
         if (!flyout.is_search_flyout) {
             this.updateSequenceButtons();
         }
+    };
+
+    getHelpContent = async block_node => {
+        let block_content;
+
+        const help_string_obj = await import(/* webpackChunkName: `[request]` */ '@deriv/bot-skeleton');
+
+        if (block_node) {
+            const target_blocks = this.xml_list_group[block_node];
+            const block_type = target_blocks[0].getAttribute('type');
+            block_content = help_string_obj[block_type];
+        }
+        return block_content;
+    };
+
+    getFilledBlocksIndex = async blocks_type => {
+        const blocks_content = await Promise.all(blocks_type.map(block => this.getHelpContent(block)));
+        return blocks_content.map((key, index) => (key ? index : null)).filter(value => value !== null);
+    };
+
+    getNextHelpContentIndex = async is_last => {
+        const filled_blocks_index = await this.getFilledBlocksIndex(Object.keys(this.xml_list_group));
+        return is_last ? filled_blocks_index[filled_blocks_index.length - 1] : filled_blocks_index[0];
     };
 
     @action.bound
@@ -77,19 +97,27 @@ export default class FlyoutHelpStore {
             }
         });
 
-        const getNextBlock = async (xml, current_index, direction) => {
-            const next_index = current_index + (direction ? 1 : -1);
-            const block_type = Object.keys(xml).find((key, index) => next_index === index);
+        const getNextBlock = async (xml, current_index, is_next) => {
+            const next_index = current_index + (is_next ? 1 : -1);
+            const next_blocks_type = Object.keys(xml).filter((key, index) =>
+                is_next ? next_index <= index : next_index >= index
+            );
+            const next_filled_block = await this.getFilledBlocksIndex(next_blocks_type);
 
-            if (!block_type) {
+            const next_filled_block_index = is_next
+                ? next_filled_block[0]
+                : next_filled_block[next_filled_block.length - 1];
+            const next_block_type = next_blocks_type[next_filled_block_index];
+
+            if (!next_block_type) {
                 return false;
             }
 
             try {
                 await import(/* webpackChunkName: `[request]` */ '@deriv/bot-skeleton');
-                return block_type;
+                return next_block_type;
             } catch (e) {
-                return getNextBlock(xml, next_index, direction);
+                return getNextBlock(xml, next_index, is_next);
             }
         };
 
@@ -111,13 +139,21 @@ export default class FlyoutHelpStore {
     }
 
     @action.bound
-    updateSequenceButtons() {
+    async updateSequenceButtons() {
         const current_block = this.xml_list.find(xml => xml.getAttribute('type') === this.block_type);
         const current_index = Object.keys(this.xml_list_group).findIndex(
             key => current_block.getAttribute('type') === key
         );
-        this.should_previous_disable = current_index === 0;
-        this.should_next_disable = current_index === Object.keys(this.xml_list_group).length - 1;
+
+        const last_filled_content_index = await this.getNextHelpContentIndex(true);
+        const first_filled_content_index = await this.getNextHelpContentIndex(false);
+
+        runInAction(() => {
+            this.should_previous_disable = current_index === 0 || current_index === first_filled_content_index;
+            this.should_next_disable =
+                current_index === Object.keys(this.xml_list_group).length - 1 ||
+                current_index === last_filled_content_index;
+        });
     }
 
     // eslint-disable-next-line

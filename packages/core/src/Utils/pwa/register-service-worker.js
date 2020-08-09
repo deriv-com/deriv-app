@@ -1,6 +1,8 @@
 import { getUrlBase } from '@deriv/shared';
 
 const EVERY_HOUR = 3600000; // 1000 * 60 * 60
+const AUTO_REFRESH_THRESHOLD = 10000; // 10 Seconds
+
 let interval_id;
 
 function refreshOnUpdate() {
@@ -40,6 +42,7 @@ export default function register() {
                                     // the fresh content will have been added to the cache.
                                     // It's the perfect time to display a "New content is
                                     // available; please refresh." message in your web app.
+                                    if (performance.now() < AUTO_REFRESH_THRESHOLD) window.location.reload();
                                     console.log('New content is available; please refresh.'); // eslint-disable-line no-console
                                     const new_version_received = new Event('UpdateAvailable');
                                     document.dispatchEvent(new_version_received);

@@ -30,7 +30,6 @@ const AppContents = ({
     is_mt5_page,
     is_positions_drawer_on,
     is_route_modal_on,
-    // is_window_loaded, TODO: Remove after debugging
     pageView,
     pushDataLayer,
 }) => {
@@ -50,8 +49,6 @@ const AppContents = ({
     React.useEffect(() => {
         if (!is_logged_in && !is_logging_in) {
             WS.wait('website_status').then(() => {
-                // eslint-disable-next-line
-                console.log(is_logged_in, is_eu_country, is_logging_in);
                 setShowCookieBanner(is_eu_country);
             });
         }
@@ -148,7 +145,6 @@ export default withRouter(
         is_mt5_page: ui.is_mt5_page,
         is_positions_drawer_on: ui.is_positions_drawer_on,
         is_route_modal_on: ui.is_route_modal_on,
-        // is_window_loaded: ui.is_window_loaded, TODO: Remove after debugging
         pwa_prompt_event: ui.pwa_prompt_event,
         // setPWAPromptEvent     : ui.setPWAPromptEvent,
         // addNotificationBar    : ui.addNotificationBar,

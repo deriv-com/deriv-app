@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
-import { routes, isMobile, getDecimalPlaces } from '@deriv/shared';
+import { routes, isMobile, getDecimalPlaces, getPlatformHeader } from '@deriv/shared';
 
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
@@ -82,6 +82,7 @@ class Header extends React.Component {
                         </DesktopWrapper>
                         <MobileWrapper>
                             <ToggleMenuDrawer
+                                platform_header={getPlatformHeader(app_routing_history)}
                                 ref={this.toggle_menu_drawer_ref}
                                 account_status={account_status}
                                 enableApp={enableApp}

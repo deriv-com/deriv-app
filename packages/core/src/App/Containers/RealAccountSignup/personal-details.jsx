@@ -316,7 +316,7 @@ class PersonalDetails extends React.Component {
                                                                     message={
                                                                         <Localize
                                                                             i18n_default_text={
-                                                                                "Don't know your tax identification number? Click <0>here<0/> to learn more."
+                                                                                "Don't know your tax identification number? Click <0>here</0> to learn more."
                                                                             }
                                                                             components={[
                                                                                 <a

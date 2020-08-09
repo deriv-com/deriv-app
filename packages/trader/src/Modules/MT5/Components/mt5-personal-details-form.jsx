@@ -9,6 +9,7 @@ import {
     ThemedScrollbars,
     Input,
     Loading,
+    Modal,
     FormSubmitButton,
     DesktopWrapper,
     MobileWrapper,
@@ -316,16 +317,18 @@ const MT5PersonalDetailsForm = ({
                                     </div>
                                 </ThemedScrollbars>
                             </Div100vhContainer>
-                            <FormSubmitButton
-                                cancel_label={localize('Previous')}
-                                is_disabled={
-                                    isSubmitting ||
-                                    (Object.keys(touched).length === 0 && !is_initial_valid) ||
-                                    (Object.keys(touched).length > 0 && Object.keys(errors).length > 0)
-                                }
-                                label={localize('Next')}
-                                onCancel={() => handleCancel(values)}
-                            />
+                            <Modal.Footer>
+                                <FormSubmitButton
+                                    cancel_label={localize('Previous')}
+                                    is_disabled={
+                                        isSubmitting ||
+                                        (Object.keys(touched).length === 0 && !is_initial_valid) ||
+                                        (Object.keys(touched).length > 0 && Object.keys(errors).length > 0)
+                                    }
+                                    label={localize('Next')}
+                                    onCancel={() => handleCancel(values)}
+                                />
+                            </Modal.Footer>
                         </form>
                     )}
                 </AutoHeightWrapper>

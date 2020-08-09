@@ -113,7 +113,7 @@ const compareAccountsData = ({ landing_companies }) =>
                     name={localize('Commission')}
                     counter={4}
                     tooltip={localize(
-                        'Deriv charges no commission across all account types, except cryptocurrency accounts.'
+                        'Deriv charges no commission across all account types, except for cryptocurrencies.'
                     )}
                 />
             ),
@@ -171,13 +171,13 @@ const compareAccountsData = ({ landing_companies }) =>
             ),
             synthetic: localize('N/A'),
             financial: localize('24/7'),
-            financial_stp: localize('N/A'),
+            financial_stp: localize('24/7'),
         },
         {
             attribute: <MT5AttributeDescriber name={localize('Trading instruments')} />,
             synthetic: localize('Synthetics'),
             financial: localize('FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies'),
-            financial_stp: localize('FX-majors, FX-minors, FX-exotics'),
+            financial_stp: localize('FX-majors, FX-minors, FX-exotics, Cryptocurrencies'),
         },
     ]);
 

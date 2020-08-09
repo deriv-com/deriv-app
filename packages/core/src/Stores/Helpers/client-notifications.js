@@ -116,27 +116,6 @@ export const clientNotifications = (ui = {}, client = {}) => {
             ),
             type: 'danger',
         },
-        mf_retail: {
-            ...(isMobile() && {
-                action: {
-                    text: localize('Contact us'),
-                    onClick: () => {
-                        window.open(getDerivComLink('contact-us'));
-                    },
-                },
-            }),
-            key: 'mf_retail',
-            header: localize('Digital options trading disabled'),
-            message: isMobile() ? (
-                <Localize i18n_default_text='Digital Options Trading has been disabled on your account. Kindly contact customer support for assistance.' />
-            ) : (
-                <Localize
-                    i18n_default_text='Digital Options Trading has been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
-                    components={[<a key={0} className='link' target='_blank' href={getDerivComLink('contact-us')} />]}
-                />
-            ),
-            type: 'danger',
-        },
         financial_limit: {
             key: 'financial_limit',
             header: localize('Remove deposit limits'),
@@ -395,12 +374,10 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
         document_needs_action,
         unwelcome,
         ukrts_max_turnover_limit_not_set,
-        professional,
     } = getStatusValidations(status);
 
     addVerificationNotifications(identity, document, addNotificationMessage);
 
-    const is_mf_retail = client.landing_company_shortcode === 'maltainvest' && !professional;
     const needs_authentication = needs_verification.length && document.status === 'none' && identity.status === 'none';
     const has_risk_assessment = getRiskAssessment(account_status);
     const needs_poa =
@@ -435,7 +412,6 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
     if (mt5_withdrawal_locked) addNotificationMessage(clientNotifications().mt5_withdrawal_locked);
     if (document_needs_action) addNotificationMessage(clientNotifications().document_needs_action);
     if (unwelcome) addNotificationMessage(clientNotifications().unwelcome);
-    if (is_mf_retail) addNotificationMessage(clientNotifications().mf_retail);
 
     if (ukrts_max_turnover_limit_not_set) {
         addNotificationMessage(clientNotifications().financial_limit);

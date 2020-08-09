@@ -231,7 +231,7 @@ const initRoutesConfig = () => [
             {
                 path: routes.cashier_p2p,
                 component: lazyLoadCashierComponent('P2PCashier'),
-                title: localize('P2P'),
+                title: localize('DP2P'),
                 icon_component: 'IcDp2p',
             },
             {

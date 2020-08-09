@@ -126,8 +126,9 @@ class AccountSwitcher extends React.Component {
     };
 
     onClickUpgrade = account => {
-        if (this.props.is_eu_enabled) {
-            // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
+        // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
+        const is_account_signup_supported = this.props.is_eu ? this.props.is_eu_enabled : !this.props.is_eu;
+        if (is_account_signup_supported) {
             this.props.openRealAccountSignup(account);
         } else {
             window.open(urlFor('user/accounts', { legacy: true })); // TODO [deriv-eu] Remove this before launching eu production

@@ -713,7 +713,7 @@ $MIN_HEIGHT_FLOATING: calc(
         & .dc-input__label {
             background: var(--general-section-1);
         }
-        & .dc-field-error {
+        & .dc-field--error {
             padding-left: 0;
         }
         &__wrapper {

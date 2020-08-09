@@ -130,11 +130,7 @@ const Dropdown = ({
     }, [is_nativepicker, is_nativepicker_visible]);
 
     React.useEffect(() => {
-        if (initialRender.current) {
-            initialRender.current = false;
-            return;
-        }
-        if (!is_list_visible && value) dropdown_ref.current.focus();
+        if (!initialRender.current && !is_list_visible && value) dropdown_ref.current.focus();
     }, [is_list_visible]);
 
     const handleSelect = item => {
@@ -249,6 +245,12 @@ const Dropdown = ({
             nodes={nodes.current}
         />
     );
+
+    React.useEffect(() => {
+        if (initialRender.current) {
+            initialRender.current = false;
+        }
+    }, []);
 
     return (
         <React.Fragment>

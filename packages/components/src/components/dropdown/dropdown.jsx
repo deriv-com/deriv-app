@@ -43,6 +43,7 @@ const Dropdown = ({
 
     const [is_list_visible, setIsListVisible] = React.useState(!!is_nativepicker_visible);
     const [list_dimensions, setListDimensions] = React.useState([0, 0]);
+    const initialRender = React.useRef(true);
 
     const onClickOutSide = () => {
         if (typeof handleBlur === 'function') handleBlur({ target: { name } });
@@ -129,6 +130,10 @@ const Dropdown = ({
     }, [is_nativepicker, is_nativepicker_visible]);
 
     React.useEffect(() => {
+        if (initialRender.current) {
+            initialRender.current = false;
+            return;
+        }
         if (!is_list_visible && value) dropdown_ref.current.focus();
     }, [is_list_visible]);
 

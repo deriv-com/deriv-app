@@ -139,9 +139,15 @@ const MT5RealAccountDisplay = ({
                     onSelectAccount={onSelectRealFinancial}
                     onPasswordManager={openPasswordManager}
                     onClickFund={onClickFundRealFinancial}
-                    descriptor={localize(
-                        'Trade commodities, cryptocurrencies, major (standard and micro-lots) and minor currency pairs with high leverage.'
-                    )}
+                    descriptor={
+                        is_eu || is_eu_country
+                            ? localize(
+                                  'Trade commodities, cryptocurrencies, major (standard) and minor currency pairs with high leverage.'
+                              )
+                            : localize(
+                                  'Trade commodities, cryptocurrencies, major (standard and micro-lots) and minor currency pairs with high leverage.'
+                              )
+                    }
                     specs={should_show_eu ? eu_real_financial_specs : real_financial_specs}
                     is_logged_in={is_logged_in}
                 />

@@ -82,7 +82,6 @@ class Header extends React.Component {
                         </DesktopWrapper>
                         <MobileWrapper>
                             <ToggleMenuDrawer
-                                platform_header={getPlatformHeader(app_routing_history)}
                                 ref={this.toggle_menu_drawer_ref}
                                 account_status={account_status}
                                 enableApp={enableApp}
@@ -96,6 +95,7 @@ class Header extends React.Component {
                                 is_payment_agent_transfer_visible={is_payment_agent_transfer_visible}
                                 is_payment_agent_visible={is_payment_agent_visible}
                                 toggleTheme={setDarkMode}
+                                platform_header={getPlatformHeader(app_routing_history)}
                                 platform_switcher={
                                     <PlatformSwitcher
                                         app_routing_history={app_routing_history}

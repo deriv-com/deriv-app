@@ -90,6 +90,16 @@ class PersonalDetails extends React.Component {
         return errors;
     };
 
+    closeTooltipOnScroll = () => {
+        // Close any open tooltip
+        if (!this.state.is_tax_residence_popover_open || !this.state.is_tin_popover_open) {
+            this.setState({
+                is_tax_residence_popover_open: false,
+                is_tin_popover_open: false,
+            });
+        }
+    };
+
     handleClickOutside = () => {
         if (this.state.is_tax_residence_popover_open) {
             this.setState({ is_tax_residence_popover_open: false });
@@ -123,7 +133,11 @@ class PersonalDetails extends React.Component {
                                     height_offset='199px'
                                     is_disabled={isDesktop()}
                                 >
-                                    <ThemedScrollbars is_bypassed={isMobile()} height={height}>
+                                    <ThemedScrollbars
+                                        is_bypassed={isMobile()}
+                                        height={height}
+                                        onScroll={this.closeTooltipOnScroll}
+                                    >
                                         <div
                                             className='details-form__elements'
                                             style={{ paddingBottom: isDesktop() ? this.state.paddingBottom : null }}

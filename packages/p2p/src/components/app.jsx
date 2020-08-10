@@ -35,7 +35,7 @@ class App extends React.Component {
         WebsocketInit(this.props.websocket_api, this.props.client.local_currency_config.decimal_places);
         ServerTime.init(this.props.server_time);
 
-        this.is_active_tab = true;
+        this.is_active_tab;
         this.list_item_limit = 20;
         this.ws_subscriptions = {};
         this.state = {

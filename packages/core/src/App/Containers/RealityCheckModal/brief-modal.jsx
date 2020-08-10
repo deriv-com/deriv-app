@@ -34,7 +34,7 @@ const BriefModal = ({
                     <Form noValidate>
                         <Modal.Body>
                             <p className='reality-check__text reality-check__text--description'>
-                                <Localize i18n_default_text='Options trading can become a real addiction, as can any other activity pushed to its limits. To avoid the danger of such an addiction, we provide a reality-check that gives you a summary of your traders and accounts on a regular basis.' />
+                                <Localize i18n_default_text='Options trading can become a real addiction, as can any other activity pushed to its limits. To avoid the danger of such an addiction, we provide a reality-check that gives you a summary of your trades and accounts on a regular basis.' />
                             </p>
                             <p className='reality-check__text reality-check__text--description'>
                                 <Localize

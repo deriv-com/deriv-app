@@ -375,22 +375,28 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                     return false;
                 }
 
-                const { min, max } = this.durations.find(d => d.unit === this.selected_duration);
-                const is_valid_duration = input_number >= min && input_number <= max;
+                const duration = this.durations.find(d => d.unit === this.selected_duration);
 
-                if (min === max) {
-                    this.error_message = localize(
-                        'Duration value is not allowed. To run the bot, please enter {{min}}.',
-                        { min }
-                    );
-                } else {
-                    this.error_message = localize(
-                        'Duration value is not allowed. To run the bot, please enter a value between {{min}} to {{max}}.',
-                        { min, max }
-                    );
+                if (duration) {
+                    const { min, max } = duration;
+                    const is_valid_duration = input_number >= min && input_number <= max;
+
+                    if (min === max) {
+                        this.error_message = localize(
+                            'Duration value is not allowed. To run the bot, please enter {{min}}.',
+                            { min }
+                        );
+                    } else {
+                        this.error_message = localize(
+                            'Duration value is not allowed. To run the bot, please enter a value between {{min}} to {{max}}.',
+                            { min, max }
+                        );
+                    }
+
+                    return !is_valid_duration;
                 }
 
-                return !is_valid_duration;
+                return false;
             },
         };
     },

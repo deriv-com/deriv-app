@@ -35,7 +35,6 @@ class App extends React.Component {
         WebsocketInit(this.props.websocket_api, this.props.client.local_currency_config.decimal_places);
         ServerTime.init(this.props.server_time);
 
-        this.is_active_tab;
         this.list_item_limit = 20;
         this.ws_subscriptions = {};
         this.state = {
@@ -306,8 +305,7 @@ class App extends React.Component {
     };
 
     changeOrderToggle = value => {
-        this.is_active_tab = value === 'active';
-        this.setState({ order_table_type: value });
+        this.setState({ order_table_type: value, is_active_tab: value === 'active' });
     };
 
     render() {
@@ -356,7 +354,7 @@ class App extends React.Component {
                     local_currency_config,
                     residence,
                     advertiser_id,
-                    is_active_tab: this.is_active_tab,
+                    is_active_tab: this.state.is_active_tab,
                     is_advertiser: this.state.is_advertiser,
                     is_listed: this.state.is_listed,
                     setIsListed: is_listed => this.setState({ is_listed }),

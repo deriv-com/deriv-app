@@ -65,14 +65,15 @@ const filterAvailableAccounts = (landing_companies, table, is_eu) => {
     });
 };
 
-const compareAccountsData = ({ landing_companies, is_eu }) =>
-    filterAvailableAccounts(
+const compareAccountsData = ({ landing_companies, is_eu, is_eu_country, is_logged_in }) => {
+    const show_eu_related = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
+    return filterAvailableAccounts(
         landing_companies,
         [
             {
                 attribute: <MT5AttributeDescriber name={localize('Account currency')} />,
-                synthetic: localize('USD'),
-                financial: localize('USD'),
+                synthetic: show_eu_related ? localize('EUR') : localize('USD'),
+                financial: show_eu_related ? localize('EUR/GBP') : localize('USD'),
                 financial_stp: localize('USD'),
             },
             {
@@ -86,7 +87,7 @@ const compareAccountsData = ({ landing_companies, is_eu }) =>
                     />
                 ),
                 synthetic: localize('Up to 1:1000'),
-                financial: localize('Up to 1:1000'),
+                financial: show_eu_related ? localize('Up to 1:30') : localize('Up to 1:1000'),
                 financial_stp: localize('Up to 1:100'),
             },
             {
@@ -148,7 +149,7 @@ const compareAccountsData = ({ landing_companies, is_eu }) =>
                     />
                 ),
                 synthetic: localize('100%'),
-                financial: localize('150%'),
+                financial: show_eu_related ? localize('100%') : localize('150%'),
                 financial_stp: localize('150%'),
             },
             {
@@ -162,7 +163,7 @@ const compareAccountsData = ({ landing_companies, is_eu }) =>
                     />
                 ),
                 synthetic: localize('50%'),
-                financial: localize('75%'),
+                financial: show_eu_related ? localize('50%') : localize('75%'),
                 financial_stp: localize('75%'),
             },
             {
@@ -188,12 +189,15 @@ const compareAccountsData = ({ landing_companies, is_eu }) =>
             {
                 attribute: <MT5AttributeDescriber name={localize('Trading instruments')} />,
                 synthetic: localize('Synthetics'),
-                financial: localize('FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies'),
+                financial: show_eu_related
+                    ? localize('FX-majors (standard), FX-minors, Commodities, Cryptocurrencies')
+                    : localize('FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies'),
                 financial_stp: localize('FX-majors, FX-minors, FX-exotics, Cryptocurrencies'),
             },
         ],
         is_eu
     );
+};
 
 const MT5CompareAccountHint = () => (
     <div className='mt5-compare-account--hint'>
@@ -210,12 +214,12 @@ const MT5CompareAccountHint = () => (
     </div>
 );
 
-const ModalContent = ({ is_eu, landing_companies }) => {
+const ModalContent = ({ is_eu, landing_companies, is_eu_country, is_logged_in }) => {
     const [cols, setCols] = React.useState([]);
     const [template_columns, updateColumnsStyle] = React.useState('1.5fr 1fr 2fr 1fr');
 
     React.useEffect(() => {
-        setCols(compareAccountsData({ is_eu, landing_companies }));
+        setCols(compareAccountsData({ landing_companies, is_eu, is_eu_country, is_logged_in }));
 
         if (is_eu) {
             updateColumnsStyle(
@@ -224,7 +228,7 @@ const ModalContent = ({ is_eu, landing_companies }) => {
                 } ${landing_companies?.mt_financial_company?.financial_stp ? ' 1fr ' : ''}`
             );
         }
-    }, [landing_companies.mt_financial_company, landing_companies.mt_gaming_company]);
+    }, [landing_companies.mt_financial_company, landing_companies.mt_gaming_company, is_eu]);
 
     return (
         <div
@@ -295,7 +299,9 @@ const CompareAccountsModal = ({
     is_compare_accounts_visible,
     landing_companies,
     is_loading,
+    is_logged_in,
     is_eu,
+    is_eu_country,
     toggleCompareAccounts,
 }) => (
     <div className='mt5-compare-accounts-modal__wrapper'>
@@ -320,7 +326,12 @@ const CompareAccountsModal = ({
                     height='696px'
                     width='903px'
                 >
-                    <ModalContent is_eu={is_eu} landing_companies={landing_companies} />
+                    <ModalContent
+                        is_logged_in={is_logged_in}
+                        is_eu={is_eu}
+                        is_eu_country={is_eu_country}
+                        landing_companies={landing_companies}
+                    />
                 </Modal>
             </DesktopWrapper>
             <MobileWrapper>
@@ -332,7 +343,12 @@ const CompareAccountsModal = ({
                     onClose={toggleCompareAccounts}
                     footer={<MT5CompareAccountHint />}
                 >
-                    <ModalContent is_eu={is_eu} landing_companies={landing_companies} />
+                    <ModalContent
+                        is_logged_in={is_logged_in}
+                        is_eu={is_eu}
+                        is_eu_country={is_eu_country}
+                        landing_companies={landing_companies}
+                    />
                 </MobileDialog>
             </MobileWrapper>
         </React.Suspense>
@@ -345,6 +361,8 @@ export default connect(({ modules, ui, client }) => ({
     is_compare_accounts_visible: modules.mt5.is_compare_accounts_visible,
     is_loading: client.is_populating_mt5_account_list,
     is_eu: client.is_eu,
+    is_eu_country: client.is_eu_country,
+    is_logged_in: client.is_logged_in,
     landing_companies: client.landing_companies,
     toggleCompareAccounts: modules.mt5.toggleCompareAccountsModal,
 }))(CompareAccountsModal);

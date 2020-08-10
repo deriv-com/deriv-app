@@ -52,7 +52,7 @@ const FormInputField = ({ name, optional = false, warn, ...props }) => (
                 required={!optional}
                 name={name}
                 autoComplete='off'
-                maxLength='30'
+                maxLength={props.maxLength || '30'}
                 error={touched[field.name] && errors[field.name]}
                 warn={warn}
                 {...field}
@@ -120,7 +120,7 @@ class PersonalDetails extends React.Component {
                 }}
             >
                 {({ handleSubmit, isSubmitting, errors, setFieldValue, touched, values, handleChange, handleBlur }) => (
-                    <AutoHeightWrapper default_height={200} height_offset={81}>
+                    <AutoHeightWrapper default_height={200} height_offset={isDesktop() ? 81 : null}>
                         {({ setRef, height }) => (
                             <form
                                 ref={setRef}
@@ -130,7 +130,7 @@ class PersonalDetails extends React.Component {
                             >
                                 <Div100vhContainer
                                     className='details-form'
-                                    height_offset='199px'
+                                    height_offset='179px'
                                     is_disabled={isDesktop()}
                                 >
                                     <ThemedScrollbars
@@ -164,7 +164,12 @@ class PersonalDetails extends React.Component {
                                             {'first_name' in this.props.value && (
                                                 <FormInputField
                                                     name='first_name'
-                                                    label={localize('First name')}
+                                                    required={this.props.is_svg}
+                                                    label={
+                                                        this.props.is_svg
+                                                            ? localize('First name*')
+                                                            : localize('First name')
+                                                    }
                                                     disabled={this.props.disabled_items.includes('first_name')}
                                                     placeholder={localize('John')}
                                                 />
@@ -172,7 +177,12 @@ class PersonalDetails extends React.Component {
                                             {'last_name' in this.props.value && (
                                                 <FormInputField
                                                     name='last_name'
-                                                    label={localize('Last name')}
+                                                    required={this.props.is_svg}
+                                                    label={
+                                                        this.props.is_svg
+                                                            ? localize('Last name*')
+                                                            : localize('Last name')
+                                                    }
                                                     disabled={this.props.disabled_items.includes('last_name')}
                                                     placeholder={localize('Doe')}
                                                 />
@@ -181,7 +191,12 @@ class PersonalDetails extends React.Component {
                                             {'date_of_birth' in this.props.value && (
                                                 <DateOfBirthField
                                                     name='date_of_birth'
-                                                    label={localize('Date of birth')}
+                                                    required={this.props.is_svg}
+                                                    label={
+                                                        this.props.is_svg
+                                                            ? localize('Date of birth*')
+                                                            : localize('Date of birth')
+                                                    }
                                                     disabled={this.props.disabled_items.includes('date_of_birth')}
                                                     placeholder={localize('01-07-1999')}
                                                 />
@@ -235,8 +250,17 @@ class PersonalDetails extends React.Component {
                                             {'phone' in this.props.value && (
                                                 <FormInputField
                                                     name='phone'
-                                                    label={localize('Phone number')}
-                                                    placeholder={localize('Phone number')}
+                                                    label={
+                                                        this.props.is_svg
+                                                            ? localize('Phone number*')
+                                                            : localize('Phone number')
+                                                    }
+                                                    placeholder={
+                                                        this.props.is_svg
+                                                            ? localize('Phone number*')
+                                                            : localize('Phone number')
+                                                    }
+                                                    maxLength={50}
                                                 />
                                             )}
                                             {('tax_residence' in this.props.value ||
@@ -420,7 +444,7 @@ class PersonalDetails extends React.Component {
                                         </div>
                                     </ThemedScrollbars>
                                 </Div100vhContainer>
-                                <Modal.Footer has_separator>
+                                <Modal.Footer has_separator is_bypassed={isMobile()}>
                                     <FormSubmitButton
                                         cancel_label={localize('Previous')}
                                         has_cancel

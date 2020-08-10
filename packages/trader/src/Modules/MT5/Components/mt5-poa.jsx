@@ -290,14 +290,14 @@ class MT5POA extends React.Component {
                                                                         name='address_state'
                                                                         value={values.address_state}
                                                                         onChange={handleChange}
-                                                                        placeholder={localize('State/Province')}
+                                                                        placeholder={localize('State/Province*')}
                                                                     />
                                                                 )}
                                                             </Field>
                                                         </DesktopWrapper>
                                                         <MobileWrapper>
                                                             <SelectNative
-                                                                label={localize('State/Province')}
+                                                                label={localize('State/Province*')}
                                                                 value={values.address_state}
                                                                 list_items={states_list}
                                                                 error={touched.address_state && errors.address_state}
@@ -305,6 +305,7 @@ class MT5POA extends React.Component {
                                                                 onChange={e =>
                                                                     setFieldValue('address_state', e.target.value, true)
                                                                 }
+                                                                required
                                                             />
                                                         </MobileWrapper>
                                                     </fieldset>

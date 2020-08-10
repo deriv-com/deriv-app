@@ -52,7 +52,7 @@ const FormInputField = ({ name, optional = false, warn, ...props }) => (
                 required={!optional}
                 name={name}
                 autoComplete='off'
-                maxLength='30'
+                maxLength={props.maxLength || '30'}
                 error={touched[field.name] && errors[field.name]}
                 warn={warn}
                 {...field}
@@ -246,6 +246,7 @@ class PersonalDetails extends React.Component {
                                                             ? localize('Phone number*')
                                                             : localize('Phone number')
                                                     }
+                                                    maxLength={50}
                                                 />
                                             )}
                                             {('tax_residence' in this.props.value ||

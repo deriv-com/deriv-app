@@ -5,6 +5,7 @@ import { MobileWrapper } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import TogglePositionsMobile from 'App/Components/Elements/TogglePositions/toggle-positions-mobile.jsx';
 import { connect, MobxContentProvider } from 'Stores/connect';
+import { WS } from 'Services/ws-methods';
 
 class TradeHeaderExtensions extends React.Component {
     populateHeader = () => {
@@ -51,6 +52,7 @@ class TradeHeaderExtensions extends React.Component {
             // Waits for login to complete
             await when(() => !client.is_populating_account_list);
             if (this.props.is_logged_in) {
+                await WS.wait('authorize');
                 this.props.onMountPositions();
                 this.props.onMountCashier(true);
                 this.props.setAccountSwitchListener();

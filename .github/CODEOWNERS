@@ -38,10 +38,13 @@
 #  aaron-binary
 #  ashkanx
 #  balakrishna-binary
+#  carol-binary
 #  mahdiaryayi-fs
+#  mehrzad-fs
 #  mustofa-binary
 #  negar-binary
 #  negarn
+#  nijil-binary
 #  oskar-binary
 #  reza-fs
 #  zaki-binary
@@ -74,8 +77,10 @@
 #  Used for approving all relevant changes to Bot
 #
 #   - aaron-binary
+#   - carol-binary
+#   - mehrzad-fs
+#   - nijil-binary
 #   - negarn
-
 
 # ==============================================================
 #  binary-com/deriv-core

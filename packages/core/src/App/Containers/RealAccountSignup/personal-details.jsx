@@ -52,7 +52,7 @@ const FormInputField = ({ name, optional = false, warn, ...props }) => (
                 required={!optional}
                 name={name}
                 autoComplete='off'
-                maxLength='30'
+                maxLength={props.maxLength || '30'}
                 error={touched[field.name] && errors[field.name]}
                 warn={warn}
                 {...field}
@@ -90,6 +90,16 @@ class PersonalDetails extends React.Component {
         return errors;
     };
 
+    closeTooltipOnScroll = () => {
+        // Close any open tooltip
+        if (!this.state.is_tax_residence_popover_open || !this.state.is_tin_popover_open) {
+            this.setState({
+                is_tax_residence_popover_open: false,
+                is_tin_popover_open: false,
+            });
+        }
+    };
+
     handleClickOutside = () => {
         if (this.state.is_tax_residence_popover_open) {
             this.setState({ is_tax_residence_popover_open: false });
@@ -110,7 +120,7 @@ class PersonalDetails extends React.Component {
                 }}
             >
                 {({ handleSubmit, isSubmitting, errors, setFieldValue, touched, values, handleChange, handleBlur }) => (
-                    <AutoHeightWrapper default_height={200} height_offset={81}>
+                    <AutoHeightWrapper default_height={200} height_offset={isDesktop() ? 81 : null}>
                         {({ setRef, height }) => (
                             <form
                                 ref={setRef}
@@ -120,10 +130,14 @@ class PersonalDetails extends React.Component {
                             >
                                 <Div100vhContainer
                                     className='details-form'
-                                    height_offset='199px'
+                                    height_offset='179px'
                                     is_disabled={isDesktop()}
                                 >
-                                    <ThemedScrollbars is_bypassed={isMobile()} height={height}>
+                                    <ThemedScrollbars
+                                        is_bypassed={isMobile()}
+                                        height={height}
+                                        onScroll={this.closeTooltipOnScroll}
+                                    >
                                         <div
                                             className='details-form__elements'
                                             style={{ paddingBottom: isDesktop() ? this.state.paddingBottom : null }}
@@ -150,7 +164,12 @@ class PersonalDetails extends React.Component {
                                             {'first_name' in this.props.value && (
                                                 <FormInputField
                                                     name='first_name'
-                                                    label={localize('First name')}
+                                                    required={this.props.is_svg}
+                                                    label={
+                                                        this.props.is_svg
+                                                            ? localize('First name*')
+                                                            : localize('First name')
+                                                    }
                                                     disabled={this.props.disabled_items.includes('first_name')}
                                                     placeholder={localize('John')}
                                                 />
@@ -158,7 +177,12 @@ class PersonalDetails extends React.Component {
                                             {'last_name' in this.props.value && (
                                                 <FormInputField
                                                     name='last_name'
-                                                    label={localize('Last name')}
+                                                    required={this.props.is_svg}
+                                                    label={
+                                                        this.props.is_svg
+                                                            ? localize('Last name*')
+                                                            : localize('Last name')
+                                                    }
                                                     disabled={this.props.disabled_items.includes('last_name')}
                                                     placeholder={localize('Doe')}
                                                 />
@@ -167,7 +191,12 @@ class PersonalDetails extends React.Component {
                                             {'date_of_birth' in this.props.value && (
                                                 <DateOfBirthField
                                                     name='date_of_birth'
-                                                    label={localize('Date of birth')}
+                                                    required={this.props.is_svg}
+                                                    label={
+                                                        this.props.is_svg
+                                                            ? localize('Date of birth*')
+                                                            : localize('Date of birth')
+                                                    }
                                                     disabled={this.props.disabled_items.includes('date_of_birth')}
                                                     placeholder={localize('01-07-1999')}
                                                 />
@@ -221,8 +250,17 @@ class PersonalDetails extends React.Component {
                                             {'phone' in this.props.value && (
                                                 <FormInputField
                                                     name='phone'
-                                                    label={localize('Phone number')}
-                                                    placeholder={localize('Phone number')}
+                                                    label={
+                                                        this.props.is_svg
+                                                            ? localize('Phone number*')
+                                                            : localize('Phone number')
+                                                    }
+                                                    placeholder={
+                                                        this.props.is_svg
+                                                            ? localize('Phone number*')
+                                                            : localize('Phone number')
+                                                    }
+                                                    maxLength={50}
                                                 />
                                             )}
                                             {('tax_residence' in this.props.value ||
@@ -265,7 +303,7 @@ class PersonalDetails extends React.Component {
                                                                             alignment='right'
                                                                             icon='info'
                                                                             message={localize(
-                                                                                'Tax residence, also known as fiscal residency or redisence for tax purposes, is an important concept for all taxpayers living and working abroad. It determines the tax liabilities that the individual has to beer within a particular country (jurisdiction).'
+                                                                                'The country in which you meet the criteria for paying taxes. Usually the country in which you physically reside.'
                                                                             )}
                                                                             zIndex={9999}
                                                                             disable_message_icon
@@ -302,7 +340,7 @@ class PersonalDetails extends React.Component {
                                                                     message={
                                                                         <Localize
                                                                             i18n_default_text={
-                                                                                'A Tax Identification Number (TIN) is a unique identifying number used for tax purposes by countries (jurisdictions) that observe the Common Reporting Standards. To determine your TIN or its equivalent, follow <0>this link</0>, locate your jurisdiction, and read the information provided on taxation guidelines.'
+                                                                                "Don't know your tax identification number? Click <0>here</0> to learn more."
                                                                             }
                                                                             components={[
                                                                                 <a
@@ -406,7 +444,7 @@ class PersonalDetails extends React.Component {
                                         </div>
                                     </ThemedScrollbars>
                                 </Div100vhContainer>
-                                <Modal.Footer has_separator>
+                                <Modal.Footer has_separator is_bypassed={isMobile()}>
                                     <FormSubmitButton
                                         cancel_label={localize('Previous')}
                                         has_cancel

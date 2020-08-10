@@ -67,8 +67,6 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin-bottom: 0;
             }
             .dc-dropdown-container {
-                margin-top: 0;
-
                 .dc-dropdown__display-text,
                 .dc-list__item-text {
                     text-transform: unset;
@@ -129,37 +127,43 @@ $MIN_HEIGHT_FLOATING: calc(
         width: 100%;
 
         &__header {
-            position: relative;
             font-size: var(--text-size-xs);
             font-weight: bold;
             margin-bottom: 1.6em;
+            position: relative;
+            height: 1.6em;
+            white-space: nowrap;
 
-            &:not(:first-child) {
-                margin-top: 1.6em;
+            &-section {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
             }
-            &:before {
-                content: '';
-                position: absolute;
-                top: 0.5em;
-                left: 0;
-                width: 100%;
-                height: 100%;
+            &-section:after {
                 border-top: 1px solid var(--general-section-1);
+                content: '';
+                height: 100%;
+                width: 100%;
+                margin-top: 0.3rem;
+                @include mobile {
+                    border-top-color: var(--general-disabled);
+                }
             }
-            @include mobile {
-                margin-top: 1.6rem;
+            &--has-description {
+                margin-bottom: 0.5rem;
             }
         }
         &__title {
-            position: absolute;
-            padding-right: 8px;
             color: var(--text-prominent);
-            background: var(--general-main-1);
+            padding-right: 0.8rem;
         }
         &__subtitle {
-            padding-left: 8px;
-            font-weight: normal;
+            font-size: 1rem;
             color: var(--text-prominent);
+            font-weight: normal;
+            align-self: baseline;
+            padding-right: 0.8rem;
+            margin-top: 0.2rem;
         }
         &__fieldset {
             position: relative;
@@ -202,9 +206,6 @@ $MIN_HEIGHT_FLOATING: calc(
                         width: 2.4rem;
                         height: 2.4rem;
                     }
-                }
-                .dc-field-error {
-                    top: 4.2rem;
                 }
             }
         }
@@ -712,7 +713,7 @@ $MIN_HEIGHT_FLOATING: calc(
         & .dc-input__label {
             background: var(--general-section-1);
         }
-        & .dc-field-error {
+        & .dc-field--error {
             padding-left: 0;
         }
         &__wrapper {
@@ -847,6 +848,32 @@ $MIN_HEIGHT_FLOATING: calc(
 
             &--small {
                 font-size: 1.2rem;
+            }
+        }
+        &__warning {
+            background-color: rgba(255, 173, 58, 0.3);
+            border-radius: $BORDER_RADIUS;
+            margin-top: 0.8rem;
+            position: relative;
+
+            &-icon {
+                position: absolute;
+                top: 0.8rem;
+                left: 0.8rem;
+            }
+            &-textbox {
+                padding: 0.9rem 3.2rem;
+            }
+            &-text {
+                color: var(--text-general);
+                font-size: var(--text-size-xxxs);
+                line-height: 1.4;
+            }
+            &-link {
+                color: var(--text-general);
+                cursor: pointer;
+                font-weight: bold;
+                text-decoration: none;
             }
         }
     }

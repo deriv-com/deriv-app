@@ -37,12 +37,12 @@ export default function register() {
                         installingWorker.onstatechange = () => {
                             if (installingWorker.state === 'installed') {
                                 if (navigator.serviceWorker.controller) {
+                                    if (performance.now() < AUTO_REFRESH_THRESHOLD) window.location.reload();
                                     // User's first visit:
                                     // At this point, the old content will have been purged and
                                     // the fresh content will have been added to the cache.
                                     // It's the perfect time to display a "New content is
                                     // available; please refresh." message in your web app.
-                                    if (performance.now() < AUTO_REFRESH_THRESHOLD) window.location.reload();
                                     console.log('New content is available; please refresh.'); // eslint-disable-line no-console
                                     const new_version_received = new Event('UpdateAvailable');
                                     document.dispatchEvent(new_version_received);

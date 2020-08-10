@@ -241,6 +241,9 @@ $modal_container_height: calc(100vh - 210px);
             padding: 25px;
             text-align: center;
             height: $modal_container_height;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
 
             > * {
                 margin: 0 auto;
@@ -374,11 +377,10 @@ $modal_container_height: calc(100vh - 210px);
                     max-height: calc(100vh - 120px);
                 }
                 &__buttons > * {
-                    margin: 0rem 0.4rem;
+                    margin: 0 0.4rem;
                 }
             }
             .preview__workspace {
-                width: 100vw;
                 height: calc(100vh - 300px);
             }
         }

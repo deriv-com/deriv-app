@@ -66,7 +66,7 @@
         grid-template-columns: $grid-template-columns;
         grid-template-rows: auto auto;
         grid-template-areas: ('trade-type entry-spot stake' 'trade-type exit-spot  profit');
-        padding: 0.8rem 0rem;
+        padding: 0.8rem 0;
 
         &-wrapper {
             height: 5.2rem;

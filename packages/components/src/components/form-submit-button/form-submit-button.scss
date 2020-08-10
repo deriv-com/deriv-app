@@ -39,7 +39,11 @@
     @include mobile {
         background-color: var(--general-section-2);
         top: unset;
-        bottom: 0;
+        bottom: -0.4rem;
+        left: 0;
+        position: absolute;
+        padding: 1.6rem;
+        border-top: 2px solid var(--general-disabled);
 
         .dc-btn {
             height: 40px;

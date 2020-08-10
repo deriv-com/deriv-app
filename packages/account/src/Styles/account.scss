@@ -14,6 +14,11 @@ $MIN_HEIGHT_FLOATING: calc(
         }
     }
     .multi-step {
+        @include desktop {
+            &__component {
+                max-height: calc(100% - 64px);
+            }
+        }
         @include mobile {
             width: 100%;
         }
@@ -77,6 +82,12 @@ $MIN_HEIGHT_FLOATING: calc(
                 overflow-x: hidden;
                 overflow-y: auto;
                 grid-template-rows: 5rem 1fr 4rem 1fr;
+
+                &:first-child {
+                    & .account-form__header {
+                        padding-top: 2.4rem;
+                    }
+                }
             }
         }
         @include desktop {
@@ -129,9 +140,9 @@ $MIN_HEIGHT_FLOATING: calc(
         &__header {
             font-size: var(--text-size-xs);
             font-weight: bold;
-            margin-bottom: 1.6em;
+            margin-bottom: 1.6rem;
             position: relative;
-            height: 1.6em;
+            height: 1.6rem;
             white-space: nowrap;
 
             &-section {
@@ -305,15 +316,14 @@ $MIN_HEIGHT_FLOATING: calc(
             .dc-select-native__placeholder {
                 background-color: var(--general-main-1);
             }
-            .account__scrollbars_container--grid-layout {
-                @include mobile {
-                    display: flex;
-                    flex-direction: column;
+            .account__scrollbars_container {
+                &--grid-layout {
+                    @include mobile {
+                        display: flex;
+                        flex-direction: column;
+                    }
                 }
-            }
-            @include desktop {
-                .account__scrollbars_container {
-                    padding-top: 2.4rem;
+                @include desktop {
                     padding-bottom: 0;
                 }
             }
@@ -448,8 +458,8 @@ $MIN_HEIGHT_FLOATING: calc(
             margin-top: 1.2rem;
 
             .dc-btn {
-                padding: 0rem;
-                margin-bottom: 0rem;
+                padding: 0;
+                margin-bottom: 0;
             }
         }
     }
@@ -557,6 +567,12 @@ $MIN_HEIGHT_FLOATING: calc(
 
             @include mobile {
                 margin-left: 1.2rem;
+
+                & .dc-timeline {
+                    &__flex {
+                        margin-top: 2.4rem;
+                    }
+                }
             }
         }
         &__scope {
@@ -626,6 +642,10 @@ $MIN_HEIGHT_FLOATING: calc(
             @include typeface(--title-left-bold-prominent, none);
             margin-bottom: 1.5rem;
             margin-left: 1.2rem;
+
+            @include mobile {
+                padding-top: 2.4rem;
+            }
         }
         &__input-group {
             display: flex;
@@ -724,6 +744,7 @@ $MIN_HEIGHT_FLOATING: calc(
             @include mobile {
                 flex-direction: column;
                 overflow-y: auto;
+                max-height: calc(100% - 72px);
             }
         }
         &__error {
@@ -781,7 +802,7 @@ $MIN_HEIGHT_FLOATING: calc(
         &__form {
             margin-right: 1rem;
             @include mobile {
-                margin: 1.6rem;
+                margin: 0 1.6rem;
             }
         }
         &__header {
@@ -841,6 +862,10 @@ $MIN_HEIGHT_FLOATING: calc(
                 align-items: center;
                 justify-content: flex-end;
                 margin-top: 2.4rem;
+
+                @include mobile {
+                    position: absolute;
+                }
             }
         }
         &__text-highlight {
@@ -1318,8 +1343,8 @@ $MIN_HEIGHT_FLOATING: calc(
         }
     }
     @include mobile {
-        margin-top: 24px;
-        padding: 0 16px;
+        overflow: hidden;
+        padding: 2.4rem 1.6rem 0;
 
         &__data-list {
             padding: 0;
@@ -1328,7 +1353,7 @@ $MIN_HEIGHT_FLOATING: calc(
             min-height: calc(100vh - 50px);
 
             .connected-apps {
-                max-height: calc(100vh - 100px);
+                max-height: calc(100vh - 130px);
             }
             .data-list__item {
                 padding: 8px;
@@ -1632,22 +1657,28 @@ $MIN_HEIGHT_FLOATING: calc(
     &__information {
         @include typeface(--paragraph-left-normal-prominent, none);
         line-height: 1.43;
-        margin-bottom: 8px;
+        margin-bottom: 0.8rem;
 
         &--bold {
             font-weight: bold;
-            margin-bottom: 8px;
-            margin-top: 5px;
+            margin: 0.5rem 0 0.8rem;
+        }
+        @include mobile {
+            &:first-child {
+                & > p {
+                    padding-top: 2.4rem;
+                }
+            }
         }
     }
     &__steps {
-        margin-top: 16px;
+        margin-top: 1.6rem;
         @include typeface(--paragraph-left-normal-prominent, none);
         line-height: 1.43;
     }
     &__title {
         font-weight: bold;
-        margin-bottom: 8px;
+        margin-bottom: 0.8rem;
     }
     &__content {
         color: var(--text-general);
@@ -1658,8 +1689,13 @@ $MIN_HEIGHT_FLOATING: calc(
         text-decoration: none;
     }
     &__button {
-        margin-top: 24px;
+        margin-top: 2.4rem;
         float: right;
+
+        @include mobile {
+            float: none;
+            margin: 2.4rem auto 3.2rem;
+        }
     }
     .deactivate-account-reasons {
         color: var(--text-prominent);
@@ -1697,6 +1733,14 @@ $MIN_HEIGHT_FLOATING: calc(
 
         .dc-form-submit-button {
             background-color: var(--general-main-1);
+        }
+        &:first-child {
+            & > div {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
         }
     }
 }

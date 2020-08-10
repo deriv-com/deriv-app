@@ -469,7 +469,7 @@ class MT5PasswordManagerModal extends React.Component {
                         enableApp={enableApp}
                         is_open={is_visible}
                         title={
-                            selected_account_type === 'real'
+                            selected_account_group === 'real'
                                 ? localize('Manage DMT5 Real {{account_title}} account password', {
                                       account_title: selected_account,
                                   })

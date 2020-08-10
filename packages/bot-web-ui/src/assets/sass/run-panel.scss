@@ -3,12 +3,25 @@
 **/
 // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
 .run-panel {
-    height: var(--bot-content-height) !important;
-    top: 104px !important;
-    width: 382px !important;
+    &__container {
+        height: var(--bot-content-height) !important;
+        top: 10.4rem !important;
+        width: 36.6rem !important;
 
-    &--open {
-        transform: translateX(-382px) !important;
+        &--mobile {
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+
+            &-closed {
+                position: unset;
+            }
+        }
+        &--open {
+            transform: translateX(-36.6rem) !important;
+        }
     }
     &__tile {
         display: flex;
@@ -33,6 +46,8 @@
         grid-template: 64px 64px / 1fr 1fr 1fr;
         width: 100%;
         background-color: var(--general-section-1);
+        position: fixed;
+        bottom: 5.7rem;
 
         &-amount {
             @include typeface(--small-center-normal-black, none);
@@ -45,6 +60,9 @@
                 font-weight: bold;
                 color: var(--text-loss-danger);
             }
+        }
+        &--mobile {
+            bottom: 0;
         }
     }
     &__footer {
@@ -80,6 +98,15 @@
             }
             &--mobile {
                 height: var(--drawer-content-height-mobile);
+                position: fixed;
+                bottom: 12.8rem;
+                width: 100vw;
+            }
+            &--journal-mobile {
+                position: fixed;
+                bottom: 0;
+                width: 100vw;
+                height: calc(100% - 7.6rem);
             }
         }
     }

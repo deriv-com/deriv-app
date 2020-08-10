@@ -10,6 +10,7 @@
         @include mobile {
             display: grid;
             grid-template-columns: 1fr 1fr;
+            width: 100%;
         }
     }
     &__item {
@@ -99,14 +100,5 @@
         border-color: var(--border-disabled);
         margin-left: -2.4rem;
         width: calc(100% + 2.4rem);
-    }
-}
-
-.currency-selector {
-    &__radio-group {
-        display: flex;
-        flex-direction: column;
-        flex-grow: 1;
-        justify-content: space-around;
     }
 }

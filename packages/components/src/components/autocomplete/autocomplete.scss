@@ -3,6 +3,7 @@
 
 .dc-autocomplete {
     width: 100%;
+    margin-bottom: 3.2rem;
     position: relative;
 
     &__trailing-icon {
@@ -25,6 +26,8 @@
         }
     }
     .dc-input {
+        margin-bottom: 0;
+
         &--error {
             .dc-autocomplete__trailing-icon {
                 .color1-fill {

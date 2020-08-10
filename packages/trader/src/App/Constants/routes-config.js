@@ -39,7 +39,7 @@ const lazyLoadReportComponent = makeLazyLoader(() => import(/* webpackChunkName:
 // Order matters
 const initRoutesConfig = () => [
     { path: routes.contract, component: ContractDetails, title: localize('Contract Details'), is_authenticated: true },
-    { path: routes.mt5, component: MT5, title: localize('MT5'), is_authenticated: true },
+    { path: routes.mt5, component: MT5, title: localize('MT5'), is_authenticated: false },
     {
         path: routes.reports,
         component: lazyLoadReportComponent('Reports'),
@@ -68,7 +68,7 @@ const initRoutesConfig = () => [
             },
         ],
     },
-    { path: routes.trade, component: Trade, title: localize('Trade'), exact: true },
+    { path: routes.trade, component: Trade, title: localize('Trader'), exact: true },
 ];
 
 let routesConfig;

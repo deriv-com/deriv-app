@@ -11,6 +11,7 @@ import RunPanel from './components/run-panel.jsx';
 import Toolbar from './components/toolbar.jsx';
 import { MobxContentProvider } from './stores/connect';
 import RoutePromptDialog from './components/route-prompt-dialog.jsx';
+import BlocklyLoading from './components/blockly-loading.jsx';
 import RootStore from './stores';
 import GTM from './utils/gtm';
 import './assets/sass/app.scss';
@@ -37,15 +38,19 @@ class App extends React.Component {
             save_modal,
             quick_strategy,
             load_modal,
+            blockly_store,
         } = this.root_store;
         const { handleFileChange } = load_modal;
         const { toggleStrategyModal } = quick_strategy;
+        const { startLoading, endLoading } = blockly_store;
         this.dbot_store = {
             is_mobile: false,
             client,
             flyout,
             toolbar,
             save_modal,
+            startLoading,
+            endLoading,
             toggleStrategyModal,
             handleFileChange,
         };
@@ -53,12 +58,13 @@ class App extends React.Component {
     }
 
     componentDidMount() {
+        this.root_store.blockly_store.startLoading();
         DBot.initWorkspace(
             __webpack_public_path__,
             this.dbot_store,
             this.api_helpers_store,
             this.root_store.ui.is_mobile
-        );
+        ).then(() => this.root_store.blockly_store.endLoading());
         this.registerCurrencyReaction();
         this.registerOnAccountSwitch();
         this.registerClickOutsideBlockly();
@@ -185,6 +191,7 @@ class App extends React.Component {
                     <FooterExtension />
                     <Audio />
                     <RoutePromptDialog />
+                    <BlocklyLoading />
                 </div>
             </MobxContentProvider>
         );

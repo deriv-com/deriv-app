@@ -65,6 +65,7 @@ export default class OrderInfo {
         return this.type === 'buy';
     }
 
+    // TODO: Determine is_active from active flag in p2p_order_list
     get is_active() {
         return this.status === 'pending' || this.status === 'buyer-confirmed';
     }

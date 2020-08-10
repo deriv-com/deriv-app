@@ -958,6 +958,7 @@ export default class CashierStore extends BaseStore {
         const accounts = this.config.account_transfer.accounts_list;
         this.config.account_transfer.selected_to = accounts.find(account => account.value === target.value) || {};
         this.setTransferFee();
+        this.setTransferLimit();
     }
 
     requestTransferBetweenAccounts = async ({ amount }) => {

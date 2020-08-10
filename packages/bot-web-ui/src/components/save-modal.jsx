@@ -166,7 +166,8 @@ const SaveModal = ({
         <Modal
             title={'Save Strategy'}
             className='modal--save'
-            width='384px'
+            width='328px'
+            height='500px'
             is_open={is_save_modal_open}
             toggleModal={toggleSaveModal}
         >

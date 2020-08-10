@@ -7,25 +7,47 @@
         flex-direction: column;
         font-size: 14px;
         padding: 16px;
+
+        @include mobile {
+            padding: 24px;
+        }
     }
     &__header {
+        margin-bottom: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        @include mobile {
+            margin-bottom: 24px;
+        }
+    }
+    &__title {
         font-weight: 700;
         text-align: left;
-        margin-bottom: 16px;
     }
     &__text {
         text-align: left;
-        line-height: 24px;
+        line-height: 40px;
+
+        @include mobile {
+            line-height: 2.2rem;
+        }
     }
     &__footer {
         align-self: flex-end;
         justify-content: flex-end;
         display: flex;
+        margin-top: 2.4rem;
     }
     &__cancel {
-        margin: 1.6rem 1.6rem 0 0 !important;
+        // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
+        margin-right: 1.2rem !important;
+        border: solid 2px var(--border-hover) !important;
     }
-    &__ok {
-        margin-top: 1.6rem;
+    &__button {
+        // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
+        width: 7.7rem !important;
+        height: 4rem !important;
     }
 }

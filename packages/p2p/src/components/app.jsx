@@ -7,7 +7,7 @@ import { Dp2pProvider } from 'Components/context/dp2p-context';
 import ServerTime from 'Utils/server-time';
 import { init as WebsocketInit, getModifiedP2POrderList, requestWS, subscribeWS, waitWS } from 'Utils/websocket';
 import { localize, setLanguage } from './i18next';
-import { orderToggleIndex } from './orders/order-info';
+import OrderInfo, { orderToggleIndex } from './orders/order-info';
 import BuySell from './buy-sell/buy-sell.jsx';
 import MyAds from './my-ads/my-ads.jsx';
 import Orders from './orders/orders.jsx';
@@ -44,6 +44,8 @@ class App extends React.Component {
             order_offset: 0,
             orders: [],
             notification_count: 0,
+            active_notification_count: 0,
+            inactive_notification_count: 0,
             parameters: null,
             is_advertiser: false,
             is_restricted: false,
@@ -211,18 +213,25 @@ class App extends React.Component {
         const { is_cached, notifications } = this.getLocalStorageSettingsForLoginId();
 
         new_orders.forEach(new_order => {
-            const old_order = old_orders.find(o => o.id === new_order.id);
+            const order_info = new OrderInfo(new_order);
             const notification = notifications.find(n => n.order_id === new_order.id);
+            const old_order = old_orders.find(o => o.id === new_order.id);
             const is_current_order = new_order.id === this.props.order_id;
+            const notification_obj = {
+                order_id: new_order.id,
+                is_seen: is_current_order,
+                is_active: order_info.is_active,
+            };
 
             if (old_order) {
                 if (old_order.status !== new_order.status) {
                     if (notification) {
                         // If order status changed, notify the user.
                         notification.is_seen = is_current_order;
+                        notification.is_active = order_info.is_active;
                     } else {
                         // If we have an old_order, but for some reason don't have a copy in local storage.
-                        notifications.push({ order_id: new_order.id, is_seen: is_current_order });
+                        notifications.push(notification_obj);
                     }
                 }
             } else if (!notification) {
@@ -230,13 +239,16 @@ class App extends React.Component {
                 // cached list or only notify user of actionable orders.
                 if (is_cached) {
                     // If we can compare with a cached list, assume each new order should be notified.
-                    notifications.push({ order_id: new_order.id, is_seen: is_current_order });
+                    notifications.push(notification_obj);
                 } else {
                     // If we don't have a cached list, only notify user of orders that require action.
                     // This is done so user isn't spammed with old orders after resetting their local storage.
                     const actionable_statuses = ['pending', 'buyer-confirmed'];
                     const is_action_required = actionable_statuses.includes(new_order.status);
-                    notifications.push({ order_id: new_order.id, is_seen: is_current_order || !is_action_required });
+                    notifications.push({
+                        ...notification_obj,
+                        is_seen: is_current_order || !is_action_required,
+                    });
                 }
             }
         });
@@ -245,7 +257,10 @@ class App extends React.Component {
     };
 
     updateP2pNotifications = notifications => {
-        const notification_count = notifications.filter(notification => notification.is_seen === false).length;
+        const unseen_notifications = notifications.filter(notification => notification.is_seen === false);
+        const notification_count = unseen_notifications.length;
+        const active_notification_count = unseen_notifications.filter(notification => notification.is_active).length;
+        const inactive_notification_count = notification_count - active_notification_count;
         const user_settings = this.getLocalStorageSettingsForLoginId();
         user_settings.is_cached = true;
         user_settings.notifications = notifications;
@@ -254,7 +269,7 @@ class App extends React.Component {
         p2p_settings[this.state.loginid] = user_settings;
 
         localStorage.setItem('p2p_settings', JSON.stringify(p2p_settings));
-        this.setState({ notification_count });
+        this.setState({ notification_count, active_notification_count, inactive_notification_count });
 
         if (typeof this.props.setNotificationCount === 'function') {
             this.props.setNotificationCount(notification_count);
@@ -309,6 +324,8 @@ class App extends React.Component {
             poi_status,
             is_restricted,
             nickname_error,
+            active_notification_count,
+            inactive_notification_count,
         } = this.state;
         const {
             className,
@@ -333,6 +350,8 @@ class App extends React.Component {
         return (
             <Dp2pProvider
                 value={{
+                    active_notification_count,
+                    inactive_notification_count,
                     currency,
                     local_currency_config,
                     residence,

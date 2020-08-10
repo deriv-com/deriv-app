@@ -57,15 +57,17 @@ class Drawer extends React.PureComponent {
             is_clear_stat_disabled,
             is_mobile,
             onClearStatClick,
+            zIndex,
         } = this.props;
 
         return (
             <div
                 className={classNames('dc-drawer', className, {
                     'dc-drawer--mobile': is_mobile,
-                    'dc-drawer--open': this.state.is_open && !is_mobile,
+                    [`${className}--open dc-drawer--open`]: this.state.is_open && !is_mobile,
                     'dc-drawer--open-mobile': this.state.is_open && is_mobile,
                 })}
+                style={{ zIndex }}
             >
                 <div
                     className={classNames('dc-drawer__toggle', {
@@ -86,7 +88,6 @@ class Drawer extends React.PureComponent {
                             is_disabled={is_clear_stat_disabled}
                             text={clear_stat_button_text}
                             onClick={onClearStatClick}
-                            has_effect
                             secondary
                         />
                     )}

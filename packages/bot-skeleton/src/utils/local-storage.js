@@ -6,7 +6,7 @@ import { save_types } from '../constants/save-type';
  * @param {String} save_type // constants/save_types.js (unsaved, local, googledrive)
  * @param {Blockly.Events} event // Blockly event object
  */
-export const saveWorkspaceToRecent = (save_type = save_types.UNSAVED, event = {}) => {
+export const saveWorkspaceToRecent = (xml, save_type = save_types.UNSAVED, event = {}) => {
     if ((event.recordUndo === false || event.group === 'load_collections') && event.group !== 'undo_clicked') {
         return;
     }
@@ -14,7 +14,7 @@ export const saveWorkspaceToRecent = (save_type = save_types.UNSAVED, event = {}
     const { save_modal } = DBotStore.instance;
     const workspace_id = Blockly.derivWorkspace.current_strategy_id || Blockly.utils.genUid();
     const workspaces = JSON.parse(localStorage.getItem('saved_workspaces')) || [];
-    const current_xml = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(Blockly.derivWorkspace));
+    const current_xml = Blockly.Xml.domToText(xml);
     const current_timestamp = Date.now();
     const current_workspace_index = workspaces.findIndex(workspace => workspace.id === workspace_id);
 

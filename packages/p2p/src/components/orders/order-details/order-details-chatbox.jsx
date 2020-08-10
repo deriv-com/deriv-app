@@ -1,35 +1,35 @@
 import * as React from 'react';
 import { Loading } from '@deriv/components';
 import { Channel, SendBirdProvider } from 'sendbird-uikit';
-// import { getShortNickname, generateHexColourFromNickname } from 'Utils/string';
+import { getShortNickname, generateHexColourFromNickname } from 'Utils/string';
 import 'sendbird-uikit/dist/index.css';
 
-const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url }) => {
+const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url, nickname }) => {
     const [is_loading, setIsLoading] = React.useState(true);
 
     React.useEffect(() => {
         const interval_header = setInterval(() => {
             const el_sendbird_conversation = document.querySelector('.sendbird-conversation');
             const el_chat_title = document.querySelector('.sendbird-chat-header__title');
-            // const el_chat_avatars = document.getElementsByClassName('sendbird-avatar');
+            const el_chat_avatar = document.querySelector('.sendbird-avatar');
 
-            if (el_chat_title && el_chat_title.innerText !== 'No title') {
-                clearInterval(interval_header);
-                setIsLoading(false);
-                el_sendbird_conversation.setAttribute('style', 'display: flex;');
-            } else {
-                return;
+            if (el_chat_title) {
+                if (/^Chat about order [0-9]+$/.test(el_chat_title.innerText)) {
+                    const short_name = getShortNickname(nickname);
+                    const el_chat_header_avatar = document.createElement('div');
+
+                    el_chat_title.innerText = nickname;
+
+                    el_chat_header_avatar.innerText = short_name;
+                    el_chat_avatar.appendChild(el_chat_header_avatar);
+                    el_chat_avatar.style.backgroundColor = generateHexColourFromNickname(nickname);
+                    el_chat_header_avatar.className = 'sendbird-avatar-text';
+
+                    el_sendbird_conversation.setAttribute('style', 'display: flex;');
+                    setIsLoading(false);
+                    clearInterval(interval_header);
+                }
             }
-
-            // if (el_chat_avatars) {
-            //     const short_name = getShortNickname(nickname);
-            //     Array.from(el_chat_avatars).map(element => {
-            //         if (element.innerText !== short_name) {
-            //             element.innerText = short_name;
-            //             element.style.backgroundColor = generateHexColourFromNickname(nickname);
-            //         }
-            //     });
-            // }
 
             const new_character_count_class = 'sendbird-chat-footer--textarea__character-count';
 

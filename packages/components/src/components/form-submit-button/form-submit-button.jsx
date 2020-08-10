@@ -5,6 +5,7 @@ import Button from '../button/button.jsx';
 
 const FormSubmitButton = ({
     cancel_label,
+    className,
     has_cancel,
     form_error,
     is_center,
@@ -17,7 +18,7 @@ const FormSubmitButton = ({
 }) => {
     return (
         <div
-            className={classNames('dc-form-submit-button', {
+            className={classNames('dc-form-submit-button', className, {
                 'dc-form-submit-button--absolute': is_absolute,
                 'dc-form-submit-button--center': !!is_center,
                 'dc-form-submit-button--relative': !is_absolute,
@@ -40,6 +41,7 @@ const FormSubmitButton = ({
 };
 
 FormSubmitButton.defaultProps = {
+    className: undefined,
     has_cancel: false,
     form_error: '',
     is_disabled: false,
@@ -48,6 +50,7 @@ FormSubmitButton.defaultProps = {
 };
 
 FormSubmitButton.propTypes = {
+    className: PropTypes.string,
     has_cancel: PropTypes.bool,
     is_absolute: PropTypes.bool,
     is_center: PropTypes.bool,

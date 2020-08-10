@@ -94,7 +94,6 @@ export default class ToolbarStore {
             false,
             () => {
                 const workspace = Blockly.derivWorkspace;
-                workspace.clear();
                 workspace.current_strategy_id = Blockly.utils.genUid();
                 load({
                     block_string: workspace.cached_xml.main,

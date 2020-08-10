@@ -1,0 +1,88 @@
+import PropTypes from 'prop-types';
+import React from 'react';
+import { Formik, Form } from 'formik';
+import { Modal, FormSubmitButton } from '@deriv/components';
+import { localize, Localize } from '@deriv/translations';
+
+const BriefModal = ({
+    disableApp,
+    enableApp,
+    IntervalField,
+    is_visible,
+    logout,
+    onSubmit,
+    openStatement,
+    validateForm,
+}) => {
+    return (
+        <Modal
+            enableApp={enableApp}
+            is_open={is_visible}
+            disableApp={disableApp}
+            has_close_icon={false}
+            title={localize('Trading statistics report')}
+            width='720px'
+        >
+            <Formik
+                initialValues={{
+                    interval: '',
+                }}
+                validate={validateForm}
+                onSubmit={onSubmit}
+            >
+                {({ errors, isSubmitting, isValid, values, touched, handleChange, handleBlur }) => (
+                    <Form noValidate>
+                        <Modal.Body>
+                            <p className='reality-check__text reality-check__text--description'>
+                                <Localize i18n_default_text='Options trading can become a real addiction, as can any other activity pushed to its limits. To avoid the danger of such an addiction, we provide a reality-check that gives you a summary of your traders and accounts on a regular basis.' />
+                            </p>
+                            <p className='reality-check__text reality-check__text--description'>
+                                <Localize
+                                    i18n_default_text='Would like to check your statement first? <0>Check Statement</0>'
+                                    components={[<a key={0} className='link' onClick={openStatement} />]}
+                                />
+                            </p>
+
+                            <div className='reality-check__separator reality-check__separator--large' />
+
+                            <p className='reality-check__text reality-check__text--center'>
+                                <Localize i18n_default_text='Please specify your preferred interval reality check in minutes:' />
+                            </p>
+
+                            <IntervalField
+                                values={values}
+                                touched={touched}
+                                errors={errors}
+                                handleChange={handleChange}
+                                handleBlur={handleBlur}
+                            />
+                        </Modal.Body>
+                        <Modal.Footer has_separator>
+                            <FormSubmitButton
+                                className='reality-check__submit'
+                                has_cancel
+                                cancel_label={localize('Log out')}
+                                is_disabled={!values.interval || !isValid || isSubmitting}
+                                label={localize('Continue trading')}
+                                onCancel={logout}
+                            />
+                        </Modal.Footer>
+                    </Form>
+                )}
+            </Formik>
+        </Modal>
+    );
+};
+
+BriefModal.propTypes = {
+    disableApp: PropTypes.func,
+    enableApp: PropTypes.func,
+    IntervalField: PropTypes.func,
+    is_visible: PropTypes.bool,
+    logout: PropTypes.func,
+    onSubmit: PropTypes.func,
+    openStatement: PropTypes.func,
+    validateForm: PropTypes.func,
+};
+
+export default BriefModal;

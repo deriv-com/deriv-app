@@ -36,6 +36,20 @@
     .dc-modal-header {
         display: none;
     }
+    .dc-input {
+        &__label {
+            top: 1.2rem;
+            background-color: var(--general-main-2);
+        }
+    }
+    .dc-password-meter {
+        &__bg {
+            background: var(--general-section-2);
+        }
+    }
+    .status-dialog {
+        margin-top: 3em;
+    }
     & .dc-password-meter__container {
         flex-grow: 0;
         width: 30rem;

@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import {
     DesktopWrapper,
@@ -68,7 +68,6 @@ class Cashier extends React.Component {
     };
 
     onClickClose = () => this.props.routeBackInApp(this.props.history);
-
     render() {
         const menu_options = () => {
             const options = [];

@@ -3,14 +3,15 @@
     flex-direction: column;
     transition: all 0.3s ease-in-out;
     @include tablet {
-        max-height: calc(100vh - 102px); // Header and footer
+        max-height: calc(100vh - 102px) !important; // Header and footer
     }
 
     &--success {
-        max-height: 380px;
         border-radius: $BORDER_RADIUS;
         overflow: hidden;
         max-width: 478px;
+        min-width: initial !important;
+        max-height: initial !important;
     }
     .dc-modal-header__title {
         text-transform: none;
@@ -38,13 +39,12 @@
             margin: 1.6rem 0 0.8rem;
         }
         p {
-            @include typeface(--paragraph-center-normal-black);
+            @include typeface(--paragraph-center-normal-prominent);
             text-transform: none;
-            color: var(--text-prominent);
             width: 80%;
             margin-bottom: 2.4rem;
         }
-        a {
+        a.dc-btn {
             @include typeface(--paragraph-center-bold-black);
             text-transform: none;
             text-decoration: none;
@@ -54,10 +54,26 @@
             justify-content: center;
             align-self: center;
         }
+        a.email-inline {
+            color: var(--brand-red-coral);
+            font-weight: bold;
+            text-decoration: none;
+        }
+    }
+    &--loading {
+        width: 300px;
+        max-height: 300px;
+
+        .dc-modal-header__title {
+            height: 0;
+        }
+    }
+    & .dc-themed-scrollbars {
+        height: 100%;
     }
 }
 
-.dc-modal-header__real-account-signup-modal {
+.dc-modal-header--real-account-signup-modal {
     border-bottom: 1px solid var(--general-section-1);
 }
 
@@ -67,15 +83,17 @@
     height: 100%;
     position: relative;
     width: 100%;
-    @include desktop {
-        overflow: auto;
-    }
     @include mobile {
         grid-template-rows: 7rem minmax(10rem, 1fr);
+        overflow: hidden;
     }
 
     &.add-or-manage {
         grid-template-rows: 1fr 1fr;
+
+        & .dc-form-submit-button {
+            padding: 2rem;
+        }
         @include desktop {
             & form {
                 grid-template-rows: auto;
@@ -83,25 +101,21 @@
         }
         @include mobile {
             grid-template-rows: 1fr 1fr;
+            overflow-y: auto;
+            overflow-x: hidden;
         }
     }
-    h1 {
-        @include typeface(--title-center-bold-black);
-        color: var(--text-prominent);
-        text-transform: none;
-        margin-top: 3rem;
-    }
-    h2 {
+    & > h2 {
         text-transform: none;
         margin-top: 2.4rem;
-        color: var(--text-less-prominent);
         @include typeface(--title-center-bold-black);
+        color: var(--text-less-prominent);
         @include mobile {
             margin-top: 0.8rem;
             font-size: 1.2rem;
         }
     }
-    h3 {
+    & > h3 {
         @include typeface(--small-center-normal-black);
         text-transform: none;
         color: var(--text-general);
@@ -111,6 +125,29 @@
         width: 100%;
 
         .currency-selector {
+            &__radio-group {
+                display: flex;
+                flex-direction: column;
+                flex-grow: 1;
+                justify-content: space-around;
+                align-items: center;
+
+                &--is-header {
+                    font-size: 1.6rem;
+                    margin: 2rem 0 0;
+                    font-weight: bold;
+                    color: var(--text-less-prominent);
+                }
+            }
+            &__description {
+                font-size: 1.4rem;
+                line-height: 2.4rem;
+                margin-top: 2.4rem;
+                @include typeface(--paragraph-center-normal-prominent);
+                @include mobile {
+                    text-align: center;
+                }
+            }
             &__container {
                 width: 100%;
                 @include mobile {
@@ -123,21 +160,33 @@
                 }
             }
         }
+        // fix for safari bug with autoheight wrapper not working properly for calculating modal footer offset
+        @media not all and (min-resolution: 0.001dpcm) {
+            // stylelint-disable-line
+            @supports (-webkit-appearance: none) and (stroke-color: transparent) {
+                @include desktop {
+                    max-height: calc(100% - 48px);
+                }
+                @include tablet {
+                    max-height: calc(100% - 48px);
+                }
+            }
+        }
         @include desktop {
             height: 100%;
             display: grid;
-            grid-template-rows: minmax(20rem, 1fr) 7rem;
+            grid-template-rows: minmax(20rem, 1fr);
         }
         @include tablet {
             height: 100%;
             display: grid;
-            grid-template-rows: minmax(20rem, 1fr) 7rem;
+            grid-template-rows: minmax(20rem, 1fr);
         }
     }
     &__body {
         & .details-form {
             @include tablet {
-                grid-template-rows: 5rem minmax(10rem, 1fr);
+                grid-template-rows: minmax(10rem, 1fr);
             }
         }
     }
@@ -156,7 +205,6 @@
         }
         h2 {
             @include typeface(--title-center-bold-black);
-            color: var(--text-prominent);
 
             @include mobile {
                 font-size: 1.2rem;
@@ -276,11 +324,77 @@
 
 .add-crypto-currency,
 .change-currency {
+    &__title,
+    &__sub-title {
+        @include typeface(--title-left-bold-black);
+        color: var(--text-prominent);
+        text-align: center;
+    }
+    &__title {
+        margin-top: 3rem;
+    }
+    &__sub-title {
+        font-size: var(--text-size-xxs);
+        font-weight: normal;
+        margin-bottom: 1rem;
+    }
     @include tablet {
         form {
             display: grid;
             grid-template-rows: repeat(2, 7rem) 1fr 7rem;
             height: auto;
         }
+    }
+}
+
+/* TODO: [refactor-components] Refactor form subheader to components */
+.account-form {
+    &__header {
+        font-size: var(--text-size-xs);
+        font-weight: bold;
+        margin-bottom: 1.6rem;
+        position: relative;
+        height: 1.6rem;
+        white-space: nowrap;
+
+        &-section {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        &-section:after {
+            border-top: 1px solid var(--general-section-1);
+            content: '';
+            height: 100%;
+            width: 100%;
+            margin-top: 0.3rem;
+            @include mobile {
+                border-top-color: var(--general-disabled);
+            }
+        }
+        &--has-description {
+            margin-bottom: 0.5rem;
+        }
+    }
+    &__header:not(:first-child) {
+        margin-top: 1.6em;
+    }
+    &__title {
+        color: var(--text-prominent);
+        padding-right: 0.8rem;
+    }
+    &__subtitle {
+        font-size: 1rem;
+        color: var(--text-prominent);
+        font-weight: normal;
+        align-self: baseline;
+        padding-right: 0.8rem;
+        margin-top: 0.2rem;
+    }
+    &__description {
+        font-size: 1.2rem;
+        font-weight: normal;
+        color: var(--text-prominent);
+        margin-bottom: 2rem;
     }
 }

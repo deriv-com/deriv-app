@@ -10,8 +10,8 @@
         border-radius: $BORDER_RADIUS;
         overflow: hidden;
         max-width: 478px;
-        min-width: initial;
-        max-height: initial;
+        min-width: initial !important;
+        max-height: initial !important;
     }
     .dc-modal-header__title {
         text-transform: none;

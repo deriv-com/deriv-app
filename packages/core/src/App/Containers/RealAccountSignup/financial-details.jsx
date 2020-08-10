@@ -180,7 +180,7 @@ const FinancialDetails = props => {
                                         </div>
                                     </ThemedScrollbars>
                                 </Div100vhContainer>
-                                <Modal.Footer has_separator>
+                                <Modal.Footer has_separator is_bypassed={isMobile()}>
                                     <FormSubmitButton
                                         is_disabled={
                                             // eslint-disable-next-line no-unused-vars

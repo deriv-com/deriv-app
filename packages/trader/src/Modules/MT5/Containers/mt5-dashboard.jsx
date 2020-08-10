@@ -28,13 +28,13 @@ const hasMoreThanOne = ({ mt_financial_company, mt_gaming_company }) =>
         ...(mt_gaming_company?.financial ? [true] : []),
     ].length > 1;
 
-const TabOrFlex = ({ landing_companies, children, is_loading, loading_component, ...props }) => {
+const TabOrFlex = ({ landing_companies, children, is_loading, is_eu, loading_component, ...props }) => {
     const LoadingComponent = loading_component;
     if (is_loading) {
         return <LoadingComponent />;
     }
 
-    const should_show_tab = hasMoreThanOne(landing_companies);
+    const should_show_tab = is_eu ? hasMoreThanOne(landing_companies) : true;
 
     if (should_show_tab) {
         return <Tabs {...props}>{children}</Tabs>;
@@ -127,6 +127,8 @@ class MT5Dashboard extends React.Component {
             beginRealSignupForMt5,
             createMT5Account,
             is_loading,
+            is_logged_in,
+            is_eu,
             has_mt5_account,
             has_real_account,
             NotificationMessages,
@@ -140,7 +142,11 @@ class MT5Dashboard extends React.Component {
                     <div className='mt5-dashboard'>
                         <div className='mt5-dashboard__welcome-message'>
                             <h1 className='mt5-dashboard__welcome-message--heading'>
-                                <Localize i18n_default_text='Welcome to your MetaTrader 5 (DMT5 account dashboard)' />
+                                {is_logged_in ? (
+                                    <Localize i18n_default_text='Welcome to your MetaTrader 5 (DMT5 account dashboard)' />
+                                ) : (
+                                    <Localize i18n_default_text='Welcome to MetaTrader 5 (DMT5 account dashboard)' />
+                                )}
                             </h1>
                         </div>
                         <div className='mt5-dashboard__accounts-display'>
@@ -152,12 +158,13 @@ class MT5Dashboard extends React.Component {
                                 selected_account_type={this.state.password_manager.selected_account_type}
                                 toggleModal={this.togglePasswordManagerModal}
                             />
-                            {!this.props.is_eu && !hasMoreThanOne(this.props.landing_companies) && (
+                            {!this.props.is_eu && !hasMoreThanOne(this.props.landing_companies) && is_logged_in && (
                                 <MissingRealAccount onClickSignup={beginRealSignupForMt5} />
                             )}
                             <TabOrFlex
                                 landing_companies={this.props.landing_companies}
                                 active_index={this.state.active_index}
+                                is_eu={is_eu}
                                 top
                                 center
                                 is_loading={is_loading}

@@ -43,7 +43,7 @@ export const validLength = (value, options) => {
             return localize('You should enter a value at least {{min}} characters.', { min });
         }
 
-        return localize('Maximum allowed characters are {{min}}.', { max });
+        return localize('Maximum allowed characters are {{max}}.', { max });
     };
 
     const result =

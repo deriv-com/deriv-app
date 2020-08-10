@@ -1,12 +1,11 @@
 import React from 'react';
 import QRCode from 'qrcode.react';
-import { Timeline, ThemedScrollbars, DesktopWrapper, MobileWrapper, Clipboard, Icon, Loading } from '@deriv/components';
+import { Timeline, ThemedScrollbars, Clipboard, Icon, Loading } from '@deriv/components';
 import { getPropertyValue } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 import LoadErrorMessage from 'Components/load-error-message';
-import Article from 'Components/article';
 import DigitForm from './digit-form.jsx';
 
 class TwoFactorAuthentication extends React.Component {
@@ -107,9 +106,6 @@ class TwoFactorAuthentication extends React.Component {
                 ) : (
                     <div className='two-factor__wrapper'>
                         <ThemedScrollbars autoHide className='two-factor__scrollbars' hideHorizontal={true}>
-                            <MobileWrapper>
-                                <Article />
-                            </MobileWrapper>
                             <h2 className='two-factor__title'>
                                 {localize('How to set up 2FA for your Deriv account')}
                             </h2>
@@ -180,9 +176,6 @@ class TwoFactorAuthentication extends React.Component {
                                 </Timeline>
                             </div>
                         </ThemedScrollbars>
-                        <DesktopWrapper>
-                            <Article />
-                        </DesktopWrapper>
                     </div>
                 )}
             </section>

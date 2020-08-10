@@ -53,6 +53,9 @@
         &--has-value {
             transform: translate(0, -1.8rem) scale(0.75);
             color: var(--text-general);
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            max-width: 100%;
         }
         &--disabled {
             color: var(--text-disabled);

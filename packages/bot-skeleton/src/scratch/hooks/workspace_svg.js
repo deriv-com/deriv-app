@@ -1,5 +1,6 @@
 import { config } from '../../constants/config';
 import { removeLimitedBlocks } from '../../utils/workspace';
+import DBotStore from '../dbot-store';
 
 /**
  * Handle a mouse-down on SVG drawing surface.
@@ -334,4 +335,97 @@ Blockly.WorkspaceSvg.prototype.showContextMenu_ = function(e) {
     menu_options.push(Blockly.ContextMenu.wsDeleteOption(this, top_blocks));
 
     Blockly.ContextMenu.show(e, menu_options, this.RTL);
+};
+
+/**
+ * Dispose of this workspace.
+ * Unlink from all DOM elements to prevent memory leaks.
+ */
+Blockly.WorkspaceSvg.prototype.dispose = function(should_show_loading = false) {
+    const disposeFn = () => {
+        // Stop rerendering.
+        this.rendered = false;
+        if (this.currentGesture_) {
+            this.currentGesture_.cancel();
+        }
+        Blockly.WorkspaceSvg.superClass_.dispose.call(this);
+        if (this.svgGroup_) {
+            goog.dom.removeNode(this.svgGroup_);
+            this.svgGroup_ = null;
+        }
+        this.svgBlockCanvas_ = null;
+        this.svgBubbleCanvas_ = null;
+        if (this.toolbox_) {
+            this.toolbox_.dispose();
+            this.toolbox_ = null;
+        }
+        if (this.flyout_) {
+            this.flyout_.dispose();
+            this.flyout_ = null;
+        }
+        if (this.trashcan) {
+            this.trashcan.dispose();
+            this.trashcan = null;
+        }
+        if (this.scrollbar) {
+            this.scrollbar.dispose();
+            this.scrollbar = null;
+        }
+        if (this.zoomControls_) {
+            this.zoomControls_.dispose();
+            this.zoomControls_ = null;
+        }
+
+        if (this.audioManager_) {
+            this.audioManager_.dispose();
+            this.audioManager_ = null;
+        }
+
+        if (this.grid_) {
+            this.grid_.dispose();
+            this.grid_ = null;
+        }
+
+        if (this.toolboxCategoryCallbacks_) {
+            this.toolboxCategoryCallbacks_ = null;
+        }
+        if (this.flyoutButtonCallbacks_) {
+            this.flyoutButtonCallbacks_ = null;
+        }
+        if (!this.options.parentWorkspace) {
+            // Top-most workspace.  Dispose of the div that the
+            // SVG is injected into (i.e. injectionDiv).
+            goog.dom.removeNode(this.getParentSvg().parentNode);
+        }
+        if (this.resizeHandlerWrapper_) {
+            Blockly.unbindEvent_(this.resizeHandlerWrapper_);
+            this.resizeHandlerWrapper_ = null;
+        }
+    };
+
+    if (should_show_loading) {
+        const { startLoading, endLoading } = DBotStore.instance;
+        startLoading();
+
+        setTimeout(() => {
+            disposeFn();
+            endLoading();
+        }, 50);
+    } else {
+        disposeFn();
+    }
+};
+
+/**
+ * Dispose of all blocks in workspace, with an optimization to prevent resizes.
+ */
+Blockly.WorkspaceSvg.prototype.asyncClear = function() {
+    const { startLoading, endLoading } = DBotStore.instance;
+    startLoading();
+
+    return new Promise(resolve => {
+        this.clear();
+        endLoading();
+        resolve();
+    });
 };

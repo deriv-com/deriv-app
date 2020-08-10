@@ -3,20 +3,24 @@
     align-items: center;
     justify-content: flex-end;
     align-self: flex-end;
-    padding: 2rem;
     width: 100%;
 
-    .dc-btn:not(:last-child) {
+    .dc-btn {
         margin: 0 0.8rem;
-    }
-    .dc-btn:last-child {
-        margin: 0;
+
+        &:first-child {
+            margin-left: 0;
+        }
+        &:last-child {
+            margin: 0;
+        }
     }
     &--absolute {
         bottom: 0;
         position: absolute;
         left: 0;
         padding: 2.4em;
+        background-color: var(--general-main-1);
         border-top: 1px solid var(--general-section-1);
     }
     &--center {

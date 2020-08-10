@@ -6,19 +6,25 @@ import { localize } from 'Components/i18next';
 import OrderTableContent from './order-table-content.jsx';
 import { orderToggleIndex } from '../order-info';
 
-const orders_filters = [
-    {
-        text: localize('Active order'),
-        value: orderToggleIndex.ACTIVE,
-    },
-    {
-        text: localize('Past order'),
-        value: orderToggleIndex.INACTIVE,
-    },
-];
-
 const OrderTable = ({ showDetails }) => {
-    const { order_table_type, changeOrderToggle } = React.useContext(Dp2pContext);
+    const {
+        active_notification_count,
+        inactive_notification_count,
+        order_table_type,
+        changeOrderToggle,
+    } = React.useContext(Dp2pContext);
+    const orders_filters = [
+        {
+            text: localize('Active order'),
+            value: orderToggleIndex.ACTIVE,
+            count: active_notification_count,
+        },
+        {
+            text: localize('Past order'),
+            value: orderToggleIndex.INACTIVE,
+            count: inactive_notification_count,
+        },
+    ];
 
     return (
         <>

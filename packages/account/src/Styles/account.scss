@@ -67,8 +67,6 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin-bottom: 0;
             }
             .dc-dropdown-container {
-                margin-top: 0;
-
                 .dc-dropdown__display-text,
                 .dc-list__item-text {
                     text-transform: unset;
@@ -129,37 +127,43 @@ $MIN_HEIGHT_FLOATING: calc(
         width: 100%;
 
         &__header {
-            position: relative;
             font-size: var(--text-size-xs);
             font-weight: bold;
             margin-bottom: 1.6em;
+            position: relative;
+            height: 1.6em;
+            white-space: nowrap;
 
-            &:not(:first-child) {
-                margin-top: 1.6em;
+            &-section {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
             }
-            &:before {
-                content: '';
-                position: absolute;
-                top: 0.5em;
-                left: 0;
-                width: 100%;
-                height: 100%;
+            &-section:after {
                 border-top: 1px solid var(--general-section-1);
+                content: '';
+                height: 100%;
+                width: 100%;
+                margin-top: 0.3rem;
+                @include mobile {
+                    border-top-color: var(--general-disabled);
+                }
             }
-            @include mobile {
-                margin-top: 1.6rem;
+            &--has-description {
+                margin-bottom: 0.5rem;
             }
         }
         &__title {
-            position: absolute;
-            padding-right: 8px;
             color: var(--text-prominent);
-            background: var(--general-main-1);
+            padding-right: 0.8rem;
         }
         &__subtitle {
-            padding-left: 8px;
-            font-weight: normal;
+            font-size: 1rem;
             color: var(--text-prominent);
+            font-weight: normal;
+            align-self: baseline;
+            padding-right: 0.8rem;
+            margin-top: 0.2rem;
         }
         &__fieldset {
             position: relative;
@@ -202,9 +206,6 @@ $MIN_HEIGHT_FLOATING: calc(
                         width: 2.4rem;
                         height: 2.4rem;
                     }
-                }
-                .dc-field-error {
-                    top: 4.2rem;
                 }
             }
         }
@@ -712,7 +713,7 @@ $MIN_HEIGHT_FLOATING: calc(
         & .dc-input__label {
             background: var(--general-section-1);
         }
-        & .dc-field-error {
+        & .dc-field--error {
             padding-left: 0;
         }
         &__wrapper {
@@ -847,6 +848,32 @@ $MIN_HEIGHT_FLOATING: calc(
 
             &--small {
                 font-size: 1.2rem;
+            }
+        }
+        &__warning {
+            background-color: rgba(255, 173, 58, 0.3);
+            border-radius: $BORDER_RADIUS;
+            margin-top: 0.8rem;
+            position: relative;
+
+            &-icon {
+                position: absolute;
+                top: 0.8rem;
+                left: 0.8rem;
+            }
+            &-textbox {
+                padding: 0.9rem 3.2rem;
+            }
+            &-text {
+                color: var(--text-general);
+                font-size: var(--text-size-xxxs);
+                line-height: 1.4;
+            }
+            &-link {
+                color: var(--text-general);
+                cursor: pointer;
+                font-weight: bold;
+                text-decoration: none;
             }
         }
     }
@@ -1236,6 +1263,110 @@ $MIN_HEIGHT_FLOATING: calc(
         }
     }
 }
+/** @define connected-apps; weak */
+.connected-apps {
+    width: 100%;
+    max-width: 682px;
+    max-height: 560px;
+    height: 100%;
+
+    .revoke_access {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+    &__loading {
+        height: calc(100vh - 240px);
+    }
+    &__title {
+        color: var(--text-prominent);
+        font-size: var(--text-size-s);
+        font-weight: bold;
+        line-height: 1.5;
+        margin-bottom: 1.6rem;
+    }
+    &__table {
+        height: calc(100% - 42px);
+        flex: 1;
+        max-width: 100%;
+        max-height: 502px;
+    }
+    &__row {
+        grid-template-columns: 169px 198px 80px 99px;
+        padding: 0;
+        column-gap: 42px;
+        text-align: left;
+
+        .table__cell {
+            height: 56px;
+        }
+    }
+    @include desktop {
+        .table__body .table__row:last-child {
+            border-bottom: 1px solid var(--general-section-1);
+        }
+        &__row {
+            padding: 0;
+        }
+        .table__cell {
+            padding: 0;
+        }
+        .table__row {
+            padding: 0;
+        }
+        .table__head {
+            font-weight: bold;
+        }
+    }
+    @include mobile {
+        margin-top: 24px;
+        padding: 0 16px;
+
+        &__data-list {
+            padding: 0;
+        }
+        &__data-list-body {
+            min-height: calc(100vh - 50px);
+
+            .connected-apps {
+                max-height: calc(100vh - 100px);
+            }
+            .data-list__item {
+                padding: 8px;
+            }
+            .data-list__row {
+                display: flex;
+                justify-content: space-between;
+                padding: 0;
+
+                .data-list__col {
+                    width: 100%;
+
+                    > :first-child {
+                        margin-bottom: 8px;
+                    }
+                    &--small {
+                        max-width: 99px;
+
+                        .last_used__row-title {
+                            line-height: 1.5;
+                        }
+                    }
+                    .data-list__row-title {
+                        line-height: 1.5;
+                    }
+                }
+            }
+        }
+        .last_used {
+            .last_used_content {
+                font-size: var(--text-size-xxs);
+                line-height: 1.5;
+                margin-bottom: 4px;
+                margin-top: 2px;
+            }
+        }
+    }
+}
 
 /** @define form-submit-error-message; weak */
 .form-submit-error-message {
@@ -1340,6 +1471,42 @@ $MIN_HEIGHT_FLOATING: calc(
             width: 440px;
             .dc-modal-body {
                 padding-top: 1.2rem;
+            }
+        }
+        &_connected-apps {
+            .dc-modal-body {
+                padding: 0;
+                width: 440px;
+                display: flex;
+                justify-content: center;
+
+                .connected-app-modal {
+                    text-align: center;
+                    &__icon {
+                        margin: 24px 0;
+                    }
+                    &__message {
+                        color: var(--text-prominent);
+                        font-weight: bold;
+                        font-size: var(--text-size-s);
+                    }
+                    &__confirmation {
+                        margin-top: 24px;
+                        margin-bottom: 32px;
+
+                        button {
+                            width: 85px;
+                            height: 40px;
+                        }
+                        > :first-child {
+                            margin-right: 16px;
+                        }
+                    }
+                }
+
+                @include mobile {
+                    width: 300px;
+                }
             }
         }
     }
@@ -1457,3 +1624,207 @@ $MIN_HEIGHT_FLOATING: calc(
         width: auto !important;
     }
 }
+
+/** @define deactivate-account; weak */
+.deactivate-account {
+    max-width: 67.2rem;
+
+    &__information {
+        @include typeface(--paragraph-left-normal-prominent, none);
+        line-height: 1.43;
+        margin-bottom: 8px;
+
+        &--bold {
+            font-weight: bold;
+            margin-bottom: 8px;
+            margin-top: 5px;
+        }
+    }
+    &__steps {
+        margin-top: 16px;
+        @include typeface(--paragraph-left-normal-prominent, none);
+        line-height: 1.43;
+    }
+    &__title {
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+    &__content {
+        color: var(--text-general);
+    }
+    &__link {
+        color: var(--text-loss-danger);
+        font-weight: bold;
+        text-decoration: none;
+    }
+    &__button {
+        margin-top: 24px;
+        float: right;
+    }
+    .deactivate-account-reasons {
+        color: var(--text-prominent);
+        font-size: var(--text-size-xs);
+        line-height: 1.43;
+        font-weight: bold;
+
+        &__title {
+            margin-bottom: 18px;
+        }
+        &__checkbox {
+            margin-top: 10px;
+            width: fit-content;
+
+            .dc-checkbox__label {
+                font-weight: normal;
+            }
+        }
+        &__input {
+            margin: 16px 0 0;
+            max-width: 400px;
+            text-overflow: ellipsis;
+
+            > input {
+                min-height: 96px;
+            }
+        }
+        &__error {
+            color: var(--text-loss-danger);
+        }
+    }
+    @include mobile {
+        width: calc(100% - 3rem);
+        margin: 0 auto;
+
+        .dc-form-submit-button {
+            background-color: var(--general-main-1);
+        }
+    }
+}
+
+/* stylelint-disable */
+.dc-modal__container_deactivate-account-reasons {
+    @include mobile {
+        max-height: 70vh;
+    }
+    .have-open-positions-or-balance-scroll {
+        overflow-y: auto;
+    }
+    .dc-modal-header {
+        border: none;
+        min-width: 430px;
+        margin-bottom: 8px;
+    }
+    .account-closure-warning-modal {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 3.2rem;
+        width: 440px;
+        @include mobile {
+            width: unset;
+        }
+
+        .dc-form-submit-button {
+            justify-content: center;
+            padding: 2rem 0 0;
+
+            @include mobile {
+                background: unset;
+            }
+        }
+        &__warning-message {
+            color: var(--text-loss-danger);
+            padding: 16px 0;
+            font-size: var(--text-size-s);
+            font-weight: bold;
+            line-height: 1.43;
+        }
+        &__content {
+            @include typeface(--paragraph-left-normal-prominent, none);
+            color: var(--text-general);
+            line-height: 1.43;
+        }
+        &__content-wrapper {
+            display: flex;
+            align-items: center;
+            margin-top: 4px;
+        }
+    }
+
+    .have-open-positions-or-balance {
+        padding: 0 24px 24px 24px;
+        &__title {
+            color: var(--text-prominent);
+            font-size: var(--text-size-xs);
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        &__account-details {
+            display: flex;
+            align-items: center;
+        }
+        &__accounts-data {
+            display: flex;
+            flex-direction: column;
+            margin-left: 8px;
+        }
+        &__accounts-loginid {
+            color: var(--text-prominent);
+            font-size: var(--text-size-xxxs);
+            line-height: 1.4;
+        }
+        &__accounts-currency {
+            color: var(--text-prominent);
+            font-size: var(--text-size-xs);
+            line-height: 1.43;
+        }
+        &__accounts-button {
+            margin-top: 16px;
+            float: right;
+        }
+        &__accounts-wrapper {
+            display: flex;
+            padding: 3px 3px 3px 16px;
+            align-items: center;
+        }
+        &__balance {
+            margin-left: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            &--currency {
+                color: var(--text-prominent);
+                font-size: var(--text-size-xs);
+                line-height: 1.43;
+            }
+            &--id {
+                color: var(--text-prominent);
+                font-size: var(--text-size-xxxs);
+                line-height: 1.4;
+            }
+        }
+
+        &__container {
+            display: flex;
+            padding: 3px 3px 3px 16px;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 264px;
+        }
+        &__money {
+            color: var(--text-prominent);
+            font-size: var(--text-size-xs);
+            line-height: 1.43;
+        }
+        &__button {
+            height: 40px;
+            width: 77px;
+            float: right;
+            margin-right: 24px;
+            margin-bottom: 24px;
+        }
+    }
+}
+/* stylelint-enable */

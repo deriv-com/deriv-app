@@ -25,7 +25,6 @@ const SetResidenceForm = ({
                             {...field}
                             autoComplete='off'
                             className={`${class_prefix}__residence-field`}
-                            dropdown_offset='3.2rem'
                             type='text'
                             label={localize('Choose country')}
                             error={touched.residence && errors.residence}

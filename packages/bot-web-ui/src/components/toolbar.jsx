@@ -138,7 +138,6 @@ const WorkspaceGroup = ({
 
 const Toolbar = props => {
     const {
-        is_drawer_open,
         is_mobile,
         active_tab,
         is_dialog_open,
@@ -193,11 +192,13 @@ const Toolbar = props => {
                             {active_tab === tabs_title.WORKSPACE && <SearchBox {...props} />}
                             {active_tab === tabs_title.WORKSPACE && <WorkspaceGroup {...props} />}
                         </div>
-                        {!is_drawer_open && (
-                            <div className='toolbar__section'>
-                                <TradeAnimation className='toolbar__animation' should_show_overlay />
-                            </div>
-                        )}
+                        <div className='toolbar__section'>
+                            <TradeAnimation
+                                className='toolbar__animation'
+                                should_show_overlay={true}
+                                info_direction={'left'}
+                            />
+                        </div>
                     </div>
                 </ThemedScrollbars>
             )}

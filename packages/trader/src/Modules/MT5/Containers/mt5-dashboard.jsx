@@ -180,6 +180,7 @@ class MT5Dashboard extends React.Component {
                                         <MT5RealAccountDisplay
                                             is_eu={this.props.is_eu}
                                             is_eu_enabled={this.props.is_eu_enabled} // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
+                                            is_eu_country={this.props.is_eu_country}
                                             is_logged_in={this.props.is_logged_in}
                                             has_maltainvest_account={this.props.has_maltainvest_account}
                                             has_malta_account={this.props.has_malta_account}
@@ -303,6 +304,7 @@ export default withRouter(
         is_logged_in: client.is_logged_in,
         is_eu_enabled: ui.is_eu_enabled, // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
         is_eu: client.is_eu,
+        is_eu_country: client.is_eu_country,
         has_maltainvest_account: client.has_maltainvest_account,
         has_malta_account: client.has_malta_account,
         can_upgrade_to: client.can_upgrade_to,

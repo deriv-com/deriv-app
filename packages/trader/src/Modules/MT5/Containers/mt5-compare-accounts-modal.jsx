@@ -214,12 +214,12 @@ const MT5CompareAccountHint = () => (
     </div>
 );
 
-const ModalContent = ({ is_eu, landing_companies, is_eu, is_eu_country, is_logged_in }) => {
+const ModalContent = ({ is_eu, landing_companies, is_eu_country, is_logged_in }) => {
     const [cols, setCols] = React.useState([]);
     const [template_columns, updateColumnsStyle] = React.useState('1.5fr 1fr 2fr 1fr');
 
     React.useEffect(() => {
-        setCols(compareAccountsData({ is_eu, landing_companies, is_eu, is_eu_country, is_logged_in }));
+        setCols(compareAccountsData({ landing_companies, is_eu, is_eu_country, is_logged_in }));
 
         if (is_eu) {
             updateColumnsStyle(

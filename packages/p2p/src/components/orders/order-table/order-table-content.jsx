@@ -28,9 +28,15 @@ const OrderRowLoader = () => (
 );
 
 const OrderTableContent = ({ showDetails, is_active }) => {
-    const { changeTab, list_item_limit, order_offset, orders, setOrders, setOrderOffset } = React.useContext(
-        Dp2pContext
-    );
+    const {
+        changeTab,
+        is_active_tab,
+        list_item_limit,
+        order_offset,
+        orders,
+        setOrders,
+        setOrderOffset,
+    } = React.useContext(Dp2pContext);
     const [is_mounted, setIsMounted] = React.useState(false);
     const [has_more_items_to_load, setHasMoreItemsToLoad] = React.useState(false);
     const [api_error_message, setApiErrorMessage] = React.useState('');
@@ -54,6 +60,7 @@ const OrderTableContent = ({ showDetails, is_active }) => {
                 p2p_order_list: 1,
                 offset: order_offset,
                 limit: list_item_limit,
+                active: is_active_tab ? 1 : 0,
             }).then(response => {
                 if (is_mounted) {
                     if (!response.error) {
@@ -132,6 +139,7 @@ const OrderTableContent = ({ showDetails, is_active }) => {
 
 OrderTableContent.propTypes = {
     is_active: PropTypes.bool,
+    is_active_tab: PropTypes.bool,
     showDetails: PropTypes.func,
 };
 

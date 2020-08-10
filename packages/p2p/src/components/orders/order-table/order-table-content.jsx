@@ -45,6 +45,7 @@ const OrderTableContent = ({ showDetails, is_active }) => {
                 p2p_order_list: 1,
                 offset: order_offset,
                 limit: list_item_limit,
+                active: is_active ? 1 : 0,
             }).then(response => {
                 if (is_mounted) {
                     if (!response.error) {

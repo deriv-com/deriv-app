@@ -66,16 +66,11 @@ export default class OrderInfo {
     }
 
     get is_active() {
-        return this.status === 'pending' || this.status === 'buyer-confirmed';
+        return this.status === 'pending' || this.status === 'buyer-confirmed' || this.status === 'timed-out';
     }
 
     get is_inactive() {
-        return (
-            this.status === 'cancelled' ||
-            this.status === 'timed-out' ||
-            this.status === 'refunded' ||
-            this.status === 'completed'
-        );
+        return this.status === 'cancelled' || this.status === 'refunded' || this.status === 'completed';
     }
 
     get is_pending() {

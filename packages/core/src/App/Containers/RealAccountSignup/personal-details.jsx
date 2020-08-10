@@ -236,8 +236,16 @@ class PersonalDetails extends React.Component {
                                             {'phone' in this.props.value && (
                                                 <FormInputField
                                                     name='phone'
-                                                    label={localize('Phone number')}
-                                                    placeholder={localize('Phone number')}
+                                                    label={
+                                                        this.props.is_svg
+                                                            ? localize('Phone number*')
+                                                            : localize('Phone number')
+                                                    }
+                                                    placeholder={
+                                                        this.props.is_svg
+                                                            ? localize('Phone number*')
+                                                            : localize('Phone number')
+                                                    }
                                                 />
                                             )}
                                             {('tax_residence' in this.props.value ||

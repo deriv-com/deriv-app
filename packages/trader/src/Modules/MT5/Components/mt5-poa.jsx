@@ -257,8 +257,8 @@ class MT5POA extends React.Component {
                                                 <InputField
                                                     name='address_line_1'
                                                     required
-                                                    label={localize('First line of address')}
-                                                    placeholder={localize('First line of address')}
+                                                    label={localize('First line of address*')}
+                                                    placeholder={localize('First line of address*')}
                                                 />
                                                 <InputField
                                                     name='address_line_2'
@@ -270,8 +270,8 @@ class MT5POA extends React.Component {
                                                     <InputField
                                                         name='address_city'
                                                         required
-                                                        label={localize('Town/City')}
-                                                        placeholder={localize('Town/City')}
+                                                        label={localize('Town/City*')}
+                                                        placeholder={localize('Town/City*')}
                                                     />
                                                     <fieldset className='address-state__fieldset'>
                                                         <DesktopWrapper>
@@ -310,8 +310,8 @@ class MT5POA extends React.Component {
                                                     </fieldset>
                                                     <InputField
                                                         name='address_postcode'
-                                                        label={localize('Postal/ZIP code')}
-                                                        placeholder={localize('Postal/ZIP code')}
+                                                        label={localize('Postal/ZIP code*')}
+                                                        placeholder={localize('Postal/ZIP code*')}
                                                     />
                                                 </div>
                                                 <div className='mt5-proof-of-address__file-upload'>

@@ -70,10 +70,12 @@
             color: var(--text-general);
         }
         @include mobile {
-            width: unset;
-            height: unset;
             margin: 1.6rem 2rem 0.8rem;
-            padding: 1.6rem;
+            padding: 0.8rem 0;
+
+            @media only screen and (max-width: 340px) {
+                width: 120px;
+            }
         }
     }
     &__radio-button {
@@ -86,7 +88,7 @@
         margin-top: -16px;
 
         @include mobile {
-            left: 15vw;
+            right: 0;
             top: -5.8rem;
         }
     }

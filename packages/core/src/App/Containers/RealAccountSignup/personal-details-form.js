@@ -75,7 +75,7 @@ const personal_details_config = ({ residence_list, account_settings }) => {
                 default_value: account_settings.phone ?? '',
                 rules: [
                     ['req', localize('Phone is required')],
-                    ['phone', localize('Phone is not in a correct format.')],
+                    ['phone', localize('Phone is not in a proper format.')],
                 ],
             },
             tax_residence: {

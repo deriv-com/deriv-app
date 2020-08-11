@@ -170,7 +170,14 @@ class RealAccountSignup extends React.Component {
         });
     };
 
-    closeModal = () => {
+    closeModal = e => {
+        // Do not close modal on external link click event
+        if (e.target.getAttribute('rel') === 'noopener noreferrer') {
+            return;
+        }
+        if (e.target.closest('.redirect-notice')) {
+            return;
+        }
         if (this.active_modal_index !== 3) {
             sessionStorage.removeItem('post_real_account_signup');
             localStorage.removeItem('real_account_signup_wizard');

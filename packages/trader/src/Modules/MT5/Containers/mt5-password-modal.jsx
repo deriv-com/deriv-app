@@ -156,7 +156,7 @@ const MT5PasswordModal = ({
                                 </div>
                                 {is_real_financial_stp && (
                                     <div className='dc-modal__container_mt5-password-modal__description'>
-                                        <Localize i18n_default_text='Your MT5 Financial STP account will be opened through Binary (FX) Ltd. All trading in this account is subject to the regulations and guidelines of the Labuan Financial Services Authority (LFSA). All other accounts, including your Deriv account, are not subject to the regulations and guidelines of the Labuan Financial Services Authority (LFSA).' />
+                                        <Localize i18n_default_text='Your MT5 Financial STP account will be opened through Deriv (FX) Ltd. All trading in this account is subject to the regulations and guidelines of the Labuan Financial Services Authority (LFSA). All other accounts, including your Deriv account, are not subject to the regulations and guidelines of the Labuan Financial Services Authority (LFSA).' />
                                     </div>
                                 )}
                             </div>

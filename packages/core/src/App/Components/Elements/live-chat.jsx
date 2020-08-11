@@ -63,6 +63,7 @@ const LiveChat = ({
                             onClick={() => {
                                 window.LC_API.open_chat_window();
                             }}
+                            className='gtm-deriv-livechat'
                         >
                             <Icon icon='IcLiveChat' className='livechat__icon' />
                             <p className='livechat__title'>{localize('Live chat')}</p>
@@ -73,7 +74,6 @@ const LiveChat = ({
                             classNameBubble='help-centre__tooltip'
                             alignment='top'
                             message={localize('Live chat')}
-                            id='gtm-deriv-livechat'
                         >
                             <Icon
                                 icon='IcLiveChat'
@@ -81,6 +81,7 @@ const LiveChat = ({
                                 onClick={() => {
                                     window.LC_API.open_chat_window();
                                 }}
+                                className='gtm-deriv-livechat'
                             />
                         </Popover>
                     )}

@@ -91,7 +91,7 @@ $side-padding: 1.2em;
         }
     }
     .dc-vertical-tab__content--floating {
-        margin-right: 0rem;
+        margin-right: 0;
     }
 }
 
@@ -714,7 +714,7 @@ $side-padding: 1.2em;
             }
             .action {
                 padding-top: 0.8rem;
-                padding-bottom: 0rem;
+                padding-bottom: 0;
             }
         }
         &__bid_price {

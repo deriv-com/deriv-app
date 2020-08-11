@@ -37,6 +37,7 @@ class App extends React.Component {
 
         this.ws_subscriptions = {};
         this.list_item_limit = 20;
+        this.is_active_tab = true;
         this.state = {
             active_index: 0,
             loginid: this.props.client.loginid,
@@ -305,6 +306,7 @@ class App extends React.Component {
     };
 
     changeOrderToggle = value => {
+        this.is_active_tab = value === 'active';
         this.setState({ order_table_type: value });
     };
 
@@ -354,6 +356,7 @@ class App extends React.Component {
                     local_currency_config,
                     residence,
                     advertiser_id,
+                    is_active_tab: this.is_active_tab,
                     is_advertiser: this.state.is_advertiser,
                     is_listed: this.state.is_listed,
                     setIsListed: is_listed => this.setState({ is_listed }),

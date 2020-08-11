@@ -206,6 +206,7 @@ class AddressDetails extends React.Component {
                                     <FormSubmitButton
                                         is_disabled={isSubmitting || Object.keys(errors).length > 0}
                                         label={localize('Next')}
+                                        is_absolute={isMobile()}
                                         has_cancel
                                         cancel_label={localize('Previous')}
                                         onCancel={this.handleCancel.bind(this, values)}

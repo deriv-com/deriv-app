@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { FormSubmitButton, Icon, Modal, PasswordInput, PasswordMeter } from '@deriv/components';
-import { routes } from '@deriv/shared';
+import { isMobile, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import SuccessDialog from 'App/Containers/Modals/success-dialog.jsx';
 import 'Sass/app/modules/mt5/mt5.scss';
@@ -165,6 +165,7 @@ const MT5PasswordModal = ({
                                 has_cancel
                                 cancel_label={localize('Cancel')}
                                 onCancel={closeModal}
+                                is_absolute={isMobile()}
                                 is_loading={isSubmitting}
                                 label={localize('Add account')}
                                 form_error={form_error}

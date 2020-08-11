@@ -1088,19 +1088,15 @@ export default class ClientStore extends BaseStore {
         } else {
             await WS.forgetAll('balance');
             await BinarySocket.authorize(this.getToken());
-            if (this.root_store.common.has_error) this.root_store.common.setError(false, null);
         }
-
+        if (this.root_store.common.has_error) this.root_store.common.setError(false, null);
         sessionStorage.setItem('active_tab', '1');
 
         // set local storage
         this.root_store.gtm.setLoginFlag();
 
         await this.init();
-
-        // broadcastAccountChange is already called after new connection is authorized
-        if (!should_switch_socket_connection) this.broadcastAccountChange();
-
+        this.broadcastAccountChange();
         this.getLimits();
 
         runInAction(() => (this.is_switching = false));

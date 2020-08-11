@@ -27,7 +27,7 @@ const showDigitalOptionsMaltainvestError = (client, common) => {
             text: localize('DBot is not available for this account'),
             link: localize('Go to DMT5 dashboard'),
         });
-    }
+    } else if (common.has_error) common.setError(false, null);
 };
 
 class App extends React.Component {
@@ -127,7 +127,6 @@ class App extends React.Component {
      */
     registerOnAccountSwitch = () => {
         const { client, common } = this.root_store.core;
-        showDigitalOptionsMaltainvestError(client, common);
 
         this.disposeSwitchAccountListener = reaction(
             () => client.switch_broadcast,

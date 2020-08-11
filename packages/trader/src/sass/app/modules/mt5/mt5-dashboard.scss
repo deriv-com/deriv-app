@@ -79,7 +79,7 @@
         &--heading {
             @include typeface(--title-left-bold-black, none);
             color: var(--text-prominent);
-            line-height: 1.5em;
+            line-height: 1.5;
         }
     }
     &__missing-real {
@@ -92,7 +92,7 @@
 
         &--heading {
             color: var(--text-prominent);
-            line-height: 1.5rem;
+            line-height: 1.5;
             @include typeface(--title-left-bold-black, none);
             @include mobile {
                 font-size: 1.2rem;
@@ -397,12 +397,12 @@
     &--heading {
         @include typeface(--title-left-bold-black, none);
         color: var(--text-prominent);
-        line-height: 1.5em;
+        line-height: 1.5;
     }
     &--paragraph {
         @include typeface(--paragraph-left-normal-black, none);
         color: var(--text-general);
-        line-height: 1.45em;
+        line-height: 1.45;
     }
     &--balance {
         @include typeface(--title-left-bold-black);
@@ -497,7 +497,7 @@
             .mt5-account-card--paragraph {
                 @include typeface(--paragraph-left-bold-black, none);
                 color: var(--text-prominent);
-                line-height: 1.45em;
+                line-height: 1.45;
             }
         }
     }
@@ -507,7 +507,7 @@
         margin-bottom: 1.6rem;
 
         &.mt5-account-card--paragraph {
-            line-height: 1.4em;
+            line-height: 1.4;
         }
     }
     &__account-selection {
@@ -677,6 +677,17 @@
     &__form,
     &__body {
         display: grid;
+        // fix for safari bug with autoheight wrapper not working properly for calculating modal footer offset
+        @media not all and (min-resolution: 0.001dpcm) {
+            @supports (-webkit-appearance: none) and (stroke-color: transparent) {
+                @include desktop {
+                    max-height: calc(100% - 24px);
+                }
+                @include tablet {
+                    max-height: calc(100% - 24px);
+                }
+            }
+        }
     }
     @include desktop {
         overflow: hidden;
@@ -687,7 +698,7 @@
         }
     }
     @include mobile {
-        overflow: auto;
+        overflow: hidden;
         grid-template-rows: 7rem minmax(10rem, 1fr);
         &__heading {
             padding: unset;
@@ -717,6 +728,9 @@
         .dc-form-submit-button {
             background-color: inherit;
         }
+    }
+    .dc-autocomplete {
+        margin-bottom: 2.4rem;
     }
 }
 
@@ -803,10 +817,10 @@
         padding: 0;
     }
     & .mt5-tax-identification-number {
-        margin-top: 1em;
+        margin-top: 1rem;
     }
     & .dc-autocomplete {
-        margin-bottom: 2.4em;
+        margin-bottom: 2.4rem;
         &__input-field {
             .dc-input {
                 margin-bottom: 0;
@@ -821,7 +835,7 @@
             width: 25px;
         }
         &-section {
-            margin-top: 0em;
+            margin-top: 0;
             display: flex;
         }
         &-list {
@@ -866,14 +880,14 @@
         }
         &-box {
             display: flex;
-            margin-bottom: 2em;
+            margin-bottom: 2rem;
             align-items: center;
             justify-content: flex-start;
         }
         &-item {
             min-width: 238px;
             width: 100%;
-            margin-left: 1em;
+            margin-left: 1rem;
             font-size: var(--text-size-xxs);
             line-height: 1.5;
             color: var(--text-prominent);
@@ -887,6 +901,18 @@
         display: grid;
         grid-template-rows: minmax(10rem, 1fr) 7.2rem;
         height: 100%;
+
+        // fix for safari bug with autoheight wrapper not working properly for calculating modal footer offset
+        @media not all and (min-resolution: 0.001dpcm) {
+            @supports (-webkit-appearance: none) and (stroke-color: transparent) {
+                @include desktop {
+                    max-height: calc(100% - 2.4rem);
+                }
+                @include tablet {
+                    max-height: calc(100% - 2.4rem);
+                }
+            }
+        }
     }
     &__file-upload {
         position: relative;
@@ -905,7 +931,7 @@
     &__inline-fields {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
-        grid-gap: 1em;
+        grid-gap: 1rem;
 
         .dc-dropdown-container {
             margin-top: 0;
@@ -916,7 +942,8 @@
             background: var(--general-section-2);
         }
         &__field-area {
-            padding: 0 1.6rem;
+            padding: 0 1.6rem 3.2rem;
+            max-height: calc(100% - 0.8rem);
         }
         &__inline-fields {
             display: flex;
@@ -956,15 +983,31 @@
         grid-template-rows: minmax(10rem, 1fr) 8.2rem;
         height: 100%;
         position: relative;
+
+        // fix for safari bug with autoheight wrapper not working properly for calculating modal footer offset
+        @media not all and (min-resolution: 0.001dpcm) {
+            @supports (-webkit-appearance: none) and (stroke-color: transparent) {
+                @include desktop {
+                    max-height: calc(100% - 2.4rem);
+                }
+                @include tablet {
+                    max-height: calc(100% - 2.4rem);
+                }
+            }
+        }
+        @include mobile {
+            max-height: calc(100% - 1rem);
+        }
+    }
+    @include mobile {
+        overflow: hidden;
     }
 }
 .dc-modal__container_mt5-financial-stp-signup-modal {
+    max-height: calc(100vh - 102px) !important;
     @include desktop {
         display: grid;
         grid-template-rows: 6rem minmax(20rem, 1fr);
-    }
-    @include tablet {
-        max-height: calc(100vh - 102px); // HEADER and FOOTER
     }
 }
 .dc-modal__container_mt5-password-modal {
@@ -974,6 +1017,14 @@
 
         .dc-btn:first-child {
             margin-left: 0;
+        }
+    }
+    .dc-input {
+        &__label {
+            top: 0.9rem;
+        }
+        &__hint {
+            top: 4.8rem;
         }
     }
 }

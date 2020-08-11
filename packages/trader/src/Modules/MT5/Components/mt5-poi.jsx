@@ -4,7 +4,7 @@ import React from 'react';
 import { AutoHeightWrapper, FormSubmitButton, Div100vhContainer, Modal } from '@deriv/components';
 import { ProofOfIdentityContainer } from '@deriv/account';
 import { WS } from 'Services/ws-methods';
-import { isDesktop } from '@deriv/shared';
+import { isDesktop, isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 class MT5POI extends React.PureComponent {
@@ -59,7 +59,7 @@ class MT5POI extends React.PureComponent {
                                             is_description_enabled={false}
                                         />
                                     </Div100vhContainer>
-                                    <Modal.Footer>
+                                    <Modal.Footer is_bypassed={isMobile()}>
                                         <FormSubmitButton
                                             has_cancel
                                             cancel_label={localize('Previous')}

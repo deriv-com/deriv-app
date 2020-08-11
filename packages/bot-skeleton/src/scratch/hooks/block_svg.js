@@ -188,13 +188,15 @@ Blockly.BlockSvg.prototype.setErrorHighlighted = function(
 };
 
 // Highlight the block that is being executed
-Blockly.BlockSvg.prototype.highlightExecutedBlock = function() {
+Blockly.BlockSvg.prototype.highlightExecutedBlock = function(block) {
     const highlight_block_class = 'block--execution-highlighted';
 
-    Blockly.utils.addClass(this.svgGroup_, highlight_block_class);
-    setTimeout(() => {
-        Blockly.utils.removeClass(this.svgGroup_, highlight_block_class);
-    }, 1505);
+    if (!Blockly.utils.hasClass(this.svgGroup_, highlight_block_class)) {
+        Blockly.utils.addClass(this.svgGroup_, highlight_block_class);
+        setTimeout(() => {
+            Blockly.utils.removeClass(this.svgGroup_, highlight_block_class);
+        }, 1505);
+    }
 };
 
 /**

@@ -237,6 +237,11 @@
         align-items: center;
         justify-content: space-around;
         padding: 2.4rem 0 2rem;
+
+        @include mobile {
+            width: calc(100vw - 3.2rem);
+            height: 100%;
+        }
     }
     @include mobile {
         & .dc-form-submit-button {

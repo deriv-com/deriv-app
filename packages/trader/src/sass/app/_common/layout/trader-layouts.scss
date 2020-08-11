@@ -690,7 +690,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
         /* postcss-bem-linter: ignore */
         &__wrapper {
             display: grid;
-            grid-template-columns: 1fr;
+            grid-template-rows: auto auto 1fr;
             grid-gap: 1.6rem;
             margin: 1.6rem;
 
@@ -698,6 +698,11 @@ $FLOATING_HEADER_HEIGHT: 41px;
             & .dc-tooltip:before,
             & .dc-tooltip:after {
                 display: none;
+            }
+            /* postcss-bem-linter: ignore */
+            & .positions-drawer-dialog__button {
+                display: flex;
+                align-items: flex-end;
             }
         }
     }

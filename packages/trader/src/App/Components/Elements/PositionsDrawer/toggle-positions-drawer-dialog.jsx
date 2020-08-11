@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, DesktopWrapper, MobileDialog, MobileWrapper, Popover } from '@deriv/components';
+import { Icon, DesktopWrapper, MobileDialog, MobileWrapper, Popover, Div100vhContainer } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -115,9 +115,9 @@ class TogglePositionsDrawerDialog extends React.Component {
                         onClose={this.toggleDialog}
                         wrapper_classname='contract-update'
                     >
-                        <div className='contract-update__wrapper'>
+                        <Div100vhContainer className='contract-update__wrapper' height_offset='75px'>
                             <ContractUpdateForm contract={this.contract} toggleDialog={this.toggleDialog} />
-                        </div>
+                        </Div100vhContainer>
                     </MobileDialog>
                 </MobileWrapper>
                 <DesktopWrapper>

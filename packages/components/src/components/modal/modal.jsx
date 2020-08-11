@@ -21,6 +21,7 @@ const ModalElement = ({
     is_vertical_centered,
     is_vertical_bottom,
     is_vertical_top,
+    is_title_centered,
     header,
     children,
     height,
@@ -83,6 +84,7 @@ const ModalElement = ({
                 <div
                     className={classNames('dc-modal-header', {
                         [`dc-modal-header--${className}`]: className,
+                        [`dc-modal-header--is-title-centered`]: is_title_centered,
                     })}
                 >
                     {rendered_title && (
@@ -136,6 +138,7 @@ ModalElement.propTypes = {
     header: PropTypes.node,
     id: PropTypes.string,
     is_open: PropTypes.bool,
+    is_title_centered: PropTypes.bool,
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
     small: PropTypes.bool,
@@ -161,6 +164,7 @@ const Modal = ({
     is_vertical_bottom,
     is_vertical_centered,
     is_vertical_top,
+    is_title_centered,
     renderTitle,
     title,
     toggleModal,
@@ -189,6 +193,7 @@ const Modal = ({
             is_vertical_bottom={is_vertical_bottom}
             is_vertical_centered={is_vertical_centered}
             is_vertical_top={is_vertical_top}
+            is_title_centered={is_title_centered}
             title={title}
             toggleModal={toggleModal}
             has_close_icon={has_close_icon}
@@ -223,6 +228,7 @@ Modal.propTypes = {
     is_vertical_bottom: PropTypes.bool,
     is_vertical_centered: PropTypes.bool,
     is_vertical_top: PropTypes.bool,
+    is_title_centered: PropTypes.bool,
     onEntered: PropTypes.func,
     onExited: PropTypes.func,
     onMount: PropTypes.func,

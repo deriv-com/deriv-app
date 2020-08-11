@@ -28,45 +28,25 @@
 
         &-value {
             font-weight: bold;
-            min-height: 1.4rem;
-        }
-    }
-    &__contract-type-wrapper {
-        display: grid;
-
-        &--multiplier {
-            grid-template-columns: 1fr 1fr;
-            grid-column-gap: 0.8rem;
-
-            /* postcss-bem-linter: ignore */
-            .contract-type-widget__icon-wrapper {
-                padding-left: 0;
-            }
+            font-size: 1.2rem;
         }
     }
     &__multiplier {
         &-amount {
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
+            align-items: center;
+            justify-content: center;
             padding: 0.8rem;
 
             .mobile-widget__item-label {
                 margin-right: 0.4rem;
             }
         }
-        &-commission {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            top: -0.4rem;
-            position: relative;
-            white-space: pre-wrap;
-
-            /* postcss-bem-linter: ignore */
-            .dc-icon {
-                margin-left: 0.5rem;
-            }
+        &-options {
+            flex: 1 !important;
+            flex-direction: column;
+            padding: 0.6rem 0.8rem;
         }
     }
     &__wrapper {

@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import classNames from 'classnames';
 import { Collapsible } from '@deriv/components';
 import { TradeParamsLoader } from 'App/Components/Elements/ContentLoader';
 import AllowEqualsMobile from 'Modules/Trading/Containers/allow-equals.jsx';
@@ -10,7 +9,7 @@ import {
     hasDurationForCallPutEqual,
     isRiseFallEqual,
 } from 'Stores/Modules/Trading/Helpers/allow-equals';
-import { MultiplierAmountWidget, MultiplierCommissionWidget } from './TradeParams/Multiplier/amount-widget.jsx';
+import MultiplierLimitOrderInfo from '../Elements/Multiplier/limit-order-info.jsx';
 import MobileWidget from '../Elements/mobile-widget.jsx';
 import ContractType from '../../Containers/contract-type.jsx';
 import { BarrierMobile, LastDigitMobile } from '../../Containers/trade-params-mobile.jsx';
@@ -44,15 +43,7 @@ const CollapsibleTradeParams = ({
 
     return (
         <Collapsible position='top' is_collapsed={is_collapsed} onClick={onClick}>
-            {is_multiplier && <MultiplierCommissionWidget />}
-            <div
-                className={classNames('mobile-widget__contract-type-wrapper', {
-                    'mobile-widget__contract-type-wrapper--multiplier': is_multiplier,
-                })}
-            >
-                <ContractType />
-                {is_multiplier && <MultiplierAmountWidget />}
-            </div>
+            <ContractType />
             {isVisible('last_digit') && (
                 <div collapsible='true'>
                     <LastDigitMobile />
@@ -65,6 +56,11 @@ const CollapsibleTradeParams = ({
             )}
             <MobileWidget is_collapsed={is_collapsed} toggleDigitsWidget={toggleDigitsWidget} />
             {has_allow_equals && <AllowEqualsMobile collapsible='true' />}
+            {is_multiplier && (
+                <div collapsible='true'>
+                    <MultiplierLimitOrderInfo />
+                </div>
+            )}
             <div className='purchase-container'>
                 <Purchase />
             </div>

@@ -24,7 +24,7 @@ class RadioGroup extends React.Component {
         return (
             <div className={classNames('dc-radio-group', className)}>
                 {items.map((item, idx) => (
-                    <label key={idx} className={classNames('dc-radio-group__item', className)}>
+                    <label key={idx} className={classNames('dc-radio-group__item', className, item.className)}>
                         <input
                             id={item.id}
                             name={name}

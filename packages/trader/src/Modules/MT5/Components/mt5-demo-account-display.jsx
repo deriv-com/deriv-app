@@ -1,12 +1,14 @@
 import React from 'react';
 import { Icon } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
+import { eu_real_financial_specs } from 'Modules/MT5/Constants/mt5-specifications';
 import { MT5AccountCard } from './mt5-account-card.jsx';
 import Loading from '../../../templates/_common/components/loading.jsx';
 
 const MT5DemoAccountDisplay = ({
     is_eu,
     is_eu_enabled, // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
+    is_eu_country,
     has_maltainvest_account,
     openAccountNeededModal,
     standpoint,
@@ -68,6 +70,7 @@ const MT5DemoAccountDisplay = ({
                     [localize('Number of assets')]: localize('10+'),
                 }}
             />
+
             <MT5AccountCard
                 has_mt5_account={has_mt5_account}
                 icon={() => <Icon icon='IcMt5FinancialPlatform' size={64} />}
@@ -92,15 +95,25 @@ const MT5DemoAccountDisplay = ({
                         type: 'financial',
                     })
                 }
-                descriptor={localize(
-                    'Trade commodities, cryptocurrencies, major (standard and micro-lots) and minor currency pairs with high leverage.'
-                )}
-                specs={{
-                    [localize('Leverage')]: localize('Up to 1:1000'),
-                    [localize('Margin call')]: localize('150%'),
-                    [localize('Stop out level')]: localize('75%'),
-                    [localize('Number of assets')]: localize('50+'),
-                }}
+                descriptor={
+                    is_eu || is_eu_country
+                        ? localize(
+                              'Trade commodities, cryptocurrencies, major (standard) and minor currency pairs with high leverage.'
+                          )
+                        : localize(
+                              'Trade commodities, cryptocurrencies, major (standard and micro-lots) and minor currency pairs with high leverage.'
+                          )
+                }
+                specs={
+                    is_eu || is_eu_country
+                        ? eu_real_financial_specs
+                        : {
+                              [localize('Leverage')]: localize('Up to 1:1000'),
+                              [localize('Margin call')]: localize('150%'),
+                              [localize('Stop out level')]: localize('75%'),
+                              [localize('Number of assets')]: localize('50+'),
+                          }
+                }
             />
             <MT5AccountCard
                 has_mt5_account={has_mt5_account}

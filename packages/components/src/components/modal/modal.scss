@@ -63,8 +63,8 @@
             }
         }
         @include desktop {
-            min-width: 400px;
-            max-height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT});
+            min-width: 400px !important;
+            max-height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT}) !important;
         }
         @include mobile {
             max-width: calc(100vw - 3.2rem) !important;

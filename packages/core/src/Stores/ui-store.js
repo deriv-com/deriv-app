@@ -167,7 +167,7 @@ export default class UIStore extends BaseStore {
         );
 
         // TODO: [deiv-eu] remove this manual enabler
-        this.is_eu_enabled = !!+localStorage.getItem('is_eu_enabled');
+        this.toggleIsEuEnabled(localStorage.getItem('is_eu_enabled') === 'true');
 
         window.addEventListener('resize', this.handleResize);
         autorun(() => {
@@ -658,5 +658,10 @@ export default class UIStore extends BaseStore {
     @action.bound
     showAccountTypesModalForEuropean() {
         this.toggleAccountTypesModal(this.root_store.client.is_uk);
+    }
+
+    @action.bound
+    toggleIsEuEnabled(status = !this.is_eu_enabled) {
+        this.is_eu_enabled = status;
     }
 }

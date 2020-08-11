@@ -56,7 +56,7 @@ const AppModals = ({
                     <DenialOfServiceModal
                         onConfirm={denialOfServiceOnConfirm}
                         onCancel={denialOfServiceOnCancel}
-                        is_visible={!is_denial_of_service_modal_visible}
+                        is_visible={is_denial_of_service_modal_visible}
                     />
                 );
             } else if (is_set_residence_modal_visible) {

@@ -122,6 +122,7 @@ export default class ClientStore extends BaseStore {
                 if (this.is_logged_in) {
                     const { loginid, email, landing_company_shortcode, currency, residence, account_settings } = this;
                     const { first_name, last_name } = account_settings;
+                    const domain = window.location.hostname.includes('deriv.com') ? 'deriv.com' : 'binary.sx';
                     const client_information = {
                         loginid,
                         email,
@@ -131,9 +132,9 @@ export default class ClientStore extends BaseStore {
                         first_name,
                         last_name,
                     };
-                    Cookies.set('client_information', client_information, { domain: 'deriv.com' });
+                    Cookies.set('client_information', client_information, { domain });
                 } else {
-                    Cookies.remove('client_information', { domain: 'deriv.com' });
+                    Cookies.remove('client_information', { domain });
                 }
             }
         );

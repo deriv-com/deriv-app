@@ -12,8 +12,9 @@ const LiveChat = ({ is_mobile_drawer }) => {
                 setLiveChatInteractive(true);
             });
             window.LiveChatWidget.on('visibility_changed', ({ visibility }) => {
+                const domain = window.location.hostname.includes('deriv.com') ? 'deriv.com' : 'binary.sx';
                 const client_information = Cookies.get('client_information', {
-                    domain: 'deriv.com',
+                    domain,
                 });
                 // only visible to CS
                 let session_variables = { loginid: '', landing_company_shortcode: '', currency: '', residence: '' };

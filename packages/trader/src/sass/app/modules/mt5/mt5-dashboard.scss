@@ -1018,6 +1018,10 @@
         background-color: unset;
         padding-bottom: 1.2rem;
 
+        @include mobile {
+            border-top: none;
+            bottom: 0;
+        }
         .dc-btn:first-child {
             margin-left: 0;
         }
@@ -1057,6 +1061,12 @@
                 margin-left: 0;
             }
         }
+        @include mobile {
+            padding: 0.8rem 1.6rem 1.6rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 1.4rem;
+        }
     }
 }
 .dc-modal__container_mt5-success-dialog {
@@ -1084,6 +1094,10 @@
         }
         @include mobile {
             width: 96px;
+
+            &--xlarge {
+                width: 128px;
+            }
         }
     }
     .dc-modal-body {

@@ -140,14 +140,15 @@ const CookieStorage = function(cookie_name, cookie_domain) {
 
     this.initialized = false;
     this.cookie_name = cookie_name;
+    // 'app.test.domain' and 'test.domain' are used during dev as hostnames, for deriv-app and deriv-com, respectively
+    // To do so simply change host to 'app.test.domain' in webpack settings in deriv-app
+    // and run 'gatsby develop -H 0.0.0.0' in deriv-com
+    // Note. You need to point both sample domains to localhost (127.0.0.1)
     this.domain =
         cookie_domain ||
-        (isProduction()
-            ? `.${hostname
-                  .split('.')
-                  .slice(-2)
-                  .join('.')}`
-            : hostname);
+        /* eslint-disable no-nested-ternary */
+        (isProduction() ? '.deriv.com' : hostname === 'app.test.domain' ? '.test.domain' : `.${hostname}`);
+        /* eslint-enable no-nested-ternary */
     this.path = '/';
     this.expires = new Date('Thu, 1 Jan 2037 12:00:00 GMT');
     this.value = {};

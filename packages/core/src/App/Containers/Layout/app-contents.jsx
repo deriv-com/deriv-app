@@ -1,21 +1,18 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Cookies from 'js-cookie';
 import { withRouter } from 'react-router';
 import WS from 'Services/ws-methods';
 import { DesktopWrapper, MobileWrapper, ThemedScrollbars } from '@deriv/components';
 import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
 import { isMobile } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import { cookie_banner_expires_in_days, cookie_banner_domain } from '../../Constants/app-config';
+import { CookieStorage } from '_common/storage';
 import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';
+import { TRACKING_STATUS_KEY } from '../../Constants/app-config';
 // import InstallPWA    from './install-pwa.jsx';
 
-Cookies.defaults = {
-    path: '/',
-    domain: cookie_banner_domain,
-};
+const tracking_status_cookie = new CookieStorage(TRACKING_STATUS_KEY);
 
 const AppContents = ({
     children,
@@ -36,7 +33,7 @@ const AppContents = ({
     const [show_cookie_banner, setShowCookieBanner] = React.useState(false);
     const [is_gtm_tracking, setIsGtmTracking] = React.useState(false);
 
-    const tracking_status = Cookies.get('tracking_status');
+    const tracking_status = tracking_status_cookie.get(TRACKING_STATUS_KEY);
 
     React.useEffect(() => {
         const allow_tracking = !is_eu_country || tracking_status === 'accepted';
@@ -47,7 +44,7 @@ const AppContents = ({
     }, [is_eu_country]);
 
     React.useEffect(() => {
-        if (!is_logged_in && !is_logging_in) {
+        if (!tracking_status && !is_logged_in && !is_logging_in) {
             WS.wait('website_status').then(() => {
                 setShowCookieBanner(is_eu_country);
             });
@@ -75,18 +72,14 @@ const AppContents = ({
 
     // handle accept/decline cookies
     const onAccept = () => {
-        Cookies.set('tracking_status', 'accepted', {
-            expires: cookie_banner_expires_in_days,
-        });
+        tracking_status_cookie.set(TRACKING_STATUS_KEY, 'accepted', { sameSite: 'none' });
         pushDataLayer({ event: 'allow_tracking' });
         setShowCookieBanner(false);
         setIsGtmTracking(true);
     };
 
     const onDecline = () => {
-        Cookies.set('tracking_status', 'declined', {
-            expires: cookie_banner_expires_in_days,
-        });
+        tracking_status_cookie.set(TRACKING_STATUS_KEY, 'declined', { sameSite: 'none' });
         setShowCookieBanner(false);
     };
 

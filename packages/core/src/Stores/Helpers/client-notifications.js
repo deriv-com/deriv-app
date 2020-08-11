@@ -238,18 +238,6 @@ export const clientNotifications = (ui = {}, client = {}) => {
             message: localize('To continue trading with us, please confirm where you live.'),
             type: 'danger',
         },
-        needs_poa_virtual: {
-            action: {
-                route: routes.proof_of_address,
-                text: localize('Verify address'),
-            },
-            key: 'needs_poa_virtual',
-            header: localize('Please Verify your address'),
-            message: localize(
-                'We couldn’t verify your personal details with our records, to enable deposit, withdrawals and trading, you need to upload proof of your address.'
-            ),
-            type: 'danger',
-        },
         needs_poi_virtual: {
             action: {
                 onClick: async () => {

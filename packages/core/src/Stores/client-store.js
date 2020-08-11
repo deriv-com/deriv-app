@@ -1,4 +1,5 @@
 import moment from 'moment';
+import Cookies from 'js-cookie';
 import { action, computed, observable, runInAction, when, reaction, toJS } from 'mobx';
 import {
     setCurrencies,
@@ -103,6 +104,36 @@ export default class ClientStore extends BaseStore {
 
                 if (!this.root_store.ui.is_real_acc_signup_on) {
                     this.root_store.ui.toggleAccountTypesModal(true);
+                }
+            }
+        );
+
+        reaction(
+            () => [
+                this.is_logged_in,
+                this.loginid,
+                this.email,
+                this.landing_company,
+                this.currency,
+                this.residence,
+                this.account_settings,
+            ],
+            () => {
+                if (this.is_logged_in) {
+                    const { loginid, email, landing_company_shortcode, currency, residence, account_settings } = this;
+                    const { first_name, last_name } = account_settings;
+                    const client_information = {
+                        loginid,
+                        email,
+                        landing_company_shortcode,
+                        currency,
+                        residence,
+                        first_name,
+                        last_name,
+                    };
+                    Cookies.set('client_information', client_information, { domain: 'deriv.com' });
+                } else {
+                    Cookies.remove('client_information', { domain: 'deriv.com' });
                 }
             }
         );

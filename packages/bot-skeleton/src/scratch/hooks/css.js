@@ -291,7 +291,7 @@ Blockly.Css.CONTENT = [
     '}',
 
     '.blocklySelected>.blocklyPath {',
-    'stroke: #fc3;',
+    'stroke: #ffc358;',
     'stroke-width: 3px;',
     '}',
 

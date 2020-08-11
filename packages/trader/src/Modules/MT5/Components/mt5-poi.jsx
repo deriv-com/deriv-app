@@ -64,6 +64,7 @@ class MT5POI extends React.PureComponent {
                                             has_cancel
                                             cancel_label={localize('Previous')}
                                             is_disabled={!['pending', 'verified'].includes(this.state.poi_state)}
+                                            is_absolute={isMobile()}
                                             label={localize('Next')}
                                             onCancel={this.props.onCancel}
                                             form_error={this.props.form_error}

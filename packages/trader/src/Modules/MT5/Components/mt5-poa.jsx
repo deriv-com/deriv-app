@@ -368,6 +368,7 @@ class MT5POA extends React.Component {
                                                 cancel_label={localize('Previous')}
                                                 is_disabled={!!Object.keys(errors).length || isSubmitting}
                                                 label={localize('Next')}
+                                                is_absolute={isMobile()}
                                                 is_loading={isSubmitting}
                                                 form_error={this.state.form_error}
                                                 onCancel={() => this.handleCancel(values)}

@@ -10,7 +10,7 @@ import {
     Modal,
     ThemedScrollbars,
 } from '@deriv/components';
-import { routes, getDerivComLink, urlFor } from '@deriv/shared';
+import { isDesktop, isMobile, routes, getDerivComLink, urlFor } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import AccountCard from './account-card.jsx';
@@ -235,8 +235,12 @@ class AccountTypesModal extends React.Component {
                 toggleModal={this.closeModal}
                 has_close_icon={this.props.is_dismissible}
             >
-                <Div100vhContainer height_offset='120px'>
-                    <ThemedScrollbars>
+                <ThemedScrollbars is_bypassed={isMobile()} autohide={false}>
+                    <Div100vhContainer
+                        height_offset='120px'
+                        is_disabled={isDesktop()}
+                        className='account-types__container'
+                    >
                         <div className='account-types'>
                             <p className='account-types__intro'>
                                 {localize('Choose an account that suits your needs.')}
@@ -282,8 +286,8 @@ class AccountTypesModal extends React.Component {
                                 />
                             </div>
                         </div>
-                    </ThemedScrollbars>
-                </Div100vhContainer>
+                    </Div100vhContainer>
+                </ThemedScrollbars>
             </Modal>
         );
     }

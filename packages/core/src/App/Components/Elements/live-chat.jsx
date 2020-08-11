@@ -59,11 +59,10 @@ const LiveChat = ({
                 <>
                     {is_mobile_drawer ? (
                         <div
-                            className='livechat'
+                            className='livechat gtm-deriv-livechat'
                             onClick={() => {
                                 window.LC_API.open_chat_window();
                             }}
-                            className='gtm-deriv-livechat'
                         >
                             <Icon icon='IcLiveChat' className='livechat__icon' />
                             <p className='livechat__title'>{localize('Live chat')}</p>
@@ -77,11 +76,10 @@ const LiveChat = ({
                         >
                             <Icon
                                 icon='IcLiveChat'
-                                className='footer__icon'
+                                className='footer__icon gtm-deriv-livechat'
                                 onClick={() => {
                                     window.LC_API.open_chat_window();
                                 }}
-                                className='gtm-deriv-livechat'
                             />
                         </Popover>
                     )}

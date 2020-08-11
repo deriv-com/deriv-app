@@ -452,6 +452,7 @@ class PersonalDetails extends React.Component {
                                             // eslint-disable-next-line no-unused-vars
                                             isSubmitting || Object.keys(errors).length > 0
                                         }
+                                        is_absolute={isMobile()}
                                         label={localize('Next')}
                                         onCancel={this.handleCancel.bind(this, values)}
                                     />

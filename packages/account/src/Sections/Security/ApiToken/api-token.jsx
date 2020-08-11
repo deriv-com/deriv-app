@@ -204,9 +204,6 @@ class ApiToken extends React.Component {
                 </Modal>
                 <div className='api-token__wrapper'>
                     <ThemedScrollbars className='api-token__scrollbars'>
-                        <MobileWrapper>
-                            <Article />
-                        </MobileWrapper>
                         <Formik
                             initialValues={this.initial_form}
                             onSubmit={this.handleSubmit}

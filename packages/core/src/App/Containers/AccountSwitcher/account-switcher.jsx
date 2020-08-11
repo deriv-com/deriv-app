@@ -80,6 +80,7 @@ class AccountSwitcher extends React.Component {
             account_type === 'synthetic' ? this.props.has_malta_account : this.props.has_maltainvest_account;
 
         if (this.props.is_eu_enabled && this.props.is_eu && !has_required_account) {
+            // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
             this.props.openAccountNeededModal(
                 account_type === 'synthetic'
                     ? this.props.standpoint.gaming_company
@@ -125,10 +126,12 @@ class AccountSwitcher extends React.Component {
     };
 
     onClickUpgrade = account => {
-        if (this.props.is_eu_enabled) {
+        // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
+        const is_account_signup_supported = this.props.is_eu ? this.props.is_eu_enabled : !this.props.is_eu;
+        if (is_account_signup_supported) {
             this.props.openRealAccountSignup(account);
         } else {
-            window.open(urlFor('new_account/maltainvestws', { legacy: true }));
+            window.open(urlFor('user/accounts', { legacy: true })); // TODO [deriv-eu] Remove this before launching eu production
         }
     };
 
@@ -405,23 +408,28 @@ class AccountSwitcher extends React.Component {
                         <div className='acc-switcher__accounts'>
                             {this.sorted_account_list
                                 .filter(account => !account.is_virtual)
-                                .map(account => (
-                                    <AccountList
-                                        key={account.loginid}
-                                        balance={this.props.accounts[account.loginid].balance}
-                                        currency={this.props.accounts[account.loginid].currency}
-                                        currency_icon={`IcCurrency-${account.icon}`}
-                                        display_type={'currency'}
-                                        has_balance={'balance' in this.props.accounts[account.loginid]}
-                                        is_disabled={account.is_disabled}
-                                        is_virtual={account.is_virtual}
-                                        loginid={account.loginid}
-                                        onClickAccount={
-                                            account.is_disabled ? undefined : this.doSwitch.bind(this, account.loginid)
-                                        }
-                                        selected_loginid={this.props.account_loginid}
-                                    />
-                                ))}
+                                .map(account => {
+                                    return (
+                                        <AccountList
+                                            key={account.loginid}
+                                            balance={this.props.accounts[account.loginid].balance}
+                                            currency={this.props.accounts[account.loginid].currency}
+                                            currency_icon={`IcCurrency-${account.icon}`}
+                                            display_type={'currency'}
+                                            has_balance={'balance' in this.props.accounts[account.loginid]}
+                                            is_disabled={account.is_disabled}
+                                            is_virtual={account.is_virtual}
+                                            is_eu={this.props.is_eu}
+                                            loginid={account.loginid}
+                                            onClickAccount={
+                                                account.is_disabled
+                                                    ? undefined
+                                                    : this.doSwitch.bind(this, account.loginid)
+                                            }
+                                            selected_loginid={this.props.account_loginid}
+                                        />
+                                    );
+                                })}
                         </div>
                         {this.remaining_real_accounts.map((account, index) => (
                             <div key={index} className='acc-switcher__new-account'>
@@ -497,7 +505,7 @@ class AccountSwitcher extends React.Component {
                                                 secondary
                                                 small
                                                 is_disabled={
-                                                    ((!this.props.is_eu_enabled || !this.props.is_eu) &&
+                                                    ((!this.props.is_eu_enabled || !this.props.is_eu) && // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
                                                         !this.props.has_any_real_account) ||
                                                     (account.type === 'financial_stp' &&
                                                         this.props.is_pending_authentication)
@@ -530,7 +538,7 @@ class AccountSwitcher extends React.Component {
                             <ThemedScrollbars height='354px'>{real_accounts}</ThemedScrollbars>
                         </DesktopWrapper>
                         <MobileWrapper>
-                            <Div100vhContainer className='acc-switcher__list-container' max_autoheight_offset='204px'>
+                            <Div100vhContainer className='acc-switcher__list-container' max_autoheight_offset='234px'>
                                 {real_accounts}
                             </Div100vhContainer>
                         </MobileWrapper>
@@ -540,7 +548,7 @@ class AccountSwitcher extends React.Component {
                             <ThemedScrollbars height='354px'>{demo_accounts}</ThemedScrollbars>
                         </DesktopWrapper>
                         <MobileWrapper>
-                            <Div100vhContainer className='acc-switcher__list-container' max_autoheight_offset='204px'>
+                            <Div100vhContainer className='acc-switcher__list-container' max_autoheight_offset='234px'>
                                 {demo_accounts}
                             </Div100vhContainer>
                         </MobileWrapper>
@@ -607,7 +615,8 @@ AccountSwitcher.propTypes = {
     can_upgrade_to: PropTypes.string,
     has_fiat: PropTypes.bool,
     has_any_real_account: PropTypes.bool,
-    is_eu_enabled: PropTypes.bool,
+    is_eu: PropTypes.bool,
+    is_eu_enabled: PropTypes.bool, // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
     is_loading_mt5: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_mt5_allowed: PropTypes.bool,
@@ -637,7 +646,7 @@ const account_switcher = withRouter(
         account_list: client.account_list,
         can_upgrade_to: client.can_upgrade_to,
         is_eu: client.is_eu,
-        is_eu_enabled: ui.is_eu_enabled,
+        is_eu_enabled: ui.is_eu_enabled, // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
         is_loading_mt5: client.is_populating_mt5_account_list,
         is_logged_in: client.is_logged_in,
         is_mt5_allowed: client.is_mt5_allowed,

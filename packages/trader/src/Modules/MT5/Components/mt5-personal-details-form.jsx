@@ -9,6 +9,7 @@ import {
     ThemedScrollbars,
     Input,
     Loading,
+    Modal,
     FormSubmitButton,
     DesktopWrapper,
     MobileWrapper,
@@ -164,7 +165,7 @@ const MT5PersonalDetailsForm = ({
             onSubmit={onSubmitForm}
         >
             {({ handleSubmit, isSubmitting, handleChange, handleBlur, errors, touched, values, setFieldValue }) => (
-                <AutoHeightWrapper default_height={200} height_offset={148}>
+                <AutoHeightWrapper default_height={200} height_offset={isDesktop() ? 148 : null}>
                     {({ height, setRef }) => (
                         <form
                             className='mt5-financial-stp-modal__form'
@@ -172,7 +173,7 @@ const MT5PersonalDetailsForm = ({
                             onSubmit={handleSubmit}
                             autoComplete='off'
                         >
-                            <Div100vhContainer className='details-form' height_offset='199px' is_disabled={isDesktop()}>
+                            <Div100vhContainer className='details-form' height_offset='179px' is_disabled={isDesktop()}>
                                 <p className='details-form__description'>
                                     <Localize
                                         i18n_default_text={
@@ -316,16 +317,18 @@ const MT5PersonalDetailsForm = ({
                                     </div>
                                 </ThemedScrollbars>
                             </Div100vhContainer>
-                            <FormSubmitButton
-                                cancel_label={localize('Previous')}
-                                is_disabled={
-                                    isSubmitting ||
-                                    (Object.keys(touched).length === 0 && !is_initial_valid) ||
-                                    (Object.keys(touched).length > 0 && Object.keys(errors).length > 0)
-                                }
-                                label={localize('Next')}
-                                onCancel={() => handleCancel(values)}
-                            />
+                            <Modal.Footer is_bypassed={isMobile()}>
+                                <FormSubmitButton
+                                    cancel_label={localize('Previous')}
+                                    is_disabled={
+                                        isSubmitting ||
+                                        (Object.keys(touched).length === 0 && !is_initial_valid) ||
+                                        (Object.keys(touched).length > 0 && Object.keys(errors).length > 0)
+                                    }
+                                    label={localize('Next')}
+                                    onCancel={() => handleCancel(values)}
+                                />
+                            </Modal.Footer>
                         </form>
                     )}
                 </AutoHeightWrapper>

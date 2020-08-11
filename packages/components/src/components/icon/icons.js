@@ -160,6 +160,7 @@ import './common/ic-profit.svg';
 import './common/ic-purchase.svg';
 import './common/ic-puzzle.svg';
 import './common/ic-qr-phone.svg';
+import './common/ic-red-warning.svg';
 import './common/ic-redo.svg';
 import './common/ic-regulatory-information.svg';
 import './common/ic-remove-token.svg';

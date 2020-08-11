@@ -70,13 +70,12 @@ class AddOrManageAccounts extends React.Component {
     }
 
     get should_hide_crypto() {
-        // TODO [deriv-eu] remove is_eu_enabled once released
-        return this.props.is_eu_enabled && this.props.is_eu;
+        return this.props.is_eu_enabled && this.props.is_eu; // TODO [deriv-eu] remove is_eu_enabled once released
     }
 
     render() {
         return (
-            <ThemedScrollbars is_bypassed={isMobile()}>
+            <ThemedScrollbars is_bypassed={isMobile()} autohide={false}>
                 <Div100vhContainer
                     className='account-wizard add-or-manage'
                     is_disabled={isDesktop()}
@@ -162,7 +161,7 @@ export default connect(({ client, ui }) => ({
     currency: client.currency,
     current_currency_type: client.current_currency_type,
     current_fiat_currency: client.current_fiat_currency,
-    is_eu_enabled: ui.is_eu_enabled,
+    is_eu_enabled: ui.is_eu_enabled, // TODO [deriv-eu] remove is_eu_enabled once eu is released.
     is_eu: client.is_eu,
     has_fiat: client.has_fiat,
     setCurrency: client.setAccountCurrency,

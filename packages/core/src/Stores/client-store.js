@@ -26,7 +26,6 @@ import { getClientAccountType, getMT5AccountType } from './Helpers/client';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
 
 const storage_key = 'client.accounts';
-
 const store_name = 'client_store';
 const eu_shortcode_regex = new RegExp('^(maltainvest|malta|iom)$');
 const eu_excluded_regex = new RegExp('^mt$');
@@ -126,7 +125,7 @@ export default class ClientStore extends BaseStore {
     get is_client_allowed_to_visit() {
         // TODO: [deriv-eu] Remove this after complete EU merge into production
         return !!(
-            this.root_store.ui.is_eu_enabled ||
+            this.root_store.ui.is_eu_enabled || // TODO: [deriv-eu] Remove this after complete EU merge into production
             !this.is_logged_in ||
             this.is_virtual ||
             this.accounts[this.loginid].landing_company_shortcode === 'svg'
@@ -434,7 +433,14 @@ export default class ClientStore extends BaseStore {
     // this is true when a user needs to have a active real account for trading
     @computed
     get should_have_real_account() {
-        return this.standpoint.iom && this.is_uk && !this.has_any_real_account;
+        // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
+        return (
+            this.standpoint.iom &&
+            this.is_uk &&
+            !this.has_any_real_account &&
+            this.root_store.ui &&
+            this.root_store.ui.is_eu_enabled
+        );
     }
 
     // Shows all possible landing companies of user between all
@@ -923,6 +929,8 @@ export default class ClientStore extends BaseStore {
             }
             WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
             this.getLimits();
+        } else {
+            this.resetMt5AccountListPopulation();
         }
         this.responseWebsiteStatus(await WS.wait('website_status'));
 
@@ -930,6 +938,11 @@ export default class ClientStore extends BaseStore {
         this.setIsLoggingIn(false);
         this.setInitialized(true);
         return true;
+    }
+
+    @action.bound
+    resetMt5AccountListPopulation() {
+        this.is_populating_mt5_account_list = false;
     }
 
     @action.bound
@@ -1276,7 +1289,11 @@ export default class ClientStore extends BaseStore {
         // Performs check to avoid login of landing companies that are currently not supported in app
         // TODO: [deriv-eu] Remove this after full merging of EU. When EU is enabled all landing companies are allowed.
         account_list.forEach(account => {
-            if (!this.root_store.ui.is_eu_enabled && !/^virtual|svg$/.test(account.landing_company_name)) {
+            if (
+                !this.root_store.ui &&
+                this.root_store.ui.is_eu_enabled &&
+                !/^virtual|svg$/.test(account.landing_company_name)
+            ) {
                 is_allowed_real = false;
             }
         });

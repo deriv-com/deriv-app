@@ -160,6 +160,7 @@ export const icons = {
         'IcPurchase',
         'IcPuzzle',
         'IcQrPhone',
+        'IcRedWarning',
         'IcRedo',
         'IcRegulatoryInformation',
         'IcRemoveToken',

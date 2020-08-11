@@ -528,7 +528,7 @@ export const BinaryOptionsTradingExperience = ({
             <React.Fragment>
                 <DesktopWrapper>
                     <Dropdown
-                        placeholder={localize('Binary options trading experience')}
+                        placeholder={localize('Digital options trading experience')}
                         is_align_text_left
                         name={field.name}
                         list={binary_options_trading_experience_enum}
@@ -544,7 +544,7 @@ export const BinaryOptionsTradingExperience = ({
                     <SelectNative
                         placeholder={localize('Please select')}
                         name={field.name}
-                        label={localize('Binary options trading experience')}
+                        label={localize('Digital options trading experience')}
                         list_items={binary_options_trading_experience_enum}
                         value={values.binary_options_trading_experience}
                         use_text={true}
@@ -576,7 +576,7 @@ export const BinaryOptionsTradingFrequency = ({
             <React.Fragment>
                 <DesktopWrapper>
                     <Dropdown
-                        placeholder={localize('Binary options trading frequency')}
+                        placeholder={localize('Digital options trading frequency')}
                         is_align_text_left
                         name={field.name}
                         list={binary_options_trading_frequency_enum}
@@ -592,7 +592,7 @@ export const BinaryOptionsTradingFrequency = ({
                     <SelectNative
                         placeholder={localize('Please select')}
                         name={field.name}
-                        label={localize('Binary options trading frequency')}
+                        label={localize('Digital options trading frequency')}
                         list_items={binary_options_trading_frequency_enum}
                         value={values.binary_options_trading_frequency}
                         use_text={true}

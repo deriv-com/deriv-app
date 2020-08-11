@@ -28,13 +28,13 @@ const hasMoreThanOne = ({ mt_financial_company, mt_gaming_company }) =>
         ...(mt_gaming_company?.financial ? [true] : []),
     ].length > 1;
 
-const TabOrFlex = ({ landing_companies, children, is_loading, loading_component, ...props }) => {
+const TabOrFlex = ({ landing_companies, children, is_loading, is_eu, loading_component, ...props }) => {
     const LoadingComponent = loading_component;
     if (is_loading) {
         return <LoadingComponent />;
     }
 
-    const should_show_tab = hasMoreThanOne(landing_companies);
+    const should_show_tab = is_eu ? hasMoreThanOne(landing_companies) : true;
 
     if (should_show_tab) {
         return <Tabs {...props}>{children}</Tabs>;
@@ -127,6 +127,8 @@ class MT5Dashboard extends React.Component {
             beginRealSignupForMt5,
             createMT5Account,
             is_loading,
+            is_logged_in,
+            is_eu,
             has_mt5_account,
             has_real_account,
             NotificationMessages,
@@ -140,7 +142,11 @@ class MT5Dashboard extends React.Component {
                     <div className='mt5-dashboard'>
                         <div className='mt5-dashboard__welcome-message'>
                             <h1 className='mt5-dashboard__welcome-message--heading'>
-                                <Localize i18n_default_text='Welcome to your MetaTrader 5 (DMT5 account dashboard)' />
+                                {is_logged_in ? (
+                                    <Localize i18n_default_text='Welcome to your MetaTrader 5 (DMT5 account dashboard)' />
+                                ) : (
+                                    <Localize i18n_default_text='Welcome to MetaTrader 5 (DMT5 account dashboard)' />
+                                )}
                             </h1>
                         </div>
                         <div className='mt5-dashboard__accounts-display'>
@@ -152,12 +158,13 @@ class MT5Dashboard extends React.Component {
                                 selected_account_type={this.state.password_manager.selected_account_type}
                                 toggleModal={this.togglePasswordManagerModal}
                             />
-                            {!this.props.is_eu && !hasMoreThanOne(this.props.landing_companies) && (
+                            {!this.props.is_eu && !hasMoreThanOne(this.props.landing_companies) && is_logged_in && (
                                 <MissingRealAccount onClickSignup={beginRealSignupForMt5} />
                             )}
                             <TabOrFlex
                                 landing_companies={this.props.landing_companies}
                                 active_index={this.state.active_index}
+                                is_eu={is_eu}
                                 top
                                 center
                                 is_loading={is_loading}
@@ -172,7 +179,9 @@ class MT5Dashboard extends React.Component {
                                             )}
                                         <MT5RealAccountDisplay
                                             is_eu={this.props.is_eu}
-                                            is_eu_enabled={this.props.is_eu_enabled}
+                                            is_eu_enabled={this.props.is_eu_enabled} // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
+                                            is_eu_country={this.props.is_eu_country}
+                                            is_logged_in={this.props.is_logged_in}
                                             has_maltainvest_account={this.props.has_maltainvest_account}
                                             has_malta_account={this.props.has_malta_account}
                                             openAccountNeededModal={this.props.openAccountNeededModal}
@@ -195,7 +204,8 @@ class MT5Dashboard extends React.Component {
                                 <div label={localize('Demo account')}>
                                     <MT5DemoAccountDisplay
                                         is_eu={this.props.is_eu}
-                                        is_eu_enabled={this.props.is_eu_enabled}
+                                        is_eu_enabled={this.props.is_eu_enabled} // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
+                                        is_logged_in={this.props.is_logged_in}
                                         has_maltainvest_account={this.props.has_maltainvest_account}
                                         openAccountNeededModal={this.props.openAccountNeededModal}
                                         standpoint={this.props.standpoint}
@@ -292,8 +302,9 @@ export default withRouter(
         current_list: modules.mt5.current_list,
         landing_companies: client.landing_companies,
         is_logged_in: client.is_logged_in,
-        is_eu_enabled: ui.is_eu_enabled,
+        is_eu_enabled: ui.is_eu_enabled, // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
         is_eu: client.is_eu,
+        is_eu_country: client.is_eu_country,
         has_maltainvest_account: client.has_maltainvest_account,
         has_malta_account: client.has_malta_account,
         can_upgrade_to: client.can_upgrade_to,

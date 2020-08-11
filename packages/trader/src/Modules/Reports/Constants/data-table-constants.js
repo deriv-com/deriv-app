@@ -11,12 +11,13 @@ import ProfitLossCell from '../Components/profit_loss_cell.jsx';
 
 const getModeFromValue = key => {
     const map = {
-        deposit: 'warn',
-        withdrawal: 'info',
-        sell: 'danger',
         buy: 'success',
+        deposit: 'success',
+        hold: 'warn',
+        release: 'success',
+        sell: 'danger',
+        withdrawal: 'info',
         default: 'default',
-        escrow: 'default-invert',
     };
 
     if (Object.keys(map).find(x => x === key)) {

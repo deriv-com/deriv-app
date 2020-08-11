@@ -52,7 +52,7 @@ const personal_details_config = ({ residence_list, account_settings }) => {
                     ['req', localize('Date of birth is required')],
                     [
                         v => toMoment(v).isValid() && toMoment(v).isBefore(toMoment().subtract(18, 'years')),
-                        localize('Date of birth is not in a proper format'),
+                        localize('You must be 18 years old and above.'),
                     ],
                 ],
             },
@@ -75,7 +75,7 @@ const personal_details_config = ({ residence_list, account_settings }) => {
                 default_value: account_settings.phone ?? '',
                 rules: [
                     ['req', localize('Phone is required')],
-                    ['phone', localize('Phone is not in a correct format.')],
+                    ['phone', localize('Phone is not in a proper format.')],
                 ],
             },
             tax_residence: {
@@ -123,7 +123,12 @@ const personal_details_config = ({ residence_list, account_settings }) => {
     ];
 };
 
-export const personalDetailsConfig = ({ real_account_signup_target, residence_list, account_settings }) => {
+export const personalDetailsConfig = ({
+    upgrade_info,
+    real_account_signup_target,
+    residence_list,
+    account_settings,
+}) => {
     const [config, disabled_items] = personal_details_config({ residence_list, account_settings });
     return {
         header: {
@@ -137,6 +142,7 @@ export const personalDetailsConfig = ({ real_account_signup_target, residence_li
                 real_account_signup_target,
                 transformConfig(config, { real_account_signup_target })
             ),
+            is_svg: upgrade_info?.can_upgrade_to === 'svg',
             account_opening_reason_list: [
                 {
                     text: localize('Hedging'),

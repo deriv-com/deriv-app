@@ -187,6 +187,16 @@ Blockly.BlockSvg.prototype.setErrorHighlighted = function(
     this.error_message = error_message;
 };
 
+// Highlight the block that is being executed
+Blockly.BlockSvg.prototype.highlightExecutedBlock = function() {
+    const highlight_block_class = 'block--execution-highlighted';
+
+    Blockly.utils.addClass(this.svgGroup_, highlight_block_class);
+    setTimeout(() => {
+        Blockly.utils.removeClass(this.svgGroup_, highlight_block_class);
+    }, 1505);
+};
+
 /**
  * Set block animation (Blink)
  */

@@ -138,9 +138,9 @@ const FinancialDetails = props => {
                                     is_disabled={isDesktop()}
                                 >
                                     <ThemedScrollbars
-                                        is_native={isMobile()}
+                                        is_bypassed={isMobile()}
                                         autoHide={!(window.innerHeight < 890)}
-                                        height={height}
+                                        height={height - 77}
                                     >
                                         <div
                                             className='details-form__elements  details-form__elements--wide'
@@ -186,6 +186,7 @@ const FinancialDetails = props => {
                                             // eslint-disable-next-line no-unused-vars
                                             isSubmitting || Object.keys(errors).length > 0
                                         }
+                                        is_absolute={isMobile()}
                                         label={localize('Next')}
                                         has_cancel
                                         cancel_label={localize('Previous')}

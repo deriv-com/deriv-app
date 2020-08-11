@@ -187,16 +187,23 @@ const JournalLoader = ({ is_mobile }) => (
     </ContentLoader>
 );
 
-const Journal = ({ contract_stage, filtered_messages, is_mobile, is_stop_button_visible, ...props }) => {
+const Journal = ({
+    contract_stage,
+    filtered_messages,
+    is_drawer_open,
+    is_mobile,
+    is_stop_button_visible,
+    ...props
+}) => {
     return (
         <div
             className={classnames('journal run-panel-tab__content--no-stat', {
                 'run-panel-tab__content': !is_mobile,
-                'run-panel-tab__content--mobile': is_mobile,
+                'run-panel-tab__content--journal-mobile': is_mobile && is_drawer_open,
             })}
         >
             <Tools {...props} />
-            <ThemedScrollbars className='journal__scrollbars' height={'calc(100% - 42px)'}>
+            <ThemedScrollbars className='journal__scrollbars' height={'calc(100% - 4.2rem)'}>
                 <div className='journal__item-list'>
                     {filtered_messages.length ? (
                         <TransitionGroup>
@@ -223,12 +230,7 @@ const Journal = ({ contract_stage, filtered_messages, is_mobile, is_stop_button_
                             is_stop_button_visible ? (
                                 <JournalLoader is_mobile={is_mobile} />
                             ) : (
-                                <div
-                                    className={classnames({
-                                        'journal-empty': !is_mobile,
-                                        'journal-empty--mobile': is_mobile,
-                                    })}
-                                >
+                                <div className='journal-empty'>
                                     <Icon icon='IcBox' className='journal-empty__icon' size={64} color='secondary' />
                                     <h4 className='journal-empty__header'>
                                         {localize('There are no messages to display')}

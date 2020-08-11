@@ -11,7 +11,7 @@ import { LocalStore, State } from '_common/storage';
 
 // TODO: Update links to app_2 links when components are done.
 /* eslint-disable react/jsx-no-target-blank */
-export const clientNotifications = (ui = {}) => {
+export const clientNotifications = (ui = {}, client = {}) => {
     const notifications = {
         currency: {
             action: {
@@ -111,27 +111,6 @@ export const clientNotifications = (ui = {}) => {
             ) : (
                 <Localize
                     i18n_default_text='Trading and deposits have been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
-                    components={[<a key={0} className='link' target='_blank' href={getDerivComLink('contact-us')} />]}
-                />
-            ),
-            type: 'danger',
-        },
-        mf_retail: {
-            ...(isMobile() && {
-                action: {
-                    text: localize('Contact us'),
-                    onClick: () => {
-                        window.open(getDerivComLink('contact-us'));
-                    },
-                },
-            }),
-            key: 'mf_retail',
-            header: localize('Digital options trading disabled'),
-            message: isMobile() ? (
-                <Localize i18n_default_text='Digital Options Trading has been disabled on your account. Kindly contact customer support for assistance.' />
-            ) : (
-                <Localize
-                    i18n_default_text='Digital Options Trading has been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
                     components={[<a key={0} className='link' target='_blank' href={getDerivComLink('contact-us')} />]}
                 />
             ),
@@ -245,6 +224,34 @@ export const clientNotifications = (ui = {}) => {
             message: localize('Please submit your proof of address.'),
             type: 'warning',
         },
+        needs_poa_virtual: {
+            action: {
+                route: routes.proof_of_address,
+                text: localize('Verify address'),
+            },
+            key: 'needs_poa_virtual',
+            header: localize('Please Verify your address'),
+            message: localize(
+                'We couldn’t verify your personal details with our records, to enable deposit, withdrawals and trading, you need to upload proof of your address.'
+            ),
+            type: 'danger',
+        },
+        needs_poi_virtual: {
+            action: {
+                onClick: async () => {
+                    const { switchAccount, first_switchable_real_loginid } = client;
+
+                    await switchAccount(first_switchable_real_loginid);
+                },
+                text: localize('Verify identity'),
+            },
+            key: 'needs_poi_virtual',
+            header: localize('Please Verify your identity'),
+            message: localize(
+                'We couldn’t verify your personal details with our records, to enable deposit, withdrawals and trading, you need to upload proof of your identity.'
+            ),
+            type: 'danger',
+        },
         poa_expired: {
             action: {
                 route: routes.proof_of_address,
@@ -296,6 +303,7 @@ const hasMissingRequiredField = (account_settings, client) => {
     const { landing_company_shortcode } = client;
     const is_svg = landing_company_shortcode === 'svg' || landing_company_shortcode === 'costarica';
 
+    // TODO: [deriv-eu] refactor into its own function once more exceptions are added.
     let required_fields;
     if (is_svg) {
         required_fields = getSVGRequiredFields();
@@ -366,12 +374,10 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
         document_needs_action,
         unwelcome,
         ukrts_max_turnover_limit_not_set,
-        professional,
     } = getStatusValidations(status);
 
     addVerificationNotifications(identity, document, addNotificationMessage);
 
-    const is_mf_retail = client.landing_company_shortcode === 'maltainvest' && !professional;
     const needs_authentication = needs_verification.length && document.status === 'none' && identity.status === 'none';
     const has_risk_assessment = getRiskAssessment(account_status);
     const needs_poa =
@@ -406,7 +412,6 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
     if (mt5_withdrawal_locked) addNotificationMessage(clientNotifications().mt5_withdrawal_locked);
     if (document_needs_action) addNotificationMessage(clientNotifications().document_needs_action);
     if (unwelcome) addNotificationMessage(clientNotifications().unwelcome);
-    if (is_mf_retail) addNotificationMessage(clientNotifications().mf_retail);
 
     if (ukrts_max_turnover_limit_not_set) {
         addNotificationMessage(clientNotifications().financial_limit);

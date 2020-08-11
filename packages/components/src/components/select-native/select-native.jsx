@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import FieldError from '../field-error';
+import Field from '../field';
 import Icon from '../icon/icon.jsx';
 
 class SelectNative extends React.Component {
@@ -93,7 +93,7 @@ class SelectNative extends React.Component {
                                 ))
                             )}
                         </select>
-                        {error && <FieldError message={error} />}
+                        {error && <Field message={error} type='error' />}
                     </div>
                 </div>
                 {!error && hint && <p className='dc-select-native__hint'>{hint}</p>}
@@ -102,7 +102,7 @@ class SelectNative extends React.Component {
     }
 }
 
-SelectNative.props = {
+SelectNative.propTypes = {
     className: PropTypes.string,
     classNameDisplay: PropTypes.string,
     list_items: PropTypes.oneOfType([

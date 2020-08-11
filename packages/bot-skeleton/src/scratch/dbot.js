@@ -4,10 +4,8 @@ import { hasAllRequiredBlocks, updateDisabledBlocks } from './utils';
 import main_xml from './xml/main.xml';
 import toolbox_xml from './xml/toolbox.xml';
 import DBotStore from './dbot-store';
-import { getSavedWorkspaces, saveWorkspaceToRecent } from '../utils/local-storage';
-import { onWorkspaceResize } from '../utils/workspace';
+import { getSavedWorkspaces } from '../utils/local-storage';
 import { config } from '../constants/config';
-import { save_types } from '../constants/save-type';
 import ApiHelpers from '../services/api/api-helpers';
 import Interpreter from '../services/tradeEngine/utils/interpreter';
 import { observer as globalObserver } from '../utils/observer';
@@ -23,77 +21,79 @@ class DBot {
      * Initialises the workspace and mounts it to a container element (app_contents).
      */
     async initWorkspace(public_path, store, api_helpers_store, is_mobile) {
-        try {
+        return new Promise((resolve, reject) => {
             __webpack_public_path__ = public_path; // eslint-disable-line no-global-assign
             ApiHelpers.setInstance(api_helpers_store);
             DBotStore.setInstance(store);
             const window_width = window.innerWidth;
-            let workspaceScale = 0.8;
+            try {
+                let workspaceScale = 0.8;
 
-            const { handleFileChange } = DBotStore.instance;
-            if (window_width < 1640) {
-                if (is_mobile) {
-                    workspaceScale = 0.7;
-                } else {
-                    const scratch_div_width = document.getElementById('scratch_div').offsetWidth;
-                    const zoom_scale = scratch_div_width / window_width;
-                    workspaceScale = zoom_scale;
+                const { handleFileChange } = DBotStore.instance;
+                if (window_width < 1640) {
+                    if (is_mobile) {
+                        workspaceScale = 0.7;
+                    } else {
+                        const scratch_div_width = document.getElementById('scratch_div').offsetWidth;
+                        const zoom_scale = scratch_div_width / window_width / 1.5;
+                        workspaceScale = zoom_scale;
+                    }
                 }
+                const el_scratch_div = document.getElementById('scratch_div');
+                this.workspace = Blockly.inject(el_scratch_div, {
+                    grid: { spacing: 40, length: 11, colour: '#f3f3f3' },
+                    media: `${__webpack_public_path__}media/`,
+                    toolbox: toolbox_xml,
+                    trashcan: !is_mobile,
+                    zoom: { wheel: true, startScale: workspaceScale },
+                });
+
+                this.workspace.cached_xml = { main: main_xml, toolbox: toolbox_xml };
+                Blockly.derivWorkspace = this.workspace;
+
+                this.workspace.addChangeListener(this.valueInputLimitationsListener.bind(this));
+                this.workspace.addChangeListener(event => updateDisabledBlocks(this.workspace, event));
+                this.workspace.addChangeListener(event => this.workspace.dispatchBlockEventEffects(event));
+
+                this.addBeforeRunFunction(this.unselectBlocks.bind(this));
+                this.addBeforeRunFunction(this.disableStrayBlocks.bind(this));
+                this.addBeforeRunFunction(this.checkForErroredBlocks.bind(this));
+                this.addBeforeRunFunction(this.checkForRequiredBlocks.bind(this));
+
+                // Push main.xml to workspace and reset the undo stack.
+                const recent_files = getSavedWorkspaces();
+                this.workspace.current_strategy_id = Blockly.utils.genUid();
+                let strategy_to_load = main_xml;
+                let file_name = config.default_file_name;
+                if (recent_files) {
+                    const latest_file = recent_files[0];
+                    strategy_to_load = latest_file.xml;
+                    file_name = latest_file.name;
+                    Blockly.derivWorkspace.current_strategy_id = latest_file.id;
+                }
+
+                const event_group = `dbot-load${Date.now()}`;
+                Blockly.Events.setGroup(event_group);
+                Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(strategy_to_load), this.workspace);
+                const { save_modal } = DBotStore.instance;
+
+                save_modal.updateBotName(file_name);
+                this.workspace.cleanUp();
+                this.workspace.clearUndo();
+
+                window.dispatchEvent(new Event('resize'));
+                window.addEventListener('dragover', DBot.handleDragOver);
+                window.addEventListener('drop', e => DBot.handleDropOver(e, handleFileChange));
+
+                // disable overflow
+                el_scratch_div.parentNode.style.overflow = 'hidden';
+                resolve();
+            } catch (error) {
+                // TODO: Handle error.
+                reject(error);
+                throw error;
             }
-            const el_scratch_div = document.getElementById('scratch_div');
-            this.workspace = Blockly.inject(el_scratch_div, {
-                grid: { spacing: 40, length: 11, colour: '#f3f3f3' },
-                media: `${__webpack_public_path__}media/`,
-                toolbox: toolbox_xml,
-                trashcan: !is_mobile,
-                zoom: { wheel: true, startScale: workspaceScale },
-            });
-
-            this.workspace.cached_xml = { main: main_xml, toolbox: toolbox_xml };
-            Blockly.derivWorkspace = this.workspace;
-
-            this.workspace.addChangeListener(event => saveWorkspaceToRecent(save_types.UNSAVED, event));
-            this.workspace.addChangeListener(this.valueInputLimitationsListener.bind(this));
-            this.workspace.addChangeListener(event => updateDisabledBlocks(this.workspace, event));
-            this.workspace.addChangeListener(event => this.workspace.dispatchBlockEventEffects(event));
-
-            this.addBeforeRunFunction(this.unselectBlocks.bind(this));
-            this.addBeforeRunFunction(this.disableStrayBlocks.bind(this));
-            this.addBeforeRunFunction(this.checkForErroredBlocks.bind(this));
-            this.addBeforeRunFunction(this.checkForRequiredBlocks.bind(this));
-
-            // Push main.xml to workspace and reset the undo stack.
-            const recent_files = getSavedWorkspaces();
-            this.workspace.current_strategy_id = Blockly.utils.genUid();
-            let strategy_to_load = main_xml;
-            let file_name = config.default_file_name;
-            if (recent_files) {
-                const latest_file = recent_files[0];
-                strategy_to_load = latest_file.xml;
-                file_name = latest_file.name;
-                Blockly.derivWorkspace.current_strategy_id = latest_file.id;
-            }
-
-            const event_group = `dbot-load${Date.now()}`;
-            Blockly.Events.setGroup(event_group);
-            Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(strategy_to_load), this.workspace);
-            const { save_modal } = DBotStore.instance;
-
-            save_modal.updateBotName(file_name);
-            this.workspace.cleanUp();
-            this.workspace.clearUndo();
-
-            window.addEventListener('resize', () => onWorkspaceResize());
-            window.dispatchEvent(new Event('resize'));
-            window.addEventListener('dragover', DBot.handleDragOver);
-            window.addEventListener('drop', e => DBot.handleDropOver(e, handleFileChange));
-
-            // disable overflow
-            el_scratch_div.parentNode.style.overflow = 'hidden';
-        } catch (error) {
-            // TODO: Handle error.
-            throw error;
-        }
+        });
     }
 
     /**

@@ -147,6 +147,8 @@
 
         <!-- Start GTM Script -->
         <script>
+            var gtm_id = 'GTM-NF7884S';
+            if (window.location.hostname === 'deriv-app.binary.sx') gtm_id = 'GTM-TNX2ZKH';
             (function(w, d, s, l, i) {
                 w[l] = w[l] || [];
                 w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
@@ -156,7 +158,7 @@
                 j.defer = true;
                 j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
                 f.parentNode.insertBefore(j, f);
-            })(window, document, 'script', 'dataLayer', 'GTM-NF7884S');
+            })(window, document, 'script', 'dataLayer', gtm_id);
         </script>
         <!-- End GTM Script -->
 
@@ -167,6 +169,8 @@
             }
         </style>
         <script>
+            var gtm_id = 'GTM-NF7884S';
+            if (window.location.hostname === 'deriv-app.binary.sx') gtm_id = 'GTM-TNX2ZKH';
             (function(a, s, y, n, c, h, i, d, e) {
                 s.className += ' ' + y;
                 h.end = i = function() {
@@ -177,7 +181,7 @@
                     i();
                     h.end = null;
                 }, c);
-            })(window, document.documentElement, 'async-hide', 'dataLayer', 4000, { 'GTM-NF7884S': true });
+            })(window, document.documentElement, 'async-hide', 'dataLayer', 4000, { [gtm_id]: true });
         </script>
         <!-- End GTM Script -->
 
@@ -248,6 +252,16 @@
             ></iframe
         ></noscript>
         <!-- End GTM NoScript -->
+        <!-- Start GTM NoScript of GTM Test Environment -->
+        <noscript
+            ><iframe
+                src="https://www.googletagmanager.com/ns.html?id=GTM-TNX2ZKH"
+                height="0"
+                width="0"
+                style="display: none; visibility: hidden;"
+            ></iframe
+        ></noscript>
+        <!-- End GTM NoScript of GTM Test Environment -->
 
         <!-- TODO: Display shell platform icon and text based on route -->
 

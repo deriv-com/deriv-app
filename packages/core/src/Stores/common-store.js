@@ -189,8 +189,8 @@ export default class CommonStore extends BaseStore {
                 this.app_routing_history.splice(0, route_to_item_idx + 1);
                 // remove once p2p is ready
                 const ui_store = this.root_store.ui;
-                if (route_to_item.pathname === routes.cashier_p2p)
-                    history.push(`${route_to_item.pathname}${ui_store.is_mobile ? '#verification' : '#show_p2p'}`);
+                if (route_to_item.pathname === routes.cashier_p2p && ui_store.is_mobile)
+                    history.push(`${route_to_item.pathname}#verification`);
                 else history.push(route_to_item.pathname);
                 return;
             }

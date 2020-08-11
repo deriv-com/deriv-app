@@ -87,10 +87,10 @@ module.exports = function(env, argv) {
                     exclude: /node_modules/,
                     loader: [
                       '@deriv/shared/src/loaders/react-import-loader.js',
-                      'babel-loader'
+                      'babel-loader',
                     ],
                 },
-                {
+                { // @deriv/bot-skeleton also requires `.xml` import statements to be parsed by raw-loader
                     test: /\.xml$/,
                     exclude: /node_modules/,
                     use: 'raw-loader',

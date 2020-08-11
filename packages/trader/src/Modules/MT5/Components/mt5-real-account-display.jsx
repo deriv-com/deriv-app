@@ -28,7 +28,6 @@ const MT5RealAccountDisplay = ({
     has_maltainvest_account,
     is_fully_authenticated,
     is_pending_authentication,
-    landing_companies,
     onSelectAccount,
     openAccountTransfer,
     openPasswordModal,

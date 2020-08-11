@@ -266,22 +266,6 @@ export const clientNotifications = (ui = {}, client = {}) => {
             ),
             type: 'danger',
         },
-        needs_poi_virtual: {
-            action: {
-                onClick: async () => {
-                    const { switchAccount, first_switchable_real_loginid } = client;
-
-                    await switchAccount(first_switchable_real_loginid);
-                },
-                text: localize('Verify identity'),
-            },
-            key: 'needs_poi_virtual',
-            header: localize('Please Verify your identity'),
-            message: localize(
-                'We couldn’t verify your personal details with our records, to enable deposit, withdrawals and trading, you need to upload proof of your identity.'
-            ),
-            type: 'danger',
-        },
         poa_expired: {
             action: {
                 route: routes.proof_of_address,

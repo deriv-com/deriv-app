@@ -28,8 +28,7 @@ class ProofOfIdentityContainer extends React.Component {
                     })
                     .then((response) => {
                         if (response.error) {
-                            this.setState({ api_error: true, is_loading: false });
-                            resolve();
+                            resolve({ error: response.error });
                             return;
                         }
 
@@ -78,6 +77,8 @@ class ProofOfIdentityContainer extends React.Component {
         this.props.getAccountStatus().then((response) => {
             const { get_account_status } = response;
             this.getOnfidoServiceToken().then((onfido_service_token) => {
+                // TODO: handle error for onfido_service_token.error.code === 'MissingPersonalDetails'
+
                 const { document, identity, needs_verification } = get_account_status.authentication;
                 const has_poa = !(document && document.status === 'none');
                 const needs_poa = needs_verification.length && needs_verification.includes('document');

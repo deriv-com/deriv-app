@@ -38,6 +38,7 @@
             align-items: center;
             justify-content: center;
             padding: 0.8rem;
+            margin-bottom: 0.6rem;
 
             .mobile-widget__item-label {
                 margin-right: 0.4rem;
@@ -47,6 +48,33 @@
             flex: 1 !important;
             flex-direction: column;
             padding: 0.6rem 0.8rem;
+            margin-bottom: 0.6rem;
+
+            .mobile-widget__item-label {
+                color: var(--text-general);
+            }
+        }
+        &-risk-management {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: stretch;
+            margin-bottom: 0.6rem;
+            color: var(--text-general);
+
+            .mobile-widget__item {
+                flex: 1;
+                display: flex;
+                justify-content: space-between;
+            }
+            .mobile-widget__item-label {
+                color: var(--text-general);
+            }
+            .mobile-widget__item-label,
+            .mobile-widget__item-value {
+                font-size: 1.4rem;
+                line-height: 1.8rem;
+            }
         }
     }
     &__wrapper {

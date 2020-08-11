@@ -1,5 +1,5 @@
 import React from 'react';
-import { Div100vhContainer, Modal, RadioGroup, Icon } from '@deriv/components';
+import { Div100vhContainer, Modal, RadioGroup, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
@@ -53,7 +53,7 @@ export default connect(({ client, modules, ui }) => ({
     disableApp: ui.disableApp,
 }))(MultiplierOptionsModal);
 
-const MultiplierOptions = ({ multiplier, multiplier_range_list, onChange, addToast, toggleModal }) => {
+const MultiplierOptions = ({ multiplier, multiplier_range_list, onChange, toggleModal }) => {
     const onChangeMultiplier = e => {
         onChange({
             target: {
@@ -63,20 +63,17 @@ const MultiplierOptions = ({ multiplier, multiplier_range_list, onChange, addToa
         });
         toggleModal();
     };
-    const showMultiplierToast = () => {
-        const text = localize('Your profit and loss are multiplied by this amount.');
-
-        addToast({
-            key: 'multiplier',
-            content: text,
-            type: 'info',
-        });
-    };
 
     return (
         <React.Fragment>
             <div className='trade-params__multiplier-icinfo-wrapper'>
-                <Icon icon='IcInfoOutline' onClick={showMultiplierToast} />
+                <Popover
+                    alignment='top'
+                    icon='info'
+                    id='dt_multiplier-stake__tooltip'
+                    zIndex={9999}
+                    message={localize('Your profit and loss are multiplied by this amount.')}
+                />
             </div>
             <RadioGroup
                 className='trade-params__multiplier-radio-group'

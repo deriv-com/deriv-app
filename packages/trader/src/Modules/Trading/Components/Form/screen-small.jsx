@@ -9,7 +9,7 @@ import {
     hasDurationForCallPutEqual,
     isRiseFallEqual,
 } from 'Stores/Modules/Trading/Helpers/allow-equals';
-import MultiplierLimitOrderInfo from '../Elements/Multiplier/limit-order-info.jsx';
+import RiskManagementInfo from '../Elements/Multiplier/risk-management-info.jsx';
 import MobileWidget from '../Elements/mobile-widget.jsx';
 import ContractType from '../../Containers/contract-type.jsx';
 import { BarrierMobile, LastDigitMobile } from '../../Containers/trade-params-mobile.jsx';
@@ -58,7 +58,7 @@ const CollapsibleTradeParams = ({
             {has_allow_equals && <AllowEqualsMobile collapsible='true' />}
             {is_multiplier && (
                 <div collapsible='true'>
-                    <MultiplierLimitOrderInfo />
+                    <RiskManagementInfo />
                 </div>
             )}
             <div className='purchase-container'>

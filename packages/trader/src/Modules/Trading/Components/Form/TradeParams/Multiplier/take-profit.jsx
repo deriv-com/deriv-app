@@ -63,13 +63,13 @@ TakeProfit.propTypes = {
     validation_errors: PropTypes.object,
 };
 
-export default connect(({ modules, client, ui }) => ({
+export default connect(({ modules, client, ui }, props) => ({
     addToast: ui.addToast,
     is_single_currency: client.is_single_currency,
     currency: modules.trade.currency,
-    has_take_profit: modules.trade.has_take_profit,
-    onChange: modules.trade.onChange,
-    onChangeMultiple: modules.trade.onChangeMultiple,
-    take_profit: modules.trade.take_profit,
-    validation_errors: modules.trade.validation_errors,
+    has_take_profit: props.has_take_profit ?? modules.trade.has_take_profit,
+    onChange: props.onChange ?? modules.trade.onChange,
+    onChangeMultiple: props.onChangeMultiple ?? modules.trade.onChangeMultiple,
+    take_profit: props.take_profit ?? modules.trade.take_profit,
+    validation_errors: props.validation_errors ?? modules.trade.validation_errors,
 }))(TakeProfit);

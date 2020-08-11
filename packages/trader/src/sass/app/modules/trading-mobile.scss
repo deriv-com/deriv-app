@@ -311,7 +311,19 @@
                 text-align: center;
                 color: var(--text-general);
             }
-            &-limit-orders {
+            &-risk-management-dialog {
+                display: grid;
+                grid-template-rows: auto auto auto 1fr;
+
+                &-apply-button {
+                    display: flex;
+                    align-items: flex-end;
+                    margin: 0rem 1.6rem;
+
+                    .dc-btn {
+                        flex: 1;
+                    }
+                }
                 .trade-container__fieldset {
                     padding: 1.6rem;
                     margin-bottom: 0rem;

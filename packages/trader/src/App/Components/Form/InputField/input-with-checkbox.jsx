@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import React from 'react';
-import { Checkbox, Popover, DesktopWrapper, MobileWrapper, Icon } from '@deriv/components';
-import { isMobile, getDecimalPlaces } from '@deriv/shared';
+import { Checkbox, Popover } from '@deriv/components';
+import { isMobile, isDesktop, getDecimalPlaces } from '@deriv/shared';
 
 import InputField from './input-field.jsx';
 
@@ -110,17 +110,6 @@ const InputWithCheckbox = ({
         />
     );
 
-    const showToast = () => {
-        if (typeof addToast === 'function') {
-            addToast({
-                key: name,
-                content: tooltip_label,
-                type: 'info',
-                is_bottom: true,
-            });
-        }
-    };
-
     const showErrorToast = () => {
         if (typeof addToast === 'function') {
             addToast({
@@ -149,21 +138,15 @@ const InputWithCheckbox = ({
                     <React.Fragment>{checkbox}</React.Fragment>
                 )}
                 {tooltip_label && (
-                    <React.Fragment>
-                        <DesktopWrapper>
-                            <Popover
-                                alignment={tooltip_alignment || 'left'}
-                                icon='info'
-                                id={`dt_${name}-checkbox__tooltip`}
-                                message={tooltip_label}
-                                margin={tooltip_alignment === 'bottom' ? 0 : 210}
-                                relative_render
-                            />
-                        </DesktopWrapper>
-                        <MobileWrapper>
-                            <Icon icon='IcInfoOutline' onClick={showToast} />
-                        </MobileWrapper>
-                    </React.Fragment>
+                    <Popover
+                        alignment={tooltip_alignment || 'left'}
+                        icon='info'
+                        id={`dt_${name}-checkbox__tooltip`}
+                        message={tooltip_label}
+                        margin={isMobile() ? 0 : 210}
+                        zIndex={9999}
+                        {...(isDesktop() ? { relative_render: true } : {})}
+                    />
                 )}
             </div>
             {!is_input_hidden && input}

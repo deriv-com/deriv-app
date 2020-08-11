@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { localize } from '@deriv/translations';
+import { isMobile } from '@deriv/shared';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import InputWithCheckbox from 'App/Components/Form/InputField/input-with-checkbox.jsx';
 import { connect } from 'Stores/connect';
@@ -66,15 +67,15 @@ StopLoss.propTypes = {
     validation_errors: PropTypes.object,
 };
 
-export default connect(({ modules, client, ui }) => ({
+export default connect(({ modules, client, ui }, props) => ({
     addToast: ui.addToast,
     is_single_currency: client.is_single_currency,
     amount: modules.trade.amount,
     currency: modules.trade.currency,
-    has_cancellation: modules.trade.has_cancellation,
-    has_stop_loss: modules.trade.has_stop_loss,
-    onChange: modules.trade.onChange,
-    onChangeMultiple: modules.trade.onChangeMultiple,
-    stop_loss: modules.trade.stop_loss,
-    validation_errors: modules.trade.validation_errors,
+    has_cancellation: props.has_cancellation ?? modules.trade.has_cancellation,
+    has_stop_loss: props.has_stop_loss ?? modules.trade.has_stop_loss,
+    onChange: props.onChange ?? modules.trade.onChange,
+    onChangeMultiple: props.onChangeMultiple ?? modules.trade.onChangeMultiple,
+    stop_loss: props.stop_loss ?? modules.trade.stop_loss,
+    validation_errors: props.validation_errors ?? modules.trade.validation_errors,
 }))(StopLoss);

@@ -1,5 +1,5 @@
 import { action, extendObservable, observable, toJS } from 'mobx';
-import { isMobile, isEqualObject } from '@deriv/shared';
+import { isEqualObject } from '@deriv/shared';
 import { WS } from 'Services/ws-methods';
 import { createChartMarkers } from './Helpers/chart-markers';
 import { getDigitInfo, isDigitContract } from './Helpers/digits';

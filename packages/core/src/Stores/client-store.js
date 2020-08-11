@@ -1475,7 +1475,9 @@ export default class ClientStore extends BaseStore {
                     event: 'virtual_signup',
                 });
 
-                this.root_store.ui.showAccountTypesModalForEuropean();
+                if (this.root_store.ui.is_eu_enabled) {
+                    this.root_store.ui.showAccountTypesModalForEuropean();
+                }
             }
         });
     }

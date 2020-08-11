@@ -397,11 +397,11 @@ export default class ClientStore extends BaseStore {
     get should_have_real_account() {
         // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
         return (
-            this.root_store.ui &&
-            this.root_store.ui.is_eu_enabled &&
             this.standpoint.iom &&
             this.is_uk &&
-            !this.has_any_real_account
+            !this.has_any_real_account &&
+            this.root_store.ui &&
+            this.root_store.ui.is_eu_enabled
         );
     }
 

@@ -157,7 +157,7 @@ class CurrencySelector extends React.Component {
                                         'currency-selector__container--no-top-margin':
                                             !has_currency && has_real_account && isMobile(),
                                     })}
-                                    height_offset={!has_currency && has_real_account ? '129px' : '199px'}
+                                    height_offset={!has_currency && has_real_account ? '109px' : '179px'}
                                     is_disabled={isDesktop()}
                                 >
                                     <MobileWrapper>
@@ -171,7 +171,7 @@ class CurrencySelector extends React.Component {
                                             </div>
                                         )}
                                     </MobileWrapper>
-                                    <ThemedScrollbars is_bypassed={isMobile()} height={height}>
+                                    <ThemedScrollbars is_bypassed={isMobile()} height={`${height - 77}px`}>
                                         <RadioButtonGroup
                                             id='currency'
                                             className='currency-selector__radio-group'
@@ -216,10 +216,11 @@ class CurrencySelector extends React.Component {
                                         )}
                                     </ThemedScrollbars>
                                 </Div100vhContainer>
-                                <Modal.Footer has_separator>
+                                <Modal.Footer is_bypassed={isMobile()}>
                                     <FormSubmitButton
                                         is_disabled={isSubmitting || !values.currency}
                                         is_center={!has_currency}
+                                        is_absolute={isMobile()}
                                         has_cancel
                                         onCancel={this.props.onCancel}
                                         cancel_label={localize('Cancel')}

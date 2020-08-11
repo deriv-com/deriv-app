@@ -188,7 +188,7 @@ Blockly.BlockSvg.prototype.setErrorHighlighted = function(
 };
 
 // Highlight the block that is being executed
-Blockly.BlockSvg.prototype.highlightExecutedBlock = function(block) {
+Blockly.BlockSvg.prototype.highlightExecutedBlock = function() {
     const highlight_block_class = 'block--execution-highlighted';
 
     if (!Blockly.utils.hasClass(this.svgGroup_, highlight_block_class)) {

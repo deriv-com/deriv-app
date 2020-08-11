@@ -19,7 +19,7 @@
         bottom: 0;
         position: absolute;
         left: 0;
-        padding: 2.4em;
+        padding: 2.4rem;
         background-color: var(--general-main-1);
         border-top: 1px solid var(--general-section-1);
     }
@@ -29,7 +29,7 @@
         height: 100%;
 
         & .btn {
-            min-width: 9em;
+            min-width: 9rem;
         }
     }
     &--error {
@@ -38,17 +38,19 @@
         color: var(--brand-red-coral) !important;
     }
     @include mobile {
-        background-color: var(--general-section-2);
-        top: unset;
-        bottom: -0.4rem;
-        left: 0;
-        position: absolute;
-        padding: 1.6rem;
-        border-top: 2px solid var(--general-disabled);
+        &--absolute {
+            background-color: var(--general-section-2);
+            top: unset;
+            bottom: -0.4rem;
+            left: 0;
+            position: absolute;
+            padding: 1.6rem;
+            border-top: 2px solid var(--general-disabled);
 
-        .dc-btn {
-            height: 40px;
-            width: 100%;
+            .dc-btn {
+                height: 40px;
+                width: 100%;
+            }
         }
     }
 }

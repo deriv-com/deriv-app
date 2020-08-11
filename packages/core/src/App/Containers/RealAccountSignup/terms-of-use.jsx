@@ -73,6 +73,7 @@ class TermsOfUse extends React.Component {
                                         is_disabled={isSubmitting || !values.agreed_tos || !values.agreed_tnc}
                                         label={localize('Add account')}
                                         has_cancel={true}
+                                        is_absolute={isMobile()}
                                         onCancel={this.props.onCancel}
                                         cancel_label={localize('Previous')}
                                         form_error={this.props.form_error}

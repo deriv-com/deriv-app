@@ -252,6 +252,12 @@
                                 color: var(--text-disabled);
                             }
                         }
+                        .dc-btn__text {
+                            /* -webkit-touch-callout only is supported on iOS webkit engine, thus it should apply iOS only styles */
+                            @supports (-webkit-touch-callout: none) {
+                                font-size: 3rem;
+                            }
+                        }
                     }
                 }
                 /* iPhone SE screen height fixes due to UI space restrictions */

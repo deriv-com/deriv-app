@@ -82,8 +82,9 @@ export default class DataCollectionStore {
                 return {
                     body: content,
                     headers: {
-                        Accept: window.location.hostname, // === referrer (no-cors is restrictive).
-                        'Content-Type': 'text/plain',
+                        'Content-Encoding': 'gzip',
+                        'Content-Type': 'application/xml',
+                        Referer: window.location.hostname,
                     },
                 };
             };
@@ -91,7 +92,7 @@ export default class DataCollectionStore {
             fetch(`${this.endpoint}/${this.run_id}/${transaction_id}/${this.run_start}/${this.strategy_hash}`, {
                 ...(this.should_post_xml ? getPayload() : {}),
                 method: 'POST',
-                mode: 'no-cors',
+                mode: 'cors',
             })
                 .then(() => {
                     this.should_post_xml = false;

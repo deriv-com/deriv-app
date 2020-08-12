@@ -392,7 +392,7 @@ class PersonalDetails extends React.Component {
                                                                         }}
                                                                     >
                                                                         <Popover
-                                                                            alignment='right'
+                                                                            alignment={isDesktop() ? 'right' : 'left'}
                                                                             icon='info'
                                                                             message={localize(
                                                                                 'The country in which you meet the criteria for paying taxes. Usually the country in which you physically reside.'
@@ -426,7 +426,7 @@ class PersonalDetails extends React.Component {
                                                                 }}
                                                             >
                                                                 <Popover
-                                                                    alignment='right'
+                                                                    alignment={isDesktop() ? 'right' : 'left'}
                                                                     icon='info'
                                                                     is_open={this.state.is_tin_popover_open}
                                                                     message={

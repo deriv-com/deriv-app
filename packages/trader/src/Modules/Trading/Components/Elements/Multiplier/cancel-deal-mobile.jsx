@@ -90,6 +90,7 @@ const CancelDeal = ({
                         icon='info'
                         id='dt_multiplier-stake__tooltip'
                         zIndex={9999}
+                        disable_message_icon={true}
                         message={localize(
                             'Allows you to cancel your trade within a chosen time frame should the market move against your favour.'
                         )}

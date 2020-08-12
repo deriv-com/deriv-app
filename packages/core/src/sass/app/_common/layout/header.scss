@@ -236,13 +236,17 @@
     }
 }
 
+/* postcss-bem-linter: ignore */
 .dc-mobile-drawer {
-    .header__counter {
-        position: relative;
-        top: 0;
-        right: 0;
-        display: flex;
-        align-self: center;
-        margin-left: 0.9rem;
+    @include mobile {
+        /* postcss-bem-linter: ignore */
+        .header__counter {
+            position: relative;
+            top: 0;
+            right: 0;
+            display: flex;
+            align-self: center;
+            margin-left: 0.9rem;
+        }
     }
 }

@@ -11,6 +11,7 @@ import {
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { getSelectedRoute, isCryptocurrency, isMobile, isTouchDevice, routes } from '@deriv/shared';
+import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 import 'Sass/app/modules/cashier.scss';
 

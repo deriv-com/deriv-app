@@ -21,20 +21,24 @@ import { MT5RealAccountDisplay } from '../Components/mt5-real-account-display.js
 import { getBrokerName, getServerName, getPlatformMt5DownloadLink } from '../Helpers/constants';
 import 'Sass/app/modules/mt5/mt5-dashboard.scss';
 
-const hasMoreThanOne = ({ mt_financial_company, mt_gaming_company }) =>
-    [
-        ...(mt_financial_company?.financial ? [true] : []),
-        ...(mt_financial_company?.financial_stp ? [true] : []),
-        ...(mt_gaming_company?.financial ? [true] : []),
-    ].length > 1;
+const hasMoreThanOne = ({ mt_financial_company, mt_gaming_company }, is_logged_in) => {
+    return (
+        !is_logged_in ||
+        [
+            ...(mt_financial_company?.financial ? [true] : []),
+            ...(mt_financial_company?.financial_stp ? [true] : []),
+            ...(mt_gaming_company?.financial ? [true] : []),
+        ].length > 1
+    );
+};
 
-const TabOrFlex = ({ landing_companies, children, is_loading, is_eu, loading_component, ...props }) => {
+const TabOrFlex = ({ landing_companies, children, is_loading, is_logged_in, is_eu, loading_component, ...props }) => {
     const LoadingComponent = loading_component;
     if (is_loading) {
         return <LoadingComponent />;
     }
 
-    const should_show_tab = is_eu ? hasMoreThanOne(landing_companies) : true;
+    const should_show_tab = is_eu ? hasMoreThanOne(landing_companies, is_logged_in) : true;
 
     if (should_show_tab) {
         return <Tabs {...props}>{children}</Tabs>;
@@ -158,9 +162,9 @@ class MT5Dashboard extends React.Component {
                                 selected_account_type={this.state.password_manager.selected_account_type}
                                 toggleModal={this.togglePasswordManagerModal}
                             />
-                            {!this.props.is_eu && !hasMoreThanOne(this.props.landing_companies) && is_logged_in && (
-                                <MissingRealAccount onClickSignup={beginRealSignupForMt5} />
-                            )}
+                            {!this.props.is_eu &&
+                                !hasMoreThanOne(this.props.landing_companies, is_logged_in) &&
+                                is_logged_in && <MissingRealAccount onClickSignup={beginRealSignupForMt5} />}
                             <TabOrFlex
                                 landing_companies={this.props.landing_companies}
                                 active_index={this.state.active_index}
@@ -168,12 +172,13 @@ class MT5Dashboard extends React.Component {
                                 top
                                 center
                                 is_loading={is_loading}
+                                is_logged_in={is_logged_in}
                                 loading_component={LoadingMT5RealAccountDisplay}
                             >
                                 <div label={localize('Real account')}>
                                     <React.Fragment>
                                         {!this.props.is_eu &&
-                                            hasMoreThanOne(this.props.landing_companies) &&
+                                            hasMoreThanOne(this.props.landing_companies, is_logged_in) &&
                                             !has_real_account && (
                                                 <MissingRealAccount onClickSignup={beginRealSignupForMt5} />
                                             )}

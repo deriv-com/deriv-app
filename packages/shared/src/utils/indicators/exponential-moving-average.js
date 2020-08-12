@@ -6,12 +6,12 @@ import { takeField, mean } from './math';
  * {
  *  periods: number,
  *  field?: 'open' | 'high' | 'low' | 'close',
- *  pip_size: number,
+ *  pipSize: number,
  * }
  * @param {Number} init_val
  */
 export const exponentialMovingAverage = (data, config, init_val) => {
-    const { periods, field, pip_size = 2 } = config;
+    const { periods, field, pipSize = 2 } = config;
 
     const weighting_multiplier = 2 / (periods + 1);
 
@@ -30,7 +30,7 @@ export const exponentialMovingAverage = (data, config, init_val) => {
     return +vals
         .slice(periods)
         .reduce((prev, e) => (e - prev) * weighting_multiplier + prev, mean_val)
-        .toFixed(pip_size);
+        .toFixed(pipSize);
 };
 
 /**
@@ -39,7 +39,7 @@ export const exponentialMovingAverage = (data, config, init_val) => {
  * {
  *  periods: number,
  *  field?: 'open' | 'high' | 'low' | 'close',
- *  pip_size: number,
+ *  pipSize: number,
  * }
  */
 export const exponentialMovingAverageArray = (data, config) => {

@@ -41,7 +41,7 @@ const calcSecondAvgDiff = (vals, comp, periods, init_avg) => {
  * {
  *  periods: number,
  *  field?: 'open' | 'high' | 'low' | 'close',
- *  pip_size: number,
+ *  pipSize: number,
  * }
  * @param {any} memoized_diff
  */
@@ -98,13 +98,13 @@ export const relativeStrengthIndex = (data, config, memoized_diff) => {
  * {
  *  periods: number,
  *  field?: 'open' | 'high' | 'low' | 'close',
- *  pip_size: number,
+ *  pipSize: number,
  * }
  */
 export const relativeStrengthIndexArray = (data, config) => {
-    const { periods, pip_size = 2 } = config;
+    const { periods, pipSize = 2 } = config;
     const memoized_diff = {};
     return sequence(data.length - periods).map(
-        (x, i) => +relativeStrengthIndex(data.slice(0, i + periods + 1), config, memoized_diff).toFixed(pip_size)
+        (x, i) => +relativeStrengthIndex(data.slice(0, i + periods + 1), config, memoized_diff).toFixed(pipSize)
     );
 };

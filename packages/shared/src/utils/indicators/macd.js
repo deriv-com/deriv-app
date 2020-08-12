@@ -12,15 +12,16 @@ const paddingLeft = (data, length) => {
  * @param {Array} data
  * @param {Object} config of type
  * {
- *  fast_ema_period: number,
- *  slow_ema_period: number,
- *  signal_ema_period: number
+ *  fastEmaPeriod: number,
+ *  slowEmaPeriod: number,
+ *  signalEmaPeriod: number
  *  field?: 'open' | 'high' | 'low' | 'close',
- *  pip_size: number,
+ *  pipSize: number,
  * }
  */
 export const macdArray = (data, config) => {
-    const { field, fast_ema_period = 12, slow_ema_period = 26, signal_ema_period = 9, pip_size = 2 } = config;
+    console.log(config);
+    const { field, fastEmaPeriod = 12, slowEmaPeriod = 26, signalEmaPeriod = 9, pipSize = 2 } = config;
 
     const vals = takeField(data, field);
 
@@ -29,31 +30,31 @@ export const macdArray = (data, config) => {
     const fast_ema_array = paddingLeft(
         exponentialMovingAverageArray(
             vals,
-            { periods: fast_ema_period, pip_size: 20, field }
-            // -------------------------- ^ set pip_size to 20 to prevent rounding
+            { periods: fastEmaPeriod, pipSize: 20, field }
+            // -------------------------- ^ set pipSize to 20 to prevent rounding
         ),
         length
     );
     const slow_ema_array = paddingLeft(
-        exponentialMovingAverageArray(vals, { periods: slow_ema_period, pip_size: 20, field }),
+        exponentialMovingAverageArray(vals, { periods: slowEmaPeriod, pipSize: 20, field }),
         length
     );
 
     const macd_calc_array = paddingLeft(
-        slow_ema_array.map((x, i) => +(fast_ema_array[i] - x).toFixed(pip_size)),
+        slow_ema_array.map((x, i) => +(fast_ema_array[i] - x).toFixed(pipSize)),
         length
     );
 
     const signal_ema_array = paddingLeft(
-        exponentialMovingAverageArray(macd_calc_array.slice(slow_ema_period - 1), {
-            periods: signal_ema_period,
-            pip_size: 20,
+        exponentialMovingAverageArray(macd_calc_array.slice(slowEmaPeriod - 1), {
+            periods: signalEmaPeriod,
+            pipSize: 20,
             field,
         }),
         length
     );
 
     return macd_calc_array
-        .map((x, i) => [+(x - signal_ema_array[i]).toFixed(pip_size), x, +signal_ema_array[i].toFixed(pip_size)])
-        .slice(slow_ema_period + signal_ema_period - 2);
+        .map((x, i) => [+(x - signal_ema_array[i]).toFixed(pipSize), x, +signal_ema_array[i].toFixed(pipSize)])
+        .slice(slowEmaPeriod + signalEmaPeriod - 2);
 };

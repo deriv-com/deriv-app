@@ -29,7 +29,7 @@ class Account extends React.Component {
                     this.props.is_high_risk ||
                     this.props.is_financial_information_incomplete ||
                     (this.props.is_financial_account && this.props.is_trading_experience_incomplete);
-                const allow_document_upload = status.includes('allow_document_upload');
+                const allow_document_upload = status?.includes('allow_document_upload');
 
                 if (this.is_mounted)
                     this.setState({

@@ -72,14 +72,14 @@ const AppContents = ({
 
     // handle accept/decline cookies
     const onAccept = () => {
-        tracking_status_cookie.set(TRACKING_STATUS_KEY, 'accepted', { sameSite: 'none' });
+        tracking_status_cookie.set(TRACKING_STATUS_KEY, 'accepted', { sameSite: 'none', secure: true });
         pushDataLayer({ event: 'allow_tracking' });
         setShowCookieBanner(false);
         setIsGtmTracking(true);
     };
 
     const onDecline = () => {
-        tracking_status_cookie.set(TRACKING_STATUS_KEY, 'declined', { sameSite: 'none' });
+        tracking_status_cookie.set(TRACKING_STATUS_KEY, 'declined', { sameSite: 'none', secure: true });
         setShowCookieBanner(false);
     };
 

@@ -62,8 +62,6 @@ const Orders = ({ chat_info, navigate, params }) => {
     };
 
     React.useEffect(() => {
-        if (!is_mounted.current) return;
-        console.log(order_id);
         if (order_info_subscription.current) {
             order_info_subscription.current.unsubscribe();
         }

@@ -242,15 +242,13 @@ export default class QuickStrategyStore {
 
         load({ block_string: Blockly.Xml.domToText(strategy_dom), file_name, workspace, from: save_types.UNSAVED });
 
-        if (button === 'run') {
-            await workspace.waitForBlockEvent(workspace.getTradeDefinitionBlock().id, Blockly.Events.BLOCK_CREATE);
-        }
         // Close modal if open for edit + run.
         if (this.is_strategy_modal_open) {
             this.toggleStrategyModal();
         }
-        // Only run if user clicked run.
+
         if (button === 'run') {
+            await workspace.waitForBlockEvent(workspace.getTradeDefinitionBlock().id, Blockly.Events.BLOCK_CREATE);
             this.root_store.run_panel.onRunButtonClick();
         }
 

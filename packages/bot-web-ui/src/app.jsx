@@ -88,6 +88,19 @@ class App extends React.Component {
         this.root_store.main_content.getCachedActiveTab();
     }
 
+    componentDidUpdate() {
+        const { client, common } = this.root_store.core;
+        if (client.landing_company_shortcode === 'maltainvest') {
+            showDigitalOptionsUnavailableError(common.showError, {
+                title: localize(
+                    'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a DMT5 Financial.'
+                ),
+                text: localize('DBot is not available for this account'),
+                link: localize('Go to DMT5 dashboard'),
+            });
+        }
+    }
+
     componentWillUnmount() {
         if (Blockly.derivWorkspace) {
             Blockly.derivWorkspace.dispose();

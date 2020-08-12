@@ -59,7 +59,7 @@ class SubMenu extends React.PureComponent {
 SubMenu.propTypes = {
     children: PropTypes.node,
     has_subheader: PropTypes.bool,
-    submenu_counter: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+    submenu_counter: PropTypes.element,
     submenu_icon: PropTypes.string,
     submenu_suffix_icon: PropTypes.string,
     submenu_title: PropTypes.string,

@@ -67,7 +67,7 @@ const OrderRowComponent = React.memo(({ data, onOpenDetails, style, is_active })
             <Table.Row
                 className={classNames('orders__table-row orders__table-grid', {
                     'orders__table-grid--active': is_active,
-                    'orders__table-row--attention': !LocalStorage.hasReadNotification(id),
+                    'orders__table-row--attention': !LocalStorage?.hasReadNotification?.(id),
                 })}
             >
                 <Table.Cell>{is_buyer ? localize('Buy') : localize('Sell')}</Table.Cell>

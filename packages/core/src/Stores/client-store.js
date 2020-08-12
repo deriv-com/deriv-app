@@ -1229,6 +1229,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setLogout(is_logged_out) {
         this.has_logged_out = is_logged_out;
+        if (this.root_store.common.has_error) this.root_store.common.setError(false, null);
     }
 
     /* eslint-disable */

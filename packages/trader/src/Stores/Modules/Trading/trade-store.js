@@ -23,6 +23,7 @@ import { isBarrierSupported, removeBarrier } from '../SmartChart/Helpers/barrier
 import BaseStore from '../../base-store';
 
 const store_name = 'trade_store';
+const fallback_symbol = 'frxAUDJPY';
 const g_subscribers_map = {}; // blame amin.m
 
 export default class TradeStore extends BaseStore {
@@ -299,17 +300,10 @@ export default class TradeStore extends BaseStore {
         await WS.wait('authorize');
         await when(() => !this.root_store.client.is_populating_account_list);
         await this.setActiveSymbols();
-        runInAction(async () => {
-            await WS.storage.contractsFor(this.symbol).then(async r => {
-                if (r.error && r.error.code === 'InvalidSymbol') {
-                    await this.resetRefresh();
-                    await this.setActiveSymbols();
-                    await pickDefaultSymbol();
-                    runInAction(() => (this.should_refresh_active_symbols = true));
-                }
-            });
-            await this.setDefaultSymbol();
-            await this.setContractTypes();
+        // runInAction(async () => {
+        const r = await WS.storage.contractsFor(this.symbol);
+        if (r.error?.code === 'InvalidSymbol') {
+            this.updateSymbol(fallback_symbol);
             await this.processNewValuesAsync(
                 {
                     is_market_closed: isMarketClosed(this.active_symbols, this.symbol),
@@ -318,7 +312,19 @@ export default class TradeStore extends BaseStore {
                 null,
                 false
             );
-        });
+            return;
+        }
+        await this.setDefaultSymbol();
+        await this.setContractTypes();
+        await this.processNewValuesAsync(
+            {
+                is_market_closed: isMarketClosed(this.active_symbols, this.symbol),
+            },
+            true,
+            null,
+            false
+        );
+        // });
     }
 
     @action.bound

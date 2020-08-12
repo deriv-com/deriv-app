@@ -26,7 +26,6 @@ const MultiplierOptionsModal = ({ is_open, enableApp, disableApp, toggleModal })
                 className='trade-params'
                 enableApp={enableApp}
                 is_open={is_open}
-                is_vertical_centered
                 is_title_centered
                 disableApp={disableApp}
                 toggleModal={toggleModal}

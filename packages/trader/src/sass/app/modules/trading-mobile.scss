@@ -255,7 +255,9 @@
                         .dc-btn__text {
                             /* -webkit-touch-callout only is supported on iOS webkit engine, thus it should apply iOS only styles */
                             @supports (-webkit-touch-callout: none) {
-                                font-size: 3rem;
+                                @media only screen and (min-width: 360px) {
+                                    font-size: 3rem;
+                                }
                             }
                         }
                     }
@@ -331,13 +333,16 @@
                     }
                 }
                 .trade-container__fieldset {
-                    padding: 1.6rem;
+                    padding: 1rem 1.6rem;
                     margin-bottom: 0rem;
                     border-bottom: 1px solid var(--general-main-1);
                     border-radius: 0;
 
                     .input-field {
                         z-index: 0;
+                    }
+                    .dc-popover {
+                        padding: 0.6rem 1rem;
                     }
                 }
                 .dc-checkbox__box {
@@ -350,7 +355,11 @@
             &-icinfo-wrapper {
                 display: flex;
                 justify-content: flex-end;
-                padding: 1.6rem 3rem 0rem;
+                padding: 0.6rem 2rem 0rem;
+
+                .dc-popover {
+                    padding: 0.5rem 1rem;
+                }
             }
             &-deal-cancellation-dialog {
                 .dc-checkbox {

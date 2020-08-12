@@ -21,11 +21,12 @@ export default class P2pStore extends BaseStore {
         );
     }
 
+    sendbird_api;
+
     @observable unread_notification_count = 0;
     @observable is_advertiser = false;
     @observable is_visible = false;
 
-    @action.bound
     async initSendbird() {
         const { client } = this.root_store;
 
@@ -76,7 +77,6 @@ export default class P2pStore extends BaseStore {
         return true;
     }
 
-    @action.bound
     async disconnectSendbird() {
         if (this.sendbird_api) {
             this.sendbird_api.disconnect();

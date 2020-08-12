@@ -37,6 +37,7 @@ class App extends React.Component {
 
         this.ws_subscriptions = {};
         this.list_item_limit = 20;
+        this.is_active_tab = true;
         this.state = {
             active_index: 0,
             order_offset: 0,
@@ -299,6 +300,7 @@ class App extends React.Component {
     };
 
     changeOrderToggle = value => {
+        this.is_active_tab = value === 'active';
         this.setState({ order_table_type: value });
     };
 
@@ -348,6 +350,7 @@ class App extends React.Component {
                     createAdvertiser: this.createAdvertiser.bind(this),
                     currency,
                     email_domain: getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
+                    is_active_tab: this.is_active_tab,
                     is_advertiser: this.state.is_advertiser,
                     is_listed: this.state.is_listed,
                     is_mobile,

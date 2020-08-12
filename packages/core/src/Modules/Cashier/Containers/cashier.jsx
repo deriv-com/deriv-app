@@ -19,9 +19,10 @@ const el_landscape_blocker = document.getElementById('landscape_blocker');
 class Cashier extends React.Component {
     state = { device_height: window.innerHeight, is_p2p_restricted: true };
 
-    componentDidMount() {
+    async componentDidMount() {
         this.props.toggleCashier();
         // we still need to populate the tabs shown on cashier
+        await WS.wait('authorize');
         this.props.onMount();
         this.props.setAccountSwitchListener();
 

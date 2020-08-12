@@ -20,7 +20,6 @@ const paddingLeft = (data, length) => {
  * }
  */
 export const macdArray = (data, config) => {
-    console.log(config);
     const { field, fastEmaPeriod = 12, slowEmaPeriod = 26, signalEmaPeriod = 9, pipSize = 2 } = config;
 
     const vals = takeField(data, field);

@@ -26,6 +26,7 @@ const OrderTable = ({ showDetails }) => {
         },
     ];
 
+    const is_active_tab = order_table_type === orderToggleIndex.ACTIVE;
     return (
         <>
             <div className='orders__header'>
@@ -39,7 +40,7 @@ const OrderTable = ({ showDetails }) => {
                     has_rounded_button
                 />
             </div>
-            <OrderTableContent showDetails={showDetails} is_active={order_table_type === orderToggleIndex.ACTIVE} />
+            <OrderTableContent showDetails={showDetails} is_active={is_active_tab} />
         </>
     );
 };

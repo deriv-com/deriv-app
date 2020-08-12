@@ -59,7 +59,7 @@ const LiveChat = ({
                 <>
                     {is_mobile_drawer ? (
                         <div
-                            className='livechat'
+                            className='livechat gtm-deriv-livechat'
                             onClick={() => {
                                 window.LC_API.open_chat_window();
                             }}
@@ -73,11 +73,10 @@ const LiveChat = ({
                             classNameBubble='help-centre__tooltip'
                             alignment='top'
                             message={localize('Live chat')}
-                            id='gtm-deriv-livechat'
                         >
                             <Icon
                                 icon='IcLiveChat'
-                                className='footer__icon'
+                                className='footer__icon gtm-deriv-livechat'
                                 onClick={() => {
                                     window.LC_API.open_chat_window();
                                 }}

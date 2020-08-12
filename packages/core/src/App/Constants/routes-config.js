@@ -1,11 +1,11 @@
 import React from 'react';
 import { Redirect as RouterRedirect } from 'react-router-dom';
 import { getUrlBase, routes } from '@deriv/shared';
-
 import { localize } from '@deriv/translations';
 import { makeLazyLoader } from '_common/lazy-load';
 import { Redirect } from 'App/Containers/Redirect';
 import Endpoint from 'Modules/Endpoint';
+import CashierNotifications from 'Modules/Cashier/Containers/cashier-notifications.jsx';
 
 // Error Routes
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
@@ -190,6 +190,7 @@ const initRoutesConfig = () => [
     { path: routes.endpoint, component: Endpoint, title: 'Endpoint' }, // doesn't need localization as it's for internal use
     { path: routes.redirect, component: Redirect, title: localize('Redirect') },
     {
+        counter: <CashierNotifications />,
         path: routes.cashier,
         component: lazyLoadCashierComponent('Cashier'),
         is_modal: true,
@@ -229,6 +230,7 @@ const initRoutesConfig = () => [
                 icon_component: 'IcAccountTransfer',
             },
             {
+                counter: <CashierNotifications />,
                 path: routes.cashier_p2p,
                 component: lazyLoadCashierComponent('P2PCashier'),
                 title: localize('DP2P'),

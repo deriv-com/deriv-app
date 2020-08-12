@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import React from 'react';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch } from '@deriv/components';
 import { routes } from '@deriv/shared';
-
 import { localize } from '@deriv/translations';
 import { WS } from 'Services';
 import { NetworkStatus } from 'App/Components/Layout/Footer';
@@ -11,7 +10,7 @@ import { BinaryLink } from 'App/Components/Routes';
 import getRoutesConfig from 'App/Constants/routes-config';
 import LiveChat from '../../Elements/live-chat.jsx';
 
-const MenuLink = ({ link_to, icon, is_disabled, suffix_icon, text, onClickLink }) => (
+const MenuLink = ({ counter, link_to, icon, is_disabled, suffix_icon, text, onClickLink }) => (
     <React.Fragment>
         {!link_to ? (
             <div
@@ -21,6 +20,7 @@ const MenuLink = ({ link_to, icon, is_disabled, suffix_icon, text, onClickLink }
             >
                 <Icon className='header__menu-mobile-link-icon' icon={icon} />
                 <span className='header__menu-mobile-link-text'>{text}</span>
+                {counter && <span className='header__menu-mobile-link-counter'>{counter}</span>}
                 {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
             </div>
         ) : (
@@ -34,6 +34,7 @@ const MenuLink = ({ link_to, icon, is_disabled, suffix_icon, text, onClickLink }
             >
                 <Icon className='header__menu-mobile-link-icon' icon={icon} />
                 <span className='header__menu-mobile-link-text'>{text}</span>
+                {counter && <span className='header__menu-mobile-link-counter'>{counter}</span>}
                 {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
             </BinaryLink>
         )}
@@ -101,6 +102,7 @@ class ToggleMenuDrawer extends React.Component {
             return (
                 <MobileDrawer.Item key={route_config.title}>
                     <MenuLink
+                        counter={route_config.counter}
                         link_to={route_config.path}
                         icon={route_config.icon_component}
                         text={route_config.title}
@@ -115,6 +117,7 @@ class ToggleMenuDrawer extends React.Component {
             <MobileDrawer.SubMenu
                 key={route_config.title}
                 has_subheader
+                submenu_counter={route_config.counter}
                 submenu_icon={route_config.icon_component}
                 submenu_title={route_config.title}
                 submenu_suffix_icon='IcChevronRight'
@@ -132,6 +135,7 @@ class ToggleMenuDrawer extends React.Component {
                             return (
                                 <MobileDrawer.Item key={route.title}>
                                     <MenuLink
+                                        counter={route.counter}
                                         link_to={route.path}
                                         icon={route.icon_component}
                                         text={route.title}
@@ -151,6 +155,7 @@ class ToggleMenuDrawer extends React.Component {
                         >
                             {route.subroutes.map(subroute => (
                                 <MenuLink
+                                    counter={subroute.counter}
                                     key={subroute.title}
                                     is_disabled={
                                         (!needs_verification &&

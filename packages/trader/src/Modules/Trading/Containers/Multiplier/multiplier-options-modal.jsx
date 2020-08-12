@@ -71,7 +71,9 @@ const MultiplierOptions = ({ multiplier, multiplier_range_list, onChange, toggle
                     icon='info'
                     id='dt_multiplier-stake__tooltip'
                     zIndex={9999}
-                    message={localize('Your profit and loss are multiplied by this amount.')}
+                    message={localize(
+                        'Your profit is the percentage change in market price times your stake and the multiplier chosen here.'
+                    )}
                 />
             </div>
             <RadioGroup

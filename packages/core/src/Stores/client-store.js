@@ -119,10 +119,11 @@ export default class ClientStore extends BaseStore {
                 this.account_settings,
             ],
             () => {
+                const domain = window.location.hostname.includes('deriv.com') ? 'deriv.com' : 'binary.sx';
                 if (this.is_logged_in) {
                     const { loginid, email, landing_company_shortcode, currency, residence, account_settings } = this;
                     const { first_name, last_name } = account_settings;
-                    const domain = window.location.hostname.includes('deriv.com') ? 'deriv.com' : 'binary.sx';
+
                     const client_information = {
                         loginid,
                         email,

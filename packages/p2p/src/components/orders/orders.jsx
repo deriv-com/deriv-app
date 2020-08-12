@@ -5,32 +5,49 @@ import { localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import OrderInfo from './order-info';
+import { subscribeWS } from '../../utils/websocket';
 import OrderDetails from './order-details/order-details.jsx';
 import OrderTable from './order-table/order-table.jsx';
 import './orders.scss';
 
-const Orders = ({ params, navigate, chat_info }) => {
-    const {
-        getLocalStorageSettingsForLoginId,
-        orders,
-        order_id,
-        setOrderId,
-        updateP2pNotifications,
-    } = React.useContext(Dp2pContext);
+const Orders = ({ chat_info, navigate, params }) => {
+    const { getLocalStorageSettingsForLoginId, order_id, setOrderId, updateP2pNotifications } = React.useContext(
+        Dp2pContext
+    );
     const [order_details, setDetails] = React.useState(null);
     const [nav, setNav] = React.useState(params?.nav);
     const is_mounted = React.useRef(false);
+    const order_info_subscription = React.useRef(null);
     const hideDetails = () => {
         if (nav) {
             navigate(nav.location);
         }
+
         setDetails(null);
         setOrderId(null);
     };
 
+    const getOrderDetails = order_id => {
+        order_info_subscription.current = subscribeWS(
+            {
+                p2p_order_info: 1,
+                id: order_id,
+                subscribe: 1,
+            },
+            [setOrderDetails]
+        );
+    };
+
+    const setOrderDetails = response => {
+        if (!response.error) {
+            setDetails(new OrderInfo(response));
+        } else {
+            order_info_subscription.current.unsubscribe();
+        }
+    };
+
     const setQueryDetails = input_order => {
         setOrderId(input_order.id);
-        setDetails(input_order);
 
         const { notifications } = getLocalStorageSettingsForLoginId();
 
@@ -45,43 +62,29 @@ const Orders = ({ params, navigate, chat_info }) => {
     };
 
     React.useEffect(() => {
+        if (!is_mounted.current) return;
+        console.log(order_id);
+        if (order_info_subscription.current) {
+            order_info_subscription.current.unsubscribe();
+        }
+        if (order_id) {
+            getOrderDetails(order_id);
+        }
+    }, [order_id]);
+
+    React.useEffect(() => {
         setNav(params?.nav ?? nav);
     }, [params]);
 
     React.useEffect(() => {
         is_mounted.current = true;
 
-        if (params && params.order_info) {
-            const order_info = new OrderInfo(params.order_info);
-            setQueryDetails(order_info);
-        }
         // Clear details when unmounting
         return () => {
             is_mounted.current = false;
             hideDetails();
         };
     }, []);
-
-    React.useEffect(() => {
-        if (!is_mounted.current) return;
-
-        if (orders.length && order_id) {
-            const order_payload = orders.find(order => order.id === order_id);
-            if (order_payload) {
-                const order_info = new OrderInfo(order_payload);
-                setQueryDetails(order_info);
-            } else {
-                navigate('orders');
-            }
-        }
-        if (order_details) {
-            const updated_order = orders.find(order => order.id === order_details.id);
-            if (updated_order.status !== order_details.status) {
-                const updated_order_info = new OrderInfo(updated_order);
-                setQueryDetails(updated_order_info);
-            }
-        }
-    }, [orders]);
 
     return (
         <div className={classNames('orders', { 'orders--order-view': !!order_details })}>
@@ -109,6 +112,7 @@ const Orders = ({ params, navigate, chat_info }) => {
 
 Orders.propTypes = {
     chat_info: PropTypes.object,
+    order_details: PropTypes.object,
     navigate: PropTypes.func,
     params: PropTypes.object,
 };

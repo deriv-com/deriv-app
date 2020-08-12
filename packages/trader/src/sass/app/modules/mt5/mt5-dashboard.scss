@@ -799,17 +799,10 @@
     &__btn-area {
         margin: 3.2rem 0 0;
 
-        .btn--primary {
-            width: 90px !important;
-            height: 40px !important;
-
-            @include mobile {
-                &:only-child {
-                    max-width: 14rem;
-                    width: auto;
-                    min-width: 9rem;
-                }
-            }
+        .dc-btn {
+            width: auto;
+            min-width: 9rem;
+            height: 4rem;
         }
     }
 }

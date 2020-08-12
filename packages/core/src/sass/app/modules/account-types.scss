@@ -13,7 +13,8 @@
         margin: 2.4rem 6.2rem 2.4rem 4.8rem;
 
         @include mobile {
-            margin: 2.4rem 0;
+            margin: 0;
+            padding-left: 2.4rem;
         }
     }
     &__text-icon {
@@ -35,10 +36,11 @@
             width: 80.8rem;
         }
         @include mobile {
-            width: fit-content;
+            width: 100%;
             grid-auto-rows: minmax(23rem, auto);
             grid-auto-flow: row;
             grid-gap: 1rem;
+            box-shadow: none;
         }
 
         &:first-of-type {
@@ -182,6 +184,17 @@
                 justify-items: center;
                 width: 6.4rem;
             }
+        }
+    }
+    @include mobile {
+        width: calc(100% - 1.6rem);
+        margin-left: 0.8rem;
+        padding-top: 2.4rem;
+
+        &__container {
+            max-height: 100%;
+            overflow-y: auto;
+            overflow-x: hidden;
         }
     }
 }

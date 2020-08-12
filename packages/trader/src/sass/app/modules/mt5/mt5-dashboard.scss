@@ -1063,9 +1063,12 @@
         }
         @include mobile {
             padding: 0.8rem 1.6rem 1.6rem;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-gap: 1.4rem;
+            display: flex;
+            grid-gap: 0.6rem;
+
+            & .dc-btn {
+                width: 100%;
+            }
         }
     }
 }

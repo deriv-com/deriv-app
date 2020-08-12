@@ -21,10 +21,11 @@
         .account-wizard--error {
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: start;
             flex-direction: column;
             height: 100%;
             width: 100%;
+            padding-top: 13%;
         }
         & > svg {
             width: 128px;

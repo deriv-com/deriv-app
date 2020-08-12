@@ -581,7 +581,6 @@
 
 .mt5-password-manager {
     margin: 5.6rem auto 3.2rem;
-    max-width: calc(400px + 1rem); // needs extra padding for the scrollbar, otherwise it will cover the words
     width: 100%;
     height: 100%;
 
@@ -639,6 +638,7 @@
         @include mobile {
             width: 100%;
             margin-top: 0.8rem;
+            max-width: 30rem;
         }
     }
     &__success {
@@ -655,17 +655,34 @@
         &-btn {
             margin-top: 3.2rem;
             width: 6.4rem;
+
+            @include mobile {
+                width: 100%;
+                max-width: 30rem;
+            }
         }
-    }
-    @include mobile {
-        padding: 0 1.6rem;
-        margin-top: 2.4rem;
     }
     .multi-step__header {
         margin: 0 0 2.4rem 0;
     }
     .multi-step__component {
         text-align: center;
+    }
+    @include desktop {
+        max-width: calc(400px + 1rem); // needs extra padding for the scrollbar, otherwise it will cover the words
+    }
+    @include mobile {
+        padding: 0 1.6rem;
+        margin-top: 2.4rem;
+
+        &__scroll-wrapper {
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        /* iPhone SE screen width fixes due to UI space restrictions */
+        @media only screen and (max-width: 320px) {
+            padding: 0;
+        }
     }
 }
 
@@ -767,8 +784,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    height: 11em;
-    margin: 12.7em 0 12em;
+    height: 11rem;
+    margin: 12.7rem 0 12rem;
 
     &__heading {
         @include typeface(--title-left-bold-black);
@@ -777,14 +794,15 @@
     &__description {
         @include typeface(--paragraph-center-normal-black);
         color: var(--text-prominent);
-        margin: 0.6em 0 0;
+        margin: 0.6rem 0 0;
     }
     &__btn-area {
-        margin: 3.2em 0 0;
+        margin: 3.2rem 0 0;
 
-        .btn--primary {
-            width: 90px !important;
-            height: 40px !important;
+        .dc-btn {
+            width: auto;
+            min-width: 9rem;
+            height: 4rem;
         }
     }
 }
@@ -1063,9 +1081,18 @@
         }
         @include mobile {
             padding: 0.8rem 1.6rem 1.6rem;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-gap: 1.4rem;
+            display: flex;
+            grid-gap: 0.6rem;
+
+            & .dc-btn {
+                width: 100%;
+
+                &:only-child {
+                    max-width: 14rem;
+                    width: auto;
+                    min-width: 9rem;
+                }
+            }
         }
     }
 }
@@ -1073,8 +1100,10 @@
     .success-change__icon-area {
         width: 128px;
         margin: 2.4rem auto 0;
+        position: relative;
 
         &--large .bottom-right-overlay {
+            position: absolute;
             left: 76px;
             top: 76px;
 
@@ -1084,20 +1113,11 @@
             }
         }
         &--xlarge .bottom-right-overlay {
-            left: 104px;
-            top: 80px;
-
-            @include mobile {
-                left: 78px;
-                top: 74px;
-            }
-        }
-        @include mobile {
-            width: 96px;
-
-            &--xlarge {
-                width: 128px;
-            }
+            position: absolute;
+            bottom: 0.8rem;
+            right: -2.8rem;
+            height: 5.2rem;
+            width: 5.2rem;
         }
     }
     .dc-modal-body {

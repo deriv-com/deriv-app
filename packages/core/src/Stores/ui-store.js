@@ -609,6 +609,7 @@ export default class UIStore extends BaseStore {
             success_message: '',
             error_message: '',
         };
+        this.real_account_signup_target = '';
     }
 
     @action.bound

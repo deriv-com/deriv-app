@@ -10,7 +10,7 @@
         flex-flow: nowrap column;
 
         @include mobile {
-            width: calc(100vw - 6rem);
+            width: 100%;
             max-width: 30rem;
         }
     }
@@ -35,7 +35,7 @@
                 width: 100%;
             }
         }
-        & .dc-field-error {
+        & .dc-field--error {
             top: 4.4rem;
         }
     }
@@ -73,6 +73,8 @@
         }
     }
     &__residence-field {
+        margin-bottom: 3.2rem;
+
         @include desktop {
             min-width: 30rem;
         }
@@ -83,7 +85,7 @@
     @include mobile {
         & .dc-select-native {
             &__placeholder {
-                top: 0.9rem;
+                top: 1.2rem;
                 background-color: var(--general-main-2);
             }
         }

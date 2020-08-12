@@ -681,6 +681,64 @@ class SelfExclusion extends React.Component {
                                                     </Field>
                                                 </div>
                                             </div>
+                                            {values.exclude_until && (this.props.is_mlt || this.props.is_mx) && (
+                                                <div className='self-exclusion__warning'>
+                                                    <Icon
+                                                        icon='IcAlertWarning'
+                                                        className='self-exclusion__warning-icon'
+                                                    />
+                                                    <div className='self-exclusion__warning-textbox'>
+                                                        <p className='self-exclusion__warning-text'>
+                                                            {localize(
+                                                                'Self-exclusion on the website only applies to your Deriv.com account and does not include other companies or websites.'
+                                                            )}
+                                                        </p>
+                                                        <p className='self-exclusion__warning-text'>
+                                                            {this.props.is_mlt ? (
+                                                                <Localize
+                                                                    i18n_default_text='If you are a UK resident, to self-exclude from all online gambling companies licensed in Great Britain, go to <0>www.gamstop.co.uk</0>.'
+                                                                    components={[
+                                                                        <a
+                                                                            key={0}
+                                                                            className='self-exclusion__warning-link'
+                                                                            rel='noopener noreferrer'
+                                                                            target='_blank'
+                                                                            href='https://www.gamstop.co.uk'
+                                                                        />,
+                                                                    ]}
+                                                                />
+                                                            ) : (
+                                                                <Localize
+                                                                    i18n_default_text='To self-exclude from all online gambling companies licensed in Great Britain, go to <0>www.gamstop.co.uk</0>.'
+                                                                    components={[
+                                                                        <a
+                                                                            key={0}
+                                                                            className='self-exclusion__warning-link'
+                                                                            rel='noopener noreferrer'
+                                                                            target='_blank'
+                                                                            href='https://www.gamstop.co.uk'
+                                                                        />,
+                                                                    ]}
+                                                                />
+                                                            )}
+                                                        </p>
+                                                        <p className='self-exclusion__warning-text'>
+                                                            <Localize
+                                                                i18n_default_text='For more information and assistance to counselling and support services, please visit <0>begambleaware.org</0>.'
+                                                                components={[
+                                                                    <a
+                                                                        key={0}
+                                                                        className='self-exclusion__warning-link'
+                                                                        rel='noopener noreferrer'
+                                                                        target='_blank'
+                                                                        href='http://begambleaware.org'
+                                                                    />,
+                                                                ]}
+                                                            />
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            )}
                                             <h2 className='self-exclusion__header'>
                                                 {localize('Your maximum account balance and open positions')}
                                             </h2>
@@ -759,5 +817,7 @@ export default connect(({ client }) => ({
     currency: client.currency,
     is_virtual: client.is_virtual,
     is_switching: client.is_switching,
+    is_mlt: client.landing_company_shortcode === 'malta',
+    is_mx: client.landing_company_shortcode === 'iom',
     logout: client.logout,
 }))(SelfExclusion);

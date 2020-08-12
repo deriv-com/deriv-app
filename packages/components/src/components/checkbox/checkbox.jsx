@@ -33,6 +33,18 @@ class Checkbox extends React.Component {
         this.setState({ checked });
     };
 
+    handleKeyDown = e => {
+        // Enter or space
+        if (e.key === 'Enter' || e.keyCode === 32) {
+            this.setState(
+                state => ({ checked: !state.checked }),
+                () => {
+                    this.props.onChange();
+                }
+            );
+        }
+    };
+
     render() {
         const {
             className,
@@ -41,6 +53,7 @@ class Checkbox extends React.Component {
             label,
             defaultChecked,
             onChange, // This needs to be here so it's not included in `otherProps`
+            withTabIndex,
             ...otherProps
         } = this.props;
 
@@ -64,6 +77,8 @@ class Checkbox extends React.Component {
                         'dc-checkbox__box--active': this.state.checked,
                         'dc-checkbox__box--disabled': this.props.disabled,
                     })}
+                    {...(withTabIndex?.length > 0 ? { tabIndex: withTabIndex } : {})}
+                    onKeyDown={this.handleKeyDown}
                 >
                     {!!this.state.checked && <Icon icon='IcCheckmark' color='active' />}
                 </span>
@@ -79,6 +94,7 @@ Checkbox.propTypes = {
     disabled: PropTypes.bool,
     id: PropTypes.string,
     label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    withTabIndex: PropTypes.string,
 };
 
 export default Checkbox;

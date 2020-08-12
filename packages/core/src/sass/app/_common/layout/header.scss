@@ -188,8 +188,7 @@
     }
     &__counter {
         position: absolute;
-        top: 0.4rem;
-        right: -1.5rem;
+        right: -1.8rem;
     }
     &__logo {
         background-color: var(--brand-secondary);
@@ -234,5 +233,16 @@
         .header__menu-right {
             height: #{$MOBILE_HEADER_HEIGHT - 1px};
         }
+    }
+}
+
+.dc-mobile-drawer {
+    .header__counter {
+        position: relative;
+        top: 0;
+        right: 0;
+        display: flex;
+        align-self: center;
+        margin-left: 0.9rem;
     }
 }

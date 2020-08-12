@@ -4,9 +4,9 @@ import { data, histogram, macd, signal } from '../../../test_utils/macd-data';
 describe('macd', () => {
     it('real world', () => {
         const result = macdArray(data, {
-            fast_ema_period: 12,
-            slow_ema_period: 26,
-            signal_sma_period: 9,
+            fastEmaPeriod: 12,
+            slowEmaPeriod: 26,
+            signalEmaPeriod: 9,
         }).slice(-100);
         const expected_histogram = histogram.slice(-100);
         const expected_macd = macd.slice(-100);

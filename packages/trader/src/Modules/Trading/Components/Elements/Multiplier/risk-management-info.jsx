@@ -11,13 +11,18 @@ const RiskManagementInfo = ({
     has_take_profit,
     has_stop_loss,
     cancellation_duration,
+    cancellation_range_list,
     has_cancellation,
+    proposal_info,
 }) => {
     const [is_dialog_open, setDialogOpen] = React.useState(false);
     const has_risk_management = has_take_profit || has_stop_loss || has_cancellation;
     const toggleDialog = () => {
         setDialogOpen(!is_dialog_open);
     };
+    const cancellation_label = cancellation_range_list.find(r => r.value === cancellation_duration)?.text;
+    const { cancellation } = Object.values(proposal_info)?.[0] || {};
+
     return (
         <React.Fragment>
             <RiskManagementDialog
@@ -54,7 +59,18 @@ const RiskManagementInfo = ({
                 {has_cancellation && (
                     <div className='mobile-widget__item'>
                         <div className='mobile-widget__item-label'>{localize('Deal Cancellation')}</div>
-                        <div className='mobile-widget__item-value'>{cancellation_duration}</div>
+                        <div className='mobile-widget__item-value'>
+                            <div className='mobile-widget__multiplier-cancellation-duration'>{cancellation_label}</div>
+                            {cancellation && (
+                                <div className='mobile-widget__multiplier-cancellation-price'>
+                                    <Money
+                                        amount={cancellation.ask_price}
+                                        className='trade-container__price-info-currency'
+                                        currency={currency}
+                                    />
+                                </div>
+                            )}
+                        </div>
                     </div>
                 )}
             </div>
@@ -69,5 +85,7 @@ export default connect(({ modules }) => ({
     take_profit: modules.trade.take_profit,
     has_take_profit: modules.trade.has_take_profit,
     cancellation_duration: modules.trade.cancellation_duration,
+    cancellation_range_list: modules.trade.cancellation_range_list,
     has_cancellation: modules.trade.has_cancellation,
+    proposal_info: modules.trade.proposal_info,
 }))(RiskManagementInfo);

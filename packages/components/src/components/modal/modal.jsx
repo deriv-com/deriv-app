@@ -36,7 +36,6 @@ const ModalElement = ({
     const validateClickOutside = e => {
         const is_reality_check_visible = modal_root_ref.current.querySelectorAll('.dc-modal__container_reality-check')
             .length;
-
         return (
             has_close_icon &&
             !is_datepicker_visible() &&

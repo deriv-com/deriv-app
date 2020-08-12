@@ -190,6 +190,12 @@ export default class ClientStore extends BaseStore {
     @computed
     get legal_allowed_currencies() {
         if (!this.landing_companies) return [];
+        if (this.root_store.ui && this.root_store.ui.real_account_signup_target) {
+            const target = this.root_store.ui.real_account_signup_target === 'maltainvest' ? 'financial' : 'gaming';
+            if (this.landing_companies[`${target}_company`]) {
+                return this.landing_companies[`${target}_company`].legal_allowed_currencies;
+            }
+        }
         if (this.landing_companies.gaming_company) {
             return this.landing_companies.gaming_company.legal_allowed_currencies;
         }
@@ -397,11 +403,11 @@ export default class ClientStore extends BaseStore {
     get should_have_real_account() {
         // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
         return (
-            this.root_store.ui &&
-            this.root_store.ui.is_eu_enabled &&
             this.standpoint.iom &&
             this.is_uk &&
-            !this.has_any_real_account
+            !this.has_any_real_account &&
+            this.root_store.ui &&
+            this.root_store.ui.is_eu_enabled
         );
     }
 
@@ -511,7 +517,9 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     getBasicUpgradeInfo() {
-        const upgradeable_landing_companies = State.getResponse('authorize.upgradeable_landing_companies');
+        const upgradeable_landing_companies = [
+            ...new Set(State.getResponse('authorize.upgradeable_landing_companies')),
+        ];
         let can_open_multi = false;
         let type, can_upgrade_to;
         if ((upgradeable_landing_companies || []).length) {
@@ -581,7 +589,7 @@ export default class ClientStore extends BaseStore {
         this.updateAccountList(response.authorize.account_list);
         this.upgrade_info = this.getBasicUpgradeInfo();
         this.user_id = response.authorize.user_id;
-        this.upgradeable_landing_companies = response.authorize.upgradeable_landing_companies;
+        this.upgradeable_landing_companies = [...new Set(response.authorize.upgradeable_landing_companies)];
         this.local_currency_config.currency = Object.keys(response.authorize.local_currencies)[0];
 
         // For residences without local currency (e.g. ax)
@@ -1348,7 +1356,7 @@ export default class ClientStore extends BaseStore {
 
             runInAction(() => {
                 const account_list = (authorize_response.authorize || {}).account_list;
-                this.upgradeable_landing_companies = authorize_response.upgradeable_landing_companies;
+                this.upgradeable_landing_companies = [...new Set(authorize_response.upgradeable_landing_companies)];
 
                 if (this.canStoreClientAccounts(obj_params, account_list)) {
                     this.storeClientAccounts(obj_params, account_list);
@@ -1468,7 +1476,9 @@ export default class ClientStore extends BaseStore {
                     event: 'virtual_signup',
                 });
 
-                this.root_store.ui.showAccountTypesModalForEuropean();
+                if (this.root_store.ui.is_eu_enabled) {
+                    this.root_store.ui.showAccountTypesModalForEuropean();
+                }
             }
         });
     }

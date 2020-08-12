@@ -102,7 +102,7 @@ class SelectNative extends React.Component {
     }
 }
 
-SelectNative.props = {
+SelectNative.propTypes = {
     className: PropTypes.string,
     classNameDisplay: PropTypes.string,
     list_items: PropTypes.oneOfType([

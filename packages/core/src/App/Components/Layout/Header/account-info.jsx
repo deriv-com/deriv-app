@@ -56,7 +56,7 @@ const AccountInfo = ({
                         )}
                     </MobileWrapper>
                 </span>
-                {typeof balance !== 'undefined' && (
+                {(typeof balance !== 'undefined' || !currency) && (
                     <p
                         className={classNames('acc-info__balance', {
                             'acc-info__balance--no-currency': !currency && !is_virtual,

@@ -1,5 +1,4 @@
 const Cookies = require('js-cookie');
-const { isProduction } = require('@deriv/shared');
 const getPropertyValue = require('@deriv/shared').getPropertyValue;
 const isEmptyObject = require('@deriv/shared').isEmptyObject;
 
@@ -140,13 +139,10 @@ const CookieStorage = function(cookie_name, cookie_domain) {
 
     this.initialized = false;
     this.cookie_name = cookie_name;
-    // 'app.test.domain' is used during dev as sample domain
-    // In order to test cookies, change host to 'app.test.domain' in webpack settings
-    // Note. You need to point sample domain to localhost (127.0.0.1)
     this.domain =
         cookie_domain ||
         /* eslint-disable no-nested-ternary */
-        (isProduction() ? '.deriv.com' : hostname === 'app.test.domain' ? '.test.domain' : `.${hostname}`);
+        (hostname.includes('binary.sx') ? 'binary.sx' : 'deriv.com');
     /* eslint-enable no-nested-ternary */
     this.path = '/';
     this.expires = new Date('Thu, 1 Jan 2037 12:00:00 GMT');

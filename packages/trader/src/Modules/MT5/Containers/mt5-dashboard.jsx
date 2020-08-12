@@ -134,6 +134,8 @@ class MT5Dashboard extends React.Component {
             NotificationMessages,
             account_settings,
         } = this.props;
+        const should_show_missing_real_account =
+            !this.props.is_eu && !hasMoreThanOne(this.props.landing_companies) && is_logged_in && !has_real_account;
 
         return (
             <React.Fragment>
@@ -158,7 +160,7 @@ class MT5Dashboard extends React.Component {
                                 selected_account_type={this.state.password_manager.selected_account_type}
                                 toggleModal={this.togglePasswordManagerModal}
                             />
-                            {!this.props.is_eu && !hasMoreThanOne(this.props.landing_companies) && is_logged_in && (
+                            {should_show_missing_real_account && (
                                 <MissingRealAccount onClickSignup={beginRealSignupForMt5} />
                             )}
                             <TabOrFlex
@@ -172,11 +174,9 @@ class MT5Dashboard extends React.Component {
                             >
                                 <div label={localize('Real account')}>
                                     <React.Fragment>
-                                        {!this.props.is_eu &&
-                                            hasMoreThanOne(this.props.landing_companies) &&
-                                            !has_real_account && (
-                                                <MissingRealAccount onClickSignup={beginRealSignupForMt5} />
-                                            )}
+                                        {should_show_missing_real_account && (
+                                            <MissingRealAccount onClickSignup={beginRealSignupForMt5} />
+                                        )}
                                         <MT5RealAccountDisplay
                                             is_eu={this.props.is_eu}
                                             is_eu_enabled={this.props.is_eu_enabled} // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production

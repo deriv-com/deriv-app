@@ -538,7 +538,7 @@ class AccountSwitcher extends React.Component {
                             <ThemedScrollbars height='354px'>{real_accounts}</ThemedScrollbars>
                         </DesktopWrapper>
                         <MobileWrapper>
-                            <Div100vhContainer className='acc-switcher__list-container' max_autoheight_offset='204px'>
+                            <Div100vhContainer className='acc-switcher__list-container' max_autoheight_offset='234px'>
                                 {real_accounts}
                             </Div100vhContainer>
                         </MobileWrapper>
@@ -548,7 +548,7 @@ class AccountSwitcher extends React.Component {
                             <ThemedScrollbars height='354px'>{demo_accounts}</ThemedScrollbars>
                         </DesktopWrapper>
                         <MobileWrapper>
-                            <Div100vhContainer className='acc-switcher__list-container' max_autoheight_offset='204px'>
+                            <Div100vhContainer className='acc-switcher__list-container' max_autoheight_offset='234px'>
                                 {demo_accounts}
                             </Div100vhContainer>
                         </MobileWrapper>

@@ -36,7 +36,6 @@ const ModalElement = ({
     const validateClickOutside = e => {
         const is_reality_check_visible = modal_root_ref.current.querySelectorAll('.dc-modal__container_reality-check')
             .length;
-
         return (
             has_close_icon &&
             !is_datepicker_visible() &&
@@ -151,9 +150,10 @@ const Modal = ({
     is_open,
     has_close_icon,
     height,
+    onEntered,
+    onExited,
     onMount,
     onUnmount,
-    onModalRendered,
     small,
     is_vertical_bottom,
     is_vertical_centered,
@@ -174,8 +174,9 @@ const Modal = ({
             enterDone: 'dc-modal__container--enter-done',
             exit: 'dc-modal__container--exit',
         }}
-        onEntered={onModalRendered}
         unmountOnExit
+        onEntered={onEntered}
+        onExited={onExited}
     >
         <ModalElement
             className={className}
@@ -219,10 +220,11 @@ Modal.propTypes = {
     is_vertical_bottom: PropTypes.bool,
     is_vertical_centered: PropTypes.bool,
     is_vertical_top: PropTypes.bool,
+    onEntered: PropTypes.func,
+    onExited: PropTypes.func,
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
     renderTitle: PropTypes.func,
-    onModalRendered: PropTypes.func,
     small: PropTypes.bool,
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.node]),
     toggleModal: PropTypes.func,

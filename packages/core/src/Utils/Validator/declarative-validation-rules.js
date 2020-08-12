@@ -23,7 +23,7 @@ export const validLetterSymbol = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><,|\d]+
 const validGeneral = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><|]+/.test(value);
 export const validAddress = value => !/[`~!$%^&*_=+[}{\]\\"?><|]+/.test(value);
 export const validPostCode = value => /^[-A-Za-z0-9\s]{0,20}$/.test(value);
-export const validPhone = value => /^\+?((-|\s)*[0-9]){8,35}$/.test(value.replace(/[ ]/g, ''));
+export const validPhone = value => /^\+((-|\s)*[0-9]){8,35}$/.test(value);
 export const validCountryCode = (list, value) =>
     list.some(item => value.replace(/[ ]/g, '').startsWith(`+${item.phone_idd}`));
 const validRegular = (value, options) => options.regex.test(value);
@@ -43,7 +43,7 @@ export const validLength = (value, options) => {
             return localize('You should enter a value at least {{min}} characters.', { min });
         }
 
-        return localize('Maximum allowed characters are {{min}}.', { max });
+        return localize('Maximum allowed characters are {{max}}.', { max });
     };
 
     const result =

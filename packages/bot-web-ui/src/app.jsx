@@ -18,7 +18,7 @@ import RootStore from './stores';
 import GTM from './utils/gtm';
 import './assets/sass/app.scss';
 
-const showDigitalOptionsMaltainvestError = (client, common) => {
+const showDigitalOptionsMaltaInvestError = (client, common) => {
     if (client.landing_company_shortcode === 'maltainvest') {
         showDigitalOptionsUnavailableError(common.showError, {
             title: localize(
@@ -73,7 +73,7 @@ class App extends React.Component {
 
     componentDidMount() {
         const { client, common } = this.root_store.core;
-        showDigitalOptionsMaltainvestError(client, common);
+        showDigitalOptionsMaltaInvestError(client, common);
         this.root_store.blockly_store.startLoading();
         DBot.initWorkspace(
             __webpack_public_path__,
@@ -147,7 +147,7 @@ class App extends React.Component {
                 if (!switch_broadcast) {
                     return;
                 }
-                showDigitalOptionsMaltainvestError(client, common);
+                showDigitalOptionsMaltaInvestError(client, common);
                 const { derivWorkspace: workspace } = Blockly;
                 const { active_symbols, contracts_for } = ApiHelpers.instance;
 

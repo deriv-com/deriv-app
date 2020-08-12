@@ -5,9 +5,9 @@ import { localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import OrderInfo from './order-info';
-import { subscribeWS } from '../../utils/websocket';
 import OrderDetails from './order-details/order-details.jsx';
 import OrderTable from './order-table/order-table.jsx';
+import { subscribeWS } from '../../utils/websocket';
 import './orders.scss';
 
 const Orders = ({ chat_info, navigate, params }) => {
@@ -27,7 +27,7 @@ const Orders = ({ chat_info, navigate, params }) => {
         setOrderId(null);
     };
 
-    const getOrderDetails = order_id => {
+    const getOrderDetails = () => {
         order_info_subscription.current = subscribeWS(
             {
                 p2p_order_info: 1,

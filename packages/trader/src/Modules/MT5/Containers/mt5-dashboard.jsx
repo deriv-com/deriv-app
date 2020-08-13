@@ -135,8 +135,7 @@ class MT5Dashboard extends React.Component {
             account_settings,
         } = this.props;
 
-        const should_show_missing_real_account =
-            !is_eu && hasMoreThanOne(this.props.landing_companies, is_eu) && is_logged_in && !has_real_account;
+        const should_show_missing_real_account = !is_eu && is_logged_in && !has_real_account;
 
         return (
             <React.Fragment>

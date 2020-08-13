@@ -71,7 +71,6 @@ const MultiplierOptions = ({ multiplier, multiplier_range_list, onChange, toggle
                     icon='info'
                     id='dt_multiplier-stake__tooltip'
                     zIndex={9999}
-                    disable_message_icon={true}
                     message={localize(
                         'Your profit is the percentage change in market price times your stake and the multiplier chosen here.'
                     )}

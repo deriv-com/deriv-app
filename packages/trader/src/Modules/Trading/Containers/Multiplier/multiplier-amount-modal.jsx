@@ -69,7 +69,6 @@ const TradeParamsMobile = ({ amount, currency, toggleModal }) => {
                     icon='info'
                     id='dt_multiplier-stake__tooltip'
                     zIndex={9999}
-                    disable_message_icon={true}
                     message={
                         <Localize
                             i18n_default_text='To ensure your loss does not exceed your stake, your contract will be closed automatically when your loss equals to <0/>.'

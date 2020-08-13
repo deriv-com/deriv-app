@@ -144,7 +144,6 @@ const InputWithCheckbox = ({
                         id={`dt_${name}-checkbox__tooltip`}
                         message={tooltip_label}
                         margin={isMobile() ? 0 : 210}
-                        disable_message_icon={isMobile()}
                         zIndex={9999}
                         {...(isDesktop() ? { relative_render: true } : {})}
                     />

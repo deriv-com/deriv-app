@@ -7,7 +7,7 @@ import PageReturn from 'Components/page-return/page-return.jsx';
 import OrderInfo from './order-info';
 import OrderDetails from './order-details/order-details.jsx';
 import OrderTable from './order-table/order-table.jsx';
-import { subscribeWS } from '../../utils/websocket';
+import { subscribeWS } from 'Utils/websocket';
 import './orders.scss';
 
 const Orders = ({ chat_info, navigate, params }) => {
@@ -110,7 +110,6 @@ const Orders = ({ chat_info, navigate, params }) => {
 
 Orders.propTypes = {
     chat_info: PropTypes.object,
-    order_details: PropTypes.object,
     navigate: PropTypes.func,
     params: PropTypes.object,
 };

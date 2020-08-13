@@ -226,9 +226,6 @@ export default class UIStore extends BaseStore {
         }
         this.screen_width = window.innerWidth;
         this.screen_height = window.innerHeight;
-        if (this.is_mobile) {
-            this.is_positions_drawer_on = false;
-        }
     }
 
     @action.bound

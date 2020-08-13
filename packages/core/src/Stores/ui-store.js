@@ -17,7 +17,6 @@ export default class UIStore extends BaseStore {
     @observable reports_route_tab_index = 0;
     @observable is_cashier_visible = false;
     @observable is_history_tab_active = false;
-    @observable is_window_loaded = false;
     // TODO: [cleanup ui-store]
     // Take profit, Stop loss & Deal cancellation checkbox
     @observable should_show_cancellation_warning = true;
@@ -160,13 +159,6 @@ export default class UIStore extends BaseStore {
 
         super({ root_store, local_storage_properties, store_name });
 
-        window.addEventListener(
-            'load',
-            action('windowLoadSuccess', () => {
-                this.is_window_loaded = true;
-            })
-        );
-
         // TODO: [deiv-eu] remove this manual enabler
         this.toggleIsEuEnabled(localStorage.getItem('is_eu_enabled') === 'true');
 
@@ -274,8 +266,8 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    toggleAccountsDialog() {
-        this.is_accounts_switcher_on = !this.is_accounts_switcher_on;
+    toggleAccountsDialog(status = !this.is_accounts_switcher_on) {
+        this.is_accounts_switcher_on = status;
     }
 
     @action.bound

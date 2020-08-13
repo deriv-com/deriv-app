@@ -106,6 +106,10 @@ export default class ClientStore extends BaseStore {
                 }
             }
         );
+        when(
+            () => !this.is_logged_in && this.root_store.ui && this.root_store.ui.is_real_acc_signup_on,
+            () => this.root_store.ui.closeRealAccountSignup()
+        );
     }
 
     @computed
@@ -495,11 +499,11 @@ export default class ClientStore extends BaseStore {
         return false;
     }
 
-    @computed({ keepAlive: true })
+    @computed
     get is_eu_country() {
         const country = this.website_status.clients_country;
         if (country) return isEuCountry(country);
-        return country;
+        return false;
     }
     /**
      * Store Values relevant to the loginid to local storage.

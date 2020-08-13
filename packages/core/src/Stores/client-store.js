@@ -537,11 +537,11 @@ export default class ClientStore extends BaseStore {
         return false;
     }
 
-    @computed({ keepAlive: true })
+    @computed
     get is_eu_country() {
         const country = this.website_status.clients_country;
         if (country) return isEuCountry(country);
-        return country;
+        return false;
     }
     /**
      * Store Values relevant to the loginid to local storage.
@@ -1123,7 +1123,6 @@ export default class ClientStore extends BaseStore {
         }
 
         runInAction(() => (this.is_switching = true));
-
         const from_login_id = this.loginid;
         this.resetLocalStorageValues(this.switched);
         SocketCache.clear();
@@ -1140,17 +1139,14 @@ export default class ClientStore extends BaseStore {
             await WS.forgetAll('balance');
             await BinarySocket.authorize(this.getToken());
         }
-
+        if (this.root_store.common.has_error) this.root_store.common.setError(false, null);
         sessionStorage.setItem('active_tab', '1');
 
         // set local storage
         this.root_store.gtm.setLoginFlag();
 
         await this.init();
-
-        // broadcastAccountChange is already called after new connection is authorized
-        if (!should_switch_socket_connection) this.broadcastAccountChange();
-
+        this.broadcastAccountChange();
         this.getLimits();
 
         runInAction(() => (this.is_switching = false));
@@ -1283,6 +1279,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setLogout(is_logged_out) {
         this.has_logged_out = is_logged_out;
+        if (this.root_store.common.has_error) this.root_store.common.setError(false, null);
     }
 
     /* eslint-disable */

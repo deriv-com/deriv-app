@@ -134,8 +134,9 @@ class MT5Dashboard extends React.Component {
             NotificationMessages,
             account_settings,
         } = this.props;
+
         const should_show_missing_real_account =
-            !this.props.is_eu && !hasMoreThanOne(this.props.landing_companies) && is_logged_in && !has_real_account;
+            !is_eu && hasMoreThanOne(this.props.landing_companies, is_eu) && is_logged_in && !has_real_account;
 
         return (
             <React.Fragment>
@@ -160,9 +161,6 @@ class MT5Dashboard extends React.Component {
                                 selected_account_type={this.state.password_manager.selected_account_type}
                                 toggleModal={this.togglePasswordManagerModal}
                             />
-                            {should_show_missing_real_account && (
-                                <MissingRealAccount onClickSignup={beginRealSignupForMt5} />
-                            )}
                             <TabOrFlex
                                 landing_companies={this.props.landing_companies}
                                 active_index={this.state.active_index}

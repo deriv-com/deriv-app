@@ -106,6 +106,10 @@ export default class ClientStore extends BaseStore {
                 }
             }
         );
+        when(
+            () => !this.is_logged_in && this.root_store.ui && this.root_store.ui.is_real_acc_signup_on,
+            () => this.root_store.ui.closeRealAccountSignup()
+        );
     }
 
     @computed
@@ -193,7 +197,9 @@ export default class ClientStore extends BaseStore {
         if (!this.landing_companies) return [];
         if (this.root_store.ui && this.root_store.ui.real_account_signup_target) {
             const target = this.root_store.ui.real_account_signup_target === 'maltainvest' ? 'financial' : 'gaming';
-            return this.landing_companies[`${target}_company`].legal_allowed_currencies;
+            if (this.landing_companies[`${target}_company`]) {
+                return this.landing_companies[`${target}_company`].legal_allowed_currencies;
+            }
         }
         if (this.landing_companies.gaming_company) {
             return this.landing_companies.gaming_company.legal_allowed_currencies;

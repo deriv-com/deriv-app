@@ -5,9 +5,12 @@ export const icons = {
     cashier: [
         'IcCashierAuthenticate',
         'IcCashierChangelly',
+        'IcCashierDepositLock',
         'IcCashierDeposit',
         'IcCashierDp2p',
         'IcCashierError',
+        'IcCashierFundsProtection',
+        'IcCashierLocked',
         'IcCashierMaestro',
         'IcCashierMastercard',
         'IcCashierNoAds',
@@ -19,6 +22,7 @@ export const icons = {
         'IcCashierSendEmail',
         'IcCashierVisa',
         'IcCashierWallet',
+        'IcCashierWithdrawalLock',
         'IcCashierWithdrawal',
     ],
     common: [

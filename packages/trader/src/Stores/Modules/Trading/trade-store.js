@@ -302,7 +302,7 @@ export default class TradeStore extends BaseStore {
         await this.setActiveSymbols();
         // runInAction(async () => {
         const r = await WS.storage.contractsFor(this.symbol);
-        if (r.error?.code === 'InvalidSymbol') {
+        if (['InvalidSymbol', 'InputValidationFailed'].includes(r.error?.code)) {
             this.updateSymbol(fallback_symbol);
             await this.processNewValuesAsync(
                 {

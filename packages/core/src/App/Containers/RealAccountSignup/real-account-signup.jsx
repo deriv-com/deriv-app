@@ -223,7 +223,6 @@ class RealAccountSignup extends React.Component {
                   body: ModalLoginPrompt,
               };
         const has_close_icon = this.active_modal_index < 2 || this.active_modal_index === 4;
-
         return (
             <>
                 <DesktopWrapper>
@@ -257,7 +256,7 @@ class RealAccountSignup extends React.Component {
                         onClose={this.closeModal}
                         renderTitle={() => <Title {...this.props} />}
                     >
-                        <ModalContent />
+                        <ModalContent passthrough={this.props.state_index} is_loading={this.state.is_loading} />
                     </MobileDialog>
                 </MobileWrapper>
             </>

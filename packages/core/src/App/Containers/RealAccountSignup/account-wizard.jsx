@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import fromEntries from 'object.fromentries';
 import React from 'react';
@@ -21,7 +22,7 @@ const getLocation = (location_list, value, type) => {
 
 const SetCurrencyHeader = ({ has_target, has_real_account, has_currency, items, step }) => (
     <React.Fragment>
-        {(!has_real_account || has_target) && (
+        {(!has_real_account || has_target) && has_currency && (
             <React.Fragment>
                 <DesktopWrapper>
                     <FormProgress steps={items} current_step={step} />
@@ -46,7 +47,7 @@ const SetCurrencyHeader = ({ has_target, has_real_account, has_currency, items, 
             </React.Fragment>
         )}
         <DesktopWrapper>
-            {has_real_account && !has_target && (
+            {has_real_account && (
                 <div className='account-wizard__set-currency'>
                     {!has_currency && (
                         <p>
@@ -78,6 +79,7 @@ class AccountWizard extends React.Component {
         this.props.fetchStatesList();
         const { cancel, promise } = makeCancellablePromise(this.props.fetchResidenceList());
         this.cancel = cancel;
+
         promise
             .then(() => {
                 this.setState({
@@ -304,8 +306,13 @@ class AccountWizard extends React.Component {
         if (!this.state.finished) {
             const BodyComponent = this.getCurrent('body');
             const passthrough = this.getPropsForChild();
+
             return (
-                <div className='account-wizard'>
+                <div
+                    className={classNames('account-wizard', {
+                        'account-wizard--set-currency': !this.props.has_currency,
+                    })}
+                >
                     <SetCurrencyHeader
                         has_real_account={this.props.has_real_account}
                         step={this.state.step}

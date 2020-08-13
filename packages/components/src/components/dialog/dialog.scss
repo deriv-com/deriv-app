@@ -16,7 +16,7 @@
     bottom: 0;
 
     &__wrapper {
-        position: absolute;
+        position: fixed;
         left: 0;
         top: 0;
         width: 100%;
@@ -85,10 +85,16 @@
         width: 100%;
         @include mobile {
             flex-wrap: wrap;
+            align-items: flex-start;
         }
     }
     &__button {
         margin-left: 0.8rem;
+        @include mobile {
+            &:not(:last-child) {
+                margin-bottom: 1rem;
+            }
+        }
     }
 }
 

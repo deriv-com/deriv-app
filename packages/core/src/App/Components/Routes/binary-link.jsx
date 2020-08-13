@@ -1,13 +1,14 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { connect } from 'Stores/connect';
 import { findRouteByPath, normalizePath } from './helpers';
 import getRoutesConfig from '../../Constants/routes-config';
 
 // TODO: solve circular dependency problem
 // when binary link is imported into components present in routes config
 // or into their descendants
-const BinaryLink = ({ active_class, to, children, href, ...props }) => {
+const BinaryLink = ({ active_class, to, children, href, has_error, setError, ...props }) => {
     const path = normalizePath(to);
     const route = findRouteByPath(path, getRoutesConfig());
 
@@ -16,7 +17,15 @@ const BinaryLink = ({ active_class, to, children, href, ...props }) => {
     }
 
     return to && !href ? (
-        <NavLink to={path} activeClassName={active_class || 'active'} exact={route.exact} {...props}>
+        <NavLink
+            onClick={() => {
+                if (has_error) setError(false, null);
+            }}
+            to={path}
+            activeClassName={active_class || 'active'}
+            exact={route.exact}
+            {...props}
+        >
             {children}
         </NavLink>
     ) : (
@@ -30,4 +39,7 @@ BinaryLink.propTypes = {
     to: PropTypes.string,
 };
 
-export default BinaryLink;
+export default connect(({ common }) => ({
+    has_error: common.has_error,
+    setError: common.setError,
+}))(BinaryLink);

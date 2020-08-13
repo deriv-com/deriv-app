@@ -1,7 +1,14 @@
 import debounce from 'lodash.debounce';
 import { action, computed, observable, reaction, runInAction, toJS, when } from 'mobx';
-import { isDesktop, isCryptocurrency, getMinPayout, cloneObject, isEmptyObject, getPropertyValue } from '@deriv/shared';
-
+import {
+    isDesktop,
+    isCryptocurrency,
+    getMinPayout,
+    cloneObject,
+    isEmptyObject,
+    getPropertyValue,
+    showDigitalOptionsUnavailableError,
+} from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { isDigitContractType, isDigitTradeType } from 'Modules/Trading/Helpers/digits';
@@ -261,8 +268,7 @@ export default class TradeStore extends BaseStore {
             ? // if SmartCharts has requested active_symbols, we wait for the response
               await WS.wait('active_symbols')
             : // else requests new active_symbols
-              await WS.activeSymbols();
-
+              await WS.authorized.activeSymbols();
         if (error) {
             this.root_store.common.showError(localize('Trading is unavailable at this time.'));
             return;
@@ -270,9 +276,17 @@ export default class TradeStore extends BaseStore {
             if (this.root_store.client.landing_company_shortcode !== 'maltainvest') {
                 showUnavailableLocationError(this.root_store.common.showError);
                 return;
+            } else if (this.root_store.client.landing_company_shortcode === 'maltainvest') {
+                showDigitalOptionsUnavailableError(this.root_store.common.showError, {
+                    title: localize(
+                        'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a DMT5 Financial.'
+                    ),
+                    text: localize('DTrader is not available for this account'),
+                    link: localize('Go to DMT5 dashboard'),
+                });
+                return;
             }
         }
-
         this.processNewValuesAsync({ active_symbols });
     }
 
@@ -296,11 +310,8 @@ export default class TradeStore extends BaseStore {
         // fallback to default currency if current logged-in client hasn't selected a currency yet
         this.currency = this.root_store.client.currency || this.root_store.client.default_currency;
         this.initial_barriers = { barrier_1: this.barrier_1, barrier_2: this.barrier_2 };
-
-        await WS.wait('authorize');
         await when(() => !this.root_store.client.is_populating_account_list);
         await this.setActiveSymbols();
-        // runInAction(async () => {
         const r = await WS.storage.contractsFor(this.symbol);
         if (['InvalidSymbol', 'InputValidationFailed'].includes(r.error?.code)) {
             this.updateSymbol(fallback_symbol);
@@ -324,7 +335,6 @@ export default class TradeStore extends BaseStore {
             null,
             false
         );
-        // });
     }
 
     @action.bound
@@ -924,9 +934,20 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     async accountSwitcherListener() {
+        if (this.root_store.client.standpoint.maltainvest) {
+            const { active_symbols } = await WS.authorized.activeSymbols();
+            if (!active_symbols || !active_symbols.length) {
+                showDigitalOptionsUnavailableError(this.root_store.common.showError, {
+                    title: localize(
+                        'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a DMT5 Financial.'
+                    ),
+                    text: localize('DTrader is not available for this account'),
+                    link: localize('Go to DMT5 dashboard'),
+                });
+            }
+        }
         this.resetErrorServices();
         await this.setContractTypes();
-
         runInAction(async () => {
             this.processNewValuesAsync(
                 { currency: this.root_store.client.currency || this.root_store.client.default_currency },
@@ -958,7 +979,6 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     clientInitListener() {
-        this.should_refresh_active_symbols = true;
         this.initAccountCurrency(this.root_store.client.currency || this.root_store.client.default_currency);
         return Promise.resolve();
     }

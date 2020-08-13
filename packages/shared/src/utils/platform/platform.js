@@ -30,9 +30,8 @@ export const getPathname = () => {
         return 'Reports';
     } else if (window.location.pathname.split('/')[1] === 'cashier') {
         return 'Cashier';
-    } else {
-        return platform_name.SmartTrader;
     }
+    return platform_name.SmartTrader;
 };
 
 export const getPlatformHeader = routing_history => {

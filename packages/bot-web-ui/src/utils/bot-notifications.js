@@ -1,7 +1,8 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
 import { Button } from '@deriv/components';
-import { platform_name } from '@deriv/shared';
+import classNames from 'classnames';
+import { platform_name, isMobile } from '@deriv/shared';
 import '../assets/sass/notify-item.scss';
 
 export const switch_account_notification = {
@@ -20,7 +21,10 @@ export const journalError = onClick => {
         header: localize('The bot encountered an error while running.'),
         message: (
             <Button
-                className='notify__item-button'
+                className={classNames({
+                    'notify__item-button-mobile': isMobile(),
+                    'notify__item-button-journal': !isMobile(),
+                })}
                 onClick={onClick}
                 has_effect
                 type='button'

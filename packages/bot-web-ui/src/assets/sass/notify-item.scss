@@ -9,6 +9,16 @@
             .btn__text {
                 font-size: var(--text-size-xxs);
             }
+            &-journal {
+                margin-left: 0 !important;
+                font-size: 1.2rem;
+                transform: none !important;
+            }
+            &-mobile {
+                margin-left: 100%;
+                font-size: 1.2rem !important;
+                transform: translateX(-100%);
+            }
         }
         &-container {
             display: flex;

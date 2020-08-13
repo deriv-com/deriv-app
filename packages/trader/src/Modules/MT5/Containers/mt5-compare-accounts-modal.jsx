@@ -46,9 +46,9 @@ const MT5AttributeDescriber = ({ name, tooltip, counter }) => {
     );
 };
 
-const filterAvailableAccounts = (landing_companies, table, is_eu) => {
+const filterAvailableAccounts = (landing_companies, table, is_logged_in) => {
     return table.map(({ attribute, synthetic, financial_stp, financial }) => {
-        if (is_eu) {
+        if (is_logged_in) {
             return {
                 attribute,
                 ...(landing_companies?.mt_gaming_company?.financial ? { synthetic } : {}),
@@ -195,7 +195,7 @@ const compareAccountsData = ({ landing_companies, is_eu, is_eu_country, is_logge
                 financial_stp: localize('FX-majors, FX-minors, FX-exotics, Cryptocurrencies'),
             },
         ],
-        is_eu
+        is_logged_in
     );
 };
 
@@ -221,14 +221,14 @@ const ModalContent = ({ is_eu, landing_companies, is_eu_country, is_logged_in })
     React.useEffect(() => {
         setCols(compareAccountsData({ landing_companies, is_eu, is_eu_country, is_logged_in }));
 
-        if (is_eu) {
+        if (is_logged_in) {
             updateColumnsStyle(
                 `1.5fr ${landing_companies?.mt_gaming_company?.financial ? '1fr' : ''} ${
                     landing_companies?.mt_financial_company?.financial ? '2fr' : ''
                 } ${landing_companies?.mt_financial_company?.financial_stp ? ' 1fr ' : ''}`
             );
         }
-    }, [landing_companies.mt_financial_company, landing_companies.mt_gaming_company, is_eu]);
+    }, [landing_companies.mt_financial_company, landing_companies.mt_gaming_company, is_eu, is_logged_in]);
 
     return (
         <div
@@ -241,7 +241,7 @@ const ModalContent = ({ is_eu, landing_companies, is_eu_country, is_logged_in })
                 <Table.Header>
                     <Table.Row className='mt5-compare-accounts__table-row'>
                         <Table.Head fixed />
-                        {is_eu ? (
+                        {is_logged_in ? (
                             <React.Fragment>
                                 {landing_companies?.mt_gaming_company?.financial && (
                                     <Table.Head>{localize('Synthetic')}</Table.Head>

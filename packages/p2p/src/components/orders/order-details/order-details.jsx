@@ -104,7 +104,7 @@ const OrderDetails = ({ order_details, chat_info }) => {
                                     <OrderInfoBlock
                                         label={
                                             is_buyer
-                                                ? localize(`Seller's contact details`)
+                                                ? localize("Seller's contact details")
                                                 : localize('Your contact details')
                                         }
                                         value={contact_info || '-'}
@@ -116,8 +116,8 @@ const OrderDetails = ({ order_details, chat_info }) => {
                                     <OrderInfoBlock
                                         label={
                                             is_buyer
-                                                ? localize(`Seller's instructions`)
-                                                : localize(`Buyer's instructions`)
+                                                ? localize("Seller's instructions")
+                                                : localize("Buyer's instructions")
                                         }
                                         value={advertiser_instructions || '-'}
                                     />

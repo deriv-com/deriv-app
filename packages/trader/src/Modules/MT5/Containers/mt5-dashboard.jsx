@@ -21,17 +21,6 @@ import { MT5RealAccountDisplay } from '../Components/mt5-real-account-display.js
 import { getBrokerName, getServerName, getPlatformMt5DownloadLink } from '../Helpers/constants';
 import 'Sass/app/modules/mt5/mt5-dashboard.scss';
 
-const hasMoreThanOne = ({ mt_financial_company, mt_gaming_company }, is_logged_in) => {
-    return (
-        !is_logged_in ||
-        [
-            ...(mt_financial_company?.financial ? [true] : []),
-            ...(mt_financial_company?.financial_stp ? [true] : []),
-            ...(mt_gaming_company?.financial ? [true] : []),
-        ].length > 1
-    );
-};
-
 const LoadTab = ({ children, is_loading, loading_component, ...props }) => {
     const LoadingComponent = loading_component;
     if (is_loading) {
@@ -176,8 +165,7 @@ class MT5Dashboard extends React.Component {
                                 selected_account_type={this.state.password_manager.selected_account_type}
                                 toggleModal={this.togglePasswordManagerModal}
                             />
-                            <TabOrFlex
-                                landing_companies={this.props.landing_companies}
+                            <LoadTab
                                 active_index={this.state.active_index}
                                 top
                                 center

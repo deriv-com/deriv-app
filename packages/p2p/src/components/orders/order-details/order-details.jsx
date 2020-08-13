@@ -24,7 +24,6 @@ const OrderDetails = ({ order_details, chat_info }) => {
         display_price_rate,
         display_transaction_amount,
         is_buyer,
-        is_incoming,
         is_expired,
         is_completed,
         is_buyer_cancelled,
@@ -80,7 +79,6 @@ const OrderDetails = ({ order_details, chat_info }) => {
                                 <div className='order-details__info--left'>
                                     <OrderInfoBlock
                                         label={is_buyer ? localize('Seller') : localize('Buyer')}
-                                        // TODO: Once we have access to other party's information we can update below.
                                         value={advertiser_name}
                                     />
                                 </div>
@@ -91,24 +89,40 @@ const OrderDetails = ({ order_details, chat_info }) => {
                                     />
                                 </div>
                             </div>
-                            {is_buyer && (
-                                <React.Fragment>
+                            <div className='order-details__info-columns'>
+                                <div className='order-details__info--left'>
                                     <OrderInfoBlock
-                                        label={localize('Seller payment instructions')}
+                                        label={
+                                            is_buyer ? localize('Payment details') : localize('Your payment details')
+                                        }
                                         value={payment_info || '-'}
                                     />
+                                </div>
+                            </div>
+                            <div className='order-details__info-columns'>
+                                <div className='order-details__info--left'>
                                     <OrderInfoBlock
-                                        label={localize('Seller contact details')}
+                                        label={
+                                            is_buyer
+                                                ? localize(`Seller's contact details`)
+                                                : localize('Your contact details')
+                                        }
                                         value={contact_info || '-'}
                                     />
-                                </React.Fragment>
-                            )}
-                            {!is_incoming && (
-                                <OrderInfoBlock
-                                    label={is_buyer ? localize('Seller instructions') : localize('Buyer instructions')}
-                                    value={advertiser_instructions || '-'}
-                                />
-                            )}
+                                </div>
+                            </div>
+                            <div className='order-details__info-columns'>
+                                <div className='order-details__info--left'>
+                                    <OrderInfoBlock
+                                        label={
+                                            is_buyer
+                                                ? localize(`Seller's instructions`)
+                                                : localize(`Buyer's instructions`)
+                                        }
+                                        value={advertiser_instructions || '-'}
+                                    />
+                                </div>
+                            </div>
                             <div className='order-details__info-columns'>
                                 <div className='order-details__info--left'>
                                     <OrderInfoBlock

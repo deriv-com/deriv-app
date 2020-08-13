@@ -204,46 +204,112 @@ class PersonalDetails extends React.Component {
                                             {'place_of_birth' in this.props.value && (
                                                 <Field name='place_of_birth'>
                                                     {({ field }) => (
-                                                        <Autocomplete
-                                                            {...field}
-                                                            disabled={this.props.disabled_items.includes(
-                                                                'place_of_birth'
-                                                            )}
-                                                            data-lpignore='true'
-                                                            autoComplete='off' // prevent chrome autocomplete
-                                                            type='text'
-                                                            label={localize('Place of birth')}
-                                                            error={touched.place_of_birth && errors.place_of_birth}
-                                                            list_items={this.props.residence_list}
-                                                            onItemSelection={({ value, text }) =>
-                                                                setFieldValue('place_of_birth', value ? text : '', true)
-                                                            }
-                                                            required
-                                                        />
+                                                        <React.Fragment>
+                                                            <DesktopWrapper>
+                                                                <Autocomplete
+                                                                    {...field}
+                                                                    disabled={this.props.disabled_items.includes(
+                                                                        'place_of_birth'
+                                                                    )}
+                                                                    data-lpignore='true'
+                                                                    autoComplete='off' // prevent chrome autocomplete
+                                                                    type='text'
+                                                                    label={localize('Place of birth')}
+                                                                    error={
+                                                                        touched.place_of_birth && errors.place_of_birth
+                                                                    }
+                                                                    list_items={this.props.residence_list}
+                                                                    onItemSelection={({ value, text }) =>
+                                                                        setFieldValue(
+                                                                            'place_of_birth',
+                                                                            value ? text : '',
+                                                                            true
+                                                                        )
+                                                                    }
+                                                                    required
+                                                                />
+                                                            </DesktopWrapper>
+                                                            <MobileWrapper>
+                                                                <SelectNative
+                                                                    placeholder={localize('Place of birth')}
+                                                                    name={field.name}
+                                                                    disabled={this.props.disabled_items.includes(
+                                                                        'place_of_birth'
+                                                                    )}
+                                                                    label={localize('Place of birth')}
+                                                                    list_items={this.props.residence_list}
+                                                                    value={values.place_of_birth}
+                                                                    use_text={true}
+                                                                    error={
+                                                                        touched.place_of_birth && errors.place_of_birth
+                                                                    }
+                                                                    onChange={e => {
+                                                                        handleChange(e);
+                                                                        setFieldValue(
+                                                                            'place_of_birth',
+                                                                            e.target.value,
+                                                                            true
+                                                                        );
+                                                                    }}
+                                                                    {...field}
+                                                                    required
+                                                                />
+                                                            </MobileWrapper>
+                                                        </React.Fragment>
                                                     )}
                                                 </Field>
                                             )}
                                             {'citizen' in this.props.value && (
                                                 <Field name='citizen'>
                                                     {({ field }) => (
-                                                        <Autocomplete
-                                                            {...field}
-                                                            data-lpignore='true'
-                                                            autoComplete='off' // prevent chrome autocomplete
-                                                            type='text'
-                                                            label={localize('Citizenship')}
-                                                            error={touched.citizen && errors.citizen}
-                                                            disabled={
-                                                                (this.props.value.citizen &&
-                                                                    this.props.is_fully_authenticated) ||
-                                                                this.props.disabled_items.includes('citizen')
-                                                            }
-                                                            list_items={this.props.residence_list}
-                                                            onItemSelection={({ value, text }) =>
-                                                                setFieldValue('citizen', value ? text : '', true)
-                                                            }
-                                                            required
-                                                        />
+                                                        <React.Fragment>
+                                                            <DesktopWrapper>
+                                                                <Autocomplete
+                                                                    {...field}
+                                                                    data-lpignore='true'
+                                                                    autoComplete='off' // prevent chrome autocomplete
+                                                                    type='text'
+                                                                    label={localize('Citizenship')}
+                                                                    error={touched.citizen && errors.citizen}
+                                                                    disabled={
+                                                                        (this.props.value.citizen &&
+                                                                            this.props.is_fully_authenticated) ||
+                                                                        this.props.disabled_items.includes('citizen')
+                                                                    }
+                                                                    list_items={this.props.residence_list}
+                                                                    onItemSelection={({ value, text }) =>
+                                                                        setFieldValue(
+                                                                            'citizen',
+                                                                            value ? text : '',
+                                                                            true
+                                                                        )
+                                                                    }
+                                                                    required
+                                                                />
+                                                            </DesktopWrapper>
+                                                            <MobileWrapper>
+                                                                <SelectNative
+                                                                    placeholder={localize('Citizenship')}
+                                                                    name={field.name}
+                                                                    disabled={
+                                                                        (this.props.value.citizen &&
+                                                                            this.props.is_fully_authenticated) ||
+                                                                        this.props.disabled_items.includes('citizen')
+                                                                    }
+                                                                    label={localize('Citizenship')}
+                                                                    list_items={this.props.residence_list}
+                                                                    value={values.citizen}
+                                                                    use_text={true}
+                                                                    error={touched.citizen && errors.citizen}
+                                                                    onChange={e => {
+                                                                        handleChange(e);
+                                                                        setFieldValue('citizen', e.target.value, true);
+                                                                    }}
+                                                                    {...field}
+                                                                    required
+                                                                />
+                                                            </MobileWrapper>
+                                                        </React.Fragment>
                                                     )}
                                                 </Field>
                                             )}
@@ -271,25 +337,51 @@ class PersonalDetails extends React.Component {
                                                         <Field name='tax_residence'>
                                                             {({ field }) => (
                                                                 <div className='details-form__tax'>
-                                                                    <Autocomplete
-                                                                        {...field}
-                                                                        data-lpignore='true'
-                                                                        autoComplete='off' // prevent chrome autocomplete
-                                                                        type='text'
-                                                                        label={localize('Tax residence')}
-                                                                        error={
-                                                                            touched.tax_residence &&
-                                                                            errors.tax_residence
-                                                                        }
-                                                                        list_items={this.props.residence_list}
-                                                                        onItemSelection={({ value, text }) =>
-                                                                            setFieldValue(
-                                                                                'tax_residence',
-                                                                                value ? text : '',
-                                                                                true
-                                                                            )
-                                                                        }
-                                                                    />
+                                                                    <DesktopWrapper>
+                                                                        <Autocomplete
+                                                                            {...field}
+                                                                            data-lpignore='true'
+                                                                            autoComplete='off' // prevent chrome autocomplete
+                                                                            type='text'
+                                                                            label={localize('Tax residence')}
+                                                                            error={
+                                                                                touched.tax_residence &&
+                                                                                errors.tax_residence
+                                                                            }
+                                                                            list_items={this.props.residence_list}
+                                                                            onItemSelection={({ value, text }) =>
+                                                                                setFieldValue(
+                                                                                    'tax_residence',
+                                                                                    value ? text : '',
+                                                                                    true
+                                                                                )
+                                                                            }
+                                                                        />
+                                                                    </DesktopWrapper>
+                                                                    <MobileWrapper>
+                                                                        <SelectNative
+                                                                            placeholder={localize('Tax residence')}
+                                                                            name={field.name}
+                                                                            label={localize('Tax residence')}
+                                                                            list_items={this.props.residence_list}
+                                                                            value={values.tax_residence}
+                                                                            use_text={true}
+                                                                            error={
+                                                                                touched.tax_residence &&
+                                                                                errors.tax_residence
+                                                                            }
+                                                                            onChange={e => {
+                                                                                handleChange(e);
+                                                                                setFieldValue(
+                                                                                    'tax_residence',
+                                                                                    e.target.value,
+                                                                                    true
+                                                                                );
+                                                                            }}
+                                                                            {...field}
+                                                                            required
+                                                                        />
+                                                                    </MobileWrapper>
                                                                     <div
                                                                         onClick={e => {
                                                                             this.setState({

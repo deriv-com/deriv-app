@@ -112,10 +112,10 @@ const FinancialBox = ({ derivOnClick, mt5OnClick, has_maltainvest_account, add_a
                     buttonOnClick={mt5OnClick}
                     is_button_disabled={!has_maltainvest_account}
                     items={{
-                        [localize('Leverage')]: localize('Up to 1:1000'),
-                        [localize('Margin call')]: localize('150%'),
-                        [localize('Stop out level')]: localize('75%'),
-                        [localize('Currency')]: localize('USD'),
+                        [localize('Leverage')]: localize('Up to 1:30'),
+                        [localize('Margin call')]: localize('100%'),
+                        [localize('Stop out level')]: localize('50%'),
+                        [localize('Currency')]: localize('EUR/GBP'),
                     }}
                     platforms={[
                         {

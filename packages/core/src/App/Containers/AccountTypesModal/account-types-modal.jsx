@@ -235,7 +235,7 @@ class AccountTypesModal extends React.Component {
                 toggleModal={this.closeModal}
                 has_close_icon={this.props.is_dismissible}
             >
-                <ThemedScrollbars is_bypassed={isMobile()} autohide={false}>
+                <ThemedScrollbars is_bypassed={isMobile()} autohide={false} height={'calc(100vh - 84px'}>
                     <Div100vhContainer
                         height_offset='120px'
                         is_disabled={isDesktop()}

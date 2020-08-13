@@ -1,8 +1,12 @@
 import React from 'react';
 import { localize, Localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
 import 'Sass/app/modules/complaints-policy.scss';
 
-const getIntroductionText = landing_company_shortcode => {
+const getIntroductionText = (landing_company_shortcode, mt5_login_list) => {
+    const has_vanuatu = mt5_login_list.some(item => /vanuatu/.test(item.group));
+    const has_labuan = mt5_login_list.some(item => /labuan/.test(item.group));
+
     switch (landing_company_shortcode) {
         case 'iom':
             return (
@@ -19,18 +23,22 @@ const getIntroductionText = landing_company_shortcode => {
             return localize(
                 'This complaints policy, which may change from time to time, applies to your account(s) registered with Deriv (Europe) Limited, having its registered office address at W Business Centre, Level 3, Triq Dun Karm, Birkirkara, BKR 9033, Malta, licensed and regulated by the Malta Gaming Authority in Malta for gambling products only, licence no. MGA/B2C/102/2000, and for clients residing in the UK by the UK Gambling Commission.'
             );
-        case 'vanuatu':
-            return localize(
-                'This complaints policy, which may change from time to time, applies to your account(s) registered with Deriv (SVG) LLC and Deriv (V) Ltd.'
-            );
-        case 'labuan':
-            return localize(
-                'This complaints policy, which may change from time to time, applies to your account(s) registered with Deriv (SVG) LLC and Deriv (FX) Ltd.'
-            );
         default:
-            // considered as svg
+            if (has_vanuatu && has_labuan) {
+                return localize(
+                    'This complaints policy, which may change from time to time, applies to your account(s) registered with Deriv (SVG) LLC, Deriv (FX) Ltd, and Deriv (V) Ltd.'
+                );
+            } else if (has_vanuatu) {
+                return localize(
+                    'This complaints policy, which may change from time to time, applies to your account(s) registered with Deriv (SVG) LLC and Deriv (V) Ltd.'
+                );
+            } else if (has_labuan) {
+                return localize(
+                    'This complaints policy, which may change from time to time, applies to your account(s) registered with Deriv (SVG) LLC and Deriv (FX) Ltd.'
+                );
+            }
             return localize(
-                'This complaints policy, which may change from time to time, applies to your account(s) registered with Deriv (SVG) LLC, Deriv (FX) Ltd, and Deriv (V) Ltd.'
+                'This complaints policy, which may change from time to time, applies to your account(s) registered with Deriv (SVG) LLC.'
             );
     }
 };
@@ -158,12 +166,12 @@ const getYourDecisionText = landing_company_shortcode => {
     }
 };
 
-const Content = ({ landing_company_shortcode }) => {
+const Content = ({ landing_company_shortcode, mt5_login_list }) => {
     const policy_content = [
         {
             title: localize('1. Introduction'),
             content: {
-                text: getIntroductionText(landing_company_shortcode),
+                text: getIntroductionText(landing_company_shortcode, mt5_login_list),
             },
         },
         {
@@ -343,7 +351,7 @@ const Content = ({ landing_company_shortcode }) => {
                 )}
                 {row.content && (
                     <div className='complaints-policy__section-content'>
-                        {row.content.text && row.content.text}
+                        {row.content.text}
                         {/* eslint-disable-next-line react/display-name */}
                         {row.content.subcontent?.map((item, i) => (
                             <div key={i} className='complaints-policy__subsection'>
@@ -364,4 +372,6 @@ const Content = ({ landing_company_shortcode }) => {
     );
 };
 
-export default Content;
+export default connect(({ client }) => ({
+    mt5_login_list: client.mt5_login_list,
+}))(Content);

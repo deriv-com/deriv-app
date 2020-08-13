@@ -20,8 +20,11 @@ const getIntroductionText = (landing_company_shortcode, mt5_login_list) => {
                 'This complaints policy, which may change from time to time, applies to your account registered with Deriv Investments (Europe) Limited.'
             );
         case 'malta':
-            return localize(
-                'This complaints policy, which may change from time to time, applies to your account(s) registered with Deriv (Europe) Limited, having its registered office address at W Business Centre, Level 3, Triq Dun Karm, Birkirkara, BKR 9033, Malta, licensed and regulated by the Malta Gaming Authority in Malta for gambling products only, licence no. MGA/B2C/102/2000, and for clients residing in the UK by the UK Gambling Commission.'
+            return (
+                <Localize
+                    i18n_default_text='This complaints policy, which may change from time to time, applies to your account(s) registered with Deriv (Europe) Limited, having its registered office address at W Business Centre, Level 3, Triq Dun Karm, Birkirkara, BKR 9033, Malta, licensed and regulated by the Malta Gaming Authority in Malta for gambling products only, <0>licence no. MGA/B2C/102/2000</0>, and for clients residing in the UK by the UK Gambling Commission.'
+                    components={[<strong key={0} />]}
+                />
             );
         default:
             if (has_vanuatu && has_labuan) {

@@ -1,17 +1,3 @@
-$modal_container_height: calc(100vh - 210px);
-
-.dc-modal {
-    &__container {
-        max-width: 99vw;
-
-        &_modal {
-            &--load {
-                opacity: 0;
-            }
-        }
-    }
-}
-
 .load-strategy {
     &__container {
         @include desktop {

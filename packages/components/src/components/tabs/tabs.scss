@@ -47,9 +47,6 @@
         &:not(&--header-fit-content) {
             justify-content: center;
         }
-        &--is-full-width {
-            width: 100%;
-        }
     }
     &__item {
         list-style: none;

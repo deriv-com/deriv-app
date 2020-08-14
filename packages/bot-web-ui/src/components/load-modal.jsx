@@ -12,12 +12,12 @@ const LoadModal = ({
     active_index,
     is_load_modal_open,
     is_mobile,
+    loaded_local_file,
     onEntered,
+    recent_workspaces,
     setActiveTabIndex,
     should_rerender_tabs,
     toggleLoadModal,
-    recent_workspaces,
-    loaded_local_file,
 }) => {
     const header_text = localize('Load strategy');
 
@@ -31,7 +31,6 @@ const LoadModal = ({
                             onTabItemClick={setActiveTabIndex}
                             should_delay_render={should_rerender_tabs}
                             top
-                            is_full_width
                         >
                             <div label={localize('Local')}>
                                 <Local />
@@ -94,12 +93,12 @@ LoadModal.propTypes = {
     active_index: PropTypes.number,
     is_load_modal_open: PropTypes.bool,
     is_mobile: PropTypes.bool,
+    loaded_local_file: PropTypes.string,
     onEntered: PropTypes.func,
+    recent_workspaces: PropTypes.array,
     setActiveTabIndex: PropTypes.func,
     should_rerender_tabs: PropTypes.bool,
     toggleLoadModal: PropTypes.func,
-    recent_workspaces: PropTypes.array,
-    loaded_local_file: PropTypes.string,
 };
 
 export default connect(({ load_modal, ui }) => ({

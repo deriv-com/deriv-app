@@ -63,7 +63,6 @@ class Tabs extends React.Component {
             fit_content,
             header_fit_content,
             single_tab_has_no_label,
-            is_full_width,
         } = this.props;
         const { active_index } = this.state;
         const tab_width = fit_content ? '150px' : `${(100 / children.length).toFixed(2)}%`;
@@ -81,7 +80,6 @@ class Tabs extends React.Component {
                         'dc-tabs__list--bottom': bottom,
                         'dc-tabs__list--center': center,
                         'dc-tabs__list--header-fit-content': header_fit_content,
-                        'dc-tabs__list--is-full-width': is_full_width,
                     })}
                     ref={this.setTabsWrapperRef}
                 >

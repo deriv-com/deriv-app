@@ -18,11 +18,11 @@ const RecentFooter = ({ is_open_button_loading, loadFileFromRecent }) => {
 };
 
 RecentFooter.propTypes = {
-    loadFileFromRecent: PropTypes.func,
     is_open_button_loading: PropTypes.bool,
+    loadFileFromRecent: PropTypes.func,
 };
 
 export default connect(({ load_modal }) => ({
-    loadFileFromRecent: load_modal.loadFileFromRecent,
     is_open_button_loading: load_modal.is_open_button_loading,
+    loadFileFromRecent: load_modal.loadFileFromRecent,
 }))(RecentFooter);

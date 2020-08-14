@@ -5,6 +5,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    pointer-events: none;
 
     &__message {
         max-width: calc(100vw - 3.2rem);
@@ -12,10 +13,10 @@
         @include typeface(--paragraph-center-normal-black);
         color: var(--text-colored-background);
         border-radius: $BORDER_RADIUS;
-        margin-bottom: 1rem;
         min-height: 34px;
         display: flex;
         align-items: center;
+        pointer-events: all;
     }
     &__error {
         .dc-toast__message {
@@ -44,6 +45,11 @@
     &--blinker {
         .dc-toast__message {
             animation: toast_blinking 0.4s alternate infinite;
+        }
+    }
+    &:not(:first-child) {
+        .dc-toast__message {
+            margin-top: 1rem;
         }
     }
 }

@@ -41,7 +41,6 @@ const Toast = ({ children, className, is_open = true, onClose, onClick, type = '
                 className={classNames('dc-toast', className, {
                     [`dc-toast__${type}`]: type,
                 })}
-                onClick={onClick}
                 onMouseDown={e => {
                     // To prevent clickoutside for modal
                     e.nativeEvent.preventDefault();
@@ -49,7 +48,7 @@ const Toast = ({ children, className, is_open = true, onClose, onClick, type = '
                     e.nativeEvent.stopImmediatePropagation();
                 }}
             >
-                <div className='dc-toast__message'>
+                <div className='dc-toast__message' onClick={onClick}>
                     <div className='dc-toast__message-content'>{children}</div>
                 </div>
             </div>

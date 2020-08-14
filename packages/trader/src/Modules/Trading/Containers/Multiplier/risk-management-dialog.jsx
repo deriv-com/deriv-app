@@ -1,5 +1,6 @@
 import React from 'react';
 import { MobileDialog, Button, Div100vhContainer } from '@deriv/components';
+import { isDeepEqual } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import StopLoss from 'Modules/Trading/Components/Form/TradeParams/Multiplier/stop-loss.jsx';
@@ -18,16 +19,41 @@ const RiskManagementDialog = ({
     onChangeMultiple,
     toggleDialog,
 }) => {
-    const [state, setState] = React.useState({
+    const applied_risk_management_state = {
         take_profit,
         stop_loss,
         has_take_profit,
         has_stop_loss,
         has_cancellation,
         cancellation_duration,
-    });
+    };
+    const [state, setState] = React.useState(applied_risk_management_state);
 
     const [validation_errors, setValidationErrors] = React.useState({});
+
+    const pick = (source, fields) => {
+        return fields.reduce((target, prop) => {
+            if (Object.prototype.hasOwnProperty.call(source, prop)) target[prop] = source[prop];
+            return target;
+        }, {});
+    };
+
+    const getStateToCompare = _state => {
+        const props_to_pick = [
+            'has_take_profit',
+            'has_stop_loss',
+            'has_cancellation',
+            _state.has_take_profit && 'take_profit',
+            _state.has_stop_loss && 'stop_loss',
+            _state.has_cancellation && 'cancellation_duration',
+        ];
+
+        return pick(_state, props_to_pick);
+    };
+
+    const isStateUnchanged = () => {
+        return isDeepEqual(getStateToCompare(state), getStateToCompare(applied_risk_management_state));
+    };
 
     const validate = new_state => {
         setValidationErrors({
@@ -60,9 +86,14 @@ const RiskManagementDialog = ({
         toggleDialog();
     };
 
+    const resetAndClose = (...args) => {
+        setState(applied_risk_management_state);
+        onClose(...args);
+    };
+
     return (
         <React.Fragment>
-            <MobileDialog portal_element_id='modal_root' visible={is_open} has_content_scroll onClose={onClose}>
+            <MobileDialog portal_element_id='modal_root' visible={is_open} has_content_scroll onClose={resetAndClose}>
                 <Div100vhContainer className='trade-params__multiplier-risk-management-dialog' height_offset='60px'>
                     <TakeProfit
                         take_profit={state.take_profit}
@@ -91,7 +122,9 @@ const RiskManagementDialog = ({
                             onClick={apply}
                             primary
                             is_disabled={
-                                validation_errors.take_profit?.length > 0 || validation_errors.stop_loss?.length > 0
+                                validation_errors.take_profit?.length > 0 ||
+                                validation_errors.stop_loss?.length > 0 ||
+                                isStateUnchanged()
                             }
                         />
                     </div>

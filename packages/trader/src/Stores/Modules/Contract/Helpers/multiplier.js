@@ -8,7 +8,7 @@ export const onToggleCancellation = ({ has_cancellation, onChangeMultiple }) => 
         ...(!new_val
             ? {
                   // reset deal cancellation price
-                  cancellation_price: 0,
+                  cancellation_price: undefined,
               }
             : {
                   // unchecked Stop loss

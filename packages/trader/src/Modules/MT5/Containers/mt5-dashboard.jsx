@@ -21,17 +21,6 @@ import { MT5RealAccountDisplay } from '../Components/mt5-real-account-display.js
 import { getBrokerName, getServerName, getPlatformMt5DownloadLink } from '../Helpers/constants';
 import 'Sass/app/modules/mt5/mt5-dashboard.scss';
 
-const hasMoreThanOne = ({ mt_financial_company, mt_gaming_company }, is_logged_in) => {
-    return (
-        !is_logged_in ||
-        [
-            ...(mt_financial_company?.financial ? [true] : []),
-            ...(mt_financial_company?.financial_stp ? [true] : []),
-            ...(mt_gaming_company?.financial ? [true] : []),
-        ].length > 1
-    );
-};
-
 const LoadTab = ({ children, is_loading, loading_component, ...props }) => {
     const LoadingComponent = loading_component;
     if (is_loading) {
@@ -151,6 +140,8 @@ class MT5Dashboard extends React.Component {
             standpoint,
         } = this.props;
 
+        const should_show_missing_real_account = !is_eu && is_logged_in && !has_real_account;
+
         return (
             <React.Fragment>
                 <div className='mt5-dashboard__container'>
@@ -174,9 +165,6 @@ class MT5Dashboard extends React.Component {
                                 selected_account_type={this.state.password_manager.selected_account_type}
                                 toggleModal={this.togglePasswordManagerModal}
                             />
-                            {!is_eu && !hasMoreThanOne(landing_companies, is_logged_in) && is_logged_in && (
-                                <MissingRealAccount onClickSignup={beginRealSignupForMt5} />
-                            )}
                             <LoadTab
                                 active_index={this.state.active_index}
                                 top
@@ -188,11 +176,9 @@ class MT5Dashboard extends React.Component {
                             >
                                 <div label={localize('Real account')}>
                                     <React.Fragment>
-                                        {!is_eu &&
-                                            hasMoreThanOne(landing_companies, is_logged_in) &&
-                                            !has_real_account && (
-                                                <MissingRealAccount onClickSignup={beginRealSignupForMt5} />
-                                            )}
+                                        {should_show_missing_real_account && (
+                                            <MissingRealAccount onClickSignup={beginRealSignupForMt5} />
+                                        )}
                                         <MT5RealAccountDisplay
                                             is_eu={is_eu}
                                             is_eu_enabled={is_eu_enabled} // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production

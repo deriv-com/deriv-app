@@ -127,6 +127,7 @@ export default class ClientStore extends BaseStore {
      */
     @computed
     get is_client_allowed_to_visit() {
+        // TODO: [deriv-eu] Remove this after complete EU merge into production
         return !!(
             this.root_store.ui.is_eu_enabled || // TODO: [deriv-eu] Remove this after complete EU merge into production
             !this.is_logged_in ||
@@ -140,7 +141,7 @@ export default class ClientStore extends BaseStore {
         if (!this.loginid || !this.landing_company) {
             return false;
         }
-        return !!(this.has_reality_check && !this.reality_check_dismissed);
+        return !!(this.has_reality_check && !this.reality_check_dismissed && this.root_store.ui.is_eu_enabled); // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
     }
 
     @computed
@@ -334,6 +335,37 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get is_authentication_needed() {
+        if (!this.account_status.status) return false;
+        return this.account_status.authentication.needs_verification.length;
+    }
+
+    @computed
+    get is_tnc_needed() {
+        return ClientBase.shouldAcceptTnc(this.account_settings);
+    }
+
+    @computed
+    get is_financial_information_incomplete() {
+        if (!this.account_status.status) return false;
+        return this.account_status.status.some(status => status === 'financial_information_not_complete');
+    }
+
+    @computed
+    get is_withdrawal_lock() {
+        if (!this.account_status.status) return false;
+        return this.account_status.status.some(status_name =>
+            /^(withdrawal_locked|no_withdrawal_or_trading)$/.test(status_name)
+        );
+    }
+
+    @computed
+    get is_trading_experience_incomplete() {
+        if (!this.account_status.status) return false;
+        return this.account_status.status.some(status => status === 'trading_experience_not_complete');
+    }
+
+    @computed
     get is_fully_authenticated() {
         if (!this.account_status.status) return false;
         return this.account_status.status.some(status => status === 'authenticated');
@@ -343,6 +375,12 @@ export default class ClientStore extends BaseStore {
     get is_pending_authentication() {
         if (!this.account_status.status) return false;
         return this.account_status.status.some(status => status === 'document_under_review');
+    }
+
+    @computed
+    get is_financial_account() {
+        if (!this.landing_companies) return false;
+        return this.account_type === 'financial';
     }
 
     @computed
@@ -499,11 +537,11 @@ export default class ClientStore extends BaseStore {
         return false;
     }
 
-    @computed({ keepAlive: true })
+    @computed
     get is_eu_country() {
         const country = this.website_status.clients_country;
         if (country) return isEuCountry(country);
-        return country;
+        return false;
     }
     /**
      * Store Values relevant to the loginid to local storage.
@@ -1085,7 +1123,6 @@ export default class ClientStore extends BaseStore {
         }
 
         runInAction(() => (this.is_switching = true));
-
         const from_login_id = this.loginid;
         this.resetLocalStorageValues(this.switched);
         SocketCache.clear();
@@ -1102,17 +1139,14 @@ export default class ClientStore extends BaseStore {
             await WS.forgetAll('balance');
             await BinarySocket.authorize(this.getToken());
         }
-
+        if (this.root_store.common.has_error) this.root_store.common.setError(false, null);
         sessionStorage.setItem('active_tab', '1');
 
         // set local storage
         this.root_store.gtm.setLoginFlag();
 
         await this.init();
-
-        // broadcastAccountChange is already called after new connection is authorized
-        if (!should_switch_socket_connection) this.broadcastAccountChange();
-
+        this.broadcastAccountChange();
         this.getLimits();
 
         runInAction(() => (this.is_switching = false));
@@ -1245,6 +1279,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setLogout(is_logged_out) {
         this.has_logged_out = is_logged_out;
+        if (this.root_store.common.has_error) this.root_store.common.setError(false, null);
     }
 
     /* eslint-disable */

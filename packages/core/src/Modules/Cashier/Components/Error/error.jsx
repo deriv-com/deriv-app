@@ -3,7 +3,6 @@ import React from 'react';
 import { Button, Icon, ButtonLink } from '@deriv/components';
 import { getDerivComLink } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 
 const ErrorComponent = ({ header, message, button_link, onClickButton, button_text, footer }) => (
@@ -45,46 +44,18 @@ class Error extends React.Component {
         this.props.setErrorMessage('');
     };
 
-    acceptTNC = async () => {
-        await WS.tncApproval();
-        this.onClickButton();
-    };
-
     render() {
         let AccountError;
         switch (this.props.error.code) {
             case 'InvalidToken':
                 AccountError = (
                     <ErrorComponent
-                        header={localize('Identity confirmation failed')}
+                        header={localize('Email verification failed')}
                         message={
-                            <Localize i18n_default_text='It looks like your link is incorrect or no longer valid.' />
+                            <Localize i18n_default_text='The verification link you used is invalid or expired. Please request for a new one.' />
                         }
                         onClickButton={this.onClickButton}
-                        button_text={localize('Request a new link')}
-                    />
-                );
-                break;
-            case 'ASK_TNC_APPROVAL':
-                AccountError = (
-                    <ErrorComponent
-                        header={localize('Our terms and conditions have changed')}
-                        message={
-                            <Localize
-                                i18n_default_text='Please accept our updated <0>terms and conditions</0> to continue.'
-                                components={[
-                                    <a
-                                        key={0}
-                                        className='link'
-                                        target='_blank'
-                                        rel='noopener noreferrer'
-                                        href={getDerivComLink('terms-and-conditions/#general')}
-                                    />,
-                                ]}
-                            />
-                        }
-                        onClickButton={this.acceptTNC}
-                        button_text={localize('I accept')}
+                        button_text={localize('Resend email')}
                     />
                 );
                 break;

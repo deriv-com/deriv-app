@@ -12,7 +12,7 @@ import {
     Button,
     FormSubmitButton,
 } from '@deriv/components';
-import { isEmptyObject, getDiffDuration, toGMTFormat, isMobile } from '@deriv/shared';
+import { isDesktop, isEmptyObject, getDiffDuration, toGMTFormat, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services';
 
@@ -119,6 +119,7 @@ const SummaryModal = ({
                             <ThemedScrollbars height='75vh' autoHide={false} is_bypassed={isMobile()}>
                                 <Div100vhContainer
                                     className='reality-check__column-wrapper'
+                                    is_disabled={isDesktop()}
                                     max_autoheight_offset='204px'
                                 >
                                     <div className='reality-check__column'>

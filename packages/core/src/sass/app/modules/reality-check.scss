@@ -47,6 +47,11 @@
 
             @include mobile {
                 flex-direction: column;
+                padding: 0.8rem 2.4rem;
+
+                @media only screen and (max-width: 340px) {
+                    padding: 0.8rem 1.6rem;
+                }
             }
         }
         &:not(:last-child) {
@@ -110,10 +115,19 @@
     }
 }
 
-.dc-modal-header__title--reality-check {
-    @include mobile {
-        margin: auto;
-        text-align: center;
-        line-height: 1.43;
+.dc-modal {
+    &-header {
+        &__title--reality-check {
+            @include mobile {
+                margin: auto;
+                text-align: center;
+                line-height: 1.43;
+            }
+        }
+    }
+    &-body {
+        @include mobile {
+            padding: 0;
+        }
     }
 }

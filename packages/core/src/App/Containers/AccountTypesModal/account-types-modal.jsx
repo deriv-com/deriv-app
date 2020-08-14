@@ -149,6 +149,9 @@ const SyntheticBox = ({ derivOnClick, add_account_label }) => {
             )}
             icons={[
                 'IcUnderlying1HZ10V',
+                'IcUnderlying1HZ25V',
+                'IcUnderlying1HZ50V',
+                'IcUnderlying1HZ75V',
                 'IcUnderlying1HZ100V',
                 'IcUnderlyingR_10',
                 'IcUnderlyingR_25',
@@ -168,7 +171,7 @@ const SyntheticBox = ({ derivOnClick, add_account_label }) => {
                         [localize('Min duration')]: localize('1 tick'),
                         [localize('Max duration')]: localize('365 days'),
                         [localize('Availability')]: localize('24/7'),
-                        [localize('Currency')]: localize('USD/GBP/EUR'),
+                        [localize('Currency')]: localize('USD/GBP'),
                     }}
                     platforms={[
                         {

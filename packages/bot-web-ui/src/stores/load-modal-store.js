@@ -23,7 +23,7 @@ export default class LoadModalStore {
         reaction(
             () => this.loaded_local_file,
             loaded_local_file => {
-                if (!loaded_local_file && this.local_workspace.dispose) {
+                if (!loaded_local_file && this.local_workspace) {
                     this.local_workspace.dispose();
                 }
             }

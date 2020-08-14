@@ -20,6 +20,14 @@ export default class LoadModalStore {
                 }
             }
         );
+        reaction(
+            () => this.loaded_local_file,
+            loaded_local_file => {
+                if (!loaded_local_file && this.local_workspace.dispose) {
+                    this.local_workspace.dispose();
+                }
+            }
+        );
     }
 
     TAB_LOCAL = 'local_tab';
@@ -126,7 +134,7 @@ export default class LoadModalStore {
         if (this.tab_name === this.TAB_LOCAL) {
             // add drag and drop event listerner when switch to local tab
             if (!this.drop_zone) {
-                this.drop_zone = document.getElementById('import_dragndrop');
+                this.drop_zone = document.querySelector('load-strategy__local-dropzone-area');
 
                 if (this.drop_zone) {
                     this.drop_zone.addEventListener('drop', e => this.handleFileChange(e, false));
@@ -135,8 +143,7 @@ export default class LoadModalStore {
 
             // dispose workspace in local tab when switch tab
             if (this.loaded_local_file && this.local_workspace) {
-                this.local_workspace.dispose(true);
-                this.loaded_local_file = null;
+                this.setLoadedLocalFile(null);
             }
         } else if (this.drop_zone) {
             this.drop_zone.removeEventListener('drop', e => this.handleFileChange(e, false));
@@ -198,7 +205,7 @@ export default class LoadModalStore {
         }
 
         if (!this.recent_workspace || !this.recent_workspace.rendered) {
-            const ref = document.getElementById('load-recent__scratch');
+            const ref = document.getElementById('load-strategy__blockly-container');
 
             if (!ref) {
                 // eslint-disable-next-line no-console
@@ -289,7 +296,7 @@ export default class LoadModalStore {
             const load_options = { block_string: e.target.result, drop_event, from: save_types.LOCAL };
 
             if (is_preview) {
-                const ref = document.getElementById('load-local__scratch');
+                const ref = document.getElementById('load-strategy__blockly-container');
                 this.local_workspace = Blockly.inject(ref, {
                     media: `${__webpack_public_path__}media/`, // eslint-disable-line
                     zoom: {

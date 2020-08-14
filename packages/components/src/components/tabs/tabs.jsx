@@ -81,7 +81,7 @@ class Tabs extends React.Component {
                         'dc-tabs__list--bottom': bottom,
                         'dc-tabs__list--center': center,
                         'dc-tabs__list--header-fit-content': header_fit_content,
-                        'dc-tabs__list--is-ful-width': is_full_width,
+                        'dc-tabs__list--is-full-width': is_full_width,
                     })}
                     ref={this.setTabsWrapperRef}
                 >

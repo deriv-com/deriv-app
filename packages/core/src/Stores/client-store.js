@@ -106,6 +106,10 @@ export default class ClientStore extends BaseStore {
                 }
             }
         );
+        when(
+            () => !this.is_logged_in && this.root_store.ui && this.root_store.ui.is_real_acc_signup_on,
+            () => this.root_store.ui.closeRealAccountSignup()
+        );
     }
 
     @computed
@@ -123,6 +127,7 @@ export default class ClientStore extends BaseStore {
      */
     @computed
     get is_client_allowed_to_visit() {
+        // TODO: [deriv-eu] Remove this after complete EU merge into production
         return !!(
             this.root_store.ui.is_eu_enabled || // TODO: [deriv-eu] Remove this after complete EU merge into production
             !this.is_logged_in ||
@@ -136,7 +141,7 @@ export default class ClientStore extends BaseStore {
         if (!this.loginid || !this.landing_company) {
             return false;
         }
-        return !!(this.has_reality_check && !this.reality_check_dismissed);
+        return !!(this.has_reality_check && !this.reality_check_dismissed && this.root_store.ui.is_eu_enabled); // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
     }
 
     @computed
@@ -190,6 +195,12 @@ export default class ClientStore extends BaseStore {
     @computed
     get legal_allowed_currencies() {
         if (!this.landing_companies) return [];
+        if (this.root_store.ui && this.root_store.ui.real_account_signup_target) {
+            const target = this.root_store.ui.real_account_signup_target === 'maltainvest' ? 'financial' : 'gaming';
+            if (this.landing_companies[`${target}_company`]) {
+                return this.landing_companies[`${target}_company`].legal_allowed_currencies;
+            }
+        }
         if (this.landing_companies.gaming_company) {
             return this.landing_companies.gaming_company.legal_allowed_currencies;
         }
@@ -324,6 +335,37 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get is_authentication_needed() {
+        if (!this.account_status.status) return false;
+        return this.account_status.authentication.needs_verification.length;
+    }
+
+    @computed
+    get is_tnc_needed() {
+        return ClientBase.shouldAcceptTnc(this.account_settings);
+    }
+
+    @computed
+    get is_financial_information_incomplete() {
+        if (!this.account_status.status) return false;
+        return this.account_status.status.some(status => status === 'financial_information_not_complete');
+    }
+
+    @computed
+    get is_withdrawal_lock() {
+        if (!this.account_status.status) return false;
+        return this.account_status.status.some(status_name =>
+            /^(withdrawal_locked|no_withdrawal_or_trading)$/.test(status_name)
+        );
+    }
+
+    @computed
+    get is_trading_experience_incomplete() {
+        if (!this.account_status.status) return false;
+        return this.account_status.status.some(status => status === 'trading_experience_not_complete');
+    }
+
+    @computed
     get is_fully_authenticated() {
         if (!this.account_status.status) return false;
         return this.account_status.status.some(status => status === 'authenticated');
@@ -333,6 +375,12 @@ export default class ClientStore extends BaseStore {
     get is_pending_authentication() {
         if (!this.account_status.status) return false;
         return this.account_status.status.some(status => status === 'document_under_review');
+    }
+
+    @computed
+    get is_financial_account() {
+        if (!this.landing_companies) return false;
+        return this.account_type === 'financial';
     }
 
     @computed
@@ -397,11 +445,11 @@ export default class ClientStore extends BaseStore {
     get should_have_real_account() {
         // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
         return (
-            this.root_store.ui &&
-            this.root_store.ui.is_eu_enabled &&
             this.standpoint.iom &&
             this.is_uk &&
-            !this.has_any_real_account
+            !this.has_any_real_account &&
+            this.root_store.ui &&
+            this.root_store.ui.is_eu_enabled
         );
     }
 
@@ -489,11 +537,11 @@ export default class ClientStore extends BaseStore {
         return false;
     }
 
-    @computed({ keepAlive: true })
+    @computed
     get is_eu_country() {
         const country = this.website_status.clients_country;
         if (country) return isEuCountry(country);
-        return country;
+        return false;
     }
     /**
      * Store Values relevant to the loginid to local storage.
@@ -511,7 +559,9 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     getBasicUpgradeInfo() {
-        const upgradeable_landing_companies = State.getResponse('authorize.upgradeable_landing_companies');
+        const upgradeable_landing_companies = [
+            ...new Set(State.getResponse('authorize.upgradeable_landing_companies')),
+        ];
         let can_open_multi = false;
         let type, can_upgrade_to;
         if ((upgradeable_landing_companies || []).length) {
@@ -581,7 +631,7 @@ export default class ClientStore extends BaseStore {
         this.updateAccountList(response.authorize.account_list);
         this.upgrade_info = this.getBasicUpgradeInfo();
         this.user_id = response.authorize.user_id;
-        this.upgradeable_landing_companies = response.authorize.upgradeable_landing_companies;
+        this.upgradeable_landing_companies = [...new Set(response.authorize.upgradeable_landing_companies)];
         this.local_currency_config.currency = Object.keys(response.authorize.local_currencies)[0];
 
         // For residences without local currency (e.g. ax)
@@ -1073,7 +1123,6 @@ export default class ClientStore extends BaseStore {
         }
 
         runInAction(() => (this.is_switching = true));
-
         const from_login_id = this.loginid;
         this.resetLocalStorageValues(this.switched);
         SocketCache.clear();
@@ -1090,17 +1139,14 @@ export default class ClientStore extends BaseStore {
             await WS.forgetAll('balance');
             await BinarySocket.authorize(this.getToken());
         }
-
+        if (this.root_store.common.has_error) this.root_store.common.setError(false, null);
         sessionStorage.setItem('active_tab', '1');
 
         // set local storage
         this.root_store.gtm.setLoginFlag();
 
         await this.init();
-
-        // broadcastAccountChange is already called after new connection is authorized
-        if (!should_switch_socket_connection) this.broadcastAccountChange();
-
+        this.broadcastAccountChange();
         this.getLimits();
 
         runInAction(() => (this.is_switching = false));
@@ -1233,6 +1279,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setLogout(is_logged_out) {
         this.has_logged_out = is_logged_out;
+        if (this.root_store.common.has_error) this.root_store.common.setError(false, null);
     }
 
     /* eslint-disable */
@@ -1351,7 +1398,7 @@ export default class ClientStore extends BaseStore {
 
             runInAction(() => {
                 const account_list = (authorize_response.authorize || {}).account_list;
-                this.upgradeable_landing_companies = authorize_response.upgradeable_landing_companies;
+                this.upgradeable_landing_companies = [...new Set(authorize_response.upgradeable_landing_companies)];
 
                 if (this.canStoreClientAccounts(obj_params, account_list)) {
                     this.storeClientAccounts(obj_params, account_list);
@@ -1471,7 +1518,9 @@ export default class ClientStore extends BaseStore {
                     event: 'virtual_signup',
                 });
 
-                this.root_store.ui.showAccountTypesModalForEuropean();
+                if (this.root_store.ui.is_eu_enabled) {
+                    this.root_store.ui.showAccountTypesModalForEuropean();
+                }
             }
         });
     }

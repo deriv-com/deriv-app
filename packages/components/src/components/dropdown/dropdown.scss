@@ -92,7 +92,7 @@
                 left: 8px;
 
                 &.dc-dropdown__display-placeholder--is-title {
-                    transform: translate(0rem, -1.7rem) scale(0.75);
+                    transform: translate(0, -1.7rem) scale(0.75);
                     padding: 0 4px;
 
                     .dc-dropdown__display-placeholder-text {
@@ -142,6 +142,9 @@
         &--up {
             transform: rotate(-180deg);
         }
+        &--error {
+            top: 1.4rem;
+        }
     }
     &:active,
     &:focus,
@@ -151,6 +154,14 @@
 
         .dc-dropdown__select-arrow {
             color: var(--text-general);
+        }
+    }
+    &--error {
+        & .dc-dropdown__display {
+            border-color: var(--brand-red-coral) !important;
+        }
+        & .dc-dropdown__label {
+            color: var(--brand-red-coral) !important;
         }
     }
     &__list {

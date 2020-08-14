@@ -79,7 +79,7 @@
         &--heading {
             @include typeface(--title-left-bold-black, none);
             color: var(--text-prominent);
-            line-height: 1.5em;
+            line-height: 1.5;
         }
     }
     &__missing-real {
@@ -92,7 +92,7 @@
 
         &--heading {
             color: var(--text-prominent);
-            line-height: 1.5rem;
+            line-height: 1.5;
             @include typeface(--title-left-bold-black, none);
             @include mobile {
                 font-size: 1.2rem;
@@ -397,12 +397,12 @@
     &--heading {
         @include typeface(--title-left-bold-black, none);
         color: var(--text-prominent);
-        line-height: 1.5em;
+        line-height: 1.5;
     }
     &--paragraph {
         @include typeface(--paragraph-left-normal-black, none);
         color: var(--text-general);
-        line-height: 1.45em;
+        line-height: 1.45;
     }
     &--balance {
         @include typeface(--title-left-bold-black);
@@ -497,7 +497,7 @@
             .mt5-account-card--paragraph {
                 @include typeface(--paragraph-left-bold-black, none);
                 color: var(--text-prominent);
-                line-height: 1.45em;
+                line-height: 1.45;
             }
         }
     }
@@ -507,7 +507,7 @@
         margin-bottom: 1.6rem;
 
         &.mt5-account-card--paragraph {
-            line-height: 1.4em;
+            line-height: 1.4;
         }
     }
     &__account-selection {
@@ -581,8 +581,8 @@
 
 .mt5-password-manager {
     margin: 5.6rem auto 3.2rem;
-    max-width: calc(400px + 1rem); // needs extra padding for the scrollbar, otherwise it will cover the words
     width: 100%;
+    height: 100%;
 
     &--paragraph {
         @include typeface(--paragraph-left-normal-black, none);
@@ -598,6 +598,9 @@
     &__investor-wrapper {
         margin: 3.2rem 0.5rem 0;
 
+        & .dc-input__label {
+            top: 0.9rem;
+        }
         @include mobile {
             padding-bottom: 12rem;
         }
@@ -635,6 +638,7 @@
         @include mobile {
             width: 100%;
             margin-top: 0.8rem;
+            max-width: 30rem;
         }
     }
     &__success {
@@ -651,17 +655,34 @@
         &-btn {
             margin-top: 3.2rem;
             width: 6.4rem;
+
+            @include mobile {
+                width: 100%;
+                max-width: 30rem;
+            }
         }
-    }
-    @include mobile {
-        padding: 0 1.6rem;
-        margin-top: 2.4rem;
     }
     .multi-step__header {
         margin: 0 0 2.4rem 0;
     }
     .multi-step__component {
         text-align: center;
+    }
+    @include desktop {
+        max-width: calc(400px + 1rem); // needs extra padding for the scrollbar, otherwise it will cover the words
+    }
+    @include mobile {
+        padding: 0 1.6rem;
+        margin-top: 2.4rem;
+
+        &__scroll-wrapper {
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        /* iPhone SE screen width fixes due to UI space restrictions */
+        @media only screen and (max-width: 320px) {
+            padding: 0;
+        }
     }
 }
 
@@ -677,6 +698,17 @@
     &__form,
     &__body {
         display: grid;
+        // fix for safari bug with autoheight wrapper not working properly for calculating modal footer offset
+        @media not all and (min-resolution: 0.001dpcm) {
+            @supports (-webkit-appearance: none) and (stroke-color: transparent) {
+                @include desktop {
+                    max-height: calc(100% - 24px);
+                }
+                @include tablet {
+                    max-height: calc(100% - 24px);
+                }
+            }
+        }
     }
     @include desktop {
         overflow: hidden;
@@ -687,7 +719,7 @@
         }
     }
     @include mobile {
-        overflow: auto;
+        overflow: hidden;
         grid-template-rows: 7rem minmax(10rem, 1fr);
         &__heading {
             padding: unset;
@@ -717,6 +749,9 @@
         .dc-form-submit-button {
             background-color: inherit;
         }
+    }
+    .dc-autocomplete {
+        margin-bottom: 2.4rem;
     }
 }
 
@@ -749,8 +784,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    height: 11em;
-    margin: 12.7em 0 12em;
+    height: 11rem;
+    margin: 12.7rem 0 12rem;
 
     &__heading {
         @include typeface(--title-left-bold-black);
@@ -759,14 +794,15 @@
     &__description {
         @include typeface(--paragraph-center-normal-black);
         color: var(--text-prominent);
-        margin: 0.6em 0 0;
+        margin: 0.6rem 0 0;
     }
     &__btn-area {
-        margin: 3.2em 0 0;
+        margin: 3.2rem 0 0;
 
-        .btn--primary {
-            width: 90px !important;
-            height: 40px !important;
+        .dc-btn {
+            width: auto;
+            min-width: 9rem;
+            height: 4rem;
         }
     }
 }
@@ -787,8 +823,10 @@
             width: 904px;
         }
         &_mt5-password-manager__modal {
-            height: 688px;
+            height: 100% !important;
+            min-height: calc(100vh - 22rem);
             width: 904px;
+            max-height: calc(100vh - 48px - 36px) !important;
         }
     }
 }
@@ -803,10 +841,10 @@
         padding: 0;
     }
     & .mt5-tax-identification-number {
-        margin-top: 1em;
+        margin-top: 1rem;
     }
     & .dc-autocomplete {
-        margin-bottom: 2.4em;
+        margin-bottom: 2.4rem;
         &__input-field {
             .dc-input {
                 margin-bottom: 0;
@@ -821,7 +859,7 @@
             width: 25px;
         }
         &-section {
-            margin-top: 0em;
+            margin-top: 0;
             display: flex;
         }
         &-list {
@@ -866,14 +904,14 @@
         }
         &-box {
             display: flex;
-            margin-bottom: 2em;
+            margin-bottom: 2rem;
             align-items: center;
             justify-content: flex-start;
         }
         &-item {
             min-width: 238px;
             width: 100%;
-            margin-left: 1em;
+            margin-left: 1rem;
             font-size: var(--text-size-xxs);
             line-height: 1.5;
             color: var(--text-prominent);
@@ -887,6 +925,18 @@
         display: grid;
         grid-template-rows: minmax(10rem, 1fr) 7.2rem;
         height: 100%;
+
+        // fix for safari bug with autoheight wrapper not working properly for calculating modal footer offset
+        @media not all and (min-resolution: 0.001dpcm) {
+            @supports (-webkit-appearance: none) and (stroke-color: transparent) {
+                @include desktop {
+                    max-height: calc(100% - 2.4rem);
+                }
+                @include tablet {
+                    max-height: calc(100% - 2.4rem);
+                }
+            }
+        }
     }
     &__file-upload {
         position: relative;
@@ -905,7 +955,7 @@
     &__inline-fields {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
-        grid-gap: 1em;
+        grid-gap: 1rem;
 
         .dc-dropdown-container {
             margin-top: 0;
@@ -916,7 +966,8 @@
             background: var(--general-section-2);
         }
         &__field-area {
-            padding: 0 1.6rem;
+            padding: 0 1.6rem 3.2rem;
+            max-height: calc(100% - 0.8rem);
         }
         &__inline-fields {
             display: flex;
@@ -953,15 +1004,31 @@
         grid-template-rows: minmax(10rem, 1fr) 8.2rem;
         height: 100%;
         position: relative;
+
+        // fix for safari bug with autoheight wrapper not working properly for calculating modal footer offset
+        @media not all and (min-resolution: 0.001dpcm) {
+            @supports (-webkit-appearance: none) and (stroke-color: transparent) {
+                @include desktop {
+                    max-height: calc(100% - 2.4rem);
+                }
+                @include tablet {
+                    max-height: calc(100% - 2.4rem);
+                }
+            }
+        }
+        @include mobile {
+            max-height: calc(100% - 1rem);
+        }
+    }
+    @include mobile {
+        overflow: hidden;
     }
 }
 .dc-modal__container_mt5-financial-stp-signup-modal {
+    max-height: calc(100vh - 102px) !important;
     @include desktop {
         display: grid;
         grid-template-rows: 6rem minmax(20rem, 1fr);
-    }
-    @include tablet {
-        max-height: calc(100vh - 102px); // HEADER and FOOTER
     }
 }
 .dc-modal__container_mt5-password-modal {
@@ -969,8 +1036,20 @@
         background-color: unset;
         padding-bottom: 1.2rem;
 
+        @include mobile {
+            border-top: none;
+            bottom: 0;
+        }
         .dc-btn:first-child {
             margin-left: 0;
+        }
+    }
+    .dc-input {
+        &__label {
+            top: 0.9rem;
+        }
+        &__hint {
+            top: 4.8rem;
         }
     }
 }
@@ -1000,14 +1079,31 @@
                 margin-left: 0;
             }
         }
+        @include mobile {
+            padding: 0.8rem 1.6rem 1.6rem;
+            display: flex;
+            grid-gap: 0.6rem;
+
+            & .dc-btn {
+                width: 100%;
+
+                &:only-child {
+                    max-width: 14rem;
+                    width: auto;
+                    min-width: 9rem;
+                }
+            }
+        }
     }
 }
 .dc-modal__container_mt5-success-dialog {
     .success-change__icon-area {
         width: 128px;
         margin: 2.4rem auto 0;
+        position: relative;
 
         &--large .bottom-right-overlay {
+            position: absolute;
             left: 76px;
             top: 76px;
 
@@ -1017,16 +1113,11 @@
             }
         }
         &--xlarge .bottom-right-overlay {
-            left: 104px;
-            top: 80px;
-
-            @include mobile {
-                left: 78px;
-                top: 74px;
-            }
-        }
-        @include mobile {
-            width: 96px;
+            position: absolute;
+            bottom: 0.8rem;
+            right: -2.8rem;
+            height: 5.2rem;
+            width: 5.2rem;
         }
     }
     .dc-modal-body {
@@ -1044,12 +1135,4 @@
     }
 }
 
-.mt5-single-row {
-    display: flex;
-    justify-content: center;
-
-    & > div {
-        margin: 0 1.2rem;
-    }
-}
 /* stylelint-enable */

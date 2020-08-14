@@ -58,6 +58,10 @@
         .dc-password-input__field {
             margin-bottom: 9.7rem;
         }
+        @include mobile {
+            width: calc(100vw - 4.8rem);
+            max-width: 30rem;
+        }
     }
     & .mt5-password-field {
         margin-bottom: 1em;
@@ -162,11 +166,9 @@
 }
 
 .mt5-reset-password {
-    width: 38.4rem;
-    height: 28.3rem;
-    flex: 1 1 auto;
+    width: 100%;
+    height: 100%;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
     @include typeface(--paragraph-left-normal-black);
@@ -176,6 +178,14 @@
         display: grid;
         grid-template-rows: 6rem 1fr 7rem;
         height: 100%;
+        width: 100%;
+        justify-items: center;
+        flex-grow: 1;
+
+        @include mobile {
+            min-height: 24rem;
+            width: calc(100vw - 3.2rem);
+        }
     }
     &__heading {
         @include typeface(--title-center-bold-black);
@@ -188,9 +198,20 @@
     }
     &__password-field {
         margin-bottom: 0.5rem;
+
+        & .dc-input__label {
+            top: 0.9rem;
+        }
     }
     &__password-area {
-        width: 30rem;
+        @include desktop {
+            width: 30rem;
+            height: 12rem;
+        }
+        @include mobile {
+            width: 100%;
+            max-width: calc(100% - 2.4rem);
+        }
     }
     &__error {
         display: flex;
@@ -220,6 +241,19 @@
         align-items: center;
         justify-content: space-around;
         padding: 2.4rem 0 2rem;
+
+        @include mobile {
+            width: calc(100vw - 3.2rem);
+            height: 100%;
+        }
+    }
+    @include mobile {
+        & .dc-form-submit-button {
+            position: relative;
+            background-color: unset;
+            border: none;
+            bottom: unset;
+        }
     }
 }
 

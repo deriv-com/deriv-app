@@ -481,7 +481,7 @@
     }
 }
 
-/** @define funds-protection */
+/** @define funds-protection; weak */
 .funds-protection {
     width: 100%;
     display: flex;
@@ -508,8 +508,10 @@
         width: calc(100% - 2.4rem);
         margin-left: 1.2rem;
 
-        .dc-btn:last-child {
-            margin-bottom: 2.4rem;
+        & .dc-btn {
+            &:last-child {
+                margin-bottom: 2.4rem;
+            }
         }
     }
 }

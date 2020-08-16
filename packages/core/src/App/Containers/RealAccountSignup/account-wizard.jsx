@@ -152,12 +152,6 @@ class AccountWizard extends React.Component {
                         : values.tax_residence;
                 }
 
-                if (values.address_state) {
-                    values.address_state = this.props.states_list.length
-                        ? getLocation(this.props.states_list, values.address_state, 'value')
-                        : values.address_state;
-                }
-
                 return {
                     ...obj,
                     ...values,

@@ -155,19 +155,27 @@ const SelfExclusionForm = props => {
                                         'self-exclusion__footer--relative': is_mobile && is_keyboard_active,
                                     })}
                                 >
-                                    <Button large text={localize('Cancel')} onClick={resetSelfExclusion} secondary />
-                                    <Button
-                                        type='submit'
-                                        large
-                                        text={localize('Apply and run')}
-                                        is_disabled={
-                                            !isValid ||
-                                            !values.run_limit ||
-                                            !values.form_max_losses ||
-                                            max_losses_error !== ''
-                                        }
-                                        primary
-                                    />
+                                    <div className='self-exclusion__footer-btn-group'>
+                                        <Button
+                                            large
+                                            text={localize('Cancel')}
+                                            onClick={resetSelfExclusion}
+                                            secondary
+                                            type='button'
+                                        />
+                                        <Button
+                                            type='submit'
+                                            large
+                                            text={localize('Apply and run')}
+                                            is_disabled={
+                                                !isValid ||
+                                                !values.run_limit ||
+                                                !values.form_max_losses ||
+                                                max_losses_error !== ''
+                                            }
+                                            primary
+                                        />
+                                    </div>
                                 </div>
                             </Form>
                         );

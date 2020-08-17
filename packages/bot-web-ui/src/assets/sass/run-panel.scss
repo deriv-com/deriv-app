@@ -189,9 +189,11 @@
     }
     &__footer {
         height: 72px;
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-end;
+        display: block;
+        position: fixed;
+        width: 100%;
+        left: 0px;
+        bottom: 0px;
         padding: 1.4rem;
         border-top: 2px solid var(--general-section-2);
         @include mobile {
@@ -204,6 +206,11 @@
                 position: relative;
                 margin-top: 5rem;
             }
+        }
+
+        &-btn-group {
+            display: flex;
+            justify-content: flex-end;
         }
     }
     &__info {
@@ -259,4 +266,5 @@
     flex-direction: row;
     align-content: space-between;
     width: 440px !important;
+    height: 374px !important;
 }

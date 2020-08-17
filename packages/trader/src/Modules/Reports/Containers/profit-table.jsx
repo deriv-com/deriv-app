@@ -4,12 +4,11 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { DesktopWrapper, MobileWrapper, DataList, DataTable } from '@deriv/components';
-import { urlFor } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
-import { website_name } from 'App/Constants/app-config';
+import { localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
 import CompositeCalendar from 'App/Components/Form/CompositeCalendar';
 import { getContractPath } from 'App/Components/Routes/helpers';
+import UnavailableContract from 'Modules/Reports/Components/unavailable-contract.jsx';
 import { getContractDurationType } from 'Modules/Reports/Helpers/market-underlying';
 import { getSupportedContracts } from 'Constants';
 import { connect } from 'Stores/connect';
@@ -88,20 +87,9 @@ class ProfitTable extends React.Component {
             ? getContractPath(row_obj.contract_id)
             : {
                   component: (
-                      <Localize
-                          i18n_default_text='This trade type is currently not supported on {{website_name}}. Please go to <0>Binary.com</0> for details.'
-                          values={{
-                              website_name,
-                          }}
-                          components={[
-                              <a
-                                  key={0}
-                                  className='link link--orange'
-                                  rel='noopener noreferrer'
-                                  target='_blank'
-                                  href={urlFor('user/profit_tablews', { legacy: true })}
-                              />,
-                          ]}
+                      <UnavailableContract
+                          contract_type={1}
+                          landing_company_shortcode={this.props.landing_company_shortcode}
                       />
                   ),
               };
@@ -216,10 +204,12 @@ ProfitTable.propTypes = {
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
     totals: PropTypes.object,
+    landing_company_shortcode: PropTypes.string,
 };
 
 export default connect(({ modules, client }) => ({
     currency: client.currency,
+    landing_company_shortcode: client.landing_company_shortcode,
     data: modules.profit_table.data_source,
     date_from: modules.profit_table.date_from,
     date_to: modules.profit_table.date_to,

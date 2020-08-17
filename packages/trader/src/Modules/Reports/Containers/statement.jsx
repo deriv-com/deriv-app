@@ -3,13 +3,12 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper, DataList, DataTable, Money } from '@deriv/components';
-import { urlFor } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
 import CompositeCalendar from 'App/Components/Form/CompositeCalendar/composite-calendar.jsx';
 import { getContractPath } from 'App/Components/Routes/helpers';
-import { website_name } from 'App/Constants/app-config';
 import { getSupportedContracts } from 'Constants';
+import UnavailableContract from 'Modules/Reports/Components/unavailable-contract.jsx';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';
 import { getStatementTableColumnsTemplate } from '../Constants/data-table-constants';
@@ -79,20 +78,9 @@ class Statement extends React.Component {
                 ? getContractPath(row_obj.id)
                 : {
                       component: (
-                          <Localize
-                              i18n_default_text='This trade type is currently not supported on {{website_name}}. Please go to <0>Binary.com</0> for details.'
-                              values={{
-                                  website_name,
-                              }}
-                              components={[
-                                  <a
-                                      key={0}
-                                      className='link link--orange'
-                                      rel='noopener noreferrer'
-                                      target='_blank'
-                                      href={urlFor('user/statementws', { legacy: true })}
-                                  />,
-                              ]}
+                          <UnavailableContract
+                              contract_type={2}
+                              landing_company_shortcode={this.props.landing_company_shortcode}
                           />
                       ),
                   };

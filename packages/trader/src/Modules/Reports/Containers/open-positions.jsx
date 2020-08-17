@@ -3,12 +3,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper, ProgressBar, Tabs, DataList, DataTable } from '@deriv/components';
-import { urlFor, isMobile } from '@deriv/shared';
+import { isMobile } from '@deriv/shared';
 
-import { localize, Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
 import { getTimePercentage } from 'App/Components/Elements/PositionsDrawer/helpers';
-import { website_name } from 'App/Constants/app-config';
 import { getContractPath } from 'App/Components/Routes/helpers';
 import { getContractDurationType } from 'Modules/Reports/Helpers/market-underlying';
 import EmptyTradeHistoryMessage from 'Modules/Reports/Components/empty-trade-history-message.jsx';
@@ -17,6 +16,7 @@ import {
     getMultiplierOpenPositionsColumnsTemplate,
 } from 'Modules/Reports/Constants/data-table-constants';
 import PlaceholderComponent from 'Modules/Reports/Components/placeholder-component.jsx';
+import UnavailableContract from 'Modules/Reports/Components/unavailable-contract.jsx';
 import { connect } from 'Stores/connect';
 import { isMultiplierContract } from 'Stores/Modules/Contract/Helpers/multiplier';
 import { ReportsMeta } from '../Components/reports-meta.jsx';
@@ -185,25 +185,13 @@ class OpenPositions extends React.Component {
         row_obj.is_unsupported
             ? {
                   component: (
-                      <Localize
-                          i18n_default_text='This trade type is currently not supported on {{website_name}}. Please go to <0>Binary.com</0> for details.'
-                          values={{
-                              website_name,
-                          }}
-                          components={[
-                              <a
-                                  key={0}
-                                  className='link link--orange'
-                                  rel='noopener noreferrer'
-                                  target='_blank'
-                                  href={urlFor('user/portfoliows', { legacy: true })}
-                              />,
-                          ]}
+                      <UnavailableContract
+                          contract_type={0}
+                          landing_company_shortcode={this.props.landing_company_shortcode}
                       />
                   ),
               }
             : getContractPath(row_obj.id);
-
     // After refactoring transactionHandler for creating positions,
     // purchase property in contract positions object is somehow NaN or undefined in the first few responses.
     // So we set it to true in these cases to show a preloader for the data-table-row until the correct value is set.
@@ -377,10 +365,12 @@ OpenPositions.propTypes = {
     onUnmount: PropTypes.func,
     server_time: PropTypes.object,
     totals: PropTypes.object,
+    landing_company_shortcode: PropTypes.string,
 };
 
 export default connect(({ modules, client, common, ui }) => ({
     currency: client.currency,
+    landing_company_shortcode: client.landing_company_shortcode,
     active_positions: modules.portfolio.active_positions_filtered,
     error: modules.portfolio.error,
     getPositionById: modules.portfolio.getPositionById,

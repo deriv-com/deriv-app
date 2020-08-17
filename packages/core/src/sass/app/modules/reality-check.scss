@@ -62,6 +62,11 @@
                 margin-bottom: 0.8rem;
             }
         }
+        @include mobile {
+            &-content {
+                padding-top: 1.6rem;
+            }
+        }
     }
     &__row {
         width: 25.1rem;
@@ -111,6 +116,13 @@
 
         @include mobile {
             padding: 0 0.8rem;
+        }
+    }
+    @include mobile {
+        &__wrapper {
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 2.4rem;
         }
     }
 }

@@ -123,7 +123,7 @@ const SummaryModal = ({
                                     max_autoheight_offset='204px'
                                 >
                                     <div className='reality-check__column'>
-                                        <div>
+                                        <div className='reality-check__column-content'>
                                             <Row label={localize('Login ID')} value={computed_values.loginid} />
                                             <Row label={localize('Currency')} value={computed_values.currency} />
                                             <Row

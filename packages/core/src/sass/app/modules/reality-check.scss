@@ -47,6 +47,11 @@
 
             @include mobile {
                 flex-direction: column;
+                padding: 0.8rem 2.4rem;
+
+                @media only screen and (max-width: 340px) {
+                    padding: 0.8rem 1.6rem;
+                }
             }
         }
         &:not(:last-child) {
@@ -55,6 +60,11 @@
             @include mobile {
                 margin-right: 0;
                 margin-bottom: 0.8rem;
+            }
+        }
+        @include mobile {
+            &-content {
+                padding-top: 1.6rem;
             }
         }
     }
@@ -108,12 +118,28 @@
             padding: 0 0.8rem;
         }
     }
+    @include mobile {
+        &__wrapper {
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 2.4rem;
+        }
+    }
 }
 
-.dc-modal-header__title--reality-check {
-    @include mobile {
-        margin: auto;
-        text-align: center;
-        line-height: 1.43;
+.dc-modal {
+    &-header {
+        &__title--reality-check {
+            @include mobile {
+                margin: auto;
+                text-align: center;
+                line-height: 1.43;
+            }
+        }
+    }
+    &-body {
+        @include mobile {
+            padding: 0;
+        }
     }
 }

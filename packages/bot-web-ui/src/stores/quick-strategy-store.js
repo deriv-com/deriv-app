@@ -242,17 +242,27 @@ export default class QuickStrategyStore {
 
         load({ block_string: Blockly.Xml.domToText(strategy_dom), file_name, workspace, from: save_types.UNSAVED });
 
-        // Close modal if open for edit + run.
+        if (button === 'run') {
+            workspace
+                .waitForBlockEvent({
+                    block_type: 'trade_definition',
+                    event_type: Blockly.Events.BLOCK_CREATE,
+                    timeout: 5000,
+                })
+                .then(() => {
+                    this.root_store.run_panel.onRunButtonClick();
+                    this.is_creating_strategy = false;
+                })
+                .catch(() => {
+                    this.is_creating_strategy = false;
+                });
+        } else {
+            this.is_creating_strategy = false;
+        }
+
         if (this.is_strategy_modal_open) {
             this.toggleStrategyModal();
         }
-
-        if (button === 'run') {
-            await workspace.waitForBlockEvent(workspace.getTradeDefinitionBlock().id, Blockly.Events.BLOCK_CREATE);
-            this.root_store.run_panel.onRunButtonClick();
-        }
-
-        this.is_creating_strategy = false;
     }
 
     @action.bound

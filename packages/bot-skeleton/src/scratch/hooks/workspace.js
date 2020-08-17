@@ -70,13 +70,40 @@ Blockly.Workspace.prototype.waitForBlockEvent = function(block_id, opt_event_typ
     return event_promise;
 };
 
+Blockly.Workspace.prototype.waitForBlockEvent = function(options) {
+    const { block_type, event_type, timeout } = options;
+    const promise = new PendingPromise();
+
+    if (!this.wait_events.some(event => event.blockId === block_id && event.type === event_type)) {
+        this.wait_events.push({
+            block_type,
+            event_type,
+            promise,
+        });
+    }
+
+    if (timeout) {
+        setTimeout(() => {
+            if (promise.isPending) {
+                promise.reject();
+            }
+        }, timeout);
+    }
+
+    return promise;
+};
+
 Blockly.Workspace.prototype.dispatchBlockEventEffects = function(event) {
     this.wait_events.forEach((wait_event, idx) => {
-        const is_same_block_id = wait_event.blockId === event.blockId;
-        const is_same_event_type = wait_event.type === null || event.type === wait_event.type;
+        if (!event.blockId) {
+            return;
+        }
 
-        if (is_same_block_id && is_same_event_type) {
-            // TODO: Find proper solution, e.g. promise chain.
+        const block = this.getBlockById(event.blockId);
+        const is_same_block_type = wait_event.block_type === block.type;
+        const is_same_event_type = wait_event.event_type === null || wait_event.event_type === event.type;
+
+        if (is_same_block_type && is_same_event_type) {
             setTimeout(() => {
                 wait_event.promise.resolve();
                 this.wait_events.splice(idx, 1);

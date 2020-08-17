@@ -41,9 +41,6 @@ const Footer = ({
         <EndpointNote />
         <NetworkStatus />
         <ServerTime />
-        <div className='footer__links footer__links-extras'>
-            {/* <ToggleComplaintsPolicy landing_company_shortcode={landing_company_shortcode} /> */}
-        </div>
         <div className='footer__links'>
             <LiveChat />
             <FooterIconSeparator />
@@ -96,6 +93,5 @@ export default withRouter(
         is_settings_modal_on: ui.is_settings_modal_on,
         disableApp: ui.disableApp,
         toggleSettingsModal: ui.toggleSettingsModal,
-        landing_company_shortcode: client.landing_company_shortcode,
     }))(Footer)
 );

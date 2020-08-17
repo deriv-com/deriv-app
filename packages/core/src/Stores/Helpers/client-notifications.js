@@ -328,14 +328,15 @@ const hasMissingRequiredField = (account_settings, client) => {
     return required_fields.some(field => !account_settings[field]);
 
     function getSVGRequiredFields() {
-        const necessary_withdrawal_fields = State.getResponse(
-            'landing_company.financial_company.requirements.withdrawal'
-        );
-        const necessary_signup_fields = State.getResponse(
-            'landing_company.financial_company.requirements.signup'
-        ).map(field => (field === 'residence' ? 'country' : field));
+        const necessary_withdrawal_fields =
+            State.getResponse('landing_company.financial_company.requirements.withdrawal') || [];
+        const necessary_signup_fields = State.getResponse('landing_company.financial_company.requirements.signup');
 
-        return [...necessary_withdrawal_fields, ...necessary_signup_fields];
+        const necessary_signup_fields_mapped = necessary_signup_fields
+            ? necessary_signup_fields.map(field => (field === 'residence' ? 'country' : field))
+            : [];
+
+        return [...necessary_withdrawal_fields, ...necessary_signup_fields_mapped];
     }
 
     function getRequiredFields() {

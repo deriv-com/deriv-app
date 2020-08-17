@@ -268,7 +268,7 @@ export default class QuickStrategyStore {
     @action.bound
     async updateSymbolDropdown() {
         const { active_symbols } = ApiHelpers.instance;
-        const symbols = active_symbols.getAllSymbols();
+        const symbols = active_symbols.getAllSymbols(/* should_be_open */ true);
         const symbol_options = symbols.map(symbol => ({
             group: symbol.submarket_display,
             text: symbol.symbol_display,

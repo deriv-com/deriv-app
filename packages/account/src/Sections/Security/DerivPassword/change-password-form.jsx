@@ -4,7 +4,6 @@ import { Formik } from 'formik';
 import { Button, Loading, PasswordInput, PasswordMeter } from '@deriv/components';
 import { withRouter } from 'react-router-dom';
 import { routes, isMobile } from '@deriv/shared';
-
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
@@ -12,6 +11,7 @@ import FormSubHeader from 'Components/form-sub-header';
 import FormBody from 'Components/form-body';
 import FormFooter from 'Components/form-footer';
 import FormSubmitErrorMessage from 'Components/form-submit-error-message';
+import { validPassword, validLength, getPreBuildDVRs } from 'Duplicated/Utils/Validator/declarative-validation-rules';
 
 class ChangePasswordForm extends React.Component {
     state = {
@@ -52,14 +52,14 @@ class ChangePasswordForm extends React.Component {
         });
 
         if (values.new_password) {
-            if (!/^[ -~]{6,25}$/.test(values.new_password)) {
-                errors.new_password = localize('Password length should be between 6 to 25 characters.');
+            if (!validLength(values.new_password, { min: 8, max: 25 })) {
+                errors.new_password = localize('Password length should be between 8 to 25 characters.');
             }
             if (values.old_password === values.new_password) {
                 errors.new_password = localize('Current password and new password cannot be the same.');
             }
-            if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+/.test(values.new_password)) {
-                errors.new_password = localize('Password should have lower and uppercase letters with numbers.');
+            if (!validPassword(values.new_password)) {
+                errors.new_password = getPreBuildDVRs().password.message;
             }
         }
 

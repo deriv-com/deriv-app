@@ -212,7 +212,7 @@ class Statement extends React.Component {
                                 getRowAction={this.getRowAction}
                                 onScroll={handleScroll}
                                 custom_width={'100%'}
-                                getRowSize={() => 162}
+                                getRowSize={() => 176}
                             >
                                 <PlaceholderComponent is_loading={is_loading} />
                             </DataList>

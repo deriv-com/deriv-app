@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@deriv/components';
-import InputWithCheckbox from 'App/Components/Form/InputField/input-with-checkbox.jsx';
 import { localize } from '@deriv/translations';
+import { isDeepEqual, pick } from '@deriv/shared';
+import InputWithCheckbox from 'App/Components/Form/InputField/input-with-checkbox.jsx';
 import { connect } from 'Stores/connect';
 import { getLimitOrderAmount } from 'Stores/Modules/Contract/Helpers/limit-orders';
-import { getCancellationPrice } from 'Stores/Modules/Contract/Helpers/logic';
+import { getCancellationPrice, getContractUpdateConfig } from 'Stores/Modules/Contract/Helpers/logic';
 
 class ContractUpdateForm extends React.Component {
     componentWillUnmount() {
@@ -61,6 +62,24 @@ class ContractUpdateForm extends React.Component {
 
     get has_validation_errors() {
         return Object.keys(this.error_messages).some(field => this.error_messages[field]?.length);
+    }
+
+    getStateToCompare = _state => {
+        const props_to_pick = [
+            'has_contract_update_take_profit',
+            'has_contract_update_stop_loss',
+            _state.has_contract_update_take_profit && 'contract_update_take_profit',
+            _state.has_contract_update_stop_loss && 'contract_update_stop_loss',
+        ];
+
+        return pick(_state, props_to_pick);
+    };
+
+    isStateUnchanged() {
+        return isDeepEqual(
+            this.getStateToCompare(getContractUpdateConfig(this.props.contract_info)),
+            this.getStateToCompare(this.props)
+        );
     }
 
     isValid = val => !(val === undefined || val === null);
@@ -137,7 +156,9 @@ class ContractUpdateForm extends React.Component {
                         text={localize('Apply')}
                         onClick={this.onClick}
                         primary
-                        is_disabled={this.has_validation_errors || !this.is_valid_contract_update}
+                        is_disabled={
+                            this.has_validation_errors || !this.is_valid_contract_update || this.isStateUnchanged()
+                        }
                     />
                 </div>
             </React.Fragment>
@@ -160,6 +181,7 @@ export default connect(({ modules, ui }, props) => {
         addToast: ui.addToast,
         getContractById: modules.contract_trade.getContractById,
         updateLimitOrder: modules.contract_trade.updateLimitOrder,
+        contract_info: contract.contract_info,
         validation_errors: contract.validation_errors,
         contract_update_take_profit: contract.contract_update_take_profit,
         contract_update_stop_loss: contract.contract_update_stop_loss,

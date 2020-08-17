@@ -1,6 +1,6 @@
 import React from 'react';
 import { MobileDialog, Button, Div100vhContainer } from '@deriv/components';
-import { isDeepEqual } from '@deriv/shared';
+import { isDeepEqual, pick } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import StopLoss from 'Modules/Trading/Components/Form/TradeParams/Multiplier/stop-loss.jsx';
@@ -30,13 +30,6 @@ const RiskManagementDialog = ({
     const [state, setState] = React.useState(applied_risk_management_state);
 
     const [validation_errors, setValidationErrors] = React.useState({});
-
-    const pick = (source, fields) => {
-        return fields.reduce((target, prop) => {
-            if (Object.prototype.hasOwnProperty.call(source, prop)) target[prop] = source[prop];
-            return target;
-        }, {});
-    };
 
     const getStateToCompare = _state => {
         const props_to_pick = [

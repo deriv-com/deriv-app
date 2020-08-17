@@ -60,7 +60,7 @@ const address_details_config = ({ account_settings }) => {
                         max_number: 20,
                         interpolation: { escapeValue: false },
                     }),
-                    { min: 1, max: 20 },
+                    { min: 0, max: 20 },
                 ],
                 ['postcode', localize('Only letters, numbers, space, and hyphen are allowed.')],
             ],

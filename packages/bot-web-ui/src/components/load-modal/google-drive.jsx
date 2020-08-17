@@ -36,7 +36,28 @@ const GoogleDrive = ({ is_authorised, is_open_button_loading, onDriveConnect, on
                         />
                     </Button.Group>
                 ) : (
-                    <Button text={localize('Connect')} onClick={onDriveConnect} has_effect primary large />
+                    <React.Fragment>
+                        <Button text={localize('Connect')} onClick={onDriveConnect} has_effect primary large />
+                        <div className='load-strategy__google-drive-terms'>
+                            <Localize
+                                i18n_default_text="Find out how this app handles your data by reviewing Deriv's <0>Privacy policy</0>, which is part of Deriv's <1>Terms and conditions</2>."
+                                components={[
+                                    <a
+                                        key={0}
+                                        className='link'
+                                        target='_blank'
+                                        href='https://deriv.com/security-and-privacy.pdf'
+                                    />,
+                                    <a
+                                        key={1}
+                                        className='link'
+                                        target='_blank'
+                                        href='https://deriv.com/terms-and-conditions'
+                                    />,
+                                ]}
+                            />
+                        </div>
+                    </React.Fragment>
                 )}
             </div>
         </div>

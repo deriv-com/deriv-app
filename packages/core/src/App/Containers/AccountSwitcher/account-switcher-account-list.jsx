@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Icon, Money } from '@deriv/components';
-import CurrencyUtils from '@deriv/shared/utils/currency';
-import { Localize } from '@deriv/translations';
+import { formatMoney, getCurrencyDisplayCode } from '@deriv/shared';
+import { Localize, localize } from '@deriv/translations';
 import { getMT5AccountDisplay } from 'Stores/Helpers/client';
 
 const AccountList = ({
@@ -12,6 +12,7 @@ const AccountList = ({
     currency_icon,
     display_type,
     has_balance,
+    is_eu,
     is_disabled,
     is_virtual,
     loginid,
@@ -19,6 +20,16 @@ const AccountList = ({
     selected_loginid,
 }) => {
     if (is_disabled && !currency) return null;
+
+    const market_type = React.useMemo(() => {
+        if (loginid.startsWith('MX') || loginid.startsWith('MLT')) {
+            return localize('Synthetic');
+        } else if (loginid.startsWith('MF')) {
+            return localize('Financial');
+        }
+        return '';
+    }, [loginid]);
+
     return (
         <>
             <div
@@ -29,7 +40,7 @@ const AccountList = ({
                 })}
                 onClick={is_disabled ? undefined : onClickAccount}
             >
-                <span className={'acc-switcher__id'}>
+                <span className='acc-switcher__id'>
                     <Icon
                         icon={currency ? currency_icon : 'IcCurrencyUnknown'}
                         className={'acc-switcher__id-icon'}
@@ -37,7 +48,12 @@ const AccountList = ({
                     />
                     <span>
                         {display_type === 'currency' ? (
-                            <CurrencyDisplay is_virtual={is_virtual} currency={currency} />
+                            <CurrencyDisplay
+                                is_virtual={is_virtual}
+                                currency={currency}
+                                is_eu={is_eu}
+                                market_type={market_type}
+                            />
                         ) : (
                             <AccountDisplay account_type={account_type} />
                         )}
@@ -48,7 +64,7 @@ const AccountList = ({
                             {currency && (
                                 <Money
                                     currency={currency}
-                                    amount={CurrencyUtils.formatMoney(currency, balance, true)}
+                                    amount={formatMoney(currency, balance, true)}
                                     should_format={false}
                                 />
                             )}
@@ -60,14 +76,17 @@ const AccountList = ({
     );
 };
 
-const CurrencyDisplay = ({ currency, is_virtual }) => {
+const CurrencyDisplay = ({ currency, is_eu, is_virtual, market_type }) => {
     if (is_virtual) {
         return <Localize i18n_default_text='Demo' />;
     }
     if (!currency) {
         return <Localize i18n_default_text='No currency assigned' />;
     }
-    return CurrencyUtils.getCurrencyDisplayCode(currency);
+    if (is_eu) {
+        return `${getCurrencyDisplayCode(currency)} ${market_type}`;
+    }
+    return getCurrencyDisplayCode(currency);
 };
 
 const AccountDisplay = ({ account_type }) => <div>{getMT5AccountDisplay(account_type)}</div>;

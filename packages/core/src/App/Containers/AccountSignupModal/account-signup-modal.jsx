@@ -1,8 +1,8 @@
 import classNames from 'classnames';
-import { Button, Dialog, PasswordInput, PasswordMeter } from '@deriv/components';
 import { Field, Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Button, Dialog, PasswordInput, PasswordMeter } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { validPassword } from 'Utils/Validator/declarative-validation-rules';
@@ -52,16 +52,15 @@ class AccountSignup extends React.Component {
     };
 
     onSignupComplete = error => {
-        // Error would be returned on invalid token (and the like) cases.
-        // TODO: Proper error handling (currently we have no place to put the message)
-
-        if (error) {
-            throw Error(error);
-        }
-
         // Handle lower level modal controls due to overriding modal rendering
         this.props.isModalVisible(false);
         this.props.enableApp();
+
+        // Error would be returned on invalid token (and the like) cases.
+        // TODO: Proper error handling (currently we have no place to put the message)
+        if (error) {
+            throw Error(error);
+        }
     };
 
     render() {
@@ -178,12 +177,22 @@ AccountSignup.propTypes = {
 const AccountSignupModal = ({
     enableApp,
     disableApp,
+    is_eu,
     is_loading,
     is_visible,
+    is_logged_in,
+    logout,
     onSignup,
     residence_list,
     toggleAccountSignupModal,
 }) => {
+    React.useEffect(() => {
+        // a logged in user should not be able to create a new account
+        if (is_visible && is_logged_in) {
+            logout();
+        }
+    }, [is_visible, is_logged_in, logout]);
+
     return (
         <Dialog
             is_visible={is_visible}
@@ -196,6 +205,7 @@ const AccountSignupModal = ({
             <AccountSignup
                 onSignup={onSignup}
                 residence_list={residence_list}
+                is_eu={is_eu}
                 isModalVisible={toggleAccountSignupModal}
                 enableApp={enableApp}
             />
@@ -206,6 +216,7 @@ const AccountSignupModal = ({
 AccountSignupModal.propTypes = {
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
+    is_eu: PropTypes.bool,
     is_loading: PropTypes.bool,
     is_visible: PropTypes.bool,
     onSignup: PropTypes.func,
@@ -217,7 +228,10 @@ export default connect(({ ui, client }) => ({
     toggleAccountSignupModal: ui.toggleAccountSignupModal,
     enableApp: ui.enableApp,
     disableApp: ui.disableApp,
+    is_eu: client.is_eu,
     is_loading: ui.is_loading,
     onSignup: client.onSignup,
+    is_logged_in: client.is_logged_in,
     residence_list: client.residence_list,
+    logout: client.logout,
 }))(AccountSignupModal);

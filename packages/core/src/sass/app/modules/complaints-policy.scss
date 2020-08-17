@@ -1,0 +1,98 @@
+.complaints-policy {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+
+    &__container {
+        width: 100%;
+
+        @include mobile {
+            overflow: auto;
+        }
+    }
+    &__wrapper {
+        padding: 0 1.4rem 2.4rem;
+        color: var(--text-prominent);
+        max-width: 80rem;
+
+        @include mobile {
+            padding: 0 0.6rem 2.4rem;
+            overflow: auto;
+            height: 100%;
+            margin: 0 1rem;
+        }
+
+        .link--orange {
+            font-weight: normal;
+        }
+    }
+    &__section {
+        &-title {
+            font-size: 1.6rem;
+            line-height: 2.4rem;
+            font-weight: bold;
+            padding-top: 2.4rem;
+
+            @include mobile {
+                font-size: 1.4rem;
+                line-height: 2rem;
+                padding-top: 1.6rem;
+            }
+        }
+        &-content {
+            font-size: 1.4rem;
+            padding: 0.8rem 0 0 1.8rem;
+            line-height: 2rem;
+
+            @include mobile {
+                font-size: 1rem;
+                line-height: 1.4rem;
+            }
+        }
+    }
+    &__subsection {
+        &-title {
+            font-size: 1.6rem;
+            font-weight: bold;
+            padding-top: 1.6rem;
+            line-height: 2.4rem;
+
+            @include mobile {
+                font-size: 1.4rem;
+                line-height: 2rem;
+                padding-top: 0.8rem;
+            }
+        }
+        &-content {
+            font-size: 1.4rem;
+            padding: 0.8rem 0 0 3.2rem;
+            line-height: 2rem;
+            @include mobile {
+                font-size: 1rem;
+                line-height: 1.4rem;
+                padding-left: 0;
+            }
+        }
+    }
+    &__list {
+        padding: 0.8rem 0 0 1.8rem;
+        font-size: 1.4rem;
+        line-height: 2rem;
+
+        @include mobile {
+            padding-left: 0;
+            font-size: 1rem;
+            line-height: 1.4rem;
+        }
+
+        &-item {
+            padding-top: 0.8rem;
+            display: flex;
+            white-space: pre-wrap;
+
+            &-prefix {
+                padding-right: 0.8rem;
+            }
+        }
+    }
+}

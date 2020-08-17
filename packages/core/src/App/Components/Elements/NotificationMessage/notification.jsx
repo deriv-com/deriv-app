@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, LinearProgress } from '@deriv/components';
-import ObjectUtils from '@deriv/shared/utils/object';
+import { isEmptyObject } from '@deriv/shared';
 import CloseButton from './close-button.jsx';
 import NotificationStatusIcons from './notification-status-icons.jsx';
 import { default_delay, types } from './constants';
@@ -46,7 +46,7 @@ const Notification = ({ data, removeNotificationMessage }) => {
                     />
                 )}
                 <p className='notification__text-body'>{data.message}</p>
-                {!ObjectUtils.isEmptyObject(data.action) && (
+                {!isEmptyObject(data.action) && (
                     <React.Fragment>
                         {data.action.route ? (
                             <BinaryLink

@@ -34,7 +34,7 @@ Run `npm i sass-resources-loader --save-dev` and add the following in your webpa
 ```js {
     loader: 'sass-resources-loader',
     options: {
-        resources: require('@deriv/shared/utils/index.js'),
+        resources: require('@deriv/shared/src/styles/index.js'),
     }
 }
 ```
@@ -51,5 +51,5 @@ Run `npm i sass-resources-loader --save-dev` and add the following in your webpa
 
 ### Utility functions
 ```js
-import { toMomemt } '@deriv/shared/utils/date'
+import { toMoment } '@deriv/shared'
 ```

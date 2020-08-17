@@ -1,8 +1,8 @@
-const domain_app_ids = require('@deriv/shared/utils/config').domain_app_ids;
-const getAppId = require('@deriv/shared/utils/config').getAppId;
-const getDerivComLink = require('@deriv/shared/utils/url').getDerivComLink;
-const urlForCurrentDomain = require('@deriv/shared/utils/url').urlForCurrentDomain;
-const isMobile = require('@deriv/shared/utils/os').isMobile;
+const domain_app_ids = require('@deriv/shared').domain_app_ids;
+const getAppId = require('@deriv/shared').getAppId;
+const getDerivComLink = require('@deriv/shared').getDerivComLink;
+const urlForCurrentDomain = require('@deriv/shared').urlForCurrentDomain;
+const isMobile = require('@deriv/shared').isMobileOs;
 const { getLanguage } = require('@deriv/translations');
 const website_name = require('App/Constants/app-config').website_name;
 const getElementById = require('../common_functions').getElementById;
@@ -30,12 +30,19 @@ const Login = (() => {
         const marketing_queries = `&signup_device=${signup_device}${
             date_first_contact ? `&date_first_contact=${date_first_contact}` : ''
         }`;
-        const default_login_url = `https://oauth.deriv.app/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
+        // TODO: [app-link-refactor] - Remove backwards compatibility for `deriv.app`
+        const default_login_url_app = `https://oauth.deriv.app/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
+        const default_login_url = `https://oauth.deriv.com/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
 
         if (server_url && /qa/.test(server_url)) {
             return `https://${server_url}/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
         }
-        if (getAppId === domain_app_ids['deriv.app']) {
+
+        // TODO: [app-link-refactor] - Remove backwards compatibility for `deriv.app`
+        if (getAppId() === domain_app_ids['deriv.app'] && /^(www\.)?deriv\.app$/.test(window.location.hostname)) {
+            return default_login_url_app;
+        }
+        if (getAppId() === domain_app_ids['app.deriv.com'] && /^app\.deriv\.com$/.test(window.location.hostname)) {
             return default_login_url;
         }
 

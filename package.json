@@ -19,7 +19,7 @@
     "publish:p2p": "f () { lerna publish from-package ;}; f",
     "serve": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run serve $npm_config_open;}; f",
     "start": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run start ;}; f",
-    "test": "f () { lerna exec --scope=@deriv/${1:-'*'} --parallel -- npm run test ;}; f",
+    "test": "f () { bash ./scripts/circleci-config.test.sh && lerna exec --scope=@deriv/${1:-'*'} --parallel -- npm run test ;}; f",
     "test:eslint": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run test:eslint ;}; f",
     "test:mocha": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run test:mocha ;}; f",
     "test:stylelint": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run test:stylelint ;}; f",

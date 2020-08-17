@@ -3,9 +3,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
-import routes from '@deriv/shared/utils/routes';
-import { isMobile } from '@deriv/shared/utils/screen';
-import { getDecimalPlaces } from '@deriv/shared/utils/currency';
+import { routes, isMobile, getDecimalPlaces } from '@deriv/shared';
+
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
@@ -199,7 +198,7 @@ export default connect(({ client, common, ui, modules }) => ({
     enableApp: ui.enableApp,
     header_extension: ui.header_extension,
     is_acc_switcher_disabled: ui.is_account_switcher_disabled,
-    is_acc_switcher_on: ui.is_accounts_switcher_on,
+    is_acc_switcher_on: !!ui.is_accounts_switcher_on,
     is_dark_mode: ui.is_dark_mode_on,
     is_app_disabled: ui.is_app_disabled,
     is_high_risk: client.is_high_risk,

@@ -1,5 +1,5 @@
 import { toJS } from 'mobx';
-import ObjectUtils from '@deriv/shared/utils/object';
+import { isEmptyObject } from '@deriv/shared';
 import { CONTRACT_SHADES } from '../Constants/barriers';
 
 export const isBarrierSupported = contract_type => contract_type in CONTRACT_SHADES;
@@ -12,7 +12,7 @@ export const barriersToString = (is_relative, ...barriers_list) =>
 export const barriersObjectToArray = (barriers, reference_array) => {
     Object.keys(barriers).forEach(barrier => {
         const js_object = toJS(barriers[barrier]);
-        if (!ObjectUtils.isEmptyObject(js_object)) {
+        if (!isEmptyObject(js_object)) {
             reference_array.push(js_object);
         }
     });

@@ -33,7 +33,8 @@ Blockly.Blocks.text_prompt_ext = {
                     name: 'TEXT',
                 },
             ],
-            output: this.getFieldValue('TYPE') === 'TEXT' ? 'String' : 'Number',
+            output:
+                typeof this.getFieldValue === 'function' && this.getFieldValue('TYPE') === 'TEXT' ? 'String' : 'Number',
             outputShape: Blockly.OUTPUT_SHAPE_ROUND,
             colour: Blockly.Colours.Special3.colour,
             colourSecondary: Blockly.Colours.Special3.colourSecondary,

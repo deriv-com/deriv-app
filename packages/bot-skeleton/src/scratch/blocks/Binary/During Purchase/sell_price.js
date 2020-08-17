@@ -12,7 +12,7 @@ Blockly.Blocks.sell_price = {
             colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary: Blockly.Colours.Base.colourTertiary,
-            tooltip: localize('Returns the profit/loss form selling at market price'),
+            tooltip: localize('Returns the profit/loss from selling at market price'),
             category: Blockly.Categories.During_Purchase,
         };
     },

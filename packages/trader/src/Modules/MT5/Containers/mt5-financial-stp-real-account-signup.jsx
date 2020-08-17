@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { FormProgress, DesktopWrapper, MobileWrapper, Div100vhContainer } from '@deriv/components';
-import { getPropertyValue } from '@deriv/shared/utils/object';
-import { isDesktop } from '@deriv/shared/utils/screen';
+import { getPropertyValue, isDesktop } from '@deriv/shared';
+
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';
@@ -93,17 +93,16 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
         });
     };
 
-    nextStep = setSubmitting => {
+    nextStep = () => {
         this.clearError();
         if (this.has_more_steps) {
             this.goNext();
         } else {
-            this.finishWizard(setSubmitting);
+            this.finishWizard();
         }
     };
 
-    finishWizard = setSubmitting => {
-        setSubmitting(false);
+    finishWizard = () => {
         this.props.openPendingDialog();
         this.props.toggleModal();
     };

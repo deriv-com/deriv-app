@@ -1,6 +1,6 @@
 import classNames from 'classnames';
-import { Icon, Label, Money } from '@deriv/components';
 import React from 'react';
+import { Icon, Label, Money } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import ProgressSliderStream from 'App/Containers/ProgressSliderStream';
 import MultiplierCloseActions from 'App/Components/Elements/PositionsDrawer/PositionsDrawerCard/multiplier-close-actions.jsx';
@@ -11,12 +11,13 @@ import ProfitLossCell from '../Components/profit_loss_cell.jsx';
 
 const getModeFromValue = key => {
     const map = {
-        deposit: 'warn',
-        withdrawal: 'info',
-        sell: 'danger',
         buy: 'success',
+        deposit: 'success',
+        hold: 'warn',
+        release: 'success',
+        sell: 'danger',
+        withdrawal: 'info',
         default: 'default',
-        escrow: 'default-invert',
     };
 
     if (Object.keys(map).find(x => x === key)) {
@@ -30,7 +31,7 @@ const getModeFromValue = key => {
 export const getStatementTableColumnsTemplate = currency => [
     {
         key: 'icon',
-        title: '',
+        title: localize('Type'),
         col_index: 'icon',
         renderCellContent: ({ cell_value, row_obj }) => (
             <MarketSymbolIconRow action={cell_value} key={row_obj.transaction_id} payload={row_obj} />

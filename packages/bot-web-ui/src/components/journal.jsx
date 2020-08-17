@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ContentLoader from 'react-content-loader';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { Checkbox, Icon, ThemedScrollbars } from '@deriv/components';
+import { Checkbox, Icon, ThemedScrollbars, useOnClickOutside } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { message_types } from '@deriv/bot-skeleton';
 import { log_types } from '@deriv/bot-skeleton/src/constants/messages';
@@ -77,14 +77,14 @@ const FormatMessage = ({ logType, className, extra }) => {
     return <div className={classnames('journal__text', className)}>{getLogMessage()}</div>;
 };
 
-const Tools = ({ checked_filters, filters, filterMessage }) => (
-    <div className='journal-tools__container'>
-        <div className='journal-tools__container-filter'>
+const Filters = ({ wrapper_ref, checked_filters, filters, filterMessage, className, classNameLabel }) => {
+    return (
+        <div ref={wrapper_ref} className={className}>
             {filters.map(item => {
                 return (
                     <Checkbox
                         key={item.id}
-                        classNameLabel='journal-tools__text'
+                        classNameLabel={classNameLabel}
                         value={checked_filters.includes(item.id)}
                         defaultChecked={checked_filters.includes(item.id)}
                         label={item.label}
@@ -93,11 +93,69 @@ const Tools = ({ checked_filters, filters, filterMessage }) => (
                 );
             })}
         </div>
-        {/* <div className='tools__container-download'>
-            <Icon icon='IcDownload' />
-        </div> */}
-    </div>
-);
+    );
+};
+
+const FilterDialog = ({
+    toggle_ref,
+    checked_filters,
+    filters,
+    filterMessage,
+    is_filter_dialog_visible,
+    toggleFilterDialog,
+}) => {
+    const wrapper_ref = React.useRef();
+
+    const validateClickOutside = event => is_filter_dialog_visible && !toggle_ref.current.contains(event.target);
+
+    useOnClickOutside(wrapper_ref, toggleFilterDialog, validateClickOutside);
+
+    return (
+        <Filters
+            wrapper_ref={wrapper_ref}
+            checked_filters={checked_filters}
+            filters={filters}
+            filterMessage={filterMessage}
+            className='filter-dialog'
+        />
+    );
+};
+
+const Tools = ({ checked_filters, filters, filterMessage, is_filter_dialog_visible, toggleFilterDialog }) => {
+    const toggle_ref = React.useRef();
+
+    return (
+        <>
+            <div className='journal-tools__container'>
+                <div ref={toggle_ref} className='journal-tools__container-filter' onClick={toggleFilterDialog}>
+                    <span className='journal-tools__container-filter--label'>
+                        <Localize i18n_default_text='Filters' />
+                    </span>
+                    <Icon icon='IcFilter' size={16} />
+                </div>
+            </div>
+            <CSSTransition
+                in={is_filter_dialog_visible}
+                classNames={{
+                    enter: 'filter-dialog--enter',
+                    enterDone: 'filter-dialog--enter-done',
+                    exit: 'filter-dialog--exit',
+                }}
+                timeout={150}
+                unmountOnExit
+            >
+                <FilterDialog
+                    toggle_ref={toggle_ref}
+                    checked_filters={checked_filters}
+                    filters={filters}
+                    filterMessage={filterMessage}
+                    is_filter_dialog_visible={is_filter_dialog_visible}
+                    toggleFilterDialog={toggleFilterDialog}
+                />
+            </CSSTransition>
+        </>
+    );
+};
 
 const getJournalItemContent = (message, type, className, extra) => {
     switch (type) {
@@ -115,25 +173,37 @@ const getJournalItemContent = (message, type, className, extra) => {
     }
 };
 
-const JournalLoader = () => (
+const JournalLoader = ({ is_mobile }) => (
     <ContentLoader
-        className='journal__loader'
+        className={classnames('journal__loader', { 'journal__loader--mobile': is_mobile })}
         speed={3}
         width={350}
         height={92}
         primaryColor={'var(--general-section-1)'}
         secondaryColor={'var(--general-hover)'}
     >
-        <rect x='15' y='15' rx='5' ry='5' width='305' height='40' />
+        <rect x='15' y='15' rx='5' ry='5' width='320' height='40' />
         <rect x='15' y='60' rx='5' ry='5' width='180' height='7' />
     </ContentLoader>
 );
 
-const Journal = ({ filtered_messages, contract_stage, is_stop_button_visible, ...props }) => {
+const Journal = ({
+    contract_stage,
+    filtered_messages,
+    is_drawer_open,
+    is_mobile,
+    is_stop_button_visible,
+    ...props
+}) => {
     return (
-        <div className='journal run-panel-tab__content'>
+        <div
+            className={classnames('journal run-panel-tab__content--no-stat', {
+                'run-panel-tab__content': !is_mobile,
+                'run-panel-tab__content--journal-mobile': is_mobile && is_drawer_open,
+            })}
+        >
             <Tools {...props} />
-            <ThemedScrollbars className='journal__scrollbars' height={'calc(100% - 50px)'}>
+            <ThemedScrollbars className='journal__scrollbars' height={'calc(100% - 4.2rem)'}>
                 <div className='journal__item-list'>
                     {filtered_messages.length ? (
                         <TransitionGroup>
@@ -155,30 +225,23 @@ const Journal = ({ filtered_messages, contract_stage, is_stop_button_visible, ..
                         </TransitionGroup>
                     ) : (
                         <>
-                            {contract_stage.index >= contract_stages.STARTING.index &&
+                            {contract_stage >= contract_stages.STARTING &&
                             !!props.checked_filters.length &&
                             is_stop_button_visible ? (
-                                <JournalLoader />
+                                <JournalLoader is_mobile={is_mobile} />
                             ) : (
-                                <div className='journal-empty__container'>
-                                    <div className='journal-empty'>
-                                        <Icon
-                                            icon='IcBox'
-                                            className='journal-empty__icon'
-                                            size={64}
-                                            color='secondary'
-                                        />
-                                        <h4 className='journal-empty__header'>
-                                            {localize('There are no messages to display')}
-                                        </h4>
-                                        <div className='journal-empty__message'>
-                                            <span>{localize('Here are the possible reasons:')}</span>
-                                            <ul className='journal-empty__list'>
-                                                <li>{localize('The bot is not running')}</li>
-                                                <li>{localize('The stats are cleared')}</li>
-                                                <li>{localize('All messages are filtered out')}</li>
-                                            </ul>
-                                        </div>
+                                <div className='journal-empty'>
+                                    <Icon icon='IcBox' className='journal-empty__icon' size={64} color='secondary' />
+                                    <h4 className='journal-empty__header'>
+                                        {localize('There are no messages to display')}
+                                    </h4>
+                                    <div className='journal-empty__message'>
+                                        <span>{localize('Here are the possible reasons:')}</span>
+                                        <ul className='journal-empty__list'>
+                                            <li>{localize('The bot is not running')}</li>
+                                            <li>{localize('The stats are cleared')}</li>
+                                            <li>{localize('All messages are filtered out')}</li>
+                                        </ul>
                                     </div>
                                 </div>
                             )}
@@ -196,13 +259,20 @@ Journal.propTypes = {
     filtered_messages: PropTypes.array,
     filterMessage: PropTypes.func,
     filters: PropTypes.array,
+    is_mobile: PropTypes.bool,
+    is_stop_button_visible: PropTypes.bool,
+    is_filter_dialog_visible: PropTypes.bool,
+    toggleFilterDialog: PropTypes.func,
 };
 
-export default connect(({ journal, run_panel }) => ({
+export default connect(({ journal, run_panel, ui }) => ({
     checked_filters: journal.checked_filters,
     contract_stage: run_panel.contract_stage,
     filterMessage: journal.filterMessage,
     filters: journal.filters,
     filtered_messages: journal.filtered_messages,
+    is_mobile: ui.is_mobile,
+    is_filter_dialog_visible: journal.is_filter_dialog_visible,
     is_stop_button_visible: run_panel.is_stop_button_visible,
+    toggleFilterDialog: journal.toggleFilterDialog,
 }))(Journal);

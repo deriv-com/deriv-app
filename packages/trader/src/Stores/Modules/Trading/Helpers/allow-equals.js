@@ -1,11 +1,11 @@
 import { localize } from '@deriv/translations';
-import ObjectUtils from '@deriv/shared/utils/object';
+import { isEmptyObject, getPropertyValue } from '@deriv/shared';
 import ContractType from './contract-type';
 
 export const hasCallPutEqual = contract_type_list => {
-    if (ObjectUtils.isEmptyObject(contract_type_list)) return false;
+    if (isEmptyObject(contract_type_list)) return false;
 
-    return ObjectUtils.getPropertyValue(contract_type_list, localize('Ups & Downs')).some(
+    return getPropertyValue(contract_type_list, localize('Ups & Downs')).some(
         contract => contract.value === 'rise_fall_equal'
     );
 };
@@ -19,7 +19,7 @@ export const hasDurationForCallPutEqual = (contract_type_list, duration_unit, co
     );
 
     const contract_duration_list = contract_list.map(list => ({
-        [list]: ObjectUtils.getPropertyValue(ContractType.getFullContractTypes(), [
+        [list]: getPropertyValue(ContractType.getFullContractTypes(), [
             list,
             'config',
             'durations',

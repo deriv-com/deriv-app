@@ -1,5 +1,5 @@
 import React from 'react';
-import { getUrlSmartTrader } from '@deriv/shared/utils/storage';
+import { getUrlSmartTrader } from '@deriv/shared';
 
 const SmartTraderIFrame = () => {
     const url = getUrlSmartTrader();

@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { formatStatementTransaction } from '../format-response';
-import { toTitleCase } from '@deriv/shared/utils/string';
+import { toTitleCase } from '@deriv/shared';
 
 describe('formatStatementTransaction', () => {
     const constant = {

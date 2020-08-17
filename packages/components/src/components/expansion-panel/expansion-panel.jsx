@@ -86,11 +86,9 @@ class ExpansionPanel extends React.Component {
                         onClick={this.onClick}
                     />
                 </div>
-                {this.state.is_open
-                    ? Array.isArray(message.content)
-                        ? this.renderArrayContent(message.content.slice())
-                        : message.content
-                    : null}
+                {!!this.state.is_open && Array.isArray(message.content)
+                    ? this.renderArrayContent(message.content.slice())
+                    : message.content}
             </>
         );
     }

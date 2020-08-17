@@ -25,6 +25,9 @@ class Tabs extends React.Component {
         if (this.props.active_index !== prev_props.active_index) {
             this.setState({ active_index: this.props.active_index });
         }
+        if (this.props.should_delay_render !== prev_props.should_delay_render && this.props.should_delay_render) {
+            this.setActiveLineStyle();
+        }
     }
 
     setActiveLineStyle = () => {

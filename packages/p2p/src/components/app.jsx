@@ -1,12 +1,13 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import ObjectUtils from '@deriv/shared/utils/object';
-import { Tabs, Modal, Loading } from '@deriv/components';
+import { getPropertyValue, isProduction } from '@deriv/shared';
+import { Tabs, Modal } from '@deriv/components';
 import { Dp2pProvider } from 'Components/context/dp2p-context';
 import ServerTime from 'Utils/server-time';
-import { init as WebsocketInit, getModifiedP2POrderList, requestWS, subscribeWS } from 'Utils/websocket';
+import { init as WebsocketInit, getModifiedP2POrderList, requestWS, subscribeWS, waitWS } from 'Utils/websocket';
 import { localize, setLanguage } from './i18next';
+import OrderInfo, { orderToggleIndex } from './orders/order-info';
 import BuySell from './buy-sell/buy-sell.jsx';
 import MyAds from './my-ads/my-ads.jsx';
 import Orders from './orders/orders.jsx';
@@ -36,23 +37,25 @@ class App extends React.Component {
 
         this.ws_subscriptions = {};
         this.list_item_limit = 20;
+        this.is_active_tab = true;
         this.state = {
-            poi_url: this.props.poi_url,
             active_index: 0,
             loginid: this.props.client.loginid,
             order_offset: 0,
             orders: [],
             notification_count: 0,
+            active_notification_count: 0,
+            inactive_notification_count: 0,
             parameters: null,
             is_advertiser: false,
             is_restricted: false,
             show_popup: false,
+            order_table_type: orderToggleIndex.ACTIVE,
             chat_info: {
                 app_id: '',
                 user_id: '',
                 token: '',
             },
-            is_loading: true,
         };
     }
 
@@ -66,24 +69,26 @@ class App extends React.Component {
             }
         };
 
-        this.ws_subscriptions = {
-            advertiser_subscription: subscribeWS(
-                {
-                    p2p_advertiser_info: 1,
-                    subscribe: 1,
-                },
-                [this.setIsAdvertiser, this.setChatInfoUsingAdvertiserInfo]
-            ),
-            order_list_subscription: subscribeWS(
-                {
-                    p2p_order_list: 1,
-                    subscribe: 1,
-                    offset: 0,
-                    limit: this.list_item_limit,
-                },
-                [this.setP2pOrderList]
-            ),
-        };
+        waitWS('authorize').then(() => {
+            this.ws_subscriptions = {
+                advertiser_subscription: subscribeWS(
+                    {
+                        p2p_advertiser_info: 1,
+                        subscribe: 1,
+                    },
+                    [this.setIsAdvertiser, this.setChatInfoUsingAdvertiserInfo]
+                ),
+                order_list_subscription: subscribeWS(
+                    {
+                        p2p_order_list: 1,
+                        subscribe: 1,
+                        offset: 0,
+                        limit: this.list_item_limit,
+                    },
+                    [this.setP2pOrderList]
+                ),
+            };
+        });
     }
 
     componentDidUpdate(prevProps) {
@@ -164,12 +169,9 @@ class App extends React.Component {
 
                     this.setState({
                         poi_status: identity.status,
-                        is_loading: false,
                     });
                 }
             });
-        } else {
-            this.setState({ is_loading: false });
         }
     };
 
@@ -180,16 +182,15 @@ class App extends React.Component {
             return;
         }
 
-        const user_id = ObjectUtils.getPropertyValue(p2p_advertiser_info, ['chat_user_id']);
-        const token = ObjectUtils.getPropertyValue(p2p_advertiser_info, ['chat_token']);
+        const user_id = getPropertyValue(p2p_advertiser_info, ['chat_user_id']);
+        const token = getPropertyValue(p2p_advertiser_info, ['chat_token']);
 
         this.setChatInfo(user_id, token);
     };
 
     setChatInfo = (user_id, token) => {
         const chat_info = {
-            // This is using QA10 SendBird AppId, please change to production's SendBird AppId when we deploy to production.
-            app_id: '4E259BA5-C383-4624-89A6-8365E06D9D39',
+            app_id: isProduction() ? '1465991C-5D64-4C88-8BD9-B0D7A6455E69' : '4E259BA5-C383-4624-89A6-8365E06D9D39',
             user_id,
             token,
         };
@@ -212,18 +213,25 @@ class App extends React.Component {
         const { is_cached, notifications } = this.getLocalStorageSettingsForLoginId();
 
         new_orders.forEach(new_order => {
-            const old_order = old_orders.find(o => o.id === new_order.id);
+            const order_info = new OrderInfo(new_order);
             const notification = notifications.find(n => n.order_id === new_order.id);
+            const old_order = old_orders.find(o => o.id === new_order.id);
             const is_current_order = new_order.id === this.props.order_id;
+            const notification_obj = {
+                order_id: new_order.id,
+                is_seen: is_current_order,
+                is_active: order_info.is_active,
+            };
 
             if (old_order) {
                 if (old_order.status !== new_order.status) {
                     if (notification) {
                         // If order status changed, notify the user.
                         notification.is_seen = is_current_order;
+                        notification.is_active = order_info.is_active;
                     } else {
                         // If we have an old_order, but for some reason don't have a copy in local storage.
-                        notifications.push({ order_id: new_order.id, is_seen: is_current_order });
+                        notifications.push(notification_obj);
                     }
                 }
             } else if (!notification) {
@@ -231,13 +239,16 @@ class App extends React.Component {
                 // cached list or only notify user of actionable orders.
                 if (is_cached) {
                     // If we can compare with a cached list, assume each new order should be notified.
-                    notifications.push({ order_id: new_order.id, is_seen: is_current_order });
+                    notifications.push(notification_obj);
                 } else {
                     // If we don't have a cached list, only notify user of orders that require action.
                     // This is done so user isn't spammed with old orders after resetting their local storage.
                     const actionable_statuses = ['pending', 'buyer-confirmed'];
                     const is_action_required = actionable_statuses.includes(new_order.status);
-                    notifications.push({ order_id: new_order.id, is_seen: is_current_order || !is_action_required });
+                    notifications.push({
+                        ...notification_obj,
+                        is_seen: is_current_order || !is_action_required,
+                    });
                 }
             }
         });
@@ -246,7 +257,10 @@ class App extends React.Component {
     };
 
     updateP2pNotifications = notifications => {
-        const notification_count = notifications.filter(notification => notification.is_seen === false).length;
+        const unseen_notifications = notifications.filter(notification => notification.is_seen === false);
+        const notification_count = unseen_notifications.length;
+        const active_notification_count = unseen_notifications.filter(notification => notification.is_active).length;
+        const inactive_notification_count = notification_count - active_notification_count;
         const user_settings = this.getLocalStorageSettingsForLoginId();
         user_settings.is_cached = true;
         user_settings.notifications = notifications;
@@ -255,7 +269,7 @@ class App extends React.Component {
         p2p_settings[this.state.loginid] = user_settings;
 
         localStorage.setItem('p2p_settings', JSON.stringify(p2p_settings));
-        this.setState({ notification_count });
+        this.setState({ notification_count, active_notification_count, inactive_notification_count });
 
         if (typeof this.props.setNotificationCount === 'function') {
             this.props.setNotificationCount(notification_count);
@@ -291,6 +305,11 @@ class App extends React.Component {
         }
     };
 
+    changeOrderToggle = value => {
+        this.is_active_tab = value === 'active';
+        this.setState({ order_table_type: value });
+    };
+
     render() {
         const {
             active_index,
@@ -302,11 +321,11 @@ class App extends React.Component {
             order_table_type,
             chat_info,
             show_popup,
-            is_loading,
-            poi_url,
             poi_status,
             is_restricted,
             nickname_error,
+            active_notification_count,
+            inactive_notification_count,
         } = this.state;
         const {
             className,
@@ -316,6 +335,7 @@ class App extends React.Component {
             setOrderId,
             should_show_verification,
             is_mobile,
+            poi_url,
         } = this.props;
 
         // TODO: remove allowed_currency check once we publish this to everyone
@@ -330,11 +350,13 @@ class App extends React.Component {
         return (
             <Dp2pProvider
                 value={{
-                    order_table_type,
+                    active_notification_count,
+                    inactive_notification_count,
                     currency,
                     local_currency_config,
                     residence,
                     advertiser_id,
+                    is_active_tab: this.is_active_tab,
                     is_advertiser: this.state.is_advertiser,
                     is_listed: this.state.is_listed,
                     setIsListed: is_listed => this.setState({ is_listed }),
@@ -343,13 +365,12 @@ class App extends React.Component {
                     setNickname: nickname => this.setState({ nickname }),
                     setChatInfo: this.setChatInfo,
                     is_restricted,
-                    email_domain: ObjectUtils.getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
+                    email_domain: getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
                     list_item_limit: this.list_item_limit,
                     order_offset,
                     orders,
                     order_id,
                     setOrderId,
-                    poi_url,
                     poi_status,
                     nickname_error,
                     changeTab: this.handleTabClick,
@@ -358,9 +379,11 @@ class App extends React.Component {
                     toggleNicknamePopup: () => this.toggleNicknamePopup(),
                     updateP2pNotifications: this.updateP2pNotifications.bind(this),
                     getLocalStorageSettingsForLoginId: this.getLocalStorageSettingsForLoginId.bind(this),
-                    createAdvertiser: this.createAdvertiser.bind(this),
+                    order_table_type,
                     changeOrderToggle: this.changeOrderToggle,
+                    createAdvertiser: this.createAdvertiser.bind(this),
                     is_mobile,
+                    poi_url,
                 }}
             >
                 <main className={classNames('p2p-cashier', className)}>
@@ -385,7 +408,6 @@ class App extends React.Component {
                         </>
                     ) : (
                         <>
-                            {is_loading && <Loading is_fullscreen={false} />}
                             {should_show_verification && !this.state.is_advertiser && (
                                 <div
                                     className={classNames('p2p-cashier__verification', {

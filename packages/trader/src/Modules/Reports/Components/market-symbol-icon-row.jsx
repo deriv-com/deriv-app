@@ -1,6 +1,6 @@
-import { Icon, Popover, IconTradeTypes } from '@deriv/components';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Icon, Popover, IconTradeTypes } from '@deriv/components';
 import { getMarketName, getTradeTypeName } from '../Helpers/market-underlying';
 import Shortcode from '../Helpers/shortcode';
 
@@ -52,12 +52,14 @@ const MarketSymbolIconRow = ({ payload, show_description }) => {
                 </div>
             </div>
         );
-    } else if (['deposit', 'withdrawal', 'escrow'].includes(payload.action_type)) {
+    } else if (['deposit', 'hold', 'release', 'withdrawal'].includes(payload.action_type)) {
         return (
             <div className='market-symbol-icon'>
                 {payload.action_type === 'deposit' && <Icon icon='IcCashierDeposit' size={32} />}
                 {payload.action_type === 'withdrawal' && <Icon icon='IcCashierWithdrawal' size={32} />}
-                {payload.action_type === 'escrow' && <Icon icon='IcCashierDp2p' size={32} />}
+                {(payload.action_type === 'hold' || payload.action_type === 'release') && (
+                    <Icon icon='IcCashierDp2p' size={32} />
+                )}
             </div>
         );
     }

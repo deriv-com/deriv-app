@@ -76,10 +76,13 @@ class Popup extends React.Component {
                                                                 )
                                                             }
                                                             defaultChecked={values.need_confirmation}
-                                                            label={localize('I have received {{amount}} {{currency}}', {
-                                                                amount: order.display_transaction_amount,
-                                                                currency: order.transaction_currency,
-                                                            })}
+                                                            label={localize(
+                                                                'I have received {{amount}} {{currency}}.',
+                                                                {
+                                                                    amount: order.display_transaction_amount,
+                                                                    currency: order.transaction_currency,
+                                                                }
+                                                            )}
                                                             classNameLabel='orders__popup-field_text'
                                                         />
                                                     )}
@@ -118,7 +121,7 @@ class Popup extends React.Component {
                                                     });
                                                 }}
                                                 defaultChecked={!disable_confirm}
-                                                label={localize('I have paid {{amount}} {{currency}}', {
+                                                label={localize('I have paid {{amount}} {{currency}}.', {
                                                     amount: order.display_transaction_amount,
                                                     currency: order.transaction_currency,
                                                 })}

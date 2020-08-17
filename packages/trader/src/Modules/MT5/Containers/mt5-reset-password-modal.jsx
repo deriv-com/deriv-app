@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Button, Icon, PasswordMeter, PasswordInput, FormSubmitButton, Loading, Modal } from '@deriv/components';
-import routes from '@deriv/shared/utils/routes';
+import { routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { getMtCompanies } from 'Stores/Modules/MT5/Helpers/mt5-config';

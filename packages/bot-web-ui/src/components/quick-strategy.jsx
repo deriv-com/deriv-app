@@ -10,6 +10,10 @@ import {
     Tabs,
     IconTradeTypes,
     ThemedScrollbars,
+    MobileWrapper,
+    Div100vhContainer,
+    FadeWrapper,
+    PageOverlay,
 } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { Formik, Form, Field } from 'formik';
@@ -34,6 +38,11 @@ const QuickStrategyForm = ({
     symbol_dropdown,
     trade_type_dropdown,
     validateQuickStrategy,
+    is_keyboard_active,
+    is_mobile,
+    selected_symbol,
+    selected_trade_type,
+    description,
 }) => (
     <div className='quick-strategy__form'>
         <Formik
@@ -47,242 +56,309 @@ const QuickStrategyForm = ({
                 const validation_errors = validateQuickStrategy(values);
                 const is_valid = Object.keys(validation_errors).length === 0;
                 const is_submit_enabled = !isSubmitting && is_valid;
-
+                const form_margin = !is_mobile
+                    ? '342px'
+                    : is_keyboard_active
+                    ? `calc(100vh - 170px)`
+                    : `calc(100vh - 80px - 35px - 72px)`; // 100vh - Core header - Vertical tab title - Strategy tabs - Footer
                 return (
                     <Form>
-                        <div className='quick-strategy__form-row'>
-                            <Field name='quick-strategy__symbol'>
-                                {({ field }) => (
-                                    <Autocomplete
-                                        {...field}
-                                        autoComplete='off'
-                                        className='quick-strategy__dropdown'
-                                        type='text'
-                                        label={localize('Asset')}
-                                        list_items={symbol_dropdown}
-                                        onHideDropdownList={() => {
-                                            onHideDropdownList('symbol', values[field.name], setFieldValue);
-                                        }}
-                                        onItemSelection={({ value }) => {
-                                            onChangeDropdownItem('symbol', value, setFieldValue);
-                                        }}
-                                        onScrollStop={() => onScrollStopDropdownList('symbol')}
-                                    />
+                        <ThemedScrollbars height={form_margin} autohide>
+                            <div className='quick-strategy__form-content'>
+                                <div className='quick-strategy__description'>{description}</div>
+                                <div className='quick-strategy__form-row'>
+                                    <Field name='quick-strategy__symbol'>
+                                        {({ field }) => (
+                                            <Autocomplete
+                                                {...field}
+                                                autoComplete='off'
+                                                className='quick-strategy__dropdown quick-strategy__leading'
+                                                type='text'
+                                                label={localize('Asset')}
+                                                list_items={symbol_dropdown}
+                                                onHideDropdownList={() => {
+                                                    onHideDropdownList('symbol', values[field.name], setFieldValue);
+                                                }}
+                                                onItemSelection={({ value }) => {
+                                                    onChangeDropdownItem('symbol', value, setFieldValue);
+                                                }}
+                                                onScrollStop={() => onScrollStopDropdownList('symbol')}
+                                                leading_icon={
+                                                    selected_symbol.value && (
+                                                        <Icon icon={`IcUnderlying${selected_symbol.value}`} size={24} />
+                                                    )
+                                                }
+                                            />
+                                        )}
+                                    </Field>
+                                </div>
+                                <div className='quick-strategy__form-row'>
+                                    <Field name='quick-strategy__trade-type'>
+                                        {({ field }) => (
+                                            <Autocomplete
+                                                {...field}
+                                                autoComplete='off'
+                                                className='quick-strategy__dropdown quick-strategy__leading'
+                                                type='text'
+                                                label={localize('Trade type')}
+                                                list_items={trade_type_dropdown}
+                                                onHideDropdownList={() => {
+                                                    onHideDropdownList('trade-type', values[field.name], setFieldValue);
+                                                }}
+                                                onItemSelection={({ value }) => {
+                                                    onChangeDropdownItem('trade-type', value, setFieldValue);
+                                                }}
+                                                onScrollStop={() => onScrollStopDropdownList('trade-type')}
+                                                leading_icon={
+                                                    selected_trade_type.icon && (
+                                                        <span className='quick_strategy__trade-type--icon'>
+                                                            <IconTradeTypes type={selected_trade_type.icon[0]} />
+                                                            <IconTradeTypes type={selected_trade_type.icon[1]} />
+                                                        </span>
+                                                    )
+                                                }
+                                            />
+                                        )}
+                                    </Field>
+                                </div>
+                                <div className='quick-strategy__form-row quick-strategy__form-row--multiple'>
+                                    <Field name='quick-strategy__duration-unit'>
+                                        {({ field }) => (
+                                            <Autocomplete
+                                                {...field}
+                                                autoComplete='off'
+                                                className='quick-strategy__duration-dropdown'
+                                                type='text'
+                                                label={localize('Duration unit')}
+                                                list_items={duration_unit_dropdown}
+                                                disabled={duration_unit_dropdown.length === 1}
+                                                onHideDropdownList={() => {
+                                                    onHideDropdownList(
+                                                        'duration-unit',
+                                                        values[field.name],
+                                                        setFieldValue
+                                                    );
+                                                }}
+                                                onItemSelection={({ value }) => {
+                                                    onChangeDropdownItem('duration-unit', value, setFieldValue);
+                                                }}
+                                                onScrollStop={() => onScrollStopDropdownList('duration-unit')}
+                                            />
+                                        )}
+                                    </Field>
+                                    <Field name='quick-strategy__duration-value'>
+                                        {({ field }) => (
+                                            <Input
+                                                {...field}
+                                                className='quick-strategy__input'
+                                                type='text'
+                                                error={
+                                                    initial_errors[field.name] ||
+                                                    (touched[field.name] && errors[field.name])
+                                                }
+                                                label={localize('Duration value')}
+                                                onChange={e => {
+                                                    handleChange(e);
+                                                    onChangeInputValue('input_duration_value', e);
+                                                }}
+                                                placeholder='5'
+                                                trailing_icon={
+                                                    <Popover
+                                                        alignment={is_mobile ? 'top' : 'bottom'}
+                                                        message={localize(
+                                                            'The trade length of your purchased contract.'
+                                                        )}
+                                                        zIndex={popover_zindex.QUICK_STRATEGY}
+                                                    >
+                                                        <Icon icon='IcInfoOutline' />
+                                                    </Popover>
+                                                }
+                                            />
+                                        )}
+                                    </Field>
+                                </div>
+                                <div className='quick-strategy__form-row quick-strategy__form-row--multiple'>
+                                    <Field name='quick-strategy__stake'>
+                                        {({ field }) => (
+                                            <Input
+                                                {...field}
+                                                className='quick-strategy__input'
+                                                type='text'
+                                                error={
+                                                    initial_errors[field.name] ||
+                                                    (touched[field.name] && errors[field.name])
+                                                }
+                                                label={localize('Initial stake')}
+                                                onChange={e => {
+                                                    handleChange(e);
+                                                    onChangeInputValue('input_stake', e);
+                                                }}
+                                                placeholder='10'
+                                                trailing_icon={
+                                                    <Popover
+                                                        alignment={is_mobile ? 'top' : 'bottom'}
+                                                        message={localize('The amount that you pay to enter a trade.')}
+                                                        zIndex={popover_zindex.QUICK_STRATEGY}
+                                                    >
+                                                        <Icon icon='IcInfoOutline' />
+                                                    </Popover>
+                                                }
+                                            />
+                                        )}
+                                    </Field>
+                                    <Field name='quick-strategy__loss'>
+                                        {({ field }) => (
+                                            <Input
+                                                {...field}
+                                                className='quick-strategy__input'
+                                                type='text'
+                                                error={
+                                                    initial_errors[field.name] ||
+                                                    (touched[field.name] && errors[field.name])
+                                                }
+                                                label={localize('Loss threshold')}
+                                                onChange={e => {
+                                                    handleChange(e);
+                                                    onChangeInputValue('input_loss', e);
+                                                }}
+                                                placeholder='5000'
+                                                trailing_icon={
+                                                    <Popover
+                                                        alignment={is_mobile ? 'top' : 'bottom'}
+                                                        message={localize(
+                                                            'The bot will stop trading if your total loss exceeds this amount.'
+                                                        )}
+                                                        zIndex={popover_zindex.QUICK_STRATEGY}
+                                                    >
+                                                        <Icon icon='IcInfoOutline' />
+                                                    </Popover>
+                                                }
+                                            />
+                                        )}
+                                    </Field>
+                                </div>
+                                <div className='quick-strategy__form-row quick-strategy__form-row--multiple'>
+                                    <Field name='quick-strategy__size'>
+                                        {({ field }) => (
+                                            <Input
+                                                {...field}
+                                                className='quick-strategy__input'
+                                                type='text'
+                                                error={
+                                                    initial_errors[field.name] ||
+                                                    (touched[field.name] && errors[field.name])
+                                                }
+                                                label={getSizeText(active_index)}
+                                                onChange={e => {
+                                                    handleChange(e);
+                                                    onChangeInputValue('input_size', e);
+                                                }}
+                                                placeholder='2'
+                                                trailing_icon={
+                                                    <Popover
+                                                        alignment={is_mobile ? 'top' : 'bottom'}
+                                                        message={getSizeDesc(active_index)}
+                                                        zIndex={popover_zindex.QUICK_STRATEGY}
+                                                    >
+                                                        <Icon icon='IcInfoOutline' />
+                                                    </Popover>
+                                                }
+                                            />
+                                        )}
+                                    </Field>
+                                    <Field name='quick-strategy__profit'>
+                                        {({ field }) => (
+                                            <Input
+                                                {...field}
+                                                className='quick-strategy__input'
+                                                type='text'
+                                                error={
+                                                    initial_errors[field.name] ||
+                                                    (touched[field.name] && errors[field.name])
+                                                }
+                                                label={localize('Profit threshold')}
+                                                onChange={e => {
+                                                    handleChange(e);
+                                                    onChangeInputValue('input_profit', e);
+                                                }}
+                                                placeholder='5000'
+                                                trailing_icon={
+                                                    <Popover
+                                                        alignment={is_mobile ? 'top' : 'bottom'}
+                                                        message={localize(
+                                                            'The bot will stop trading if your total profit exceeds this amount.'
+                                                        )}
+                                                        zIndex={popover_zindex.QUICK_STRATEGY}
+                                                    >
+                                                        <Icon icon='IcInfoOutline' />
+                                                    </Popover>
+                                                }
+                                            />
+                                        )}
+                                    </Field>
+                                </div>
+                                {is_keyboard_active && (
+                                    <div className='quick-strategy__form-footer'>
+                                        <Button.Group>
+                                            {!is_mobile && (
+                                                <Button
+                                                    id='db-quick-strategy__button-edit'
+                                                    text={localize('Create and edit')}
+                                                    is_disabled={!is_submit_enabled}
+                                                    secondary
+                                                    large
+                                                    onClick={() => {
+                                                        setFieldValue('button', 'edit');
+                                                        submitForm();
+                                                    }}
+                                                />
+                                            )}
+                                            <Button
+                                                id='db-quick-strategy__button-run'
+                                                text={localize('Run')}
+                                                is_disabled={!is_submit_enabled || is_stop_button_visible}
+                                                primary
+                                                large
+                                                onClick={() => {
+                                                    setFieldValue('button', 'run');
+                                                    submitForm();
+                                                }}
+                                            />
+                                        </Button.Group>
+                                    </div>
                                 )}
-                            </Field>
-                        </div>
-                        <div className='quick-strategy__form-row'>
-                            <Field name='quick-strategy__trade-type'>
-                                {({ field }) => (
-                                    <Autocomplete
-                                        {...field}
-                                        autoComplete='off'
-                                        className='quick-strategy__dropdown'
-                                        type='text'
-                                        label={localize('Trade type')}
-                                        list_items={trade_type_dropdown}
-                                        onHideDropdownList={() => {
-                                            onHideDropdownList('trade-type', values[field.name], setFieldValue);
+                            </div>
+                        </ThemedScrollbars>
+                        {(!is_mobile || !is_keyboard_active) && (
+                            <div className='quick-strategy__form-footer'>
+                                <Button.Group>
+                                    {!is_mobile && (
+                                        <Button
+                                            id='db-quick-strategy__button-edit'
+                                            text={localize('Create and edit')}
+                                            is_disabled={!is_submit_enabled}
+                                            secondary
+                                            large
+                                            onClick={() => {
+                                                setFieldValue('button', 'edit');
+                                                submitForm();
+                                            }}
+                                        />
+                                    )}
+                                    <Button
+                                        id='db-quick-strategy__button-run'
+                                        text={localize('Run')}
+                                        is_disabled={!is_submit_enabled || is_stop_button_visible}
+                                        primary
+                                        large
+                                        onClick={() => {
+                                            setFieldValue('button', 'run');
+                                            submitForm();
                                         }}
-                                        onItemSelection={({ value }) => {
-                                            onChangeDropdownItem('trade-type', value, setFieldValue);
-                                        }}
-                                        onScrollStop={() => onScrollStopDropdownList('trade-type')}
                                     />
-                                )}
-                            </Field>
-                        </div>
-                        <div className='quick-strategy__form-row quick-strategy__form-row--multiple'>
-                            <Field name='quick-strategy__duration-unit'>
-                                {({ field }) => (
-                                    <Autocomplete
-                                        {...field}
-                                        autoComplete='off'
-                                        className='quick-strategy__duration-dropdown'
-                                        type='text'
-                                        label={localize('Duration unit')}
-                                        list_items={duration_unit_dropdown}
-                                        disabled={duration_unit_dropdown.length === 1}
-                                        onHideDropdownList={() => {
-                                            onHideDropdownList('duration-unit', values[field.name], setFieldValue);
-                                        }}
-                                        onItemSelection={({ value }) => {
-                                            onChangeDropdownItem('duration-unit', value, setFieldValue);
-                                        }}
-                                        onScrollStop={() => onScrollStopDropdownList('duration-unit')}
-                                    />
-                                )}
-                            </Field>
-                            <Field name='quick-strategy__duration-value'>
-                                {({ field }) => (
-                                    <Input
-                                        {...field}
-                                        className='quick-strategy__input'
-                                        type='text'
-                                        error={
-                                            initial_errors[field.name] || (touched[field.name] && errors[field.name])
-                                        }
-                                        label={localize('Duration value')}
-                                        onChange={e => {
-                                            handleChange(e);
-                                            onChangeInputValue('input_duration_value', e);
-                                        }}
-                                        placeholder='5'
-                                        trailing_icon={
-                                            <Popover
-                                                alignment='bottom'
-                                                message={localize('The trade length of your purchased contract.')}
-                                                zIndex={popover_zindex.QUICK_STRATEGY}
-                                            >
-                                                <Icon icon='IcInfoOutline' />
-                                            </Popover>
-                                        }
-                                    />
-                                )}
-                            </Field>
-                        </div>
-                        <div className='quick-strategy__form-row quick-strategy__form-row--multiple'>
-                            <Field name='quick-strategy__stake'>
-                                {({ field }) => (
-                                    <Input
-                                        {...field}
-                                        className='quick-strategy__input'
-                                        type='text'
-                                        error={
-                                            initial_errors[field.name] || (touched[field.name] && errors[field.name])
-                                        }
-                                        label={localize('Initial stake')}
-                                        onChange={e => {
-                                            handleChange(e);
-                                            onChangeInputValue('input_stake', e);
-                                        }}
-                                        placeholder='10'
-                                        trailing_icon={
-                                            <Popover
-                                                alignment='bottom'
-                                                message={localize('The amount that you pay to enter a trade.')}
-                                                zIndex={popover_zindex.QUICK_STRATEGY}
-                                            >
-                                                <Icon icon='IcInfoOutline' />
-                                            </Popover>
-                                        }
-                                    />
-                                )}
-                            </Field>
-                            <Field name='quick-strategy__loss'>
-                                {({ field }) => (
-                                    <Input
-                                        {...field}
-                                        className='quick-strategy__input'
-                                        type='text'
-                                        error={
-                                            initial_errors[field.name] || (touched[field.name] && errors[field.name])
-                                        }
-                                        label={localize('Loss threshold')}
-                                        onChange={e => {
-                                            handleChange(e);
-                                            onChangeInputValue('input_loss', e);
-                                        }}
-                                        placeholder='5000'
-                                        trailing_icon={
-                                            <Popover
-                                                alignment='bottom'
-                                                message={localize(
-                                                    'The bot will stop trading if your total loss exceeds this amount.'
-                                                )}
-                                                zIndex={popover_zindex.QUICK_STRATEGY}
-                                            >
-                                                <Icon icon='IcInfoOutline' />
-                                            </Popover>
-                                        }
-                                    />
-                                )}
-                            </Field>
-                        </div>
-                        <div className='quick-strategy__form-row quick-strategy__form-row--multiple'>
-                            <Field name='quick-strategy__size'>
-                                {({ field }) => (
-                                    <Input
-                                        {...field}
-                                        className='quick-strategy__input'
-                                        type='text'
-                                        error={
-                                            initial_errors[field.name] || (touched[field.name] && errors[field.name])
-                                        }
-                                        label={getSizeText(active_index)}
-                                        onChange={e => {
-                                            handleChange(e);
-                                            onChangeInputValue('input_size', e);
-                                        }}
-                                        placeholder='2'
-                                        trailing_icon={
-                                            <Popover
-                                                alignment='bottom'
-                                                message={getSizeDesc(active_index)}
-                                                zIndex={popover_zindex.QUICK_STRATEGY}
-                                            >
-                                                <Icon icon='IcInfoOutline' />
-                                            </Popover>
-                                        }
-                                    />
-                                )}
-                            </Field>
-                            <Field name='quick-strategy__profit'>
-                                {({ field }) => (
-                                    <Input
-                                        {...field}
-                                        className='quick-strategy__input'
-                                        type='text'
-                                        error={
-                                            initial_errors[field.name] || (touched[field.name] && errors[field.name])
-                                        }
-                                        label={localize('Profit threshold')}
-                                        onChange={e => {
-                                            handleChange(e);
-                                            onChangeInputValue('input_profit', e);
-                                        }}
-                                        placeholder='5000'
-                                        trailing_icon={
-                                            <Popover
-                                                alignment='bottom'
-                                                message={localize(
-                                                    'The bot will stop trading if your total profit exceeds this amount.'
-                                                )}
-                                                zIndex={popover_zindex.QUICK_STRATEGY}
-                                            >
-                                                <Icon icon='IcInfoOutline' />
-                                            </Popover>
-                                        }
-                                    />
-                                )}
-                            </Field>
-                        </div>
-                        <div className='quick-strategy__form-footer'>
-                            <Button.Group>
-                                <Button
-                                    id='db-quick-strategy__button-edit'
-                                    text={localize('Create and edit')}
-                                    is_disabled={!is_submit_enabled}
-                                    secondary
-                                    large
-                                    onClick={() => {
-                                        setFieldValue('button', 'edit');
-                                        submitForm();
-                                    }}
-                                />
-                                <Button
-                                    id='db-quick-strategy__button-run'
-                                    text={localize('Run')}
-                                    is_disabled={!is_submit_enabled || is_stop_button_visible}
-                                    primary
-                                    large
-                                    onClick={() => {
-                                        setFieldValue('button', 'run');
-                                        submitForm();
-                                    }}
-                                />
-                            </Button.Group>
-                        </div>
+                                </Button.Group>
+                            </div>
+                        )}
                     </Form>
                 );
             }}
@@ -304,12 +380,12 @@ const TradeTypeOption = ({ trade_type }) => (
         <span className='quick-strategy__symbol'>{trade_type.text}</span>
     </div>
 );
-
-const QuickStrategy = props => {
+const ContentRenderer = props => {
     const { strategies } = config;
     const {
-        is_strategy_modal_open,
         setActiveTabIndex,
+        symbol_dropdown,
+        trade_type_dropdown,
         active_index,
         createStrategy,
         duration_unit_dropdown,
@@ -317,71 +393,93 @@ const QuickStrategy = props => {
         getSizeText,
         initial_errors,
         initial_values,
+        is_keyboard_active,
+        is_mobile,
         is_stop_button_visible,
         onChangeDropdownItem,
         onChangeInputValue,
         onHideDropdownList,
         onScrollStopDropdownList,
         validateQuickStrategy,
-        symbol_dropdown,
-        trade_type_dropdown,
-        toggleStrategyModal,
+        selected_symbol,
+        selected_trade_type,
     } = props;
-
     const symbol_dropdown_options = symbol_dropdown.map(symbol => ({
         component: <MarketOption symbol={symbol} />,
         ...symbol,
     }));
-
     const trade_type_dropdown_options = trade_type_dropdown.map(trade_type => ({
         component: <TradeTypeOption trade_type={trade_type} />,
         ...trade_type,
     }));
+    return (
+        <Tabs active_index={active_index} onTabItemClick={setActiveTabIndex} top>
+            {Object.keys(strategies).map(key => {
+                const { index, label, description } = strategies[key];
+                return (
+                    <div key={index} label={label}>
+                        <QuickStrategyForm
+                            active_index={active_index}
+                            createStrategy={createStrategy}
+                            duration_unit_dropdown={duration_unit_dropdown}
+                            getSizeDesc={getSizeDesc}
+                            getSizeText={getSizeText}
+                            initial_errors={initial_errors}
+                            initial_values={initial_values}
+                            is_stop_button_visible={is_stop_button_visible}
+                            onChangeDropdownItem={onChangeDropdownItem}
+                            onChangeInputValue={onChangeInputValue}
+                            onHideDropdownList={onHideDropdownList}
+                            onScrollStopDropdownList={onScrollStopDropdownList}
+                            validateQuickStrategy={validateQuickStrategy}
+                            symbol_dropdown={symbol_dropdown_options}
+                            trade_type_dropdown={trade_type_dropdown_options}
+                            is_keyboard_active={is_keyboard_active}
+                            is_mobile={is_mobile}
+                            selected_symbol={selected_symbol}
+                            selected_trade_type={selected_trade_type}
+                            description={description}
+                        />
+                    </div>
+                );
+            })}
+        </Tabs>
+    );
+};
+
+const QuickStrategy = props => {
+    const { is_strategy_modal_open, is_mobile, toggleStrategyModal } = props;
 
     return (
-        <Modal
-            title={localize('Quick strategy')}
-            className='modal--strategy'
-            is_open={is_strategy_modal_open}
-            toggleModal={toggleStrategyModal}
-            width={'460px'}
-        >
-            <ThemedScrollbars className='modal__scrollbar' height='calc(100vh - 250px)'>
-                <div className='modal__content'>
-                    <div className='quick-strategy__tabs'>
-                        <Tabs active_index={active_index} onTabItemClick={setActiveTabIndex} top>
-                            {Object.keys(strategies).map(key => {
-                                const { index, label, description } = strategies[key];
-                                return (
-                                    <div key={index} label={label}>
-                                        <div className='strategy__tab'>
-                                            <div className='quick-strategy__description'>{description}</div>
-                                            <QuickStrategyForm
-                                                active_index={active_index}
-                                                createStrategy={createStrategy}
-                                                duration_unit_dropdown={duration_unit_dropdown}
-                                                getSizeDesc={getSizeDesc}
-                                                getSizeText={getSizeText}
-                                                initial_errors={initial_errors}
-                                                initial_values={initial_values}
-                                                is_stop_button_visible={is_stop_button_visible}
-                                                onChangeDropdownItem={onChangeDropdownItem}
-                                                onChangeInputValue={onChangeInputValue}
-                                                onHideDropdownList={onHideDropdownList}
-                                                onScrollStopDropdownList={onScrollStopDropdownList}
-                                                validateQuickStrategy={validateQuickStrategy}
-                                                symbol_dropdown={symbol_dropdown_options}
-                                                trade_type_dropdown={trade_type_dropdown_options}
-                                            />
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                        </Tabs>
+        <>
+            {is_mobile ? (
+                <FadeWrapper
+                    is_visible={is_strategy_modal_open}
+                    className='quick-strategy__wrapper'
+                    keyname='quick-strategy__wrapper'
+                >
+                    <PageOverlay header={localize('Quick Strategy')} onClickClose={toggleStrategyModal}>
+                        <MobileWrapper>
+                            <Div100vhContainer className='quick-strategy__wrapper--is-mobile' height_offset='80px'>
+                                <ContentRenderer {...props} />
+                            </Div100vhContainer>
+                        </MobileWrapper>
+                    </PageOverlay>
+                </FadeWrapper>
+            ) : (
+                <Modal
+                    title={localize('Quick strategy')}
+                    className='modal--strategy'
+                    is_open={is_strategy_modal_open}
+                    toggleModal={toggleStrategyModal}
+                    width={'460px'}
+                >
+                    <div className='modal__content'>
+                        <ContentRenderer {...props} />
                     </div>
-                </div>
-            </ThemedScrollbars>
-        </Modal>
+                </Modal>
+            )}
+        </>
     );
 };
 
@@ -393,6 +491,8 @@ QuickStrategy.propTypes = {
     getSizeText: PropTypes.func,
     initial_errors: PropTypes.object,
     initial_values: PropTypes.object,
+    is_keyboard_active: PropTypes.bool,
+    is_mobile: PropTypes.bool,
     is_stop_button_visible: PropTypes.bool,
     is_strategy_modal_open: PropTypes.bool,
     onChangeDropdownItem: PropTypes.func,
@@ -401,13 +501,15 @@ QuickStrategy.propTypes = {
     onHideDropdownList: PropTypes.func,
     onScrollStopDropdownList: PropTypes.func,
     setActiveTabIndex: PropTypes.func,
+    selected_symbol: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    selected_trade_type: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     symbol_dropdown: PropTypes.array,
     toggleStrategyModal: PropTypes.func,
     trade_type_dropdown: PropTypes.array,
     validateQuickStrategy: PropTypes.func,
 };
 
-export default connect(({ run_panel, quick_strategy }) => ({
+export default connect(({ run_panel, quick_strategy, ui }) => ({
     active_index: quick_strategy.active_index,
     createStrategy: quick_strategy.createStrategy,
     duration_unit_dropdown: quick_strategy.duration_unit_dropdown,
@@ -415,6 +517,8 @@ export default connect(({ run_panel, quick_strategy }) => ({
     getSizeText: quick_strategy.getSizeText,
     initial_errors: quick_strategy.initial_errors,
     initial_values: quick_strategy.initial_values,
+    is_keyboard_active: ui.is_keyboard_active,
+    is_mobile: ui.is_mobile,
     is_stop_button_visible: run_panel.is_stop_button_visible,
     is_strategy_modal_open: quick_strategy.is_strategy_modal_open,
     onChangeDropdownItem: quick_strategy.onChangeDropdownItem,
@@ -423,6 +527,8 @@ export default connect(({ run_panel, quick_strategy }) => ({
     onHideDropdownList: quick_strategy.onHideDropdownList,
     onScrollStopDropdownList: quick_strategy.onScrollStopDropdownList,
     setActiveTabIndex: quick_strategy.setActiveTabIndex,
+    selected_symbol: quick_strategy.selected_symbol,
+    selected_trade_type: quick_strategy.selected_trade_type,
     symbol_dropdown: quick_strategy.symbol_dropdown,
     toggleStrategyModal: quick_strategy.toggleStrategyModal,
     trade_type_dropdown: quick_strategy.trade_type_dropdown,

@@ -280,9 +280,8 @@ export default class BlockConversion {
     // eslint-disable-next-line class-methods-use-this
     createWorkspace() {
         const options = new Blockly.Options({ media: `${__webpack_public_path__}media/` });
-        const el_injection_div = document.createElement('div');
-        const svg = Blockly.createDom_(el_injection_div, options);
-        const workspace = Blockly.createMainWorkspace_(svg, options, false, false);
+        const el_injection_div = new DocumentFragment();
+        const workspace = Blockly.createVirtualWorkspace_(el_injection_div, options, false, false);
 
         return workspace;
     }
@@ -486,7 +485,8 @@ export default class BlockConversion {
             converted_xml.setAttribute('collection', 'true');
         }
 
-        this.workspace.dispose();
+        converted_xml.setAttribute('is_dbot', 'true');
+
         this.workspace = null;
 
         Blockly.Events.enable();

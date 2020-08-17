@@ -2,12 +2,12 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { mobileOSDetect } from '@deriv/shared/utils/os';
+import { mobileOSDetect } from '@deriv/shared';
 import { listPropType, findNextFocusableNode, findPreviousFocusableNode } from './dropdown';
 import Items from './items.jsx';
 import NativeSelect from './native-select.jsx';
 import DisplayText from './display-text.jsx';
-import { useOnClickOutside } from '../../hooks/use-onclickoutside';
+import { useOnClickOutside } from '../../hooks';
 import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars.jsx';
 import Icon from '../icon';
 
@@ -43,6 +43,7 @@ const Dropdown = ({
 
     const [is_list_visible, setIsListVisible] = React.useState(!!is_nativepicker_visible);
     const [list_dimensions, setListDimensions] = React.useState([0, 0]);
+    const initial_render = React.useRef(true);
 
     const onClickOutSide = () => {
         if (typeof handleBlur === 'function') handleBlur({ target: { name } });
@@ -86,6 +87,7 @@ const Dropdown = ({
             'dc-dropdown--left': is_alignment_left,
             'dc-dropdown--show': is_list_visible,
             'dc-dropdown--disabled': isSingleOption() || disabled,
+            'dc-dropdown--error': error,
         });
     };
 
@@ -129,7 +131,7 @@ const Dropdown = ({
     }, [is_nativepicker, is_nativepicker_visible]);
 
     React.useEffect(() => {
-        if (!is_list_visible) dropdown_ref.current.focus();
+        if (!initial_render.current && !is_list_visible && value) dropdown_ref.current.focus();
     }, [is_list_visible]);
 
     const handleSelect = item => {
@@ -202,7 +204,10 @@ const Dropdown = ({
         const { activeElement } = document;
 
         if (activeElement.id === 'dropdown-display') {
-            Array.from(nodes.current.values())[0].focus();
+            const el = Array.from(nodes.current.values())[0];
+            if (el && el.focus instanceof Function) {
+                el.focus();
+            }
         } else {
             const active_node = nodes.current.get(activeElement.id);
             if (active_node) {
@@ -241,6 +246,12 @@ const Dropdown = ({
             nodes={nodes.current}
         />
     );
+
+    React.useEffect(() => {
+        if (initial_render.current) {
+            initial_render.current = false;
+        }
+    }, []);
 
     return (
         <React.Fragment>
@@ -287,10 +298,11 @@ const Dropdown = ({
                             className={classNames('dc-dropdown__select-arrow', {
                                 'dc-dropdown__select-arrow--left': is_alignment_left,
                                 'dc-dropdown__select-arrow--up': is_list_visible,
+                                'dc-dropdown__select-arrow--error': error || hint,
                             })}
                         />
                     )}
-                    {error && <p className='dc-field-error'>{error}</p>}
+                    {error && <p className='dc-field--error'>{error}</p>}
                     {is_nativepicker ? (
                         <NativeSelect
                             ref={native_select_ref}

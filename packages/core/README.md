@@ -6,7 +6,7 @@ Deriv App
 - [General](docs/README.md) - Contains general philosophy and overview of this package
 - [Modules docs](docs/Modules/README.md) - Contains implementation guides (i.e., scaffolding help, etc.)
 
-This repository contains the static HTML, Javascript, CSS, and images content of the [Deriv](http://deriv.app) website.
+This repository contains the static HTML, Javascript, CSS, and images content of the [Deriv](http://app.deriv.com) website.
 
 ## Installation
 

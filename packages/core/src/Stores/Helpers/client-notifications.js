@@ -1,19 +1,17 @@
 import React from 'react';
-import { urlFor, getDerivComLink } from '@deriv/shared/utils/url';
-import routes from '@deriv/shared/utils/routes';
-import { isMobile } from '@deriv/shared/utils/screen';
+import { getDerivComLink, routes, isMobile, formatDate, isEmptyObject } from '@deriv/shared';
+
 import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services';
-import { formatDate } from '@deriv/shared/utils/date';
-import ObjectUtils from '@deriv/shared/utils/object';
+
 import { getRiskAssessment, isAccountOfType, shouldAcceptTnc, shouldCompleteTax } from '_common/base/client_base';
 import { BinaryLink } from 'App/Components/Routes';
-import { website_domain } from 'App/Constants/app-config';
+import { website_name } from 'App/Constants/app-config';
 import { LocalStore, State } from '_common/storage';
 
 // TODO: Update links to app_2 links when components are done.
 /* eslint-disable react/jsx-no-target-blank */
-export const clientNotifications = (ui = {}) => {
+export const clientNotifications = (ui = {}, client = {}) => {
     const notifications = {
         currency: {
             action: {
@@ -35,7 +33,7 @@ export const clientNotifications = (ui = {}) => {
                 <Localize
                     i18n_default_text='You have opted to be excluded from {{website_domain}} until {{exclusion_end}}. Please <0>contact us</0> for assistance.'
                     values={{
-                        website_domain,
+                        website_domain: website_name,
                         exclusion_end: formatDate(excluded_until, 'DD/MM/YYYY'),
                         interpolation: { escapeValue: false },
                     }}
@@ -118,6 +116,17 @@ export const clientNotifications = (ui = {}) => {
             ),
             type: 'danger',
         },
+        max_turnover_limit_not_set: {
+            key: 'max_turnover_limit_not_set',
+            header: localize('Remove deposit limits'),
+            message: (
+                <Localize
+                    i18n_default_text='Please set your <0>30-day turnover limit</0> to remove deposit limits.'
+                    components={[<BinaryLink key={0} className='link' to={routes.cashier_deposit} />]}
+                />
+            ),
+            type: 'danger',
+        },
         mf_retail: {
             ...(isMobile() && {
                 action: {
@@ -138,24 +147,6 @@ export const clientNotifications = (ui = {}) => {
                 />
             ),
             type: 'danger',
-        },
-        financial_limit: {
-            key: 'financial_limit',
-            header: localize('Remove deposit limits'),
-            message: (
-                <Localize
-                    i18n_default_text='Please set your <0>30-day turnover limit</0> to remove deposit limits.'
-                    components={[
-                        <a
-                            key={0}
-                            className='link'
-                            target='_blank'
-                            href={urlFor('user/security/self_exclusionws', { legacy: true })}
-                        />,
-                    ]}
-                />
-            ),
-            type: 'warning',
         },
         risk: {
             action: {
@@ -233,9 +224,9 @@ export const clientNotifications = (ui = {}) => {
                 text: localize('Verify identity'),
             },
             key: 'needs_poi',
-            header: localize('Proof of identity required'),
-            message: localize('Please submit your proof of identity.'),
-            type: 'warning',
+            header: localize('Please verify your proof of identity'),
+            message: localize('To continue trading with us, please confirm who you are.'),
+            type: 'danger',
         },
         needs_poa: {
             action: {
@@ -243,9 +234,37 @@ export const clientNotifications = (ui = {}) => {
                 text: localize('Verify address'),
             },
             key: 'needs_poa',
-            header: localize('Proof of address required'),
-            message: localize('Please submit your proof of address.'),
-            type: 'warning',
+            header: localize('Please verify your proof of address'),
+            message: localize('To continue trading with us, please confirm where you live.'),
+            type: 'danger',
+        },
+        needs_poi_virtual: {
+            action: {
+                onClick: async () => {
+                    const { switchAccount, first_switchable_real_loginid } = client;
+
+                    await switchAccount(first_switchable_real_loginid);
+                },
+                text: localize('Verify identity'),
+            },
+            key: 'needs_poi_virtual',
+            header: localize('Please Verify your identity'),
+            message: localize(
+                'We couldn’t verify your personal details with our records, to enable deposit, withdrawals and trading, you need to upload proof of your identity.'
+            ),
+            type: 'danger',
+        },
+        needs_poa_virtual: {
+            action: {
+                route: routes.proof_of_address,
+                text: localize('Verify address'),
+            },
+            key: 'needs_poa_virtual',
+            header: localize('Please Verify your address'),
+            message: localize(
+                'We couldn’t verify your personal details with our records, to enable deposit, withdrawals and trading, you need to upload proof of your address.'
+            ),
+            type: 'danger',
         },
         poa_expired: {
             action: {
@@ -298,6 +317,7 @@ const hasMissingRequiredField = (account_settings, client) => {
     const { landing_company_shortcode } = client;
     const is_svg = landing_company_shortcode === 'svg' || landing_company_shortcode === 'costarica';
 
+    // TODO: [deriv-eu] refactor into its own function once more exceptions are added.
     let required_fields;
     if (is_svg) {
         required_fields = getSVGRequiredFields();
@@ -350,7 +370,7 @@ const addVerificationNotifications = (identity, document, addNotificationMessage
 };
 
 const checkAccountStatus = (account_status, client, addNotificationMessage, loginid) => {
-    if (ObjectUtils.isEmptyObject(account_status)) return {};
+    if (isEmptyObject(account_status)) return {};
     if (loginid !== LocalStore.get('active_loginid')) return {};
 
     const {
@@ -367,27 +387,20 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
         mt5_withdrawal_locked,
         document_needs_action,
         unwelcome,
-        ukrts_max_turnover_limit_not_set,
         professional,
+        max_turnover_limit_not_set,
+        allow_document_upload,
     } = getStatusValidations(status);
 
     addVerificationNotifications(identity, document, addNotificationMessage);
 
     const is_mf_retail = client.landing_company_shortcode === 'maltainvest' && !professional;
-    const needs_authentication = needs_verification.length && document.status === 'none' && identity.status === 'none';
+    const should_show_max_turnover = client.landing_company_shortcode === 'iom' && max_turnover_limit_not_set;
+
+    const needs_authentication = needs_verification.length || allow_document_upload;
     const has_risk_assessment = getRiskAssessment(account_status);
-    const needs_poa =
-        needs_verification.length &&
-        needs_verification.includes('document') &&
-        !needs_verification.includes('identity') &&
-        document.status !== 'rejected' &&
-        document.status !== 'expired';
-    const needs_poi =
-        needs_verification.length &&
-        needs_verification.includes('identity') &&
-        !needs_verification.includes('document') &&
-        identity.status !== 'rejected' &&
-        identity.status !== 'expired';
+    const needs_poa = needs_authentication && needs_verification.includes('document');
+    const needs_poi = needs_authentication && needs_verification.includes('identity');
 
     if (needs_poa) addNotificationMessage(clientNotifications().needs_poa);
     if (needs_poi) addNotificationMessage(clientNotifications().needs_poi);
@@ -407,18 +420,13 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
     }
     if (mt5_withdrawal_locked) addNotificationMessage(clientNotifications().mt5_withdrawal_locked);
     if (document_needs_action) addNotificationMessage(clientNotifications().document_needs_action);
-    if (unwelcome) addNotificationMessage(clientNotifications().unwelcome);
+    if (unwelcome && !should_show_max_turnover) addNotificationMessage(clientNotifications().unwelcome);
     if (is_mf_retail) addNotificationMessage(clientNotifications().mf_retail);
 
-    if (ukrts_max_turnover_limit_not_set) {
-        addNotificationMessage(clientNotifications().financial_limit);
-    }
     if (has_risk_assessment) addNotificationMessage(clientNotifications().risk);
     if (shouldCompleteTax(account_status)) addNotificationMessage(clientNotifications().tax);
-    if (needs_authentication || prompt_client_to_authenticate) {
-        addNotificationMessage(clientNotifications().authenticate);
-    }
 
+    if (should_show_max_turnover) addNotificationMessage(clientNotifications().max_turnover_limit_not_set);
     return {
         has_risk_assessment,
     };

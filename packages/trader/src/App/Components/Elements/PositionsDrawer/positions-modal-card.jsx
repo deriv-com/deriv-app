@@ -5,7 +5,7 @@ import { CSSTransition } from 'react-transition-group';
 import { Button, Icon, Money } from '@deriv/components';
 import { getContractPath } from 'App/Components/Routes/helpers';
 import { BinaryLink } from 'App/Components/Routes';
-import CurrencyUtils from '@deriv/shared/utils/currency';
+import { isCryptocurrency } from '@deriv/shared';
 import Shortcode from 'Modules/Reports/Helpers/shortcode';
 import { localize } from '@deriv/translations';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
@@ -101,7 +101,7 @@ const PositionsModalCard = ({
                     </div>
                     <div
                         className={classNames('positions-modal-card__profit-loss', {
-                            'positions-modal-card__profit-loss--is-crypto': CurrencyUtils.isCryptocurrency(currency),
+                            'positions-modal-card__profit-loss--is-crypto': isCryptocurrency(currency),
                             'positions-modal-card__profit-loss--negative': profit_loss < 0,
                             'positions-modal-card__profit-loss--positive': profit_loss > 0,
                         })}

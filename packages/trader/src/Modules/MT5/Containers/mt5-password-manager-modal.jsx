@@ -1,3 +1,6 @@
+import { Field, Form, Formik } from 'formik';
+import PropTypes from 'prop-types';
+import React from 'react';
 import {
     Icon,
     Modal,
@@ -6,16 +9,15 @@ import {
     PasswordMeter,
     Button,
     DesktopWrapper,
+    Div100vhContainer,
     MobileWrapper,
     MultiStep,
     PageOverlay,
     ThemedScrollbars,
     UILoader,
 } from '@deriv/components';
-import { Field, Form, Formik } from 'formik';
-import PropTypes from 'prop-types';
-import React from 'react';
 import { localize, Localize } from '@deriv/translations';
+import { isMobile } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import MT5Store from 'Stores/Modules/MT5/mt5-store';
 import { validLength, validPassword } from 'Utils/Validator/declarative-validation-rules';
@@ -409,14 +411,18 @@ class MT5PasswordManagerModal extends React.Component {
                 <Tabs active_index={this.state.active_tab_index} onTabItemClick={this.updateAccountTabIndex} top>
                     <div label={localize('Main password')}>
                         <DesktopWrapper>
-                            <ThemedScrollbars height={password_container_height}>
+                            <ThemedScrollbars
+                                height={password_container_height}
+                                is_bypassed={isMobile()}
+                                autohide={false}
+                            >
                                 <MainPasswordManager />
                             </ThemedScrollbars>
                         </DesktopWrapper>
                         <MobileWrapper>
-                            <ThemedScrollbars height='calc(100vh - 120px)'>
+                            <Div100vhContainer className='mt5-password-manager__scroll-wrapper' height_offset='120px'>
                                 <MainPasswordManager />
-                            </ThemedScrollbars>
+                            </Div100vhContainer>
                         </MobileWrapper>
                     </div>
                     <div label={localize('Investor password')}>
@@ -426,9 +432,9 @@ class MT5PasswordManagerModal extends React.Component {
                             </ThemedScrollbars>
                         </DesktopWrapper>
                         <MobileWrapper>
-                            <ThemedScrollbars height='calc(100vh - 120px)'>
+                            <Div100vhContainer className='mt5-password-manager__scroll-wrapper' height_offset='120px'>
                                 <InvestorPasswordManager />
-                            </ThemedScrollbars>
+                            </Div100vhContainer>
                         </MobileWrapper>
                     </div>
                 </Tabs>
@@ -469,7 +475,7 @@ class MT5PasswordManagerModal extends React.Component {
                         enableApp={enableApp}
                         is_open={is_visible}
                         title={
-                            selected_account_type === 'real'
+                            selected_account_group === 'real'
                                 ? localize('Manage DMT5 Real {{account_title}} account password', {
                                       account_title: selected_account,
                                   })

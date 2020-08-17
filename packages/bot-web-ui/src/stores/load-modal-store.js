@@ -1,171 +1,68 @@
-import { observable, action } from 'mobx';
+import { observable, action, computed, reaction } from 'mobx';
+import { localize } from '@deriv/translations';
 import { load, config, save_types, getSavedWorkspaces, removeExistingWorkspace } from '@deriv/bot-skeleton';
 
 export default class LoadModalStore {
-    @observable is_load_modal_open = false;
-    @observable active_index = 0;
-    @observable recent_files = [];
-    @observable selected_file_id = '';
-    @observable is_explanation_expand = false;
-    @observable loaded_local_file = null;
-    @observable is_open_button_loading = false;
+    constructor(root_store) {
+        this.root_store = root_store;
+
+        reaction(
+            () => this.active_index,
+            () => this.onActiveIndexChange()
+        );
+        reaction(
+            () => this.is_load_modal_open,
+            is_load_modal_open => {
+                if (is_load_modal_open) {
+                    this.setRecentFiles(getSavedWorkspaces() || []);
+                } else {
+                    this.onLoadModalClose();
+                }
+            }
+        );
+    }
+
+    TAB_LOCAL = 'local_tab';
+    TAB_GOOGLE = 'google_tab';
+    TAB_RECENT = 'recent_tab';
+
     recent_workspace;
     local_workspace;
     drop_zone;
 
-    constructor(root_store) {
-        this.root_store = root_store;
+    @observable active_index = 0;
+    @observable is_load_modal_open = false;
+    @observable is_explanation_expand = false;
+    @observable is_open_button_loading = false;
+    @observable loaded_local_file = null;
+    @observable recent_workspaces = [];
+    @observable selected_workspace_id = undefined;
+    @observable should_rerender_tabs = false;
+
+    @computed
+    get preview_workspace() {
+        if (this.tab_name === this.TAB_LOCAL) return this.local_workspace;
+        if (this.tab_name === this.TAB_RECENT) return this.recent_workspace;
+        return null;
     }
 
-    @action.bound
-    toggleLoadModal() {
-        this.is_load_modal_open = !this.is_load_modal_open;
-
-        if (this.is_load_modal_open) {
-            this.recent_files = getSavedWorkspaces() || [];
-        }
+    @computed
+    get selected_workspace() {
+        return this.recent_workspaces.find(ws => ws.id === this.selected_workspace_id) || this.recent_workspaces[0];
     }
 
-    @action.bound
-    setActiveTabIndex(index) {
-        this.active_index = index;
-
-        // dispose workspace in recent tab when switch tab
-        if (this.active_index !== 0 && this.recent_workspace && this.recent_workspace.rendered) {
-            this.recent_workspace.dispose();
+    @computed
+    get tab_name() {
+        if (this.root_store.ui.is_mobile) {
+            if (this.active_index === 0) return this.TAB_LOCAL;
+            if (this.active_index === 1) return this.TAB_GOOGLE;
         }
-
-        // preview workspace when switch to recent tab
-        if (this.active_index === 0 && this.recent_files.length) {
-            this.previewWorkspace(this.selected_file_id);
-        }
-
-        // dispose workspace in local tab when switch tab
-        if (
-            this.active_index !== 1 &&
-            this.loaded_local_file &&
-            this.local_workspace &&
-            this.local_workspace.rendered
-        ) {
-            this.local_workspace.dispose();
-            this.loaded_local_file = null;
-        }
-
-        // add drag and drop event listerner when switch to local tab
-        if (this.active_index === 1) {
-            this.drop_zone = document.getElementById('import_dragndrop');
-            if (this.drop_zone) {
-                this.drop_zone.addEventListener('drop', e => this.handleFileChange(e, false));
-            }
-        } else if (this.drop_zone) {
-            this.drop_zone.removeEventListener('drop', e => this.handleFileChange(e, false));
-        }
+        if (this.active_index === 0) return this.TAB_RECENT;
+        if (this.active_index === 1) return this.TAB_LOCAL;
+        if (this.active_index === 2) return this.TAB_GOOGLE;
+        return '';
     }
 
-    /** --------- Recent Tab Start --------- */
-    @action.bound
-    onMount() {
-        if (this.recent_files.length && this.active_index === 0) {
-            this.selected_file_id = this.recent_files[0].id;
-            this.previewWorkspace(this.selected_file_id);
-        }
-    }
-
-    @action.bound
-    onUnmount() {
-        if (this.recent_workspace && this.recent_workspace.rendered) {
-            this.recent_workspace.dispose();
-        }
-        this.selected_file_id = null;
-        this.setActiveTabIndex(0);
-    }
-
-    @action.bound
-    previewWorkspace(id) {
-        const selected_file_id = this.recent_files.find(file => file.id === id);
-        if (!selected_file_id) {
-            return;
-        }
-
-        const xml_file = selected_file_id.xml;
-        this.selected_file_id = id;
-
-        if (!this.recent_workspace || !this.recent_workspace.rendered) {
-            const ref = document.getElementById('load-recent__scratch');
-            this.recent_workspace = Blockly.inject(ref, {
-                media: `${__webpack_public_path__}media/`, // eslint-disable-line
-                zoom: {
-                    wheel: false,
-                    startScale: config.workspaces.previewWorkspaceStartScale,
-                },
-                readOnly: true,
-                scrollbars: true,
-            });
-        } else {
-            this.recent_workspace.clear();
-        }
-
-        load({ block_string: xml_file, drop_event: {}, workspace: this.recent_workspace });
-    }
-
-    @action.bound
-    onZoomInOutClick(is_zoom_in) {
-        let workspace;
-        if (this.active_index === 0) {
-            workspace = this.recent_workspace;
-        } else if (this.active_index === 1) {
-            workspace = this.local_workspace;
-        }
-
-        workspace.zoomCenter(is_zoom_in ? 1 : -1);
-    }
-
-    @action.bound
-    loadFileFromRecent() {
-        this.is_open_button_loading = true;
-        const selected_workspace = this.recent_files.find(file => file.id === this.selected_file_id);
-
-        if (!selected_workspace) {
-            return;
-        }
-
-        removeExistingWorkspace(selected_workspace.id);
-        load({
-            block_string: selected_workspace.xml,
-            strategy_id: selected_workspace.id,
-            file_name: selected_workspace.name,
-            workspace: Blockly.derivWorkspace,
-        });
-        this.is_open_button_loading = false;
-        this.toggleLoadModal();
-    }
-
-    @action.bound
-    onExplanationToggle() {
-        this.is_explanation_expand = !this.is_explanation_expand;
-    }
-
-    // eslint-disable-next-line class-methods-use-this
-    getRecentFileIcon(save_type) {
-        switch (save_type) {
-            case save_types.UNSAVED:
-                return 'IcReports';
-            case save_types.LOCAL:
-                return 'IcDesktop';
-            case save_types.GOOGLE_DRIVE:
-                return 'IcGoogleDrive';
-            default:
-                return 'IcReports';
-        }
-    }
-
-    // eslint-disable-next-line class-methods-use-this
-    getSaveType(save_type) {
-        return save_type.replace(/\b\w/g, l => l.toUpperCase());
-    }
-    /** --------- Recent Tab End --------- */
-
-    /** --------- Local Tab Start --------- */
     @action.bound
     handleFileChange(event, is_body = true) {
         let files;
@@ -180,18 +77,217 @@ export default class LoadModalStore {
 
         files = Array.from(files);
         if (!is_body) {
-            this.loaded_local_file = files[0];
+            this.setLoadedLocalFile(files[0]);
         }
         this.readFile(!is_body, event, files[0]);
         event.target.value = '';
     }
 
-    // eslint-disable-next-line class-methods-use-this
-    readFile(is_preview, drop_event, file) {
+    @action.bound
+    loadFileFromRecent() {
+        this.is_open_button_loading = true;
+
+        if (!this.selected_workspace) {
+            this.is_open_button_loading = false;
+            return;
+        }
+
+        removeExistingWorkspace(this.selected_workspace.id);
+        load({
+            block_string: this.selected_workspace.xml,
+            strategy_id: this.selected_workspace.id,
+            file_name: this.selected_workspace.name,
+            workspace: Blockly.derivWorkspace,
+        });
+        this.is_open_button_loading = false;
+        this.toggleLoadModal();
+    }
+
+    @action.bound
+    loadFileFromLocal() {
+        this.is_open_button_loading = true;
+        this.readFile(false, {}, this.loaded_local_file);
+        this.is_open_button_loading = false;
+        this.toggleLoadModal();
+    }
+
+    @action.bound
+    onActiveIndexChange() {
+        if (this.tab_name === this.TAB_RECENT) {
+            // preview workspace when switch to recent tab
+            if (this.selected_workspace) {
+                this.previewWorkspace(this.selected_workspace_id);
+            }
+        } else if (this.recent_workspace) {
+            // dispose workspace in recent tab when switch tab
+            this.recent_workspace.dispose(true);
+        }
+
+        if (this.tab_name === this.TAB_LOCAL) {
+            // add drag and drop event listerner when switch to local tab
+            if (!this.drop_zone) {
+                this.drop_zone = document.getElementById('import_dragndrop');
+
+                if (this.drop_zone) {
+                    this.drop_zone.addEventListener('drop', e => this.handleFileChange(e, false));
+                }
+            }
+
+            // dispose workspace in local tab when switch tab
+            if (this.loaded_local_file && this.local_workspace) {
+                this.local_workspace.dispose(true);
+                this.loaded_local_file = null;
+            }
+        } else if (this.drop_zone) {
+            this.drop_zone.removeEventListener('drop', e => this.handleFileChange(e, false));
+        }
+    }
+
+    @action.bound
+    async onDriveConnect() {
+        const { google_drive } = this.root_store;
+
+        if (google_drive.is_authorised) {
+            google_drive.signOut();
+        } else {
+            google_drive.signIn();
+        }
+    }
+
+    @action.bound
+    async onDriveOpen() {
+        const { loadFile } = this.root_store.google_drive;
+        const { xml_doc, file_name } = await loadFile();
+        load({ block_string: xml_doc, file_name, workspace: Blockly.derivWorkspace, from: save_types.GOOGLE_DRIVE });
+        this.toggleLoadModal();
+    }
+
+    @action.bound
+    onEntered() {
+        if (this.tab_name === this.TAB_RECENT && this.selected_workspace) {
+            this.previewWorkspace(this.selected_workspace.id);
+        }
+
+        this.setShouldRerenderTabs(true);
+    }
+
+    @action.bound
+    onLoadModalClose() {
+        if (this.preview_workspace) {
+            this.preview_workspace.dispose(true);
+        }
+
+        this.setActiveTabIndex(0); // Reset to first tab.
+        this.setLoadedLocalFile(null);
+        this.setShouldRerenderTabs(false);
+    }
+
+    @action.bound
+    onZoomInOutClick(is_zoom_in) {
+        if (this.preview_workspace) {
+            this.preview_workspace.zoomCenter(is_zoom_in ? 1 : -1);
+        }
+    }
+
+    @action.bound
+    previewWorkspace(workspace_id) {
+        this.setSelectedWorkspaceId(workspace_id);
+
+        if (!this.selected_workspace) {
+            return;
+        }
+
+        if (!this.recent_workspace || !this.recent_workspace.rendered) {
+            const ref = document.getElementById('load-recent__scratch');
+
+            if (!ref) {
+                // eslint-disable-next-line no-console
+                console.warn('Could not find preview workspace element.');
+                return;
+            }
+
+            this.recent_workspace = Blockly.inject(ref, {
+                media: `${__webpack_public_path__}media/`,
+                zoom: {
+                    wheel: false,
+                    startScale: config.workspaces.previewWorkspaceStartScale,
+                },
+                readOnly: true,
+                scrollbars: true,
+            });
+        }
+
+        load({ block_string: this.selected_workspace.xml, drop_event: {}, workspace: this.recent_workspace });
+    }
+
+    @action.bound
+    setActiveTabIndex(index) {
+        this.active_index = index;
+    }
+
+    @action.bound
+    setLoadedLocalFile(loaded_local_file) {
+        this.loaded_local_file = loaded_local_file;
+    }
+
+    @action.bound
+    setRecentFiles(recent_workspaces) {
+        this.recent_workspaces = recent_workspaces;
+    }
+
+    @action.bound
+    setSelectedWorkspaceId(selected_workspace_id) {
+        this.selected_workspace_id = selected_workspace_id;
+    }
+
+    @action.bound
+    setShouldRerenderTabs(should_rerender_tabs) {
+        this.should_rerender_tabs = should_rerender_tabs;
+    }
+
+    @action.bound
+    toggleExplanationExpand() {
+        this.is_explanation_expand = !this.is_explanation_expand;
+    }
+
+    @action.bound
+    toggleLoadModal() {
+        this.is_load_modal_open = !this.is_load_modal_open;
+    }
+
+    getRecentFileIcon = save_type => {
+        switch (save_type) {
+            case save_types.UNSAVED:
+                return 'IcReports';
+            case save_types.LOCAL:
+                return 'IcDesktop';
+            case save_types.GOOGLE_DRIVE:
+                return 'IcGoogleDrive';
+            default:
+                return 'IcReports';
+        }
+    };
+
+    getSaveType = save_type => {
+        switch (save_type) {
+            case save_types.UNSAVED:
+                return localize('Unsaved');
+            case save_types.LOCAL:
+                return localize('Local');
+            case save_types.GOOGLE_DRIVE:
+                return localize('Google Drive');
+            default:
+                return localize('Unsaved');
+        }
+    };
+
+    readFile = (is_preview, drop_event, file) => {
         const file_name = file && file.name.replace(/\.[^/.]+$/, '');
         const reader = new FileReader();
+
         reader.onload = action(e => {
             const load_options = { block_string: e.target.result, drop_event, from: save_types.LOCAL };
+
             if (is_preview) {
                 const ref = document.getElementById('load-local__scratch');
                 this.local_workspace = Blockly.inject(ref, {
@@ -208,47 +304,9 @@ export default class LoadModalStore {
                 load_options.workspace = Blockly.derivWorkspace;
                 load_options.file_name = file_name;
             }
+
             load(load_options);
         });
         reader.readAsText(file);
-    }
-
-    @action.bound
-    loadFileFromLocal() {
-        this.is_open_button_loading = true;
-        this.readFile(false, {}, this.loaded_local_file);
-        this.is_open_button_loading = false;
-        this.toggleLoadModal();
-    }
-
-    @action.bound
-    closePreview() {
-        this.local_workspace.dispose();
-        this.loaded_local_file = null;
-    }
-    /** --------- Local Tab End --------- */
-
-    /** --------- GD Tab Start --------- */
-    @action.bound
-    async onDriveConnect() {
-        const { google_drive } = this.root_store;
-
-        if (google_drive.is_authorised) {
-            google_drive.signOut();
-        } else {
-            google_drive.signIn();
-        }
-    }
-
-    @action.bound
-    async onDriveOpen() {
-        const { google_drive } = this.root_store;
-        const { loadFile } = google_drive;
-
-        const { xml_doc, file_name } = await loadFile();
-
-        load({ block_string: xml_doc, file_name, workspace: Blockly.derivWorkspace, from: save_types.GOOGLE_DRIVE });
-        this.toggleLoadModal();
-    }
-    /** --------- GD Tab End --------- */
+    };
 }

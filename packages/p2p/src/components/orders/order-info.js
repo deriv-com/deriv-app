@@ -47,7 +47,7 @@ export default class OrderInfo {
     static status_map_common = {
         cancelled: localize('Cancelled'),
         'timed-out': localize('Expired'),
-        refunded: localize('Refunded'),
+        refunded: localize('Expired'),
         completed: localize('Completed'),
     };
 
@@ -65,17 +65,14 @@ export default class OrderInfo {
         return this.type === 'buy';
     }
 
+    // TODO: Determine is_active from active flag in p2p_order_list
+
     get is_active() {
-        return this.status === 'pending' || this.status === 'buyer-confirmed';
+        return this.status === 'pending' || this.status === 'buyer-confirmed' || this.status === 'timed-out';
     }
 
     get is_inactive() {
-        return (
-            this.status === 'cancelled' ||
-            this.status === 'timed-out' ||
-            this.status === 'refunded' ||
-            this.status === 'completed'
-        );
+        return this.status === 'cancelled' || this.status === 'refunded' || this.status === 'completed';
     }
 
     get is_pending() {

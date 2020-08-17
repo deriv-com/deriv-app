@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import Counter from 'Components/counter';
-import Icon from 'Components/icon/icon.jsx';
+import Counter from '../counter';
+import Icon from '../icon/icon.jsx';
 
 const HeaderIcon = ({ icon, is_active }) => (
     <Icon

@@ -1,30 +1,29 @@
-import PropTypes from 'prop-types';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import {
-    VerticalTab,
     DesktopWrapper,
-    MobileWrapper,
     Div100vhContainer,
-    PageOverlay,
     FadeWrapper,
+    MobileWrapper,
+    PageOverlay,
+    VerticalTab,
 } from '@deriv/components';
-import routes from '@deriv/shared/utils/routes';
 import { localize, Localize } from '@deriv/translations';
-import CurrencyUtils from '@deriv/shared/utils/currency';
-import { getSelectedRoute } from '@deriv/shared/utils/route';
-import { isMobile, isTouchDevice } from '@deriv/shared/utils/screen';
+import { getSelectedRoute, isCryptocurrency, isMobile, isTouchDevice, routes } from '@deriv/shared';
+import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 import 'Sass/app/modules/cashier.scss';
 
 const el_landscape_blocker = document.getElementById('landscape_blocker');
 
 class Cashier extends React.Component {
-    state = { device_height: window.innerHeight };
+    state = { device_height: window.innerHeight, is_p2p_restricted: true };
 
-    componentDidMount() {
+    async componentDidMount() {
         this.props.toggleCashier();
         // we still need to populate the tabs shown on cashier
+        await WS.wait('authorize');
         this.props.onMount();
         this.props.setAccountSwitchListener();
 
@@ -34,6 +33,8 @@ class Cashier extends React.Component {
         if (isMobile() && isTouchDevice()) {
             window.addEventListener('resize', this.handleOnScreenKeyboard);
         }
+
+        this.checkIsP2pRestricted();
     }
 
     componentWillUnmount() {
@@ -45,6 +46,13 @@ class Cashier extends React.Component {
             if (el_landscape_blocker) el_landscape_blocker.classList.remove('landscape-blocker--keyboard-visible');
         }
     }
+
+    checkIsP2pRestricted = async () => {
+        const response = await WS.send({ p2p_advertiser_info: 1 });
+
+        if (!response.error) this.setState({ is_p2p_restricted: false });
+        else if (response.error.code !== 'RestrictedCountry') this.setState({ is_p2p_restricted: false });
+    };
 
     handleOnScreenKeyboard = () => {
         // We are listening to resize window resize events on mobile,
@@ -60,7 +68,6 @@ class Cashier extends React.Component {
     };
 
     onClickClose = () => this.props.routeBackInApp(this.props.history);
-
     render() {
         const menu_options = () => {
             const options = [];
@@ -71,7 +78,8 @@ class Cashier extends React.Component {
                     (route.path !== routes.cashier_pa || this.props.is_payment_agent_visible) &&
                     (route.path !== routes.cashier_pa_transfer || this.props.is_payment_agent_transfer_visible) &&
                     (route.path !== routes.cashier_p2p ||
-                        (this.props.is_p2p_visible && /(show_p2p|verification)/.test(this.props.location.hash)))
+                        (this.props.is_p2p_visible && !this.state.is_p2p_restricted)) &&
+                    (route.path !== routes.cashier_onramp || this.props.is_onramp_tab_visible)
                 ) {
                     options.push({
                         ...(route.path === routes.cashier_p2p && { count: this.props.p2p_notification_count }),
@@ -94,7 +102,8 @@ class Cashier extends React.Component {
             : null;
         const should_show_tab_headers_note =
             !this.props.is_virtual &&
-            !CurrencyUtils.isCryptocurrency(this.props.loggedin_currency) &&
+            !this.props.is_eu &&
+            !isCryptocurrency(this.props.loggedin_currency) &&
             (location.pathname.startsWith(routes.cashier_deposit) ||
                 location.pathname.startsWith(routes.cashier_withdrawal));
 
@@ -161,6 +170,8 @@ class Cashier extends React.Component {
 
 Cashier.propTypes = {
     history: PropTypes.object,
+    is_onramp_tab_visible: PropTypes.bool,
+    is_eu: PropTypes.bool,
     is_p2p_visible: PropTypes.bool,
     is_payment_agent_transfer_visible: PropTypes.bool,
     is_payment_agent_visible: PropTypes.bool,
@@ -179,6 +190,8 @@ export default connect(({ client, common, modules, ui }) => ({
     tab_index: modules.cashier.cashier_route_tab_index,
     setTabIndex: modules.cashier.setCashierTabIndex,
     loggedin_currency: client.currency,
+    is_onramp_tab_visible: modules.cashier.onramp.is_onramp_tab_visible,
+    is_eu: client.is_eu,
     is_p2p_visible: modules.cashier.is_p2p_visible,
     is_virtual: client.is_virtual,
     is_visible: ui.is_cashier_visible,

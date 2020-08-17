@@ -4,10 +4,10 @@ import { withRouter } from 'react-router-dom';
 import queryString from 'query-string';
 import P2P from '@deriv/p2p';
 import { getLanguage } from '@deriv/translations';
-import routes from '@deriv/shared/utils/routes';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 import ServerTime from '_common/base/server_time';
+import { routes } from '@deriv/shared';
 
 /* P2P will use the same websocket connection as Deriv/Binary, we need to pass it as a prop */
 class P2PCashier extends React.Component {

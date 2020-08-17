@@ -5,7 +5,7 @@
             .chart-container {
                 width: 100%;
 
-                .ciq-navigation-widget,
+                .sc-navigation-widget,
                 .cq-top-ui-widgets,
                 .sc-toolbar-widget,
                 .stx-panel-control {
@@ -162,7 +162,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
                     }
                     .sc-toolbar-widget,
                     .stx-panel-control,
-                    .ciq-navigation-widget {
+                    .sc-navigation-widget {
                         transition: transform 0.25s ease;
                     }
                     .ciq-asset-information {
@@ -285,7 +285,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
     }
     // smartchart library style fixes
     .smartcharts-mobile {
-        .cq-categorical-display {
+        .sc-categorical-display {
             height: calc(100% - 8px) !important;
         }
     }
@@ -338,7 +338,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
         .cq-chart-controls,
         .sc-toolbar-widget,
         .stx-panel-control,
-        .ciq-navigation-widget {
+        .sc-navigation-widget {
             transform: translate3d(0, 0, 0);
             transition: transform 0.25s ease;
         }
@@ -391,7 +391,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
         .cq-chart-controls {
             transition: max-width 0.25s ease, transform 0.25s ease;
         }
-        .ciq-navigation-widget,
+        .sc-navigation-widget,
         .stx-panel-control {
             transition: transform 0.25s ease;
         }
@@ -431,7 +431,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
         &--screenshot {
             .sc-toolbar-widget,
             .stx-panel-control,
-            .ciq-navigation-widget,
+            .sc-navigation-widget,
             .cq-top-ui-widgets {
                 transform: translate3d(0, 0, 0) !important;
             }

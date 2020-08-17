@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { CSSTransition } from 'react-transition-group';
-import routes from '@deriv/shared/utils/routes';
+import { routes } from '@deriv/shared';
 import ErrorComponent from 'App/Components/Elements/Errors';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';

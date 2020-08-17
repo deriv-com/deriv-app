@@ -1,5 +1,7 @@
 import { reaction } from 'mobx';
 import React from 'react';
+import { showDigitalOptionsUnavailableError } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import { runIrreversibleEvents, ApiHelpers, DBot, ServerTime } from '@deriv/bot-skeleton';
 import './public-path'; // Leave this here! OK boss!
 import Audio from './components/audio.jsx';
@@ -11,9 +13,22 @@ import RunPanel from './components/run-panel.jsx';
 import Toolbar from './components/toolbar.jsx';
 import { MobxContentProvider } from './stores/connect';
 import RoutePromptDialog from './components/route-prompt-dialog.jsx';
+import BlocklyLoading from './components/blockly-loading.jsx';
 import RootStore from './stores';
 import GTM from './utils/gtm';
 import './assets/sass/app.scss';
+
+const showDigitalOptionsMaltainvestError = (client, common) => {
+    if (client.landing_company_shortcode === 'maltainvest') {
+        showDigitalOptionsUnavailableError(common.showError, {
+            title: localize(
+                'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a DMT5 Financial.'
+            ),
+            text: localize('DBot is not available for this account'),
+            link: localize('Go to DMT5 dashboard'),
+        });
+    } else if (common.has_error) common.setError(false, null);
+};
 
 class App extends React.Component {
     constructor(props) {
@@ -37,15 +52,19 @@ class App extends React.Component {
             save_modal,
             quick_strategy,
             load_modal,
+            blockly_store,
         } = this.root_store;
         const { handleFileChange } = load_modal;
         const { toggleStrategyModal } = quick_strategy;
+        const { startLoading, endLoading } = blockly_store;
         this.dbot_store = {
             is_mobile: false,
             client,
             flyout,
             toolbar,
             save_modal,
+            startLoading,
+            endLoading,
             toggleStrategyModal,
             handleFileChange,
         };
@@ -53,17 +72,33 @@ class App extends React.Component {
     }
 
     componentDidMount() {
+        const { client, common } = this.root_store.core;
+        showDigitalOptionsMaltainvestError(client, common);
+        this.root_store.blockly_store.startLoading();
         DBot.initWorkspace(
             __webpack_public_path__,
             this.dbot_store,
             this.api_helpers_store,
             this.root_store.ui.is_mobile
-        );
+        ).then(() => this.root_store.blockly_store.endLoading());
         this.registerCurrencyReaction();
         this.registerOnAccountSwitch();
         this.registerClickOutsideBlockly();
         this.registerBeforeUnload();
         this.root_store.main_content.getCachedActiveTab();
+    }
+
+    componentDidUpdate() {
+        const { client, common } = this.root_store.core;
+        if (client.landing_company_shortcode === 'maltainvest') {
+            showDigitalOptionsUnavailableError(common.showError, {
+                title: localize(
+                    'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a DMT5 Financial.'
+                ),
+                text: localize('DBot is not available for this account'),
+                link: localize('Go to DMT5 dashboard'),
+            });
+        }
     }
 
     componentWillUnmount() {
@@ -104,7 +139,7 @@ class App extends React.Component {
      * Register a reaction to switchaccount
      */
     registerOnAccountSwitch = () => {
-        const { client } = this.root_store.core;
+        const { client, common } = this.root_store.core;
 
         this.disposeSwitchAccountListener = reaction(
             () => client.switch_broadcast,
@@ -112,7 +147,7 @@ class App extends React.Component {
                 if (!switch_broadcast) {
                     return;
                 }
-
+                showDigitalOptionsMaltainvestError(client, common);
                 const { derivWorkspace: workspace } = Blockly;
                 const { active_symbols, contracts_for } = ApiHelpers.instance;
 
@@ -185,6 +220,7 @@ class App extends React.Component {
                     <FooterExtension />
                     <Audio />
                     <RoutePromptDialog />
+                    <BlocklyLoading />
                 </div>
             </MobxContentProvider>
         );

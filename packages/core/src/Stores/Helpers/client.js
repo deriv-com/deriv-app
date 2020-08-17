@@ -11,16 +11,28 @@ export const getClientAccountType = loginid => {
 
 // TODO: [move-to-shared] - Remove the implementation in ClientBase and add this to shared utils
 export const getMT5AccountType = group =>
-    group ? group.replace('\\', '_').replace(/_(\d+|master|EUR|GBP|Bbook|HighRisk)/i, '') : '';
+    group
+        ? group
+              .replace('\\', '_')
+              .replace(/_(\d+|master|EUR|GBP|Bbook|HighRisk)/i, '')
+              // TODO: [remove-standard-advanced] remove standard and advanced when API groups are updated
+              .replace(/_standard$/, '_financial')
+              .replace(/_advanced$/, '_financial_stp')
+        : '';
 
 export const getMT5AccountDisplay = group => {
     if (!group) return {};
 
     const value = getMT5AccountType(group);
     let display_text = localize('MT5');
-    if (/svg$/.test(value)) {
+    if (/svg$/.test(value) || /malta$/.test(value)) {
         display_text = localize('Synthetic');
-    } else if (/vanuatu/.test(value) || /svg_standard/.test(value)) {
+    } else if (
+        /vanuatu/.test(value) ||
+        /svg_(standard|financial)/.test(value) ||
+        /maltainvest_financial$/.test(value)
+    ) {
+        // TODO: [remove-standard-advanced] remove standard when API groups are updated
         display_text = localize('Financial');
     } else if (/labuan/.test(value)) {
         display_text = localize('Financial STP');

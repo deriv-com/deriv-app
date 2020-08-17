@@ -1,11 +1,11 @@
 import { Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import React from 'react';
-import { ContinueTradingButton } from 'Components/poa-continue-trading-button/continue-trading-button.jsx';
-import { PoaButton } from 'Components/poa-button/poa-button.jsx';
+import ContinueTradingButton from 'Components/poa-continue-trading-button';
+import PoaButton from 'Components/poa-button';
 import IconMessageContent from 'Components/icon-message-content';
 
-export const UploadComplete = ({ has_poa, is_description_enabled }) => {
+export const UploadComplete = ({ has_poa, is_description_enabled, redirect_button }) => {
     const message = localize('Your proof of identity was submitted successfully');
     if (has_poa) {
         return (
@@ -33,6 +33,7 @@ export const UploadComplete = ({ has_poa, is_description_enabled }) => {
                     <PoaButton />
                 </React.Fragment>
             )}
+            {redirect_button}
         </IconMessageContent>
     );
 };

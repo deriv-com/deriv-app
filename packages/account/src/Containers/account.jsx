@@ -2,9 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter, Redirect } from 'react-router-dom';
 import { VerticalTab, DesktopWrapper, MobileWrapper, FadeWrapper, PageOverlay } from '@deriv/components';
-import routes from '@deriv/shared/utils/routes';
-import { isMobile } from '@deriv/shared/utils/screen';
-import { getSelectedRoute } from '@deriv/shared/utils/route';
+import { routes, isMobile, getSelectedRoute } from '@deriv/shared';
+
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';
@@ -27,8 +26,10 @@ class Account extends React.Component {
             if (this.props.account_status) {
                 const { status } = this.props.account_status;
                 const needs_financial_assessment =
-                    this.props.is_high_risk || status.includes('financial_information_not_complete');
-                const allow_document_upload = status.includes('allow_document_upload');
+                    this.props.is_high_risk ||
+                    this.props.is_financial_information_incomplete ||
+                    (this.props.is_financial_account && this.props.is_trading_experience_incomplete);
+                const allow_document_upload = status?.includes('allow_document_upload');
 
                 if (this.is_mounted)
                     this.setState({
@@ -101,10 +102,7 @@ class Account extends React.Component {
             });
         }
 
-        const selected_route = isMobile()
-            ? getSelectedRoute({ routes: subroutes, pathname: this.props.location.pathname })
-            : null;
-
+        const selected_route = getSelectedRoute({ routes: subroutes, pathname: this.props.location.pathname });
         return (
             <FadeWrapper
                 is_visible={this.props.is_visible}
@@ -159,5 +157,8 @@ export default connect(({ client, common, ui }) => ({
     is_high_risk: client.is_high_risk,
     is_virtual: client.is_virtual,
     is_visible: ui.is_account_settings_visible,
+    is_financial_account: client.is_financial_account,
+    is_financial_information_incomplete: client.is_financial_information_incomplete,
+    is_trading_experience_incomplete: client.is_trading_experience_incomplete,
     toggleAccount: ui.toggleAccountSettings,
 }))(withRouter(Account));

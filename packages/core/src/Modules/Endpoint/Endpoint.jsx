@@ -1,7 +1,8 @@
 import React from 'react';
 import { Field, Form, Formik } from 'formik';
-import { Button, Input } from '@deriv/components';
-import { getAppId, getSocketURL } from '@deriv/shared/utils/config';
+import { Button, Input, Checkbox } from '@deriv/components';
+import { getAppId, getSocketURL } from '@deriv/shared';
+import { connect } from 'Stores/connect';
 // eslint-disable-next-line import/extensions
 
 const InputField = props => {
@@ -24,11 +25,12 @@ const InputField = props => {
 };
 
 // doesn't need localization as it's for internal use
-const Endpoint = () => (
+const Endpoint = ({ is_eu_enabled, toggleIsEuEnabled }) => (
     <Formik
         initialValues={{
             app_id: getAppId(),
             server: getSocketURL(),
+            is_eu_enabled,
         }}
         validate={values => {
             const errors = {};
@@ -50,10 +52,12 @@ const Endpoint = () => (
         onSubmit={values => {
             localStorage.setItem('config.app_id', values.app_id);
             localStorage.setItem('config.server_url', values.server);
+            localStorage.setItem('is_eu_enabled', values.is_eu_enabled);
+            toggleIsEuEnabled(values.is_eu_enabled);
             location.reload();
         }}
     >
-        {({ errors, isSubmitting, touched, values }) => (
+        {({ errors, isSubmitting, touched, values, handleChange, setFieldTouched }) => (
             <Form style={{ width: '30vw', minWidth: '300px', margin: '20vh auto' }}>
                 <h1
                     style={{
@@ -84,11 +88,26 @@ const Endpoint = () => (
                         </React.Fragment>
                     }
                 />
+                <Field name='is_eu_enabled'>
+                    {({ field }) => (
+                        <div style={{ marginTop: '4.5rem', marginBottom: '1.6rem' }}>
+                            <Checkbox
+                                {...field}
+                                label='Enable EU'
+                                value={values.is_eu_enabled}
+                                onChange={e => {
+                                    handleChange(e);
+                                    setFieldTouched('is_eu_enabled', true);
+                                }}
+                            />
+                        </div>
+                    )}
+                </Field>
                 <Button
                     type='submit'
                     is_disabled={
                         !!(
-                            (!touched.server && !touched.app_id) ||
+                            (!touched.server && !touched.app_id && !touched.is_eu_enabled) ||
                             !values.server ||
                             !values.app_id ||
                             errors.server ||
@@ -105,6 +124,7 @@ const Endpoint = () => (
                     onClick={() => {
                         localStorage.removeItem('config.app_id');
                         localStorage.removeItem('config.server_url');
+                        localStorage.removeItem('is_eu_enabled');
                         location.reload();
                     }}
                     text='Reset to original settings'
@@ -115,4 +135,7 @@ const Endpoint = () => (
     </Formik>
 );
 
-export default Endpoint;
+export default connect(({ ui }) => ({
+    is_eu_enabled: ui.is_eu_enabled,
+    toggleIsEuEnabled: ui.toggleIsEuEnabled,
+}))(Endpoint);

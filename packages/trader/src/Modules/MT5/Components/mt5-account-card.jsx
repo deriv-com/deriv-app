@@ -14,6 +14,7 @@ const MT5AccountCard = ({
     icon,
     is_button_primary,
     is_disabled,
+    is_logged_in,
     specs,
     title,
     type,
@@ -34,7 +35,7 @@ const MT5AccountCard = ({
     const has_demo_banner = type.category === 'demo';
 
     return (
-        <div className='mt5-account-card'>
+        <div className={classNames('mt5-account-card', { 'mt5-account-card__logged-out': !is_logged_in })}>
             {has_popular_banner && (
                 <div className='mt5-account-card__banner'>
                     <Localize i18n_default_text='Most popular' />
@@ -54,8 +55,8 @@ const MT5AccountCard = ({
                 {icon && <IconComponent />}
                 <div className='mt5-account-card__type--description'>
                     <h1 className='mt5-account-card--heading'>{title}</h1>
-                    {!existing_data && <p className='mt5-account-card--paragraph'>{descriptor}</p>}
-                    {existing_data && existing_data.display_balance && (
+                    {(!existing_data || !is_logged_in) && <p className='mt5-account-card--paragraph'>{descriptor}</p>}
+                    {existing_data && existing_data.display_balance && is_logged_in && (
                         <p className='mt5-account-card--balance'>
                             <Money amount={existing_data.display_balance} currency={existing_data.currency} />
                         </p>
@@ -80,7 +81,7 @@ const MT5AccountCard = ({
                         </tbody>
                     </table>
                 </div>
-                {existing_data?.login && (
+                {existing_data?.login && is_logged_in && (
                     <div className='mt5-account-card__login'>
                         <Localize
                             i18n_default_text='Account login no.&nbsp;<0>{{login}}</0>'
@@ -93,10 +94,10 @@ const MT5AccountCard = ({
                     </div>
                 )}
 
-                {!existing_data && commission_message && (
+                {((!existing_data && commission_message) || !is_logged_in) && (
                     <p className='mt5-account-card__commission mt5-account-card--paragraph'>{commission_message}</p>
                 )}
-                {existing_data && (
+                {existing_data && is_logged_in && (
                     <div className='mt5-account-card__manage'>
                         <Button onClick={onClickFund} type='button' secondary>
                             {type.category === 'real' && <Localize i18n_default_text='Fund transfer' />}
@@ -119,7 +120,7 @@ const MT5AccountCard = ({
                         <Localize i18n_default_text='Select' />
                     </Button>
                 )}
-                {existing_data && (
+                {existing_data && is_logged_in && (
                     <a
                         className='dc-btn mt5-account-card__account-selection mt5-account-card__account-selection--primary'
                         type='button'
@@ -130,7 +131,7 @@ const MT5AccountCard = ({
                         <Localize i18n_default_text='Trade on web terminal' />
                     </a>
                 )}
-                {!existing_data && !has_mt5_account && (
+                {!existing_data && !has_mt5_account && is_logged_in && (
                     <Button
                         className='mt5-account-card__account-selection'
                         onClick={onSelectAccount}

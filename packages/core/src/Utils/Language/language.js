@@ -1,4 +1,4 @@
-import { urlForLanguage } from '@deriv/shared/utils/url';
+import { urlForLanguage } from '@deriv/shared';
 import { getLanguage, getAllLanguages } from '@deriv/translations';
 
 export const currentLanguage = getLanguage();

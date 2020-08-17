@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon, Money, MobileWrapper } from '@deriv/components';
-import CurrencyUtils from '@deriv/shared/utils/currency';
+import { isCryptocurrency } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ContractCardBody from 'App/Components/Elements/ContractCard/contract-card-body.jsx';
 import { ResultStatusIcon } from 'App/Components/Elements/PositionsDrawer/result-overlay.jsx';
@@ -63,7 +63,7 @@ const MultiplierCardBody = ({ contract_info, contract_update, currency, status }
                 <ContractCardItem
                     className='contract-card-item__total-profit-loss'
                     header={localize('Total profit/loss:')}
-                    is_crypto={CurrencyUtils.isCryptocurrency(currency)}
+                    is_crypto={isCryptocurrency(currency)}
                     is_loss={+total_profit < 0}
                     is_won={+total_profit > 0}
                 >
@@ -104,7 +104,7 @@ const CardBody = ({ contract_info, contract_update, currency, is_multiplier, sta
             <div className='contract-card-items-wrapper'>
                 <ContractCardItem
                     header={is_sold ? localize('Profit/Loss') : localize('Potential profit/loss:')}
-                    is_crypto={CurrencyUtils.isCryptocurrency(currency)}
+                    is_crypto={isCryptocurrency(currency)}
                     is_loss={+profit < 0}
                     is_won={+profit > 0}
                 >

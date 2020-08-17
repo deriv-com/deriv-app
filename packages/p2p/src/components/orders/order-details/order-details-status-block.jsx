@@ -23,11 +23,11 @@ const OrderDetailsStatusBlock = ({ order_details }) => {
         status = is_buyer ? localize('Pay now') : localize('Wait for payment');
     } else if (is_buyer_cancelled) {
         status = localize('Cancelled');
-    } else if (is_refunded) {
-        status = is_buyer ? localize('Seller has been refunded') : localize('You have been refunded');
+        // } else if (is_refunded) {
+        //     status = is_buyer ? localize('Seller has been refunded') : localize('You have been refunded');
     } else if (is_buyer_confirmed) {
         status = is_buyer ? localize('Wait for release') : localize('Confirm payment');
-    } else if (is_expired) {
+    } else if (is_expired || is_refunded) {
         status = localize('Expired');
     } else if (is_completed) {
         status = localize('Completed');

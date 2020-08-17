@@ -1,8 +1,8 @@
-import CurrencyUtils from '@deriv/shared/utils/currency';
-import { toTitleCase } from '@deriv/shared/utils/string';
+import { formatMoney, toTitleCase, toMoment } from '@deriv/shared';
+
 import { localize } from '@deriv/translations';
 import { getMarketInformation } from 'Modules/Reports/Helpers/market-underlying';
-import { toMoment } from '@deriv/shared/utils/date';
+
 import { getSymbolDisplayName } from '../../Trading/Helpers/active-symbols';
 
 export const formatStatementTransaction = (transaction, currency, active_symbols = []) => {
@@ -22,9 +22,9 @@ export const formatStatementTransaction = (transaction, currency, active_symbols
         date: transaction_time,
         display_name,
         refid: transaction.transaction_id,
-        payout: isNaN(payout) ? '-' : CurrencyUtils.formatMoney(currency, payout, should_exclude_currency),
-        amount: isNaN(amount) ? '-' : CurrencyUtils.formatMoney(currency, amount, should_exclude_currency),
-        balance: isNaN(balance) ? '-' : CurrencyUtils.formatMoney(currency, balance, should_exclude_currency),
+        payout: isNaN(payout) ? '-' : formatMoney(currency, payout, should_exclude_currency),
+        amount: isNaN(amount) ? '-' : formatMoney(currency, amount, should_exclude_currency),
+        balance: isNaN(balance) ? '-' : formatMoney(currency, balance, should_exclude_currency),
         desc: transaction.longcode.replace(/\n/g, '<br />'),
         id: transaction.contract_id,
         app_id: transaction.app_id,

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
 import { Input, Button, ThemedScrollbars } from '@deriv/components';
-import CurrencyUtils from '@deriv/shared/utils/currency';
+import { formatMoney } from '@deriv/shared';
 import { localize, Localize } from 'Components/i18next';
 import { countDecimalPlaces } from 'Utils/string';
 import { requestWS } from 'Utils/websocket';
@@ -12,12 +12,7 @@ import FormError from '../form/error.jsx';
 
 const BuySellForm = ({ ad, handleClose, handleConfirm }) => {
     const [total_amount, setTotalAmount] = React.useState(
-        CurrencyUtils.formatMoney(
-            ad.transaction_currency,
-            ad.min_available * ad.price_rate,
-            true,
-            ad.transaction_currency_decimals
-        )
+        formatMoney(ad.transaction_currency, ad.min_available * ad.price_rate, true, ad.transaction_currency_decimals)
     );
     const is_buyer = ad.type === 'buy';
     const initial_values = {
@@ -66,19 +61,14 @@ const BuySellForm = ({ ad, handleClose, handleConfirm }) => {
             validations.payment_info = [v => !!v, v => textValidator(v), v => lengthValidator(v)];
         }
 
-        const display_initial_amount = CurrencyUtils.formatMoney(
+        const display_initial_amount = formatMoney(
             ad.offer_currency,
             ad.min_available,
             true,
             ad.offer_currency_decimals
         );
 
-        const display_max_amount = CurrencyUtils.formatMoney(
-            ad.offer_currency,
-            ad.max_available,
-            true,
-            ad.offer_currency_decimals
-        );
+        const display_max_amount = formatMoney(ad.offer_currency, ad.max_available, true, ad.offer_currency_decimals);
 
         const common_messages = [
             localize('Enter a valid amount'),
@@ -213,7 +203,7 @@ const BuySellForm = ({ ad, handleClose, handleConfirm }) => {
                                                         }
                                                         const amount = isNaN(e.target.value) ? 0 : e.target.value;
                                                         setTotalAmount(
-                                                            CurrencyUtils.formatMoney(
+                                                            formatMoney(
                                                                 ad.transaction_currency,
                                                                 amount * ad.price_rate,
                                                                 true,

@@ -3,11 +3,13 @@
     <head>
         <script src="https://www.datadoghq-browser-agent.com/datadog-rum-us.js" type="text/javascript"></script>
         <script>
-            (window.location.hostname === 'www.deriv.app' || window.location.hostname === 'deriv.app') &&
+            // TODO: [app-link-refactor] - Remove backwards compatibility for `deriv.app`
+            (window.location.hostname === 'www.deriv.app' || window.location.hostname === 'deriv.app' || window.location.hostname === 'app.deriv.com') &&
                 window.DD_RUM &&
                 window.DD_RUM.init({
                     clientToken: 'pub6f67be9c67c8693a214336c89a1623fd',
                     applicationId: '34461589-53a5-4f9f-aa85-5d0e994ee1a4',
+                    sampleRate: 25,
                 });
         </script>
         <!-- Set skeleton theme color properties -->
@@ -146,6 +148,8 @@
 
         <!-- Start GTM Script -->
         <script>
+            var gtm_id = 'GTM-NF7884S';
+            if (window.location.hostname === 'deriv-app.binary.sx') gtm_id = 'GTM-TNX2ZKH';
             (function(w, d, s, l, i) {
                 w[l] = w[l] || [];
                 w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
@@ -155,7 +159,7 @@
                 j.defer = true;
                 j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
                 f.parentNode.insertBefore(j, f);
-            })(window, document, 'script', 'dataLayer', 'GTM-NF7884S');
+            })(window, document, 'script', 'dataLayer', gtm_id);
         </script>
         <!-- End GTM Script -->
 
@@ -166,6 +170,8 @@
             }
         </style>
         <script>
+            var gtm_id = 'GTM-NF7884S';
+            if (window.location.hostname === 'deriv-app.binary.sx') gtm_id = 'GTM-TNX2ZKH';
             (function(a, s, y, n, c, h, i, d, e) {
                 s.className += ' ' + y;
                 h.end = i = function() {
@@ -176,7 +182,7 @@
                     i();
                     h.end = null;
                 }, c);
-            })(window, document.documentElement, 'async-hide', 'dataLayer', 4000, { 'GTM-NF7884S': true });
+            })(window, document.documentElement, 'async-hide', 'dataLayer', 4000, { [gtm_id]: true });
         </script>
         <!-- End GTM Script -->
 
@@ -216,7 +222,7 @@
             content=" digital options, forex, forex trading, online trading, financial trading, binary trading, index trading, trading indices, forex trades, trading commodities, digital options strategy, binary broker, binary bet, digital options trading platform, binary strategy, finance, stocks, investment, trading"
         />
         <meta name="author" content="Deriv" />
-        <!-- TODO: iOS zoom bug for input elements means we'll get a lower user accessibility score since we're not allowing deriv.app to be scalable on mobile -->
+        <!-- TODO: iOS zoom bug for input elements means we'll get a lower user accessibility score since we're not allowing app.deriv.com to be scalable on mobile -->
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
         <meta name="theme-color" content="#2a3052" />
         <meta name="dcterms.rightsHolder" content="Deriv" />
@@ -247,6 +253,16 @@
             ></iframe
         ></noscript>
         <!-- End GTM NoScript -->
+        <!-- Start GTM NoScript of GTM Test Environment -->
+        <noscript
+            ><iframe
+                src="https://www.googletagmanager.com/ns.html?id=GTM-TNX2ZKH"
+                height="0"
+                width="0"
+                style="display: none; visibility: hidden;"
+            ></iframe
+        ></noscript>
+        <!-- End GTM NoScript of GTM Test Environment -->
 
         <!-- TODO: Display shell platform icon and text based on route -->
 
@@ -296,5 +312,12 @@
             </div>
         </div>
         <!-- End Temporary Mobile Landscape UI Blocker -->
+        <!-- LiveChat script -->
+        <script type="text/javascript">
+            window.__lc = window.__lc || {};
+            window.__lc.license = 12049137;
+            ;(function(n,t,c){function i(n){return e._h?e._h.apply(null,n):e._q.push(n)}var e={_q:[],_h:null,_v:"2.0",on:function(){i(["on",c.call(arguments)])},once:function(){i(["once",c.call(arguments)])},off:function(){i(["off",c.call(arguments)])},get:function(){if(!e._h)throw new Error("[LiveChatWidget] You can’t use getters before load.");return i(["get",c.call(arguments)])},call:function(){i(["call",c.call(arguments)])},init:function(){var n=t.createElement("script");n.async=!0,n.type="text/javascript",n.src="https://cdn.livechatinc.com/tracking.js",t.head.appendChild(n)}};!n.__lc.asyncInit&&e.init(),n.LiveChatWidget=n.LiveChatWidget||e}(window,document,[].slice))
+        </script>
+        <!-- End LiveChat script -->
     </body>
 </html>

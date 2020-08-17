@@ -1,6 +1,6 @@
 const Cookies = require('js-cookie');
-const { isProduction } = require('@deriv/shared/utils/config');
-const ObjectUtils = require('@deriv/shared/utils/object');
+const getPropertyValue = require('@deriv/shared').getPropertyValue;
+const isEmptyObject = require('@deriv/shared').isEmptyObject;
 
 const getObject = function(key) {
     return JSON.parse(this.getItem(key) || '{}');
@@ -78,13 +78,13 @@ const InScriptStore = function(object) {
 
 InScriptStore.prototype = {
     get(key) {
-        return ObjectUtils.getPropertyValue(this.store, key);
+        return getPropertyValue(this.store, key);
     },
     set(k, value, obj = this.store) {
         let key = k;
         if (!Array.isArray(key)) key = [key];
         if (key.length > 1) {
-            if (!(key[0] in obj) || ObjectUtils.isEmptyObject(obj[key[0]])) obj[key[0]] = {};
+            if (!(key[0] in obj) || isEmptyObject(obj[key[0]])) obj[key[0]] = {};
             this.set(key.slice(1), value, obj[key[0]]);
         } else {
             obj[key[0]] = value;
@@ -141,12 +141,9 @@ const CookieStorage = function(cookie_name, cookie_domain) {
     this.cookie_name = cookie_name;
     this.domain =
         cookie_domain ||
-        (isProduction()
-            ? `.${hostname
-                  .split('.')
-                  .slice(-2)
-                  .join('.')}`
-            : hostname);
+        /* eslint-disable no-nested-ternary */
+        (hostname.includes('binary.sx') ? 'binary.sx' : 'deriv.com');
+    /* eslint-enable no-nested-ternary */
     this.path = '/';
     this.expires = new Date('Thu, 1 Jan 2037 12:00:00 GMT');
     this.value = {};

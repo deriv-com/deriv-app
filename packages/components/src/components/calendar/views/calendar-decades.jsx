@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { toMoment } from '@deriv/shared/utils/date';
+import { toMoment } from '@deriv/shared';
 import { CommonPropTypes } from './types';
 import { getCentury, getDecade } from '../helpers';
 

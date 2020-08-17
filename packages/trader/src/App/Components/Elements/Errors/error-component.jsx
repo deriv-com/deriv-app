@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { PageError } from '@deriv/components';
-import routes from '@deriv/shared/utils/routes';
+import { routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 
 const ErrorComponent = ({ header, message, redirect_label, redirectOnClick, should_show_refresh = true }) => {

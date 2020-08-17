@@ -45,13 +45,10 @@ module.exports = {
                 exclude: /node_modules/,
                 use: [
                     {
-                        loader: '@deriv/shared/utils/deriv-components-loader.js',
+                        loader: '@deriv/shared/src/loaders/react-import-loader.js',
                     },
                     {
-                        loader: '@deriv/shared/utils/react-import-loader.js',
-                    },
-                    {
-                        loader: '@deriv/shared/utils/react-import-loader.js',
+                        loader: '@deriv/shared/src/loaders/react-import-loader.js',
                     },
                     {
                         loader: 'babel-loader',
@@ -80,7 +77,7 @@ module.exports = {
                         loader: 'sass-resources-loader',
                         options: {
                             // Provide path to the file with resources
-                            resources: require('@deriv/shared/utils/index.js'),
+                            resources: require('@deriv/shared/src/styles/index.js'),
                         },
                     },
                 ],

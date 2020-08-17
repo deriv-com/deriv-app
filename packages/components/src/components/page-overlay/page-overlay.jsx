@@ -3,10 +3,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import PropTypes from 'prop-types';
-import Icon from 'Components/icon/icon.jsx';
-import { useOnClickOutside } from '../../hooks/use-onclickoutside';
+import Icon from '../icon/icon.jsx';
+import { useOnClickOutside } from '../../hooks';
 
-const PageOverlay = ({ portal_id, children, header, id, onClickClose, is_open }) => {
+const PageOverlay = ({ children, header, id, is_open, onClickClose, portal_id }) => {
     const page_overlay_ref = React.useRef();
 
     useOnClickOutside(page_overlay_ref, onClickClose, () => is_open && portal_id);
@@ -60,9 +60,9 @@ PageOverlay.propTypes = {
     children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
     header: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    is_open: PropTypes.bool,
     onClickClose: PropTypes.func,
     portal_id: PropTypes.string,
-    is_open: PropTypes.bool,
 };
 
 export default PageOverlay;

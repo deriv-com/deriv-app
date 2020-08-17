@@ -1,5 +1,5 @@
 import React from 'react';
-import { isMobile } from '@deriv/shared/utils/screen';
+import { isMobile } from '@deriv/shared';
 import Digits from 'Modules/Contract/Components/Digits';
 import { connect } from 'Stores/connect';
 import BottomWidgets from '../../SmartChart/Components/bottom-widgets.jsx';

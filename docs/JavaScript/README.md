@@ -142,7 +142,7 @@ export default Loading;
 
 ```JavaScript
 localize('{{opening_tag}}Deriv App{{closing_tag}}', {
-    opening_tag  : '<a href="https://deriv.app" rel="noopener noreferrer" target="_blank" class="link">',
+    opening_tag  : '<a href="https://app.deriv.com" rel="noopener noreferrer" target="_blank" class="link">',
     closing_tag  : '</a>',
     interpolation: { escapeValue: false },
 }),

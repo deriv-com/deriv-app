@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon, Money } from '@deriv/components';
-import CurrencyUtils from '@deriv/shared/utils/currency';
+import { isCryptocurrency } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { getLimitOrderAmount } from 'Stores/Modules/Contract/Helpers/limit-orders';
 import { getCancellationPrice, getIndicativePrice } from 'Stores/Modules/Contract/Helpers/logic';
@@ -27,7 +27,7 @@ const MultiplierCardBody = ({ contract_info, contract_update, currency, status }
                     <span className='positions-drawer-card__item-label'>{localize('Current stake:')}</span>
                     <span
                         className={classNames('positions-drawer-card__item-value', {
-                            'positions-drawer-card__profit-loss--is-crypto': CurrencyUtils.isCryptocurrency(currency),
+                            'positions-drawer-card__profit-loss--is-crypto': isCryptocurrency(currency),
                             'positions-drawer-card--loss': profit < 0,
                             'positions-drawer-card--profit': profit > 0,
                         })}
@@ -77,7 +77,7 @@ const MultiplierCardBody = ({ contract_info, contract_update, currency, status }
                     className={classNames(
                         ' positions-drawer-card__profit-loss positions-drawer-card__total-profit-loss-value',
                         {
-                            'positions-drawer-card__profit-loss--is-crypto': CurrencyUtils.isCryptocurrency(currency),
+                            'positions-drawer-card__profit-loss--is-crypto': isCryptocurrency(currency),
                             'positions-drawer-card__profit-loss--negative': total_profit < 0,
                             'positions-drawer-card__profit-loss--positive': total_profit > 0,
                         }
@@ -134,7 +134,7 @@ const CardBody = ({ contract_info, contract_update, currency, is_multiplier, sta
                 </div>
                 <div
                     className={classNames('positions-drawer-card__profit-loss', {
-                        'positions-drawer-card__profit-loss--is-crypto': CurrencyUtils.isCryptocurrency(currency),
+                        'positions-drawer-card__profit-loss--is-crypto': isCryptocurrency(currency),
                         'positions-drawer-card__profit-loss--negative': profit < 0,
                         'positions-drawer-card__profit-loss--positive': profit > 0,
                     })}

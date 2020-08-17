@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import { Field, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -10,15 +9,15 @@ import {
     ThemedScrollbars,
     Input,
     Loading,
+    Modal,
     FormSubmitButton,
     DesktopWrapper,
     MobileWrapper,
     SelectNative,
 } from '@deriv/components';
 import { FormSubHeader } from '@deriv/account';
-import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
+import { isDesktop, isMobile, isDeepEqual } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { isDeepEqual } from '@deriv/shared/utils/object';
 
 const getAccountOpeningReasonList = () => [
     {
@@ -166,7 +165,7 @@ const MT5PersonalDetailsForm = ({
             onSubmit={onSubmitForm}
         >
             {({ handleSubmit, isSubmitting, handleChange, handleBlur, errors, touched, values, setFieldValue }) => (
-                <AutoHeightWrapper default_height={200}>
+                <AutoHeightWrapper default_height={200} height_offset={isDesktop() ? 148 : null}>
                     {({ height, setRef }) => (
                         <form
                             className='mt5-financial-stp-modal__form'
@@ -174,11 +173,7 @@ const MT5PersonalDetailsForm = ({
                             onSubmit={handleSubmit}
                             autoComplete='off'
                         >
-                            <Div100vhContainer
-                                className={classNames('details-form', 'mt5-details-form')}
-                                is_disabled={isDesktop()}
-                                height_offset='199px'
-                            >
+                            <Div100vhContainer className='details-form' height_offset='179px' is_disabled={isDesktop()}>
                                 <p className='details-form__description'>
                                     <Localize
                                         i18n_default_text={
@@ -186,7 +181,7 @@ const MT5PersonalDetailsForm = ({
                                         }
                                     />
                                 </p>
-                                <ThemedScrollbars height={`calc(${height}px - 120px)`} is_bypassed={isMobile()}>
+                                <ThemedScrollbars height={height} is_bypassed={isMobile()}>
                                     <div className='details-form__elements'>
                                         <FormSubHeader title={localize('Details')} />
                                         <fieldset className='account-form__fieldset'>
@@ -322,16 +317,19 @@ const MT5PersonalDetailsForm = ({
                                     </div>
                                 </ThemedScrollbars>
                             </Div100vhContainer>
-                            <FormSubmitButton
-                                cancel_label={localize('Previous')}
-                                is_disabled={
-                                    isSubmitting ||
-                                    (Object.keys(touched).length === 0 && !is_initial_valid) ||
-                                    (Object.keys(touched).length > 0 && Object.keys(errors).length > 0)
-                                }
-                                label={localize('Next')}
-                                onCancel={() => handleCancel(values)}
-                            />
+                            <Modal.Footer is_bypassed={isMobile()}>
+                                <FormSubmitButton
+                                    cancel_label={localize('Previous')}
+                                    is_disabled={
+                                        isSubmitting ||
+                                        (Object.keys(touched).length === 0 && !is_initial_valid) ||
+                                        (Object.keys(touched).length > 0 && Object.keys(errors).length > 0)
+                                    }
+                                    is_absolute={isMobile()}
+                                    label={localize('Next')}
+                                    onCancel={() => handleCancel(values)}
+                                />
+                            </Modal.Footer>
                         </form>
                     )}
                 </AutoHeightWrapper>

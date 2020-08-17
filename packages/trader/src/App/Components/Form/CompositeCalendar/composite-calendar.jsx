@@ -3,7 +3,7 @@ import React from 'react';
 import Loadable from 'react-loadable';
 import { Icon, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { daysFromTodayTo, epochToMoment, toMoment } from '@deriv/shared/utils/date';
+import { daysFromTodayTo, epochToMoment, toMoment } from '@deriv/shared';
 import InputField from 'App/Components/Form/InputField/input-field.jsx';
 import CompositeCalendarMobile from './composite-calendar-mobile.jsx';
 import SideList from './side-list.jsx';

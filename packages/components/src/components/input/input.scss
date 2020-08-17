@@ -100,7 +100,7 @@
             border: none;
             resize: none;
 
-            ~ .dc-field-error {
+            ~ .dc-field--error {
                 top: 10rem;
             }
         }
@@ -114,6 +114,15 @@
             &:focus,
             &:active {
                 -webkit-box-shadow: 0 0 0 30px var(--fill-normal) inset !important;
+            }
+        }
+    }
+    &__textarea {
+        &:not(.dc-input--no-placeholder):not(:focus):empty {
+            & ~ label {
+                transform: none;
+                color: var(--text-less-prominent);
+                padding: 0 4px;
             }
         }
     }

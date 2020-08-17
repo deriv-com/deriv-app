@@ -1,20 +1,22 @@
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { Field, Formik } from 'formik';
 import {
     AutoHeightWrapper,
     FormSubmitButton,
     Div100vhContainer,
     MobileWrapper,
+    Modal,
     Popover,
     Icon,
     ThemedScrollbars,
 } from '@deriv/components';
-import PropTypes from 'prop-types';
-import React from 'react';
-import { Field, Formik } from 'formik';
-import CurrencyUtils from '@deriv/shared/utils/currency';
-import { isMobile, isDesktop } from '@deriv/shared/utils/screen';
+import { getCurrencyDisplayCode, isMobile, isDesktop } from '@deriv/shared';
+
 import { connect } from 'Stores/connect';
 import { Localize, localize } from '@deriv/translations';
+import { splitValidationResultTypes } from 'App/Containers/RealAccountSignup/helpers/utils';
 import 'Sass/currency-select-radio.scss';
 
 // Radio input
@@ -56,7 +58,7 @@ export const RadioButton = ({ field: { name, value, onChange, onBlur }, id, labe
                     )}
                     <div className='label currency-list__item-text'>
                         {label}
-                        <br />({CurrencyUtils.getCurrencyDisplayCode(id)})
+                        <br />({getCurrencyDisplayCode(id)})
                     </div>
                 </div>
             </label>
@@ -65,11 +67,16 @@ export const RadioButton = ({ field: { name, value, onChange, onBlur }, id, labe
 };
 
 // Radio group
-export const RadioButtonGroup = ({ label, className, children, is_title_enabled }) => {
+export const RadioButtonGroup = ({ label, className, children, is_title_enabled, is_fiat }) => {
     return (
         <div className={className}>
-            {is_title_enabled && <h2>{label}</h2>}
+            {is_title_enabled && <h2 className={classNames(`${className}--is-header`)}>{label}</h2>}
             <div className='currency-list__items'>{children}</div>
+            {is_fiat && (
+                <p className='currency-selector__description'>
+                    <Localize i18n_default_text='You will not be able to change currency once you have made a deposit' />
+                </p>
+            )}
         </div>
     );
 };
@@ -117,27 +124,21 @@ class CurrencySelector extends React.Component {
         };
     }
 
-    validateCurrencies = values => {
-        const errors = {};
-
-        if (!values.currency) {
-            errors.currency = localize('Select an item');
-        }
-
+    handleValidate = values => {
+        const { errors } = splitValidationResultTypes(this.props.validate(values));
         return errors;
     };
 
     render() {
         const { has_currency, has_real_account } = this.props;
+
         return (
             <Formik
-                initialValues={{
-                    currency: this.props.value.currency,
-                }}
+                initialValues={this.props.value}
                 onSubmit={(values, actions) => {
                     this.props.onSubmit(this.props.index, values, actions.setSubmitting);
                 }}
-                validate={this.validateCurrencies}
+                validate={this.handleValidate}
             >
                 {({
                     handleSubmit,
@@ -156,7 +157,7 @@ class CurrencySelector extends React.Component {
                                         'currency-selector__container--no-top-margin':
                                             !has_currency && has_real_account && isMobile(),
                                     })}
-                                    height_offset={!has_currency && has_real_account ? '129px' : '199px'}
+                                    height_offset={!has_currency && has_real_account ? '109px' : '179px'}
                                     is_disabled={isDesktop()}
                                 >
                                     <MobileWrapper>
@@ -167,17 +168,15 @@ class CurrencySelector extends React.Component {
                                                         <Localize i18n_default_text='You have an account without an assigned currency. Please choose a currency to trade with this account.' />
                                                     </p>
                                                 )}
-                                                <h2>
-                                                    <Localize i18n_default_text='Please choose your currency' />
-                                                </h2>
                                             </div>
                                         )}
                                     </MobileWrapper>
-                                    <ThemedScrollbars is_bypassed={isMobile()} height={`${height - 70}px`}>
+                                    <ThemedScrollbars is_bypassed={isMobile()} height={`${height - 77}px`}>
                                         <RadioButtonGroup
                                             id='currency'
                                             className='currency-selector__radio-group'
                                             label={localize('Fiat currencies')}
+                                            is_fiat
                                             value={values.currency}
                                             error={errors.currency}
                                             touched={touched.currency}
@@ -217,13 +216,17 @@ class CurrencySelector extends React.Component {
                                         )}
                                     </ThemedScrollbars>
                                 </Div100vhContainer>
-                                <FormSubmitButton
-                                    is_disabled={isSubmitting || !values.currency}
-                                    is_center={!has_currency || isMobile()}
-                                    label={
-                                        !has_real_account && isMobile() ? localize('Next') : localize('Set currency')
-                                    }
-                                />
+                                <Modal.Footer is_bypassed={isMobile()}>
+                                    <FormSubmitButton
+                                        is_disabled={isSubmitting || !values.currency}
+                                        is_center={!has_currency}
+                                        is_absolute={isMobile()}
+                                        has_cancel
+                                        onCancel={this.props.onCancel}
+                                        cancel_label={localize('Cancel')}
+                                        label={localize('Next')}
+                                    />
+                                </Modal.Footer>
                             </form>
                         )}
                     </AutoHeightWrapper>

@@ -1,4 +1,4 @@
-import ObjectUtils from '../object';
+import { getPropertyValue } from '../object';
 
 let currencies_config = {};
 
@@ -52,16 +52,22 @@ export const addComma = (num, decimal_points, is_crypto) => {
 };
 
 export const calcDecimalPlaces = currency => {
-    return isCryptocurrency(currency)
-        ? ObjectUtils.getPropertyValue(CryptoConfig.get(), [currency, 'fractional_digits'])
-        : 2;
+    return isCryptocurrency(currency) ? getPropertyValue(CryptoConfig.get(), [currency, 'fractional_digits']) : 2;
 };
 
 export const getDecimalPlaces = currency =>
     // need to check currencies_config[currency] exists instead of || in case of 0 value
     currencies_config[currency]
-        ? ObjectUtils.getPropertyValue(currencies_config, [currency, 'fractional_digits'])
+        ? getPropertyValue(currencies_config, [currency, 'fractional_digits'])
         : calcDecimalPlaces(currency);
+
+export const hasCorrectDecimalPlaces = (currency, amount) => {
+    const currency_decimal_places = getDecimalPlaces(currency);
+    const amount_decimal_array = amount.toString().split('.')[1];
+    const amount_decimal_places = amount_decimal_array ? amount_decimal_array.length || 0 : 0;
+
+    return amount_decimal_places <= currency_decimal_places;
+};
 
 export const setCurrencies = website_status => {
     currencies_config = website_status.currencies_config;
@@ -69,10 +75,7 @@ export const setCurrencies = website_status => {
 
 // (currency in crypto_config) is a back-up in case website_status doesn't include the currency config, in some cases where it's disabled
 export const isCryptocurrency = currency => {
-    return (
-        /crypto/i.test(ObjectUtils.getPropertyValue(currencies_config, [currency, 'type'])) ||
-        currency in CryptoConfig.get()
-    );
+    return /crypto/i.test(getPropertyValue(currencies_config, [currency, 'type'])) || currency in CryptoConfig.get();
 };
 
 export const CryptoConfig = (() => {
@@ -149,9 +152,7 @@ export const CryptoConfig = (() => {
 })();
 
 export const getMinWithdrawal = currency => {
-    return isCryptocurrency(currency)
-        ? ObjectUtils.getPropertyValue(CryptoConfig.get(), [currency, 'min_withdrawal']) || 0.002
-        : 1;
+    return isCryptocurrency(currency) ? getPropertyValue(CryptoConfig.get(), [currency, 'min_withdrawal']) || 0.002 : 1;
 };
 
 /**
@@ -162,7 +163,7 @@ export const getMinWithdrawal = currency => {
  */
 export const getTransferLimits = (currency, which) => {
     const transfer_limits =
-        ObjectUtils.getPropertyValue(currencies_config, [currency, 'transfer_between_accounts', 'limits']) ||
+        getPropertyValue(currencies_config, [currency, 'transfer_between_accounts', 'limits']) ||
         getMinWithdrawal(currency);
     const decimals = getDecimalPlaces(currency);
     if (which === 'max') {
@@ -173,7 +174,7 @@ export const getTransferLimits = (currency, which) => {
 };
 
 export const getTransferFee = (currency_from, currency_to) => {
-    const transfer_fee = ObjectUtils.getPropertyValue(currencies_config, [
+    const transfer_fee = getPropertyValue(currencies_config, [
         currency_from,
         'transfer_between_accounts',
         'fees',
@@ -191,24 +192,21 @@ export const getMinimumTransferFee = currency => {
 // @param {String} limit = max|min
 export const getPaWithdrawalLimit = (currency, limit) => {
     if (isCryptocurrency(currency)) {
-        return ObjectUtils.getPropertyValue(CryptoConfig.get(), [currency, `pa_${limit}_withdrawal`]); // pa_min_withdrawal and pa_max_withdrawal used here
+        return getPropertyValue(CryptoConfig.get(), [currency, `pa_${limit}_withdrawal`]); // pa_min_withdrawal and pa_max_withdrawal used here
     }
     return limit === 'max' ? 2000 : 10; // limits for fiat currency
 };
 
 export const getCurrencyDisplayCode = (currency = '') => {
-    return (
-        ObjectUtils.getPropertyValue(CryptoConfig.get(), [currency.toUpperCase(), 'display_code']) ||
-        currency.toUpperCase()
-    );
+    return getPropertyValue(CryptoConfig.get(), [currency.toUpperCase(), 'display_code']) || currency.toUpperCase();
 };
 
 export const getCurrencyName = currency => {
-    return ObjectUtils.getPropertyValue(CryptoConfig.get(), [currency, 'name']) || '';
+    return getPropertyValue(CryptoConfig.get(), [currency, 'name']) || '';
 };
 
 export const getMinPayout = currency => {
-    return ObjectUtils.getPropertyValue(currencies_config, [currency, 'stake_default']);
+    return getPropertyValue(currencies_config, [currency, 'stake_default']);
 };
 
 export const getCurrencies = () => {

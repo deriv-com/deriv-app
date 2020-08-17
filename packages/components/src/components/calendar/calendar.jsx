@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { getStartOfMonth, toMoment } from '@deriv/shared/utils/date';
+import { getStartOfMonth, toMoment } from '@deriv/shared';
 import Body from './calendar-body.jsx';
 import Footer from './calendar-footer.jsx';
 import Header from './calendar-header.jsx';

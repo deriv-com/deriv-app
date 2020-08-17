@@ -1,29 +1,36 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Dropdown, Icon, Input, Money, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
 import { Field, Formik, Form } from 'formik';
-import CurrencyUtils from '@deriv/shared/utils/currency';
+import { Button, Dropdown, Icon, Input, Money, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
+import { getDecimalPlaces, getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { website_name } from 'App/Constants/app-config';
 import { connect } from 'Stores/connect';
 import { getPreBuildDVRs, validNumber } from 'Utils/Validator/declarative-validation-rules';
+import FormError from '../Error/form-error.jsx';
 import Loading from '../../../../templates/_common/components/loading.jsx';
 
-const AccountOption = ({ account, idx }) => (
-    <React.Fragment key={idx}>
-        {(account.currency || account.mt_icon) && (
-            <Icon
-                icon={account.mt_icon ? `IcMt5-${account.mt_icon}` : `IcCurrency-${account.currency.toLowerCase()}`}
-                className='account-transfer__currency-icon'
-            />
-        )}
-        <span className='account-transfer__currency'>{account.text}</span>
-        <span className='account-transfer__balance cashier__drop-down-display-brackets'>
-            <Money amount={account.balance} currency={account.currency} />
-        </span>
-    </React.Fragment>
-);
+const AccountOption = ({ account, idx }) => {
+    return (
+        <React.Fragment key={idx}>
+            {(account.currency || account.mt_icon) && (
+                <Icon
+                    icon={account.mt_icon ? `IcMt5-${account.mt_icon}` : `IcCurrency-${account.currency.toLowerCase()}`}
+                    className='account-transfer__currency-icon'
+                />
+            )}
+            <div className='account-transfer__currency-wrapper'>
+                <span className='account-transfer__currency'>{account.text}</span>
+                <span className='account-transfer__loginid'>{account.value}</span>
+            </div>
+
+            <span className='account-transfer__balance cashier__drop-down-display-brackets'>
+                <Money amount={account.balance} currency={account.currency} />
+            </span>
+        </React.Fragment>
+    );
+};
 
 const AccountTransferBullet = ({ children }) => (
     <div className='account-transfer__bullet-wrapper'>
@@ -63,7 +70,7 @@ const AccountTransferNote = ({
                 values={{
                     transfer_fee,
                     minimum_fee,
-                    currency: CurrencyUtils.getCurrencyDisplayCode(currency),
+                    currency: getCurrencyDisplayCode(currency),
                 }}
             />
         </AccountTransferBullet>
@@ -103,7 +110,7 @@ const AccountTransferForm = ({
         } else if (
             !validNumber(amount, {
                 type: 'float',
-                decimals: CurrencyUtils.getDecimalPlaces(selected_from.currency),
+                decimals: getDecimalPlaces(selected_from.currency),
                 min: transfer_limit.min,
                 max: transfer_limit.max,
             })
@@ -196,7 +203,6 @@ const AccountTransferForm = ({
             );
         }
     }, [transfer_fee, selected_from, minimum_fee, mt5_total_transfers, internal_total_transfers, setSideNote]);
-
     return (
         <div className='cashier__wrapper account-transfer__wrapper'>
             <React.Fragment>
@@ -209,7 +215,16 @@ const AccountTransferForm = ({
                     }}
                     onSubmit={onTransferPassthrough}
                 >
-                    {({ errors, isSubmitting, isValid, touched, validateField, handleChange }) => (
+                    {({
+                        errors,
+                        isSubmitting,
+                        isValid,
+                        touched,
+                        validateField,
+                        setFieldValue,
+                        setFieldError,
+                        handleChange,
+                    }) => (
                         <React.Fragment>
                             {isSubmitting ? (
                                 <div className='cashier__loader-wrapper'>
@@ -236,7 +251,10 @@ const AccountTransferForm = ({
                                                     onChangeTransferFrom(e);
                                                     handleChange(e);
                                                     validateField('amount');
+                                                    setFieldValue('amount', '');
+                                                    setFieldError('amount', '');
                                                 }}
+                                                error={selected_from.error}
                                             />
                                         </DesktopWrapper>
                                         <MobileWrapper>
@@ -251,7 +269,10 @@ const AccountTransferForm = ({
                                                     onChangeTransferFrom(e);
                                                     handleChange(e);
                                                     validateField('amount');
+                                                    setFieldValue('amount', '');
+                                                    setFieldError('amount', '');
                                                 }}
+                                                error={selected_from.error}
                                             />
                                         </MobileWrapper>
                                         <DesktopWrapper>
@@ -270,6 +291,7 @@ const AccountTransferForm = ({
                                                 value={selected_to.value}
                                                 onChange={onChangeTransferTo}
                                                 hint={transfer_to_hint}
+                                                error={selected_to.error}
                                             />
                                         </DesktopWrapper>
                                         <MobileWrapper>
@@ -282,6 +304,7 @@ const AccountTransferForm = ({
                                                 list_items={to_accounts}
                                                 onChange={onChangeTransferTo}
                                                 hint={transfer_to_hint}
+                                                error={selected_to.error}
                                             />
                                         </MobileWrapper>
                                     </div>
@@ -335,32 +358,17 @@ const AccountTransferForm = ({
                                         )}
                                     </Field>
                                     <div className='cashier__form-submit cashier__form-submit--align-end account-transfer__form-submit'>
-                                        {error.message && (
-                                            <React.Fragment>
-                                                <DesktopWrapper>
-                                                    <div className='cashier__form-error-wrapper account-transfer__form-error'>
-                                                        <Icon
-                                                            icon='IcAlertDanger'
-                                                            className='cashier__form-error-small-icon'
-                                                        />
-                                                        <p className='cashier__form-error'>{error.message}</p>
-                                                    </div>
-                                                </DesktopWrapper>
-                                                <MobileWrapper>
-                                                    <div className='cashier__form-error-container'>
-                                                        <Icon
-                                                            icon='IcAlertDanger'
-                                                            className='cashier__form-error-small-icon'
-                                                        />
-                                                        <p className='cashier__form-error'>{error.message}</p>
-                                                    </div>
-                                                </MobileWrapper>
-                                            </React.Fragment>
-                                        )}
+                                        {error.message && <FormError error_message={error.message} />}
                                         <Button
                                             className='cashier__form-submit-button'
                                             type='submit'
-                                            is_disabled={!isValid || isSubmitting || !+remaining_transfers}
+                                            is_disabled={
+                                                !isValid ||
+                                                isSubmitting ||
+                                                !+remaining_transfers ||
+                                                !!selected_from.error ||
+                                                !!selected_to.error
+                                            }
                                             primary
                                             large
                                         >

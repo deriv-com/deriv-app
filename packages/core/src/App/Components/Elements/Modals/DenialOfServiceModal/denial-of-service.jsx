@@ -1,14 +1,14 @@
-import { Dialog } from '@deriv/components';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Dialog } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { website_domain, website_name } from 'App/Constants/app-config';
+import { website_name } from 'App/Constants/app-config';
 
 const DenialOfServiceModal = ({ disableApp, enableApp, is_loading, is_visible, onCancel, onConfirm }) => (
     <Dialog
         title={localize("That's not ready yet!")}
-        confirm_button_text={localize('Stay on {{website_domain}}', { website_domain })}
+        confirm_button_text={localize('Stay on {{website_domain}}', { website_domain: website_name })}
         cancel_button_text={localize('Go to Binary.com')}
         onConfirm={onConfirm}
         onCancel={onCancel}
@@ -18,7 +18,7 @@ const DenialOfServiceModal = ({ disableApp, enableApp, is_loading, is_visible, o
         is_closed_on_cancel={false}
         is_visible={is_visible}
     >
-        <Localize i18n_default_text='Real money accounts are currently unavailable.' values={{ website_name }} />
+        <Localize i18n_default_text='Real money accounts are currently unavailable.' />
     </Dialog>
 );
 

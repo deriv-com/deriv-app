@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Icon from 'Components/icon/icon.jsx';
+import Icon from '../icon/icon.jsx';
 
 const CircularProgress = ({ className, danger_limit, icon, is_clockwise, progress, radius, stroke, warning_limit }) => {
     const normalizedRadius = radius - stroke / 2;

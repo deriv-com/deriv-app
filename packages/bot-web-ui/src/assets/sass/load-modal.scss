@@ -2,6 +2,8 @@ $modal_container_height: calc(100vh - 210px);
 
 .dc-modal {
     &__container {
+        max-width: 99vw;
+
         &_modal {
             &--load {
                 opacity: 0;
@@ -178,7 +180,7 @@ $modal_container_height: calc(100vh - 210px);
             display: flex;
             flex-direction: column;
             justify-content: center;
-            border: dashed 3px var(--border-normal);
+            border: dashed 0.2rem var(--border-normal);
             border-radius: $BORDER_RADIUS;
             padding: 50px;
             height: 100%;
@@ -237,20 +239,32 @@ $modal_container_height: calc(100vh - 210px);
     &-google-drive {
         &__container {
             padding: 25px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            text-align: center;
             height: $modal_container_height;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
 
             > * {
                 margin: 0 auto;
             }
+        }
+        &__box {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: dashed 0.2rem var(--border-normal);
+            border-radius: $BORDER_RADIUS;
+            padding: 50px;
+            height: 100%;
         }
         &__text {
             margin-top: 16px;
             font-size: var(--text-size-s);
             font-weight: bold;
             line-height: 1.43;
+            text-align: center;
 
             &--disabled {
                 color: var(--text-disabled);
@@ -270,17 +284,104 @@ $modal_container_height: calc(100vh - 210px);
             margin-top: 16px;
         }
         &__icon {
-            &--active {
-                // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
-                --fill-color1: #ffcf45 !important;
-                --fill-color2: #1ca362 !important;
-                --fill-color3: #4686f5 !important;
-            }
             &--disabled {
-                // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
-                --fill-color1: #{$color-grey-8} !important;
-                --fill-color2: #{$color_grey-9} !important;
-                --fill-color3: #{$color-grey-10} !important;
+                opacity: 0.32;
+            }
+        }
+    }
+    &__wrapper {
+        @include mobile {
+            position: fixed;
+            z-index: 6;
+            width: 100%;
+            left: 0px;
+            top: 8rem;
+            background: var(--general-main-1);
+
+            &--is-mobile {
+                max-height: calc(100vh - 80px);
+            }
+            #import_dragndrop {
+                padding: 8vw;
+            }
+            & .dc {
+                &-tabs {
+                    display: flex;
+                    flex-direction: column;
+                    height: 100%;
+                    max-height: calc(100vh - 80px);
+
+                    &__list {
+                        width: 100%;
+                        height: 4rem;
+                    }
+                    &__item {
+                        width: 50%;
+                    }
+                    &__content {
+                        height: calc(100% - 4rem);
+                    }
+                }
+                &-btn {
+                    height: 4rem;
+
+                    &--secondary {
+                        border-width: 0.2rem;
+                    }
+                }
+                &-page-overlay {
+                    margin-top: -4rem;
+
+                    &__header {
+                        position: fixed;
+                        top: 4rem;
+                        width: 100%;
+                        height: 4rem;
+                    }
+                    &__content {
+                        margin-top: 4rem;
+
+                        & .modal__content {
+                            padding: 1.6rem;
+                            max-height: calc(100vh - 150px);
+                            overflow: overlay;
+                        }
+                    }
+                }
+            }
+            & .load-local {
+                &__container {
+                    width: calc(100vw);
+                    padding: 1.6rem;
+                    height: 100%;
+                    max-height: calc(100vh - 120px);
+                }
+                &__dragndrop {
+                    overflow: overlay;
+                }
+                &__footer {
+                    display: flex;
+                    justify-content: flex-end;
+
+                    & .dc-btn {
+                        margin-right: 0rem;
+                        margin-left: 0.8rem;
+                    }
+                }
+            }
+            & .load-google-drive {
+                &__container {
+                    width: calc(100vw);
+                    padding: 1.6rem;
+                    height: 100%;
+                    max-height: calc(100vh - 120px);
+                }
+                &__buttons > * {
+                    margin: 0 0.4rem;
+                }
+            }
+            .preview__workspace {
+                height: calc(100vh - 300px);
             }
         }
     }
@@ -292,4 +393,20 @@ $modal_container_height: calc(100vh - 210px);
     border-radius: $BORDER_RADIUS;
     border: solid 1px var(--border-normal);
     height: 100%;
+}
+
+.picker {
+    max-width: 98%;
+    border-radius: 8px;
+    max-height: 99%;
+
+    &-content {
+        max-width: 98%;
+        padding: 1%;
+    }
+    @include mobile {
+        height: 100%;
+        width: 100%;
+        top: 0px;
+    }
 }

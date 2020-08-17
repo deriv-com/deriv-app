@@ -1,0 +1,155 @@
+.on-ramp {
+    &__page-header {
+        font-size: var(--text-size-s);
+        color: var(--text-general);
+        font-weight: bold;
+        line-height: 2.4rem;
+        margin-bottom: 1.7rem;
+    }
+    &__provider {
+        box-shadow: 0 0.8rem 0.8rem 0 var(--shadow-drop), 0 0 0.8rem 0 var(--shadow-drop);
+        padding: 1.6rem 1.6rem 0.8rem 2.4rem;
+        border-radius: 0.8rem;
+        display: grid;
+        grid-column-gap: 3.2rem;
+        grid-template-areas: ('logo name buy' 'logo description buy' 'logo website buy' 'logo payment-icons buy');
+        grid-template-columns: 1fr 4fr 1fr;
+
+        & + & {
+            margin-top: 1.6rem;
+        }
+        &-logo {
+            align-self: center;
+            grid-area: logo;
+            grid-row: 1 / 5;
+        }
+        &-name {
+            grid-area: name;
+            font-size: var(--text-size-s);
+            color: var(--text-general);
+            font-weight: bold;
+            line-height: 2.4rem;
+            margin-bottom: 0.8rem;
+        }
+        &-description {
+            grid-area: description;
+            font-size: var(--text-size-xs);
+            color: var(--text-general);
+            line-height: 2rem;
+        }
+        &-website {
+            grid-area: website;
+            font-size: var(--text-size-xs);
+            line-height: 2rem;
+        }
+        &-payment-icons {
+            grid-area: payment-icons;
+        }
+        &-button {
+            align-self: center;
+            grid-area: buy;
+            grid-row: 1 / 5;
+            justify-self: flex-end;
+        }
+    }
+    &__popup {
+        color: var(--text-general);
+
+        &-deposit {
+            text-align: center;
+
+            &-intro {
+                font-size: var(--text-size-xs);
+                line-height: 2rem;
+            }
+            &-address {
+                display: inline-flex;
+                border-radius: $BORDER_RADIUS;
+                align-self: center;
+                align-items: center;
+                padding: 1.2rem;
+                margin: 1.6rem;
+                background-color: var(--general-section-2);
+
+                &-text {
+                    cursor: pointer;
+                }
+                &-icon {
+                    margin-left: 0.8rem;
+                    cursor: pointer;
+                }
+                .dc-popover__target {
+                    margin-top: 0.1rem;
+                    display: flex;
+                    align-items: center;
+                }
+            }
+        }
+        &-divider {
+            height: 2px;
+            width: 100%;
+            background-color: var(--general-section-2);
+            margin: 2.4rem 0;
+        }
+        &-disclaimer {
+            &-title {
+                font-size: var(--text-size-s);
+                font-weight: bold;
+                line-height: 2.4rem;
+                margin-bottom: 0.8rem;
+            }
+            &-text {
+                font-size: var(--text-size-xs);
+                line-height: 2rem;
+                margin-bottom: 1.6rem;
+            }
+            &-checkbox {
+                .dc-checkbox__box {
+                    margin-left: 0;
+                }
+            }
+        }
+        &-buttons {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 2.4rem;
+        }
+        &-no-deposit-address {
+            display: flex;
+            flex-direction: column;
+
+            &-title {
+                font-size: var(--text-size-s);
+                font-weight: bold;
+                line-height: 2.4rem;
+            }
+            &-text {
+                font-size: var(--text-size-xs);
+                line-height: 2rem;
+                margin-bottom: 2.4rem;
+            }
+            &-buttons {
+                align-self: flex-end;
+            }
+        }
+    }
+    &__widget {
+        &-container {
+            padding: 0.8rem;
+            overflow: visible;
+        }
+    }
+}
+
+.dc-modal__container {
+    &_on-ramp__modal {
+        > .dc-modal-body {
+            padding-top: 0.8rem;
+        }
+        > .dc-modal-header {
+            &__title {
+                padding-top: 2.4rem !important;
+            }
+        }
+    }
+}

@@ -1,9 +1,9 @@
 import classNames from 'classnames';
-import { Dropdown, ButtonToggle } from '@deriv/components';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
-import CurrencyUtils from '@deriv/shared/utils/currency';
+import { Dropdown, ButtonToggle } from '@deriv/components';
+import { AMOUNT_MAX_LENGTH, getDecimalPlaces, addComma } from '@deriv/shared';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import InputField from 'App/Components/Form/InputField';
 import { connect } from 'Stores/connect';
@@ -43,7 +43,7 @@ const Amount = ({
                         })}
                     />
                 </i>
-                {CurrencyUtils.addComma(amount, 2)}
+                {addComma(amount, 2)}
             </div>
         );
     }
@@ -57,7 +57,7 @@ const Amount = ({
             classNameInput='trade-container__input'
             currency={currency}
             error_messages={error_messages}
-            fractional_digits={CurrencyUtils.getDecimalPlaces(currency)}
+            fractional_digits={getDecimalPlaces(currency)}
             id='dt_amount_input'
             inline_prefix={is_single_currency ? currency : null}
             is_autocomplete_disabled
@@ -66,7 +66,7 @@ const Amount = ({
             is_incrementable
             is_nativepicker={is_nativepicker}
             is_negative_disabled
-            max_length={CurrencyUtils.AMOUNT_MAX_LENGTH}
+            max_length={AMOUNT_MAX_LENGTH}
             name='amount'
             onChange={onChange}
             type='tel'

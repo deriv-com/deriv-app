@@ -1,4 +1,4 @@
-const CurrencyUtils = require('@deriv/shared/utils/currency');
+const setCurrencies = require('@deriv/shared').setCurrencies;
 const Client = require('../client_base');
 const { api, expect, setURL } = require('../../__tests__/tests_common');
 const State = require('../../storage').State;
@@ -207,7 +207,7 @@ describe('ClientBase', () => {
         before(function(done) {
             this.timeout(5000);
             api.getWebsiteStatus().then(response => {
-                CurrencyUtils.setCurrencies(response.website_status);
+                setCurrencies(response.website_status);
                 done();
             });
         });

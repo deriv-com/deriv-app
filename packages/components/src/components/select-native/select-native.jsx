@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import FieldError from 'Components/field-error';
-import Icon from 'Components/icon/icon.jsx';
+import Field from '../field';
+import Icon from '../icon/icon.jsx';
 
 class SelectNative extends React.Component {
     getDisplayText = value => {
@@ -63,11 +63,11 @@ class SelectNative extends React.Component {
                         <select className='dc-select-native__picker' value={value} disabled={disabled} {...props}>
                             {Array.isArray(list_items) ? (
                                 <React.Fragment>
-                                    {/* In native select, first option is selected by default. 
-                                        Added an empty option to avoid it from selecting first item 
+                                    {/* In native select, first option is selected by default.
+                                        Added an empty option to avoid it from selecting first item
                                         from list_items provided */}
                                     <option value=''>{placeholder}</option>
-                                    {/* Safari on ios allows to select a disabled option. 
+                                    {/* Safari on ios allows to select a disabled option.
                                         So, we should avoid showing it */}
                                     {list_items
                                         .filter(opt => !opt.disabled)
@@ -80,7 +80,7 @@ class SelectNative extends React.Component {
                             ) : (
                                 Object.keys(list_items).map(key => (
                                     <optgroup key={key} label={key}>
-                                        {/* Safari on ios allows to select a disabled option. 
+                                        {/* Safari on ios allows to select a disabled option.
                                         So, we should avoid showing it */}
                                         {list_items[key]
                                             .filter(opt => !opt.disabled)
@@ -93,7 +93,7 @@ class SelectNative extends React.Component {
                                 ))
                             )}
                         </select>
-                        {error && <FieldError message={error} />}
+                        {error && <Field message={error} type='error' />}
                     </div>
                 </div>
                 {!error && hint && <p className='dc-select-native__hint'>{hint}</p>}
@@ -102,17 +102,20 @@ class SelectNative extends React.Component {
     }
 }
 
-SelectNative.props = {
+const list_items_shape = PropTypes.arrayOf(
+    PropTypes.shape({
+        text: PropTypes.string.isRequired,
+        value: PropTypes.string.isRequired,
+    })
+);
+
+SelectNative.propTypes = {
     className: PropTypes.string,
     classNameDisplay: PropTypes.string,
     list_items: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.string),
-        PropTypes.arrayOf(
-            PropTypes.shape({
-                text: PropTypes.string.isRequired,
-                value: PropTypes.string.isRequired,
-            })
-        ),
+        list_items_shape,
+        PropTypes.objectOf(list_items_shape),
     ]),
     value: PropTypes.string,
     label: PropTypes.string,

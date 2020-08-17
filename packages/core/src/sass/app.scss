@@ -2,14 +2,14 @@
 @import 'app/_common/base/index';
 
 // Fonts
-@import '@deriv/shared/utils/styles/google-fonts.scss';
+@import '~@deriv/shared/src/styles/google-fonts.scss';
 
 // Shared
-@import '@deriv/shared/utils/styles/reset.scss';
-@import '@deriv/shared/utils/styles/themes.scss';
+@import '~@deriv/shared/src/styles/reset.scss';
+@import '~@deriv/shared/src/styles/themes.scss';
 
 // General
-@import '@deriv/shared/utils/styles/symbols.scss';
+@import '~@deriv/shared/src/styles/symbols.scss';
 
 // Layout
 @import 'app/_common/layout/app-layouts';
@@ -33,6 +33,7 @@
 //@import 'app/_common/components/market-symbol-icon';
 @import 'app/_common/components/media-item';
 @import 'app/_common/components/side-menu';
+@import 'app/_common/components/live-chat';
 //@import 'app/_common/components/number-selector';
 //@import 'app/_common/components/popconfirm';
 //@import 'app/_common/components/pl-card';
@@ -41,9 +42,12 @@
 //@import 'app/_common/components/toggle-button';
 //@import 'app/_common/components/select';
 //@import 'app/_common/components/switch-button';
-
+@import 'app/_common/components/cookie-banner';
 // Modules
 @import 'app/modules/page-404';
+@import 'app/modules/account-deactivated';
+@import 'app/modules/reality-check';
 @import 'app/modules/reset-password';
 //@import 'app/modules/contract';
 //@import 'app/modules/contract/bottom-widgets';
+@import 'app/modules/external-link';

@@ -13,7 +13,11 @@ class SubMenu extends React.PureComponent {
     }
 
     toggleMenu = () => {
-        this.setState({ is_expanded: !this.state.is_expanded });
+        const is_expanded = !this.state.is_expanded;
+        this.setState({ is_expanded });
+        if (this.props.onToggle) {
+            this.props.onToggle(is_expanded);
+        }
     };
 
     render() {

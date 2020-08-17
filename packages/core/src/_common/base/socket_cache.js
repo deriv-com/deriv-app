@@ -1,5 +1,6 @@
 const moment = require('moment');
-const ObjectUtils = require('@deriv/shared/utils/object');
+const isEmptyObject = require('@deriv/shared').isEmptyObject;
+const getPropertyValue = require('@deriv/shared').getPropertyValue;
 const getStaticHash = require('_common/utility.js').getStaticHash;
 const LocalStore = require('../storage').LocalStore;
 
@@ -100,9 +101,9 @@ const SocketCache = (() => {
     };
 
     const reloadDataObj = () => {
-        if (ObjectUtils.isEmptyObject(data_obj)) {
+        if (isEmptyObject(data_obj)) {
             data_obj = LocalStore.getObject(storage_key);
-            if (ObjectUtils.isEmptyObject(data_obj)) return;
+            if (isEmptyObject(data_obj)) return;
         }
 
         if (data_obj.static_hash !== getStaticHash()) {
@@ -111,7 +112,7 @@ const SocketCache = (() => {
         }
     };
 
-    const getData = key => ObjectUtils.getPropertyValue(data_obj, key) || {};
+    const getData = key => getPropertyValue(data_obj, key) || {};
 
     const get = key => {
         reloadDataObj();

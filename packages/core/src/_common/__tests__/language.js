@@ -1,9 +1,9 @@
-const Url = require('@deriv/shared/utils/url');
+const websiteUrl = require('@deriv/shared').websiteUrl;
 const expect = require('chai').expect;
 const Language = require('../language');
 
 describe('Language', () => {
-    const website_url = Url.websiteUrl();
+    const website_url = websiteUrl();
     describe('.urlFor()', () => {
         it('works as expected for current url', () => {
             expect(Language.urlFor('ZH_TW')).to.eq(`${website_url}zh_tw/home.html`);

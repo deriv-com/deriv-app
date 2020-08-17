@@ -1,6 +1,6 @@
 import { observable, action, computed } from 'mobx';
 import { localize } from '@deriv/translations';
-import { formatDate } from '@deriv/shared/utils/date';
+import { formatDate } from '@deriv/shared';
 import { message_types } from '@deriv/bot-skeleton';
 import { config } from '@deriv/bot-skeleton/src/constants/config';
 import { storeSetting, getSetting } from '../utils/settings';
@@ -29,8 +29,14 @@ export default class JournalStore {
         { id: message_types.SUCCESS, label: localize('System') },
     ];
 
+    @observable is_filter_dialog_visible = false;
     @observable unfiltered_messages = [];
     @observable journal_filters = getSetting('journal_filter') || this.filters.map(filter => filter.id);
+
+    @action.bound
+    toggleFilterDialog() {
+        this.is_filter_dialog_visible = !this.is_filter_dialog_visible;
+    }
 
     @action.bound
     onLogSuccess(message) {

@@ -24,15 +24,15 @@ class MainContent extends React.Component {
     }
 
     render() {
-        const { active_tab } = this.props;
-        switch (active_tab) {
+        switch (this.props.active_tab) {
             case tabs_title.WORKSPACE:
             default:
                 return (
                     <div
                         id='scratch_div'
+                        className='test'
                         style={{
-                            width: 'var(--bot-content-width)',
+                            width: '100vw',
                             height: 'var(--bot-content-height)',
                         }}
                     >

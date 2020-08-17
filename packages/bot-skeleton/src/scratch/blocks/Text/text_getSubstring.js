@@ -121,10 +121,11 @@ Blockly.Blocks.text_getSubstring = {
         this.render(false);
     },
     getRequiredValueInputs() {
+        const hasInput = input_name => this.getInput(input_name)?.type === Blockly.INPUT_VALUE;
         return {
             STRING: emptyTextValidator,
-            AT1: emptyTextValidator,
-            AT2: emptyTextValidator,
+            ...(hasInput('AT1') ? { AT1: emptyTextValidator } : {}),
+            ...(hasInput('AT2') ? { AT2: emptyTextValidator } : {}),
         };
     },
 };

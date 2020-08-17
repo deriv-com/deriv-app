@@ -37,20 +37,10 @@ storybook:deploy:
   npm run storybook:deploy br_storybook
   ```
 ## Usage
-You can import individual components on demand and import style manually:
-```jsx
-import Button from '@deriv/components/lib/Button';
-import '@deriv/components/lib/button.css';
-const SomeComponent = () => (
-    <Button is_disabled primary>
-      Hello World
-    </Button>
-  );
-```
- Or you can use deriv-components-loader to import components from @deriv/components without having to manually import the corresponding stylesheet. The deriv-components-loader will automatically import stylesheets.
-
+You can import individual components with ES6 named imports.
  ```jsx
 import { Button } from '@deriv/components';
+
 const SomeComponent = () => (
     <Button is_disabled primary>
       Hello World

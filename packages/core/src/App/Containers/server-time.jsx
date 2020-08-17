@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { toGMTFormat } from '@deriv/shared/utils/date';
+import { toGMTFormat } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 
 const ServerTime = ({ is_mobile, server_time }) => {

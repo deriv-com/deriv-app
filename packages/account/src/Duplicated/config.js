@@ -10,7 +10,8 @@
  */
 const domain_app_ids = {
     // these domains as supported "production domains"
-    'deriv.app': 16929,
+    'deriv.app': 16929, // TODO: [app-link-refactor] - Remove backwards compatibility for `deriv.app`
+    'app.deriv.com': 16929,
 };
 
 const getCurrentProductionDomain = () =>
@@ -18,7 +19,7 @@ const getCurrentProductionDomain = () =>
     Object.keys(domain_app_ids).find((domain) => new RegExp(`.${domain}$`, 'i').test(window.location.hostname));
 
 const isProduction = () => {
-    const all_domains = Object.keys(domain_app_ids).map((domain) => `www\\.${domain.replace('.', '\\.')}`);
+    const all_domains = Object.keys(domain_app_ids).map((domain) => `(www\\.)?${domain.replace('.', '\\.')}`);
     return new RegExp(`^(${all_domains.join('|')})$`, 'i').test(window.location.hostname);
 };
 
@@ -37,7 +38,10 @@ const getAppId = () => {
     } else if (user_app_id.length) {
         window.localStorage.setItem('config.default_app_id', user_app_id);
         app_id = user_app_id;
-    } else if (/staging\.deriv\.app/i.test(window.location.hostname)) {
+    } else if (
+        /staging\.deriv\.app/i.test(window.location.hostname) || // TODO: [app-link-refactor] - Remove backwards compatibility for `deriv.app`
+        /staging-app\.deriv\.com/i.test(window.location.hostname)
+    ) {
         window.localStorage.removeItem('config.default_app_id');
         app_id = 16303; // it's being used in endpoint chrome extension - please do not remove
     } else if (/localhost/i.test(window.location.hostname)) {

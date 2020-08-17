@@ -1,7 +1,6 @@
 import { observable, action, reaction, computed } from 'mobx';
 import { localize } from '@deriv/translations';
-import { error_types, unrecoverable_errors, observer, isEnded, message_types } from '@deriv/bot-skeleton';
-import { setMainContentWidth } from '../utils/window-size';
+import { error_types, unrecoverable_errors, observer, message_types } from '@deriv/bot-skeleton';
 import { contract_stages } from '../constants/contract-stage';
 import { switch_account_notification } from '../utils/bot-notifications';
 
@@ -14,12 +13,22 @@ export default class RunPanelStore {
 
     run_id = '';
 
+    @observable statistics = {
+        lost_contracts: 0,
+        number_of_runs: 0,
+        total_profit: 0,
+        total_payout: 0,
+        total_stake: 0,
+        won_contracts: 0,
+    };
+
     @observable active_index = 0;
     @observable contract_stage = contract_stages.NOT_RUNNING;
     @observable dialog_options = {};
     @observable has_open_contract = false;
     @observable is_running = false;
     @observable is_drawer_open = true;
+    @observable is_dialog_open = false;
 
     // when error happens, if it is unrecoverable_errors we reset run-panel
     // we activate run-button and clear trade info and set the ContractStage to NOT_RUNNING
@@ -28,13 +37,13 @@ export default class RunPanelStore {
 
     // #region button clicks
     @computed
-    get is_stop_button_disabled() {
-        return this.contract_stage.index === contract_stages.IS_STOPPING.index;
+    get is_stop_button_visible() {
+        return this.is_running || this.has_open_contract;
     }
 
     @computed
-    get is_stop_button_visible() {
-        return this.is_running || this.has_open_contract;
+    get is_stop_button_disabled() {
+        return this.contract_stage === contract_stages.IS_STOPPING;
     }
 
     @computed
@@ -80,13 +89,13 @@ export default class RunPanelStore {
     onStopButtonClick() {
         const { ui } = this.root_store.core;
         this.dbot.stopBot();
-        this.is_running = false;
         ui.setPromptHandler(false);
 
         if (this.error_type) {
             // when user click stop button when there is a error but bot is retrying
             this.setContractStage(contract_stages.NOT_RUNNING);
             ui.setAccountSwitcherDisabledMessage(false);
+            this.is_running = false;
         } else if (this.has_open_contract) {
             // when user click stop button when bot is running
             this.setContractStage(contract_stages.IS_STOPPING);
@@ -95,6 +104,7 @@ export default class RunPanelStore {
             this.setContractStage(contract_stages.NOT_RUNNING);
             RunPanelStore.unregisterBotListeners();
             ui.setAccountSwitcherDisabledMessage(false);
+            this.is_running = false;
         }
 
         if (this.error_type) {
@@ -109,13 +119,13 @@ export default class RunPanelStore {
 
     @action.bound
     clearStat() {
-        const { contract_card, journal, summary, transactions } = this.root_store;
+        const { contract_card, journal, transactions } = this.root_store;
 
         this.is_running = false;
         this.has_open_contract = false;
+        this.clear();
         journal.clear();
         contract_card.clear();
-        summary.clear();
         transactions.clear();
         this.setContractStage(contract_stages.NOT_RUNNING);
     }
@@ -125,7 +135,6 @@ export default class RunPanelStore {
     @action.bound
     toggleDrawer(is_open) {
         this.is_drawer_open = is_open;
-        setMainContentWidth(is_open);
     }
 
     @action.bound
@@ -139,14 +148,9 @@ export default class RunPanelStore {
     // #endregion
 
     // #region Dialog
-    @computed
-    get is_dialog_open() {
-        return Object.entries(this.dialog_options).length > 0;
-    }
-
     @action.bound
     onCloseDialog() {
-        this.dialog_options = {};
+        this.is_dialog_open = false;
     }
 
     @action.bound
@@ -157,6 +161,7 @@ export default class RunPanelStore {
             title: localize('Please log in'),
             message: localize('You need to log in to run the bot.'),
         };
+        this.is_dialog_open = true;
     }
 
     @action.bound
@@ -167,6 +172,7 @@ export default class RunPanelStore {
             title: localize("DBot isn't quite ready for real accounts"),
             message: localize('Please switch to your demo account to run your DBot.'),
         };
+        this.is_dialog_open = true;
     }
 
     @action.bound
@@ -182,6 +188,7 @@ export default class RunPanelStore {
                 'This will clear all data in the summary, transactions, and journal panels. All counters will be reset to zero.'
             ),
         };
+        this.is_dialog_open = true;
     }
 
     @action.bound
@@ -192,19 +199,19 @@ export default class RunPanelStore {
             title: localize('Import error'),
             message: localize('This strategy is currently not compatible with DBot.'),
         };
+        this.is_dialog_open = true;
     }
     // #endregion
 
     // #region Bot listenets
     registerBotListeners() {
-        const { contract_card, summary, transactions } = this.root_store;
+        const { contract_card, transactions } = this.root_store;
 
         observer.register('bot.running', this.onBotRunningEvent);
         observer.register('bot.stop', this.onBotStopEvent);
         observer.register('bot.click_stop', this.onStopButtonClick);
         observer.register('bot.trade_again', this.onBotTradeAgain);
         observer.register('contract.status', this.onContractStatusEvent);
-        observer.register('contract.status', summary.onContractStatusEvent);
         observer.register('bot.contract', this.onBotContractEvent);
         observer.register('bot.contract', contract_card.onBotContractEvent);
         observer.register('bot.contract', transactions.onBotContractEvent);
@@ -214,6 +221,10 @@ export default class RunPanelStore {
     @action.bound
     onBotRunningEvent() {
         this.has_open_contract = true;
+
+        // prevent new version update
+        const ignore_new_version = new Event('IgnorePWAUpdate');
+        document.dispatchEvent(ignore_new_version);
     }
 
     @action.bound
@@ -247,12 +258,17 @@ export default class RunPanelStore {
             // Bot should indicate the contract is closed in below cases:
             // - When bot was running and an error happens
             this.error_type = undefined;
+            this.is_running = false;
             this.setContractStage(contract_stages.CONTRACT_CLOSED);
             ui.setAccountSwitcherDisabledMessage(false);
             RunPanelStore.unregisterBotListeners();
         }
 
         this.has_open_contract = false;
+
+        // listen for new version update
+        const listen_new_version = new Event('ListenPWAUpdate');
+        document.dispatchEvent(listen_new_version);
     }
 
     @action.bound
@@ -263,8 +279,8 @@ export default class RunPanelStore {
     }
 
     @action.bound
-    onContractStatusEvent(data) {
-        switch (data.id) {
+    onContractStatusEvent(contract_status) {
+        switch (contract_status.id) {
             case 'contract.purchase_sent': {
                 this.setContractStage(contract_stages.PURCHASE_SENT);
                 break;
@@ -274,10 +290,45 @@ export default class RunPanelStore {
 
                 // Close transaction-specific popover, if any.
                 this.root_store.transactions.setActiveTransactionId(null);
+
+                const { buy } = contract_status;
+                this.statistics.total_stake += buy.buy_price;
+                const { is_virtual } = this.root_store.core.client;
+                if (!is_virtual) {
+                    this.root_store.core.gtm.pushDataLayer({ event: 'dbot_purchase', buy_price: buy.buy_price });
+                }
+
                 break;
             }
             case 'contract.sold': {
                 this.setContractStage(contract_stages.CONTRACT_CLOSED);
+
+                const { contract } = contract_status;
+                this.statistics.total_profit += contract.profit;
+                this.statistics.number_of_runs += 1;
+
+                switch (contract.status) {
+                    case 'won': {
+                        this.statistics.won_contracts += 1;
+                        this.statistics.total_payout += contract.payout;
+                        break;
+                    }
+                    case 'lost': {
+                        this.statistics.lost_contracts += 1;
+                        break;
+                    }
+                    case 'sold': {
+                        if (contract.profit > 0) {
+                            this.statistics.won_contracts += 1;
+                            this.statistics.total_payout += contract.profit;
+                        } else {
+                            this.statistics.lost_contracts += 1;
+                        }
+                        break;
+                    }
+                    default:
+                        break;
+                }
                 break;
             }
             default: {
@@ -288,9 +339,21 @@ export default class RunPanelStore {
     }
 
     @action.bound
+    clear() {
+        this.statistics = {
+            lost_contracts: 0,
+            number_of_runs: 0,
+            total_profit: 0,
+            total_payout: 0,
+            total_stake: 0,
+            won_contracts: 0,
+        };
+        observer.emit('statistics.clear');
+    }
+
+    @action.bound
     onBotContractEvent(data) {
-        const isClosed = isEnded(data);
-        if (isClosed) {
+        if (data?.is_sold) {
             this.setContractStage(contract_stages.CONTRACT_CLOSED);
         }
     }

@@ -1,13 +1,15 @@
 import classNames from 'classnames';
 import React from 'react';
-import FieldError from 'Components/field-error';
+import Field from '../field';
 
 const Input = (
     {
         className,
         classNameError,
+        classNameWarn,
         disabled,
         error,
+        warn,
         hint,
         leading_icon,
         has_character_counter,
@@ -43,7 +45,7 @@ const Input = (
                 <textarea
                     ref={ref}
                     {...props}
-                    className={classNames('dc-input__field', {
+                    className={classNames('dc-input__field dc-input__textarea', {
                         'dc-input__field--placeholder-visible': !label && props.placeholder,
                     })}
                     onChange={changeHandler}
@@ -68,7 +70,8 @@ const Input = (
                     {label}
                 </label>
             )}
-            {error && <FieldError className={classNameError} message={error} />}
+            {error && <Field className={classNameError} message={error} type='error' />}
+            {warn && <Field className={classNameWarn} message={warn} type='warn' />}
             {!error && hint && <p className='dc-input__hint'>{hint}</p>}
             {has_character_counter && (
                 <p className='dc-input__counter'>

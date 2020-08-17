@@ -63,8 +63,8 @@
             }
         }
         @include desktop {
-            min-width: 400px;
-            max-height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT});
+            min-width: 400px !important;
+            max-height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT}) !important;
         }
         @include mobile {
             max-width: calc(100vw - 3.2rem) !important;
@@ -88,10 +88,15 @@
             align-items: center;
             height: 100%;
 
+            &:empty {
+                padding: 0;
+                border: none;
+            }
+
             @include mobile {
                 font-size: 1.4rem;
                 padding: 1.6rem;
-                line-height: 1;
+                line-height: 1.2;
             }
         }
         &__section {
@@ -131,7 +136,7 @@
 
         @include mobile {
             font-size: 1.2rem;
-            padding: 0.8rem 1.6rem;
+            padding: 0.8rem 2.4rem;
         }
     }
     /** @define dc-modal-footer; weak */
@@ -140,8 +145,15 @@
         justify-content: flex-end;
         padding: 1.6rem;
 
-        .dc-btn:nth-child(2) {
-            margin-left: 0.8rem;
+        .dc-btn {
+            margin: 0 0.8rem;
+
+            &:last-child {
+                margin: 0;
+            }
+        }
+        &--separator {
+            border-top: 2px solid var(--general-section-1);
         }
     }
 }

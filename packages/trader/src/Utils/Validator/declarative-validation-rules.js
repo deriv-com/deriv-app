@@ -1,8 +1,8 @@
-import CurrencyUtils from '@deriv/shared/utils/currency';
-import ObjectUtils from '@deriv/shared/utils/object';
+import { addComma, getDecimalPlaces, cloneObject, compareBigUnsignedInt } from '@deriv/shared';
+
 import { ClientBase } from '_common/base/client_base';
 import { getElementById } from '_common/common_functions';
-import { compareBigUnsignedInt } from '@deriv/shared/utils/string';
+
 import { localize } from '@deriv/translations';
 
 // ------------------------------
@@ -22,7 +22,7 @@ export const validLetterSymbol = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><,|\d]+
 const validGeneral = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><|]+/.test(value);
 export const validAddress = value => !/[`~!$%^&*_=+[}{\]\\"?><|]+/.test(value);
 export const validPostCode = value => /^[-A-Za-z0-9\s]{0,20}$/.test(value);
-export const validPhone = value => /^\+?((-|\s)*[0-9]){8,35}$/.test(value.replace(/[ ]/g, ''));
+export const validPhone = value => /^\+?((-|\s)*[0-9]){8,35}$/.test(value);
 export const validCountryCode = (list, value) =>
     list.some(item => value.replace(/[ ]/g, '').startsWith(`+${item.phone_idd}`));
 const validRegular = (value, options) => options.regex.test(value);
@@ -37,7 +37,7 @@ export const validLength = (value, options) =>
     (options.min ? value.length >= options.min : true) && (options.max ? value.length <= options.max : true);
 
 export const validNumber = (value, opts) => {
-    const options = ObjectUtils.cloneObject(opts);
+    const options = cloneObject(opts);
     let message = null;
     if (options.allow_empty && value.length === 0) {
         return true;
@@ -64,37 +64,37 @@ export const validNumber = (value, opts) => {
     } else if ('min' in options && 'max' in options && +options.min === +options.max && +value !== +options.min) {
         is_ok = false;
         message = localize('Should be {{value}}', {
-            value: CurrencyUtils.addComma(
+            value: addComma(
                 options.min,
-                options.format_money ? CurrencyUtils.getDecimalPlaces(ClientBase.get('currency')) : undefined
+                options.format_money ? getDecimalPlaces(ClientBase.get('currency')) : undefined
             ),
         });
     } else if ('min' in options && 'max' in options && (+value < +options.min || isMoreThanMax(value, options))) {
         is_ok = false;
         message = localize('Should be between {{min_value}} and {{max_value}}', {
-            min_value: CurrencyUtils.addComma(
+            min_value: addComma(
                 options.min,
-                options.format_money ? CurrencyUtils.getDecimalPlaces(ClientBase.get('currency')) : undefined
+                options.format_money ? getDecimalPlaces(ClientBase.get('currency')) : undefined
             ),
-            max_value: CurrencyUtils.addComma(
+            max_value: addComma(
                 options.max,
-                options.format_money ? CurrencyUtils.getDecimalPlaces(ClientBase.get('currency')) : undefined
+                options.format_money ? getDecimalPlaces(ClientBase.get('currency')) : undefined
             ),
         });
     } else if ('min' in options && +value < +options.min) {
         is_ok = false;
         message = localize('Should be more than {{min_value}}', {
-            min_value: CurrencyUtils.addComma(
+            min_value: addComma(
                 options.min,
-                options.format_money ? CurrencyUtils.getDecimalPlaces(ClientBase.get('currency')) : undefined
+                options.format_money ? getDecimalPlaces(ClientBase.get('currency')) : undefined
             ),
         });
     } else if ('max' in options && isMoreThanMax(value, options)) {
         is_ok = false;
         message = localize('Should be less than {{max_value}}', {
-            max_value: CurrencyUtils.addComma(
+            max_value: addComma(
                 options.max,
-                options.format_money ? CurrencyUtils.getDecimalPlaces(ClientBase.get('currency')) : undefined
+                options.format_money ? getDecimalPlaces(ClientBase.get('currency')) : undefined
             ),
         });
     }

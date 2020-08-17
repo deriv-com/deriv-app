@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from '@deriv/components';
-import { mobileOSDetect } from '@deriv/shared/utils/os';
+import { mobileOSDetect } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import PlayStoreIcon from 'Assets/svgComponents/logo-play-store.svg';
 import './download.scss';

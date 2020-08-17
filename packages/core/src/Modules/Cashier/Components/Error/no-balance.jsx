@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Button, Icon } from '@deriv/components';
-import routes from '@deriv/shared/utils/routes';
-import CurrencyUtils from '@deriv/shared/utils/currency';
+import { routes, getCurrencyDisplayCode } from '@deriv/shared';
+
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
@@ -21,7 +21,7 @@ class NoBalance extends React.Component {
                 <h2 className='withdraw__header'>
                     <Localize
                         i18n_default_text='You have no funds in your {{currency}} account'
-                        values={{ currency: CurrencyUtils.getCurrencyDisplayCode(this.props.currency) }}
+                        values={{ currency: getCurrencyDisplayCode(this.props.currency) }}
                     />
                 </h2>
                 <p className='cashier__text'>

@@ -1,4 +1,4 @@
-import ObjectUtils from '@deriv/shared/utils/object';
+import { cloneThorough } from '@deriv/shared';
 import JSInterpreter from 'js-interpreter';
 import { createScope } from './cliTools';
 import Interface from '../Interface';
@@ -6,12 +6,12 @@ import { unrecoverable_errors } from '../../../constants/messages';
 import { observer as globalObserver } from '../../../utils/observer';
 
 JSInterpreter.prototype.takeStateSnapshot = function() {
-    const newStateStack = ObjectUtils.cloneThorough(this.stateStack, undefined, undefined, undefined, true);
+    const newStateStack = cloneThorough(this.stateStack, undefined, undefined, undefined, true);
     return newStateStack;
 };
 
 JSInterpreter.prototype.restoreStateSnapshot = function(snapshot) {
-    this.stateStack = ObjectUtils.cloneThorough(snapshot, undefined, undefined, undefined, true);
+    this.stateStack = cloneThorough(snapshot, undefined, undefined, undefined, true);
     this.global = this.stateStack[0].scope.object || this.stateStack[0].scope;
     this.initFunc_(this, this.global);
 };
@@ -115,7 +115,7 @@ export default class Interpreter {
                     return;
                 }
 
-                this.isErrorTriggered = true;
+                this.is_error_triggered = true;
                 if (!shouldRestartOnError(this.bot, e.name) || !botStarted(this.bot)) {
                     reject(e);
                     return;
@@ -142,7 +142,6 @@ export default class Interpreter {
 
     loop() {
         if (this.stopped || !this.interpreter.run()) {
-            this.isErrorTriggered = false;
             this.onFinish(this.interpreter.pseudoToNative(this.interpreter.value));
         }
     }
@@ -163,12 +162,15 @@ export default class Interpreter {
         } else if (socket.readyState === 1) {
             this.$scope.api.disconnect();
         }
+
         this.stopped = true;
+        this.is_error_triggered = false;
+
         globalObserver.emit('bot.stop');
     }
 
     stop() {
-        if (this.bot.tradeEngine.isSold === false && !this.isErrorTriggered) {
+        if (this.bot.tradeEngine.isSold === false && !this.is_error_triggered) {
             globalObserver.register('contract.status', contractStatus => {
                 if (contractStatus.id === 'contract.sold') {
                     this.terminateSession();

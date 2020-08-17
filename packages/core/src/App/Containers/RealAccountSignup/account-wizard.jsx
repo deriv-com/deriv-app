@@ -47,7 +47,7 @@ const SetCurrencyHeader = ({ has_target, has_real_account, has_currency, items, 
             </React.Fragment>
         )}
         <DesktopWrapper>
-            {has_real_account && (
+            {has_real_account && (!has_target || !has_currency) && (
                 <div className='account-wizard__set-currency'>
                     {!has_currency && (
                         <p>

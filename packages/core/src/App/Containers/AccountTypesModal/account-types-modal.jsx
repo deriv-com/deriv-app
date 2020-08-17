@@ -112,10 +112,10 @@ const FinancialBox = ({ derivOnClick, mt5OnClick, has_maltainvest_account, add_a
                     buttonOnClick={mt5OnClick}
                     is_button_disabled={!has_maltainvest_account}
                     items={{
-                        [localize('Leverage')]: localize('Up to 1:1000'),
-                        [localize('Margin call')]: localize('150%'),
-                        [localize('Stop out level')]: localize('75%'),
-                        [localize('Currency')]: localize('USD'),
+                        [localize('Leverage')]: localize('Up to 1:30'),
+                        [localize('Margin call')]: localize('100%'),
+                        [localize('Stop out level')]: localize('50%'),
+                        [localize('Currency')]: localize('EUR/GBP'),
                     }}
                     platforms={[
                         {
@@ -149,6 +149,9 @@ const SyntheticBox = ({ derivOnClick, add_account_label }) => {
             )}
             icons={[
                 'IcUnderlying1HZ10V',
+                'IcUnderlying1HZ25V',
+                'IcUnderlying1HZ50V',
+                'IcUnderlying1HZ75V',
                 'IcUnderlying1HZ100V',
                 'IcUnderlyingR_10',
                 'IcUnderlyingR_25',
@@ -168,7 +171,7 @@ const SyntheticBox = ({ derivOnClick, add_account_label }) => {
                         [localize('Min duration')]: localize('1 tick'),
                         [localize('Max duration')]: localize('365 days'),
                         [localize('Availability')]: localize('24/7'),
-                        [localize('Currency')]: localize('USD/GBP/EUR'),
+                        [localize('Currency')]: localize('USD/GBP'),
                     }}
                     platforms={[
                         {
@@ -235,7 +238,7 @@ class AccountTypesModal extends React.Component {
                 toggleModal={this.closeModal}
                 has_close_icon={this.props.is_dismissible}
             >
-                <ThemedScrollbars is_bypassed={isMobile()} autohide={false}>
+                <ThemedScrollbars is_bypassed={isMobile()} autohide={false} height={'calc(100vh - 84px'}>
                     <Div100vhContainer
                         height_offset='120px'
                         is_disabled={isDesktop()}

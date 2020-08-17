@@ -481,7 +481,7 @@
     }
 }
 
-/** @define funds-protection */
+/** @define funds-protection; weak */
 .funds-protection {
     width: 100%;
     display: flex;
@@ -503,6 +503,16 @@
         @include typeface(--paragraph-center-normal-black);
         margin-bottom: 3.2rem;
         max-width: 67.2rem;
+    }
+    @include mobile {
+        width: calc(100% - 2.4rem);
+        margin-left: 1.2rem;
+
+        & .dc-btn {
+            &:last-child {
+                margin-bottom: 2.4rem;
+            }
+        }
     }
 }
 
@@ -532,6 +542,16 @@
     &__button {
         width: fit-content;
         align-self: flex-end;
+    }
+    @include mobile {
+        &__form {
+            width: calc(100% - 2.4rem);
+        }
+        &__button {
+            align-self: center;
+            width: auto;
+            min-width: 9rem;
+        }
     }
 }
 

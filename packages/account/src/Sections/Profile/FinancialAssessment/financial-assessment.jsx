@@ -292,8 +292,6 @@ class FinancialAssessment extends React.Component {
             ].forEach((list) => list.forEach((i) => (i.nativepicker_text = i.text)));
         }
 
-        if (isMobile()) console.warn(source_of_wealth_list);
-
         return (
             <React.Fragment>
                 <Formik

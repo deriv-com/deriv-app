@@ -256,7 +256,7 @@ class AccountWizard extends React.Component {
     };
 
     createRealAccount(setSubmitting) {
-        this.props.onLoading(true);
+        this.props.setLoading(true);
         if (this.props.has_real_account && !this.props.has_currency) {
             this.setAccountCurrency()
                 .then(response => {
@@ -270,7 +270,7 @@ class AccountWizard extends React.Component {
                         () => setSubmitting(false)
                     );
                 })
-                .finally(() => this.props.onLoading(false));
+                .finally(() => this.props.setLoading(false));
         } else {
             this.submitForm()
                 .then(response => {
@@ -283,7 +283,7 @@ class AccountWizard extends React.Component {
                 .catch(error => {
                     this.props.onError(error, this.state.items);
                 })
-                .finally(() => this.props.onLoading(false));
+                .finally(() => this.props.setLoading(false));
         }
     }
 

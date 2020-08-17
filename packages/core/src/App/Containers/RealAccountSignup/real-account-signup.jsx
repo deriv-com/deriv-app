@@ -48,7 +48,7 @@ class RealAccountSignup extends React.Component {
                         <AccountWizard
                             onFinishSuccess={this.showStatusDialog}
                             is_loading={this.state.is_loading}
-                            onLoading={this.showLoadingModal}
+                            setLoading={this.setLoading}
                             onError={this.showErrorModal}
                             onClose={this.closeModal}
                             onSuccessSetAccountCurrency={this.showSetCurrencySuccess}
@@ -62,7 +62,7 @@ class RealAccountSignup extends React.Component {
                             onSuccessSetAccountCurrency={this.showSetCurrencySuccess}
                             onSuccessAddCurrency={this.showStatusDialog}
                             is_loading={this.state.is_loading}
-                            onLoading={this.showLoadingModal}
+                            setLoading={this.setLoading}
                             onError={this.showErrorModal}
                         />
                     ),
@@ -132,7 +132,7 @@ class RealAccountSignup extends React.Component {
         });
     };
 
-    showLoadingModal = is_loading => {
+    setLoading = is_loading => {
         this.setState({ is_loading });
     };
 

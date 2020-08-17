@@ -32,7 +32,7 @@ class AddOrManageAccounts extends React.Component {
     };
 
     manageOrChangeAccount = (obj, setSubmitting) => {
-        this.props.onLoading(true);
+        this.props.setLoading(true);
         Object.entries(obj).map(([key, value]) => {
             if (key === 'fiat') {
                 this.props
@@ -47,7 +47,7 @@ class AddOrManageAccounts extends React.Component {
                     .catch(error_message => {
                         this.props.onError(error_message);
                     })
-                    .finally(() => this.props.onLoading(false));
+                    .finally(() => this.props.setLoading(false));
             } else {
                 // Add Crypto Account
                 this.props
@@ -59,7 +59,7 @@ class AddOrManageAccounts extends React.Component {
                     .catch(error_message => {
                         this.props.onError(error_message);
                     })
-                    .finally(() => this.props.onLoading(false));
+                    .finally(() => this.props.setLoading(false));
             }
         });
     };

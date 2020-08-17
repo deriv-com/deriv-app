@@ -30,7 +30,6 @@ import { isBarrierSupported, removeBarrier } from '../SmartChart/Helpers/barrier
 import BaseStore from '../../base-store';
 
 const store_name = 'trade_store';
-const fallback_symbol = 'frxAUDJPY';
 const g_subscribers_map = {}; // blame amin.m
 
 export default class TradeStore extends BaseStore {
@@ -256,9 +255,8 @@ export default class TradeStore extends BaseStore {
     @action.bound
     async setDefaultSymbol() {
         if (!this.is_symbol_in_active_symbols) {
-            await this.processNewValuesAsync({
-                symbol: pickDefaultSymbol(this.active_symbols),
-            });
+            const symbol = await pickDefaultSymbol(this.active_symbols);
+            await this.processNewValuesAsync({ symbol });
         }
     }
 
@@ -314,17 +312,10 @@ export default class TradeStore extends BaseStore {
         await this.setActiveSymbols();
         const r = await WS.storage.contractsFor(this.symbol);
         if (['InvalidSymbol', 'InputValidationFailed'].includes(r.error?.code)) {
-            this.updateSymbol(fallback_symbol);
-            await this.processNewValuesAsync(
-                {
-                    is_market_closed: isMarketClosed(this.active_symbols, this.symbol),
-                },
-                true,
-                null,
-                false
-            );
-            return;
+            const symbol_to_update = await pickDefaultSymbol(this.active_symbols);
+            await this.processNewValuesAsync({ symbol: symbol_to_update });
         }
+
         await this.setDefaultSymbol();
         await this.setContractTypes();
         await this.processNewValuesAsync(
@@ -359,9 +350,7 @@ export default class TradeStore extends BaseStore {
             this.is_trade_enabled = false;
             // this.root_store.modules.contract_trade.contracts = [];
             // TODO: Clear the contracts in contract-trade-store
-        }
-
-        if (name === 'currency') {
+        } else if (name === 'currency') {
             // Only allow the currency dropdown change if client is not logged in
             if (!this.root_store.client.is_logged_in) {
                 this.root_store.client.selectCurrency(value);

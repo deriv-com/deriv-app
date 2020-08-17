@@ -37,7 +37,7 @@ const BriefModal = ({
                         <Modal.Body>
                             <Div100vhContainer
                                 className='reality-check__wrapper'
-                                height_offset='240px'
+                                max_autoheight_offset='204px'
                                 is_disabled={isDesktop()}
                             >
                                 <p className='reality-check__text reality-check__text--description'>

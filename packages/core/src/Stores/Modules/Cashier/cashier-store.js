@@ -227,7 +227,6 @@ export default class CashierStore extends BaseStore {
             if (!this.is_p2p_visible && !this.root_store.client.is_virtual) {
                 const advertiser_info = await WS.authorized.p2pAdvertiserInfo();
                 const advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
-                if (advertiser_error === 'PermissionDenied') return;
 
                 this.is_p2p_advertiser = !advertiser_error;
                 this.setIsP2pVisible(true);

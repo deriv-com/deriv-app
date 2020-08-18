@@ -2,10 +2,12 @@
     display: inline;
 
     &__button {
+        display: flex;
+        align-items: center;
         font-size: 14px;
         padding: 8px;
         cursor: pointer;
-        align-self: flex-end;
+        height: 100%;
 
         &--active {
             border-bottom: 2px solid var(--brand-red-coral);

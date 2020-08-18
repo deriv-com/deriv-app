@@ -46,12 +46,14 @@ const GoogleDrive = ({ is_authorised, is_open_button_loading, onDriveConnect, on
                                         key={0}
                                         className='link'
                                         target='_blank'
+                                        rel='noopener noreferrer'
                                         href='https://deriv.com/security-and-privacy.pdf'
                                     />,
                                     <a
                                         key={1}
                                         className='link'
                                         target='_blank'
+                                        rel='noopener noreferrer'
                                         href='https://deriv.com/terms-and-conditions'
                                     />,
                                 ]}

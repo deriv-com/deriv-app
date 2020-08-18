@@ -14,7 +14,9 @@ const SetAccountCurrencyModal = ({ is_visible, is_virtual, setCurrency, toggleMo
         title={localize('You have an account that needs action')}
     >
         <Modal.Body>
-            {localize('Please set a currency for your existing real account before creating another account.')}
+            <div style={{ padding: '0.8rem 2.4rem' }}>
+                {localize('Please set a currency for your existing real account before creating another account.')}
+            </div>
         </Modal.Body>
         <Modal.Footer>
             {!is_virtual ? (

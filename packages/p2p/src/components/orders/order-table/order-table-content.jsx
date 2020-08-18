@@ -32,7 +32,7 @@ const OrderTableContent = ({ showDetails, is_active }) => {
         if (is_mounted) {
             is_active_tab.current = order_table_type === 'active';
             order_offset.current = 0;
-            orders.current = [];
+            setOrders([]);
             setIsLoading(true);
             loadMoreOrders();
         }
@@ -51,8 +51,8 @@ const OrderTableContent = ({ showDetails, is_active }) => {
                     if (list) {
                         if (!list.error) {
                             setHasMoreItemsToLoad(list.length >= list_item_limit);
-                            handleNotifications(orders.current, list);
-                            setOrders(orders.current.concat(getModifiedP2POrderList(list)));
+                            handleNotifications(orders, list);
+                            setOrders(orders.concat(getModifiedP2POrderList(list)));
                             order_offset.current += list.length;
                             setIsLoading(false);
                         } else {
@@ -70,10 +70,9 @@ const OrderTableContent = ({ showDetails, is_active }) => {
                             updated_orders[idx_order_to_update] = response;
                         }
                         // trigger re-rendering by setting orders again
-                        this.handleNotifications(orders, updated_orders);
+                        handleNotifications(orders, updated_orders);
                         setOrders(getModifiedP2POrderList(updated_orders));
                     }
-
                     setIsLoading(false);
                     resolve();
                 }

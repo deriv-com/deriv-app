@@ -92,7 +92,7 @@ const findFirstSymbol = async (active_symbols, pattern) => {
 const isSymbolOpen = symbol => symbol.exchange_is_open === 1;
 
 const isSymbolOffered = async symbol_info => {
-    const r = await WS.storage.contractsFor(symbol_info.symbol);
+    const r = await WS.storage.contractsFor(symbol_info?.symbol);
     return !['InvalidSymbol', 'InputValidationFailed'].includes(r.error?.code);
 };
 

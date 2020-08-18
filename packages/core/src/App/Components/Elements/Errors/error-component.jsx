@@ -1,10 +1,28 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { PageError } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 
-const ErrorComponent = ({ header, message, redirect_label, redirectOnClick, should_show_refresh = true }) => {
+const ErrorComponent = ({
+    header,
+    message,
+    redirect_label,
+    redirectOnClick,
+    with_history,
+    setError,
+    where_to = routes.trade,
+    should_show_refresh = true,
+}) => {
+    let buttonOnClick;
+    if (with_history) {
+        const history = useHistory();
+        buttonOnClick = history.push;
+    } else {
+        buttonOnClick = redirectOnClick || (() => location.reload());
+    }
+
     const refresh_message = should_show_refresh ? (
         <Localize i18n_default_text='Please refresh this page to continue.' />
     ) : (
@@ -25,9 +43,11 @@ const ErrorComponent = ({ header, message, redirect_label, redirectOnClick, shou
                           refresh_message,
                       ]
             }
-            redirect_url={routes.trade}
+            redirect_url={where_to}
             redirect_label={redirect_label || <Localize i18n_default_text='Refresh' />}
-            buttonOnClick={redirectOnClick || (() => location.reload())}
+            buttonOnClick={buttonOnClick}
+            with_history={with_history}
+            setError={setError}
         />
     );
 };

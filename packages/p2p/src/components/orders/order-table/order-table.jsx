@@ -12,12 +12,12 @@ const OrderTable = ({ showDetails }) => {
         {
             text: localize('Active order'),
             value: orderToggleIndex.ACTIVE,
-            count: LocalStorage?.getActiveNotificationCount?.(true) || 0,
+            count: LocalStorage.getActiveNotificationCount?.(true) || 0,
         },
         {
             text: localize('Past order'),
             value: orderToggleIndex.INACTIVE,
-            count: LocalStorage?.getActiveNotificationCount?.(false) || 0,
+            count: LocalStorage.getActiveNotificationCount?.(false) || 0,
         },
     ];
 

@@ -92,6 +92,10 @@
                 height: 120px;
             }
         }
+        &--center {
+            justify-content: center;
+            width: auto;
+        }
     }
     &__body-area {
         flex-grow: 1;
@@ -117,6 +121,9 @@
                 padding: 0 1rem;
             }
         }
+        &--no-grow {
+            flex-grow: 0;
+        }
     }
     &__btn-area {
         margin: 2rem 0 1rem;
@@ -134,7 +141,7 @@
             }
         }
         @include mobile {
-            height: 74px;
+            height: 88px;
             align-items: center;
             border-top: 2px solid var(--border-disabled);
             margin: 0;

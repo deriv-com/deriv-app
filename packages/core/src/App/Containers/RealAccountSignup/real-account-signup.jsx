@@ -15,7 +15,6 @@ import 'Sass/account-wizard.scss';
 import 'Sass/real-account-signup.scss';
 
 const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_residence, is_belgium_residence }) => {
-    console.log(real_account_signup_target);
     if (!currency && real_account_signup_target !== 'maltainvest') {
         return <Localize i18n_default_text='Set a currency for your real account' />;
     }

@@ -1,436 +1,420 @@
-import React from 'react';
-import { Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 
-export const experience_list = [
+export const getIncomeSourceList = () => [
     {
-        text: <Localize i18n_default_text='0-1 year' />,
-        value: '0-1 year',
-    },
-    {
-        text: <Localize i18n_default_text='1-2 years' />,
-        value: '1-2 years',
-    },
-    {
-        text: <Localize i18n_default_text='Over 3 years' />,
-        value: 'Over 3 years',
-    },
-];
-
-export const income_source_list = [
-    {
-        text: <Localize i18n_default_text='Salaried Employee' />,
+        text: localize('Salaried Employee'),
         value: 'Salaried Employee',
     },
     {
-        text: <Localize i18n_default_text='Self-Employed' />,
+        text: localize('Self-Employed'),
         value: 'Self-Employed',
     },
     {
-        text: <Localize i18n_default_text='Investments & Dividends' />,
+        text: localize('Investments & Dividends'),
         value: 'Investments & Dividends',
     },
     {
-        text: <Localize i18n_default_text='Pension' />,
+        text: localize('Pension'),
         value: 'Pension',
     },
     {
-        text: <Localize i18n_default_text='State Benefits' />,
+        text: localize('State Benefits'),
         value: 'State Benefits',
     },
     {
-        text: <Localize i18n_default_text='Savings & Inheritance' />,
+        text: localize('Savings & Inheritance'),
         value: 'Savings & Inheritance',
     },
 ];
 
-export const employment_status_list = [
+export const getEmploymentStatusList = () => [
     {
-        text: <Localize i18n_default_text='Employed' />,
+        text: localize('Employed'),
         value: 'Employed',
     },
     {
-        text: <Localize i18n_default_text='Pensioner' />,
+        text: localize('Pensioner'),
         value: 'Pensioner',
     },
     {
-        text: <Localize i18n_default_text='Self-Employed' />,
+        text: localize('Self-Employed'),
         value: 'Self-Employed',
     },
     {
-        text: <Localize i18n_default_text='Student' />,
+        text: localize('Student'),
         value: 'Student',
     },
     {
-        text: <Localize i18n_default_text='Unemployed' />,
+        text: localize('Unemployed'),
         value: 'Unemployed',
     },
 ];
 
-export const employment_industry_list = [
+export const getEmploymentIndustryList = () => [
     {
-        text: <Localize i18n_default_text='Construction' />,
+        text: localize('Construction'),
         value: 'Construction',
     },
     {
-        text: <Localize i18n_default_text='Education' />,
+        text: localize('Education'),
         value: 'Education',
     },
     {
-        text: <Localize i18n_default_text='Finance' />,
+        text: localize('Finance'),
         value: 'Finance',
     },
     {
-        text: <Localize i18n_default_text='Health' />,
+        text: localize('Health'),
         value: 'Health',
     },
     {
-        text: <Localize i18n_default_text='Tourism' />,
+        text: localize('Tourism'),
         value: 'Tourism',
     },
     {
-        text: <Localize i18n_default_text='Information & Communications Technology' />,
+        text: localize('Information & Communications Technology'),
         value: 'Information & Communications Technology',
     },
     {
-        text: <Localize i18n_default_text='Science & Engineering' />,
+        text: localize('Science & Engineering'),
         value: 'Science & Engineering',
     },
     {
-        text: <Localize i18n_default_text='Legal' />,
+        text: localize('Legal'),
         value: 'Legal',
     },
     {
-        text: <Localize i18n_default_text='Social & Cultural' />,
+        text: localize('Social & Cultural'),
         value: 'Social & Cultural',
     },
     {
-        text: <Localize i18n_default_text='Agriculture' />,
+        text: localize('Agriculture'),
         value: 'Agriculture',
     },
     {
-        text: <Localize i18n_default_text='Real Estate' />,
+        text: localize('Real Estate'),
         value: 'Real Estate',
     },
     {
-        text: <Localize i18n_default_text='Food Services' />,
+        text: localize('Food Services'),
         value: 'Food Services',
     },
     {
-        text: <Localize i18n_default_text='Manufacturing' />,
+        text: localize('Manufacturing'),
         value: 'Manufacturing',
     },
     {
-        text: <Localize i18n_default_text='Unemployed' />,
+        text: localize('Unemployed'),
         value: 'Unemployed',
     },
 ];
 
-export const occupation_list = [
+export const getOccupationList = () => [
     {
-        text: <Localize i18n_default_text='Chief Executives, Senior Officials and Legislators' />,
+        text: localize('Chief Executives, Senior Officials and Legislators'),
         value: 'Chief Executives, Senior Officials and Legislators',
     },
     {
-        text: <Localize i18n_default_text='Managers' />,
+        text: localize('Managers'),
         value: 'Managers',
     },
     {
-        text: <Localize i18n_default_text='Professionals' />,
+        text: localize('Professionals'),
         value: 'Professionals',
     },
     {
-        text: <Localize i18n_default_text='Clerks' />,
+        text: localize('Clerks'),
         value: 'Clerks',
     },
     {
-        text: <Localize i18n_default_text='Personal Care, Sales and Service Workers' />,
+        text: localize('Personal Care, Sales and Service Workers'),
         value: 'Personal Care, Sales and Service Workers',
     },
     {
-        text: <Localize i18n_default_text='Agricultural, Forestry and Fishery Workers' />,
+        text: localize('Agricultural, Forestry and Fishery Workers'),
         value: 'Agricultural, Forestry and Fishery Workers',
     },
     {
-        text: <Localize i18n_default_text='Craft, Metal, Electrical and Electronics Workers' />,
+        text: localize('Craft, Metal, Electrical and Electronics Workers'),
         value: 'Craft, Metal, Electrical and Electronics Workers',
     },
     {
-        text: <Localize i18n_default_text='Plant and Machine Operators and Assemblers' />,
+        text: localize('Plant and Machine Operators and Assemblers'),
         value: 'Plant and Machine Operators and Assemblers',
     },
     {
-        text: <Localize i18n_default_text='Cleaners and Helpers' />,
+        text: localize('Cleaners and Helpers'),
         value: 'Cleaners and Helpers',
     },
     {
-        text: <Localize i18n_default_text='Mining, Construction, Manufacturing and Transport Workers' />,
+        text: localize('Mining, Construction, Manufacturing and Transport Workers'),
         value: 'Mining, Construction, Manufacturing and Transport Workers',
     },
     {
-        text: <Localize i18n_default_text='Armed Forces' />,
+        text: localize('Armed Forces'),
         value: 'Armed Forces',
     },
     {
-        text: <Localize i18n_default_text='Government Officers' />,
+        text: localize('Government Officers'),
         value: 'Government Officers',
     },
     {
-        text: <Localize i18n_default_text='Students' />,
+        text: localize('Students'),
         value: 'Students',
     },
     {
-        text: <Localize i18n_default_text='Unemployed' />,
+        text: localize('Unemployed'),
         value: 'Unemployed',
     },
 ];
 
-export const source_of_wealth_list = [
+export const getSourceOfWealthList = () => [
     {
-        text: <Localize i18n_default_text='Accumulation of Income/Savings' />,
+        text: localize('Accumulation of Income/Savings'),
         value: 'Accumulation of Income/Savings',
     },
     {
-        text: <Localize i18n_default_text='Cash Business' />,
+        text: localize('Cash Business'),
         value: 'Cash Business',
     },
     {
-        text: <Localize i18n_default_text='Company Ownership' />,
+        text: localize('Company Ownership'),
         value: 'Company Ownership',
     },
     {
-        text: <Localize i18n_default_text='Divorce Settlement' />,
+        text: localize('Divorce Settlement'),
         value: 'Divorce Settlement',
     },
     {
-        text: <Localize i18n_default_text='Inheritance' />,
+        text: localize('Inheritance'),
         value: 'Inheritance',
     },
     {
-        text: <Localize i18n_default_text='Investment Income' />,
+        text: localize('Investment Income'),
         value: 'Investment Income',
     },
     {
-        text: <Localize i18n_default_text='Sale of Property' />,
+        text: localize('Sale of Property'),
         value: 'Sale of Property',
     },
 ];
 
-export const education_level_list = [
+export const getEducationLevelList = () => [
     {
-        text: <Localize i18n_default_text='Primary' />,
+        text: localize('Primary'),
         value: 'Primary',
     },
     {
-        text: <Localize i18n_default_text='Secondary' />,
+        text: localize('Secondary'),
         value: 'Secondary',
     },
     {
-        text: <Localize i18n_default_text='Tertiary' />,
+        text: localize('Tertiary'),
         value: 'Tertiary',
     },
 ];
 
-export const net_income_list = [
+export const getNetIncomeList = () => [
     {
-        text: <Localize i18n_default_text='Less than $25,000' />,
+        text: localize('Less than $25,000'),
         value: 'Less than $25,000',
     },
     {
-        text: <Localize i18n_default_text='$25,000 - $50,000' />,
+        text: localize('$25,000 - $50,000'),
         value: '$25,000 - $50,000',
     },
     {
-        text: <Localize i18n_default_text='$50,001 - $100,000' />,
+        text: localize('$50,001 - $100,000'),
         value: '$50,001 - $100,000',
     },
     {
-        text: <Localize i18n_default_text='$100,001 - $500,000' />,
+        text: localize('$100,001 - $500,000'),
         value: '$100,001 - $500,000',
     },
     {
-        text: <Localize i18n_default_text='Over $500,000' />,
+        text: localize('Over $500,000'),
         value: 'Over $500,000',
     },
 ];
 
-export const estimated_worth_list = [
+export const getEstimatedWorthList = () => [
     {
-        text: <Localize i18n_default_text='Less than $100,000' />,
+        text: localize('Less than $100,000'),
         value: 'Less than $100,000',
     },
     {
-        text: <Localize i18n_default_text='$100,000 - $250,000' />,
+        text: localize('$100,000 - $250,000'),
         value: '$100,000 - $250,000',
     },
     {
-        text: <Localize i18n_default_text='$250,001 - $500,000' />,
+        text: localize('$250,001 - $500,000'),
         value: '$250,001 - $500,000',
     },
     {
-        text: <Localize i18n_default_text='$500,001 - $1,000,000' />,
+        text: localize('$500,001 - $1,000,000'),
         value: '$500,001 - $1,000,000',
     },
     {
-        text: <Localize i18n_default_text='Over $1,000,000' />,
+        text: localize('Over $1,000,000'),
         value: 'Over $1,000,000',
     },
 ];
 
-export const account_turnover_list = [
+export const getAccountTurnoverList = () => [
     {
-        text: <Localize i18n_default_text='Less than $25,000' />,
+        text: localize('Less than $25,000'),
         value: 'Less than $25,000',
     },
     {
-        text: <Localize i18n_default_text='$25,000 - $50,000' />,
+        text: localize('$25,000 - $50,000'),
         value: '$25,000 - $50,000',
     },
     {
-        text: <Localize i18n_default_text='$50,001 - $100,000' />,
+        text: localize('$50,001 - $100,000'),
         value: '$50,001 - $100,000',
     },
     {
-        text: <Localize i18n_default_text='$100,001 - $500,000' />,
+        text: localize('$100,001 - $500,000'),
         value: '$100,001 - $500,000',
     },
     {
-        text: <Localize i18n_default_text='Over $500,000' />,
+        text: localize('Over $500,000'),
         value: 'Over $500,000',
     },
 ];
 
-export const binary_options_trading_experience_list = [
+export const getBinaryOptionsTradingExperienceList = () => [
     {
-        text: <Localize i18n_default_text='0-1 year' />,
+        text: localize('0-1 year'),
         value: '0-1 year',
     },
     {
-        text: <Localize i18n_default_text='1-2 years' />,
+        text: localize('1-2 years'),
         value: '1-2 years',
     },
     {
-        text: <Localize i18n_default_text='Over 3 years' />,
+        text: localize('Over 3 years'),
         value: 'Over 3 years',
     },
 ];
 
-export const binary_options_trading_frequency_list = [
+export const getBinaryOptionsTradingFrequencyList = () => [
     {
-        text: <Localize i18n_default_text='0-5 transactions in the past 12 months' />,
+        text: localize('0-5 transactions in the past 12 months'),
         value: '0-5 transactions in the past 12 months',
     },
     {
-        text: <Localize i18n_default_text='6-10 transactions in the past 12 months' />,
+        text: localize('6-10 transactions in the past 12 months'),
         value: '6-10 transactions in the past 12 months',
     },
     {
-        text: <Localize i18n_default_text='11-39 transactions in the past 12 months' />,
+        text: localize('11-39 transactions in the past 12 months'),
         value: '11-39 transactions in the past 12 months',
     },
     {
-        text: <Localize i18n_default_text='40 transactions or more in the past 12 months' />,
+        text: localize('40 transactions or more in the past 12 months'),
         value: '40 transactions or more in the past 12 months',
     },
 ];
 
-export const cfd_trading_experience_list = [
+export const getCfdTradingExperienceList = () => [
     {
-        text: <Localize i18n_default_text='0-1 year' />,
+        text: localize('0-1 year'),
         value: '0-1 year',
     },
     {
-        text: <Localize i18n_default_text='1-2 years' />,
+        text: localize('1-2 years'),
         value: '1-2 years',
     },
     {
-        text: <Localize i18n_default_text='Over 3 years' />,
+        text: localize('Over 3 years'),
         value: 'Over 3 years',
     },
 ];
 
-export const cfd_trading_frequency_list = [
+export const getCfdTradingFrequencyList = () => [
     {
-        text: <Localize i18n_default_text='0-5 transactions in the past 12 months' />,
+        text: localize('0-5 transactions in the past 12 months'),
         value: '0-5 transactions in the past 12 months',
     },
     {
-        text: <Localize i18n_default_text='6-10 transactions in the past 12 months' />,
+        text: localize('6-10 transactions in the past 12 months'),
         value: '6-10 transactions in the past 12 months',
     },
     {
-        text: <Localize i18n_default_text='11-39 transactions in the past 12 months' />,
+        text: localize('11-39 transactions in the past 12 months'),
         value: '11-39 transactions in the past 12 months',
     },
     {
-        text: <Localize i18n_default_text='40 transactions or more in the past 12 months' />,
+        text: localize('40 transactions or more in the past 12 months'),
         value: '40 transactions or more in the past 12 months',
     },
 ];
 
-export const forex_trading_experience_list = [
+export const getForexTradingExperienceList = () => [
     {
-        text: <Localize i18n_default_text='0-1 year' />,
+        text: localize('0-1 year'),
         value: '0-1 year',
     },
     {
-        text: <Localize i18n_default_text='1-2 years' />,
+        text: localize('1-2 years'),
         value: '1-2 years',
     },
     {
-        text: <Localize i18n_default_text='Over 3 years' />,
+        text: localize('Over 3 years'),
         value: 'Over 3 years',
     },
 ];
 
-export const forex_trading_frequency_list = [
+export const getForexTradingFrequencyList = () => [
     {
-        text: <Localize i18n_default_text='0-5 transactions in the past 12 months' />,
+        text: localize('0-5 transactions in the past 12 months'),
         value: '0-5 transactions in the past 12 months',
     },
     {
-        text: <Localize i18n_default_text='6-10 transactions in the past 12 months' />,
+        text: localize('6-10 transactions in the past 12 months'),
         value: '6-10 transactions in the past 12 months',
     },
     {
-        text: <Localize i18n_default_text='11-39 transactions in the past 12 months' />,
+        text: localize('11-39 transactions in the past 12 months'),
         value: '11-39 transactions in the past 12 months',
     },
     {
-        text: <Localize i18n_default_text='40 transactions or more in the past 12 months' />,
+        text: localize('40 transactions or more in the past 12 months'),
         value: '40 transactions or more in the past 12 months',
     },
 ];
 
-export const other_instruments_trading_experience_list = [
+export const getOtherInstrumentsTradingExperienceList = () => [
     {
-        text: <Localize i18n_default_text='0-1 year' />,
+        text: localize('0-1 year'),
         value: '0-1 year',
     },
     {
-        text: <Localize i18n_default_text='1-2 years' />,
+        text: localize('1-2 years'),
         value: '1-2 years',
     },
     {
-        text: <Localize i18n_default_text='Over 3 years' />,
+        text: localize('Over 3 years'),
         value: 'Over 3 years',
     },
 ];
 
-export const other_instruments_trading_frequency_list = [
+export const getOtherInstrumentsTradingFrequencyList = () => [
     {
-        text: <Localize i18n_default_text='0-5 transactions in the past 12 months' />,
+        text: localize('0-5 transactions in the past 12 months'),
         value: '0-5 transactions in the past 12 months',
     },
     {
-        text: <Localize i18n_default_text='6-10 transactions in the past 12 months' />,
+        text: localize('6-10 transactions in the past 12 months'),
         value: '6-10 transactions in the past 12 months',
     },
     {
-        text: <Localize i18n_default_text='11-39 transactions in the past 12 months' />,
+        text: localize('11-39 transactions in the past 12 months'),
         value: '11-39 transactions in the past 12 months',
     },
     {
-        text: <Localize i18n_default_text='40 transactions or more in the past 12 months' />,
+        text: localize('40 transactions or more in the past 12 months'),
         value: '40 transactions or more in the past 12 months',
     },
 ];

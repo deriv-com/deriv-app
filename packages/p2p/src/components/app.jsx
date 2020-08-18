@@ -5,7 +5,7 @@ import { getPropertyValue, isProduction } from '@deriv/shared';
 import { Tabs, Modal } from '@deriv/components';
 import { Dp2pProvider } from 'Components/context/dp2p-context';
 import ServerTime from 'Utils/server-time';
-import { init as WebsocketInit, getModifiedP2POrderList, requestWS, subscribeWS, waitWS } from 'Utils/websocket';
+import { init as WebsocketInit, requestWS, subscribeWS, waitWS } from 'Utils/websocket';
 import { localize, setLanguage } from './i18next';
 import OrderInfo, { orderToggleIndex } from './orders/order-info';
 import BuySell from './buy-sell/buy-sell.jsx';
@@ -37,11 +37,9 @@ class App extends React.Component {
 
         this.ws_subscriptions = {};
         this.list_item_limit = 20;
-        this.is_active_tab = true;
         this.state = {
             active_index: 0,
             loginid: this.props.client.loginid,
-            order_offset: 0,
             orders: [],
             notification_count: 0,
             active_notification_count: 0,
@@ -77,15 +75,6 @@ class App extends React.Component {
                         subscribe: 1,
                     },
                     [this.setIsAdvertiser, this.setChatInfoUsingAdvertiserInfo]
-                ),
-                order_list_subscription: subscribeWS(
-                    {
-                        p2p_order_list: 1,
-                        subscribe: 1,
-                        offset: 0,
-                        limit: this.list_item_limit,
-                    },
-                    [this.setP2pOrderList]
                 ),
             };
         });
@@ -276,35 +265,6 @@ class App extends React.Component {
         }
     };
 
-    setP2pOrderList = order_response => {
-        if (order_response.error) {
-            this.ws_subscriptions.order_list_subscription.unsubscribe();
-            return;
-        }
-        const { p2p_order_list } = order_response;
-
-        if (p2p_order_list) {
-            const { list } = p2p_order_list;
-            // it's an array of orders from p2p_order_list
-            this.handleNotifications(this.state.orders, list);
-            this.setState({ order_offset: list.length, orders: getModifiedP2POrderList(list) });
-        } else {
-            // it's a single order from p2p_order_info
-            const idx_order_to_update = this.state.orders.findIndex(order => order.id === order_response.id);
-            const updated_orders = [...this.state.orders];
-            // if it's a new order, add it to the top of the list
-            if (idx_order_to_update < 0) {
-                updated_orders.unshift(order_response);
-            } else {
-                // otherwise, update the correct order
-                updated_orders[idx_order_to_update] = order_response;
-            }
-            // trigger re-rendering by setting orders again
-            this.handleNotifications(this.state.orders, updated_orders);
-            this.setState({ order_offset: updated_orders.length, orders: updated_orders });
-        }
-    };
-
     changeOrderToggle = value => {
         this.is_active_tab = value === 'active';
         this.setState({ order_table_type: value });
@@ -313,7 +273,6 @@ class App extends React.Component {
     render() {
         const {
             active_index,
-            order_offset,
             advertiser_id,
             orders,
             parameters,
@@ -351,39 +310,37 @@ class App extends React.Component {
             <Dp2pProvider
                 value={{
                     active_notification_count,
-                    inactive_notification_count,
-                    currency,
-                    local_currency_config,
-                    residence,
                     advertiser_id,
-                    is_active_tab: this.is_active_tab,
+                    changeOrderToggle: this.changeOrderToggle,
+                    changeTab: this.handleTabClick,
+                    createAdvertiser: this.createAdvertiser.bind(this),
+                    currency,
+                    email_domain: getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
+                    getLocalStorageSettingsForLoginId: this.getLocalStorageSettingsForLoginId.bind(this),
+                    handleNotifications: this.handleNotifications,
+                    inactive_notification_count,
                     is_advertiser: this.state.is_advertiser,
                     is_listed: this.state.is_listed,
+                    is_mobile,
+                    is_restricted,
+                    list_item_limit: this.list_item_limit,
+                    local_currency_config,
+                    nickname: this.state.nickname,
+                    nickname_error,
+                    order_id,
+                    order_table_type,
+                    orders,
+                    poi_status,
+                    poi_url,
+                    residence,
+                    setChatInfo: this.setChatInfo,
                     setIsListed: is_listed => this.setState({ is_listed }),
                     setIsAdvertiser: is_advertiser => this.setState({ is_advertiser }),
-                    nickname: this.state.nickname,
                     setNickname: nickname => this.setState({ nickname }),
-                    setChatInfo: this.setChatInfo,
-                    is_restricted,
-                    email_domain: getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
-                    list_item_limit: this.list_item_limit,
-                    order_offset,
-                    orders,
-                    order_id,
                     setOrderId,
-                    poi_status,
-                    nickname_error,
-                    changeTab: this.handleTabClick,
                     setOrders: incoming_orders => this.setState({ orders: incoming_orders }),
-                    setOrderOffset: incoming_order_offset => this.setState({ order_offset: incoming_order_offset }),
                     toggleNicknamePopup: () => this.toggleNicknamePopup(),
                     updateP2pNotifications: this.updateP2pNotifications.bind(this),
-                    getLocalStorageSettingsForLoginId: this.getLocalStorageSettingsForLoginId.bind(this),
-                    order_table_type,
-                    changeOrderToggle: this.changeOrderToggle,
-                    createAdvertiser: this.createAdvertiser.bind(this),
-                    is_mobile,
-                    poi_url,
                 }}
             >
                 <main className={classNames('p2p-cashier', className)}>

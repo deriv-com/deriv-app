@@ -13,20 +13,15 @@ import OrderInfo from 'Components/orders/order-info';
 import { height_constants } from 'Utils/height_constants';
 
 const OrderTableContent = ({ showDetails, is_active }) => {
-    const {
-        changeTab,
-        is_active_tab,
-        list_item_limit,
-        order_offset,
-        order_table_type,
-        orders,
-        setOrders,
-        setOrderOffset,
-    } = React.useContext(Dp2pContext);
-    const [is_mounted, setIsMounted] = React.useState(false);
-    const [has_more_items_to_load, setHasMoreItemsToLoad] = React.useState(false);
+    const { changeTab, handleNotifications, list_item_limit, order_table_type } = React.useContext(Dp2pContext);
+
     const [api_error_message, setApiErrorMessage] = React.useState('');
+    const [has_more_items_to_load, setHasMoreItemsToLoad] = React.useState(false);
+    const is_active_tab = React.useRef(true);
     const [is_loading, setIsLoading] = React.useState(true);
+    const [is_mounted, setIsMounted] = React.useState(false);
+    const order_offset = React.useRef(0);
+    const [orders, setOrders] = React.useState([]);
 
     React.useEffect(() => {
         setIsMounted(true);
@@ -35,6 +30,9 @@ const OrderTableContent = ({ showDetails, is_active }) => {
 
     React.useEffect(() => {
         if (is_mounted) {
+            is_active_tab.current = order_table_type === 'active';
+            order_offset.current = 0;
+            orders.current = [];
             setIsLoading(true);
             loadMoreOrders();
         }
@@ -44,22 +42,41 @@ const OrderTableContent = ({ showDetails, is_active }) => {
         return new Promise(resolve => {
             requestWS({
                 p2p_order_list: 1,
-                offset: order_offset,
+                offset: order_offset.current,
                 limit: list_item_limit,
-                active: is_active_tab ? 1 : 0,
+                active: is_active_tab.current ? 1 : 0,
             }).then(response => {
                 if (is_mounted) {
-                    if (!response.error) {
-                        const { list } = response.p2p_order_list;
-                        setHasMoreItemsToLoad(list.length >= list_item_limit);
-                        setOrders(orders.concat(getModifiedP2POrderList(list)));
-                        setOrderOffset(order_offset + list.length);
+                    const { list } = response.p2p_order_list;
+                    if (list) {
+                        if (!list.error) {
+                            setHasMoreItemsToLoad(list.length >= list_item_limit);
+                            handleNotifications(orders.current, list);
+                            setOrders(orders.current.concat(getModifiedP2POrderList(list)));
+                            order_offset.current += list.length;
+                            setIsLoading(false);
+                        } else {
+                            setApiErrorMessage(list.error.message);
+                        }
                     } else {
-                        setApiErrorMessage(response.api_error_message);
+                        // it's a single order from p2p_order_info
+                        const idx_order_to_update = orders.findIndex(order => order.id === response.id);
+                        const updated_orders = [...orders];
+                        // if it's a new order, add it to the top of the list
+                        if (idx_order_to_update < 0) {
+                            updated_orders.unshift(response);
+                        } else {
+                            // otherwise, update the correct order
+                            updated_orders[idx_order_to_update] = response;
+                        }
+                        // trigger re-rendering by setting orders again
+                        this.handleNotifications(orders, updated_orders);
+                        setOrders(getModifiedP2POrderList(updated_orders));
                     }
+
+                    setIsLoading(false);
+                    resolve();
                 }
-                setIsLoading(false);
-                resolve();
             });
         });
     };
@@ -119,7 +136,6 @@ const OrderTableContent = ({ showDetails, is_active }) => {
 
 OrderTableContent.propTypes = {
     is_active: PropTypes.bool,
-    is_active_tab: PropTypes.bool,
     showDetails: PropTypes.func,
 };
 

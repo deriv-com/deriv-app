@@ -174,10 +174,6 @@ export default class QuickStrategyStore {
 
     @action.bound
     async createStrategy({ button }) {
-        // Avoid being called twice.
-        if (this.is_creating_strategy) return;
-        this.is_creating_strategy = true;
-
         const symbol = this.selected_symbol.value;
         const trade_type = this.selected_trade_type.value;
         const duration_unit = this.selected_duration_unit.value;
@@ -252,12 +248,7 @@ export default class QuickStrategyStore {
                 .then(() => {
                     this.root_store.run_panel.onRunButtonClick();
                     this.is_creating_strategy = false;
-                })
-                .catch(() => {
-                    this.is_creating_strategy = false;
                 });
-        } else {
-            this.is_creating_strategy = false;
         }
 
         if (this.is_strategy_modal_open) {

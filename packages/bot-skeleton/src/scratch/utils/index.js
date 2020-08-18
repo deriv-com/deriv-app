@@ -404,6 +404,7 @@ export const emptyTextValidator = input => {
     return !input || input === "''";
 };
 
+/* eslint-disable no-bitwise */
 export const isDarkRgbColour = string_rgb => {
     const values = string_rgb.substring(1);
     const rgb = parseInt(values, 16);
@@ -413,3 +414,4 @@ export const isDarkRgbColour = string_rgb => {
     const luma = 0.2126 * red + 0.7152 * green + 0.0722 * blue;
     return luma < 160;
 };
+/* eslint-enable */

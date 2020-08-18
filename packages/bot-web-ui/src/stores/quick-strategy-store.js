@@ -25,8 +25,6 @@ export default class QuickStrategyStore {
     @observable trade_type_dropdown = [];
     @observable duration_unit_dropdown = [];
 
-    is_creating_strategy = false;
-
     @computed
     get initial_values() {
         const init = {
@@ -247,7 +245,6 @@ export default class QuickStrategyStore {
                 })
                 .then(() => {
                     this.root_store.run_panel.onRunButtonClick();
-                    this.is_creating_strategy = false;
                 });
         }
 

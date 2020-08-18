@@ -102,21 +102,10 @@ class SelectNative extends React.Component {
     }
 }
 
-const list_items_shape = PropTypes.arrayOf(
-    PropTypes.shape({
-        text: PropTypes.string.isRequired,
-        value: PropTypes.string.isRequired,
-    })
-);
-
 SelectNative.propTypes = {
     className: PropTypes.string,
     classNameDisplay: PropTypes.string,
-    list_items: PropTypes.oneOfType([
-        PropTypes.arrayOf(PropTypes.string),
-        list_items_shape,
-        PropTypes.objectOf(list_items_shape),
-    ]),
+    list_items: PropTypes.any,
     value: PropTypes.string,
     label: PropTypes.string,
     onChange: PropTypes.func,

@@ -40,6 +40,8 @@ class Header extends React.Component {
             is_acc_switcher_disabled,
             is_app_disabled,
             is_dark_mode,
+            is_financial_account,
+            is_financial_information_incomplete,
             is_high_risk,
             is_logged_in,
             is_logging_in,
@@ -49,6 +51,7 @@ class Header extends React.Component {
             is_payment_agent_visible,
             is_payment_agent_transfer_visible,
             is_route_modal_on,
+            is_trading_experience_incomplete,
             is_virtual,
             disableApp,
             logoutClient,
@@ -90,6 +93,9 @@ class Header extends React.Component {
                                 logoutClient={logoutClient}
                                 is_dark_mode={is_dark_mode}
                                 is_high_risk={is_high_risk}
+                                is_financial_information_incomplete={is_financial_information_incomplete}
+                                is_financial_account={is_financial_account}
+                                is_trading_experience_incomplete={is_trading_experience_incomplete}
                                 is_logged_in={is_logged_in}
                                 is_p2p_visible={is_p2p_visible}
                                 is_payment_agent_transfer_visible={is_payment_agent_transfer_visible}
@@ -191,6 +197,9 @@ export default connect(({ client, common, ui, modules }) => ({
     is_payment_agent_transfer_visible: modules.cashier.is_payment_agent_transfer_visible,
     balance: client.balance,
     currency: client.currency,
+    is_financial_account: client.is_financial_account,
+    is_financial_information_incomplete: client.is_financial_information_incomplete,
+    is_trading_experience_incomplete: client.is_trading_experience_incomplete,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
     logoutClient: client.logout,

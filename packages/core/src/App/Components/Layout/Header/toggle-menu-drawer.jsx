@@ -59,14 +59,14 @@ class ToggleMenuDrawer extends React.Component {
         this.is_mounted = true;
         WS.wait('authorize', 'get_account_status').then(() => {
             if (this.props.account_status) {
-                const { authentication, status } = this.props.account_status;
+                const { status } = this.props.account_status;
                 const needs_financial_assessment =
-                    this.props.is_high_risk || status.includes('financial_information_not_complete');
-                const needs_verification =
-                    authentication.needs_verification.includes('identity') ||
-                    authentication.needs_verification.includes('document');
-
-                if (this.is_mounted) this.setState({ needs_financial_assessment, needs_verification });
+                    this.props.is_high_risk ||
+                    this.props.is_financial_information_incomplete ||
+                    this.props.is_financial_account ||
+                    this.props.is_trading_experience_incomplete;
+                const allow_document_upload = status?.includes('allow_document_upload');
+                if (this.is_mounted) this.setState({ needs_financial_assessment, allow_document_upload });
             }
         });
         this.processRoutes();
@@ -93,7 +93,7 @@ class ToggleMenuDrawer extends React.Component {
     };
 
     getRoutesWithSubMenu = route_config => {
-        const { needs_financial_assessment, needs_verification } = this.state;
+        const { needs_financial_assessment, allow_document_upload } = this.state;
         const has_access = route_config.is_authenticated ? this.props.is_logged_in : true;
         if (!has_access) return null;
 
@@ -153,11 +153,9 @@ class ToggleMenuDrawer extends React.Component {
                                 <MenuLink
                                     key={subroute.title}
                                     is_disabled={
-                                        (!needs_verification &&
-                                            !needs_financial_assessment &&
-                                            /proof-of-identity|proof-of-address|financial-assessment/.test(
-                                                subroute.path
-                                            )) ||
+                                        (!allow_document_upload && /proof-of-address/.test(subroute.path)) ||
+                                        (!allow_document_upload && /proof-of-identity/.test(subroute.path)) ||
+                                        (!needs_financial_assessment && /financial-assessment/.test(subroute.path)) ||
                                         subroute.is_disabled
                                     }
                                     link_to={subroute.path}

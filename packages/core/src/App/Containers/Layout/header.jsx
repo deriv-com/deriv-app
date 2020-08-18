@@ -54,6 +54,7 @@ class Header extends React.Component {
             is_trading_experience_incomplete,
             is_virtual,
             disableApp,
+            landing_company_shortcode,
             logoutClient,
             notifications_count,
             setDarkMode,
@@ -68,6 +69,8 @@ class Header extends React.Component {
                 const is_mt5_eligible = !(is_logged_in && config.link_to === routes.mt5 && !is_mt5_allowed);
                 return is_mt5_eligible;
             });
+
+        const is_svg = landing_company_shortcode === 'svg' || landing_company_shortcode === 'costarica';
 
         return (
             <header
@@ -100,6 +103,8 @@ class Header extends React.Component {
                                 is_p2p_visible={is_p2p_visible}
                                 is_payment_agent_transfer_visible={is_payment_agent_transfer_visible}
                                 is_payment_agent_visible={is_payment_agent_visible}
+                                is_svg={is_svg}
+                                is_virtual={is_virtual}
                                 toggleTheme={setDarkMode}
                                 platform_switcher={
                                     <PlatformSwitcher
@@ -202,6 +207,7 @@ export default connect(({ client, common, ui, modules }) => ({
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
+    landing_company_shortcode: client.landing_company_shortcode,
     logoutClient: client.logout,
     is_virtual: client.is_virtual,
     enableApp: ui.enableApp,

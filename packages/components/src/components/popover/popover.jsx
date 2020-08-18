@@ -44,6 +44,10 @@ class Popover extends React.PureComponent {
         this.setState({ is_bubble_open: false, is_open: false });
     };
 
+    onClick = () => {
+        this.setState({ is_bubble_open: !this.state.is_bubble_open });
+    };
+
     toggleIsOpenOnHoverPopoverBubble = () => {
         setTimeout(() => {
             // add delay to check if mouse is hovered on popover bubble
@@ -162,6 +166,7 @@ class Popover extends React.PureComponent {
                                         })}
                                         onMouseEnter={this.onMouseEnter}
                                         onMouseLeave={this.onMouseLeave}
+                                        onClick={this.onClick}
                                     >
                                         {!disable_message_icon && icon === 'info' && (
                                             <i className='dc-popover__bubble__icon'>

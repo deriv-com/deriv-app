@@ -2,15 +2,9 @@ import React from 'react';
 import { Loading, Button, Input } from '@deriv/components';
 import { Formik } from 'formik';
 import { localize } from '@deriv/translations';
-import { isMobile } from '@deriv/shared';
+import { isMobile, validAddress, validPostCode, validLetterSymbol, validLength } from '@deriv/shared';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
-import {
-    validAddress,
-    validPostCode,
-    validLetterSymbol,
-    validLength,
-} from 'Duplicated/Utils/Validator/declarative-validation-rules';
 import FormFooter from 'Components/form-footer';
 import FormBody from 'Components/form-body';
 import FormSubHeader from 'Components/form-sub-header';

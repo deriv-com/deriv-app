@@ -13,19 +13,19 @@ import {
     SelectNative,
     DateOfBirthPicker,
 } from '@deriv/components';
-import { toMoment, isMobile } from '@deriv/shared';
-import { localize } from '@deriv/translations';
-import { WS } from 'Services/ws-methods';
-import { connect } from 'Stores/connect';
 import {
+    toMoment,
+    isMobile,
     validAddress,
     validPostCode,
     validTaxID,
     validPhone,
-    validCountryCode,
     validLetterSymbol,
     validLength,
-} from 'Duplicated/Utils/Validator/declarative-validation-rules';
+} from '@deriv/shared';
+import { localize } from '@deriv/translations';
+import { WS } from 'Services/ws-methods';
+import { connect } from 'Stores/connect';
 // import { account_opening_reason_list }         from './constants';
 import LeaveConfirm from 'Components/leave-confirm';
 import FormFooter from 'Components/form-footer';

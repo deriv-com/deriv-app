@@ -190,13 +190,18 @@ const initRoutesConfig = () => [
     { path: routes.endpoint, component: Endpoint, title: 'Endpoint' }, // doesn't need localization as it's for internal use
     { path: routes.redirect, component: Redirect, title: localize('Redirect') },
     {
-        counter: <CashierNotifications />,
         path: routes.cashier,
         component: lazyLoadCashierComponent('Cashier'),
         is_modal: true,
         is_authenticated: true,
         title: localize('Cashier'),
         icon_component: 'IcCashier',
+        renderTitle: title => (
+            <React.Fragment>
+                {title}
+                <CashierNotifications />
+            </React.Fragment>
+        ),
         routes: [
             {
                 path: routes.cashier_deposit,
@@ -230,11 +235,16 @@ const initRoutesConfig = () => [
                 icon_component: 'IcAccountTransfer',
             },
             {
-                counter: <CashierNotifications />,
                 path: routes.cashier_p2p,
                 component: lazyLoadCashierComponent('P2PCashier'),
                 title: localize('DP2P'),
                 icon_component: 'IcDp2p',
+                renderTitle: title => (
+                    <React.Fragment>
+                        {title}
+                        <CashierNotifications />
+                    </React.Fragment>
+                ),
             },
             {
                 path: routes.cashier_onramp,

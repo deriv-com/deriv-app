@@ -31,10 +31,9 @@ class SubMenu extends React.PureComponent {
                         <Icon className='dc-mobile-drawer__submenu-toggle-icon' icon={this.props.submenu_icon} />
                     )}
                     {this.props.submenu_title && (
-                        <h3 className='dc-mobile-drawer__submenu-toggle-text'>{this.props.submenu_title}</h3>
-                    )}
-                    {this.props.submenu_counter && (
-                        <span className='dc-mobile-drawer__submenu-toggle-counter'>{this.props.submenu_counter}</span>
+                        <h3 className='dc-mobile-drawer__submenu-toggle-text'>
+                            {this.props.submenuRenderTitle?.(this.props.submenu_title) || this.props.submenu_title}
+                        </h3>
                     )}
                     {this.props.submenu_suffix_icon && (
                         <Icon
@@ -59,7 +58,7 @@ class SubMenu extends React.PureComponent {
 SubMenu.propTypes = {
     children: PropTypes.node,
     has_subheader: PropTypes.bool,
-    submenu_counter: PropTypes.element,
+    submenuRenderTitle: PropTypes.func,
     submenu_icon: PropTypes.string,
     submenu_suffix_icon: PropTypes.string,
     submenu_title: PropTypes.string,

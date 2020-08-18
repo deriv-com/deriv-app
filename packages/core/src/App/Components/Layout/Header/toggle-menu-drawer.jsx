@@ -10,7 +10,7 @@ import { BinaryLink } from 'App/Components/Routes';
 import getRoutesConfig from 'App/Constants/routes-config';
 import LiveChat from '../../Elements/live-chat.jsx';
 
-const MenuLink = ({ counter, link_to, icon, is_disabled, suffix_icon, text, onClickLink }) => (
+const MenuLink = ({ link_to, icon, is_disabled, suffix_icon, renderTitle, text, onClickLink }) => (
     <React.Fragment>
         {!link_to ? (
             <div
@@ -19,8 +19,7 @@ const MenuLink = ({ counter, link_to, icon, is_disabled, suffix_icon, text, onCl
                 })}
             >
                 <Icon className='header__menu-mobile-link-icon' icon={icon} />
-                <span className='header__menu-mobile-link-text'>{text}</span>
-                {counter && <span className='header__menu-mobile-link-counter'>{counter}</span>}
+                <span className='header__menu-mobile-link-text'>{renderTitle?.(text) || text}</span>
                 {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
             </div>
         ) : (
@@ -33,8 +32,7 @@ const MenuLink = ({ counter, link_to, icon, is_disabled, suffix_icon, text, onCl
                 onClick={onClickLink}
             >
                 <Icon className='header__menu-mobile-link-icon' icon={icon} />
-                <span className='header__menu-mobile-link-text'>{text}</span>
-                {counter && <span className='header__menu-mobile-link-counter'>{counter}</span>}
+                <span className='header__menu-mobile-link-text'>{renderTitle?.(text) || text}</span>
                 {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
             </BinaryLink>
         )}
@@ -102,9 +100,9 @@ class ToggleMenuDrawer extends React.Component {
             return (
                 <MobileDrawer.Item key={route_config.title}>
                     <MenuLink
-                        counter={route_config.counter}
                         link_to={route_config.path}
                         icon={route_config.icon_component}
+                        renderTitle={route_config.renderTitle}
                         text={route_config.title}
                         onClickLink={this.toggleDrawer}
                     />
@@ -117,10 +115,10 @@ class ToggleMenuDrawer extends React.Component {
             <MobileDrawer.SubMenu
                 key={route_config.title}
                 has_subheader
-                submenu_counter={route_config.counter}
                 submenu_icon={route_config.icon_component}
                 submenu_title={route_config.title}
                 submenu_suffix_icon='IcChevronRight'
+                submenuRenderTitle={route_config.renderTitle}
                 onToggle={this.onToggleSubmenu}
             >
                 {!has_subroutes &&
@@ -135,9 +133,9 @@ class ToggleMenuDrawer extends React.Component {
                             return (
                                 <MobileDrawer.Item key={route.title}>
                                     <MenuLink
-                                        counter={route.counter}
                                         link_to={route.path}
                                         icon={route.icon_component}
+                                        renderTitle={route.renderTitle}
                                         text={route.title}
                                         onClickLink={this.toggleDrawer}
                                     />
@@ -155,7 +153,6 @@ class ToggleMenuDrawer extends React.Component {
                         >
                             {route.subroutes.map(subroute => (
                                 <MenuLink
-                                    counter={subroute.counter}
                                     key={subroute.title}
                                     is_disabled={
                                         (!needs_verification &&
@@ -166,6 +163,7 @@ class ToggleMenuDrawer extends React.Component {
                                         subroute.is_disabled
                                     }
                                     link_to={subroute.path}
+                                    renderTitle={subroute.renderTitle}
                                     text={subroute.title}
                                     onClickLink={this.toggleDrawer}
                                 />

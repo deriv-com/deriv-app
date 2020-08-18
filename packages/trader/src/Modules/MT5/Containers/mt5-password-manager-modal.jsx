@@ -9,6 +9,7 @@ import {
     PasswordMeter,
     Button,
     DesktopWrapper,
+    Div100vhContainer,
     MobileWrapper,
     MultiStep,
     PageOverlay,
@@ -419,9 +420,9 @@ class MT5PasswordManagerModal extends React.Component {
                             </ThemedScrollbars>
                         </DesktopWrapper>
                         <MobileWrapper>
-                            <ThemedScrollbars height='calc(100vh - 120px)'>
+                            <Div100vhContainer className='mt5-password-manager__scroll-wrapper' height_offset='120px'>
                                 <MainPasswordManager />
-                            </ThemedScrollbars>
+                            </Div100vhContainer>
                         </MobileWrapper>
                     </div>
                     <div label={localize('Investor password')}>
@@ -431,9 +432,9 @@ class MT5PasswordManagerModal extends React.Component {
                             </ThemedScrollbars>
                         </DesktopWrapper>
                         <MobileWrapper>
-                            <ThemedScrollbars height='calc(100vh - 120px)'>
+                            <Div100vhContainer className='mt5-password-manager__scroll-wrapper' height_offset='120px'>
                                 <InvestorPasswordManager />
-                            </ThemedScrollbars>
+                            </Div100vhContainer>
                         </MobileWrapper>
                     </div>
                 </Tabs>

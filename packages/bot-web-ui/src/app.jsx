@@ -1,5 +1,7 @@
 import { reaction } from 'mobx';
 import React from 'react';
+import { showDigitalOptionsUnavailableError } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import { runIrreversibleEvents, ApiHelpers, DBot, ServerTime } from '@deriv/bot-skeleton';
 import './public-path'; // Leave this here! OK boss!
 import Audio from './components/audio.jsx';
@@ -15,6 +17,18 @@ import BlocklyLoading from './components/blockly-loading.jsx';
 import RootStore from './stores';
 import GTM from './utils/gtm';
 import './assets/sass/app.scss';
+
+const showDigitalOptionsMaltainvestError = (client, common) => {
+    if (client.landing_company_shortcode === 'maltainvest') {
+        showDigitalOptionsUnavailableError(common.showError, {
+            title: localize(
+                'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a DMT5 Financial.'
+            ),
+            text: localize('DBot is not available for this account'),
+            link: localize('Go to DMT5 dashboard'),
+        });
+    } else if (common.has_error) common.setError(false, null);
+};
 
 class App extends React.Component {
     constructor(props) {
@@ -58,6 +72,8 @@ class App extends React.Component {
     }
 
     componentDidMount() {
+        const { client, common } = this.root_store.core;
+        showDigitalOptionsMaltainvestError(client, common);
         this.root_store.blockly_store.startLoading();
         DBot.initWorkspace(
             __webpack_public_path__,
@@ -70,6 +86,19 @@ class App extends React.Component {
         this.registerClickOutsideBlockly();
         this.registerBeforeUnload();
         this.root_store.main_content.getCachedActiveTab();
+    }
+
+    componentDidUpdate() {
+        const { client, common } = this.root_store.core;
+        if (client.landing_company_shortcode === 'maltainvest') {
+            showDigitalOptionsUnavailableError(common.showError, {
+                title: localize(
+                    'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a DMT5 Financial.'
+                ),
+                text: localize('DBot is not available for this account'),
+                link: localize('Go to DMT5 dashboard'),
+            });
+        }
     }
 
     componentWillUnmount() {
@@ -110,7 +139,7 @@ class App extends React.Component {
      * Register a reaction to switchaccount
      */
     registerOnAccountSwitch = () => {
-        const { client } = this.root_store.core;
+        const { client, common } = this.root_store.core;
 
         this.disposeSwitchAccountListener = reaction(
             () => client.switch_broadcast,
@@ -118,7 +147,7 @@ class App extends React.Component {
                 if (!switch_broadcast) {
                     return;
                 }
-
+                showDigitalOptionsMaltainvestError(client, common);
                 const { derivWorkspace: workspace } = Blockly;
                 const { active_symbols, contracts_for } = ApiHelpers.instance;
 

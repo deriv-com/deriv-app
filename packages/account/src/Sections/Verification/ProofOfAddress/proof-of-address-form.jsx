@@ -121,6 +121,7 @@ class ProofOfAddressForm extends React.Component {
         WS.setSettings(values).then((data) => {
             if (data.error) {
                 setStatus({ msg: data.error.message });
+                this.setState({ is_btn_loading: false });
             } else {
                 // force request to update settings cache since settings have been updated
                 WS.authorized.storage
@@ -193,9 +194,11 @@ class ProofOfAddressForm extends React.Component {
                             })
                             .catch((error) => {
                                 setStatus({ msg: error.message });
+                                this.setState({ is_btn_loading: false });
                             })
                             .then(() => {
                                 setSubmitting(false);
+                                this.setState({ is_btn_loading: false });
                             });
                     });
             }

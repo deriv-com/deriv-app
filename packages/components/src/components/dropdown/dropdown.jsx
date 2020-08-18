@@ -87,6 +87,7 @@ const Dropdown = ({
             'dc-dropdown--left': is_alignment_left,
             'dc-dropdown--show': is_list_visible,
             'dc-dropdown--disabled': isSingleOption() || disabled,
+            'dc-dropdown--error': error,
         });
     };
 
@@ -297,6 +298,7 @@ const Dropdown = ({
                             className={classNames('dc-dropdown__select-arrow', {
                                 'dc-dropdown__select-arrow--left': is_alignment_left,
                                 'dc-dropdown__select-arrow--up': is_list_visible,
+                                'dc-dropdown__select-arrow--error': error || hint,
                             })}
                         />
                     )}

@@ -92,6 +92,7 @@ class Cashier extends React.Component {
             : null;
         const should_show_tab_headers_note =
             !this.props.is_virtual &&
+            !this.props.is_eu &&
             !isCryptocurrency(this.props.loggedin_currency) &&
             (location.pathname.startsWith(routes.cashier_deposit) ||
                 location.pathname.startsWith(routes.cashier_withdrawal));
@@ -160,6 +161,7 @@ class Cashier extends React.Component {
 Cashier.propTypes = {
     history: PropTypes.object,
     is_onramp_tab_visible: PropTypes.bool,
+    is_eu: PropTypes.bool,
     is_p2p_visible: PropTypes.bool,
     is_payment_agent_transfer_visible: PropTypes.bool,
     is_payment_agent_visible: PropTypes.bool,
@@ -178,6 +180,7 @@ export default connect(({ client, common, modules, ui }) => ({
     tab_index: modules.cashier.cashier_route_tab_index,
     setTabIndex: modules.cashier.setCashierTabIndex,
     loggedin_currency: client.currency,
+    is_eu: client.is_eu,
     is_onramp_tab_visible: modules.cashier.onramp.is_onramp_tab_visible,
     is_p2p_visible: modules.p2p.is_visible,
     is_virtual: client.is_virtual,

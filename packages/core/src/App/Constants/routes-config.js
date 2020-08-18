@@ -247,6 +247,7 @@ const initRoutesConfig = () => [
                 ),
             },
             {
+                id: 'gtm-onramp-tab',
                 path: routes.cashier_onramp,
                 component: lazyLoadCashierComponent('OnRamp'),
                 title: localize('Fiat onramp'),

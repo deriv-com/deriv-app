@@ -1,21 +1,6 @@
 import { localize } from '@deriv/translations';
 
-export const experience_list = [
-    {
-        text: localize('0-1 year'),
-        value: '0-1 year',
-    },
-    {
-        text: localize('1-2 years'),
-        value: '1-2 years',
-    },
-    {
-        text: localize('Over 3 years'),
-        value: 'Over 3 years',
-    },
-];
-
-export const income_source_list = [
+export const getIncomeSourceList = () => [
     {
         text: localize('Salaried Employee'),
         value: 'Salaried Employee',
@@ -42,7 +27,7 @@ export const income_source_list = [
     },
 ];
 
-export const employment_status_list = [
+export const getEmploymentStatusList = () => [
     {
         text: localize('Employed'),
         value: 'Employed',
@@ -65,7 +50,7 @@ export const employment_status_list = [
     },
 ];
 
-export const employment_industry_list = [
+export const getEmploymentIndustryList = () => [
     {
         text: localize('Construction'),
         value: 'Construction',
@@ -124,7 +109,7 @@ export const employment_industry_list = [
     },
 ];
 
-export const occupation_list = [
+export const getOccupationList = () => [
     {
         text: localize('Chief Executives, Senior Officials and Legislators'),
         value: 'Chief Executives, Senior Officials and Legislators',
@@ -183,7 +168,7 @@ export const occupation_list = [
     },
 ];
 
-export const source_of_wealth_list = [
+export const getSourceOfWealthList = () => [
     {
         text: localize('Accumulation of Income/Savings'),
         value: 'Accumulation of Income/Savings',
@@ -214,7 +199,7 @@ export const source_of_wealth_list = [
     },
 ];
 
-export const education_level_list = [
+export const getEducationLevelList = () => [
     {
         text: localize('Primary'),
         value: 'Primary',
@@ -229,7 +214,7 @@ export const education_level_list = [
     },
 ];
 
-export const net_income_list = [
+export const getNetIncomeList = () => [
     {
         text: localize('Less than $25,000'),
         value: 'Less than $25,000',
@@ -252,7 +237,7 @@ export const net_income_list = [
     },
 ];
 
-export const estimated_worth_list = [
+export const getEstimatedWorthList = () => [
     {
         text: localize('Less than $100,000'),
         value: 'Less than $100,000',
@@ -275,7 +260,7 @@ export const estimated_worth_list = [
     },
 ];
 
-export const account_turnover_list = [
+export const getAccountTurnoverList = () => [
     {
         text: localize('Less than $25,000'),
         value: 'Less than $25,000',
@@ -295,5 +280,141 @@ export const account_turnover_list = [
     {
         text: localize('Over $500,000'),
         value: 'Over $500,000',
+    },
+];
+
+export const getBinaryOptionsTradingExperienceList = () => [
+    {
+        text: localize('0-1 year'),
+        value: '0-1 year',
+    },
+    {
+        text: localize('1-2 years'),
+        value: '1-2 years',
+    },
+    {
+        text: localize('Over 3 years'),
+        value: 'Over 3 years',
+    },
+];
+
+export const getBinaryOptionsTradingFrequencyList = () => [
+    {
+        text: localize('0-5 transactions in the past 12 months'),
+        value: '0-5 transactions in the past 12 months',
+    },
+    {
+        text: localize('6-10 transactions in the past 12 months'),
+        value: '6-10 transactions in the past 12 months',
+    },
+    {
+        text: localize('11-39 transactions in the past 12 months'),
+        value: '11-39 transactions in the past 12 months',
+    },
+    {
+        text: localize('40 transactions or more in the past 12 months'),
+        value: '40 transactions or more in the past 12 months',
+    },
+];
+
+export const getCfdTradingExperienceList = () => [
+    {
+        text: localize('0-1 year'),
+        value: '0-1 year',
+    },
+    {
+        text: localize('1-2 years'),
+        value: '1-2 years',
+    },
+    {
+        text: localize('Over 3 years'),
+        value: 'Over 3 years',
+    },
+];
+
+export const getCfdTradingFrequencyList = () => [
+    {
+        text: localize('0-5 transactions in the past 12 months'),
+        value: '0-5 transactions in the past 12 months',
+    },
+    {
+        text: localize('6-10 transactions in the past 12 months'),
+        value: '6-10 transactions in the past 12 months',
+    },
+    {
+        text: localize('11-39 transactions in the past 12 months'),
+        value: '11-39 transactions in the past 12 months',
+    },
+    {
+        text: localize('40 transactions or more in the past 12 months'),
+        value: '40 transactions or more in the past 12 months',
+    },
+];
+
+export const getForexTradingExperienceList = () => [
+    {
+        text: localize('0-1 year'),
+        value: '0-1 year',
+    },
+    {
+        text: localize('1-2 years'),
+        value: '1-2 years',
+    },
+    {
+        text: localize('Over 3 years'),
+        value: 'Over 3 years',
+    },
+];
+
+export const getForexTradingFrequencyList = () => [
+    {
+        text: localize('0-5 transactions in the past 12 months'),
+        value: '0-5 transactions in the past 12 months',
+    },
+    {
+        text: localize('6-10 transactions in the past 12 months'),
+        value: '6-10 transactions in the past 12 months',
+    },
+    {
+        text: localize('11-39 transactions in the past 12 months'),
+        value: '11-39 transactions in the past 12 months',
+    },
+    {
+        text: localize('40 transactions or more in the past 12 months'),
+        value: '40 transactions or more in the past 12 months',
+    },
+];
+
+export const getOtherInstrumentsTradingExperienceList = () => [
+    {
+        text: localize('0-1 year'),
+        value: '0-1 year',
+    },
+    {
+        text: localize('1-2 years'),
+        value: '1-2 years',
+    },
+    {
+        text: localize('Over 3 years'),
+        value: 'Over 3 years',
+    },
+];
+
+export const getOtherInstrumentsTradingFrequencyList = () => [
+    {
+        text: localize('0-5 transactions in the past 12 months'),
+        value: '0-5 transactions in the past 12 months',
+    },
+    {
+        text: localize('6-10 transactions in the past 12 months'),
+        value: '6-10 transactions in the past 12 months',
+    },
+    {
+        text: localize('11-39 transactions in the past 12 months'),
+        value: '11-39 transactions in the past 12 months',
+    },
+    {
+        text: localize('40 transactions or more in the past 12 months'),
+        value: '40 transactions or more in the past 12 months',
     },
 ];

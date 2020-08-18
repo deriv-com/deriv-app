@@ -28,7 +28,7 @@
         display: grid;
         margin: 0 auto 4rem;
         padding: 2.4rem;
-        @include desktop {
+        @include tablet-up {
             grid-auto-columns: 1fr;
             grid-auto-flow: column;
             grid-column-gap: 2.4rem;
@@ -41,6 +41,9 @@
             grid-auto-flow: row;
             grid-gap: 1rem;
             box-shadow: none;
+        }
+        @include tablet {
+            max-width: 90vw;
         }
 
         &:first-of-type {
@@ -72,13 +75,18 @@
     }
     &__box-icons {
         display: grid;
-        @include desktop {
-            grid-auto-flow: column;
+        @include tablet-up {
+            grid-auto-flow: row;
             grid-gap: 0.8rem 1.6rem;
-            width: fit-content;
+            grid-template-columns: repeat(auto-fit, 4.8rem);
         }
         @include mobile {
             grid-template-columns: repeat(4, 1fr);
+        }
+        @include tablet {
+            grid-auto-flow: initial;
+            grid-template-columns: repeat(auto-fit, minmax(48px, 1fr));
+            width: auto;
         }
     }
     &__box-icon {

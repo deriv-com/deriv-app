@@ -376,6 +376,9 @@
         cursor: pointer;
         font-weight: bold;
     }
+    &__button {
+        margin-top: 3.2rem;
+    }
     &__virtual {
         &-header {
             @include typeface(--title-center-bold-prominent);
@@ -470,6 +473,109 @@
             width: 100%;
             height: 4rem;
         }
+    }
+}
+
+/** @define funds-protection; weak */
+.funds-protection {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 4rem;
+
+    &__icon {
+        width: 12.8rem;
+        height: 12.8rem;
+        margin-bottom: 2.4rem;
+    }
+    &__title {
+        @include typeface(--title-center-bold-black);
+        margin-bottom: 0.8rem;
+    }
+    &__desc {
+        @include typeface(--paragraph-center-normal-black);
+        margin-bottom: 3.2rem;
+        max-width: 67.2rem;
+    }
+    @include mobile {
+        width: calc(100% - 2.4rem);
+        margin-left: 1.2rem;
+
+        & .dc-btn {
+            &:last-child {
+                margin-bottom: 2.4rem;
+            }
+        }
+    }
+}
+
+/** @define max-turnover */
+.max-turnover {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 47rem;
+    margin: 4rem auto 0;
+
+    &__title {
+        @include typeface(--title-center-bold-black);
+        margin-bottom: 3.2rem;
+    }
+    &__desc {
+        @include typeface(--paragraph-center-normal-black);
+        margin-bottom: 3.2rem;
+        margin-top: 2rem;
+    }
+    &__form {
+        display: flex;
+        flex-direction: column;
+    }
+    &__button {
+        width: fit-content;
+        align-self: flex-end;
+    }
+    @include mobile {
+        &__form {
+            width: calc(100% - 2.4rem);
+        }
+        &__button {
+            align-self: center;
+            width: auto;
+            min-width: 9rem;
+        }
+    }
+}
+
+/** @define cashier-locked */
+.cashier-locked {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 4rem;
+    max-width: 67.2rem;
+
+    /* stylelint-disable-next-line plugin/selector-bem-pattern */
+    .dc-checklist {
+        width: 100%;
+    }
+    &__icon {
+        width: 12.8rem;
+        height: 12.8rem;
+        margin-bottom: 2.4rem;
+    }
+    &__title {
+        @include typeface(--title-center-bold-black);
+        margin-bottom: 0.8rem;
+    }
+    &__desc {
+        @include typeface(--paragraph-center-normal-black);
+        margin-bottom: 3.2rem;
     }
 }
 
@@ -972,14 +1078,18 @@
     }
     &__drop-down-wrapper .account-transfer__drop-down {
         text-align: left;
-        width: fit-content;
-        min-width: 36rem;
+        max-width: 36rem;
         margin: 0 auto 5.1rem;
 
         @include mobile {
             width: 100%;
             min-width: auto;
             margin-bottom: 2.4rem;
+        }
+
+        & .dc-dropdown__display-text {
+            width: 100%;
+            align-items: center;
         }
     }
     &__wrapper .account-transfer__input {
@@ -998,11 +1108,22 @@
         line-height: 1.43;
     }
     &__currency {
-        margin: 0 0.4rem;
+        font-size: 1.2rem;
 
         &-icon {
             align-self: center;
         }
+        &-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            margin-left: 8px;
+            margin-right: 8px;
+        }
+    }
+    &__loginid {
+        @include typeface(--xsmall-left-normal-grey);
     }
     &__balance {
         margin-left: auto;
@@ -1036,6 +1157,16 @@
     }
     &__native-select {
         margin-bottom: 2.4rem;
+    }
+    &__form-submit {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-end;
+
+        > * {
+            width: auto;
+        }
     }
     &__receipt {
         & .cashier {

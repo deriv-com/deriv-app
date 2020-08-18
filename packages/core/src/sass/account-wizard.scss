@@ -89,7 +89,7 @@
         overflow: hidden;
 
         &--set-currency {
-            overflow: unset;
+            grid-template-rows: 1fr 70px;
         }
     }
 

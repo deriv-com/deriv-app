@@ -50,10 +50,8 @@ class SendbirdAPI {
 
         while (channel_list_query.hasNext) {
             if (channel_list_query.isLoading) {
-                /* eslint-disable */
-                await new Promise(resolve => setTimeout(resolve, 100));
-                continue;
-                /* eslint-enable */
+                await new Promise(resolve => setTimeout(resolve, 100)); // eslint-disable-line no-await-in-loop
+                continue; // eslint-disable-line no-continue
             }
 
             // eslint-disable-next-line no-loop-func
@@ -66,10 +64,6 @@ class SendbirdAPI {
                     });
                 }
             });
-
-            if (!channel_list_query.hasNext) {
-                break;
-            }
         }
 
         this.channels = Object.assign({}, this.channels, channels);

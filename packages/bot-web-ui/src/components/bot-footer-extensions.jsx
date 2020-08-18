@@ -6,17 +6,17 @@ import { Localize } from '@deriv/translations';
 import { getDerivComLink } from '@deriv/shared';
 import { tabs_title } from '../constants/bot-contents';
 import { connect } from '../stores/connect';
-import '../assets/sass/footer-extensions.scss';
+import '../assets/sass/bot-footer-extensions.scss';
 
 const FooterTabs = ({ active_tab, setActiveTab }) => (
-    <div className='footer_extensions'>
+    <div className='bot-footer-extensions'>
         {Object.keys(tabs_title).map(key => {
             const tab_title = tabs_title[key];
             return (
                 <span
                     key={key}
-                    className={classNames('footer_extensions__button', {
-                        'footer_extensions__button--active': active_tab === tab_title,
+                    className={classNames('bot-footer-extensions__button', {
+                        'bot-footer-extensions__button--active': active_tab === tab_title,
                     })}
                     onClick={() => setActiveTab(tab_title)}
                 >

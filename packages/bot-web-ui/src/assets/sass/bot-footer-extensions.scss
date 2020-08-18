@@ -1,10 +1,11 @@
-.footer_extensions {
+.bot-footer-extensions {
     display: inline;
 
     &__button {
         font-size: 14px;
         padding: 8px;
         cursor: pointer;
+        align-self: flex-end;
 
         &--active {
             border-bottom: 2px solid var(--brand-red-coral);

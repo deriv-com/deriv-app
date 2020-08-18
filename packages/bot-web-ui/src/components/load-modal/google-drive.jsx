@@ -2,6 +2,7 @@ import classnames from 'classnames';
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import { Button, Icon } from '@deriv/components';
+import { getDerivComLink } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from '../../stores/connect';
 
@@ -47,14 +48,14 @@ const GoogleDrive = ({ is_authorised, is_open_button_loading, onDriveConnect, on
                                         className='link'
                                         target='_blank'
                                         rel='noopener noreferrer'
-                                        href='https://deriv.com/security-and-privacy.pdf'
+                                        href={getDerivComLink('tnc/security-and-privacy.pdf')}
                                     />,
                                     <a
                                         key={1}
                                         className='link'
                                         target='_blank'
                                         rel='noopener noreferrer'
-                                        href='https://deriv.com/terms-and-conditions'
+                                        href={getDerivComLink('terms-and-conditions')}
                                     />,
                                 ]}
                             />

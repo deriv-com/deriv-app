@@ -166,7 +166,8 @@ class FinancialAssessment extends React.Component {
                     const needs_financial_assessment =
                         this.props.is_financial_information_incomplete ||
                         this.props.is_high_risk ||
-                        has_trading_experience;
+                        has_trading_experience ||
+                        this.props.is_financial_account;
 
                     this.setState({ has_trading_experience });
 

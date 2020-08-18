@@ -22,7 +22,7 @@ export default class UIStore extends BaseStore {
     @observable should_show_cancellation_warning = true;
 
     // Extensions
-    @observable footer_extension = undefined;
+    @observable footer_extensions = [];
     @observable header_extension = undefined;
     @observable settings_extension = undefined;
     @observable notification_messages_ui = undefined;
@@ -189,8 +189,8 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    populateFooterExtensions(component) {
-        this.footer_extension = component;
+    populateFooterExtensions(footer_extensions) {
+        this.footer_extensions = footer_extensions;
     }
 
     @action.bound

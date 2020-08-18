@@ -10,8 +10,8 @@ const contract_type_binary_url = [
     'user/statementws', // Statement     - 2
 ];
 
-const UnavailableContract = ({ contract_type, landing_company_shortcode }) =>
-    landing_company_shortcode === 'iom' ? (
+const UnavailableContract = ({ contract_type, is_eu }) =>
+    is_eu ? (
         <Localize
             i18n_default_text='This trade type is no longer available. For more details on this transaction, please <0>chat with us</0>.'
             components={[<a key={0} className='link link--orange' onClick={() => window.LC_API.open_chat_window()} />]}
@@ -36,7 +36,7 @@ const UnavailableContract = ({ contract_type, landing_company_shortcode }) =>
 
 UnavailableContract.propTypes = {
     contract_type: PropTypes.number,
-    landing_company_shortcode: PropTypes.string,
+    is_eu: PropTypes.bool,
 };
 
 export default UnavailableContract;

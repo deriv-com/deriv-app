@@ -22,6 +22,7 @@ import {
     validPhone,
     validLetterSymbol,
     validLength,
+    validCountryCode,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';

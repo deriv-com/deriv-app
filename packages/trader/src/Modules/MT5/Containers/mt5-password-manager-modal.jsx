@@ -17,10 +17,9 @@ import {
     UILoader,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { isMobile } from '@deriv/shared';
+import { isMobile, validLength, validPassword } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import MT5Store from 'Stores/Modules/MT5/mt5-store';
-import { validLength, validPassword } from 'Utils/Validator/declarative-validation-rules';
 
 const CountdownComponent = ({ count_from = 60, onTimeout }) => {
     const [count, setCount] = React.useState(count_from);

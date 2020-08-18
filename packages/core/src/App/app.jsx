@@ -5,7 +5,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 // Initialize i18n by importing it here
 // eslint-disable-next-line no-unused-vars
 import { DesktopWrapper } from '@deriv/components';
-import { checkAndSetEndpointFromUrl, setUrlLanguage, isMobile } from '@deriv/shared';
+import { checkAndSetEndpointFromUrl, setUrlLanguage, isMobile, setValidationErrorMessages } from '@deriv/shared';
 import { initializeTranslations, getLanguage } from '@deriv/translations';
 import Client from '_common/base/client_base';
 import WS from 'Services/ws-methods';
@@ -18,8 +18,10 @@ import Header from './Containers/Layout/header.jsx';
 import AppNotificationMessages from './Containers/app-notification-messages.jsx';
 import AppModals from './Containers/Modals';
 import Routes from './Containers/Routes/routes.jsx';
+import initStore from './app';
+import { ERROR_MESSAGES } from '../Constants/error-messages';
+
 // eslint-disable-next-line import/extensions
-import initStore from './app.js';
 // eslint-disable-next-line import/no-unresolved
 import 'Sass/app.scss';
 
@@ -32,6 +34,7 @@ const App = ({ root_store }) => {
         checkAndSetEndpointFromUrl();
         initializeTranslations();
         setUrlLanguage(getLanguage());
+        setValidationErrorMessages(ERROR_MESSAGES);
     }, []);
     if (isMobile()) {
         React.useEffect(() => {

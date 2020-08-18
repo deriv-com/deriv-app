@@ -3,12 +3,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { FormSubmitButton, Icon, Modal, PasswordInput, PasswordMeter } from '@deriv/components';
-import { isMobile, routes } from '@deriv/shared';
+import { isMobile, routes, validLength, validPassword } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import SuccessDialog from 'App/Containers/Modals/success-dialog.jsx';
 import 'Sass/app/modules/mt5/mt5.scss';
 import { connect } from 'Stores/connect';
-import { validLength, validPassword } from 'Utils/Validator/declarative-validation-rules';
 
 const getSubmitText = (account_title, category) => {
     if (category === 'real') {

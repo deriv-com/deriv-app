@@ -183,6 +183,13 @@ const lazyLoadComplaintsPolicy = makeLazyLoader(() =>
     import(/* webpackChunkName: "complaints-policy" */ 'Modules/ComplaintsPolicy')
 );
 
+const RenderCashierTitle = title => (
+    <React.Fragment>
+        {title}
+        <CashierNotifications />
+    </React.Fragment>
+);
+
 // Order matters
 // TODO: search tag: test-route-parent-info -> Enable test for getting route parent info when there are nested routes
 const initRoutesConfig = () => [
@@ -196,12 +203,7 @@ const initRoutesConfig = () => [
         is_authenticated: true,
         title: localize('Cashier'),
         icon_component: 'IcCashier',
-        renderTitle: title => (
-            <React.Fragment>
-                {title}
-                <CashierNotifications />
-            </React.Fragment>
-        ),
+        renderTitle: RenderCashierTitle,
         routes: [
             {
                 path: routes.cashier_deposit,
@@ -239,12 +241,7 @@ const initRoutesConfig = () => [
                 component: lazyLoadCashierComponent('P2PCashier'),
                 title: localize('DP2P'),
                 icon_component: 'IcDp2p',
-                renderTitle: title => (
-                    <React.Fragment>
-                        {title}
-                        <CashierNotifications />
-                    </React.Fragment>
-                ),
+                renderTitle: RenderCashierTitle,
             },
             {
                 id: 'gtm-onramp-tab',

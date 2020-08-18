@@ -64,7 +64,7 @@ P2PCashier.propTypes = {
 };
 
 export default withRouter(
-    connect(({ client, ui }) => ({
+    connect(({ client }) => ({
         currency: client.currency,
         is_virtual: client.is_virtual,
         local_currency_config: client.local_currency_config,

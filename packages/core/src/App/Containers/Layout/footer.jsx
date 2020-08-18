@@ -22,7 +22,7 @@ const FooterIconSeparator = () => <div className='footer-icon-separator' />;
 const FooterExtensionRenderer = (footer_extension, idx) => {
     const { Component: FooterExtensionComponent } = footer_extension;
     return (
-        <React.Fragment key={`footer-link-${footer_extension.position}`}>
+        <React.Fragment key={`footer-link-${footer_extension.position}-${idx}`}>
             {footer_extension.has_left_separator && <FooterIconSeparator />}
             <FooterExtensionComponent />
             {footer_extension.has_right_separator && <FooterIconSeparator />}

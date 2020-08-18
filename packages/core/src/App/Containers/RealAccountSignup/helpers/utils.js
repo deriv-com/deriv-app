@@ -4,7 +4,7 @@
  * @param {object} values - object containing form field values and validations
  * @return {object} object containing errors and warnings
  */
-function splitValidationResultTypes(values) {
+export const splitValidationResultTypes = values => {
     const warnings = {};
     const errors = {};
     Object.keys(values).forEach(field => {
@@ -18,6 +18,11 @@ function splitValidationResultTypes(values) {
         }
     });
     return { warnings, errors };
-}
+};
 
-export { splitValidationResultTypes };
+export const validate = (errors, values) => (fn, arr, err_msg) => {
+    arr.forEach(field => {
+        const value = values[field];
+        if (!fn(value) && !errors[field] && err_msg !== true) errors[field] = err_msg;
+    });
+};

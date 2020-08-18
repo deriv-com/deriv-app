@@ -20,7 +20,8 @@ import {
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { isDesktop, isMobile, toMoment } from '@deriv/shared';
-import { splitValidationResultTypes } from 'App/Containers/RealAccountSignup/helpers/utils';
+import { splitValidationResultTypes, validate } from 'App/Containers/RealAccountSignup/helpers/utils';
+import { validLetterSymbol } from 'Utils/Validator/declarative-validation-rules';
 import 'Sass/details-form.scss';
 
 const DateOfBirthField = props => (
@@ -85,7 +86,12 @@ class PersonalDetails extends React.Component {
     };
 
     handleValidate = values => {
-        const { errors, warnings } = splitValidationResultTypes(this.props.validate(values));
+        const { warnings, errors } = splitValidationResultTypes(this.props.validate(values));
+        const validateValues = validate(errors, values);
+
+        const only_alphabet_fields = ['first_name', 'last_name'];
+        validateValues(validLetterSymbol, only_alphabet_fields, localize('Only alphabet is allowed'));
+
         this.setState({ warnings });
         return errors;
     };

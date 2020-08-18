@@ -86,7 +86,7 @@ class ProfitTable extends React.Component {
         getSupportedContracts()[Shortcode.extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase()]
             ? getContractPath(row_obj.contract_id)
             : {
-                  component: <UnavailableContract contract_type={1} is_eu={this.props.is_eu} />,
+                  component: <UnavailableContract binary_contract_url='user/profit_tablews' is_eu={this.props.is_eu} />,
               };
 
     render() {

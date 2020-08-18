@@ -77,7 +77,9 @@ class Statement extends React.Component {
             ]
                 ? getContractPath(row_obj.id)
                 : {
-                      component: <UnavailableContract contract_type={2} is_eu={this.props.is_eu} />,
+                      component: (
+                          <UnavailableContract binary_contract_url='user/statementws' is_eu={this.props.is_eu} />
+                      ),
                   };
         } else if (['deposit', 'withdrawal'].includes(row_obj.action_type)) {
             action = {

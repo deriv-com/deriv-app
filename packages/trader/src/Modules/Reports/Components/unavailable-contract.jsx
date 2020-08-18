@@ -4,13 +4,7 @@ import { Localize } from '@deriv/translations';
 import { urlFor } from '@deriv/shared';
 import { website_name } from 'App/Constants/app-config';
 
-const contract_type_binary_url = [
-    'user/portfoliows', // Open position - 0
-    'user/profit_tablews', // Profit table  - 1
-    'user/statementws', // Statement     - 2
-];
-
-const UnavailableContract = ({ contract_type, is_eu }) =>
+const UnavailableContract = ({ binary_contract_url, is_eu }) =>
     is_eu ? (
         <Localize
             i18n_default_text='This trade type is no longer available. For more details on this transaction, please <0>chat with us</0>.'
@@ -28,14 +22,14 @@ const UnavailableContract = ({ contract_type, is_eu }) =>
                     className='link link--orange'
                     rel='noopener noreferrer'
                     target='_blank'
-                    href={urlFor(contract_type_binary_url[contract_type], { legacy: true })}
+                    href={urlFor(binary_contract_url, { legacy: true })}
                 />,
             ]}
         />
     );
 
 UnavailableContract.propTypes = {
-    contract_type: PropTypes.number,
+    binary_contract_url: PropTypes.string,
     is_eu: PropTypes.bool,
 };
 

@@ -184,7 +184,7 @@ class OpenPositions extends React.Component {
     getRowAction = row_obj =>
         row_obj.is_unsupported
             ? {
-                  component: <UnavailableContract contract_type={0} is_eu={this.props.is_eu} />,
+                  component: <UnavailableContract binary_contract_url='user/portfoliows' is_eu={this.props.is_eu} />,
               }
             : getContractPath(row_obj.id);
     // After refactoring transactionHandler for creating positions,

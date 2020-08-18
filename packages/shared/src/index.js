@@ -11,3 +11,4 @@ export * from './utils/platform';
 export * from './utils/url';
 export * from './utils/storage';
 export * from './utils/digital-options';
+export * from './utils/validation';

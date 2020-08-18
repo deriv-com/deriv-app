@@ -184,12 +184,7 @@ class OpenPositions extends React.Component {
     getRowAction = row_obj =>
         row_obj.is_unsupported
             ? {
-                  component: (
-                      <UnavailableContract
-                          contract_type={0}
-                          landing_company_shortcode={this.props.landing_company_shortcode}
-                      />
-                  ),
+                  component: <UnavailableContract contract_type={0} is_eu={this.props.is_eu} />,
               }
             : getContractPath(row_obj.id);
     // After refactoring transactionHandler for creating positions,
@@ -365,12 +360,12 @@ OpenPositions.propTypes = {
     onUnmount: PropTypes.func,
     server_time: PropTypes.object,
     totals: PropTypes.object,
-    landing_company_shortcode: PropTypes.string,
+    is_eu: PropTypes.bool,
 };
 
 export default connect(({ modules, client, common, ui }) => ({
     currency: client.currency,
-    landing_company_shortcode: client.landing_company_shortcode,
+    is_eu: client.is_eu,
     active_positions: modules.portfolio.active_positions_filtered,
     error: modules.portfolio.error,
     getPositionById: modules.portfolio.getPositionById,

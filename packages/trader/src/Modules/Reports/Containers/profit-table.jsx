@@ -86,12 +86,7 @@ class ProfitTable extends React.Component {
         getSupportedContracts()[Shortcode.extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase()]
             ? getContractPath(row_obj.contract_id)
             : {
-                  component: (
-                      <UnavailableContract
-                          contract_type={1}
-                          landing_company_shortcode={this.props.landing_company_shortcode}
-                      />
-                  ),
+                  component: <UnavailableContract contract_type={1} is_eu={this.props.is_eu} />,
               };
 
     render() {
@@ -204,12 +199,12 @@ ProfitTable.propTypes = {
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
     totals: PropTypes.object,
-    landing_company_shortcode: PropTypes.string,
+    is_eu: PropTypes.bool,
 };
 
 export default connect(({ modules, client }) => ({
     currency: client.currency,
-    landing_company_shortcode: client.landing_company_shortcode,
+    is_eu: client.is_eu,
     data: modules.profit_table.data_source,
     date_from: modules.profit_table.date_from,
     date_to: modules.profit_table.date_to,

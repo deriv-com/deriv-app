@@ -77,12 +77,7 @@ class Statement extends React.Component {
             ]
                 ? getContractPath(row_obj.id)
                 : {
-                      component: (
-                          <UnavailableContract
-                              contract_type={2}
-                              landing_company_shortcode={this.props.landing_company_shortcode}
-                          />
-                      ),
+                      component: <UnavailableContract contract_type={2} is_eu={this.props.is_eu} />,
                   };
         } else if (['deposit', 'withdrawal'].includes(row_obj.action_type)) {
             action = {
@@ -227,10 +222,12 @@ Statement.propTypes = {
     landing_company_shortcode: PropTypes.string,
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
+    is_eu: PropTypes.bool,
 };
 
 export default connect(({ modules, client }) => ({
     currency: client.currency,
+    is_eu: client.is_eu,
     date_from: modules.statement.date_from,
     date_to: modules.statement.date_to,
     data: modules.statement.data_source,

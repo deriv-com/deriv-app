@@ -158,6 +158,7 @@ class Popover extends React.PureComponent {
                                     popoverRect={popoverRect}
                                     arrowColor={has_error ? 'var(--status-danger)' : 'var(--general-active)'}
                                     arrowSize={5}
+                                    onClick={this.onClick}
                                 >
                                     <div
                                         id={id}
@@ -190,6 +191,7 @@ class Popover extends React.PureComponent {
                             id={id}
                             onMouseEnter={has_external_open_state ? undefined : this.toggleOpen}
                             onMouseLeave={has_external_open_state ? undefined : this.toggleClose}
+                            onClick={this.onClick}
                         >
                             <div className={classNames(classNameTarget, 'dc-popover__target')}>
                                 {!disable_target_icon && (

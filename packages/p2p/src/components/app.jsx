@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { isDeepEqual, isProduction, getPropertyValue } from '@deriv/shared';
+import { isDeepEqual, isProduction, getPropertyValue, isMobile } from '@deriv/shared';
 import { Tabs, Modal } from '@deriv/components';
 import { Dp2pProvider } from 'Components/context/dp2p-context';
 import ServerTime from 'Utils/server-time';
@@ -324,7 +324,6 @@ class App extends React.Component {
             className,
             client: { currency, local_currency_config, is_virtual, residence },
             custom_strings,
-            is_mobile,
             order_id,
             setOrderId,
             should_show_verification,
@@ -339,6 +338,8 @@ class App extends React.Component {
                 </h1>
             );
         }
+
+        const is_mobile = isMobile();
 
         return (
             <Dp2pProvider
@@ -454,7 +455,6 @@ App.propTypes = {
         }).isRequired,
         residence: PropTypes.string.isRequired,
     }),
-    is_mobile: PropTypes.bool,
     lang: PropTypes.string,
     order_id: PropTypes.string,
     setOrderId: PropTypes.func,

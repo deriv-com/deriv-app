@@ -9,7 +9,7 @@ import { connect } from 'Stores/connect';
 import ServerTime from '_common/base/server_time';
 import { routes } from '@deriv/shared';
 
-const P2PCashier = ({ currency, history, is_mobile, is_virtual, local_currency_config, location, residence }) => {
+const P2PCashier = ({ currency, history, is_virtual, local_currency_config, location, residence }) => {
     const [order_id, setOrderId] = React.useState(null);
 
     React.useEffect(() => {
@@ -45,7 +45,6 @@ const P2PCashier = ({ currency, history, is_mobile, is_virtual, local_currency_c
         <P2P
             LocalStorage={P2pStorage}
             client={{ currency, local_currency_config, is_virtual, residence }}
-            is_mobile={is_mobile}
             lang={getLanguage()}
             order_id={order_id}
             poi_url={routes.proof_of_identity}
@@ -59,7 +58,6 @@ const P2PCashier = ({ currency, history, is_mobile, is_virtual, local_currency_c
 
 P2PCashier.propTypes = {
     currency: PropTypes.string,
-    is_mobile: PropTypes.bool,
     is_virtual: PropTypes.bool,
     local_currency_config: PropTypes.object,
     residence: PropTypes.string,
@@ -68,7 +66,6 @@ P2PCashier.propTypes = {
 export default withRouter(
     connect(({ client, ui }) => ({
         currency: client.currency,
-        is_mobile: ui.is_mobile,
         is_virtual: client.is_virtual,
         local_currency_config: client.local_currency_config,
         residence: client.residence,

@@ -9,15 +9,6 @@
             .btn__text {
                 font-size: var(--text-size-xxs);
             }
-            &-mobile {
-                height: 2.4rem !important;
-                margin-left: 100%;
-                transform: translateX(-95%) !important;
-
-                .dc-btn__text {
-                    font-size: 1.2rem !important;
-                }
-            }
             &-journal {
                 margin-left: 0 !important;
                 transform: none !important;
@@ -26,6 +17,15 @@
 
                 .dc-btn__text {
                     font-size: 1.2rem !important;
+                }
+                &--mobile {
+                    height: 2.4rem !important;
+                    margin-left: 100% !important;
+                    transform: translateX(-95%) !important;
+
+                    .dc-btn__text {
+                        font-size: 1.2rem !important;
+                    }
                 }
             }
         }

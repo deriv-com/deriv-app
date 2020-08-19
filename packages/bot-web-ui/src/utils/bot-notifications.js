@@ -22,7 +22,7 @@ export const journalError = onClick => {
         message: (
             <Button
                 className={classNames({
-                    'notify__item-button-mobile': isMobile(),
+                    'notify__item-button-journal--mobile': isMobile(),
                     'notify__item-button-journal': !isMobile(),
                 })}
                 onClick={onClick}

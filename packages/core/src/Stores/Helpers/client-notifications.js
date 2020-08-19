@@ -17,7 +17,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
                 text: localize('Set currency'),
                 onClick: () => {
                     ui.toggleNotificationsModal();
-                    ui.openRealAccountSignup();
+                    ui.openRealAccountSignup('set_currency');
                 },
             },
             key: 'currency',

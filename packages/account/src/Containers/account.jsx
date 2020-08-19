@@ -30,7 +30,8 @@ class Account extends React.Component {
                     this.props.landing_company_shortcode === 'costarica';
                 const needs_financial_assessment =
                     !this.props.is_virtual &&
-                    !(is_svg && this.props.is_high_risk) &&
+                    !is_svg &&
+                    this.props.is_high_risk &&
                     (this.props.is_high_risk ||
                         this.props.is_financial_information_incomplete ||
                         this.props.is_financial_account ||
@@ -58,7 +59,8 @@ class Account extends React.Component {
                 this.props.landing_company_shortcode === 'svg' || this.props.landing_company_shortcode === 'costarica';
             const needs_financial_assessment =
                 !this.props.is_virtual &&
-                !(is_svg && this.props.is_high_risk) &&
+                !is_svg &&
+                this.props.is_high_risk &&
                 (this.props.is_high_risk ||
                     this.props.is_financial_information_incomplete ||
                     this.props.is_financial_account ||

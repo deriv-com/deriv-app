@@ -163,7 +163,9 @@ class FinancialAssessment extends React.Component {
                         const has_mt5_financial_session = /labuan_financial_stp|labuan_advanced/.test(
                             mt5_session_storage
                         );
-                        const is_svg = this.props.landing_company_shortcode === 'svg';
+                        const is_svg =
+                            this.props.landing_company_shortcode === 'svg' ||
+                            this.props.landing_company_shortcode === 'costarica';
                         const has_trading_experience =
                             (has_mt5_financial_session ||
                                 this.props.is_financial_account ||

@@ -2,6 +2,14 @@ import { addComma } from '../currency';
 import { cloneObject } from '../object';
 import { compareBigUnsignedInt } from '../string';
 
+const validRequired = (value /* , options, field */) => {
+    if (value === undefined || value === null) {
+        return false;
+    }
+
+    const str = String(value).replace(/\s/g, '');
+    return str.length > 0;
+};
 export const validAddress = value => !/[`~!$%^&*_=+[}{\]\\"?><|]+/.test(value);
 export const validPostCode = value => /^[a-zA-Z\s\W\d-]*$/.test(value);
 export const validTaxID = value => /^[a-zA-Z0-9]*[\w-]*$/.test(value);
@@ -96,6 +104,7 @@ const initPreBuildDVRs = () => ({
     phone: { func: validPhone, message: form_error_messages.phone },
     postcode: { func: validPostCode, message: form_error_messages.postcode },
     regular: { func: validRegular, message: '' },
+    req: { func: validRequired, message: '' },
     confirm: { func: confirmRequired, message: '' },
     signup_token: { func: validEmailToken, message: form_error_messages.signup_token },
     tax_id: {

@@ -3,10 +3,10 @@ const isMobile = require('@deriv/shared').isMobileOs;
 const getDerivComLink = require('@deriv/shared').getDerivComLink;
 const urlForCurrentDomain = require('@deriv/shared').urlForCurrentDomain;
 const website_name = require('@deriv/shared').website_name;
-const isStorageSupported = require('../storage').isStorageSupported;
-const LocalStore = require('../storage').LocalStore;
 const domain_app_ids = require('@deriv/shared').domain_app_ids;
 const getAppId = require('@deriv/shared').getAppId;
+const isStorageSupported = require('../storage').isStorageSupported;
+const LocalStore = require('../storage').LocalStore;
 
 const Login = (() => {
     const redirectToLogin = (is_logged_in) => {

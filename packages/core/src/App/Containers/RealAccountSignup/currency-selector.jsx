@@ -224,7 +224,7 @@ class CurrencySelector extends React.Component {
                                         has_cancel
                                         onCancel={this.props.onCancel}
                                         cancel_label={localize('Cancel')}
-                                        label={localize('Next')}
+                                        label={!has_currency ? localize('Set currency') : localize('Next')}
                                     />
                                 </Modal.Footer>
                             </form>

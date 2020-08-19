@@ -164,7 +164,8 @@ class FinancialAssessment extends React.Component {
                             mt5_session_storage
                         );
                         const has_trading_experience =
-                            (has_mt5_financial_session || this.props.is_financial_account) &&
+                            has_mt5_financial_session ||
+                            this.props.is_financial_account ||
                             this.props.is_trading_experience_incomplete;
                         const needs_financial_assessment =
                             this.props.is_financial_information_incomplete ||

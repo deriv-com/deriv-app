@@ -49,6 +49,31 @@ class Account extends React.Component {
         this.props.toggleAccount(true);
     }
 
+    componentDidUpdate(prevProps) {
+        // since account.jsx is rendered only once after initial load,
+        // we need to add this update once account_status changes
+        // TODO: Refactor account.jsx into functional component with hooks to eliminate need for componentDidUpdate
+        if (this.props.account_status !== prevProps.account_status) {
+            const is_svg =
+                this.props.landing_company_shortcode === 'svg' || this.props.landing_company_shortcode === 'costarica';
+            const needs_financial_assessment =
+                !this.props.is_virtual &&
+                !(is_svg && this.props.is_high_risk) &&
+                (this.props.is_high_risk ||
+                    this.props.is_financial_information_incomplete ||
+                    this.props.is_financial_account ||
+                    this.props.is_trading_experience_incomplete);
+
+            const allow_document_upload = this.props.account_status.status?.includes('allow_document_upload');
+
+            if (this.is_mounted)
+                this.setState({
+                    needs_financial_assessment,
+                    allow_document_upload,
+                });
+        }
+    }
+
     componentWillUnmount() {
         this.is_mounted = false;
         this.props.toggleAccount(false);

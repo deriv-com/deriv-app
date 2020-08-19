@@ -81,7 +81,7 @@ class ToggleMenuDrawer extends React.Component {
     componentDidUpdate(prevProps) {
         // since ToggleMenuDrawer is rendered only once after initial load,
         // we need to add this update once account_status changes
-        // TODO: Refactor into functional component with hooks to eliminate need for componentDidUpdate
+        // TODO: Refactor ToggleMenuDrawer into functional component with hooks to eliminate need for componentDidUpdate
         if (this.props.account_status !== prevProps.account_status) {
             const needs_financial_assessment =
                 !this.props.is_virtual &&

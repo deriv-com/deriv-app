@@ -1,12 +1,12 @@
 export const showDigitalOptionsUnavailableError = (showError, message) => {
     const { title, text, link } = message;
-    showError(
-        title, // Header
-        text, // Message
-        link, // Redirect label
-        null, // Redirect onClick
-        false, // Should show refresh?
-        '/mt5', // Where to
-        true // With history? (not window.location)
-    );
+    showError({
+        message: text,
+        header: title,
+        redirect_label: link,
+        redirectOnClick: null,
+        should_show_refresh: false,
+        where_to: '/mt5',
+        with_history: true,
+    });
 };

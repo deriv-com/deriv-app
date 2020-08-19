@@ -269,7 +269,7 @@ export default class TradeStore extends BaseStore {
             : // else requests new active_symbols
               await WS.authorized.activeSymbols();
         if (error) {
-            this.root_store.common.showError(localize('Trading is unavailable at this time.'));
+            this.root_store.common.showError({ message: localize('Trading is unavailable at this time.') });
             return;
         } else if (!active_symbols || !active_symbols.length) {
             if (this.root_store.client.landing_company_shortcode !== 'maltainvest') {
@@ -277,10 +277,10 @@ export default class TradeStore extends BaseStore {
                 return;
             } else if (this.root_store.client.landing_company_shortcode === 'maltainvest') {
                 showDigitalOptionsUnavailableError(this.root_store.common.showError, {
-                    title: localize(
+                    text: localize(
                         'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a DMT5 Financial.'
                     ),
-                    text: localize('DTrader is not available for this account'),
+                    title: localize('DTrader is not available for this account'),
                     link: localize('Go to DMT5 dashboard'),
                 });
                 return;
@@ -934,10 +934,10 @@ export default class TradeStore extends BaseStore {
             const { active_symbols } = await WS.authorized.activeSymbols();
             if (!active_symbols || !active_symbols.length) {
                 showDigitalOptionsUnavailableError(this.root_store.common.showError, {
-                    title: localize(
+                    text: localize(
                         'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a DMT5 Financial.'
                     ),
-                    text: localize('DTrader is not available for this account'),
+                    title: localize('DTrader is not available for this account'),
                     link: localize('Go to DMT5 dashboard'),
                 });
             }

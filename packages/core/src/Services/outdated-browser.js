@@ -29,16 +29,18 @@ const OutdatedBrowser = (() => {
     const updateStore = action('showError', () => {
         if (common_store) {
             common_store.showError({
-                message: localize(
-                    'Your web browser is out of date and may affect your trading experience. Please {{opening_tag}}update your browser{{closing_tag}}.',
-                    {
-                        opening_tag:
-                            '<a href="http://outdatedbrowser.com" rel="noopener noreferrer" target="_blank" class="link">',
-                        closing_tag: '</a>',
-                        interpolation: { escapeValue: false },
-                    }
-                ),
-                has_html: true,
+                message: {
+                    message: localize(
+                        'Your web browser is out of date and may affect your trading experience. Please {{opening_tag}}update your browser{{closing_tag}}.',
+                        {
+                            opening_tag:
+                                '<a href="http://outdatedbrowser.com" rel="noopener noreferrer" target="_blank" class="link">',
+                            closing_tag: '</a>',
+                            interpolation: { escapeValue: false },
+                        }
+                    ),
+                    has_html: true,
+                },
             });
         }
     });

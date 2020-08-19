@@ -9,10 +9,20 @@
             .btn__text {
                 font-size: var(--text-size-xxs);
             }
+            &-mobile {
+                height: 2.4rem !important;
+                margin-left: 100%;
+                transform: translateX(-95%) !important;
+
+                .dc-btn__text {
+                    font-size: 1.2rem !important;
+                }
+            }
             &-journal {
                 margin-left: 0 !important;
                 transform: none !important;
                 height: 2.4rem !important;
+                margin-top: 0.8rem !important;
 
                 .dc-btn__text {
                     font-size: 1.2rem !important;

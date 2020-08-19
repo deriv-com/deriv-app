@@ -64,7 +64,6 @@ class ConfigError {
     @observable is_self_exclusion_max_turnover_set = false;
     @observable is_ask_authentication = false;
     @observable is_ask_financial_risk_approval = false;
-    @observable is_cashier_forward_error = false;
 }
 
 class ConfigPaymentAgent {
@@ -344,8 +343,7 @@ export default class CashierStore extends BaseStore {
             need_authentication ||
             is_tnc_needed ||
             need_financial_assessment ||
-            this.config.deposit.error.is_ask_financial_risk_approval ||
-            this.config.deposit.error.is_cashier_forward_error
+            this.config.deposit.error.is_ask_financial_risk_approval
         );
     }
 
@@ -360,8 +358,7 @@ export default class CashierStore extends BaseStore {
         return (
             this.root_store.client.is_withdrawal_lock ||
             need_authentication ||
-            this.config.withdraw.error.is_ask_financial_risk_approval ||
-            this.config.withdraw.error.is_cashier_forward_error
+            this.config.withdraw.error.is_ask_financial_risk_approval
         );
     }
 
@@ -465,18 +462,12 @@ export default class CashierStore extends BaseStore {
                     is_ask_financial_risk_approval: true,
                 };
                 break;
-            case 'CashierForwardError':
-                this.config[this.active_container].error = {
-                    is_cashier_forward_error: true,
-                };
-                break;
             default:
                 this.config[this.active_container].error = {
                     is_ask_uk_funds_protection: false,
                     is_self_exclusion_max_turnover_set: false,
                     is_ask_authentication: false,
                     is_ask_financial_risk_approval: false,
-                    is_cashier_forward_error: false,
                 };
                 this.setErrorMessage(error);
         }

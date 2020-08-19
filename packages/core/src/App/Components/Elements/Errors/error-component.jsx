@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { PageError } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
@@ -14,6 +15,14 @@ const ErrorComponent = ({
     where_to = routes.trade,
     should_show_refresh = true,
 }) => {
+    const history = useHistory();
+
+    React.useEffect(() => {
+        return history.listen(() => {
+            setError(false, null);
+        });
+    }, []);
+
     const refresh_message = should_show_refresh ? (
         <Localize i18n_default_text='Please refresh this page to continue.' />
     ) : (

@@ -36,7 +36,7 @@ const SignupErrorContent = ({ message, code, onConfirm }) => {
                         <Localize i18n_default_text='An account with your details already exists.' />
                         <br />
                         <Localize
-                            i18n_default_text="If you're having trouble signing in, let us know <0>chat</0>"
+                            i18n_default_text="If you're having trouble signing in, let us know via <0>chat</0>"
                             components={[
                                 <span
                                     className='chat-inline'

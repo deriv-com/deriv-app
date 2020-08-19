@@ -80,6 +80,17 @@
     }
 }
 
+.dc-mobile-dialog__account-signup-mobile-dialog {
+    .account-wizard--error {
+        span.chat-inline {
+            color: var(--brand-red-coral);
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    }
+}
+
 .dc-modal-header--real-account-signup-modal {
     border-bottom: 1px solid var(--general-section-1);
 }

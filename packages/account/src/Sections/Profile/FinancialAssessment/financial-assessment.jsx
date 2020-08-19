@@ -163,10 +163,13 @@ class FinancialAssessment extends React.Component {
                         const has_mt5_financial_session = /labuan_financial_stp|labuan_advanced/.test(
                             mt5_session_storage
                         );
+                        const is_svg = this.props.landing_company_shortcode === 'svg';
                         const has_trading_experience =
-                            has_mt5_financial_session ||
-                            this.props.is_financial_account ||
-                            this.props.is_trading_experience_incomplete;
+                            (has_mt5_financial_session ||
+                                this.props.is_financial_account ||
+                                this.props.is_trading_experience_incomplete) &&
+                            !is_svg;
+
                         const needs_financial_assessment =
                             this.props.is_financial_information_incomplete ||
                             this.props.is_high_risk ||
@@ -901,6 +904,7 @@ export default connect(({ client, ui }) => ({
     is_financial_account: client.is_financial_account,
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,
     is_financial_information_incomplete: client.is_financial_information_incomplete,
+    landing_company_shortcode: client.landing_company_shortcode,
     removeNotificationMessage: ui.removeNotificationMessage,
     removeNotificationByKey: ui.removeNotificationByKey,
 }))(FinancialAssessment);

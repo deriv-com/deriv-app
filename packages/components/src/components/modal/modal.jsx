@@ -22,6 +22,7 @@ const ModalElement = ({
     is_vertical_bottom,
     is_vertical_top,
     header,
+    portalId,
     children,
     height,
     width,
@@ -29,7 +30,8 @@ const ModalElement = ({
     small,
 }) => {
     const el_ref = React.useRef(document.createElement('div'));
-    const modal_root_ref = React.useRef(document.getElementById('modal_root'));
+    const el_portal_node = document.getElementById(portalId);
+    const modal_root_ref = React.useRef(el_portal_node || document.getElementById('modal_root'));
     const wrapper_ref = React.useRef();
 
     const is_datepicker_visible = () => modal_root_ref.current.querySelectorAll('.dc-datepicker__picker').length;
@@ -154,6 +156,7 @@ const Modal = ({
     onExited,
     onMount,
     onUnmount,
+    portalId,
     small,
     is_vertical_bottom,
     is_vertical_centered,
@@ -192,6 +195,7 @@ const Modal = ({
             height={height}
             onMount={onMount}
             onUnmount={onUnmount}
+            portalId={portalId}
             renderTitle={renderTitle}
             small={small}
             width={width}
@@ -224,6 +228,7 @@ Modal.propTypes = {
     onExited: PropTypes.func,
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
+    portalId: PropTypes.string,
     renderTitle: PropTypes.func,
     small: PropTypes.bool,
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.node]),

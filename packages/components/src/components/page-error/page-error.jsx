@@ -18,7 +18,7 @@ const PageError = ({
     const onClickHandler = () => {
         if (with_history) {
             setError(false, null);
-            buttonOnClick(redirect_label);
+            buttonOnClick(redirect_url);
         } else {
             buttonOnClick();
         }

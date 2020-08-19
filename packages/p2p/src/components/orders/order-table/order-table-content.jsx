@@ -13,7 +13,9 @@ import OrderInfo from 'Components/orders/order-info';
 import { height_constants } from 'Utils/height_constants';
 
 const OrderTableContent = ({ showDetails, is_active }) => {
-    const { changeTab, handleNotifications, list_item_limit, order_table_type } = React.useContext(Dp2pContext);
+    const { changeTab, handleNotifications, list_item_limit, order_table_type, setOrders } = React.useContext(
+        Dp2pContext
+    );
 
     const [api_error_message, setApiErrorMessage] = React.useState('');
     const [has_more_items_to_load, setHasMoreItemsToLoad] = React.useState(false);
@@ -21,7 +23,7 @@ const OrderTableContent = ({ showDetails, is_active }) => {
     const [is_loading, setIsLoading] = React.useState(true);
     const [is_mounted, setIsMounted] = React.useState(false);
     const order_offset = React.useRef(0);
-    const [orders, setOrders] = React.useState([]);
+    const [orders, setOrdersState] = React.useState([]);
 
     React.useEffect(() => {
         setIsMounted(true);
@@ -32,7 +34,7 @@ const OrderTableContent = ({ showDetails, is_active }) => {
         if (is_mounted) {
             is_active_tab.current = order_table_type === 'active';
             order_offset.current = 0;
-            setOrders([]);
+            setOrdersState([]);
             setIsLoading(true);
             loadMoreOrders();
         }
@@ -52,7 +54,8 @@ const OrderTableContent = ({ showDetails, is_active }) => {
                         if (!list.error) {
                             setHasMoreItemsToLoad(list.length >= list_item_limit);
                             handleNotifications(orders, list);
-                            setOrders(orders.concat(getModifiedP2POrderList(list)));
+                            setOrdersState(orders.concat(getModifiedP2POrderList(list)));
+                            setOrders(orders);
                             order_offset.current += list.length;
                             setIsLoading(false);
                         } else {

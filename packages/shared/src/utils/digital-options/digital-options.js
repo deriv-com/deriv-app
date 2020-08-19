@@ -7,6 +7,6 @@ export const showDigitalOptionsUnavailableError = (showError, message) => {
         redirectOnClick: null,
         should_show_refresh: false,
         where_to: '/mt5',
-        with_history: true,
+        clear_error: true,
     });
 };

@@ -12,13 +12,12 @@ const PageError = ({
     messages,
     redirect_label,
     redirect_url,
-    with_history,
+    clear_error,
     setError,
 }) => {
     const onClickHandler = () => {
-        if (with_history) {
+        if (clear_error) {
             setError(false, null);
-            buttonOnClick(redirect_url);
         } else {
             buttonOnClick();
         }
@@ -89,7 +88,7 @@ PageError.propTypes = {
     redirect_label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     redirect_url: PropTypes.string,
     setError: PropTypes.func,
-    with_history: PropTypes.bool,
+    clear_error: PropTypes.bool,
 };
 
 export default PageError;

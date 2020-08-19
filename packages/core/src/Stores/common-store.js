@@ -99,14 +99,14 @@ export default class CommonStore extends BaseStore {
                 redirectOnClick: error.redirectOnClick,
                 should_show_refresh: error.should_show_refresh,
                 where_to: error.where_to,
-                with_history: error.with_history,
+                clear_error: error.clear_error,
                 setError: this.setError,
             }),
         };
     }
 
     @action.bound
-    showError({ message, header, redirect_label, redirectOnClick, should_show_refresh, where_to, with_history }) {
+    showError({ message, header, redirect_label, redirectOnClick, should_show_refresh, where_to, clear_error }) {
         this.setError(true, {
             header,
             message,
@@ -114,7 +114,7 @@ export default class CommonStore extends BaseStore {
             redirectOnClick,
             should_show_refresh,
             where_to,
-            with_history,
+            clear_error,
             type: 'error',
         });
     }

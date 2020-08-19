@@ -106,7 +106,7 @@ export default class CommonStore extends BaseStore {
     }
 
     @action.bound
-    showError(message, header, redirect_label, redirectOnClick, should_show_refresh, where_to, with_history) {
+    showError({ message, header, redirect_label, redirectOnClick, should_show_refresh, where_to, with_history }) {
         this.setError(true, {
             header,
             message,

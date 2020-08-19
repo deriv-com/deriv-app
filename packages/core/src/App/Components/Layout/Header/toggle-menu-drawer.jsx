@@ -62,7 +62,8 @@ class ToggleMenuDrawer extends React.Component {
                 const { status } = this.props.account_status;
                 const needs_financial_assessment =
                     !this.props.is_virtual &&
-                    !this.props.is_svg && this.props.is_high_risk &&
+                    this.props.is_svg &&
+                    this.props.is_high_risk &&
                     (this.props.is_high_risk ||
                         this.props.is_financial_information_incomplete ||
                         this.props.is_financial_account ||
@@ -85,7 +86,8 @@ class ToggleMenuDrawer extends React.Component {
         if (this.props.account_status !== prevProps.account_status) {
             const needs_financial_assessment =
                 !this.props.is_virtual &&
-                !this.props.is_svg && this.props.is_high_risk &&
+                !this.props.is_svg &&
+                this.props.is_high_risk &&
                 (this.props.is_high_risk ||
                     this.props.is_financial_information_incomplete ||
                     this.props.is_financial_account ||

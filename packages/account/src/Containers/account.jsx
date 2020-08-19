@@ -30,7 +30,7 @@ class Account extends React.Component {
                     this.props.landing_company_shortcode === 'costarica';
                 const needs_financial_assessment =
                     !this.props.is_virtual &&
-                    !is_svg &&
+                    is_svg &&
                     this.props.is_high_risk &&
                     (this.props.is_high_risk ||
                         this.props.is_financial_information_incomplete ||

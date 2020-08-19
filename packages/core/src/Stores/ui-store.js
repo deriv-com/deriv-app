@@ -283,8 +283,8 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    toggleAccountsDialog() {
-        this.is_accounts_switcher_on = !this.is_accounts_switcher_on;
+    toggleAccountsDialog(status = !this.is_accounts_switcher_on) {
+        this.is_accounts_switcher_on = status;
     }
 
     @action.bound

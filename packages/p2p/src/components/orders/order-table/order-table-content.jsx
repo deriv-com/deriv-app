@@ -74,7 +74,7 @@ const OrderTableContent = ({ showDetails, is_active }) => {
                         }
                         // trigger re-rendering by setting orders again
                         handleNotifications(orders, updated_orders);
-                        setOrders(getModifiedP2POrderList(updated_orders));
+                        setOrdersState(getModifiedP2POrderList(updated_orders));
                     }
                     setIsLoading(false);
                     resolve();

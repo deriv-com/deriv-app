@@ -15,9 +15,10 @@ const ErrorComponent = ({
     where_to = routes.trade,
     should_show_refresh = true,
 }) => {
+    const history = useHistory();
+
     let buttonOnClick;
     if (with_history) {
-        const history = useHistory();
         buttonOnClick = history.push;
     } else {
         buttonOnClick = redirectOnClick || (() => location.reload());

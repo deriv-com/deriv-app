@@ -36,12 +36,13 @@ const ModalElement = ({
     const validateClickOutside = e => {
         const is_reality_check_visible = modal_root_ref.current.querySelectorAll('.dc-modal__container_reality-check')
             .length;
+        const path = e.path ?? e.composedPath?.();
         return (
             has_close_icon &&
             !is_datepicker_visible() &&
             is_open &&
             !is_reality_check_visible &&
-            !(elements_to_ignore && e?.path.find(el => elements_to_ignore.includes(el)))
+            !(elements_to_ignore && path?.find(el => elements_to_ignore.includes(el)))
         );
     };
 

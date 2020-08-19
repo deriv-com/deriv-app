@@ -1,7 +1,6 @@
-import { toMoment } from '@deriv/shared';
+import { toMoment, getPreBuildDVRs } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import PersonalDetails from 'App/Containers/RealAccountSignup/personal-details.jsx';
-import { getPreBuildDVRs } from 'Utils/Validator/declarative-validation-rules';
 import { generateValidationFunction, getDefaultFields } from './form-validations';
 
 const personal_details_config = ({ residence_list, account_settings }) => {

@@ -19,7 +19,7 @@ import AppNotificationMessages from './Containers/app-notification-messages.jsx'
 import AppModals from './Containers/Modals';
 import Routes from './Containers/Routes/routes.jsx';
 import initStore from './app';
-import { ERROR_MESSAGES } from '../Constants/error-messages';
+import { FORM_ERROR_MESSAGES } from '../Constants/form-error-messages';
 
 // eslint-disable-next-line import/extensions
 // eslint-disable-next-line import/no-unresolved
@@ -34,7 +34,7 @@ const App = ({ root_store }) => {
         checkAndSetEndpointFromUrl();
         initializeTranslations();
         setUrlLanguage(getLanguage());
-        setValidationErrorMessages(ERROR_MESSAGES);
+        setValidationErrorMessages(FORM_ERROR_MESSAGES);
     }, []);
     if (isMobile()) {
         React.useEffect(() => {

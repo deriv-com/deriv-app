@@ -1,12 +1,11 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
-import { ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { isMobile } from '@deriv/shared';
 import { website_name } from 'App/Constants/app-config';
 import { connect } from 'Stores/connect';
 import CurrencySelector from './currency-selector.jsx';
+import { generateValidationFunction } from './form-validations';
+import { currency_selector_config } from './currency-selector-form';
 import 'Sass/set-currency.scss';
 import 'Sass/change-account.scss';
 
@@ -16,8 +15,7 @@ class SetCurrency extends React.Component {
         this.state = {
             form_error: '',
             form_value: {
-                crypto: '',
-                fiat: '',
+                currency: '',
             },
         };
     }
@@ -25,42 +23,22 @@ class SetCurrency extends React.Component {
     clearError = () => this.setState({ form_error: '' });
 
     setCurrency = (obj, setSubmitting) => {
-        console.log(obj, setSubmitting, this.props);
         this.props.onLoading();
-        Object.entries(obj).map(([key, value]) => {
-            console.log(key, value);
-            if (key === 'fiat') {
-                this.props
-                    .setCurrency(value)
-                    .then(response => {
-                        console.log(response);
-                        setSubmitting(false);
-                        this.props.onSuccessSetAccountCurrency(
-                            response.passthrough.previous_currency,
-                            response.echo_req.set_account_currency
-                        );
-                    })
-                    .catch(error_message => {
-                        console.log(error_message);
-                        this.props.onError(error_message);
-                    });
-            } else {
-                // Add Crypto Account
-                this.props
-                    .createCryptoAccount(value)
-                    .then(() => {
-                        this.props.onSuccessAddCurrency(value);
-                        setSubmitting(false);
-                    })
-                    .catch(error_message => {
-                        this.props.onError(error_message);
-                    });
-            }
-        });
+        const { currency } = obj;
+        if (currency) {
+            this.props
+                .setCurrency(currency)
+                .then(response => {
+                    setSubmitting(false);
+                    this.props.onSuccessSetAccountCurrency('', response.echo_req.set_account_currency);
+                })
+                .catch(error_message => {
+                    this.props.onError(error_message);
+                });
+        }
     };
 
-    updateValue = (value, setSubmitting) => {
-        console.log(value);
+    updateValue = (index, value, setSubmitting) => {
         this.setCurrency(value, setSubmitting);
     };
 
@@ -108,14 +86,16 @@ class SetCurrency extends React.Component {
                     value={this.state.form_value}
                     form_error={this.state.form_error}
                     set_currency
+                    validate={generateValidationFunction(
+                        this.props.landing_company_shortcode,
+                        currency_selector_config
+                    )}
                     {...this.props}
                 />
             </div>
         );
     }
 }
-
-SetCurrency.propTypes = {};
 
 export default connect(({ client, ui }) => ({
     available_crypto_currencies: client.available_crypto_currencies,
@@ -126,6 +106,7 @@ export default connect(({ client, ui }) => ({
     is_eu_enabled: ui.is_eu_enabled, // TODO [deriv-eu] remove is_eu_enabled once eu is released.
     is_eu: client.is_eu,
     has_fiat: client.has_fiat,
+    landing_company_shortcode: client.landing_company_shortcode,
     setCurrency: client.setAccountCurrency,
     createCryptoAccount: client.createCryptoAccount,
 }))(SetCurrency);

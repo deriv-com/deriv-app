@@ -40,7 +40,7 @@ const PositionsDrawerCard = ({
     const contract_el = (
         <React.Fragment>
             <CardHeader contract_info={contract_info} has_progress_slider={!is_multiplier} />
-            <CurrencyBadge className='positions-drawer-card__currency-indicator' currency={currency} />
+            <CurrencyBadge currency={currency} />
             <CardBody
                 contract_info={contract_info}
                 contract_update={contract_update}

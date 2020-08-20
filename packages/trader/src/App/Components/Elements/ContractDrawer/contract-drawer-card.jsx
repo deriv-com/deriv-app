@@ -51,7 +51,7 @@ const ContractDrawerCard = ({
             is_sold={!!is_sold}
         >
             <CardHeader contract_info={contract_info} has_progress_slider={!is_multiplier} />
-            <CurrencyBadge className='contract-card__currency-indicator' currency={contract_info?.currency ?? ''} />
+            <CurrencyBadge currency={contract_info?.currency ?? ''} />
             {card_body_wrapper}
             <CardFooter
                 contract_info={contract_info}

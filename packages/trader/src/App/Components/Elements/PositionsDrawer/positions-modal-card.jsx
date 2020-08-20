@@ -82,7 +82,7 @@ const PositionsModalCard = ({
                     </div>
                 </CSSTransition>
             </div>
-            <CurrencyBadge className='contract-card__currency-indicator' currency={contract_info?.currency ?? ''} />
+            <CurrencyBadge currency={contract_info?.currency ?? ''} />
             <div className={classNames('positions-modal-card__grid', 'positions-modal-card__grid-body')}>
                 <div className={classNames('positions-modal-card__grid-profit-payout')}>
                     <div

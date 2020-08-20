@@ -145,16 +145,6 @@
             padding: 0.8rem 0rem;
         }
     }
-    &__currency-indicator {
-        align-self: flex-start;
-        padding: 0.3rem;
-        font-weight: bold;
-        color: $color-white;
-        background-color: $color-green;
-        border-radius: 4px;
-        margin-left: 5px;
-        margin-top: 5px;
-    }
     &__purchase,
     &__payout,
     &__item {

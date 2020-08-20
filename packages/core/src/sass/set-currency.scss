@@ -4,11 +4,14 @@
     &__heading-container {
         margin: 1rem auto;
         color: var(--text-general);
+
         &__main-heading {
             font-size: 1.4rem;
             line-height: 1.43;
+            @include mobile {
+                padding: 0 3rem;
+            }
         }
-
         &__sub-heading {
             font-size: 1.6rem;
             font-weight: bold;
@@ -21,6 +24,7 @@
     }
     .currency-selector {
         min-height: 330px;
+
         &__radio-group--is-header {
             font-size: 1.6rem;
             font-weight: bold;
@@ -59,24 +63,23 @@
         }
 
         @include mobile {
-            height: calc(100vh - 2rem);
-            .dc-form-submit-button {
-                // position: fixed;
-                // right: 0;
-                // bottom: 0;
-                // padding: 1.3rem;
-                // background-color: var(--general-main-1);
+            overflow-y: auto;
 
-                // &--center {
-                //     justify-content: flex-end;
-                // }
+            &__container--no-top-margin {
+                height: unset;
+            }
+            .currency-list__items__is-crypto {
+                margin-bottom: 8rem;
             }
             .dc-modal-footer {
                 background-color: var(--general-main-1);
                 position: fixed;
                 right: 0;
+                bottom: 0;
                 width: 100%;
-                bottom: 3.5rem;
+            }
+            .dc-form-submit-button {
+                margin-bottom: 1rem;
             }
         }
     }

@@ -8,18 +8,6 @@
     .dc-tabs__list--header-fit-content {
         margin: 0 auto;
     }
-    h1 {
-        @include typeface(--title-center-bold-black);
-        color: var(--text-prominent);
-        text-transform: none;
-        margin-top: 3rem;
-    }
-    h3 {
-        @include typeface(--small-center-normal-black);
-        text-transform: none;
-        color: var(--text-general);
-        margin-bottom: 1.6rem;
-    }
     .account-wizard--disabled {
         .currency-list__items {
             margin-top: 6rem;
@@ -34,8 +22,33 @@
             border-radius: $BORDER_RADIUS;
         }
     }
+    .currency-selector {
+        &__radio-group--is-header {
+            font-size: 1.6rem;
+            font-weight: bold;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.5;
+            letter-spacing: normal;
+            color: var(--text-general);
+            text-align: center;
+        }
+        &__description {
+            display: none;
+        }
+    }
+    .with-margin--is-header {
+        font-size: 1.6rem;
+        font-weight: bold;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.5;
+        letter-spacing: normal;
+        color: var(--text-general);
+        text-align: center;
+    }
     @include desktop {
-        .currency-selector__radio-group {
+        .currency-selector__radio-group.with-margin {
             margin-bottom: 6rem;
         }
         .add-crypto-currency {
@@ -60,14 +73,14 @@
                 margin: 0 1.6rem;
             }
         }
-        .currency-selector__radio-group {
-            margin-bottom: 12rem;
+        .currency-selector__radio-group.with-margin {
+            margin-bottom: 7rem;
         }
         .dc-form-submit-button--relative {
             height: 72px;
             position: fixed;
             padding: 15px;
-            bottom: 56px;
+            // bottom: 56px;
             border-top: 2px solid var(--general-section-1);
         }
         & .change-currency {
@@ -112,7 +125,7 @@
 
         .bottom-right-overlay {
             position: absolute;
-            bottom: 0;
+            bottom: 2rem;
             right: 0rem;
             width: 3rem;
             height: 3rem;
@@ -158,12 +171,26 @@
             }
         }
     }
+    &__icon-area.set-currency {
+        svg:first-child {
+            margin: 0 auto;
+        }
+        .bottom-right-overlay {
+            bottom: 2rem;
+            right: 15rem;
+
+            @include mobile {
+                right: 11rem;
+            }
+        }
+    }
     &__body-area {
         flex-grow: 1;
 
         h2 {
             @include typeface(--title-center-bold-black);
-            margin-top: 2rem;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
             color: var(--text-general);
 
             @include mobile {
@@ -173,7 +200,8 @@
         }
         p {
             @include typeface(--paragraph-left-normal-black);
-            padding: 1rem;
+            padding: 0.3rem;
+            line-height: unset;
             text-align: center;
             text-transform: none;
             color: var(--text-general);
@@ -192,6 +220,7 @@
         & .dc-btn {
             margin: 0 0.5rem;
             height: 4rem;
+            border-width: 2px;
 
             @include mobile {
                 width: 100%;
@@ -199,11 +228,16 @@
             }
         }
         @include mobile {
+            margin: 0rem 0 1rem;
             height: 88px;
             align-items: center;
             width: calc(100% - 1.6rem);
             border-top: 1px solid var(--border-disabled);
         }
+    }
+
+    @include desktop {
+        min-width: 440px;
     }
     @include mobile {
         justify-content: flex-start;

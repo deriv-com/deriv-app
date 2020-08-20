@@ -83,6 +83,19 @@
     width: 100%;
     @include desktop {
         overflow: auto;
+
+        .currency-list__items {
+            &__is-fiat {
+                width: 100%;
+            }
+            &__is-crypto {
+                margin-bottom: 9rem;
+            }
+        }
+        .dc-modal-footer {
+            background-color: var(--general-main-1);
+            z-index: 1;
+        }
     }
     @include mobile {
         grid-template-rows: 7rem minmax(10rem, 1fr);

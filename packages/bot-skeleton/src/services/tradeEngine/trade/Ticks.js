@@ -3,6 +3,7 @@ import { localize } from '@deriv/translations';
 import * as constants from './state/constants';
 import { getDirection, getLastDigit } from '../utils/helpers';
 import { expectPositiveInteger } from '../utils/sanitize';
+import { observer as globalObserver } from '../../../utils/observer';
 
 let tickListenerKey;
 
@@ -50,14 +51,22 @@ export default Engine =>
 
         getLastTick(raw, toString = false) {
             return new Promise(resolve =>
-                this.$scope.ticksService.request({ symbol: this.symbol }).then(ticks => {
-                    let lastTick = raw ? getLast(ticks) : getLast(ticks).quote;
+                this.$scope.ticksService
+                    .request({ symbol: this.symbol })
+                    .then(ticks => {
+                        let lastTick = raw ? getLast(ticks) : getLast(ticks).quote;
 
-                    if (toString && !raw) {
-                        lastTick = lastTick.toFixed(this.getPipSize());
-                    }
-                    resolve(lastTick);
-                })
+                        if (toString && !raw) {
+                            lastTick = lastTick.toFixed(this.getPipSize());
+                        }
+                        resolve(lastTick);
+                    })
+                    .catch(e => {
+                        if (e.name === 'MarketIsClosed') {
+                            globalObserver.emit('Error', e);
+                            resolve(e.name);
+                        }
+                    })
             );
         }
 

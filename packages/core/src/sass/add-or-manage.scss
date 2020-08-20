@@ -239,11 +239,10 @@
             }
         }
         @include mobile {
-            margin: 0rem 0 1rem;
+            margin: 0 0 1rem 0;
             height: 88px;
             align-items: center;
             border-top: 2px solid var(--border-disabled);
-            margin: 0;
         }
     }
 

@@ -66,7 +66,7 @@ const address_details_config = ({ account_settings }) => {
     };
 };
 
-export const addressDetailsConfig = ({ real_account_signup_target, residence, account_settings }) => {
+export const addressDetailsConfig = ({ upgrade_info, real_account_signup_target, residence, account_settings }) => {
     const config = address_details_config({ account_settings });
     return {
         header: {
@@ -80,6 +80,7 @@ export const addressDetailsConfig = ({ real_account_signup_target, residence, ac
                 real_account_signup_target,
                 transformConfig(transformForResidence(config, residence), real_account_signup_target)
             ),
+            is_svg: upgrade_info?.can_upgrade_to === 'svg',
         },
         passthrough: ['residence_list', 'is_fully_authenticated'],
     };

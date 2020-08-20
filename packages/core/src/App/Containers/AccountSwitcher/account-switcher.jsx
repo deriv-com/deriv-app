@@ -56,12 +56,12 @@ class AccountSwitcher extends React.Component {
             this.props.is_visible &&
             accounts_toggle_btn
         ) {
-            this.props.toggleAccountsDialog();
+            this.closeAccountsDialog();
         }
     };
 
     handleLogout = () => {
-        this.props.toggleAccountsDialog();
+        this.closeAccountsDialog();
         if (this.props.is_positions_drawer_on) {
             this.props.togglePositionsDrawer(); // TODO: hide drawer inside logout, once it is a mobx action
         }
@@ -70,8 +70,12 @@ class AccountSwitcher extends React.Component {
         });
     };
 
+    closeAccountsDialog = () => {
+        this.props.toggleAccountsDialog(false);
+    };
+
     redirectToMt5 = account_type => {
-        this.props.toggleAccountsDialog();
+        this.closeAccountsDialog();
         this.props.history.push(`${routes.mt5}#${account_type}`);
     };
 
@@ -81,6 +85,7 @@ class AccountSwitcher extends React.Component {
 
         if (this.props.is_eu_enabled && this.props.is_eu && !has_required_account) {
             // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
+            this.closeAccountsDialog();
             this.props.openAccountNeededModal(
                 account_type === 'synthetic'
                     ? this.props.standpoint.gaming_company
@@ -116,12 +121,12 @@ class AccountSwitcher extends React.Component {
     };
 
     setAccountCurrency = () => {
-        this.props.toggleAccountsDialog();
+        this.closeAccountsDialog();
         this.props.toggleSetCurrencyModal();
     };
 
     showAccountTypesModal = () => {
-        this.props.toggleAccountsDialog();
+        this.closeAccountsDialog();
         this.props.toggleAccountTypesModal(true);
     };
 
@@ -189,7 +194,7 @@ class AccountSwitcher extends React.Component {
     }
 
     async doSwitch(loginid) {
-        this.props.toggleAccountsDialog();
+        this.closeAccountsDialog();
         if (this.props.account_loginid === loginid) return;
         await this.props.switchAccount(loginid);
     }
@@ -537,7 +542,7 @@ class AccountSwitcher extends React.Component {
                             <ThemedScrollbars height='354px'>{real_accounts}</ThemedScrollbars>
                         </DesktopWrapper>
                         <MobileWrapper>
-                            <Div100vhContainer className='acc-switcher__list-container' max_autoheight_offset='204px'>
+                            <Div100vhContainer className='acc-switcher__list-container' max_autoheight_offset='234px'>
                                 {real_accounts}
                             </Div100vhContainer>
                         </MobileWrapper>
@@ -547,7 +552,7 @@ class AccountSwitcher extends React.Component {
                             <ThemedScrollbars height='354px'>{demo_accounts}</ThemedScrollbars>
                         </DesktopWrapper>
                         <MobileWrapper>
-                            <Div100vhContainer className='acc-switcher__list-container' max_autoheight_offset='204px'>
+                            <Div100vhContainer className='acc-switcher__list-container' max_autoheight_offset='234px'>
                                 {demo_accounts}
                             </Div100vhContainer>
                         </MobileWrapper>

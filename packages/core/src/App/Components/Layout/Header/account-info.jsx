@@ -53,16 +53,16 @@ const AccountInfo = ({
                         <MobileWrapper>
                             {(is_virtual || currency) && (
                                 <Icon
-                                    icon={`IcCurrency-${is_virtual ? 'virtual' : currency}`}
+                                    icon={`IcCurrency-${is_virtual ? 'virtual' : currency_lower || 'Unknown'}`}
                                     className={`acc-info__id-icon acc-info__id-icon--${
-                                        is_virtual ? 'virtual' : currency
+                                        is_virtual ? 'virtual' : currency_lower
                                     }`}
                                     size={24}
                                 />
                             )}
                         </MobileWrapper>
                     </span>
-                    {typeof balance !== 'undefined' && (
+                    {(typeof balance !== 'undefined' || !currency) && (
                         <p
                             className={classNames('acc-info__balance', {
                                 'acc-info__balance--no-currency': !currency && !is_virtual,

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Button, Icon, Div100vhContainer } from '@deriv/components';
-import { isDesktop } from '@deriv/shared';
+import { isDesktop, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 
 const FinishedSetCurrency = ({ current, onCancel, onSubmit, prev }) => {
@@ -19,6 +19,7 @@ const FinishedSetCurrency = ({ current, onCancel, onSubmit, prev }) => {
         <Div100vhContainer className='status-dialog' is_disabled={isDesktop()} height_offset='40px'>
             <div
                 className={classNames('status-dialog__icon-area', {
+                    'status-dialog__icon-area--center': isMobile(),
                     'set-currency': !prev,
                 })}
             >
@@ -27,7 +28,9 @@ const FinishedSetCurrency = ({ current, onCancel, onSubmit, prev }) => {
                 <IconNextCurrency />
                 <IconWon className='bottom-right-overlay' />
             </div>
-            <div className='status-dialog__body-area'>
+            <div
+                className={classNames('status-dialog__body-area', { 'status-dialog__body-area--no-grow': isMobile() })}
+            >
                 <h2>
                     <Localize i18n_default_text='Success!' />
                 </h2>

@@ -95,7 +95,7 @@ class ProofOfAddressForm extends React.Component {
         if (values.address_postcode) {
             if (!validLength(values.address_postcode, { min: 0, max: 20 })) {
                 errors.address_postcode = localize('Please enter a {{field_name}} under {{max_number}} characters.', {
-                    field_name: localize('postal/ZIP code'),
+                    field_name: localize('Postal/ZIP code'),
                     max_number: 20,
                     interpolation: { escapeValue: false },
                 });
@@ -121,6 +121,7 @@ class ProofOfAddressForm extends React.Component {
         WS.setSettings(values).then((data) => {
             if (data.error) {
                 setStatus({ msg: data.error.message });
+                this.setState({ is_btn_loading: false });
             } else {
                 // force request to update settings cache since settings have been updated
                 WS.authorized.storage
@@ -193,9 +194,11 @@ class ProofOfAddressForm extends React.Component {
                             })
                             .catch((error) => {
                                 setStatus({ msg: error.message });
+                                this.setState({ is_btn_loading: false });
                             })
                             .then(() => {
                                 setSubmitting(false);
+                                this.setState({ is_btn_loading: false });
                             });
                     });
             }
@@ -259,7 +262,7 @@ class ProofOfAddressForm extends React.Component {
                                                     type='text'
                                                     maxLength={70}
                                                     name='address_line_1'
-                                                    label={localize('First line of address')}
+                                                    label={localize('First line of address*')}
                                                     value={values.address_line_1}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
@@ -279,7 +282,6 @@ class ProofOfAddressForm extends React.Component {
                                                     error={touched.address_line_2 && errors.address_line_2}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
-                                                    required
                                                 />
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
@@ -288,7 +290,7 @@ class ProofOfAddressForm extends React.Component {
                                                     autoComplete='off' // prevent chrome autocomplete
                                                     type='text'
                                                     name='address_city'
-                                                    label={localize('Town/City')}
+                                                    label={localize('Town/City*')}
                                                     value={values.address_city}
                                                     error={touched.address_city && errors.address_city}
                                                     onChange={handleChange}
@@ -307,7 +309,6 @@ class ProofOfAddressForm extends React.Component {
                                                     error={touched.address_state && errors.address_state}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
-                                                    required
                                                 />
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
@@ -316,11 +317,12 @@ class ProofOfAddressForm extends React.Component {
                                                     autoComplete='off' // prevent chrome autocomplete
                                                     type='text'
                                                     name='address_postcode'
-                                                    label={localize('Postal/ZIP code')}
+                                                    label={localize('Postal/ZIP code*')}
                                                     value={values.address_postcode}
                                                     error={touched.address_postcode && errors.address_postcode}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
+                                                    required
                                                 />
                                             </fieldset>
                                         </div>

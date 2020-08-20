@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { Modal, Loading, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
+import { Modal, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
 import { routes, isNavigationFromPlatform } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -15,14 +15,8 @@ import StatusDialogContainer from './status-dialog-container.jsx';
 import 'Sass/account-wizard.scss';
 import 'Sass/real-account-signup.scss';
 
-const LoadingModal = props => (
-    <div className='account-signup-loader'>
-        <Loading {...props} is_fullscreen={false} />
-    </div>
-);
-
 const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_residence, is_belgium_residence }) => {
-    if (!currency) {
+    if (!currency && real_account_signup_target !== 'maltainvest') {
         return <Localize i18n_default_text='Set a currency for your real account' />;
     }
 
@@ -48,12 +42,14 @@ class RealAccountSignup extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            is_loading: false,
             modal_content: [
                 {
                     body: () => (
                         <AccountWizard
                             onFinishSuccess={this.showStatusDialog}
-                            onLoading={this.showLoadingModal}
+                            is_loading={this.state.is_loading}
+                            setLoading={this.setLoading}
                             onError={this.showErrorModal}
                             onClose={this.closeModal}
                             onSuccessSetAccountCurrency={this.showSetCurrencySuccess}
@@ -66,7 +62,8 @@ class RealAccountSignup extends React.Component {
                         <AddOrManageAccounts
                             onSuccessSetAccountCurrency={this.showSetCurrencySuccess}
                             onSuccessAddCurrency={this.showStatusDialog}
-                            onLoading={this.showLoadingModal}
+                            is_loading={this.state.is_loading}
+                            setLoading={this.setLoading}
                             onError={this.showErrorModal}
                         />
                     ),
@@ -84,9 +81,6 @@ class RealAccountSignup extends React.Component {
                 },
                 {
                     body: () => <StatusDialogContainer />,
-                },
-                {
-                    body: () => <LoadingModal className='loading-modal' />,
                 },
                 {
                     body: () => (
@@ -150,10 +144,8 @@ class RealAccountSignup extends React.Component {
         });
     };
 
-    showLoadingModal = () => {
-        this.props.setParams({
-            active_modal_index: 4,
-        });
+    setLoading = is_loading => {
+        this.setState({ is_loading });
     };
 
     cacheFormValues = payload => {
@@ -176,13 +168,20 @@ class RealAccountSignup extends React.Component {
         }
 
         this.props.setParams({
-            active_modal_index: 5,
+            active_modal_index: 4,
             error_message: error.message,
             error_code: error.code,
         });
     };
 
-    closeModal = () => {
+    closeModal = e => {
+        // Do not close modal on external link click event
+        if (e?.target.getAttribute('rel') === 'noopener noreferrer') {
+            return;
+        }
+        if (e?.target.closest('.redirect-notice')) {
+            return;
+        }
         if (this.active_modal_index !== 3) {
             sessionStorage.removeItem('post_real_account_signup');
             localStorage.removeItem('real_account_signup_wizard');
@@ -247,8 +246,7 @@ class RealAccountSignup extends React.Component {
                         className={classNames('real-account-signup-modal', {
                             'dc-modal__container_real-account-signup-modal--error': this.active_modal_index === 6,
                             'dc-modal__container_real-account-signup-modal--success':
-                                this.active_modal_index >= 2 && this.active_modal_index < 5,
-                            'dc-modal__container_real-account-signup-modal--loading': this.active_modal_index === 4,
+                                this.active_modal_index >= 2 && this.active_modal_index < 4,
                         })}
                         is_open={is_real_acc_signup_on}
                         has_close_icon={has_close_icon}
@@ -262,7 +260,7 @@ class RealAccountSignup extends React.Component {
                         height={this.modal_height}
                         width={!has_close_icon ? 'auto' : '904px'}
                     >
-                        <ModalContent passthrough={this.props.state_index} />
+                        <ModalContent passthrough={this.props.state_index} is_loading={this.state.is_loading} />
                     </Modal>
                 </DesktopWrapper>
                 <MobileWrapper>
@@ -273,7 +271,7 @@ class RealAccountSignup extends React.Component {
                         onClose={this.closeModal}
                         renderTitle={() => <Title {...this.props} />}
                     >
-                        <ModalContent />
+                        <ModalContent passthrough={this.props.state_index} is_loading={this.state.is_loading} />
                     </MobileDialog>
                 </MobileWrapper>
             </>

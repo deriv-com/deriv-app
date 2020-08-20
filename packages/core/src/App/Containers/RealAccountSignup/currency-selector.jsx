@@ -193,7 +193,7 @@ class CurrencySelector extends React.Component {
                                         'currency-selector__container--no-top-margin':
                                             !has_currency && has_real_account && isMobile(),
                                     })}
-                                    height_offset={!has_currency && has_real_account ? '129px' : '199px'}
+                                    height_offset={!has_currency && has_real_account ? '109px' : '179px'}
                                     is_disabled={isDesktop()}
                                 >
                                     <ThemedScrollbars is_bypassed={isMobile()} height={height}>
@@ -240,7 +240,7 @@ class CurrencySelector extends React.Component {
                                         )}
                                     </ThemedScrollbars>
                                 </Div100vhContainer>
-                                <Modal.Footer has_separator>
+                                <Modal.Footer is_bypassed={isMobile()}>
                                     <FormSubmitButton
                                         is_disabled={isSubmitting || !values.currency}
                                         is_center={!has_currency}

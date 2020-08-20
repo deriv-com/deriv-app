@@ -15,7 +15,7 @@ class AddOrManageAccounts extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            active_index: 0,
+            active_index: this.props.has_fiat && this.props.available_crypto_currencies?.length === 0 ? 1 : 0,
             finished: undefined,
             form_error: '',
             form_value: {
@@ -26,7 +26,10 @@ class AddOrManageAccounts extends React.Component {
     }
 
     setActiveTabIndex = index => {
-        this.setState({ active_index: index });
+        this.setState({
+            active_index: index,
+            // form_value: index === 0 ? { currency: '' } : { crypto: '', fiat: ''}
+        });
     };
 
     clearError = () => {
@@ -56,7 +59,7 @@ class AddOrManageAccounts extends React.Component {
                 this.props
                     .createCryptoAccount(value)
                     .then(() => {
-                        this.props.onSuccessAddCurrency(value);
+                        this.props.onSuccessSetAccountCurrency('', value);
                         setSubmitting(false);
                     })
                     .catch(error_message => {

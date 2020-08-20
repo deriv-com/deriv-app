@@ -6,7 +6,6 @@ import {
     AutoHeightWrapper,
     FormSubmitButton,
     Div100vhContainer,
-    MobileWrapper,
     Modal,
     Popover,
     Icon,
@@ -19,23 +18,41 @@ import { Localize, localize } from '@deriv/translations';
 import { splitValidationResultTypes } from 'App/Containers/RealAccountSignup/helpers/utils';
 import 'Sass/currency-select-radio.scss';
 
-// Radio input
-export const RadioButton = ({ field: { name, value, onChange, onBlur }, id, label, className, ...props }) => {
-    const popover_message = /^UST$/i.test(id) ? (
-        <Localize
-            i18n_default_text={
-                'Tether on Omnilayer (USDT) is a version of Tether, a digital token issued on blockchains and holds a value pegged to 1 USD at all times.<0 /><0 />USDT is built on the bitcoin blockchain via Omni Layer, a platform for digital assets and currencies that run in the bitcoin network.'
-            }
-            components={[<br key={0} />]}
-        />
-    ) : (
-        <Localize
-            i18n_default_text={
-                'Tether as an ERC20 token (eUSDT) is a version of Tether that is hosted on Ethereum, an open software platform where anyone can build and deploy decentralised applications.'
-            }
+const USTPopover = ({ id }) => {
+    let popover_message;
+    if (/^UST$/i.test(id)) {
+        popover_message = (
+            <Localize
+                i18n_default_text={
+                    'Tether on Omnilayer (USDT) is a version of Tether, a digital token issued on blockchains and holds a value pegged to 1 USD at all times.<0 /><0 />USDT is built on the bitcoin blockchain via Omni Layer, a platform for digital assets and currencies that run in the bitcoin network.'
+                }
+                components={[<br key={0} />]}
+            />
+        );
+    } else {
+        popover_message = (
+            <Localize
+                i18n_default_text={
+                    'Tether as an ERC20 token (eUSDT) is a version of Tether that is hosted on Ethereum, an open software platform where anyone can build and deploy decentralised applications.'
+                }
+            />
+        );
+    }
+
+    return (
+        <Popover
+            alignment='top'
+            icon='info'
+            disable_message_icon
+            zIndex={9999}
+            className='currency-list__popover'
+            message={popover_message}
         />
     );
+};
 
+// Radio input
+export const RadioButton = ({ field: { name, value, onChange, onBlur }, id, label, className, ...props }) => {
     return (
         <React.Fragment>
             <input
@@ -59,16 +76,7 @@ export const RadioButton = ({ field: { name, value, onChange, onBlur }, id, labe
             >
                 <div>
                     <Icon className='currency-list__icon' icon={`IcCurrency-${id.toLowerCase()}`} />
-                    {/^(UST|eUSDT)$/i.test(id) && (
-                        <Popover
-                            alignment='top'
-                            icon='info'
-                            disable_message_icon
-                            zIndex={9999}
-                            className='currency-list__popover'
-                            message={popover_message}
-                        />
-                    )}
+                    {/^(UST|eUSDT)$/i.test(id) && <USTPopover id={id} />}
                     <div className='label currency-list__item-text'>
                         {label}
                         <br />({getCurrencyDisplayCode(id)})
@@ -83,8 +91,23 @@ export const RadioButton = ({ field: { name, value, onChange, onBlur }, id, labe
 export const RadioButtonGroup = ({ label, className, children, is_title_enabled, is_fiat }) => {
     return (
         <div className={className}>
-            {is_title_enabled && <h2 className={classNames(`${className}--is-header`)}>{label}</h2>}
-            <div className='currency-list__items'>{children}</div>
+            {is_title_enabled && (
+                <h2
+                    className={classNames(`${className}--is-header`, {
+                        'currency-selector__is-crypto': !is_fiat,
+                    })}
+                >
+                    {label}
+                </h2>
+            )}
+            <div
+                className={classNames('currency-list__items', {
+                    'currency-list__items__is-fiat': is_fiat,
+                    'currency-list__items__is-crypto': !is_fiat,
+                })}
+            >
+                {children}
+            </div>
             {is_fiat && (
                 <p className='currency-selector__description'>
                     <Localize i18n_default_text='You will not be able to change currency once you have made a deposit' />
@@ -173,17 +196,6 @@ class CurrencySelector extends React.Component {
                                     height_offset={!has_currency && has_real_account ? '129px' : '199px'}
                                     is_disabled={isDesktop()}
                                 >
-                                    <MobileWrapper>
-                                        {has_real_account && (
-                                            <div className='account-wizard__set-currency'>
-                                                {!has_currency && (
-                                                    <p>
-                                                        <Localize i18n_default_text='You have an account without an assigned currency. Please choose a currency to trade with this account.' />
-                                                    </p>
-                                                )}
-                                            </div>
-                                        )}
-                                    </MobileWrapper>
                                     <ThemedScrollbars is_bypassed={isMobile()} height={height}>
                                         <RadioButtonGroup
                                             id='currency'
@@ -206,7 +218,6 @@ class CurrencySelector extends React.Component {
                                         </RadioButtonGroup>
                                         {this.state.crypto_currencies.length > 0 && (
                                             <React.Fragment>
-                                                <Hr />
                                                 <RadioButtonGroup
                                                     id='currency'
                                                     className='currency-selector__radio-group'
@@ -233,10 +244,10 @@ class CurrencySelector extends React.Component {
                                     <FormSubmitButton
                                         is_disabled={isSubmitting || !values.currency}
                                         is_center={!has_currency}
-                                        has_cancel
+                                        has_cancel={!this.props.set_currency}
                                         onCancel={this.props.onCancel}
                                         cancel_label={localize('Cancel')}
-                                        label={localize('Next')}
+                                        label={this.props.set_currency ? localize('Set currency') : localize('Next')}
                                     />
                                 </Modal.Footer>
                             </form>

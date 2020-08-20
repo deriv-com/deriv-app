@@ -1,5 +1,8 @@
 /** @define dc-modal; weak */
 .dc-modal {
+    #dt_set_account_currency_modal .dc-btn--secondary {
+        margin-right: 1rem;
+    }
     &__container {
         display: flex;
         flex-direction: column;

@@ -8,6 +8,7 @@ import { connect } from 'Stores/connect';
 import ModalLoginPrompt from './modal-login-prompt.jsx';
 import AccountWizard from './account-wizard.jsx';
 import AddOrManageAccounts from './add-or-manage-accounts.jsx';
+import SetCurrency from './set-currency.jsx';
 import FinishedSetCurrency from './finished-set-currency.jsx';
 import SignupErrorContent from './signup-error-content.jsx';
 import StatusDialogContainer from './status-dialog-container.jsx';
@@ -86,6 +87,17 @@ class RealAccountSignup extends React.Component {
                 },
                 {
                     body: () => <LoadingModal className='loading-modal' />,
+                },
+                {
+                    body: () => (
+                        <SetCurrency
+                            onLoading={this.showLoadingModal}
+                            onError={this.showErrorModal}
+                            onClose={this.closeModal}
+                            onSuccessSetAccountCurrency={this.showSetCurrencySuccess}
+                        />
+                    ),
+                    title: WizardHeading,
                 },
                 {
                     body: () => (
@@ -195,10 +207,12 @@ class RealAccountSignup extends React.Component {
     get active_modal_index() {
         const ACCOUNT_WIZARD = 0;
         const ADD_OR_MANAGE_ACCOUNT = 1;
-
+        const SET_CURRENCY = 5;
         if (this.props.state_value.active_modal_index === -1) {
             return this.props.has_real_account && this.props.currency && this.is_manage_target
                 ? ADD_OR_MANAGE_ACCOUNT
+                : !this.props.currency
+                ? SET_CURRENCY
                 : ACCOUNT_WIZARD;
         }
 
@@ -223,7 +237,7 @@ class RealAccountSignup extends React.Component {
                       : null,
                   body: ModalLoginPrompt,
               };
-        const has_close_icon = this.active_modal_index < 2 || this.active_modal_index === 5;
+        const has_close_icon = [0, 1, 5, 6].includes(this.active_modal_index);
 
         return (
             <>
@@ -231,7 +245,7 @@ class RealAccountSignup extends React.Component {
                     <Modal
                         id='real_account_signup_modal'
                         className={classNames('real-account-signup-modal', {
-                            'dc-modal__container_real-account-signup-modal--error': this.active_modal_index === 5,
+                            'dc-modal__container_real-account-signup-modal--error': this.active_modal_index === 6,
                             'dc-modal__container_real-account-signup-modal--success':
                                 this.active_modal_index >= 2 && this.active_modal_index < 5,
                             'dc-modal__container_real-account-signup-modal--loading': this.active_modal_index === 4,

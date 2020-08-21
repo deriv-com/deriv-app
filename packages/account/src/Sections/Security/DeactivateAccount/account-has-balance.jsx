@@ -1,27 +1,7 @@
 import React from 'react';
 import { Button, Icon, Money, ThemedScrollbars } from '@deriv/components';
-import { formatMoney } from '@deriv/shared';
+import { formatMoney, getMT5AccountDisplay } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-
-// TODO: [move-to-shared] - Remove the implementation in Client and add this to shared utils
-const getMT5AccountType = (group) => (group ? group.replace('\\', '_').replace(/_(\d+|master|EUR|GBP)/, '') : '');
-
-// TODO: [move-to-shared] - Remove the implementation in Client and add this to shared utils
-const getMT5AccountDisplay = (group) => {
-    if (!group) return {};
-
-    const value = getMT5AccountType(group);
-    let display_text = localize('MT5');
-    if (/svg$/.test(value)) {
-        display_text = localize('Synthetic');
-    } else if (/vanuatu/.test(value) || /svg_(standard|financial)/.test(value)) {
-        display_text = localize('Financial');
-    } else if (/labuan/.test(value)) {
-        display_text = localize('Financial STP');
-    }
-
-    return display_text;
-};
 
 const AccountHasBalanceOrOpenPositions = ({
     accounts_with_balance_or_open_positions,

@@ -9,14 +9,13 @@ import {
     getCurrencyDisplayCode,
     isEmptyObject,
     getPropertyValue,
+    getMT5AccountDisplay,
 } from '@deriv/shared';
-
 import BinarySocket from '_common/base/socket_base';
 import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services';
 import OnRampStore from './on-ramp-store';
 import BaseStore from '../../base-store';
-import { getMT5AccountDisplay } from '../../Helpers/client';
 
 const bank_default_option = [{ text: localize('All payment agents'), value: 0 }];
 

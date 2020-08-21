@@ -1,9 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Icon, Money } from '@deriv/components';
-import { formatMoney, getCurrencyDisplayCode } from '@deriv/shared';
+import { formatMoney, getCurrencyDisplayCode, getMT5AccountDisplay } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { getMT5AccountDisplay } from 'Stores/Helpers/client';
 
 const AccountList = ({
     account_type,

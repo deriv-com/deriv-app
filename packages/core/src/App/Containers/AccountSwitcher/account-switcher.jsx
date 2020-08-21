@@ -12,12 +12,11 @@ import {
     Tabs,
     ThemedScrollbars,
 } from '@deriv/components';
-import { urlFor, routes, isCryptocurrency, formatMoney } from '@deriv/shared';
+import { urlFor, routes, isCryptocurrency, formatMoney, getMT5AccountDisplay } from '@deriv/shared';
 
 import { localize, Localize } from '@deriv/translations';
 import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
 import { connect } from 'Stores/connect';
-import { getMT5AccountDisplay } from 'Stores/Helpers/client';
 import { AccountsItemLoader } from 'App/Components/Layout/Header/Components/Preloader';
 import AccountList from './account-switcher-account-list.jsx';
 import AccountWrapper from './account-switcher-account-wrapper.jsx';

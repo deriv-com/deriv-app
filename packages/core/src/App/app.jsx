@@ -5,7 +5,13 @@ import { BrowserRouter as Router } from 'react-router-dom';
 // Initialize i18n by importing it here
 // eslint-disable-next-line no-unused-vars
 import { DesktopWrapper } from '@deriv/components';
-import { checkAndSetEndpointFromUrl, setUrlLanguage, isMobile, setValidationErrorMessages } from '@deriv/shared';
+import {
+    checkAndSetEndpointFromUrl,
+    setUrlLanguage,
+    isMobile,
+    setValidationErrorMessages,
+    setSharedMT5Text,
+} from '@deriv/shared';
 import { initializeTranslations, getLanguage } from '@deriv/translations';
 import Client from '_common/base/client_base';
 import WS from 'Services/ws-methods';
@@ -21,6 +27,7 @@ import AppModals from './Containers/Modals';
 import Routes from './Containers/Routes/routes.jsx';
 import initStore from './app';
 import { FORM_ERROR_MESSAGES } from '../Constants/form-error-messages';
+import { MT5_TEXT } from '../Constants/mt5-text';
 
 // eslint-disable-next-line import/extensions
 // eslint-disable-next-line import/no-unresolved
@@ -34,8 +41,11 @@ const App = ({ root_store }) => {
     React.useEffect(() => {
         checkAndSetEndpointFromUrl();
         initializeTranslations();
+
+        // TODO: [translation-to-shared]: add translation implemnentation in shared
         setUrlLanguage(getLanguage());
         setValidationErrorMessages(FORM_ERROR_MESSAGES);
+        setSharedMT5Text(MT5_TEXT);
     }, []);
     if (isMobile()) {
         React.useEffect(() => {

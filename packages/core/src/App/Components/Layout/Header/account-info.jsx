@@ -36,7 +36,7 @@ const AccountInfo = ({
                     'acc-info--is-virtual': is_virtual,
                     'acc-info--is-disabled': is_disabled,
                 })}
-                onClick={is_disabled ? undefined : toggleDialog}
+                onClick={is_disabled ? undefined : () => toggleDialog()}
             >
                 <span className='acc-info__id'>
                     <DesktopWrapper>
@@ -56,7 +56,7 @@ const AccountInfo = ({
                         )}
                     </MobileWrapper>
                 </span>
-                {typeof balance !== 'undefined' && (
+                {(typeof balance !== 'undefined' || !currency) && (
                     <p
                         className={classNames('acc-info__balance', {
                             'acc-info__balance--no-currency': !currency && !is_virtual,

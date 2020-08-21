@@ -145,6 +145,14 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get is_svg() {
+        if (!this.landing_company_shortcode) {
+            return false;
+        }
+        return this.landing_company_shortcode === 'svg' || this.landing_company_shortcode === 'costarica';
+    }
+
+    @computed
     get reality_check_duration() {
         return this.has_reality_check ? this.reality_check_dur || +LocalStore.get('reality_check_duration') : undefined;
     }
@@ -509,6 +517,12 @@ export default class ClientStore extends BaseStore {
     @computed
     get account_type() {
         return getClientAccountType(this.loginid);
+    }
+
+    @computed
+    get has_mt5_financial() {
+        if (!this.mt5_login_list.length) return false;
+        return 'mt_financial_company' in this.landing_companies || 'mt_gaming_company' in this.landing_companies;
     }
 
     @computed
@@ -1614,6 +1628,7 @@ export default class ClientStore extends BaseStore {
                     group: getMT5AccountType(account.group),
                     display_login: account.login.replace(/^(MT[DR]?)/i, ''),
                 }));
+            console.warn(this.mt5_login_list);
         }
     }
 

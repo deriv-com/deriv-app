@@ -25,17 +25,14 @@ class Account extends React.Component {
         WS.wait('authorize', 'get_account_status').then(() => {
             if (this.props.account_status) {
                 const { status } = this.props.account_status;
-                const is_svg =
-                    this.props.landing_company_shortcode === 'svg' ||
-                    this.props.landing_company_shortcode === 'costarica';
                 const needs_financial_assessment =
                     !this.props.is_virtual &&
-                    is_svg &&
-                    this.props.is_high_risk &&
-                    (this.props.is_high_risk ||
-                        this.props.is_financial_information_incomplete ||
-                        this.props.is_financial_account ||
-                        this.props.is_trading_experience_incomplete);
+                    (this.props.is_svg
+                        ? this.props.is_high_risk
+                        : this.props.is_high_risk ||
+                          this.props.is_financial_information_incomplete ||
+                          this.props.is_financial_account ||
+                          this.props.is_trading_experience_incomplete);
 
                 const allow_document_upload = status?.includes('allow_document_upload');
 
@@ -55,16 +52,14 @@ class Account extends React.Component {
         // we need to add this update once account_status changes
         // TODO: Refactor account.jsx into functional component with hooks to eliminate need for componentDidUpdate
         if (this.props.account_status !== prevProps.account_status) {
-            const is_svg =
-                this.props.landing_company_shortcode === 'svg' || this.props.landing_company_shortcode === 'costarica';
             const needs_financial_assessment =
                 !this.props.is_virtual &&
-                !is_svg &&
-                this.props.is_high_risk &&
-                (this.props.is_high_risk ||
-                    this.props.is_financial_information_incomplete ||
-                    this.props.is_financial_account ||
-                    this.props.is_trading_experience_incomplete);
+                (this.props.is_svg
+                    ? this.props.is_high_risk
+                    : this.props.is_high_risk ||
+                      this.props.is_financial_information_incomplete ||
+                      this.props.is_financial_account ||
+                      this.props.is_trading_experience_incomplete);
 
             const allow_document_upload = this.props.account_status.status?.includes('allow_document_upload');
 
@@ -194,6 +189,6 @@ export default connect(({ client, common, ui }) => ({
     is_financial_account: client.is_financial_account,
     is_financial_information_incomplete: client.is_financial_information_incomplete,
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,
-    landing_company_shortcode: client.landing_company_shortcode,
+    is_svg: client.is_svg,
     toggleAccount: ui.toggleAccountSettings,
 }))(withRouter(Account));

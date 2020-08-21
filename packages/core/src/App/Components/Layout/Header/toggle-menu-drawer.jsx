@@ -62,12 +62,12 @@ class ToggleMenuDrawer extends React.Component {
                 const { status } = this.props.account_status;
                 const needs_financial_assessment =
                     !this.props.is_virtual &&
-                    this.props.is_svg &&
-                    this.props.is_high_risk &&
-                    (this.props.is_high_risk ||
-                        this.props.is_financial_information_incomplete ||
-                        this.props.is_financial_account ||
-                        this.props.is_trading_experience_incomplete);
+                    (this.props.is_svg
+                        ? this.props.is_high_risk
+                        : this.props.is_high_risk ||
+                          this.props.is_financial_information_incomplete ||
+                          this.props.is_financial_account ||
+                          this.props.is_trading_experience_incomplete);
                 const allow_document_upload = status?.includes('allow_document_upload');
                 if (this.is_mounted) this.setState({ needs_financial_assessment, allow_document_upload });
             }
@@ -86,12 +86,12 @@ class ToggleMenuDrawer extends React.Component {
         if (this.props.account_status !== prevProps.account_status) {
             const needs_financial_assessment =
                 !this.props.is_virtual &&
-                !this.props.is_svg &&
-                this.props.is_high_risk &&
-                (this.props.is_high_risk ||
-                    this.props.is_financial_information_incomplete ||
-                    this.props.is_financial_account ||
-                    this.props.is_trading_experience_incomplete);
+                (this.props.is_svg
+                    ? this.props.is_high_risk
+                    : this.props.is_high_risk ||
+                      this.props.is_financial_information_incomplete ||
+                      this.props.is_financial_account ||
+                      this.props.is_trading_experience_incomplete);
             const allow_document_upload = this.props.account_status?.status?.includes('allow_document_upload');
             if (this.is_mounted) this.setState({ needs_financial_assessment, allow_document_upload });
         }

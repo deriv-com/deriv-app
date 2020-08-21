@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon, Popover } from '@deriv/components';
-import { Localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { getDerivComLink } from '@deriv/shared';
 import { tabs_title } from '../constants/bot-contents';
 import { connect } from '../stores/connect';

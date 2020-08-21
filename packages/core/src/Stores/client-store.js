@@ -520,12 +520,6 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
-    get has_mt5_financial() {
-        if (!this.mt5_login_list.length) return false;
-        return 'mt_financial_company' in this.landing_companies || 'mt_gaming_company' in this.landing_companies;
-    }
-
-    @computed
     get is_mt5_allowed() {
         if (!this.landing_companies || !Object.keys(this.landing_companies).length) return false;
         const has_mt5 =
@@ -1628,7 +1622,6 @@ export default class ClientStore extends BaseStore {
                     group: getMT5AccountType(account.group),
                     display_login: account.login.replace(/^(MT[DR]?)/i, ''),
                 }));
-            console.warn(this.mt5_login_list);
         }
     }
 

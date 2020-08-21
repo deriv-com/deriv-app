@@ -49,7 +49,7 @@ export const RadioButton = ({ field: { name, value, onChange, onBlur }, id, labe
                             alignment='top'
                             icon='info'
                             disable_message_icon
-                            zIndex={9999}
+                            zIndex={9998}
                             className='currency-list__popover'
                             message={localize(
                                 'Deriv currently supports Tether (USDT). Please deposit USDT from your Omni Layer-enabled wallet into your Deriv account.'

@@ -310,10 +310,7 @@ class PersonalDetailsForm extends React.Component {
                             <form
                                 noValidate
                                 className='account-form account-form__personal-details'
-                                onSubmit={(e) => {
-                                    console.warn(errors);
-                                    handleSubmit(e);
-                                }}
+                                onSubmit={handleSubmit}
                             >
                                 <FormBody scroll_offset={isMobile() ? '199px' : '80px'}>
                                     <FormSubHeader title={localize('Details')} />

@@ -36,8 +36,6 @@ export default Engine =>
 
                     this.store.dispatch(sell());
 
-                    this.unsubscribeOpenContract();
-
                     this.cancelSubscriptionTimeout();
                 } else {
                     this.store.dispatch(openContractReceived());
@@ -60,8 +58,6 @@ export default Engine =>
             }
             this.contractId = contractId;
 
-            this.unsubscribeOpenContract();
-
             doUntilDone(() => this.api.subscribeToOpenContract(contractId)).then(r => {
                 ({
                     proposal_open_contract: { id: this.openContractId },
@@ -79,12 +75,6 @@ export default Engine =>
 
         cancelSubscriptionTimeout() {
             clearTimeout(this.subscriptionTimeout);
-        }
-
-        unsubscribeOpenContract() {
-            if (this.openContractId) {
-                doUntilDone(() => this.api.unsubscribeByID(this.openContractId));
-            }
         }
 
         setContractFlags(contract) {

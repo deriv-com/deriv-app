@@ -9,13 +9,13 @@ let purchase_reference;
 
 export default Engine =>
     class Purchase extends Engine {
-        purchase(contractType) {
+        purchase(contract_type) {
             // Prevent calling purchase twice
             if (this.store.getState().scope !== BEFORE_PURCHASE) {
                 return Promise.resolve();
             }
 
-            const { id, askPrice } = this.selectProposal(contractType);
+            const { id, askPrice } = this.selectProposal(contract_type);
 
             const onSuccess = response => {
                 // Don't unnecessarily send a forget request for a purchased contract.
@@ -37,7 +37,7 @@ export default Engine =>
                     accountID: this.accountInfo.loginid,
                     totalRuns: this.updateAndReturnTotalRuns(),
                     transaction_ids: { buy: buy.transaction_id },
-                    contract_type: contractType,
+                    contract_type,
                     buy_price: buy.buy_price,
                 });
             };

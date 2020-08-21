@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { getKebabCase } from '@deriv/shared';
 import Counter from '../counter';
 import Icon from '../icon/icon.jsx';
 
@@ -19,7 +20,7 @@ const VerticalTabHeader = ({ children, className, is_floating, is_routed, item, 
     const label = item.label || item.title; // item.label.charAt(0).toUpperCase() + item.label.slice(1).toLowerCase();
     const is_active = selected && selected.label === item.label;
     const handleClick = () => onChange(item);
-    const id = `dt_${label}_link`;
+    const id = `dt_${getKebabCase(label)}_link`;
     const is_disabled = !!item.is_disabled;
     const count = item.count || 0;
 

@@ -4,7 +4,6 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper, ProgressBar, Tabs, DataList, DataTable } from '@deriv/components';
 import { urlFor, isMobile, website_name } from '@deriv/shared';
-
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
 import { getTimePercentage } from 'App/Components/Elements/PositionsDrawer/helpers';
@@ -15,6 +14,7 @@ import {
     getOpenPositionsColumnsTemplate,
     getMultiplierOpenPositionsColumnsTemplate,
 } from 'Modules/Reports/Constants/data-table-constants';
+import PositionsCard from 'App/Components/Elements/PositionsDrawer/PositionsDrawerCard/positions-drawer-card.jsx';
 import PlaceholderComponent from 'Modules/Reports/Components/placeholder-component.jsx';
 import { connect } from 'Stores/connect';
 import { isMultiplierContract } from 'Stores/Modules/Contract/Helpers/multiplier';
@@ -42,6 +42,7 @@ const OpenPositionsTable = ({
     currency,
     active_positions,
     is_loading,
+    is_multiplier_tab,
     getRowAction,
     mobileRowRenderer,
     preloaderCheck,
@@ -90,8 +91,12 @@ const OpenPositionsTable = ({
                                 footer={totals}
                                 rowRenderer={mobileRowRenderer}
                                 getRowAction={getRowAction}
-                                custom_width={'100%'}
-                                getRowSize={() => 194}
+                                custom_width='100%'
+                                getRowSize={() => {
+                                    if (isMobile() && is_multiplier_tab) return 228;
+                                    if (isMobile()) return 208;
+                                    return 194;
+                                }}
                             >
                                 <PlaceholderComponent is_loading={is_loading} />
                             </DataList>
@@ -106,6 +111,7 @@ const OpenPositionsTable = ({
 class OpenPositions extends React.Component {
     state = {
         active_index: this.props.is_multiplier ? 1 : 0,
+        has_multiplier_contract: false,
     };
 
     componentDidMount() {
@@ -113,6 +119,17 @@ class OpenPositions extends React.Component {
         // `onMount` in portfolio store will be invoked from portfolio stepper component in `trade-header-extensions.jsx`
         if (!isMobile()) {
             this.props.onMount();
+        }
+    }
+
+    componentDidUpdate(prev_props) {
+        if (this.props.active_positions !== prev_props.active_positions && !this.state.has_multiplier_contract) {
+            const has_multiplier_contract = this.props.active_positions.some(p =>
+                isMultiplierContract(p.contract_info?.contract_type)
+            );
+            this.setState({
+                has_multiplier_contract,
+            });
         }
     }
 
@@ -126,7 +143,6 @@ class OpenPositions extends React.Component {
         if (is_footer) {
             return (
                 <>
-                    <span className='open-positions__data-list-footer--title'>Total</span>
                     <div className='open-positions__data-list-footer--content'>
                         <div>
                             <DataList.Cell row={row} column={this.columns_map.purchase} />
@@ -149,12 +165,25 @@ class OpenPositions extends React.Component {
             );
         }
 
-        const { server_time } = this.props;
-        const { contract_info } = row;
-        const { date_expiry, date_start } = contract_info;
+        const { server_time, onClickCancel, onClickSell } = this.props;
+        const { contract_info, contract_update, type } = row;
+        const { currency, status, date_expiry, date_start } = contract_info;
         const duration_type = getContractDurationType(contract_info.longcode);
         const progress_value = getTimePercentage(server_time, date_start, date_expiry) / 100;
 
+        if (isMultiplierContract(type))
+            return (
+                <PositionsCard
+                    contract_info={contract_info}
+                    contract_update={contract_update}
+                    currency={currency}
+                    is_multiplier
+                    is_link_disabled
+                    onClickCancel={onClickCancel}
+                    onClickSell={onClickSell}
+                    status={status}
+                />
+            );
         return (
             <>
                 <div className='data-list__row'>
@@ -283,11 +312,13 @@ class OpenPositions extends React.Component {
             getPositionById,
         } = this.props;
 
+        const { has_multiplier_contract, active_index } = this.state;
+
         if (error) {
             return <p>{error}</p>;
         }
 
-        const is_multiplier_selected = this.state.active_index === 1;
+        const is_multiplier_selected = has_multiplier_contract && active_index === 1;
 
         const active_positions_filtered = active_positions.filter(p => {
             if (p.contract_info) {
@@ -310,10 +341,9 @@ class OpenPositions extends React.Component {
             preloaderCheck: this.isPurchaseReceived,
             totals: active_positions_filtered_totals,
         };
-        this.columns =
-            this.state.active_index === 1
-                ? getMultiplierOpenPositionsColumnsTemplate({ currency, onClickCancel, onClickSell, getPositionById })
-                : getOpenPositionsColumnsTemplate(currency);
+        this.columns = is_multiplier_selected
+            ? getMultiplierOpenPositionsColumnsTemplate({ currency, onClickCancel, onClickSell, getPositionById })
+            : getOpenPositionsColumnsTemplate(currency);
 
         this.columns_map = this.columns.reduce((map, item) => {
             map[item.col_index] = item;
@@ -323,41 +353,48 @@ class OpenPositions extends React.Component {
         return (
             <React.Fragment>
                 <NotificationMessages />
-                <ReportsMeta
-                    i18n_heading={localize('Open positions')}
-                    i18n_message={localize(
-                        'View all active trades on your account that can still incur a profit or a loss.'
-                    )}
-                />
                 <DesktopWrapper>
+                    <ReportsMeta
+                        i18n_heading={localize('Open positions')}
+                        i18n_message={localize(
+                            'View all active trades on your account that can still incur a profit or a loss.'
+                        )}
+                    />
+                </DesktopWrapper>
+                {has_multiplier_contract ? (
                     <Tabs
-                        active_index={this.state.active_index}
+                        active_index={active_index}
                         className='open-positions'
                         onTabItemClick={this.setActiveTabIndex}
                         top
-                        header_fit_content
+                        header_fit_content={!isMobile()}
                     >
                         <div label={localize('Options')}>
                             <OpenPositionsTable
                                 className='open-positions'
                                 columns={this.columns}
                                 {...shared_props}
-                                row_size={63}
+                                row_size={isMobile() ? 5 : 63}
                             />
                         </div>
                         <div label={localize('Multipliers')}>
                             <OpenPositionsTable
                                 className='open-positions-multiplier open-positions'
+                                is_multiplier_tab
                                 columns={this.columns}
-                                row_size={68}
+                                row_size={isMobile() ? 3 : 68}
                                 {...shared_props}
                             />
                         </div>
                     </Tabs>
-                </DesktopWrapper>
-                <MobileWrapper>
-                    <OpenPositionsTable className='open-positions' columns={this.columns} {...shared_props} />
-                </MobileWrapper>
+                ) : (
+                    <OpenPositionsTable
+                        className='open-positions'
+                        columns={this.columns}
+                        {...shared_props}
+                        row_size={isMobile() ? 5 : 63}
+                    />
+                )}
             </React.Fragment>
         );
     }
@@ -380,7 +417,7 @@ OpenPositions.propTypes = {
 
 export default connect(({ modules, client, common, ui }) => ({
     currency: client.currency,
-    active_positions: modules.portfolio.active_positions_filtered,
+    active_positions: modules.portfolio.active_positions,
     error: modules.portfolio.error,
     getPositionById: modules.portfolio.getPositionById,
     is_loading: modules.portfolio.is_loading,

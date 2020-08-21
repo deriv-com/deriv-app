@@ -211,7 +211,7 @@ class Statement extends React.Component {
                                 getRowAction={this.getRowAction}
                                 onScroll={handleScroll}
                                 custom_width={'100%'}
-                                getRowSize={() => 162}
+                                getRowSize={() => 176}
                             >
                                 <PlaceholderComponent is_loading={is_loading} />
                             </DataList>
@@ -244,7 +244,7 @@ export default connect(({ modules, client }) => ({
     currency: client.currency,
     date_from: modules.statement.date_from,
     date_to: modules.statement.date_to,
-    data: modules.statement.data_source,
+    data: modules.statement.data,
     error: modules.statement.error,
     filtered_date_range: modules.statement.filtered_date_range,
     handleScroll: modules.statement.handleScroll,

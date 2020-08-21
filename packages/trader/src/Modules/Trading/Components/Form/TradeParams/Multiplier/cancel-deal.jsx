@@ -4,6 +4,7 @@ import { Checkbox, Popover, Dropdown } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { connect } from 'Stores/connect';
+import { onToggleCancellation, onChangeCancellationDuration } from 'Stores/Modules/Contract/Helpers/multiplier';
 import PopoverMessageCheckbox from 'Modules/Trading/Components/Elements/popover-message-checkbox.jsx';
 
 const CancelDeal = ({
@@ -16,40 +17,12 @@ const CancelDeal = ({
     should_show_cancellation_warning,
     toggleCancellationWarning,
 }) => {
-    const changeValue = () => {
-        // e.target.checked is not reliable, we have to toggle its previous value
-        const new_val = !has_cancellation;
-        onChangeMultiple({
-            has_cancellation: new_val,
-            ...(!new_val
-                ? {
-                      // reset deal cancellation price
-                      cancellation_price: 0,
-                  }
-                : {
-                      // unchecked Stop loss
-                      has_stop_loss: false,
-                      has_take_profit: false,
-                  }),
-        });
-    };
-
-    const changeDuration = e => {
-        const { name, value } = e.target;
-        onChangeMultiple({
-            has_cancellation: true,
-            has_take_profit: false,
-            has_stop_loss: false,
-            [name]: value,
-        });
-    };
-
     const should_show_popover = (has_take_profit || has_stop_loss) && should_show_cancellation_warning;
 
     const input = (
         <Checkbox
             id='dt_cancellation-checkbox_input'
-            onChange={changeValue}
+            onChange={() => onToggleCancellation({ has_cancellation, onChangeMultiple })}
             name='has_cancellation'
             label={localize('Deal cancellation')}
             defaultChecked={has_cancellation}
@@ -103,7 +76,7 @@ const CancelDeal = ({
                     name='cancellation_duration'
                     no_border={true}
                     value={cancellation_duration}
-                    onChange={changeDuration}
+                    onChange={event => onChangeCancellationDuration({ event, onChangeMultiple })}
                 />
             )}
         </Fieldset>

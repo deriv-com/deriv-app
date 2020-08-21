@@ -5,6 +5,7 @@ import { localize } from '@deriv/translations';
 
 // TODO: [move-to-shared] - Remove the implementation in Client and add this to shared utils
 const getMT5AccountType = (group) => (group ? group.replace('\\', '_').replace(/_(\d+|master|EUR|GBP)/, '') : '');
+
 // TODO: [move-to-shared] - Remove the implementation in Client and add this to shared utils
 const getMT5AccountDisplay = (group) => {
     if (!group) return {};

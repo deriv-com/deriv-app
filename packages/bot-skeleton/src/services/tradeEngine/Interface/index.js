@@ -40,15 +40,16 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
     }
 
     getBotInterface() {
-        const getDetail = i => createDetails(this.get('contract'))[i];
+        const getDetail = i => createDetails(this.data.contract)[i];
 
         return {
             init: (...args) => this.tradeEngine.init(...args),
             start: (...args) => this.tradeEngine.start(...args),
             stop: (...args) => this.tradeEngine.stop(...args),
-            purchase: contractType => this.tradeEngine.purchase(contractType),
-            getAskPrice: contractType => Number(this.getProposal(contractType).ask_price),
-            getPayout: contractType => Number(this.getProposal(contractType).payout),
+            purchase: contract_type => this.tradeEngine.purchase(contract_type),
+            getAskPrice: contract_type => Number(this.getProposal(contract_type).ask_price),
+            getPayout: contract_type => Number(this.getProposal(contract_type).payout),
+            getPurchaseReference: () => this.tradeEngine.getPurchaseReference(),
             isSellAvailable: () => this.tradeEngine.isSellAtMarketAvailable(),
             sellAtMarket: () => this.tradeEngine.sellAtMarket(),
             getSellPrice: () => this.getSellPrice(),
@@ -69,25 +70,15 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
         );
     }
 
-    getProposal(contractType) {
-        const proposals = this.get('proposals');
-
-        let proposal;
-
-        proposals.forEach(p => {
-            if (p.contractType === contractType) {
-                proposal = p;
-            }
-        });
-
-        return proposal;
+    getProposal(contract_type) {
+        return this.data.proposals.find(
+            proposal =>
+                proposal.contract_type === contract_type &&
+                proposal.purchase_reference === this.tradeEngine.getPurchaseReference()
+        );
     }
 
     getSellPrice() {
         return this.tradeEngine.getSellPrice();
-    }
-
-    get(key) {
-        return this.tradeEngine.getData().get(key);
     }
 }

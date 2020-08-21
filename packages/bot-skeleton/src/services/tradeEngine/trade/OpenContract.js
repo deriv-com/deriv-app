@@ -17,7 +17,7 @@ export default Engine =>
 
                 this.setContractFlags(contract);
 
-                this.data = this.data.set('contract', contract);
+                this.data.contract = contract;
 
                 broadcastContract({ accountID: this.accountInfo.loginid, ...contract });
 

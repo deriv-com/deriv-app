@@ -444,7 +444,7 @@ class DBot {
 
     static handleDropOver(event, handleFileChange) {
         const main_workspace_dom = document.getElementById('scratch_div');
-        const local_drag_zone = document.getElementById('import_dragndrop');
+        const local_drag_zone = document.getElementById('load-strategy__local-dropzone-area');
 
         if (main_workspace_dom.contains(event.target)) {
             handleFileChange(event);

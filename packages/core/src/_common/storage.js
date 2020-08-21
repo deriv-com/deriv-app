@@ -1,5 +1,4 @@
 const Cookies = require('js-cookie');
-const { isProduction } = require('@deriv/shared');
 const getPropertyValue = require('@deriv/shared').getPropertyValue;
 const isEmptyObject = require('@deriv/shared').isEmptyObject;
 
@@ -142,12 +141,9 @@ const CookieStorage = function(cookie_name, cookie_domain) {
     this.cookie_name = cookie_name;
     this.domain =
         cookie_domain ||
-        (isProduction()
-            ? `.${hostname
-                  .split('.')
-                  .slice(-2)
-                  .join('.')}`
-            : hostname);
+        /* eslint-disable no-nested-ternary */
+        (hostname.includes('binary.sx') ? 'binary.sx' : 'deriv.com');
+    /* eslint-enable no-nested-ternary */
     this.path = '/';
     this.expires = new Date('Thu, 1 Jan 2037 12:00:00 GMT');
     this.value = {};

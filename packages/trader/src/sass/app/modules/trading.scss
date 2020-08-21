@@ -68,6 +68,7 @@
         @include mobile {
             padding: 0;
             margin-bottom: 0.8rem;
+            background-color: transparent;
         }
 
         /* postcss-bem-linter: ignore */
@@ -369,6 +370,25 @@
             align-self: flex-end;
         }
     }
+    &__cancel-deal-info {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        @include mobile {
+            padding: 0rem 0.4rem;
+            min-height: 1.4rem;
+
+            .trade-container__price-info-basis {
+                color: var(--text-less-prominent);
+            }
+            .trade-container__price-info-value {
+                color: var(--text-prominent);
+                font-size: 1rem;
+            }
+        }
+    }
     &__popover {
         /* postcss-bem-linter: ignore */
         .dc-checkbox {
@@ -427,6 +447,12 @@
         @include mobile {
             padding: initial;
             position: relative;
+
+            &:not(&--has-cancellation) {
+                .btn-purchase--multiplier {
+                    height: 86px;
+                }
+            }
         }
     }
     &__loading {
@@ -513,20 +539,6 @@
         left: 0;
         width: calc(100vw - 1.6rem);
         transform: translate(0.8rem, 0);
-    }
-}
-
-/** @define popup-root */
-@include mobile {
-    .popup-root {
-        width: 100vw;
-        height: 100vh;
-
-        /* postcss-bem-linter: ignore */
-        .dc-toast-error {
-            z-index: 9999;
-            top: 2em;
-        }
     }
 }
 

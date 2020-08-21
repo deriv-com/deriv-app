@@ -2,8 +2,7 @@ import throttle from 'lodash.throttle';
 import { action, computed, observable, reaction } from 'mobx';
 import { createTransformer } from 'mobx-utils';
 import { WS } from 'Services/ws-methods';
-import { isMobile, isEmptyObject } from '@deriv/shared';
-
+import { isEmptyObject } from '@deriv/shared';
 import { formatPortfolioPosition } from './Helpers/format-response';
 import { contractCancelled, contractSold } from './Helpers/portfolio-notifications';
 import { getCurrentTick, getDurationPeriod, getDurationTime, getDurationUnitText } from './Helpers/details';
@@ -204,7 +203,6 @@ export default class PortfolioStore extends BaseStore {
                         type: response.msg_type,
                         ...response.error,
                     });
-                    this.root_store.ui.toggleServicesErrorModal(true);
                 } else {
                     this.root_store.ui.addNotificationMessage(contractCancelled());
                 }
@@ -231,11 +229,10 @@ export default class PortfolioStore extends BaseStore {
 
             // invalidToken error will handle in socket-general.js
             if (response.error.code !== 'InvalidToken') {
-                this.root_store.common.services_error = {
+                this.root_store.common.setServicesError({
                     type: response.msg_type,
                     ...response.error,
-                };
-                this.root_store.ui.toggleServicesErrorModal(true);
+                });
             }
         } else if (!response.error && response.sell) {
             const i = this.getPositionIndexById(response.sell.contract_id);
@@ -422,23 +419,11 @@ export default class PortfolioStore extends BaseStore {
 
     @computed
     get active_positions_count() {
-        return this.active_positions_filtered.length || 0;
+        return this.active_positions.length || 0;
     }
 
     @computed
     get is_empty() {
         return !this.is_loading && this.all_positions.length === 0;
-    }
-
-    @computed
-    get all_positions_filtered() {
-        // TODO: remove this once Multiplier is supported in Mobile
-        return this.all_positions.filter(p => !(isMultiplierContract(p.contract_info.contract_type) && isMobile()));
-    }
-
-    @computed
-    get active_positions_filtered() {
-        // TODO: remove this once Multiplier is supported in Mobile
-        return this.active_positions.filter(p => !(isMultiplierContract(p.contract_info.contract_type) && isMobile()));
     }
 }

@@ -56,7 +56,7 @@ const OnRampProviderPopup = ({
                 </div>
                 <div className='on-ramp__popup-deposit-address'>
                     <Popover
-                        zIndex={9999}
+                        zIndex={9998}
                         alignment='right'
                         message={localize('Copied!')}
                         is_open={is_deposit_address_popover_open}
@@ -102,7 +102,15 @@ const OnRampProviderPopup = ({
                 <div className='on-ramp__popup-buttons'>
                     <Button.Group>
                         <Button large onClick={() => setIsOnRampModalOpen(false)} secondary text={localize('Cancel')} />
-                        <Button large onClick={onClickDisclaimerContinue} primary text={localize('Continue')} />
+                        <Button
+                            id={`gtm-onramp-provider-continue--${selected_provider.name
+                                .toLowerCase()
+                                .replace(' ', '-')}`}
+                            large
+                            onClick={onClickDisclaimerContinue}
+                            primary
+                            text={localize('Continue')}
+                        />
                     </Button.Group>
                 </div>
             )}

@@ -63,7 +63,7 @@
             line-height: 1.4;
             z-index: 2;
             border-radius: $BORDER_RADIUS;
-            max-height: 70px;
+            max-height: 90px;
             overflow: hidden;
             font-weight: bold;
         }
@@ -296,6 +296,16 @@
         }
         &:not(.btn-purchase--swoosh) .btn-purchase__effect-detail {
             width: 72px;
+        }
+        .btn-purchase__top {
+            @include mobile {
+                justify-content: center;
+            }
+        }
+        .trade-container__price-info {
+            @include mobile {
+                justify-content: center;
+            }
         }
     }
 }

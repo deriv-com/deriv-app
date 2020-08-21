@@ -40,7 +40,7 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
     }
 
     getBotInterface() {
-        const getDetail = i => createDetails(this.data.contract)[i];
+        const getDetail = i => createDetails(this.tradeEngine.data.contract)[i];
 
         return {
             init: (...args) => this.tradeEngine.init(...args),

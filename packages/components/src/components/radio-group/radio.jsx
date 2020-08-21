@@ -69,7 +69,7 @@ Radio.propTypes = {
     id: PropTypes.string,
     onClick: PropTypes.func,
     selected: PropTypes.bool,
-    value: PropTypes.bool,
+    value: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
 };
 
 export default Radio;

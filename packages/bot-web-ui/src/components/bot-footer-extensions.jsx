@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Icon } from '@deriv/components';
+import { Icon, Popover } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { getDerivComLink } from '@deriv/shared';
 import { tabs_title } from '../constants/bot-contents';
@@ -9,14 +9,16 @@ import { connect } from '../stores/connect';
 import '../assets/sass/bot-footer-extensions.scss';
 
 const SecurityAndPrivacy = () => (
-    <a
-        className='footer__link'
-        href={getDerivComLink('tnc/security-and-privacy.pdf')}
-        rel='noopener noreferrer'
-        target='_blank'
-    >
-        <Icon icon='IcSecurityAndPrivacy' />
-    </a>
+    <Popover alignment='top' message={localize('Security and privacy')}>
+        <a
+            className='footer__link'
+            href={getDerivComLink('tnc/security-and-privacy.pdf')}
+            rel='noopener noreferrer'
+            target='_blank'
+        >
+            <Icon icon='IcSecurityAndPrivacy' />
+        </a>
+    </Popover>
 );
 
 const BotFooterExtensions = ({ active_tab, populateFooterExtensions, setActiveTab }) => {

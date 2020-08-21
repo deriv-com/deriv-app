@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import fromEntries from 'object.fromentries';
 import React from 'react';
@@ -6,7 +7,7 @@ import { isDesktop, toMoment } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { makeCancellablePromise } from '_common/base/cancellable_promise';
-
+import LoadingModal from './real-account-signup-loader.jsx';
 import { getItems } from './account-wizard-form';
 
 // TODO: [deriv-eu] remove and merge this with the original function in PersonalDetails
@@ -21,7 +22,7 @@ const getLocation = (location_list, value, type) => {
 
 const SetCurrencyHeader = ({ has_target, has_real_account, has_currency, items, step }) => (
     <React.Fragment>
-        {(!has_real_account || has_target) && (
+        {(!has_real_account || has_target) && has_currency && (
             <React.Fragment>
                 <DesktopWrapper>
                     <FormProgress steps={items} current_step={step} />
@@ -46,7 +47,7 @@ const SetCurrencyHeader = ({ has_target, has_real_account, has_currency, items, 
             </React.Fragment>
         )}
         <DesktopWrapper>
-            {has_real_account && !has_target && (
+            {has_real_account && (!has_target || !has_currency) && (
                 <div className='account-wizard__set-currency'>
                     {!has_currency && (
                         <p>
@@ -78,6 +79,7 @@ class AccountWizard extends React.Component {
         this.props.fetchStatesList();
         const { cancel, promise } = makeCancellablePromise(this.props.fetchResidenceList());
         this.cancel = cancel;
+
         promise
             .then(() => {
                 this.setState({
@@ -201,7 +203,6 @@ class AccountWizard extends React.Component {
         if (this.hasMoreSteps()) {
             this.goNext();
         } else {
-            this.props.onLoading();
             this.createRealAccount(setSubmitting);
         }
     };
@@ -255,6 +256,7 @@ class AccountWizard extends React.Component {
     };
 
     createRealAccount(setSubmitting) {
+        this.props.setLoading(true);
         if (this.props.has_real_account && !this.props.has_currency) {
             this.setAccountCurrency()
                 .then(response => {
@@ -267,7 +269,8 @@ class AccountWizard extends React.Component {
                         },
                         () => setSubmitting(false)
                     );
-                });
+                })
+                .finally(() => this.props.setLoading(false));
         } else {
             this.submitForm()
                 .then(response => {
@@ -279,7 +282,8 @@ class AccountWizard extends React.Component {
                 })
                 .catch(error => {
                     this.props.onError(error, this.state.items);
-                });
+                })
+                .finally(() => this.props.setLoading(false));
         }
     }
 
@@ -298,11 +302,17 @@ class AccountWizard extends React.Component {
 
     render() {
         if (this.state.mounted) return null;
+        if (this.props.is_loading) return <LoadingModal />;
         if (!this.state.finished) {
             const BodyComponent = this.getCurrent('body');
             const passthrough = this.getPropsForChild();
+
             return (
-                <div className='account-wizard'>
+                <div
+                    className={classNames('account-wizard', {
+                        'account-wizard--set-currency': !this.props.has_currency,
+                    })}
+                >
                     <SetCurrencyHeader
                         has_real_account={this.props.has_real_account}
                         step={this.state.step}

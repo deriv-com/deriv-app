@@ -139,9 +139,12 @@ class PersonalDetailsForm extends React.Component {
             // 'account_opening_reason',
             'address_line_1',
             'address_city',
-            this.props.is_eu && 'tax_residence',
-            this.props.is_eu && 'tax_identification_number',
         ];
+        if (this.props.is_eu) {
+            const required_tax_fields = ['tax_residence', 'tax_identification_number'];
+            required_fields.push(...required_tax_fields);
+        }
+
         validateValues((val) => val, required_fields, localize('This field is required'));
         const only_alphabet_fields = ['first_name', 'last_name'];
         validateValues(validLetterSymbol, only_alphabet_fields, localize('Only alphabet is allowed'));
@@ -307,7 +310,10 @@ class PersonalDetailsForm extends React.Component {
                             <form
                                 noValidate
                                 className='account-form account-form__personal-details'
-                                onSubmit={handleSubmit}
+                                onSubmit={(e) => {
+                                    console.warn(errors);
+                                    handleSubmit(e);
+                                }}
                             >
                                 <FormBody scroll_offset={isMobile() ? '199px' : '80px'}>
                                     <FormSubHeader title={localize('Details')} />

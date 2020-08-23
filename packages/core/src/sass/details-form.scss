@@ -1,11 +1,16 @@
 .details-form {
     display: grid;
+    align-content: start;
     @include desktop {
         padding: 0 0.4rem;
     }
     @include mobile {
         overflow-x: hidden;
         overflow-y: auto;
+    }
+
+    &__scrollbar {
+        max-height: none;
     }
 
     &__elements {

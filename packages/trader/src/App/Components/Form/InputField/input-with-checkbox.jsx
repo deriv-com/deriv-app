@@ -2,10 +2,12 @@ import PropTypes from 'prop-types';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import React from 'react';
 import { Checkbox, Popover } from '@deriv/components';
-import { getDecimalPlaces } from '@deriv/shared';
+import { isMobile, isDesktop, getDecimalPlaces } from '@deriv/shared';
+
 import InputField from './input-field.jsx';
 
 const InputWithCheckbox = ({
+    addToast,
     classNameInlinePrefix,
     classNameInput,
     className,
@@ -21,6 +23,7 @@ const InputWithCheckbox = ({
     max_value,
     onChange,
     checkbox_tooltip_label,
+    tooltip_alignment,
     error_message_alignment,
     tooltip_label,
     value,
@@ -35,6 +38,12 @@ const InputWithCheckbox = ({
     React.useEffect(() => {
         setChecked(defaultChecked);
     }, [defaultChecked]);
+
+    React.useEffect(() => {
+        if (isMobile() && error_messages?.length > 0) {
+            showErrorToast(error_messages[0]);
+        }
+    }, [error_messages]);
 
     const focusInput = () => {
         setTimeout(() => {
@@ -66,6 +75,7 @@ const InputWithCheckbox = ({
             currency={currency}
             error_messages={error_messages}
             error_message_alignment={error_message_alignment}
+            is_error_tooltip_hidden={isMobile()}
             is_disabled={is_disabled ? 'disabled' : undefined}
             fractional_digits={getDecimalPlaces(currency)}
             id={`dt_${name}_input`}
@@ -80,7 +90,8 @@ const InputWithCheckbox = ({
             name={name}
             onChange={onChange}
             onClickInputWrapper={is_disabled ? undefined : enableInputOnClick}
-            type='tel'
+            type='number'
+            inputmode='decimal'
             value={value}
         />
     );
@@ -98,6 +109,16 @@ const InputWithCheckbox = ({
             disabled={is_disabled}
         />
     );
+
+    const showErrorToast = () => {
+        if (typeof addToast === 'function') {
+            addToast({
+                key: `${name}__error`,
+                content: error_messages,
+                type: 'error',
+            });
+        }
+    };
 
     return (
         <React.Fragment>
@@ -118,12 +139,13 @@ const InputWithCheckbox = ({
                 )}
                 {tooltip_label && (
                     <Popover
-                        alignment='left'
+                        alignment={tooltip_alignment || 'left'}
                         icon='info'
                         id={`dt_${name}-checkbox__tooltip`}
                         message={tooltip_label}
-                        margin={210}
-                        relative_render
+                        margin={isMobile() ? 0 : 210}
+                        zIndex={9999}
+                        {...(isDesktop() ? { relative_render: true } : {})}
                     />
                 )}
             </div>
@@ -133,6 +155,7 @@ const InputWithCheckbox = ({
 };
 
 InputWithCheckbox.propTypes = {
+    addToast: PropTypes.func,
     checkbox_tooltip_label: PropTypes.oneOfType([PropTypes.node, PropTypes.object, PropTypes.string]),
     className: PropTypes.string,
     classNameInlinePrefix: PropTypes.string,
@@ -149,6 +172,7 @@ InputWithCheckbox.propTypes = {
     name: PropTypes.string,
     onChange: PropTypes.func,
     tooltip_label: PropTypes.string,
+    tooltip_alignment: PropTypes.string,
     error_message_alignment: PropTypes.string,
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };

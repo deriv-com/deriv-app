@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
@@ -16,6 +17,7 @@ import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
 import ContractDrawer from 'App/Components/Elements/ContractDrawer';
 import { SmartChart } from 'Modules/SmartChart';
 import { connect } from 'Stores/connect';
+import { isMultiplierContract } from 'Stores/Modules/Contract/Helpers/multiplier';
 import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget, InfoBoxWidget } from './contract-replay-widget.jsx';
 import ChartMarker from '../../SmartChart/Components/Markers/marker.jsx';
 
@@ -62,6 +64,25 @@ class ContractReplay extends React.Component {
 
         if (!contract_info.underlying) return null;
 
+        const is_multiplier = isMultiplierContract(contract_info.contract_type);
+
+        const contract_drawer_el = (
+            <ContractDrawer
+                contract_info={contract_info}
+                contract_update={contract_update}
+                contract_update_history={contract_update_history}
+                is_chart_loading={is_chart_loading}
+                is_dark_theme={is_dark_theme}
+                is_multiplier={is_multiplier}
+                is_sell_requested={is_sell_requested}
+                is_valid_to_cancel={is_valid_to_cancel}
+                onClickCancel={onClickCancel}
+                onClickSell={onClickSell}
+                status={indicative_status}
+                toggleHistoryTab={toggleHistoryTab}
+            />
+        );
+
         return (
             <FadeWrapper
                 is_visible={this.state.is_visible}
@@ -81,20 +102,22 @@ class ContractReplay extends React.Component {
                         is_disabled={isDesktop()}
                         height_offset='80px' // * 80px = header + contract details header heights in mobile
                     >
-                        <ContractDrawer
-                            contract_info={contract_info}
-                            contract_update={contract_update}
-                            contract_update_history={contract_update_history}
-                            is_dark_theme={is_dark_theme}
-                            is_sell_requested={is_sell_requested}
-                            is_valid_to_cancel={is_valid_to_cancel}
-                            onClickCancel={onClickCancel}
-                            onClickSell={onClickSell}
-                            status={indicative_status}
-                            toggleHistoryTab={toggleHistoryTab}
-                        />
+                        <DesktopWrapper>{contract_drawer_el}</DesktopWrapper>
+                        <MobileWrapper>
+                            <div
+                                className={classNames('contract-drawer__mobile-wrapper', {
+                                    'contract-drawer__mobile-wrapper--is-multiplier': isMobile() && is_multiplier,
+                                })}
+                            >
+                                {contract_drawer_el}
+                            </div>
+                        </MobileWrapper>
                         <React.Suspense fallback={<div />}>
-                            <div className='replay-chart__container'>
+                            <div
+                                className={classNames('replay-chart__container', {
+                                    'replay-chart__container--is-multiplier': isMobile() && is_multiplier,
+                                })}
+                            >
                                 <DesktopWrapper>
                                     <NotificationMessages />
                                 </DesktopWrapper>

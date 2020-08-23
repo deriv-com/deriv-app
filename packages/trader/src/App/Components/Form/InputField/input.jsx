@@ -14,6 +14,7 @@ const Input = ({
     display_value,
     fractional_digits,
     id,
+    inputmode,
     inline_prefix,
     is_autocomplete_disabled,
     is_disabled,
@@ -92,6 +93,7 @@ const Input = ({
                 readOnly={is_read_only}
                 ref={ref}
                 required={required || undefined}
+                inputMode={inputmode}
                 type={type === 'number' ? 'text' : type}
                 value={display_value || ''}
                 aria-label={ariaLabel}

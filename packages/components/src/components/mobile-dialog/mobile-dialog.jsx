@@ -40,6 +40,7 @@ const MobileDialog = props => {
 
     // sometimes input is covered by virtual keyboard on mobile chrome, uc browser
     const handleClick = e => {
+        e.stopPropagation();
         if (e.target.tagName === 'INPUT' && e.target.type === 'number') {
             const scrollToTarget = scrollToElement(e.currentTarget, e.target);
             window.addEventListener('resize', scrollToTarget, false);
@@ -72,10 +73,7 @@ const MobileDialog = props => {
                     height_offset={props.content_height_offset || '8px'}
                 >
                     <div className='dc-mobile-dialog__header'>
-                        {!!renderTitle ||
-                            (!!title && (
-                                <h2 className='dc-mobile-dialog__title'>{renderTitle ? renderTitle() : title}</h2>
-                            ))}
+                        <h2 className='dc-mobile-dialog__title'>{renderTitle ? renderTitle() : title}</h2>
                         <div className='icons dc-btn-close dc-mobile-dialog__close-btn' onClick={props.onClose}>
                             <Icon icon='IcCross' className='dc-mobile-dialog__close-btn-icon' />
                         </div>

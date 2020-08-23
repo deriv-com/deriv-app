@@ -17,6 +17,7 @@ const PositionsDrawerCard = ({
     currency,
     is_sell_requested,
     is_unsupported,
+    is_link_disabled,
     profit_loss,
     onClickCancel,
     onClickSell,
@@ -59,13 +60,13 @@ const PositionsDrawerCard = ({
             id={`dt_drawer_card_${contract_info.contract_id}`}
             className={classNames('positions-drawer-card__wrapper', transition_class, className)}
             onMouseEnter={() => {
-                onMouseEnter(true, contract_info);
+                if (typeof onMouseEnter === 'function') onMouseEnter(true, contract_info);
             }}
             onMouseLeave={() => {
-                onMouseLeave(false, contract_info);
+                if (typeof onMouseLeave === 'function') onMouseLeave(false, contract_info);
             }}
             onClick={() => {
-                onMouseLeave(false, contract_info);
+                if (typeof onMouseLeave === 'function') onMouseLeave(false, contract_info);
             }}
         >
             <ResultOverlay
@@ -77,6 +78,7 @@ const PositionsDrawerCard = ({
                 onClick={() => toggleUnsupportedContractModal(true)}
                 result={result || fallback_result}
             />
+            {/* eslint-disable-next-line no-nested-ternary */}
             {is_unsupported ? (
                 <div
                     className={classNames('positions-drawer-card', {
@@ -84,6 +86,15 @@ const PositionsDrawerCard = ({
                         'positions-drawer-card--red': !is_multiplier && profit_loss < 0 && !result,
                     })}
                     onClick={() => toggleUnsupportedContractModal(true)}
+                >
+                    {contract_info.underlying ? contract_el : loader_el}
+                </div>
+            ) : is_link_disabled ? (
+                <div
+                    className={classNames('positions-drawer-card', {
+                        'positions-drawer-card--green': !is_multiplier && profit_loss > 0 && !result,
+                        'positions-drawer-card--red': !is_multiplier && profit_loss < 0 && !result,
+                    })}
                 >
                     {contract_info.underlying ? contract_el : loader_el}
                 </div>

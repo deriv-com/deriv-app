@@ -4,6 +4,10 @@ import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { getExpiryType, getDurationMinMaxValues } from 'Stores/Modules/Trading/Helpers/duration';
 import { getLocalizedBasis } from 'Stores/Modules/Trading/Constants/contract';
+import {
+    MultiplierAmountWidget,
+    MultiplierOptionsWidget,
+} from 'Modules/Trading/Components/Form/TradeParams/Multiplier/amount-widget.jsx';
 import TradeParamsModal from '../../Containers/trade-params-mobile.jsx';
 
 class MobileWidget extends React.Component {
@@ -59,7 +63,7 @@ class MobileWidget extends React.Component {
     };
 
     render() {
-        const { amount, basis, currency, last_digit } = this.props;
+        const { amount, basis, currency, last_digit, is_multiplier } = this.props;
 
         const localized_basis = getLocalizedBasis();
 
@@ -76,13 +80,20 @@ class MobileWidget extends React.Component {
 
         return (
             <div className='mobile-widget__wrapper'>
-                <div className='mobile-widget' onClick={this.toggleWidget}>
-                    <div className='mobile-widget__duration'>{this.getHumanReadableDuration()}</div>
-                    <div className='mobile-widget__amount'>
-                        <Money amount={amount} currency={currency} show_currency />
+                {is_multiplier ? (
+                    <React.Fragment>
+                        <MultiplierAmountWidget />
+                        <MultiplierOptionsWidget />
+                    </React.Fragment>
+                ) : (
+                    <div className='mobile-widget' onClick={this.toggleWidget}>
+                        <div className='mobile-widget__duration'>{this.getHumanReadableDuration()}</div>
+                        <div className='mobile-widget__amount'>
+                            <Money amount={amount} currency={currency} show_currency />
+                        </div>
+                        <div className='mobile-widget__type'>{stakeOrPayout()}</div>
                     </div>
-                    <div className='mobile-widget__type'>{stakeOrPayout()}</div>
-                </div>
+                )}
                 <TradeParamsModal is_open={this.state.is_open} toggleModal={this.toggleWidget} />
                 {this.isVisible('last_digit') && this.props.is_collapsed && (
                     <div className='mobile-widget' onClick={this.props.toggleDigitsWidget}>
@@ -108,4 +119,5 @@ export default connect(({ modules, ui }) => ({
     trade_store: modules.trade,
     form_components: modules.trade.form_components,
     last_digit: modules.trade.last_digit,
+    is_multiplier: modules.trade.is_multiplier,
 }))(MobileWidget);

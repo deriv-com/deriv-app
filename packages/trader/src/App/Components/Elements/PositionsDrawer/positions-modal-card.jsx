@@ -10,13 +10,18 @@ import { isCryptocurrency } from '@deriv/shared';
 import Shortcode from 'Modules/Reports/Helpers/shortcode';
 import { localize } from '@deriv/translations';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
+import { isMultiplierContract } from 'Stores/Modules/Contract/Helpers/multiplier';
 import ContractTypeCell from './contract-type-cell.jsx';
 import ProgressSliderMobile from './ProgressSliderMobile';
 import ResultMobile from './result-mobile.jsx';
+import CardHeader from './PositionsDrawerCard/positions-drawer-card-header.jsx';
+import CardBody from './PositionsDrawerCard/positions-drawer-card-body.jsx';
+import CardFooter from './PositionsDrawerCard/positions-drawer-card-footer.jsx';
 
 const PositionsModalCard = ({
     className,
     contract_info,
+    contract_update,
     currency,
     current_tick,
     indicative,
@@ -28,6 +33,7 @@ const PositionsModalCard = ({
     profit_loss,
     onClickSell,
     onClickRemove,
+    onClickCancel,
     result,
     sell_price,
     status,
@@ -40,8 +46,10 @@ const PositionsModalCard = ({
             <PositionsCardLoader speed={2} />
         </div>
     );
+    const is_multiplier = isMultiplierContract(contract_info.contract_type);
+
     const fallback_result = profit_loss < 0 ? 'lost' : 'won';
-    const contract_el = (
+    const contract_options_el = (
         <React.Fragment>
             <div className={classNames('positions-modal-card__grid', 'positions-modal-card__grid-header')}>
                 <div className='positions-modal-card__underlying-name'>
@@ -172,6 +180,31 @@ const PositionsModalCard = ({
         </React.Fragment>
     );
 
+    const contract_multiplier_el = (
+        <React.Fragment>
+            <CardHeader contract_info={contract_info} has_progress_slider={!is_multiplier} />
+            <CardBody
+                contract_info={contract_info}
+                contract_update={contract_update}
+                currency={currency}
+                is_multiplier={is_multiplier}
+                status={status}
+            />
+        </React.Fragment>
+    );
+
+    const contract_footer_el = is_multiplier ? (
+        <CardFooter
+            contract_info={contract_info}
+            is_multiplier={is_multiplier}
+            is_sell_requested={is_sell_requested}
+            onClickCancel={onClickCancel}
+            onClickSell={onClickSell}
+        />
+    ) : null;
+
+    const contract_el = is_multiplier ? contract_multiplier_el : contract_options_el;
+
     return (
         <div id={`dt_drawer_card_${id}`} className={classNames('positions-modal-card__wrapper', className)}>
             {is_unsupported ? (
@@ -182,13 +215,18 @@ const PositionsModalCard = ({
                     {contract_info.underlying ? contract_el : loader_el}
                 </div>
             ) : (
-                <BinaryLink
-                    onClick={togglePositions}
-                    className={classNames('positions-modal-card')}
-                    to={getContractPath(id)}
-                >
-                    {contract_info.underlying ? contract_el : loader_el}
-                </BinaryLink>
+                <React.Fragment>
+                    <BinaryLink
+                        onClick={togglePositions}
+                        className={classNames('positions-modal-card', {
+                            'positions-modal-card--multiplier': is_multiplier,
+                        })}
+                        to={getContractPath(id)}
+                    >
+                        {contract_info.underlying ? contract_el : loader_el}
+                    </BinaryLink>
+                    {contract_footer_el}
+                </React.Fragment>
             )}
         </div>
     );
@@ -210,6 +248,7 @@ PositionsModalCard.propTypes = {
     is_valid_to_sell: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
     onClickRemove: PropTypes.func,
     onClickSell: PropTypes.func,
+    onClickCancel: PropTypes.func,
     profit_loss: PropTypes.number,
     result: PropTypes.string,
     sell_time: PropTypes.number,

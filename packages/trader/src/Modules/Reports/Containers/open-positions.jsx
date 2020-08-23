@@ -171,9 +171,6 @@ class OpenPositions extends React.Component {
         const { currency, status, date_expiry, date_start } = contract_info;
         const duration_type = getContractDurationType(contract_info.longcode);
         const progress_value = getTimePercentage(server_time, date_start, date_expiry) / 100;
-        // Remove 'Type' title in mobile mode
-        const column_clone = { ...this.columns_map };
-        column_clone.type.title = '';
 
         if (isMultiplierContract(type))
             return (
@@ -191,20 +188,28 @@ class OpenPositions extends React.Component {
         return (
             <>
                 <div className='data-list__row'>
-                    <DataList.Cell row={row} column={column_clone.type} />
+                    <DataList.Cell row={row} column={this.columns_map.type} />
                     <ProgressBar label={duration_type} value={progress_value} />
                 </div>
                 <div className='data-list__row'>
-                    <DataList.Cell row={row} column={column_clone.reference} />
-                    <DataList.Cell className='data-list__row-cell--amount' row={row} column={column_clone.currency} />
+                    <DataList.Cell row={row} column={this.columns_map.reference} />
+                    <DataList.Cell
+                        className='data-list__row-cell--amount'
+                        row={row}
+                        column={this.columns_map.currency}
+                    />
                 </div>
                 <div className='data-list__row'>
-                    <DataList.Cell row={row} column={column_clone.purchase} />
-                    <DataList.Cell className='data-list__row-cell--amount' row={row} column={column_clone.indicative} />
+                    <DataList.Cell row={row} column={this.columns_map.purchase} />
+                    <DataList.Cell
+                        className='data-list__row-cell--amount'
+                        row={row}
+                        column={this.columns_map.indicative}
+                    />
                 </div>
                 <div className='data-list__row'>
-                    <DataList.Cell row={row} column={column_clone.payout} />
-                    <DataList.Cell className='data-list__row-cell--amount' row={row} column={column_clone.profit} />
+                    <DataList.Cell row={row} column={this.columns_map.payout} />
+                    <DataList.Cell className='data-list__row-cell--amount' row={row} column={this.columns_map.profit} />
                 </div>
             </>
         );

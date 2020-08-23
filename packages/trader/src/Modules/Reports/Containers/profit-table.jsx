@@ -46,33 +46,41 @@ class ProfitTable extends React.Component {
             );
         }
 
-        // Remove 'Type' title in mobile mode
-        const column_clone = { ...this.columns_map };
-        column_clone.action_type.title = '';
-
         return (
             <>
                 <div className='data-list__row'>
-                    <DataList.Cell row={row} column={column_clone.action_type} />
+                    <DataList.Cell row={row} column={this.columns_map.action_type} />
                     <div className={classNames('duration-type', duration_classname)}>
                         <div className={classNames('duration-type__background', `${duration_classname}__background`)} />
                         <span className={`${duration_classname}__label`}>{localize(duration_type)}</span>
                     </div>
                 </div>
                 <div className='data-list__row'>
-                    <DataList.Cell row={row} column={column_clone.transaction_id} />
-                    <DataList.Cell className='data-list__row-cell--amount' row={row} column={column_clone.currency} />
+                    <DataList.Cell row={row} column={this.columns_map.transaction_id} />
+                    <DataList.Cell
+                        className='data-list__row-cell--amount'
+                        row={row}
+                        column={this.columns_map.currency}
+                    />
                 </div>
                 <div className='data-list__row'>
-                    <DataList.Cell row={row} column={column_clone.purchase_time} />
-                    <DataList.Cell className='data-list__row-cell--amount' row={row} column={column_clone.buy_price} />
+                    <DataList.Cell row={row} column={this.columns_map.purchase_time} />
+                    <DataList.Cell
+                        className='data-list__row-cell--amount'
+                        row={row}
+                        column={this.columns_map.buy_price}
+                    />
                 </div>
                 <div className='data-list__row'>
-                    <DataList.Cell row={row} column={column_clone.sell_time} />
-                    <DataList.Cell className='data-list__row-cell--amount' row={row} column={column_clone.sell_price} />
+                    <DataList.Cell row={row} column={this.columns_map.sell_time} />
+                    <DataList.Cell
+                        className='data-list__row-cell--amount'
+                        row={row}
+                        column={this.columns_map.sell_price}
+                    />
                 </div>
                 <div className='data-list__row'>
-                    <DataList.Cell row={row} column={column_clone.profit_loss} />
+                    <DataList.Cell row={row} column={this.columns_map.profit_loss} />
                 </div>
             </>
         );

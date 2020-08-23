@@ -32,7 +32,7 @@ const getModeFromValue = key => {
 export const getStatementTableColumnsTemplate = currency => [
     {
         key: 'icon',
-        title: localize('Type'),
+        title: isMobile() ? '' : localize('Type'),
         col_index: 'icon',
         renderCellContent: ({ cell_value, row_obj }) => (
             <MarketSymbolIconRow action={cell_value} key={row_obj.transaction_id} payload={row_obj} />
@@ -77,7 +77,7 @@ export const getStatementTableColumnsTemplate = currency => [
 export const getProfitTableColumnsTemplate = (currency, items_count) => [
     {
         key: 'icon',
-        title: localize('Type'),
+        title: isMobile() ? '' : localize('Type'),
         col_index: 'action_type',
         renderCellContent: ({ cell_value, row_obj, is_footer }) => {
             if (is_footer) {
@@ -134,7 +134,7 @@ export const getProfitTableColumnsTemplate = (currency, items_count) => [
 ];
 export const getOpenPositionsColumnsTemplate = currency => [
     {
-        title: localize('Type'),
+        title: isMobile() ? '' : localize('Type'),
         col_index: 'type',
         renderCellContent: ({ cell_value, row_obj, is_footer }) => {
             if (is_footer) return localize('Total');
@@ -209,7 +209,7 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
     getPositionById,
 }) => [
     {
-        title: localize('Type'),
+        title: isMobile() ? '' : localize('Type'),
         col_index: 'type',
         renderCellContent: ({ cell_value, row_obj, is_footer }) => {
             if (is_footer) return localize('Total');

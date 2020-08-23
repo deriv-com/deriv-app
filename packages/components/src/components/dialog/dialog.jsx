@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import Button from '../button/button.jsx';
 
@@ -42,6 +43,7 @@ class Dialog extends React.Component {
             is_visible,
             is_mobile_full_width = true,
             is_content_centered,
+            portal_element_id,
             title,
         } = this.props;
 
@@ -49,59 +51,63 @@ class Dialog extends React.Component {
             'dc-dialog__content--centered': is_content_centered,
         });
 
-        return (
-            <React.Fragment>
-                <CSSTransition
-                    appear
-                    in={is_visible && !is_loading}
-                    timeout={50}
-                    classNames={{
-                        appear: 'dc-dialog__wrapper--enter',
-                        enter: 'dc-dialog__wrapper--enter',
-                        enterDone: 'dc-dialog__wrapper--enter-done',
-                        exit: 'dc-dialog__wrapper--exit',
-                    }}
-                    unmountOnExit
-                >
-                    <div className={classNames('dc-dialog__wrapper', className)}>
-                        <div
-                            className={classNames('dc-dialog__dialog', {
-                                'dc-dialog__dialog--has-margin': !is_mobile_full_width,
-                            })}
-                        >
-                            {!!title && <h1 className='dc-dialog__header'>{title}</h1>}
-                            {typeof children === 'string' ? (
-                                <p className={content_classes}>{children}</p>
-                            ) : (
-                                <div className={content_classes}>{children}</div>
+        const dialog = (
+            <CSSTransition
+                appear
+                in={is_visible && !is_loading}
+                timeout={50}
+                classNames={{
+                    appear: 'dc-dialog__wrapper--enter',
+                    enter: 'dc-dialog__wrapper--enter',
+                    enterDone: 'dc-dialog__wrapper--enter-done',
+                    exit: 'dc-dialog__wrapper--exit',
+                }}
+                unmountOnExit
+            >
+                <div className={classNames('dc-dialog__wrapper', className)}>
+                    <div
+                        className={classNames('dc-dialog__dialog', {
+                            'dc-dialog__dialog--has-margin': !is_mobile_full_width,
+                        })}
+                    >
+                        {!!title && <h1 className='dc-dialog__header'>{title}</h1>}
+                        {typeof children === 'string' ? (
+                            <p className={content_classes}>{children}</p>
+                        ) : (
+                            <div className={content_classes}>{children}</div>
+                        )}
+                        <div className='dc-dialog__footer'>
+                            {!!onCancel && (
+                                <Button
+                                    className='dc-dialog__button'
+                                    has_effect
+                                    text={cancel_button_text}
+                                    onClick={this.handleCancel}
+                                    secondary
+                                    large
+                                />
                             )}
-                            <div className='dc-dialog__footer'>
-                                {!!onCancel && (
-                                    <Button
-                                        className='dc-dialog__button'
-                                        has_effect
-                                        text={cancel_button_text}
-                                        onClick={this.handleCancel}
-                                        secondary
-                                        large
-                                    />
-                                )}
-                                {!!confirm_button_text && (
-                                    <Button
-                                        className='dc-dialog__button'
-                                        has_effect
-                                        text={confirm_button_text}
-                                        onClick={this.handleConfirm}
-                                        primary
-                                        large
-                                    />
-                                )}
-                            </div>
+                            {!!confirm_button_text && (
+                                <Button
+                                    className='dc-dialog__button'
+                                    has_effect
+                                    text={confirm_button_text}
+                                    onClick={this.handleConfirm}
+                                    primary
+                                    large
+                                />
+                            )}
                         </div>
                     </div>
-                </CSSTransition>
-            </React.Fragment>
+                </div>
+            </CSSTransition>
         );
+
+        if (portal_element_id) {
+            return ReactDOM.createPortal(dialog, document.getElementById(portal_element_id));
+        }
+
+        return dialog;
     }
 }
 
@@ -121,6 +127,7 @@ Dialog.propTypes = {
     is_visible: PropTypes.bool,
     onCancel: PropTypes.func,
     onConfirm: PropTypes.func,
+    portal_element_id: PropTypes.string,
     title: PropTypes.string,
 };
 

@@ -97,6 +97,7 @@ const TicksWrapper = connect(({ modules }) => ({
 }))(Ticks);
 
 const Numbers = ({
+    addToast,
     setDurationError,
     basis_option,
     toggleModal,
@@ -113,8 +114,6 @@ const Numbers = ({
     trade_duration,
     selected_duration,
     setSelectedDuration,
-    setToastErrorMessage,
-    setToastErrorVisibility,
 }) => {
     const { value: duration_unit } = duration_unit_option;
     const [min, max] = getDurationMinMaxValues(duration_min_max, contract_expiry, duration_unit);
@@ -130,22 +129,18 @@ const Numbers = ({
             />
         );
         if (parseInt(value) < min || parseInt(selected_duration) > max) {
-            setToastErrorMessage(localized_message, 2000);
-            setToastErrorVisibility(true);
+            addToast({ key: 'duration_error', content: localized_message, type: 'error', timeout: 2000 });
             setDurationError(true);
             return 'error';
         } else if (parseInt(value) > max) {
-            setToastErrorMessage(localized_message, 2000);
-            setToastErrorVisibility(true);
+            addToast({ key: 'duration_error', content: localized_message, type: 'error', timeout: 2000 });
             return 'error';
         } else if (value.toString().length < 1) {
-            setToastErrorMessage(localized_message, 2000);
-            setToastErrorVisibility(true);
+            addToast({ key: 'duration_error', content: localized_message, type: 'error', timeout: 2000 });
             setDurationError(true);
             return false;
         }
 
-        setToastErrorVisibility(false);
         setDurationError(false);
         return true;
     };
@@ -200,8 +195,7 @@ const NumpadWrapper = connect(({ modules, ui }) => ({
     trade_basis: modules.trade.basis,
     trade_amount: modules.trade.amount,
     onChangeMultiple: modules.trade.onChangeMultiple,
-    setToastErrorMessage: ui.setToastErrorMessage,
-    setToastErrorVisibility: ui.setToastErrorVisibility,
+    addToast: ui.addToast,
 }))(Numbers);
 
 const Duration = ({

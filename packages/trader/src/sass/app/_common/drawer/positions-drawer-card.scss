@@ -142,7 +142,7 @@
         &-items {
             grid-template-columns: 1fr 1fr;
             grid-gap: 0.8rem 0.4rem;
-            padding: 0.8rem 0rem;
+            padding: 0.8rem 0;
         }
     }
     &__purchase,
@@ -292,6 +292,8 @@
         }
         &--has-cancel-btn {
             justify-content: space-between;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
 
             .dc-btn--cancel {
                 margin-left: 0.8rem;
@@ -310,6 +312,15 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+
+        @include mobile {
+            flex-direction: row;
+            justify-content: center;
+
+            &-value {
+                margin-left: 0.2rem;
+            }
+        }
 
         &-label,
         &-value {

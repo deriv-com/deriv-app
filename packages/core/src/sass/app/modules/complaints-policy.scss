@@ -70,7 +70,7 @@
             @include mobile {
                 font-size: 1rem;
                 line-height: 1.4rem;
-                padding-left: 0rem;
+                padding-left: 0;
             }
         }
     }
@@ -80,7 +80,7 @@
         line-height: 2rem;
 
         @include mobile {
-            padding-left: 0rem;
+            padding-left: 0;
             font-size: 1rem;
             line-height: 1.4rem;
         }

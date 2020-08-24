@@ -8,7 +8,7 @@ import { isMobile } from '@deriv/shared';
 import { RadioButtonGroup, RadioButton } from './currency-selector.jsx';
 
 const messages = () => [
-    localize('Add a cryptocurrency account'),
+    localize('Choose your preferred cryptocurrency'),
     localize('You can open an account for each cryptocurrency.'),
     localize('Add a real account'),
     localize('Choose a currency you would like to trade with.'),

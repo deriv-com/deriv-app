@@ -269,7 +269,12 @@ class RealAccountSignup extends React.Component {
                         wrapper_classname='account-signup-mobile-dialog'
                         visible={is_real_acc_signup_on}
                         onClose={this.closeModal}
-                        renderTitle={() => <Title {...this.props} />}
+                        renderTitle={() => {
+                            if (Title) {
+                                return <Title {...this.props} />;
+                            }
+                            return null;
+                        }}
                     >
                         <ModalContent passthrough={this.props.state_index} is_loading={this.state.is_loading} />
                     </MobileDialog>

@@ -161,8 +161,6 @@
                 }
             }
             &__description {
-                font-size: 1.4rem;
-                line-height: 2.4rem;
                 margin-top: 2.4rem;
                 @include typeface(--paragraph-center-normal-prominent);
                 @include mobile {
@@ -397,7 +395,7 @@
         }
     }
     &__header:not(:first-child) {
-        margin-top: 1.6em;
+        margin-top: 1.6rem;
     }
     &__title {
         color: var(--text-prominent);
@@ -416,5 +414,6 @@
         font-weight: normal;
         color: var(--text-prominent);
         margin-bottom: 2rem;
+        line-height: 1.5;
     }
 }

@@ -36,6 +36,7 @@ const Footer = ({
     is_app_disabled,
     is_eu,
     is_eu_enabled, // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
+    is_logged_in,
     is_route_modal_on,
     is_settings_modal_on,
     disableApp,
@@ -66,7 +67,7 @@ const Footer = ({
                 <FooterIconSeparator />
                 <GoToDeriv />
                 <ResponsibleTrading />
-                <AccountLimits />
+                {is_logged_in && <AccountLimits />}
                 {is_eu_enabled && (
                     <RegulatoryInformation
                         standpoint={

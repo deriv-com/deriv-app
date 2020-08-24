@@ -67,3 +67,13 @@ export const pick = (source, fields) => {
         return target;
     }, {});
 };
+// Recursively freeze an object (deep freeze)
+export const deepFreeze = obj => {
+    Object.getOwnPropertyNames(obj).forEach(key => {
+        const value = obj[key];
+        if (value && typeof value === 'object' && !Object.isFrozen(value)) {
+            deepFreeze(value);
+        }
+    });
+    return Object.freeze(obj);
+};

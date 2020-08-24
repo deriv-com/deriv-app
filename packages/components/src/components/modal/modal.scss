@@ -118,6 +118,20 @@
                 margin: 0.8rem;
             }
         }
+        &--is-title-centered {
+            justify-content: flex-end;
+            position: relative;
+
+            .dc-modal-header__title {
+                position: absolute;
+                justify-content: center;
+                width: 100%;
+            }
+            .dc-modal-header__close {
+                z-index: 1;
+            }
+        }
+
         // fix for safari bug with header being truncated
         @media not all and (min-resolution: 0.001dpcm) {
             // stylelint-disable-line

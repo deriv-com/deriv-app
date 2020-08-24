@@ -6,6 +6,7 @@ import { requestWS } from 'Utils/websocket';
 import FormAds from './form-ads.jsx';
 import MyAdsTable from './my-ads-table.jsx';
 import Verification from '../verification/verification.jsx';
+import { useStores } from '../../../stores';
 import './my-ads.scss';
 
 const MyAdsState = ({ message }) => (
@@ -14,62 +15,58 @@ const MyAdsState = ({ message }) => (
     </div>
 );
 
-class MyAds extends React.Component {
-    state = {
-        show_form: false,
-    };
+const MyAds = () => {
+    const { general_store } = useStores();
+    const is_loading = React.useRef(true);
+    const is_mounted = React.useRef(false);
+    const [show_form, setShowForm] = React.useState(false);
+    const [poi_status, setPoiStatus] = React.useState(null);
 
-    handleShowForm = show_form => {
-        this.setState({ show_form });
-    };
+    React.useEffect(() => {
+        is_mounted.current = true;
 
-    componentDidMount() {
-        this.is_mounted = true;
-
-        if (!this.context.is_advertiser) {
+        if (!general_store.is_advertiser) {
             requestWS({ get_account_status: 1 }).then(response => {
-                if (this.is_mounted && !response.error) {
+                if (is_mounted.current && !response.error) {
                     const { get_account_status } = response;
                     const { authentication } = get_account_status;
                     const { identity } = authentication;
                     const { status } = identity;
 
-                    this.setState({
-                        poi_status: status,
-                    });
+                    setPoiStatus(status);
                 }
-
-                this.setState({ is_loading: false });
+                is_loading.current = false;
             });
         } else {
-            this.setState({ is_loading: false });
+            is_loading.current = false;
         }
-    }
+    }, []);
 
-    onClickCreate = () => {
-        this.setState({ show_form: true });
+    const handleShowForm = show_form => {
+        setShowForm(show_form);
     };
 
-    render() {
-        if (this.context.is_restricted) {
-            return <MyAdsState message={localize('P2P cashier is unavailable in your country.')} />;
-        }
+    const onClickCreate = () => {
+        setShowForm(true);
+    };
 
-        if (this.context.is_advertiser) {
-            return (
-                <div className='p2p-my-ads'>
-                    {this.state.show_form ? (
-                        <FormAds handleShowForm={this.handleShowForm} />
-                    ) : (
-                        <MyAdsTable onClickCreate={this.onClickCreate} />
-                    )}
-                </div>
-            );
-        }
-
-        return <Verification />;
+    // render() {
+    if (general_store.is_restricted) {
+        return <MyAdsState message={localize('P2P cashier is unavailable in your country.')} />;
     }
-}
+
+    if (general_store.is_advertiser) {
+        return (
+            <div className='p2p-my-ads'>
+                {show_form ? <FormAds handleShowForm={handleShowForm} /> : <MyAdsTable onClickCreate={onClickCreate} />}
+            </div>
+        );
+    }
+
+    return <Verification />;
+};
+
+// }
 
 export default MyAds;
 

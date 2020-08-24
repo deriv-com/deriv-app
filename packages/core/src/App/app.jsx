@@ -11,6 +11,7 @@ import Client from '_common/base/client_base';
 import WS from 'Services/ws-methods';
 import { MobxContentProvider } from 'Stores/connect';
 import SmartTraderIFrame from 'Modules/SmartTraderIFrame';
+import AppToastMessages from './Containers/app-toast-messages.jsx';
 import ErrorBoundary from './Components/Elements/Errors/error-boundary.jsx';
 import AppContents from './Containers/Layout/app-contents.jsx';
 import Footer from './Containers/Layout/footer.jsx';
@@ -101,6 +102,7 @@ const App = ({ root_store }) => {
                     </DesktopWrapper>
                     <AppModals url_action_param={url_params.get('action')} />
                     <SmartTraderIFrame />
+                    <AppToastMessages />
                 </React.Fragment>
             </MobxContentProvider>
         </Router>

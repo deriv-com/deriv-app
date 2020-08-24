@@ -46,7 +46,7 @@ const financial_details_config = {
     employment_industry: {
         default_value: '',
         supported_in: ['maltainvest'],
-        rules: [['req']],
+        rules: [['req', localize('Please select an option')]],
     },
     employment_status: {
         default_value: '',
@@ -56,32 +56,32 @@ const financial_details_config = {
     estimated_worth: {
         default_value: '',
         supported_in: ['maltainvest'],
-        rules: [['req']],
+        rules: [['req', localize('Please select an option')]],
     },
     income_source: {
         default_value: '',
         supported_in: ['maltainvest'],
-        rules: [['req']],
+        rules: [['req', localize('Please select an option')]],
     },
     net_income: {
         default_value: '',
         supported_in: ['maltainvest'],
-        rules: [['req']],
+        rules: [['req', localize('Please select an option')]],
     },
     occupation: {
         default_value: '',
         supported_in: ['maltainvest'],
-        rules: [['req']],
+        rules: [['req', localize('Please select an option')]],
     },
     other_instruments_trading_experience: {
         default_value: '',
         supported_in: ['maltainvest'],
-        rules: [['req']],
+        rules: [['req', localize('Please select an option')]],
     },
     other_instruments_trading_frequency: {
         default_value: '',
         supported_in: ['maltainvest'],
-        rules: [['req']],
+        rules: [['req', localize('Please select an option')]],
     },
     source_of_wealth: {
         default_value: '',

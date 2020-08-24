@@ -8,6 +8,7 @@ import { website_name } from 'App/Constants/app-config';
 import { connect } from 'Stores/connect';
 import AddCryptoCurrency from './add-crypto-currency.jsx';
 import ChangeAccountCurrency from './change-account-currency.jsx';
+import LoadingModal from './real-account-signup-loader.jsx';
 import 'Sass/add-or-manage.scss';
 import 'Sass/change-account.scss';
 
@@ -31,7 +32,7 @@ class AddOrManageAccounts extends React.Component {
     };
 
     manageOrChangeAccount = (obj, setSubmitting) => {
-        this.props.onLoading();
+        this.props.setLoading(true);
         Object.entries(obj).map(([key, value]) => {
             if (key === 'fiat') {
                 this.props
@@ -45,7 +46,8 @@ class AddOrManageAccounts extends React.Component {
                     })
                     .catch(error_message => {
                         this.props.onError(error_message);
-                    });
+                    })
+                    .finally(() => this.props.setLoading(false));
             } else {
                 // Add Crypto Account
                 this.props
@@ -56,7 +58,8 @@ class AddOrManageAccounts extends React.Component {
                     })
                     .catch(error_message => {
                         this.props.onError(error_message);
-                    });
+                    })
+                    .finally(() => this.props.setLoading(false));
             }
         });
     };
@@ -74,8 +77,10 @@ class AddOrManageAccounts extends React.Component {
     }
 
     render() {
+        if (this.props.is_loading) return <LoadingModal />;
+
         return (
-            <ThemedScrollbars is_bypassed={isMobile()}>
+            <ThemedScrollbars is_bypassed={isMobile()} autohide={false}>
                 <Div100vhContainer
                     className='account-wizard add-or-manage'
                     is_disabled={isDesktop()}

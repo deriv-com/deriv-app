@@ -16,7 +16,6 @@ import { localize, Localize } from '@deriv/translations';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { splitValidationResultTypes } from 'App/Containers/RealAccountSignup/helpers/utils';
-import { screen_height_sm_threshold } from 'App/Containers/RealAccountSignup/helpers/constants';
 
 const InputField = props => {
     return (

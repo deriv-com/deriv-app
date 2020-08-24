@@ -94,7 +94,7 @@ class ContractTypeWidget extends React.PureComponent {
         return (
             <div
                 id='dt_contract_dropdown'
-                className='contract-type-widget dropdown--left'
+                className={`contract-type-widget contract-type-widget--${value} dropdown--left`}
                 ref={this.setWrapperRef}
                 tabIndex='0'
             >

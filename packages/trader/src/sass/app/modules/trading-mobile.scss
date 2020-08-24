@@ -62,6 +62,7 @@
                 width: 100%;
                 padding: 0;
                 font-weight: bold;
+                border: none;
 
                 &--is-offset {
                     pointer-events: none;
@@ -110,24 +111,6 @@
             margin-right: 0.8rem;
         }
     }
-    /** @define dc-toast-info; weak */
-    .dc-toast-info {
-        max-width: calc(100% - 1.6rem);
-        left: 0;
-        width: calc(100% - 3.6rem) !important;
-        top: 11rem !important;
-
-        .dc-toast-error__message {
-            background: var(--status-info);
-            font-size: 1.2rem;
-            width: 100%;
-
-            /* iPhone SE screen height fixes due to UI space restrictions */
-            @media only screen and (max-height: 580px) {
-                font-size: 1rem;
-            }
-        }
-    }
     /** @define dc-modal; weak */
     .dc-modal {
         &__container_trade-params {
@@ -161,6 +144,22 @@
                 .dc-modal-header__close {
                     padding: 0.8rem 0.8rem 0;
                     margin: 0.4rem 0.4rem 0.2rem;
+                }
+            }
+        }
+    }
+    /** @define dc-tabs; weak */
+    .dc-tabs {
+        /* postcss-bem-linter: ignore */
+        &--trade-params__multiplier-tabs {
+            /* postcss-bem-linter: ignore */
+            .dc-tabs__content {
+                display: flex;
+                flex-direction: column;
+                min-height: 400px;
+
+                @media only screen and (max-height: 480px) {
+                    min-height: 360px;
                 }
             }
         }
@@ -253,11 +252,19 @@
                                 color: var(--text-disabled);
                             }
                         }
+                        .dc-btn__text {
+                            /* -webkit-touch-callout only is supported on iOS webkit engine, thus it should apply iOS only styles */
+                            @supports (-webkit-touch-callout: none) {
+                                @media only screen and (min-width: 360px) {
+                                    font-size: 3rem;
+                                }
+                            }
+                        }
                     }
                 }
                 /* iPhone SE screen height fixes due to UI space restrictions */
                 @media only screen and (max-height: 480px) {
-                    transform: scale(1, 0.9);
+                    transform: scale(1, 0.92);
                     transform-origin: top;
                     margin-top: -0.4rem;
                 }
@@ -277,6 +284,89 @@
                     &--has-error {
                         color: var(--status-danger);
                         font-weight: bold;
+                    }
+                }
+            }
+        }
+        &__multiplier {
+            &-radio-group {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 1.6rem;
+                margin-top: 0rem;
+                flex: 1;
+
+                .dc-radio-group__item {
+                    min-height: 4.8rem;
+                    max-height: 4.8rem;
+                    width: 100%;
+                    align-items: center;
+                    margin-bottom: 0.8rem;
+                    padding: 0.8rem;
+                    border-radius: $BORDER_RADIUS;
+                    border: 1px solid var(--border-normal);
+                    font-size: 1.4rem;
+                    flex-direction: row;
+
+                    &--selected {
+                        border: 1px solid var(--brand-secondary);
+                    }
+                }
+            }
+            &-amount-text {
+                padding: 1.6rem 4rem 0;
+                line-height: 1.4rem;
+                text-align: center;
+                color: var(--text-general);
+            }
+            &-risk-management-dialog {
+                display: grid;
+                grid-template-rows: auto auto auto 1fr;
+
+                &-apply-button {
+                    display: flex;
+                    align-items: flex-end;
+                    margin: 0rem 1.6rem;
+
+                    .dc-btn {
+                        flex: 1;
+                    }
+                }
+                .trade-container__fieldset {
+                    padding: 1rem 1.6rem;
+                    margin-bottom: 0rem;
+                    border-bottom: 1px solid var(--general-main-1);
+                    border-radius: 0;
+
+                    .input-field {
+                        z-index: 0;
+                    }
+                    .dc-popover {
+                        padding: 0.6rem 1rem;
+                    }
+                }
+                .dc-checkbox__box {
+                    margin-left: 0rem;
+                }
+                .dc-radio-group {
+                    padding: 1.6rem 0rem;
+                }
+            }
+            &-icinfo-wrapper {
+                display: flex;
+                justify-content: flex-end;
+                padding: 0.6rem 2rem 0rem;
+
+                .dc-popover {
+                    padding: 0.5rem 1rem;
+                }
+            }
+            &-deal-cancellation-dialog {
+                .dc-checkbox {
+                    margin-top: 2.6rem;
+
+                    .dc-checkbox__box {
+                        margin-left: 0rem;
                     }
                 }
             }

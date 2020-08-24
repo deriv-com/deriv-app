@@ -54,6 +54,8 @@
         text-align: center;
         white-space: nowrap;
         color: var(--text-general);
+        -webkit-touch-callout: none;
+        -webkit-tap-highlight-color: transparent;
 
         &__counter {
             margin-top: -2rem;

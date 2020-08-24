@@ -1,4 +1,4 @@
-import { getPropertyValue } from '../object';
+import { getPropertyValue, deepFreeze } from '../object';
 
 let currencies_config = {};
 
@@ -83,7 +83,7 @@ export const CryptoConfig = (() => {
 
     // TODO: [use-shared-i18n] - Use translate function shared among apps or pass in translated names externally.
     const initCryptoConfig = () =>
-        Object.freeze({
+        deepFreeze({
             BTC: {
                 display_code: 'BTC',
                 name: 'Bitcoin',

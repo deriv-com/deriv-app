@@ -86,6 +86,7 @@ class App extends React.Component {
         this.registerClickOutsideBlockly();
         this.registerBeforeUnload();
         this.root_store.main_content.getCachedActiveTab();
+        this.turnThemeToLight();
     }
 
     componentDidUpdate() {
@@ -100,6 +101,11 @@ class App extends React.Component {
             });
         }
     }
+    // TODO: [disable-dark-theme] Delete this when Bot is ready for dark theme.
+    turnThemeToLight = () => {
+        document.body.classList.remove('theme--dark');
+        document.body.classList.add('theme--light');
+    };
 
     componentWillUnmount() {
         if (Blockly.derivWorkspace) {

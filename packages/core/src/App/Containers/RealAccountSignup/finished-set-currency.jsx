@@ -12,9 +12,28 @@ const FinishedSetCurrency = ({ current, onCancel, onSubmit, prev }) => {
 
     const IconWon = ({ className }) => <Icon className={className} icon='IcCheckmarkCircle' color='green' />;
 
-    const message = prev
-        ? '<0>You have successfully changed your currency to {{currency}}.</0><0>Make a deposit now to start trading.</0>'
-        : '<0>You have added a {{currency}} account.</0><0> Make a deposit now to start trading.</0>';
+    const SuccessMessage = prev ? (
+        <Localize
+            i18n_default_text={
+                '<0>You have successfully changed your currency to {{currency}}.</0><0>Make a deposit now to start trading.</0>'
+            }
+            values={{
+                currency: current,
+            }}
+            components={[<p key={current} />]}
+        />
+    ) : (
+        <Localize
+            i18n_default_text={
+                '<0>You have added a {{currency}} account.</0><0> Make a deposit now to start trading.</0>'
+            }
+            values={{
+                currency: current,
+            }}
+            components={[<p key={current} />]}
+        />
+    );
+
     return (
         <Div100vhContainer className='status-dialog' is_disabled={isDesktop()} height_offset='40px'>
             <div
@@ -34,13 +53,7 @@ const FinishedSetCurrency = ({ current, onCancel, onSubmit, prev }) => {
                 <h2>
                     <Localize i18n_default_text='Success!' />
                 </h2>
-                <Localize
-                    i18n_default_text={message}
-                    values={{
-                        currency: current,
-                    }}
-                    components={[<p key={current} />]}
-                />
+                <SuccessMessage />
             </div>
             <div className='status-dialog__btn-area'>
                 <Button onClick={onCancel} text={localize('Maybe later')} secondary />

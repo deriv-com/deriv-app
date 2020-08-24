@@ -10,9 +10,10 @@
     }
 
     &__scrollbar {
-        max-height: none;
+        @include desktop {
+            max-height: none;
+        }
     }
-
     &__elements {
         flex-grow: 1;
         margin: 1.2rem auto;

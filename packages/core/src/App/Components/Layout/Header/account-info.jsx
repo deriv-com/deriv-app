@@ -16,6 +16,14 @@ const AccountInfoWrapper = ({ is_disabled, disabled_message, children }) =>
         <React.Fragment>{children}</React.Fragment>
     );
 
+const AccountInfoIcon = ({ is_virtual, currency }) => (
+    <Icon
+        icon={`IcCurrency-${is_virtual ? 'virtual' : currency || 'Unknown'}`}
+        className={`acc-info__id-icon acc-info__id-icon--${is_virtual ? 'virtual' : currency}`}
+        size={24}
+    />
+);
+
 const AccountInfo = ({
     acc_switcher_disabled_message,
     balance,
@@ -42,23 +50,11 @@ const AccountInfo = ({
                 >
                     <span className='acc-info__id'>
                         <DesktopWrapper>
-                            <Icon
-                                icon={`IcCurrency-${is_virtual ? 'virtual' : currency_lower || 'Unknown'}`}
-                                className={`acc-info__id-icon acc-info__id-icon--${
-                                    is_virtual ? 'virtual' : currency_lower
-                                }`}
-                                size={24}
-                            />
+                            <AccountInfoIcon is_virtual={is_virtual} currency={currency_lower} />
                         </DesktopWrapper>
                         <MobileWrapper>
                             {(is_virtual || currency) && (
-                                <Icon
-                                    icon={`IcCurrency-${is_virtual ? 'virtual' : currency_lower || 'Unknown'}`}
-                                    className={`acc-info__id-icon acc-info__id-icon--${
-                                        is_virtual ? 'virtual' : currency_lower
-                                    }`}
-                                    size={24}
-                                />
+                                <AccountInfoIcon is_virtual={is_virtual} currency={currency_lower} />
                             )}
                         </MobileWrapper>
                     </span>

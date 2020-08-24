@@ -49,7 +49,7 @@ export const RadioButton = ({ field: { name, value, onChange, onBlur }, id, labe
                             alignment='top'
                             icon='info'
                             disable_message_icon
-                            zIndex={9999}
+                            zIndex={9998}
                             className='currency-list__popover'
                             message={localize(
                                 'Deriv currently supports Tether (USDT). Please deposit USDT from your Omni Layer-enabled wallet into your Deriv account.'
@@ -224,7 +224,7 @@ class CurrencySelector extends React.Component {
                                         has_cancel
                                         onCancel={this.props.onCancel}
                                         cancel_label={localize('Cancel')}
-                                        label={localize('Next')}
+                                        label={!has_currency ? localize('Set currency') : localize('Next')}
                                     />
                                 </Modal.Footer>
                             </form>

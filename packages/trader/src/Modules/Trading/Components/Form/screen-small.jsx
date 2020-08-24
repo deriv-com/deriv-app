@@ -9,6 +9,7 @@ import {
     hasDurationForCallPutEqual,
     isRiseFallEqual,
 } from 'Stores/Modules/Trading/Helpers/allow-equals';
+import RiskManagementInfo from '../Elements/Multiplier/risk-management-info.jsx';
 import MobileWidget from '../Elements/mobile-widget.jsx';
 import ContractType from '../../Containers/contract-type.jsx';
 import { BarrierMobile, LastDigitMobile } from '../../Containers/trade-params-mobile.jsx';
@@ -21,6 +22,7 @@ const CollapsibleTradeParams = ({
     previous_symbol,
     is_allow_equal,
     is_trade_params_expanded,
+    is_multiplier,
     setIsTradeParamsExpanded,
 }) => {
     React.useEffect(() => {
@@ -54,6 +56,11 @@ const CollapsibleTradeParams = ({
             )}
             <MobileWidget is_collapsed={is_collapsed} toggleDigitsWidget={toggleDigitsWidget} />
             {has_allow_equals && <AllowEqualsMobile collapsible='true' />}
+            {is_multiplier && (
+                <div collapsible='true'>
+                    <RiskManagementInfo />
+                </div>
+            )}
             <div className='purchase-container'>
                 <Purchase />
             </div>
@@ -95,6 +102,7 @@ ScreenSmall.propTypes = {
 
 export default connect(({ modules }) => ({
     is_allow_equal: !!modules.trade.is_equal,
+    is_multiplier: modules.trade.is_multiplier,
     duration_unit: modules.trade.duration_unit,
     contract_types_list: modules.trade.contract_types_list,
     contract_type: modules.trade.contract_type,

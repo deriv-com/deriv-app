@@ -11,7 +11,7 @@
 
     &__scrollbar {
         @include desktop {
-            max-height: none;
+            max-height: none !important;
         }
     }
     &__elements {

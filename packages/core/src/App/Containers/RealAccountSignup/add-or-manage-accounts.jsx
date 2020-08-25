@@ -99,11 +99,10 @@ class AddOrManageAccounts extends React.Component {
                     <div label={localize('Add account')}>
                         <div
                             className={classNames('add-crypto-currency', {
-                                'account-wizard--disabled':
-                                    this.props.available_crypto_currencies.length === 0 && this.props.has_fiat,
+                                'account-wizard--disabled': this.no_crypto_available(),
                             })}
                         >
-                            {this.props.available_crypto_currencies.length === 0 && this.props.has_fiat && (
+                            {this.no_crypto_available() && (
                                 <div className='account-wizard--disabled-message'>
                                     <p>
                                         {localize(

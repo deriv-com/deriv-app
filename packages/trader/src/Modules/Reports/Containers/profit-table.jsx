@@ -28,7 +28,7 @@ class ProfitTable extends React.Component {
     }
 
     mobileRowRenderer = ({ row, is_footer }) => {
-        const duration_type = getContractDurationType(row.longcode);
+        const duration_type = getContractDurationType(row.longcode, row.shortcode);
         const duration_classname = `duration-type__${duration_type.toLowerCase()}`;
 
         if (is_footer) {

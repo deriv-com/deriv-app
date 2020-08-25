@@ -258,9 +258,8 @@ export default class TradeStore extends BaseStore {
     @action.bound
     async setDefaultSymbol() {
         if (!this.is_symbol_in_active_symbols) {
-            await this.processNewValuesAsync({
-                symbol: pickDefaultSymbol(this.active_symbols),
-            });
+            const symbol = await pickDefaultSymbol(this.active_symbols);
+            await this.processNewValuesAsync({ symbol });
         }
     }
 
@@ -314,26 +313,22 @@ export default class TradeStore extends BaseStore {
         this.initial_barriers = { barrier_1: this.barrier_1, barrier_2: this.barrier_2 };
         await when(() => !this.root_store.client.is_populating_account_list);
         await this.setActiveSymbols();
-        runInAction(async () => {
-            await WS.storage.contractsFor(this.symbol).then(async r => {
-                if (['InvalidSymbol', 'InputValidationFailed'].includes(r.error?.code)) {
-                    await this.resetRefresh();
-                    await this.setActiveSymbols();
-                    await pickDefaultSymbol();
-                    runInAction(() => (this.should_refresh_active_symbols = true));
-                }
-            });
-            await this.setDefaultSymbol();
-            await this.setContractTypes();
-            await this.processNewValuesAsync(
-                {
-                    is_market_closed: isMarketClosed(this.active_symbols, this.symbol),
-                },
-                true,
-                null,
-                false
-            );
-        });
+        const r = await WS.storage.contractsFor(this.symbol);
+        if (['InvalidSymbol', 'InputValidationFailed'].includes(r.error?.code)) {
+            const symbol_to_update = await pickDefaultSymbol(this.active_symbols);
+            await this.processNewValuesAsync({ symbol: symbol_to_update });
+        }
+
+        await this.setDefaultSymbol();
+        await this.setContractTypes();
+        await this.processNewValuesAsync(
+            {
+                is_market_closed: isMarketClosed(this.active_symbols, this.symbol),
+            },
+            true,
+            null,
+            false
+        );
     }
 
     @action.bound
@@ -358,9 +353,7 @@ export default class TradeStore extends BaseStore {
             this.is_trade_enabled = false;
             // this.root_store.modules.contract_trade.contracts = [];
             // TODO: Clear the contracts in contract-trade-store
-        }
-
-        if (name === 'currency') {
+        } else if (name === 'currency') {
             // Only allow the currency dropdown change if client is not logged in
             if (!this.root_store.client.is_logged_in) {
                 this.root_store.client.selectCurrency(value);
@@ -1005,7 +998,7 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     onMount() {
-        if (this.should_skip_prepost_lifecycle) {
+        if (this.is_trade_component_mounted && this.should_skip_prepost_lifecycle) {
             return;
         }
 

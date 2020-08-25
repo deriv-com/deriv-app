@@ -33,22 +33,27 @@ export default class ContractReplayStore extends BaseStore {
     // Forget old proposal_open_contract stream on account switch from ErrorComponent
     should_forget_first = false;
 
-    subscribers = {};
-
     // -------------------
     // ----- Actions -----
     // -------------------
-    handleSubscribeProposalOpenContract = (contract_id, cb) => {
+    handleSubscribeProposalOpenContract = async (contract_id, cb) => {
+        // expired contracts are cached and we can get the poc response from local storage
+        const is_cached = await WS.storage.has({ proposal_open_contract: 1, contract_id });
+        if (is_cached) {
+            WS.storage.proposalOpenContract({ contract_id }).then(cb);
+            return;
+        }
+
         if (this.should_forget_first) {
             // TODO; don't forget all ever
-            WS.forgetAll('proposal_open_contract').then(() => {
-                this.should_forget_first = false;
-                WS.storage.proposalOpenContract({ contract_id }).then(cb);
-                this.subscribers[contract_id] = WS.subscribeProposalOpenContract(contract_id, cb);
-            });
-        } else {
-            WS.storage.proposalOpenContract({ contract_id }).then(cb);
-            this.subscribers[contract_id] = WS.subscribeProposalOpenContract(contract_id, cb);
+            await WS.forgetAll('proposal_open_contract');
+            this.should_forget_first = false;
+        }
+
+        // If the contract replay is opened from trade page, it should already have an ongoing subscription
+        // Subscription is created only when the contract replay page is opened directly
+        if (!this.root_store.modules.contract_trade.contracts_map[contract_id]) {
+            this.subscriber = WS.subscribeProposalOpenContract(contract_id, cb);
         }
     };
 
@@ -143,6 +148,10 @@ export default class ContractReplayStore extends BaseStore {
             }
         }
 
+        if (this.contract_info.is_sold) {
+            this.contract_store.cacheProposalOpenContractResponse(response);
+        }
+
         this.is_chart_loading = false;
     }
 
@@ -212,10 +221,11 @@ export default class ContractReplayStore extends BaseStore {
         }
     }
 
-    forgetProposalOpenContract = contract_id => {
-        if (!(contract_id in this.subscribers)) return;
-        this.subscribers[contract_id].unsubscribe();
-        delete this.subscribers[contract_id];
+    forgetProposalOpenContract = () => {
+        if (this.subscriber) {
+            this.subscriber.unsubscribe();
+            delete this.subscriber;
+        }
     };
 
     @action.bound

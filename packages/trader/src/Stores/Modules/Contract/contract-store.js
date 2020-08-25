@@ -93,6 +93,11 @@ export default class ContractStore extends BaseStore {
         }
     }
 
+    cacheProposalOpenContractResponse = response => {
+        const { contract_id } = response.proposal_open_contract;
+        WS.storage.set({ proposal_open_contract: 1, contract_id }, response);
+    };
+
     @action.bound
     populateContractUpdateConfig(response) {
         const contract_update_config = getContractUpdateConfig(response);

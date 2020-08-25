@@ -170,6 +170,7 @@ export default class ContractTradeStore extends BaseStore {
             contract.populateConfig(response.proposal_open_contract);
             if (response.proposal_open_contract.is_sold) {
                 this.root_store.ui.removeNotificationMessage(switch_to_tick_chart);
+                contract.cacheProposalOpenContractResponse(response);
             }
         }
     }

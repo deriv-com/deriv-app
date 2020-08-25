@@ -4,19 +4,7 @@ import React from 'react';
 import { Icon, DesktopWrapper, Money, MobileWrapper, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { getLocalizedBasis } from 'Stores/Modules/Trading/Constants/contract';
-
-const CancelDealInfo = ({ amount, currency, error }) => {
-    return (
-        <React.Fragment>
-            <div className='trade-container__price-info-basis'>{localize('Deal cancel. fee')}</div>
-            <div className='trade-container__price-info-value'>
-                {!error && (
-                    <Money amount={amount} className='trade-container__price-info-currency' currency={currency} />
-                )}
-            </div>
-        </React.Fragment>
-    );
-};
+import CancelDealInfo from './cancel-deal-info.jsx';
 
 const ValueMovement = ({ has_error_or_not_loaded, proposal_info, currency, has_increased }) => (
     <React.Fragment>
@@ -43,7 +31,6 @@ const ContractInfo = ({
     basis,
     currency,
     has_increased,
-    has_cancellation,
     is_loading,
     is_multiplier,
     should_fade,
@@ -69,7 +56,7 @@ const ContractInfo = ({
         ? stakeOrPayout()
         : localize('{{value}}', { value: proposal_info.obj_contract_basis.text });
 
-    const { cancellation, message, obj_contract_basis } = proposal_info;
+    const { message, obj_contract_basis, stake } = proposal_info;
 
     return (
         <div className='trade-container__price'>
@@ -81,12 +68,21 @@ const ContractInfo = ({
                     'trade-container__price-info--fade': is_loading && should_fade,
                 })}
             >
-                {is_multiplier && has_cancellation && cancellation ? (
-                    <CancelDealInfo
-                        amount={cancellation.ask_price}
-                        currency={currency}
-                        error={has_error_or_not_loaded}
-                    />
+                {is_multiplier ? (
+                    <React.Fragment>
+                        <DesktopWrapper>
+                            <CancelDealInfo proposal_info={proposal_info} />
+                        </DesktopWrapper>
+                        <MobileWrapper>
+                            <div className='trade-container__price-info-wrapper'>
+                                <div className='btn-purchase__text_wrapper'>
+                                    <span className='btn-purchase__text'>
+                                        <Money amount={stake} currency={currency} />
+                                    </span>
+                                </div>
+                            </div>
+                        </MobileWrapper>
+                    </React.Fragment>
                 ) : (
                     !is_multiplier &&
                     obj_contract_basis && (

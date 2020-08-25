@@ -59,14 +59,17 @@ class ToggleMenuDrawer extends React.Component {
         this.is_mounted = true;
         WS.wait('authorize', 'get_account_status').then(() => {
             if (this.props.account_status) {
-                const { authentication, status } = this.props.account_status;
+                const { status } = this.props.account_status;
                 const needs_financial_assessment =
-                    this.props.is_high_risk || status.includes('financial_information_not_complete');
-                const needs_verification =
-                    authentication.needs_verification.includes('identity') ||
-                    authentication.needs_verification.includes('document');
-
-                if (this.is_mounted) this.setState({ needs_financial_assessment, needs_verification });
+                    !this.props.is_virtual &&
+                    (this.props.is_svg
+                        ? this.props.is_high_risk
+                        : this.props.is_high_risk ||
+                          this.props.is_financial_information_incomplete ||
+                          this.props.is_financial_account ||
+                          this.props.is_trading_experience_incomplete);
+                const allow_document_upload = status?.includes('allow_document_upload');
+                if (this.is_mounted) this.setState({ needs_financial_assessment, allow_document_upload });
             }
         });
         this.processRoutes();
@@ -74,6 +77,24 @@ class ToggleMenuDrawer extends React.Component {
 
     componentWillUnmount() {
         this.is_mounted = false;
+    }
+
+    componentDidUpdate(prevProps) {
+        // since ToggleMenuDrawer is rendered only once after initial load,
+        // we need to add this update once account_status changes
+        // TODO: Refactor ToggleMenuDrawer into functional component with hooks to eliminate need for componentDidUpdate
+        if (this.props.account_status !== prevProps.account_status) {
+            const needs_financial_assessment =
+                !this.props.is_virtual &&
+                (this.props.is_svg
+                    ? this.props.is_high_risk
+                    : this.props.is_high_risk ||
+                      this.props.is_financial_information_incomplete ||
+                      this.props.is_financial_account ||
+                      this.props.is_trading_experience_incomplete);
+            const allow_document_upload = this.props.account_status?.status?.includes('allow_document_upload');
+            if (this.is_mounted) this.setState({ needs_financial_assessment, allow_document_upload });
+        }
     }
 
     toggleDrawer = () => {
@@ -93,7 +114,7 @@ class ToggleMenuDrawer extends React.Component {
     };
 
     getRoutesWithSubMenu = route_config => {
-        const { needs_financial_assessment, needs_verification } = this.state;
+        const { needs_financial_assessment, allow_document_upload } = this.state;
         const has_access = route_config.is_authenticated ? this.props.is_logged_in : true;
         if (!has_access) return null;
 
@@ -153,11 +174,9 @@ class ToggleMenuDrawer extends React.Component {
                                 <MenuLink
                                     key={subroute.title}
                                     is_disabled={
-                                        (!needs_verification &&
-                                            !needs_financial_assessment &&
-                                            /proof-of-identity|proof-of-address|financial-assessment/.test(
-                                                subroute.path
-                                            )) ||
+                                        (!allow_document_upload && /proof-of-address/.test(subroute.path)) ||
+                                        (!allow_document_upload && /proof-of-identity/.test(subroute.path)) ||
+                                        (!needs_financial_assessment && /financial-assessment/.test(subroute.path)) ||
                                         subroute.is_disabled
                                     }
                                     link_to={subroute.path}
@@ -223,32 +242,36 @@ class ToggleMenuDrawer extends React.Component {
                                     />
                                 </MobileDrawer.Item>
                                 {primary_routes_config.map(route_config => this.getRoutesWithSubMenu(route_config))}
-                                <MobileDrawer.Item
-                                    className='header__menu-mobile-theme'
-                                    onClick={e => {
-                                        e.preventDefault();
-                                        this.props.toggleTheme(!this.props.is_dark_mode);
-                                    }}
-                                >
-                                    <div
-                                        className={classNames('header__menu-mobile-link', {
-                                            'header__menu-mobile-link--active': this.props.is_dark_mode,
-                                        })}
+                                {this.props.platform_header !== 'DBot' && (
+                                    <MobileDrawer.Item
+                                        className='header__menu-mobile-theme'
+                                        onClick={e => {
+                                            e.preventDefault();
+                                            this.props.toggleTheme(!this.props.is_dark_mode);
+                                        }}
                                     >
-                                        <Icon className='header__menu-mobile-link-icon' icon={'IcTheme'} />
-                                        <span className='header__menu-mobile-link-text'>{localize('Dark theme')}</span>
-                                        <ToggleSwitch
-                                            id='dt_mobile_drawer_theme_toggler'
-                                            classNameLabel='header__menu-mobile-link-toggler-label'
-                                            classNameButton={classNames('header__menu-mobile-link-toggler-button', {
-                                                'header__menu-mobile-link-toggler-button--active': this.props
-                                                    .is_dark_mode,
+                                        <div
+                                            className={classNames('header__menu-mobile-link', {
+                                                'header__menu-mobile-link--active': this.props.is_dark_mode,
                                             })}
-                                            handleToggle={() => this.props.toggleTheme(!this.props.is_dark_mode)}
-                                            is_enabled={this.props.is_dark_mode}
-                                        />
-                                    </div>
-                                </MobileDrawer.Item>
+                                        >
+                                            <Icon className='header__menu-mobile-link-icon' icon={'IcTheme'} />
+                                            <span className='header__menu-mobile-link-text'>
+                                                {localize('Dark theme')}
+                                            </span>
+                                            <ToggleSwitch
+                                                id='dt_mobile_drawer_theme_toggler'
+                                                classNameLabel='header__menu-mobile-link-toggler-label'
+                                                classNameButton={classNames('header__menu-mobile-link-toggler-button', {
+                                                    'header__menu-mobile-link-toggler-button--active': this.props
+                                                        .is_dark_mode,
+                                                })}
+                                                handleToggle={() => this.props.toggleTheme(!this.props.is_dark_mode)}
+                                                is_enabled={this.props.is_dark_mode}
+                                            />
+                                        </div>
+                                    </MobileDrawer.Item>
+                                )}
                                 {secondary_routes_config.map(route_config => this.getRoutesWithSubMenu(route_config))}
                                 {this.props.is_logged_in && (
                                     <MobileDrawer.Item

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
-import { routes, isMobile, getDecimalPlaces } from '@deriv/shared';
+import { routes, isMobile, getDecimalPlaces, getPlatformHeader } from '@deriv/shared';
 
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
@@ -104,6 +104,7 @@ class Header extends React.Component {
                                 is_svg={is_svg}
                                 is_virtual={is_virtual}
                                 toggleTheme={setDarkMode}
+                                platform_header={getPlatformHeader(app_routing_history)}
                                 platform_switcher={
                                     <PlatformSwitcher
                                         app_routing_history={app_routing_history}

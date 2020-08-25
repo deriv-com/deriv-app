@@ -235,13 +235,4 @@
     .sc-categorical-display {
         height: calc(100% - 38px) !important;
     }
-    /* TODO: Remove this override once the issue is fixed in smartcharts */
-    @at-root .replay-chart__container & .stx-holder.stx-panel-chart {
-        z-index: 14;
-
-        .cq-inchart-holder {
-            z-index: 109;
-            position: relative;
-        }
-    }
 }

@@ -375,7 +375,21 @@ $FLOATING_HEADER_HEIGHT: 41px;
                         }
                     }
                 }
+
+                /* postcss-bem-linter: ignore */
+                &-mobile {
+                    /* TODO: Remove this override once the issue is fixed in smartcharts */
+                    .stx-holder.stx-panel-chart {
+                        z-index: 14;
+
+                        .cq-inchart-holder {
+                            z-index: 109;
+                            position: relative;
+                        }
+                    }
+                }
             }
+
             @include mobile {
                 flex: 1;
                 height: 100%;

@@ -7,6 +7,7 @@ import { connect } from 'Stores/connect';
 
 const TakeProfit = ({
     addToast,
+    removeToast,
     currency,
     has_take_profit,
     is_single_currency,
@@ -31,6 +32,7 @@ const TakeProfit = ({
         <Fieldset className='trade-container__fieldset'>
             <InputWithCheckbox
                 addToast={addToast}
+                removeToast={removeToast}
                 classNameInlinePrefix='trade-container__currency'
                 classNameInput='trade-container__input'
                 currency={currency}
@@ -65,6 +67,7 @@ TakeProfit.propTypes = {
 
 export default connect(({ modules, client, ui }, props) => ({
     addToast: ui.addToast,
+    removeToast: ui.removeToast,
     is_single_currency: client.is_single_currency,
     currency: modules.trade.currency,
     has_take_profit: props.has_take_profit ?? modules.trade.has_take_profit,

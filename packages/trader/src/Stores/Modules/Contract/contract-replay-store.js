@@ -65,7 +65,11 @@ export default class ContractReplayStore extends BaseStore {
             this.contract_store = new ContractStore(this.root_store, { contract_id });
             this.subscribeProposalOpenContract();
             WS.storage.activeSymbols('brief');
-            WS.setOnReconnect(this.subscribeProposalOpenContract);
+            WS.setOnReconnect(() => {
+                if (!this.root_store.client.is_switching) {
+                    this.subscribeProposalOpenContract();
+                }
+            });
         }
     }
 
@@ -88,6 +92,8 @@ export default class ContractReplayStore extends BaseStore {
 
     @action.bound
     populateConfig(response) {
+        if (!this.switch_account_listener) return;
+
         if ('error' in response) {
             this.has_error = true;
             this.is_chart_loading = false;

@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { isMultiplierContract } from '@deriv/shared';
 import ContractCardLoader from './contract-card-loader';
 import ContractCardHeader from './contract-card-items/contract-card-header.jsx';
 import ContractCardBody from './contract-card-items/contract-card-body.jsx';
@@ -47,7 +46,6 @@ const ContractCard = ({
     );
 
     const fallback_result = profit_loss >= 0 ? 'won' : 'lost';
-    // const is_multiplier = isMultiplierContract(contract_info.contract_type);
 
     const card_body = (
         <ContractCardBody

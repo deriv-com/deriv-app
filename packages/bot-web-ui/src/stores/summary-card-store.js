@@ -2,7 +2,7 @@ import { observable, action, computed } from 'mobx';
 import { getIndicativePrice } from '@deriv/shared';
 import { contract_stages } from '../constants/contract-stage';
 
-export default class ContractCardStore {
+export default class SummaryCardStore {
     @observable contract = null;
     @observable indicative_movement = '';
     @observable profit_movement = '';

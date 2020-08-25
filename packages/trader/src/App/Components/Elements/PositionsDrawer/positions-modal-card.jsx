@@ -1,14 +1,15 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { ContractCard, ContractTypeCell, ProgressSliderMobile } from '@deriv/components';
-import { getContractPath, isMultiplierContract } from '@deriv/shared';
+import { CSSTransition } from 'react-transition-group';
+import { Button, ContractCard, Icon, Money, ProgressSliderMobile } from '@deriv/components';
+import { getContractPath, isMultiplierContract, isHighLow, isCryptocurrency } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
 import { connect } from 'Stores/connect';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
-import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
-// import {ContractTypeCell} from './contract-type-cell.jsx';
-// import ProgressSliderMobile from './ProgressSliderMobile';
+import { getContractTypeDisplay, getCardLabels } from 'Constants/contract';
+import ContractTypeCell from './contract-type-cell.jsx';
 import ResultMobile from './result-mobile.jsx';
 import CardFooter from './PositionsDrawerCard/positions-drawer-card-footer.jsx';
 
@@ -17,7 +18,10 @@ const PositionsModalCard = ({
     contract_info,
     contract_update,
     currency,
+    current_tick,
     id,
+    indicative,
+    is_loading,
     is_mobile,
     is_sell_requested,
     is_unsupported,
@@ -27,10 +31,12 @@ const PositionsModalCard = ({
     profit_loss,
     onClickCancel,
     result,
+    sell_price,
     server_time,
     status,
     togglePositions,
     toggleUnsupportedContractModal,
+    type,
 }) => {
     const loader_el = (
         <div className='positions-modal-card__content-loader'>
@@ -38,8 +44,8 @@ const PositionsModalCard = ({
         </div>
     );
     const is_multiplier = isMultiplierContract(contract_info.contract_type);
+    const fallback_result = profit_loss >= 0 ? 'won' : 'lost';
 
-    // const fallback_result = profit_loss < 0 ? 'lost' : 'won';
     const contract_options_el = (
         <React.Fragment>
             {/* <ContractCard
@@ -74,7 +80,7 @@ const PositionsModalCard = ({
                     <ContractTypeCell
                         multiplier={contract_info.multiplier}
                         type={type}
-                        is_high_low={Shortcode.isHighLow({ shortcode: contract_info.shortcode })}
+                        is_high_low={isHighLow({ shortcode: contract_info.shortcode })}
                     />
                 </div>
                 <CSSTransition
@@ -202,6 +208,7 @@ const PositionsModalCard = ({
             /> */}
             <ContractCard
                 contract_info={contract_info}
+                contract_update={contract_update}
                 currency={currency}
                 getCardLabels={getCardLabels}
                 getContractTypeDisplay={getContractTypeDisplay}

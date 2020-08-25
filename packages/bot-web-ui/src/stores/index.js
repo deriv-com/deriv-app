@@ -1,5 +1,4 @@
 import ChartStore from './chart-store';
-import SummaryCardStore from './summary-card-store';
 import FlyoutStore from './flyout-store';
 import FlyoutHelpStore from './flyout-help-store';
 import GoogleDriveStore from './google-drive-store';
@@ -8,6 +7,7 @@ import LoadModalStore from './load-modal-store';
 import RunPanelStore from './run-panel-store';
 import SaveModalStore from './save-modal-store';
 import SummaryStore from './summary-store';
+import SummaryCardStore from './summary-card-store';
 import ToolbarStore from './toolbar-store';
 import TransactionsStore from './transactions-store';
 import QuickStrategyStore from './quick-strategy-store';

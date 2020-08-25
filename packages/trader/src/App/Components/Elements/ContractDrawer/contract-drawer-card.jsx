@@ -51,7 +51,7 @@ const ContractDrawerCard = ({
             server_time={server_time}
             should_show_result_overlay={false}
             status={status}
-        ></ContractCard>
+        />
     );
 
     return (

@@ -10,9 +10,9 @@ const ErrorComponent = ({
     message,
     redirect_label,
     redirectOnClick,
-    clear_error,
+    should_clear_error_on_click,
     setError,
-    where_to = routes.trade,
+    redirect_to = routes.trade,
     should_show_refresh = true,
 }) => {
     const history = useHistory();
@@ -43,10 +43,10 @@ const ErrorComponent = ({
                           refresh_message,
                       ]
             }
-            redirect_url={where_to}
+            redirect_url={redirect_to}
             redirect_label={redirect_label || <Localize i18n_default_text='Refresh' />}
             buttonOnClick={redirectOnClick || (() => location.reload())}
-            clear_error={clear_error}
+            should_clear_error_on_click={should_clear_error_on_click}
             setError={setError}
         />
     );

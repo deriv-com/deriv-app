@@ -214,7 +214,11 @@ export default class GeneralStore {
     }
 
     @action.bound
+<<<<<<< HEAD
     setNickname(nickname) {
+=======
+    setNickname(nickname){
+>>>>>>> 6b48330b6... refactor app.jsx
         this.nickname = nickname;
     }
 
@@ -234,7 +238,7 @@ export default class GeneralStore {
     }
 
     @action.bound
-    setOrderTableType(order_table_type) {
+    setOrderTableType(order_table_type){
         this.order_table_type = order_table_type;
     }
 

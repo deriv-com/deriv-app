@@ -32,9 +32,13 @@ const App = props => {
         should_show_verification,
         websocket_api,
     } = props;
-    general_store.setAppProps(props);
+    const is_mounted = React.useRef(false);
 
     React.useEffect(() => {
+        general_store.setAppProps(props);
+        general_store.setClient(client);
+        is_mounted.current = true;
+
         setLanguage(lang);
         WebsocketInit(websocket_api, general_store.client.local_currency_config.decimal_places);
         ServerTime.init(server_time);

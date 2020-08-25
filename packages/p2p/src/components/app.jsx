@@ -114,6 +114,7 @@ class App extends React.Component {
 
     toggleNicknamePopup = () => {
         this.setState({ show_popup: !this.state.show_popup });
+        this.resetNicknameErrorState();
     };
 
     onNicknamePopupClose = () => {
@@ -139,6 +140,10 @@ class App extends React.Component {
             this.setChatInfo(p2p_advertiser_create.chat_user_id, p2p_advertiser_create.chat_token);
             this.toggleNicknamePopup();
         }
+    };
+
+    resetNicknameErrorState = () => {
+        this.setState({ nickname_error: undefined });
     };
 
     setIsAdvertiser = response => {
@@ -382,6 +387,7 @@ class App extends React.Component {
                     order_table_type,
                     changeOrderToggle: this.changeOrderToggle,
                     createAdvertiser: this.createAdvertiser.bind(this),
+                    resetNicknameErrorState: this.resetNicknameErrorState,
                     is_mobile,
                     poi_url,
                 }}

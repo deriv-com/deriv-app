@@ -19,11 +19,12 @@ const GTM = (() => {
         try {
             root_store = _root_store;
 
-            const { run_panel, transactions, statistics: s } = root_store;
+            const { run_panel, transactions } = root_store;
+            const run_statistics = run_panel.statistics;
 
             reaction(
                 () => run_panel.is_running,
-                () => run_panel.is_running && onRunBot(s)
+                () => run_panel.is_running && onRunBot(run_statistics)
             );
 
             reaction(

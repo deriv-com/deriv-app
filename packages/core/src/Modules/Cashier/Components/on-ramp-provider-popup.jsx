@@ -56,7 +56,7 @@ const OnRampProviderPopup = ({
                 </div>
                 <div className='on-ramp__popup-deposit-address'>
                     <Popover
-                        zIndex={9999}
+                        zIndex={9998}
                         alignment='right'
                         message={localize('Copied!')}
                         is_open={is_deposit_address_popover_open}

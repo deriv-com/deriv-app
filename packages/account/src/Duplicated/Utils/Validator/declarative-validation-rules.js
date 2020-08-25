@@ -20,7 +20,7 @@ export const validPassword = (value) => /^(?=.*[a-z])(?=.*[0-9])(?=.*[A-Z])[ -~]
 export const validLetterSymbol = (value) => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><,|\d]+/.test(value);
 const validGeneral = (value) => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><|]+/.test(value);
 export const validAddress = (value) => !/[`~!$%^&*_=+[}{\]\\"?><|]+/.test(value);
-export const validPostCode = (value) => /^[a-zA-Z\s\W\d-]*$/.test(value);
+export const validPostCode = (value) => value === '' || /^[A-Za-z0-9][A-Za-z0-9\s-]*$/.test(value);
 export const validPhone = (value) => /^\+(?:[0-9] ?){6,14}[0-9]$/.test(value);
 export const validCountryCode = (list, value) => list.some((item) => value.startsWith(`+${item.phone_idd}`));
 const validRegular = (value, options) => options.regex.test(value);

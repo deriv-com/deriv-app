@@ -18,7 +18,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
                 text: localize('Set currency'),
                 onClick: () => {
                     ui.toggleNotificationsModal();
-                    ui.openRealAccountSignup();
+                    ui.openRealAccountSignup('set_currency');
                 },
             },
             key: 'currency',
@@ -314,8 +314,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
 const hasMissingRequiredField = (account_settings, client) => {
     if (!account_settings) return false;
 
-    const { landing_company_shortcode } = client;
-    const is_svg = landing_company_shortcode === 'svg' || landing_company_shortcode === 'costarica';
+    const { is_svg, landing_company_shortcode } = client;
 
     // TODO: [deriv-eu] refactor into its own function once more exceptions are added.
     let required_fields;
@@ -328,14 +327,15 @@ const hasMissingRequiredField = (account_settings, client) => {
     return required_fields.some(field => !account_settings[field]);
 
     function getSVGRequiredFields() {
-        const necessary_withdrawal_fields = State.getResponse(
-            'landing_company.financial_company.requirements.withdrawal'
-        );
-        const necessary_signup_fields = State.getResponse(
-            'landing_company.financial_company.requirements.signup'
-        ).map(field => (field === 'residence' ? 'country' : field));
+        const necessary_withdrawal_fields =
+            State.getResponse('landing_company.financial_company.requirements.withdrawal') || [];
+        const necessary_signup_fields = State.getResponse('landing_company.financial_company.requirements.signup');
 
-        return [...necessary_withdrawal_fields, ...necessary_signup_fields];
+        const necessary_signup_fields_mapped = necessary_signup_fields
+            ? necessary_signup_fields.map(field => (field === 'residence' ? 'country' : field))
+            : [];
+
+        return [...necessary_withdrawal_fields, ...necessary_signup_fields_mapped];
     }
 
     function getRequiredFields() {

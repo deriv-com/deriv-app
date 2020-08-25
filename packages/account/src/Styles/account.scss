@@ -83,9 +83,10 @@ $MIN_HEIGHT_FLOATING: calc(
                 overflow-y: auto;
                 grid-template-rows: 5rem 1fr 4rem 1fr;
 
-                &:first-child {
-                    & .account-form__header {
+                & .account-form__header {
+                    &:first-child {
                         padding-top: 2.4rem;
+                        margin-bottom: 3.2rem;
                     }
                 }
             }

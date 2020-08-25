@@ -2,6 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Collapsible, ContractCard } from '@deriv/components';
 import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
+import { getEndTime } from 'Stores/Modules/Contract/Helpers/logic';
+import CardFooter from './contract-drawer-card-footer.jsx';
 import { SwipeableContractDrawer } from './swipeable-components.jsx';
 import CardFooter from './contract-drawer-card-footer.jsx';
 
@@ -21,7 +23,8 @@ const ContractDrawerCard = ({
     status,
     toggleContractAuditDrawer,
 }) => {
-    const { is_sold, profit } = contract_info;
+    const { profit } = contract_info;
+    const is_sold = !!getEndTime(contract_info);
 
     const card_footer = (
         <CardFooter
@@ -42,12 +45,14 @@ const ContractDrawerCard = ({
             getCardLabels={getCardLabels}
             getContractTypeDisplay={getContractTypeDisplay}
             is_mobile={is_mobile}
+            is_multiplier={is_multiplier}
             is_positions={false}
+            is_sold={is_sold}
             profit_loss={profit}
             server_time={server_time}
             should_show_result_overlay={false}
             status={status}
-        />
+        ></ContractCard>
     );
 
     return (
@@ -55,10 +60,10 @@ const ContractDrawerCard = ({
             <DesktopWrapper>{contract_card}</DesktopWrapper>
             <MobileWrapper>
                 <SwipeableContractDrawer
-                    onSwipedUp={is_sold ? onSwipedUp : undefined}
-                    onSwipedDown={is_sold ? onSwipedDown : undefined}
+                    onSwipedUp={is_sold || is_multiplier ? onSwipedUp : undefined}
+                    onSwipedDown={is_sold || is_multiplier ? onSwipedDown : undefined}
                 >
-                    {!!is_sold && (
+                    {(is_sold || is_multiplier) && (
                         <Collapsible.ArrowButton onClick={toggleContractAuditDrawer} is_collapsed={is_collapsed} />
                     )}
                     {contract_card}

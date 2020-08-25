@@ -47,12 +47,6 @@ export default class ProfitTableStore extends BaseStore {
         return !!(this.date_from || this.date_to);
     }
 
-    @computed
-    get data_source() {
-        // TODO: remove this getter once Multiplier is supported in mobile
-        return isDesktop() ? this.data : this.data.filter(row => !isMultiplier({ shortcode: row.shortcode }));
-    }
-
     shouldFetchNextBatch(should_load_partially) {
         if (!should_load_partially && (this.has_loaded_all || this.is_loading)) return false;
         const today = toMoment()

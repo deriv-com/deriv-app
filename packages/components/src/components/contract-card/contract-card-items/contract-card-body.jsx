@@ -16,8 +16,8 @@ import MobileWrapper from '../../mobile-wrapper';
 import { ResultStatusIcon } from '../result-overlay/result-overlay.jsx';
 import ProgressSliderMobile from '../../progress-slider-mobile';
 
-const MultiplierCardBody = ({ contract_info, contract_update, currency, getCardLabels, status }) => {
-    const { buy_price, bid_price, is_sold, profit, limit_order } = contract_info;
+const MultiplierCardBody = ({ contract_info, contract_update, currency, getCardLabels, is_sold, status }) => {
+    const { buy_price, bid_price, profit, limit_order } = contract_info;
 
     const total_profit = bid_price - buy_price;
     const { take_profit, stop_loss } = getLimitOrderAmount(contract_update || limit_order);
@@ -90,11 +90,12 @@ const ContractCardBody = ({
     currency,
     getCardLabels,
     is_multiplier,
+    is_sold,
     status,
     server_time,
 }) => {
     const indicative = getIndicativePrice(contract_info);
-    const { buy_price, is_sold, sell_price, payout, profit, tick_count, date_expiry, purchase_time } = contract_info;
+    const { buy_price, sell_price, payout, profit, tick_count, date_expiry, purchase_time } = contract_info;
     const current_tick = tick_count ? getCurrentTick(contract_info) : null;
 
     if (is_multiplier) {
@@ -104,6 +105,7 @@ const ContractCardBody = ({
                 contract_update={contract_update}
                 currency={currency}
                 getCardLabels={getCardLabels}
+                is_sold={is_sold}
                 status={status}
             />
         );

@@ -2,12 +2,14 @@ import debounce from 'lodash.debounce';
 import { action, computed, observable, reaction, runInAction, toJS, when } from 'mobx';
 import {
     isDesktop,
+    isMobile,
     isCryptocurrency,
     getMinPayout,
     cloneObject,
     isEmptyObject,
     getPropertyValue,
     extractInfoFromShortcode,
+    showDigitalOptionsUnavailableError,
 } from '@deriv/shared';
 
 import { localize } from '@deriv/translations';
@@ -112,8 +114,8 @@ export default class TradeStore extends BaseStore {
     @observable has_stop_loss = false;
     @observable has_take_profit = false;
     @observable has_cancellation = false;
-    @observable commission = 0;
-    @observable cancellation_price = 0;
+    @observable commission;
+    @observable cancellation_price;
     @observable hovered_contract_type;
     @observable cancellation_duration = '60m';
     @observable cancellation_range_list = [];
@@ -157,6 +159,7 @@ export default class TradeStore extends BaseStore {
             'expiry_type',
             'has_take_profit',
             'has_stop_loss',
+            'has_cancellation',
             'is_equal',
             'last_digit',
             'multiplier',
@@ -267,8 +270,7 @@ export default class TradeStore extends BaseStore {
             ? // if SmartCharts has requested active_symbols, we wait for the response
               await WS.wait('active_symbols')
             : // else requests new active_symbols
-              await WS.activeSymbols();
-
+              await WS.authorized.activeSymbols();
         if (error) {
             this.root_store.common.showError(localize('Trading is unavailable at this time.'));
             return;
@@ -276,9 +278,17 @@ export default class TradeStore extends BaseStore {
             if (this.root_store.client.landing_company_shortcode !== 'maltainvest') {
                 showUnavailableLocationError(this.root_store.common.showError);
                 return;
+            } else if (this.root_store.client.landing_company_shortcode === 'maltainvest') {
+                showDigitalOptionsUnavailableError(this.root_store.common.showError, {
+                    title: localize(
+                        'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a DMT5 Financial.'
+                    ),
+                    text: localize('DTrader is not available for this account'),
+                    link: localize('Go to DMT5 dashboard'),
+                });
+                return;
             }
         }
-
         this.processNewValuesAsync({ active_symbols });
     }
 
@@ -302,13 +312,11 @@ export default class TradeStore extends BaseStore {
         // fallback to default currency if current logged-in client hasn't selected a currency yet
         this.currency = this.root_store.client.currency || this.root_store.client.default_currency;
         this.initial_barriers = { barrier_1: this.barrier_1, barrier_2: this.barrier_2 };
-
-        await WS.wait('authorize');
         await when(() => !this.root_store.client.is_populating_account_list);
         await this.setActiveSymbols();
         runInAction(async () => {
             await WS.storage.contractsFor(this.symbol).then(async r => {
-                if (r.error && r.error.code === 'InvalidSymbol') {
+                if (['InvalidSymbol', 'InputValidationFailed'].includes(r.error?.code)) {
                     await this.resetRefresh();
                     await this.setActiveSymbols();
                     await pickDefaultSymbol();
@@ -556,7 +564,14 @@ export default class TradeStore extends BaseStore {
                             // and then set the chart view to the start_time
                             // draw the start time line and show longcode then mount contract
                             // this.root_store.modules.contract_trade.drawContractStartTime(start_time, longcode, contract_id);
-                            if (isDesktop()) this.root_store.ui.openPositionsDrawer();
+                            if (isDesktop()) {
+                                this.root_store.ui.openPositionsDrawer();
+                            } else if (isMobile()) {
+                                // TODO: Remove this when markers for multipliers are enabled
+                                if (this.is_multiplier) {
+                                    this.root_store.ui.openPositionsDrawer();
+                                }
+                            }
                             this.proposal_info = {};
                             this.forgetAllProposal();
                             this.purchase_info = response;
@@ -571,11 +586,10 @@ export default class TradeStore extends BaseStore {
                         this.disablePurchaseButtons();
                         // invalidToken error will handle in socket-general.js
                         if (response.error.code !== 'InvalidToken') {
-                            this.root_store.common.services_error = {
+                            this.root_store.common.setServicesError({
                                 type: response.msg_type,
                                 ...response.error,
-                            };
-                            this.root_store.ui.toggleServicesErrorModal(true);
+                            });
                         }
                     }
                     this.forgetAllProposal();
@@ -864,7 +878,7 @@ export default class TradeStore extends BaseStore {
             if (this.is_multiplier) {
                 const { message, details } = response.error;
                 const commission_match = (message || '').match(/\((\d+\.*\d*)\)/);
-                if (details.field === 'stop_loss' && commission_match && commission_match[1]) {
+                if (details?.field === 'stop_loss' && commission_match?.[1]) {
                     this.commission = commission_match[1];
                 }
             }
@@ -925,9 +939,20 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     async accountSwitcherListener() {
+        if (this.root_store.client.standpoint.maltainvest) {
+            const { active_symbols } = await WS.authorized.activeSymbols();
+            if (!active_symbols || !active_symbols.length) {
+                showDigitalOptionsUnavailableError(this.root_store.common.showError, {
+                    title: localize(
+                        'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a DMT5 Financial.'
+                    ),
+                    text: localize('DTrader is not available for this account'),
+                    link: localize('Go to DMT5 dashboard'),
+                });
+            }
+        }
         this.resetErrorServices();
         await this.setContractTypes();
-
         runInAction(async () => {
             this.processNewValuesAsync(
                 { currency: this.root_store.client.currency || this.root_store.client.default_currency },
@@ -959,7 +984,6 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     clientInitListener() {
-        this.should_refresh_active_symbols = true;
         this.initAccountCurrency(this.root_store.client.currency || this.root_store.client.default_currency);
         return Promise.resolve();
     }

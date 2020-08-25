@@ -1,6 +1,5 @@
 import { action, observable } from 'mobx';
 import { routes, isEmptyObject } from '@deriv/shared';
-
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import ContractStore from './contract-store';
@@ -121,7 +120,7 @@ export default class ContractReplayStore extends BaseStore {
         this.prev_indicative = new_indicative;
 
         // update the contract_store here passing contract_info
-        this.contract_store.populateConfig(this.contract_info, true);
+        this.contract_store.populateConfig(this.contract_info);
 
         const end_time = this.contract_store.end_time;
 
@@ -169,7 +168,6 @@ export default class ContractReplayStore extends BaseStore {
                         type: response.msg_type,
                         ...response.error,
                     });
-                    this.root_store.ui.toggleServicesErrorModal(true);
                 } else {
                     this.root_store.ui.addNotificationMessage(contractCancelled());
                 }
@@ -191,11 +189,10 @@ export default class ContractReplayStore extends BaseStore {
         if (response.error) {
             // If unable to sell due to error, give error via pop up if not in contract mode
             this.is_sell_requested = false;
-            this.root_store.common.services_error = {
+            this.root_store.common.setServicesError({
                 type: response.msg_type,
                 ...response.error,
-            };
-            this.root_store.ui.toggleServicesErrorModal(true);
+            });
         } else if (!response.error && response.sell) {
             this.is_sell_requested = false;
             // update contract store sell info after sell

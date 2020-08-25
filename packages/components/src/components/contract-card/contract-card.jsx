@@ -20,9 +20,12 @@ const ContractCard = ({
     getContractPath,
     getContractTypeDisplay,
     id,
+    is_link_disabled,
     is_mobile,
+    is_multiplier,
     is_positions,
     is_sell_requested,
+    is_sold,
     is_unsupported,
     is_valid_to_sell,
     onClickRemove,
@@ -44,7 +47,7 @@ const ContractCard = ({
     );
 
     const fallback_result = profit_loss >= 0 ? 'won' : 'lost';
-    const is_multiplier = isMultiplierContract(contract_info.contract_type);
+    // const is_multiplier = isMultiplierContract(contract_info.contract_type);
 
     const card_body = (
         <ContractCardBody
@@ -53,6 +56,7 @@ const ContractCard = ({
             currency={currency}
             getCardLabels={getCardLabels}
             is_multiplier={is_multiplier}
+            is_sold={is_sold}
             status={status}
             server_time={server_time}
         />
@@ -78,6 +82,7 @@ const ContractCard = ({
                 is_mobile={is_mobile}
                 is_positions={is_positions}
                 is_sell_requested={is_sell_requested}
+                is_sold={is_sold}
                 is_valid_to_sell={is_valid_to_sell}
                 onClickSell={onClickSell}
                 server_time={server_time}
@@ -113,13 +118,13 @@ const ContractCard = ({
                     id={`contract_card_${contract_info.contract_id}`}
                     className={classNames('contract-card__wrapper', transition_class, className)}
                     onMouseEnter={() => {
-                        onMouseEnter(true, contract_info);
+                        if (typeof onMouseEnter === 'function') onMouseEnter(true, contract_info);
                     }}
                     onMouseLeave={() => {
-                        onMouseLeave(false, contract_info);
+                        if (typeof onMouseLeave === 'function') onMouseLeave(false, contract_info);
                     }}
                     onClick={() => {
-                        onMouseLeave(false, contract_info);
+                        if (typeof onMouseLeave === 'function') onMouseLeave(false, contract_info);
                     }}
                 >
                     {is_unsupported ? (
@@ -129,6 +134,15 @@ const ContractCard = ({
                                 'contract-card--red': !is_multiplier && profit_loss < 0 && !result,
                             })}
                             onClick={() => toggleUnsupportedContractModal(true)}
+                        >
+                            {contract_info.underlying ? contract_el : loader_el}
+                        </div>
+                    ) : is_link_disabled ? (
+                        <div
+                            className={classNames('contract-card', {
+                                'contract-card--green': !is_multiplier && profit_loss > 0 && !result,
+                                'contract-card--red': !is_multiplier && profit_loss < 0 && !result,
+                            })}
                         >
                             {contract_info.underlying ? contract_el : loader_el}
                         </div>

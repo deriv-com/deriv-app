@@ -5,7 +5,7 @@ import { connect } from 'Stores/connect';
 import { isDigitTradeType } from 'Modules/Trading/Helpers/digits';
 import { localize } from '@deriv/translations';
 import { unsupported_contract_types_list } from 'Stores/Modules/Trading/Constants/contract';
-import ToastInfoPopup from '../Components/Form/TradeParams/toast-info-popup.jsx';
+import { ToastPopup } from 'Modules/Trading/Containers/toast-popup.jsx';
 import { getMarketNamesMap } from '../../../Constants';
 import ContractTypeWidget from '../Components/Form/ContractType';
 import { getAvailableContractTypes } from '../Helpers/contract-type';
@@ -21,12 +21,9 @@ const Contract = ({ contract_type, contract_types_list, is_digit_view, is_equal,
         <React.Fragment>
             <MobileWrapper>
                 {isDigitTradeType(contract_type) && (
-                    <ToastInfoPopup
-                        portal_id='deriv_app'
-                        message={digits_message}
-                        is_open={is_digit_view}
-                        timeout={5000}
-                    />
+                    <ToastPopup className='digits__toast-info' is_open={is_digit_view} type='info' timeout={3000}>
+                        {digits_message}
+                    </ToastPopup>
                 )}
             </MobileWrapper>
             <ContractTypeWidget

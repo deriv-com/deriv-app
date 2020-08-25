@@ -37,12 +37,6 @@ export default class StatementStore extends BaseStore {
         return !!(this.date_from || this.date_to);
     }
 
-    @computed
-    get data_source() {
-        // TODO: remove this getter once Multiplier is supported in mobile
-        return isDesktop() ? this.data : this.data.filter(row => !isMultiplier({ shortcode: row.shortcode }));
-    }
-
     @action.bound
     clearTable() {
         this.data = [];

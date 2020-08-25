@@ -1,26 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@deriv/components';
-import { getCancellationPrice, getLimitOrderAmount } from '@deriv/shared';
+import { getCancellationPrice, getLimitOrderAmount, isDeepEqual, pick } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import InputWithCheckbox from 'App/Components/Form/InputField/input-with-checkbox.jsx';
 import { connect } from 'Stores/connect';
+import { getContractUpdateConfig } from 'Stores/Modules/Contract/Helpers/logic';
 
 class ContractUpdateForm extends React.Component {
     componentWillUnmount() {
-        this.props.clearContractUpdateConfigValues(this.props.contract_id);
-    }
-
-    get contract() {
-        return this.props.getContractById(this.props.contract_id);
+        this.props.contract.clearContractUpdateConfigValues();
     }
 
     get contract_info() {
-        return this.contract.contract_info;
-    }
-
-    get contract_update_config() {
-        return this.contract.contract_update_config;
+        return this.props.contract.contract_info;
     }
 
     get limit_order() {
@@ -34,11 +27,12 @@ class ContractUpdateForm extends React.Component {
 
     get is_valid_contract_update() {
         const {
-            has_contract_update_take_profit,
-            has_contract_update_stop_loss,
             contract_update_take_profit,
+            has_contract_update_take_profit,
             contract_update_stop_loss,
-        } = this.contract_update_config;
+            has_contract_update_stop_loss,
+        } = this.props;
+
         const { current_take_profit, current_stop_loss } = this.limit_order;
 
         const is_take_profit_valid = has_contract_update_take_profit
@@ -52,7 +46,7 @@ class ContractUpdateForm extends React.Component {
     }
 
     get error_messages() {
-        const { has_contract_update_stop_loss, has_contract_update_take_profit } = this.contract_update_config;
+        const { has_contract_update_take_profit, has_contract_update_stop_loss } = this.props;
 
         const {
             contract_update_stop_loss: stop_loss,
@@ -69,39 +63,55 @@ class ContractUpdateForm extends React.Component {
         return Object.keys(this.error_messages).some(field => this.error_messages[field]?.length);
     }
 
+    getStateToCompare = _state => {
+        const props_to_pick = [
+            'has_contract_update_take_profit',
+            'has_contract_update_stop_loss',
+            _state.has_contract_update_take_profit && 'contract_update_take_profit',
+            _state.has_contract_update_stop_loss && 'contract_update_stop_loss',
+        ];
+
+        return pick(_state, props_to_pick);
+    };
+
+    isStateUnchanged() {
+        return isDeepEqual(
+            this.getStateToCompare(getContractUpdateConfig(this.props.contract_info)),
+            this.getStateToCompare(this.props)
+        );
+    }
+
     isValid = val => !(val === undefined || val === null);
 
     onChange = e => {
         const { name, value } = e.target;
 
-        if (typeof this.props.onChange === 'function') {
-            this.props.onChange(
-                {
-                    name,
-                    value,
-                },
-                this.props.contract_id
-            );
+        if (typeof this.props.contract.onChange === 'function') {
+            this.props.contract.onChange({
+                name,
+                value,
+            });
         }
     };
 
-    onClick = () => {
-        this.props.updateLimitOrder(this.props.contract_id);
-        this.props.toggleDialog();
+    onClick = e => {
+        this.props.contract.updateLimitOrder();
+        this.props.toggleDialog(e);
     };
 
     render() {
-        const { buy_price, currency, is_valid_to_cancel } = this.contract_info;
-        const cancellation_price = getCancellationPrice(this.contract_info);
         const {
-            has_contract_update_stop_loss,
+            addToast,
+            contract_update_take_profit,
             has_contract_update_take_profit,
             contract_update_stop_loss,
-            contract_update_take_profit,
-        } = this.contract_update_config;
-
+            has_contract_update_stop_loss,
+        } = this.props;
+        const { buy_price, currency, is_valid_to_cancel } = this.contract_info;
+        const cancellation_price = getCancellationPrice(this.contract_info);
         const take_profit_input = (
             <InputWithCheckbox
+                addToast={addToast}
                 classNameInlinePrefix='trade-container__currency'
                 currency={currency}
                 error_messages={this.error_messages.take_profit}
@@ -119,6 +129,7 @@ class ContractUpdateForm extends React.Component {
 
         const stop_loss_input = (
             <InputWithCheckbox
+                addToast={addToast}
                 classNameInlinePrefix='trade-container__currency'
                 currency={currency}
                 defaultChecked={has_contract_update_stop_loss}
@@ -144,7 +155,9 @@ class ContractUpdateForm extends React.Component {
                         text={localize('Apply')}
                         onClick={this.onClick}
                         primary
-                        is_disabled={this.has_validation_errors || !this.is_valid_contract_update}
+                        is_disabled={
+                            this.has_validation_errors || !this.is_valid_contract_update || this.isStateUnchanged()
+                        }
                     />
                 </div>
             </React.Fragment>
@@ -153,7 +166,7 @@ class ContractUpdateForm extends React.Component {
 }
 
 ContractUpdateForm.propTypes = {
-    contract_id: PropTypes.number,
+    contract: PropTypes.object,
     currency: PropTypes.string,
     getContractById: PropTypes.func,
     resetContractUpdate: PropTypes.func,
@@ -161,10 +174,17 @@ ContractUpdateForm.propTypes = {
     validation_errors: PropTypes.object,
 };
 
-export default connect(({ modules }) => ({
-    clearContractUpdateConfigValues: modules.contract_trade.clearContractUpdateConfigValues,
-    getContractById: modules.contract_trade.getContractById,
-    onChange: modules.contract_trade.onChange,
-    updateLimitOrder: modules.contract_trade.updateLimitOrder,
-    validation_errors: modules.contract_trade.validation_errors,
-}))(ContractUpdateForm);
+export default connect(({ modules, ui }, props) => {
+    const contract = props.contract;
+    return {
+        addToast: ui.addToast,
+        getContractById: modules.contract_trade.getContractById,
+        updateLimitOrder: modules.contract_trade.updateLimitOrder,
+        contract_info: contract.contract_info,
+        validation_errors: contract.validation_errors,
+        contract_update_take_profit: contract.contract_update_take_profit,
+        contract_update_stop_loss: contract.contract_update_stop_loss,
+        has_contract_update_take_profit: contract.has_contract_update_take_profit,
+        has_contract_update_stop_loss: contract.has_contract_update_stop_loss,
+    };
+})(ContractUpdateForm);

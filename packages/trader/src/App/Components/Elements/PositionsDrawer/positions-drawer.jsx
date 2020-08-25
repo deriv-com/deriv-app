@@ -12,6 +12,7 @@ import EmptyPortfolioMessage from 'Modules/Reports/Components/empty-portfolio-me
 import { connect } from 'Stores/connect';
 import { getContractTypesConfig } from 'Stores/Modules/Trading/Constants/contract';
 import { isCallPut } from 'Stores/Modules/Contract/Helpers/contract-type';
+import { filterByContractType } from './helpers';
 import PositionsDrawerCard from './PositionsDrawerCard';
 
 const ThemedScrollbarsWrapper = React.forwardRef((props, ref) => (
@@ -165,10 +166,21 @@ class PositionsDrawer extends React.Component {
     };
 
     render() {
-        const { all_positions, error, is_empty, is_positions_drawer_on, symbol, toggleDrawer } = this.props;
+        const {
+            all_positions,
+            error,
+            is_empty,
+            is_positions_drawer_on,
+            symbol,
+            toggleDrawer,
+            trade_contract_type,
+        } = this.props;
 
         this.positions = all_positions.filter(
-            p => p.contract_info && symbol === p.contract_info.underlying && this.filterByContractType(p.contract_info)
+            p =>
+                p.contract_info &&
+                symbol === p.contract_info.underlying &&
+                filterByContractType(p.contract_info, trade_contract_type)
         );
         this.calculatePositionsHeight();
 

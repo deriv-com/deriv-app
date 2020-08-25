@@ -14,7 +14,7 @@ const signupInitialValues = { password: '', residence: '' };
 
 const validateSignup = (values, residence_list) => {
     const errors = {};
-    const min_password_length = 6;
+    const min_password_length = 8;
 
     if (values.password && (values.password.length < min_password_length || !validPassword(values.password))) {
         errors.password = true;

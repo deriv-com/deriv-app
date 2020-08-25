@@ -1,5 +1,6 @@
 .details-form {
     display: grid;
+    align-content: start;
     @include desktop {
         padding: 0 0.4rem;
     }
@@ -8,6 +9,11 @@
         overflow-y: auto;
     }
 
+    &__scrollbar {
+        @include desktop {
+            max-height: none !important;
+        }
+    }
     &__elements {
         flex-grow: 1;
         margin: 1.2rem auto;

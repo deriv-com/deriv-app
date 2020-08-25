@@ -10,7 +10,7 @@ Blockly.Blocks.math_number_positive = {
         };
     },
     numberValidator(input) {
-        if (/^([0][.]|[1-9]+[.])?([0]|[1-9]){1,}$/.test(input)) {
+        if (/^([0][.]|[0-9]+[.])?([0]|[1-9]){1,}$/.test(input) && input < Number.MAX_SAFE_INTEGER) {
             return undefined;
         }
         return null;

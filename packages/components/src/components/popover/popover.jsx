@@ -11,17 +11,17 @@ class Popover extends React.PureComponent {
             is_open: false,
             is_bubble_open: false,
             popover_ref: undefined,
+            is_mounted: false,
         };
 
-        this.setWrapperRef = ref => (this.wrapper_ref = ref);
+        this.setWrapperRef = ref => {
+            this.wrapper_ref = ref;
+            this.setState({ popover_ref: ref });
+        };
     }
 
     componentDidMount() {
-        this.setState({ is_open: this.props.has_error });
-
-        if (this.wrapper_ref) {
-            this.setState({ popover_ref: this.wrapper_ref });
-        }
+        this.setState({ is_open: this.props.has_error, is_mounted: true });
     }
 
     toggleOpen = () => {
@@ -42,6 +42,10 @@ class Popover extends React.PureComponent {
 
     onMouseLeave = () => {
         this.setState({ is_bubble_open: false, is_open: false });
+    };
+
+    onClick = () => {
+        this.setState({ is_bubble_open: !this.state.is_bubble_open });
     };
 
     toggleIsOpenOnHoverPopoverBubble = () => {
@@ -71,18 +75,19 @@ class Popover extends React.PureComponent {
             zIndex,
             relative_render,
         } = this.props;
+        const { is_mounted } = this.state;
 
         const has_external_open_state = is_open !== undefined;
         const icon_class_name = classNames(classNameTargetIcon, icon);
 
         return (
             <div className={classNames({ 'dc-popover__wrapper': relative_render })}>
-                {relative_render && (
+                {relative_render && is_mounted && (
                     <div className='dc-popover__container' style={{ zIndex: zIndex || 1 }}>
                         <div ref={this.setWrapperRef} className='dc-popover__container-relative' />
                     </div>
                 )}
-                {(this.state.popover_ref || !relative_render) && (
+                {(this.state.popover_ref || !relative_render) && is_mounted && (
                     <TinyPopover
                         isOpen={is_open ?? this.state.is_open}
                         position={alignment}
@@ -153,6 +158,7 @@ class Popover extends React.PureComponent {
                                     popoverRect={popoverRect}
                                     arrowColor={has_error ? 'var(--status-danger)' : 'var(--general-active)'}
                                     arrowSize={5}
+                                    onClick={this.onClick}
                                 >
                                     <div
                                         id={id}
@@ -161,6 +167,7 @@ class Popover extends React.PureComponent {
                                         })}
                                         onMouseEnter={this.onMouseEnter}
                                         onMouseLeave={this.onMouseLeave}
+                                        onClick={this.onClick}
                                     >
                                         {!disable_message_icon && icon === 'info' && (
                                             <i className='dc-popover__bubble__icon'>
@@ -184,6 +191,7 @@ class Popover extends React.PureComponent {
                             id={id}
                             onMouseEnter={has_external_open_state ? undefined : this.toggleOpen}
                             onMouseLeave={has_external_open_state ? undefined : this.toggleClose}
+                            onClick={this.onClick}
                         >
                             <div className={classNames(classNameTarget, 'dc-popover__target')}>
                                 {!disable_target_icon && (

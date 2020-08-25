@@ -70,9 +70,6 @@ const SaveModalForm = ({
                                         />
                                     ),
                                     value: true,
-                                    className: classNames({
-                                        'dc-radio-group__item--active': is_local,
-                                    }),
                                 },
                                 {
                                     id: 'drive',
@@ -88,7 +85,6 @@ const SaveModalForm = ({
                                     disabled: !is_authorised,
                                     className: classNames({
                                         'dc-radio-group__item-disabled': !is_authorised,
-                                        'dc-radio-group__item--active': is_authorised && !is_local,
                                     }),
                                 },
                             ]}

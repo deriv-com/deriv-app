@@ -311,6 +311,7 @@ const QuickStrategyForm = ({
                                                         setFieldValue('button', 'edit');
                                                         submitForm();
                                                     }}
+                                                    type='button'
                                                 />
                                             )}
                                             <Button
@@ -323,6 +324,7 @@ const QuickStrategyForm = ({
                                                     setFieldValue('button', 'run');
                                                     submitForm();
                                                 }}
+                                                type='button'
                                             />
                                         </Button.Group>
                                     </div>
@@ -334,6 +336,7 @@ const QuickStrategyForm = ({
                                 <Button.Group>
                                     {!is_mobile && (
                                         <Button
+                                            type='button'
                                             id='db-quick-strategy__button-edit'
                                             text={localize('Create and edit')}
                                             is_disabled={!is_submit_enabled}
@@ -346,6 +349,7 @@ const QuickStrategyForm = ({
                                         />
                                     )}
                                     <Button
+                                        type='button'
                                         id='db-quick-strategy__button-run'
                                         text={localize('Run')}
                                         is_disabled={!is_submit_enabled || is_stop_button_visible}

@@ -6,6 +6,8 @@ import InputWithCheckbox from 'App/Components/Form/InputField/input-with-checkbo
 import { connect } from 'Stores/connect';
 
 const StopLoss = ({
+    addToast,
+    removeToast,
     amount,
     currency,
     has_stop_loss,
@@ -30,6 +32,8 @@ const StopLoss = ({
     return (
         <Fieldset className='trade-container__fieldset'>
             <InputWithCheckbox
+                addToast={addToast}
+                removeToast={removeToast}
                 classNameInlinePrefix='trade-container__currency'
                 classNameInput='trade-container__input'
                 currency={currency}
@@ -45,6 +49,8 @@ const StopLoss = ({
                 tooltip_label={localize(
                     'Your contract is closed automatically when your loss is more than or equals to this amount.'
                 )}
+                tooltip_alignment='left'
+                error_message_alignment='left'
                 value={stop_loss}
             />
         </Fieldset>
@@ -62,14 +68,16 @@ StopLoss.propTypes = {
     validation_errors: PropTypes.object,
 };
 
-export default connect(({ modules, client }) => ({
+export default connect(({ modules, client, ui }, props) => ({
+    addToast: ui.addToast,
+    removeToast: ui.removeToast,
     is_single_currency: client.is_single_currency,
     amount: modules.trade.amount,
     currency: modules.trade.currency,
-    has_cancellation: modules.trade.has_cancellation,
-    has_stop_loss: modules.trade.has_stop_loss,
-    onChange: modules.trade.onChange,
-    onChangeMultiple: modules.trade.onChangeMultiple,
-    stop_loss: modules.trade.stop_loss,
-    validation_errors: modules.trade.validation_errors,
+    has_cancellation: props.has_cancellation ?? modules.trade.has_cancellation,
+    has_stop_loss: props.has_stop_loss ?? modules.trade.has_stop_loss,
+    onChange: props.onChange ?? modules.trade.onChange,
+    onChangeMultiple: props.onChangeMultiple ?? modules.trade.onChangeMultiple,
+    stop_loss: props.stop_loss ?? modules.trade.stop_loss,
+    validation_errors: props.validation_errors ?? modules.trade.validation_errors,
 }))(StopLoss);

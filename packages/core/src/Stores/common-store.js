@@ -1,5 +1,5 @@
 import { action, observable } from 'mobx';
-import { routes, toMoment, getUrlSmartTrader } from '@deriv/shared';
+import { routes, toMoment, getUrlSmartTrader, isMobile } from '@deriv/shared';
 import ServerTime from '_common/base/server_time';
 import { currentLanguage } from 'Utils/Language/index';
 import BaseStore from './base-store';
@@ -131,7 +131,15 @@ export default class CommonStore extends BaseStore {
 
     @action.bound
     setServicesError(error) {
-        this.services_error = error;
+        if (isMobile()) {
+            this.root_store.ui.addToast({
+                content: error.message,
+                type: 'error',
+            });
+        } else {
+            this.services_error = error;
+            this.root_store.ui.toggleServicesErrorModal(true);
+        }
     }
 
     @action.bound

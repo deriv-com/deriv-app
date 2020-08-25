@@ -2,6 +2,7 @@ import debounce from 'lodash.debounce';
 import { action, computed, observable, reaction, runInAction, toJS, when } from 'mobx';
 import {
     isDesktop,
+    isMobile,
     isCryptocurrency,
     getMinPayout,
     cloneObject,
@@ -9,6 +10,7 @@ import {
     getPropertyValue,
     showDigitalOptionsUnavailableError,
 } from '@deriv/shared';
+
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { isDigitContractType, isDigitTradeType } from 'Modules/Trading/Helpers/digits';
@@ -112,8 +114,8 @@ export default class TradeStore extends BaseStore {
     @observable has_stop_loss = false;
     @observable has_take_profit = false;
     @observable has_cancellation = false;
-    @observable commission = 0;
-    @observable cancellation_price = 0;
+    @observable commission;
+    @observable cancellation_price;
     @observable hovered_contract_type;
     @observable cancellation_duration = '60m';
     @observable cancellation_range_list = [];
@@ -157,6 +159,7 @@ export default class TradeStore extends BaseStore {
             'expiry_type',
             'has_take_profit',
             'has_stop_loss',
+            'has_cancellation',
             'is_equal',
             'last_digit',
             'multiplier',
@@ -255,9 +258,8 @@ export default class TradeStore extends BaseStore {
     @action.bound
     async setDefaultSymbol() {
         if (!this.is_symbol_in_active_symbols) {
-            await this.processNewValuesAsync({
-                symbol: pickDefaultSymbol(this.active_symbols),
-            });
+            const symbol = await pickDefaultSymbol(this.active_symbols);
+            await this.processNewValuesAsync({ symbol });
         }
     }
 
@@ -311,26 +313,22 @@ export default class TradeStore extends BaseStore {
         this.initial_barriers = { barrier_1: this.barrier_1, barrier_2: this.barrier_2 };
         await when(() => !this.root_store.client.is_populating_account_list);
         await this.setActiveSymbols();
-        runInAction(async () => {
-            await WS.storage.contractsFor(this.symbol).then(async r => {
-                if (['InvalidSymbol', 'InputValidationFailed'].includes(r.error?.code)) {
-                    await this.resetRefresh();
-                    await this.setActiveSymbols();
-                    await pickDefaultSymbol();
-                    runInAction(() => (this.should_refresh_active_symbols = true));
-                }
-            });
-            await this.setDefaultSymbol();
-            await this.setContractTypes();
-            await this.processNewValuesAsync(
-                {
-                    is_market_closed: isMarketClosed(this.active_symbols, this.symbol),
-                },
-                true,
-                null,
-                false
-            );
-        });
+        const r = await WS.storage.contractsFor(this.symbol);
+        if (['InvalidSymbol', 'InputValidationFailed'].includes(r.error?.code)) {
+            const symbol_to_update = await pickDefaultSymbol(this.active_symbols);
+            await this.processNewValuesAsync({ symbol: symbol_to_update });
+        }
+
+        await this.setDefaultSymbol();
+        await this.setContractTypes();
+        await this.processNewValuesAsync(
+            {
+                is_market_closed: isMarketClosed(this.active_symbols, this.symbol),
+            },
+            true,
+            null,
+            false
+        );
     }
 
     @action.bound
@@ -355,9 +353,7 @@ export default class TradeStore extends BaseStore {
             this.is_trade_enabled = false;
             // this.root_store.modules.contract_trade.contracts = [];
             // TODO: Clear the contracts in contract-trade-store
-        }
-
-        if (name === 'currency') {
+        } else if (name === 'currency') {
             // Only allow the currency dropdown change if client is not logged in
             if (!this.root_store.client.is_logged_in) {
                 this.root_store.client.selectCurrency(value);
@@ -561,7 +557,14 @@ export default class TradeStore extends BaseStore {
                             // and then set the chart view to the start_time
                             // draw the start time line and show longcode then mount contract
                             // this.root_store.modules.contract_trade.drawContractStartTime(start_time, longcode, contract_id);
-                            if (isDesktop()) this.root_store.ui.openPositionsDrawer();
+                            if (isDesktop()) {
+                                this.root_store.ui.openPositionsDrawer();
+                            } else if (isMobile()) {
+                                // TODO: Remove this when markers for multipliers are enabled
+                                if (this.is_multiplier) {
+                                    this.root_store.ui.openPositionsDrawer();
+                                }
+                            }
                             this.proposal_info = {};
                             this.forgetAllProposal();
                             this.purchase_info = response;
@@ -576,11 +579,10 @@ export default class TradeStore extends BaseStore {
                         this.disablePurchaseButtons();
                         // invalidToken error will handle in socket-general.js
                         if (response.error.code !== 'InvalidToken') {
-                            this.root_store.common.services_error = {
+                            this.root_store.common.setServicesError({
                                 type: response.msg_type,
                                 ...response.error,
-                            };
-                            this.root_store.ui.toggleServicesErrorModal(true);
+                            });
                         }
                     }
                     this.forgetAllProposal();
@@ -869,7 +871,7 @@ export default class TradeStore extends BaseStore {
             if (this.is_multiplier) {
                 const { message, details } = response.error;
                 const commission_match = (message || '').match(/\((\d+\.*\d*)\)/);
-                if (details.field === 'stop_loss' && commission_match && commission_match[1]) {
+                if (details?.field === 'stop_loss' && commission_match?.[1]) {
                     this.commission = commission_match[1];
                 }
             }
@@ -996,7 +998,7 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     onMount() {
-        if (this.should_skip_prepost_lifecycle) {
+        if (this.is_trade_component_mounted && this.should_skip_prepost_lifecycle) {
             return;
         }
 

@@ -35,7 +35,7 @@ const MT5AttributeDescriber = ({ name, tooltip, counter }) => {
                 </MobileWrapper>
             </p>
             <DesktopWrapper>
-                <Popover alignment='right' icon='counter' counter={counter} message={tooltip} zIndex={9999} />
+                <Popover alignment='right' icon='counter' counter={counter} message={tooltip} zIndex={9998} />
             </DesktopWrapper>
             <MobileWrapper>
                 <MT5AttributeDescriberModal toggleModal={toggleModal} is_visible={is_visible} message={tooltip} />

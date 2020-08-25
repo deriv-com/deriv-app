@@ -2,7 +2,7 @@ import React from 'react';
 import { Autocomplete, Loading, Button, Input, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
 import { Formik, Field } from 'formik';
 import { localize } from '@deriv/translations';
-import { isMobile } from '@deriv/shared';
+import { isMobile, getLocation } from '@deriv/shared';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 import {
@@ -24,15 +24,6 @@ const validate = (errors, values) => (fn, arr, err_msg) => {
         const value = values[field];
         if (!fn(value) && !errors[field] && err_msg !== true) errors[field] = err_msg;
     });
-};
-
-const getLocation = (location_list, value, type) => {
-    const location_obj = location_list.find(
-        (location) => location[type === 'text' ? 'value' : 'text'].toLowerCase() === value.toLowerCase()
-    );
-
-    if (location_obj) return location_obj[type];
-    return '';
 };
 
 class ProofOfAddressForm extends React.Component {

@@ -3,22 +3,12 @@ import PropTypes from 'prop-types';
 import fromEntries from 'object.fromentries';
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Div100vhContainer, FormProgress } from '@deriv/components';
-import { isDesktop, toMoment } from '@deriv/shared';
+import { isDesktop, toMoment, getLocation } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { makeCancellablePromise } from '_common/base/cancellable_promise';
 import LoadingModal from './real-account-signup-loader.jsx';
 import { getItems } from './account-wizard-form';
-
-// TODO: [deriv-eu] remove and merge this with the original function in PersonalDetails
-const getLocation = (location_list, value, type) => {
-    const location_obj = location_list.find(
-        location => location[type === 'text' ? 'value' : 'text'].toLowerCase() === value.toLowerCase()
-    );
-
-    if (location_obj) return location_obj[type];
-    return '';
-};
 
 const SetCurrencyHeader = ({ has_target, has_real_account, has_currency, items, step }) => (
     <React.Fragment>

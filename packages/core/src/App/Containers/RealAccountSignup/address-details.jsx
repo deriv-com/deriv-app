@@ -13,7 +13,7 @@ import {
     SelectNative,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { isDesktop, isMobile } from '@deriv/shared';
+import { isDesktop, isMobile, getLocation } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { splitValidationResultTypes } from 'App/Containers/RealAccountSignup/helpers/utils';
 import { screen_height_sm_threshold } from 'App/Containers/RealAccountSignup/helpers/constants';
@@ -35,15 +35,6 @@ const InputField = props => {
             )}
         </Field>
     );
-};
-
-const getLocation = (location_list, value, type) => {
-    const location_obj = location_list.find(
-        location => location[type === 'text' ? 'value' : 'text'].toLowerCase() === value.toLowerCase()
-    );
-
-    if (location_obj) return location_obj[type];
-    return '';
 };
 
 class AddressDetails extends React.Component {

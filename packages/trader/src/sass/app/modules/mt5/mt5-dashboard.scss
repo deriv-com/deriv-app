@@ -693,21 +693,13 @@
     position: relative;
     width: 100%;
 
-    &__heading {
-    }
-    &__form,
-    &__body {
-        display: grid;
-        // fix for safari bug with autoheight wrapper not working properly for calculating modal footer offset
-        @media not all and (min-resolution: 0.001dpcm) {
-            @supports (-webkit-appearance: none) and (stroke-color: transparent) {
-                @include desktop {
-                    max-height: calc(100% - 24px);
-                }
-                @include tablet {
-                    max-height: calc(100% - 24px);
-                }
-            }
+    &__form {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+
+        .details-form {
+            flex: 1;
         }
     }
     @include desktop {
@@ -925,18 +917,6 @@
         display: grid;
         grid-template-rows: minmax(10rem, 1fr) 7.2rem;
         height: 100%;
-
-        // fix for safari bug with autoheight wrapper not working properly for calculating modal footer offset
-        @media not all and (min-resolution: 0.001dpcm) {
-            @supports (-webkit-appearance: none) and (stroke-color: transparent) {
-                @include desktop {
-                    max-height: calc(100% - 2.4rem);
-                }
-                @include tablet {
-                    max-height: calc(100% - 2.4rem);
-                }
-            }
-        }
     }
     &__file-upload {
         position: relative;
@@ -1008,17 +988,6 @@
         height: 100%;
         position: relative;
 
-        // fix for safari bug with autoheight wrapper not working properly for calculating modal footer offset
-        @media not all and (min-resolution: 0.001dpcm) {
-            @supports (-webkit-appearance: none) and (stroke-color: transparent) {
-                @include desktop {
-                    max-height: calc(100% - 2.4rem);
-                }
-                @include tablet {
-                    max-height: calc(100% - 2.4rem);
-                }
-            }
-        }
         @include mobile {
             max-height: calc(100% - 1rem);
         }

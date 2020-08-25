@@ -35,7 +35,7 @@ Blockly.Blocks.math_number = {
         };
     },
     numberValidator(input) {
-        if (/^-?([0][.]|[1-9]+[.])?([0]|[1-9]){1,}$/.test(input) && input < Number.MAX_SAFE_INTEGER) {
+        if (/^-?([0][.]|[0-9]+[.])?([0]|[1-9]){1,}$/.test(input) && input < Number.MAX_SAFE_INTEGER) {
             return undefined;
         }
         return null;

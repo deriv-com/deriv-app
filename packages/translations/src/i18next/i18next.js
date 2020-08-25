@@ -29,7 +29,7 @@ const getUrlBase = (path = '') => {
 };
 
 // TODO: [app-link-refactor] - Remove backwards compatibility for `deriv.app`
-const isStaging = () => /staging\.deriv\.app|staging-app\.deriv\.com/i.test(window.location.hostname);
+const isStaging = () => true;
 
 const isLanguageAvailable = lang => {
     if (!lang) return false;
@@ -40,7 +40,7 @@ const isLanguageAvailable = lang => {
     if (is_ach) return isStaging();
 
     // TODO: remove when translations are ready
-    if (selected_language !== DEFAULT_LANGUAGE) return false;
+    // if (selected_language !== DEFAULT_LANGUAGE) return false;
 
     return Object.keys(ALL_LANGUAGES).includes(selected_language);
 };

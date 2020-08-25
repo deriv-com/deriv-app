@@ -12,7 +12,7 @@ import {
     Tabs,
     ThemedScrollbars,
 } from '@deriv/components';
-import { urlFor, routes, isCryptocurrency, formatMoney, getMT5AccountDisplay } from '@deriv/shared';
+import { urlFor, routes, isCryptocurrency, formatMoney, getMT5Account } from '@deriv/shared';
 
 import { localize, Localize } from '@deriv/translations';
 import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
@@ -368,7 +368,7 @@ class AccountSwitcher extends React.Component {
                                                     account_type={account.group}
                                                     balance={account.balance}
                                                     currency={account.currency}
-                                                    currency_icon={`IcMt5-${getMT5AccountDisplay(account.group)}`}
+                                                    currency_icon={`IcMt5-${getMT5Account(account.group)}`}
                                                     has_balance={'balance' in account}
                                                     is_virtual
                                                     loginid={account.display_login}
@@ -491,7 +491,7 @@ class AccountSwitcher extends React.Component {
                                                     account_type={account.group}
                                                     balance={account.balance}
                                                     currency={account.currency}
-                                                    currency_icon={`IcMt5-${getMT5AccountDisplay(account.group)}`}
+                                                    currency_icon={`IcMt5-${getMT5Account(account.group)}`}
                                                     has_balance={'balance' in account}
                                                     loginid={account.display_login}
                                                     onClickAccount={this.redirectToMt5Real}

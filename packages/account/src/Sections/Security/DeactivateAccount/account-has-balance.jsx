@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Icon, Money, ThemedScrollbars } from '@deriv/components';
-import { formatMoney, getMT5AccountDisplay } from '@deriv/shared';
+import { formatMoney, getMT5AccountDisplay, getMT5Account } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 const AccountHasBalanceOrOpenPositions = ({
@@ -115,7 +115,7 @@ const AccountHasBalanceOrOpenPositions = ({
                         <div key={account.login} className='have-open-positions-or-balance__container'>
                             <div className='have-open-positions-or-balance__account-details'>
                                 <div className='have-open-positions-or-balance__container__account-details__icon'>
-                                    <Icon icon={`IcMt5-${getMT5AccountDisplay(account.group)}`} size={24} />
+                                    <Icon icon={`IcMt5-${getMT5Account(account.group)}`} size={24} />
                                 </div>
                                 <div className='have-open-positions-or-balance__balance'>
                                     <span className='have-open-positions-or-balance__balance--currency'>

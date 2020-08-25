@@ -9,7 +9,7 @@ import {
     checkAndSetEndpointFromUrl,
     setUrlLanguage,
     isMobile,
-    setValidationErrorMessages,
+    initFormErrorMessages,
     setSharedMT5Text,
 } from '@deriv/shared';
 import { initializeTranslations, getLanguage } from '@deriv/translations';
@@ -44,7 +44,7 @@ const App = ({ root_store }) => {
 
         // TODO: [translation-to-shared]: add translation implemnentation in shared
         setUrlLanguage(getLanguage());
-        setValidationErrorMessages(FORM_ERROR_MESSAGES);
+        initFormErrorMessages(FORM_ERROR_MESSAGES);
         setSharedMT5Text(MT5_TEXT);
     }, []);
     if (isMobile()) {

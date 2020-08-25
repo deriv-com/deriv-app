@@ -113,7 +113,7 @@ const initPreBuildDVRs = () => ({
     },
 });
 
-export const setValidationErrorMessages = all_form_error_messages => {
+export const initFormErrorMessages = all_form_error_messages => {
     if (!pre_build_dvrs) {
         form_error_messages = all_form_error_messages;
         pre_build_dvrs = initPreBuildDVRs();

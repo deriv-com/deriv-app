@@ -1,5 +1,5 @@
 import React from 'react';
-import GeneralStore from '../stores/general-store';
+import GeneralStore from './general-store.js';
 
 const stores_context = React.createContext({
     general_store: new GeneralStore(),

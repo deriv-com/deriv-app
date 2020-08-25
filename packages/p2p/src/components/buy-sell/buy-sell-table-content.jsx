@@ -10,11 +10,9 @@ import { height_constants } from 'Utils/height_constants';
 import { requestWS } from 'Utils/websocket';
 import { RowComponent, BuySellRowLoader } from './row.jsx';
 import { BuySellTable } from './buy-sell-table.jsx';
-import { useStores } from '../../stores';
 
 const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
-    // const { list_item_limit } = React.useContext(Dp2pContext);
-    const { general_store } = useStores();
+    const { list_item_limit } = React.useContext(Dp2pContext);
     const is_mounted = React.useRef(false);
     const item_offset = React.useRef(0);
     const [has_more_items_to_load, setHasMoreItemsToLoad] = React.useState(false);
@@ -24,14 +22,14 @@ const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
 
     React.useEffect(() => {
         is_mounted.current = true;
-        loadMoreItems(item_offset.current, general_store.list_item_limit);
+        loadMoreItems(item_offset.current, list_item_limit);
         return () => (is_mounted.current = false);
     }, []);
 
     React.useEffect(() => {
         setIsLoading(true);
         if (is_mounted.current) {
-            loadMoreItems(item_offset.current, general_store.list_item_limit);
+            loadMoreItems(item_offset.current, list_item_limit);
         }
     }, [is_buy]);
 
@@ -41,11 +39,11 @@ const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
                 p2p_advert_list: 1,
                 counterparty_type: is_buy ? 'buy' : 'sell',
                 offset: start_idx,
-                limit: general_store.list_item_limit,
+                limit: list_item_limit,
             }).then(response => {
                 if (is_mounted.current) {
                     if (!response.error) {
-                        setHasMoreItemsToLoad(response.length >= general_store.list_item_limit);
+                        setHasMoreItemsToLoad(response.length >= list_item_limit);
                         setItems(items.concat(response));
                         item_offset.current += response.length;
                     } else {

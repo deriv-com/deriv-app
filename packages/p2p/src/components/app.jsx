@@ -7,7 +7,6 @@ import { Dp2pProvider } from 'Components/context/dp2p-context';
 import ServerTime from 'Utils/server-time';
 import { init as WebsocketInit, subscribeWS, waitWS } from 'Utils/websocket';
 import { localize, setLanguage } from './i18next';
-// import , { orderToggleIndex } from './orders/order-info';
 import BuySell from './buy-sell/buy-sell.jsx';
 import MyAds from './my-ads/my-ads.jsx';
 import Orders from './orders/orders.jsx';
@@ -23,25 +22,19 @@ const App = props => {
     const { general_store } = useStores();
     const {
         className,
-        client,
         custom_strings,
         is_mobile,
         lang,
         order_id,
         poi_url,
         server_time,
-        setNotificationCount,
         setOrderId,
         should_show_verification,
         websocket_api,
     } = props;
-    const is_mounted = React.useRef(false);
+    general_store.setAppProps(props);
 
     React.useEffect(() => {
-        general_store.setAppProps(props);
-        general_store.setClient(client);
-        is_mounted.current = true;
-
         setLanguage(lang);
         WebsocketInit(websocket_api, general_store.client.local_currency_config.decimal_places);
         ServerTime.init(server_time);
@@ -74,7 +67,6 @@ const App = props => {
             };
         });
         return () => {
-            is_mounted.current = false;
             Object.keys(general_store.ws_subscriptions).forEach(key =>
                 general_store.ws_subscriptions[key].unsubscribe()
             );
@@ -113,7 +105,7 @@ const App = props => {
                 is_listed: general_store.is_listed,
                 is_mobile,
                 is_restricted: general_store.is_restricted,
-                list_item_limit,
+                list_item_limit: general_store.list_item_limit,
                 local_currency_config: general_store.client.local_currency_config,
                 nickname: general_store.nickname,
                 nickname_error: general_store.nickname_error,

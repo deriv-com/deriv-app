@@ -3,12 +3,10 @@ import { Icon, Checklist } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { Localize } from 'Components/i18next';
-import { useStores } from '../../../stores';
 import './verification.scss';
 
 const Verification = () => {
-    const { general_store } = useStores();
-    const { nickname, toggleNicknamePopup, poi_status, poi_url } = React.useContext(Dp2pContext);
+    const { nickname, toggleNicknamePopup, is_advertiser, poi_status, poi_url } = React.useContext(Dp2pContext);
 
     const poiStatusText = status => {
         switch (status) {
@@ -45,7 +43,7 @@ const Verification = () => {
         },
     ];
 
-    if (!general_store.is_advertiser && poi_status === 'verified' && nickname) {
+    if (!is_advertiser && poi_status === 'verified' && nickname) {
         return (
             <div className='p2p-blocked-user'>
                 <Localize i18n_default_text='Your P2P cashier has been blocked. Please contact customer support.' />

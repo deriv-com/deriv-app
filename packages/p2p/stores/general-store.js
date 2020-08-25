@@ -1,7 +1,7 @@
 import { observable, action } from 'mobx';
 import OrderInfo, { orderToggleIndex } from '../src/components/orders/order-info.js';
-import {isProduction} from '@deriv/shared';
-import {requestWS, getModifiedP2POrderList }  from 'Utils/websocket';
+import { getPropertyValue, isEmptyObject, isProduction } from '@deriv/shared';
+import { init as getModifiedP2POrderList, requestWS,  subscribeWS } from 'Utils/websocket.js';
 
 export default class GeneralStore {
     @observable active_index = 0;
@@ -10,8 +10,8 @@ export default class GeneralStore {
     @observable chat_info = {
         app_id: '',
         user_id: '',
-        token: '',
-    }
+        token: ''
+    };
     @observable inactive_notification_count = 0;
     @observable is_advertiser = false;
     @observable is_listed = false;
@@ -34,265 +34,35 @@ export default class GeneralStore {
         // my_profile: 3,
     };
     props = {};
-    ws_subscriptions = {}
+    ws_subscriptions = {};
 
     get client(){
         return this.props?.client || {};
     }
 
     @action.bound
-    setActiveIndex(active_index) {
-        this.active_index = active_index;
-    }
-
-    setActiveNotificationCount(active_notification_count) {
-        this.active_notification_count = active_notification_count;
-    }
-
-    @action.bound
-    setAdvertiserId(advertiser_id){
-        this.advertiser_id = advertiser_id;
-    }
-
-    @action.bound
-    setChatInfoState(chat_info){
-        this.chat_info = chat_info;
-    }
-
-    @action.bound
-    createAdvertiser(name){
-        ws_subscriptions.advertiser_subscription = subscribeWS(
+    createAdvertiser(name) {
+        this.ws_subscriptions.advertiser_subscription = subscribeWS(
             { p2p_advertiser_create: 1, name, subscribe: 1 },
-            [setCreateAdvertiser]
+            [this.setCreateAdvertiser]
         );
     };
 
-    @action.bound
-    setInactiveNotificationCount(inactive_notification_count) {
-        this.inactive_notification_count = inactive_notification_count;
-    }
+    getLocalStorageSettings = () => JSON.parse(localStorage.getItem('p2p_settings') || '{}');
 
-    @action.bound
-    setIsAdvertiser(is_advertiser) {
-        this.is_advertiser = is_advertiser;
-    }
-
-    @action.bound
-    setIsListed(is_listed) {
-        this.is_listed = is_listed;
-    }
-
-    @action.bound
-    setIsRestricted(is_restricted) {
-        this.is_restricted = is_restricted;
-    }
-
-    @action.bound
-    setNickname(nickname){
-        this.nickname = nickname;
-    }
-
-    @action.bound
-    setNicknameError(nickname_error) {
-        this.nickname_error = nickname_error;
-    }
-
-    @action.bound
-    setNotificationCount(notification_count) {
-        this.notification_count = notification_count;
-    }
-
-    @action.bound
-    setOrderOffset(order_offset) {
-        this.order_offset = order_offset;
-    }
-
-    @action.bound
-    setOrderTableType(order_table_type){
-        this.order_table_type = order_table_type;
-    }
-
-    @action.bound
-    setOrders(orders){
-        this.orders = orders;
-    }
-
-    @action.bound
-    setParameters(parameters){
-        this.parameters = parameters;
-    }
-
-    @action.bound
-    setPoiStatus(poi_status) {
-        this.poi_status = poi_status;
-    }
-
-    @action.bound
-    setShowPopup(show_popup) {
-        this.show_popup = show_popup;
-    }
-
-    @action.bound
-    handleTabClick(idx) {
-        this.setActiveIndex(idx);
-        this.setParameters(null);
-    };
-
-    @action.bound
-    onNicknamePopupClose(){
-        this.setShowPopup(false);
-    };
-
-    @action.bound
-    redirectTo(path_name, params = null){
-        this.setActiveIndex(this.path[path_name]);
-        this.setParameters(params);
-    };
-
-    @action.bound
-    setChatInfo(user_id, token){
-        const chat_info = {
-            app_id: isProduction() ? '1465991C-5D64-4C88-8BD9-B0D7A6455E69' : '4E259BA5-C383-4624-89A6-8365E06D9D39',
-            user_id,
-            token,
-        };
-
-        if (!chat_info.token) {
-            requestWS({ service_token: 1, service: 'sendbird' }).then(response => {
-                chat_info.token = response.service_token.sendbird.token;
-                this.setChatInfoState(chat_info);
-            });
-        }
+    getLocalStorageSettingsForLoginId = () => {
+        const local_storage_settings = this.getLocalStorageSettings()[this.client.loginid] 
         
-    };
-
-    @action.bound
-    setChatInfoUsingAdvertiserInfo (response){
-        const { p2p_advertiser_info } = response;
-        if (response.error) {
-            ws_subscriptions.current.advertiser_subscription.unsubscribe();
-            return;
-        }
-        const user_id = getPropertyValue(p2p_advertiser_info, ['chat_user_id']);
-        const token = getPropertyValue(p2p_advertiser_info, ['chat_token']);
-
-        setChatInfo(user_id, token);
-    };
-
-    @action.bound
-    setCreateAdvertiser (response) {
-        const { p2p_advertiser_create } = response;
-
-        if (response.error) {
-            this.setNicknameError(response.error.message);
+        if (isEmptyObject(local_storage_settings)) {
+            return { is_cached: false, notifications: [] };
         } else {
-            this.setAdvertiserId(p2p_advertiser_create.id);
-            this.setIsAdvertiser(!!p2p_advertiser_create.is_approved);
-            this.setNickname(p2p_advertiser_create.name);
-            this.setNicknameError(undefined);
-            this.setChatInfo(p2p_advertiser_create.chat_user_id, p2p_advertiser_create.chat_token);
-            this.toggleNicknamePopup();
+            return local_storage_settings;
         }
-    };
-
-    @action.bound
-    setP2pOrderList = order_response => {
-        if (order_response.error) {
-            ws_subscriptions.order_list_subscription.unsubscribe();
-            return;
-        }
-        const { p2p_order_list } = order_response;
-
-        if (p2p_order_list) {
-            const { list } = p2p_order_list;
-            // it's an array of orders from p2p_order_list
-            this.handleNotifications(orders, list);
-            this.setOrderOffset(list.length);
-            this.setOrders(getModifiedP2POrderList(list));
-        } else {
-            // it's a single order from p2p_order_info
-            const idx_order_to_update = orders.findIndex(order => order.id === order_response.id);
-            const updated_orders = [...orders];
-            // if it's a new order, add it to the top of the list
-            if (idx_order_to_update < 0) {
-                updated_orders.unshift(order_response);
-            } else {
-                // otherwise, update the correct order
-                updated_orders[idx_order_to_update] = order_response;
-            }
-            // trigger re-rendering by setting orders again
-            this.handleNotifications(orders, updated_orders);
-            this.setOrderOffset(updated_orders.length);
-            this.setOrders(updated_orders);
-        }
-    };
-
-    toggleNicknamePopup(){
-        this.setShowPopup(!this.show_popup)
     }
 
     @action.bound
-    updateAdvertiserInfo (response) {
-        const { p2p_advertiser_info } = response;
-        if (!response.error) {
-            this.setAdvertiserId(p2p_advertiser_info.id);
-            this.setIsAdvertiser(!!p2p_advertiser_info.is_approved);
-            this.setIsListed(p2p_advertiser_info.is_listed === 1);
-            this.setNickname(p2p_advertiser_info.name);
-        } else {
-            this.ws_subscriptions.advertiser_subscription.unsubscribe();
-
-            if (response.error.code === 'RestrictedCountry') {
-                this.setIsRestricted(true);
-            } else if (response.error.code === 'AdvertiserNotFound') {
-                this.setIsAdvertiser(false);
-            }
-        }
-
-        if (!this.is_advertiser) {
-            requestWS({ get_account_status: 1 }).then(account_response => {
-                if (is_mounted.current && !account_response.error) {
-                    const { get_account_status } = account_response;
-                    const { authentication } = get_account_status;
-                    const { identity } = authentication;
-
-                    this.setPoiStatus(identity.status);
-                }
-            });
-        }
-    };
-
-    @action.bound
-    updateP2pNotifications (notifications) {
-        const unseen_notifications = notifications.filter(notification => notification.is_seen === false);
-        const notification_count = unseen_notifications.length;
-        const active_notification_count = unseen_notifications.filter(notification => notification.is_active).length;
-        const inactive_notification_count = notification_count - active_notification_count;
-        const user_settings = this.getLocalStorageSettingsForLoginId();
-        user_settings.is_cached = true;
-        user_settings.notifications = notifications;
-
-        const p2p_settings = this.getLocalStorageSettings();
-        p2p_settings[loginid] = user_settings;
-
-        localStorage.setItem('p2p_settings', JSON.stringify(p2p_settings));
-
-        this.setNotificationCount(notification_count);
-        this.setActiveNotificationCount(active_notification_count);
-        this.setInactiveNotificationCount(inactive_notification_count);
-
-        if (typeof this.props?.setNotificationCount === 'function') {
-            this.props.setNotificationCount(notification_count);
-        }
-    };
-
-    setAppProps(props) {
-        this.props = props;
-    }
-
-    handleNotifications = (old_orders, new_orders) => {
+    handleNotifications(old_orders, new_orders) {
         const { is_cached, notifications } = this.getLocalStorageSettingsForLoginId();
-
         new_orders.forEach(new_order => {
             const order_info = new OrderInfo(new_order);
             const notification = notifications.find(n => n.order_id === new_order.id);
@@ -337,10 +107,246 @@ export default class GeneralStore {
         this.updateP2pNotifications(notifications);
     };
 
-    getLocalStorageSettingsForLoginId = () => {
-        this.getLocalStorageSettings()[loginid] || { is_cached: false, notifications: [] };
+    @action.bound
+    handleTabClick(idx) {
+        this.setActiveIndex(idx);
+        this.setParameters(null);
+    };
+
+    @action.bound
+    onNicknamePopupClose() {
+        this.setShowPopup(false);
+    };
+
+    @action.bound
+    redirectTo(path_name, params = null) {
+        this.setActiveIndex(this.path[path_name]);
+        this.setParameters(params);
+    };
+
+    @action.bound
+    setActiveIndex(active_index) {
+        this.active_index = active_index;
     }
 
-    
-    getLocalStorageSettings = () => JSON.parse(localStorage.getItem('p2p_settings') || '{}');
+    setActiveNotificationCount(active_notification_count) {
+        this.active_notification_count = active_notification_count;
+    }
+
+    @action.bound
+    setAdvertiserId(advertiser_id) {
+        this.advertiser_id = advertiser_id;
+    }
+
+    setAppProps(props) {
+        this.props = props;
+    }
+
+    @action.bound
+    setChatInfo(user_id, token) {
+        const chat_info = {
+            app_id: isProduction() ? '1465991C-5D64-4C88-8BD9-B0D7A6455E69' : '4E259BA5-C383-4624-89A6-8365E06D9D39',
+            user_id,
+            token,
+        };
+
+        if (!chat_info.token) {
+            requestWS({ service_token: 1, service: 'sendbird' }).then(response => {
+                chat_info.token = response.service_token.sendbird.token;
+                this.setChatInfoState(chat_info);
+            });
+        }
+        
+    };
+
+    @action.bound
+    setChatInfoState(chat_info) {
+        this.chat_info = chat_info;
+    }
+
+    @action.bound
+    setChatInfoUsingAdvertiserInfo(response) {
+        const { p2p_advertiser_info } = response;
+        if (response.error) {
+            this.ws_subscriptions.advertiser_subscription.unsubscribe();
+            return;
+        }
+        const user_id = getPropertyValue(p2p_advertiser_info, ['chat_user_id']);
+        const token = getPropertyValue(p2p_advertiser_info, ['chat_token']);
+
+        this.setChatInfo(user_id, token);
+    };
+
+    @action.bound
+    setCreateAdvertiser(response) {
+        const { p2p_advertiser_create } = response;
+
+        if (response.error) {
+            this.setNicknameError(response.error.message);
+        } else {
+            this.setAdvertiserId(p2p_advertiser_create.id);
+            this.setIsAdvertiser(!!p2p_advertiser_create.is_approved);
+            this.setNickname(p2p_advertiser_create.name);
+            this.setNicknameError(undefined);
+            this.setChatInfo(p2p_advertiser_create.chat_user_id, p2p_advertiser_create.chat_token);
+            this.toggleNicknamePopup();
+        }
+    };
+
+    @action.bound
+    setInactiveNotificationCount(inactive_notification_count) {
+        this.inactive_notification_count = inactive_notification_count;
+    }
+
+    @action.bound
+    setIsAdvertiser(is_advertiser) {
+        this.is_advertiser = is_advertiser;
+    }
+
+    @action.bound
+    setIsListed(is_listed) {
+        this.is_listed = is_listed;
+    }
+
+    @action.bound
+    setIsRestricted(is_restricted) {
+        this.is_restricted = is_restricted;
+    }
+
+    @action.bound
+    setNickname(nickname) {
+        this.nickname = nickname;
+    }
+
+    @action.bound
+    setNicknameError(nickname_error) {
+        this.nickname_error = nickname_error;
+    }
+
+    @action.bound
+    setNotificationCount(notification_count) {
+        this.notification_count = notification_count;
+    }
+
+    @action.bound
+    setOrderOffset(order_offset) {
+        this.order_offset = order_offset;
+    }
+
+    @action.bound
+    setOrderTableType(order_table_type) {
+        this.order_table_type = order_table_type;
+    }
+
+    @action.bound
+    setOrders(orders) {
+        this.orders = orders;
+    }
+
+    @action.bound
+    setP2pOrderList(order_response) {
+        if (order_response.error) {
+            this.ws_subscriptions.order_list_subscription.unsubscribe();
+            return;
+        }
+        const { p2p_order_list } = order_response;
+
+        if (p2p_order_list) {
+            const { list } = p2p_order_list;
+            // it's an array of orders from p2p_order_list
+            this.handleNotifications(this.orders, list);
+            this.setOrderOffset(list.length);
+            this.setOrders(getModifiedP2POrderList(list));
+        } else {
+            // it's a single order from p2p_order_info
+            const idx_order_to_update = orders.findIndex(order => order.id === order_response.id);
+            const updated_orders = [...orders];
+            // if it's a new order, add it to the top of the list
+            if (idx_order_to_update < 0) {
+                updated_orders.unshift(order_response);
+            } else {
+                // otherwise, update the correct order
+                updated_orders[idx_order_to_update] = order_response;
+            }
+            // trigger re-rendering by setting orders again
+            this.handleNotifications(orders, updated_orders);
+            this.setOrderOffset(updated_orders.length);
+            this.setOrders(updated_orders);
+        }
+    };
+
+    @action.bound
+    setParameters(parameters) {
+        this.parameters = parameters;
+    }
+
+    @action.bound
+    setPoiStatus(poi_status) {
+        this.poi_status = poi_status;
+    }
+
+    @action.bound
+    setShowPopup(show_popup) {
+        this.show_popup = show_popup;
+    }
+
+    toggleNicknamePopup() {
+        this.setShowPopup(!this.show_popup)
+    }
+
+    @action.bound
+    updateAdvertiserInfo(response) {
+        const { p2p_advertiser_info } = response;
+
+        if (!response.error) {
+            this.setAdvertiserId(p2p_advertiser_info.id);
+            this.setIsAdvertiser(!!p2p_advertiser_info.is_approved);
+            this.setIsListed(p2p_advertiser_info.is_listed === 1);
+            this.setNickname(p2p_advertiser_info.name);
+        } else {
+            this.ws_subscriptions.advertiser_subscription.unsubscribe();
+
+            if (response.error.code === 'RestrictedCountry') {
+                this.setIsRestricted(true);
+            } else if (response.error.code === 'AdvertiserNotFound') {
+                this.setIsAdvertiser(false);
+            }
+        }
+
+        if (!this.is_advertiser) {
+            requestWS({ get_account_status: 1 }).then(account_response => {
+                if (is_mounted.current && !account_response.error) {
+                    const { get_account_status } = account_response;
+                    const { authentication } = get_account_status;
+                    const { identity } = authentication;
+
+                    this.setPoiStatus(identity.status);
+                }
+            });
+        }
+    };
+
+    @action.bound
+    updateP2pNotifications(notifications) {
+        const unseen_notifications = notifications.filter(notification => notification.is_seen === false);
+        const notification_count = unseen_notifications.length;
+        const active_notification_count = unseen_notifications.filter(notification => notification.is_active).length;
+        const inactive_notification_count = notification_count - active_notification_count;
+        const user_settings = this.getLocalStorageSettingsForLoginId();
+        user_settings.is_cached = true;
+        user_settings.notifications = notifications;
+
+        const p2p_settings = this.getLocalStorageSettings();
+        p2p_settings[this.client.loginid] = user_settings;
+
+        localStorage.setItem('p2p_settings', JSON.stringify(p2p_settings));
+
+        this.setNotificationCount(notification_count);
+        this.setActiveNotificationCount(active_notification_count);
+        this.setInactiveNotificationCount(inactive_notification_count);
+
+        if (typeof this.props?.setNotificationCount === 'function') {
+            this.props.setNotificationCount(notification_count);
+        }
+    };  
 }

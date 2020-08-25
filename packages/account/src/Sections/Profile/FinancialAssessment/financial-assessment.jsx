@@ -158,28 +158,37 @@ class FinancialAssessment extends React.Component {
             WS.authorized.storage.getFinancialAssessment().then((data) => {
                 // TODO: Find a better solution for handling no-op instead of using is_mounted flags
                 if (this.is_mounted) {
-                    const mt5_session_storage = sessionStorage.getItem('open_mt5_account_type');
-                    const has_mt5_financial_session = /labuan_financial_stp|labuan_advanced/.test(mt5_session_storage);
-                    const has_trading_experience =
-                        (has_mt5_financial_session || this.props.is_financial_account) &&
-                        this.props.is_trading_experience_incomplete;
-                    const needs_financial_assessment =
-                        this.props.is_financial_information_incomplete ||
-                        this.props.is_high_risk ||
-                        has_trading_experience;
+                    WS.wait('get_account_status').then(() => {
+                        const mt5_session_storage = sessionStorage.getItem('open_mt5_account_type');
+                        const has_mt5_financial_session = /labuan_financial_stp|labuan_advanced/.test(
+                            mt5_session_storage
+                        );
+                        const has_trading_experience =
+                            (has_mt5_financial_session ||
+                                this.props.is_financial_account ||
+                                this.props.is_trading_experience_incomplete) &&
+                            !this.props.is_svg;
 
-                    this.setState({ has_trading_experience });
+                        const needs_financial_assessment =
+                            this.props.is_financial_information_incomplete ||
+                            this.props.is_high_risk ||
+                            has_trading_experience ||
+                            this.props.is_financial_account;
+                        this.setState({ has_trading_experience });
 
-                    if (data.error) {
-                        this.setState({ api_initial_load_error: data.error.message });
-                        return;
-                    } else if (!needs_financial_assessment) {
-                        // Additional layer of error handling if non high risk user somehow manages to reach FA page, need to define error to prevent app crash
-                        this.setState({
-                            api_initial_load_error: localize('Error: Could not load financial assessment information'),
-                        });
-                    }
-                    this.setState({ ...data.get_financial_assessment, is_loading: false });
+                        if (data.error) {
+                            this.setState({ api_initial_load_error: data.error.message });
+                            return;
+                        } else if (!needs_financial_assessment) {
+                            // Additional layer of error handling if non high risk user somehow manages to reach FA page, need to define error to prevent app crash
+                            this.setState({
+                                api_initial_load_error: localize(
+                                    'Error: Could not load financial assessment information'
+                                ),
+                            });
+                        }
+                        this.setState({ ...data.get_financial_assessment, is_loading: false });
+                    });
                 }
             });
         }
@@ -894,6 +903,7 @@ export default connect(({ client, ui }) => ({
     is_financial_account: client.is_financial_account,
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,
     is_financial_information_incomplete: client.is_financial_information_incomplete,
+    is_svg: client.is_svg,
     removeNotificationMessage: ui.removeNotificationMessage,
     removeNotificationByKey: ui.removeNotificationByKey,
 }))(FinancialAssessment);

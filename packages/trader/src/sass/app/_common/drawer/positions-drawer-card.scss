@@ -278,7 +278,7 @@
         align-items: center;
         justify-content: center;
         transition: transform 0.25s ease, opacity 0.25s linear;
-        padding-top: 8px;
+        padding: 8px;
         border-top: 1px solid var(--general-section-1);
 
         &--enter-done {

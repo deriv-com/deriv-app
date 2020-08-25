@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import Shortcode from 'Modules/Reports/Helpers/shortcode';
+import { isHighLow } from '@deriv/shared';
 import { getContractTypesConfig } from 'Stores/Modules/Trading/Constants/contract';
 import { isCallPut } from 'Stores/Modules/Contract/Helpers/contract-type';
 
@@ -39,7 +39,7 @@ const digitTypeMap = contract_info => ({
 
 export const filterByContractType = ({ contract_type, shortcode }, trade_contract_type) => {
     const is_call_put = isCallPut(trade_contract_type);
-    const is_high_low = Shortcode.isHighLow({ shortcode });
+    const is_high_low = isHighLow({ shortcode });
     const trade_types = is_call_put
         ? ['CALL', 'CALLE', 'PUT', 'PUTE']
         : getContractTypesConfig()[trade_contract_type]?.trade_types;

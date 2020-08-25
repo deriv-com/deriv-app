@@ -1,14 +1,14 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { ContractCard, ContractTypeCell } from '@deriv/components';
+import { ContractCard, ContractTypeCell, ProgressSliderMobile } from '@deriv/components';
 import { getContractPath, isMultiplierContract } from '@deriv/shared';
 import { BinaryLink } from 'App/Components/Routes';
 import { connect } from 'Stores/connect';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
 // import {ContractTypeCell} from './contract-type-cell.jsx';
-import ProgressSliderMobile from './ProgressSliderMobile';
+// import ProgressSliderMobile from './ProgressSliderMobile';
 import ResultMobile from './result-mobile.jsx';
 import CardFooter from './PositionsDrawerCard/positions-drawer-card-footer.jsx';
 

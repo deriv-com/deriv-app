@@ -5,7 +5,6 @@ import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
 import { getEndTime } from 'Stores/Modules/Contract/Helpers/logic';
 import CardFooter from './contract-drawer-card-footer.jsx';
 import { SwipeableContractDrawer } from './swipeable-components.jsx';
-import CardFooter from './contract-drawer-card-footer.jsx';
 
 const ContractDrawerCard = ({
     contract_info,

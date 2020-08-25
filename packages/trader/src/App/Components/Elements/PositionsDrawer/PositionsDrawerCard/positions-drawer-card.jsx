@@ -49,6 +49,7 @@ const PositionsDrawerCard = ({
             getContractPath={getContractPath}
             getContractTypeDisplay={getContractTypeDisplay}
             is_link_disabled={is_link_disabled}
+            is_multiplier={is_multiplier}
             is_mobile={is_mobile}
             is_positions={true}
             is_unsupported={is_unsupported}

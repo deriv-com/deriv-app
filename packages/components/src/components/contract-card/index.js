@@ -1,6 +1,6 @@
 import ContractCard from './contract-card.jsx';
-import ContractTypeCell from './contract-card-items/contract-type-cell';
+import TypeCell from './contract-card-items/contract-type-cell';
 import './contract-card.scss';
 
-export const ContractTypeCell = ContractTypeCell;
+export const ContractTypeCell = TypeCell;
 export default ContractCard;

@@ -1005,7 +1005,7 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     onMount() {
-        if (this.should_skip_prepost_lifecycle) {
+        if (this.is_trade_component_mounted && this.should_skip_prepost_lifecycle) {
             return;
         }
 

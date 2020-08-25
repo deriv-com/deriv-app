@@ -37,6 +37,7 @@ const CancelDeal = ({
                         alignment='left'
                         classNameBubble='trade-container__popover'
                         is_bubble_hover_enabled
+                        should_disable_pointer_events={false}
                         margin={2}
                         message={
                             <PopoverMessageCheckbox

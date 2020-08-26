@@ -1,6 +1,8 @@
 /** @define positions-modal-card; weak */
 
 .positions-modal-card {
+    $positions-modal-card: &;
+
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -233,6 +235,22 @@
         align-items: center;
         font-weight: bold;
         font-size: 1.2em;
+    }
+    &--multiplier {
+        .positions-drawer-card {
+            &__grid-items {
+                grid-template-columns: 1fr 1fr 1fr;
+                padding: 1.2rem 0rem;
+            }
+            &__deal-cancel-fee,
+            &__buy-price,
+            &__stop-loss {
+                order: 1;
+            }
+        }
+        .positions-drawer-card__sell-button {
+            border-top: 0rem;
+        }
     }
 }
 

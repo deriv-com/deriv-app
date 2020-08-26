@@ -23,6 +23,7 @@ const BriefModal = ({
             disableApp={disableApp}
             has_close_icon={false}
             title={localize('Trading statistics report')}
+            portalId='modal_root_absolute'
             width='720px'
         >
             <Formik

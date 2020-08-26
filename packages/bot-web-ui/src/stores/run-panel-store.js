@@ -389,6 +389,7 @@ export default class RunPanelStore {
         const { journal, ui } = this.root_store;
         journal.journal_filters.push(message_types.ERROR);
         this.setActiveTabIndex(2);
+        this.toggleDrawer(true);
         ui.toggleNotificationsModal();
         ui.removeNotificationByKey({ key: 'bot_error' });
     }

@@ -93,10 +93,14 @@ export default class ActiveSymbols {
      * Retrieves all symbols and returns an array of symbol objects consisting of symbol and their linked market + submarket.
      * @returns {Array} Symbols and their submarkets + markets.
      */
-    getAllSymbols() {
+    getAllSymbols(should_be_open = false) {
         const all_symbols = [];
 
         Object.keys(this.processed_symbols).forEach(market_name => {
+            if (should_be_open && this.isMarketClosed(market_name)) {
+                return;
+            }
+
             const market = this.processed_symbols[market_name];
             const { submarkets } = market;
 

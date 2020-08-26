@@ -145,6 +145,14 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get is_svg() {
+        if (!this.landing_company_shortcode) {
+            return false;
+        }
+        return this.landing_company_shortcode === 'svg' || this.landing_company_shortcode === 'costarica';
+    }
+
+    @computed
     get reality_check_duration() {
         return this.has_reality_check ? this.reality_check_dur || +LocalStore.get('reality_check_duration') : undefined;
     }
@@ -676,7 +684,7 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     setLoginInformation(client_accounts, client_id) {
-        this.accounts = client_accounts;
+        this.setAccounts(client_accounts);
         localStorage.setItem(storage_key, JSON.stringify(client_accounts));
         LocalStore.set(storage_key, JSON.stringify(client_accounts));
         this.is_populating_account_list = false;
@@ -734,6 +742,7 @@ export default class ClientStore extends BaseStore {
                 runInAction(() => {
                     const new_account = Object.assign({}, this.accounts[this.loginid]);
                     new_account.currency = currency;
+                    if (!('balance' in new_account)) new_account.balance = 0;
                     this.accounts[this.loginid] = new_account;
                 });
                 localStorage.setItem(storage_key, JSON.stringify(this.accounts));

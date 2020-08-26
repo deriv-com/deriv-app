@@ -34,14 +34,13 @@ const ModalElement = ({
 
     const is_datepicker_visible = () => modal_root_ref.current.querySelectorAll('.dc-datepicker__picker').length;
     const validateClickOutside = e => {
-        const is_reality_check_visible = modal_root_ref.current.querySelectorAll('.dc-modal__container_reality-check')
-            .length;
+        const is_absolute_modal_visible = document.getElementById('modal_root_absolute')?.hasChildNodes();
         const path = e.path ?? e.composedPath?.();
         return (
             has_close_icon &&
             !is_datepicker_visible() &&
             is_open &&
-            !is_reality_check_visible &&
+            !is_absolute_modal_visible &&
             !(elements_to_ignore && path?.find(el => elements_to_ignore.includes(el)))
         );
     };

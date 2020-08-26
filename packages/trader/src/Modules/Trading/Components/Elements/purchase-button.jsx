@@ -111,6 +111,7 @@ const PurchaseButton = ({
                         currency={currency}
                         has_increased={has_increased}
                         is_loading={is_loading}
+                        is_multiplier={is_multiplier}
                         should_fade={should_fade}
                         proposal_info={info}
                         type={type}

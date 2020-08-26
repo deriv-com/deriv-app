@@ -1,5 +1,6 @@
 .details-form {
     display: grid;
+    align-content: start;
     @include desktop {
         padding: 0 0.4rem;
     }
@@ -8,6 +9,11 @@
         overflow-y: auto;
     }
 
+    &__scrollbar {
+        @include desktop {
+            max-height: none !important;
+        }
+    }
     &__elements {
         flex-grow: 1;
         margin: 1.2rem auto;
@@ -27,8 +33,11 @@
                 margin: 1.6rem auto;
             }
         }
+        .dc-autocomplete {
+            margin-bottom: 3.2rem;
+        }
         .dc-radio__input {
-            margin-bottom: 2.3rem;
+            margin-bottom: 2.4rem;
         }
         .dc-input {
             &__label {
@@ -124,15 +133,18 @@
         font-size: var(--text-size-xxs);
         line-height: 1.8rem;
         margin: 1.6rem auto;
+        width: 40%;
         color: var(--text-general);
         @include desktop {
-            width: 40%;
             display: flex;
             flex-direction: column;
         }
-
+        @include tablet {
+            width: 70%;
+        }
         @include mobile {
             text-align: left;
+            width: unset;
             margin: 0 2.4rem;
             line-height: 20px;
             color: var(--text-less-prominent);

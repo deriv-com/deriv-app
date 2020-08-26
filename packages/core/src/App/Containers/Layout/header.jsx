@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
-import { routes, isMobile, getDecimalPlaces } from '@deriv/shared';
+import { routes, isMobile, getDecimalPlaces, getPlatformHeader } from '@deriv/shared';
 
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
@@ -40,6 +40,8 @@ class Header extends React.Component {
             is_acc_switcher_disabled,
             is_app_disabled,
             is_dark_mode,
+            is_financial_account,
+            is_financial_information_incomplete,
             is_high_risk,
             is_logged_in,
             is_logging_in,
@@ -49,6 +51,8 @@ class Header extends React.Component {
             is_payment_agent_visible,
             is_payment_agent_transfer_visible,
             is_route_modal_on,
+            is_trading_experience_incomplete,
+            is_svg,
             is_virtual,
             disableApp,
             logoutClient,
@@ -90,11 +94,17 @@ class Header extends React.Component {
                                 logoutClient={logoutClient}
                                 is_dark_mode={is_dark_mode}
                                 is_high_risk={is_high_risk}
+                                is_financial_information_incomplete={is_financial_information_incomplete}
+                                is_financial_account={is_financial_account}
+                                is_trading_experience_incomplete={is_trading_experience_incomplete}
                                 is_logged_in={is_logged_in}
                                 is_p2p_visible={is_p2p_visible}
                                 is_payment_agent_transfer_visible={is_payment_agent_transfer_visible}
                                 is_payment_agent_visible={is_payment_agent_visible}
+                                is_svg={is_svg}
+                                is_virtual={is_virtual}
                                 toggleTheme={setDarkMode}
+                                platform_header={getPlatformHeader(app_routing_history)}
                                 platform_switcher={
                                     <PlatformSwitcher
                                         app_routing_history={app_routing_history}
@@ -191,14 +201,18 @@ export default connect(({ client, common, ui, modules }) => ({
     is_payment_agent_transfer_visible: modules.cashier.is_payment_agent_transfer_visible,
     balance: client.balance,
     currency: client.currency,
+    is_financial_account: client.is_financial_account,
+    is_financial_information_incomplete: client.is_financial_information_incomplete,
+    is_trading_experience_incomplete: client.is_trading_experience_incomplete,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
+    is_svg: client.is_svg,
     logoutClient: client.logout,
     is_virtual: client.is_virtual,
     enableApp: ui.enableApp,
     header_extension: ui.header_extension,
     is_acc_switcher_disabled: ui.is_account_switcher_disabled,
-    is_acc_switcher_on: ui.is_accounts_switcher_on,
+    is_acc_switcher_on: !!ui.is_accounts_switcher_on,
     is_dark_mode: ui.is_dark_mode_on,
     is_app_disabled: ui.is_app_disabled,
     is_high_risk: client.is_high_risk,

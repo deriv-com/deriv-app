@@ -288,6 +288,8 @@
             width: 100%;
             border: 0.8rem solid var(--general-section-1);
             min-height: 555px;
+            max-height: 555px;
+            overflow-y: scroll;
 
             .footer-actions {
                 position: relative;

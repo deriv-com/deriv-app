@@ -983,7 +983,7 @@ export default class CashierStore extends BaseStore {
             max: transfer_limit.max
                 ? Math.min(transfer_limit.max, balance || transfer_limit.max).toFixed(decimal_places) // in case balance is 0, just use transfer_limit.max
                 : balance,
-            min: transfer_limit.min ? transfer_limit.min.toFixed(decimal_places) : null,
+            min: transfer_limit.min ? (+transfer_limit.min).toFixed(decimal_places) : null,
         };
     }
 

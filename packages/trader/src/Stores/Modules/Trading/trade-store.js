@@ -275,7 +275,7 @@ export default class TradeStore extends BaseStore {
             return;
         } else if (!active_symbols || !active_symbols.length) {
             if (this.root_store.client.landing_company_shortcode !== 'maltainvest') {
-                showUnavailableLocationError(this.root_store.common.showError);
+                showUnavailableLocationError(this.root_store.common.showError, this.root_store.client.is_logged_in);
                 return;
             } else if (this.root_store.client.landing_company_shortcode === 'maltainvest') {
                 showDigitalOptionsUnavailableError(this.root_store.common.showError, {

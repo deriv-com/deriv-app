@@ -1,11 +1,10 @@
 import { flow } from 'mobx';
 import { localize } from '@deriv/translations';
-import { ClientBase } from '_common/base/client_base';
 import { redirectToLogin } from '_common/base/login';
 import { LocalStore } from '_common/storage';
 import { WS } from 'Services/ws-methods';
 
-export const showUnavailableLocationError = flow(function*(showError) {
+export const showUnavailableLocationError = flow(function*(showError, is_logged_in) {
     const website_status = yield WS.wait('website_status');
     const residence_list = yield WS.residenceList();
 
@@ -22,7 +21,7 @@ export const showUnavailableLocationError = flow(function*(showError) {
               })
             : localize('Sorry, this app is unavailable in your current location.'),
         localize('Log in'),
-        () => redirectToLogin(ClientBase.isLoggedIn()),
+        () => redirectToLogin(is_logged_in),
         false
     );
 });

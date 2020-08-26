@@ -46,7 +46,7 @@ const AppContents = ({
 
     React.useEffect(() => {
         checkDomain();
-    }, []);
+    });
 
     React.useEffect(() => {
         const allow_tracking = !is_eu_country || tracking_status === 'accepted';

@@ -1,6 +1,5 @@
 import { action, observable } from 'mobx';
 import { routes, isEmptyObject } from '@deriv/shared';
-
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import ContractStore from './contract-store';
@@ -34,22 +33,27 @@ export default class ContractReplayStore extends BaseStore {
     // Forget old proposal_open_contract stream on account switch from ErrorComponent
     should_forget_first = false;
 
-    subscribers = {};
-
     // -------------------
     // ----- Actions -----
     // -------------------
-    handleSubscribeProposalOpenContract = (contract_id, cb) => {
+    handleSubscribeProposalOpenContract = async (contract_id, cb) => {
+        // expired contracts are cached and we can get the poc response from local storage
+        const is_cached = await WS.storage.has({ proposal_open_contract: 1, contract_id });
+        if (is_cached) {
+            WS.storage.proposalOpenContract({ contract_id }).then(cb);
+            return;
+        }
+
         if (this.should_forget_first) {
             // TODO; don't forget all ever
-            WS.forgetAll('proposal_open_contract').then(() => {
-                this.should_forget_first = false;
-                WS.storage.proposalOpenContract({ contract_id }).then(cb);
-                this.subscribers[contract_id] = WS.subscribeProposalOpenContract(contract_id, cb);
-            });
-        } else {
-            WS.storage.proposalOpenContract({ contract_id }).then(cb);
-            this.subscribers[contract_id] = WS.subscribeProposalOpenContract(contract_id, cb);
+            await WS.forgetAll('proposal_open_contract');
+            this.should_forget_first = false;
+        }
+
+        // If the contract replay is opened from trade page, it should already have an ongoing subscription
+        // Subscription is created only when the contract replay page is opened directly
+        if (!this.root_store.modules.contract_trade.contracts_map[contract_id]) {
+            this.subscriber = WS.subscribeProposalOpenContract(contract_id, cb);
         }
     };
 
@@ -66,7 +70,11 @@ export default class ContractReplayStore extends BaseStore {
             this.contract_store = new ContractStore(this.root_store, { contract_id });
             this.subscribeProposalOpenContract();
             WS.storage.activeSymbols('brief');
-            WS.setOnReconnect(this.subscribeProposalOpenContract);
+            WS.setOnReconnect(() => {
+                if (!this.root_store.client.is_switching) {
+                    this.subscribeProposalOpenContract();
+                }
+            });
         }
     }
 
@@ -89,6 +97,8 @@ export default class ContractReplayStore extends BaseStore {
 
     @action.bound
     populateConfig(response) {
+        if (!this.switch_account_listener) return;
+
         if ('error' in response) {
             this.has_error = true;
             this.is_chart_loading = false;
@@ -121,7 +131,7 @@ export default class ContractReplayStore extends BaseStore {
         this.prev_indicative = new_indicative;
 
         // update the contract_store here passing contract_info
-        this.contract_store.populateConfig(this.contract_info, true);
+        this.contract_store.populateConfig(this.contract_info);
 
         const end_time = this.contract_store.end_time;
 
@@ -136,6 +146,10 @@ export default class ContractReplayStore extends BaseStore {
             } else {
                 this.is_static_chart = false;
             }
+        }
+
+        if (this.contract_info.is_sold) {
+            this.contract_store.cacheProposalOpenContractResponse(response);
         }
 
         this.is_chart_loading = false;
@@ -169,7 +183,6 @@ export default class ContractReplayStore extends BaseStore {
                         type: response.msg_type,
                         ...response.error,
                     });
-                    this.root_store.ui.toggleServicesErrorModal(true);
                 } else {
                     this.root_store.ui.addNotificationMessage(contractCancelled());
                 }
@@ -191,11 +204,10 @@ export default class ContractReplayStore extends BaseStore {
         if (response.error) {
             // If unable to sell due to error, give error via pop up if not in contract mode
             this.is_sell_requested = false;
-            this.root_store.common.services_error = {
+            this.root_store.common.setServicesError({
                 type: response.msg_type,
                 ...response.error,
-            };
-            this.root_store.ui.toggleServicesErrorModal(true);
+            });
         } else if (!response.error && response.sell) {
             this.is_sell_requested = false;
             // update contract store sell info after sell
@@ -209,10 +221,11 @@ export default class ContractReplayStore extends BaseStore {
         }
     }
 
-    forgetProposalOpenContract = contract_id => {
-        if (!(contract_id in this.subscribers)) return;
-        this.subscribers[contract_id].unsubscribe();
-        delete this.subscribers[contract_id];
+    forgetProposalOpenContract = () => {
+        if (this.subscriber) {
+            this.subscriber.unsubscribe();
+            delete this.subscriber;
+        }
     };
 
     @action.bound

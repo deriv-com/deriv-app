@@ -25,6 +25,7 @@ const Footer = ({
     is_app_disabled,
     is_eu,
     is_eu_enabled, // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
+    is_logged_in,
     is_route_modal_on,
     is_settings_modal_on,
     disableApp,
@@ -41,15 +42,12 @@ const Footer = ({
         <EndpointNote />
         <NetworkStatus />
         <ServerTime />
-        <div className='footer__links footer__links-extras'>
-            {/* <ToggleComplaintsPolicy landing_company_shortcode={landing_company_shortcode} /> */}
-        </div>
         <div className='footer__links'>
             <LiveChat />
             <FooterIconSeparator />
             <GoToDeriv />
             <ResponsibleTrading />
-            <AccountLimits />
+            {is_logged_in && <AccountLimits />}
             {is_eu_enabled && (
                 <RegulatoryInformation
                     standpoint={
@@ -96,6 +94,5 @@ export default withRouter(
         is_settings_modal_on: ui.is_settings_modal_on,
         disableApp: ui.disableApp,
         toggleSettingsModal: ui.toggleSettingsModal,
-        landing_company_shortcode: client.landing_company_shortcode,
     }))(Footer)
 );

@@ -231,18 +231,24 @@ export default class QuickStrategyStore {
             }
         });
 
-        const file_name = strategies[strategy_name].label;
-        const workspace = Blockly.derivWorkspace;
+        const file_name = strategies?.[strategy_name]?.label || localize('Unknown');
+        const { derivWorkspace: workspace } = Blockly;
+
         load({ block_string: Blockly.Xml.domToText(strategy_dom), file_name, workspace, from: save_types.UNSAVED });
 
         if (button === 'run') {
-            const trade_definition_block = workspace.getTradeDefinitionBlock();
+            workspace
+                .waitForBlockEvent({
+                    block_type: 'trade_definition',
+                    event_type: Blockly.Events.BLOCK_CREATE,
+                    timeout: 5000,
+                })
+                .then(() => {
+                    this.root_store.run_panel.onRunButtonClick();
+                });
+        }
 
-            workspace.waitForBlockEvent(trade_definition_block.id, Blockly.Events.BLOCK_CREATE).then(() => {
-                this.toggleStrategyModal();
-                this.root_store.run_panel.onRunButtonClick();
-            });
-        } else {
+        if (this.is_strategy_modal_open) {
             this.toggleStrategyModal();
         }
     }
@@ -250,7 +256,7 @@ export default class QuickStrategyStore {
     @action.bound
     async updateSymbolDropdown() {
         const { active_symbols } = ApiHelpers.instance;
-        const symbols = active_symbols.getAllSymbols();
+        const symbols = active_symbols.getAllSymbols(/* should_be_open */ true);
         const symbol_options = symbols.map(symbol => ({
             group: symbol.submarket_display,
             text: symbol.symbol_display,

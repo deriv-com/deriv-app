@@ -332,10 +332,12 @@ export default class CashierStore extends BaseStore {
             is_financial_information_incomplete,
             is_trading_experience_incomplete,
             account_status,
+            is_eu,
         } = this.root_store.client;
         if (!account_status.status) return false;
 
-        const need_authentication = this.config.deposit.error.is_ask_authentication || is_authentication_needed;
+        const need_authentication =
+            this.config.deposit.error.is_ask_authentication || (is_authentication_needed && is_eu);
         const need_financial_assessment =
             is_financial_account && (is_financial_information_incomplete || is_trading_experience_incomplete);
 

@@ -54,13 +54,15 @@ const address_details_config = ({ account_settings }) => {
             default_value: account_settings.address_postcode ?? '',
             rules: [
                 [
-                    'postcode',
+                    'length',
                     localize('Please enter a {{field_name}} under {{max_number}} characters.', {
                         field_name: localize('postal/ZIP code'),
                         max_number: 20,
                         interpolation: { escapeValue: false },
                     }),
+                    { min: 0, max: 20 },
                 ],
+                ['postcode', localize('Only letters, numbers, space, and hyphen are allowed.')],
             ],
         },
     };

@@ -31,17 +31,6 @@
         flex-direction: row;
         height: 100%;
 
-        &-extras:not(:empty) {
-            padding: 0 0.8rem;
-
-            &:before,
-            &:after {
-                content: '';
-                width: 1px;
-                height: 16px;
-                background: var(--general-section-1);
-            }
-        }
         &--left {
             margin-right: auto;
         }

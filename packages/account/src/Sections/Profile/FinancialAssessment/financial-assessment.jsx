@@ -17,15 +17,23 @@ import FormBody from 'Components/form-body';
 import FormSubHeader from 'Components/form-sub-header';
 import FormFooter from 'Components/form-footer';
 import {
-    account_turnover_list,
-    education_level_list,
-    employment_industry_list,
-    employment_status_list,
-    estimated_worth_list,
-    income_source_list,
-    net_income_list,
-    occupation_list,
-    source_of_wealth_list,
+    getAccountTurnoverList,
+    getEducationLevelList,
+    getEmploymentIndustryList,
+    getEmploymentStatusList,
+    getEstimatedWorthList,
+    getIncomeSourceList,
+    getNetIncomeList,
+    getOccupationList,
+    getSourceOfWealthList,
+    getBinaryOptionsTradingExperienceList,
+    getBinaryOptionsTradingFrequencyList,
+    getCfdTradingExperienceList,
+    getCfdTradingFrequencyList,
+    getForexTradingExperienceList,
+    getForexTradingFrequencyList,
+    getOtherInstrumentsTradingExperienceList,
+    getOtherInstrumentsTradingFrequencyList,
 } from './financial-information-list';
 
 const ConfirmationContent = ({ className }) => {
@@ -121,6 +129,7 @@ class FinancialAssessment extends React.Component {
     state = {
         is_loading: true,
         is_confirmation_visible: false,
+        has_trading_experience: false,
         show_form: true,
         income_source: '',
         employment_status: '',
@@ -131,6 +140,14 @@ class FinancialAssessment extends React.Component {
         net_income: '',
         estimated_worth: '',
         account_turnover: '',
+        binary_options_trading_experience: '',
+        binary_options_trading_frequency: '',
+        cfd_trading_experience: '',
+        cfd_trading_frequency: '',
+        forex_trading_experience: '',
+        forex_trading_frequency: '',
+        other_instruments_trading_experience: '',
+        other_instruments_trading_frequency: '',
     };
 
     componentDidMount() {
@@ -141,20 +158,37 @@ class FinancialAssessment extends React.Component {
             WS.authorized.storage.getFinancialAssessment().then((data) => {
                 // TODO: Find a better solution for handling no-op instead of using is_mounted flags
                 if (this.is_mounted) {
-                    const needs_financial_assessment =
-                        this.props.account_status.status.includes('financial_information_not_complete') ||
-                        this.props.is_high_risk;
+                    WS.wait('get_account_status').then(() => {
+                        const mt5_session_storage = sessionStorage.getItem('open_mt5_account_type');
+                        const has_mt5_financial_session = /labuan_financial_stp|labuan_advanced/.test(
+                            mt5_session_storage
+                        );
+                        const has_trading_experience =
+                            (has_mt5_financial_session ||
+                                this.props.is_financial_account ||
+                                this.props.is_trading_experience_incomplete) &&
+                            !this.props.is_svg;
 
-                    if (data.error) {
-                        this.setState({ api_initial_load_error: data.error.message });
-                        return;
-                    } else if (!needs_financial_assessment) {
-                        // Additional layer of error handling if non high risk user somehow manages to reach FA page, need to define error to prevent app crash
-                        this.setState({
-                            api_initial_load_error: localize('Error: Could not load financial assessment information'),
-                        });
-                    }
-                    this.setState({ ...data.get_financial_assessment, is_loading: false });
+                        const needs_financial_assessment =
+                            this.props.is_financial_information_incomplete ||
+                            this.props.is_high_risk ||
+                            has_trading_experience ||
+                            this.props.is_financial_account;
+                        this.setState({ has_trading_experience });
+
+                        if (data.error) {
+                            this.setState({ api_initial_load_error: data.error.message });
+                            return;
+                        } else if (!needs_financial_assessment) {
+                            // Additional layer of error handling if non high risk user somehow manages to reach FA page, need to define error to prevent app crash
+                            this.setState({
+                                api_initial_load_error: localize(
+                                    'Error: Could not load financial assessment information'
+                                ),
+                            });
+                        }
+                        this.setState({ ...data.get_financial_assessment, is_loading: false });
+                    });
                 }
             });
         }
@@ -216,30 +250,26 @@ class FinancialAssessment extends React.Component {
             net_income,
             estimated_worth,
             account_turnover,
+            binary_options_trading_experience,
+            binary_options_trading_frequency,
+            cfd_trading_experience,
+            cfd_trading_frequency,
+            forex_trading_experience,
+            forex_trading_frequency,
+            other_instruments_trading_experience,
+            other_instruments_trading_frequency,
             show_form,
             is_loading,
             is_btn_loading,
             is_submit_success,
             is_confirmation_visible,
+            has_trading_experience,
         } = this.state;
 
         if (is_loading) return <Loading is_fullscreen={false} className='account___intial-loader' />;
         if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
         if (this.props.is_virtual) return <DemoMessage />;
         if (isMobile() && is_submit_success) return <SubmittedPage />;
-        if (isMobile()) {
-            [
-                account_turnover_list,
-                education_level_list,
-                employment_industry_list,
-                employment_status_list,
-                estimated_worth_list,
-                income_source_list,
-                net_income_list,
-                occupation_list,
-                source_of_wealth_list,
-            ].forEach((list) => list.forEach((i) => (i.nativepicker_text = i.text)));
-        }
 
         return (
             <React.Fragment>
@@ -254,6 +284,16 @@ class FinancialAssessment extends React.Component {
                         net_income,
                         estimated_worth,
                         account_turnover,
+                        ...(has_trading_experience && {
+                            binary_options_trading_experience,
+                            binary_options_trading_frequency,
+                            cfd_trading_experience,
+                            cfd_trading_frequency,
+                            forex_trading_experience,
+                            forex_trading_frequency,
+                            other_instruments_trading_experience,
+                            other_instruments_trading_frequency,
+                        }),
                     }}
                     validate={this.validateFields}
                     onSubmit={this.onSubmit}
@@ -298,7 +338,7 @@ class FinancialAssessment extends React.Component {
                                                     placeholder={localize('Source of income')}
                                                     is_align_text_left
                                                     name='income_source'
-                                                    list={income_source_list}
+                                                    list={getIncomeSourceList()}
                                                     value={values.income_source}
                                                     onChange={handleChange}
                                                     handleBlur={handleBlur}
@@ -310,7 +350,7 @@ class FinancialAssessment extends React.Component {
                                                     placeholder={localize('Please select')}
                                                     name='income_source'
                                                     label={localize('Source of income')}
-                                                    list_items={income_source_list}
+                                                    list_items={getIncomeSourceList()}
                                                     value={values.income_source}
                                                     use_text={true}
                                                     error={touched.income_source && errors.income_source}
@@ -324,7 +364,7 @@ class FinancialAssessment extends React.Component {
                                                     placeholder={localize('Employment status')}
                                                     is_align_text_left
                                                     name='employment_status'
-                                                    list={employment_status_list}
+                                                    list={getEmploymentStatusList()}
                                                     value={values.employment_status}
                                                     onChange={handleChange}
                                                     handleBlur={handleBlur}
@@ -336,7 +376,7 @@ class FinancialAssessment extends React.Component {
                                                     placeholder={localize('Please select')}
                                                     name='employment_status'
                                                     label={localize('Employment status')}
-                                                    list_items={employment_status_list}
+                                                    list_items={getEmploymentStatusList()}
                                                     value={values.employment_status}
                                                     use_text={true}
                                                     error={touched.employment_status && errors.employment_status}
@@ -350,7 +390,7 @@ class FinancialAssessment extends React.Component {
                                                     placeholder={localize('Industry of employment')}
                                                     is_align_text_left
                                                     name='employment_industry'
-                                                    list={employment_industry_list}
+                                                    list={getEmploymentIndustryList()}
                                                     value={values.employment_industry}
                                                     onChange={handleChange}
                                                     handleBlur={handleBlur}
@@ -362,7 +402,7 @@ class FinancialAssessment extends React.Component {
                                                     placeholder={localize('Please select')}
                                                     name='employment_industry'
                                                     label={localize('Industry of employment')}
-                                                    list_items={employment_industry_list}
+                                                    list_items={getEmploymentIndustryList()}
                                                     value={values.employment_industry}
                                                     use_text={true}
                                                     error={touched.employment_industry && errors.employment_industry}
@@ -377,7 +417,7 @@ class FinancialAssessment extends React.Component {
                                                     placeholder={localize('Occupation')}
                                                     is_align_text_left
                                                     name='occupation'
-                                                    list={occupation_list}
+                                                    list={getOccupationList()}
                                                     value={values.occupation}
                                                     onChange={handleChange}
                                                     handleBlur={handleBlur}
@@ -389,7 +429,7 @@ class FinancialAssessment extends React.Component {
                                                     placeholder={localize('Please select')}
                                                     name='occupation'
                                                     label={localize('Occupation')}
-                                                    list_items={occupation_list}
+                                                    list_items={getOccupationList()}
                                                     value={values.occupation}
                                                     use_text={true}
                                                     error={touched.occupation && errors.occupation}
@@ -403,7 +443,7 @@ class FinancialAssessment extends React.Component {
                                                     placeholder={localize('Source of wealth')}
                                                     is_align_text_left
                                                     name='source_of_wealth'
-                                                    list={source_of_wealth_list}
+                                                    list={getSourceOfWealthList()}
                                                     value={values.source_of_wealth}
                                                     onChange={handleChange}
                                                     handleBlur={handleBlur}
@@ -415,7 +455,7 @@ class FinancialAssessment extends React.Component {
                                                     placeholder={localize('Please select')}
                                                     name='source_of_wealth'
                                                     label={localize('Source of wealth')}
-                                                    list_items={source_of_wealth_list}
+                                                    list_items={getSourceOfWealthList()}
                                                     value={values.source_of_wealth}
                                                     use_text={true}
                                                     error={touched.source_of_wealth && errors.source_of_wealth}
@@ -429,7 +469,7 @@ class FinancialAssessment extends React.Component {
                                                     placeholder={localize('Level of education')}
                                                     is_align_text_left
                                                     name='education_level'
-                                                    list={education_level_list}
+                                                    list={getEducationLevelList()}
                                                     value={values.education_level}
                                                     onChange={handleChange}
                                                     handleBlur={handleBlur}
@@ -441,7 +481,7 @@ class FinancialAssessment extends React.Component {
                                                     placeholder={localize('Please select')}
                                                     name='education_level'
                                                     label={localize('Level of education')}
-                                                    list_items={education_level_list}
+                                                    list_items={getEducationLevelList()}
                                                     value={values.education_level}
                                                     use_text={true}
                                                     error={touched.education_level && errors.education_level}
@@ -455,7 +495,7 @@ class FinancialAssessment extends React.Component {
                                                     placeholder={localize('Net annual income')}
                                                     is_align_text_left
                                                     name='net_income'
-                                                    list={net_income_list}
+                                                    list={getNetIncomeList()}
                                                     value={values.net_income}
                                                     onChange={handleChange}
                                                     handleBlur={handleBlur}
@@ -467,7 +507,7 @@ class FinancialAssessment extends React.Component {
                                                     placeholder={localize('Please select')}
                                                     name='net_income'
                                                     label={localize('Net annual income')}
-                                                    list_items={net_income_list}
+                                                    list_items={getNetIncomeList()}
                                                     value={values.net_income}
                                                     use_text={true}
                                                     error={touched.net_income && errors.net_income}
@@ -482,7 +522,7 @@ class FinancialAssessment extends React.Component {
                                                     is_alignment_top
                                                     is_align_text_left
                                                     name='estimated_worth'
-                                                    list={estimated_worth_list}
+                                                    list={getEstimatedWorthList()}
                                                     value={values.estimated_worth}
                                                     onChange={handleChange}
                                                     handleBlur={handleBlur}
@@ -494,7 +534,7 @@ class FinancialAssessment extends React.Component {
                                                     placeholder={localize('Please select')}
                                                     name='estimated_worth'
                                                     label={localize('Estimated net worth')}
-                                                    list_items={estimated_worth_list}
+                                                    list_items={getEstimatedWorthList()}
                                                     value={values.estimated_worth}
                                                     use_text={true}
                                                     error={touched.estimated_worth && errors.estimated_worth}
@@ -509,7 +549,7 @@ class FinancialAssessment extends React.Component {
                                                     is_alignment_top
                                                     is_align_text_left
                                                     name='account_turnover'
-                                                    list={account_turnover_list}
+                                                    list={getAccountTurnoverList()}
                                                     value={values.account_turnover}
                                                     onChange={handleChange}
                                                     handleBlur={handleBlur}
@@ -521,7 +561,7 @@ class FinancialAssessment extends React.Component {
                                                     placeholder={localize('Please select')}
                                                     name='account_turnover'
                                                     label={localize('Anticipated account turnover')}
-                                                    list_items={account_turnover_list}
+                                                    list_items={getAccountTurnoverList()}
                                                     value={values.account_turnover}
                                                     use_text={true}
                                                     error={touched.account_turnover && errors.account_turnover}
@@ -529,6 +569,276 @@ class FinancialAssessment extends React.Component {
                                                 />
                                             </MobileWrapper>
                                         </fieldset>
+                                        {/* Trading experience fieldset */}
+                                        {has_trading_experience && (
+                                            <>
+                                                <FormSubHeader
+                                                    title={localize('Trading experience')}
+                                                    subtitle={isDesktop() && `(${localize('All fields are required')})`}
+                                                />
+                                                <fieldset className='account-form__fieldset'>
+                                                    <DesktopWrapper>
+                                                        <Dropdown
+                                                            placeholder={localize('Forex trading experience')}
+                                                            is_align_text_left
+                                                            name='forex_trading_experience'
+                                                            list={getForexTradingExperienceList()}
+                                                            value={values.forex_trading_experience}
+                                                            onChange={handleChange}
+                                                            handleBlur={handleBlur}
+                                                            error={
+                                                                touched.forex_trading_experience &&
+                                                                errors.forex_trading_experience
+                                                            }
+                                                        />
+                                                    </DesktopWrapper>
+                                                    <MobileWrapper>
+                                                        <SelectNative
+                                                            placeholder={localize('Please select')}
+                                                            name='forex_trading_experience'
+                                                            label={localize('Forex trading experience')}
+                                                            list_items={getForexTradingExperienceList()}
+                                                            value={values.forex_trading_experience}
+                                                            use_text={true}
+                                                            error={
+                                                                touched.forex_trading_experience &&
+                                                                errors.forex_trading_experience
+                                                            }
+                                                            onChange={handleChange}
+                                                        />
+                                                    </MobileWrapper>
+                                                </fieldset>
+                                                <fieldset className='account-form__fieldset'>
+                                                    <DesktopWrapper>
+                                                        <Dropdown
+                                                            placeholder={localize('Forex trading frequency')}
+                                                            is_align_text_left
+                                                            name='forex_trading_frequency'
+                                                            list={getForexTradingFrequencyList()}
+                                                            value={values.forex_trading_frequency}
+                                                            onChange={handleChange}
+                                                            handleBlur={handleBlur}
+                                                            error={
+                                                                touched.forex_trading_frequency &&
+                                                                errors.forex_trading_frequency
+                                                            }
+                                                        />
+                                                    </DesktopWrapper>
+                                                    <MobileWrapper>
+                                                        <SelectNative
+                                                            placeholder={localize('Please select')}
+                                                            name='forex_trading_frequency'
+                                                            label={localize('Forex trading frequency')}
+                                                            list_items={getForexTradingFrequencyList()}
+                                                            value={values.forex_trading_frequency}
+                                                            use_text={true}
+                                                            error={
+                                                                touched.forex_trading_frequency &&
+                                                                errors.forex_trading_frequency
+                                                            }
+                                                            onChange={handleChange}
+                                                        />
+                                                    </MobileWrapper>
+                                                </fieldset>
+                                                <fieldset className='account-form__fieldset'>
+                                                    <DesktopWrapper>
+                                                        <Dropdown
+                                                            placeholder={localize('Binary options trading experience')}
+                                                            is_align_text_left
+                                                            name='binary_options_trading_experience'
+                                                            list={getBinaryOptionsTradingExperienceList()}
+                                                            value={values.binary_options_trading_experience}
+                                                            onChange={handleChange}
+                                                            handleBlur={handleBlur}
+                                                            error={
+                                                                touched.binary_options_trading_experience &&
+                                                                errors.binary_options_trading_experience
+                                                            }
+                                                        />
+                                                    </DesktopWrapper>
+                                                    <MobileWrapper>
+                                                        <SelectNative
+                                                            placeholder={localize('Please select')}
+                                                            name='binary_options_trading_experience'
+                                                            label={localize('Binary options trading experience')}
+                                                            list_items={getBinaryOptionsTradingExperienceList()}
+                                                            value={values.binary_options_trading_experience}
+                                                            use_text={true}
+                                                            error={
+                                                                touched.binary_options_trading_experience &&
+                                                                errors.binary_options_trading_experience
+                                                            }
+                                                            onChange={handleChange}
+                                                        />
+                                                    </MobileWrapper>
+                                                </fieldset>
+                                                <fieldset className='account-form__fieldset'>
+                                                    <DesktopWrapper>
+                                                        <Dropdown
+                                                            placeholder={localize('Binary options trading frequency')}
+                                                            is_align_text_left
+                                                            name='binary_options_trading_frequency'
+                                                            list={getBinaryOptionsTradingFrequencyList()}
+                                                            value={values.binary_options_trading_frequency}
+                                                            onChange={handleChange}
+                                                            handleBlur={handleBlur}
+                                                            error={
+                                                                touched.binary_options_trading_frequency &&
+                                                                errors.binary_options_trading_frequency
+                                                            }
+                                                        />
+                                                    </DesktopWrapper>
+                                                    <MobileWrapper>
+                                                        <SelectNative
+                                                            placeholder={localize('Please select')}
+                                                            name='binary_options_trading_frequency'
+                                                            label={localize('Binary options trading frequency')}
+                                                            list_items={getBinaryOptionsTradingFrequencyList()}
+                                                            value={values.binary_options_trading_frequency}
+                                                            use_text={true}
+                                                            error={
+                                                                touched.binary_options_trading_frequency &&
+                                                                errors.binary_options_trading_frequency
+                                                            }
+                                                            onChange={handleChange}
+                                                        />
+                                                    </MobileWrapper>
+                                                </fieldset>
+                                                <fieldset className='account-form__fieldset'>
+                                                    <DesktopWrapper>
+                                                        <Dropdown
+                                                            placeholder={localize('CFD trading experience')}
+                                                            is_align_text_left
+                                                            name='cfd_trading_experience'
+                                                            list={getCfdTradingExperienceList()}
+                                                            value={values.cfd_trading_experience}
+                                                            onChange={handleChange}
+                                                            handleBlur={handleBlur}
+                                                            error={
+                                                                touched.cfd_trading_experience &&
+                                                                errors.cfd_trading_experience
+                                                            }
+                                                        />
+                                                    </DesktopWrapper>
+                                                    <MobileWrapper>
+                                                        <SelectNative
+                                                            placeholder={localize('Please select')}
+                                                            name='cfd_trading_experience'
+                                                            label={localize('CFD trading experience')}
+                                                            list_items={getCfdTradingExperienceList()}
+                                                            value={values.cfd_trading_experience}
+                                                            use_text={true}
+                                                            error={
+                                                                touched.cfd_trading_experience &&
+                                                                errors.cfd_trading_experience
+                                                            }
+                                                            onChange={handleChange}
+                                                        />
+                                                    </MobileWrapper>
+                                                </fieldset>
+                                                <fieldset className='account-form__fieldset'>
+                                                    <DesktopWrapper>
+                                                        <Dropdown
+                                                            placeholder={localize('CFD trading frequency')}
+                                                            is_align_text_left
+                                                            name='cfd_trading_frequency'
+                                                            list={getCfdTradingFrequencyList()}
+                                                            value={values.cfd_trading_frequency}
+                                                            onChange={handleChange}
+                                                            handleBlur={handleBlur}
+                                                            error={
+                                                                touched.cfd_trading_frequency &&
+                                                                errors.cfd_trading_frequency
+                                                            }
+                                                        />
+                                                    </DesktopWrapper>
+                                                    <MobileWrapper>
+                                                        <SelectNative
+                                                            placeholder={localize('Please select')}
+                                                            name='cfd_trading_frequency'
+                                                            label={localize('CFD trading frequency')}
+                                                            list_items={getCfdTradingFrequencyList()}
+                                                            value={values.cfd_trading_frequency}
+                                                            use_text={true}
+                                                            error={
+                                                                touched.cfd_trading_frequency &&
+                                                                errors.cfd_trading_frequency
+                                                            }
+                                                            onChange={handleChange}
+                                                        />
+                                                    </MobileWrapper>
+                                                </fieldset>
+                                                <fieldset className='account-form__fieldset'>
+                                                    <DesktopWrapper>
+                                                        <Dropdown
+                                                            placeholder={localize(
+                                                                'Other trading instruments experience'
+                                                            )}
+                                                            is_align_text_left
+                                                            name='other_instruments_trading_experience'
+                                                            list={getOtherInstrumentsTradingExperienceList()}
+                                                            value={values.other_instruments_trading_experience}
+                                                            onChange={handleChange}
+                                                            handleBlur={handleBlur}
+                                                            error={
+                                                                touched.other_instruments_trading_experience &&
+                                                                errors.other_instruments_trading_experience
+                                                            }
+                                                        />
+                                                    </DesktopWrapper>
+                                                    <MobileWrapper>
+                                                        <SelectNative
+                                                            placeholder={localize('Please select')}
+                                                            name='other_instruments_trading_experience'
+                                                            label={localize('Other trading instruments experience')}
+                                                            list_items={getOtherInstrumentsTradingExperienceList()}
+                                                            value={values.other_instruments_trading_experience}
+                                                            use_text={true}
+                                                            error={
+                                                                touched.other_instruments_trading_experience &&
+                                                                errors.other_instruments_trading_experience
+                                                            }
+                                                            onChange={handleChange}
+                                                        />
+                                                    </MobileWrapper>
+                                                </fieldset>
+                                                <fieldset className='account-form__fieldset'>
+                                                    <DesktopWrapper>
+                                                        <Dropdown
+                                                            placeholder={localize(
+                                                                'Other trading instruments frequency'
+                                                            )}
+                                                            is_alignment_top
+                                                            is_align_text_left
+                                                            name='other_instruments_trading_frequency'
+                                                            list={getOtherInstrumentsTradingFrequencyList()}
+                                                            value={values.other_instruments_trading_frequency}
+                                                            onChange={handleChange}
+                                                            handleBlur={handleBlur}
+                                                            error={
+                                                                touched.other_instruments_trading_frequency &&
+                                                                errors.other_instruments_trading_frequency
+                                                            }
+                                                        />
+                                                    </DesktopWrapper>
+                                                    <MobileWrapper>
+                                                        <SelectNative
+                                                            placeholder={localize('Please select')}
+                                                            name='other_instruments_trading_frequency'
+                                                            label={localize('Other trading instruments frequency')}
+                                                            list_items={getOtherInstrumentsTradingFrequencyList()}
+                                                            value={values.other_instruments_trading_frequency}
+                                                            use_text={true}
+                                                            error={
+                                                                touched.other_instruments_trading_frequency &&
+                                                                errors.other_instruments_trading_frequency
+                                                            }
+                                                            onChange={handleChange}
+                                                        />
+                                                    </MobileWrapper>
+                                                </fieldset>
+                                            </>
+                                        )}
                                     </FormBody>
                                     <FormFooter>
                                         {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
@@ -590,6 +900,10 @@ export default connect(({ client, ui }) => ({
     account_status: client.account_status,
     is_virtual: client.is_virtual,
     is_high_risk: client.is_high_risk,
+    is_financial_account: client.is_financial_account,
+    is_trading_experience_incomplete: client.is_trading_experience_incomplete,
+    is_financial_information_incomplete: client.is_financial_information_incomplete,
+    is_svg: client.is_svg,
     removeNotificationMessage: ui.removeNotificationMessage,
     removeNotificationByKey: ui.removeNotificationByKey,
 }))(FinancialAssessment);

@@ -37,6 +37,7 @@ class App extends React.Component {
 
         this.ws_subscriptions = {};
         this.list_item_limit = 20;
+        this.is_active_tab = true;
         this.state = {
             active_index: 0,
             loginid: this.props.client.loginid,
@@ -113,6 +114,7 @@ class App extends React.Component {
 
     toggleNicknamePopup = () => {
         this.setState({ show_popup: !this.state.show_popup });
+        this.resetNicknameErrorState();
     };
 
     onNicknamePopupClose = () => {
@@ -138,6 +140,10 @@ class App extends React.Component {
             this.setChatInfo(p2p_advertiser_create.chat_user_id, p2p_advertiser_create.chat_token);
             this.toggleNicknamePopup();
         }
+    };
+
+    resetNicknameErrorState = () => {
+        this.setState({ nickname_error: undefined });
     };
 
     setIsAdvertiser = response => {
@@ -305,6 +311,7 @@ class App extends React.Component {
     };
 
     changeOrderToggle = value => {
+        this.is_active_tab = value === 'active';
         this.setState({ order_table_type: value });
     };
 
@@ -332,6 +339,7 @@ class App extends React.Component {
             order_id,
             setOrderId,
             should_show_verification,
+            is_dark_mode_on,
             is_mobile,
             poi_url,
         } = this.props;
@@ -354,6 +362,7 @@ class App extends React.Component {
                     local_currency_config,
                     residence,
                     advertiser_id,
+                    is_active_tab: this.is_active_tab,
                     is_advertiser: this.state.is_advertiser,
                     is_listed: this.state.is_listed,
                     setIsListed: is_listed => this.setState({ is_listed }),
@@ -361,6 +370,7 @@ class App extends React.Component {
                     nickname: this.state.nickname,
                     setNickname: nickname => this.setState({ nickname }),
                     setChatInfo: this.setChatInfo,
+                    is_dark_mode_on,
                     is_restricted,
                     email_domain: getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
                     list_item_limit: this.list_item_limit,
@@ -379,6 +389,7 @@ class App extends React.Component {
                     order_table_type,
                     changeOrderToggle: this.changeOrderToggle,
                     createAdvertiser: this.createAdvertiser.bind(this),
+                    resetNicknameErrorState: this.resetNicknameErrorState,
                     is_mobile,
                     poi_url,
                 }}

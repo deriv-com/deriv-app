@@ -1,15 +1,24 @@
 import { action, extendObservable, observable, toJS } from 'mobx';
+import { isEqualObject } from '@deriv/shared';
+import { WS } from 'Services/ws-methods';
 import { createChartMarkers } from './Helpers/chart-markers';
 import { getDigitInfo, isDigitContract } from './Helpers/digits';
-import { setLimitOrderBarriers } from './Helpers/limit-orders';
+import { setLimitOrderBarriers, getLimitOrder } from './Helpers/limit-orders';
 import { getChartConfig, getContractUpdateConfig, getDisplayStatus, getEndTime, isEnded } from './Helpers/logic';
 import { isMultiplierContract } from './Helpers/multiplier';
+import getValidationRules from './Constants/validation-rules';
+import BaseStore from '../../base-store';
 import { BARRIER_COLORS, BARRIER_LINE_STYLES } from '../SmartChart/Constants/barriers';
 import { isBarrierSupported } from '../SmartChart/Helpers/barriers';
 import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
 
-export default class ContractStore {
+export default class ContractStore extends BaseStore {
     constructor(root_store, { contract_id }) {
+        super({
+            root_store,
+            validation_rules: getValidationRules(),
+        });
+
         this.root_store = root_store;
         this.contract_id = contract_id;
     }
@@ -32,9 +41,12 @@ export default class ContractStore {
     @observable end_time = null;
 
     // Multiplier contract update config
-    @observable contract_update_config = observable.object({});
-    @observable.ref contract_update = observable.object({});
+    @observable contract_update_take_profit = '';
+    @observable contract_update_stop_loss = '';
+    @observable has_contract_update_take_profit = false;
+    @observable has_contract_update_stop_loss = false;
     @observable.ref contract_update_history = [];
+    contract_update_config = {};
 
     // ---- chart props
     @observable margin;
@@ -46,7 +58,7 @@ export default class ContractStore {
     is_ongoing_contract = false;
 
     @action.bound
-    populateConfig(contract_info, has_limit_order = false) {
+    populateConfig(contract_info) {
         const prev_contract_info = this.contract_info;
         this.contract_info = contract_info;
         this.end_time = getEndTime(this.contract_info);
@@ -69,18 +81,25 @@ export default class ContractStore {
             extendObservable(this.digits_info, getDigitInfo(this.digits_info, this.contract_info));
         }
 
-        this.is_multiplier_contract = isMultiplierContract(this.contract_info.contract_type);
-        if (this.is_multiplier_contract && !this.contract_update_config.has_contract_update && has_limit_order) {
+        const is_multiplier = isMultiplierContract(this.contract_info.contract_type);
+
+        if (is_multiplier && contract_info.contract_id && contract_info.limit_order) {
             this.populateContractUpdateConfig(this.contract_info);
-            this.contract_update_config.has_contract_update = true;
         }
     }
 
+    cacheProposalOpenContractResponse = response => {
+        const { contract_id } = response.proposal_open_contract;
+        WS.storage.set({ proposal_open_contract: 1, contract_id }, response);
+    };
+
     @action.bound
     populateContractUpdateConfig(response) {
-        this.contract_update_config = getContractUpdateConfig(response);
-        this.contract_update = response.contract_update;
-        this.root_store.modules.contract_replay.contract_store.contract_update = response.contract_update;
+        const contract_update_config = getContractUpdateConfig(response);
+        if (!isEqualObject(this.contract_update_config, contract_update_config)) {
+            Object.assign(this, contract_update_config);
+            this.contract_update_config = contract_update_config;
+        }
     }
 
     @action.bound
@@ -135,6 +154,43 @@ export default class ContractStore {
         }
         return barriers;
     };
+
+    @action.bound
+    clearContractUpdateConfigValues() {
+        Object.assign(this, getContractUpdateConfig(this.contract_info));
+        this.validation_errors.contract_update_stop_loss = [];
+        this.validation_errors.contract_update_take_profit = [];
+    }
+
+    @action.bound
+    onChange({ name, value }) {
+        this[name] = value;
+        this.validateProperty(name, this[name]);
+    }
+
+    @action.bound
+    updateLimitOrder() {
+        const limit_order = getLimitOrder(this);
+
+        WS.contractUpdate(this.contract_id, limit_order).then(response => {
+            if (response.error) {
+                this.root_store.common.setServicesError({
+                    type: response.msg_type,
+                    ...response.error,
+                });
+                return;
+            }
+
+            // Update contract store
+            this.populateContractUpdateConfig(response);
+            if (this.root_store.ui.is_history_tab_active) {
+                WS.contractUpdateHistory(this.contract_id).then(this.populateContractUpdateHistory);
+            }
+
+            // Update portfolio store
+            this.root_store.modules.portfolio.populateContractUpdate(response, this.contract_id);
+        });
+    }
 }
 
 function calculate_marker(contract_info) {

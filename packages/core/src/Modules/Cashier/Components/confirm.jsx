@@ -42,7 +42,7 @@ Confirm.propTypes = {
     data: PropTypes.arrayOf(
         PropTypes.shape({
             label: PropTypes.string,
-            value: PropTypes.oneOfType(PropTypes.string, PropTypes.arrayOf(PropTypes.string), PropTypes.node),
+            value: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string), PropTypes.node]),
         })
     ),
     header: PropTypes.string,

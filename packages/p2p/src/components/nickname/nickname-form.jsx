@@ -71,7 +71,7 @@ const NicknameForm = ({ handleClose }) => {
                 initialValues={{ nickname: '' }}
                 onSubmit={async values => await handleSubmit(values)}
             >
-                {({ errors, handleChange, values }) => (
+                {({ errors, handleChange, isSubmitting, values }) => (
                     <Form noValidate>
                         <ThemedScrollbars autoHide style={{ height: '437px' }}>
                             <div className='nickname__form-content nickname__form-content__centre'>
@@ -110,7 +110,7 @@ const NicknameForm = ({ handleClose }) => {
                                 </Button>
                                 <Button
                                     type='submit'
-                                    is_disabled={!!errors.nickname || values.nickname === ''}
+                                    is_disabled={!!errors.nickname || values.nickname === '' || isSubmitting}
                                     primary
                                     large
                                 >

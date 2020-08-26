@@ -69,7 +69,7 @@ const NicknameForm = ({ handleClose }) => {
             <Formik
                 validate={validatePopup}
                 initialValues={{ nickname: '' }}
-                onSubmit={async values => await handleSubmit(values)}
+                onSubmit={async values => handleSubmit(values)}
             >
                 {({ errors, handleChange, isSubmitting, values }) => (
                     <Form noValidate>

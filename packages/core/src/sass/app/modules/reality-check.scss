@@ -127,19 +127,21 @@
     }
 }
 
-.dc-modal {
-    &-header {
-        &__title--reality-check {
-            @include mobile {
-                margin: auto;
-                text-align: center;
-                line-height: 1.43;
+.dc-modal__container_reality-check {
+    & .dc-modal {
+        &-header {
+            &__title--reality-check {
+                @include mobile {
+                    margin: auto;
+                    text-align: center;
+                    line-height: 1.43;
+                }
             }
         }
-    }
-    &-body {
-        @include mobile {
-            padding: 0;
+        &-body {
+            @include mobile {
+                padding: 0;
+            }
         }
     }
 }

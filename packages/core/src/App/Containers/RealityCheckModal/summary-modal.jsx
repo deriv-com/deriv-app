@@ -88,6 +88,7 @@ const SummaryModal = ({
             enableApp={enableApp}
             is_open={is_visible}
             disableApp={disableApp}
+            portalId='modal_root_absolute'
             has_close_icon={false}
             title={
                 <React.Fragment>

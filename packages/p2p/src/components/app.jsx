@@ -5,7 +5,7 @@ import { getPropertyValue, isProduction } from '@deriv/shared';
 import { Tabs, Modal } from '@deriv/components';
 import { Dp2pProvider } from 'Components/context/dp2p-context';
 import ServerTime from 'Utils/server-time';
-import { init as WebsocketInit, requestWS, subscribeWS, waitWS } from 'Utils/websocket';
+import { init as WebsocketInit, getModifiedP2POrderList, requestWS, subscribeWS, waitWS } from 'Utils/websocket';
 import { localize, setLanguage } from './i18next';
 import OrderInfo, { orderToggleIndex } from './orders/order-info';
 import BuySell from './buy-sell/buy-sell.jsx';
@@ -76,6 +76,15 @@ class App extends React.Component {
                     },
                     [this.setIsAdvertiser, this.setChatInfoUsingAdvertiserInfo]
                 ),
+                order_list_subscription: subscribeWS(
+                    {
+                        p2p_order_list: 1,
+                        subscribe: 1,
+                        offset: 0,
+                        limit: this.list_item_limit,
+                    },
+                    [this.setP2pOrderList]
+                ),
             };
         });
     }
@@ -103,6 +112,7 @@ class App extends React.Component {
 
     toggleNicknamePopup = () => {
         this.setState({ show_popup: !this.state.show_popup });
+        this.resetNicknameErrorState();
     };
 
     onNicknamePopupClose = () => {
@@ -128,6 +138,10 @@ class App extends React.Component {
             this.setChatInfo(p2p_advertiser_create.chat_user_id, p2p_advertiser_create.chat_token);
             this.toggleNicknamePopup();
         }
+    };
+
+    resetNicknameErrorState = () => {
+        this.setState({ nickname_error: undefined });
     };
 
     setIsAdvertiser = response => {
@@ -191,6 +205,11 @@ class App extends React.Component {
         }
 
         this.setState({ chat_info });
+    };
+
+    setP2pOrderList = response => {
+        this.handleNotifications(this.state.orders, response);
+        this.setState({ orders: getModifiedP2POrderList(response) });
     };
 
     getLocalStorageSettings = () => JSON.parse(localStorage.getItem('p2p_settings') || '{}');
@@ -293,6 +312,7 @@ class App extends React.Component {
             order_id,
             setOrderId,
             should_show_verification,
+            is_dark_mode_on,
             is_mobile,
             poi_url,
         } = this.props;
@@ -320,6 +340,7 @@ class App extends React.Component {
                     handleNotifications: this.handleNotifications,
                     inactive_notification_count,
                     is_advertiser: this.state.is_advertiser,
+                    is_dark_mode_on,
                     is_listed: this.state.is_listed,
                     is_mobile,
                     is_restricted,
@@ -332,6 +353,7 @@ class App extends React.Component {
                     orders,
                     poi_status,
                     poi_url,
+                    resetNicknameErrorState: this.resetNicknameErrorState,
                     residence,
                     setChatInfo: this.setChatInfo,
                     setIsListed: is_listed => this.setState({ is_listed }),

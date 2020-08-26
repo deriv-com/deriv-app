@@ -104,6 +104,10 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 display: none;
             }
             @include mobile {
+                position: absolute;
+                top: 0;
+                transition: transform 0.25s linear;
+                z-index: 4;
                 height: auto;
                 border-bottom-right-radius: $BORDER_RADIUS;
                 border-top-right-radius: $BORDER_RADIUS;
@@ -111,20 +115,205 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 margin-left: 0.8rem;
                 margin-bottom: 0.8rem;
 
-                .contract-card__grid-underlying-trade,
-                .contract-card__footer-wrapper {
-                    grid-template-columns: 1fr 1fr 0.7fr;
+                &__mobile-wrapper {
+                    position: relative;
+                    max-height: 188px;
+                    flex: 2;
 
-                    @media only screen and (max-height: 480px) {
-                        grid-template-columns: 1fr 1fr;
+                    &--is-multiplier {
+                        max-height: 244px;
+                        top: -0.5rem;
+
+                        @media (max-width: 320px) and (max-height: 480px) {
+                            max-height: 206px;
+                            top: 0;
+                        }
                     }
                 }
                 &--with-collapsible-btn {
                     padding-top: 0;
+
+                    &.contract-drawer--is-expanded {
+                        transform: translateY(calc(-100% + 204px));
+                    }
+                    & .contract-card {
+                        min-height: 144px;
+                    }
                 }
-                @media only screen and (max-height: 480px) {
-                    .contract-card__body-wrapper {
-                        padding-top: 0.2rem;
+                & .contract-card {
+                    &__grid-underlying-trade {
+                        grid-template-columns: 2fr 1fr !important;
+                    }
+                    &__underlying-name {
+                        max-width: none;
+                    }
+                }
+                &--is-multiplier {
+                    & .positions-drawer-dialog-toggle {
+                        top: 48px;
+                        width: 128px;
+                        height: 78px;
+
+                        @media only screen and (max-width: 380px) {
+                            width: 115px;
+                            height: 73px;
+                        }
+                        @media only screen and (max-width: 320px) {
+                            top: 46px;
+                            width: 98px;
+                            height: 78px;
+                        }
+                        @media (max-width: 320px) and (max-height: 480px) {
+                            top: 43px;
+                            height: 65px;
+                        }
+                    }
+                    & .contract-card {
+                        &__body-wrapper {
+                            flex-direction: column;
+                            padding-top: 0.4rem;
+                        }
+                        &-items-wrapper {
+                            grid-template-columns: 1fr 1fr 1fr;
+                            grid-gap: 0.4rem;
+                            padding-bottom: 0.4rem;
+                            border-bottom: 1px solid var(--general-section-1);
+                            min-height: 80px;
+
+                            @media (max-width: 320px) and (max-height: 480px) {
+                                min-height: unset;
+                            }
+                        }
+                        &-item {
+                            &__total-profit-loss {
+                                flex-direction: row;
+                                margin: 0 auto;
+                                border-top: 0;
+
+                                & .contract-card-item__header {
+                                    font-size: 1.2rem !important;
+
+                                    @media (max-width: 320px) and (max-height: 480px) {
+                                        font-size: 1rem !important;
+                                    }
+                                }
+                            }
+                            &__header,
+                            &__body {
+                                font-size: 1.2rem;
+                            }
+                            &__body--loss {
+                                padding-left: 0.4rem;
+                            }
+                            &:nth-child(1) {
+                                order: 0;
+                            }
+                            &:nth-child(3),
+                            &:nth-child(5) {
+                                order: 2;
+                            }
+                            &:nth-child(6) {
+                                order: 6;
+                            }
+                            @media only screen and (max-width: 320px) {
+                                &__header {
+                                    font-size: 1rem;
+                                }
+                            }
+                            @media (max-width: 320px) and (max-height: 480px) {
+                                &__body {
+                                    font-size: 1rem;
+                                }
+                            }
+                        }
+                        @media (max-width: 320px) and (max-height: 480px) {
+                            &__symbol,
+                            &__type {
+                                font-size: 1rem;
+                            }
+                            &__sell-button {
+                                padding-top: 0.4rem;
+
+                                & .dc-btn {
+                                    height: 2.6rem;
+
+                                    &__text {
+                                        font-size: 1rem;
+                                    }
+                                }
+                            }
+                            &__footer {
+                                margin-bottom: 0;
+                            }
+                        }
+
+                        &__sell-button {
+                            &--has-cancel-btn {
+                                display: grid;
+                                grid-template-columns: 1fr 1fr;
+                            }
+                            @media (max-width: 320px) and (max-height: 480px) {
+                                & .dc-btn--cancel {
+                                    & .dc-btn__text {
+                                        align-items: center;
+                                    }
+                                    & .remaining-time {
+                                        font-size: 1rem;
+                                        padding-top: 0;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    &.contract-drawer--is-expanded {
+                        transform: translateY(calc(-100% + 327px));
+
+                        @media (max-width: 320px) and (max-height: 480px) {
+                            transform: translateY(calc(-100% + 238px));
+                        }
+                    }
+                    &.contract-drawer--with-collapsible-btn {
+                        & .contract-card {
+                            min-height: 206px;
+
+                            &-item {
+                                &__total-profit-loss {
+                                    margin: 0 auto 0.4rem;
+                                }
+                            }
+                            &__indicative--movement {
+                                margin-top: 2px;
+                            }
+                            @media (max-width: 320px) and (max-height: 480px) {
+                                min-height: 140px;
+                            }
+                        }
+                    }
+                    & .contract-card__grid-underlying-trade,
+                    & .contract-card__footer-wrapper {
+                        grid-template-columns: 1fr 1fr 0.7fr;
+
+                        @media only screen and (max-height: 480px) {
+                            grid-template-columns: 1fr 1fr;
+                        }
+                    }
+                    @media only screen and (max-height: 480px) {
+                        & .contract-card__body-wrapper {
+                            padding-top: 0.2rem;
+                        }
+                    }
+
+                    &-sold {
+                        &.contract-drawer--with-collapsible-btn {
+                            & .contract-card-item {
+                                &__total-profit-loss {
+                                    flex-direction: column;
+                                }
+                                &__body--profit {
+                                    font-size: 1.6rem;
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -186,16 +375,26 @@ $FLOATING_HEADER_HEIGHT: 41px;
                         }
                     }
                 }
-            }
-            @include mobile {
-                flex: 1;
-                margin-left: unset;
 
-                .drag-price {
-                    .arrow-icon {
-                        display: none;
+                /* postcss-bem-linter: ignore */
+                &-mobile {
+                    /* TODO: Remove this override once the issue is fixed in smartcharts */
+                    .stx-holder.stx-panel-chart {
+                        z-index: 14;
+
+                        .cq-inchart-holder {
+                            z-index: 109;
+                            position: relative;
+                        }
                     }
                 }
+            }
+
+            @include mobile {
+                flex: 1;
+                height: 100%;
+                width: calc(100% - 1.6rem);
+                margin-left: 0.8rem;
             }
         }
         @include mobile {
@@ -203,6 +402,21 @@ $FLOATING_HEADER_HEIGHT: 41px;
             flex-direction: column-reverse;
             height: 100%;
             padding-bottom: 0;
+            position: relative;
+
+            & .contract-audit-card {
+                &__container {
+                    height: calc(100% - 0.4rem);
+
+                    &--is-multiplier {
+                        height: calc(100% - 6.4rem);
+
+                        @media (max-width: 320px) and (max-height: 480px) {
+                            height: calc(100% - 1.6rem);
+                        }
+                    }
+                }
+            }
         }
     }
     @include mobile {
@@ -217,7 +431,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
     padding: 0 0.8rem;
     display: flex;
     flex-direction: column;
-    height: 202px;
+    height: 212px;
     position: relative;
 
     &__content-loader {
@@ -483,8 +697,29 @@ $FLOATING_HEADER_HEIGHT: 41px;
     }
 }
 
-/** @define contract */
+/** @define contract; weak */
 .contract {
+    // TODO: Remove below if redundant
+    &-update {
+        /* postcss-bem-linter: ignore */
+        &__wrapper {
+            display: grid;
+            grid-template-rows: auto auto 1fr;
+            grid-gap: 1.6rem;
+            margin: 1.6rem;
+
+            /* postcss-bem-linter: ignore */
+            & .dc-tooltip:before,
+            & .dc-tooltip:after {
+                display: none;
+            }
+            /* postcss-bem-linter: ignore */
+            & .positions-drawer-dialog__button {
+                display: flex;
+                align-items: flex-end;
+            }
+        }
+    }
     &--enter {
         transform: translate3d(calc(100% + 1.6em), 0, 0);
         opacity: 0;
@@ -565,5 +800,14 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 }
             }
         }
+    }
+    /* TODO: Remove this override once the issue is fixed in smartcharts */
+    /* postcss-bem-linter: ignore */
+    @at-root body.theme--light & .chart-line.horizontal .title-wrapper {
+        background-image: linear-gradient(
+            rgba(255, 255, 255, 0.001) 30%,
+            var(--general-main-1) 50%,
+            rgba(255, 255, 255, 0.001) 75%
+        );
     }
 }

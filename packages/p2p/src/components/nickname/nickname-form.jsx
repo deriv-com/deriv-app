@@ -66,7 +66,11 @@ const NicknameForm = ({ handleClose }) => {
                     </div>
                 </div>
             )}
-            <Formik validate={validatePopup} initialValues={{ nickname: '' }} onSubmit={handleSubmit}>
+            <Formik
+                validate={validatePopup}
+                initialValues={{ nickname: '' }}
+                onSubmit={async values => await handleSubmit(values)}
+            >
                 {({ errors, handleChange, values }) => (
                     <Form noValidate>
                         <ThemedScrollbars autoHide style={{ height: '437px' }}>

@@ -981,7 +981,7 @@ export default class CashierStore extends BaseStore {
         // we need .toFixed() so that it doesn't display in scientific notation, e.g. 1e-8 for currencies with 8 decimal places
         this.config.account_transfer.transfer_limit = {
             max: transfer_limit.max
-                ? Math.min(transfer_limit.max, balance || transfer_limit.max).toFixed(decimal_places) // in case balance is 0, just use transfer_limit.max
+                ? Math.min(transfer_limit.max, +balance || transfer_limit.max).toFixed(decimal_places) // in case balance is 0, just use transfer_limit.max
                 : balance,
             min: transfer_limit.min ? (+transfer_limit.min).toFixed(decimal_places) : null,
         };

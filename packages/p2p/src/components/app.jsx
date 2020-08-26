@@ -339,6 +339,7 @@ class App extends React.Component {
             order_id,
             setOrderId,
             should_show_verification,
+            is_dark_mode_on,
             is_mobile,
             poi_url,
         } = this.props;
@@ -369,6 +370,7 @@ class App extends React.Component {
                     nickname: this.state.nickname,
                     setNickname: nickname => this.setState({ nickname }),
                     setChatInfo: this.setChatInfo,
+                    is_dark_mode_on,
                     is_restricted,
                     email_domain: getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
                     list_item_limit: this.list_item_limit,

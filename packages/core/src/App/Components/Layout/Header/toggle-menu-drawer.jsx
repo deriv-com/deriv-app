@@ -242,32 +242,36 @@ class ToggleMenuDrawer extends React.Component {
                                     />
                                 </MobileDrawer.Item>
                                 {primary_routes_config.map(route_config => this.getRoutesWithSubMenu(route_config))}
-                                <MobileDrawer.Item
-                                    className='header__menu-mobile-theme'
-                                    onClick={e => {
-                                        e.preventDefault();
-                                        this.props.toggleTheme(!this.props.is_dark_mode);
-                                    }}
-                                >
-                                    <div
-                                        className={classNames('header__menu-mobile-link', {
-                                            'header__menu-mobile-link--active': this.props.is_dark_mode,
-                                        })}
+                                {this.props.platform_header !== 'DBot' && (
+                                    <MobileDrawer.Item
+                                        className='header__menu-mobile-theme'
+                                        onClick={e => {
+                                            e.preventDefault();
+                                            this.props.toggleTheme(!this.props.is_dark_mode);
+                                        }}
                                     >
-                                        <Icon className='header__menu-mobile-link-icon' icon={'IcTheme'} />
-                                        <span className='header__menu-mobile-link-text'>{localize('Dark theme')}</span>
-                                        <ToggleSwitch
-                                            id='dt_mobile_drawer_theme_toggler'
-                                            classNameLabel='header__menu-mobile-link-toggler-label'
-                                            classNameButton={classNames('header__menu-mobile-link-toggler-button', {
-                                                'header__menu-mobile-link-toggler-button--active': this.props
-                                                    .is_dark_mode,
+                                        <div
+                                            className={classNames('header__menu-mobile-link', {
+                                                'header__menu-mobile-link--active': this.props.is_dark_mode,
                                             })}
-                                            handleToggle={() => this.props.toggleTheme(!this.props.is_dark_mode)}
-                                            is_enabled={this.props.is_dark_mode}
-                                        />
-                                    </div>
-                                </MobileDrawer.Item>
+                                        >
+                                            <Icon className='header__menu-mobile-link-icon' icon={'IcTheme'} />
+                                            <span className='header__menu-mobile-link-text'>
+                                                {localize('Dark theme')}
+                                            </span>
+                                            <ToggleSwitch
+                                                id='dt_mobile_drawer_theme_toggler'
+                                                classNameLabel='header__menu-mobile-link-toggler-label'
+                                                classNameButton={classNames('header__menu-mobile-link-toggler-button', {
+                                                    'header__menu-mobile-link-toggler-button--active': this.props
+                                                        .is_dark_mode,
+                                                })}
+                                                handleToggle={() => this.props.toggleTheme(!this.props.is_dark_mode)}
+                                                is_enabled={this.props.is_dark_mode}
+                                            />
+                                        </div>
+                                    </MobileDrawer.Item>
+                                )}
                                 {secondary_routes_config.map(route_config => this.getRoutesWithSubMenu(route_config))}
                                 {this.props.is_logged_in && (
                                     <MobileDrawer.Item

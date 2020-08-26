@@ -23,12 +23,13 @@ const OrderDetails = ({ order_details, chat_info }) => {
         display_offer_amount,
         display_price_rate,
         display_transaction_amount,
-        is_buyer,
-        is_expired,
-        is_completed,
-        is_buyer_cancelled,
-        offer_currency,
         id,
+        is_buyer,
+        is_buyer_cancelled,
+        is_completed,
+        is_expired,
+        is_incoming,
+        offer_currency,
         order_purchase_datetime,
         payment_info,
         transaction_currency,
@@ -115,9 +116,9 @@ const OrderDetails = ({ order_details, chat_info }) => {
                                 <div className='order-details__info--left'>
                                     <OrderInfoBlock
                                         label={
-                                            is_buyer
-                                                ? localize("Seller's instructions")
-                                                : localize("Buyer's instructions")
+                                            (is_buyer && is_incoming) || (!is_buyer && !is_incoming)
+                                                ? localize("Buyer's instructions")
+                                                : localize("Seller's instructions")
                                         }
                                         value={advertiser_instructions || '-'}
                                     />

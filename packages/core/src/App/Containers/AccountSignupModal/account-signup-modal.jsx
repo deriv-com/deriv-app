@@ -145,7 +145,7 @@ class AccountSignup extends React.Component {
                                             )}
                                         </Field>
                                         <p className='account-signup__subtext'>
-                                            <Localize i18n_default_text='Strong passwords contain at least 6 characters, combine uppercase and lowercase letters, numbers, and symbols.' />
+                                            <Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters, numbers, and symbols.' />
                                         </p>
 
                                         <Button

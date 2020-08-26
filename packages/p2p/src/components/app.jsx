@@ -208,8 +208,10 @@ class App extends React.Component {
     };
 
     setP2pOrderList = response => {
-        this.handleNotifications(this.state.orders, response);
-        this.setState({ orders: getModifiedP2POrderList(response) });
+        const { p2p_order_list } = response;
+        const { list } = p2p_order_list;
+        this.handleNotifications(this.state.orders, list);
+        this.setState({ orders: getModifiedP2POrderList(list) });
     };
 
     getLocalStorageSettings = () => JSON.parse(localStorage.getItem('p2p_settings') || '{}');

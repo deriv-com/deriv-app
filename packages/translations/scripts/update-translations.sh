@@ -11,7 +11,7 @@ if ! [ -x "$(command -v crowdin)" ]; then
     if [ -f /usr/local/bin/crowdin-cli.jar ]; then
         alias crowdin="java -jar /usr/local/bin/crowdin-cli.jar"
     else
-        echo ${YELLOW}"crowdin-cli not found. Please follow the instructions here: https://support.crowdin.com/cli-tool/#installation"${RESET}
+        echo ${YELLOW}"crowdin-cli not found. Please follow the instructions here: https://support.crowdin.com/cli-tool-v2/#installation"${RESET}
         exit 1
     fi
 fi
@@ -35,7 +35,7 @@ message "Updating deriv app translations branch" &&
 git branch -D ${NEW_TRANSLATION_BRANCH} &&
 git push origin --delete ${NEW_TRANSLATION_BRANCH}
 git checkout -b ${NEW_TRANSLATION_BRANCH} &&
-git pull upstream dev &&
+git pull upstream master &&
 
 confirm "Update the source file (messages.json) and push to Crowdin?" &&
 if [[ $REPLY =~ ^[Yy]$ ]]

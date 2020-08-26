@@ -9,7 +9,8 @@ import BaseStore from './base-store';
 import { getMT5AccountType } from './Helpers/client';
 
 export default class GTMStore extends BaseStore {
-    is_gtm_applicable = /^(16303|16929|19111|19112)$/.test(getAppId());
+    is_gtm_applicable =
+        window.location.hostname === 'deriv-app.binary.sx' || /^(16303|16929|19111|19112)$/.test(getAppId());
 
     constructor(root_store) {
         super({ root_store });
@@ -36,7 +37,9 @@ export default class GTMStore extends BaseStore {
 
             // TODO: [app-link-refactor] - Remove backwards compatibility for `deriv.app`
             if (
-                /^(app.deriv.com|staging-app.deriv.com|deriv.app|staging.deriv.app|localhost.binary.sx)$/.test(domain)
+                /^(deriv-app\.binary.sx|app.deriv.com|staging-app.deriv.com|deriv.app|staging.deriv.app|localhost.binary.sx)$/.test(
+                    domain
+                )
             ) {
                 if (path === 'bot') {
                     return 'DBot';
@@ -54,9 +57,7 @@ export default class GTMStore extends BaseStore {
                 currency: this.root_store.client.currency,
                 userId: this.root_store.client.user_id,
             }),
-            ...(this.root_store.ui.is_dark_mode_on && {
-                theme: this.root_store.ui.is_dark_mode_on ? 'dark' : 'light',
-            }),
+            theme: this.root_store.ui.is_dark_mode_on ? 'dark' : 'light',
             platform: platform(),
         };
     }

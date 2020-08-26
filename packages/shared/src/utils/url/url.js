@@ -73,10 +73,13 @@ export const urlFor = (
     const lang = language?.toLowerCase?.() ?? default_language;
     let domain = `https://${window.location.hostname}/`;
     if (legacy) {
-        if (/localhost|binary\.sx/.test(domain)) {
-            domain = `https://binary.com/${lang.toLowerCase() || 'en'}/`;
+        if (/staging-app\.deriv\.com/.test(domain)) {
+            domain = domain.replace(/staging-app\.deriv\.com/, `staging.binary.com/${lang || 'en'}`);
+        } else if (/app\.deriv\.com|deriv\.app/.test(domain)) {
+            // TODO: [app-link-refactor] - Remove backwards compatibility for `deriv.app`
+            domain = domain.replace(/app\.deriv\.com|deriv\.app/, `binary.com/${lang || 'en'}`);
         } else {
-            domain = domain.replace(/deriv\.app/, `binary.com/${lang.toLowerCase() || 'en'}`);
+            domain = `https://binary.com/${lang || 'en'}/`;
         }
     }
     const new_url = `${domain}${normalizePath(path) || 'home'}.html${query_string ? `?${query_string}` : ''}`;

@@ -44,6 +44,11 @@ const modules = [
         title: localize('Bot'),
     },
     {
+        path: routes.account_deactivated,
+        component: Account,
+        title: localize('Account deactivated'),
+    },
+    {
         path: routes.account,
         component: Account,
         title: localize('Accounts Settings'),
@@ -123,6 +128,11 @@ const modules = [
                         component: Account,
                         title: localize('Two-factor authentication'),
                     },
+                    {
+                        path: routes.deactivate_account,
+                        component: Account,
+                        title: localize('Deactivate account'),
+                    },
                 ],
             },
         ],
@@ -132,7 +142,7 @@ const modules = [
         component: Trader,
         title: localize('Trader'),
         routes: [
-            { path: routes.mt5, component: Trader, title: localize('MT5'), is_authenticated: true },
+            { path: routes.mt5, component: Trader, title: localize('MT5'), is_authenticated: false },
             {
                 path: routes.reports,
                 component: Trader,
@@ -221,10 +231,11 @@ const initRoutesConfig = () => [
             {
                 path: routes.cashier_p2p,
                 component: lazyLoadCashierComponent('P2PCashier'),
-                title: localize('P2P'),
+                title: localize('DP2P'),
                 icon_component: 'IcDp2p',
             },
             {
+                id: 'gtm-onramp-tab',
                 path: routes.cashier_onramp,
                 component: lazyLoadCashierComponent('OnRamp'),
                 title: localize('Fiat onramp'),

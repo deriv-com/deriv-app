@@ -91,8 +91,19 @@
                     }
 
                     &-avatar {
-                        display: none;
-
+                        display: table;
+                        width: 40px !important;
+                        height: 40px !important;
+                        color: var(--text-colored-background);
+                        &-text {
+                            display: table-cell;
+                            position: relative;
+                            text-align: center;
+                            font-size: 14px;
+                            width: 40px;
+                            height: 20px;
+                            vertical-align: middle;
+                        }
                         &-img {
                             display: none;
                         }
@@ -122,19 +133,6 @@
                         &__sender-name {
                             display: none;
                         }
-                        &--incoming {
-                            padding-left: 0px !important;
-
-                            .sendbird-file-message__tooltip,
-                            &:hover .sendbird-file-message__tooltip {
-                                background-color: var(--general-active);
-                                border-bottom-left-radius: $BORDER_RADIUS;
-
-                                &__text {
-                                    color: var(--text-prominent);
-                                }
-                            }
-                        }
                     }
 
                     &-user-message {
@@ -160,7 +158,19 @@
                                 background-color: var(--general-active);
                             }
 
-                            .sendbird-user-message__tooltip,
+                            .sendbird-user-message__text-balloon {
+                                background-color: var(--general-section-1);
+
+                                .sendbird-label {
+                                    color: var(--text-prominent);
+                                }
+                            }
+
+                            sendbird-label
+                                sendbird-user-message__text-balloon__inner__text-place__text
+                                sendbird-label--body-1
+                                sendbird-label--color-onbackground-1
+                                .sendbird-user-message__tooltip,
                             &:hover .sendbird-user-message__tooltip {
                                 background-color: var(--general-active);
                                 border-bottom-left-radius: $BORDER_RADIUS;
@@ -180,18 +190,28 @@
                                     color: var(--text-colored-background);
                                 }
                             }
+
+                            .sendbird-user-message__text-balloon {
+                                background-color: var(--brand-secondary);
+
+                                .sendbird-label {
+                                    color: var(--text-colored-background);
+                                }
+                            }
+                        }
+                        &__avatar {
+                            display: none;
                         }
                     }
 
                     &-chat-header {
                         border-radius: $BORDER_RADIUS $BORDER_RADIUS 0 0;
                         border-bottom: none;
-                        padding: 0 16px;
+                        padding: 0 16px 0px 24px;
                         background-color: var(--general-section-2);
 
                         &__left {
                             display: flex;
-                            flex-flow: column;
                             align-items: flex-start;
                             margin-right: 0;
                         }
@@ -202,6 +222,7 @@
 
                         &__title {
                             font-size: 16px;
+                            padding-left: 16px;
                             display: flex;
                             max-width: 350px;
                             margin-right: 0;
@@ -210,6 +231,10 @@
                         }
 
                         &__subtitle {
+                            display: flex;
+                            align-self: flex-end;
+                            position: absolute;
+                            padding-left: 56px;
                             color: var(--text-less-prominent);
                         }
                     }

@@ -8,7 +8,7 @@ import { localize } from '@deriv/translations';
 // ------------------------------
 // ----- Validation Methods -----
 // ------------------------------
-const validRequired = (value /* , options, field */) => {
+export const validRequired = (value /* , options, field */) => {
     if (value === undefined || value === null) {
         return false;
     }
@@ -16,13 +16,14 @@ const validRequired = (value /* , options, field */) => {
     const str = String(value).replace(/\s/g, '');
     return str.length > 0;
 };
+const confirmRequired = value => value === true;
 const validEmail = value => /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$/.test(value);
 export const validPassword = value => /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+/.test(value);
 export const validLetterSymbol = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><,|\d]+/.test(value);
 const validGeneral = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><|]+/.test(value);
 export const validAddress = value => !/[`~!$%^&*_=+[}{\]\\"?><|]+/.test(value);
-export const validPostCode = value => /^[-A-Za-z0-9\s]{0,20}$/.test(value);
-export const validPhone = value => /^\+?((-|\s)*[0-9]){8,35}$/.test(value.replace(/[ ]/g, ''));
+export const validPostCode = value => value === '' || /^[A-Za-z0-9][A-Za-z0-9\s-]*$/.test(value);
+export const validPhone = value => /^\+((-|\s)*[0-9]){8,35}$/.test(value);
 export const validCountryCode = (list, value) =>
     list.some(item => value.replace(/[ ]/g, '').startsWith(`+${item.phone_idd}`));
 const validRegular = (value, options) => options.regex.test(value);
@@ -33,8 +34,26 @@ const validBarrier = value => /^[+-]?\d+\.?\d*$/.test(value);
 const validCompare = (value, options) => value === getElementById(options.to.substr(1)).value;
 const validNotEqual = (value, options) => value !== getElementById(options.to.substr(1)).value;
 const validMin = (value, options) => (options.min ? value.length >= options.min : true);
-export const validLength = (value, options) =>
-    (options.min ? value.length >= options.min : true) && (options.max ? value.length <= options.max : true);
+export const validLength = (value, options) => {
+    const getMessage = () => {
+        const { min, max } = options;
+        if (min && max) {
+            return localize('You should enter a value between {{min}} and {{max}} characters.', { min, max });
+        } else if (min) {
+            return localize('You should enter a value at least {{min}} characters.', { min });
+        }
+
+        return localize('Maximum allowed characters are {{max}}.', { max });
+    };
+
+    const result =
+        (options.min ? value.length >= options.min : true) && (options.max ? value.length <= options.max : true);
+    if (!result) {
+        getPreBuildDVRs().length.message = getMessage();
+    }
+
+    return result;
+};
 
 export const validNumber = (value, opts) => {
     const options = cloneObject(opts);
@@ -123,7 +142,7 @@ const initPreBuildDVRs = () => ({
         func: validGeneral,
         message: localize('Only letters, numbers, space, hyphen, period, and apostrophe are allowed.'),
     },
-    length: { func: validLength, message: localize('You should enter {{value}} characters.', { value: '{{value}}' }) },
+    length: { func: validLength, message: '' }, // Message will be set in validLength function on initiation
     letter_symbol: {
         func: validLetterSymbol,
         message: localize('Only letters, space, hyphen, period, and apostrophe are allowed.'),
@@ -144,7 +163,8 @@ const initPreBuildDVRs = () => ({
     phone: { func: validPhone, message: localize('Only numbers and spaces are allowed.') },
     postcode: { func: validPostCode, message: localize('Only letters, numbers, space, and hyphen are allowed.') },
     regular: { func: validRegular, message: '' },
-    req: { func: validRequired, message: '' },
+    req: { func: validRequired, message: field => localize('{{field}} is required', { field }) },
+    confirm: { func: confirmRequired, message: '' },
     signup_token: { func: validEmailToken, message: localize('The length of token should be 8.') },
     tax_id: {
         func: validTaxID,

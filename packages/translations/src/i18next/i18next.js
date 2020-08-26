@@ -28,7 +28,8 @@ const getUrlBase = (path = '') => {
     return `/${l.pathname.split('/')[1]}${/^\//.test(path) ? path : `/${path}`}`;
 };
 
-const isStaging = () => /staging\.deriv\.app/i.test(window.location.hostname);
+// TODO: [app-link-refactor] - Remove backwards compatibility for `deriv.app`
+const isStaging = () => /staging\.deriv\.app|staging-app\.deriv\.com/i.test(window.location.hostname);
 
 const isLanguageAvailable = lang => {
     if (!lang) return false;

@@ -8,7 +8,7 @@
     left: 0;
     bottom: 0;
     right: 0;
-    z-index: 9999;
+    z-index: 9998;
     display: none;
     overflow: hidden;
     opacity: 0;
@@ -17,5 +17,8 @@
     &:not(:empty) {
         display: flex;
         opacity: 1;
+    }
+    &--absolute {
+        z-index: 9999;
     }
 }

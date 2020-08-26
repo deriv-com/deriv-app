@@ -3,25 +3,35 @@ import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {
+    AccountLimits,
     EndpointNote,
+    GoToDeriv,
+    HelpCentre,
     NetworkStatus,
+    RegulatoryInformation,
+    ResponsibleTrading,
     ToggleFullScreen,
     ToggleSettings,
-    HelpCentre,
 } from 'App/Components/Layout/Footer';
 import LiveChat from 'App/Components/Elements/live-chat.jsx';
 import { connect } from 'Stores/connect';
 import ServerTime from '../server-time.jsx';
 
+const FooterIconSeparator = () => <div className='footer-icon-separator' />;
+
 const Footer = ({
     enableApp,
     footer_extension,
     is_app_disabled,
+    is_eu,
+    is_eu_enabled, // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
+    is_logged_in,
     is_route_modal_on,
     is_settings_modal_on,
     disableApp,
     toggleSettingsModal,
     settings_extension,
+    standpoint,
 }) => (
     <footer
         className={classNames('footer', {
@@ -32,11 +42,21 @@ const Footer = ({
         <EndpointNote />
         <NetworkStatus />
         <ServerTime />
-        <div className='footer__links footer__links-extras'>
-            {/* <ToggleComplaintsPolicy landing_company_shortcode={landing_company_shortcode} /> */}
-        </div>
         <div className='footer__links'>
             <LiveChat />
+            <FooterIconSeparator />
+            <GoToDeriv />
+            <ResponsibleTrading />
+            {is_logged_in && <AccountLimits />}
+            {is_eu_enabled && (
+                <RegulatoryInformation
+                    standpoint={
+                        standpoint // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
+                    }
+                    is_eu={is_eu}
+                />
+            )}
+            <FooterIconSeparator />
             <HelpCentre />
             <ToggleSettings
                 is_settings_visible={is_settings_modal_on}
@@ -67,10 +87,12 @@ export default withRouter(
         is_app_disabled: ui.is_app_disabled,
         is_route_modal_on: ui.is_route_modal_on,
         is_logged_in: client.is_logged_in,
+        is_eu_enabled: ui.is_eu_enabled, // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
+        is_eu: client.is_eu,
+        standpoint: client.standpoint,
         is_loading: ui.is_loading,
         is_settings_modal_on: ui.is_settings_modal_on,
         disableApp: ui.disableApp,
         toggleSettingsModal: ui.toggleSettingsModal,
-        landing_company_shortcode: client.landing_company_shortcode,
     }))(Footer)
 );

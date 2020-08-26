@@ -15,8 +15,8 @@ const messages = [
 
 const Headers = ({ heading, subheading }) => (
     <React.Fragment>
-        <h1>{heading}</h1>
-        <h3>{subheading}</h3>
+        <h1 className='add-crypto-currency__title'>{heading}</h1>
+        <h3 className='add-crypto-currency__sub-title'>{subheading}</h3>
     </React.Fragment>
 );
 
@@ -65,8 +65,8 @@ class AddCryptoCurrency extends React.Component {
                     isSubmitting,
                 }) => (
                     <form onSubmit={handleSubmit}>
-                        {!this.can_add_fiat && <Headers heading={messages[0]} subheading={messages[1]} />}
-                        {this.can_add_fiat && <Headers heading={messages[2]} subheading={messages[3]} />}
+                        {!this.can_add_fiat && <Headers heading={messages()[0]} subheading={messages()[1]} />}
+                        {this.can_add_fiat && <Headers heading={messages()[2]} subheading={messages()[3]} />}
                         {this.props.available_crypto_currencies.length !== 0 ? (
                             <RadioButtonGroup
                                 id='crypto_currency'
@@ -112,6 +112,7 @@ class AddCryptoCurrency extends React.Component {
                                 <Hr />
                                 <RadioButtonGroup
                                     id='fiat_currency'
+                                    is_fiat
                                     className='currency-selector__radio-group'
                                     label={localize('Fiat currencies')}
                                     value={values.currency}

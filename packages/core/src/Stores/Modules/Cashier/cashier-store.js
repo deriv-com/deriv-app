@@ -1,4 +1,5 @@
-import { action, computed, observable, toJS } from 'mobx';
+import React from 'react';
+import { action, computed, observable, toJS, reaction } from 'mobx';
 import {
     routes,
     isCryptocurrency,
@@ -11,11 +12,31 @@ import {
 } from '@deriv/shared';
 
 import BinarySocket from '_common/base/socket_base';
-import { localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services';
 import OnRampStore from './on-ramp-store';
 import BaseStore from '../../base-store';
 import { getMT5AccountDisplay } from '../../Helpers/client';
+
+const hasTransferNotAllowedLoginid = loginid => loginid.startsWith('MX');
+
+const getSelectedError = (selected_value, is_from_account) => {
+    if (is_from_account) {
+        return (
+            <Localize
+                i18n_default_text='Transfer from {{selected_value}} is not allowed, Please choose another account from dropdown'
+                values={{ selected_value }}
+            />
+        );
+    }
+
+    return (
+        <Localize
+            i18n_default_text='Transfer to {{selected_value}} is not allowed, Please choose another account from dropdown'
+            values={{ selected_value }}
+        />
+    );
+};
 
 class Config {
     container = '';
@@ -37,6 +58,10 @@ class ConfigError {
     @observable fields = '';
     @observable is_show_full_page = false;
     @observable onClickButton = null;
+    @observable is_ask_uk_funds_protection = false;
+    @observable is_self_exclusion_max_turnover_set = false;
+    @observable is_ask_authentication = false;
+    @observable is_ask_financial_risk_approval = false;
 }
 
 class ConfigPaymentAgent {
@@ -48,7 +73,9 @@ class ConfigPaymentAgent {
     @observable filtered_list = [];
     @observable is_name_selected = true;
     @observable is_withdraw = false;
+    @observable is_try_withdraw_successful = false;
     @observable is_withdraw_successful = false;
+    @observable confirm = {};
     @observable receipt = {};
     @observable selected_bank = 0;
     @observable supported_banks = [];
@@ -59,7 +86,9 @@ class ConfigPaymentAgentTransfer {
     @observable container = 'payment_agent_transfer';
     @observable error = new ConfigError();
     @observable is_payment_agent = false;
+    @observable is_try_transfer_successful = false;
     @observable is_transfer_successful = false;
+    @observable confirm = {};
     @observable receipt = {};
     @observable transfer_limit = {};
 }
@@ -184,7 +213,7 @@ export default class CashierStore extends BaseStore {
                 this.sortAccountsTransfer();
             }
 
-            if (!this.onramp.is_onramp_tab_visible && window.location.pathname.startsWith(routes.cashier_onramp)) {
+            if (!this.onramp.is_onramp_tab_visible && window.location.pathname.endsWith(routes.cashier_onramp)) {
                 this.root_store.common.routeTo(routes.cashier_deposit);
             }
 
@@ -215,7 +244,7 @@ export default class CashierStore extends BaseStore {
     @action.bound
     setIsP2pVisible(is_p2p_visible) {
         this.is_p2p_visible = is_p2p_visible;
-        if (!is_p2p_visible && window.location.pathname.startsWith(routes.cashier_p2p)) {
+        if (!is_p2p_visible && window.location.pathname.endsWith(routes.cashier_p2p)) {
             this.root_store.common.routeTo(routes.cashier_deposit);
         }
     }
@@ -225,6 +254,13 @@ export default class CashierStore extends BaseStore {
         const current_container = this.active_container;
         this.onRemount = this.onMount;
         await this.onMountCommon();
+
+        reaction(
+            () => [this.root_store.client.is_tnc_needed],
+            () => {
+                this.onMount();
+            }
+        );
 
         if (this.containers.indexOf(this.active_container) === -1) {
             throw new Error('Cashier Store onMount requires a valid container name.');
@@ -240,7 +276,6 @@ export default class CashierStore extends BaseStore {
 
         // if session has timed out reset everything
         this.setIframeUrl('');
-
         if (
             (this.active_container === this.config.withdraw.container && !verification_code) ||
             this.root_store.client.is_virtual
@@ -256,10 +291,9 @@ export default class CashierStore extends BaseStore {
         if (current_container !== this.active_container) {
             return;
         }
-
         if (response_cashier.error) {
+            this.handleCashierError(response_cashier.error);
             this.setLoading(false);
-            this.setErrorMessage(response_cashier.error);
             this.setSessionTimeout(true);
             this.clearTimeoutCashierUrl();
             if (verification_code) {
@@ -278,6 +312,72 @@ export default class CashierStore extends BaseStore {
             this.setSessionTimeout(false);
             this.setTimeoutCashierUrl();
         }
+    }
+
+    @computed
+    get is_cashier_locked() {
+        if (!this.root_store.client.account_status.status) return false;
+        const { status } = this.root_store.client.account_status;
+
+        return status.some(status_name => status_name === 'cashier_locked');
+    }
+
+    @computed
+    get is_deposit_locked() {
+        const {
+            is_authentication_needed,
+            is_tnc_needed,
+            is_financial_account,
+            is_financial_information_incomplete,
+            is_trading_experience_incomplete,
+            account_status,
+            is_eu,
+        } = this.root_store.client;
+        if (!account_status.status) return false;
+
+        const need_authentication =
+            this.config.deposit.error.is_ask_authentication || (is_authentication_needed && is_eu);
+        const need_financial_assessment =
+            is_financial_account && (is_financial_information_incomplete || is_trading_experience_incomplete);
+
+        return (
+            need_authentication ||
+            is_tnc_needed ||
+            need_financial_assessment ||
+            this.config.deposit.error.is_ask_financial_risk_approval
+        );
+    }
+
+    @computed
+    get is_withdrawal_locked() {
+        if (!this.root_store.client.account_status.status) return false;
+        const { authentication } = this.root_store.client.account_status;
+        const need_poi = authentication.needs_verification.includes('identity');
+
+        const need_authentication = this.config.withdraw.error.is_ask_authentication && need_poi;
+
+        return (
+            this.root_store.client.is_withdrawal_lock ||
+            need_authentication ||
+            this.config.withdraw.error.is_ask_financial_risk_approval
+        );
+    }
+
+    @computed
+    get is_transfer_locked() {
+        const {
+            is_financial_account,
+            is_financial_information_incomplete,
+            is_trading_experience_incomplete,
+            account_status,
+        } = this.root_store.client;
+
+        if (!account_status.status) return false;
+
+        const need_financial_assessment =
+            is_financial_account && (is_financial_information_incomplete || is_trading_experience_incomplete);
+
+        return need_financial_assessment && this.config.account_transfer.error.is_ask_financial_risk_approval;
     }
 
     @action.bound
@@ -320,17 +420,77 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    setErrorMessage(error, onClickButton) {
+    setErrorMessage(error, onClickButton, is_show_full_page) {
         // for errors that need to show a button, reset the form
         this.config[this.active_container].error = {
             onClickButton,
             code: error.code,
             message: error.message,
-            is_show_full_page: /InvalidToken|ASK_TNC_APPROVAL|ASK_FIX_DETAILS|WrongResponse/.test(error.code),
+            is_show_full_page: is_show_full_page || /InvalidToken|WrongResponse/.test(error.code),
             ...(getPropertyValue(error, ['details', 'fields']) && {
                 fields: error.details.fields,
             }),
         };
+    }
+    @action.bound
+    handleCashierError(error) {
+        switch (error.code) {
+            case 'ASK_TNC_APPROVAL':
+                this.setErrorMessage(error, null, true);
+                break;
+            case 'ASK_FIX_DETAILS':
+                this.setErrorMessage(error, null, true);
+                break;
+            case 'ASK_UK_FUNDS_PROTECTION':
+                this.config[this.active_container].error = {
+                    is_ask_uk_funds_protection: true,
+                };
+                break;
+            case 'ASK_SELF_EXCLUSION_MAX_TURNOVER_SET':
+                this.config[this.active_container].error = {
+                    is_self_exclusion_max_turnover_set: true,
+                };
+                break;
+            case 'ASK_AUTHENTICATE':
+            case 'ASK_AGE_VERIFICATION':
+                this.config[this.active_container].error = {
+                    is_ask_authentication: true,
+                };
+                break;
+            case 'FinancialAssessmentRequired':
+            case 'ASK_FINANCIAL_RISK_APPROVAL':
+                this.config[this.active_container].error = {
+                    is_ask_financial_risk_approval: true,
+                };
+                break;
+            default:
+                this.config[this.active_container].error = {
+                    is_ask_uk_funds_protection: false,
+                    is_self_exclusion_max_turnover_set: false,
+                    is_ask_authentication: false,
+                    is_ask_financial_risk_approval: false,
+                };
+                this.setErrorMessage(error);
+        }
+    }
+
+    @action.bound
+    setErrorConfig(config_name, value) {
+        this.config[this.active_container].error = {
+            [config_name]: value,
+        };
+    }
+
+    @action.bound
+    submitFundsProtection() {
+        WS.send({ ukgc_funds_protection: 1, tnc_approval: 1 }).then(response => {
+            if (response.error) {
+                this.setErrorConfig('message', response.error.message);
+            } else {
+                this.setErrorConfig('is_ask_uk_funds_protection', false);
+                this.onMount();
+            }
+        });
     }
 
     @action.bound
@@ -477,9 +637,10 @@ export default class CashierStore extends BaseStore {
             return BinarySocket.wait('paymentagent_list');
         }
 
-        const residence = this.root_store.client.accounts[this.root_store.client.loginid].residence;
-        const currency = this.root_store.client.currency;
-        return WS.authorized.paymentAgentList(residence, currency);
+        // wait for get_settings so residence gets populated in client-store
+        // TODO: set residence in client-store from authorize so it's faster
+        await BinarySocket.wait('get_settings');
+        return WS.authorized.paymentAgentList(this.root_store.client.residence, this.root_store.client.currency);
     }
 
     @action.bound
@@ -551,7 +712,7 @@ export default class CashierStore extends BaseStore {
         } else {
             this.config.payment_agent.filtered_list = this.config.payment_agent.list;
         }
-        if (!this.is_payment_agent_visible && window.location.pathname.startsWith(routes.cashier_pa)) {
+        if (!this.is_payment_agent_visible && window.location.pathname.endsWith(routes.cashier_pa)) {
             this.root_store.common.routeTo(routes.cashier_deposit);
         }
     }
@@ -580,13 +741,15 @@ export default class CashierStore extends BaseStore {
             });
             if (
                 !payment_agent_list.paymentagent_list.list.length &&
-                window.location.pathname.startsWith(routes.cashier_pa)
+                window.location.pathname.endsWith(routes.cashier_pa)
             ) {
                 this.root_store.common.routeTo(routes.cashier_deposit);
             }
-        }
 
-        this.setLoading(false);
+            this.setLoading(false);
+        } else {
+            this.setLoading(false);
+        }
     }
 
     @action.bound
@@ -595,8 +758,23 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
+    setIsTryWithdrawSuccessful(is_try_withdraw_successful) {
+        this.config.payment_agent.is_try_withdraw_successful = is_try_withdraw_successful;
+    }
+
+    @action.bound
     setIsWithdrawSuccessful(is_withdraw_successful) {
         this.config.payment_agent.is_withdraw_successful = is_withdraw_successful;
+    }
+
+    @action.bound
+    setConfirmation({ amount, currency, loginid, payment_agent_name }) {
+        this.config.payment_agent.confirm = {
+            amount,
+            currency,
+            loginid,
+            payment_agent_name,
+        };
     }
 
     @action.bound
@@ -632,6 +810,29 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
+    async requestTryPaymentAgentWithdraw({ loginid, currency, amount, verification_code }) {
+        const payment_agent_withdraw = await WS.authorized.paymentAgentWithdraw({
+            loginid,
+            currency,
+            amount,
+            verification_code,
+            dry_run: 1,
+        });
+        if (+payment_agent_withdraw.paymentagent_withdraw === 2) {
+            const selected_agent = this.config.payment_agent.agents.find(agent => agent.value === loginid);
+            this.setConfirmation({
+                amount,
+                currency,
+                loginid,
+                ...(selected_agent && { payment_agent_name: selected_agent.text }),
+            });
+            this.setIsTryWithdrawSuccessful(true);
+        } else {
+            this.setErrorMessage(payment_agent_withdraw.error, this.resetPaymentAgent);
+        }
+    }
+
+    @action.bound
     async requestPaymentAgentWithdraw({ loginid, currency, amount, verification_code }) {
         const payment_agent_withdraw = await WS.authorized.paymentAgentWithdraw({
             loginid,
@@ -655,6 +856,8 @@ export default class CashierStore extends BaseStore {
                 }),
             });
             this.setIsWithdrawSuccessful(true);
+            this.setIsTryWithdrawSuccessful(false);
+            this.setConfirmation({});
         } else {
             this.setErrorMessage(payment_agent_withdraw.error, this.resetPaymentAgent);
         }
@@ -832,8 +1035,17 @@ export default class CashierStore extends BaseStore {
             };
             // set current logged in client as the default transfer from account
             if (account.loginid === this.root_store.client.loginid) {
+                // check if selected from is not allowed account
+                if (hasTransferNotAllowedLoginid(obj_values.value)) {
+                    obj_values.error = getSelectedError(obj_values.value, true);
+                }
+
                 this.setSelectedFrom(obj_values);
             } else if (isEmptyObject(this.config.account_transfer.selected_to)) {
+                if (hasTransferNotAllowedLoginid(obj_values.value)) {
+                    // check if selected to is not allowed account
+                    obj_values.error = getSelectedError(obj_values.value);
+                }
                 // set the first available account as the default transfer to account
                 this.setSelectedTo(obj_values);
             }
@@ -858,6 +1070,11 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
+    setIsTryTransferSuccessful(is_try_transfer_successful) {
+        this.config[this.active_container].is_try_transfer_successful = is_try_transfer_successful;
+    }
+
+    @action.bound
     setIsTransferSuccessful(is_transfer_successful) {
         this.config[this.active_container].is_transfer_successful = is_transfer_successful;
     }
@@ -872,6 +1089,7 @@ export default class CashierStore extends BaseStore {
     @action.bound
     onChangeTransferFrom({ target }) {
         this.setErrorMessage('');
+        this.config.account_transfer.selected_from.error = '';
 
         const accounts = this.config.account_transfer.accounts_list;
         const selected_from = accounts.find(account => account.value === target.value);
@@ -890,6 +1108,10 @@ export default class CashierStore extends BaseStore {
             this.onChangeTransferTo({ target: { value: first_fiat.value } });
         }
 
+        if (hasTransferNotAllowedLoginid(selected_from.value)) {
+            selected_from.error = getSelectedError(selected_from.value, true);
+        }
+
         this.config.account_transfer.selected_from = selected_from;
         this.setMinimumFee();
         this.setTransferLimit();
@@ -898,9 +1120,15 @@ export default class CashierStore extends BaseStore {
     @action.bound
     onChangeTransferTo({ target }) {
         this.setErrorMessage('');
+        this.config.account_transfer.selected_to.error = '';
 
         const accounts = this.config.account_transfer.accounts_list;
         this.config.account_transfer.selected_to = accounts.find(account => account.value === target.value) || {};
+        if (hasTransferNotAllowedLoginid(this.config.account_transfer.selected_to.value)) {
+            this.config.account_transfer.selected_to.error = getSelectedError(
+                this.config.account_transfer.selected_to.value
+            );
+        }
         this.setTransferFee();
     }
 
@@ -977,7 +1205,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setIsPaymentAgent(is_payment_agent) {
-        if (!is_payment_agent && window.location.pathname.startsWith(routes.cashier_pa_transfer)) {
+        if (!is_payment_agent && window.location.pathname.endsWith(routes.cashier_pa_transfer)) {
             this.root_store.common.routeTo(routes.cashier_deposit);
         }
         this.config.payment_agent_transfer.is_payment_agent = !!is_payment_agent;
@@ -990,6 +1218,41 @@ export default class CashierStore extends BaseStore {
             max: max_withdrawal,
         };
     }
+
+    @action.bound
+    setConfirmationPaymentAgentTransfer({ amount, client_id, client_name, description }) {
+        this.config.payment_agent_transfer.confirm = {
+            amount,
+            client_id,
+            client_name,
+            description,
+        };
+    }
+
+    @action.bound
+    requestTryPaymentAgentTransfer = async ({ amount, currency, description, transfer_to }) => {
+        const payment_agent_transfer = await WS.authorized.paymentAgentTransfer({
+            amount,
+            currency,
+            description,
+            transfer_to,
+            dry_run: 1,
+        });
+        if (+payment_agent_transfer.paymentagent_transfer === 2) {
+            // show confirmation screen
+            this.setConfirmationPaymentAgentTransfer({
+                client_id: transfer_to,
+                client_name: payment_agent_transfer.client_to_full_name,
+                amount,
+                description,
+            });
+            this.setIsTryTransferSuccessful(true);
+        } else {
+            this.setErrorMessage(payment_agent_transfer.error, this.resetPaymentAgentTransfer);
+        }
+
+        return payment_agent_transfer;
+    };
 
     @action.bound
     setReceiptPaymentAgentTransfer({ amount_transferred, client_id, client_name }) {
@@ -1015,6 +1278,8 @@ export default class CashierStore extends BaseStore {
                 client_name: payment_agent_transfer.client_to_full_name,
             });
             this.setIsTransferSuccessful(true);
+            this.setIsTryTransferSuccessful(false);
+            this.setConfirmationPaymentAgentTransfer({});
         } else {
             this.setErrorMessage(payment_agent_transfer.error, this.resetPaymentAgentTransfer);
         }

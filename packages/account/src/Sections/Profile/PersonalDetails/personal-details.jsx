@@ -102,7 +102,14 @@ class PersonalDetailsForm extends React.Component {
         request.first_name = request.first_name.trim();
         request.last_name = request.last_name.trim();
         request.date_of_birth = toMoment(request.date_of_birth).format('YYYY-MM-DD');
-        // request.tax_identification_number = request.tax_identification_number ? request.tax_identification_number.trim() : '';
+        if (this.props.is_eu) {
+            request.tax_residence = request.tax_residence
+                ? getLocation(this.props.residence_list, request.tax_residence, 'value')
+                : '';
+            request.tax_identification_number = request.tax_identification_number
+                ? request.tax_identification_number.trim()
+                : '';
+        }
         request.citizen = request.citizen ? getLocation(this.props.residence_list, request.citizen, 'value') : '';
         request.place_of_birth = request.place_of_birth
             ? getLocation(this.props.residence_list, request.place_of_birth, 'value')
@@ -133,8 +140,13 @@ class PersonalDetailsForm extends React.Component {
             'address_line_1',
             'address_city',
         ];
+        if (this.props.is_eu) {
+            const required_tax_fields = ['citizen', 'tax_residence', 'tax_identification_number'];
+            required_fields.push(...required_tax_fields);
+        }
+
         validateValues((val) => val, required_fields, localize('This field is required'));
-        const only_alphabet_fields = ['first_name', 'last_name', 'address_state'];
+        const only_alphabet_fields = ['first_name', 'last_name'];
         validateValues(validLetterSymbol, only_alphabet_fields, localize('Only alphabet is allowed'));
 
         const { residence_list } = this.props;
@@ -205,9 +217,10 @@ class PersonalDetailsForm extends React.Component {
 
         const state_is_input_element = values.address_state && !this.props.states_list.length;
         if (state_is_input_element) {
-            const max_state_length = 35;
-            if (!validLength(values.address_state, { min: 0, max: max_state_length })) {
+            if (!validLength(values.address_state, { min: 0, max: 35 })) {
                 errors.address_state = localize('You should enter 0-35 characters.');
+            } else if (!/^[\w\s\W'.-;,]{0,35}$/.test(values.address_state)) {
+                errors.address_state = localize('State is not in a proper format');
             }
         }
 
@@ -254,7 +267,6 @@ class PersonalDetailsForm extends React.Component {
         form_initial_values.citizen = form_initial_values.citizen
             ? getLocation(residence_list, form_initial_values.citizen, 'text')
             : '';
-        // form_initial_values.tax_residence = form_initial_values.tax_residence ? getLocation(residence_list, tax_residence, 'text') : '';
         form_initial_values.place_of_birth = form_initial_values.place_of_birth
             ? getLocation(residence_list, form_initial_values.place_of_birth, 'text')
             : '';
@@ -265,7 +277,12 @@ class PersonalDetailsForm extends React.Component {
         } else {
             form_initial_values.address_state = '';
         }
-        // if (!form_initial_values.tax_identification_number) form_initial_values tax_identification_number = '';
+        if (this.props.is_eu) {
+            form_initial_values.tax_residence = form_initial_values.tax_residence
+                ? getLocation(residence_list, form_initial_values.tax_residence, 'text')
+                : '';
+            if (!form_initial_values.tax_identification_number) form_initial_values.tax_identification_number = '';
+        }
         return (
             <Formik
                 initialValues={form_initial_values}
@@ -295,7 +312,7 @@ class PersonalDetailsForm extends React.Component {
                                 className='account-form account-form__personal-details'
                                 onSubmit={handleSubmit}
                             >
-                                <FormBody scroll_offset={isMobile() ? '200px' : '80px'}>
+                                <FormBody scroll_offset={isMobile() ? '199px' : '80px'}>
                                     <FormSubHeader title={localize('Details')} />
                                     {!this.props.is_virtual && (
                                         <React.Fragment>
@@ -431,7 +448,11 @@ class PersonalDetailsForm extends React.Component {
                                                                 data-lpignore='true'
                                                                 autoComplete='new-password' // prevent chrome autocomplete
                                                                 type='text'
-                                                                label={localize('Citizenship*')}
+                                                                label={
+                                                                    this.props.is_eu
+                                                                        ? localize('Citizenship*')
+                                                                        : localize('Citizenship')
+                                                                }
                                                                 error={touched.citizen && errors.citizen}
                                                                 disabled={
                                                                     form_initial_values.citizen &&
@@ -441,7 +462,7 @@ class PersonalDetailsForm extends React.Component {
                                                                 onItemSelection={({ value, text }) =>
                                                                     setFieldValue('citizen', value ? text : '', true)
                                                                 }
-                                                                required
+                                                                required={this.props.is_eu}
                                                             />
                                                         )}
                                                     </Field>
@@ -450,8 +471,12 @@ class PersonalDetailsForm extends React.Component {
                                                     <MobileWrapper>
                                                         <SelectNative
                                                             placeholder={localize('Please select')}
-                                                            label={localize('Citizenship*')}
-                                                            required
+                                                            label={
+                                                                this.props.is_eu
+                                                                    ? localize('Citizenship*')
+                                                                    : localize('Citizenship')
+                                                            }
+                                                            required={this.props.is_eu}
                                                             disabled={
                                                                 form_initial_values.citizen && is_fully_authenticated
                                                             }
@@ -508,69 +533,117 @@ class PersonalDetailsForm extends React.Component {
                                                 />
                                             </fieldset>
                                             {/* Hide Account Opening Reason, uncomment block below to re-enable */}
-                                            {/* <fieldset className='account-form__fieldset'>
-                                            {account_opening_reason && is_fully_authenticated ?
-                                                <Input
-                                                    data-lpignore='true'
-                                                    type='text'
-                                                    name='account_opening_reason'
-                                                    label={localize('Account opening reason')}
-                                                    value={values.account_opening_reason}
-                                                    disabled
-                                                />
-                                                :
-                                                <Dropdown
-                                                    placeholder={'Account opening reason'}
-                                                    is_align_text_left
-                                                    name='account_opening_reason'
-                                                    list={account_opening_reason_list}
-                                                    value={values.account_opening_reason}
-                                                    onChange={handleChange}
-                                                    handleBlur={handleBlur}
-                                                    error={
-                                                        touched.account_opening_reason &&
-                                                        errors.account_opening_reason
-                                                    }
-                                                />
-                                            }
-                                        </fieldset> */}
-                                            {/* Hide Tax Information, uncomment block below to re-enable */}
-                                            {/* <FormSubHeader title={localize('Tax information')} />
-                                            <fieldset className='account-form__fieldset'>
-                                                <Field name='tax_residence_text'>
-                                                    {({ field }) => (
-                                                        <Autocomplete
-                                                            { ...field }
+                                            {/* <fieldset className='account-form__fieldset'> */}
+                                            {/*    {account_opening_reason && is_fully_authenticated ? ( */}
+                                            {/*        <Input */}
+                                            {/*            data-lpignore='true' */}
+                                            {/*            type='text' */}
+                                            {/*            name='account_opening_reason' */}
+                                            {/*            label={localize('Account opening reason')} */}
+                                            {/*            value={values.account_opening_reason} */}
+                                            {/*            disabled */}
+                                            {/*        /> */}
+                                            {/*    ) : ( */}
+                                            {/*        <Dropdown */}
+                                            {/*            placeholder={'Account opening reason'} */}
+                                            {/*            is_align_text_left */}
+                                            {/*            name='account_opening_reason' */}
+                                            {/*            list={account_opening_reason_list} */}
+                                            {/*            value={values.account_opening_reason} */}
+                                            {/*            onChange={handleChange} */}
+                                            {/*            handleBlur={handleBlur} */}
+                                            {/*            error={ */}
+                                            {/*                touched.account_opening_reason && */}
+                                            {/*                errors.account_opening_reason */}
+                                            {/*            } */}
+                                            {/*        /> */}
+                                            {/*    )} */}
+                                            {/* </fieldset> */}
+                                            {this.props.is_eu && (
+                                                <React.Fragment>
+                                                    {/* Hide Tax Information, uncomment block below to re-enable */}
+                                                    <FormSubHeader title={localize('Tax information')} />
+                                                    <fieldset className='account-form__fieldset'>
+                                                        <Field name='tax_residence'>
+                                                            {({ field }) => (
+                                                                <React.Fragment>
+                                                                    <DesktopWrapper>
+                                                                        <Autocomplete
+                                                                            {...field}
+                                                                            data-lpignore='true'
+                                                                            autoComplete='new-password' // prevent chrome autocomplete
+                                                                            type='text'
+                                                                            label={localize('Tax residence*')}
+                                                                            error={
+                                                                                touched.tax_residence &&
+                                                                                errors.tax_residence
+                                                                            }
+                                                                            disabled={
+                                                                                form_initial_values.tax_residence &&
+                                                                                is_fully_authenticated
+                                                                            }
+                                                                            list_items={this.props.residence_list}
+                                                                            onItemSelection={({ value, text }) =>
+                                                                                setFieldValue(
+                                                                                    'tax_residence',
+                                                                                    value ? text : '',
+                                                                                    true
+                                                                                )
+                                                                            }
+                                                                            required
+                                                                        />
+                                                                    </DesktopWrapper>
+                                                                    <MobileWrapper>
+                                                                        <SelectNative
+                                                                            placeholder={localize('Tax residence*')}
+                                                                            label={localize('Tax residence*')}
+                                                                            value={values.tax_residence}
+                                                                            list_items={this.props.residence_list}
+                                                                            error={
+                                                                                touched.tax_residence &&
+                                                                                errors.tax_residence
+                                                                            }
+                                                                            disabled={
+                                                                                form_initial_values.tax_residence &&
+                                                                                is_fully_authenticated
+                                                                            }
+                                                                            use_text={true}
+                                                                            onChange={(e) =>
+                                                                                setFieldValue(
+                                                                                    'tax_residence',
+                                                                                    e.target.value,
+                                                                                    true
+                                                                                )
+                                                                            }
+                                                                            required
+                                                                        />
+                                                                    </MobileWrapper>
+                                                                </React.Fragment>
+                                                            )}
+                                                        </Field>
+                                                    </fieldset>
+                                                    <fieldset className='account-form__fieldset'>
+                                                        <Input
                                                             data-lpignore='true'
-                                                            autoComplete='new-password' // prevent chrome autocomplete
                                                             type='text'
-                                                            label={localize('Tax residence')}
-                                                            error={touched.tax_residence_text && errors.tax_residence_text}
-                                                            disabled={tax_residence && is_fully_authenticated}
-                                                            list_items={this.props.residence_list}
-                                                            onItemSelection={
-                                                                ({ value, text }) => setFieldValue('tax_residence_text', value ? text : '', true)
+                                                            name='tax_identification_number'
+                                                            label={localize('Tax identification number*')}
+                                                            value={values.tax_identification_number}
+                                                            onChange={handleChange}
+                                                            onBlur={handleBlur}
+                                                            error={
+                                                                touched.tax_identification_number &&
+                                                                errors.tax_identification_number
                                                             }
+                                                            disabled={
+                                                                form_initial_values.tax_identification_number &&
+                                                                is_fully_authenticated
+                                                            }
+                                                            required
                                                         />
-                                                    )}
-                                                </Field>
-                                            </fieldset>
-                                            <fieldset className='account-form__fieldset'>
-                                                <Input
-                                                    data-lpignore='true'
-                                                    type='text'
-                                                    name='tax_identification_number'
-                                                    label={localize('Tax identification number')}
-                                                    value={values.tax_identification_number}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                    error={
-                                                        touched.tax_identification_number &&
-                                                        errors.tax_identification_number
-                                                    }
-                                                    disabled={tax_identification_number && is_fully_authenticated}
-                                                />
-                                            </fieldset> */}
+                                                    </fieldset>
+                                                </React.Fragment>
+                                            )}
                                             <FormSubHeader title={localize('Address')} />
                                             <div className='account-address__details-section'>
                                                 <fieldset className='account-form__fieldset'>
@@ -737,7 +810,10 @@ class PersonalDetailsForm extends React.Component {
                                                       !values.last_name ||
                                                       errors.phone ||
                                                       !values.phone ||
-                                                      errors.tax_identification_number ||
+                                                      (this.props.is_eu && errors.tax_residence) ||
+                                                      (this.props.is_eu && !values.tax_residence) ||
+                                                      (this.props.is_eu && errors.tax_identification_number) ||
+                                                      (this.props.is_eu && !values.tax_identification_number) ||
                                                       errors.place_of_birth ||
                                                       !values.place_of_birth ||
                                                       // (errors.account_opening_reason || !values.account_opening_reason) ||
@@ -795,8 +871,8 @@ class PersonalDetailsForm extends React.Component {
 
             const hidden_settings = [
                 'account_opening_reason',
-                'tax_residence',
-                'tax_identification_number',
+                !this.props.is_eu && 'tax_residence',
+                !this.props.is_eu && 'tax_identification_number',
                 'client_tnc_status',
                 'country_code',
                 'has_secret_answer',
@@ -822,6 +898,7 @@ export default connect(({ client }) => ({
     has_residence: client.has_residence,
     getChangeableFields: client.getChangeableFields,
     is_fully_authenticated: client.is_fully_authenticated,
+    is_eu: client.is_eu,
     is_virtual: client.is_virtual,
     residence_list: client.residence_list,
     states_list: client.states_list,

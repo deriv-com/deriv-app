@@ -21,23 +21,34 @@ const ModalElement = ({
     is_vertical_centered,
     is_vertical_bottom,
     is_vertical_top,
+    is_title_centered,
     header,
+    portalId,
     children,
     height,
     width,
+    renderTitle,
     small,
 }) => {
     const el_ref = React.useRef(document.createElement('div'));
-    const modal_root_ref = React.useRef(document.getElementById('modal_root'));
+    const el_portal_node = document.getElementById(portalId);
+    const modal_root_ref = React.useRef(el_portal_node || document.getElementById('modal_root'));
     const wrapper_ref = React.useRef();
 
     const is_datepicker_visible = () => modal_root_ref.current.querySelectorAll('.dc-datepicker__picker').length;
+    const is_dialog_visible = () => modal_root_ref.current.querySelectorAll('.dc-mobile-dialog').length;
 
-    const validateClickOutside = e =>
-        has_close_icon &&
-        !is_datepicker_visible() &&
-        is_open &&
-        !(elements_to_ignore && e?.path.find(el => elements_to_ignore.includes(el)));
+    const validateClickOutside = e => {
+        const is_absolute_modal_visible = document.getElementById('modal_root_absolute')?.hasChildNodes();
+        return (
+            has_close_icon &&
+            !is_datepicker_visible() &&
+            !is_dialog_visible() &&
+            is_open &&
+            !is_absolute_modal_visible &&
+            !(elements_to_ignore && e?.path.find(el => elements_to_ignore.includes(el)))
+        );
+    };
 
     useOnClickOutside(wrapper_ref, toggleModal, validateClickOutside);
 
@@ -51,6 +62,8 @@ const ModalElement = ({
             if (typeof onUnmount === 'function') onUnmount();
         };
     }, []);
+
+    const rendered_title = typeof renderTitle === 'function' ? renderTitle() : null;
 
     return ReactDOM.createPortal(
         <div
@@ -68,12 +81,22 @@ const ModalElement = ({
                 width: width || 'auto',
             }}
         >
-            {(header || title) && (
+            {(header || title || rendered_title) && (
                 <div
                     className={classNames('dc-modal-header', {
                         [`dc-modal-header--${className}`]: className,
+                        [`dc-modal-header--is-title-centered`]: is_title_centered,
                     })}
                 >
+                    {rendered_title && (
+                        <h3
+                            className={classNames('dc-modal-header__title', {
+                                [`dc-modal-header__title--${className}`]: className,
+                            })}
+                        >
+                            {rendered_title}
+                        </h3>
+                    )}
                     {title && (
                         <h3
                             className={classNames('dc-modal-header__title', {
@@ -116,9 +139,11 @@ ModalElement.propTypes = {
     header: PropTypes.node,
     id: PropTypes.string,
     is_open: PropTypes.bool,
+    is_title_centered: PropTypes.bool,
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
     small: PropTypes.bool,
+    renderTitle: PropTypes.func,
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.node]),
     toggleModal: PropTypes.func,
     elements_to_ignore: PropTypes.array,
@@ -132,13 +157,17 @@ const Modal = ({
     is_open,
     has_close_icon,
     height,
+    onEntered,
+    onExited,
     onMount,
     onUnmount,
-    onModalRendered,
+    portalId,
     small,
     is_vertical_bottom,
     is_vertical_centered,
     is_vertical_top,
+    is_title_centered,
+    renderTitle,
     title,
     toggleModal,
     width,
@@ -154,8 +183,9 @@ const Modal = ({
             enterDone: 'dc-modal__container--enter-done',
             exit: 'dc-modal__container--exit',
         }}
-        onEntered={onModalRendered}
         unmountOnExit
+        onEntered={onEntered}
+        onExited={onExited}
     >
         <ModalElement
             className={className}
@@ -165,12 +195,15 @@ const Modal = ({
             is_vertical_bottom={is_vertical_bottom}
             is_vertical_centered={is_vertical_centered}
             is_vertical_top={is_vertical_top}
+            is_title_centered={is_title_centered}
             title={title}
             toggleModal={toggleModal}
             has_close_icon={has_close_icon}
             height={height}
             onMount={onMount}
             onUnmount={onUnmount}
+            portalId={portalId}
+            renderTitle={renderTitle}
             small={small}
             width={width}
             elements_to_ignore={elements_to_ignore}
@@ -198,9 +231,13 @@ Modal.propTypes = {
     is_vertical_bottom: PropTypes.bool,
     is_vertical_centered: PropTypes.bool,
     is_vertical_top: PropTypes.bool,
+    is_title_centered: PropTypes.bool,
+    onEntered: PropTypes.func,
+    onExited: PropTypes.func,
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
-    onModalRendered: PropTypes.func,
+    portalId: PropTypes.string,
+    renderTitle: PropTypes.func,
     small: PropTypes.bool,
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.node]),
     toggleModal: PropTypes.func,

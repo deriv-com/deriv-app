@@ -12,7 +12,7 @@ Blockly.Blocks.tick = {
             colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary: Blockly.Colours.Base.colourTertiary,
-            tooltip: localize('Returns the value of the latest tick'),
+            tooltip: localize('Returns the value of the last tick'),
             category: Blockly.Categories.Tick_Analysis,
         };
     },

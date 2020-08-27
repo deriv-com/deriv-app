@@ -66,8 +66,10 @@ export default class ProfitTableStore extends BaseStore {
         const response = await WS.profitTable(
             batch_size,
             !should_load_partially ? this.data.length : undefined,
-            /* Last fetch time (`partial_fetch_time`) should not be set to `date_from` while fetching latest profit table records because 
-            date filtering happens based on `buy_time` of a contract. If we visit profit table and then sell a contract which was purchased earlier, that particular contract won't be visible in profit table when visited again. */
+            /* Last fetch time (`partial_fetch_time`) should not be set to `date_from` 
+            while fetching latest profit table records because date filtering happens based on `buy_time` of a contract. 
+            If we visit profit table and then sell a contract which was purchased earlier, 
+            that particular contract won't be visible in profit table when visited again. */
             getDateBoundaries(this.date_from, this.date_to, 0, should_load_partially)
         );
 

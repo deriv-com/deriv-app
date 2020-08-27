@@ -38,7 +38,7 @@ class ProofOfAddressForm extends React.Component {
     }
 
     componentDidMount() {
-        const { fetchResidenceList, fetchStatesList, account_settings } = this.props;
+        const { fetchResidenceList, fetchStatesList } = this.props;
 
         fetchResidenceList().then(() => {
             Promise.all([fetchStatesList(), WS.wait('get_settings')]).then(() => {
@@ -48,7 +48,7 @@ class ProofOfAddressForm extends React.Component {
                     address_city,
                     address_state,
                     address_postcode,
-                } = account_settings;
+                } = this.props.account_settings;
                 this.setState({
                     address_line_1,
                     address_line_2,

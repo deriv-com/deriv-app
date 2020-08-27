@@ -25,7 +25,9 @@ export const getMarketName = underlying => (underlying ? getMarketNamesMap()[und
 
 export const getTradeTypeName = category => (category ? getContractConfig()[category.toUpperCase()].name : null);
 
-export const getContractDurationType = longcode => {
+export const getContractDurationType = (longcode, shortcode) => {
+    if (/^MULTUP|MULTDOWN/.test(shortcode)) return '';
+
     const duration_pattern = new RegExp('ticks|tick|seconds|minutes|minute|hour|hours');
     const extracted = duration_pattern.exec(longcode);
     if (extracted !== null) {

@@ -80,7 +80,7 @@
 .account-wizard {
     display: grid;
     grid-template-rows: 13rem minmax(10rem, 1fr);
-    height: 100%;
+    height: calc(100% - 57px);
     position: relative;
     width: 100%;
 

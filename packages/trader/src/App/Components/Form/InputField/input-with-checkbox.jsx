@@ -8,6 +8,7 @@ import InputField from './input-field.jsx';
 
 const InputWithCheckbox = ({
     addToast,
+    removeToast,
     classNameInlinePrefix,
     classNameInput,
     className,
@@ -39,9 +40,13 @@ const InputWithCheckbox = ({
         setChecked(defaultChecked);
     }, [defaultChecked]);
 
+    // eslint-disable-next-line consistent-return
     React.useEffect(() => {
         if (isMobile() && error_messages?.length > 0) {
             showErrorToast(error_messages[0]);
+            return () => {
+                removeErrorToast();
+            };
         }
     }, [error_messages]);
 
@@ -120,6 +125,12 @@ const InputWithCheckbox = ({
         }
     };
 
+    const removeErrorToast = () => {
+        if (typeof removeToast === 'function') {
+            removeToast(`${name}__error`);
+        }
+    };
+
     return (
         <React.Fragment>
             <div ref={input_wrapper_ref} className='input-wrapper--inline'>
@@ -156,6 +167,7 @@ const InputWithCheckbox = ({
 
 InputWithCheckbox.propTypes = {
     addToast: PropTypes.func,
+    removeToast: PropTypes.func,
     checkbox_tooltip_label: PropTypes.oneOfType([PropTypes.node, PropTypes.object, PropTypes.string]),
     className: PropTypes.string,
     classNameInlinePrefix: PropTypes.string,

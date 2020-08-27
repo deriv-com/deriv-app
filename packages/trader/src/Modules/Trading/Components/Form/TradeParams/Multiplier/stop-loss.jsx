@@ -7,6 +7,7 @@ import { connect } from 'Stores/connect';
 
 const StopLoss = ({
     addToast,
+    removeToast,
     amount,
     currency,
     has_stop_loss,
@@ -32,6 +33,7 @@ const StopLoss = ({
         <Fieldset className='trade-container__fieldset'>
             <InputWithCheckbox
                 addToast={addToast}
+                removeToast={removeToast}
                 classNameInlinePrefix='trade-container__currency'
                 classNameInput='trade-container__input'
                 currency={currency}
@@ -68,6 +70,7 @@ StopLoss.propTypes = {
 
 export default connect(({ modules, client, ui }, props) => ({
     addToast: ui.addToast,
+    removeToast: ui.removeToast,
     is_single_currency: client.is_single_currency,
     amount: modules.trade.amount,
     currency: modules.trade.currency,

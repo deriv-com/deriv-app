@@ -17,6 +17,11 @@ const Popover = ({ ...props }) => {
         return undefined;
     }, [popover_ref, props.has_error]);
 
+    const onClick = () =>
+        React.useCallback(() => {
+            setIsBubbleOpen(!is_bubble_open);
+        }, [is_bubble_open]);
+
     const toggleOpen = React.useCallback(() => {
         if (has_external_open_state) return;
         setIsPopoverOpen(Boolean(props.message));
@@ -61,10 +66,10 @@ const Popover = ({ ...props }) => {
         icon,
         id,
         is_open,
-        margin,
+        margin = 0,
         message,
         zIndex,
-        relative_render,
+        relative_render = 'false',
     } = props;
 
     const icon_class_name = classNames(classNameTargetIcon, icon);
@@ -152,6 +157,7 @@ const Popover = ({ ...props }) => {
                                     id={id}
                                     onMouseEnter={onMouseEnter}
                                     onMouseLeave={onMouseLeave}
+                                    onClick={onClick}
                                     className={classNames(classNameBubble, 'dc-popover__bubble', {
                                         'dc-popover__bubble--error': has_error,
                                     })}
@@ -200,11 +206,6 @@ const Popover = ({ ...props }) => {
             )}
         </div>
     );
-};
-
-Popover.defaultProps = {
-    margin: 0,
-    relative_render: false,
 };
 
 Popover.propTypes = {

@@ -48,7 +48,7 @@ export const validNumber = (value, opts) => {
 
     if (!(options.type === 'float' ? /^\d*(\.\d+)?$/ : /^\d+$/).test(value) || isNaN(value)) {
         is_ok = false;
-        message = form_error_messages.number;
+        message = form_error_messages.number();
     } else if (
         options.type === 'float' &&
         options.decimals &&

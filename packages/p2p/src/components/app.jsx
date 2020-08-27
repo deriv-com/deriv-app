@@ -5,7 +5,7 @@ import { getPropertyValue } from '@deriv/shared';
 import { Tabs, Modal } from '@deriv/components';
 import { Dp2pProvider } from 'Components/context/dp2p-context';
 import ServerTime from 'Utils/server-time';
-import { init as WebsocketInit, subscribeWS, waitWS } from 'Utils/websocket';
+import { subscribeWS, waitWS } from 'Utils/websocket';
 import { localize, setLanguage } from './i18next';
 import BuySell from './buy-sell/buy-sell.jsx';
 import MyAds from './my-ads/my-ads.jsx';
@@ -22,6 +22,7 @@ const App = props => {
     const { general_store } = useStores();
     const {
         className,
+        client,
         custom_strings,
         is_mobile,
         lang,
@@ -40,7 +41,7 @@ const App = props => {
         is_mounted.current = true;
 
         setLanguage(lang);
-        WebsocketInit(websocket_api, general_store.client.local_currency_config.decimal_places);
+        general_store.setWebsocketInit(websocket_api, general_store.client.local_currency_config.decimal_places);
         ServerTime.init(server_time);
 
         // force safari refresh on back/forward

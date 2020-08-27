@@ -1,7 +1,7 @@
 import { observable, action } from 'mobx';
 import OrderInfo, { orderToggleIndex } from '../src/components/orders/order-info.js';
 import { getPropertyValue, isEmptyObject, isProduction } from '@deriv/shared';
-import { init as getModifiedP2POrderList, requestWS,  subscribeWS } from 'Utils/websocket.js';
+import { init as WebsocketInit, getModifiedP2POrderList, requestWS, subscribeWS } from 'Utils/websocket.js';
 
 export default class GeneralStore {
     @observable active_index = 0;
@@ -10,7 +10,7 @@ export default class GeneralStore {
     @observable chat_info = {
         app_id: '',
         user_id: '',
-        token: ''
+        token: '',
     };
     @observable inactive_notification_count = 0;
     @observable is_advertiser = false;
@@ -25,7 +25,7 @@ export default class GeneralStore {
     @observable parameters = null;
     @observable poi_status = null;
     @observable show_popup = false;
-    
+
     list_item_limit = 20;
     path = {
         buy_sell: 0,
@@ -36,29 +36,28 @@ export default class GeneralStore {
     props = {};
     ws_subscriptions = {};
 
-    get client(){
+    get client() {
         return this.props?.client || {};
     }
 
     @action.bound
     createAdvertiser(name) {
-        this.ws_subscriptions.advertiser_subscription = subscribeWS(
-            { p2p_advertiser_create: 1, name, subscribe: 1 },
-            [this.setCreateAdvertiser]
-        );
-    };
+        this.ws_subscriptions.advertiser_subscription = subscribeWS({ p2p_advertiser_create: 1, name, subscribe: 1 }, [
+            this.setCreateAdvertiser,
+        ]);
+    }
 
     getLocalStorageSettings = () => JSON.parse(localStorage.getItem('p2p_settings') || '{}');
 
     getLocalStorageSettingsForLoginId = () => {
-        const local_storage_settings = this.getLocalStorageSettings()[this.client.loginid] 
-        
+        const local_storage_settings = this.getLocalStorageSettings()[this.client.loginid];
+
         if (isEmptyObject(local_storage_settings)) {
             return { is_cached: false, notifications: [] };
         } else {
             return local_storage_settings;
         }
-    }
+    };
 
     @action.bound
     handleNotifications(old_orders, new_orders) {
@@ -105,24 +104,24 @@ export default class GeneralStore {
         });
 
         this.updateP2pNotifications(notifications);
-    };
+    }
 
     @action.bound
     handleTabClick(idx) {
         this.setActiveIndex(idx);
         this.setParameters(null);
-    };
+    }
 
     @action.bound
     onNicknamePopupClose() {
         this.setShowPopup(false);
-    };
+    }
 
     @action.bound
     redirectTo(path_name, params = null) {
         this.setActiveIndex(this.path[path_name]);
         this.setParameters(params);
-    };
+    }
 
     @action.bound
     setActiveIndex(active_index) {
@@ -156,8 +155,7 @@ export default class GeneralStore {
                 this.setChatInfoState(chat_info);
             });
         }
-        
-    };
+    }
 
     @action.bound
     setChatInfoState(chat_info) {
@@ -175,7 +173,7 @@ export default class GeneralStore {
         const token = getPropertyValue(p2p_advertiser_info, ['chat_token']);
 
         this.setChatInfo(user_id, token);
-    };
+    }
 
     @action.bound
     setCreateAdvertiser(response) {
@@ -191,7 +189,7 @@ export default class GeneralStore {
             this.setChatInfo(p2p_advertiser_create.chat_user_id, p2p_advertiser_create.chat_token);
             this.toggleNicknamePopup();
         }
-    };
+    }
 
     @action.bound
     setInactiveNotificationCount(inactive_notification_count) {
@@ -214,11 +212,7 @@ export default class GeneralStore {
     }
 
     @action.bound
-<<<<<<< HEAD
     setNickname(nickname) {
-=======
-    setNickname(nickname){
->>>>>>> 6b48330b6... refactor app.jsx
         this.nickname = nickname;
     }
 
@@ -238,7 +232,7 @@ export default class GeneralStore {
     }
 
     @action.bound
-    setOrderTableType(order_table_type){
+    setOrderTableType(order_table_type) {
         this.order_table_type = order_table_type;
     }
 
@@ -277,7 +271,7 @@ export default class GeneralStore {
             this.setOrderOffset(updated_orders.length);
             this.setOrders(updated_orders);
         }
-    };
+    }
 
     @action.bound
     setParameters(parameters) {
@@ -294,8 +288,13 @@ export default class GeneralStore {
         this.show_popup = show_popup;
     }
 
+    @action.bound
+    setWebsocketInit = (websocket, local_currency_decimal_places) => {
+        WebsocketInit(websocket, local_currency_decimal_places);
+    };
+
     toggleNicknamePopup() {
-        this.setShowPopup(!this.show_popup)
+        this.setShowPopup(!this.show_popup);
     }
 
     @action.bound
@@ -328,7 +327,7 @@ export default class GeneralStore {
                 }
             });
         }
-    };
+    }
 
     @action.bound
     updateP2pNotifications(notifications) {
@@ -352,5 +351,5 @@ export default class GeneralStore {
         if (typeof this.props?.setNotificationCount === 'function') {
             this.props.setNotificationCount(notification_count);
         }
-    };  
+    }
 }

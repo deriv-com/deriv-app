@@ -102,7 +102,6 @@ class Header extends React.Component {
                                 is_svg={is_svg}
                                 is_virtual={is_virtual}
                                 toggleTheme={setDarkMode}
-                                Opo
                                 platform_header={getPlatformHeader(app_routing_history)}
                                 platform_switcher={
                                     <PlatformSwitcher

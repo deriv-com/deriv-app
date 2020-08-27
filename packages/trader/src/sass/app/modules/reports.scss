@@ -12,9 +12,6 @@ $side-padding: 1.2em;
         justify-content: space-between;
         padding: 0 24px 16px;
 
-        &--statement {
-            justify-content: flex-end;
-        }
         &-description {
             &--heading {
                 @include typeface(--title-left-bold-black, none);

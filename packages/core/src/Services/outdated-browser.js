@@ -30,23 +30,20 @@ const OutdatedBrowser = (() => {
     const updateStore = action('showError', () => {
         if (common_store) {
             common_store.showError({
-                message: {
-                    message: (
-                        <Localize
-                            i18n_default_text='Your web browser is out of date and may affect your trading experience. Please <0>update your browser</0>.'
-                            components={[
-                                <a
-                                    key={0}
-                                    href='http://outdatedbrowser.com'
-                                    rel='noopener noreferrer'
-                                    target='_blank'
-                                    className='link'
-                                />,
-                            ]}
-                        />
-                    ),
-                    has_html: true,
-                },
+                message: (
+                    <Localize
+                        i18n_default_text='Your web browser is out of date and may affect your trading experience. Please <0>update your browser</0>.'
+                        components={[
+                            <a
+                                key={0}
+                                href='http://outdatedbrowser.com'
+                                rel='noopener noreferrer'
+                                target='_blank'
+                                className='link'
+                            />,
+                        ]}
+                    />
+                ),
             });
         }
     });

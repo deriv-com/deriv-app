@@ -202,6 +202,8 @@ class MT5PasswordManagerModal extends React.Component {
                 });
             } else if (!validPassword(values.new_password)) {
                 errors.new_password = localize('You need to include uppercase and lowercase letters, and numbers.');
+            } else if (values.new_password.toLowerCase() === this.props.email.toLowerCase()) {
+                errors.new_password = localize('Your password cannot be the same as your email address.');
             }
 
             if (!values.old_password && values.old_password !== undefined) {
@@ -506,13 +508,15 @@ class MT5PasswordManagerModal extends React.Component {
 }
 
 MT5PasswordManagerModal.propTypes = {
+    email: PropTypes.string,
     is_visible: PropTypes.bool,
     selected_account: PropTypes.string,
     selected_login: PropTypes.string,
     toggleModal: PropTypes.func,
 };
 
-export default connect(({ modules: { mt5 }, ui }) => ({
+export default connect(({ modules: { mt5 }, client, ui }) => ({
+    email: client.email,
     enableApp: ui.enableApp,
     disableApp: ui.disableApp,
     sendVerifyEmail: mt5.sendVerifyEmail,

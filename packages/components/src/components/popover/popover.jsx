@@ -227,7 +227,7 @@ Popover.defaultProps = {
     portal_container: 'deriv_app',
     margin: 0,
     relative_render: false,
-    should_disable_pointer_events: true,
+    should_disable_pointer_events: false,
 };
 
 Popover.propTypes = {

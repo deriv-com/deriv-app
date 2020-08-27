@@ -52,7 +52,12 @@ const SearchBox = ({ is_search_loading, onSearch, onSearchBlur, onSearchClear, o
 );
 
 const IconButton = ({ popover_message, icon, icon_id, icon_color, iconOnClick }) => (
-    <Popover alignment='bottom' message={popover_message} zIndex={popover_zindex.TOOLBAR}>
+    <Popover
+        alignment='bottom'
+        message={popover_message}
+        zIndex={popover_zindex.TOOLBAR}
+        should_disable_pointer_events={true}
+    >
         <Icon
             icon={icon}
             id={icon_id}
@@ -64,7 +69,7 @@ const IconButton = ({ popover_message, icon, icon_id, icon_color, iconOnClick })
 );
 
 const ToolbarButton = ({ popover_message, button_id, button_classname, buttonOnClick, icon, button_text }) => (
-    <Popover alignment='bottom' message={popover_message}>
+    <Popover alignment='bottom' message={popover_message} should_disable_pointer_events={true}>
         <Button id={button_id} className={button_classname} has_effect onClick={buttonOnClick} icon={icon} green>
             {button_text}
         </Button>

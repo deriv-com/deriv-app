@@ -84,7 +84,6 @@ class TogglePositionsDrawerDialog extends React.Component {
                     alignment='right'
                     classNameBubble='trade-container__popover'
                     is_bubble_hover_enabled
-                    should_disable_pointer_events={false}
                     margin={2}
                     zIndex={2}
                     message={

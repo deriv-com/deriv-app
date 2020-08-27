@@ -77,11 +77,13 @@ export class AccountActions extends React.Component {
                             is_visible={is_notifications_visible}
                             toggleDialog={toggleNotifications}
                             tooltip_message={localize('View notifications')}
+                            should_disable_pointer_events={true}
                         />
                         <Popover
                             classNameBubble='account-settings-toggle__tooltip'
                             alignment='bottom'
                             message={localize('Manage account settings')}
+                            should_disable_pointer_events={true}
                         >
                             <BinaryLink className='account-settings-toggle' to={routes.personal_details}>
                                 <Icon icon='IcUserOutline' />

@@ -94,7 +94,8 @@ class RealAccountSignup extends React.Component {
                 {
                     body: () => (
                         <SetCurrency
-                            onLoading={this.showLoadingModal}
+                            setLoading={this.setLoading}
+                            is_loading={this.state.is_loading}
                             onError={this.showErrorModal}
                             onClose={this.closeModal}
                             onSuccessSetAccountCurrency={this.showSetCurrencySuccess}

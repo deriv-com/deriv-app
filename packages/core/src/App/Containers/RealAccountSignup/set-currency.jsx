@@ -6,6 +6,7 @@ import { connect } from 'Stores/connect';
 import CurrencySelector from './currency-selector.jsx';
 import { generateValidationFunction } from './form-validations';
 import { currency_selector_config } from './currency-selector-form';
+import LoadingModal from './real-account-signup-loader.jsx';
 import 'Sass/set-currency.scss';
 import 'Sass/change-account.scss';
 
@@ -23,7 +24,7 @@ class SetCurrency extends React.Component {
     clearError = () => this.setState({ form_error: '' });
 
     setCurrency = (obj, setSubmitting) => {
-        this.props.onLoading();
+        this.props.setLoading(true);
         const { currency } = obj;
         if (currency) {
             this.props
@@ -34,7 +35,8 @@ class SetCurrency extends React.Component {
                 })
                 .catch(error_message => {
                     this.props.onError(error_message);
-                });
+                })
+                .finally(() => this.props.setLoading(false));
         }
     };
 
@@ -51,6 +53,7 @@ class SetCurrency extends React.Component {
     }
 
     render() {
+        if (this.props.is_loading) return <LoadingModal />;
         return (
             <div
                 className={classNames('set-currency-modal', {

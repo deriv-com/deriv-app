@@ -1,18 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {
-    Button,
-    Checkbox,
-    Icon,
-    Modal,
-    RadioGroup,
-    Input,
-    MobileWrapper,
-    Div100vhContainer,
-    FadeWrapper,
-    PageOverlay,
-} from '@deriv/components';
+import { Button, Checkbox, Icon, Modal, RadioGroup, Input, MobileFullPageModal } from '@deriv/components';
 import { Formik, Form, Field } from 'formik';
 import { localize } from '@deriv/translations';
 import { config, save_types } from '@deriv/bot-skeleton';
@@ -150,24 +139,25 @@ const SaveModal = ({
     is_mobile,
 }) =>
     is_mobile ? (
-        <FadeWrapper is_visible={is_save_modal_open} className='save-modal__wrapper' keyname='save-modal__wrapper'>
-            <PageOverlay header={localize('Save Strategy')} onClickClose={toggleSaveModal}>
-                <MobileWrapper>
-                    <Div100vhContainer className='save-modal__wrapper--is-mobile' height_offset='80px'>
-                        <SaveModalForm
-                            bot_name={bot_name}
-                            button_status={button_status}
-                            is_authorised={is_authorised}
-                            onConfirmSave={onConfirmSave}
-                            onDriveConnect={onDriveConnect}
-                            validateBotName={validateBotName}
-                            toggleSaveModal={toggleSaveModal}
-                            is_mobile={is_mobile}
-                        />
-                    </Div100vhContainer>
-                </MobileWrapper>
-            </PageOverlay>
-        </FadeWrapper>
+        <MobileFullPageModal
+            is_modal_open={is_save_modal_open}
+            className='save-modal'
+            header={localize('Save strategy')}
+            onClickClose={toggleSaveModal}
+            offset='80px'
+            page_overlay
+        >
+            <SaveModalForm
+                bot_name={bot_name}
+                button_status={button_status}
+                is_authorised={is_authorised}
+                onConfirmSave={onConfirmSave}
+                onDriveConnect={onDriveConnect}
+                validateBotName={validateBotName}
+                toggleSaveModal={toggleSaveModal}
+                is_mobile={is_mobile}
+            />
+        </MobileFullPageModal>
     ) : (
         <Modal
             title={'Save Strategy'}

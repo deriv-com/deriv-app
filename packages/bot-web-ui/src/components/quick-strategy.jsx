@@ -10,9 +10,7 @@ import {
     Tabs,
     IconTradeTypes,
     ThemedScrollbars,
-    Div100vhContainer,
-    FadeWrapper,
-    PageOverlay,
+    MobileFullPageModal,
 } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { Formik, Form, Field } from 'formik';
@@ -407,17 +405,16 @@ const QuickStrategy = props => {
     return (
         <>
             {is_mobile ? (
-                <FadeWrapper
-                    is_visible={is_strategy_modal_open}
-                    className='quick-strategy__wrapper'
-                    keyname='quick-strategy__wrapper'
+                <MobileFullPageModal
+                    is_modal_open={is_strategy_modal_open}
+                    className='quick-strategy'
+                    header={localize('Quick Strategy')}
+                    onClickClose={toggleStrategyModal}
+                    offset='80px'
+                    page_overlay
                 >
-                    <PageOverlay header={localize('Quick Strategy')} onClickClose={toggleStrategyModal}>
-                        <Div100vhContainer className='quick-strategy__wrapper--is-mobile' height_offset='80px'>
-                            <ContentRenderer {...props} />
-                        </Div100vhContainer>
-                    </PageOverlay>
-                </FadeWrapper>
+                    <ContentRenderer {...props} />
+                </MobileFullPageModal>
             ) : (
                 <Modal
                     title={localize('Quick strategy')}

@@ -37,8 +37,7 @@ div.radio-group {
     &__save-type {
         display: flex;
         justify-content: center;
-        margin-top: 0;
-        padding: 38px 0 30px;
+        margin: 8% 0px;
 
         .dc-radio {
             &-group {
@@ -129,37 +128,11 @@ div.radio-group {
 
 .save-modal__wrapper {
     @include mobile {
-        position: fixed;
-        z-index: 6;
-        width: 100%;
-        left: 0px;
-        top: 80px;
-        background: var(--general-main-1);
-
-        & form {
-            height: 100%;
+        form {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-        }
-        & .dc-page-overlay {
-            margin-top: -40px;
-
-            &__header {
-                position: fixed;
-                top: 4rem;
-                width: 100%;
-                height: 4rem;
-            }
-            &__content {
-                margin-top: 40px;
-
-                & .modal__content {
-                    padding: 1.6rem;
-                    max-height: calc(100vh - 150px);
-                    overflow: overlay;
-                }
-            }
+            height: 100%;
         }
         & .dc-input {
             width: 100% !important;
@@ -171,12 +144,16 @@ div.radio-group {
         & .save-type__drive-status {
             position: relative;
         }
+        & .modal__content {
+            padding: 0px 1.6rem;
+            height: calc(100% - #{$MOBILE_WRAPPER_FOOTER_HEIGHT});
+        }
         & .modal__footer {
             display: flex;
             flex-direction: row;
             justify-content: flex-end;
             padding: 1.4rem;
-            height: 6.8rem;
+            height: #{$MOBILE_WRAPPER_FOOTER_HEIGHT};
             border-top: solid 0.1em var(--general-section-1);
 
             &--button {

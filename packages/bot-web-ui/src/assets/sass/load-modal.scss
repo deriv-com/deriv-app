@@ -248,33 +248,6 @@
             text-align: center;
         }
     }
-
-    @include mobile {
-        &__wrapper {
-            position: absolute;
-            z-index: 6;
-            width: 100%;
-            left: 0;
-            top: 0;
-            background: var(--general-main-1);
-        }
-        &--is-mobile {
-            width: 100%;
-
-            & .dc-tabs {
-                display: flex;
-                flex-direction: column;
-                height: 100%;
-
-                &__list {
-                    height: 4rem;
-                }
-                &__content {
-                    height: calc(100% - 4rem);
-                }
-            }
-        }
-    }
 }
 
 .picker {

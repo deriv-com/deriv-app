@@ -16,7 +16,6 @@ const ContractCardHeader = ({
     has_progress_slider,
     id,
     is_mobile,
-    is_positions,
     is_sell_requested,
     is_valid_to_sell,
     getContractTypeDisplay,

@@ -32,7 +32,6 @@ const MultiplierCardBody = ({
     const cancellation_price = getCancellationPrice(contract_info);
 
     return (
-        // <div classNames='contract-card__body-wrapper-multiplier'>
         <React.Fragment>
             <div
                 className={classNames({

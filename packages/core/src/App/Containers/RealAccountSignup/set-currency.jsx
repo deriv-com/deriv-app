@@ -54,10 +54,10 @@ class SetCurrency extends React.Component {
         return (
             <div
                 className={classNames('set-currency-modal', {
-                    'set-currency-modal--disabled': this.no_crypto_available(),
+                    'set-currency-modal--disabled': this.no_crypto_available,
                 })}
             >
-                {this.no_crypto_available() && (
+                {this.no_crypto_available && (
                     <div className='set-currency-modal--disabled-message'>
                         <p>
                             {localize(

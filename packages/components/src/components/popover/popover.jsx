@@ -5,17 +5,20 @@ import TinyPopover, { ArrowContainer } from 'react-tiny-popover';
 import Icon from '../icon';
 
 const Popover = ({ ...props }) => {
-    const popover_ref = React.useRef();
+    const ref = React.useRef();
 
     const [is_popover_open, setIsPopoverOpen] = React.useState(false);
     const [is_bubble_open, setIsBubbleOpen] = React.useState(false);
+    const [popover_ref, setPopoverRef] = React.useState(undefined);
 
     const has_external_open_state = props.is_open !== undefined;
 
     React.useEffect(() => {
+        if (ref.current) {
+            setPopoverRef(ref.current);
+        }
         setIsPopoverOpen(!!props.has_error);
-        return undefined;
-    }, [popover_ref, props.has_error]);
+    }, [ref.current, props.has_error]);
 
     const onClick = () =>
         React.useCallback(() => {
@@ -25,32 +28,28 @@ const Popover = ({ ...props }) => {
     const toggleOpen = React.useCallback(() => {
         if (has_external_open_state) return;
         setIsPopoverOpen(Boolean(props.message));
-    }, [popover_ref, props.message, has_external_open_state]);
+    }, [props.message]);
 
     const toggleClose = React.useCallback(() => {
         if (has_external_open_state) return;
         if (props.is_bubble_hover_enabled) {
-            toggleIsOpenOnHoverPopoverBubble();
+            setTimeout(() => {
+                // add delay to check if mouse is hovered on popover bubble
+                setIsBubbleOpen(props.is_bubble_hover_enabled ? is_bubble_open : false);
+            }, 50);
         } else {
             setIsPopoverOpen(false);
         }
-    }, [popover_ref, props.is_bubble_hover_enabled, has_external_open_state]);
-
-    const toggleIsOpenOnHoverPopoverBubble = React.useCallback(() => {
-        setTimeout(() => {
-            // add delay to check if mouse is hovered on popover bubble
-            setIsPopoverOpen(props.is_bubble_hover_enabled ? is_bubble_open : false);
-        }, 50);
-    }, [popover_ref, props.is_bubble_hover_enabled]);
+    }, [props.is_bubble_hover_enabled]);
 
     const onMouseEnter = React.useCallback(() => {
         setIsBubbleOpen(true);
-    }, [popover_ref]);
+    }, []);
 
     const onMouseLeave = React.useCallback(() => {
         setIsPopoverOpen(false);
         setIsBubbleOpen(false);
-    }, [popover_ref]);
+    }, []);
 
     const {
         alignment,
@@ -66,10 +65,11 @@ const Popover = ({ ...props }) => {
         icon,
         id,
         is_open,
-        margin = 0,
+        margin,
         message,
         zIndex,
-        relative_render = 'false',
+        relative_render,
+        should_disable_pointer_events,
     } = props;
 
     const icon_class_name = classNames(classNameTargetIcon, icon);
@@ -78,16 +78,19 @@ const Popover = ({ ...props }) => {
         <div className={classNames({ 'dc-popover__wrapper': relative_render })}>
             {relative_render && (
                 <div className='dc-popover__container' style={{ zIndex: zIndex || 1 }}>
-                    <div ref={popover_ref} className='dc-popover__container-relative' />
+                    <div ref={ref} className='dc-popover__container-relative' />
                 </div>
             )}
-            {(popover_ref.current || !relative_render) && (
+            {(popover_ref || !relative_render) && (
                 <TinyPopover
                     isOpen={is_open ?? is_popover_open}
                     position={alignment}
                     transitionDuration={0.25}
                     padding={margin + 8}
-                    contentDestination={relative_render ? popover_ref.current : document.body}
+                    contentDestination={relative_render ? popover_ref : document.body}
+                    containerClassName={classNames({
+                        'react-tiny-popover-container--disabled-pointer-event': should_disable_pointer_events,
+                    })}
                     {...(relative_render
                         ? {
                               contentLocation: ({ targetRect, popoverRect, nudgedLeft }) => {
@@ -206,6 +209,11 @@ const Popover = ({ ...props }) => {
             )}
         </div>
     );
+};
+
+Popover.defaultProps = {
+    margin: 0,
+    relative_render: false,
 };
 
 Popover.propTypes = {

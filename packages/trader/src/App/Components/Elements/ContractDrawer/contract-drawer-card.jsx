@@ -49,6 +49,7 @@ const ContractDrawerCard = ({
             is_sold={is_sold}
             profit_loss={profit}
             server_time={server_time}
+            should_show_profit_loss_overlay={false}
             should_show_result_overlay={false}
             status={status}
         />

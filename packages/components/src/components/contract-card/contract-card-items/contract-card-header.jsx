@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { isHighLow, getCurrentTick } from '@deriv/shared';
+import { isHighLow, getCurrentTick, isBot } from '@deriv/shared';
 import ContractTypeCell from './contract-type-cell.jsx';
 import Button from '../../button';
 import Icon from '../../icon';
@@ -40,8 +40,8 @@ const ContractCardHeader = ({
         <>
             <div
                 className={classNames('contract-card__grid', 'contract-card__grid-underlying-trade', {
-                    'contract-card__grid-underlying-trade--mobile': is_mobile,
-                    'contract-card__grid-underlying-trade--positions': is_positions,
+                    'contract-card__grid-underlying-trade--mobile': is_mobile && !multiplier,
+                    'contract-card__grid-underlying-trade--trader': !isBot(),
                 })}
             >
                 <div id='contract_card_underlying_label' className='contract-card__underlying-name'>
@@ -84,6 +84,9 @@ const ContractCardHeader = ({
                     ) : null}
                 </MobileWrapper>
             </div>
+            <MobileWrapper>
+                <div className='progress-slider--completed' />
+            </MobileWrapper>
             <DesktopWrapper>
                 {(!has_progress_slider || !!is_sold) && <div className='progress-slider--completed' />}
                 {has_progress_slider && !is_sold && (

@@ -16,7 +16,15 @@ import MobileWrapper from '../../mobile-wrapper';
 import { ResultStatusIcon } from '../result-overlay/result-overlay.jsx';
 import ProgressSliderMobile from '../../progress-slider-mobile';
 
-const MultiplierCardBody = ({ contract_info, contract_update, currency, getCardLabels, is_sold, status }) => {
+const MultiplierCardBody = ({
+    contract_info,
+    contract_update,
+    currency,
+    getCardLabels,
+    is_mobile,
+    is_sold,
+    status,
+}) => {
     const { buy_price, bid_price, profit, limit_order } = contract_info;
 
     const total_profit = bid_price - buy_price;
@@ -24,12 +32,21 @@ const MultiplierCardBody = ({ contract_info, contract_update, currency, getCardL
     const cancellation_price = getCancellationPrice(contract_info);
 
     return (
-        <div className='contract-card__body-wrapper'>
-            <div className='contract-card-items-wrapper'>
-                <ContractCardItem header={getCardLabels().STAKE}>
+        // <div classNames='contract-card__body-wrapper-multiplier'>
+        <React.Fragment>
+            <div
+                className={classNames({
+                    'contract-card-items-wrapper--mobile': is_mobile,
+                    'contract-card-items-wrapper': !is_mobile,
+                })}
+            >
+                <ContractCardItem header={getCardLabels().STAKE} className='positions-drawer-card__stake'>
                     <Money amount={buy_price - cancellation_price} currency={currency} />
                 </ContractCardItem>
-                <ContractCardItem header={getCardLabels().CURRENT_STAKE}>
+                <ContractCardItem
+                    header={getCardLabels().CURRENT_STAKE}
+                    className='positions-drawer-card__current-stake'
+                >
                     <div
                         className={classNames({
                             'contract-card--profit': +profit > 0,
@@ -39,20 +56,23 @@ const MultiplierCardBody = ({ contract_info, contract_update, currency, getCardL
                         <Money amount={bid_price} currency={currency} />
                     </div>
                 </ContractCardItem>
-                <ContractCardItem header={getCardLabels().DEAL_CANCEL_FEE}>
+                <ContractCardItem
+                    header={getCardLabels().DEAL_CANCEL_FEE}
+                    className='positions-drawer-card__deal-cancel-fee'
+                >
                     {cancellation_price ? (
                         <Money amount={cancellation_price} currency={currency} />
                     ) : (
                         <strong>-</strong>
                     )}
                 </ContractCardItem>
-                <ContractCardItem header={getCardLabels().TAKE_PROFIT}>
+                <ContractCardItem header={getCardLabels().TAKE_PROFIT} className='positions-drawer-card__take-profit'>
                     {take_profit ? <Money amount={take_profit} currency={currency} /> : <strong>-</strong>}
                 </ContractCardItem>
-                <ContractCardItem header={getCardLabels().BUY_PRICE}>
+                <ContractCardItem header={getCardLabels().BUY_PRICE} className='positions-drawer-card__buy-price'>
                     <Money amount={buy_price} currency={currency} />
                 </ContractCardItem>
-                <ContractCardItem header={getCardLabels().STOP_LOSS}>
+                <ContractCardItem header={getCardLabels().STOP_LOSS} className='positions-drawer-card__stop-loss'>
                     {stop_loss ? (
                         <React.Fragment>
                             <strong>-</strong>
@@ -80,7 +100,7 @@ const MultiplierCardBody = ({ contract_info, contract_update, currency, getCardL
                     {status === 'loss' && <Icon icon='IcLoss' />}
                 </div>
             </ContractCardItem>
-        </div>
+        </React.Fragment>
     );
 };
 
@@ -89,6 +109,7 @@ const ContractCardBody = ({
     contract_update,
     currency,
     getCardLabels,
+    is_mobile,
     is_multiplier,
     is_sold,
     status,
@@ -105,6 +126,7 @@ const ContractCardBody = ({
                 contract_update={contract_update}
                 currency={currency}
                 getCardLabels={getCardLabels}
+                is_mobile={is_mobile}
                 is_sold={is_sold}
                 status={status}
             />

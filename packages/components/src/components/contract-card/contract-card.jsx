@@ -34,6 +34,7 @@ const ContractCard = ({
     profit_loss,
     result,
     server_time,
+    should_show_profit_loss_overlay,
     should_show_result_overlay,
     show_transition,
     status,
@@ -53,6 +54,7 @@ const ContractCard = ({
             contract_update={contract_update}
             currency={currency}
             getCardLabels={getCardLabels}
+            is_mobile={is_mobile}
             is_multiplier={is_multiplier}
             is_sold={is_sold}
             status={status}
@@ -64,7 +66,16 @@ const ContractCard = ({
         <React.Fragment>
             <DesktopWrapper>{card_body}</DesktopWrapper>
             <MobileWrapper>
-                <div className='contract-card__body-wrapper contract-card__separator'>{card_body}</div>
+                <div
+                    className={
+                        ('contract-card__separatorclass',
+                        classNames({
+                            'contract-card__body-wrapper': !is_multiplier,
+                        }))
+                    }
+                >
+                    {card_body}
+                </div>
             </MobileWrapper>
         </React.Fragment>
     );
@@ -165,8 +176,10 @@ const ContractCard = ({
             ) : (
                 <div
                     className={classNames('contract-card', {
-                        'contract-card--green': !is_multiplier && profit_loss > 0 && !result,
-                        'contract-card--red': !is_multiplier && profit_loss < 0 && !result,
+                        'contract-card--green':
+                            should_show_profit_loss_overlay && !is_multiplier && profit_loss > 0 && !result,
+                        'contract-card--red':
+                            should_show_profit_loss_overlay && !is_multiplier && profit_loss < 0 && !result,
                     })}
                 >
                     {contract_el}

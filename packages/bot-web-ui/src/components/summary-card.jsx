@@ -37,6 +37,7 @@ const SummaryCard = ({
                     is_positions={false}
                     profit_loss={contract.profit}
                     server_time={server_time}
+                    should_show_profit_loss_overlay={true}
                     should_show_result_overlay={true}
                     status={contract.status}
                 />

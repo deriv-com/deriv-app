@@ -48,26 +48,6 @@ const PositionsModalCard = ({
 
     const contract_options_el = (
         <React.Fragment>
-            {/* <ContractCard
-                contract_info={contract_info}
-                currency={currency}
-                getCardLabels={getCardLabels}
-                getContractTypeDisplay={getContractTypeDisplay}
-                id={id}
-                is_mobile={is_mobile}
-                is_positions={false}
-                is_sell_requested={is_sell_requested}
-                is_unsupported={is_unsupported}
-                is_valid_to_sell={is_valid_to_sell}
-                onClickRemove={onClickRemove}
-                onClickSell={onClickSell}
-                profit_loss={profit_loss}
-                result={result}
-                server_time={server_time}
-                should_show_result_overlay={false}
-                status={status}
-                toggleUnsupportedContractModal={toggleUnsupportedContractModal}
-            /> */}
             <div className={classNames('positions-modal-card__grid', 'positions-modal-card__grid-header')}>
                 <div className='positions-modal-card__underlying-name'>
                     <Icon
@@ -185,10 +165,12 @@ const PositionsModalCard = ({
                 ) : (
                     <ProgressSliderMobile
                         className='positions-modal-card__progress'
+                        current_tick={current_tick}
+                        getCardLabels={getCardLabels}
                         is_loading={is_loading}
                         start_time={contract_info.date_start}
                         expiry_time={contract_info.date_expiry}
-                        current_tick={current_tick}
+                        server_time={server_time}
                         ticks_count={contract_info.tick_count}
                     />
                 )}
@@ -198,14 +180,6 @@ const PositionsModalCard = ({
 
     const contract_multiplier_el = (
         <React.Fragment>
-            {/* <CardHeader contract_info={contract_info} has_progress_slider={!is_multiplier} />
-            <CardBody
-                contract_info={contract_info}
-                contract_update={contract_update}
-                currency={currency}
-                is_multiplier={is_multiplier}
-                status={status}
-            /> */}
             <ContractCard
                 contract_info={contract_info}
                 contract_update={contract_update}
@@ -216,17 +190,9 @@ const PositionsModalCard = ({
                 is_mobile={is_mobile}
                 is_multiplier={is_multiplier}
                 is_positions={false}
-                // is_sell_requested={is_sell_requested}
-                // is_unsupported={is_unsupported}
-                // is_valid_to_sell={is_valid_to_sell}
-                // onClickRemove={onClickRemove}
-                // onClickSell={onClickSell}
-                // profit_loss={profit_loss}
-                // result={result}
                 server_time={server_time}
                 should_show_result_overlay={false}
                 status={status}
-                // toggleUnsupportedContractModal={toggleUnsupportedContractModal}
             />
         </React.Fragment>
     );

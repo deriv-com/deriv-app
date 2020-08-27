@@ -150,7 +150,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 }
                 &--is-multiplier {
                     & .positions-drawer-dialog-toggle {
-                        top: 48px;
+                        top: 62px;
                         width: 128px;
                         height: 78px;
 
@@ -188,7 +188,6 @@ $FLOATING_HEADER_HEIGHT: 41px;
                             &__total-profit-loss {
                                 flex-direction: row;
                                 margin: 0 auto;
-                                border-top: 0;
 
                                 & .contract-card-item__header {
                                     font-size: 1.2rem !important;

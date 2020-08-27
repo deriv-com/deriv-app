@@ -10,8 +10,6 @@ import './nickname-form.scss';
 const NicknameForm = ({ handleClose }) => {
     const { createAdvertiser, is_mobile, nickname_error, resetNicknameErrorState } = React.useContext(Dp2pContext);
 
-    const handleSubmit = values => createAdvertiser(values.nickname);
-
     const validatePopup = values => {
         const validations = {
             nickname: [
@@ -69,7 +67,9 @@ const NicknameForm = ({ handleClose }) => {
             <Formik
                 validate={validatePopup}
                 initialValues={{ nickname: '' }}
-                onSubmit={async values => handleSubmit(values)}
+                onSubmit={async values => {
+                    await createAdvertiser(values.nickname);
+                }}
             >
                 {({ errors, handleChange, isSubmitting, values }) => (
                     <Form noValidate>

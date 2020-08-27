@@ -110,7 +110,9 @@ const NicknameForm = ({ handleClose }) => {
                                 </Button>
                                 <Button
                                     type='submit'
-                                    is_disabled={!!errors.nickname || values.nickname === '' || isSubmitting}
+                                    is_disabled={
+                                        !!errors.nickname || values.nickname === '' || isSubmitting || nickname_error
+                                    }
                                     primary
                                     large
                                 >

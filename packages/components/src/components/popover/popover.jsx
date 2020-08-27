@@ -74,6 +74,7 @@ class Popover extends React.PureComponent {
             message,
             zIndex,
             relative_render,
+            should_disable_pointer_events,
         } = this.props;
         const { is_mounted } = this.state;
 
@@ -94,6 +95,9 @@ class Popover extends React.PureComponent {
                         transitionDuration={0.25}
                         padding={margin + 8}
                         contentDestination={relative_render ? this.state.popover_ref : document.body}
+                        containerClassName={classNames({
+                            'react-tiny-popover-container--disabled-pointer-event': should_disable_pointer_events,
+                        })}
                         {...(relative_render
                             ? {
                                   contentLocation: ({ targetRect, popoverRect, nudgedLeft }) => {
@@ -223,6 +227,7 @@ Popover.defaultProps = {
     portal_container: 'deriv_app',
     margin: 0,
     relative_render: false,
+    should_disable_pointer_events: true,
 };
 
 Popover.propTypes = {
@@ -245,6 +250,7 @@ Popover.propTypes = {
     message: PropTypes.oneOfType([PropTypes.node, PropTypes.object, PropTypes.string]),
     portal_container: PropTypes.string,
     zIndex: PropTypes.number,
+    should_disable_pointer_events: PropTypes.bool,
 };
 
 export default Popover;

@@ -91,7 +91,7 @@
     "react-pose": "^4.0.10",
     "react-router-dom": "^5.1.2",
     "react-swipeable": "^5.5.1",
-    "react-tiny-popover": "^4.0.0",
+    "react-tiny-popover": "^5.1.0",
     "react-transition-group": "^4.2.2",
     "react-window": "^1.8.5"
   }

@@ -1,7 +1,5 @@
 const isCryptocurrency = require('@deriv/shared').isCryptocurrency;
-const getPropertyValue = require('@deriv/shared').getPropertyValue;
 const isEmptyObject = require('@deriv/shared').isEmptyObject;
-const { localize } = require('@deriv/translations');
 const SocketCache = require('./socket_cache');
 const LocalStore = require('../storage').LocalStore;
 const State = require('../storage').State;
@@ -106,31 +104,6 @@ const ClientBase = (() => {
         return loginids.find(loginid => !get('is_virtual', loginid) && !isCryptocurrency(get('currency', loginid)));
     };
 
-    const TypesMapConfig = (() => {
-        let types_map_config;
-
-        const initTypesMap = () => ({
-            default: localize('Real'),
-            financial: localize('Investment'),
-            gaming: localize('Gaming'),
-            virtual: localize('Virtual'),
-        });
-
-        return {
-            get: () => {
-                if (!types_map_config) {
-                    types_map_config = initTypesMap();
-                }
-                return types_map_config;
-            },
-        };
-    })();
-
-    const getAccountTitle = loginid => {
-        const types_map = TypesMapConfig.get();
-        return types_map[getAccountType(loginid)] || types_map.default;
-    };
-
     const responseAuthorize = response => {
         const authorize = response.authorize;
         set('loginid', authorize.loginid);
@@ -207,26 +180,6 @@ const ClientBase = (() => {
             can_upgrade_to,
             can_open_multi,
         };
-    };
-
-    const getLandingCompanyValue = (loginid, landing_company, key) => {
-        let landing_company_object;
-        if (loginid.financial || isAccountOfType('financial', loginid)) {
-            landing_company_object = getPropertyValue(landing_company, 'financial_company');
-        } else if (loginid.real || isAccountOfType('real', loginid)) {
-            landing_company_object = getPropertyValue(landing_company, 'gaming_company');
-
-            // handle accounts that don't have gaming company
-            if (!landing_company_object) {
-                landing_company_object = getPropertyValue(landing_company, 'financial_company');
-            }
-        } else {
-            const financial_company = (getPropertyValue(landing_company, 'financial_company') || {})[key] || [];
-            const gaming_company = (getPropertyValue(landing_company, 'gaming_company') || {})[key] || [];
-            landing_company_object = financial_company.concat(gaming_company);
-            return landing_company_object;
-        }
-        return (landing_company_object || {})[key];
     };
 
     const getRiskAssessment = (account_status = State.getResponse('get_account_status')) => {
@@ -311,7 +264,6 @@ const ClientBase = (() => {
         getAccountOfType,
         hasAccountType,
         hasCurrencyType,
-        getAccountTitle,
         responseAuthorize,
         shouldAcceptTnc,
         clearAllAccounts,
@@ -320,7 +272,6 @@ const ClientBase = (() => {
         shouldCompleteTax,
         getAllAccountsObject,
         getBasicUpgradeInfo,
-        getLandingCompanyValue,
         getRiskAssessment,
         canTransferFunds,
         hasSvgAccount,

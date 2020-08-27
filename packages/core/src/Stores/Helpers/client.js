@@ -1,8 +1,65 @@
-// TODO: [move-to-shared] - Remove the implementation in ClientBase and add this to shared utils
+import { localize } from '@deriv/translations';
+import { getPropertyValue } from '@deriv/shared';
+
 export const getClientAccountType = loginid => {
     let account_type;
     if (/^VR/.test(loginid)) account_type = 'virtual';
     else if (/^MF/.test(loginid)) account_type = 'financial';
     else if (/^MLT|MX/.test(loginid)) account_type = 'gaming';
     return account_type;
+};
+
+const TypesMapConfig = (() => {
+    let types_map_config;
+
+    const initTypesMap = () => ({
+        default: localize('Real'),
+        financial: localize('Investment'),
+        gaming: localize('Gaming'),
+        virtual: localize('Virtual'),
+    });
+
+    return {
+        get: () => {
+            if (!types_map_config) {
+                types_map_config = initTypesMap();
+            }
+            return types_map_config;
+        },
+    };
+})();
+
+const isAccountOfType = (type, loginid, only_enabled = false, isDisabled) => {
+    const this_type = getClientAccountType(loginid);
+    return (
+        ((type === 'virtual' && this_type === 'virtual') ||
+            (type === 'real' && this_type !== 'virtual') ||
+            type === this_type) &&
+        (only_enabled ? !isDisabled() : true)
+    );
+};
+
+export const getAccountTitle = loginid => {
+    const types_map = TypesMapConfig.get();
+    return types_map[getClientAccountType(loginid)] || types_map.default;
+};
+
+export const getLandingCompanyValue = (loginid, landing_company, key, isDisabled) => {
+    let landing_company_object;
+    if (loginid.financial || isAccountOfType('financial', loginid, isDisabled)) {
+        landing_company_object = getPropertyValue(landing_company, 'financial_company');
+    } else if (loginid.real || isAccountOfType('real', loginid, isDisabled)) {
+        landing_company_object = getPropertyValue(landing_company, 'gaming_company');
+
+        // handle accounts that don't have gaming company
+        if (!landing_company_object) {
+            landing_company_object = getPropertyValue(landing_company, 'financial_company');
+        }
+    } else {
+        const financial_company = (getPropertyValue(landing_company, 'financial_company') || {})[key] || [];
+        const gaming_company = (getPropertyValue(landing_company, 'gaming_company') || {})[key] || [];
+        landing_company_object = financial_company.concat(gaming_company);
+        return landing_company_object;
+    }
+    return (landing_company_object || {})[key];
 };

@@ -12,7 +12,6 @@ import {
 } from '@deriv/shared';
 
 import { requestLogout, WS } from 'Services';
-import ClientBase from '_common/base/client_base';
 import { redirectToLogin } from '_common/base/login';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
@@ -22,7 +21,7 @@ import { isEuCountry } from '_common/utility';
 import BinarySocketGeneral from 'Services/socket-general';
 import { handleClientNotifications } from './Helpers/client-notifications';
 import BaseStore from './base-store';
-import { getClientAccountType } from './Helpers/client';
+import { getClientAccountType, getAccountTitle, getLandingCompanyValue } from './Helpers/client';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
 
 const storage_key = 'client.accounts';
@@ -316,7 +315,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get account_title() {
-        return ClientBase.getAccountTitle(this.loginid);
+        return getAccountTitle(this.loginid);
     }
 
     @computed
@@ -350,7 +349,12 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_tnc_needed() {
-        return ClientBase.shouldAcceptTnc(this.account_settings);
+        if (this.is_virtual) return false;
+
+        const { client_tnc_status } = this.account_settings;
+        const { terms_conditions_version } = this.website_status;
+
+        return typeof client_tnc_status !== 'undefined' && client_tnc_status !== terms_conditions_version;
     }
 
     @computed
@@ -647,8 +651,6 @@ export default class ClientStore extends BaseStore {
         this.local_currency_config.decimal_places = isEmptyObject(response.authorize.local_currencies)
             ? default_fractional_digits
             : +response.authorize.local_currencies[this.local_currency_config.currency].fractional_digits;
-
-        ClientBase.responseAuthorize(response);
     }
 
     @action.bound
@@ -1065,7 +1067,7 @@ export default class ClientStore extends BaseStore {
         const currency = account.currency;
         const is_disabled = account.is_disabled;
         const is_virtual = account.is_virtual;
-        const account_type = !is_virtual && currency ? currency : ClientBase.getAccountTitle(loginid);
+        const account_type = !is_virtual && currency ? currency : this.account_title;
 
         return {
             loginid,
@@ -1639,7 +1641,7 @@ export default class ClientStore extends BaseStore {
         const has_changeable_field =
             (this.root_store.ui.is_eu_enabled || this.landing_company_shortcode === 'svg') &&
             !this.is_fully_authenticated;
-        const changeable = ClientBase.getLandingCompanyValue(this.loginid, landing_company, 'changeable_fields');
+        const changeable = getLandingCompanyValue(this.loginid, landing_company, 'changeable_fields', this.isDisabled);
         if (has_changeable_field) {
             let changeable_fields = [];
             if (changeable && changeable.only_before_auth) {

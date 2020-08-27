@@ -4,15 +4,8 @@ import { Button, Icon, Div100vhContainer } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 
-const FinishedSetCurrency = ({ current, onCancel, onSubmit, prev }) => {
-    const IconPrevCurrency = () =>
-        prev ? <Icon icon={`IcCurrency-${prev.toLowerCase()}`} height={120} width={90} /> : null;
-    const IconNextCurrency = () => <Icon icon={`IcCurrency-${current.toLowerCase()}`} height={120} width={90} />;
-    const IconArrow = () => (prev ? <Icon icon='IcArrowPointerRight' color='red' width={50} height={20} /> : null);
-
-    const IconWon = ({ className }) => <Icon className={className} icon='IcCheckmarkCircle' color='green' />;
-
-    const SuccessMessage = prev ? (
+const SuccessMessage = ({ prev, current }) =>
+    prev ? (
         <Localize
             i18n_default_text={
                 '<0>You have successfully changed your currency to {{currency}}.</0><0>Make a deposit now to start trading.</0>'
@@ -34,6 +27,14 @@ const FinishedSetCurrency = ({ current, onCancel, onSubmit, prev }) => {
         />
     );
 
+const FinishedSetCurrency = ({ current, onCancel, onSubmit, prev }) => {
+    const IconPrevCurrency = () =>
+        prev ? <Icon icon={`IcCurrency-${prev.toLowerCase()}`} height={120} width={90} /> : null;
+    const IconNextCurrency = () => <Icon icon={`IcCurrency-${current.toLowerCase()}`} height={120} width={90} />;
+    const IconArrow = () => (prev ? <Icon icon='IcArrowPointerRight' color='red' width={50} height={20} /> : null);
+
+    const IconWon = ({ className }) => <Icon className={className} icon='IcCheckmarkCircle' color='green' />;
+
     return (
         <Div100vhContainer className='status-dialog' is_disabled={isDesktop()} height_offset='40px'>
             <div
@@ -53,7 +54,7 @@ const FinishedSetCurrency = ({ current, onCancel, onSubmit, prev }) => {
                 <h2>
                     <Localize i18n_default_text='Success!' />
                 </h2>
-                <SuccessMessage />
+                <SuccessMessage prev={prev} current={current} />
             </div>
             <div className='status-dialog__btn-area'>
                 <Button onClick={onCancel} text={localize('Maybe later')} secondary />

@@ -202,7 +202,7 @@ const TradeParamsMobile = ({
         const has_selected_tab_idx = typeof amount_tab_idx !== 'undefined';
         const active_index = has_selected_tab_idx ? amount_tab_idx : basis_list.findIndex(b => b.value === basis);
 
-        return <Money currency={currency} amount={active_index === 1 ? payout_value : stake_value} />;
+        return <Money currency={currency} show_currency amount={active_index === 1 ? payout_value : stake_value} />;
     };
 
     const getHeaderContent = tab_key => {

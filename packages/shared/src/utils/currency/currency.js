@@ -18,9 +18,15 @@ export const formatMoney = (currency_value, amount, exclude_currency, decimals =
     const sign = money && Number(money) < 0 ? '-' : '';
     const decimal_places = decimals || getDecimalPlaces(currency_value);
 
+    let integer_places = 2;
+    if (isCryptocurrency(currency_value) && getDecimalPlaces(currency_value) > 2) {
+        integer_places = 1;
+    }
+
     money = isNaN(money) ? 0 : Math.abs(money);
     if (typeof Intl !== 'undefined') {
         const options = {
+            minimumIntegerDigits: integer_places,
             minimumFractionDigits: minimumFractionDigits || decimal_places,
             maximumFractionDigits: decimal_places,
         };
@@ -197,8 +203,8 @@ export const CryptoConfig = (() => {
                 fractional_digits: 8,
             },
             UST: {
-                display_code: 'USDT',
-                name: 'Tether',
+                display_code: 'UST',
+                name: 'Tether Omni',
                 min_withdrawal: 0.02,
                 pa_max_withdrawal: 2000,
                 pa_min_withdrawal: 10,
@@ -271,7 +277,9 @@ export const getPaWithdrawalLimit = (currency, limit) => {
 };
 
 export const getCurrencyDisplayCode = (currency = '') => {
-    return getPropertyValue(CryptoConfig.get(), [currency.toUpperCase(), 'display_code']) || currency.toUpperCase();
+    // eslint-disable-next-line
+    if (currency !== 'eUSDT') currency = currency.toUpperCase();
+    return getPropertyValue(CryptoConfig.get(), [currency, 'display_code']) || currency;
 };
 
 export const getCurrencyName = (currency = '') => getPropertyValue(currencies_config, [currency, 'name']) || '';

@@ -392,12 +392,12 @@ class PersonalDetails extends React.Component {
                                                                         }}
                                                                     >
                                                                         <Popover
-                                                                            alignment='right'
+                                                                            alignment={isDesktop() ? 'right' : 'left'}
                                                                             icon='info'
                                                                             message={localize(
                                                                                 'The country in which you meet the criteria for paying taxes. Usually the country in which you physically reside.'
                                                                             )}
-                                                                            zIndex={9999}
+                                                                            zIndex={9998}
                                                                             disable_message_icon
                                                                             is_open={
                                                                                 this.state.is_tax_residence_popover_open
@@ -426,7 +426,7 @@ class PersonalDetails extends React.Component {
                                                                 }}
                                                             >
                                                                 <Popover
-                                                                    alignment='right'
+                                                                    alignment={isDesktop() ? 'right' : 'left'}
                                                                     icon='info'
                                                                     is_open={this.state.is_tin_popover_open}
                                                                     message={
@@ -445,7 +445,7 @@ class PersonalDetails extends React.Component {
                                                                             ]}
                                                                         />
                                                                     }
-                                                                    zIndex={9999}
+                                                                    zIndex={9998}
                                                                     disable_message_icon
                                                                 />
                                                             </div>

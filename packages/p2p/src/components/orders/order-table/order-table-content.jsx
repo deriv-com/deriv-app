@@ -55,7 +55,7 @@ const OrderTableContent = ({ showDetails, is_active }) => {
                         setOrders(orders.concat(getModifiedP2POrderList(list)));
                         setOrderOffset(order_offset + list.length);
                     } else {
-                        setApiErrorMessage(response.api_error_message);
+                        setApiErrorMessage(response.error.message);
                     }
                 }
                 setIsLoading(false);

@@ -58,8 +58,8 @@ class ChangePasswordForm extends React.Component {
             if (values.old_password === values.new_password) {
                 errors.new_password = localize('Current password and new password cannot be the same.');
             }
-            if (values.new_password === this.props.email) {
-                errors.new_password = localize('you cannot use your email address as your password.');
+            if (values.new_password.toLowerCase() === this.props.email.toLowerCase()) {
+                errors.new_password = localize('Your password cannot be the same as your email address.');
             }
             if (!validPassword(values.new_password)) {
                 errors.new_password = getPreBuildDVRs().password.message;

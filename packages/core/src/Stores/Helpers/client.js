@@ -29,26 +29,16 @@ const TypesMapConfig = (() => {
     };
 })();
 
-const isAccountOfType = ({ type, loginid, only_enabled = false, isDisabled }) => {
-    const this_type = getClientAccountType(loginid);
-    return (
-        ((type === 'virtual' && this_type === 'virtual') ||
-            (type === 'real' && this_type !== 'virtual') ||
-            type === this_type) &&
-        (only_enabled ? !isDisabled() : true)
-    );
-};
-
 export const getAccountTitle = loginid => {
     const types_map = TypesMapConfig.get();
     return types_map[getClientAccountType(loginid)] || types_map.default;
 };
 
-export const getLandingCompanyValue = (loginid, landing_company, key, isDisabled) => {
+export const getLandingCompanyValue = (loginid, landing_company, key, isAccountOfType) => {
     let landing_company_object;
-    if (loginid.financial || isAccountOfType({ type: 'financial', loginid, isDisabled })) {
+    if (loginid.financial || isAccountOfType({ type: 'financial' })) {
         landing_company_object = getPropertyValue(landing_company, 'financial_company');
-    } else if (loginid.real || isAccountOfType({ type: 'real', loginid, isDisabled })) {
+    } else if (loginid.real || isAccountOfType({ type: 'real' })) {
         landing_company_object = getPropertyValue(landing_company, 'gaming_company');
 
         // handle accounts that don't have gaming company

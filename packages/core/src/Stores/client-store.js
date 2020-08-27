@@ -806,6 +806,17 @@ export default class ClientStore extends BaseStore {
         return this.website_status && this.website_status.site_status === 'up';
     }
 
+    isAccountOfType = type => {
+        const client_account_type = getClientAccountType(this.loginid);
+
+        return (
+            ((type === 'virtual' && client_account_type === 'virtual') ||
+                (type === 'real' && client_account_type !== 'virtual') ||
+                type === client_account_type) &&
+            !this.isDisabled()
+        );
+    };
+
     @action.bound
     updateAccountList(account_list) {
         account_list.forEach(account => {
@@ -1641,9 +1652,16 @@ export default class ClientStore extends BaseStore {
         const has_changeable_field =
             (this.root_store.ui.is_eu_enabled || this.landing_company_shortcode === 'svg') &&
             !this.is_fully_authenticated;
-        const changeable = getLandingCompanyValue(this.loginid, landing_company, 'changeable_fields', this.isDisabled);
+
         if (has_changeable_field) {
             let changeable_fields = [];
+            const changeable = getLandingCompanyValue(
+                this.loginid,
+                landing_company,
+                'changeable_fields',
+                this.isAccountOfType
+            );
+
             if (changeable && changeable.only_before_auth) {
                 changeable_fields = [...changeable.only_before_auth];
             }

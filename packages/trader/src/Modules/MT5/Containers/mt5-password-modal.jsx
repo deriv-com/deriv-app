@@ -8,7 +8,7 @@ import { localize, Localize } from '@deriv/translations';
 import SuccessDialog from 'App/Containers/Modals/success-dialog.jsx';
 import 'Sass/app/modules/mt5/mt5.scss';
 import { connect } from 'Stores/connect';
-import { validLength, validPassword } from 'Utils/Validator/declarative-validation-rules';
+import { validLength, validPassword, getPreBuildDVRs } from 'Utils/Validator/declarative-validation-rules';
 
 const getSubmitText = (account_title, category) => {
     if (category === 'real') {
@@ -61,7 +61,7 @@ const MT5PasswordModal = ({
                 max_number: 25,
             });
         } else if (!validPassword(values.password)) {
-            errors.password = localize('You need to include uppercase and lowercase letters, and numbers.');
+            errors.password = getPreBuildDVRs().password.message;
         }
         if (values.password.toLowerCase() === email.toLowerCase()) {
             errors.password = localize('Your password cannot be the same as your email address.');

@@ -20,7 +20,7 @@ import { localize, Localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import MT5Store from 'Stores/Modules/MT5/mt5-store';
-import { validLength, validPassword } from 'Utils/Validator/declarative-validation-rules';
+import { validLength, validPassword, getPreBuildDVRs } from 'Utils/Validator/declarative-validation-rules';
 
 const CountdownComponent = ({ count_from = 60, onTimeout }) => {
     const [count, setCount] = React.useState(count_from);
@@ -202,7 +202,7 @@ class MT5PasswordManagerModal extends React.Component {
                     max_number: 25,
                 });
             } else if (!validPassword(values.new_password)) {
-                errors.new_password = localize('You need to include uppercase and lowercase letters, and numbers.');
+                errors.new_password = getPreBuildDVRs().password.message;
             } else if (values.new_password.toLowerCase() === email.toLowerCase()) {
                 errors.new_password = localize('Your password cannot be the same as your email address.');
             }

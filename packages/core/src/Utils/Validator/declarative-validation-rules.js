@@ -158,7 +158,7 @@ const initPreBuildDVRs = () => ({
     number: { func: validNumber, message: '' },
     password: {
         func: validPassword,
-        message: localize('Password should have lower and uppercase letters with numbers.'),
+        message: localize('Password should have lower and uppercase English letters with numbers.'),
     },
     phone: { func: validPhone, message: localize('Only numbers and spaces are allowed.') },
     postcode: { func: validPostCode, message: localize('Only letters, numbers, space, and hyphen are allowed.') },

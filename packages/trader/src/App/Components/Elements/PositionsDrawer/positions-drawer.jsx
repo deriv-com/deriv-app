@@ -164,8 +164,9 @@ class PositionsDrawer extends React.Component {
 
         this.positions = all_positions.filter(
             p =>
-                !p.contract_info ||
-                (symbol === p.contract_info.underlying && filterByContractType(p.contract_info, trade_contract_type))
+                p.contract_info &&
+                symbol === p.contract_info.underlying &&
+                filterByContractType(p.contract_info, trade_contract_type)
         );
         this.calculatePositionsHeight();
 

@@ -208,8 +208,8 @@ MT5PasswordModal.propTypes = {
     submitMt5Password: PropTypes.func,
 };
 
-export default connect(({ modules }) => ({
-    email: modules.client.email,
+export default connect(({ client, modules }) => ({
+    email: client.email,
     account_title: modules.mt5.account_title,
     account_type: modules.mt5.account_type,
     disableMt5PasswordModal: modules.mt5.disableMt5PasswordModal,

@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { Button, Icon, PasswordMeter, PasswordInput, FormSubmitButton, Loading, Modal } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
+import { validLength, validPassword, getPreBuildDVRs } from 'Utils/Validator/declarative-validation-rules';
 import { connect } from 'Stores/connect';
 import { getMtCompanies } from 'Stores/Modules/MT5/Helpers/mt5-config';
 import { WS } from 'Services/ws-methods';
@@ -59,6 +60,29 @@ class MT5ResetPasswordModal extends React.Component {
         this.props.history.push(`${routes.mt5}`);
     };
 
+    validatePassword = values => {
+        const errors = {};
+
+        if (
+            !validLength(values.new_password, {
+                min: 8,
+                max: 25,
+            })
+        ) {
+            errors.new_password = localize('You should enter {{min_number}}-{{max_number}} characters.', {
+                min_number: 8,
+                max_number: 25,
+            });
+        } else if (!validPassword(values.new_password)) {
+            errors.new_password = getPreBuildDVRs().new_password.message;
+        }
+        if (values.new_password.toLowerCase() === this.props.email.toLowerCase()) {
+            errors.new_password = localize('Your password cannot be the same as your email address.');
+        }
+
+        return errors;
+    };
+
     resetPassword = (values, password_type, login, actions) => {
         const { setSubmitting } = actions;
         const url_params = new URLSearchParams(window.location.search);
@@ -102,7 +126,7 @@ class MT5ResetPasswordModal extends React.Component {
                         {({ title, type, login }) => (
                             <Formik
                                 initialValues={{ new_password: '' }}
-                                validate={values => !!values.new_password}
+                                validate={this.validatePassword}
                                 onSubmit={(values, actions) => this.resetPassword(values, type, login, actions)}
                             >
                                 {({
@@ -213,13 +237,15 @@ class MT5ResetPasswordModal extends React.Component {
 }
 
 MT5ResetPasswordModal.propTypes = {
+    email: PropTypes.string,
     is_mt5_reset_password_modal_enabled: PropTypes.any,
     setMt5PasswordResetModal: PropTypes.any,
     current_list: PropTypes.any,
 };
 
 export default withRouter(
-    connect(({ modules: { mt5 } }) => ({
+    connect(({ modules: { mt5 }, client }) => ({
+        email: client.email,
         is_mt5_reset_password_modal_enabled: mt5.is_mt5_reset_password_modal_enabled,
         setMt5PasswordResetModal: mt5.setMt5PasswordResetModal,
         current_list: mt5.current_list,

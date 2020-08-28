@@ -20,10 +20,9 @@ const Popover = ({ ...props }) => {
         setIsPopoverOpen(!!props.has_error);
     }, [ref.current, props.has_error]);
 
-    const onClick = () =>
-        React.useCallback(() => {
-            setIsBubbleOpen(!is_bubble_open);
-        }, [is_bubble_open]);
+    const onClick = React.useCallback(() => {
+        setIsBubbleOpen(!is_bubble_open);
+    }, [is_bubble_open]);
 
     const toggleOpen = React.useCallback(() => {
         if (has_external_open_state) return;

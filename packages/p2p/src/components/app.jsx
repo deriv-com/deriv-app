@@ -102,12 +102,6 @@ class App extends React.Component {
         Object.keys(this.ws_subscriptions).forEach(key => this.ws_subscriptions[key].unsubscribe());
     }
 
-    createAdvertiser(name) {
-        this.ws_subscriptions.advertiser_subscription = subscribeWS({ p2p_advertiser_create: 1, name, subscribe: 1 }, [
-            this.setCreateAdvertiser,
-        ]);
-    }
-
     redirectTo = (path_name, params = null) => {
         this.setState({ active_index: path[path_name], parameters: params });
     };
@@ -125,21 +119,27 @@ class App extends React.Component {
         this.setState({ active_index: idx, parameters: null });
     };
 
-    setCreateAdvertiser = response => {
-        const { p2p_advertiser_create } = response;
-
-        if (response.error) {
-            this.setState({ nickname_error: response.error.message });
-        } else {
-            this.setState({
-                advertiser_id: p2p_advertiser_create.id,
-                is_advertiser: !!p2p_advertiser_create.is_approved,
-                nickname: p2p_advertiser_create.name,
-                nickname_error: undefined,
+    createAdvertiser = name => {
+        return new Promise(resolve => {
+            requestWS({ p2p_advertiser_create: 1, name }).then(response => {
+                const { p2p_advertiser_create } = response;
+                if (response) {
+                    if (response.error) {
+                        this.setState({ nickname_error: response.error.message });
+                    } else {
+                        this.setState({
+                            advertiser_id: p2p_advertiser_create.id,
+                            is_advertiser: !!p2p_advertiser_create.is_approved,
+                            nickname: p2p_advertiser_create.name,
+                            nickname_error: undefined,
+                        });
+                        this.setChatInfo(p2p_advertiser_create.chat_user_id, p2p_advertiser_create.chat_token);
+                        this.toggleNicknamePopup();
+                    }
+                    resolve();
+                }
             });
-            this.setChatInfo(p2p_advertiser_create.chat_user_id, p2p_advertiser_create.chat_token);
-            this.toggleNicknamePopup();
-        }
+        });
     };
 
     resetNicknameErrorState = () => {

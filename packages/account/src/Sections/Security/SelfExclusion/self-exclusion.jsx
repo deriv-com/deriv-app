@@ -29,6 +29,7 @@ import { WS } from 'Services/ws-methods';
 import DemoMessage from 'Components/demo-message';
 import LoadErrorMessage from 'Components/load-error-message';
 import Article from './article.jsx';
+import ArticleContent from './article-content.jsx';
 
 class SelfExclusion extends React.Component {
     exclusion_data = {
@@ -67,6 +68,7 @@ class SelfExclusion extends React.Component {
         error_message: '',
         self_exclusions: this.exclusion_data,
         show_confirm: false,
+        show_article: false,
         submit_error_message: '',
     };
 
@@ -250,6 +252,10 @@ class SelfExclusion extends React.Component {
         return object;
     };
 
+    toggleArticle = () => {
+        this.setState({ show_article: !this.state.show_article });
+    };
+
     componentWillUnmount() {
         this.setState({ changed_attributes: [] });
     }
@@ -300,6 +306,7 @@ class SelfExclusion extends React.Component {
             is_confirm_page,
             changed_attributes,
             show_confirm,
+            show_article,
             submit_error_message,
         } = this.state;
         const { is_virtual, is_switching, currency } = this.props;
@@ -454,6 +461,13 @@ class SelfExclusion extends React.Component {
                                         </>
                                     ) : (
                                         <>
+                                            <Modal
+                                                className='self_exclusion__article-modal'
+                                                is_open={show_article}
+                                                toggleModal={this.toggleArticle}
+                                            >
+                                                <ArticleContent toggleModal={this.toggleArticle} />
+                                            </Modal>
                                             <h2 className='self-exclusion__header'>
                                                 {localize('Your stake and loss limits')}
                                             </h2>
@@ -805,7 +819,7 @@ class SelfExclusion extends React.Component {
                         </Formik>
                     </ThemedScrollbars>
                     <DesktopWrapper>
-                        <Article />
+                        <Article toggleArticle={this.toggleArticle} />
                     </DesktopWrapper>
                 </Div100vhContainer>
             </section>

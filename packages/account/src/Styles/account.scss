@@ -125,6 +125,20 @@ $MIN_HEIGHT_FLOATING: calc(
             @include typeface(--paragraph-left-bold-prominent, none);
             margin-bottom: 0.8rem;
         }
+        &-description {
+            @include typeface(--small-left-normal-black, none);
+            margin-bottom: 1.6rem;
+        }
+        &-link {
+            display: flex;
+            @include typeface(--small-left-normal-red, none);
+
+            &--icon {
+                margin-left: 4px;
+                width: 16px;
+                height: 16px;
+            }
+        }
         &-text {
             @include typeface(--small-left-normal-black, none);
         }
@@ -1592,6 +1606,35 @@ $MIN_HEIGHT_FLOATING: calc(
             @include mobile {
                 width: 300px;
                 height: 272px;
+            }
+        }
+    }
+}
+
+.dc-modal__container_self_exclusion__article-modal {
+    .self-exclusion {
+        &__article {
+            width: 440px;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+
+            &-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 1.6rem 2.4rem;
+                @include typeface(--title-center-bold-prominent, none);
+                border-bottom: 1px solid var(--border-normal);
+            }
+            &-icon {
+                cursor: pointer;
+            }
+            &-text {
+                @include typeface(--paragraph-left-normal-black, none);
+            }
+            &-content {
+                padding: 2.4rem;
             }
         }
     }

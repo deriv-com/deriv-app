@@ -154,17 +154,6 @@ class MT5ResetPasswordModal extends React.Component {
                                                         input={values.new_password}
                                                         error={touched.new_password && errors.new_password}
                                                     >
-                                                        <PasswordInput
-                                                            className='mt5-reset-password__password-field'
-                                                            name='new_password'
-                                                            label={localize('New {{type}} password', { type })}
-                                                            onChange={handleChange}
-                                                            onBlur={handleBlur}
-                                                            error={touched.new_password && errors.new_password}
-                                                            value={values.new_password}
-                                                            data-lpignore='true'
-                                                            required
-                                                        />
                                                         {({ has_warning }) => (
                                                             <PasswordInput
                                                                 className='mt5-reset-password__password-field'

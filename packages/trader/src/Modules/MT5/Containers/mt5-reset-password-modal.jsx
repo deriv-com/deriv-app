@@ -165,12 +165,26 @@ class MT5ResetPasswordModal extends React.Component {
                                                             data-lpignore='true'
                                                             required
                                                         />
+                                                        {({ has_warning }) => (
+                                                            <PasswordInput
+                                                                className='mt5-reset-password__password-field'
+                                                                name='new_password'
+                                                                label={localize('New {{type}} password', { type })}
+                                                                onChange={handleChange}
+                                                                onBlur={handleBlur}
+                                                                error={touched.new_password && errors.new_password}
+                                                                value={values.new_password}
+                                                                data-lpignore='true'
+                                                                required
+                                                                hint={
+                                                                    !has_warning &&
+                                                                    localize(
+                                                                        'Minimum of eight lower and uppercase English letters with numbers'
+                                                                    )
+                                                                }
+                                                            />
+                                                        )}
                                                     </PasswordMeter>
-                                                    {!values.new_password && (
-                                                        <p className='mt5-reset-password__hint'>
-                                                            <Localize i18n_default_text='Minimum of eight lower and uppercase English letters with numbers' />
-                                                        </p>
-                                                    )}
                                                 </div>
                                                 {isSubmitting && <Loading is_fullscreen={false} />}
                                                 {!isSubmitting && (

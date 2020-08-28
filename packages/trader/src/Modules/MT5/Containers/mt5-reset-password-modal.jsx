@@ -144,7 +144,7 @@ class MT5ResetPasswordModal extends React.Component {
                                                     </PasswordMeter>
                                                     {!values.new_password && (
                                                         <p className='mt5-reset-password__hint'>
-                                                            <Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers.' />
+                                                            <Localize i18n_default_text='Minimum of eight lower and uppercase English letters with numbers' />
                                                         </p>
                                                     )}
                                                 </div>

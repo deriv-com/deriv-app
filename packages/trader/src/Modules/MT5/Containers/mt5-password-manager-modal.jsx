@@ -178,6 +178,7 @@ class MT5PasswordManagerModal extends React.Component {
     render() {
         const {
             enableApp,
+            email,
             disableApp,
             is_visible,
             selected_login,
@@ -202,7 +203,7 @@ class MT5PasswordManagerModal extends React.Component {
                 });
             } else if (!validPassword(values.new_password)) {
                 errors.new_password = localize('You need to include uppercase and lowercase letters, and numbers.');
-            } else if (values.new_password.toLowerCase() === this.props.email.toLowerCase()) {
+            } else if (values.new_password.toLowerCase() === email.toLowerCase()) {
                 errors.new_password = localize('Your password cannot be the same as your email address.');
             }
 
@@ -267,7 +268,7 @@ class MT5PasswordManagerModal extends React.Component {
                                                 hint={
                                                     !has_warning &&
                                                     localize(
-                                                        'Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers.'
+                                                        'Minimum of eight lower and uppercase English letters with numbers'
                                                     )
                                                 }
                                                 error={touched.new_password && errors.new_password}
@@ -358,7 +359,7 @@ class MT5PasswordManagerModal extends React.Component {
                                                     hint={
                                                         !has_warning &&
                                                         localize(
-                                                            'Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers.'
+                                                            'Minimum of eight lower and uppercase English letters with numbers'
                                                         )
                                                     }
                                                     error={touched.new_password && errors.new_password}

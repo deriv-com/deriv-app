@@ -143,7 +143,7 @@ const MT5PasswordModal = ({
                                                 hint={
                                                     !has_warning &&
                                                     localize(
-                                                        'Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers.'
+                                                        'Minimum of eight lower and uppercase English letters with numbers'
                                                     )
                                                 }
                                                 name='password'

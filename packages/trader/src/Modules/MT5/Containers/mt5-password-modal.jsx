@@ -36,6 +36,7 @@ const MT5PasswordModal = ({
     account_title,
     account_type,
     disableMt5PasswordModal,
+    email,
     // error_message,
     form_error,
     history,
@@ -62,7 +63,7 @@ const MT5PasswordModal = ({
         } else if (!validPassword(values.password)) {
             errors.password = localize('You need to include uppercase and lowercase letters, and numbers.');
         }
-        if (values.password.toLowerCase() === this.props.email.toLowerCase()) {
+        if (values.password.toLowerCase() === email.toLowerCase()) {
             errors.password = localize('Your password cannot be the same as your email address.');
         }
 

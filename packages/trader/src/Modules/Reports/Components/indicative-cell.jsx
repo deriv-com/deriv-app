@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Icon, Money } from '@deriv/components';
+import classNames from 'classnames';
+import { Icon, Money, DesktopWrapper, Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
 
 class IndicativeCell extends React.PureComponent {
     constructor(props) {
@@ -20,7 +22,7 @@ class IndicativeCell extends React.PureComponent {
     }
 
     render() {
-        const { amount, currency, status } = this.props;
+        const { amount, currency, contract_info, is_valid_to_sell, is_footer, onClickSell } = this.props;
         const { movement } = this.state;
         return (
             <div className='open-positions__indicative'>
@@ -33,11 +35,28 @@ class IndicativeCell extends React.PureComponent {
                         </React.Fragment>
                     )}
                 </div>
-
-                {status === 'no-resale' && (
-                    <div className='open-positions__indicative-no-resale-msg indicative__no-resale-msg'>
-                        {localize('Resale not offered')}
-                    </div>
+                {!is_footer && (
+                    <DesktopWrapper>
+                        {is_valid_to_sell ? (
+                            <Button
+                                className={classNames('dc-btn--sell', {
+                                    'dc-btn--loading': contract_info.is_sell_requested,
+                                })}
+                                is_disabled={contract_info.is_sell_requested}
+                                text={localize('Sell')}
+                                onClick={ev => {
+                                    onClickSell(contract_info.contract_id);
+                                    ev.stopPropagation();
+                                    ev.preventDefault();
+                                }}
+                                secondary
+                            />
+                        ) : (
+                            <div className='open-positions__indicative-no-resale-msg indicative__no-resale-msg'>
+                                {localize('Resale not offered')}
+                            </div>
+                        )}
+                    </DesktopWrapper>
                 )}
             </div>
         );
@@ -48,6 +67,10 @@ IndicativeCell.propTypes = {
     amount: PropTypes.number,
     currency: PropTypes.string,
     status: PropTypes.string,
+    is_footer: PropTypes.bool,
+    onClickSell: PropTypes.func,
 };
 
-export default IndicativeCell;
+export default connect(({ modules }) => ({
+    onClickSell: modules.portfolio.onClickSell,
+}))(IndicativeCell);

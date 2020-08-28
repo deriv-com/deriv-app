@@ -148,3 +148,8 @@ export const getContractUpdateConfig = ({ contract_update, limit_order }) => {
         has_contract_update_take_profit: !!take_profit,
     };
 };
+
+export const isSellVisible = contract_info => {
+    const has_contract_entered = !!contract_info.entry_spot;
+    return has_contract_entered && !isEnded(contract_info);
+};

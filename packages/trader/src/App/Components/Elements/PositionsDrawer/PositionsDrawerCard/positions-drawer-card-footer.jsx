@@ -5,19 +5,18 @@ import { CSSTransition } from 'react-transition-group';
 import { Button } from '@deriv/components';
 import TogglePositionsDrawerDialog from 'App/Components/Elements/PositionsDrawer/toggle-positions-drawer-dialog.jsx';
 import { localize } from '@deriv/translations';
-import { isValidToCancel, isValidToSell } from 'Stores/Modules/Contract/Helpers/logic';
+import { isValidToCancel, isValidToSell, isSellVisible } from 'Stores/Modules/Contract/Helpers/logic';
 import MultiplierCloseActions from './multiplier-close-actions.jsx';
 
 const CardFooter = ({ contract_info, is_multiplier, is_sell_requested, onClickCancel, onClickSell }) => {
+    const { contract_id } = contract_info;
     const is_valid_to_cancel = isValidToCancel(contract_info);
     const is_valid_to_sell = isValidToSell(contract_info);
-    const show_sell = !!(is_valid_to_sell || (is_multiplier && !contract_info.is_sold));
-
-    if (!show_sell) return null;
+    const is_open = contract_info.status === 'open';
 
     return (
         <CSSTransition
-            in={show_sell}
+            in={isSellVisible(contract_info)}
             timeout={250}
             classNames={{
                 enter: 'positions-drawer-card__sell-button--enter',
@@ -42,22 +41,28 @@ const CardFooter = ({ contract_info, is_multiplier, is_sell_requested, onClickCa
                     {(is_valid_to_sell || is_valid_to_cancel) && (
                         <TogglePositionsDrawerDialog
                             is_valid_to_cancel={is_valid_to_cancel}
-                            contract_id={contract_info.contract_id}
+                            contract_id={contract_id}
                         />
                     )}
                 </div>
             ) : (
                 <div className='positions-drawer-card__sell-button'>
-                    <Button
-                        id={`dt_drawer_card_${contract_info.contract_id}_button`}
-                        className={classNames('dc-btn--sell', {
-                            'dc-btn--loading': is_sell_requested,
-                        })}
-                        is_disabled={!is_valid_to_sell || is_sell_requested}
-                        text={localize('Sell contract')}
-                        onClick={() => onClickSell(contract_info.contract_id)}
-                        secondary
-                    />
+                    {is_valid_to_sell ? (
+                        <Button
+                            id={`dt_drawer_card_${contract_id}_button`}
+                            className={classNames('dc-btn--sell', {
+                                'dc-btn--loading': is_sell_requested,
+                            })}
+                            is_disabled={is_sell_requested}
+                            text={localize('Sell')}
+                            onClick={() => onClickSell(contract_id)}
+                            secondary
+                        />
+                    ) : (
+                        is_open && (
+                            <div className='positions-drawer-card__no-resale-msg'>{localize('Resale not offered')}</div>
+                        )
+                    )}
                 </div>
             )}
         </CSSTransition>

@@ -8,6 +8,7 @@
     text-decoration: none;
     position: relative;
     color: var(--text-general);
+    padding-bottom: 0.8rem;
 
     &__result {
         position: absolute;
@@ -327,6 +328,9 @@
             font-size: 1.4rem;
             line-height: 2rem;
         }
+    }
+    &__no-resale-msg {
+        padding: 0.4rem 0rem;
     }
 }
 

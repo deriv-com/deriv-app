@@ -239,7 +239,7 @@ class MT5PasswordManagerModal extends React.Component {
 
             return (
                 <Formik initialValues={initial_values} validate={validatePassword} onSubmit={onSubmit}>
-                    {({ isSubmitting, errors, setFieldTouched, touched }) => (
+                    {({ isSubmitting, errors, setFieldTouched, values, touched }) => (
                         <Form className='mt5-password-manager__main-form' noValidate>
                             {this.state.error_message_main && (
                                 <p className='mt5-password-manager--error-message'>{this.state.error_message_main}</p>
@@ -286,7 +286,12 @@ class MT5PasswordManagerModal extends React.Component {
                             <div className='mt5-password-manager__actions'>
                                 <Button
                                     className='mt5-password-manager--button'
-                                    is_disabled={isSubmitting}
+                                    is_disabled={
+                                        isSubmitting ||
+                                        !values.old_password ||
+                                        !values.new_password ||
+                                        Object.keys(errors).length > 0
+                                    }
                                     is_loading={isSubmitting}
                                     text={localize('Change password')}
                                     primary
@@ -333,7 +338,7 @@ class MT5PasswordManagerModal extends React.Component {
                         <p className='mt5-password-manager--error-message'>{this.state.error_message_investor}</p>
                     )}
                     <Formik initialValues={initial_values} validate={validatePassword} onSubmit={onSubmit}>
-                        {({ isSubmitting, errors, setFieldTouched, touched }) => (
+                        {({ isSubmitting, errors, setFieldTouched, values, touched }) => (
                             <Form className='mt5-password-manager__investor-form' noValidate>
                                 <Field name='old_password'>
                                     {({ field }) => (
@@ -377,7 +382,12 @@ class MT5PasswordManagerModal extends React.Component {
                                 <div className='mt5-password-manager__actions'>
                                     <Button
                                         className='mt5-password-manager--button'
-                                        is_disabled={isSubmitting}
+                                        is_disabled={
+                                            isSubmitting ||
+                                            !values.old_password ||
+                                            !values.new_password ||
+                                            Object.keys(errors).length > 0
+                                        }
                                         is_loading={isSubmitting}
                                         text={localize('Change investor password')}
                                         primary

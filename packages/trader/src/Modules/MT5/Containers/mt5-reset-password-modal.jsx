@@ -74,7 +74,7 @@ class MT5ResetPasswordModal extends React.Component {
                 max_number: 25,
             });
         } else if (!validPassword(values.new_password)) {
-            errors.new_password = getPreBuildDVRs().new_password.message;
+            errors.new_password = getPreBuildDVRs().password.message;
         }
         if (values.new_password.toLowerCase() === this.props.email.toLowerCase()) {
             errors.new_password = localize('Your password cannot be the same as your email address.');
@@ -178,7 +178,11 @@ class MT5ResetPasswordModal extends React.Component {
                                                 {isSubmitting && <Loading is_fullscreen={false} />}
                                                 {!isSubmitting && (
                                                     <FormSubmitButton
-                                                        is_disabled={isSubmitting || !values.new_password}
+                                                        is_disabled={
+                                                            isSubmitting ||
+                                                            !values.new_password ||
+                                                            Object.keys(errors).length > 0
+                                                        }
                                                         errors={errors}
                                                         is_center={true}
                                                         large

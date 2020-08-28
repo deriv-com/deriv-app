@@ -35,6 +35,7 @@ const SummaryCard = ({
                     getContractTypeDisplay={getContractTypeDisplay}
                     is_mobile={is_mobile}
                     is_positions={false}
+                    is_sold={is_contract_completed}
                     profit_loss={contract.profit}
                     server_time={server_time}
                     should_show_profit_loss_overlay={true}

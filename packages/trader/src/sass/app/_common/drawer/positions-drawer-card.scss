@@ -89,11 +89,13 @@
         &--enter-done {
             opacity: 1;
             transform: translateY(0);
+            margin: 0.8rem;
         }
         &--enter,
         &--exit {
             opacity: 0;
             transform: translateY(-16px);
+            margin: 0.8rem;
         }
     }
     &--active {

@@ -9,8 +9,7 @@
         align-items: center;
         transition: opacity 0.25s ease;
         width: 100%;
-        margin-top: 1rem;
-        height: calc(100% - 36px);
+        height: 100%;
 
         &--won {
             color: var(--text-profit-success);
@@ -21,11 +20,13 @@
         &-wrapper {
             cursor: pointer;
             width: 100%;
-            margin-top: 2rem;
-            height: calc(100% - 36px);
+            height: 100%;
             text-decoration: none;
             position: absolute;
             z-index: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         @include mobile {
             pointer-events: none;

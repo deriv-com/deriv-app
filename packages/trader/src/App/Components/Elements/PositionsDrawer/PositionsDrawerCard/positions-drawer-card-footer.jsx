@@ -5,14 +5,13 @@ import { CSSTransition } from 'react-transition-group';
 import { Button } from '@deriv/components';
 import TogglePositionsDrawerDialog from 'App/Components/Elements/PositionsDrawer/toggle-positions-drawer-dialog.jsx';
 import { localize } from '@deriv/translations';
-import { isValidToCancel, isValidToSell, isSellVisible } from 'Stores/Modules/Contract/Helpers/logic';
+import { isValidToCancel, isValidToSell, isSellVisible, isOpen } from 'Stores/Modules/Contract/Helpers/logic';
 import MultiplierCloseActions from './multiplier-close-actions.jsx';
 
 const CardFooter = ({ contract_info, is_multiplier, is_sell_requested, onClickCancel, onClickSell }) => {
     const { contract_id } = contract_info;
     const is_valid_to_cancel = isValidToCancel(contract_info);
     const is_valid_to_sell = isValidToSell(contract_info);
-    const is_open = contract_info.status === 'open';
 
     return (
         <CSSTransition
@@ -59,7 +58,7 @@ const CardFooter = ({ contract_info, is_multiplier, is_sell_requested, onClickCa
                             secondary
                         />
                     ) : (
-                        is_open && (
+                        isOpen(contract_info) && (
                             <div className='positions-drawer-card__no-resale-msg'>{localize('Resale not offered')}</div>
                         )
                     )}

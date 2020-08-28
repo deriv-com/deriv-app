@@ -10,7 +10,7 @@ import Shortcode from 'Modules/Reports/Helpers/shortcode';
 import { localize } from '@deriv/translations';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import { isMultiplierContract } from 'Stores/Modules/Contract/Helpers/multiplier';
-import { isSellVisible } from 'Stores/Modules/Contract/Helpers/logic';
+import { isSellVisible, isOpen } from 'Stores/Modules/Contract/Helpers/logic';
 import ContractTypeCell from './contract-type-cell.jsx';
 import ProgressSliderMobile from './ProgressSliderMobile';
 import ResultMobile from './result-mobile.jsx';
@@ -49,7 +49,6 @@ const PositionsModalCard = ({
     const is_multiplier = isMultiplierContract(contract_info.contract_type);
 
     const fallback_result = profit_loss < 0 ? 'lost' : 'won';
-    const is_open = contract_info.status === 'open';
 
     const contract_options_el = (
         <React.Fragment>
@@ -91,7 +90,7 @@ const PositionsModalCard = ({
                                 secondary
                             />
                         ) : (
-                            is_open && (
+                            isOpen(contract_info) && (
                                 <div className='positions-modal-card__no-resale-msg'>
                                     {localize('Resale not offered')}
                                 </div>

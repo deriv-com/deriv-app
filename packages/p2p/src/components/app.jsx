@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
 import { getPropertyValue } from '@deriv/shared';
 import { Tabs, Modal } from '@deriv/components';
@@ -17,12 +18,10 @@ import { useStores } from '../../stores';
 import './app.scss';
 
 const allowed_currency = 'USD';
-
-const App = props => {
+const App = observer(props => {
     const { general_store } = useStores();
     const {
         className,
-        client,
         custom_strings,
         is_mobile,
         lang,
@@ -34,14 +33,13 @@ const App = props => {
         websocket_api,
     } = props;
     const is_mounted = React.useRef(false);
+    general_store.setAppProps(props);
+    general_store.setWebsocketInit(websocket_api, general_store.client.local_currency_config.decimal_places);
 
     React.useEffect(() => {
-        general_store.setAppProps(props);
-        general_store.setClient(client);
         is_mounted.current = true;
 
         setLanguage(lang);
-        general_store.setWebsocketInit(websocket_api, general_store.client.local_currency_config.decimal_places);
         ServerTime.init(server_time);
 
         // force safari refresh on back/forward
@@ -202,7 +200,7 @@ const App = props => {
             </main>
         </Dp2pProvider>
     );
-};
+});
 
 App.propTypes = {
     client: PropTypes.shape({

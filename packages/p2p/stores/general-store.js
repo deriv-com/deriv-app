@@ -1,7 +1,7 @@
 import { observable, action } from 'mobx';
 import OrderInfo, { orderToggleIndex } from '../src/components/orders/order-info.js';
 import { getPropertyValue, isEmptyObject, isProduction } from '@deriv/shared';
-import { init as WebsocketInit, getModifiedP2POrderList, requestWS, subscribeWS } from 'Utils/websocket.js';
+import { init as WebsocketInit, getModifiedP2POrderList, requestWS, subscribeWS } from '../src/utils/websocket.js';
 
 export default class GeneralStore {
     @observable active_index = 0;
@@ -66,7 +66,7 @@ export default class GeneralStore {
             const order_info = new OrderInfo(new_order);
             const notification = notifications.find(n => n.order_id === new_order.id);
             const old_order = old_orders.find(o => o.id === new_order.id);
-            const is_current_order = new_order.id === order_id;
+            const is_current_order = new_order.id === this.props?.order_id;
             const notification_obj = {
                 order_id: new_order.id,
                 is_seen: is_current_order,
@@ -183,7 +183,7 @@ export default class GeneralStore {
             this.setNicknameError(response.error.message);
         } else {
             this.setAdvertiserId(p2p_advertiser_create.id);
-            this.setIsAdvertiser(!!p2p_advertiser_create.is_approved);
+            this.setIsAdvertiser(p2p_advertiser_create.is_approved === 1);
             this.setNickname(p2p_advertiser_create.name);
             this.setNicknameError(undefined);
             this.setChatInfo(p2p_advertiser_create.chat_user_id, p2p_advertiser_create.chat_token);
@@ -257,8 +257,8 @@ export default class GeneralStore {
             this.setOrders(getModifiedP2POrderList(list));
         } else {
             // it's a single order from p2p_order_info
-            const idx_order_to_update = orders.findIndex(order => order.id === order_response.id);
-            const updated_orders = [...orders];
+            const idx_order_to_update = this.orders.findIndex(order => order.id === order_response.id);
+            const updated_orders = [...this.orders];
             // if it's a new order, add it to the top of the list
             if (idx_order_to_update < 0) {
                 updated_orders.unshift(order_response);
@@ -267,7 +267,7 @@ export default class GeneralStore {
                 updated_orders[idx_order_to_update] = order_response;
             }
             // trigger re-rendering by setting orders again
-            this.handleNotifications(orders, updated_orders);
+            this.handleNotifications(this.orders, updated_orders);
             this.setOrderOffset(updated_orders.length);
             this.setOrders(updated_orders);
         }
@@ -293,6 +293,7 @@ export default class GeneralStore {
         WebsocketInit(websocket, local_currency_decimal_places);
     };
 
+    @action.bound
     toggleNicknamePopup() {
         this.setShowPopup(!this.show_popup);
     }
@@ -303,7 +304,7 @@ export default class GeneralStore {
 
         if (!response.error) {
             this.setAdvertiserId(p2p_advertiser_info.id);
-            this.setIsAdvertiser(!!p2p_advertiser_info.is_approved);
+            this.setIsAdvertiser(p2p_advertiser_info.is_approved === 1);
             this.setIsListed(p2p_advertiser_info.is_listed === 1);
             this.setNickname(p2p_advertiser_info.name);
         } else {
@@ -318,7 +319,7 @@ export default class GeneralStore {
 
         if (!this.is_advertiser) {
             requestWS({ get_account_status: 1 }).then(account_response => {
-                if (is_mounted.current && !account_response.error) {
+                if (!account_response.error) {
                     const { get_account_status } = account_response;
                     const { authentication } = get_account_status;
                     const { identity } = authentication;

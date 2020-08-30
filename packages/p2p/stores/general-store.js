@@ -47,14 +47,12 @@ export default class GeneralStore {
                 const { p2p_advertiser_create } = response;
                 if (response) {
                     if (response.error) {
-                        this.setState({ nickname_error: response.error.message });
+                        this.setNicknameError(response.error.message);
                     } else {
-                        this.setState({
-                            advertiser_id: p2p_advertiser_create.id,
-                            is_advertiser: !!p2p_advertiser_create.is_approved,
-                            nickname: p2p_advertiser_create.name,
-                            nickname_error: undefined,
-                        });
+                        this.setAdvertiserId(p2p_advertiser_create.id);
+                        this.setIsAdvertiser(p2p_advertiser_create.is_approved === 1);
+                        this.setNickname(p2p_advertiser_create.name);
+                        this.setNicknameError(undefined);
                         this.setChatInfo(p2p_advertiser_create.chat_user_id, p2p_advertiser_create.chat_token);
                         this.toggleNicknamePopup();
                     }
@@ -150,6 +148,7 @@ export default class GeneralStore {
         this.active_index = active_index;
     }
 
+    @action.bound
     setActiveNotificationCount(active_notification_count) {
         this.active_notification_count = active_notification_count;
     }

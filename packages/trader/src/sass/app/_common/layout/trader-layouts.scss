@@ -121,7 +121,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
                     flex: 2;
 
                     &--is-multiplier {
-                        max-height: 244px;
+                        max-height: 269px;
                         top: -0.5rem;
 
                         @media (max-width: 320px) and (max-height: 480px) {
@@ -265,7 +265,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
                         }
                     }
                     &.contract-drawer--is-expanded {
-                        transform: translateY(calc(-100% + 327px));
+                        transform: translateY(calc(-100% + 376px));
 
                         @media (max-width: 320px) and (max-height: 480px) {
                             transform: translateY(calc(-100% + 238px));

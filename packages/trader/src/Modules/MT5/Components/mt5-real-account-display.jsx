@@ -2,6 +2,7 @@ import React from 'react';
 import { Icon } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import {
+    eu_real_financial_specs,
     real_financial_stp_specs,
     real_financial_specs,
     real_synthetic_specs,
@@ -22,6 +23,7 @@ const MT5RealAccountDisplay = ({
     has_real_account,
     is_eu,
     is_eu_enabled, // TODO [deriv-eu] remove is_eu_enabled once eu is released.
+    is_eu_country,
     has_malta_account,
     has_maltainvest_account,
     is_fully_authenticated,
@@ -92,10 +94,10 @@ const MT5RealAccountDisplay = ({
             category: 'real',
             type: 'financial_stp',
         });
-
+    const should_show_eu = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
     return (
         <div className='mt5-real-accounts-display'>
-            {landing_companies?.mt_gaming_company?.financial && (
+            {(landing_companies?.mt_gaming_company?.financial || !is_logged_in) && (
                 <MT5AccountCard
                     has_mt5_account={has_mt5_account}
                     icon={() => <Icon icon='IcMt5SyntheticPlatform' size={64} />}
@@ -117,7 +119,8 @@ const MT5RealAccountDisplay = ({
                     specs={real_synthetic_specs}
                 />
             )}
-            {landing_companies?.mt_financial_company?.financial && (
+
+            {(landing_companies?.mt_financial_company?.financial || !is_logged_in) && (
                 <MT5AccountCard
                     has_mt5_account={has_mt5_account}
                     is_disabled={(!is_eu && !has_real_account) || (!is_eu_enabled && is_eu)} // TODO [deriv-eu] remove eu enabled check
@@ -137,14 +140,20 @@ const MT5RealAccountDisplay = ({
                     onSelectAccount={onSelectRealFinancial}
                     onPasswordManager={openPasswordManager}
                     onClickFund={onClickFundRealFinancial}
-                    descriptor={localize(
-                        'Trade commodities, cryptocurrencies, major (standard and micro-lots) and minor currency pairs with high leverage.'
-                    )}
-                    specs={real_financial_specs}
+                    descriptor={
+                        is_eu || is_eu_country
+                            ? localize(
+                                  'Trade commodities, cryptocurrencies, major (standard) and minor currency pairs with high leverage.'
+                              )
+                            : localize(
+                                  'Trade commodities, cryptocurrencies, major (standard and micro-lots) and minor currency pairs with high leverage.'
+                              )
+                    }
+                    specs={should_show_eu ? eu_real_financial_specs : real_financial_specs}
                     is_logged_in={is_logged_in}
                 />
             )}
-            {landing_companies?.mt_financial_company?.financial_stp && (
+            {(landing_companies?.mt_financial_company?.financial_stp || !is_logged_in) && (
                 <MT5AccountCard
                     has_mt5_account={has_mt5_account}
                     icon={() => <Icon icon='IcMt5FinancialStpPlatform' size={64} />}
@@ -167,7 +176,7 @@ const MT5RealAccountDisplay = ({
                     onPasswordManager={openPasswordManager}
                     onClickFund={onClickFundRealFinancialStp}
                     descriptor={localize(
-                        'Trade major, minor, and exotic currency pairs with Straight-Through Processing (STP) of your orders direct to the market.'
+                        'Trade major, minor, exotic currency pairs, and cryptocurrencies with Straight-Through Processing (STP) of your orders direct to the market.'
                     )}
                     specs={real_financial_stp_specs}
                     is_disabled={!is_eu && is_real_financial_stp_disabled}

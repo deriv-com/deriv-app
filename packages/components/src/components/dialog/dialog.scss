@@ -16,7 +16,7 @@
     bottom: 0;
 
     &__wrapper {
-        position: absolute;
+        position: fixed;
         left: 0;
         top: 0;
         width: 100%;
@@ -68,6 +68,7 @@
         line-height: 1.43;
         color: var(--text-general);
         max-width: calc(440px - 4.8rem);
+        width: 100%;
 
         /* postcss-bem-linter: ignore */
         .dc-input__label {
@@ -84,10 +85,16 @@
         width: 100%;
         @include mobile {
             flex-wrap: wrap;
+            align-items: flex-start;
         }
     }
     &__button {
         margin-left: 0.8rem;
+        @include mobile {
+            &:not(:last-child) {
+                margin-bottom: 1rem;
+            }
+        }
     }
 }
 

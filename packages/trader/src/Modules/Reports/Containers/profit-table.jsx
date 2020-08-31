@@ -29,7 +29,7 @@ class ProfitTable extends React.Component {
     }
 
     mobileRowRenderer = ({ row, is_footer }) => {
-        const duration_type = getContractDurationType(row.longcode);
+        const duration_type = getContractDurationType(row.longcode, row.shortcode);
         const duration_classname = `duration-type__${duration_type.toLowerCase()}`;
 
         if (is_footer) {
@@ -220,7 +220,7 @@ ProfitTable.propTypes = {
 
 export default connect(({ modules, client }) => ({
     currency: client.currency,
-    data: modules.profit_table.data_source,
+    data: modules.profit_table.data,
     date_from: modules.profit_table.date_from,
     date_to: modules.profit_table.date_to,
     error: modules.profit_table.error,

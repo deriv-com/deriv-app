@@ -6,11 +6,11 @@ import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { Hr, RadioButtonGroup, RadioButton } from './currency-selector.jsx';
 
-const messages = [
-    'Choose your preferred cryptocurrency',
-    'You can open an account for each cryptocurrency.',
-    'Add a real account',
-    'Choose a currency you would like to trade with.',
+const messages = () => [
+    localize('Choose your preferred cryptocurrency'),
+    localize('You can open an account for each cryptocurrency.'),
+    localize('Add a real account'),
+    localize('Choose a currency you would like to trade with.'),
 ];
 
 const Headers = ({ heading, subheading }) => (
@@ -69,8 +69,8 @@ class AddCryptoCurrency extends React.Component {
                     isSubmitting,
                 }) => (
                     <form onSubmit={handleSubmit}>
-                        {!this.can_add_fiat && <Headers heading={messages[0]} subheading={messages[1]} />}
-                        {this.can_add_fiat && <Headers heading={messages[2]} subheading={messages[3]} />}
+                        {!this.can_add_fiat && <Headers heading={messages()[0]} subheading={messages()[1]} />}
+                        {this.can_add_fiat && <Headers heading={messages()[2]} subheading={messages()[3]} />}
                         {this.props.available_crypto_currencies.length !== 0 ? (
                             <RadioButtonGroup
                                 id='crypto_currency'

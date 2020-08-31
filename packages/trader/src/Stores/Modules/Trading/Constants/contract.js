@@ -1,5 +1,4 @@
 import { localize } from '@deriv/translations';
-import { isMobile } from '@deriv/shared';
 
 export const getLocalizedBasis = () => ({
     payout: localize('Payout'),
@@ -133,6 +132,4 @@ export const unsupported_contract_types_list = [
     'lb_call',
     'lb_put',
     'lb_high_low',
-    // TODO: Remove the conditional values below once barrier and path dependent contracts are ready for mobile
-    isMobile() ? 'multiplier' : null,
 ];

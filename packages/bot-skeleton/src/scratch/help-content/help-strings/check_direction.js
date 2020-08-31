@@ -10,7 +10,7 @@ export default {
             '1. If the selected direction is "Rise", and the previous tick value is less than the current tick value, the output will be "True". Otherwise, the output will be an empty string.'
         ),
         localize(
-            '2. If the selected direction is "Fall", and the previous tick value is more than the current tick value, the output will be "True". Otherwise, the output will be an empty string."'
+            '2. If the selected direction is "Fall", and the previous tick value is more than the current tick value, the output will be "True". Otherwise, the output will be an empty string.'
         ),
     ],
 };

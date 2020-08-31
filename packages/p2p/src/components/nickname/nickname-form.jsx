@@ -5,13 +5,10 @@ import { Input, Button, ThemedScrollbars, Icon } from '@deriv/components';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { localize } from 'Components/i18next';
 import IconClose from 'Assets/icon-close.jsx';
-import FormError from '../form/error.jsx';
 import './nickname-form.scss';
 
 const NicknameForm = ({ handleClose }) => {
-    const { createAdvertiser, nickname_error, is_mobile } = React.useContext(Dp2pContext);
-
-    const handleSubmit = values => createAdvertiser(values.nickname);
+    const { createAdvertiser, is_mobile, nickname_error, resetNicknameErrorState } = React.useContext(Dp2pContext);
 
     const validatePopup = values => {
         const validations = {
@@ -67,8 +64,14 @@ const NicknameForm = ({ handleClose }) => {
                     </div>
                 </div>
             )}
-            <Formik validate={validatePopup} initialValues={{ nickname: '' }} onSubmit={handleSubmit}>
-                {({ errors, handleChange, values }) => (
+            <Formik
+                validate={validatePopup}
+                initialValues={{ nickname: '' }}
+                onSubmit={async values => {
+                    await createAdvertiser(values.nickname);
+                }}
+            >
+                {({ errors, handleChange, isSubmitting, values }) => (
                     <Form noValidate>
                         <ThemedScrollbars autoHide style={{ height: '437px' }}>
                             <div className='nickname__form-content nickname__form-content__centre'>
@@ -83,10 +86,13 @@ const NicknameForm = ({ handleClose }) => {
                                             <Input
                                                 {...field}
                                                 data-lpignore='true'
-                                                error={errors.nickname}
+                                                error={nickname_error || errors.nickname}
                                                 label={localize('Your nickname')}
                                                 className='nickname__form-field'
-                                                onChange={handleChange}
+                                                onChange={e => {
+                                                    handleChange(e);
+                                                    resetNicknameErrorState();
+                                                }}
                                                 required
                                             />
                                         )}
@@ -98,14 +104,15 @@ const NicknameForm = ({ handleClose }) => {
                             </div>
                         </ThemedScrollbars>
                         <div className='nickname__form-footer'>
-                            {nickname_error && <FormError message={nickname_error} />}
                             <Button.Group>
                                 <Button secondary type='button' onClick={handleClose} large>
                                     {localize('Cancel')}
                                 </Button>
                                 <Button
                                     type='submit'
-                                    is_disabled={!!errors.nickname || values.nickname === ''}
+                                    is_disabled={
+                                        !!errors.nickname || values.nickname === '' || isSubmitting || nickname_error
+                                    }
                                     primary
                                     large
                                 >

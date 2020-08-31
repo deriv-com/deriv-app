@@ -20,9 +20,10 @@ const el_landscape_blocker = document.getElementById('landscape_blocker');
 class Cashier extends React.Component {
     state = { device_height: window.innerHeight, is_p2p_restricted: true };
 
-    componentDidMount() {
+    async componentDidMount() {
         this.props.toggleCashier();
         // we still need to populate the tabs shown on cashier
+        await WS.wait('authorize');
         this.props.onMount();
         this.props.setAccountSwitchListener();
 
@@ -101,6 +102,7 @@ class Cashier extends React.Component {
             : null;
         const should_show_tab_headers_note =
             !this.props.is_virtual &&
+            !this.props.is_eu &&
             !isCryptocurrency(this.props.loggedin_currency) &&
             (location.pathname.startsWith(routes.cashier_deposit) ||
                 location.pathname.startsWith(routes.cashier_withdrawal));
@@ -169,6 +171,7 @@ class Cashier extends React.Component {
 Cashier.propTypes = {
     history: PropTypes.object,
     is_onramp_tab_visible: PropTypes.bool,
+    is_eu: PropTypes.bool,
     is_p2p_visible: PropTypes.bool,
     is_payment_agent_transfer_visible: PropTypes.bool,
     is_payment_agent_visible: PropTypes.bool,
@@ -188,6 +191,7 @@ export default connect(({ client, common, modules, ui }) => ({
     setTabIndex: modules.cashier.setCashierTabIndex,
     loggedin_currency: client.currency,
     is_onramp_tab_visible: modules.cashier.onramp.is_onramp_tab_visible,
+    is_eu: client.is_eu,
     is_p2p_visible: modules.cashier.is_p2p_visible,
     is_virtual: client.is_virtual,
     is_visible: ui.is_cashier_visible,

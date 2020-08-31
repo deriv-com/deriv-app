@@ -32,7 +32,7 @@ export const listPropType = () =>
             PropTypes.shape({
                 disabled: PropTypes.bool,
                 has_tooltip: PropTypes.bool,
-                text: PropTypes.string,
+                text: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
                 tooltip: PropTypes.string,
                 value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
             })

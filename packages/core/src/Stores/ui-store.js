@@ -17,7 +17,6 @@ export default class UIStore extends BaseStore {
     @observable reports_route_tab_index = 0;
     @observable is_cashier_visible = false;
     @observable is_history_tab_active = false;
-    @observable is_window_loaded = false;
     // TODO: [cleanup ui-store]
     // Take profit, Stop loss & Deal cancellation checkbox
     @observable should_show_cancellation_warning = true;
@@ -115,9 +114,8 @@ export default class UIStore extends BaseStore {
     @observable is_eu_enabled = false; // TODO: [deriv-eu] - Remove this constant when all EU sections are done.
 
     // Mobile
-    @observable should_show_toast_error = false;
-    @observable mobile_toast_error = '';
-    @observable mobile_toast_timeout = 1500;
+    mobile_toast_timeout = 3500;
+    @observable.shallow toasts = [];
 
     @observable is_mt5_page = false;
     @observable is_nativepicker_visible = false;
@@ -160,15 +158,8 @@ export default class UIStore extends BaseStore {
 
         super({ root_store, local_storage_properties, store_name });
 
-        window.addEventListener(
-            'load',
-            action('windowLoadSuccess', () => {
-                this.is_window_loaded = true;
-            })
-        );
-
         // TODO: [deiv-eu] remove this manual enabler
-        this.is_eu_enabled = !!+localStorage.getItem('is_eu_enabled');
+        this.toggleIsEuEnabled(localStorage.getItem('is_eu_enabled') === 'true');
 
         window.addEventListener('resize', this.handleResize);
         autorun(() => {
@@ -227,9 +218,6 @@ export default class UIStore extends BaseStore {
         }
         this.screen_width = window.innerWidth;
         this.screen_height = window.innerHeight;
-        if (this.is_mobile) {
-            this.is_positions_drawer_on = false;
-        }
     }
 
     @action.bound
@@ -274,8 +262,8 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    toggleAccountsDialog() {
-        this.is_accounts_switcher_on = !this.is_accounts_switcher_on;
+    toggleAccountsDialog(status = !this.is_accounts_switcher_on) {
+        this.is_accounts_switcher_on = status;
     }
 
     @action.bound
@@ -610,6 +598,7 @@ export default class UIStore extends BaseStore {
             success_message: '',
             error_message: '',
         };
+        this.real_account_signup_target = '';
     }
 
     @action.bound
@@ -618,14 +607,27 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    setToastErrorVisibility(status) {
-        this.should_show_toast_error = status;
+    addToast(toast_config) {
+        toast_config.key = toast_config.key ?? toast_config.content;
+        const toast_index = this.toasts.findIndex(t => t.key === toast_config.key);
+        if (toast_index > -1) {
+            this.toasts.splice(toast_index, 1);
+        }
+
+        toast_config.timeout = toast_config.timeout ?? this.mobile_toast_timeout;
+        if (toast_config.is_bottom) {
+            this.toasts.push(toast_config);
+        } else {
+            this.toasts.unshift(toast_config);
+        }
     }
 
     @action.bound
-    setToastErrorMessage(msg, timeout = 1500) {
-        this.mobile_toast_timeout = timeout;
-        this.mobile_toast_error = msg;
+    removeToast(key) {
+        const index = this.toasts.findIndex(t => t.key === key);
+        if (index > -1) {
+            this.toasts.splice(index, 1);
+        }
     }
 
     @action.bound
@@ -646,5 +648,10 @@ export default class UIStore extends BaseStore {
     @action.bound
     showAccountTypesModalForEuropean() {
         this.toggleAccountTypesModal(this.root_store.client.is_uk);
+    }
+
+    @action.bound
+    toggleIsEuEnabled(status = !this.is_eu_enabled) {
+        this.is_eu_enabled = status;
     }
 }

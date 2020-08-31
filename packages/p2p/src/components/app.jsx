@@ -15,7 +15,6 @@ import NicknameForm from './nickname/nickname-form.jsx';
 import Download from './verification/download.jsx';
 import Verification from './verification/verification.jsx';
 import './app.scss';
-import { replace } from 'formik';
 
 const allowed_currency = 'USD';
 

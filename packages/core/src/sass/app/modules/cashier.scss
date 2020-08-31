@@ -234,6 +234,8 @@
             @include mobile {
                 min-height: auto;
                 min-width: auto;
+                display: flex;
+                align-items: center;
             }
         }
         &-items,

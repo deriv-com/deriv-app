@@ -80,7 +80,7 @@
 .account-wizard {
     display: grid;
     grid-template-rows: 13rem minmax(10rem, 1fr);
-    height: 100%;
+    height: calc(100% - 57px);
     position: relative;
     width: 100%;
 
@@ -145,8 +145,6 @@
                 }
             }
             &__description {
-                font-size: 1.4rem;
-                line-height: 2.4rem;
                 margin-top: 2.4rem;
                 @include typeface(--paragraph-center-normal-prominent);
                 @include mobile {
@@ -382,7 +380,7 @@
         }
     }
     &__header:not(:first-child) {
-        margin-top: 1.6em;
+        margin-top: 1.6rem;
     }
     &__title {
         color: var(--text-prominent);
@@ -401,5 +399,6 @@
         font-weight: normal;
         color: var(--text-prominent);
         margin-bottom: 2rem;
+        line-height: 1.5;
     }
 }

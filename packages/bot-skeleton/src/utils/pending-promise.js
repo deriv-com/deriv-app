@@ -6,6 +6,8 @@ export default function PendingPromise() {
         reject = _reject;
     });
 
+    promise.isPending = true;
+
     promise.resolve = res => {
         promise.isPending = false;
         resolve(res);

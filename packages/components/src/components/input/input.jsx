@@ -59,6 +59,7 @@ const Input = (
                         'dc-input__field--placeholder-visible': !label && props.placeholder,
                     })}
                     disabled={disabled}
+                    data-lpignore={props.type === 'password' ? undefined : true}
                 />
             )}
             {trailing_icon &&

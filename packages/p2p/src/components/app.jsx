@@ -15,6 +15,7 @@ import NicknameForm from './nickname/nickname-form.jsx';
 import Download from './verification/download.jsx';
 import Verification from './verification/verification.jsx';
 import './app.scss';
+import { replace } from 'formik';
 
 const allowed_currency = 'USD';
 
@@ -80,8 +81,6 @@ class App extends React.Component {
                     {
                         p2p_order_list: 1,
                         subscribe: 1,
-                        offset: 0,
-                        limit: this.list_item_limit,
                     },
                     [this.setP2pOrderList]
                 ),
@@ -207,11 +206,33 @@ class App extends React.Component {
         this.setState({ chat_info });
     };
 
-    setP2pOrderList = response => {
-        const { p2p_order_list } = response;
-        const { list } = p2p_order_list;
-        this.handleNotifications(this.state.orders, list);
-        this.setState({ orders: getModifiedP2POrderList(list) });
+    setP2pOrderList = order_response => {
+        if (order_response.error) {
+            this.ws_subscriptions.order_list_subscription.unsubscribe();
+            return;
+        }
+        const { p2p_order_list } = order_response;
+
+        if (p2p_order_list) {
+            const { list } = p2p_order_list;
+            // it's an array of orders from p2p_order_list
+            this.handleNotifications(this.state.orders, list);
+            this.setState({ order_offset: list.length, orders: getModifiedP2POrderList(list) });
+        } else {
+            // it's a single order from p2p_order_info
+            const idx_order_to_update = this.state.orders.findIndex(order => order.id === order_response.id);
+            const updated_orders = [...this.state.orders];
+            // if it's a new order, add it to the top of the list
+            if (idx_order_to_update < 0) {
+                updated_orders.unshift(order_response);
+            } else {
+                // otherwise, update the correct order
+                updated_orders[idx_order_to_update] = order_response;
+            }
+            // trigger re-rendering by setting orders again
+            this.handleNotifications(this.state.orders, updated_orders);
+            this.setState({ orders: updated_orders });
+        }
     };
 
     getLocalStorageSettings = () => JSON.parse(localStorage.getItem('p2p_settings') || '{}');

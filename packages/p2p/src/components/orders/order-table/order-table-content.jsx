@@ -31,11 +31,11 @@ const OrderTableContent = ({ showDetails, is_active }) => {
     }, []);
 
     React.useEffect(() => {
+        setIsLoading(true);
         if (is_mounted) {
             is_active_tab.current = order_table_type === 'active';
             order_offset.current = 0;
             setOrdersState([]);
-            setIsLoading(true);
             loadMoreOrders();
         }
     }, [is_mounted, order_table_type]);
@@ -51,30 +51,16 @@ const OrderTableContent = ({ showDetails, is_active }) => {
                 if (is_mounted) {
                     const { list } = response.p2p_order_list;
                     if (list) {
-                        if (!list.error) {
-                            setHasMoreItemsToLoad(list.length >= list_item_limit);
+                        if (!response.error) {
+                            setHasMoreItemsToLoad(response.length >= list_item_limit);
                             handleNotifications(orders, list);
-                            setOrdersState(orders.concat(getModifiedP2POrderList(list)));
+                            setOrdersState(getModifiedP2POrderList(list));
                             setOrders(orders);
-                            order_offset.current += list.length;
+                            order_offset.current += response.length;
                             setIsLoading(false);
                         } else {
                             setApiErrorMessage(list.error.message);
                         }
-                    } else {
-                        // it's a single order from p2p_order_info
-                        const idx_order_to_update = orders.findIndex(order => order.id === response.id);
-                        const updated_orders = [...orders];
-                        // if it's a new order, add it to the top of the list
-                        if (idx_order_to_update < 0) {
-                            updated_orders.unshift(response);
-                        } else {
-                            // otherwise, update the correct order
-                            updated_orders[idx_order_to_update] = response;
-                        }
-                        // trigger re-rendering by setting orders again
-                        handleNotifications(orders, updated_orders);
-                        setOrdersState(getModifiedP2POrderList(updated_orders));
                     }
                     setIsLoading(false);
                     resolve();

@@ -14,11 +14,15 @@ const signupInitialValues = { password: '', residence: '' };
 
 const validateSignup = (values, residence_list) => {
     const errors = {};
-    const min_password_length = 6;
 
-    if (values.password && (values.password.length < min_password_length || !validPassword(values.password))) {
-        errors.password = true;
+    if (!/^[ -~]{6,25}$/.test(values.password)) {
+        errors.password = localize('Password length should be between 6 to 25 characters.');
     }
+    if (!validPassword(values.password)) {
+        errors.password = localize('Password should have lower and uppercase letters with numbers.');
+    }
+
+    if (!values.password) errors.password = localize('This field is required');
 
     if (!values.residence) {
         errors.residence = true;

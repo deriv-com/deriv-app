@@ -143,13 +143,7 @@ class ProfitTable extends React.Component {
 
         return (
             <React.Fragment>
-                <ReportsMeta
-                    i18n_heading={localize('Profit table')}
-                    i18n_message={localize(
-                        'View all trades purchased on your account, and a summary of your total profit/loss.'
-                    )}
-                    filter_component={filter_component}
-                />
+                <ReportsMeta filter_component={filter_component} className='profit-table__filter' />
                 {data.length === 0 || is_empty ? (
                     <PlaceholderComponent
                         is_loading={is_loading}

@@ -37,20 +37,14 @@ export default function register() {
                         installingWorker.onstatechange = () => {
                             if (installingWorker.state === 'installed') {
                                 if (navigator.serviceWorker.controller) {
-                                    console.log('service worker installed in msecs', performance.now()); // eslint-disable-line no-console
-                                    if (performance.now() < AUTO_REFRESH_THRESHOLD) {
-                                        console.log(`${performance.now()} is lesser than ${AUTO_REFRESH_THRESHOLD}`); // eslint-disable-line no-console
-                                        window.location.reload();
-                                    } else {
-                                        // User's first visit:
-                                        // At this point, the old content will have been purged and
-                                        // the fresh content will have been added to the cache.
-                                        // It's the perfect time to display a "New content is
-                                        // available; please refresh." message in your web app.
-                                        console.log('New content is available; please refresh.'); // eslint-disable-line no-console
-                                        const new_version_received = new Event('UpdateAvailable');
-                                        document.dispatchEvent(new_version_received);
-                                    }
+                                    // User's first visit:
+                                    // At this point, the old content will have been purged and
+                                    // the fresh content will have been added to the cache.
+                                    // It's the perfect time to display a "New content is
+                                    // available; please refresh." message in your web app.
+                                    console.log('New content is available; please refresh.'); // eslint-disable-line no-console
+                                    const new_version_received = new Event('UpdateAvailable');
+                                    document.dispatchEvent(new_version_received);
                                 } else {
                                     // At this point, everything has been precached.
                                     // It's the perfect time to display a
@@ -64,6 +58,15 @@ export default function register() {
                 .catch(error => {
                     console.error('Error during service worker registration:', error); // eslint-disable-line no-console
                 });
+        });
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+            console.log('controller change detected'); // eslint-disable-line no-console
+            // This fires when the service worker controlling this page
+            // changes, eg a new worker has skipped waiting and become
+            // the new active worker.
+            if (AUTO_REFRESH_THRESHOLD > performance.now()) {
+                window.location.reload();
+            }
         });
     }
 }

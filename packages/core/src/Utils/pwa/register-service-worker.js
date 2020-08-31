@@ -65,7 +65,10 @@ export default function register() {
             // changes, eg a new worker has skipped waiting and become
             // the new active worker.
             if (AUTO_REFRESH_THRESHOLD > performance.now()) {
+                alert('Now refreshing');
                 window.location.reload();
+            } else {
+                alert('new version was too late to update.');
             }
         });
     }

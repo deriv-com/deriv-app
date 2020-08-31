@@ -6,9 +6,8 @@
     }
     &__items {
         display: flex;
-        justify-content: center;
-        // flex-wrap: wrap;
-        // justify-content: space-evenly;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
 
         @include mobile {
             display: grid;

@@ -15,6 +15,7 @@ import { height_constants } from 'Utils/height_constants';
 const OrderTableContent = ({ showDetails, is_active }) => {
     const {
         changeTab,
+        is_active_tab,
         list_item_limit,
         order_offset,
         order_table_type,
@@ -45,6 +46,7 @@ const OrderTableContent = ({ showDetails, is_active }) => {
                 p2p_order_list: 1,
                 offset: order_offset,
                 limit: list_item_limit,
+                active: is_active_tab ? 1 : 0,
             }).then(response => {
                 if (is_mounted) {
                     if (!response.error) {
@@ -53,7 +55,7 @@ const OrderTableContent = ({ showDetails, is_active }) => {
                         setOrders(orders.concat(getModifiedP2POrderList(list)));
                         setOrderOffset(order_offset + list.length);
                     } else {
-                        setApiErrorMessage(response.api_error_message);
+                        setApiErrorMessage(response.error.message);
                     }
                 }
                 setIsLoading(false);
@@ -117,6 +119,7 @@ const OrderTableContent = ({ showDetails, is_active }) => {
 
 OrderTableContent.propTypes = {
     is_active: PropTypes.bool,
+    is_active_tab: PropTypes.bool,
     showDetails: PropTypes.func,
 };
 

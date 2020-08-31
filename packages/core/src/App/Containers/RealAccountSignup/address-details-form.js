@@ -54,19 +54,21 @@ const address_details_config = ({ account_settings }) => {
             default_value: account_settings.address_postcode ?? '',
             rules: [
                 [
-                    'postcode',
+                    'length',
                     localize('Please enter a {{field_name}} under {{max_number}} characters.', {
                         field_name: localize('postal/ZIP code'),
                         max_number: 20,
                         interpolation: { escapeValue: false },
                     }),
+                    { min: 0, max: 20 },
                 ],
+                ['postcode', localize('Only letters, numbers, space, and hyphen are allowed.')],
             ],
         },
     };
 };
 
-export const addressDetailsConfig = ({ real_account_signup_target, residence, account_settings }) => {
+export const addressDetailsConfig = ({ upgrade_info, real_account_signup_target, residence, account_settings }) => {
     const config = address_details_config({ account_settings });
     return {
         header: {
@@ -80,6 +82,7 @@ export const addressDetailsConfig = ({ real_account_signup_target, residence, ac
                 real_account_signup_target,
                 transformConfig(transformForResidence(config, residence), real_account_signup_target)
             ),
+            is_svg: upgrade_info?.can_upgrade_to === 'svg',
         },
         passthrough: ['residence_list', 'is_fully_authenticated'],
     };

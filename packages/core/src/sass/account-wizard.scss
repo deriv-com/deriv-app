@@ -3,15 +3,15 @@
     flex-direction: column;
     transition: all 0.3s ease-in-out;
     @include tablet {
-        max-height: calc(100vh - 102px); // Header and footer
+        max-height: calc(100vh - 102px) !important; // Header and footer
     }
 
     &--success {
         border-radius: $BORDER_RADIUS;
         overflow: hidden;
         max-width: 478px;
-        min-width: initial;
-        max-height: initial;
+        min-width: initial !important;
+        max-height: initial !important;
     }
     .dc-modal-header__title {
         text-transform: none;
@@ -68,6 +68,9 @@
             height: 0;
         }
     }
+    & .dc-themed-scrollbars {
+        height: 100%;
+    }
 }
 
 .dc-modal-header--real-account-signup-modal {
@@ -77,18 +80,25 @@
 .account-wizard {
     display: grid;
     grid-template-rows: 13rem minmax(10rem, 1fr);
-    height: 100%;
+    height: calc(100% - 57px);
     position: relative;
     width: 100%;
-    @include desktop {
-        overflow: auto;
-    }
+
     @include mobile {
         grid-template-rows: 7rem minmax(10rem, 1fr);
+        overflow: hidden;
+
+        &--set-currency {
+            grid-template-rows: 1fr 70px;
+        }
     }
 
     &.add-or-manage {
         grid-template-rows: 1fr 1fr;
+
+        & .dc-form-submit-button {
+            padding: 2rem;
+        }
         @include desktop {
             & form {
                 grid-template-rows: auto;
@@ -96,6 +106,8 @@
         }
         @include mobile {
             grid-template-rows: 1fr 1fr;
+            overflow-y: auto;
+            overflow-x: hidden;
         }
     }
     & > h2 {
@@ -133,8 +145,6 @@
                 }
             }
             &__description {
-                font-size: 1.4rem;
-                line-height: 2.4rem;
                 margin-top: 2.4rem;
                 @include typeface(--paragraph-center-normal-prominent);
                 @include mobile {
@@ -150,6 +160,18 @@
                     &--no-top-margin {
                         margin-top: 0;
                     }
+                }
+            }
+        }
+        // fix for safari bug with autoheight wrapper not working properly for calculating modal footer offset
+        @media not all and (min-resolution: 0.001dpcm) {
+            // stylelint-disable-line
+            @supports (-webkit-appearance: none) and (stroke-color: transparent) {
+                @include desktop {
+                    max-height: calc(100% - 48px);
+                }
+                @include tablet {
+                    max-height: calc(100% - 48px);
                 }
             }
         }
@@ -173,7 +195,7 @@
     }
     &__set-currency {
         p {
-            margin-top: 2.4rem;
+            margin: 2.4rem 0;
             @include typeface(--paragraph-center-normal-black);
             text-transform: initial;
             color: var(--text-prominent);
@@ -311,9 +333,13 @@
         color: var(--text-prominent);
         text-align: center;
     }
+    &__title {
+        margin-top: 3rem;
+    }
     &__sub-title {
         font-size: var(--text-size-xxs);
         font-weight: normal;
+        margin-bottom: 1rem;
     }
     @include tablet {
         form {
@@ -329,9 +355,9 @@
     &__header {
         font-size: var(--text-size-xs);
         font-weight: bold;
-        margin-bottom: 1.6em;
+        margin-bottom: 1.6rem;
         position: relative;
-        height: 1.6em;
+        height: 1.6rem;
         white-space: nowrap;
 
         &-section {
@@ -354,7 +380,7 @@
         }
     }
     &__header:not(:first-child) {
-        margin-top: 1.6em;
+        margin-top: 1.6rem;
     }
     &__title {
         color: var(--text-prominent);
@@ -373,5 +399,6 @@
         font-weight: normal;
         color: var(--text-prominent);
         margin-bottom: 2rem;
+        line-height: 1.5;
     }
 }

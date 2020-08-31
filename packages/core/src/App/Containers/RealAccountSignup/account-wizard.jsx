@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import fromEntries from 'object.fromentries';
 import React from 'react';
@@ -6,7 +7,7 @@ import { isDesktop, toMoment } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { makeCancellablePromise } from '_common/base/cancellable_promise';
-
+import LoadingModal from './real-account-signup-loader.jsx';
 import { getItems } from './account-wizard-form';
 
 // TODO: [deriv-eu] remove and merge this with the original function in PersonalDetails
@@ -21,7 +22,7 @@ const getLocation = (location_list, value, type) => {
 
 const SetCurrencyHeader = ({ has_target, has_real_account, has_currency, items, step }) => (
     <React.Fragment>
-        {(!has_real_account || has_target) && (
+        {(!has_real_account || has_target) && has_currency && (
             <React.Fragment>
                 <DesktopWrapper>
                     <FormProgress steps={items} current_step={step} />
@@ -46,7 +47,7 @@ const SetCurrencyHeader = ({ has_target, has_real_account, has_currency, items, 
             </React.Fragment>
         )}
         <DesktopWrapper>
-            {has_real_account && !has_target && (
+            {has_real_account && (!has_target || !has_currency) && (
                 <div className='account-wizard__set-currency'>
                     {!has_currency && (
                         <p>
@@ -75,10 +76,10 @@ class AccountWizard extends React.Component {
     }
 
     componentDidMount() {
-        this.fetchFromStorage();
         this.props.fetchStatesList();
         const { cancel, promise } = makeCancellablePromise(this.props.fetchResidenceList());
         this.cancel = cancel;
+
         promise
             .then(() => {
                 this.setState({
@@ -95,6 +96,20 @@ class AccountWizard extends React.Component {
                         }
                     });
                 }
+
+                const previous_data = this.fetchFromStorage();
+                if (previous_data.length > 0) {
+                    const items = this.state.items.slice(0);
+                    previous_data.forEach((item, index) => {
+                        if (item instanceof Object) {
+                            items[index].form_value = item;
+                        }
+                    });
+                    this.setState({
+                        items,
+                        step: 1,
+                    });
+                }
             })
             // eslint-disable-next-line no-unused-vars
             .catch(error => {
@@ -106,19 +121,11 @@ class AccountWizard extends React.Component {
         const stored_items = localStorage.getItem('real_account_signup_wizard');
         try {
             const items = JSON.parse(stored_items);
-            const cloned = this.state.items.slice(0);
-            items.forEach((item, index) => {
-                if (typeof item === 'object') {
-                    cloned[index].form_value = item;
-                }
-            });
-            this.setState({
-                items: cloned,
-                step: 1, // Send the user back to personal details.
-            });
             localStorage.removeItem('real_account_signup_wizard');
+            return items || [];
         } catch (e) {
             localStorage.removeItem('real_account_signup_wizard');
+            return [];
         }
     };
 
@@ -196,7 +203,6 @@ class AccountWizard extends React.Component {
         if (this.hasMoreSteps()) {
             this.goNext();
         } else {
-            this.props.onLoading();
             this.createRealAccount(setSubmitting);
         }
     };
@@ -250,6 +256,7 @@ class AccountWizard extends React.Component {
     };
 
     createRealAccount(setSubmitting) {
+        this.props.setLoading(true);
         if (this.props.has_real_account && !this.props.has_currency) {
             this.setAccountCurrency()
                 .then(response => {
@@ -262,7 +269,8 @@ class AccountWizard extends React.Component {
                         },
                         () => setSubmitting(false)
                     );
-                });
+                })
+                .finally(() => this.props.setLoading(false));
         } else {
             this.submitForm()
                 .then(response => {
@@ -274,7 +282,8 @@ class AccountWizard extends React.Component {
                 })
                 .catch(error => {
                     this.props.onError(error, this.state.items);
-                });
+                })
+                .finally(() => this.props.setLoading(false));
         }
     }
 
@@ -293,11 +302,17 @@ class AccountWizard extends React.Component {
 
     render() {
         if (this.state.mounted) return null;
+        if (this.props.is_loading) return <LoadingModal />;
         if (!this.state.finished) {
             const BodyComponent = this.getCurrent('body');
             const passthrough = this.getPropsForChild();
+
             return (
-                <div className='account-wizard'>
+                <div
+                    className={classNames('account-wizard', {
+                        'account-wizard--set-currency': !this.props.has_currency,
+                    })}
+                >
                     <SetCurrencyHeader
                         has_real_account={this.props.has_real_account}
                         step={this.state.step}
@@ -344,6 +359,7 @@ export default connect(({ client, ui }) => ({
     is_fully_authenticated: client.is_fully_authenticated,
     realAccountSignup: client.realAccountSignup,
     has_real_account: client.has_active_real_account,
+    upgrade_info: client.upgrade_info,
     real_account_signup_target: ui.real_account_signup_target,
     has_currency: !!client.currency,
     setAccountCurrency: client.setAccountCurrency,

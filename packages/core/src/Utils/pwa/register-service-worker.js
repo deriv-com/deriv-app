@@ -37,6 +37,7 @@ export default function register() {
                         installingWorker.onstatechange = () => {
                             if (installingWorker.state === 'installed') {
                                 if (navigator.serviceWorker.controller) {
+                                    console.log('service worker installed in msecs', performance.now()); // eslint-disable-line no-console
                                     if (performance.now() < AUTO_REFRESH_THRESHOLD) window.location.reload();
                                     // User's first visit:
                                     // At this point, the old content will have been purged and

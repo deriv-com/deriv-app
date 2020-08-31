@@ -1,7 +1,7 @@
 import { getUrlBase } from '@deriv/shared';
 
 const EVERY_HOUR = 3600000; // 1000 * 60 * 60
-const AUTO_REFRESH_THRESHOLD = 10000; // 10 Seconds
+const AUTO_REFRESH_THRESHOLD = 30000; // 30 Seconds
 
 let interval_id;
 

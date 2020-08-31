@@ -36,7 +36,6 @@ export default function register() {
                         const installingWorker = registration.installing;
                         installingWorker.onstatechange = () => {
                             if (installingWorker.state === 'installed') {
-                                console.log('time after page load: ', performance.now()); // TODO remove before merging.
                                 if (navigator.serviceWorker.controller) {
                                     if (performance.now() < AUTO_REFRESH_THRESHOLD) window.location.reload();
                                     // User's first visit:

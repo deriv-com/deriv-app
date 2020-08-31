@@ -39,7 +39,7 @@ export default function register() {
                                 if (navigator.serviceWorker.controller) {
                                     console.log('service worker installed in msecs', performance.now()); // eslint-disable-line no-console
                                     if (performance.now() < AUTO_REFRESH_THRESHOLD) {
-                                        console.log(`${performance.now()} is lesser than ${AUTO_REFRESH_THRESHOLD}`);
+                                        console.log(`${performance.now()} is lesser than ${AUTO_REFRESH_THRESHOLD}`); // eslint-disable-line no-console
                                         window.location.reload();
                                     } else {
                                         // User's first visit:

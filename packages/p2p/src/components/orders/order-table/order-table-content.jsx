@@ -31,8 +31,8 @@ const OrderTableContent = ({ showDetails, is_active }) => {
     }, []);
 
     React.useEffect(() => {
-        setIsLoading(true);
         if (is_mounted) {
+            setIsLoading(true);
             is_active_tab.current = order_table_type === 'active';
             order_offset.current = 0;
             setOrdersState([]);

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { AutoHeightWrapper, FormSubmitButton, Div100vhContainer } from '@deriv/components';
 import { ProofOfIdentityContainer } from '@deriv/account';
-import { isDesktop } from '@deriv/shared';
+import { isDesktop, isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import WS from 'Services/ws-methods';
 
@@ -61,6 +61,7 @@ class ProofOfIdentityForm extends React.PureComponent {
                                         has_cancel
                                         cancel_label={localize('Previous')}
                                         is_disabled={!['pending', 'verified'].includes(this.state.poi_state)}
+                                        is_absolute={isMobile()}
                                         label={localize('Next')}
                                         onCancel={this.props.onCancel}
                                         form_error={this.props.form_error}

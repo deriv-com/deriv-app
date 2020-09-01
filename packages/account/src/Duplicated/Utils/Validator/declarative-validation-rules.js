@@ -16,11 +16,11 @@ const validRequired = (value /* , options, field */) => {
     return str.length > 0;
 };
 const validEmail = (value) => /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$/.test(value);
-export const validPassword = (value) => /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+/.test(value);
+export const validPassword = (value) => /^(?=.*[a-z])(?=.*[0-9])(?=.*[A-Z])[ -~]*$/.test(value);
 export const validLetterSymbol = (value) => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><,|\d]+/.test(value);
 const validGeneral = (value) => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><|]+/.test(value);
 export const validAddress = (value) => !/[`~!$%^&*_=+[}{\]\\"?><|]+/.test(value);
-export const validPostCode = (value) => /^[a-zA-Z\s\W\d-]*$/.test(value);
+export const validPostCode = (value) => value === '' || /^[A-Za-z0-9][A-Za-z0-9\s-]*$/.test(value);
 export const validPhone = (value) => /^\+(?:[0-9] ?){6,14}[0-9]$/.test(value);
 export const validCountryCode = (list, value) => list.some((item) => value.startsWith(`+${item.phone_idd}`));
 const validRegular = (value, options) => options.regex.test(value);
@@ -140,7 +140,7 @@ const initPreBuildDVRs = () => ({
     number: { func: validNumber, message: '' },
     password: {
         func: validPassword,
-        message: localize('Password should have lower and uppercase letters with numbers.'),
+        message: localize('Password should have lower and uppercase English letters with numbers.'),
     },
     phone: { func: validPhone, message: localize('Only numbers and spaces are allowed.') },
     postcode: { func: validPostCode, message: localize('Only letters, numbers, space, and hyphen are allowed.') },

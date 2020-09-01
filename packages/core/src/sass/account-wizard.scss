@@ -100,12 +100,17 @@
 .account-wizard {
     display: grid;
     grid-template-rows: 13rem minmax(10rem, 1fr);
-    height: 100%;
+    height: calc(100% - 57px);
     position: relative;
     width: 100%;
+
     @include mobile {
         grid-template-rows: 7rem minmax(10rem, 1fr);
         overflow: hidden;
+
+        &--set-currency {
+            grid-template-rows: 1fr 70px;
+        }
     }
 
     &.add-or-manage {
@@ -160,8 +165,6 @@
                 }
             }
             &__description {
-                font-size: 1.4rem;
-                line-height: 2.4rem;
                 margin-top: 2.4rem;
                 @include typeface(--paragraph-center-normal-prominent);
                 @include mobile {
@@ -212,7 +215,7 @@
     }
     &__set-currency {
         p {
-            margin-top: 2.4rem;
+            margin: 2.4rem 0;
             @include typeface(--paragraph-center-normal-black);
             text-transform: initial;
             color: var(--text-prominent);
@@ -397,7 +400,7 @@
         }
     }
     &__header:not(:first-child) {
-        margin-top: 1.6em;
+        margin-top: 1.6rem;
     }
     &__title {
         color: var(--text-prominent);
@@ -416,5 +419,6 @@
         font-weight: normal;
         color: var(--text-prominent);
         margin-bottom: 2rem;
+        line-height: 1.5;
     }
 }

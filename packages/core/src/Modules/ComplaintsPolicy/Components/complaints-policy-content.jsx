@@ -1,15 +1,180 @@
 import React from 'react';
 import { localize, Localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
 import 'Sass/app/modules/complaints-policy.scss';
 
-const Content = () => {
+const getIntroductionText = (landing_company_shortcode, mt5_login_list) => {
+    const has_vanuatu = mt5_login_list.some(item => /vanuatu/.test(item.group));
+    const has_labuan = mt5_login_list.some(item => /labuan/.test(item.group));
+
+    switch (landing_company_shortcode) {
+        case 'iom':
+            return (
+                <Localize
+                    i18n_default_text='This complaints policy, which may change from time to time, applies to your account registered with Deriv (MX) Ltd, having its registered office address at First Floor, Millennium House, Victoria Road, Douglas, Isle of Man, IM2 4RW, licensed and regulated respectively by (1) the Gambling Supervision Commission in the Isle of Man (current <0>licence</0> issued on 31 August 2017) and (2) the Gambling Commission in the UK (<1>licence no. 39172</1>).'
+                    components={[<strong key={0} />, <strong key={1} />]}
+                />
+            );
+        case 'maltainvest':
+            return localize(
+                'This complaints policy, which may change from time to time, applies to your account registered with Deriv Investments (Europe) Limited.'
+            );
+        case 'malta':
+            return (
+                <Localize
+                    i18n_default_text='This complaints policy, which may change from time to time, applies to your account(s) registered with Deriv (Europe) Limited, having its registered office address at W Business Centre, Level 3, Triq Dun Karm, Birkirkara, BKR 9033, Malta, licensed and regulated by the Malta Gaming Authority in Malta for gambling products only, <0>licence no. MGA/B2C/102/2000</0>, and for clients residing in the UK by the UK Gambling Commission.'
+                    components={[<strong key={0} />]}
+                />
+            );
+        default:
+            if (has_vanuatu && has_labuan) {
+                return localize(
+                    'This complaints policy, which may change from time to time, applies to your account(s) registered with Deriv (SVG) LLC, Deriv (FX) Ltd, and Deriv (V) Ltd.'
+                );
+            } else if (has_vanuatu) {
+                return localize(
+                    'This complaints policy, which may change from time to time, applies to your account(s) registered with Deriv (SVG) LLC and Deriv (V) Ltd.'
+                );
+            } else if (has_labuan) {
+                return localize(
+                    'This complaints policy, which may change from time to time, applies to your account(s) registered with Deriv (SVG) LLC and Deriv (FX) Ltd.'
+                );
+            }
+            return localize(
+                'This complaints policy, which may change from time to time, applies to your account(s) registered with Deriv (SVG) LLC.'
+            );
+    }
+};
+
+const getYourDecisionText = landing_company_shortcode => {
+    switch (landing_company_shortcode) {
+        case 'iom':
+        case 'malta': {
+            const texts = [
+                <Localize
+                    key={0}
+                    i18n_default_text='If you are not satisfied with the outcome, you can escalate your complaint to the <0>Independent Betting Adjudication Service (IBAS)</0> by filling the IBAS adjudication form. Please note that IBAS only deals with disputes that result from transactions.'
+                    components={[
+                        <a
+                            key={0}
+                            className='link link--orange'
+                            rel='noopener noreferrer'
+                            target='_blank'
+                            href='https://www.ibas-uk.com/'
+                        />,
+                    ]}
+                />,
+                <Localize
+                    key={1}
+                    i18n_default_text="<0/><1/>Alternatively, you can send your complaint to the <2>European Commission's Online Dispute Resolution (ODR)</2> platform."
+                    components={[
+                        <br key={0} />,
+                        <br key={1} />,
+                        <a
+                            key={2}
+                            className='link link--orange'
+                            rel='noopener noreferrer'
+                            target='_blank'
+                            href='https://ec.europa.eu/odr/'
+                        />,
+                    ]}
+                />,
+            ];
+
+            if (landing_company_shortcode === 'iom') {
+                texts.push(
+                    <Localize
+                        key={texts.length}
+                        i18n_default_text='<0/><1/>If your complaint relates to our data processing practices, you can submit a formal complaint to your local supervisory authority.'
+                        components={[<br key={0} />, <br key={1} />]}
+                    />
+                );
+            } else {
+                texts.push(
+                    <Localize
+                        key={texts.length}
+                        i18n_default_text='<0/><1/>You can also refer your dispute to the Malta Gaming Authority via the <2>Player Support Unit</2>.'
+                        components={[
+                            <br key={0} />,
+                            <br key={1} />,
+                            <a
+                                key={2}
+                                className='link link--orange'
+                                rel='noopener noreferrer'
+                                target='_blank'
+                                href='https://www.mga.org.mt/support/online-gaming-support/'
+                            />,
+                        ]}
+                    />
+                );
+
+                texts.push(
+                    <Localize
+                        key={texts.length}
+                        i18n_default_text='<0/><1/>If your complaint relates to our data processing practices, you can submit a formal complaint to the <2>Information and Data Protection Commissioner</2> (Malta) on their website or make a complaint to any supervisory authority within the European Union.'
+                        components={[
+                            <br key={0} />,
+                            <br key={1} />,
+                            <a
+                                key={2}
+                                className='link link--orange'
+                                rel='noopener noreferrer'
+                                target='_blank'
+                                href='https://idpc.org.mt/en/Pages/Home.aspx'
+                            />,
+                        ]}
+                    />
+                );
+            }
+
+            return texts;
+        }
+        default: {
+            const texts = [
+                <Localize
+                    key={0}
+                    i18n_default_text='If you are not satisfied with the outcome, you can escalate your complaint to the <0>Financial Commission</0>.'
+                    components={[
+                        <a
+                            key={0}
+                            className='link link--orange'
+                            rel='noopener noreferrer'
+                            target='_blank'
+                            href='https://financialcommission.org/resolving-a-dispute/how-to-file-a-complaintdispute/'
+                        />,
+                    ]}
+                />,
+            ];
+            if (landing_company_shortcode === 'maltainvest') {
+                texts.push(
+                    <Localize
+                        key={texts.length}
+                        i18n_default_text='<0/><1/>You may also raise your unresolved dispute to the <2>Office of the Arbiter for Financial Services</2>.'
+                        components={[
+                            <br key={0} />,
+                            <br key={1} />,
+                            <a
+                                key={2}
+                                className='link link--orange'
+                                rel='noopener noreferrer'
+                                target='_blank'
+                                href='https://financialcommission.org/'
+                            />,
+                        ]}
+                    />
+                );
+            }
+            return texts;
+        }
+    }
+};
+
+const Content = ({ landing_company_shortcode, mt5_login_list }) => {
     const policy_content = [
         {
             title: localize('1. Introduction'),
             content: {
-                text: localize(
-                    'This complaints policy, which may change from time to time, applies to your account(s) registered with Deriv (SVG) LLC and Deriv (FX) Ltd.'
-                ),
+                text: getIntroductionText(landing_company_shortcode, mt5_login_list),
             },
         },
         {
@@ -57,26 +222,11 @@ const Content = () => {
                             'We shall try to resolve your complaint within 15 business days. We will inform you of the outcome together with an explanation of our position and propose any remedial measures we intend to take.'
                         ),
                     },
+                    {
+                        title: localize('3.4. Your decision'),
+                        text: getYourDecisionText(landing_company_shortcode),
+                    },
                 ],
-            },
-        },
-        {
-            title: localize('4. Your decision'),
-            content: {
-                text: (
-                    <Localize
-                        i18n_default_text='If you are not satisfied with the outcome, you can escalate your complaint to the <0>Financial Commission</0>.'
-                        components={[
-                            <a
-                                key={0}
-                                className='link link--orange'
-                                rel='noopener noreferrer'
-                                target='_blank'
-                                href='https://financialcommission.org/'
-                            />,
-                        ]}
-                    />
-                ),
             },
         },
     ];
@@ -139,7 +289,7 @@ const Content = () => {
                                     className='link link--orange'
                                     rel='noopener noreferrer'
                                     target='_blank'
-                                    href='https://financialcommission.org/resolving-a-dispute/dispute-resolution/'
+                                    href='https://financialcommission.org/resolving-a-dispute/dispute-resolution-process/'
                                 />,
                             ]}
                         />
@@ -187,32 +337,36 @@ const Content = () => {
         },
     ];
 
-    const modal_content = [...policy_content, ...complaints_procedure].map((row, index) => (
-        <div key={index} className='complaints-policy__section'>
-            <div className='complaints-policy__section-title'>{row.title}</div>
-            {row.list && (
-                <div className='complaints-policy__list'>
-                    {row.list.map((item, i) => (
-                        <div key={i} className='complaints-policy__list-item'>
-                            {item}
-                        </div>
-                    ))}
-                </div>
-            )}
-            {row.content && (
-                <div className='complaints-policy__section-content'>
-                    {row.content.text && row.content.text}
-                    {/* eslint-disable-next-line react/display-name */}
-                    {row.content.subcontent?.map((item, i) => (
-                        <div key={i} className='complaints-policy__subsection'>
-                            <div className='complaints-policy__subsection-title'>{item.title}</div>
-                            <div className='complaints-policy__subsection-content'>{item.text}</div>
-                        </div>
-                    ))}
-                </div>
-            )}
-        </div>
-    ));
+    const can_show_complaints_procedure = /^(svg|labuan|vanuatu|maltainvest)$/.test(landing_company_shortcode);
+
+    const modal_content = [...policy_content, ...(can_show_complaints_procedure ? complaints_procedure : [])].map(
+        (row, index) => (
+            <div key={index} className='complaints-policy__section'>
+                <div className='complaints-policy__section-title'>{row.title}</div>
+                {row.list && (
+                    <div className='complaints-policy__list'>
+                        {row.list.map((item, i) => (
+                            <div key={i} className='complaints-policy__list-item'>
+                                {item}
+                            </div>
+                        ))}
+                    </div>
+                )}
+                {row.content && (
+                    <div className='complaints-policy__section-content'>
+                        {row.content.text}
+                        {/* eslint-disable-next-line react/display-name */}
+                        {row.content.subcontent?.map((item, i) => (
+                            <div key={i} className='complaints-policy__subsection'>
+                                <div className='complaints-policy__subsection-title'>{item.title}</div>
+                                <div className='complaints-policy__subsection-content'>{item.text}</div>
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
+        )
+    );
 
     return (
         <div className='complaints-policy'>
@@ -221,4 +375,6 @@ const Content = () => {
     );
 };
 
-export default Content;
+export default connect(({ client }) => ({
+    mt5_login_list: client.mt5_login_list,
+}))(Content);

@@ -325,6 +325,7 @@ const MT5PersonalDetailsForm = ({
                                         (Object.keys(touched).length === 0 && !is_initial_valid) ||
                                         (Object.keys(touched).length > 0 && Object.keys(errors).length > 0)
                                     }
+                                    is_absolute={isMobile()}
                                     label={localize('Next')}
                                     onCancel={() => handleCancel(values)}
                                 />

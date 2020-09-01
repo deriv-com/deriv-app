@@ -31,6 +31,7 @@ class InputField extends React.Component {
             inline_prefix,
             is_autocomplete_disabled,
             is_disabled,
+            is_error_tooltip_hidden = false,
             is_float,
             is_hj_whitelisted = false,
             is_incrementable,
@@ -39,6 +40,7 @@ class InputField extends React.Component {
             is_read_only = false,
             is_signed = false,
             is_unit_at_right = false,
+            inputmode,
             label,
             max_length,
             max_value,
@@ -247,6 +249,7 @@ class InputField extends React.Component {
                 required={required}
                 setCurrentFocus={setCurrentFocus}
                 type={type}
+                inputmode={inputmode}
             />
         );
 
@@ -269,7 +272,7 @@ class InputField extends React.Component {
                 className={classNames('trade-container__tooltip', { 'dc-tooltip--with-label': label })}
                 alignment={error_message_alignment || 'left'}
                 message={has_error ? error_messages[0] : null}
-                has_error={has_error}
+                has_error={!is_error_tooltip_hidden && has_error}
             >
                 {!!label && (
                     <label htmlFor={name} className='input-field__label'>

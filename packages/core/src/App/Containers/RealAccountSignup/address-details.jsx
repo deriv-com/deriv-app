@@ -25,7 +25,7 @@ const InputField = props => {
                     <Input
                         type='text'
                         autoComplete='off'
-                        maxLength='30'
+                        maxLength={props.maxLength || '30'}
                         error={touched[field.name] && errors[field.name]}
                         {...field}
                         {...props}
@@ -130,11 +130,13 @@ class AddressDetails extends React.Component {
                                                         ? localize('First line of address*')
                                                         : localize('First line of address')
                                                 }
+                                                maxLength={255}
                                                 placeholder={localize('First line of address')}
                                             />
                                             <InputField
                                                 name='address_line_2'
                                                 label={localize('Second line of address')}
+                                                maxLength={255}
                                                 placeholder={localize('Second line of address')}
                                             />
                                             <InputField

@@ -2,8 +2,8 @@
 import React from 'react';
 import { getDerivComLink } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 import { Icon } from '@deriv/components';
+import { connect } from 'Stores/connect';
 
 const ArticleContent = ({ is_eu, toggleModal }) => {
     const eu_items = [

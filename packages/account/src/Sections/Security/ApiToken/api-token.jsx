@@ -430,7 +430,10 @@ class ApiToken extends React.Component {
                         <Article
                             title={localize('API token')}
                             descriptions={[
-                                <Localize i18n_default_text="To access our mobile apps and other third-party apps, you'll first need to generate an API token." />,
+                                <Localize
+                                    key={0}
+                                    i18n_default_text="To access our mobile apps and other third-party apps, you'll first need to generate an API token."
+                                />,
                             ]}
                         />
                     </DesktopWrapper>

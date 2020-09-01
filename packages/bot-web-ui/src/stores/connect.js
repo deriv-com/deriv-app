@@ -7,19 +7,21 @@ const isClassComponent = Component =>
 export const MobxContent = React.createContext(null);
 
 function injectStorePropsToComponent(propsToSelectFn, BaseComponent) {
-    const component = own_props => {
+    const Component = own_props => {
         const store = React.useContext(MobxContent);
 
-        if (!isClassComponent(BaseComponent)) {
-            return useObserver(() => BaseComponent({ ...own_props, ...propsToSelectFn(store, own_props) }));
+        let ObservedComponent = BaseComponent;
+
+        if (isClassComponent(BaseComponent)) {
+            const FunctionalWrapperComponent = props => <BaseComponent {...props} />;
+            ObservedComponent = FunctionalWrapperComponent;
         }
 
-        const FunctionalWrapperComponent = props => <BaseComponent {...props} />;
-        return useObserver(() => FunctionalWrapperComponent({ ...own_props, ...propsToSelectFn(store, own_props) }));
+        return useObserver(() => ObservedComponent({ ...own_props, ...propsToSelectFn(store, own_props) }));
     };
 
-    component.displayName = BaseComponent.name;
-    return component;
+    Component.displayName = BaseComponent.name;
+    return Component;
 }
 
 export const MobxContentProvider = ({ store, children }) => {

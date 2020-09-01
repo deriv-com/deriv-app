@@ -82,6 +82,7 @@ export class AccountActions extends React.Component {
                             classNameBubble='account-settings-toggle__tooltip'
                             alignment='bottom'
                             message={localize('Manage account settings')}
+                            zIndex={9999}
                         >
                             <BinaryLink className='account-settings-toggle' to={routes.personal_details}>
                                 <Icon icon='IcUserOutline' />

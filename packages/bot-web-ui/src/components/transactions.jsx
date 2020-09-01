@@ -5,9 +5,11 @@ import { PropTypes } from 'prop-types';
 import React from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import Transaction from './transaction.jsx';
+import Download from './download.jsx';
 import { transaction_elements } from '../constants/transactions';
 import { connect } from '../stores/connect';
 import { contract_stages } from '../constants/contract-stage';
+import '../assets/sass/download.scss';
 import '../assets/sass/transactions.scss';
 
 class Transactions extends React.PureComponent {
@@ -28,6 +30,9 @@ class Transactions extends React.PureComponent {
                     'run-panel-tab__content--mobile': is_mobile && is_drawer_open,
                 })}
             >
+                <div className='download__container'>
+                    <Download tab='transactions' />
+                </div>
                 <div className='transactions__header'>
                     <span className='transactions__header-column transactions__header-type'>{localize('Type')}</span>
                     <span className='transactions__header-column transactions__header-spot'>

@@ -12,3 +12,4 @@ export * from './utils/url';
 export * from './utils/storage';
 export * from './utils/indicators';
 export * from './utils/digital-options';
+export * from './utils/location';

@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { Loading } from '@deriv/components';
 import { Channel, SendBirdProvider } from 'sendbird-uikit';
+import Dp2pContext from 'Components/context/dp2p-context';
 import { getShortNickname, generateHexColourFromNickname } from 'Utils/string';
 import 'sendbird-uikit/dist/index.css';
 
 const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url, nickname }) => {
     const [is_loading, setIsLoading] = React.useState(true);
+    const { is_dark_mode_on } = React.useContext(Dp2pContext);
 
     React.useEffect(() => {
         const interval_header = setInterval(() => {
@@ -80,7 +82,12 @@ const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url, nickname }) 
     return (
         <div className={'sendbird-container'}>
             {is_loading && <Loading is_fullscreen={false} />}
-            <SendBirdProvider appId={app_id} userId={user_id} accessToken={token}>
+            <SendBirdProvider
+                appId={app_id}
+                userId={user_id}
+                accessToken={token}
+                theme={is_dark_mode_on ? 'dark' : 'light'}
+            >
                 <Channel channelUrl={channel_url} />
             </SendBirdProvider>
         </div>

@@ -12,7 +12,6 @@ class ProofOfIdentityContainer extends React.Component {
     state = {
         is_loading: true,
         api_error: false,
-        onfido_unsupported: false,
         status: '',
     };
 
@@ -20,7 +19,6 @@ class ProofOfIdentityContainer extends React.Component {
         new Promise((resolve) => {
             const onfido_cookie_name = 'onfido_token';
             const onfido_cookie = Cookies.get(onfido_cookie_name);
-            const unsupported_country_code = 'UnsupportedCountry';
 
             if (!onfido_cookie) {
                 this.props
@@ -29,13 +27,8 @@ class ProofOfIdentityContainer extends React.Component {
                         service: 'onfido',
                     })
                     .then((response) => {
-                        if (response.error || !response.service_token?.onfido) {
-                            if (response.error.code === unsupported_country_code) {
-                                this.setState({ onfido_unsupported: true });
-                            } else {
-                                this.setState({ api_error: true, is_loading: false });
-                            }
-                            resolve();
+                        if (response.error) {
+                            resolve({ error: response.error });
                             return;
                         }
 
@@ -84,10 +77,12 @@ class ProofOfIdentityContainer extends React.Component {
         this.props.getAccountStatus().then((response) => {
             const { get_account_status } = response;
             this.getOnfidoServiceToken().then((onfido_service_token) => {
+                // TODO: handle error for onfido_service_token.error.code === 'MissingPersonalDetails'
+
                 const { document, identity, needs_verification } = get_account_status.authentication;
                 const has_poa = !(document && document.status === 'none');
                 const needs_poa = needs_verification.length && needs_verification.includes('document');
-                const { onfido_unsupported } = this.state;
+                const onfido_unsupported = !identity.services.onfido.is_country_supported;
                 const status = getIdentityStatus(identity, onfido_unsupported);
                 const unwelcome = get_account_status.status.some((account_status) => account_status === 'unwelcome');
                 const allow_document_upload = get_account_status.status.some(

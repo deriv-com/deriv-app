@@ -82,6 +82,9 @@
 
 .dc-mobile-dialog__account-signup-mobile-dialog {
     .account-wizard--error {
+        p {
+            text-align: center;
+        }
         span.chat-inline {
             color: var(--brand-red-coral);
             font-weight: bold;

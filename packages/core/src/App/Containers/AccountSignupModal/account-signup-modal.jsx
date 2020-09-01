@@ -5,7 +5,7 @@ import React from 'react';
 import { Button, Dialog, PasswordInput, PasswordMeter } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { validPassword } from 'Utils/Validator/declarative-validation-rules';
+import { validLength, validPassword, getPreBuildDVRs } from 'Utils/Validator/declarative-validation-rules';
 import { website_name } from 'App/Constants/app-config';
 import ResidenceForm from '../SetResidenceModal/set-residence-form.jsx';
 import 'Sass/app/modules/account-signup.scss';
@@ -14,10 +14,19 @@ const signupInitialValues = { password: '', residence: '' };
 
 const validateSignup = (values, residence_list) => {
     const errors = {};
-    const min_password_length = 8;
 
-    if (values.password && (values.password.length < min_password_length || !validPassword(values.password))) {
-        errors.password = true;
+    if (
+        !validLength(values.password, {
+            min: 8,
+            max: 25,
+        })
+    ) {
+        errors.password = localize('You should enter {{min_number}}-{{max_number}} characters.', {
+            min_number: 8,
+            max_number: 25,
+        });
+    } else if (!validPassword(values.password)) {
+        errors.password = getPreBuildDVRs().password.message;
     }
 
     if (!values.residence) {

@@ -1,4 +1,5 @@
 import moment from 'moment';
+import Cookies from 'js-cookie';
 import { action, computed, observable, runInAction, when, reaction, toJS } from 'mobx';
 import {
     setCurrencies,
@@ -82,6 +83,7 @@ export default class ClientStore extends BaseStore {
         currency: '',
         decimal_places: undefined,
     };
+    @observable has_cookie_account = false;
 
     is_mt5_account_list_updated = false;
 
@@ -89,6 +91,20 @@ export default class ClientStore extends BaseStore {
         const local_storage_properties = ['device_data'];
         super({ root_store, local_storage_properties, store_name });
 
+        reaction(
+            () => [
+                this.is_logged_in,
+                this.loginid,
+                this.email,
+                this.landing_company,
+                this.currency,
+                this.residence,
+                this.account_settings,
+            ],
+            () => {
+                this.setCookieAccount();
+            }
+        );
         when(
             () => this.should_have_real_account,
             () => {
@@ -618,6 +634,29 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
+    setCookieAccount() {
+        const domain = window.location.hostname.includes('deriv.com') ? 'deriv.com' : 'binary.sx';
+        const { loginid, email, landing_company_shortcode, currency, residence, account_settings } = this;
+        const { first_name, last_name } = account_settings;
+        if (loginid && email && first_name) {
+            const client_information = {
+                loginid,
+                email,
+                landing_company_shortcode,
+                currency,
+                residence,
+                first_name,
+                last_name,
+            };
+            Cookies.set('client_information', client_information, { domain });
+            this.has_cookie_account = true;
+        } else {
+            Cookies.remove('client_information', { domain });
+            this.has_cookie_account = false;
+        }
+    }
+
+    @action.bound
     responsePayoutCurrencies(response) {
         const list = response.payout_currencies || response;
         this.currencies_list = buildCurrenciesList(list);
@@ -684,7 +723,7 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     setLoginInformation(client_accounts, client_id) {
-        this.accounts = client_accounts;
+        this.setAccounts(client_accounts);
         localStorage.setItem(storage_key, JSON.stringify(client_accounts));
         LocalStore.set(storage_key, JSON.stringify(client_accounts));
         this.is_populating_account_list = false;
@@ -742,6 +781,7 @@ export default class ClientStore extends BaseStore {
                 runInAction(() => {
                     const new_account = Object.assign({}, this.accounts[this.loginid]);
                     new_account.currency = currency;
+                    if (!('balance' in new_account)) new_account.balance = 0;
                     this.accounts[this.loginid] = new_account;
                 });
                 localStorage.setItem(storage_key, JSON.stringify(this.accounts));

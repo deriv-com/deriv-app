@@ -221,12 +221,11 @@ export default class CashierStore extends BaseStore {
 
             // show p2p if:
             // 1. we have not already checked this before, and
-            // 2. client is not virtual, and
-            // 3. p2p call does not return error code `PermissionDenied`
+            // 2. client is not virtual
             if (!this.is_p2p_visible && !this.root_store.client.is_virtual) {
                 const advertiser_info = await WS.authorized.p2pAdvertiserInfo();
                 const advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
-                if (advertiser_error === 'PermissionDenied') return;
+                if (advertiser_error === 'PermissionDenied') this.setIsP2pVisible(true);
 
                 this.is_p2p_advertiser = !advertiser_error;
                 this.setIsP2pVisible(true);
@@ -333,10 +332,12 @@ export default class CashierStore extends BaseStore {
             is_financial_information_incomplete,
             is_trading_experience_incomplete,
             account_status,
+            is_eu,
         } = this.root_store.client;
         if (!account_status.status) return false;
 
-        const need_authentication = this.config.deposit.error.is_ask_authentication || is_authentication_needed;
+        const need_authentication =
+            this.config.deposit.error.is_ask_authentication || (is_authentication_needed && is_eu);
         const need_financial_assessment =
             is_financial_account && (is_financial_information_incomplete || is_trading_experience_incomplete);
 

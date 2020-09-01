@@ -24,6 +24,10 @@ class Statement extends React.Component {
         this.state = { total_deposits: 0, total_withdrawals: 0 };
     }
 
+    get show_loading_placeholder() {
+        return this.props.is_loading || this.props.is_switching;
+    }
+
     componentDidMount() {
         this.props.onMount();
         const is_mx_mlt =
@@ -190,32 +194,36 @@ class Statement extends React.Component {
                 ) : (
                     <>
                         <DesktopWrapper>
-                            <DataTable
-                                className='statement'
-                                data_source={data}
-                                columns={this.columns}
-                                onScroll={handleScroll}
-                                getRowAction={row => this.getRowAction(row)}
-                                is_empty={is_empty}
-                                custom_width={'100%'}
-                                getRowSize={() => 63}
-                                content_loader={ReportsTableRowLoader}
-                            >
-                                <PlaceholderComponent is_loading={is_loading} />
-                            </DataTable>
+                            {this.show_loading_placeholder ? (
+                                <PlaceholderComponent is_loading={this.show_loading_placeholder} />
+                            ) : (
+                                <DataTable
+                                    className='statement'
+                                    data_source={data}
+                                    columns={this.columns}
+                                    onScroll={handleScroll}
+                                    getRowAction={row => this.getRowAction(row)}
+                                    is_empty={is_empty}
+                                    custom_width={'100%'}
+                                    getRowSize={() => 63}
+                                    content_loader={ReportsTableRowLoader}
+                                />
+                            )}
                         </DesktopWrapper>
                         <MobileWrapper>
-                            <DataList
-                                className='statement'
-                                data_source={data}
-                                rowRenderer={this.mobileRowRenderer}
-                                getRowAction={this.getRowAction}
-                                onScroll={handleScroll}
-                                custom_width={'100%'}
-                                getRowSize={() => 176}
-                            >
-                                <PlaceholderComponent is_loading={is_loading} />
-                            </DataList>
+                            {this.show_loading_placeholder ? (
+                                <PlaceholderComponent is_loading={this.show_loading_placeholder} />
+                            ) : (
+                                <DataList
+                                    className='statement'
+                                    data_source={data}
+                                    rowRenderer={this.mobileRowRenderer}
+                                    getRowAction={this.getRowAction}
+                                    onScroll={handleScroll}
+                                    custom_width={'100%'}
+                                    getRowSize={() => 176}
+                                />
+                            )}
                         </MobileWrapper>
                     </>
                 )}
@@ -253,6 +261,7 @@ export default connect(({ modules, client }) => ({
     has_selected_date: modules.statement.has_selected_date,
     is_empty: modules.statement.is_empty,
     is_loading: modules.statement.is_loading,
+    is_switching: client.is_switching,
     landing_company_shortcode: client.landing_company_shortcode,
     onMount: modules.statement.onMount,
     onUnmount: modules.statement.onUnmount,

@@ -218,6 +218,8 @@ class Chart extends React.Component {
                 isMobile={isMobile()}
                 enabledNavigationWidget={isDesktop()}
                 enabledChartFooter={false}
+                enableScroll={!(isMobile() && !this.props.end_epoch)}
+                enableZoom={!(isMobile() && !this.props.end_epoch)}
                 granularity={this.props.granularity}
                 requestAPI={this.props.wsSendRequest}
                 requestForget={this.props.wsForget}

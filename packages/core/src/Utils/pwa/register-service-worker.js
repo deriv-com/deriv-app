@@ -1,8 +1,8 @@
 import { getUrlBase } from '@deriv/shared';
 
 const EVERY_HOUR = 3600000; // 1000 * 60 * 60
-const AUTO_REFRESH_THRESHOLD = 30000; // 30 Seconds
-let should_show_notification = true;
+const AUTO_REFRESH_THRESHOLD = 10000; // 10 Seconds
+
 let interval_id;
 
 function refreshOnUpdate() {
@@ -36,7 +36,7 @@ export default function register() {
                         const installingWorker = registration.installing;
                         installingWorker.onstatechange = () => {
                             if (installingWorker.state === 'installed') {
-                                if (navigator.serviceWorker.controller && should_show_notification) {
+                                if (navigator.serviceWorker.controller && AUTO_REFRESH_THRESHOLD < performance.now()) {
                                     // User's first visit:
                                     // At this point, the old content will have been purged and
                                     // the fresh content will have been added to the cache.
@@ -64,7 +64,6 @@ export default function register() {
             // changes, eg a new worker has skipped waiting and become
             // the new active worker.
             if (AUTO_REFRESH_THRESHOLD > performance.now()) {
-                should_show_notification = false;
                 window.location.reload();
             }
         });

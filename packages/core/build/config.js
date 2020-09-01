@@ -146,7 +146,7 @@ const htmlInjectConfig = () => ({
 
 const htmlPreloadConfig = () => ({
     rel: 'prefetch',
-    include: 'allAssets',
+    include: 'initial',
     as(entry) {
         if (/\.css$/.test(entry)) return 'style';
         if (/\.woff$/.test(entry)) return 'font';

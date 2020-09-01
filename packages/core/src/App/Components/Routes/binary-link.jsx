@@ -17,17 +17,15 @@ const BinaryLink = ({ active_class, to, children, href, has_error, setError, ...
     }
 
     return to && !href ? (
-        <NavLink
+        <span
             onClick={() => {
                 if (has_error) setError(false, null);
             }}
-            to={path}
-            activeClassName={active_class || 'active'}
-            exact={route.exact}
-            {...props}
         >
-            {children}
-        </NavLink>
+            <NavLink to={path} activeClassName={active_class || 'active'} exact={route.exact} {...props}>
+                {children}
+            </NavLink>
+        </span>
     ) : (
         <a {...props}>{children}</a>
     );

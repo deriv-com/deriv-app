@@ -167,3 +167,104 @@
         }
     }
 }
+
+.self-exclusion {
+    font-size: var(--text-size-xs);
+    font-weight: normal;
+    line-height: 1.43;
+    color: var(--text-general);
+
+    &__content {
+        margin: 2.4rem;
+        margin-right: 1.4rem;
+        padding-right: 1rem;
+    }
+    & .dc-themed-scrollbars__track--vertical {
+        right: -0.2rem;
+    }
+    // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
+    &__dialog {
+        max-height: 500px !important;
+        width: 460px;
+    }
+    &__footer {
+        height: 72px;
+        display: block;
+        position: fixed;
+        width: 100%;
+        left: 0px;
+        bottom: 0px;
+        padding: 1.4rem;
+        border-top: 2px solid var(--general-section-2);
+        @include mobile {
+            position: absolute;
+            width: 100%;
+            bottom: 40px;
+            left: 0px;
+
+            &--relative {
+                position: relative;
+                margin-top: 5rem;
+            }
+        }
+
+        &-btn-group {
+            display: flex;
+            justify-content: flex-end;
+        }
+    }
+    &__info {
+        margin-bottom: 2rem;
+    }
+    &__limit-status {
+        margin: 1rem 0;
+
+        &--bold {
+            font-weight: 700;
+        }
+        &--danger {
+            font-weight: 700;
+            color: var(--status-danger);
+        }
+    }
+    &--danger {
+        color: var(--status-danger);
+    }
+    & .dc-btn {
+        margin-left: 0.8rem;
+    }
+}
+
+.limits__wrapper {
+    @include mobile {
+        position: fixed;
+        z-index: 5;
+        width: 100%;
+        left: 0px;
+        top: 0px;
+        background: var(--general-main-1);
+
+        .self-exclusion {
+            height: calc(100vh - 40px);
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+
+            &__content {
+                margin-top: 56px;
+            }
+            &__form-group {
+                margin-bottom: 1.6rem;
+                display: flex;
+            }
+        }
+    }
+}
+
+.dc-modal__container_self-exclusion__modal {
+    display: flex;
+    flex-direction: row;
+    align-content: space-between;
+    width: 440px !important;
+    height: 374px !important;
+}

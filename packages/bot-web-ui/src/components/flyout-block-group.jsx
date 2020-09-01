@@ -2,15 +2,16 @@ import { Button } from '@deriv/components';
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import { localize } from '@deriv/translations';
+import classNames from 'classnames';
 import FlyoutBlock from './flyout-block.jsx';
 
-const FlyoutBlockGroup = ({ onInfoClick, block_node }) => {
+const FlyoutBlockGroup = ({ onInfoClick, block_node, is_active }) => {
     const block_type = block_node.getAttribute('type');
     const block_meta = Blockly.Blocks[block_type].meta();
     const { display_name, description } = block_meta;
 
     return (
-        <div className='flyout__item'>
+        <div className={classNames('flyout__item', { 'flyout__item--active': is_active })}>
             <div className='flyout__item-header'>
                 <div className='flyout__item-label'>{display_name}</div>
                 <div className='flyout__item-buttons'>

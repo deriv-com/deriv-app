@@ -31,8 +31,11 @@
         }
         & > .input-field {
             margin: 0;
-            max-width: 17.6rem;
             width: 100%;
+
+            @include desktop {
+                max-width: 17.6rem;
+            }
 
             @include colorIcon(var(--text-prominent));
 

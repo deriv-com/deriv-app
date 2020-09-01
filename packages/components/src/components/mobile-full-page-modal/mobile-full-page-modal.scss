@@ -1,4 +1,4 @@
-.mobile__full-page-modal {
+.dc-mobile-full-page-modal {
     height: calc(100% - #{$MOBILE_HEADER_HEIGHT} - #{$MOBILE_WRAPPER_HEADER_HEIGHT});
     position: fixed;
     z-index: 6;

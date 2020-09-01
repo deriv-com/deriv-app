@@ -8,11 +8,11 @@ const MobileFullPageModal = ({ children, className, header, is_modal_open, onCli
     return (
         <FadeWrapper
             is_visible={is_modal_open}
-            className={classNames('mobile__full-page-modal ', `${className}__wrapper`)}
+            className={classNames('dc-mobile-full-page-modal', `${className}__wrapper`)}
             keyname={`${className}__wrapper`}
         >
             <PageOverlay header={header} onClickClose={onClickClose}>
-                <Div100vhContainer className={`mobile__full-page-modal --is-mobile`} height_offset={offset}>
+                <Div100vhContainer className={`dc-mobile-full-page-modal--is-mobile`} height_offset={offset}>
                     {children}
                 </Div100vhContainer>
             </PageOverlay>

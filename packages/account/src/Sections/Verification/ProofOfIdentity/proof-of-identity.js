@@ -12,9 +12,9 @@ export const onfido_status_codes = {
 export const getIdentityStatus = (identity, onfido_unsupported) => {
     const { further_resubmissions_allowed, status } = identity;
 
+    if (onfido_unsupported) return onfido_status_codes.unsupported;
     if (!further_resubmissions_allowed) {
         if (status === 'none') {
-            if (onfido_unsupported) return onfido_status_codes.unsupported;
             return onfido_status_codes.onfido;
         }
         return onfido_status_codes[status];

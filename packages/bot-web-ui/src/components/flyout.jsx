@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { localize } from '@deriv/translations';
+import { Icon } from '@deriv/components';
 import { help_content_config } from '@deriv/bot-skeleton';
 import FlyoutBlockGroup from './flyout-block-group.jsx';
 import HelpBase from './help-contents/flyout-help-base.jsx';
@@ -53,6 +54,22 @@ const FlyoutContent = props => {
             ref={flyout_ref}
             className={classNames('flyout__content', { 'flyout__normal-content': !is_search_flyout })}
         >
+            {selected_category === 'indicators' && (
+                <div className='flyout__content-disclaimer'>
+                    <span className='flyout__content-disclaimer-icon'>
+                        <Icon
+                            icon='IcBlackWarning'
+                            custom_color='#000000'
+                            className='flyout__content-disclaimer__warning-icon'
+                        />
+                    </span>
+                    <span className='flyout__content-disclaimer-text'>
+                        {localize(
+                            'Indicators on the Chart tab are for indicative purposes only and may vary slightly from the ones on the DBot workspace.'
+                        )}
+                    </span>
+                </div>
+            )}
             {is_empty ? (
                 <div className='flyout__search-empty'>
                     <h2>{localize('No results found')}</h2>

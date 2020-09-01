@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const available_modes = [
+    'adjustment',
     'default',
     'success',
     'warn',

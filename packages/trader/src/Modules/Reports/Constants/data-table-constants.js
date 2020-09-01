@@ -19,6 +19,7 @@ const getModeFromValue = key => {
         sell: 'danger',
         withdrawal: 'info',
         default: 'default',
+        adjustment: 'adjustment',
     };
 
     if (Object.keys(map).find(x => x === key)) {

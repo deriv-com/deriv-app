@@ -24,6 +24,21 @@
             border-radius: $BORDER_RADIUS * 3;
         }
     }
+    &--adjustment {
+        color: var(--status-adjustment);
+
+        &:after {
+            background-color: var(--status-adjustment);
+            opacity: 0.16;
+            content: '';
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            position: absolute;
+            border-radius: $BORDER_RADIUS * 3;
+        }
+    }
     &--danger {
         color: var(--status-danger);
 

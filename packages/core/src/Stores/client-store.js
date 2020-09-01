@@ -871,7 +871,6 @@ export default class ClientStore extends BaseStore {
 
     /**
      * We initially fetch things from local storage, and then do everything inside the store.
-     * This will probably be the only place we are fetching data from Client_base.
      */
     @action.bound
     async init(login_new_user) {

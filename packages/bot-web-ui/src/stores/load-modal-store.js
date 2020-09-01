@@ -1,6 +1,7 @@
 import { observable, action, computed, reaction } from 'mobx';
 import { localize } from '@deriv/translations';
 import { load, config, save_types, getSavedWorkspaces, removeExistingWorkspace } from '@deriv/bot-skeleton';
+import { tabs_title } from '../constants/load-modal';
 
 export default class LoadModalStore {
     constructor(root_store) {
@@ -30,10 +31,6 @@ export default class LoadModalStore {
         );
     }
 
-    TAB_LOCAL = 'local_tab';
-    TAB_GOOGLE = 'google_tab';
-    TAB_RECENT = 'recent_tab';
-
     recent_workspace;
     local_workspace;
     drop_zone;
@@ -49,8 +46,8 @@ export default class LoadModalStore {
 
     @computed
     get preview_workspace() {
-        if (this.tab_name === this.TAB_LOCAL) return this.local_workspace;
-        if (this.tab_name === this.TAB_RECENT) return this.recent_workspace;
+        if (this.tab_name === tabs_title.TAB_LOCAL) return this.local_workspace;
+        if (this.tab_name === tabs_title.TAB_RECENT) return this.recent_workspace;
         return null;
     }
 
@@ -62,12 +59,12 @@ export default class LoadModalStore {
     @computed
     get tab_name() {
         if (this.root_store.ui.is_mobile) {
-            if (this.active_index === 0) return this.TAB_LOCAL;
-            if (this.active_index === 1) return this.TAB_GOOGLE;
+            if (this.active_index === 0) return tabs_title.TAB_LOCAL;
+            if (this.active_index === 1) return tabs_title.TAB_GOOGLE;
         }
-        if (this.active_index === 0) return this.TAB_RECENT;
-        if (this.active_index === 1) return this.TAB_LOCAL;
-        if (this.active_index === 2) return this.TAB_GOOGLE;
+        if (this.active_index === 0) return tabs_title.TAB_RECENT;
+        if (this.active_index === 1) return tabs_title.TAB_LOCAL;
+        if (this.active_index === 2) return tabs_title.TAB_GOOGLE;
         return '';
     }
 
@@ -121,7 +118,7 @@ export default class LoadModalStore {
 
     @action.bound
     onActiveIndexChange() {
-        if (this.tab_name === this.TAB_RECENT) {
+        if (this.tab_name === tabs_title.TAB_RECENT) {
             // preview workspace when switch to recent tab
             if (this.selected_workspace) {
                 this.previewWorkspace(this.selected_workspace_id);
@@ -131,7 +128,7 @@ export default class LoadModalStore {
             this.recent_workspace.dispose(true);
         }
 
-        if (this.tab_name === this.TAB_LOCAL) {
+        if (this.tab_name === tabs_title.TAB_LOCAL) {
             // add drag and drop event listerner when switch to local tab
             if (!this.drop_zone) {
                 this.drop_zone = document.querySelector('load-strategy__local-dropzone-area');
@@ -171,7 +168,7 @@ export default class LoadModalStore {
 
     @action.bound
     onEntered() {
-        if (this.tab_name === this.TAB_RECENT && this.selected_workspace) {
+        if (this.tab_name === tabs_title.TAB_RECENT && this.selected_workspace) {
             this.previewWorkspace(this.selected_workspace.id);
         }
 

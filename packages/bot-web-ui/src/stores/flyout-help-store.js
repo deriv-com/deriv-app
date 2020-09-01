@@ -20,16 +20,18 @@ export default class FlyoutHelpStore {
     @observable title = '';
     @observable should_next_disable = false;
     @observable should_previous_disable = false;
+    @observable active_helper = '';
 
     @action.bound
     setHelpContent = async block_node => {
         const block_hw = Blockly.Block.getDimensions(block_node);
         const block_type = block_node.getAttribute('type');
         const title = Blockly.Blocks[block_type].meta().display_name;
-
+        if (block_type !== '') {
+            this.active_helper = block_type;
+        }
         const help_string_obj = await import(/* webpackChunkName: `[request]` */ '@deriv/bot-skeleton');
         const start_scale = config.workspaces.flyoutWorkspacesStartScale;
-
         block_node.setAttribute('width', block_hw.width * start_scale);
         block_node.setAttribute('height', block_hw.height * start_scale);
 
@@ -69,6 +71,11 @@ export default class FlyoutHelpStore {
         const filled_blocks_index = await this.getFilledBlocksIndex(Object.keys(this.xml_list_group));
         return is_last ? filled_blocks_index[filled_blocks_index.length - 1] : filled_blocks_index[0];
     };
+
+    @action.bound
+    setActiveHelper(active_helper) {
+        this.active_helper = active_helper;
+    }
 
     @action.bound
     onBackClick() {

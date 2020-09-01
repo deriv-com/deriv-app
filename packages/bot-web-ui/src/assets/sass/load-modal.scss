@@ -197,7 +197,7 @@
 
             &-close {
                 // TODO : Dark Theme
-                background-image: radial-gradient(at right top, $color_white 60%, transparent 90%);
+                background-image: radial-gradient(at right top);
                 position: absolute;
                 padding: 25px;
                 border-bottom-left-radius: 50%;

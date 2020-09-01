@@ -128,6 +128,28 @@ export default class GeneralStore {
     }
 
     @action.bound
+    onMount() {
+        this.ws_subscriptions = {
+            advertiser_subscription: subscribeWS(
+                {
+                    p2p_advertiser_info: 1,
+                    subscribe: 1,
+                },
+                [this.updateAdvertiserInfo, this.setChatInfoUsingAdvertiserInfo]
+            ),
+            order_list_subscription: subscribeWS(
+                {
+                    p2p_order_list: 1,
+                    subscribe: 1,
+                    offset: 0,
+                    limit: this.list_item_limit,
+                },
+                [this.setP2pOrderList]
+            ),
+        };
+    }
+
+    @action.bound
     onNicknamePopupClose() {
         this.setShowPopup(false);
     }

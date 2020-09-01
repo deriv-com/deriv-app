@@ -6,7 +6,7 @@ import { getPropertyValue } from '@deriv/shared';
 import { Tabs, Modal } from '@deriv/components';
 import { Dp2pProvider } from 'Components/context/dp2p-context';
 import ServerTime from 'Utils/server-time';
-import { subscribeWS, waitWS } from 'Utils/websocket';
+import { waitWS } from 'Utils/websocket';
 import { localize, setLanguage } from './i18next';
 import BuySell from './buy-sell/buy-sell.jsx';
 import MyAds from './my-ads/my-ads.jsx';
@@ -32,13 +32,10 @@ const App = observer(props => {
         should_show_verification,
         websocket_api,
     } = props;
-    const is_mounted = React.useRef(false);
     general_store.setAppProps(props);
     general_store.setWebsocketInit(websocket_api, general_store.client.local_currency_config.decimal_places);
 
     React.useEffect(() => {
-        is_mounted.current = true;
-
         setLanguage(lang);
         ServerTime.init(server_time);
 
@@ -50,24 +47,7 @@ const App = observer(props => {
         };
 
         waitWS('authorize').then(() => {
-            general_store.ws_subscriptions = {
-                advertiser_subscription: subscribeWS(
-                    {
-                        p2p_advertiser_info: 1,
-                        subscribe: 1,
-                    },
-                    [general_store.updateAdvertiserInfo, general_store.setChatInfoUsingAdvertiserInfo]
-                ),
-                order_list_subscription: subscribeWS(
-                    {
-                        p2p_order_list: 1,
-                        subscribe: 1,
-                        offset: 0,
-                        limit: general_store.list_item_limit,
-                    },
-                    [general_store.setP2pOrderList]
-                ),
-            };
+            general_store.onMount();
         });
         return () => {
             Object.keys(general_store.ws_subscriptions).forEach(key =>

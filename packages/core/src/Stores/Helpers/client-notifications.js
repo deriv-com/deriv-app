@@ -1,5 +1,5 @@
 import React from 'react';
-import { getDerivComLink, routes, isMobile, formatDate, isEmptyObject } from '@deriv/shared';
+import { getDerivComLink, routes, isMobile, formatDate, isEmptyObject, toMoment } from '@deriv/shared';
 
 import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services';
@@ -455,7 +455,7 @@ export const handleClientNotifications = (
     const { currency, excluded_until } = client;
     if (loginid !== LocalStore.get('active_loginid')) return {};
     if (!currency) addNotificationMessage(clientNotifications(ui).currency);
-    if (excluded_until) {
+    if (excluded_until && excluded_until > toMoment().unix()) {
         addNotificationMessage(clientNotifications(ui).self_exclusion(excluded_until));
     }
 

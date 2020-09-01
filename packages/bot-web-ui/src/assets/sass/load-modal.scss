@@ -197,7 +197,7 @@
 
             &-close {
                 // TODO : Dark Theme
-                background-image: radial-gradient(at right top, $color_white 60%, transparent 90%);
+                background-image: radial-gradient(at right top);
                 position: absolute;
                 padding: 25px;
                 border-bottom-left-radius: 50%;
@@ -224,6 +224,7 @@
             border: dashed 0.2rem var(--border-normal);
             border-radius: $BORDER_RADIUS;
             margin: 1.6rem;
+            padding: 1.6rem;
             height: calc(100% - 3.2rem); // - 2x margin.
         }
 
@@ -239,6 +240,12 @@
             font-size: var(--text-size-s);
             font-weight: bold;
             line-height: 2.4rem;
+        }
+        &-terms {
+            font-size: var(--text-size-xs);
+            line-height: 2rem;
+            margin-top: 1.6rem;
+            text-align: center;
         }
     }
 

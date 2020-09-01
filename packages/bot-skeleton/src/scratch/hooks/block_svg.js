@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 import DBotStore from '../dbot-store';
-import { save } from '../utils';
+import { save, isDarkRgbColour } from '../utils';
 
 /**
  * Select this block.  Highlight it visually.
@@ -249,10 +249,17 @@ Blockly.BlockSvg.prototype.setCollapsed = function(collapsed) {
             })
         );
 
+        const dropdown_path =
+            this.workspace.options.pathToMedia +
+            (isDarkRgbColour(this.getColour()) ? 'dropdown-arrow.svg' : 'dropdown-arrow-dark.svg');
         const field_label = new Blockly.FieldLabel(text, field_class);
+        const field_expand_icon = new Blockly.FieldImage(dropdown_path, 16, 16, localize('Expand'), () =>
+            this.setCollapsed(false)
+        );
 
         this.appendDummyInput(COLLAPSED_INPUT_NAME)
             .appendField(field_label)
+            .appendField(field_expand_icon)
             .init();
     } else {
         this.removeInput(COLLAPSED_INPUT_NAME);

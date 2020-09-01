@@ -54,6 +54,7 @@ Blockly.JavaScript.during_purchase = block => {
     const stack = Blockly.JavaScript.statementToCode(block, 'DURING_PURCHASE_STACK');
 
     const code = `BinaryBotPrivateDuringPurchase = function BinaryBotPrivateDuringPurchase() {
+        Bot.highlightBlock('${block.id}');
         ${stack}
     };\n`;
     return code;

@@ -218,7 +218,12 @@ $side-padding: 1.2em;
         justify-content: flex-end;
     }
     &__account-statistics {
-        width: 43.2rem;
+        @include desktop {
+            width: 43.2rem;
+        }
+        @include mobile {
+            margin: 0.8rem 0;
+        }
         height: 6.4rem;
         display: flex;
         flex-direction: row;

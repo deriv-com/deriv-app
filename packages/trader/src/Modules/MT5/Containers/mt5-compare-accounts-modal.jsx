@@ -46,128 +46,158 @@ const MT5AttributeDescriber = ({ name, tooltip, counter }) => {
     );
 };
 
-const compareAccountsData = [
-    {
-        attribute: <MT5AttributeDescriber name={localize('Account currency')} />,
-        synthetic: localize('USD'),
-        financial: localize('USD'),
-        financial_stp: localize('USD'),
-    },
-    {
-        attribute: (
-            <MT5AttributeDescriber
-                name={localize('Maximum leverage')}
-                counter={1}
-                tooltip={localize(
-                    'Leverage gives you the ability to trade a larger position using your existing capital. Leverage varies across different symbols.'
-                )}
-            />
-        ),
-        synthetic: localize('Up to 1:1000'),
-        financial: localize('Up to 1:1000'),
-        financial_stp: localize('Up to 1:100'),
-    },
-    {
-        attribute: (
-            <MT5AttributeDescriber
-                name={localize('Order execution')}
-                counter={2}
-                tooltip={localize(
-                    "All 3 account types use market execution. This means you agree with the broker's price in advance and will place orders at the broker's price."
-                )}
-            />
-        ),
-        synthetic: localize('Market'),
-        financial: localize('Market'),
-        financial_stp: localize('Market'),
-    },
-    {
-        attribute: (
-            <MT5AttributeDescriber
-                name={localize('Spread')}
-                counter={3}
-                tooltip={localize(
-                    "The spread is the difference between the buy price and sell price. A variable spread means that the spread is constantly changing, depending on market conditions. A fixed spread remains constant but is subject to alteration, at the Broker's absolute discretion."
-                )}
-            />
-        ),
-        synthetic: localize('Fixed/Variable'),
-        financial: localize('Variable'),
-        financial_stp: localize('Variable'),
-    },
-    {
-        attribute: (
-            <MT5AttributeDescriber
-                name={localize('Commission')}
-                counter={4}
-                tooltip={localize(
-                    'Deriv charges no commission across all account types, except cryptocurrency accounts.'
-                )}
-            />
-        ),
-        synthetic: localize('No'),
-        financial: localize('No'),
-        financial_stp: localize('Yes'),
-    },
-    {
-        attribute: <MT5AttributeDescriber name={localize('Minimum deposit')} />,
-        synthetic: localize('No'),
-        financial: localize('No'),
-        financial_stp: localize('No'),
-    },
-    {
-        attribute: (
-            <MT5AttributeDescriber
-                name={localize('Margin call')}
-                counter={5}
-                tooltip={localize(
-                    'When the remaining funds in your account is deemed insufficient to cover the leverage or margin requirements, your account will be placed under margin call. To prevent a margin call escalating to a stop out level, you can deposit  additional funds into your account or close any open positions.'
-                )}
-            />
-        ),
-        synthetic: localize('100%'),
-        financial: localize('150%'),
-        financial_stp: localize('150%'),
-    },
-    {
-        attribute: (
-            <MT5AttributeDescriber
-                name={localize('Stop out level')}
-                counter={6}
-                tooltip={localize(
-                    'If your account reaches the stop out level, then your account will be in stop out state. Trading positions and orders on your account are forcibly closed until there are no more open positions or until your margin level increases above the stop out level.'
-                )}
-            />
-        ),
-        synthetic: localize('50%'),
-        financial: localize('75%'),
-        financial_stp: localize('75%'),
-    },
-    {
-        attribute: <MT5AttributeDescriber name={localize('Number of assets')} />,
-        synthetic: localize('10+'),
-        financial: localize('50+'),
-        financial_stp: localize('50+'),
-    },
-    {
-        attribute: (
-            <MT5AttributeDescriber
-                name={localize('Cryptocurrency trading')}
-                counter={7}
-                tooltip={localize('Indicates the availability of cryptocurrency trading on a particular account.')}
-            />
-        ),
-        synthetic: localize('N/A'),
-        financial: localize('24/7'),
-        financial_stp: localize('24/7'),
-    },
-    {
-        attribute: <MT5AttributeDescriber name={localize('Trading instruments')} />,
-        synthetic: localize('Synthetics'),
-        financial: localize('FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies'),
-        financial_stp: localize('FX-majors, FX-minors, FX-exotics, Cryptocurrencies'),
-    },
-];
+const filterAvailableAccounts = (landing_companies, table, is_logged_in) => {
+    return table.map(({ attribute, synthetic, financial_stp, financial }) => {
+        if (is_logged_in) {
+            return {
+                attribute,
+                ...(landing_companies?.mt_gaming_company?.financial ? { synthetic } : {}),
+                ...(landing_companies?.mt_financial_company?.financial ? { financial } : {}),
+                ...(landing_companies?.mt_financial_company?.financial_stp ? { financial_stp } : {}),
+            };
+        }
+        return {
+            attribute,
+            ...{ synthetic },
+            ...{ financial },
+            ...{ financial_stp },
+        };
+    });
+};
+
+const compareAccountsData = ({ landing_companies, is_eu, is_eu_country, is_logged_in }) => {
+    const show_eu_related = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
+    return filterAvailableAccounts(
+        landing_companies,
+        [
+            {
+                attribute: <MT5AttributeDescriber name={localize('Account currency')} />,
+                synthetic: show_eu_related ? localize('EUR') : localize('USD'),
+                financial: show_eu_related ? localize('EUR/GBP') : localize('USD'),
+                financial_stp: localize('USD'),
+            },
+            {
+                attribute: (
+                    <MT5AttributeDescriber
+                        name={localize('Maximum leverage')}
+                        counter={1}
+                        tooltip={localize(
+                            'Leverage gives you the ability to trade a larger position using your existing capital. Leverage varies across different symbols.'
+                        )}
+                    />
+                ),
+                synthetic: localize('Up to 1:1000'),
+                financial: show_eu_related ? localize('Up to 1:30') : localize('Up to 1:1000'),
+                financial_stp: localize('Up to 1:100'),
+            },
+            {
+                attribute: (
+                    <MT5AttributeDescriber
+                        name={localize('Order execution')}
+                        counter={2}
+                        tooltip={localize(
+                            "All 3 account types use market execution. This means you agree with the broker's price in advance and will place orders at the broker's price."
+                        )}
+                    />
+                ),
+                synthetic: localize('Market'),
+                financial: localize('Market'),
+                financial_stp: localize('Market'),
+            },
+            {
+                attribute: (
+                    <MT5AttributeDescriber
+                        name={localize('Spread')}
+                        counter={3}
+                        tooltip={localize(
+                            "The spread is the difference between the buy price and sell price. A variable spread means that the spread is constantly changing, depending on market conditions. A fixed spread remains constant but is subject to alteration, at the Broker's absolute discretion."
+                        )}
+                    />
+                ),
+                synthetic: localize('Fixed/Variable'),
+                financial: localize('Variable'),
+                financial_stp: localize('Variable'),
+            },
+            {
+                attribute: (
+                    <MT5AttributeDescriber
+                        name={localize('Commission')}
+                        counter={4}
+                        tooltip={localize(
+                            'Deriv charges no commission across all account types, except for cryptocurrencies.'
+                        )}
+                    />
+                ),
+                synthetic: localize('No'),
+                financial: localize('No'),
+                financial_stp: localize('No'),
+            },
+            {
+                attribute: <MT5AttributeDescriber name={localize('Minimum deposit')} />,
+                synthetic: localize('No'),
+                financial: localize('No'),
+                financial_stp: localize('No'),
+            },
+            {
+                attribute: (
+                    <MT5AttributeDescriber
+                        name={localize('Margin call')}
+                        counter={5}
+                        tooltip={localize(
+                            'When the remaining funds in your account is deemed insufficient to cover the leverage or margin requirements, your account will be placed under margin call. To prevent a margin call escalating to a stop out level, you can deposit  additional funds into your account or close any open positions.'
+                        )}
+                    />
+                ),
+                synthetic: localize('100%'),
+                financial: show_eu_related ? localize('100%') : localize('150%'),
+                financial_stp: localize('150%'),
+            },
+            {
+                attribute: (
+                    <MT5AttributeDescriber
+                        name={localize('Stop out level')}
+                        counter={6}
+                        tooltip={localize(
+                            'If your account reaches the stop out level, then your account will be in stop out state. Trading positions and orders on your account are forcibly closed until there are no more open positions or until your margin level increases above the stop out level.'
+                        )}
+                    />
+                ),
+                synthetic: localize('50%'),
+                financial: show_eu_related ? localize('50%') : localize('75%'),
+                financial_stp: localize('75%'),
+            },
+            {
+                attribute: <MT5AttributeDescriber name={localize('Number of assets')} />,
+                synthetic: localize('10+'),
+                financial: localize('50+'),
+                financial_stp: localize('50+'),
+            },
+            {
+                attribute: (
+                    <MT5AttributeDescriber
+                        name={localize('Cryptocurrency trading')}
+                        counter={7}
+                        tooltip={localize(
+                            'Indicates the availability of cryptocurrency trading on a particular account.'
+                        )}
+                    />
+                ),
+                synthetic: localize('N/A'),
+                financial: localize('24/7'),
+                financial_stp: localize('24/7'),
+            },
+            {
+                attribute: <MT5AttributeDescriber name={localize('Trading instruments')} />,
+                synthetic: localize('Synthetics'),
+                financial: show_eu_related
+                    ? localize('FX-majors (standard), FX-minors, Commodities, Cryptocurrencies')
+                    : localize('FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies'),
+                financial_stp: localize('FX-majors, FX-minors, FX-exotics, Cryptocurrencies'),
+            },
+        ],
+        is_logged_in
+    );
+};
 
 const MT5CompareAccountHint = () => (
     <div className='mt5-compare-account--hint'>

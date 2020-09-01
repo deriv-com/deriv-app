@@ -1,5 +1,6 @@
 import ChartStore from './chart-store';
 import ContractCardStore from './contract-card-store';
+import DownloadStore from './download-store';
 import FlyoutStore from './flyout-store';
 import FlyoutHelpStore from './flyout-help-store';
 import GoogleDriveStore from './google-drive-store';
@@ -13,7 +14,9 @@ import TransactionsStore from './transactions-store';
 import QuickStrategyStore from './quick-strategy-store';
 import MainContentStore from './main-content-store';
 import RoutePromptDialogStore from './route-prompt-dialog-store';
+import DataCollectionStore from './data-collection-store';
 import BlocklyStore from './blockly-store';
+import SelfExclusionStore from './self-exclusion-store';
 
 export default class RootStore {
     constructor(core, ws, dbot) {
@@ -25,6 +28,7 @@ export default class RootStore {
         this.server_time = core.common.server_time;
         this.blockly_store = new BlocklyStore(this);
         this.contract_card = new ContractCardStore(this);
+        this.download = new DownloadStore(this);
         this.flyout = new FlyoutStore(this);
         this.flyout_help = new FlyoutHelpStore(this);
         this.google_drive = new GoogleDriveStore(this);
@@ -37,9 +41,11 @@ export default class RootStore {
         this.toolbar = new ToolbarStore(this);
         this.quick_strategy = new QuickStrategyStore(this);
         this.route_prompt_dialog = new RoutePromptDialogStore(this);
+        this.self_exclusion = new SelfExclusionStore(this);
 
         // need to be at last for dependency
         this.chart_store = new ChartStore(this);
         this.main_content = new MainContentStore(this);
+        this.data_collection_store = new DataCollectionStore(this);
     }
 }

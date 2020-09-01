@@ -5,7 +5,7 @@ import { localize } from '@deriv/translations';
 import { runIrreversibleEvents, ApiHelpers, DBot, ServerTime } from '@deriv/bot-skeleton';
 import './public-path'; // Leave this here! OK boss!
 import Audio from './components/audio.jsx';
-import FooterExtension from './components/footer-extension.jsx';
+import BotFooterExtensions from './components/bot-footer-extensions.jsx';
 import MainContent from './components/main-content.jsx';
 import BotNotificationMessages from './components/bot-notification-messages.jsx';
 import QuickStrategy from './components/quick-strategy.jsx';
@@ -21,10 +21,10 @@ import './assets/sass/app.scss';
 const showDigitalOptionsMaltainvestError = (client, common) => {
     if (client.landing_company_shortcode === 'maltainvest') {
         showDigitalOptionsUnavailableError(common.showError, {
-            title: localize(
+            text: localize(
                 'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a DMT5 Financial.'
             ),
-            text: localize('DBot is not available for this account'),
+            title: localize('DBot is not available for this account'),
             link: localize('Go to DMT5 dashboard'),
         });
     } else if (common.has_error) common.setError(false, null);
@@ -93,10 +93,10 @@ class App extends React.Component {
         const { client, common } = this.root_store.core;
         if (client.landing_company_shortcode === 'maltainvest') {
             showDigitalOptionsUnavailableError(common.showError, {
-                title: localize(
+                text: localize(
                     'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a DMT5 Financial.'
                 ),
-                text: localize('DBot is not available for this account'),
+                title: localize('DBot is not available for this account'),
                 link: localize('Go to DMT5 dashboard'),
             });
         }
@@ -223,7 +223,7 @@ class App extends React.Component {
                     <MainContent />
                     <RunPanel />
                     <QuickStrategy />
-                    <FooterExtension />
+                    <BotFooterExtensions />
                     <Audio />
                     <RoutePromptDialog />
                     <BlocklyLoading />

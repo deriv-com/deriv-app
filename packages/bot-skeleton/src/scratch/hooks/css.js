@@ -22,6 +22,23 @@ Blockly.Css.CONTENT = [
     'stroke-width: 5px;',
     '}',
 
+    '@keyframes fade-in-out {',
+    '0%{',
+    'stroke-opacity: 0;',
+    '}',
+    '50%{',
+    'stroke-opacity: 1;',
+    'stroke-width: 6px;',
+    '}',
+    '100%{',
+    'stroke-opacity: 0;',
+    '}}',
+
+    '.block--execution-highlighted > .blocklyPath {',
+    'stroke: #89B2AF;',
+    'animation: fade-in-out 1.5s',
+    '}',
+
     '.block--blink > .blocklyPath {',
     'animation: blinkEffect 1s infinite;',
     '}',
@@ -274,7 +291,7 @@ Blockly.Css.CONTENT = [
     '}',
 
     '.blocklySelected>.blocklyPath {',
-    'stroke: #fc3;',
+    'stroke: #ffc358;',
     'stroke-width: 3px;',
     '}',
 

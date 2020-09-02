@@ -35,9 +35,8 @@ const getSymbol = (target_symbol, trading_times) => {
 const whenMarketOpens = async (days_offset, target_symbol) => {
     // days_offset is 0 for today, 1 for tomorrow, etc.
     if (days_offset > days_to_check_before_exit) return undefined;
-    const now = new Date();
     let when_market_opens;
-    const date_target = new Date(now);
+    const date_target = new Date();
     date_target.setDate(date_target.getDate() + days_offset);
     const date = moment(date_target).format('YYYY-MM-DD');
     const api_res = await getTradingTimes(date);

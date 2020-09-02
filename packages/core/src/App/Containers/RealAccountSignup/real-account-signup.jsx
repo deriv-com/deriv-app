@@ -6,7 +6,9 @@ import { routes, isNavigationFromPlatform } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import ModalLoginPrompt from './modal-login-prompt.jsx';
+/* develblock:start */
 import AccountWizard from './account-wizard.jsx';
+/* develblock:end */
 import AddOrManageAccounts from './add-or-manage-accounts.jsx';
 import FinishedSetCurrency from './finished-set-currency.jsx';
 import SignupErrorContent from './signup-error-content.jsx';
@@ -44,16 +46,24 @@ class RealAccountSignup extends React.Component {
             is_loading: false,
             modal_content: [
                 {
-                    body: () => (
-                        <AccountWizard
-                            onFinishSuccess={this.showStatusDialog}
-                            is_loading={this.state.is_loading}
-                            setLoading={this.setLoading}
-                            onError={this.showErrorModal}
-                            onClose={this.closeModal}
-                            onSuccessSetAccountCurrency={this.showSetCurrencySuccess}
-                        />
-                    ),
+                    body: () => {
+                        let component = <div>This will be loaded only in deriv-crypto</div>;
+
+                        /* develblock:start */
+                        component = (
+                            <AccountWizard
+                                onFinishSuccess={this.showStatusDialog}
+                                is_loading={this.state.is_loading}
+                                setLoading={this.setLoading}
+                                onError={this.showErrorModal}
+                                onClose={this.closeModal}
+                                onSuccessSetAccountCurrency={this.showSetCurrencySuccess}
+                            />
+                        );
+                        /* develblock:end */
+
+                        return component;
+                    },
                     title: WizardHeading,
                 },
                 {

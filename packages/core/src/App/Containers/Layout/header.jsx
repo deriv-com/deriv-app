@@ -6,8 +6,8 @@ import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { routes, isMobile, getDecimalPlaces, getPlatformHeader } from '@deriv/shared';
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
-/* develblock:start */
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
+/* develblock:start */
 import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
 /* develblock:end */
 import NewVersionNotification from 'App/Containers/new-version-notification.jsx';
@@ -156,8 +156,8 @@ class Header extends React.Component {
                         </div>
                     </div>
                 </div>
-                {/* develblock:start */}
                 <RealAccountSignup />
+                {/* develblock:start */}
                 <SetAccountCurrencyModal />
                 {/* develblock:end */}
                 <NewVersionNotification onUpdate={this.addUpdateNotification} />

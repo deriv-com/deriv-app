@@ -14,11 +14,7 @@ const address_details_config = ({ account_settings }) => {
             rules: [
                 ['req', localize('Address line 1 is required')],
                 ['address', localize('Address is not in a proper format')],
-                [
-                    'length',
-                    localize('You should enter a value between {{min}} and {{max}} characters.', { min: 1, max: 70 }),
-                    { min: 1, max: 70 },
-                ],
+                ['length', localize('This should not exceed {{max}} characters.', { max: 70 }), { max: 70 }],
                 ['po_box', localize('P.O. Box is not accepted in address')],
             ],
         },
@@ -26,11 +22,7 @@ const address_details_config = ({ account_settings }) => {
             supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
             default_value: account_settings.address_line_2 ?? '',
             rules: [
-                [
-                    'length',
-                    localize('You should enter a value between {{min}} and {{max}} characters.', { min: 0, max: 70 }),
-                    { min: 0, max: 70 },
-                ],
+                ['length', localize('This should not exceed {{max}} characters.', { max: 70 }), { max: 70 }],
                 ['po_box', localize('P.O. Box is not accepted in address')],
             ],
         },

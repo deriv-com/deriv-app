@@ -285,9 +285,11 @@ export default class BaseStore {
 
     @action.bound
     onSwitchAccount(listener) {
+        this.switch_account_listener = listener;
+
         this.switchAccountDisposer = when(
             () => this.root_store.client.switch_broadcast,
-            async () => {
+            () => {
                 try {
                     const result = this.switch_account_listener();
                     if (result && result.then && typeof result.then === 'function') {
@@ -307,14 +309,14 @@ export default class BaseStore {
                 }
             }
         );
-        this.switch_account_listener = listener;
     }
 
     @action.bound
     onPreSwitchAccount(listener) {
+        this.pre_switch_account_listener = listener;
         this.preSwitchAccountDisposer = when(
             () => this.root_store.client.pre_switch_broadcast,
-            async () => {
+            () => {
                 try {
                     const result = this.pre_switch_account_listener();
                     if (result && result.then && typeof result.then === 'function') {
@@ -334,7 +336,6 @@ export default class BaseStore {
                 }
             }
         );
-        this.pre_switch_account_listener = listener;
     }
 
     @action.bound
@@ -464,7 +465,6 @@ export default class BaseStore {
         if (typeof this.preSwitchAccountDisposer === 'function') {
             this.preSwitchAccountDisposer();
         }
-        this.pre_switch_account_listener = null;
     }
 
     @action.bound
@@ -472,7 +472,6 @@ export default class BaseStore {
         if (typeof this.switchAccountDisposer === 'function') {
             this.switchAccountDisposer();
         }
-        this.switch_account_listener = null;
     }
 
     @action.bound

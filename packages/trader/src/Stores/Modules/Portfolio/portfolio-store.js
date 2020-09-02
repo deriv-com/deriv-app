@@ -307,11 +307,9 @@ export default class PortfolioStore extends BaseStore {
         this.root_store.modules.contract_trade.removeContract({ contract_id });
     }
 
-    @action.bound
-    accountSwitcherListener() {
-        return new Promise(async resolve => {
-            return resolve(this.initializePortfolio());
-        });
+    async accountSwitcherListener() {
+        await this.initializePortfolio();
+        return Promise.resolve();
     }
 
     @action.bound

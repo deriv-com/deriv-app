@@ -2,7 +2,7 @@ import { localize } from '@deriv/translations';
 import { proposalsReady, clearProposals } from './state/actions';
 import { tradeOptionToProposal, doUntilDone } from '../utils/helpers';
 
-export default (Engine) =>
+export default Engine =>
     class Proposal extends Engine {
         makeProposals(trade_option) {
             if (!this.isNewTradeOption(trade_option)) {
@@ -24,7 +24,7 @@ export default (Engine) =>
                 throw Error(localize('Proposals are not ready'));
             }
 
-            const to_buy = proposals.find((proposal) => {
+            const to_buy = proposals.find(proposal => {
                 if (
                     proposal.contract_type === contract_type &&
                     proposal.purchase_reference === this.getPurchaseReference()
@@ -64,9 +64,9 @@ export default (Engine) =>
 
         requestProposals() {
             Promise.all(
-                this.proposal_templates.map((proposal) =>
+                this.proposal_templates.map(proposal =>
                     doUntilDone(() =>
-                        this.api.subscribeToPriceForContractProposal(proposal).catch((error) => {
+                        this.api.subscribeToPriceForContractProposal(proposal).catch(error => {
                             // We intercept ContractBuyValidationError as user may have specified
                             // e.g. a DIGITUNDER 0 or DIGITOVER 9, while one proposal may be invalid
                             // the other is valid. We will error on Purchase rather than here.
@@ -88,11 +88,11 @@ export default (Engine) =>
         }
 
         observeProposals() {
-            this.listen('proposal', (response) => {
+            this.listen('proposal', response => {
                 const { passthrough, proposal } = response;
 
                 if (
-                    this.data.proposals.findIndex((p) => p.id === proposal.id) === -1 &&
+                    this.data.proposals.findIndex(p => p.id === proposal.id) === -1 &&
                     !this.data.forget_proposal_ids.includes(proposal.id)
                 ) {
                     // Add proposals based on the ID returned by the API.
@@ -104,15 +104,13 @@ export default (Engine) =>
 
         unsubscribeProposals() {
             const { proposals } = this.data;
-            const removeForgetProposalById = (forget_proposal_id) =>
-                (this.data.forget_proposal_ids = this.data.forget_proposal_ids.filter(
-                    (id) => id !== forget_proposal_id
-                ));
+            const removeForgetProposalById = forget_proposal_id =>
+                (this.data.forget_proposal_ids = this.data.forget_proposal_ids.filter(id => id !== forget_proposal_id));
 
             this.clearProposals();
 
             return Promise.all(
-                proposals.map((proposal) => {
+                proposals.map(proposal => {
                     if (!this.data.forget_proposal_ids.includes(proposal.id)) {
                         this.data.forget_proposal_ids.push(proposal.id);
                     }
@@ -137,9 +135,9 @@ export default (Engine) =>
             if (proposals.length > 0) {
                 const has_equal_length = proposals.length === this.proposal_templates.length;
                 const hasEqualProposals = () =>
-                    this.proposal_templates.every((template) => {
+                    this.proposal_templates.every(template => {
                         return (
-                            proposals.findIndex((proposal) => {
+                            proposals.findIndex(proposal => {
                                 return (
                                     proposal.purchase_reference === template.passthrough.purchase_reference &&
                                     proposal.contract_type === template.contract_type
@@ -172,6 +170,6 @@ export default (Engine) =>
                 'prediction',
                 'secondBarrierOffset',
                 'symbol',
-            ].some((value) => this.trade_option[value] !== trade_option[value]);
+            ].some(value => this.trade_option[value] !== trade_option[value]);
         }
     };

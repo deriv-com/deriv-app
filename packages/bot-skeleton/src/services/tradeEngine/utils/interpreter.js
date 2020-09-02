@@ -5,19 +5,19 @@ import Interface from '../Interface';
 import { unrecoverable_errors } from '../../../constants/messages';
 import { observer as globalObserver } from '../../../utils/observer';
 
-JSInterpreter.prototype.takeStateSnapshot = function () {
+JSInterpreter.prototype.takeStateSnapshot = function() {
     const newStateStack = cloneThorough(this.stateStack, undefined, undefined, undefined, true);
     return newStateStack;
 };
 
-JSInterpreter.prototype.restoreStateSnapshot = function (snapshot) {
+JSInterpreter.prototype.restoreStateSnapshot = function(snapshot) {
     this.stateStack = cloneThorough(snapshot, undefined, undefined, undefined, true);
     this.global = this.stateStack[0].scope.object || this.stateStack[0].scope;
     this.initFunc_(this, this.global);
 };
 
-const botInitialized = (bot) => bot && bot.tradeEngine.options;
-const botStarted = (bot) => botInitialized(bot) && bot.tradeEngine.tradeOptions;
+const botInitialized = bot => bot && bot.tradeEngine.options;
+const botStarted = bot => botInitialized(bot) && bot.tradeEngine.tradeOptions;
 const shouldRestartOnError = (bot, errorName = '') =>
     !unrecoverable_errors.includes(errorName) && botInitialized(bot) && bot.tradeEngine.options.shouldRestartOnError;
 
@@ -29,7 +29,7 @@ const shouldStopOnError = (bot, errorName = '') => {
     return false;
 };
 
-const timeMachineEnabled = (bot) => botInitialized(bot) && bot.tradeEngine.options.timeMachineEnabled;
+const timeMachineEnabled = bot => botInitialized(bot) && bot.tradeEngine.options.timeMachineEnabled;
 
 export default class Interpreter {
     constructor() {
@@ -40,7 +40,7 @@ export default class Interpreter {
         this.$scope = createScope();
         this.bot = new Interface(this.$scope);
         this.stopped = false;
-        this.$scope.observer.register('REVERT', (watchName) =>
+        this.$scope.observer.register('REVERT', watchName =>
             this.revert(watchName === 'before' ? this.beforeState : this.duringState)
         );
     }
@@ -92,7 +92,7 @@ export default class Interpreter {
             interpreter.setProperty(
                 scope,
                 'watch',
-                this.createAsync(interpreter, (watchName) => {
+                this.createAsync(interpreter, watchName => {
                     const { watch } = this.bot.getInterface();
 
                     if (timeMachineEnabled(this.bot)) {
@@ -112,7 +112,7 @@ export default class Interpreter {
         };
 
         return new Promise((resolve, reject) => {
-            const onError = (e) => {
+            const onError = e => {
                 if (this.stopped) {
                     return;
                 }
@@ -177,7 +177,7 @@ export default class Interpreter {
 
     stop() {
         if (this.bot.tradeEngine.isSold === false && !this.is_error_triggered) {
-            globalObserver.register('contract.status', (contractStatus) => {
+            globalObserver.register('contract.status', contractStatus => {
                 if (contractStatus.id === 'contract.sold') {
                     this.terminateSession();
                 }
@@ -193,18 +193,18 @@ export default class Interpreter {
 
             // Workaround for unknown number of args
             const reversed_args = args.slice().reverse();
-            const first_defined_arg_idx = reversed_args.findIndex((arg) => arg !== undefined);
+            const first_defined_arg_idx = reversed_args.findIndex(arg => arg !== undefined);
 
             // Remove extra undefined args from end of the args
             const function_args = first_defined_arg_idx < 0 ? [] : reversed_args.slice(first_defined_arg_idx).reverse();
             // End of workaround
 
-            func(...function_args.map((arg) => interpreter.pseudoToNative(arg)))
-                .then((rv) => {
+            func(...function_args.map(arg => interpreter.pseudoToNative(arg)))
+                .then(rv => {
                     callback(interpreter.nativeToPseudo(rv));
                     this.loop();
                 })
-                .catch((e) => this.$scope.observer.emit('Error', e));
+                .catch(e => this.$scope.observer.emit('Error', e));
         };
 
         // TODO: This is a workaround, create issue on original repo, once fixed

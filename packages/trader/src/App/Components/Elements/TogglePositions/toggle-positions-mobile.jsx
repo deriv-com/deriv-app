@@ -117,7 +117,7 @@ class TogglePositionsMobile extends React.Component {
                                 className='dc-btn dc-btn--secondary dc-btn__large positions-modal__footer-btn'
                                 to={routes.positions}
                             >
-                                <span className='dc-btn__text'>{localize('View more')}</span>
+                                <span className='dc-btn__text'>{localize('Go to Reports')}</span>
                             </BinaryLink>
                         </div>
                     </Div100vhContainer>

@@ -60,7 +60,7 @@ const CancelDeal = ({
                     icon='info'
                     id='dt_cancellation-checkbox__tooltip'
                     message={localize(
-                        'Allows you to cancel your trade within a chosen time frame should the market move against your favour.'
+                        'Cancel your trade anytime within a chosen time-frame. Triggered automatically if your trade reaches the stop out level within the chosen time-frame.'
                     )}
                     margin={210}
                     relative_render

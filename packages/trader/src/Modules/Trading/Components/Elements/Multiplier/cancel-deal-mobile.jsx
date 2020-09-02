@@ -91,7 +91,7 @@ const CancelDeal = ({
                         id='dt_multiplier-stake__tooltip'
                         zIndex={9999}
                         message={localize(
-                            'Allows you to cancel your trade within a chosen time frame should the market move against your favour.'
+                            'Cancel your trade anytime within a chosen time-frame. Triggered automatically if your trade reaches the stop out level within the chosen time-frame.'
                         )}
                     />
                 </div>

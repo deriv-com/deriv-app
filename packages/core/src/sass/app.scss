@@ -45,8 +45,10 @@
 @import 'app/_common/components/cookie-banner';
 // Modules
 @import 'app/modules/page-404';
+/* develblock:start */
 @import 'app/modules/account-deactivated';
 @import 'app/modules/reality-check';
+/* develblock:end */
 @import 'app/modules/reset-password';
 //@import 'app/modules/contract';
 //@import 'app/modules/contract/bottom-widgets';

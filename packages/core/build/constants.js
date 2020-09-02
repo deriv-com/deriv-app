@@ -81,7 +81,7 @@ const rules = (is_test_env = false, is_mocha_only = false) => [
           ]
         : []),
     {
-        test: /\.(js|jsx)$/,
+        test: /\.(js|jsx|scss)$/,
         enforce: 'pre',
         exclude: /node_modules/,
         use: [

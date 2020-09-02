@@ -1151,7 +1151,7 @@ $MIN_HEIGHT_FLOATING: calc(
         margin: 0;
     }
 }
-
+/* develblock:start */
 /** @define account-poa; weak */
 .account-poa {
     &__upload {
@@ -1265,7 +1265,7 @@ $MIN_HEIGHT_FLOATING: calc(
         }
     }
 }
-
+/* develblock:end */
 /** @define forgot-password; weak */
 .forgot-password {
     display: grid;
@@ -1289,6 +1289,7 @@ $MIN_HEIGHT_FLOATING: calc(
         }
     }
 }
+/* develblock:start */
 /** @define connected-apps; weak */
 .connected-apps {
     width: 100%;
@@ -1393,7 +1394,7 @@ $MIN_HEIGHT_FLOATING: calc(
         }
     }
 }
-
+/* develblock:end */
 /** @define form-submit-error-message; weak */
 .form-submit-error-message {
     display: flex;
@@ -1642,6 +1643,7 @@ $MIN_HEIGHT_FLOATING: calc(
 }
 /* stylelint-enable */
 
+/* develblock:start */
 /** @define proof-of-identity */
 .proof-of-identity {
     height: 100%;
@@ -1847,3 +1849,4 @@ $MIN_HEIGHT_FLOATING: calc(
     }
 }
 /* stylelint-enable */
+/* develblock:end */

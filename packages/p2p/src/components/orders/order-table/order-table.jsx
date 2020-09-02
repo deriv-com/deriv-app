@@ -28,7 +28,7 @@ const OrderTable = ({ showDetails }) => {
 
     const is_active_tab = order_table_type === orderToggleIndex.ACTIVE;
     return (
-        <>
+        <React.Fragment>
             <div className='orders__header'>
                 <ButtonToggle
                     buttons_arr={orders_filters}
@@ -41,7 +41,7 @@ const OrderTable = ({ showDetails }) => {
                 />
             </div>
             <OrderTableContent showDetails={showDetails} is_active={is_active_tab} />
-        </>
+        </React.Fragment>
     );
 };
 

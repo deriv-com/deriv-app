@@ -23,16 +23,16 @@ const buy_sell_filters = [
 class BuySell extends React.Component {
     state = {
         table_type: 'buy',
-        selected_ad: {},
+        selected_advert: {},
         show_popup: false,
         show_verification: false,
     };
 
-    setSelectedAd = selected_ad => {
+    setSelectedAdvert = selected_advert => {
         if (!this.context.is_advertiser) {
             this.setState({ show_verification: true });
         } else {
-            this.setState({ selected_ad, show_popup: true });
+            this.setState({ selected_advert, show_popup: true });
         }
     };
 
@@ -52,7 +52,7 @@ class BuySell extends React.Component {
     hideVerification = () => this.setState({ show_verification: false });
 
     render() {
-        const { table_type, selected_ad, show_popup } = this.state;
+        const { table_type, selected_advert, show_popup } = this.state;
 
         if (this.state.show_verification)
             return (
@@ -78,13 +78,13 @@ class BuySell extends React.Component {
                 <BuySellTableContent
                     key={table_type}
                     is_buy={table_type === 'buy'}
-                    setSelectedAd={this.setSelectedAd}
+                    setSelectedAdvert={this.setSelectedAdvert}
                 />
                 {show_popup && (
                     <div className='buy-sell__dialog'>
                         <Dialog is_visible={show_popup}>
                             <Popup
-                                ad={selected_ad}
+                                advert={selected_advert}
                                 handleClose={this.onCancelClick}
                                 handleConfirm={this.onConfirmClick}
                             />

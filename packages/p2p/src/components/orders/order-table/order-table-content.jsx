@@ -4,41 +4,45 @@ import { Loading, Button } from '@deriv/components';
 import { Localize, localize } from 'Components/i18next';
 import { TableError } from 'Components/table/table-error.jsx';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
-import { requestWS, getModifiedP2POrderList } from 'Utils/websocket';
+import { requestWS } from 'Utils/websocket';
 import Dp2pContext from 'Components/context/dp2p-context';
 import Empty from 'Components/empty/empty.jsx';
 import OrderTableHeader from 'Components/orders/order-table/order-table-header.jsx';
 import OrderRowComponent from 'Components/orders/order-table/order-table-row.jsx';
-import OrderInfo from 'Components/orders/order-info';
 import { height_constants } from 'Utils/height_constants';
+import { getExtendedOrderDetails } from 'Utils/orders';
 
 const OrderTableContent = ({ showDetails, is_active }) => {
     const {
         changeTab,
         is_active_tab,
         list_item_limit,
+        loginid,
         order_offset,
         order_table_type,
         orders,
         setOrders,
         setOrderOffset,
     } = React.useContext(Dp2pContext);
-    const [is_mounted, setIsMounted] = React.useState(false);
+    const is_mounted = React.useRef(false);
     const [has_more_items_to_load, setHasMoreItemsToLoad] = React.useState(false);
     const [api_error_message, setApiErrorMessage] = React.useState('');
     const [is_loading, setIsLoading] = React.useState(true);
 
     React.useEffect(() => {
-        setIsMounted(true);
-        return () => setIsMounted(false);
+        is_mounted.current = true;
+
+        return () => {
+            is_mounted.current = false;
+        };
     }, []);
 
     React.useEffect(() => {
-        if (is_mounted) {
+        if (is_mounted.current) {
             setIsLoading(true);
             loadMoreOrders();
         }
-    }, [is_mounted, order_table_type]);
+    }, [order_table_type]);
 
     const loadMoreOrders = () => {
         return new Promise(resolve => {
@@ -48,11 +52,11 @@ const OrderTableContent = ({ showDetails, is_active }) => {
                 limit: list_item_limit,
                 active: is_active_tab ? 1 : 0,
             }).then(response => {
-                if (is_mounted) {
+                if (is_mounted.current) {
                     if (!response.error) {
                         const { list } = response.p2p_order_list;
                         setHasMoreItemsToLoad(list.length >= list_item_limit);
-                        setOrders(orders.concat(getModifiedP2POrderList(list)));
+                        setOrders(orders.concat(list));
                         setOrderOffset(order_offset + list.length);
                     } else {
                         setApiErrorMessage(response.api_error_message);
@@ -75,8 +79,9 @@ const OrderTableContent = ({ showDetails, is_active }) => {
 
     if (orders.length) {
         const modified_list = orders
-            .map(list => new OrderInfo(list))
-            .filter(order => (is_active ? order.is_active : order.is_inactive));
+            .map(order => getExtendedOrderDetails(order, loginid))
+            .filter(order => (is_active ? order.is_active_order : order.is_inactive_order));
+
         const item_height = 72;
         const height_values = [
             height_constants.screen,
@@ -89,6 +94,7 @@ const OrderTableContent = ({ showDetails, is_active }) => {
             height_constants.table_header,
             height_constants.core_footer,
         ];
+
         if (modified_list.length) {
             return (
                 <OrderTableHeader is_active={is_active}>
@@ -97,7 +103,6 @@ const OrderTableContent = ({ showDetails, is_active }) => {
                         items={modified_list}
                         item_size={item_height}
                         RenderComponent={Row}
-                        // RowLoader={OrderRowLoader}
                         has_more_items_to_load={has_more_items_to_load}
                         loadMore={loadMoreOrders}
                     />

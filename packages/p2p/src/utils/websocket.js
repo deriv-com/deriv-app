@@ -1,7 +1,7 @@
 import { setCurrencies, formatMoney, getCurrencies, isEmptyObject, getPropertyValue } from '@deriv/shared';
 
 import { localize } from 'Components/i18next';
-import { convertToMillis, getFormattedDateString } from 'Utils/date-time';
+// import { convertToMillis, getFormattedDateString } from 'Utils/date-time';
 
 let ws, transaction_currency_decimals;
 
@@ -32,6 +32,7 @@ const map_payment_method = {
 };
 
 const getModifiedP2PAdvertList = (response, is_original) => {
+    return response;
     // only show active adverts
     const filtered_list = response.list.filter(offer => !!+offer.is_active);
 
@@ -93,52 +94,6 @@ const getModifiedP2PAdvertList = (response, is_original) => {
     return modified_response;
 };
 
-const getModifiedP2POrder = response => {
-    const { chat_channel_url, contact_info, is_incoming, payment_info } = response;
-    const offer_currency = response.account_currency;
-    const transaction_currency = response.local_currency;
-
-    const offer_amount = +response.amount;
-    const price_rate = +response.rate;
-    const transaction_amount = +response.price;
-    const type = response.is_incoming ? getPropertyValue(response, ['advert_details', 'type']) : response.type;
-    const is_buyer = type === 'buy';
-    const advertiser_props =
-        response.type === 'buy'
-            ? is_buyer
-                ? 'advertiser_details'
-                : 'client_details'
-            : is_buyer
-            ? 'client_details'
-            : 'advertiser_details';
-    const payment_method = map_payment_method.bank_transfer; // TODO: [p2p-replace-with-api] add payment method to order details once API has it
-    // const payment_method = response.payment_method;
-
-    return {
-        type,
-        contact_info,
-        offer_amount,
-        offer_currency,
-        payment_info,
-        price_rate,
-        transaction_amount,
-        transaction_currency,
-        chat_channel_url,
-        advertiser_id: getPropertyValue(response, [advertiser_props, 'id']),
-        advertiser_name: getPropertyValue(response, [advertiser_props, 'name']),
-        advertiser_instructions: getPropertyValue(response, ['advert_details', 'description']),
-        display_offer_amount: fmtMoney(offer_currency, offer_amount),
-        display_payment_method: map_payment_method[payment_method] || payment_method,
-        display_price_rate: fmtMoney(offer_currency, price_rate),
-        display_transaction_amount: fmtMoney(transaction_currency, transaction_amount),
-        order_expiry_millis: convertToMillis(response.expiry_time),
-        id: response.id,
-        is_incoming: !!is_incoming,
-        order_purchase_datetime: getFormattedDateString(new Date(convertToMillis(response.created_time))),
-        status: response.status,
-    };
-};
-
 export const getModifiedP2POrderList = response => {
     const modified_response = [];
     response.forEach((list_item, idx) => {
@@ -150,10 +105,8 @@ export const getModifiedP2POrderList = response => {
 
 export const requestWS = async request => {
     await populateInitialResponses();
-
-    const response = await ws.send(request);
-
-    return getModifiedResponse(response);
+    return await ws.send(request);
+    // return getModifiedResponse(response);
 };
 
 const getModifiedResponse = response => {
@@ -173,7 +126,7 @@ const getModifiedResponse = response => {
 
 export const subscribeWS = (request, callbacks) =>
     ws.p2pSubscribe(request, response => {
-        callbacks.map(callback => callback(getModifiedResponse(response)));
+        callbacks.map(callback => callback(response));
     });
 
 export const waitWS = args => ws.wait(args);

@@ -22,6 +22,7 @@ import './cashier/ic-cashier-off-ramp.svg';
 import './cashier/ic-cashier-on-ramp.svg';
 import './cashier/ic-cashier-p2p-user.svg';
 import './cashier/ic-cashier-send-email.svg';
+import './cashier/ic-cashier-two-way-conversion.svg';
 import './cashier/ic-cashier-visa.svg';
 import './cashier/ic-cashier-wallet.svg';
 import './cashier/ic-cashier-withdrawal-lock.svg';

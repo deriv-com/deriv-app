@@ -4,7 +4,7 @@ import { Formik, Field, Form } from 'formik';
 import { Dropdown, Loading, Icon, Input, Button, ThemedScrollbars } from '@deriv/components';
 import { getDecimalPlaces } from '@deriv/shared';
 import Dp2pContext from 'Components/context/dp2p-context';
-import FooterActions from 'Components/footer-actions/footer-actions.jsx';
+// import FooterActions from 'Components/footer-actions/footer-actions.jsx';
 import { localize } from 'Components/i18next';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import { countDecimalPlaces } from 'Utils/string';
@@ -277,7 +277,7 @@ class FormAds extends React.Component {
                                                 )}
                                             </Field>
                                         </ThemedScrollbars>
-                                        <FooterActions has_border>
+                                        {/* <FooterActions has_border>
                                             {this.state.error_message && (
                                                 <div className='p2p-my-ads__form-error'>
                                                     <Icon icon='IcAlertDanger' />
@@ -300,7 +300,7 @@ class FormAds extends React.Component {
                                             >
                                                 {localize('Post ad')}
                                             </Button>
-                                        </FooterActions>
+                                        </FooterActions> */}
                                     </Form>
                                 </div>
                             );

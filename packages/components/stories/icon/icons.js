@@ -20,6 +20,7 @@ export const icons = {
         'IcCashierOnRamp',
         'IcCashierP2pUser',
         'IcCashierSendEmail',
+        'IcCashierTwoWayConversion',
         'IcCashierVisa',
         'IcCashierWallet',
         'IcCashierWithdrawalLock',

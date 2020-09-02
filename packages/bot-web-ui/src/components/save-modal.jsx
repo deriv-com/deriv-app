@@ -69,7 +69,7 @@ const SaveModalForm = ({
                                             icon={<Icon icon={is_mobile ? 'IcMobile' : 'IcDesktop'} size={48} />}
                                         />
                                     ),
-                                    value: true,
+                                    value: 'true',
                                 },
                                 {
                                     id: 'drive',
@@ -81,14 +81,14 @@ const SaveModalForm = ({
                                             onDriveConnect={onDriveConnect}
                                         />
                                     ),
-                                    value: false,
+                                    value: 'false',
                                     disabled: !is_authorised,
                                     className: classNames({
                                         'dc-radio-group__item-disabled': !is_authorised,
                                     }),
                                 },
                             ]}
-                            selected={is_authorised ? is_local : true}
+                            selected={is_authorised ? is_local.toString() : 'true'}
                             onToggle={() => setFieldValue('is_local', !is_local)}
                         />
                     </div>

@@ -5,7 +5,7 @@ import React from 'react';
 import { Button, Dialog, PasswordInput, PasswordMeter } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { validPassword } from 'Utils/Validator/declarative-validation-rules';
+import { validateMainPassword } from 'Utils/Validator/declarative-validation-rules';
 import { website_name } from 'App/Constants/app-config';
 import ResidenceForm from '../SetResidenceModal/set-residence-form.jsx';
 import 'Sass/app/modules/account-signup.scss';
@@ -13,16 +13,7 @@ import 'Sass/app/modules/account-signup.scss';
 const signupInitialValues = { password: '', residence: '' };
 
 const validateSignup = (values, residence_list) => {
-    const errors = {};
-
-    if (!/^[ -~]{6,25}$/.test(values.password)) {
-        errors.password = localize('Password length should be between 6 to 25 characters.');
-    }
-    if (!validPassword(values.password)) {
-        errors.password = localize('Password should have lower and uppercase letters with numbers.');
-    }
-
-    if (!values.password) errors.password = localize('This field is required');
+    const errors = validateMainPassword(values.password);
 
     if (!values.residence) {
         errors.residence = true;

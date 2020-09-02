@@ -198,41 +198,35 @@ class Statement extends React.Component {
                         localized_message={localize('You have no transactions yet.')}
                         localized_period_message={localize('You have no transactions for this period.')}
                     />
+                ) : this.show_loading_placeholder ? (
+                    <PlaceholderComponent is_loading={this.show_loading_placeholder} />
                 ) : (
-                    <>
+                    <React.Fragment>
                         <DesktopWrapper>
-                            {this.show_loading_placeholder ? (
-                                <PlaceholderComponent is_loading={this.show_loading_placeholder} />
-                            ) : (
-                                <DataTable
-                                    className='statement'
-                                    data_source={data}
-                                    columns={this.columns}
-                                    onScroll={handleScroll}
-                                    getRowAction={row => this.getRowAction(row)}
-                                    is_empty={is_empty}
-                                    custom_width={'100%'}
-                                    getRowSize={() => 63}
-                                    content_loader={ReportsTableRowLoader}
-                                />
-                            )}
+                            <DataTable
+                                className='statement'
+                                data_source={data}
+                                columns={this.columns}
+                                onScroll={handleScroll}
+                                getRowAction={row => this.getRowAction(row)}
+                                is_empty={is_empty}
+                                custom_width={'100%'}
+                                getRowSize={() => 63}
+                                content_loader={ReportsTableRowLoader}
+                            />
                         </DesktopWrapper>
                         <MobileWrapper>
-                            {this.show_loading_placeholder ? (
-                                <PlaceholderComponent is_loading={this.show_loading_placeholder} />
-                            ) : (
-                                <DataList
-                                    className='statement'
-                                    data_source={data}
-                                    rowRenderer={this.mobileRowRenderer}
-                                    getRowAction={this.getRowAction}
-                                    onScroll={handleScroll}
-                                    custom_width={'100%'}
-                                    getRowSize={() => 176}
-                                />
-                            )}
+                            <DataList
+                                className='statement'
+                                data_source={data}
+                                rowRenderer={this.mobileRowRenderer}
+                                getRowAction={this.getRowAction}
+                                onScroll={handleScroll}
+                                custom_width={'100%'}
+                                getRowSize={() => 176}
+                            />
                         </MobileWrapper>
-                    </>
+                    </React.Fragment>
                 )}
             </React.Fragment>
         );

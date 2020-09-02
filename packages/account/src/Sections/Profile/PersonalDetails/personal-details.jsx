@@ -23,6 +23,7 @@ import {
     validLetterSymbol,
     validLength,
     validCountryCode,
+    getLocation,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
@@ -34,15 +35,6 @@ import FormBody from 'Components/form-body';
 import FormSubHeader from 'Components/form-sub-header';
 import FormSubmitErrorMessage from 'Components/form-submit-error-message';
 import LoadErrorMessage from 'Components/load-error-message';
-
-const getLocation = (location_list, value, type) => {
-    const location_obj = location_list.find(
-        (location) => location[type === 'text' ? 'value' : 'text'].toLowerCase() === value.toLowerCase()
-    );
-
-    if (location_obj) return location_obj[type];
-    return '';
-};
 
 const removeObjProperties = (property_arr, { ...obj }) => {
     property_arr.forEach((property) => delete obj[property]);

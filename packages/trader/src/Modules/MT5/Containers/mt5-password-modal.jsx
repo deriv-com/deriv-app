@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { FormSubmitButton, Icon, Modal, PasswordInput, PasswordMeter } from '@deriv/components';
-import { isMobile, routes, validLength, validPassword } from '@deriv/shared';
+import { isMobile, routes, validLength, validPassword, getPreBuildDVRs } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import SuccessDialog from 'App/Containers/Modals/success-dialog.jsx';
 import 'Sass/app/modules/mt5/mt5.scss';
@@ -35,6 +35,7 @@ const MT5PasswordModal = ({
     account_title,
     account_type,
     disableMt5PasswordModal,
+    email,
     // error_message,
     form_error,
     history,
@@ -59,7 +60,10 @@ const MT5PasswordModal = ({
                 max_number: 25,
             });
         } else if (!validPassword(values.password)) {
-            errors.password = localize('You need to include uppercase and lowercase letters, and numbers.');
+            errors.password = getPreBuildDVRs().password.message;
+        }
+        if (values.password.toLowerCase() === email.toLowerCase()) {
+            errors.password = localize('Your password cannot be the same as your email address.');
         }
 
         return errors;
@@ -139,7 +143,7 @@ const MT5PasswordModal = ({
                                                 hint={
                                                     !has_warning &&
                                                     localize(
-                                                        'Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers.'
+                                                        'Minimum of eight lower and uppercase English letters with numbers'
                                                     )
                                                 }
                                                 name='password'
@@ -194,6 +198,7 @@ MT5PasswordModal.propTypes = {
     account_title: PropTypes.string,
     account_type: PropTypes.object,
     disableMt5PasswordModal: PropTypes.func,
+    email: PropTypes.string,
     error_message: PropTypes.string,
     has_mt5_error: PropTypes.bool,
     is_mt5_password_modal_enabled: PropTypes.bool,
@@ -203,7 +208,8 @@ MT5PasswordModal.propTypes = {
     submitMt5Password: PropTypes.func,
 };
 
-export default connect(({ modules }) => ({
+export default connect(({ client, modules }) => ({
+    email: client.email,
     account_title: modules.mt5.account_title,
     account_type: modules.mt5.account_type,
     disableMt5PasswordModal: modules.mt5.disableMt5PasswordModal,

@@ -1,4 +1,5 @@
 import moment from 'moment';
+import Cookies from 'js-cookie';
 import { action, computed, observable, runInAction, when, reaction, toJS } from 'mobx';
 import {
     setCurrencies,
@@ -9,6 +10,7 @@ import {
     getUrlSmartTrader,
     toMoment,
     getMT5AccountType,
+    isBot,
 } from '@deriv/shared';
 
 import { requestLogout, WS } from 'Services';
@@ -78,10 +80,13 @@ export default class ClientStore extends BaseStore {
     };
     @observable account_limits = {};
 
+    @observable self_exclusion = {};
+
     @observable local_currency_config = {
         currency: '',
         decimal_places: undefined,
     };
+    @observable has_cookie_account = false;
 
     is_mt5_account_list_updated = false;
 
@@ -89,6 +94,20 @@ export default class ClientStore extends BaseStore {
         const local_storage_properties = ['device_data'];
         super({ root_store, local_storage_properties, store_name });
 
+        reaction(
+            () => [
+                this.is_logged_in,
+                this.loginid,
+                this.email,
+                this.landing_company,
+                this.currency,
+                this.residence,
+                this.account_settings,
+            ],
+            () => {
+                this.setCookieAccount();
+            }
+        );
         when(
             () => this.should_have_real_account,
             () => {
@@ -132,7 +151,8 @@ export default class ClientStore extends BaseStore {
             this.root_store.ui.is_eu_enabled || // TODO: [deriv-eu] Remove this after complete EU merge into production
             !this.is_logged_in ||
             this.is_virtual ||
-            this.accounts[this.loginid].landing_company_shortcode === 'svg'
+            this.accounts[this.loginid].landing_company_shortcode === 'svg' ||
+            isBot()
         );
     }
 
@@ -613,6 +633,54 @@ export default class ClientStore extends BaseStore {
                         resolve(data);
                     }
                 });
+            });
+        });
+    }
+
+    @action.bound
+    setCookieAccount() {
+        const domain = window.location.hostname.includes('deriv.com') ? 'deriv.com' : 'binary.sx';
+        const { loginid, email, landing_company_shortcode, currency, residence, account_settings } = this;
+        const { first_name, last_name } = account_settings;
+        if (loginid && email && first_name) {
+            const client_information = {
+                loginid,
+                email,
+                landing_company_shortcode,
+                currency,
+                residence,
+                first_name,
+                last_name,
+            };
+            Cookies.set('client_information', client_information, { domain });
+            this.has_cookie_account = true;
+        } else {
+            Cookies.remove('client_information', { domain });
+            this.has_cookie_account = false;
+        }
+    }
+    getSelfExclusion() {
+        return new Promise(resolve => {
+            WS.authorized.storage.getSelfExclusion().then(data => {
+                runInAction(() => {
+                    if (data.get_self_exclusion) {
+                        this.self_exclusion = data.get_self_exclusion;
+                    } else {
+                        this.self_exclusion = false;
+                    }
+                    resolve(data);
+                });
+            });
+        });
+    }
+    @action.bound
+    updateSelfExclusion(values) {
+        return new Promise(resolve => {
+            WS.authorized.storage.setSelfExclusion(values).then(data => {
+                if (!data.error) {
+                    this.getSelfExclusion();
+                }
+                resolve(data);
             });
         });
     }

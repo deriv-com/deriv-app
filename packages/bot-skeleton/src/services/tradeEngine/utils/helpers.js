@@ -7,34 +7,38 @@ export const noop = () => {};
 
 const hasOwnProperty = (obj, prop) => Object.prototype.hasOwnProperty.call(obj, prop);
 
-export const isVirtual = tokenInfo => hasOwnProperty(tokenInfo, 'loginInfo') && tokenInfo.loginInfo.is_virtual;
+export const isVirtual = (tokenInfo) => hasOwnProperty(tokenInfo, 'loginInfo') && tokenInfo.loginInfo.is_virtual;
 
-export const tradeOptionToProposal = tradeOption =>
-    tradeOption.contractTypes.map(type => {
+export const tradeOptionToProposal = (trade_option, purchase_reference) =>
+    trade_option.contractTypes.map((type) => {
         const proposal = {
-            duration_unit: tradeOption.duration_unit,
-            basis: tradeOption.basis,
-            currency: tradeOption.currency,
-            symbol: tradeOption.symbol,
-            duration: tradeOption.duration,
-            amount: tradeOption.amount,
+            duration_unit: trade_option.duration_unit,
+            basis: trade_option.basis,
+            currency: trade_option.currency,
+            symbol: trade_option.symbol,
+            duration: trade_option.duration,
+            amount: trade_option.amount,
             contract_type: type,
+            passthrough: {
+                contract_type: type,
+                purchase_reference,
+            },
         };
-        if (tradeOption.prediction !== undefined) {
-            proposal.selected_tick = tradeOption.prediction;
+        if (trade_option.prediction !== undefined) {
+            proposal.selected_tick = trade_option.prediction;
         }
-        if (!['TICKLOW', 'TICKHIGH'].includes(type) && tradeOption.prediction !== undefined) {
-            proposal.barrier = tradeOption.prediction;
-        } else if (tradeOption.barrierOffset !== undefined) {
-            proposal.barrier = tradeOption.barrierOffset;
+        if (!['TICKLOW', 'TICKHIGH'].includes(type) && trade_option.prediction !== undefined) {
+            proposal.barrier = trade_option.prediction;
+        } else if (trade_option.barrierOffset !== undefined) {
+            proposal.barrier = trade_option.barrierOffset;
         }
-        if (tradeOption.secondBarrierOffset !== undefined) {
-            proposal.barrier2 = tradeOption.secondBarrierOffset;
+        if (trade_option.secondBarrierOffset !== undefined) {
+            proposal.barrier2 = trade_option.secondBarrierOffset;
         }
         return proposal;
     });
 
-export const getDirection = ticks => {
+export const getDirection = (ticks) => {
     const { length } = ticks;
     const [tickOld, tickNew] = ticks.slice(-2);
 
@@ -50,7 +54,7 @@ export const getDirection = ticks => {
 export const getLastDigit = (tick, pipSize) => Number(tick.toFixed(pipSize).slice(-1)[0]);
 
 export const subscribeToStream = (observer, name, respHandler, request, registerOnce, type, unregister) =>
-    new Promise(resolve => {
+    new Promise((resolve) => {
         observer.register(
             name,
             (...args) => {
@@ -114,13 +118,13 @@ export const recoverFromError = (f, r, types, delayIndex) =>
             return;
         }
 
-        promise.then(resolve).catch(e => {
+        promise.then(resolve).catch((e) => {
             if (shouldThrowError(e, types, delayIndex)) {
                 reject(e);
                 return;
             }
 
-            r(e.name, () => new Promise(delayPromise => setTimeout(delayPromise, getBackoffDelay(e, delayIndex))));
+            r(e.name, () => new Promise((delayPromise) => setTimeout(delayPromise, getBackoffDelay(e, delayIndex))));
         });
     });
 
@@ -137,7 +141,7 @@ export const doUntilDone = (f, types) => {
     });
 };
 
-export const createDetails = contract => {
+export const createDetails = (contract) => {
     const { sell_price: sellPrice, buy_price: buyPrice, currency } = contract;
     const profit = getRoundedNumber(sellPrice - buyPrice, currency);
     const result = profit < 0 ? 'loss' : 'win';
@@ -159,10 +163,10 @@ export const createDetails = contract => {
 
 export const getUUID = () => `${new Date().getTime() * Math.random()}`;
 
-export const showDialog = options =>
+export const showDialog = (options) =>
     new Promise((resolve, reject) => {
         const $dialog = $('<div/>', { class: 'draggable-dialog', title: options.title });
-        options.text.forEach(text => $dialog.append(`<p style="margin: 0.7em;">${text}</p>`));
+        options.text.forEach((text) => $dialog.append(`<p style="margin: 0.7em;">${text}</p>`));
         const defaultButtons = [
             {
                 text: localize('No'),
@@ -192,10 +196,7 @@ export const showDialog = options =>
             modal: true,
             resizable: false,
             open() {
-                $(this)
-                    .parent()
-                    .find('.ui-dialog-buttonset > button')
-                    .removeClass('ui-button ui-corner-all ui-widget');
+                $(this).parent().find('.ui-dialog-buttonset > button').removeClass('ui-button ui-corner-all ui-widget');
             },
         };
         Object.assign(dialogOptions, { buttons: options.buttons || defaultButtons });

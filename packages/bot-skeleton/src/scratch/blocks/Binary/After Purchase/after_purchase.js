@@ -48,10 +48,11 @@ Blockly.Blocks.after_purchase = {
     },
 };
 
-Blockly.JavaScript.after_purchase = block => {
+Blockly.JavaScript.after_purchase = (block) => {
     const stack = Blockly.JavaScript.statementToCode(block, 'AFTERPURCHASE_STACK');
     const code = `
     BinaryBotPrivateAfterPurchase = function BinaryBotPrivateAfterPurchase() {
+        Bot.highlightBlock('${block.id}');
         ${stack}
         Bot.isTradeAgain(false);
         return false;

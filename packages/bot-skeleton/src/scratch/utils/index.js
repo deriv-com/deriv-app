@@ -403,3 +403,15 @@ export const updateDisabledBlocks = (workspace, event) => {
 export const emptyTextValidator = input => {
     return !input || input === "''";
 };
+
+/* eslint-disable no-bitwise */
+export const isDarkRgbColour = string_rgb => {
+    const values = string_rgb.substring(1);
+    const rgb = parseInt(values, 16);
+    const red = (rgb >> 16) & 0xff;
+    const green = (rgb >> 8) & 0xff;
+    const blue = (rgb >> 0) & 0xff;
+    const luma = 0.2126 * red + 0.7152 * green + 0.0722 * blue;
+    return luma < 160;
+};
+/* eslint-enable */

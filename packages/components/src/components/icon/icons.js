@@ -168,6 +168,7 @@ import './common/ic-reset.svg';
 import './common/ic-save-filled.svg';
 import './common/ic-save.svg';
 import './common/ic-search.svg';
+import './common/ic-security-and-privacy.svg';
 import './common/ic-security.svg';
 import './common/ic-sort.svg';
 import './common/ic-stage1.svg';

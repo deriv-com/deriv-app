@@ -50,6 +50,13 @@ export const getStatementTableColumnsTemplate = currency => [
     {
         title: localize('Transaction time'),
         col_index: 'date',
+        renderCellContent: ({ cell_value }) => {
+            return (
+                <span>
+                    {cell_value} {localize('GMT')}
+                </span>
+            );
+        },
     },
     {
         key: 'mode',
@@ -98,6 +105,14 @@ export const getProfitTableColumnsTemplate = (currency, items_count) => [
     {
         title: localize('Buy time'),
         col_index: 'purchase_time',
+        renderCellContent: ({ cell_value, is_footer }) => {
+            if (is_footer) return '';
+            return (
+                <span>
+                    {cell_value} {localize('GMT')}
+                </span>
+            );
+        },
     },
     {
         title: localize('Buy price'),

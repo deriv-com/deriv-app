@@ -168,6 +168,7 @@ export const icons = {
         'IcSaveFilled',
         'IcSave',
         'IcSearch',
+        'IcSecurityAndPrivacy',
         'IcSecurity',
         'IcSort',
         'IcStage1',

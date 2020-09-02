@@ -80,7 +80,7 @@ class DeactivateAccountReason extends React.Component {
         is_account_deactivated: false,
         is_modal_open: false,
         reason: null,
-        accounts: undefined,
+        details: undefined,
         which_modal_should_render: undefined,
         is_checkbox_disabled: false,
         total_checkbox_checked: 0,
@@ -161,7 +161,7 @@ class DeactivateAccountReason extends React.Component {
         } else {
             this.setState({
                 which_modal_should_render: account_closure_response.error.code,
-                accounts: account_closure_response.error.details,
+                details: account_closure_response.error.details,
                 is_modal_open: true,
             });
         }
@@ -367,7 +367,7 @@ class DeactivateAccountReason extends React.Component {
                     )}
                     {this.state.which_modal_should_render === 'AccountHasBalanceOrOpenPositions' && (
                         <AccountHasBalanceOrOpenPositions
-                            accounts_with_balance_or_open_positions={this.state.accounts}
+                            details={this.state.details}
                             mt5_login_list={this.props.mt5_login_list}
                             client_accounts={this.props.client_accounts}
                             onBackClick={this.props.onBackClick}

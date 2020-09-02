@@ -174,8 +174,15 @@ class Statement extends React.Component {
             <React.Fragment>
                 <ReportsMeta
                     className={is_mx_mlt ? undefined : 'reports__meta--statement'}
-                    optional_component={is_mx_mlt && account_statistics_component}
                     filter_component={filter_component}
+                    {...(is_mx_mlt
+                        ? { optional_component: account_statistics_component }
+                        : {
+                              i18n_heading: localize('Statement'),
+                              i18n_message: localize(
+                                  'View all transactions on your account, including trades, deposits, and withdrawals.'
+                              ),
+                          })}
                 />
                 {data.length === 0 || is_empty ? (
                     <PlaceholderComponent

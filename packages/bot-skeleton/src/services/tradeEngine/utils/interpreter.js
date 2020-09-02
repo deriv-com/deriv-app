@@ -47,27 +47,30 @@ export default class Interpreter {
 
     run(code) {
         const initFunc = (interpreter, scope) => {
-            const BotIf = this.bot.getInterface('Bot');
-            const ticksIf = this.bot.getTicksInterface();
-            const { alert, prompt, sleep, console: customConsole } = this.bot.getInterface();
+            const bot_interface = this.bot.getInterface('Bot');
+            const ticks_interface = this.bot.getTicksInterface();
+            const { alert, prompt, sleep, console: custom_console } = this.bot.getInterface();
 
-            interpreter.setProperty(scope, 'console', interpreter.nativeToPseudo(customConsole));
-
+            interpreter.setProperty(scope, 'console', interpreter.nativeToPseudo(custom_console));
             interpreter.setProperty(scope, 'alert', interpreter.nativeToPseudo(alert));
-
             interpreter.setProperty(scope, 'prompt', interpreter.nativeToPseudo(prompt));
+            interpreter.setProperty(
+                scope,
+                'getPurchaseReference',
+                interpreter.nativeToPseudo(bot_interface.getPurchaseReference)
+            );
 
-            const pseudoBotIf = interpreter.nativeToPseudo(BotIf);
+            const pseudo_bot_interface = interpreter.nativeToPseudo(bot_interface);
 
-            Object.entries(ticksIf).forEach(([name, f]) =>
-                interpreter.setProperty(pseudoBotIf, name, this.createAsync(interpreter, f))
+            Object.entries(ticks_interface).forEach(([name, f]) =>
+                interpreter.setProperty(pseudo_bot_interface, name, this.createAsync(interpreter, f))
             );
 
             interpreter.setProperty(
-                pseudoBotIf,
+                pseudo_bot_interface,
                 'start',
                 interpreter.nativeToPseudo((...args) => {
-                    const { start } = BotIf;
+                    const { start } = bot_interface;
                     if (shouldRestartOnError(this.bot)) {
                         this.startState = interpreter.takeStateSnapshot();
                     }
@@ -75,12 +78,17 @@ export default class Interpreter {
                 })
             );
 
-            interpreter.setProperty(pseudoBotIf, 'purchase', this.createAsync(interpreter, BotIf.purchase));
-
-            interpreter.setProperty(pseudoBotIf, 'sellAtMarket', this.createAsync(interpreter, BotIf.sellAtMarket));
-
-            interpreter.setProperty(scope, 'Bot', pseudoBotIf);
-
+            interpreter.setProperty(
+                pseudo_bot_interface,
+                'purchase',
+                this.createAsync(interpreter, bot_interface.purchase)
+            );
+            interpreter.setProperty(
+                pseudo_bot_interface,
+                'sellAtMarket',
+                this.createAsync(interpreter, bot_interface.sellAtMarket)
+            );
+            interpreter.setProperty(scope, 'Bot', pseudo_bot_interface);
             interpreter.setProperty(
                 scope,
                 'watch',
@@ -134,8 +142,8 @@ export default class Interpreter {
             this.$scope.observer.register('Error', onError);
 
             this.interpreter = new JSInterpreter(code, initFunc);
-
             this.onFinish = resolve;
+
             this.loop();
         });
     }
@@ -148,17 +156,15 @@ export default class Interpreter {
 
     revert(state) {
         this.interpreter.restoreStateSnapshot(state);
-        // eslint-disable-next-line no-underscore-dangle
-        this.interpreter.paused_ = false;
+        this.interpreter.paused_ = false; // eslint-disable-line no-underscore-dangle
         this.loop();
     }
 
     terminateSession() {
         const { socket } = this.$scope.api;
+
         if (socket.readyState === 0) {
-            socket.addEventListener('open', () => {
-                this.$scope.api.disconnect();
-            });
+            socket.addEventListener('open', () => this.$scope.api.disconnect());
         } else if (socket.readyState === 1) {
             this.$scope.api.disconnect();
         }

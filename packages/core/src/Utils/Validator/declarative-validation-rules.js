@@ -18,7 +18,7 @@ export const validRequired = (value /* , options, field */) => {
 };
 const confirmRequired = value => value === true;
 const validEmail = value => /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$/.test(value);
-export const validPassword = value => /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+/.test(value);
+export const validPassword = value => /^(?=.*[a-z])(?=.*[0-9])(?=.*[A-Z])[ -~]*$/.test(value);
 export const validLetterSymbol = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><,|\d]+/.test(value);
 const validGeneral = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><|]+/.test(value);
 export const validAddress = value => !/[`~!$%^&*_=+[}{\]\\"?><|]+/.test(value);
@@ -158,7 +158,7 @@ const initPreBuildDVRs = () => ({
     number: { func: validNumber, message: '' },
     password: {
         func: validPassword,
-        message: localize('Password should have lower and uppercase letters with numbers.'),
+        message: localize('Password should have lower and uppercase English letters with numbers.'),
     },
     phone: { func: validPhone, message: localize('Only numbers and spaces are allowed.') },
     postcode: { func: validPostCode, message: localize('Only letters, numbers, space, and hyphen are allowed.') },

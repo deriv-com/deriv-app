@@ -21,10 +21,11 @@
         .account-wizard--error {
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: start;
             flex-direction: column;
             height: 100%;
             width: 100%;
+            padding-top: 10rem;
         }
         & > svg {
             width: 128px;
@@ -59,6 +60,12 @@
             font-weight: bold;
             text-decoration: none;
         }
+        span.chat-inline {
+            color: var(--brand-red-coral);
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+        }
     }
     &--loading {
         width: 300px;
@@ -70,6 +77,22 @@
     }
     & .dc-themed-scrollbars {
         height: 100%;
+    }
+}
+
+.dc-mobile-dialog__account-signup-mobile-dialog {
+    .account-wizard--error {
+        p {
+            text-align: center;
+        }
+        span.chat-inline {
+            color: var(--brand-red-coral);
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            display: block;
+            text-align: center;
+        }
     }
 }
 

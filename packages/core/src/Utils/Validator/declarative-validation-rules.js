@@ -185,14 +185,19 @@ export const getPasswordLengthConfig = type => ({ min: /^mt$/.test(type) ? 8 : 6
 export const validateMainPassword = password => {
     const errors = {};
 
-    if (!/^[ -~]{6,25}$/.test(password)) {
-        errors.password = localize('Password length should be between 6 to 25 characters.');
+    if (
+        !validLength(password, {
+            min: 6,
+            max: 25,
+        })
+    ) {
+        errors.password = localize('You should enter {{min_number}}-{{max_number}} characters.', {
+            min_number: 6,
+            max_number: 25,
+        });
+    } else if (!validPassword(password)) {
+        errors.password = getPreBuildDVRs().password.message;
     }
-    if (!validPassword(password)) {
-        errors.password = localize('Password should have lower and uppercase letters with numbers.');
-    }
-
-    if (!password) errors.password = localize('This field is required');
 
     return errors;
 };

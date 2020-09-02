@@ -17,6 +17,7 @@ import { Formik, Form, Field } from 'formik';
 import { localize } from '@deriv/translations';
 import { config } from '@deriv/bot-skeleton';
 import { connect } from '../stores/connect';
+import { save_selection_types } from '../constants/save-modal';
 import '../assets/sass/google-drive.scss';
 import '../assets/sass/save-modal.scss';
 
@@ -69,7 +70,7 @@ const SaveModalForm = ({
                                             icon={<Icon icon={is_mobile ? 'IcMobile' : 'IcDesktop'} size={48} />}
                                         />
                                     ),
-                                    value: 'true',
+                                    value: save_selection_types.LOCAL,
                                 },
                                 {
                                     id: 'drive',
@@ -81,14 +82,20 @@ const SaveModalForm = ({
                                             onDriveConnect={onDriveConnect}
                                         />
                                     ),
-                                    value: 'false',
+                                    value: save_selection_types.DRIVE,
                                     disabled: !is_authorised,
                                     className: classNames({
                                         'dc-radio-group__item-disabled': !is_authorised,
                                     }),
                                 },
                             ]}
-                            selected={is_authorised ? is_local.toString() : 'true'}
+                            selected={
+                                is_authorised
+                                    ? is_local
+                                        ? save_selection_types.LOCAL
+                                        : save_selection_types.DRIVE
+                                    : save_selection_types.LOCAL
+                            }
                             onToggle={() => setFieldValue('is_local', !is_local)}
                         />
                     </div>

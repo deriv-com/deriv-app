@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { localize } from '@deriv/translations';
-import { Icon } from '@deriv/components';
+import { Icon, ThemedScrollbars } from '@deriv/components';
 import { help_content_config } from '@deriv/bot-skeleton';
 import FlyoutBlockGroup from './flyout-block-group.jsx';
 import HelpBase from './help-contents/flyout-help-base.jsx';
@@ -54,93 +54,95 @@ const FlyoutContent = props => {
             ref={flyout_ref}
             className={classNames('flyout__content', { 'flyout__normal-content': !is_search_flyout })}
         >
-            {selected_category === 'indicators' && (
-                <div className='flyout__content-disclaimer'>
-                    <span className='flyout__content-disclaimer-icon'>
-                        <Icon
-                            icon='IcBlackWarning'
-                            custom_color='#000000'
-                            className='flyout__content-disclaimer__warning-icon'
-                        />
-                    </span>
-                    <span className='flyout__content-disclaimer-text'>
-                        {localize(
-                            'Indicators on the Chart tab are for indicative purposes only and may vary slightly from the ones on the DBot workspace.'
-                        )}
-                    </span>
-                </div>
-            )}
-            {is_empty ? (
-                <div className='flyout__search-empty'>
-                    <h2>{localize('No results found')}</h2>
-                </div>
-            ) : (
-                flyout_content.map((node, index) => {
-                    const tag_name = node.tagName.toUpperCase();
+            <ThemedScrollbars className='flyout__content-scrollbar'>
+                {selected_category === 'indicators' && (
+                    <div className='flyout__content-disclaimer'>
+                        <span className='flyout__content-disclaimer-icon'>
+                            <Icon
+                                icon='IcBlackWarning'
+                                custom_color='#000000'
+                                className='flyout__content-disclaimer__warning-icon'
+                            />
+                        </span>
+                        <span className='flyout__content-disclaimer-text'>
+                            {localize(
+                                'Indicators on the chart tab are for indicative purposes only and may vary slightly from the ones on the DBot workspace.'
+                            )}
+                        </span>
+                    </div>
+                )}
+                {is_empty ? (
+                    <div className='flyout__search-empty'>
+                        <h2>{localize('No results found')}</h2>
+                    </div>
+                ) : (
+                    flyout_content.map((node, index) => {
+                        const tag_name = node.tagName.toUpperCase();
 
-                    switch (tag_name) {
-                        case Blockly.Xml.NODE_BLOCK: {
-                            const block_type = node.getAttribute('type');
+                        switch (tag_name) {
+                            case Blockly.Xml.NODE_BLOCK: {
+                                const block_type = node.getAttribute('type');
 
-                            return (
-                                <FlyoutBlockGroup
-                                    key={`${node.getAttribute('type')}${Blockly.utils.genUid()}`}
-                                    id={`flyout__item-workspace--${index}`}
-                                    block_node={node}
-                                    onInfoClick={
-                                        help_content_config(__webpack_public_path__)[block_type] &&
-                                        (is_search_flyout
-                                            ? () => setHelpContent(node)
-                                            : () => initialiseFlyoutHelp(node, block_type))
-                                    }
-                                    is_active={active_helper === block_type}
-                                />
-                            );
-                        }
-                        case Blockly.Xml.NODE_LABEL: {
-                            return (
-                                <div key={`${node.getAttribute('text')}${index}`} className='flyout__item-label'>
-                                    {node.getAttribute('text')}
-                                </div>
-                            );
-                        }
-                        case Blockly.Xml.NODE_BUTTON: {
-                            const cb_key = node.getAttribute('callbackKey');
-                            const button_cb = Blockly.derivWorkspace.getButtonCallback(cb_key);
-                            const callback = button_cb || (() => {});
+                                return (
+                                    <FlyoutBlockGroup
+                                        key={`${node.getAttribute('type')}${Blockly.utils.genUid()}`}
+                                        id={`flyout__item-workspace--${index}`}
+                                        block_node={node}
+                                        onInfoClick={
+                                            help_content_config(__webpack_public_path__)[block_type] &&
+                                            (is_search_flyout
+                                                ? () => setHelpContent(node)
+                                                : () => initialiseFlyoutHelp(node, block_type))
+                                        }
+                                        is_active={active_helper === block_type}
+                                    />
+                                );
+                            }
+                            case Blockly.Xml.NODE_LABEL: {
+                                return (
+                                    <div key={`${node.getAttribute('text')}${index}`} className='flyout__item-label'>
+                                        {node.getAttribute('text')}
+                                    </div>
+                                );
+                            }
+                            case Blockly.Xml.NODE_BUTTON: {
+                                const cb_key = node.getAttribute('callbackKey');
+                                const button_cb = Blockly.derivWorkspace.getButtonCallback(cb_key);
+                                const callback = button_cb || (() => {});
 
-                            return (
-                                <button
-                                    key={`${cb_key}${index}`}
-                                    className={classNames(
-                                        'dc-btn',
-                                        'dc-btn-effect',
-                                        'dc-btn--primary',
-                                        'flyout__button-new'
-                                    )}
-                                    onClick={button => {
-                                        const flyout_button = button;
+                                return (
+                                    <button
+                                        key={`${cb_key}${index}`}
+                                        className={classNames(
+                                            'dc-btn',
+                                            'dc-btn-effect',
+                                            'dc-btn--primary',
+                                            'flyout__button-new'
+                                        )}
+                                        onClick={button => {
+                                            const flyout_button = button;
 
-                                        // Workaround for not having a flyout workspace.
-                                        // eslint-disable-next-line no-underscore-dangle
-                                        flyout_button.targetWorkspace_ = Blockly.derivWorkspace;
-                                        flyout_button.getTargetWorkspace = () => {
+                                            // Workaround for not having a flyout workspace.
                                             // eslint-disable-next-line no-underscore-dangle
-                                            return flyout_button.targetWorkspace_;
-                                        };
+                                            flyout_button.targetWorkspace_ = Blockly.derivWorkspace;
+                                            flyout_button.getTargetWorkspace = () => {
+                                                // eslint-disable-next-line no-underscore-dangle
+                                                return flyout_button.targetWorkspace_;
+                                            };
 
-                                        callback(flyout_button);
-                                    }}
-                                >
-                                    {node.getAttribute('text')}
-                                </button>
-                            );
+                                            callback(flyout_button);
+                                        }}
+                                    >
+                                        {node.getAttribute('text')}
+                                    </button>
+                                );
+                            }
+                            default:
+                                return null;
                         }
-                        default:
-                            return null;
-                    }
-                })
-            )}
+                    })
+                )}
+            </ThemedScrollbars>
         </div>
     );
 };

@@ -35,7 +35,6 @@ const Clipboard = ({ text_copy, info_message, success_message, className, popove
                 <Popover
                     alignment='bottom'
                     classNameBubble={classNames('dc-clipboard__popover', popoverClassName)}
-                    is_bubble_hover_enabled
                     message={info_message}
                 >
                     <Icon
@@ -50,7 +49,6 @@ const Clipboard = ({ text_copy, info_message, success_message, className, popove
                 <Popover
                     alignment='bottom'
                     classNameBubble={classNames('dc-clipboard__popover', popoverClassName)}
-                    is_bubble_hover_enabled
                     message={success_message}
                     relative_render
                 >

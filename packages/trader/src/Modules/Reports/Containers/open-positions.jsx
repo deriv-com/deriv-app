@@ -358,7 +358,7 @@ class OpenPositions extends React.Component {
                     <ReportsMeta
                         i18n_heading={localize('Open positions')}
                         i18n_message={localize(
-                            'View all active trades on your account that can still incur a profit or a loss.'
+                            'View all active trades on your account that can still incur a profit or a losssssssssssss.'
                         )}
                     />
                 </DesktopWrapper>

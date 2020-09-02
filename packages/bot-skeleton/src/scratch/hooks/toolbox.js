@@ -303,6 +303,7 @@ Blockly.Toolbox.prototype.showCategory_ = function(category_id) {
     }
 
     flyout.setIsSearchFlyout(false);
+    flyout.setSelectedCategory(category_id);
     flyout.setContents(flyout_content);
 };
 

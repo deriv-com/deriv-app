@@ -96,7 +96,13 @@ const initPreBuildDVRs = () => ({
         func: validLetterSymbol,
         message: form_error_messages.letter_symbol,
     },
-    number: { func: validNumber, message: '' },
+    number: {
+        func: (...args) => {
+            const { is_ok } = validNumber(...args);
+            return is_ok;
+        },
+        message: form_error_messages.number,
+    },
     password: {
         func: validPassword,
         message: form_error_messages.password,

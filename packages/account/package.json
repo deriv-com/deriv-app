@@ -49,7 +49,6 @@
     "react-router-dom": "^5.1.2"
   },
   "devDependencies": {
-    "webpack-cli": "^3.3.11",
     "@babel/core": "^7.9.6",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/plugin-proposal-decorators": "^7.8.3",
@@ -93,7 +92,9 @@
     "stylelint-selector-bem-pattern": "^2.1.0",
     "stylelint-webpack-plugin": "^1.2.3",
     "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
     "webpack-manifest-plugin": "^2.2.0",
-    "webpack-node-externals": "^1.7.2"
+    "webpack-node-externals": "^1.7.2",
+    "webpack-strip-block": "^0.3.0"
   }
 }

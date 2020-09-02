@@ -6,12 +6,14 @@ import {
     AccountLimits,
     DerivPassword,
     PersonalDetails,
+    /* develblock:start */
     FinancialAssessment,
     ProofOfIdentity,
     ProofOfAddress,
     ApiToken,
-    TwoFactorAuthentication,
     SelfExclusion,
+    /* develblock:end */
+    TwoFactorAuthentication,
     Account,
     DeactivateAccount,
     ConnectedApps,
@@ -47,13 +49,16 @@ const initRoutesConfig = () => [
                         title: localize('Personal details'),
                         default: true,
                     },
+                    /* develblock:start */
                     {
                         path: routes.financial_assessment,
                         component: FinancialAssessment,
                         title: localize('Financial assessment'),
                     },
+                    /* develblock:end */
                 ],
             },
+            /* develblock:start */
             {
                 title: localize('Verification'),
                 icon: 'IcVerification',
@@ -70,6 +75,7 @@ const initRoutesConfig = () => [
                     },
                 ],
             },
+            /* develblock:end */
             {
                 title: localize('Security and safety'),
                 icon: 'IcSecurity',
@@ -79,11 +85,13 @@ const initRoutesConfig = () => [
                         component: DerivPassword,
                         title: localize('Deriv password'),
                     },
+                    /* develblock:start */
                     {
                         path: routes.self_exclusion,
                         component: SelfExclusion,
                         title: localize('Self exclusion'),
                     },
+                    /* develblock:end */
                     {
                         path: routes.account_limits,
                         component: AccountLimits,
@@ -94,6 +102,7 @@ const initRoutesConfig = () => [
                         component: LoginHistory,
                         title: localize('Login history'),
                     },
+                    /* develblock:start */
                     {
                         path: routes.api_token,
                         component: ApiToken,
@@ -104,16 +113,19 @@ const initRoutesConfig = () => [
                         component: ConnectedApps,
                         title: localize('Connected apps'),
                     },
+                    /* develblock:end */
                     {
                         path: routes.two_factor_authentication,
                         component: TwoFactorAuthentication,
                         title: localize('Two-factor authentication'),
                     },
+                    /* develblock:start */
                     {
                         path: routes.deactivate_account,
                         component: DeactivateAccount,
                         title: localize('Deactivate account'),
                     },
+                    /* develblock:end */
                 ],
             },
         ],

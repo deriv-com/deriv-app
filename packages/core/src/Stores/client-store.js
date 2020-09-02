@@ -112,6 +112,7 @@ export default class ClientStore extends BaseStore {
             () => this.should_have_real_account,
             () => {
                 this.root_store.ui.showAccountTypesModalForEuropean();
+                /* develblock:start */
                 this.onRealAccountSignupEnd(() => {
                     if (!this.has_any_real_account) {
                         this.root_store.ui.showAccountTypesModalForEuropean();
@@ -123,6 +124,7 @@ export default class ClientStore extends BaseStore {
                 if (!this.root_store.ui.is_real_acc_signup_on) {
                     this.root_store.ui.toggleAccountTypesModal(true);
                 }
+                /* develblock:end */
             }
         );
         when(
@@ -184,10 +186,12 @@ export default class ClientStore extends BaseStore {
             : undefined;
     }
 
+    /* develblock:start */
     @computed
     get has_active_real_account() {
         return this.active_accounts.some(acc => acc.is_virtual === 0);
     }
+    /* develblock:end */
 
     @computed
     get has_maltainvest_account() {

@@ -82,6 +82,16 @@ const rules = (is_test_env = false, is_mocha_only = false) => [
         : []),
     {
         test: /\.(js|jsx)$/,
+        enforce: 'pre',
+        exclude: /node_modules/,
+        use: [
+            {
+                loader: 'webpack-strip-block',
+            },
+        ],
+    },
+    {
+        test: /\.(js|jsx)$/,
         exclude: is_test_env ? /node_modules/ : /node_modules|__tests__/,
         include: is_test_env ? /__tests__|src/ : /src/,
         use: js_loaders,

@@ -187,12 +187,12 @@ export const validateMainPassword = password => {
 
     if (
         !validLength(password, {
-            min: 6,
+            min: 8,
             max: 25,
         })
     ) {
         errors.password = localize('You should enter {{min_number}}-{{max_number}} characters.', {
-            min_number: 6,
+            min_number: 8,
             max_number: 25,
         });
     } else if (!validPassword(password)) {

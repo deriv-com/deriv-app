@@ -369,7 +369,10 @@ class AccountSwitcher extends React.Component {
                                                     account_type={account.group}
                                                     balance={account.balance}
                                                     currency={account.currency}
-                                                    currency_icon={`IcMt5-${getMT5AccountDisplay(account.group)}`}
+                                                    currency_icon={`IcMt5-${getMT5AccountDisplay(
+                                                        account.group,
+                                                        false
+                                                    )}`}
                                                     has_balance={'balance' in account}
                                                     is_virtual
                                                     loginid={account.display_login}
@@ -486,18 +489,23 @@ class AccountSwitcher extends React.Component {
                                 <React.Fragment>
                                     {!!this.real_mt5.length && (
                                         <div className='acc-switcher__accounts'>
-                                            {this.real_mt5.map(account => (
-                                                <AccountList
-                                                    key={account.login}
-                                                    account_type={account.group}
-                                                    balance={account.balance}
-                                                    currency={account.currency}
-                                                    currency_icon={`IcMt5-${getMT5AccountDisplay(account.group)}`}
-                                                    has_balance={'balance' in account}
-                                                    loginid={account.display_login}
-                                                    onClickAccount={this.redirectToMt5Real}
-                                                />
-                                            ))}
+                                            {this.real_mt5.map(account => {
+                                                return (
+                                                    <AccountList
+                                                        key={account.login}
+                                                        account_type={account.group}
+                                                        balance={account.balance}
+                                                        currency={account.currency}
+                                                        currency_icon={`IcMt5-${getMT5AccountDisplay(
+                                                            account.group,
+                                                            false
+                                                        )}`}
+                                                        has_balance={'balance' in account}
+                                                        loginid={account.display_login}
+                                                        onClickAccount={this.redirectToMt5Real}
+                                                    />
+                                                );
+                                            })}
                                         </div>
                                     )}
                                     {this.remaining_real_mt5.map(account => (

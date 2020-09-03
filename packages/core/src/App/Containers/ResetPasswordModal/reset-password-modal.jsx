@@ -5,7 +5,7 @@ import { Formik, Form } from 'formik';
 import { Button, Dialog, PasswordInput, PasswordMeter } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { validPassword } from 'Utils/Validator/declarative-validation-rules';
+import { validLength, validPassword, getPreBuildDVRs } from 'Utils/Validator/declarative-validation-rules';
 import { redirectToLogin } from '_common/base/login';
 import { WS } from 'Services/index';
 
@@ -50,10 +50,19 @@ class ResetPassword extends React.Component {
 
     validateReset = values => {
         const errors = {};
-        const min_password_length = 6;
 
-        if (values.password && (values.password.length < min_password_length || !validPassword(values.password))) {
-            errors.password = true;
+        if (
+            !validLength(values.password, {
+                min: 8,
+                max: 25,
+            })
+        ) {
+            errors.password = localize('You should enter {{min_number}}-{{max_number}} characters.', {
+                min_number: 8,
+                max_number: 25,
+            });
+        } else if (!validPassword(values.password)) {
+            errors.password = getPreBuildDVRs().password.message;
         }
 
         return errors;
@@ -110,7 +119,7 @@ class ResetPassword extends React.Component {
                                                     values={{ error_msg: status.error_msg }}
                                                 />
                                             ) : (
-                                                <Localize i18n_default_text='Strong passwords contain at least 6 characters, combine uppercase and lowercase letters, numbers, and symbols.' />
+                                                <Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters, numbers, and symbols.' />
                                             )}
                                         </p>
 

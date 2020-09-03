@@ -52,6 +52,9 @@ class Cashier extends React.Component {
 
         if (!response.error) this.setState({ is_p2p_restricted: false });
         else if (response.error.code !== 'RestrictedCountry') this.setState({ is_p2p_restricted: false });
+        else if (response.error.code === 'RestrictedCountry' && location.pathname === routes.cashier_p2p) {
+            this.props.routeTo(routes.cashier_deposit);
+        }
     };
 
     handleOnScreenKeyboard = () => {
@@ -200,6 +203,7 @@ export default connect(({ client, common, modules, ui }) => ({
     is_payment_agent_transfer_visible: modules.cashier.is_payment_agent_transfer_visible,
     onMount: modules.cashier.onMountCommon,
     p2p_notification_count: modules.cashier.p2p_notification_count,
+    routeTo: common.routeTo,
     setAccountSwitchListener: modules.cashier.setAccountSwitchListener,
     toggleCashier: ui.toggleCashier,
 }))(withRouter(Cashier));

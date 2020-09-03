@@ -10,8 +10,6 @@ import './nickname-form.scss';
 const NicknameForm = ({ handleClose }) => {
     const { createAdvertiser, is_mobile, nickname_error, resetNicknameErrorState } = React.useContext(Dp2pContext);
 
-    const handleSubmit = values => createAdvertiser(values.nickname);
-
     const validatePopup = values => {
         const validations = {
             nickname: [
@@ -66,7 +64,13 @@ const NicknameForm = ({ handleClose }) => {
                     </div>
                 </div>
             )}
-            <Formik validate={validatePopup} initialValues={{ nickname: '' }} onSubmit={handleSubmit}>
+            <Formik
+                validate={validatePopup}
+                initialValues={{ nickname: '' }}
+                onSubmit={async values => {
+                    await createAdvertiser(values.nickname);
+                }}
+            >
                 {({ errors, handleChange, isSubmitting, values }) => (
                     <Form noValidate>
                         <ThemedScrollbars autoHide style={{ height: '437px' }}>
@@ -106,7 +110,9 @@ const NicknameForm = ({ handleClose }) => {
                                 </Button>
                                 <Button
                                     type='submit'
-                                    is_disabled={!!errors.nickname || values.nickname === '' || isSubmitting}
+                                    is_disabled={
+                                        !!errors.nickname || values.nickname === '' || isSubmitting || nickname_error
+                                    }
                                     primary
                                     large
                                 >

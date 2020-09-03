@@ -1,487 +1,532 @@
-import { localize } from '@deriv/translations';
+import React from 'react';
+import { Localize } from '@deriv/translations';
 
 const onfido_phrases = {
     accessibility: {
-        camera_view: localize('View from camera'),
-        close_sdk_screen: localize('Close identity verification screen'),
-        country_select: localize('Select country'),
-        cross_device_verification: localize('Steps required to continue verification on your mobile'),
-        dismiss_alert: localize('Dismiss alert'),
-        document_types: localize('Documents you can use to verify your identity'),
-        replay_video: localize('Replay your recorded video'),
-        selfie_video_actions: localize('Actions to record a selfie video'),
-        shutter: localize('Take a photo'),
-        start_recording: localize('Start recording'),
-        stop_recording: localize('Stop recording'),
+        camera_view: <Localize i18n_default_text='View from camera' />,
+        close_sdk_screen: <Localize i18n_default_text='Close identity verification screen' />,
+        country_select: <Localize i18n_default_text='Select country' />,
+        cross_device_verification: (
+            <Localize i18n_default_text='Steps required to continue verification on your mobile' />
+        ),
+        dismiss_alert: <Localize i18n_default_text='Dismiss alert' />,
+        document_types: <Localize i18n_default_text='Documents you can use to verify your identity' />,
+        replay_video: <Localize i18n_default_text='Replay your recorded video' />,
+        selfie_video_actions: <Localize i18n_default_text='Actions to record a selfie video' />,
+        shutter: <Localize i18n_default_text='Take a photo' />,
+        start_recording: <Localize i18n_default_text='Start recording' />,
+        stop_recording: <Localize i18n_default_text='Stop recording' />,
     },
-    back: localize('back'),
-    bank_building_society_statement: localize('Bank or building society statement'),
-    benefit_letters: localize('Benefits Letter'),
-    cancel: localize('Cancel'),
+    back: <Localize i18n_default_text='back' />,
+    bank_building_society_statement: <Localize i18n_default_text='Bank or building society statement' />,
+    benefit_letters: <Localize i18n_default_text='Benefits Letter' />,
+    cancel: <Localize i18n_default_text='Cancel' />,
     capture: {
         bank_building_society_statement: {
             front: {
-                instructions: localize('Provide the whole document page for best results'),
-                sub_title: localize('Must be issued in the <strong>last 3 months</strong>'),
-                title: localize('Submit statement'),
-                webcam: localize('Position your bank statement in the frame (it will be automatically detected)'),
+                instructions: <Localize i18n_default_text='Provide the whole document page for best results' />,
+                sub_title: <Localize i18n_default_text='Must be issued in the <strong>last 3 months</strong>' />,
+                title: <Localize i18n_default_text='Submit statement' />,
+                webcam: (
+                    <Localize i18n_default_text='Position your bank statement in the frame (it will be automatically detected)' />
+                ),
             },
         },
         benefit_letters: {
             front: {
-                instructions: localize('Provide the whole document page for best results'),
-                sub_title: localize('Must be issued in the <strong>last 12 months</strong>'),
-                title: localize('Submit letter'),
-                webcam: localize('Position your benefits letter in the frame (it will be automatically detected)'),
+                instructions: <Localize i18n_default_text='Provide the whole document page for best results' />,
+                sub_title: <Localize i18n_default_text='Must be issued in the <strong>last 12 months</strong>' />,
+                title: <Localize i18n_default_text='Submit letter' />,
+                webcam: (
+                    <Localize i18n_default_text='Position your benefits letter in the frame (it will be automatically detected)' />
+                ),
             },
         },
         council_tax: {
             front: {
-                instructions: localize('Provide the whole document page for best results'),
-                sub_title: localize('Must be issued in the <strong>last 12 months</strong>'),
-                title: localize('Submit letter'),
-                webcam: localize('Position your council tax letter in the frame (it will be automatically detected)'),
+                instructions: <Localize i18n_default_text='Provide the whole document page for best results' />,
+                sub_title: <Localize i18n_default_text='Must be issued in the <strong>last 12 months</strong>' />,
+                title: <Localize i18n_default_text='Submit letter' />,
+                webcam: (
+                    <Localize i18n_default_text='Position your council tax letter in the frame (it will be automatically detected)' />
+                ),
             },
         },
         driving_licence: {
             back: {
-                instructions: localize('Upload back of license from your computer'),
-                title: localize('Submit license (back)'),
-                webcam: localize('Position the back of license in the frame (it will be automatically detected)'),
+                instructions: <Localize i18n_default_text='Upload back of license from your computer' />,
+                title: <Localize i18n_default_text='Submit license (back)' />,
+                webcam: (
+                    <Localize i18n_default_text='Position the back of license in the frame (it will be automatically detected)' />
+                ),
             },
             front: {
-                instructions: localize('Upload front of license from your computer'),
-                title: localize('Submit license (front)'),
-                webcam: localize('Position the front of license in the frame (it will be automatically detected)'),
+                instructions: <Localize i18n_default_text='Upload front of license from your computer' />,
+                title: <Localize i18n_default_text='Submit license (front)' />,
+                webcam: (
+                    <Localize i18n_default_text='Position the front of license in the frame (it will be automatically detected)' />
+                ),
             },
         },
         face: {
-            instructions: localize('Upload a selfie from your computer'),
+            instructions: <Localize i18n_default_text='Upload a selfie from your computer' />,
             intro: {
                 accessibility: {
-                    selfie_capture_tips: localize('Tips to take a good selfie'),
+                    selfie_capture_tips: <Localize i18n_default_text='Tips to take a good selfie' />,
                 },
-                glasses_instruction: localize('Remove your glasses, if necessary'),
-                selfie_instruction: localize('Face forward and make sure your eyes are clearly visible'),
-                subtitle: localize("We'll compare it with your document"),
-                title: localize('Take a selfie'),
+                glasses_instruction: <Localize i18n_default_text='Remove your glasses, if necessary' />,
+                selfie_instruction: (
+                    <Localize i18n_default_text='Face forward and make sure your eyes are clearly visible' />
+                ),
+                subtitle: <Localize i18n_default_text="We'll compare it with your document" />,
+                title: <Localize i18n_default_text='Take a selfie' />,
             },
-            title: localize('Take a selfie'),
-            upload_title: localize('Selfie'),
+            title: <Localize i18n_default_text='Take a selfie' />,
+            upload_title: <Localize i18n_default_text='Selfie' />,
         },
         government_letter: {
             front: {
-                instructions: localize('Provide the whole document page for best results'),
-                sub_title: localize('Must be issued in the <strong>last 12 months</strong>'),
-                title: localize('Government Letter'),
-                webcam: localize('Position your government letter in the frame (it will be automatically detected)'),
+                instructions: <Localize i18n_default_text='Provide the whole document page for best results' />,
+                sub_title: <Localize i18n_default_text='Must be issued in the <strong>last 12 months</strong>' />,
+                title: <Localize i18n_default_text='Government Letter' />,
+                webcam: (
+                    <Localize i18n_default_text='Position your government letter in the frame (it will be automatically detected)' />
+                ),
             },
         },
         liveness: {
             challenges: {
-                done_next: localize("When you're done, press next"),
-                done_stop: localize("When you're done, press stop"),
-                left: localize('left'),
-                movement: localize('Look over your %{side} shoulder'),
-                next: localize('Next'),
-                position_face: localize('Position your face in the oval'),
-                recite: localize('Say each digit out loud'),
-                right: localize('right'),
+                done_next: <Localize i18n_default_text="When you're done, press next" />,
+                done_stop: <Localize i18n_default_text="When you're done, press stop" />,
+                left: <Localize i18n_default_text='left' />,
+                movement: <Localize i18n_default_text='Look over your %{side} shoulder' />,
+                next: <Localize i18n_default_text='Next' />,
+                position_face: <Localize i18n_default_text='Position your face in the oval' />,
+                recite: <Localize i18n_default_text='Say each digit out loud' />,
+                right: <Localize i18n_default_text='right' />,
             },
             intro: {
-                continue: localize('Continue'),
-                speak_out_loud: localize('One will involve <strong>speaking out loud</strong>'),
-                title: localize("Let's make sure nobody's impersonating you"),
-                two_actions: localize("We'll ask you to film yourself performing <strong>2 simple actions</strong>"),
+                continue: <Localize i18n_default_text='Continue' />,
+                speak_out_loud: <Localize i18n_default_text='One will involve <strong>speaking out loud</strong>' />,
+                title: <Localize i18n_default_text="Let's make sure nobody's impersonating you" />,
+                two_actions: (
+                    <Localize i18n_default_text="We'll ask you to film yourself performing <strong>2 simple actions</strong>" />
+                ),
             },
-            press_record: localize('Press record and follow the instructions'),
-            recording: localize('Recording'),
-            start: localize('Start'),
-            stop: localize('Stop'),
+            press_record: <Localize i18n_default_text='Press record and follow the instructions' />,
+            recording: <Localize i18n_default_text='Recording' />,
+            start: <Localize i18n_default_text='Start' />,
+            stop: <Localize i18n_default_text='Stop' />,
         },
         national_identity_card: {
             back: {
-                instructions: localize('Upload back of card from your computer'),
-                title: localize('Submit identity card (back)'),
-                webcam: localize('Position the back of card in the frame (it will be automatically detected)'),
+                instructions: <Localize i18n_default_text='Upload back of card from your computer' />,
+                title: <Localize i18n_default_text='Submit identity card (back)' />,
+                webcam: (
+                    <Localize i18n_default_text='Position the back of card in the frame (it will be automatically detected)' />
+                ),
             },
             front: {
-                instructions: localize('Upload front of card from your computer'),
-                title: localize('Submit identity card (front)'),
-                webcam: localize('Position the front of card in the frame (it will be automatically detected)'),
+                instructions: <Localize i18n_default_text='Upload front of card from your computer' />,
+                title: <Localize i18n_default_text='Submit identity card (front)' />,
+                webcam: (
+                    <Localize i18n_default_text='Position the front of card in the frame (it will be automatically detected)' />
+                ),
             },
         },
         passport: {
             front: {
-                instructions: localize('Upload passport photo page from your computer'),
-                title: localize('Submit passport photo page'),
-                webcam: localize('Position your passport photo page in the frame (it will be automatically detected)'),
+                instructions: <Localize i18n_default_text='Upload passport photo page from your computer' />,
+                title: <Localize i18n_default_text='Submit passport photo page' />,
+                webcam: (
+                    <Localize i18n_default_text='Position your passport photo page in the frame (it will be automatically detected)' />
+                ),
             },
         },
-        switch_device: localize('Continue on phone'),
-        take_photo: localize('Take photo'),
-        upload_document: localize('Upload'),
-        upload_file: localize('or upload photo – no scans or photocopies'),
+        switch_device: <Localize i18n_default_text='Continue on phone' />,
+        take_photo: <Localize i18n_default_text='Take photo' />,
+        upload_document: <Localize i18n_default_text='Upload' />,
+        upload_file: <Localize i18n_default_text='or upload photo – no scans or photocopies' />,
         utility_bill: {
             front: {
-                instructions: localize('Provide the whole document page for best results'),
-                sub_title: localize('Must be issued in the <strong>last 3 months</strong>'),
-                title: localize('Submit bill'),
-                webcam: localize('Position your utility bill in the frame (it will be automatically detected)'),
+                instructions: <Localize i18n_default_text='Provide the whole document page for best results' />,
+                sub_title: <Localize i18n_default_text='Must be issued in the <strong>last 3 months</strong>' />,
+                title: <Localize i18n_default_text='Submit bill' />,
+                webcam: (
+                    <Localize i18n_default_text='Position your utility bill in the frame (it will be automatically detected)' />
+                ),
             },
         },
     },
-    close: localize('close'),
+    close: <Localize i18n_default_text='close' />,
     complete: {
-        message: localize('Verification complete'),
-        submessage: localize('Thank you'),
+        message: <Localize i18n_default_text='Verification complete' />,
+        submessage: <Localize i18n_default_text='Thank you' />,
     },
     confirm: {
         bank_building_society_statement: {
-            message: localize('Make sure details are clear to read, with no blur or glare'),
+            message: <Localize i18n_default_text='Make sure details are clear to read, with no blur or glare' />,
         },
         benefit_letters: {
-            message: localize('Make sure details are clear to read, with no blur or glare'),
+            message: <Localize i18n_default_text='Make sure details are clear to read, with no blur or glare' />,
         },
-        confirm: localize('Confirm'),
-        continue: localize('Continue'),
+        confirm: <Localize i18n_default_text='Confirm' />,
+        continue: <Localize i18n_default_text='Continue' />,
         council_tax: {
-            message: localize('Make sure details are clear to read, with no blur or glare'),
+            message: <Localize i18n_default_text='Make sure details are clear to read, with no blur or glare' />,
         },
         document: {
-            alt: localize('Photo of your document'),
-            title: localize('Check readability'),
+            alt: <Localize i18n_default_text='Photo of your document' />,
+            title: <Localize i18n_default_text='Check readability' />,
         },
         driving_licence: {
-            message: localize('Make sure your license details are clear to read, with no blur or glare'),
+            message: (
+                <Localize i18n_default_text='Make sure your license details are clear to read, with no blur or glare' />
+            ),
         },
         enlarge_image: {
-            close: localize('Close'),
-            enlarge: localize('Enlarge image'),
+            close: <Localize i18n_default_text='Close' />,
+            enlarge: <Localize i18n_default_text='Enlarge image' />,
         },
         face: {
             standard: {
-                alt: localize('Photo of your face'),
-                message: localize('Make sure your selfie clearly shows your face'),
-                title: localize('Check selfie'),
+                alt: <Localize i18n_default_text='Photo of your face' />,
+                message: <Localize i18n_default_text='Make sure your selfie clearly shows your face' />,
+                title: <Localize i18n_default_text='Check selfie' />,
             },
             video: {
-                title: localize('Check selfie video'),
+                title: <Localize i18n_default_text='Check selfie video' />,
             },
         },
         national_identity_card: {
-            message: localize('Make sure your card details are clear to read, with no blur or glare'),
+            message: (
+                <Localize i18n_default_text='Make sure your card details are clear to read, with no blur or glare' />
+            ),
         },
         passport: {
-            message: localize('Make sure your passport details are clear to read, with no blur or glare'),
+            message: (
+                <Localize i18n_default_text='Make sure your passport details are clear to read, with no blur or glare' />
+            ),
         },
-        redo: localize('Redo'),
+        redo: <Localize i18n_default_text='Redo' />,
         utility_bill: {
-            message: localize('Make sure details are clear to read, with no blur or glare'),
+            message: <Localize i18n_default_text='Make sure details are clear to read, with no blur or glare' />,
         },
     },
-    continue: localize('Continue'),
-    council_tax: localize('Council Tax Letter'),
+    continue: <Localize i18n_default_text='Continue' />,
+    council_tax: <Localize i18n_default_text='Council Tax Letter' />,
     cross_device: {
         client_success: {
-            body: localize('Your computer may take a few seconds to update'),
-            sub_title: localize('You can now return to your computer to continue'),
-            title: localize('Uploads successful'),
+            body: <Localize i18n_default_text='Your computer may take a few seconds to update' />,
+            sub_title: <Localize i18n_default_text='You can now return to your computer to continue' />,
+            title: <Localize i18n_default_text='Uploads successful' />,
         },
         intro: {
-            action: localize('Get secure link'),
-            description_li_1: localize('Send a secure link to your phone'),
-            description_li_2: localize('Open the link and complete the tasks'),
-            description_li_3: localize('Check back here to finish the submission'),
-            sub_title: localize("Here's how to do it:"),
-            title: localize('Continue on your phone'),
+            action: <Localize i18n_default_text='Get secure link' />,
+            description_li_1: <Localize i18n_default_text='Send a secure link to your phone' />,
+            description_li_2: <Localize i18n_default_text='Open the link and complete the tasks' />,
+            description_li_3: <Localize i18n_default_text='Check back here to finish the submission' />,
+            sub_title: <Localize i18n_default_text="Here's how to do it:" />,
+            title: <Localize i18n_default_text='Continue on your phone' />,
         },
         link: {
             button_copy: {
-                action: localize('Send link'),
-                status: localize('Sending'),
+                action: <Localize i18n_default_text='Send link' />,
+                status: <Localize i18n_default_text='Sending' />,
             },
-            copy_link_label: localize('Copy the link to your mobile browser'),
-            copy_link_option: localize('Copy link'),
-            copy_link_sub_title: localize('Open the link on your mobile'),
+            copy_link_label: <Localize i18n_default_text='Copy the link to your mobile browser' />,
+            copy_link_option: <Localize i18n_default_text='Copy link' />,
+            copy_link_sub_title: <Localize i18n_default_text='Open the link on your mobile' />,
             copy_link: {
-                action: localize('Copy'),
-                success: localize('Copied'),
+                action: <Localize i18n_default_text='Copy' />,
+                success: <Localize i18n_default_text='Copied' />,
             },
-            options_divider_label: localize('or'),
-            qr_code_option: localize('Scan QR code'),
-            qr_code_sub_title: localize('Scan the QR code with your phone'),
+            options_divider_label: <Localize i18n_default_text='or' />,
+            qr_code_option: <Localize i18n_default_text='Scan QR code' />,
+            qr_code_sub_title: <Localize i18n_default_text='Scan the QR code with your phone' />,
             qr_code: {
-                help_label: localize('How to scan a QR code'),
-                help_step_1: localize('Point your phone’s camera at the QR code'),
-                help_step_2: localize(
-                    'If it doesn’t work, download a QR code scanner from Google Play or the App Store'
+                help_label: <Localize i18n_default_text='How to scan a QR code' />,
+                help_step_1: <Localize i18n_default_text='Point your phone’s camera at the QR code' />,
+                help_step_2: (
+                    <Localize i18n_default_text='If it doesn’t work, download a QR code scanner from Google Play or the App Store' />
                 ),
             },
-            sms_label: localize('Enter your mobile number:'),
-            sms_option: localize('Get link via SMS'),
-            sms_sub_title: localize('Send this one-time link to your phone'),
-            title: localize('Get your secure link'),
+            sms_label: <Localize i18n_default_text='Enter your mobile number:' />,
+            sms_option: <Localize i18n_default_text='Get link via SMS' />,
+            sms_sub_title: <Localize i18n_default_text='Send this one-time link to your phone' />,
+            title: <Localize i18n_default_text='Get your secure link' />,
         },
-        loading: localize('Loading...'),
+        loading: <Localize i18n_default_text='Loading...' />,
         mobile_connected: {
             tips: {
-                item_1: localize('Keep this window open while using your mobile'),
-                item_2: localize('Your mobile link will expire in one hour'),
-                item_3: localize("Don't refresh this page"),
+                item_1: <Localize i18n_default_text='Keep this window open while using your mobile' />,
+                item_2: <Localize i18n_default_text='Your mobile link will expire in one hour' />,
+                item_3: <Localize i18n_default_text="Don't refresh this page" />,
             },
             title: {
-                message: localize('Connected to your mobile'),
-                submessage: localize("Once you've finished we'll take you to the next step"),
+                message: <Localize i18n_default_text='Connected to your mobile' />,
+                submessage: <Localize i18n_default_text="Once you've finished we'll take you to the next step" />,
             },
         },
         mobile_notification_sent: {
-            bold_message: localize('It may take a few minutes to arrive'),
-            resend_link: localize('Resend link'),
-            submessage: localize("We've sent a secure link to %{number}"),
+            bold_message: <Localize i18n_default_text='It may take a few minutes to arrive' />,
+            resend_link: <Localize i18n_default_text='Resend link' />,
+            submessage: <Localize i18n_default_text="We've sent a secure link to %{number}" />,
             tips: {
-                item_1: localize('Keep this window open while using your mobile'),
-                item_2: localize('Your link will expire in one hour'),
+                item_1: <Localize i18n_default_text='Keep this window open while using your mobile' />,
+                item_2: <Localize i18n_default_text='Your link will expire in one hour' />,
             },
-            title: localize('Check your mobile'),
+            title: <Localize i18n_default_text='Check your mobile' />,
         },
-        phone_number_placeholder: localize('Enter mobile number'),
+        phone_number_placeholder: <Localize i18n_default_text='Enter mobile number' />,
         submit: {
-            action: localize('Submit verification'),
-            multiple_docs_uploaded: localize('Documents uploaded'),
-            one_doc_uploaded: localize('Document uploaded'),
-            selfie_uploaded: localize('Selfie uploaded'),
-            sub_title: localize("We're now ready to verify your identity"),
-            title: localize("Great, that's everything we need"),
-            video_uploaded: localize('Video uploaded'),
+            action: <Localize i18n_default_text='Submit verification' />,
+            multiple_docs_uploaded: <Localize i18n_default_text='Documents uploaded' />,
+            one_doc_uploaded: <Localize i18n_default_text='Document uploaded' />,
+            selfie_uploaded: <Localize i18n_default_text='Selfie uploaded' />,
+            sub_title: <Localize i18n_default_text="We're now ready to verify your identity" />,
+            title: <Localize i18n_default_text="Great, that's everything we need" />,
+            video_uploaded: <Localize i18n_default_text='Video uploaded' />,
         },
         switch_device: {
-            header: localize('Take a photo with your phone'),
+            header: <Localize i18n_default_text='Take a photo with your phone' />,
         },
-        tips: localize('Tips'),
+        tips: <Localize i18n_default_text='Tips' />,
     },
     document_selector: {
         identity: {
-            driving_licence_hint: localize('Front and back'),
-            hint: localize('Select the type of document you would like to upload'),
-            national_identity_card_hint: localize('Front and back'),
-            passport_hint: localize('Face photo page'),
-            title: localize('Verify your identity'),
+            driving_licence_hint: <Localize i18n_default_text='Front and back' />,
+            hint: <Localize i18n_default_text='Select the type of document you would like to upload' />,
+            national_identity_card_hint: <Localize i18n_default_text='Front and back' />,
+            passport_hint: <Localize i18n_default_text='Face photo page' />,
+            title: <Localize i18n_default_text='Verify your identity' />,
         },
         proof_of_address: {
-            benefits_letter_hint: localize(
-                'Government authorised household benefits eg. Jobseeker allowance, Housing benefit, Tax credits'
+            benefits_letter_hint: (
+                <Localize i18n_default_text='Government authorised household benefits eg. Jobseeker allowance, Housing benefit, Tax credits' />
             ),
-            estatements_accepted: localize('e-statements accepted'),
-            government_letter_hint: localize(
-                'Any government issued letter eg. Benefits entitlement, Voting letters, Tax letters, etc'
+            estatements_accepted: <Localize i18n_default_text='e-statements accepted' />,
+            government_letter_hint: (
+                <Localize i18n_default_text='Any government issued letter eg. Benefits entitlement, Voting letters, Tax letters, etc' />
             ),
-            hint: localize('These are the documents most likely to show your current home address'),
-            title: localize('Select a %{country} document'),
-            utility_bill_hint: localize('Gas, electricity, water, landline, or broadband'),
-            utility_bill_warning: localize('Sorry, no mobile phone bills'),
+            hint: (
+                <Localize i18n_default_text='These are the documents most likely to show your current home address' />
+            ),
+            title: <Localize i18n_default_text='Select a %{country} document' />,
+            utility_bill_hint: <Localize i18n_default_text='Gas, electricity, water, landline, or broadband' />,
+            utility_bill_warning: <Localize i18n_default_text='Sorry, no mobile phone bills' />,
         },
     },
-    driving_licence: localize("Driver's license"),
+    driving_licence: <Localize i18n_default_text="Driver's license" />,
     errors: {
         camera_inactive_no_fallback: {
-            instruction: localize('Make sure your device has a working camera'),
+            instruction: <Localize i18n_default_text='Make sure your device has a working camera' />,
         },
         camera_inactive: {
-            instruction: localize(
-                'Check that it is connected and functional. You can also <fallback>continue verification on your phone</fallback>'
+            instruction: (
+                <Localize i18n_default_text='Check that it is connected and functional. You can also <fallback>continue verification on your phone</fallback>' />
             ),
-            message: localize('Camera not working?'),
+            message: <Localize i18n_default_text='Camera not working?' />,
         },
         camera_not_working_no_fallback: {
-            instruction: localize("Make sure your device's camera works"),
+            instruction: <Localize i18n_default_text="Make sure your device's camera works" />,
         },
         camera_not_working: {
-            instruction: localize('It may be disconnected. <fallback>Try using your phone instead</fallback>.'),
-            message: localize('Camera not working'),
+            instruction: (
+                <Localize i18n_default_text='It may be disconnected. <fallback>Try using your phone instead</fallback>.' />
+            ),
+            message: <Localize i18n_default_text='Camera not working' />,
         },
         forbidden_client_error: {
-            instruction: localize('The link only works on mobile devices'),
-            message: localize("Something's gone wrong"),
+            instruction: <Localize i18n_default_text='The link only works on mobile devices' />,
+            message: <Localize i18n_default_text="Something's gone wrong" />,
         },
         generic_client_error: {
-            instruction: localize("You'll need to restart your verification on your computer"),
-            message: localize("Something's gone wrong"),
+            instruction: <Localize i18n_default_text="You'll need to restart your verification on your computer" />,
+            message: <Localize i18n_default_text="Something's gone wrong" />,
         },
         glare_detected: {
-            instruction: localize('All details should be clear and readable'),
-            message: localize('Glare detected'),
+            instruction: <Localize i18n_default_text='All details should be clear and readable' />,
+            message: <Localize i18n_default_text='Glare detected' />,
         },
         interrupted_flow_error: {
-            instruction: localize('Restart process on a different device'),
-            message: localize('Camera not detected'),
+            instruction: <Localize i18n_default_text='Restart process on a different device' />,
+            message: <Localize i18n_default_text='Camera not detected' />,
         },
         invalid_capture: {
-            instruction: localize('Make sure all of the document is in the photo'),
-            message: localize('No document detected'),
+            instruction: <Localize i18n_default_text='Make sure all of the document is in the photo' />,
+            message: <Localize i18n_default_text='No document detected' />,
         },
         invalid_number: {
-            message: localize('Check that your number is correct'),
+            message: <Localize i18n_default_text='Check that your number is correct' />,
         },
         invalid_size: {
-            instruction: localize('Must be under 10MB.'),
-            message: localize('File size exceeded.'),
+            instruction: <Localize i18n_default_text='Must be under 10MB.' />,
+            message: <Localize i18n_default_text='File size exceeded.' />,
         },
         invalid_type: {
-            instruction: localize('Try using another file type.'),
-            message: localize('File not uploaded.'),
+            instruction: <Localize i18n_default_text='Try using another file type.' />,
+            message: <Localize i18n_default_text='File not uploaded.' />,
         },
         lazy_loading: {
-            message: localize('An error occurred while loading the component'),
+            message: <Localize i18n_default_text='An error occurred while loading the component' />,
         },
         liveness_timeout: {
-            instruction: localize("Remember to press stop when you're done. <fallback>Redo video actions</fallback>"),
-            message: localize('Looks like you took too long'),
+            instruction: (
+                <Localize i18n_default_text="Remember to press stop when you're done. <fallback>Redo video actions</fallback>" />
+            ),
+            message: <Localize i18n_default_text='Looks like you took too long' />,
         },
         multiple_faces: {
-            instruction: localize('Only your face can be in the selfie'),
-            message: localize('Multiple faces found'),
+            instruction: <Localize i18n_default_text='Only your face can be in the selfie' />,
+            message: <Localize i18n_default_text='Multiple faces found' />,
         },
         no_face: {
-            instruction: localize('Your face is needed in the selfie'),
-            message: localize('No face found'),
+            instruction: <Localize i18n_default_text='Your face is needed in the selfie' />,
+            message: <Localize i18n_default_text='No face found' />,
         },
         server_error: {
-            instruction: localize('Please try again'),
-            message: localize('Connection lost'),
+            instruction: <Localize i18n_default_text='Please try again' />,
+            message: <Localize i18n_default_text='Connection lost' />,
         },
         sms_failed: {
-            instruction: localize('Copy the link to your phone'),
-            message: localize("Something's gone wrong"),
+            instruction: <Localize i18n_default_text='Copy the link to your phone' />,
+            message: <Localize i18n_default_text="Something's gone wrong" />,
         },
         sms_overuse: {
-            instruction: localize('Copy the link to your phone'),
-            message: localize('Too many failed attempts'),
+            instruction: <Localize i18n_default_text='Copy the link to your phone' />,
+            message: <Localize i18n_default_text='Too many failed attempts' />,
         },
         unsupported_android_browser: {
-            instruction: localize('Restart the process on the latest version of Google Chrome'),
-            message: localize('Unsupported browser'),
+            instruction: <Localize i18n_default_text='Restart the process on the latest version of Google Chrome' />,
+            message: <Localize i18n_default_text='Unsupported browser' />,
         },
         unsupported_file: {
-            instruction: localize('Try using a JPG or PNG file'),
-            message: localize('File type not supported'),
+            instruction: <Localize i18n_default_text='Try using a JPG or PNG file' />,
+            message: <Localize i18n_default_text='File type not supported' />,
         },
         unsupported_ios_browser: {
-            instruction: localize('Restart the process on the latest version of Safari'),
-            message: localize('Unsupported browser'),
+            instruction: <Localize i18n_default_text='Restart the process on the latest version of Safari' />,
+            message: <Localize i18n_default_text='Unsupported browser' />,
         },
     },
-    government_letter: localize('Government Letter'),
+    government_letter: <Localize i18n_default_text='Government Letter' />,
     image_quality_guide: {
         all_good: {
-            image_alt_text: localize('Document example'),
-            label: localize('This is good'),
+            image_alt_text: <Localize i18n_default_text='Document example' />,
+            label: <Localize i18n_default_text='This is good' />,
         },
-        next_step: localize('Upload photo'),
+        next_step: <Localize i18n_default_text='Upload photo' />,
         no_blur: {
-            image_alt_text: localize('Example of a blurry document'),
-            label: localize('All details must be clear'),
+            image_alt_text: <Localize i18n_default_text='Example of a blurry document' />,
+            label: <Localize i18n_default_text='All details must be clear' />,
         },
         no_glare: {
-            image_alt_text: localize('Example of a document with glare'),
-            label: localize('Move away from direct light'),
+            image_alt_text: <Localize i18n_default_text='Example of a document with glare' />,
+            label: <Localize i18n_default_text='Move away from direct light' />,
         },
         not_cut_off: {
-            image_alt_text: localize('Example of a cut-off document'),
-            label: localize('Show all details — including the bottom 2 lines'),
+            image_alt_text: <Localize i18n_default_text='Example of a cut-off document' />,
+            label: <Localize i18n_default_text='Show all details — including the bottom 2 lines' />,
         },
-        sub_title: localize('Scans and photocopies are not accepted'),
-        title: localize('Upload passport photo page'),
+        sub_title: <Localize i18n_default_text='Scans and photocopies are not accepted' />,
+        title: <Localize i18n_default_text='Upload passport photo page' />,
     },
-    loading: localize('Loading'),
+    loading: <Localize i18n_default_text='Loading' />,
     mobilePhrases: {
         capture: {
             driving_licence: {
                 back: {
-                    instructions: localize('Take a photo of the back of your license'),
+                    instructions: <Localize i18n_default_text='Take a photo of the back of your license' />,
                 },
                 front: {
-                    instructions: localize('Take a photo of the front of your license'),
+                    instructions: <Localize i18n_default_text='Take a photo of the front of your license' />,
                 },
             },
             face: {
-                instructions: localize('Take a selfie showing your face'),
+                instructions: <Localize i18n_default_text='Take a selfie showing your face' />,
             },
             national_identity_card: {
                 back: {
-                    instructions: localize('Take a photo of the back of your card'),
+                    instructions: <Localize i18n_default_text='Take a photo of the back of your card' />,
                 },
                 front: {
-                    instructions: localize('Take a photo of the front of your card'),
+                    instructions: <Localize i18n_default_text='Take a photo of the front of your card' />,
                 },
             },
             passport: {
                 front: {
-                    instructions: localize('Take a photo of your passport photo page'),
+                    instructions: <Localize i18n_default_text='Take a photo of your passport photo page' />,
                 },
             },
         },
         errors: {
             camera_inactive: {
-                instruction: localize('Take a photo using the <fallback>basic camera mode</fallback> instead'),
+                instruction: (
+                    <Localize i18n_default_text='Take a photo using the <fallback>basic camera mode</fallback> instead' />
+                ),
             },
             camera_not_working: {
-                instruction: localize('Take a photo using the <fallback>basic camera mode</fallback> instead'),
+                instruction: (
+                    <Localize i18n_default_text='Take a photo using the <fallback>basic camera mode</fallback> instead' />
+                ),
             },
         },
         image_quality_guide: {
-            next_step: localize('Take a photo'),
-            title: localize('Passport photo page'),
+            next_step: <Localize i18n_default_text='Take a photo' />,
+            title: <Localize i18n_default_text='Passport photo page' />,
         },
     },
-    national_identity_card: localize('Identity Card'),
-    passport: localize('Passport'),
+    national_identity_card: <Localize i18n_default_text='Identity Card' />,
+    passport: <Localize i18n_default_text='Passport' />,
     proof_of_address: {
         guidance: {
-            continue: localize('Continue'),
-            current_address: localize('Current address'),
-            full_name: localize('Full name'),
-            issue_date: localize('Issue date or summary period'),
-            logo: localize('Logo'),
-            make_sure_it_shows: localize('Make sure it clearly shows:'),
+            continue: <Localize i18n_default_text='Continue' />,
+            current_address: <Localize i18n_default_text='Current address' />,
+            full_name: <Localize i18n_default_text='Full name' />,
+            issue_date: <Localize i18n_default_text='Issue date or summary period' />,
+            logo: <Localize i18n_default_text='Logo' />,
+            make_sure_it_shows: <Localize i18n_default_text='Make sure it clearly shows:' />,
         },
         intro: {
-            is_recent: localize('Is your most <strong>recent</strong> document'),
-            matches_signup: localize('<strong>Matches</strong> the address you used on signup'),
-            requirements: localize("You'll need a document that:"),
-            shows_address: localize('Shows your <strong>current</strong> address'),
-            start: localize('Start verification'),
-            title: localize("Let's verify your %{country} address"),
+            is_recent: <Localize i18n_default_text='Is your most <strong>recent</strong> document' />,
+            matches_signup: <Localize i18n_default_text='<strong>Matches</strong> the address you used on signup' />,
+            requirements: <Localize i18n_default_text="You'll need a document that:" />,
+            shows_address: <Localize i18n_default_text='Shows your <strong>current</strong> address' />,
+            start: <Localize i18n_default_text='Start verification' />,
+            title: <Localize i18n_default_text="Let's verify your %{country} address" />,
         },
     },
-    short_driving_licence: localize('license'),
-    short_national_identity_card: localize('card'),
-    short_passport: localize('passport'),
-    SMS_BODY: localize('Continue your identity verification by tapping'),
-    utility_bill: localize('Utility Bill'),
+    short_driving_licence: <Localize i18n_default_text='license' />,
+    short_national_identity_card: <Localize i18n_default_text='card' />,
+    short_passport: <Localize i18n_default_text='passport' />,
+    SMS_BODY: <Localize i18n_default_text='Continue your identity verification by tapping' />,
+    utility_bill: <Localize i18n_default_text='Utility Bill' />,
     webcam_permissions: {
-        access_denied: localize('Camera access is denied'),
-        allow: localize('Allow'),
-        allow_access: localize('Allow camera access'),
-        click_allow: localize('We cannot verify you without using your camera'),
-        enable_webcam: localize('Enable camera'),
-        enable_webcam_for_selfie: localize('When prompted, you must enable camera access to continue'),
-        follow_steps: localize('Follow these steps to recover camera access:'),
-        grant_access: localize('Grant access to your camera from your browser settings'),
-        if_denied: localize(
-            "If you deny camera access, you won't be able to take pictures and complete verification process."
+        access_denied: <Localize i18n_default_text='Camera access is denied' />,
+        allow: <Localize i18n_default_text='Allow' />,
+        allow_access: <Localize i18n_default_text='Allow camera access' />,
+        click_allow: <Localize i18n_default_text='We cannot verify you without using your camera' />,
+        enable_webcam: <Localize i18n_default_text='Enable camera' />,
+        enable_webcam_for_selfie: (
+            <Localize i18n_default_text='When prompted, you must enable camera access to continue' />
         ),
-        recover_access: localize('Recover camera access to continue face verification'),
-        recovery: localize('Recovery'),
-        refresh: localize('Refresh'),
-        refresh_page: localize('Refresh this page to restart the identity verification process'),
-        why: localize('Why do I need to do this?'),
+        follow_steps: <Localize i18n_default_text='Follow these steps to recover camera access:' />,
+        grant_access: <Localize i18n_default_text='Grant access to your camera from your browser settings' />,
+        if_denied: (
+            <Localize i18n_default_text="If you deny camera access, you won't be able to take pictures and complete verification process." />
+        ),
+        recover_access: <Localize i18n_default_text='Recover camera access to continue face verification' />,
+        recovery: <Localize i18n_default_text='Recovery' />,
+        refresh: <Localize i18n_default_text='Refresh' />,
+        refresh_page: <Localize i18n_default_text='Refresh this page to restart the identity verification process' />,
+        why: <Localize i18n_default_text='Why do I need to do this?' />,
     },
     welcome: {
-        description_p_1: localize('To open a bank account, we will need to verify your identity.'),
-        description_p_2: localize('It will only take a couple of minutes.'),
-        next_button: localize('Verify Identity'),
-        title: localize('Open your new bank account'),
+        description_p_1: <Localize i18n_default_text='To open a bank account, we will need to verify your identity.' />,
+        description_p_2: <Localize i18n_default_text='It will only take a couple of minutes.' />,
+        next_button: <Localize i18n_default_text='Verify Identity' />,
+        title: <Localize i18n_default_text='Open your new bank account' />,
     },
 };
 

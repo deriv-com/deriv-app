@@ -69,7 +69,7 @@
     }
     // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
     &__button {
-        width: 82px;
+        width: fit-content;
         height: 100% !important;
         border-top-right-radius: 0 !important;
         border-bottom-right-radius: 0 !important;

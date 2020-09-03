@@ -6,7 +6,7 @@ import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { Hr, RadioButtonGroup, RadioButton } from './currency-selector.jsx';
 
-const messages = [
+const messages = () => [
     <Localize key={0} i18n_default_text='Choose your preferred cryptocurrency' />,
     <Localize key={1} i18n_default_text='You can open an account for each cryptocurrency.' />,
     <Localize key={2} i18n_default_text='Add a real account' />,

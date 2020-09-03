@@ -5,7 +5,7 @@ import { getContractTypeOptions } from '../../../shared';
 Blockly.Blocks.trade_definition_contracttype = {
     init() {
         this.jsonInit({
-            message0: 'Contract Type: %1',
+            message0: localize('Contract Type: %1'),
             args0: [
                 {
                     type: 'field_dropdown',

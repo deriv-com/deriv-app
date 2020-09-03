@@ -164,7 +164,7 @@ const SaveModal = ({
         </FadeWrapper>
     ) : (
         <Modal
-            title={'Save Strategy'}
+            title={localize('Save Strategy')}
             className='modal--save'
             width='328px'
             height='500px'

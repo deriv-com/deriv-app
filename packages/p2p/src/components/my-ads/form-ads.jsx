@@ -4,7 +4,6 @@ import { Formik, Field, Form } from 'formik';
 import { Dropdown, Loading, Icon, Input, Button, ThemedScrollbars } from '@deriv/components';
 import { getDecimalPlaces } from '@deriv/shared';
 import Dp2pContext from 'Components/context/dp2p-context';
-import FooterActions from 'Components/footer-actions/footer-actions.jsx';
 import { localize } from 'Components/i18next';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import { countDecimalPlaces } from 'Utils/string';
@@ -69,7 +68,7 @@ class FormAds extends React.Component {
 
     render() {
         return (
-            <>
+            <React.Fragment>
                 <PageReturn onClick={() => this.props.handleShowForm(false)} page_title={localize('Create new ad')} />
                 {this.state.is_loading ? (
                     <Loading is_fullscreen={false} />
@@ -82,9 +81,12 @@ class FormAds extends React.Component {
                             min_transaction: '',
                             offer_amount: '',
                             payment_info: '',
-                            // payment_method: 'bank_transfer',
                             price_rate: '',
                             type: 'buy',
+                        }}
+                        initialErrors={{
+                            // Pass one error to ensure Post ad button is disabled initially.
+                            offer_amount: true,
                         }}
                         onSubmit={this.handleSubmit}
                         validate={this.validateFormAds}
@@ -95,7 +97,7 @@ class FormAds extends React.Component {
                                 <div className='p2p-my-ads__form'>
                                     <Form noValidate>
                                         <ThemedScrollbars className='p2p-my-ads__form-scrollbar'>
-                                            <p className='p2p-my-ads__form-summary'>
+                                            <div className='p2p-my-ads__form-summary'>
                                                 <AdSummary
                                                     offer_amount={errors.offer_amount ? '' : values.offer_amount}
                                                     offer_currency={this.context.currency}
@@ -103,7 +105,7 @@ class FormAds extends React.Component {
                                                     price_rate={errors.price_rate ? '' : values.price_rate}
                                                     type={values.type}
                                                 />
-                                            </p>
+                                            </div>
                                             <div className='p2p-my-ads__form-container'>
                                                 <Field name='type'>
                                                     {({ field }) => (
@@ -143,18 +145,6 @@ class FormAds extends React.Component {
                                                 </Field>
                                             </div>
                                             <div className='p2p-my-ads__form-container'>
-                                                {/* <Field name='payment_method'>
-                                                    {({ field }) => (
-                                                        <Dropdown
-                                                            {...field}
-                                                            placeholder={localize('Payment method')}
-                                                            is_align_text_left
-                                                            className='p2p-my-ads__form-field'
-                                                            list={[{ text: 'Bank transfer', value: 'bank_transfer' }]}
-                                                            error={touched.payment_method && errors.payment_method}
-                                                        />
-                                                    )}
-                                                </Field> */}
                                                 <Field name='price_rate'>
                                                     {({ field }) => (
                                                         <Input
@@ -276,38 +266,38 @@ class FormAds extends React.Component {
                                                     />
                                                 )}
                                             </Field>
+                                            <div className='p2p-my-ads__form-container p2p-my-ads__form-footer'>
+                                                {this.state.error_message && (
+                                                    <div className='p2p-my-ads__form-error'>
+                                                        <Icon icon='IcAlertDanger' />
+                                                        <p>{this.state.error_message}</p>
+                                                    </div>
+                                                )}
+                                                <Button
+                                                    className='p2p-my-ads__form-button'
+                                                    secondary
+                                                    large
+                                                    onClick={() => this.props.handleShowForm(false)}
+                                                >
+                                                    {localize('Cancel')}
+                                                </Button>
+                                                <Button
+                                                    className='p2p-my-ads__form-button'
+                                                    primary
+                                                    large
+                                                    is_disabled={isSubmitting || !isValid}
+                                                >
+                                                    {localize('Post ad')}
+                                                </Button>
+                                            </div>
                                         </ThemedScrollbars>
-                                        <FooterActions has_border>
-                                            {this.state.error_message && (
-                                                <div className='p2p-my-ads__form-error'>
-                                                    <Icon icon='IcAlertDanger' />
-                                                    <p>{this.state.error_message}</p>
-                                                </div>
-                                            )}
-                                            <Button
-                                                className='p2p-my-ads__form-button'
-                                                secondary
-                                                large
-                                                onClick={() => this.props.handleShowForm(false)}
-                                            >
-                                                {localize('Cancel')}
-                                            </Button>
-                                            <Button
-                                                className='p2p-my-ads__form-button'
-                                                primary
-                                                large
-                                                is_disabled={isSubmitting || !isValid}
-                                            >
-                                                {localize('Post ad')}
-                                            </Button>
-                                        </FooterActions>
                                     </Form>
                                 </div>
                             );
                         }}
                     </Formik>
                 )}
-            </>
+            </React.Fragment>
         );
     }
 

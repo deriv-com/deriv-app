@@ -17,7 +17,6 @@ const getHeaders = offered_currency => [
     { text: localize('Ad ID') },
     { text: localize('Limits') },
     { text: localize('Rate (1 {{ offered_currency }})', { offered_currency }) },
-    { text: localize('Payment method') },
     { text: localize('Available amount') },
     { text: '' }, // empty header for delete icon
 ];
@@ -27,38 +26,51 @@ const type = {
     sell: localize('Sell'),
 };
 
-const RowComponent = React.memo(({ data, row_actions, style }) => (
-    <div style={style}>
-        <Table.Row className='p2p-my-ads__table-row'>
-            <Table.Cell>
-                {type[data.type]} {data.id}
-            </Table.Cell>
-            <Table.Cell>
-                {data.display_min_order_amount}-{data.display_max_order_amount} {data.offer_currency}
-            </Table.Cell>
-            <Table.Cell className='p2p-my-ads__table-price'>
-                {data.display_price_rate} {data.transaction_currency}
-            </Table.Cell>
-            <Table.Cell>{data.display_payment_method}</Table.Cell>
-            <Table.Cell className='p2p-my-ads__table-available'>
-                <ProgressIndicator
-                    className={'p2p-my-ads__table-available-progress'}
-                    value={data.available_amount}
-                    total={data.offer_amount}
-                />
-                <div className='p2p-my-ads__table-available-value'>
-                    {data.display_available_amount}/{data.display_offer_amount} {data.offer_currency}
-                </div>
-            </Table.Cell>
-            <Table.Cell className='p2p-my-ads__table-delete'>
-                <Icon icon='IcDelete' size={16} onClick={() => row_actions.onClickDelete(data.id)} />
-            </Table.Cell>
-        </Table.Row>
-    </div>
-));
+const RowComponent = React.memo(({ advert, row_actions, style }) => {
+    const {
+        account_currency,
+        amount,
+        amount_display,
+        local_currency,
+        max_order_amount_display,
+        min_order_amount_display,
+        price_display,
+        remaining_amount,
+        remaining_amount_display,
+    } = advert;
+
+    return (
+        <div style={style}>
+            <Table.Row className='p2p-my-ads__table-row'>
+                <Table.Cell>
+                    {type[advert.type]} {advert.id}
+                </Table.Cell>
+                <Table.Cell>
+                    {min_order_amount_display}-{max_order_amount_display} {account_currency}
+                </Table.Cell>
+                <Table.Cell className='p2p-my-ads__table-price'>
+                    {price_display} {local_currency}
+                </Table.Cell>
+                <Table.Cell className='p2p-my-ads__table-available'>
+                    <ProgressIndicator
+                        className={'p2p-my-ads__table-available-progress'}
+                        value={remaining_amount}
+                        total={amount}
+                    />
+                    <div className='p2p-my-ads__table-available-value'>
+                        {remaining_amount_display}/{amount_display} {account_currency}
+                    </div>
+                </Table.Cell>
+                <Table.Cell className='p2p-my-ads__table-delete'>
+                    <Icon icon='IcDelete' size={16} onClick={() => row_actions.onClickDelete(advert.id)} />
+                </Table.Cell>
+            </Table.Row>
+        </div>
+    );
+});
 
 RowComponent.propTypes = {
-    data: PropTypes.object,
+    advert: PropTypes.object,
     style: PropTypes.object,
 };
 RowComponent.displayName = 'RowComponent';
@@ -77,7 +89,6 @@ const MyAdsTable = ({ onClickCreate }) => {
     React.useEffect(() => {
         is_mounted.current = true;
         loadMoreAds(item_offset.current);
-
         return () => (is_mounted.current = false);
     }, []);
 
@@ -90,13 +101,14 @@ const MyAdsTable = ({ onClickCreate }) => {
             }).then(response => {
                 if (is_mounted.current) {
                     if (!response.error) {
-                        setHasMoreItemsToLoad(response.length >= list_item_limit);
-                        setAds(ads.concat(response));
-                        setIsLoading(false);
-                        item_offset.current += response.length;
+                        const { list } = response.p2p_advertiser_adverts;
+                        setHasMoreItemsToLoad(list.length >= list_item_limit);
+                        setAds(ads.concat(list));
+                        item_offset.current += list.length;
                     } else {
-                        setApiErrorMessage(response.api_error_message);
+                        setApiErrorMessage(response.error.message);
                     }
+                    setIsLoading(false);
                     resolve();
                 }
             });
@@ -184,8 +196,8 @@ const MyAdsTable = ({ onClickCreate }) => {
                         <Dialog is_visible={!!show_popup}>
                             <Popup
                                 has_cancel
-                                title={localize('Delete this ad')}
-                                message={localize("You won't be able to restore it later.")}
+                                title={localize('Do you want to delete this ad?')}
+                                message={localize('You will NOT be able to restore it.')}
                                 cancel_text={localize('Cancel')}
                                 confirm_text={localize('Delete')}
                                 onCancel={onClickCancel}

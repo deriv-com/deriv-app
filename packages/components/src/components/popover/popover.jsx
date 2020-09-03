@@ -34,7 +34,7 @@ const Popover = ({ ...props }) => {
         if (props.is_bubble_hover_enabled) {
             setTimeout(() => {
                 // add delay to check if mouse is hovered on popover bubble
-                setIsBubbleOpen(props.is_bubble_hover_enabled ? is_bubble_open : false);
+                setIsPopoverOpen(props.is_bubble_hover_enabled ? is_bubble_open : false);
             }, 50);
         } else {
             setIsPopoverOpen(false);

@@ -62,6 +62,7 @@ const CancelDeal = ({
                     message={localize(
                         'Cancel your trade anytime within a chosen time-frame. Triggered automatically if your trade reaches the stop out level within the chosen time-frame.'
                     )}
+                    classNameBubble='trade-container__deal-cancellation-popover'
                     margin={210}
                     relative_render
                 />

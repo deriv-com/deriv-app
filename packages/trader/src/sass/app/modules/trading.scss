@@ -370,6 +370,9 @@
             align-self: flex-end;
         }
     }
+    &__deal-cancellation-popover {
+        width: 28rem;
+    }
     &__cancel-deal-info {
         display: flex;
         flex-direction: row;

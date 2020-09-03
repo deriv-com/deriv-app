@@ -1,6 +1,6 @@
 import moment from 'moment';
 import Cookies from 'js-cookie';
-import { action, computed, observable, runInAction, when, reaction, toJS } from 'mobx';
+import { action, computed, observable, runInAction, when, reaction, toJS, has } from 'mobx';
 import {
     setCurrencies,
     isEmptyObject,
@@ -1704,21 +1704,9 @@ export default class ClientStore extends BaseStore {
     @action.bound
     getChangeableFields() {
         const get_settings = State.getResponse('get_settings');
-        const landing_company = State.getResponse('landing_company');
-        const has_changeable_field =
-            (this.root_store.ui.is_eu_enabled || this.landing_company_shortcode === 'svg') &&
-            !this.is_fully_authenticated;
-        const changeable = ClientBase.getLandingCompanyValue(this.loginid, landing_company, 'changeable_fields');
-        if (has_changeable_field) {
-            let changeable_fields = [];
-            if (changeable && changeable.only_before_auth) {
-                changeable_fields = [
-                    ...changeable.only_before_auth.filter(field => !get_settings.immutable_fields.includes(field)),
-                ];
-            }
-            return changeable_fields;
-        }
-        return [];
+
+        const readonly_fields = [...get_settings.immutable_fields, ...['immutable_fields', 'email', 'password']];
+        return Object.keys(get_settings).filter(field => !readonly_fields.includes(field));
     }
 
     @action.bound

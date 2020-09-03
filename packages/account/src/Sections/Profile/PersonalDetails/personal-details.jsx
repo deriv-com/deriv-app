@@ -41,6 +41,13 @@ const removeObjProperties = (property_arr, { ...obj }) =>
             .filter(([key, _]) => !property_arr.includes(key))
     );
 
+const filterOnlyChangeableFields = (property_arr, { ...obj }) =>
+    Object.fromEntries(
+        Object.entries(obj)
+            // eslint-disable-next-line no-unused-vars
+            .filter(([key, _]) => property_arr.includes(key))
+    );
+
 const validate = (errors, values) => (fn, arr, err_msg) => {
     arr.forEach((field) => {
         const value = values[field];
@@ -85,12 +92,7 @@ class PersonalDetailsForm extends React.Component {
     makeSettingsRequest = async (settings) => {
         if (this.props.is_virtual) return { email_consent: +settings.email_consent };
         const settings_response = await WS.getSettings();
-        const settings_to_be_removed_for_api = [
-            ...settings_response.get_settings.immutable_fields,
-            'immutable_fields',
-            ...['email', 'residence'],
-        ];
-        const request = removeObjProperties(settings_to_be_removed_for_api, settings);
+        const request = filterOnlyChangeableFields(this.state.changeable_fields, settings);
         request.email_consent = +request.email_consent; // checkbox is boolean but api expects number (1 or 0)
         request.first_name = request.first_name.trim();
         request.last_name = request.last_name.trim();

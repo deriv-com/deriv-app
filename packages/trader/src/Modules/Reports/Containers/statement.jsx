@@ -24,7 +24,7 @@ class Statement extends React.Component {
         this.state = { total_deposits: 0, total_withdrawals: 0 };
     }
 
-    get show_loading_placeholder() {
+    get should_show_loading_placeholder() {
         return this.props.is_loading || this.props.is_switching;
     }
 
@@ -198,8 +198,8 @@ class Statement extends React.Component {
                         localized_message={localize('You have no transactions yet.')}
                         localized_period_message={localize('You have no transactions for this period.')}
                     />
-                ) : this.show_loading_placeholder ? (
-                    <PlaceholderComponent is_loading={this.show_loading_placeholder} />
+                ) : this.should_show_loading_placeholder ? (
+                    <PlaceholderComponent is_loading={this.should_show_loading_placeholder} />
                 ) : (
                     <React.Fragment>
                         <DesktopWrapper>

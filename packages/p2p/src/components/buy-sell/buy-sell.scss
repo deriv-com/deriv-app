@@ -49,7 +49,7 @@
         white-space: nowrap;
     }
     &__table-row {
-        grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
+        grid-template-columns: 2fr 1fr 1fr 1fr;
     }
     &__button {
         display: flex;
@@ -124,13 +124,15 @@
             margin-bottom: 0 !important;
             flex: 1;
 
-            &:not(:first-child) {
-                margin-left: 2.4rem;
-            }
             &_wrapper {
+                gap: 2.4rem;
                 display: flex;
-                margin-bottom: 3.4rem;
+                margin-bottom: 1.6rem;
                 align-items: center;
+
+                > .dc-input {
+                    margin-top: 1rem; // Compensate for label.
+                }
             }
             &--textarea {
                 margin-top: 4.3rem;
@@ -151,6 +153,9 @@
             &--trailing {
                 font-size: var(--text-size-xxs);
                 color: var(--text-less-prominent);
+            }
+            &--receive-amount {
+                margin-top: 1rem;
             }
         }
         &-info {

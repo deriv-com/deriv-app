@@ -27,7 +27,10 @@ class PaymentAgentList extends React.Component {
             );
         }
 
-        const list_with_default = [{ text: localize('All payment agents'), value: 0 }, ...this.props.supported_banks];
+        const list_with_default = [
+            { text: <Localize i18n_default_text='All payment agents' />, value: 0 },
+            ...this.props.supported_banks,
+        ];
 
         return (
             <div className='cashier__wrapper--align-left'>

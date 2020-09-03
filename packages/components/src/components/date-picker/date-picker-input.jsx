@@ -41,7 +41,7 @@ const DatePickerInput = ({
         <DatePickerIcon
             onClick={onClick}
             className={classNames({
-                'dc-datepicker__icon': !!onClick, // If has an onclick function add class
+                'dc-datepicker__icon': typeof onClick === 'function', // If has an onclick function add class
             })}
             icon='IcCalendar'
         />

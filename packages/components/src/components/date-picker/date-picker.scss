@@ -40,14 +40,6 @@
     }
     &__icon {
         cursor: pointer;
-        transition: transform 0.1s ease-in-out, opacity 0.3s linear;
-
-        &:hover {
-            opacity: 0.8;
-        }
-        &:active {
-            transform: translateY(1px);
-        }
     }
     .dc-icon {
         top: 25%;

@@ -32,30 +32,28 @@ const getOrderLabels = (is_my_ad, is_buy_ad, order_details) => {
                 offered_currency: order_details.account_currency,
             });
         }
+    } else if (is_my_ad) {
+        labels.other_party_role = localize('Seller');
+        labels.left_send_or_receive = localize('Send');
+        labels.right_send_or_receive = localize('Receive');
+        labels.payment_details = localize("Seller's payment details");
+        labels.contact_details = localize("Seller's contact details");
+        labels.instructions = localize('Your instructions');
+        labels.result_string = localize("You've received {{offered_amount}} {{offered_currency}}", {
+            offered_amount: order_details.amount_display,
+            offered_currency: order_details.account_currency,
+        });
     } else {
-        if (is_my_ad) {
-            labels.other_party_role = localize('Seller');
-            labels.left_send_or_receive = localize('Send');
-            labels.right_send_or_receive = localize('Receive');
-            labels.payment_details = localize("Seller's payment details");
-            labels.contact_details = localize("Seller's contact details");
-            labels.instructions = localize('Your instructions');
-            labels.result_string = localize("You've received {{offered_amount}} {{offered_currency}}", {
-                offered_amount: order_details.amount_display,
-                offered_currency: order_details.account_currency,
-            });
-        } else {
-            labels.other_party_role = localize('Buyer');
-            labels.left_send_or_receive = localize('Receive');
-            labels.right_send_or_receive = localize('Send');
-            labels.payment_details = localize('Your payment details');
-            labels.contact_details = localize('Your contact details');
-            labels.instructions = localize("Buyer's instructions");
-            labels.result_string = localize('You sold {{offered_amount}} {{offered_currency}}', {
-                offered_amount: order_details.amount_display,
-                offered_currency: order_details.account_currency,
-            });
-        }
+        labels.other_party_role = localize('Buyer');
+        labels.left_send_or_receive = localize('Receive');
+        labels.right_send_or_receive = localize('Send');
+        labels.payment_details = localize('Your payment details');
+        labels.contact_details = localize('Your contact details');
+        labels.instructions = localize("Buyer's instructions");
+        labels.result_string = localize('You sold {{offered_amount}} {{offered_currency}}', {
+            offered_amount: order_details.amount_display,
+            offered_currency: order_details.account_currency,
+        });
     }
 
     return labels;

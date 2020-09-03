@@ -34,16 +34,12 @@ import FormSubHeader from 'Components/form-sub-header';
 import FormSubmitErrorMessage from 'Components/form-submit-error-message';
 import LoadErrorMessage from 'Components/load-error-message';
 
-const removeObjProperties = (property_arr, { ...obj }) => {
-    const new_fields = Object.entries(obj).filter(([key, _]) => {
-        if (!property_arr.includes(key)) {
-            return true;
-        }
-        return false;
-    });
-
-    return Object.fromEntries(new_fields);
-};
+const removeObjProperties = (property_arr, { ...obj }) =>
+    Object.fromEntries(
+        Object.entries(obj)
+            // eslint-disable-next-line no-unused-vars
+            .filter(([key, _]) => !property_arr.includes(key))
+    );
 
 const validate = (errors, values) => (fn, arr, err_msg) => {
     arr.forEach((field) => {

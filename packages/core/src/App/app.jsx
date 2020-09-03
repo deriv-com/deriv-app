@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
+import PlatformConfig from 'App/Containers/PlatformConfig/platform-config.jsx';
 // Initialize i18n by importing it here
 // eslint-disable-next-line no-unused-vars
 import { DesktopWrapper } from '@deriv/components';
@@ -23,6 +24,7 @@ import Routes from './Containers/Routes/routes.jsx';
 import initStore from './app.js';
 // eslint-disable-next-line import/no-unresolved
 import 'Sass/app.scss';
+import { PlatformContext } from './platform-context';
 
 const App = ({ root_store }) => {
     const l = window.location;
@@ -88,8 +90,8 @@ const App = ({ root_store }) => {
 
     return (
         <Router basename={has_base ? `/${base}` : null}>
-            <MobxContentProvider store={root_store}>
-                <React.Fragment>
+            <PlatformConfig>
+                <MobxContentProvider store={root_store}>
                     <Header />
                     <ErrorBoundary>
                         <AppContents>
@@ -103,8 +105,8 @@ const App = ({ root_store }) => {
                     <AppModals url_action_param={url_params.get('action')} />
                     <SmartTraderIFrame />
                     <AppToastMessages />
-                </React.Fragment>
-            </MobxContentProvider>
+                </MobxContentProvider>
+            </PlatformConfig>
         </Router>
     );
 };

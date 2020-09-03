@@ -13,6 +13,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const AssetsManifestPlugin = require('webpack-manifest-plugin');
 const { GenerateSW } = require('workbox-webpack-plugin');
+const DefinePlugin = require('webpack').DefinePlugin;
 
 const {
     copyConfig,
@@ -130,10 +131,11 @@ const MINIMIZERS = !IS_RELEASE
           new OptimizeCssAssetsPlugin(),
       ];
 
-const plugins = (base, is_test_env, is_mocha_only) => [
+const plugins = (base, is_test_env, is_mocha_only, env) => [
     new CleanWebpackPlugin(),
     new CopyPlugin(copyConfig(base)),
     new HtmlWebPackPlugin(htmlOutputConfig()),
+    new DefinePlugin({ 'process.env.crypto': JSON.stringify(env.crypto) }),
     new HtmlWebpackTagsPlugin(htmlInjectConfig()),
     new PreloadWebpackPlugin(htmlPreloadConfig()),
     new IgnorePlugin(/^\.\/locale$/, /moment$/),

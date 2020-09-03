@@ -14,6 +14,7 @@ import {
     ToggleSettings,
 } from 'App/Components/Layout/Footer';
 import LiveChat from 'App/Components/Elements/live-chat.jsx';
+import { PlatformContext } from 'App/platform-context';
 import { connect } from 'Stores/connect';
 import ServerTime from '../server-time.jsx';
 
@@ -27,6 +28,31 @@ const FooterExtensionRenderer = (footer_extension, idx) => {
             <FooterExtensionComponent />
             {footer_extension.has_right_separator && <FooterIconSeparator />}
         </React.Fragment>
+    );
+};
+
+const DerivCryptoNotice = () => {
+    const { deriv_theme, setTheme } = React.useContext(PlatformContext);
+
+    return (
+        <section
+            style={{
+                backgroundColor: 'red',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'white',
+                fontSize: 'larger',
+                padding: '1rem',
+            }}
+        >
+            DERIV CRYPTO Theme change:
+            <input
+                type='checkbox'
+                value={deriv_theme}
+                onChange={() => setTheme(deriv_theme === 'crypto' ? 'deriv' : 'crypto')}
+            />
+        </section>
     );
 };
 
@@ -46,6 +72,7 @@ const Footer = ({
 }) => {
     const footer_extensions_left = footer_extensions.filter(footer_extension => footer_extension.position === 'left');
     const footer_extensions_right = footer_extensions.filter(footer_extension => footer_extension.position === 'right');
+    const { deriv_crypto } = React.useContext(PlatformContext);
 
     return (
         <footer
@@ -58,6 +85,7 @@ const Footer = ({
                     {footer_extensions_left.map(FooterExtensionRenderer)}
                 </div>
             )}
+            {deriv_crypto && <DerivCryptoNotice />}
             <EndpointNote />
             <NetworkStatus />
             <ServerTime />

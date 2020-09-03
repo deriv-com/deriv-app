@@ -7,6 +7,7 @@ import { Checkbox, Icon, ThemedScrollbars, useOnClickOutside } from '@deriv/comp
 import { localize, Localize } from '@deriv/translations';
 import { message_types } from '@deriv/bot-skeleton';
 import { log_types } from '@deriv/bot-skeleton/src/constants/messages';
+import Download from './download.jsx';
 import { contract_stages } from '../constants/contract-stage';
 import { connect } from '../stores/connect';
 import '../assets/sass/journal.scss';
@@ -127,6 +128,7 @@ const Tools = ({ checked_filters, filters, filterMessage, is_filter_dialog_visib
     return (
         <>
             <div className='journal-tools__container'>
+                <Download tab='journal' />
                 <div ref={toggle_ref} className='journal-tools__container-filter' onClick={toggleFilterDialog}>
                     <span className='journal-tools__container-filter--label'>
                         <Localize i18n_default_text='Filters' />
@@ -203,7 +205,7 @@ const Journal = ({
             })}
         >
             <Tools {...props} />
-            <ThemedScrollbars className='journal__scrollbars' height={'calc(100% - 4.2rem)'}>
+            <ThemedScrollbars className='journal__scrollbars' height={'calc(100% - 9.2rem)'}>
                 <div className='journal__item-list'>
                     {filtered_messages.length ? (
                         <TransitionGroup>

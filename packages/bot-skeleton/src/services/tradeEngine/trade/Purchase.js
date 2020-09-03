@@ -1,23 +1,27 @@
 import { purchaseSuccessful } from './state/actions';
 import { BEFORE_PURCHASE } from './state/constants';
 import { contractStatus, info, log } from '../utils/broadcast';
-import { recoverFromError, doUntilDone } from '../utils/helpers';
+import { getUUID, recoverFromError, doUntilDone } from '../utils/helpers';
 import { log_types } from '../../../constants/messages';
 
 let delayIndex = 0;
+let purchase_reference;
 
 export default Engine =>
     class Purchase extends Engine {
-        purchase(contractType) {
+        purchase(contract_type) {
             // Prevent calling purchase twice
             if (this.store.getState().scope !== BEFORE_PURCHASE) {
                 return Promise.resolve();
             }
 
-            const { id, askPrice } = this.selectProposal(contractType);
+            const { id, askPrice } = this.selectProposal(contract_type);
 
-            const onSuccess = r => {
-                const { buy } = r;
+            const onSuccess = response => {
+                // Don't unnecessarily send a forget request for a purchased contract.
+                this.data.proposals = this.data.proposals.filter(p => p.id !== response.echo_req.buy);
+                const { buy } = response;
+
                 contractStatus({
                     id: 'contract.purchase_received',
                     data: buy.transaction_id,
@@ -33,7 +37,7 @@ export default Engine =>
                     accountID: this.accountInfo.loginid,
                     totalRuns: this.updateAndReturnTotalRuns(),
                     transaction_ids: { buy: buy.transaction_id },
-                    contract_type: contractType,
+                    contract_type,
                     buy_price: buy.buy_price,
                 });
             };
@@ -71,4 +75,8 @@ export default Engine =>
                 delayIndex++
             ).then(onSuccess);
         }
+        getPurchaseReference = () => purchase_reference;
+        regeneratePurchaseReference = () => {
+            purchase_reference = getUUID();
+        };
     };

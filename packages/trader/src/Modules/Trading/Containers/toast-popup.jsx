@@ -19,9 +19,9 @@ export const ToastPopup = ({ portal_id = 'popup_root', children, className, ...p
  * Network status Toast components
  */
 const NetworkStatusToastError = ({ status, portal_id, message }) => {
-    if (!document.getElementById(portal_id) || !message) return null;
-
     const [is_open, setIsOpen] = React.useState(false);
+
+    if (!document.getElementById(portal_id) || !message) return null;
 
     if (!is_open && status !== 'online') {
         setIsOpen(true); // open if status === 'blinker' or 'offline'

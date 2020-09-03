@@ -24,7 +24,12 @@ const ToggleNotificationsDrawer = ({ count, is_visible, toggleDialog, tooltip_me
             })}
         >
             <DesktopWrapper>
-                <Popover classNameBubble='notifications-toggle__tooltip' alignment='bottom' message={tooltip_message}>
+                <Popover
+                    classNameBubble='notifications-toggle__tooltip'
+                    alignment='bottom'
+                    message={tooltip_message}
+                    zIndex={9999}
+                >
                     {notifications_toggler_el}
                 </Popover>
                 <NotificationsDialog is_visible={is_visible} toggleDialog={toggleDialog} />

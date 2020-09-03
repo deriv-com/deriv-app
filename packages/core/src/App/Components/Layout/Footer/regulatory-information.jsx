@@ -10,10 +10,10 @@ const MLTRegulatoryInformation = () => (
         </div>
         <p>
             <Localize
-                i18n_default_text='Synthetic indices in the EU and the UK are offered by Deriv (Europe) Ltd, W Business Centre, Level 3, Triq Dun Karm, Birkirkara BKR 9033, Malta, licensed and regulated respectively by the Malta Gaming Authority in Malta <0>(view licence)</0> and the UK Gambling Commission <1>(view licence)</1>. For more information, please read our <2>Terms and conditions</2>.'
+                i18n_default_text='Synthetic indices in the EU and the UK are offered by Deriv (Europe) Limited, W Business Centre, Level 3, Triq Dun Karm, Birkirkara BKR 9033, Malta, licensed and regulated respectively by the Malta Gaming Authority in Malta (licence no. <0>MGA/B2C/102/2000</0>) and the UK Gambling Commission (account no. <1>39495</1>). For more information, please read our <2>Terms and conditions</2>.'
                 components={[
                     <a
-                        href='https://deriv.com/MGA_licence.pdf'
+                        href='https://deriv.com/regulatory/Deriv_(Europe)_Limited.pdf'
                         target='_blank'
                         rel='nofollow noreferrer'
                         key={0}
@@ -43,7 +43,7 @@ const MXRegulatoryInformation = () => (
     <div className='footer-regulatory-information'>
         <p>
             <Localize
-                i18n_default_text='Synthetic indices in the Isle of Man and the UK are offered by Deriv (MX) Ltd, licensed and regulated respectively by the Gambling Supervision Commission in the Isle of Man and the Gambling Commission in the UK <0>(view licence)</0>.'
+                i18n_default_text='Synthetic indices in the Isle of Man and the UK are offered by Deriv (MX) Ltd, licensed and regulated respectively by the Gambling Supervision Commission in the Isle of Man and the Gambling Commission in the UK (account no. <0>39172</0>).'
                 components={[
                     <a
                         href='https://secure.gamblingcommission.gov.uk/PublicRegister/Search/Detail/39172'

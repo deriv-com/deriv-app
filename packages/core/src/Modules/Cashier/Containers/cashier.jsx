@@ -52,7 +52,9 @@ class Cashier extends React.Component {
 
         if (!response.error) this.setState({ is_p2p_restricted: false });
         else if (response.error.code !== 'RestrictedCountry') this.setState({ is_p2p_restricted: false });
-        else if (response.error.code === 'RestrictedCountry') this.props.routeTo(routes.cashier_deposit);
+        else if (response.error.code === 'RestrictedCountry' && location.pathname === routes.cashier_p2p) {
+            this.props.routeTo(routes.cashier_deposit);
+        }
     };
 
     handleOnScreenKeyboard = () => {

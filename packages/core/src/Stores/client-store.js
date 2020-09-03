@@ -1703,6 +1703,7 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     getChangeableFields() {
+        const get_settings = State.getResponse('get_settings');
         const landing_company = State.getResponse('landing_company');
         const has_changeable_field =
             (this.root_store.ui.is_eu_enabled || this.landing_company_shortcode === 'svg') &&
@@ -1711,7 +1712,9 @@ export default class ClientStore extends BaseStore {
         if (has_changeable_field) {
             let changeable_fields = [];
             if (changeable && changeable.only_before_auth) {
-                changeable_fields = [...changeable.only_before_auth];
+                changeable_fields = [
+                    ...changeable.only_before_auth.filter(field => !get_settings.immutable_fields.includes(field)),
+                ];
             }
             return changeable_fields;
         }

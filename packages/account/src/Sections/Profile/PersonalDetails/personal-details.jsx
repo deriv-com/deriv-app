@@ -35,8 +35,14 @@ import FormSubmitErrorMessage from 'Components/form-submit-error-message';
 import LoadErrorMessage from 'Components/load-error-message';
 
 const removeObjProperties = (property_arr, { ...obj }) => {
-    property_arr.forEach((property) => delete obj[property]);
-    return obj;
+    const new_fields = Object.entries(obj).filter(([key, _]) => {
+        if (!property_arr.includes(key)) {
+            return true;
+        }
+        return false;
+    });
+
+    return Object.fromEntries(new_fields);
 };
 
 const validate = (errors, values) => (fn, arr, err_msg) => {
@@ -55,40 +61,40 @@ const InputGroup = ({ children, className }) => (
 class PersonalDetailsForm extends React.Component {
     state = { is_loading: true, is_state_loading: false, show_form: true };
 
-    onSubmit = (values, { setStatus, setSubmitting }) => {
+    onSubmit = async (values, { setStatus, setSubmitting }) => {
         setStatus({ msg: '' });
-
-        const request = this.makeSettingsRequest(values);
-
+        const request = await this.makeSettingsRequest(values);
         this.setState({ is_btn_loading: true });
-        WS.setSettings(request).then((data) => {
-            this.setState({ is_btn_loading: false });
+        const data = await WS.setSettings(request);
+        this.setState({ is_btn_loading: false });
 
-            setSubmitting(false);
+        setSubmitting(false);
 
-            if (data.error) {
-                setStatus({ msg: data.error.message });
-            } else {
-                // force request to update settings cache since settings have been updated
-                WS.authorized.storage.getSettings().then((response) => {
-                    if (response.error) {
-                        this.setState({ api_error: response.error.message });
-                        return;
-                    }
-                    this.setState({ ...response.get_settings, is_loading: false });
-                    this.props.refreshNotifications();
-                });
-                this.setState({ is_submit_success: true });
-                setTimeout(() => this.setState({ is_submit_success: false }), 3000);
+        if (data.error) {
+            setStatus({ msg: data.error.message });
+        } else {
+            // force request to update settings cache since settings have been updated
+            const response = await WS.authorized.storage.getSettings();
+            if (response.error) {
+                this.setState({ api_error: response.error.message });
+                return;
             }
-        });
+            this.setState({ ...response.get_settings, is_loading: false });
+            this.props.refreshNotifications();
+            this.setState({ is_submit_success: true });
+            setTimeout(() => this.setState({ is_submit_success: false }), 3000);
+        }
     };
 
-    makeSettingsRequest = (settings) => {
+    makeSettingsRequest = async (settings) => {
         if (this.props.is_virtual) return { email_consent: +settings.email_consent };
-        const settings_to_be_removed_for_api = ['email', 'residence'];
+        const settings_response = await WS.getSettings();
+        const settings_to_be_removed_for_api = [
+            ...settings_response.get_settings.immutable_fields,
+            'immutable_fields',
+            ...['email', 'residence'],
+        ];
         const request = removeObjProperties(settings_to_be_removed_for_api, settings);
-
         request.email_consent = +request.email_consent; // checkbox is boolean but api expects number (1 or 0)
         request.first_name = request.first_name.trim();
         request.last_name = request.last_name.trim();
@@ -101,10 +107,16 @@ class PersonalDetailsForm extends React.Component {
                 ? request.tax_identification_number.trim()
                 : '';
         }
-        request.citizen = request.citizen ? getLocation(this.props.residence_list, request.citizen, 'value') : '';
-        request.place_of_birth = request.place_of_birth
-            ? getLocation(this.props.residence_list, request.place_of_birth, 'value')
-            : '';
+
+        if (request.citizen) {
+            request.citizen = request.citizen ? getLocation(this.props.residence_list, request.citizen, 'value') : '';
+        }
+
+        if (request.place_of_birth) {
+            request.place_of_birth = request.place_of_birth
+                ? getLocation(this.props.residence_list, request.place_of_birth, 'value')
+                : '';
+        }
 
         if (request.address_state) {
             request.address_state = this.props.states_list.length

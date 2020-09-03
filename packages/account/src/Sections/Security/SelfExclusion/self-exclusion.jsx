@@ -86,7 +86,7 @@ class SelfExclusion extends React.Component {
     };
 
     validateFields = (values) => {
-        const { currency } = this.props;
+        const { currency, is_eu } = this.props;
         const errors = {};
         // Regex
         const is_number = /^\d+(\.\d+)?$/;
@@ -163,7 +163,11 @@ class SelfExclusion extends React.Component {
             if (values[item]) {
                 if (!is_number.test(values[item])) {
                     errors[item] = valid_number_message;
-                } else if (this.state.self_exclusions[item] && +values[item] > +this.state.self_exclusions[item]) {
+                } else if (
+                    this.state.self_exclusions[item] &&
+                    +values[item] > +this.state.self_exclusions[item] &&
+                    is_eu
+                ) {
                     errors[item] = getLimitNumberMessage(this.state.self_exclusions[item]);
                 } else if (+values[item] > max_number) {
                     errors[item] = max_number_message;
@@ -831,6 +835,7 @@ export default connect(({ client }) => ({
     currency: client.currency,
     is_virtual: client.is_virtual,
     is_switching: client.is_switching,
+    is_eu: client.is_eu,
     is_mlt: client.landing_company_shortcode === 'malta',
     is_mx: client.landing_company_shortcode === 'iom',
     logout: client.logout,

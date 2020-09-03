@@ -1,6 +1,6 @@
 import moment from 'moment';
 import Cookies from 'js-cookie';
-import { action, computed, observable, runInAction, when, reaction, toJS, has } from 'mobx';
+import { action, computed, observable, runInAction, when, reaction, toJS } from 'mobx';
 import {
     setCurrencies,
     isEmptyObject,

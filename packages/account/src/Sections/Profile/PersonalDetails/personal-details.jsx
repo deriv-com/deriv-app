@@ -91,7 +91,6 @@ class PersonalDetailsForm extends React.Component {
 
     makeSettingsRequest = async (settings) => {
         if (this.props.is_virtual) return { email_consent: +settings.email_consent };
-        const settings_response = await WS.getSettings();
         const request = filterOnlyChangeableFields(this.state.changeable_fields, settings);
         request.email_consent = +request.email_consent; // checkbox is boolean but api expects number (1 or 0)
         request.first_name = request.first_name.trim();

@@ -175,7 +175,8 @@ class SelfExclusion extends React.Component {
                 } else if (+values[item] > max_number) {
                     errors[item] = max_number_message;
                 }
-            } else {
+            }
+            if (+this.state.self_exclusions[item] && !values[item]) {
                 errors[item] = more_than_zero_message;
             }
         });

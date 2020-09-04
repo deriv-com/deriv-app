@@ -50,6 +50,7 @@ class Header extends React.Component {
             is_virtual,
             disableApp,
             logoutClient,
+            needs_financial_assessment,
             notifications_count,
             setDarkMode,
             toggleAccountsDialog,
@@ -91,6 +92,7 @@ class Header extends React.Component {
                                 is_payment_agent_transfer_visible={is_payment_agent_transfer_visible}
                                 is_payment_agent_visible={is_payment_agent_visible}
                                 is_virtual={is_virtual}
+                                needs_financial_assessment={needs_financial_assessment}
                                 toggleTheme={setDarkMode}
                                 platform_header={getPlatformHeader(app_routing_history)}
                                 platform_switcher={
@@ -173,6 +175,7 @@ Header.propTypes = {
     is_route_modal_on: PropTypes.bool,
     is_virtual: PropTypes.bool,
     logoutClient: PropTypes.func,
+    needs_financial_assessment: PropTypes.bool,
     notifications_count: PropTypes.any,
     setDarkMode: PropTypes.func,
     toggleAccountsDialog: PropTypes.func,

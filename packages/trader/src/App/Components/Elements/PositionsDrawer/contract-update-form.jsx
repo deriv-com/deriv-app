@@ -1,8 +1,9 @@
+import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from '@deriv/components';
+import { Button, Icon, MobileWrapper, Money } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { isDeepEqual, pick } from '@deriv/shared';
+import { isDeepEqual, isCryptocurrency, pick } from '@deriv/shared';
 import InputWithCheckbox from 'App/Components/Form/InputField/input-with-checkbox.jsx';
 import { connect } from 'Stores/connect';
 import { getLimitOrderAmount } from 'Stores/Modules/Contract/Helpers/limit-orders';
@@ -108,8 +109,9 @@ class ContractUpdateForm extends React.Component {
             has_contract_update_take_profit,
             contract_update_stop_loss,
             has_contract_update_stop_loss,
+            status,
         } = this.props;
-        const { buy_price, currency, is_valid_to_cancel } = this.contract_info;
+        const { buy_price, currency, is_valid_to_cancel, bid_price, is_sold } = this.contract_info;
         const cancellation_price = getCancellationPrice(this.contract_info);
         const take_profit_input = (
             <InputWithCheckbox
@@ -150,19 +152,48 @@ class ContractUpdateForm extends React.Component {
             />
         );
 
+        const total_profit = bid_price - buy_price;
+
         return (
             <React.Fragment>
-                <div className='positions-drawer-dialog__input'>{take_profit_input}</div>
-                <div className='positions-drawer-dialog__input'>{stop_loss_input}</div>
-                <div className='positions-drawer-dialog__button'>
-                    <Button
-                        text={localize('Apply')}
-                        onClick={this.onClick}
-                        primary
-                        is_disabled={
-                            this.has_validation_errors || !this.is_valid_contract_update || this.isStateUnchanged()
-                        }
-                    />
+                <MobileWrapper>
+                    <div className='positions-drawer-dialog__total-profit'>
+                        <span>{localize('Total profit/loss:')}</span>
+                        <div
+                            className={classNames(
+                                'positions-drawer-card__profit-loss positions-drawer-card__total-profit-loss-value',
+                                {
+                                    'positions-drawer-card__profit-loss--is-crypto': isCryptocurrency(currency),
+                                    'positions-drawer-card__profit-loss--negative': total_profit < 0,
+                                    'positions-drawer-card__profit-loss--positive': total_profit > 0,
+                                }
+                            )}
+                        >
+                            <Money amount={total_profit} currency={currency} />
+                            <div
+                                className={classNames('positions-drawer-card__indicative--movement', {
+                                    'positions-drawer-card__indicative--movement-complete': is_sold,
+                                })}
+                            >
+                                {status === 'profit' && <Icon icon='IcProfit' />}
+                                {status === 'loss' && <Icon icon='IcLoss' />}
+                            </div>
+                        </div>
+                    </div>
+                </MobileWrapper>
+                <div className='positions-drawer-dialog__form'>
+                    <div className='positions-drawer-dialog__input'>{take_profit_input}</div>
+                    <div className='positions-drawer-dialog__input'>{stop_loss_input}</div>
+                    <div className='positions-drawer-dialog__button'>
+                        <Button
+                            text={localize('Apply')}
+                            onClick={this.onClick}
+                            primary
+                            is_disabled={
+                                this.has_validation_errors || !this.is_valid_contract_update || this.isStateUnchanged()
+                            }
+                        />
+                    </div>
                 </div>
             </React.Fragment>
         );
@@ -191,5 +222,6 @@ export default connect(({ modules, ui }, props) => {
         contract_update_stop_loss: contract.contract_update_stop_loss,
         has_contract_update_take_profit: contract.has_contract_update_take_profit,
         has_contract_update_stop_loss: contract.has_contract_update_stop_loss,
+        status: modules.portfolio.positions_map[contract.contract_id]?.status,
     };
 })(ContractUpdateForm);

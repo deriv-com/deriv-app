@@ -4,7 +4,7 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { DesktopWrapper, MobileWrapper, DataList, DataTable } from '@deriv/components';
-import { urlFor } from '@deriv/shared';
+import { urlFor, isDesktop } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { website_name } from 'App/Constants/app-config';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
@@ -143,7 +143,18 @@ class ProfitTable extends React.Component {
 
         return (
             <React.Fragment>
-                <ReportsMeta filter_component={filter_component} className='profit-table__filter' />
+                <ReportsMeta
+                    {...(isDesktop()
+                        ? {
+                              i18n_heading: localize('Profit table'),
+                              i18n_message: localize(
+                                  'View all trades purchased on your account, and a summary of your total profit/loss.'
+                              ),
+                          }
+                        : {})}
+                    filter_component={filter_component}
+                    className='profit-table__filter'
+                />
                 {data.length === 0 || is_empty ? (
                     <PlaceholderComponent
                         is_loading={is_loading}

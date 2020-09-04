@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper, DataList, DataTable, Money } from '@deriv/components';
-import { urlFor } from '@deriv/shared';
+import { urlFor, isDesktop } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
 import CompositeCalendar from 'App/Components/Form/CompositeCalendar/composite-calendar.jsx';
@@ -109,25 +109,9 @@ class Statement extends React.Component {
         return action;
     };
 
-    render() {
-        const {
-            component_icon,
-            currency,
-            data,
-            date_from,
-            date_to,
-            is_empty,
-            is_loading,
-            error,
-            filtered_date_range,
-            handleScroll,
-            handleDateChange,
-            has_selected_date,
-        } = this.props;
-
-        if (error) return <p>{error}</p>;
-
-        const account_statistics_component = (
+    getAccountStatistics() {
+        const { currency } = this.props;
+        return (
             <React.Fragment>
                 <div className='statement__account-statistics'>
                     <div className='statement__account-statistics--is-rectangle'>
@@ -154,6 +138,42 @@ class Statement extends React.Component {
                 </div>
             </React.Fragment>
         );
+    }
+
+    getReportsMetaProps(is_mx_mlt) {
+        const reports_meta_props = {};
+
+        if (is_mx_mlt) {
+            Object.assign(reports_meta_props, { optional_component: this.getAccountStatistics() });
+        }
+        if (isDesktop()) {
+            Object.assign(reports_meta_props, {
+                i18n_heading: localize('Statement'),
+                i18n_message: localize(
+                    'View all transactions on your account, including trades, deposits, and withdrawals.'
+                ),
+            });
+        }
+        return reports_meta_props;
+    }
+
+    render() {
+        const {
+            component_icon,
+            currency,
+            data,
+            date_from,
+            date_to,
+            is_empty,
+            is_loading,
+            error,
+            filtered_date_range,
+            handleScroll,
+            handleDateChange,
+            has_selected_date,
+        } = this.props;
+
+        if (error) return <p>{error}</p>;
 
         const filter_component = (
             <React.Fragment>
@@ -179,14 +199,7 @@ class Statement extends React.Component {
                 <ReportsMeta
                     className={is_mx_mlt ? undefined : 'reports__meta--statement'}
                     filter_component={filter_component}
-                    {...(is_mx_mlt
-                        ? { optional_component: account_statistics_component }
-                        : {
-                              i18n_heading: localize('Statement'),
-                              i18n_message: localize(
-                                  'View all transactions on your account, including trades, deposits, and withdrawals.'
-                              ),
-                          })}
+                    {...this.getReportsMetaProps(is_mx_mlt)}
                 />
                 {data.length === 0 || is_empty ? (
                     <PlaceholderComponent

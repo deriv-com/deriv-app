@@ -153,6 +153,7 @@ class ProfitTable extends React.Component {
                           }
                         : {})}
                     filter_component={filter_component}
+                    className='profit-table__filter'
                 />
                 {data.length === 0 || is_empty ? (
                     <PlaceholderComponent

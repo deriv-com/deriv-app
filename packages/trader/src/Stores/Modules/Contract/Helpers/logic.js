@@ -74,6 +74,8 @@ export const getCancellationPrice = contract_info => {
 
 export const getLastTickFromTickStream = (tick_stream = []) => tick_stream[tick_stream.length - 1] || {};
 
+export const isOpen = contract_info => contract_info.status === 'open';
+
 export const isEnded = contract_info =>
     !!(
         (contract_info.status && contract_info.status !== 'open') ||
@@ -147,4 +149,9 @@ export const getContractUpdateConfig = ({ contract_update, limit_order }) => {
         has_contract_update_stop_loss: !!stop_loss,
         has_contract_update_take_profit: !!take_profit,
     };
+};
+
+export const isSellVisible = contract_info => {
+    const has_contract_entered = !!contract_info.entry_spot;
+    return has_contract_entered && !isEnded(contract_info);
 };

@@ -6,17 +6,18 @@ import { Button } from '@deriv/components';
 import ContractCardFooter from 'App/Components/Elements/ContractCard/contract-card-footer.jsx';
 import TogglePositionsDrawerDialog from 'App/Components/Elements/PositionsDrawer/toggle-positions-drawer-dialog.jsx';
 import { localize } from '@deriv/translations';
-import { isValidToCancel, isValidToSell } from 'Stores/Modules/Contract/Helpers/logic';
+import { isValidToCancel, isValidToSell, isSellVisible, isOpen } from 'Stores/Modules/Contract/Helpers/logic';
 import MultiplierCloseActions from '../PositionsDrawer/PositionsDrawerCard/multiplier-close-actions.jsx';
 
 const CardFooter = ({ contract_info, is_multiplier, is_sell_requested, onClickCancel, onClickSell }) => {
-    const { contract_id, is_sold } = contract_info;
+    const { contract_id } = contract_info;
     const is_valid_to_cancel = isValidToCancel(contract_info);
     const is_valid_to_sell = isValidToSell(contract_info);
+
     return (
         <ContractCardFooter>
             <CSSTransition
-                in={!!(isValidToSell(contract_info) || (is_multiplier && !is_sold))}
+                in={isSellVisible(contract_info)}
                 timeout={250}
                 classNames={{
                     enter: 'contract-card__sell-button--enter',
@@ -47,15 +48,21 @@ const CardFooter = ({ contract_info, is_multiplier, is_sell_requested, onClickCa
                     </div>
                 ) : (
                     <div className='contract-card__sell-button'>
-                        <Button
-                            className={classNames('dc-btn--sell', {
-                                'dc-btn--loading': is_sell_requested,
-                            })}
-                            is_disabled={!isValidToSell(contract_info) || is_sell_requested}
-                            text={localize('Sell contract')}
-                            onClick={() => onClickSell(contract_id)}
-                            secondary
-                        />
+                        {is_valid_to_sell ? (
+                            <Button
+                                className={classNames('dc-btn--sell', {
+                                    'dc-btn--loading': is_sell_requested,
+                                })}
+                                is_disabled={!isValidToSell(contract_info) || is_sell_requested}
+                                text={localize('Sell')}
+                                onClick={() => onClickSell(contract_id)}
+                                secondary
+                            />
+                        ) : (
+                            isOpen(contract_info) && (
+                                <div className='contract-card__no-resale-msg'>{localize('Resale not offered')}</div>
+                            )
+                        )}
                     </div>
                 )}
             </CSSTransition>

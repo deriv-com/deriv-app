@@ -1,8 +1,9 @@
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
+import classNames from 'classnames';
 import { withRouter } from 'react-router-dom';
-import { DesktopWrapper, MobileWrapper, ProgressBar, Tabs, DataList, DataTable } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, ProgressBar, Tabs, DataList, DataTable, Button } from '@deriv/components';
 import { urlFor, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
@@ -93,8 +94,8 @@ const OpenPositionsTable = ({
                                 getRowAction={getRowAction}
                                 custom_width='100%'
                                 getRowSize={() => {
-                                    if (isMobile() && is_multiplier_tab) return 228;
-                                    if (isMobile()) return 208;
+                                    if (isMobile() && is_multiplier_tab) return 238;
+                                    if (isMobile()) return 245;
                                     return 194;
                                 }}
                             >
@@ -111,6 +112,7 @@ const OpenPositionsTable = ({
 class OpenPositions extends React.Component {
     state = {
         active_index: this.props.is_multiplier ? 1 : 0,
+        // Tabs should be visible only when there is atleast one active multiplier contract
         has_multiplier_contract: false,
     };
 
@@ -120,22 +122,27 @@ class OpenPositions extends React.Component {
         if (!isMobile()) {
             this.props.onMount();
         }
+        this.checkForMultiplierContract();
     }
 
     componentDidUpdate(prev_props) {
-        if (this.props.active_positions !== prev_props.active_positions && !this.state.has_multiplier_contract) {
+        this.checkForMultiplierContract(prev_props.active_positions);
+    }
+
+    componentWillUnmount() {
+        if (!isMobile()) {
+            this.props.onUnmount();
+        }
+    }
+
+    checkForMultiplierContract(prev_active_positions = []) {
+        if (!this.state.has_multiplier_contract && this.props.active_positions !== prev_active_positions) {
             const has_multiplier_contract = this.props.active_positions.some(p =>
                 isMultiplierContract(p.contract_info?.contract_type)
             );
             this.setState({
                 has_multiplier_contract,
             });
-        }
-    }
-
-    componentWillUnmount() {
-        if (!isMobile()) {
-            this.props.onUnmount();
         }
     }
 
@@ -167,7 +174,7 @@ class OpenPositions extends React.Component {
 
         const { server_time, onClickCancel, onClickSell } = this.props;
         const { contract_info, contract_update, type } = row;
-        const { currency, status, date_expiry, date_start } = contract_info;
+        const { currency, status, date_expiry, date_start, is_valid_to_sell, is_sell_requested } = contract_info;
         const duration_type = getContractDurationType(contract_info.longcode);
         const progress_value = getTimePercentage(server_time, date_start, date_expiry) / 100;
 
@@ -204,6 +211,26 @@ class OpenPositions extends React.Component {
                 <div className='data-list__row'>
                     <DataList.Cell row={row} column={this.columns_map.payout} />
                     <DataList.Cell className='data-list__row-cell--amount' row={row} column={this.columns_map.profit} />
+                </div>
+                <div className='data-list__row-divider' />
+                <div className='data-list__row'>
+                    {is_valid_to_sell ? (
+                        <Button
+                            className={classNames('dc-btn--sell', {
+                                'dc-btn--loading': is_sell_requested,
+                            })}
+                            is_disabled={is_sell_requested}
+                            text={localize('Sell')}
+                            onClick={ev => {
+                                onClickSell(contract_info.contract_id);
+                                ev.stopPropagation();
+                                ev.preventDefault();
+                            }}
+                            secondary
+                        />
+                    ) : (
+                        <div className='open-positions__no-resale-msg'>{localize('Resale not offered')}</div>
+                    )}
                 </div>
             </>
         );

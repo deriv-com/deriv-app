@@ -273,10 +273,16 @@ $header-height: 4em;
             padding-top: 0.2rem;
         }
         .dc-btn--sell {
-            height: 32px;
-
             @include mobile {
                 width: 100%;
+            }
+        }
+        .dc-btn--sell,
+        .dc-btn--cancel {
+            height: 2.4rem;
+
+            @include mobile {
+                height: 3.2rem;
             }
         }
         .positions-drawer-dialog-toggle {
@@ -358,6 +364,9 @@ $header-height: 4em;
         .result-icon {
             margin-left: 0.4rem;
         }
+    }
+    &__no-resale-msg {
+        padding: 0.4rem 0rem;
     }
     .contract-audit {
         &__wrapper {

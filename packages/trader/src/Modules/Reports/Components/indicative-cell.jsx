@@ -3,6 +3,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Icon, Money, DesktopWrapper, Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { isOpen } from 'Stores/Modules/Contract/Helpers/logic';
 import { connect } from 'Stores/connect';
 
 class IndicativeCell extends React.PureComponent {
@@ -22,7 +23,15 @@ class IndicativeCell extends React.PureComponent {
     }
 
     render() {
-        const { amount, currency, contract_info, is_valid_to_sell, is_footer, onClickSell } = this.props;
+        const {
+            amount,
+            currency,
+            contract_info,
+            is_valid_to_sell,
+            is_footer,
+            onClickSell,
+            is_sell_requested,
+        } = this.props;
         const { movement } = this.state;
         return (
             <div className='open-positions__indicative'>
@@ -40,9 +49,9 @@ class IndicativeCell extends React.PureComponent {
                         {is_valid_to_sell ? (
                             <Button
                                 className={classNames('dc-btn--sell', {
-                                    'dc-btn--loading': contract_info.is_sell_requested,
+                                    'dc-btn--loading': is_sell_requested,
                                 })}
-                                is_disabled={contract_info.is_sell_requested}
+                                is_disabled={is_sell_requested}
                                 text={localize('Sell')}
                                 onClick={ev => {
                                     onClickSell(contract_info.contract_id);
@@ -52,9 +61,11 @@ class IndicativeCell extends React.PureComponent {
                                 secondary
                             />
                         ) : (
-                            <div className='open-positions__indicative-no-resale-msg indicative__no-resale-msg'>
-                                {localize('Resale not offered')}
-                            </div>
+                            isOpen(contract_info) && (
+                                <div className='open-positions__indicative-no-resale-msg indicative__no-resale-msg'>
+                                    {localize('Resale not offered')}
+                                </div>
+                            )
                         )}
                     </DesktopWrapper>
                 )}

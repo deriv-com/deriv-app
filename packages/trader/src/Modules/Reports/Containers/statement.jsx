@@ -24,6 +24,10 @@ class Statement extends React.Component {
         this.state = { total_deposits: 0, total_withdrawals: 0 };
     }
 
+    get should_show_loading_placeholder() {
+        return this.props.is_loading || this.props.is_switching;
+    }
+
     componentDidMount() {
         this.props.onMount();
         const is_mx_mlt =
@@ -194,8 +198,10 @@ class Statement extends React.Component {
                         localized_message={localize('You have no transactions yet.')}
                         localized_period_message={localize('You have no transactions for this period.')}
                     />
+                ) : this.should_show_loading_placeholder ? (
+                    <PlaceholderComponent is_loading={this.should_show_loading_placeholder} />
                 ) : (
-                    <>
+                    <React.Fragment>
                         <DesktopWrapper>
                             <DataTable
                                 className='statement'
@@ -207,9 +213,7 @@ class Statement extends React.Component {
                                 custom_width={'100%'}
                                 getRowSize={() => 63}
                                 content_loader={ReportsTableRowLoader}
-                            >
-                                <PlaceholderComponent is_loading={is_loading} />
-                            </DataTable>
+                            />
                         </DesktopWrapper>
                         <MobileWrapper>
                             <DataList
@@ -220,11 +224,9 @@ class Statement extends React.Component {
                                 onScroll={handleScroll}
                                 custom_width={'100%'}
                                 getRowSize={() => 176}
-                            >
-                                <PlaceholderComponent is_loading={is_loading} />
-                            </DataList>
+                            />
                         </MobileWrapper>
-                    </>
+                    </React.Fragment>
                 )}
             </React.Fragment>
         );
@@ -260,6 +262,7 @@ export default connect(({ modules, client }) => ({
     has_selected_date: modules.statement.has_selected_date,
     is_empty: modules.statement.is_empty,
     is_loading: modules.statement.is_loading,
+    is_switching: client.is_switching,
     landing_company_shortcode: client.landing_company_shortcode,
     onMount: modules.statement.onMount,
     onUnmount: modules.statement.onUnmount,

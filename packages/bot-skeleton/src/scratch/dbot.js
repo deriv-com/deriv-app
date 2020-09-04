@@ -153,7 +153,12 @@ class DBot {
                 return false;
             }
             function BinaryBotPrivateTickAnalysis() {
-                var currentTickTime = Bot.getLastTick(true).epoch;
+                var currentTickTime = Bot.getLastTick(true);
+                while (currentTickTime === 'MarketIsClosed') {
+                    sleep(5);
+                    currentTickTime = Bot.getLastTick(true);
+                }
+                currentTickTime = currentTickTime.epoch;
                 if (currentTickTime === BinaryBotPrivateLastTickTime) {
                     return;
                 }
@@ -161,7 +166,7 @@ class DBot {
                 for (var BinaryBotPrivateI = 0; BinaryBotPrivateI < BinaryBotPrivateTickAnalysisList.length; BinaryBotPrivateI++) {
                     BinaryBotPrivateRun(BinaryBotPrivateTickAnalysisList[BinaryBotPrivateI]);
                 }
-            }
+            }   
             var BinaryBotPrivateLimitations = ${JSON.stringify(limitations)};
             ${Blockly.JavaScript.workspaceToCode(this.workspace)}
             BinaryBotPrivateRun(BinaryBotPrivateInit);

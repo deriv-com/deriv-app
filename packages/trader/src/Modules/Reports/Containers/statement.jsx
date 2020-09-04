@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper, DataList, DataTable, Money } from '@deriv/components';
-import { urlFor } from '@deriv/shared';
+import { urlFor, isDesktop } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
 import CompositeCalendar from 'App/Components/Form/CompositeCalendar/composite-calendar.jsx';
@@ -22,6 +22,10 @@ class Statement extends React.Component {
     constructor(props) {
         super(props);
         this.state = { total_deposits: 0, total_withdrawals: 0 };
+    }
+
+    get should_show_loading_placeholder() {
+        return this.props.is_loading || this.props.is_switching;
     }
 
     componentDidMount() {
@@ -105,25 +109,9 @@ class Statement extends React.Component {
         return action;
     };
 
-    render() {
-        const {
-            component_icon,
-            currency,
-            data,
-            date_from,
-            date_to,
-            is_empty,
-            is_loading,
-            error,
-            filtered_date_range,
-            handleScroll,
-            handleDateChange,
-            has_selected_date,
-        } = this.props;
-
-        if (error) return <p>{error}</p>;
-
-        const account_statistics_component = (
+    getAccountStatistics() {
+        const { currency } = this.props;
+        return (
             <React.Fragment>
                 <div className='statement__account-statistics'>
                     <div className='statement__account-statistics--is-rectangle'>
@@ -150,6 +138,42 @@ class Statement extends React.Component {
                 </div>
             </React.Fragment>
         );
+    }
+
+    getReportsMetaProps(is_mx_mlt) {
+        const reports_meta_props = {};
+
+        if (is_mx_mlt) {
+            Object.assign(reports_meta_props, { optional_component: this.getAccountStatistics() });
+        }
+        if (isDesktop()) {
+            Object.assign(reports_meta_props, {
+                i18n_heading: localize('Statement'),
+                i18n_message: localize(
+                    'View all transactions on your account, including trades, deposits, and withdrawals.'
+                ),
+            });
+        }
+        return reports_meta_props;
+    }
+
+    render() {
+        const {
+            component_icon,
+            currency,
+            data,
+            date_from,
+            date_to,
+            is_empty,
+            is_loading,
+            error,
+            filtered_date_range,
+            handleScroll,
+            handleDateChange,
+            has_selected_date,
+        } = this.props;
+
+        if (error) return <p>{error}</p>;
 
         const filter_component = (
             <React.Fragment>
@@ -174,8 +198,8 @@ class Statement extends React.Component {
             <React.Fragment>
                 <ReportsMeta
                     className={is_mx_mlt ? undefined : 'reports__meta--statement'}
-                    optional_component={is_mx_mlt && account_statistics_component}
                     filter_component={filter_component}
+                    {...this.getReportsMetaProps(is_mx_mlt)}
                 />
                 {data.length === 0 || is_empty ? (
                     <PlaceholderComponent
@@ -187,8 +211,10 @@ class Statement extends React.Component {
                         localized_message={localize('You have no transactions yet.')}
                         localized_period_message={localize('You have no transactions for this period.')}
                     />
+                ) : this.should_show_loading_placeholder ? (
+                    <PlaceholderComponent is_loading={this.should_show_loading_placeholder} />
                 ) : (
-                    <>
+                    <React.Fragment>
                         <DesktopWrapper>
                             <DataTable
                                 className='statement'
@@ -200,9 +226,7 @@ class Statement extends React.Component {
                                 custom_width={'100%'}
                                 getRowSize={() => 63}
                                 content_loader={ReportsTableRowLoader}
-                            >
-                                <PlaceholderComponent is_loading={is_loading} />
-                            </DataTable>
+                            />
                         </DesktopWrapper>
                         <MobileWrapper>
                             <DataList
@@ -213,11 +237,9 @@ class Statement extends React.Component {
                                 onScroll={handleScroll}
                                 custom_width={'100%'}
                                 getRowSize={() => 176}
-                            >
-                                <PlaceholderComponent is_loading={is_loading} />
-                            </DataList>
+                            />
                         </MobileWrapper>
-                    </>
+                    </React.Fragment>
                 )}
             </React.Fragment>
         );
@@ -253,6 +275,7 @@ export default connect(({ modules, client }) => ({
     has_selected_date: modules.statement.has_selected_date,
     is_empty: modules.statement.is_empty,
     is_loading: modules.statement.is_loading,
+    is_switching: client.is_switching,
     landing_company_shortcode: client.landing_company_shortcode,
     onMount: modules.statement.onMount,
     onUnmount: modules.statement.onUnmount,

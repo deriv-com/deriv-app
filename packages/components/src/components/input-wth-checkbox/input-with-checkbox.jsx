@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types';
-import { PropTypes as MobxPropTypes } from 'mobx-react';
 import React from 'react';
-import { Checkbox, Popover } from '@deriv/components';
 import { isMobile, isDesktop, getDecimalPlaces } from '@deriv/shared';
-
 import InputField from './input-field.jsx';
+import Checkbox from '../checkbox';
+import Popover from '../popover';
 
 const InputWithCheckbox = ({
     addToast,
@@ -13,6 +12,7 @@ const InputWithCheckbox = ({
     classNameInput,
     className,
     currency,
+    current_focus,
     defaultChecked,
     error_messages,
     is_disabled,
@@ -26,6 +26,7 @@ const InputWithCheckbox = ({
     checkbox_tooltip_label,
     tooltip_alignment,
     error_message_alignment,
+    setCurrentFocus,
     tooltip_label,
     value,
 }) => {
@@ -78,12 +79,13 @@ const InputWithCheckbox = ({
             classNameInlinePrefix={classNameInlinePrefix}
             classNameInput={classNameInput}
             currency={currency}
+            current_focus={current_focus}
             error_messages={error_messages}
             error_message_alignment={error_message_alignment}
             is_error_tooltip_hidden={isMobile()}
             is_disabled={is_disabled ? 'disabled' : undefined}
             fractional_digits={getDecimalPlaces(currency)}
-            id={`dt_${name}_input`}
+            id={`dc_${name}_input`}
             inline_prefix={is_single_currency ? currency : null}
             is_autocomplete_disabled
             is_float
@@ -98,6 +100,7 @@ const InputWithCheckbox = ({
             type='number'
             inputmode='decimal'
             value={value}
+            setCurrentFocus={setCurrentFocus}
         />
     );
 
@@ -105,7 +108,7 @@ const InputWithCheckbox = ({
         <Checkbox
             className={`${name}-checkbox__input`}
             ref={checkboxRef}
-            id={`dt_${name}-checkbox_input`}
+            id={`dc_${name}-checkbox_input`}
             onChange={changeValue}
             name={checkboxName}
             label={label}
@@ -133,7 +136,7 @@ const InputWithCheckbox = ({
 
     return (
         <React.Fragment>
-            <div ref={input_wrapper_ref} className='input-wrapper--inline'>
+            <div ref={input_wrapper_ref} className='dc-input-wrapper--inline'>
                 {checkbox_tooltip_label ? (
                     <Popover
                         alignment='left'
@@ -152,7 +155,7 @@ const InputWithCheckbox = ({
                     <Popover
                         alignment={tooltip_alignment || 'left'}
                         icon='info'
-                        id={`dt_${name}-checkbox__tooltip`}
+                        id={`dc_${name}-checkbox__tooltip`}
                         message={tooltip_label}
                         margin={isMobile() ? 0 : 210}
                         zIndex={9999}
@@ -174,8 +177,9 @@ InputWithCheckbox.propTypes = {
     classNameInput: PropTypes.string,
     classNamePrefix: PropTypes.string,
     currency: PropTypes.string,
+    current_focus: PropTypes.string,
     defaultChecked: PropTypes.bool,
-    error_messages: MobxPropTypes.arrayOrObservableArray,
+    error_messages: PropTypes.array,
     is_negative_disabled: PropTypes.bool,
     is_single_currency: PropTypes.bool,
     is_input_hidden: PropTypes.bool,
@@ -183,6 +187,7 @@ InputWithCheckbox.propTypes = {
     max_value: PropTypes.number,
     name: PropTypes.string,
     onChange: PropTypes.func,
+    setCurrentFocus: PropTypes.func,
     tooltip_label: PropTypes.string,
     tooltip_alignment: PropTypes.string,
     error_message_alignment: PropTypes.string,

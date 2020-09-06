@@ -1,5 +1,5 @@
 /** @define positions-drawer-dialog; weak */
-.positions-drawer-dialog {
+.dc-contract-card-dialog {
     position: fixed;
     display: grid;
     grid-gap: 0.8rem;
@@ -21,7 +21,7 @@
         transform: translate3d(-20px, 0, 0);
     }
     &__input {
-        .input-wrapper__input {
+        .dc-input-wrapper__input {
             border: 1px solid var(--border-normal);
         }
     }
@@ -35,7 +35,7 @@
 }
 
 /** @define positions-drawer-dialog-toggle; */
-.positions-drawer-dialog-toggle {
+.dc-contract-card-dialog-toggle {
     position: absolute;
     width: 108px;
     height: 80px;

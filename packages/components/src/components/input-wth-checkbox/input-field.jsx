@@ -1,12 +1,10 @@
 import classNames from 'classnames';
-import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { isCryptocurrency } from '@deriv/shared';
-import Tooltip from 'App/Components/Elements/tooltip.jsx';
-import { connect } from 'Stores/connect';
 import IncrementButtons from './increment-buttons.jsx';
 import Input from './input.jsx';
+import Tooltip from '../tooltip';
 
 class InputField extends React.Component {
     state = {};
@@ -275,15 +273,15 @@ class InputField extends React.Component {
                 has_error={!is_error_tooltip_hidden && has_error}
             >
                 {!!label && (
-                    <label htmlFor={name} className='input-field__label'>
+                    <label htmlFor={name} className='dc-input-field__label'>
                         {label}
                     </label>
                 )}
-                {!!helper && <span className='input-field__helper'>{helper}</span>}
+                {!!helper && <span className='dc-input-field__helper'>{helper}</span>}
                 {is_increment_input ? (
                     <div
-                        className={classNames('input-wrapper', {
-                            'input-wrapper--disabled': !!is_disabled,
+                        className={classNames('dc-input-wrapper', {
+                            'dc-input-wrapper--disabled': !!is_disabled,
                         })}
                     >
                         {increment_buttons}
@@ -308,7 +306,7 @@ class InputField extends React.Component {
                         />
                     </div>
                 )}
-                <div className={classNames('input-field', className)} onClick={onClickInputWrapper}>
+                <div className={classNames('dc-input-field', className)} onClick={onClickInputWrapper}>
                     {this.props.icon && <Icon onClick={onClick} />}
                     {input_tooltip}
                 </div>
@@ -329,7 +327,7 @@ InputField.propTypes = {
     classNamePrefix: PropTypes.string,
     currency: PropTypes.string,
     current_focus: PropTypes.string,
-    error_messages: MobxPropTypes.arrayOrObservableArray,
+    error_messages: PropTypes.array,
     error_message_alignment: PropTypes.string,
     fractional_digits: PropTypes.number,
     helper: PropTypes.string,
@@ -361,7 +359,4 @@ InputField.propTypes = {
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 
-export default connect(({ ui }) => ({
-    current_focus: ui.current_focus,
-    setCurrentFocus: ui.setCurrentFocus,
-}))(InputField);
+export default InputField;

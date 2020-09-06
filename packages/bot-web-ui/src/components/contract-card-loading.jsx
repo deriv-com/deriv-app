@@ -6,8 +6,8 @@ const ContractCardLoader = () => (
         height={153}
         width={334}
         speed={3}
-        primaryColor={'var(--general-section-1)'}
-        secondaryColor={'var(--general-hover)'}
+        // primaryColor={'var(--general-section-1)'}
+        // secondaryColor={'var(--general-hover)'}
     >
         <rect x='12' y='15' rx='0' ry='0' width='41' height='25' />
         <rect x='61' y='24' rx='0' ry='0' width='91' height='8' />

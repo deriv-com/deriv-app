@@ -35,8 +35,8 @@ const MultiplierCardBody = ({
         <React.Fragment>
             <div
                 className={classNames({
-                    'contract-card-items-wrapper--mobile': is_mobile,
-                    'contract-card-items-wrapper': !is_mobile,
+                    'dc-contract-card-items-wrapper--mobile': is_mobile,
+                    'dc-contract-card-items-wrapper': !is_mobile,
                 })}
             >
                 <ContractCardItem header={getCardLabels().STAKE} className='positions-drawer-card__stake'>
@@ -48,8 +48,8 @@ const MultiplierCardBody = ({
                 >
                     <div
                         className={classNames({
-                            'contract-card--profit': +profit > 0,
-                            'contract-card--loss': +profit < 0,
+                            'dc-contract-card--profit': +profit > 0,
+                            'dc-contract-card--loss': +profit < 0,
                         })}
                     >
                         <Money amount={bid_price} currency={currency} />
@@ -83,7 +83,7 @@ const MultiplierCardBody = ({
                 </ContractCardItem>
             </div>
             <ContractCardItem
-                className='contract-card-item__total-profit-loss'
+                className='dc-contract-card-item__total-profit-loss'
                 header={getCardLabels().TOTAL_PROFIT_LOSS}
                 is_crypto={isCryptocurrency(currency)}
                 is_loss={+total_profit < 0}
@@ -91,8 +91,8 @@ const MultiplierCardBody = ({
             >
                 <Money amount={total_profit} currency={currency} />
                 <div
-                    className={classNames('contract-card__indicative--movement', {
-                        'contract-card__indicative--movement-complete': is_sold,
+                    className={classNames('dc-contract-card__indicative--movement', {
+                        'dc-contract-card__indicative--movement-complete': is_sold,
                     })}
                 >
                     {status === 'profit' && <Icon icon='IcProfit' />}
@@ -134,7 +134,7 @@ const ContractCardBody = ({
 
     return (
         <>
-            <div className='contract-card-items-wrapper'>
+            <div className='dc-contract-card-items-wrapper'>
                 <ContractCardItem
                     header={is_sold ? getCardLabels().PROFIT_LOSS : getCardLabels().POTENTIAL_PROFIT_LOSS}
                     is_crypto={isCryptocurrency(currency)}
@@ -143,8 +143,8 @@ const ContractCardBody = ({
                 >
                     <Money amount={profit} currency={currency} />
                     <div
-                        className={classNames('contract-card__indicative--movement', {
-                            'contract-card__indicative--movement-complete': is_sold,
+                        className={classNames('dc-contract-card__indicative--movement', {
+                            'dc-contract-card__indicative--movement-complete': is_sold,
                         })}
                     >
                         {status === 'profit' && <Icon icon='IcProfit' />}
@@ -154,8 +154,8 @@ const ContractCardBody = ({
                 <ContractCardItem header={is_sold ? getCardLabels().PAYOUT : getCardLabels().INDICATIVE_PRICE}>
                     <Money currency={currency} amount={sell_price || indicative} />
                     <div
-                        className={classNames('contract-card__indicative--movement', {
-                            'contract-card__indicative--movement-complete': is_sold,
+                        className={classNames('dc-contract-card__indicative--movement', {
+                            'dc-contract-card__indicative--movement-complete': is_sold,
                         })}
                     >
                         {status === 'profit' && <Icon icon='IcProfit' />}
@@ -170,7 +170,7 @@ const ContractCardBody = ({
                 </ContractCardItem>
             </div>
             <MobileWrapper>
-                <div className='contract-card__status'>
+                <div className='dc-contract-card__status'>
                     {is_sold ? (
                         <ResultStatusIcon
                             getCardLabels={getCardLabels}

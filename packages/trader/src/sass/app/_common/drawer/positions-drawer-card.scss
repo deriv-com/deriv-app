@@ -302,7 +302,7 @@
                 margin-left: 0.8rem;
             }
         }
-        .remaining-time {
+        .dc-remaining-time {
             border-radius: 0.4rem;
             font-size: 1.2rem;
             margin-left: 0.8rem;
@@ -369,6 +369,6 @@
 }
 
 /** @define remaining-time; */
-.remaining-time {
+.dc-remaining-time {
     display: inline;
 }

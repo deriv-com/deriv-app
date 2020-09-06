@@ -1,14 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, DesktopWrapper, MobileDialog, MobileWrapper, Popover, Div100vhContainer } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
-import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import PopoverMessageCheckbox from 'Modules/Trading/Components/Elements/popover-message-checkbox.jsx';
-import PositionsDrawerDialog from './positions-drawer-dialog.jsx';
+import ContractCardDialog from './contract-card-dialog.jsx';
 import ContractUpdateForm from './contract-update-form.jsx';
+import PopoverMessageCheckbox from '../../popover-message-checkbox';
+import Icon from '../../icon';
+import DesktopWrapper from '../../desktop-wrapper';
+import MobileDialog from '../../mobile-dialog';
+import MobileWrapper from '../../mobile-wrapper';
+import Popover from '../../popover';
+import Div100vhContainer from '../../div100vh-container';
+import './sass/contract-card-dialog.scss';
 
-class TogglePositionsDrawerDialog extends React.Component {
+class ToggleCardDialog extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -28,7 +32,7 @@ class TogglePositionsDrawerDialog extends React.Component {
         if (isMobile() && should_show_cancellation_warning && is_valid_to_cancel) {
             addToast({
                 key: 'deal_cancellation_active',
-                content: localize('Take profit and/or stop loss are not available while deal cancellation is active.'),
+                content: 'Take profit and/or stop loss are not available while deal cancellation is active.',
                 type: 'error',
             });
         }
@@ -67,11 +71,19 @@ class TogglePositionsDrawerDialog extends React.Component {
     };
 
     render() {
-        const { is_valid_to_cancel, should_show_cancellation_warning, toggleCancellationWarning } = this.props;
+        const {
+            addToast,
+            getCardLabels,
+            getContractById,
+            is_valid_to_cancel,
+            removeToast,
+            should_show_cancellation_warning,
+            toggleCancellationWarning,
+        } = this.props;
 
         const edit_icon = (
             <Icon
-                className='positions-drawer-dialog-toggle__icon'
+                className='dc-contract-card-dialog-toggle__icon'
                 icon='IcEdit'
                 color={is_valid_to_cancel && 'disabled'}
                 size={16}
@@ -89,23 +101,23 @@ class TogglePositionsDrawerDialog extends React.Component {
                     message={
                         <PopoverMessageCheckbox
                             defaultChecked={!should_show_cancellation_warning}
-                            message={localize(
+                            message={
                                 'Take profit and/or stop loss are not available while deal cancellation is active.'
-                            )}
+                            }
                             name='should_show_cancellation_warning'
                             onChange={() => toggleCancellationWarning()}
                         />
                     }
                 >
-                    <div className='positions-drawer-dialog-toggle__wrapper'>{edit_icon}</div>
+                    <div className='dc-contract-card-dialog-toggle__wrapper'>{edit_icon}</div>
                 </Popover>
             ) : (
-                <div className='positions-drawer-dialog-toggle__wrapper'>{edit_icon}</div>
+                <div className='dc-contract-card-dialog-toggle__wrapper'>{edit_icon}</div>
             );
 
         return (
             <React.Fragment>
-                <div ref={this.toggle_ref} className='positions-drawer-dialog-toggle' onClick={this.toggleDialog}>
+                <div ref={this.toggle_ref} className='dc-contract-card-dialog-toggle' onClick={this.toggleDialog}>
                     {is_valid_to_cancel ? toggle_wrapper : edit_icon}
                 </div>
                 <MobileWrapper>
@@ -116,12 +128,19 @@ class TogglePositionsDrawerDialog extends React.Component {
                         wrapper_classname='contract-update'
                     >
                         <Div100vhContainer className='contract-update__wrapper' height_offset='75px'>
-                            <ContractUpdateForm contract={this.contract} toggleDialog={this.toggleDialog} />
+                            <ContractUpdateForm
+                                addToast={addToast}
+                                getCardLabels={getCardLabels}
+                                getContractById={getContractById}
+                                removeToast={removeToast}
+                                contract={this.contract}
+                                toggleDialog={this.toggleDialog}
+                            />
                         </Div100vhContainer>
                     </MobileDialog>
                 </MobileWrapper>
                 <DesktopWrapper>
-                    <PositionsDrawerDialog
+                    <ContractCardDialog
                         ref={this.dialog_ref}
                         is_visible={this.state.is_visible}
                         left={this.state.left}
@@ -129,22 +148,24 @@ class TogglePositionsDrawerDialog extends React.Component {
                         toggle_ref={this.toggle_ref}
                         toggleDialog={this.toggleDialog}
                     >
-                        <ContractUpdateForm contract={this.contract} toggleDialog={this.toggleDialog} />
-                    </PositionsDrawerDialog>
+                        <ContractUpdateForm
+                            addToast={addToast}
+                            getCardLabels={getCardLabels}
+                            getContractById={getContractById}
+                            removeToast={removeToast}
+                            contract={this.contract}
+                            toggleDialog={this.toggleDialog}
+                        />
+                    </ContractCardDialog>
                 </DesktopWrapper>
             </React.Fragment>
         );
     }
 }
 
-PropTypes.TogglePositionsDrawerDialog = {
+PropTypes.ToggleCardDialog = {
     is_valid_to_cancel: PropTypes.bool,
     contract_id: PropTypes.string,
 };
 
-export default connect(({ modules, ui }) => ({
-    toggleCancellationWarning: ui.toggleCancellationWarning,
-    should_show_cancellation_warning: ui.should_show_cancellation_warning,
-    getContractById: modules.contract_trade.getContractById,
-    addToast: ui.addToast,
-}))(TogglePositionsDrawerDialog);
+export default ToggleCardDialog;

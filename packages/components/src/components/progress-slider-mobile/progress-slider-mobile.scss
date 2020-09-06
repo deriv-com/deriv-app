@@ -1,4 +1,8 @@
-.progress-slider-mobile {
+.dc-progress-slider-mobile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
     &__remaining-time {
         font-size: 1.2em;
         color: var(--text-general);

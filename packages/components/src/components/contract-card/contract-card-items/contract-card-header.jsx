@@ -38,16 +38,16 @@ const ContractCardHeader = ({
     return (
         <>
             <div
-                className={classNames('contract-card__grid', 'contract-card__grid-underlying-trade', {
-                    'contract-card__grid-underlying-trade--mobile': is_mobile && !multiplier,
-                    'contract-card__grid-underlying-trade--trader': !isBot(),
+                className={classNames('dc-contract-card__grid', 'dc-contract-card__grid-underlying-trade', {
+                    'dc-contract-card__grid-underlying-trade--mobile': is_mobile && !multiplier,
+                    'dc-contract-card__grid-underlying-trade--trader': !isBot(),
                 })}
             >
-                <div id='contract_card_underlying_label' className='contract-card__underlying-name'>
+                <div id='dc-contract_card_underlying_label' className='dc-contract-card__underlying-name'>
                     <Icon icon={underlying ? `IcUnderlying${underlying}` : 'IcUnknown'} width={40} size={32} />
-                    <span className='contract-card__symbol'>{display_name}</span>
+                    <span className='dc-contract-card__symbol'>{display_name}</span>
                 </div>
-                <div id='contract_card_type_label' className='contract-card__type'>
+                <div id='dc-contract_card_type_label' className='dc-contract-card__type'>
                     <ContractTypeCell
                         getContractTypeDisplay={getContractTypeDisplay}
                         is_high_low={isHighLow({ shortcode })}
@@ -61,13 +61,13 @@ const ContractCardHeader = ({
                             in={!!is_valid_to_sell}
                             timeout={250}
                             classNames={{
-                                enter: 'contract-card__sell-button--enter',
-                                enterDone: 'contract-card__sell-button--enter-done',
-                                exit: 'contract-card__sell-button--exit',
+                                enter: 'dc-contract-card__sell-button--enter',
+                                enterDone: 'dc-contract-card__sell-button--enter-done',
+                                exit: 'dc-contract-card__sell-button--exit',
                             }}
                             unmountOnExit
                         >
-                            <div className='contract-card__sell-button-mobile'>
+                            <div className='dc-contract-card__sell-button-mobile'>
                                 <Button
                                     id={`dc_contract_card_${id}_button`}
                                     className={classNames('dc-btn--sell', {
@@ -84,10 +84,10 @@ const ContractCardHeader = ({
                 </MobileWrapper>
             </div>
             <MobileWrapper>
-                <div className='progress-slider--completed' />
+                <div className='dc-progress-slider--completed' />
             </MobileWrapper>
             <DesktopWrapper>
-                {(!has_progress_slider || !!is_sold) && <div className='progress-slider--completed' />}
+                {(!has_progress_slider || !!is_sold) && <div className='dc-progress-slider--completed' />}
                 {has_progress_slider && !is_sold && (
                     <ProgressSlider
                         current_tick={current_tick}

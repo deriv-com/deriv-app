@@ -1,7 +1,9 @@
 import { localize } from '@deriv/translations';
 
 export const getCardLabels = () => ({
+    APPLY: localize('Apply'),
     STAKE: localize('Stake:'),
+    CLOSE: localize('Close'),
     CURRENT_STAKE: localize('Current stake:'),
     DEAL_CANCEL_FEE: localize('Deal cancel. fee:'),
     TAKE_PROFIT: localize('Take profit:'),
@@ -20,6 +22,7 @@ export const getCardLabels = () => ({
     DAYS: localize('Days'),
     DAY: localize('Day'),
     SELL: localize('Sell'),
+    SELL_CONTRACT: localize('Sell contract'),
 });
 
 export const getMarketNamesMap = () => ({

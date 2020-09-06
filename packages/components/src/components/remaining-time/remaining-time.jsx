@@ -14,7 +14,7 @@ const RemainingTime = ({ end_time = null, format, getCardLabels, start_time }) =
     }
     const is_zeroes = /^00:00$/.test(remaining_time);
 
-    return !is_zeroes && <div className='remaining-time'>{remaining_time}</div>;
+    return !is_zeroes && <div className='dc-remaining-time'>{remaining_time}</div>;
 };
 
 RemainingTime.propTypes = {

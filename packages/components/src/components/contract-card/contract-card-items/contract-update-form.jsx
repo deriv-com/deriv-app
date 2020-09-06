@@ -1,11 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from '@deriv/components';
-import { getCancellationPrice, getLimitOrderAmount, isDeepEqual, pick } from '@deriv/shared';
-import { localize } from '@deriv/translations';
-import InputWithCheckbox from 'App/Components/Form/InputField/input-with-checkbox.jsx';
-import { connect } from 'Stores/connect';
-import { getContractUpdateConfig } from 'Stores/Modules/Contract/Helpers/logic';
+import { getCancellationPrice, getContractUpdateConfig, getLimitOrderAmount, isDeepEqual, pick } from '@deriv/shared';
+import Button from '../../button';
+import InputWithCheckbox from '../../input-wth-checkbox';
 
 class ContractUpdateForm extends React.Component {
     componentWillUnmount() {
@@ -31,7 +28,7 @@ class ContractUpdateForm extends React.Component {
             has_contract_update_take_profit,
             contract_update_stop_loss,
             has_contract_update_stop_loss,
-        } = this.props;
+        } = this.props.contract;
 
         const { current_take_profit, current_stop_loss } = this.limit_order;
 
@@ -46,12 +43,12 @@ class ContractUpdateForm extends React.Component {
     }
 
     get error_messages() {
-        const { has_contract_update_take_profit, has_contract_update_stop_loss } = this.props;
+        const { has_contract_update_take_profit, has_contract_update_stop_loss } = this.props.contract;
 
         const {
             contract_update_stop_loss: stop_loss,
             contract_update_take_profit: take_profit,
-        } = this.props.validation_errors;
+        } = this.props.contract.validation_errors;
 
         return {
             take_profit: has_contract_update_take_profit ? take_profit : undefined,
@@ -76,7 +73,7 @@ class ContractUpdateForm extends React.Component {
 
     isStateUnchanged() {
         return isDeepEqual(
-            this.getStateToCompare(getContractUpdateConfig(this.props.contract_info)),
+            this.getStateToCompare(getContractUpdateConfig(this.props.contract.contract_info)),
             this.getStateToCompare(this.props)
         );
     }
@@ -100,14 +97,13 @@ class ContractUpdateForm extends React.Component {
     };
 
     render() {
+        const { addToast, removeToast, getCardLabels } = this.props;
         const {
-            addToast,
-            removeToast,
             contract_update_take_profit,
             has_contract_update_take_profit,
             contract_update_stop_loss,
             has_contract_update_stop_loss,
-        } = this.props;
+        } = this.props.contract;
         const { buy_price, currency, is_valid_to_cancel } = this.contract_info;
         const cancellation_price = getCancellationPrice(this.contract_info);
         const take_profit_input = (
@@ -120,7 +116,7 @@ class ContractUpdateForm extends React.Component {
                 is_single_currency={true}
                 is_negative_disabled={true}
                 defaultChecked={has_contract_update_take_profit}
-                label={localize('Take profit')}
+                label={getCardLabels().TAKE_PROFIT}
                 name='contract_update_take_profit'
                 onChange={this.onChange}
                 error_message_alignment='right'
@@ -139,7 +135,7 @@ class ContractUpdateForm extends React.Component {
                 error_messages={this.error_messages.stop_loss}
                 is_single_currency={true}
                 is_negative_disabled={true}
-                label={localize('Stop loss')}
+                label={getCardLabels().STOP_LOSS}
                 max_value={buy_price - cancellation_price}
                 name='contract_update_stop_loss'
                 onChange={this.onChange}
@@ -151,11 +147,11 @@ class ContractUpdateForm extends React.Component {
 
         return (
             <React.Fragment>
-                <div className='positions-drawer-dialog__input'>{take_profit_input}</div>
-                <div className='positions-drawer-dialog__input'>{stop_loss_input}</div>
-                <div className='positions-drawer-dialog__button'>
+                <div className='dc-contract-card-dialog__input'>{take_profit_input}</div>
+                <div className='dc-contract-card-dialog__input'>{stop_loss_input}</div>
+                <div className='dc-contract-card-dialog__button'>
                     <Button
-                        text={localize('Apply')}
+                        text={getCardLabels().APPLY}
                         onClick={this.onClick}
                         primary
                         is_disabled={
@@ -177,18 +173,4 @@ ContractUpdateForm.propTypes = {
     validation_errors: PropTypes.object,
 };
 
-export default connect(({ modules, ui }, props) => {
-    const contract = props.contract;
-    return {
-        addToast: ui.addToast,
-        removeToast: ui.removeToast,
-        getContractById: modules.contract_trade.getContractById,
-        updateLimitOrder: modules.contract_trade.updateLimitOrder,
-        contract_info: contract.contract_info,
-        validation_errors: contract.validation_errors,
-        contract_update_take_profit: contract.contract_update_take_profit,
-        contract_update_stop_loss: contract.contract_update_stop_loss,
-        has_contract_update_take_profit: contract.has_contract_update_take_profit,
-        has_contract_update_stop_loss: contract.has_contract_update_stop_loss,
-    };
-})(ContractUpdateForm);
+export default ContractUpdateForm;

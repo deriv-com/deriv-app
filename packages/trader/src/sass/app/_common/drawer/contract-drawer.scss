@@ -63,6 +63,11 @@ $header-height: 4em;
         display: flex;
         flex-direction: column;
     }
+    .dc-contract-card-dialog-toggle {
+        top: 97px;
+        right: 8px;
+        width: 108px;
+    }
 }
 
 /** @define .contract-card; weak */
@@ -103,7 +108,7 @@ $header-height: 4em;
                 margin-left: 0.8rem;
             }
         }
-        .remaining-time {
+        .dc-remaining-time {
             border-radius: 0.4rem;
             font-size: 1.2rem;
             margin-left: 0.8rem;
@@ -115,11 +120,6 @@ $header-height: 4em;
             @include mobile {
                 width: 100%;
             }
-        }
-        .positions-drawer-dialog-toggle {
-            top: 97px;
-            right: 6px;
-            width: 108px;
         }
     }
 }

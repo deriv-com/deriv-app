@@ -17,26 +17,26 @@ const ProgressSlider = ({
 }) => {
     const percentage = getTimePercentage(server_time, start_time, expiry_time);
     return (
-        <div className={classNames('progress-slider', className)}>
+        <div className={classNames('dc-progress-slider', className)}>
             {ticks_count ? (
                 <ProgressTicks current_tick={current_tick} getCardLabels={getCardLabels} ticks_count={ticks_count} />
             ) : (
                 <React.Fragment>
-                    <span className='progress-slider__remaining-time'>
+                    <span className='dc-progress-slider__remaining-time'>
                         <RemainingTime end_time={expiry_time} getCardLabels={getCardLabels} start_time={server_time} />
                     </span>
                     {is_loading || percentage < 1 ? (
-                        <div className='progress-slider__infinite-loader'>
-                            <div className='progress-slider__infinite-loader--indeterminate' />
+                        <div className='dc-progress-slider__infinite-loader'>
+                            <div className='dc-progress-slider__infinite-loader--indeterminate' />
                         </div>
                     ) : (
                         /* Calculate line width based on percentage of time left */
-                        <div className='progress-slider__track'>
+                        <div className='dc-progress-slider__track'>
                             <div
-                                className={classNames('progress-slider__line', {
-                                    'progress-slider__line--green': percentage >= 50,
-                                    'progress-slider__line--orange': percentage < 50 && percentage >= 20,
-                                    'progress-slider__line--red': percentage < 20,
+                                className={classNames('dc-progress-slider__line', {
+                                    'dc-progress-slider__line--green': percentage >= 50,
+                                    'dc-progress-slider__line--orange': percentage < 50 && percentage >= 20,
+                                    'dc-progress-slider__line--red': percentage < 20,
                                 })}
                                 style={{ width: `${percentage}%` }}
                             />

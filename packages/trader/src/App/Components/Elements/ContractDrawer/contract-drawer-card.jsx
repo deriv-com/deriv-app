@@ -3,13 +3,15 @@ import React from 'react';
 import { DesktopWrapper, MobileWrapper, Collapsible, ContractCard } from '@deriv/components';
 import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
 import { getEndTime } from 'Stores/Modules/Contract/Helpers/logic';
-import CardFooter from './contract-drawer-card-footer.jsx';
+import { connect } from 'Stores/connect';
 import { SwipeableContractDrawer } from './swipeable-components.jsx';
 
 const ContractDrawerCard = ({
+    addToast,
     contract_info,
     contract_update,
     currency,
+    getContractById,
     is_mobile,
     is_multiplier,
     is_sell_requested,
@@ -18,40 +20,42 @@ const ContractDrawerCard = ({
     onClickSell,
     onSwipedUp,
     onSwipedDown,
+    removeToast,
     server_time,
+    should_show_cancellation_warning,
     status,
+    toggleCancellationWarning,
     toggleContractAuditDrawer,
+    updateLimitOrder,
 }) => {
     const { profit } = contract_info;
     const is_sold = !!getEndTime(contract_info);
 
-    const card_footer = (
-        <CardFooter
-            contract_info={contract_info}
-            is_multiplier={is_multiplier}
-            is_sell_requested={is_sell_requested}
-            onClickCancel={onClickCancel}
-            onClickSell={onClickSell}
-        />
-    );
-
     const contract_card = (
         <ContractCard
-            card_footer={card_footer}
+            addToast={addToast}
             contract_info={contract_info}
             contract_update={contract_update}
             currency={currency}
             getCardLabels={getCardLabels}
+            getContractById={getContractById}
             getContractTypeDisplay={getContractTypeDisplay}
             is_mobile={is_mobile}
             is_multiplier={is_multiplier}
             is_positions={false}
+            is_sell_requested={is_sell_requested}
             is_sold={is_sold}
+            onClickCancel={onClickCancel}
+            onClickSell={onClickSell}
             profit_loss={profit}
+            removeToast={removeToast}
             server_time={server_time}
-            should_show_profit_loss_overlay={false}
+            should_show_cancellation_warning={should_show_cancellation_warning}
+            should_show_profit_loss_overlay={is_mobile}
             should_show_result_overlay={false}
             status={status}
+            toggleCancellationWarning={toggleCancellationWarning}
+            updateLimitOrder={updateLimitOrder}
         />
     );
 
@@ -83,4 +87,11 @@ ContractDrawerCard.propTypes = {
     status: PropTypes.string,
 };
 
-export default ContractDrawerCard;
+export default connect(({ modules, ui }) => ({
+    addToast: ui.addToast,
+    getContractById: modules.contract_trade.getContractById,
+    removeToast: ui.removeToast,
+    should_show_cancellation_warning: ui.should_show_cancellation_warning,
+    toggleCancellationWarning: ui.toggleCancellationWarning,
+    updateLimitOrder: modules.contract_trade.updateLimitOrder,
+}))(ContractDrawerCard);

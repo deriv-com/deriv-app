@@ -1,4 +1,4 @@
-.contract-card {
+.dc-contract-card {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -69,6 +69,11 @@
             align-self: flex-start;
             line-height: 1.5;
         }
+        &-items {
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 0.8rem 0.4rem;
+            padding: 0.8rem 0;
+        }
     }
     &__result {
         position: absolute;
@@ -97,7 +102,7 @@
         &:hover {
             background: 0 !important;
 
-            .result__caption {
+            .dc-result__caption {
                 opacity: 0;
             }
         }
@@ -303,8 +308,8 @@
             align-items: center;
             margin-top: 0.8rem;
 
-            .contract-card-item__header,
-            .contract-card-item__body {
+            .dc-contract-card-item__header,
+            .dc-contract-card-item__body {
                 font-size: 1.4rem;
                 line-height: 2rem;
                 align-self: center;
@@ -317,12 +322,44 @@
                     margin-left: 0.2rem;
                 }
             }
+        }
+    }
+    &__sell-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.25s ease, opacity 0.25s linear;
+        padding-top: 0.8rem;
+        margin-top: 0.8rem;
+        border-top: 1px solid var(--general-section-1);
 
-            &-label,
-            &-value {
-                font-size: 1.4rem;
-                line-height: 2rem;
+        &--positions {
+            padding: 0.8rem 0;
+            margin: 0 0.8rem;
+        }
+        &--enter-done {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        &--enter,
+        &--exit {
+            opacity: 0;
+            transform: translateY(-8px);
+        }
+        &--has-cancel-btn {
+            justify-content: space-between;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+
+            .dc-btn--cancel {
+                margin-left: 0.8rem;
             }
+        }
+        .dc-remaining-time {
+            border-radius: 0.4rem;
+            font-size: 1.2rem;
+            margin-left: 0.8rem;
+            padding-top: 0.2rem;
         }
     }
     &__indicative--movement {
@@ -385,7 +422,7 @@
 }
 
 /** @define contract-type */
-.contract-type {
+.dc-contract-type {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -426,6 +463,6 @@
 }
 
 /** @define remaining-time; */
-.remaining-time {
+.dc-remaining-time {
     display: inline;
 }

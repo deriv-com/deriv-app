@@ -3,13 +3,15 @@ import React from 'react';
 import { ContractCard } from '@deriv/components';
 import { getContractPath, isMultiplierContract } from '@deriv/shared';
 import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
-import CardFooter from './positions-drawer-card-footer.jsx';
+import { connect } from 'Stores/connect';
 
 const PositionsDrawerCard = ({
+    addToast,
     className,
     contract_info,
     contract_update,
     currency,
+    getContractById,
     is_mobile,
     is_sell_requested,
     is_unsupported,
@@ -20,49 +22,51 @@ const PositionsDrawerCard = ({
     onClickRemove,
     onMouseEnter,
     onMouseLeave,
+    removeToast,
     result,
     server_time,
+    should_show_cancellation_warning,
     show_transition,
     status,
+    toggleCancellationWarning,
     toggleUnsupportedContractModal,
+    updateLimitOrder,
 }) => {
     const is_multiplier = isMultiplierContract(contract_info.contract_type);
 
-    const card_footer = (
-        <CardFooter
-            contract_info={contract_info}
-            is_multiplier={is_multiplier}
-            is_sell_requested={is_sell_requested}
-            onClickCancel={onClickCancel}
-            onClickSell={onClickSell}
-        />
-    );
-
     return (
         <ContractCard
-            card_footer={card_footer}
+            addToast={addToast}
             className={className}
             contract_info={contract_info}
             contract_update={contract_update}
             currency={currency}
             getCardLabels={getCardLabels}
+            getContractById={getContractById}
             getContractPath={getContractPath}
             getContractTypeDisplay={getContractTypeDisplay}
             is_link_disabled={is_link_disabled}
             is_multiplier={is_multiplier}
             is_mobile={is_mobile}
             is_positions={true}
+            is_sell_requested={is_sell_requested}
             is_unsupported={is_unsupported}
+            onClickCancel={onClickCancel}
             onClickRemove={onClickRemove}
+            onClickSell={onClickSell}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
             profit_loss={profit_loss}
+            removeToast={removeToast}
             result={result}
             server_time={server_time}
+            should_show_cancellation_warning={should_show_cancellation_warning}
             should_show_result_overlay={true}
             show_transition={show_transition}
             status={status}
+            toggleCancellationWarning={toggleCancellationWarning}
             toggleUnsupportedContractModal={toggleUnsupportedContractModal}
+            updateLimitOrder={updateLimitOrder}
         />
     );
 };
@@ -78,6 +82,7 @@ PositionsDrawerCard.propTypes = {
     id: PropTypes.number,
     indicative: PropTypes.number,
     is_loading: PropTypes.bool,
+    is_mobile: PropTypes.bool,
     is_sell_requested: PropTypes.bool,
     is_unsupported: PropTypes.bool,
     is_valid_to_sell: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
@@ -91,4 +96,12 @@ PositionsDrawerCard.propTypes = {
     type: PropTypes.string,
 };
 
-export default PositionsDrawerCard;
+export default connect(({ modules, ui }) => ({
+    toggleCancellationWarning: ui.toggleCancellationWarning,
+    should_show_cancellation_warning: ui.should_show_cancellation_warning,
+    getContractById: modules.contract_trade.getContractById,
+    addToast: ui.addToast,
+    is_mobile: ui.is_mobile,
+    removeToast: ui.removeToast,
+    updateLimitOrder: modules.contract_trade.updateLimitOrder,
+}))(PositionsDrawerCard);

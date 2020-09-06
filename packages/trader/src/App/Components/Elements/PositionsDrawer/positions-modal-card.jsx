@@ -11,14 +11,15 @@ import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import { getContractTypeDisplay, getCardLabels } from 'Constants/contract';
 import ContractTypeCell from './contract-type-cell.jsx';
 import ResultMobile from './result-mobile.jsx';
-import CardFooter from './PositionsDrawerCard/positions-drawer-card-footer.jsx';
 
 const PositionsModalCard = ({
+    addToast,
     className,
     contract_info,
     contract_update,
     currency,
     current_tick,
+    getContractById,
     id,
     indicative,
     is_loading,
@@ -30,13 +31,17 @@ const PositionsModalCard = ({
     onClickSell,
     profit_loss,
     onClickCancel,
+    removeToast,
     result,
     sell_price,
     server_time,
+    should_show_cancellation_warning,
     status,
+    toggleCancellationWarning,
     togglePositions,
     toggleUnsupportedContractModal,
     type,
+    updateLimitOrder,
 }) => {
     const loader_el = (
         <div className='positions-modal-card__content-loader'>
@@ -181,31 +186,28 @@ const PositionsModalCard = ({
     const contract_multiplier_el = (
         <React.Fragment>
             <ContractCard
+                addToast={addToast}
                 contract_info={contract_info}
                 contract_update={contract_update}
                 currency={currency}
                 getCardLabels={getCardLabels}
+                getContractById={getContractById}
                 getContractTypeDisplay={getContractTypeDisplay}
                 id={id}
                 is_mobile={is_mobile}
                 is_multiplier={is_multiplier}
                 is_positions={false}
+                onClickCancel={onClickCancel}
+                removeToast={removeToast}
                 server_time={server_time}
+                should_show_cancellation_warning={should_show_cancellation_warning}
                 should_show_result_overlay={false}
                 status={status}
+                toggleCancellationWarning={toggleCancellationWarning}
+                updateLimitOrder={updateLimitOrder}
             />
         </React.Fragment>
     );
-
-    const contract_footer_el = is_multiplier ? (
-        <CardFooter
-            contract_info={contract_info}
-            is_multiplier={is_multiplier}
-            is_sell_requested={is_sell_requested}
-            onClickCancel={onClickCancel}
-            onClickSell={onClickSell}
-        />
-    ) : null;
 
     const contract_el = is_multiplier ? contract_multiplier_el : contract_options_el;
 
@@ -229,7 +231,6 @@ const PositionsModalCard = ({
                     >
                         {contract_info.underlying ? contract_el : loader_el}
                     </BinaryLink>
-                    {contract_footer_el}
                 </React.Fragment>
             )}
         </div>
@@ -264,7 +265,13 @@ PositionsModalCard.propTypes = {
     type: PropTypes.string,
 };
 
-export default connect(({ common, ui }) => ({
-    server_time: common.server_time,
+export default connect(({ common, ui, modules }) => ({
+    addToast: ui.addToast,
+    getContractById: modules.contract_trade.getContractById,
     is_mobile: ui.is_mobile,
+    removeToast: ui.removeToast,
+    server_time: common.server_time,
+    should_show_cancellation_warning: ui.should_show_cancellation_warning,
+    toggleCancellationWarning: ui.toggleCancellationWarning,
+    updateLimitOrder: modules.contract_trade.updateLimitOrder,
 }))(PositionsModalCard);

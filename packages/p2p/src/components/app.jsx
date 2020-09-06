@@ -392,6 +392,7 @@ class App extends React.Component {
                     resetNicknameErrorState: this.resetNicknameErrorState,
                     is_mobile,
                     poi_url,
+                    setPoiStatus: poi => this.setState({ poi_status: poi }),
                 }}
             >
                 <main className={classNames('p2p-cashier', className)}>

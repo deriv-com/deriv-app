@@ -38,11 +38,9 @@
             text-align: center;
         }
     }
-    &__icon {
-        cursor: pointer;
-    }
     .dc-icon {
         top: 25%;
+        cursor: pointer;
     }
     &__picker {
         position: absolute;

@@ -170,16 +170,23 @@ class AddressDetails extends React.Component {
                                                                 <SelectNative
                                                                     placeholder={localize('Please select')}
                                                                     label={localize('State/Province')}
-                                                                    value={values.address_state}
+                                                                    value={
+                                                                        this.state.address_state_to_display
+                                                                            ? this.state.address_state_to_display
+                                                                            : values.address_state
+                                                                    }
                                                                     list_items={this.props.states_list}
                                                                     use_text={true}
-                                                                    onChange={e =>
+                                                                    onChange={e => {
                                                                         setFieldValue(
                                                                             'address_state',
                                                                             e.target.value,
                                                                             true
-                                                                        )
-                                                                    }
+                                                                        );
+                                                                        this.setState({
+                                                                            address_state_to_display: '',
+                                                                        });
+                                                                    }}
                                                                 />
                                                             </MobileWrapper>
                                                         </>

@@ -42,11 +42,11 @@ const BuySell = ({ navigate }) => {
         navigate('orders', { order_info, nav });
     };
 
-    const setSelectedAd = selected_ad => {
+    const setSelectedAd = selected_advert => {
         if (!is_advertiser) {
             setShowVerification(true);
         } else {
-            setSelectedAdState(selected_ad);
+            setSelectedAdState(selected_advert);
             setShowPopup(true);
         }
     };
@@ -90,5 +90,3 @@ BuySell.propTypes = {
 };
 
 export default BuySell;
-
-BuySell.contextType = Dp2pContext;

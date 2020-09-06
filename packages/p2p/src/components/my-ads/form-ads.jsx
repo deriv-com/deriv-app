@@ -295,9 +295,7 @@ const FormAds = ({ handleShowForm }) => {
                                                         type='text'
                                                         error={touched.price_rate && errors.price_rate}
                                                         label={localize('Fixed rate (1 USD)')}
-                                                        hint={localize('Per 1 {{currency}}', {
-                                                            currency: currency,
-                                                        })}
+                                                        hint={localize('Per 1 {{currency}}', { currency })}
                                                         className='p2p-my-ads__form-field'
                                                         trailing_icon={
                                                             <span className='p2p-my-ads__form-field--trailing'>
@@ -446,7 +444,5 @@ const FormAds = ({ handleShowForm }) => {
 FormAds.propTypes = {
     handleShowForm: PropTypes.func,
 };
-
-FormAds.contextType = Dp2pContext;
 
 export default FormAds;

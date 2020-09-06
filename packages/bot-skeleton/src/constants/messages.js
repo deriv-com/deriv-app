@@ -14,6 +14,7 @@ export const unrecoverable_errors = [
     'NoMFProfessionalClient',
     'AuthorizationRequired',
     'InvalidToken',
+    'DailyLossLimitExceeded',
 ];
 
 export const message_types = Object.freeze({
@@ -28,7 +29,7 @@ export const error_types = Object.freeze({
 });
 
 export const log_types = Object.freeze({
-    LOAD_BLOCK: 'block_loaded',
+    LOAD_BLOCK: 'load_block',
     PURCHASE: 'purchase',
     SELL: 'sell',
     NOT_OFFERED: 'not_offered',

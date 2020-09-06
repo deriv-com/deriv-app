@@ -194,6 +194,7 @@ import './common/ic-website.svg';
 import './common/ic-wip.svg';
 import './common/ic-zoom-in.svg';
 import './common/ic-zoom-out.svg';
+import './common/ic-adjustment.svg';
 import './contract/ic-contract-barrier.svg';
 import './contract/ic-contract-buy-price.svg';
 import './contract/ic-contract-commission.svg';

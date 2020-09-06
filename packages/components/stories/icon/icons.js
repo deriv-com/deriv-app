@@ -194,6 +194,7 @@ export const icons = {
         'IcWip',
         'IcZoomIn',
         'IcZoomOut',
+        'IcAdjustment',
     ],
     contract: [
         'IcContractBarrier',

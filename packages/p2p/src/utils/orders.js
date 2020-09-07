@@ -77,7 +77,7 @@ export const getExtendedOrderDetails = (order_details, loginid) => {
     const is_active_order = is_pending_order || is_buyer_confirmed_order || is_expired_order;
     const is_inactive_order = is_buyer_cancelled_order || is_refunded_order || is_completed_order;
 
-    // Status highlighting (alert = red, danger = yellow)
+    // Status highlighting (alert = yellow, danger = red)
     const should_highlight_alert = (is_buy_ad && is_buyer_confirmed_order) || (!is_buy_ad && is_pending_order);
     const should_highlight_danger = (is_buy_ad && is_pending_order) || (!is_buy_ad && is_buyer_confirmed_order);
 

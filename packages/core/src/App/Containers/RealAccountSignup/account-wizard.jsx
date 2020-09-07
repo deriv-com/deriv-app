@@ -69,42 +69,41 @@ class AccountWizard extends React.Component {
         this.props.fetchStatesList();
         const { cancel, promise } = makeCancellablePromise(this.props.fetchResidenceList());
         this.cancel = cancel;
+        const { cancel: cancelFinancialAssessment, promise: financial_assessment_promise } = makeCancellablePromise(
+            this.props.fetchFinancialAssessment()
+        );
+        this.cancelFinancialAssessment = cancelFinancialAssessment;
 
-        promise
-            .then(() => {
-                this.setState({
-                    items: getItems(this.props),
-                    mounted: false,
-                });
-
-                if (!this.residence_list?.length) {
-                    const items = this.state.items.slice(0);
-                    this.getCountryCode().then(phone_idd => {
-                        if ('phone' in items[1].form_value) {
-                            items[1].form_value.phone = items[1].form_value.phone || phone_idd || '';
-                            this.setState(items);
-                        }
-                    });
-                }
-
-                const previous_data = this.fetchFromStorage();
-                if (previous_data.length > 0) {
-                    const items = this.state.items.slice(0);
-                    previous_data.forEach((item, index) => {
-                        if (item instanceof Object) {
-                            items[index].form_value = item;
-                        }
-                    });
-                    this.setState({
-                        items,
-                        step: 1,
-                    });
-                }
-            })
-            // eslint-disable-next-line no-unused-vars
-            .catch(error => {
-                // Cancelled. no op.
+        Promise.all([promise, financial_assessment_promise]).then(() => {
+            this.setState({
+                items: getItems(this.props),
+                mounted: false,
             });
+
+            if (!this.residence_list?.length) {
+                const items = this.state.items.slice(0);
+                this.getCountryCode().then(phone_idd => {
+                    if ('phone' in items[1].form_value) {
+                        items[1].form_value.phone = items[1].form_value.phone || phone_idd || '';
+                        this.setState(items);
+                    }
+                });
+            }
+
+            const previous_data = this.fetchFromStorage();
+            if (previous_data.length > 0) {
+                const items = this.state.items.slice(0);
+                previous_data.forEach((item, index) => {
+                    if (item instanceof Object) {
+                        items[index].form_value = item;
+                    }
+                });
+                this.setState({
+                    items,
+                    step: 1,
+                });
+            }
+        });
     }
 
     fetchFromStorage = () => {
@@ -194,6 +193,7 @@ class AccountWizard extends React.Component {
     prevStep = () => {
         if (this.state.step - 1 < 0) {
             this.cancel();
+            this.cancelFinancialAssessment();
             this.props.onClose();
             return;
         }
@@ -353,4 +353,7 @@ export default connect(({ client, ui }) => ({
     fetchStatesList: client.fetchStatesList,
     fetchResidenceList: client.fetchResidenceList,
     refreshNotifications: client.refreshNotifications,
+    fetchFinancialAssessment: client.fetchFinancialAssessment,
+    needs_financial_assessment: client.needs_financial_assessment,
+    financial_assessment: client.financial_assessment,
 }))(AccountWizard);

@@ -8,22 +8,23 @@ import BuySellTableContent from './buy-sell-table-content.jsx';
 import PageReturn from '../page-return/page-return.jsx';
 import Verification from '../verification/verification.jsx';
 import AdvertiserPage from '../advertiser-page/advertiser-page.jsx';
+import { buy_sell } from '../../constants/buy-sell';
 import './buy-sell.scss';
 
 const buy_sell_filters = [
     {
         text: localize('Buy'),
-        value: 'buy',
+        value: buy_sell.BUY,
     },
     {
         text: localize('Sell'),
-        value: 'sell',
+        value: buy_sell.SELL,
     },
 ];
 
 const BuySell = ({ navigate }) => {
     const { is_advertiser } = React.useContext(Dp2pContext);
-    const [table_type, setTableType] = React.useState('buy');
+    const [table_type, setTableType] = React.useState(buy_sell.BUY);
     const [selected_ad, setSelectedAd] = React.useState({});
     const [show_advertiser_page, setShowAdvertiserPage] = React.useState(false);
     const [show_popup, setShowPopup] = React.useState(false);
@@ -99,7 +100,7 @@ const BuySell = ({ navigate }) => {
 
             <BuySellTableContent
                 key={table_type}
-                is_buy={table_type === 'buy'}
+                is_buy={table_type === buy_sell.BUY}
                 setSelectedAd={setSelectedAdvert}
                 showAdvertiserPage={showAdvertiserPage}
             />

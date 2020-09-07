@@ -11,7 +11,6 @@ import OrderDetailsTimerBlock from './order-details-timer-block.jsx';
 import OrderActionsBlock from './order-actions-block.jsx';
 import OrderDetailsResultMessage from './order-details-result-message.jsx';
 import Popup from '../popup.jsx';
-
 import './order-details.scss';
 
 const OrderDetails = ({ order_details, chat_info }) => {

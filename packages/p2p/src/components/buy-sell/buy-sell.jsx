@@ -7,6 +7,7 @@ import Popup from './popup.jsx';
 import BuySellTableContent from './buy-sell-table-content.jsx';
 import PageReturn from '../page-return/page-return.jsx';
 import Verification from '../verification/verification.jsx';
+import AdvertiserPage from '../advertiser-page/advertiser-page.jsx';
 import './buy-sell.scss';
 
 const buy_sell_filters = [
@@ -23,9 +24,12 @@ const buy_sell_filters = [
 const BuySell = ({ navigate }) => {
     const { is_advertiser } = React.useContext(Dp2pContext);
     const [table_type, setTableType] = React.useState('buy');
-    const [selected_ad, setSelectedAdState] = React.useState({});
+    const [selected_ad, setSelectedAd] = React.useState({});
+    const [show_advertiser_page, setShowAdvertiserPage] = React.useState(false);
     const [show_popup, setShowPopup] = React.useState(false);
     const [show_verification, setShowVerification] = React.useState(false);
+
+    const hideAdvertiserPage = () => setShowAdvertiserPage(false);
 
     const hideVerification = () => setShowVerification(false);
 
@@ -42,22 +46,42 @@ const BuySell = ({ navigate }) => {
         navigate('orders', { order_info, nav });
     };
 
-    const setSelectedAd = selected_advert => {
+    const setSelectedAdvert = selected_advert => {
         if (!is_advertiser) {
             setShowVerification(true);
         } else {
-            setSelectedAdState(selected_advert);
+            setSelectedAd(selected_advert);
             setShowPopup(true);
         }
     };
 
-    if (show_verification)
+    const showAdvertiserPage = selected_advert => {
+        setSelectedAd(selected_advert);
+        setShowAdvertiserPage(true);
+    };
+
+    const showVerification = () => {
+        hideAdvertiserPage();
+        setShowVerification(true);
+    };
+
+    if (show_verification) {
         return (
             <>
                 <PageReturn onClick={hideVerification} page_title={localize('Verification')} />
                 <Verification />
             </>
         );
+    }
+
+    if (show_advertiser_page) {
+        return (
+            <>
+                <PageReturn onClick={hideAdvertiserPage} page_title={localize("Advertiser's page")} />
+                <AdvertiserPage navigate={navigate} selected_ad={selected_ad} showVerification={showVerification} />
+            </>
+        );
+    }
 
     return (
         <div className='buy-sell'>
@@ -72,7 +96,14 @@ const BuySell = ({ navigate }) => {
                     has_rounded_button
                 />
             </div>
-            <BuySellTableContent key={table_type} is_buy={table_type === 'buy'} setSelectedAd={setSelectedAd} />
+
+            <BuySellTableContent
+                key={table_type}
+                is_buy={table_type === 'buy'}
+                setSelectedAd={setSelectedAdvert}
+                showAdvertiserPage={showAdvertiserPage}
+            />
+
             {show_popup && (
                 <div className='buy-sell__dialog'>
                     <Dialog is_visible={show_popup}>

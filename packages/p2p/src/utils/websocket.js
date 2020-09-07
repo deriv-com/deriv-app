@@ -1,7 +1,7 @@
 import { setCurrencies, formatMoney, getCurrencies, isEmptyObject, getPropertyValue } from '@deriv/shared';
-
 import { localize } from 'Components/i18next';
 import { convertToMillis, getFormattedDateString } from 'Utils/date-time';
+import { buy_sell } from '../constants/buy-sell';
 
 let ws, transaction_currency_decimals;
 
@@ -102,9 +102,9 @@ const getModifiedP2POrder = response => {
     const price_rate = +response.rate;
     const transaction_amount = +response.price;
     const type = response.is_incoming ? getPropertyValue(response, ['advert_details', 'type']) : response.type;
-    const is_buyer = type === 'buy';
+    const is_buyer = type === buy_sell.BUY;
     const advertiser_props =
-        response.type === 'buy'
+        response.type === buy_sell.BUY
             ? is_buyer
                 ? 'advertiser_details'
                 : 'client_details'

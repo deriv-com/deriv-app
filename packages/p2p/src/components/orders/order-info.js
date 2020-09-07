@@ -1,4 +1,5 @@
 import { localize } from 'Components/i18next';
+import { buy_sell } from '../../constants/buy-sell';
 
 export const orderToggleIndex = {
     ACTIVE: 'active',
@@ -62,7 +63,7 @@ export default class OrderInfo {
     }
 
     get is_buyer() {
-        return this.type === 'buy';
+        return this.type === buy_sell.BUY;
     }
 
     // TODO: Determine is_active from active flag in p2p_order_list

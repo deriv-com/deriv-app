@@ -10,6 +10,7 @@ import { height_constants } from 'Utils/height_constants';
 import { requestWS } from 'Utils/websocket';
 import { RowComponent, BuySellRowLoader } from './row.jsx';
 import { BuySellTable } from './buy-sell-table.jsx';
+import { buy_sell } from '../../constants/buy-sell';
 
 const BuySellTableContent = ({ is_buy, setSelectedAd, showAdvertiserPage }) => {
     const { list_item_limit } = React.useContext(Dp2pContext);
@@ -37,7 +38,7 @@ const BuySellTableContent = ({ is_buy, setSelectedAd, showAdvertiserPage }) => {
         return new Promise(resolve => {
             requestWS({
                 p2p_advert_list: 1,
-                counterparty_type: is_buy ? 'buy' : 'sell',
+                counterparty_type: is_buy ? buy_sell.BUY : buy_sell.SELL,
                 offset: start_idx,
                 limit: list_item_limit,
             }).then(response => {

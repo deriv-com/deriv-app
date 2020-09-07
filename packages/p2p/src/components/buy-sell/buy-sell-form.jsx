@@ -9,12 +9,13 @@ import { requestWS } from 'Utils/websocket';
 import { textValidator, lengthValidator } from 'Utils/validations';
 import IconClose from 'Assets/icon-close.jsx';
 import FormError from '../form/error.jsx';
+import { buy_sell } from '../../constants/buy-sell';
 
 const BuySellForm = ({ ad, handleClose, handleConfirm }) => {
     const [total_amount, setTotalAmount] = React.useState(
         formatMoney(ad.transaction_currency, ad.min_available * ad.price_rate, true, ad.transaction_currency_decimals)
     );
-    const is_buyer = ad.type === 'buy';
+    const is_buyer = ad.type === buy_sell.BUY;
     const initial_values = {
         amount: ad.min_available,
         ...(!is_buyer && {
@@ -30,7 +31,7 @@ const BuySellForm = ({ ad, handleClose, handleConfirm }) => {
             p2p_order_create: 1,
             advert_id: ad.id,
             amount: values.amount,
-            ...(ad.type === 'sell' && {
+            ...(ad.type === buy_sell.sell && {
                 contact_info: values.contact_info,
                 payment_info: values.payment_info,
             }),
@@ -56,7 +57,7 @@ const BuySellForm = ({ ad, handleClose, handleConfirm }) => {
                 v => countDecimalPlaces(v) <= ad.offer_currency_decimals,
             ],
         };
-        if (ad.type === 'sell') {
+        if (ad.type === buy_sell.SELL) {
             validations.contact_info = [v => !!v, v => textValidator(v), v => lengthValidator(v)];
             validations.payment_info = [v => !!v, v => textValidator(v), v => lengthValidator(v)];
         }

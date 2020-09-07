@@ -6,6 +6,7 @@ import Dp2pContext from 'Components/context/dp2p-context';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { requestWS } from 'Utils/websocket';
 import Popup from '../buy-sell/popup.jsx';
+import { buy_sell } from '../../constants/buy-sell';
 import { localize } from '../i18next';
 import './advertiser-page.scss';
 
@@ -38,24 +39,13 @@ const RowComponent = React.memo(({ data, is_buy_advert, showAdPopup, style }) =>
 
 RowComponent.displayName = 'RowComponent';
 
-const buy_sell_tabs = {
-    BUY: {
-        text: localize('Buy'),
-        value: 'buy',
-    },
-    SELL: {
-        text: localize('Sell'),
-        value: 'sell',
-    },
-};
-
 const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
     const { is_advertiser } = React.useContext(Dp2pContext);
     const { advertiser_name, advertiser_id } = selected_ad;
     const [active_index, setActiveIndex] = React.useState(0);
     const [ad, setAd] = React.useState(null);
     const [adverts, setAdverts] = React.useState([]);
-    const [counterparty_type, setCounterpartyType] = React.useState(buy_sell_tabs.BUY.value);
+    const [counterparty_type, setCounterpartyType] = React.useState(buy_sell.BUY);
     const height_values = [
         height_constants.screen,
         height_constants.core_header,
@@ -122,9 +112,9 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
     const handleTabItemClick = idx => {
         setActiveIndex(idx);
         if (idx === 0) {
-            setCounterpartyType(buy_sell_tabs.BUY.value);
+            setCounterpartyType(buy_sell.BUY);
         } else {
-            setCounterpartyType(buy_sell_tabs.SELL.value);
+            setCounterpartyType(buy_sell.SELL);
         }
     };
 
@@ -138,11 +128,7 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
     };
 
     const Row = props => (
-        <RowComponent
-            {...props}
-            is_buy_advert={counterparty_type === buy_sell_tabs.BUY.value}
-            showAdPopup={showAdPopup}
-        />
+        <RowComponent {...props} is_buy_advert={counterparty_type === buy_sell.BUY} showAdPopup={showAdPopup} />
     );
 
     const showAdPopup = advert => {
@@ -234,8 +220,8 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
                         top
                         header_fit_content
                     >
-                        <div label={buy_sell_tabs.BUY.text} />
-                        <div label={buy_sell_tabs.SELL.text} />
+                        <div label={localize('Buy')} />
+                        <div label={localize('Sell')} />
                     </Tabs>
                     <div className='advertiser-details__adverts-table'>
                         <Table>

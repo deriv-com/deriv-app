@@ -11,6 +11,7 @@ import { countDecimalPlaces } from 'Utils/string';
 import { textValidator, lengthValidator } from 'Utils/validations';
 import { requestWS } from 'Utils/websocket';
 import AdSummary from './my-ads-summary.jsx';
+import { buy_sell } from '../../constants/buy-sell';
 
 const FormAds = ({ handleShowForm }) => {
     const { currency, local_currency_config } = React.useContext(Dp2pContext);
@@ -100,7 +101,7 @@ const FormAds = ({ handleShowForm }) => {
             ],
         };
 
-        if (values.type === 'sell') {
+        if (values.type === buy_sell.SELL) {
             validations.contact_info = [v => !!v, v => textValidator(v), v => lengthValidator(v)];
             validations.payment_info = [v => !!v, v => textValidator(v), v => lengthValidator(v)];
         }
@@ -216,13 +217,13 @@ const FormAds = ({ handleShowForm }) => {
                         payment_info: '',
                         // payment_method: 'bank_transfer',
                         price_rate: '',
-                        type: 'buy',
+                        type: buy_sell.BUY,
                     }}
                     onSubmit={handleSubmit}
                     validate={validateFormAds}
                 >
                     {({ isSubmitting, errors, handleChange, touched, isValid, values }) => {
-                        const is_sell_ad = values.type === 'sell';
+                        const is_sell_ad = values.type === buy_sell.SELL;
                         return (
                             <div className='p2p-my-ads__form'>
                                 <Form noValidate>
@@ -245,8 +246,8 @@ const FormAds = ({ handleShowForm }) => {
                                                         is_align_text_left
                                                         className='p2p-my-ads__form-field'
                                                         list={[
-                                                            { text: 'Buy', value: 'buy' },
-                                                            { text: 'Sell', value: 'sell' },
+                                                            { text: 'Buy', value: buy_sell.BUY },
+                                                            { text: 'Sell', value: buy_sell.SELL },
                                                         ]}
                                                         error={touched.type && errors.type}
                                                     />

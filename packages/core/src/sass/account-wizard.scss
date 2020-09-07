@@ -173,7 +173,7 @@
                 display: flex;
                 flex-direction: column;
                 flex-grow: 1;
-                justify-content: space-around;
+                justify-content: center;
                 align-items: center;
 
                 &--is-header {
@@ -200,6 +200,9 @@
                         margin-top: 0;
                     }
                 }
+            }
+            &__button {
+                margin-top: 1.6rem;
             }
         }
         // fix for safari bug with autoheight wrapper not working properly for calculating modal footer offset
@@ -321,6 +324,7 @@
                 text-align: center;
                 font-weight: bold;
                 line-height: 1.5;
+                color: var(--text-prominent);
             }
             p {
                 font-size: 1.4rem;
@@ -365,6 +369,8 @@
 
 .add-crypto-currency,
 .change-currency {
+    padding-bottom: 1.6rem;
+
     &__title,
     &__sub-title {
         @include typeface(--title-left-bold-black);
@@ -378,6 +384,9 @@
         font-size: var(--text-size-xxs);
         font-weight: normal;
         margin-bottom: 1rem;
+    }
+    &__button {
+        margin-top: 1.6rem;
     }
     @include tablet {
         form {

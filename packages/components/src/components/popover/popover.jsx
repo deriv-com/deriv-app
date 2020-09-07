@@ -34,7 +34,7 @@ const Popover = ({ ...props }) => {
         if (props.is_bubble_hover_enabled) {
             setTimeout(() => {
                 // add delay to check if mouse is hovered on popover bubble
-                setIsBubbleOpen(props.is_bubble_hover_enabled ? is_bubble_open : false);
+                setIsPopoverOpen(props.is_bubble_hover_enabled ? is_bubble_open : false);
             }, 50);
         } else {
             setIsPopoverOpen(false);
@@ -213,6 +213,7 @@ const Popover = ({ ...props }) => {
 Popover.defaultProps = {
     margin: 0,
     relative_render: false,
+    should_disable_pointer_events: false,
 };
 
 Popover.propTypes = {
@@ -234,6 +235,7 @@ Popover.propTypes = {
     margin: PropTypes.number,
     message: PropTypes.oneOfType([PropTypes.node, PropTypes.object, PropTypes.string]),
     zIndex: PropTypes.number,
+    should_disable_pointer_events: PropTypes.bool,
 };
 
 export default Popover;

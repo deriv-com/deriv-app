@@ -19,7 +19,6 @@ import PositionsCard from 'App/Components/Elements/PositionsDrawer/PositionsDraw
 import PlaceholderComponent from 'Modules/Reports/Components/placeholder-component.jsx';
 import { connect } from 'Stores/connect';
 import { isMultiplierContract } from 'Stores/Modules/Contract/Helpers/multiplier';
-import { ReportsMeta } from '../Components/reports-meta.jsx';
 
 const EmptyPlaceholderWrapper = props => (
     <React.Fragment>
@@ -359,14 +358,6 @@ class OpenPositions extends React.Component {
         return (
             <React.Fragment>
                 <NotificationMessages />
-                <DesktopWrapper>
-                    <ReportsMeta
-                        i18n_heading={localize('Open positions')}
-                        i18n_message={localize(
-                            'View all active trades on your account that can still incur a profit or a loss.'
-                        )}
-                    />
-                </DesktopWrapper>
                 {has_multiplier_contract ? (
                     <Tabs
                         active_index={active_index}

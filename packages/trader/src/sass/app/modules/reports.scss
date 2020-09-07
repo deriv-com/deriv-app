@@ -10,7 +10,11 @@ $side-padding: 1.2em;
         width: 100%;
         display: flex;
         justify-content: space-between;
-        padding: 0 24px 16px;
+        padding: 0 2.4rem 1.6rem;
+
+        @include mobile {
+            padding: 0 1.6rem 1.6rem;
+        }
 
         &-description {
             &--heading {
@@ -34,8 +38,10 @@ $side-padding: 1.2em;
             position: relative;
             display: flex;
             justify-content: flex-end;
-            max-width: 36rem;
             width: 100%;
+            @include desktop {
+                max-width: 36rem;
+            }
         }
 
         @include desktop {
@@ -59,6 +65,9 @@ $side-padding: 1.2em;
         display: flex;
         flex-direction: column;
         width: 100%;
+    }
+    &__route-selection {
+        padding: 1.6rem;
     }
     .unknown-icon {
         margin-left: 8px;
@@ -115,7 +124,7 @@ $side-padding: 1.2em;
 
         &__data-list-body,
         &__data-list-footer {
-            padding: 0 24px;
+            padding: 0 1.6rem;
         }
         &__data-list-body {
             height: 100%;
@@ -341,7 +350,7 @@ $side-padding: 1.2em;
 
         &__data-list-body,
         &__data-list-footer {
-            padding: 0 24px;
+            padding: 0 1.6rem;
         }
         &__data-list-body {
             height: calc(100% - 50px);
@@ -370,6 +379,9 @@ $side-padding: 1.2em;
         }
     }
 
+    &__filter {
+        justify-content: flex-end;
+    }
     &__content {
         width: 100%;
         max-height: 100%;

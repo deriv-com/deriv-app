@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Dialog, ButtonToggle } from '@deriv/components';
+import { ButtonToggle, Dialog } from '@deriv/components';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { localize } from 'Components/i18next';
 import Popup from './popup.jsx';
@@ -62,7 +62,6 @@ const BuySell = ({ navigate }) => {
     };
 
     const showVerification = () => {
-        hideAdvertiserPage();
         setShowVerification(true);
     };
 
@@ -75,7 +74,7 @@ const BuySell = ({ navigate }) => {
         );
     }
 
-    if (show_advertiser_page) {
+    if (show_advertiser_page && !show_verification) {
         return (
             <>
                 <PageReturn onClick={hideAdvertiserPage} page_title={localize("Advertiser's page")} />

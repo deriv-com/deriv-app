@@ -49,7 +49,7 @@ const MyAds = () => {
     }
 
     if (is_restricted) {
-        return <MyAdsState message={localize('P2P cashier is unavailable in your country.')} />;
+        return <MyAdsState message={localize('DP2P cashier is unavailable in your country.')} />;
     }
 
     if (is_advertiser) {

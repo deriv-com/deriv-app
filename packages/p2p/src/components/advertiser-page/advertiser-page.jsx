@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Dialog, Icon, Loading, Table, Tabs } from '@deriv/components';
+import { Button, Dialog, Icon, Loading, Popover, Table, Tabs } from '@deriv/components';
 import { generateHexColourFromNickname, getShortNickname } from 'Utils/string';
 import { height_constants } from 'Utils/height_constants';
 import Dp2pContext from 'Components/context/dp2p-context';
@@ -16,17 +16,17 @@ const RowComponent = React.memo(({ data, is_buy_advert, showAdPopup, style }) =>
 
     return (
         <div style={style}>
-            <Table.Row className='advertiser-details__adverts-table_row'>
+            <Table.Row className='advertiser-page__adverts-table_row'>
                 <Table.Cell>
                     {data.display_min_available}&ndash;{data.display_max_available} {data.offer_currency}
                 </Table.Cell>
-                <Table.Cell className='advertiser-details__adverts-price' flex='2fr'>
+                <Table.Cell className='advertiser-page__adverts-price' flex='2fr'>
                     {data.display_price_rate} {data.transaction_currency}
                 </Table.Cell>
                 {is_my_ad ? (
                     <Table.Cell />
                 ) : (
-                    <Table.Cell className='advertiser-details__adverts-button'>
+                    <Table.Cell className='advertiser-page__adverts-button'>
                         <Button primary small onClick={() => showAdPopup(data)}>
                             {is_buy_advert ? localize('Buy') : localize('Sell')} {data.offer_currency}
                         </Button>
@@ -155,78 +155,86 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
     }
 
     return (
-        <div className='advertiser-details'>
-            <div className='advertiser-details__container'>
-                <div className='advertiser-details__header'>
-                    <div className='advertiser-details__header-details'>
+        <div className='advertiser-page'>
+            <div className='advertiser-page__container'>
+                <div className='advertiser-page__header'>
+                    <div className='advertiser-page__header-details'>
                         <div
-                            className='advertiser-details__header-avatar'
+                            className='advertiser-page__header-avatar'
                             style={{ backgroundColor: generateHexColourFromNickname(advertiser_name) }}
                         >
                             {short_name}
                         </div>
-                        <div className='advertiser-details__header-name'>{advertiser_name}</div>
+                        <div className='advertiser-page__header-name'>{advertiser_name}</div>
                     </div>
                     {/* TODO: add check for id and address verified */}
-                    {/* <div className='advertiser-details__header-verification'>
-                        <div className='advertiser-details__header-verification-id'>
+                    {/* <div className='advertiser-page__header-verification'>
+                        <div className='advertiser-page__header-verification-id'>
                             {localize('ID Verified')}
                             <Icon icon='IcCashierVerificationBadge' size={14} />
                         </div>
-                        <div className='advertiser-details__header-verification-address'>
+                        <div className='advertiser-page__header-verification-address'>
                             {localize('Address verified')}
                             <Icon icon='IcCashierVerificationBadge' size={14} />
                         </div>
                     </div> */}
                 </div>
                 <Table>
-                    <Table.Row className='advertiser-details__stats'>
-                        <Table.Cell className='advertiser-details__stats-cell'>
-                            <div className='advertiser-details__stats-cell-header'>{localize('Total Trades')}</div>
-                            <div className='advertiser-details__stats-cell-info'>{total_orders_count || '-'}</div>
+                    <Table.Row className='advertiser-page__stats'>
+                        <Table.Cell className='advertiser-page__stats-cell'>
+                            <div className='advertiser-page__stats-cell-header'>{localize('Total Trades')}</div>
+                            <div className='advertiser-page__stats-cell-info'>{total_orders_count || '-'}</div>
                         </Table.Cell>
-                        <div className='advertiser-details__stats-cell-separator' />
-                        <Table.Cell className='advertiser-details__stats-cell'>
-                            <div className='advertiser-details__stats-cell-header'>{localize('Buy')}</div>
-                            <div className='advertiser-details__stats-cell-info'>{buy_orders_count || '-'}</div>
+                        <div className='advertiser-page__stats-cell-separator' />
+                        <Table.Cell className='advertiser-page__stats-cell'>
+                            <div className='advertiser-page__stats-cell-header'>{localize('Buy')}</div>
+                            <div className='advertiser-page__stats-cell-info'>{buy_orders_count || '-'}</div>
                         </Table.Cell>
-                        <div className='advertiser-details__stats-cell-separator' />
-                        <Table.Cell className='advertiser-details__stats-cell'>
-                            <div className='advertiser-details__stats-cell-header'>{localize('Sell')}</div>
-                            <div className='advertiser-details__stats-cell-info'>{sell_orders_count || '-'}</div>
+                        <div className='advertiser-page__stats-cell-separator' />
+                        <Table.Cell className='advertiser-page__stats-cell'>
+                            <div className='advertiser-page__stats-cell-header'>{localize('Sell')}</div>
+                            <div className='advertiser-page__stats-cell-info'>{sell_orders_count || '-'}</div>
                         </Table.Cell>
-                        <div className='advertiser-details__stats-cell-separator' />
-                        <Table.Cell className='advertiser-details__stats-cell'>
-                            <div className='advertiser-details__stats-cell-header'>{localize('Completion')}</div>
-                            <div className='advertiser-details__stats-cell-info'>
+                        <div className='advertiser-page__stats-cell-separator' />
+                        <Table.Cell className='advertiser-page__stats-cell'>
+                            <div className='advertiser-page__stats-cell-header'>{localize('Completion')}</div>
+                            <div className='advertiser-page__stats-cell-info'>
                                 {completion_rate ? `${completion_rate}%` : '-'}
                             </div>
                         </Table.Cell>
-                        <div className='advertiser-details__stats-cell-separator' />
-                        <Table.Cell className='advertiser-details__stats-cell'>
-                            <div className='advertiser-details__stats-cell-header'>{localize('Avg. release')}</div>
-                            <div className='advertiser-details__stats-cell-info'>
+                        <div className='advertiser-page__stats-cell-separator' />
+                        <Table.Cell className='advertiser-page__stats-cell'>
+                            <div className='advertiser-page__stats-cell-header'>{localize('Avg. release')}</div>
+                            <div className='advertiser-page__stats-cell-info'>
                                 {release_time_avg ? `${(release_time_avg / 3600).toFixed(2)} min` : '-'}
                             </div>
                         </Table.Cell>
-                        <Icon icon='IcInfoOutline' size={16} />
+                        <Popover
+                            className='advertiser-page__popover'
+                            // alignment='left'
+                            message={localize(
+                                "These fields are based on last 30 days' activity: Completion, Buy, Sell, Avg. release."
+                            )}
+                        >
+                            <Icon icon='IcInfoOutline' size={16} />
+                        </Popover>
                     </Table.Row>
                 </Table>
-                <div className='advertiser-details__adverts'>
+                <div className='advertiser-page__adverts'>
                     <Tabs
                         onTabItemClick={handleTabItemClick}
                         active_index={active_index}
-                        className='advertiser-details__adverts-tabs'
+                        className='advertiser-page__adverts-tabs'
                         top
                         header_fit_content
                     >
                         <div label={localize('Buy')} />
                         <div label={localize('Sell')} />
                     </Tabs>
-                    <div className='advertiser-details__adverts-table'>
+                    <div className='advertiser-page__adverts-table'>
                         <Table>
                             <Table.Header>
-                                <Table.Row className='advertiser-details__adverts-table_row'>
+                                <Table.Row className='advertiser-page__adverts-table_row'>
                                     <Table.Head>{localize('Limits')}</Table.Head>
                                     <Table.Head>{localize('Rate (1 USD)')}</Table.Head>
                                     <Table.Head>{''}</Table.Head>

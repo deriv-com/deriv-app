@@ -1,4 +1,4 @@
-.advertiser-details {
+.advertiser-page {
     &__container {
         display: flex;
         flex-flow: column;
@@ -43,9 +43,6 @@
 
             &-address {
                 margin-left: 16px;
-            }
-
-            &-id {
             }
         }
     }
@@ -99,4 +96,9 @@
             width: 228px;
         }
     }
+
+    // &__popover {
+    //     width: 463px;
+    //     height: 34px;
+    // }
 }

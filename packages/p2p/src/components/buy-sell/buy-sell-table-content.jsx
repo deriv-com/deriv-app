@@ -11,7 +11,7 @@ import { requestWS } from 'Utils/websocket';
 import { RowComponent, BuySellRowLoader } from './row.jsx';
 import { BuySellTable } from './buy-sell-table.jsx';
 
-const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
+const BuySellTableContent = ({ is_buy, setSelectedAd, showAdvertiserPage }) => {
     const { list_item_limit } = React.useContext(Dp2pContext);
     const is_mounted = React.useRef(false);
     const item_offset = React.useRef(0);
@@ -63,7 +63,14 @@ const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
         return <TableError message={api_error_message} />;
     }
 
-    const Row = props => <RowComponent {...props} is_buy={is_buy} setSelectedAd={setSelectedAd} />;
+    const Row = props => (
+        <RowComponent
+            {...props}
+            is_buy={is_buy}
+            setSelectedAd={setSelectedAd}
+            showAdvertiserPage={showAdvertiserPage}
+        />
+    );
 
     if (items.length) {
         const item_height = 56;
@@ -99,6 +106,7 @@ const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
 BuySellTableContent.propTypes = {
     is_buy: PropTypes.bool,
     setSelectedAd: PropTypes.func,
+    showAdvertiserPage: PropTypes.func,
 };
 
 export default BuySellTableContent;

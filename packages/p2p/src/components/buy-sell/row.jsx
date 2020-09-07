@@ -27,7 +27,7 @@ BuySellRowLoader.propTypes = {
     width: PropTypes.number,
 };
 
-export const RowComponent = React.memo(({ data, is_buy, setSelectedAd, style }) => {
+export const RowComponent = React.memo(({ data, is_buy, setSelectedAd, showAdvertiserPage, style }) => {
     const { advertiser_id } = React.useContext(Dp2pContext);
     const is_own_ad = data.advertiser_id === advertiser_id;
     const short_name = getShortNickname(data.advertiser_name);
@@ -36,13 +36,15 @@ export const RowComponent = React.memo(({ data, is_buy, setSelectedAd, style }) 
         <div style={style}>
             <Table.Row className='buy-sell__table-row'>
                 <Table.Cell>
-                    <div
-                        className='buy-sell__icon'
-                        style={{ backgroundColor: generateHexColourFromNickname(data.advertiser_name) }}
-                    >
-                        {short_name}
+                    <div className='buy-sell__cell' onClick={() => showAdvertiserPage(data)}>
+                        <div
+                            className='buy-sell__icon'
+                            style={{ backgroundColor: generateHexColourFromNickname(data.advertiser_name) }}
+                        >
+                            {short_name}
+                        </div>
+                        {data.advertiser_name}
                     </div>
-                    {data.advertiser_name}
                 </Table.Cell>
                 <Table.Cell>
                     {data.display_min_available}&ndash;{data.display_max_available} {data.offer_currency}

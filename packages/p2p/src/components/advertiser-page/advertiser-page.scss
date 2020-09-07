@@ -1,0 +1,102 @@
+.advertiser-details {
+    &__container {
+        display: flex;
+        flex-flow: column;
+        height: calc(100vh - 47px - 53px - 60px - 52px - 36px - 2.4rem - 1.6rem);
+        min-height: 555px;
+        overflow-y: scroll;
+    }
+
+    &__header {
+        display: inherit;
+        height: fit-content;
+        justify-content: space-between;
+        width: 657px;
+
+        &-avatar {
+            align-items: center;
+            border-radius: 50%;
+            color: var(--text-colored-background);
+            display: flex;
+            font-size: 12px;
+            height: 3.2rem;
+            justify-content: center;
+            margin-right: 8px;
+            width: 3.2rem;
+        }
+
+        &-details {
+            display: flex;
+        }
+
+        &-name {
+            font-size: 16px;
+            height: fit-content;
+            padding-top: 7px;
+            width: fit-content;
+        }
+
+        &-verification {
+            display: flex;
+            font-size: 14px;
+            margin-right: 5px;
+
+            &-address {
+                margin-left: 16px;
+            }
+
+            &-id {
+            }
+        }
+    }
+
+    &__stats {
+        border-bottom: none;
+        display: flex;
+        grid-template-columns: 25fr 25fr 25fr 25fr 25fr 25fr;
+        grid-template-rows: 46px;
+        height: fit-content;
+        margin: 24px 0;
+
+        &-cell {
+            display: block;
+            text-align-last: center;
+            width: 127px;
+
+            &-header {
+                font-size: 14px;
+                line-height: 20px;
+            }
+
+            &-info {
+                font-size: 16px;
+                font-weight: bold;
+                line-height: 24px;
+            }
+            &-separator {
+                border-right: 1px solid #ededed;
+            }
+        }
+    }
+
+    &__adverts {
+        &-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        &-price {
+            color: var(--text-profit-success);
+            font-weight: bold;
+        }
+        &-table {
+            width: 657px;
+        }
+        &-table_row {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+        &-tabs {
+            width: 228px;
+        }
+    }
+}

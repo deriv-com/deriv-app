@@ -1249,7 +1249,10 @@ export default class CashierStore extends BaseStore {
             });
             this.setIsTryTransferSuccessful(true);
         } else {
-            this.setErrorMessage(payment_agent_transfer.error, this.resetPaymentAgentTransfer);
+            this.setErrorMessage(
+                payment_agent_transfer.error?.message || payment_agent_transfer.error,
+                this.resetPaymentAgentTransfer
+            );
         }
 
         return payment_agent_transfer;

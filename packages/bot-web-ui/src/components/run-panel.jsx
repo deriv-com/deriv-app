@@ -158,9 +158,10 @@ class RunPanel extends React.PureComponent {
             setActiveTabIndex,
             toggleDrawer,
             is_dialog_open,
+            onOkButtonClick,
+            onRunButtonClick,
             onCancelButtonClick,
             onCloseDialog,
-            onOkButtonClick,
         } = this.props;
         const content = drawerContent({ active_index, is_drawer_open, setActiveTabIndex, ...this.props });
         const footer = drawerFooter({ is_clear_stat_disabled, onClearStatClick });

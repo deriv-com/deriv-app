@@ -55,11 +55,17 @@ export const InputField = ({ name, optional = false, ...props }) => (
     </Field>
 );
 
-const validatePersonalDetails = (values, residence_list, account_opening_reason) => {
+const validatePersonalDetails = (values, residence_list, account_opening_reason, landing_company) => {
+    const is_tin_required = landing_company?.config.tax_details_required || false;
+    const tin_regex = landing_company?.config?.tin_format?.[0];
+
     const validations = {
         citizen: [v => !!v, v => residence_list.map(i => i.text).includes(v)],
         tax_residence: [v => !!v, v => residence_list.map(i => i.text).includes(v)],
-        tax_identification_number: [v => !!v, v => /^[\w-]{0,20}$/.test(v)],
+        tax_identification_number: [
+            v => (is_tin_required ? !!v : true),
+            v => (is_tin_required && tin_regex ? v.test(tin_regex) : true),
+        ],
         account_opening_reason: [v => !!v, v => account_opening_reason.map(i => i.text).includes(v)],
     };
 
@@ -129,6 +135,7 @@ const submitForm = (values, actions, idx, onSubmitFn, is_dirty, residence_list) 
 const MT5PersonalDetailsForm = ({
     onSave,
     is_fully_authenticated,
+    landing_company,
     residence_list,
     onCancel,
     onSubmit,
@@ -156,12 +163,19 @@ const MT5PersonalDetailsForm = ({
                 account_opening_reason: value.account_opening_reason,
             }}
             enableReinitialize
-            isInitialValid={({ initialValues }) => {
-                const initial_errors = validatePersonalDetails(initialValues, residence_list, account_opening_reason);
+            validateOnMount={({ initialValues }) => {
+                const initial_errors = validatePersonalDetails(
+                    initialValues,
+                    residence_list,
+                    account_opening_reason,
+                    landing_company
+                );
                 is_initial_valid = Object.entries(initial_errors).length === 0 && initial_errors.constructor === Object;
                 return initial_errors;
             }}
-            validate={values => validatePersonalDetails(values, residence_list, account_opening_reason)}
+            validate={values =>
+                validatePersonalDetails(values, residence_list, account_opening_reason, landing_company)
+            }
             onSubmit={onSubmitForm}
         >
             {({ handleSubmit, isSubmitting, handleChange, handleBlur, errors, touched, values, setFieldValue }) => (
@@ -345,6 +359,7 @@ MT5PersonalDetailsForm.propTypes = {
     onSubmit: PropTypes.func,
     residence_list: PropTypes.array,
     value: PropTypes.object,
+    landing_company: PropTypes.object.isRequired,
 };
 
 export default MT5PersonalDetailsForm;

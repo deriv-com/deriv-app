@@ -211,7 +211,7 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
                         </Table.Cell>
                         <Popover
                             className='advertiser-page__popover'
-                            // alignment='left'
+                            alignment='top'
                             message={localize(
                                 "These fields are based on last 30 days' activity: Completion, Buy, Sell, Avg. release."
                             )}

@@ -2,8 +2,7 @@
     &__container {
         display: flex;
         flex-flow: column;
-        height: calc(100vh - 47px - 53px - 60px - 52px - 36px - 2.4rem - 1.6rem);
-        min-height: 555px;
+        max-height: 555px;
         overflow-y: scroll;
     }
 
@@ -18,10 +17,10 @@
             border-radius: 50%;
             color: var(--text-colored-background);
             display: flex;
-            font-size: 12px;
+            font-size: var(--text-size-xs);
             height: 3.2rem;
             justify-content: center;
-            margin-right: 8px;
+            margin-right: 0.8rem;
             width: 3.2rem;
         }
 
@@ -30,19 +29,19 @@
         }
 
         &-name {
-            font-size: 16px;
+            font-size: var(--text-size-s);
             height: fit-content;
-            padding-top: 7px;
+            padding-top: 0.7rem;
             width: fit-content;
         }
 
         &-verification {
             display: flex;
-            font-size: 14px;
-            margin-right: 5px;
+            font-size: var(--text-size-xs);
+            margin-right: 0.5rem;
 
             &-address {
-                margin-left: 16px;
+                margin-left: 1.6rem;
             }
         }
     }
@@ -50,10 +49,10 @@
     &__stats {
         border-bottom: none;
         display: flex;
-        grid-template-columns: 25fr 25fr 25fr 25fr 25fr 25fr;
+        grid-template-columns: repeat(5, 1fr);
         grid-template-rows: 46px;
         height: fit-content;
-        margin: 24px 0;
+        margin: 2.4rem 0;
 
         &-cell {
             display: block;
@@ -61,12 +60,12 @@
             width: 127px;
 
             &-header {
-                font-size: 14px;
+                font-size: var(--text-size-xs);
                 line-height: 20px;
             }
 
             &-info {
-                font-size: 16px;
+                font-size: var(--text-size-s);
                 font-weight: bold;
                 line-height: 24px;
             }
@@ -90,7 +89,7 @@
             width: 657px;
         }
         &-table_row {
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: repeat(3, 1fr);
         }
         &-tabs {
             width: 228px;

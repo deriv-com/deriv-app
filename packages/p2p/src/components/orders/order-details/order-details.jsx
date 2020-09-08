@@ -35,12 +35,12 @@ const OrderDetails = ({ order_details, chat_info }) => {
     } = order_details;
     const is_mounted = React.useRef(false);
     const [channel_url, setChannelUrl] = React.useState(chat_channel_url);
-    const [show_popup, setShowPopup] = React.useState(false);
+    const [show_popup, setShouldShowPopup] = React.useState(false);
     const [popup_options, setPopupOptions] = React.useState({});
-    const onCancelClick = () => setShowPopup(false);
+    const onCancelClick = () => setShouldShowPopup(false);
     const handleShowPopup = options => {
         setPopupOptions(options);
-        setShowPopup(true);
+        setShouldShowPopup(true);
     };
     React.useEffect(() => {
         is_mounted.current = true;
@@ -142,7 +142,7 @@ const OrderDetails = ({ order_details, chat_info }) => {
                         {...popup_options}
                         onCancel={onCancelClick}
                         should_show_popup={show_popup}
-                        setShowPopup={setShowPopup}
+                        setShouldShowPopup={setShouldShowPopup}
                     />
                 )}
             </div>

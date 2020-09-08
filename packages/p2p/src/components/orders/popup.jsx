@@ -15,7 +15,7 @@ const FormWithConfirmation = ({
     onCancel,
     onClickConfirm,
     order,
-    setShowPopup,
+    setShouldShowPopup,
     should_show_popup,
     title,
     width,
@@ -36,7 +36,7 @@ const FormWithConfirmation = ({
                     is_open={should_show_popup}
                     portalId={modal_root_id}
                     title={title}
-                    toggleModal={() => setShowPopup(false)}
+                    toggleModal={() => setShouldShowPopup(false)}
                     width={width}
                 >
                     <Modal.Body>
@@ -95,7 +95,7 @@ const FormWithoutConfirmation = ({
     onCancel,
     onClickConfirm,
     order,
-    setShowPopup,
+    setShouldShowPopup,
     should_confirm_payment,
     should_show_popup,
     title,
@@ -112,7 +112,7 @@ const FormWithoutConfirmation = ({
             is_open={should_show_popup}
             portalId={modal_root_id}
             title={title}
-            toggleModal={() => setShowPopup(false)}
+            toggleModal={() => setShouldShowPopup(false)}
             width={width}
         >
             <Modal.Body>

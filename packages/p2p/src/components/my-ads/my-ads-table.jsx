@@ -179,19 +179,17 @@ const MyAdsTable = ({ onClickCreate }) => {
                         />
                     </Table.Body>
                 </Table>
-                {should_show_popup && (
-                    <Popup
-                        cancel_text={localize('Cancel')}
-                        confirm_text={localize('Delete')}
-                        has_cancel
-                        message={localize("You won't be able to restore it later.")}
-                        onCancel={onClickCancel}
-                        onClickConfirm={onClickConfirm}
-                        setShouldShowPopup={setShouldShowPopup}
-                        should_show_popup={should_show_popup}
-                        title={localize('Delete this ad')}
-                    />
-                )}
+                <Popup
+                    cancel_text={localize('Cancel')}
+                    confirm_text={localize('Delete')}
+                    has_cancel
+                    message={localize("You won't be able to restore it later.")}
+                    onCancel={onClickCancel}
+                    onClickConfirm={onClickConfirm}
+                    setShouldShowPopup={setShouldShowPopup}
+                    should_show_popup={should_show_popup}
+                    title={localize('Delete this ad')}
+                />
             </React.Fragment>
         );
     }

@@ -35,7 +35,7 @@ const OrderDetails = ({ order_details, chat_info }) => {
     } = order_details;
     const is_mounted = React.useRef(false);
     const [channel_url, setChannelUrl] = React.useState(chat_channel_url);
-    const [show_popup, setShouldShowPopup] = React.useState(false);
+    const [should_show_popup, setShouldShowPopup] = React.useState(false);
     const [popup_options, setPopupOptions] = React.useState({});
     const onCancelClick = () => setShouldShowPopup(false);
     const handleShowPopup = options => {
@@ -137,14 +137,12 @@ const OrderDetails = ({ order_details, chat_info }) => {
                 {channel_url && (
                     <OrderDetailsChatbox {...chat_info} channel_url={channel_url} nickname={advertiser_name} />
                 )}
-                {show_popup && (
-                    <Popup
-                        {...popup_options}
-                        onCancel={onCancelClick}
-                        should_show_popup={show_popup}
-                        setShouldShowPopup={setShouldShowPopup}
-                    />
-                )}
+                <Popup
+                    {...popup_options}
+                    onCancel={onCancelClick}
+                    should_show_popup={should_show_popup}
+                    setShouldShowPopup={setShouldShowPopup}
+                />
             </div>
         </div>
     );

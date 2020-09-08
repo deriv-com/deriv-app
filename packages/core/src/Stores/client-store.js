@@ -1741,6 +1741,17 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get needs_financial_assessment() {
+        if (this.is_virtual) return false;
+        if (this.is_high_risk || this.is_financial_information_incomplete) return true;
+        if (!this.is_svg) {
+            if (this.is_financial_account || this.is_trading_experience_incomplete) return true;
+        }
+
+        return false;
+    }
+
+    @computed
     get has_residence() {
         return !!this.accounts[this.loginid]?.residence;
     }

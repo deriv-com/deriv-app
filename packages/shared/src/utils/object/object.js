@@ -73,6 +73,8 @@ export const removeEmptyPropertiesFromObject = obj => {
     return clone;
 };
 
+export const sequence = n => Array.from(Array(n).keys());
+
 export const pick = (source, fields) => {
     return fields.reduce((target, prop) => {
         if (Object.prototype.hasOwnProperty.call(source, prop)) target[prop] = source[prop];

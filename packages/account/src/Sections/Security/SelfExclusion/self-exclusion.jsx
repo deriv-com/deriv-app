@@ -486,14 +486,25 @@ class SelfExclusion extends React.Component {
                                                     )}
                                                 </p>
                                                 <p className='self-exclusion__error'>{submit_error_message}</p>
-                                                <Button
-                                                    is_loading={isSubmitting}
-                                                    is_disabled={isSubmitting}
-                                                    primary
-                                                    large
-                                                    type='submit'
-                                                    text={localize('Confirm my limits')}
-                                                />
+                                                {is_eu ? (
+                                                    <Button
+                                                        is_loading={isSubmitting}
+                                                        is_disabled={isSubmitting}
+                                                        primary
+                                                        large
+                                                        type='submit'
+                                                        text={localize('Confirm my limits')}
+                                                    />
+                                                ) : (
+                                                    <Button
+                                                        is_loading={isSubmitting}
+                                                        is_disabled={isSubmitting}
+                                                        primary
+                                                        large
+                                                        type='submit'
+                                                        text={localize('Agree and accept')}
+                                                    />
+                                                )}
                                             </div>
                                         </>
                                     ) : (

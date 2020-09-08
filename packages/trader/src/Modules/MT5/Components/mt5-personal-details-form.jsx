@@ -56,15 +56,15 @@ export const InputField = ({ name, optional = false, ...props }) => (
 );
 
 const validatePersonalDetails = (values, residence_list, account_opening_reason, landing_company) => {
-    const is_tin_required = landing_company?.config.tax_details_required || false;
-    const tin_regex = landing_company?.config?.tin_format?.[0];
+    const is_tin_required = landing_company?.config?.tax_details_required ?? false;
+    const tin_regex = landing_company?.config?.tin_format?.[0] ?? true;
 
     const validations = {
         citizen: [v => !!v, v => residence_list.map(i => i.text).includes(v)],
         tax_residence: [v => !!v, v => residence_list.map(i => i.text).includes(v)],
         tax_identification_number: [
             v => (is_tin_required ? !!v : true),
-            v => (is_tin_required && tin_regex ? v.test(tin_regex) : true),
+            v => (is_tin_required && tin_regex ? v.match(tin_regex) : true),
         ],
         account_opening_reason: [v => !!v, v => account_opening_reason.map(i => i.text).includes(v)],
     };

@@ -35,6 +35,7 @@
     &__form {
         @include mobile {
             padding: 0 1.6rem;
+            height: 100%;
         }
 
         &-row {
@@ -71,8 +72,8 @@
             margin: 0 -2.4rem;
 
             @include mobile {
-                padding: 1.4rem 1.6rem 0;
-                margin: 0 -1.6rem;
+                padding: 1.6rem 0;
+                margin: unset;
             }
         }
         .dc-autocomplete {
@@ -144,7 +145,6 @@
                     display: flex;
                     flex-direction: column;
                     height: 100%;
-                    max-height: calc(100vh - 80px);
 
                     &__list {
                         width: 100%;

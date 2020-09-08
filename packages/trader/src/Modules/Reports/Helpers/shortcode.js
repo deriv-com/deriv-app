@@ -15,6 +15,8 @@ const Shortcode = (() => {
 
             if (/^(CALL|PUT)$/i.test(info_from_shortcode.category)) {
                 info_from_shortcode.barrier_1 = shortcode.split('_').slice(-2)[0];
+            } else if (/^MULT/i.test(info_from_shortcode.category)) {
+                info_from_shortcode.multiplier = shortcode.split('_').slice(-5)[0];
             }
         }
 

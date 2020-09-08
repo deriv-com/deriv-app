@@ -74,3 +74,9 @@
         }
     }
 }
+
+.react-tiny-popover-container {
+    &--disabled-pointer-event {
+        pointer-events: none;
+    }
+}

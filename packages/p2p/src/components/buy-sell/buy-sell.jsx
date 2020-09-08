@@ -31,8 +31,8 @@ const BuySell = ({ navigate }) => {
     const [is_submit_disabled, setIsSubmitDisabled] = React.useState(true);
     const [error_message, setErrorMessage] = React.useState(null);
 
-    const handleSubmit = React.useRef(() => {});
-    const setHandleSubmit = handleSubmitFn => (handleSubmit.current = handleSubmitFn);
+    const submitForm = React.useRef(() => {});
+    const setSubmitForm = submitFormFn => (submitForm.current = submitFormFn);
 
     const setSelectedAd = selected_ad => {
         if (!is_advertiser) {
@@ -96,7 +96,7 @@ const BuySell = ({ navigate }) => {
                             handleConfirm={onConfirmClick}
                             setIsSubmitDisabled={setIsSubmitDisabled}
                             setErrorMessage={setErrorMessage}
-                            setHandleSubmit={setHandleSubmit}
+                            setSubmitForm={setSubmitForm}
                         />
                     </Modal.Body>
                 </ThemedScrollbars>
@@ -106,7 +106,7 @@ const BuySell = ({ navigate }) => {
                         <Button secondary type='button' onClick={onCancelClick} large>
                             {localize('Cancel')}
                         </Button>
-                        <Button is_disabled={is_submit_disabled} primary large onClick={handleSubmit.current}>
+                        <Button is_disabled={is_submit_disabled} primary large onClick={submitForm.current}>
                             {localize('Confirm')}
                         </Button>
                     </Button.Group>

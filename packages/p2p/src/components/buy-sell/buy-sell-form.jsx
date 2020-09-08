@@ -8,7 +8,7 @@ import { countDecimalPlaces } from 'Utils/string';
 import { requestWS } from 'Utils/websocket';
 import { textValidator, lengthValidator } from 'Utils/validations';
 
-const BuySellForm = ({ ad, handleClose, handleConfirm, setIsSubmitDisabled, setErrorMessage, setHandleSubmit }) => {
+const BuySellForm = ({ ad, handleClose, handleConfirm, setIsSubmitDisabled, setErrorMessage, setSubmitForm }) => {
     const [total_amount, setTotalAmount] = React.useState(
         formatMoney(ad.transaction_currency, ad.min_available * ad.price_rate, true, ad.transaction_currency_decimals)
     );
@@ -118,14 +118,14 @@ const BuySellForm = ({ ad, handleClose, handleConfirm, setIsSubmitDisabled, setE
     };
 
     return (
-        <Formik validate={validatePopup} initialValues={initial_values}>
-            {({ errors, isSubmitting, isValid, handleChange, status, touched }) => {
+        <Formik validate={validatePopup} initialValues={initial_values} onSubmit={handleSubmit}>
+            {({ errors, isSubmitting, isValid, handleChange, status, touched, submitForm }) => {
                 // Use custom is_valid value as isValid doesn't work.
                 const is_valid = is_buyer ? Object.keys(errors).length === 0 : isValid;
 
                 setIsSubmitDisabled(isSubmitting || !is_valid);
                 setErrorMessage(status && status.error_message);
-                setHandleSubmit(handleSubmit);
+                setSubmitForm(submitForm);
 
                 return (
                     <Form noValidate>

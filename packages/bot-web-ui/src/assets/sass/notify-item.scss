@@ -14,7 +14,7 @@
                 margin-top: 0.8rem;
 
                 .dc-btn__text {
-                    font-size: 1.2rem;
+                    font-size: var(--text-size-xxs);
                 }
                 &--mobile {
                     height: 2.4rem !important;
@@ -22,7 +22,7 @@
                     transform: translateX(-95%);
 
                     .dc-btn__text {
-                        font-size: 1.2rem;
+                        font-size: var(--text-size-xxs);
                     }
                 }
             }

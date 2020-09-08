@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Dialog, Icon, Loading, Table, ProgressIndicator } from '@deriv/components';
+import { Button, Icon, Loading, Table, ProgressIndicator } from '@deriv/components';
 import { localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
 import Empty from 'Components/empty/empty.jsx';

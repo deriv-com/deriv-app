@@ -13,7 +13,7 @@ import {
     SelectNative,
     DateOfBirthPicker,
 } from '@deriv/components';
-import { toMoment, isMobile, getLocation } from '@deriv/shared';
+import { toMoment, isMobile, getLocation, removeObjProperties, filterObjProperties } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
@@ -34,20 +34,6 @@ import FormSubHeader from 'Components/form-sub-header';
 import FormSubmitErrorMessage from 'Components/form-submit-error-message';
 import LoadErrorMessage from 'Components/load-error-message';
 
-const removeObjProperties = (property_arr, { ...obj }) =>
-    Object.fromEntries(
-        Object.entries(obj)
-            // eslint-disable-next-line no-unused-vars
-            .filter(([key, _]) => !property_arr.includes(key))
-    );
-
-const filterOnlyChangeableFields = (property_arr, { ...obj }) =>
-    Object.fromEntries(
-        Object.entries(obj)
-            // eslint-disable-next-line no-unused-vars
-            .filter(([key, _]) => property_arr.includes(key))
-    );
-
 const validate = (errors, values) => (fn, arr, err_msg) => {
     arr.forEach((field) => {
         const value = values[field];
@@ -66,7 +52,7 @@ class PersonalDetailsForm extends React.Component {
 
     onSubmit = async (values, { setStatus, setSubmitting }) => {
         setStatus({ msg: '' });
-        const request = await this.makeSettingsRequest(values);
+        const request = this.makeSettingsRequest(values);
         this.setState({ is_btn_loading: true });
         const data = await WS.setSettings(request);
         this.setState({ is_btn_loading: false });
@@ -89,9 +75,9 @@ class PersonalDetailsForm extends React.Component {
         }
     };
 
-    makeSettingsRequest = async (settings) => {
+    makeSettingsRequest = (settings) => {
         if (this.props.is_virtual) return { email_consent: +settings.email_consent };
-        const request = filterOnlyChangeableFields(this.state.changeable_fields, settings);
+        const request = filterObjProperties(settings, this.state.changeable_fields);
         request.email_consent = +request.email_consent; // checkbox is boolean but api expects number (1 or 0)
         request.first_name = request.first_name.trim();
         request.last_name = request.last_name.trim();

@@ -1,8 +1,20 @@
+import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { getCancellationPrice, getContractUpdateConfig, getLimitOrderAmount, isDeepEqual, pick } from '@deriv/shared';
+import {
+    getCancellationPrice,
+    getContractUpdateConfig,
+    getLimitOrderAmount,
+    isCryptocurrency,
+    isDeepEqual,
+    pick,
+} from '@deriv/shared';
 import Button from '../../button';
+import Icon from '../../icon';
+import MobileWrapper from '../../mobile-wrapper';
+import Money from '../../money';
 import InputWithCheckbox from '../../input-wth-checkbox';
+import { localize } from '@deriv/translations';
 
 class ContractUpdateForm extends React.Component {
     componentWillUnmount() {
@@ -92,19 +104,19 @@ class ContractUpdateForm extends React.Component {
     };
 
     onClick = e => {
-        this.props.contract.updateLimitOrder();
+        this.props.updateLimitOrder();
         this.props.toggleDialog(e);
     };
 
     render() {
-        const { addToast, removeToast, getCardLabels } = this.props;
+        const { addToast, removeToast, getCardLabels, status } = this.props;
         const {
             contract_update_take_profit,
             has_contract_update_take_profit,
             contract_update_stop_loss,
             has_contract_update_stop_loss,
         } = this.props.contract;
-        const { buy_price, currency, is_valid_to_cancel } = this.contract_info;
+        const { buy_price, currency, is_valid_to_cancel, bid_price, is_sold } = this.contract_info;
         const cancellation_price = getCancellationPrice(this.contract_info);
         const take_profit_input = (
             <InputWithCheckbox
@@ -145,19 +157,48 @@ class ContractUpdateForm extends React.Component {
             />
         );
 
+        const total_profit = bid_price - buy_price;
+
         return (
             <React.Fragment>
-                <div className='dc-contract-card-dialog__input'>{take_profit_input}</div>
-                <div className='dc-contract-card-dialog__input'>{stop_loss_input}</div>
-                <div className='dc-contract-card-dialog__button'>
-                    <Button
-                        text={getCardLabels().APPLY}
-                        onClick={this.onClick}
-                        primary
-                        is_disabled={
-                            this.has_validation_errors || !this.is_valid_contract_update || this.isStateUnchanged()
-                        }
-                    />
+                <MobileWrapper>
+                    <div className='dc-contract-card-dialog__total-profit'>
+                        <span>{localize('Total profit/loss:')}</span>
+                        <div
+                            className={classNames(
+                                'dc-contract-card__profit-loss dc-contract-card__total-profit-loss-value',
+                                {
+                                    'dc-contract-card__profit-loss--is-crypto': isCryptocurrency(currency),
+                                    'dc-contract-card__profit-loss--negative': total_profit < 0,
+                                    'dc-contract-card__profit-loss--positive': total_profit > 0,
+                                }
+                            )}
+                        >
+                            <Money amount={total_profit} currency={currency} />
+                            <div
+                                className={classNames('dc-contract-card__indicative--movement', {
+                                    'dc-contract-card__indicative--movement-complete': is_sold,
+                                })}
+                            >
+                                {status === 'profit' && <Icon icon='IcProfit' />}
+                                {status === 'loss' && <Icon icon='IcLoss' />}
+                            </div>
+                        </div>
+                    </div>
+                </MobileWrapper>
+                <div className='dc-contract-card-dialog__form'>
+                    <div className='dc-contract-card-dialog__input'>{take_profit_input}</div>
+                    <div className='dc-contract-card-dialog__input'>{stop_loss_input}</div>
+                    <div className='dc-contract-card-dialog__button'>
+                        <Button
+                            text={getCardLabels().APPLY}
+                            onClick={this.onClick}
+                            primary
+                            is_disabled={
+                                this.has_validation_errors || !this.is_valid_contract_update || this.isStateUnchanged()
+                            }
+                        />
+                    </div>
                 </div>
             </React.Fragment>
         );
@@ -167,7 +208,6 @@ class ContractUpdateForm extends React.Component {
 ContractUpdateForm.propTypes = {
     contract: PropTypes.object,
     currency: PropTypes.string,
-    getContractById: PropTypes.func,
     resetContractUpdate: PropTypes.func,
     toggleDialog: PropTypes.func,
     validation_errors: PropTypes.object,

@@ -45,6 +45,7 @@ const ContractCard = ({
     status,
     toggleCancellationWarning,
     toggleUnsupportedContractModal,
+    updateLimitOrder = { updateLimitOrder },
 }) => {
     const loader_el = (
         <div className='dc-contract-card__content-loader'>
@@ -117,6 +118,7 @@ const ContractCard = ({
             removeToast={removeToast}
             should_show_cancellation_warning={should_show_cancellation_warning}
             toggleCancellationWarning={toggleCancellationWarning}
+            updateLimitOrder={updateLimitOrder}
         />
     );
 

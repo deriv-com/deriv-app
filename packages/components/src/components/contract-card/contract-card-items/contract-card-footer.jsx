@@ -20,6 +20,7 @@ const CardFooter = ({
     removeToast,
     should_show_cancellation_warning,
     toggleCancellationWarning,
+    updateLimitOrder,
 }) => {
     const is_valid_to_cancel = isValidToCancel(contract_info);
     const is_valid_to_sell = isValidToSell(contract_info);
@@ -64,6 +65,7 @@ const CardFooter = ({
                                 removeToast={removeToast}
                                 should_show_cancellation_warning={should_show_cancellation_warning}
                                 toggleCancellationWarning={toggleCancellationWarning}
+                                updateLimitOrder={updateLimitOrder}
                             />
                         )}
                     </div>

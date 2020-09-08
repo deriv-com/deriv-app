@@ -85,9 +85,15 @@ export default class PortfolioStore extends BaseStore {
             this.error = response.error.message;
         }
         if (!response.transaction) return;
-        const { contract_id, action: act } = response.transaction;
+        const { contract_id, action: act, longcode } = response.transaction;
 
-        if (act === 'sell') {
+        if (act === 'buy') {
+            this.onBuyResponse({
+                contract_id,
+                longcode,
+                contract_type: '', // TODO: figure out the icon not showing
+            });
+        } else if (act === 'sell') {
             const i = this.getPositionIndexById(contract_id);
 
             if (!this.positions[i]) {
@@ -113,7 +119,7 @@ export default class PortfolioStore extends BaseStore {
 
     updateContractReplayStore(response) {
         const contract_replay = this.root_store.modules.contract_replay;
-        if (contract_replay.contract_id === response.proposal_open_contract.contract_id) {
+        if (contract_replay.contract_id === response.proposal_open_contract?.contract_id) {
             contract_replay.populateConfig(response);
         }
     }
@@ -299,6 +305,8 @@ export default class PortfolioStore extends BaseStore {
     @action.bound
     pushNewPosition(new_pos) {
         const position = formatPortfolioPosition(new_pos, this.root_store.modules.trade.active_symbols);
+        if (this.positions_map[position.id]) return;
+
         this.positions.unshift(position);
         this.positions_map[position.id] = position;
         this.updatePositions();

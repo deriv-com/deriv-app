@@ -6,7 +6,7 @@ import GTM from '../utils/gtm';
 export default class FlyoutStore {
     block_listeners = [];
     block_workspaces = [];
-    flyout_min_width = 500;
+    flyout_min_width = 440;
     options = {
         css: false,
         media: `${__webpack_public_path__}media/`,
@@ -177,6 +177,7 @@ export default class FlyoutStore {
 
         if (!is_flyout_click && !isToolboxClick() && !is_search_focus) {
             toolbox.clearSelection();
+            this.setSelectedCategory('');
         }
     }
 

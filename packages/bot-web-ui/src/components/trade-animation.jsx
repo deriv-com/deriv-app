@@ -23,6 +23,7 @@ const AnimationInfo = () => (
             'Stopping the bot will prevent further trades. Any ongoing trades will be completed by our system. Please be aware that some completed transactions may not be displayed in the transaction table if the bot is stopped while placing trades. You may refer to the statement page for details of all completed transactions.'
         )}
         zIndex={5}
+        should_disable_pointer_events
     >
         <Icon icon='IcInfoOutline' id='db-animation__clear-stat' />
     </Popover>

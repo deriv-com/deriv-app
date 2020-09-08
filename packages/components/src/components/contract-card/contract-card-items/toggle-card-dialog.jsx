@@ -79,6 +79,7 @@ class ToggleCardDialog extends React.Component {
             removeToast,
             should_show_cancellation_warning,
             toggleCancellationWarning,
+            updateLimitOrder,
         } = this.props;
 
         const edit_icon = (
@@ -127,7 +128,7 @@ class ToggleCardDialog extends React.Component {
                         onClose={this.toggleDialog}
                         wrapper_classname='contract-update'
                     >
-                        <Div100vhContainer className='contract-update__wrapper' height_offset='75px'>
+                        <Div100vhContainer className='contract-update__wrapper' height_offset='40px'>
                             <ContractUpdateForm
                                 addToast={addToast}
                                 getCardLabels={getCardLabels}
@@ -135,6 +136,7 @@ class ToggleCardDialog extends React.Component {
                                 removeToast={removeToast}
                                 contract={this.contract}
                                 toggleDialog={this.toggleDialog}
+                                updateLimitOrder={updateLimitOrder}
                             />
                         </Div100vhContainer>
                     </MobileDialog>
@@ -155,6 +157,7 @@ class ToggleCardDialog extends React.Component {
                             removeToast={removeToast}
                             contract={this.contract}
                             toggleDialog={this.toggleDialog}
+                            updateLimitOrder={updateLimitOrder}
                         />
                     </ContractCardDialog>
                 </DesktopWrapper>

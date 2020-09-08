@@ -7,7 +7,7 @@
     }
 
     &__header {
-        display: inherit;
+        display: flex;
         height: fit-content;
         justify-content: space-between;
         width: 657px;
@@ -29,16 +29,16 @@
         }
 
         &-name {
+            align-self: center;
             font-size: var(--text-size-s);
             height: fit-content;
-            padding-top: 0.7rem;
             width: fit-content;
         }
 
         &-verification {
+            align-items: center;
             display: flex;
             font-size: var(--text-size-xs);
-            margin-right: 0.5rem;
 
             &-address {
                 margin-left: 1.6rem;

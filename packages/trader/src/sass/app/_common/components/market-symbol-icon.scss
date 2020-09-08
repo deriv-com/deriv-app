@@ -14,13 +14,25 @@
     &-category {
         display: flex;
         justify-content: flex-start;
-        width: 50%;
         align-items: center;
         @include typeface(--paragraph-left-bold-active);
         color: var(--text-prominent);
-
-        :first-child {
-            margin-right: 4px;
+    }
+    &-name {
+        width: 3.2rem;
+        margin-right: 0.8rem;
+    }
+    &-category {
+        svg {
+            width: 2.4rem;
+            height: 2.4rem;
         }
+    }
+    &__multiplier {
+        color: var(--text-less-prominent);
+        font-size: 1rem;
+        display: flex;
+        align-items: flex-end;
+        margin: 0 0 0.4rem 0.4rem;
     }
 }

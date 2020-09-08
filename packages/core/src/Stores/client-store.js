@@ -9,6 +9,7 @@ import {
     isDesktopOs,
     getUrlSmartTrader,
     toMoment,
+    isBot,
 } from '@deriv/shared';
 
 import { requestLogout, WS } from 'Services';
@@ -79,6 +80,8 @@ export default class ClientStore extends BaseStore {
     };
     @observable account_limits = {};
 
+    @observable self_exclusion = {};
+
     @observable local_currency_config = {
         currency: '',
         decimal_places: undefined,
@@ -148,7 +151,8 @@ export default class ClientStore extends BaseStore {
             this.root_store.ui.is_eu_enabled || // TODO: [deriv-eu] Remove this after complete EU merge into production
             !this.is_logged_in ||
             this.is_virtual ||
-            this.accounts[this.loginid].landing_company_shortcode === 'svg'
+            this.accounts[this.loginid].landing_company_shortcode === 'svg' ||
+            isBot()
         );
     }
 
@@ -654,6 +658,31 @@ export default class ClientStore extends BaseStore {
             Cookies.remove('client_information', { domain });
             this.has_cookie_account = false;
         }
+    }
+    getSelfExclusion() {
+        return new Promise(resolve => {
+            WS.authorized.storage.getSelfExclusion().then(data => {
+                runInAction(() => {
+                    if (data.get_self_exclusion) {
+                        this.self_exclusion = data.get_self_exclusion;
+                    } else {
+                        this.self_exclusion = false;
+                    }
+                    resolve(data);
+                });
+            });
+        });
+    }
+    @action.bound
+    updateSelfExclusion(values) {
+        return new Promise(resolve => {
+            WS.authorized.storage.setSelfExclusion(values).then(data => {
+                if (!data.error) {
+                    this.getSelfExclusion();
+                }
+                resolve(data);
+            });
+        });
     }
 
     @action.bound
@@ -1718,6 +1747,17 @@ export default class ClientStore extends BaseStore {
     get is_high_risk() {
         if (isEmptyObject(this.account_status)) return false;
         return this.account_status.risk_classification === 'high';
+    }
+
+    @computed
+    get needs_financial_assessment() {
+        if (this.is_virtual) return false;
+        if (this.is_high_risk || this.is_financial_information_incomplete) return true;
+        if (!this.is_svg) {
+            if (this.is_financial_account || this.is_trading_experience_incomplete) return true;
+        }
+
+        return false;
     }
 
     @computed

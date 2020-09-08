@@ -6,7 +6,7 @@ import GTM from '../utils/gtm';
 export default class FlyoutStore {
     block_listeners = [];
     block_workspaces = [];
-    flyout_min_width = 500;
+    flyout_min_width = 440;
     options = {
         css: false,
         media: `${__webpack_public_path__}media/`,
@@ -22,6 +22,7 @@ export default class FlyoutStore {
     @observable is_search_flyout = false;
     @observable is_loading = false;
     @observable search_term = '';
+    @observable selected_category = '';
 
     constructor(root_store) {
         this.root_store = root_store;
@@ -82,6 +83,7 @@ export default class FlyoutStore {
      * @memberof FlyoutStore
      */
     @action.bound setIsSearchFlyout(is_search) {
+        this.selected_category = '';
         this.is_search_flyout = is_search;
     }
 
@@ -175,7 +177,13 @@ export default class FlyoutStore {
 
         if (!is_flyout_click && !isToolboxClick() && !is_search_focus) {
             toolbox.clearSelection();
+            this.setSelectedCategory('');
         }
+    }
+
+    @action.bound
+    setSelectedCategory(selected_category) {
+        this.selected_category = selected_category;
     }
 
     @action.bound

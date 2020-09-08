@@ -14,12 +14,17 @@ const address_details_config = ({ account_settings }) => {
             rules: [
                 ['req', localize('Address line 1 is required')],
                 ['address', localize('Address is not in a proper format')],
+                ['length', localize('This should not exceed {{max}} characters.', { max: 70 }), { max: 70 }],
+                ['po_box', localize('P.O. Box is not accepted in address')],
             ],
         },
         address_line_2: {
             supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
             default_value: account_settings.address_line_2 ?? '',
-            rules: [['length', localize('Address line 2 is not in a proper format'), { min: 0, max: 30 }]],
+            rules: [
+                ['length', localize('This should not exceed {{max}} characters.', { max: 70 }), { max: 70 }],
+                ['po_box', localize('P.O. Box is not accepted in address')],
+            ],
         },
         address_city: {
             supported_in: ['svg', 'iom', 'malta', 'maltainvest'],

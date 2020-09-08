@@ -54,7 +54,7 @@ export default class ProfitTableStore extends BaseStore {
             .add(1, 'd')
             .subtract(1, 's')
             .unix();
-        if (this.date_to < today) return !should_load_partially && this.partial_fetch_time;
+        if (this.date_to < today) return !should_load_partially;
         return true;
     }
 
@@ -66,7 +66,11 @@ export default class ProfitTableStore extends BaseStore {
         const response = await WS.profitTable(
             batch_size,
             !should_load_partially ? this.data.length : undefined,
-            getDateBoundaries(this.date_from, this.date_to, this.partial_fetch_time, should_load_partially)
+            /* Last fetch time (`partial_fetch_time`) should not be set to `date_from` 
+            while fetching latest profit table records because date filtering happens based on `buy_time` of a contract. 
+            If we visit profit table and then sell a contract which was purchased earlier, 
+            that particular contract won't be visible in profit table when visited again. */
+            getDateBoundaries(this.date_from, this.date_to, 0, should_load_partially)
         );
 
         this.profitTableResponseHandler(response, should_load_partially);
@@ -94,9 +98,6 @@ export default class ProfitTableStore extends BaseStore {
         }
         this.has_loaded_all = !should_load_partially && formatted_transactions.length < batch_size;
         this.is_loading = false;
-        if (formatted_transactions.length > 0) {
-            this.partial_fetch_time = toMoment().unix();
-        }
     }
 
     fetchOnScroll = debounce(left => {
@@ -119,16 +120,12 @@ export default class ProfitTableStore extends BaseStore {
 
     @action.bound
     async onMount() {
-        this.assertHasValidCache(
-            this.client_loginid,
-            this.clearDateFilter,
-            this.clearTable,
-            WS.forgetAll.bind(null, 'proposal')
-        );
+        this.assertHasValidCache(this.client_loginid, this.clearDateFilter, WS.forgetAll.bind(null, 'proposal'));
         this.client_loginid = this.root_store.client.loginid;
         this.onSwitchAccount(this.accountSwitcherListener);
         this.onNetworkStatusChange(this.networkStatusChangeListener);
         await WS.wait('authorize');
+        this.clearTable();
         this.fetchNextBatch(true);
     }
 
@@ -174,7 +171,6 @@ export default class ProfitTableStore extends BaseStore {
             .add(1, 'd')
             .subtract(1, 's')
             .unix();
-        this.partial_fetch_time = 0;
     }
 
     @action.bound

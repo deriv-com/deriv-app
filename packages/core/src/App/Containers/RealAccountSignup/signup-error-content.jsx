@@ -33,15 +33,15 @@ const SignupErrorContent = ({ message, code, onConfirm }) => {
             case 'DuplicateAccount':
                 return (
                     <p>
+                        <Localize i18n_default_text='An account with your details already exists.' />
+                        <br />
                         <Localize
-                            i18n_default_text='An account with your details already exists. If you are having problems signing into your account please email <0>support@deriv.com</0>'
+                            i18n_default_text="If you're having trouble signing in, let us know via <0>chat</0>"
                             components={[
-                                <a
-                                    className='email-inline'
+                                <span
+                                    className='chat-inline'
                                     key={0}
-                                    href='mailto:support@deriv.com'
-                                    target='_blank'
-                                    rel='noreferrer nofollow'
+                                    onClick={() => window.LC_API.open_chat_window()}
                                 />,
                             ]}
                         />

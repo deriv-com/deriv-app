@@ -81,18 +81,20 @@ class AccountWizard extends React.Component {
             });
 
             if (!this.residence_list?.length) {
-                const items = this.state.items.slice(0);
-                this.getCountryCode().then(phone_idd => {
+                const setDefaultPhone = country_code => {
                     if ('phone' in items[1].form_value) {
-                        items[1].form_value.phone = items[1].form_value.phone || phone_idd || '';
+                        items[1].form_value.phone = items[1].form_value.phone || country_code || '';
                         this.setState(items);
                     }
-                });
+                };
+
+                const items = [...this.state.items];
+                this.getCountryCode().then(setDefaultPhone);
             }
 
             const previous_data = this.fetchFromStorage();
             if (previous_data.length > 0) {
-                const items = this.state.items.slice(0);
+                const items = [...this.state.items];
                 previous_data.forEach((item, index) => {
                     if (item instanceof Object) {
                         items[index].form_value = item;

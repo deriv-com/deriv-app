@@ -1813,11 +1813,7 @@ export default class ClientStore extends BaseStore {
         return new Promise(async resolve => {
             const { get_financial_assessment } = await WS.getFinancialAssessment();
 
-            runInAction(() => {
-                console.log('Setting financial assessment', get_financial_assessment);
-                this.financial_assessment = get_financial_assessment;
-            });
-
+            runInAction(() => (this.financial_assessment = get_financial_assessment));
             resolve(get_financial_assessment);
         });
     }

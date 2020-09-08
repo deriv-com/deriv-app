@@ -84,6 +84,7 @@ const App = observer(props => {
                 getLocalStorageSettingsForLoginId: general_store.getLocalStorageSettingsForLoginId,
                 handleNotifications: general_store.handleNotifications,
                 inactive_notification_count: general_store.inactive_notification_count,
+                is_active_tab: general_store.is_active_tab,
                 is_advertiser: general_store.is_advertiser,
                 is_listed: general_store.is_listed,
                 is_mobile,

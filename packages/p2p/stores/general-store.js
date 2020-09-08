@@ -40,6 +40,10 @@ export default class GeneralStore {
         return this.props?.client || {};
     }
 
+    get is_active_tab() {
+        return this.order_table_type === orderToggleIndex.ACTIVE;
+    }
+
     @action.bound
     createAdvertiser = name => {
         return new Promise(resolve => {
@@ -186,23 +190,17 @@ export default class GeneralStore {
 
     @action.bound
     setChatInfo(user_id, token) {
-        const chat_info = {
+        this.chat_info = {
             app_id: isProduction() ? '1465991C-5D64-4C88-8BD9-B0D7A6455E69' : '4E259BA5-C383-4624-89A6-8365E06D9D39',
-            user_id,
-            token,
+            user_id: user_id,
+            token: token,
         };
 
-        if (!chat_info.token) {
+        if (!this.chat_info.token) {
             requestWS({ service_token: 1, service: 'sendbird' }).then(response => {
-                chat_info.token = response.service_token.sendbird.token;
-                this.setChatInfoState(chat_info);
+                this.chat_info.token = response.service_token.sendbird.token;
             });
         }
-    }
-
-    @action.bound
-    setChatInfoState(chat_info) {
-        this.chat_info = chat_info;
     }
 
     @action.bound

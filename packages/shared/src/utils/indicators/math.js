@@ -12,3 +12,35 @@ export const stddev = data => {
     const avg_sq_diff = mean(sq_diff);
     return Math.sqrt(avg_sq_diff);
 };
+
+export const slidingWindowMax = (data, periods, field) => {
+    const vals = takeField(data, field);
+    const n = vals.length - periods;
+    const maxArray = [];
+
+    for (let i = 0; i <= n; i++) {
+        let max = vals[i];
+
+        for (let j = 1; j < periods; j++) {
+            if (vals[i + j] > max) max = vals[i + j];
+        }
+        maxArray.push(max);
+    }
+    return maxArray;
+};
+
+export const slidingWindowMin = (data, periods, field) => {
+    const vals = takeField(data, field);
+    const n = vals.length - periods;
+    const minArray = [];
+
+    for (let i = 0; i <= n; i++) {
+        let min = vals[i];
+
+        for (let j = 1; j < periods; j++) {
+            if (vals[i + j] < min) min = vals[i + j];
+        }
+        minArray.push(min);
+    }
+    return minArray;
+};

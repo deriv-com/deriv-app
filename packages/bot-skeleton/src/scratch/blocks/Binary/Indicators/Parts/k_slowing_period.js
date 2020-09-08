@@ -1,13 +1,13 @@
 import { localize } from '@deriv/translations';
 
-Blockly.Blocks.period = {
+Blockly.Blocks.k_slowing_period = {
     init() {
         this.jsonInit({
-            message0: localize('Period %1'),
+            message0: localize('K Slowing Period %1'),
             args0: [
                 {
                     type: 'input_value',
-                    name: 'PERIOD',
+                    name: 'K_SLOWING_PERIOD',
                     check: null,
                 },
             ],
@@ -22,30 +22,12 @@ Blockly.Blocks.period = {
         this.setDeletable(false);
     },
     onchange: Blockly.Blocks.input_list.onchange,
-    allowed_parents: [
-        'atr_statement',
-        'atra_statement',
-        'bb_statement',
-        'bba_statement',
-        'ema_statement',
-        'emaa_statement',
-        'macda_statement',
-        'pc_statement',
-        'pca_statement',
-        'psar_statement',
-        'psara_statement',
-        'fr_statement',
-        'fra_statement',
-        'rsi_statement',
-        'rsia_statement',
-        'sma_statement',
-        'smaa_statement',
-    ],
+    allowed_parents: ['so_statement', 'soa_statement'],
     getRequiredValueInputs() {
         return {
-            PERIOD: null,
+            K_SLOWING_PERIOD: null,
         };
     },
 };
 
-Blockly.JavaScript.period = () => {};
+Blockly.JavaScript.k_slowing_period = () => {};

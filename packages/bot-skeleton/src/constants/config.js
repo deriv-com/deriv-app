@@ -256,6 +256,18 @@ export const config = {
         [localize('MACD'), '1'],
         [localize('Signal'), '2'],
     ],
+    priceChannelResult: [
+        [localize('Minimal'), '0'],
+        [localize('Maximal'), '1'],
+    ],
+    fractalResult: [
+        [localize('Low'), '0'],
+        [localize('High'), '1'],
+    ],
+    stochasticOscillatorPeriod: [
+        [localize('K'), '0'],
+        [localize('D'), '1'],
+    ],
     gd: {
         cid: '828416594271-b4bhia944ecegn3j327oeb4l8o803bts.apps.googleusercontent.com',
         aid: 'derivbot-248506',

@@ -34,6 +34,16 @@ export const isCustomJournalMessage = (
         );
         return true;
     }
+    // notify null variable block
+    if (message === null) {
+        pushMessage('NULL');
+        return true;
+    }
+    // notify NaN variable block
+    if (Object.is(message, NaN)) {
+        pushMessage(message.toString());
+        return true;
+    }
     // notify list block
     if (Array.isArray(message)) {
         const message_length = message.length;
@@ -49,6 +59,10 @@ export const isCustomJournalMessage = (
     }
     // notify boolean results
     if (typeof message === 'boolean') {
+        pushMessage(message.toString());
+        return true;
+    }
+    if (typeof message === 'object') {
         pushMessage(message.toString());
         return true;
     }

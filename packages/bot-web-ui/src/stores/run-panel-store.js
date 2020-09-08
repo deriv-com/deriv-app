@@ -2,7 +2,8 @@ import { observable, action, reaction, computed, runInAction } from 'mobx';
 import { localize } from '@deriv/translations';
 import { error_types, unrecoverable_errors, observer, message_types } from '@deriv/bot-skeleton';
 import { contract_stages } from '../constants/contract-stage';
-import { switch_account_notification } from '../utils/bot-notifications';
+import { journalError, switch_account_notification } from '../utils/bot-notifications';
+import { run_panel } from '../constants/run-panel';
 
 export default class RunPanelStore {
     constructor(root_store) {
@@ -391,11 +392,24 @@ export default class RunPanelStore {
 
     @action.bound
     showErrorMessage(data) {
-        const { journal } = this.root_store;
+        const { journal, ui } = this.root_store;
         journal.onError(data);
         if (journal.journal_filters.some(filter => filter === message_types.ERROR)) {
-            this.setActiveTabIndex(2);
+            this.setActiveTabIndex(run_panel.JOURNAL);
+        } else {
+            ui.addNotificationMessage(journalError(this.switchToJournal));
+            ui.removeNotificationMessage({ key: 'bot_error' });
         }
+    }
+
+    @action.bound
+    switchToJournal() {
+        const { journal, ui } = this.root_store;
+        journal.journal_filters.push(message_types.ERROR);
+        this.setActiveTabIndex(run_panel.JOURNAL);
+        this.toggleDrawer(true);
+        ui.toggleNotificationsModal();
+        ui.removeNotificationByKey({ key: 'bot_error' });
     }
 
     static unregisterBotListeners() {

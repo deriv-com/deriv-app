@@ -1,5 +1,5 @@
 import { action, autorun, computed, observable } from 'mobx';
-import { getPlatformHeader, unique, isEmptyObject } from '@deriv/shared';
+import { getPathname, getPlatformHeader, isEmptyObject, unique } from '@deriv/shared';
 
 import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
 import { LocalStore } from '_common/storage';
@@ -239,6 +239,23 @@ export default class UIStore extends BaseStore {
     @computed
     get is_account_switcher_disabled() {
         return !!this.account_switcher_disabled_message;
+    }
+
+    @action.bound
+    filterNotificationMessages() {
+        this.notifications = this.notification_messages.filter(notification => {
+            if (notification.platform === undefined) {
+                return true;
+            } else if (notification.platform.includes(getPathname())) {
+                return true;
+            } else if (!notification.platform.includes(getPathname())) {
+                if (notification.is_disposable) {
+                    this.removeNotificationMessage({ key: notification.key });
+                    this.removeNotificationByKey({ key: notification.key });
+                }
+            }
+            return false;
+        });
     }
 
     @action.bound

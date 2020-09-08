@@ -8,6 +8,7 @@ import {
     MobileWrapper,
     FadeWrapper,
     PageOverlay,
+    SelectNative,
 } from '@deriv/components';
 import { getSelectedRoute } from '@deriv/shared';
 import { localize } from '@deriv/translations';
@@ -25,6 +26,10 @@ class Reports extends React.Component {
     }
 
     onClickClose = () => this.props.routeBackInApp(this.props.history);
+
+    handleRouteChange = e => {
+        this.props.history.push(e.target.value);
+    };
 
     render() {
         const menu_options = () => {
@@ -70,6 +75,16 @@ class Reports extends React.Component {
                         </DesktopWrapper>
                         <MobileWrapper>
                             <Div100vhContainer className='reports__mobile-wrapper' height_offset='80px'>
+                                <SelectNative
+                                    className='reports__route-selection'
+                                    list_items={menu_options().map(option => ({
+                                        text: option.label,
+                                        value: option.path,
+                                    }))}
+                                    value={selected_route.path}
+                                    should_show_empty_option={false}
+                                    onChange={this.handleRouteChange}
+                                />
                                 {selected_route && (
                                     <selected_route.component component_icon={selected_route.icon_component} />
                                 )}

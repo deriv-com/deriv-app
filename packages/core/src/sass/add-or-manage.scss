@@ -41,8 +41,8 @@
     &__icon-area {
         display: flex;
         align-items: center;
-        width: 100%;
-        justify-content: space-between;
+        width: auto;
+        justify-content: center;
         position: relative;
 
         .bottom-right-overlay {
@@ -58,6 +58,12 @@
         }
         svg {
             display: block;
+
+            &.dc-icon {
+                &--red {
+                    margin: 0 1rem;
+                }
+            }
 
             @include mobile {
                 max-width: 96px;

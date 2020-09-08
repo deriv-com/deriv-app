@@ -7,6 +7,7 @@ export default class ToolbarStore {
         this.root_store = root_store;
     }
 
+    @observable is_animation_info_modal_open = false;
     @observable is_dialog_open = false;
     @observable is_toolbox_open = false;
     @observable is_search_focus = false;
@@ -77,6 +78,11 @@ export default class ToolbarStore {
         setFieldValue('search', '');
         toolbox.showSearch('');
     };
+
+    @action.bound
+    toggleAnimationInfoModal() {
+        this.is_animation_info_modal_open = !this.is_animation_info_modal_open;
+    }
 
     @action.bound
     onResetClick() {

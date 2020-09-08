@@ -96,7 +96,7 @@ class SelfExclusion extends React.Component {
 
         // Messages
         const valid_number_message = localize('Should be a valid number');
-        const more_than_zero_message = localize('Should be more than 0');
+        const more_than_zero_message = localize('Please input number greater than or equal to 0');
         const max_number_message = localize('Reached maximum number of digits');
         const max_decimal_message = (
             <Localize
@@ -170,7 +170,7 @@ class SelfExclusion extends React.Component {
                     is_eu
                 ) {
                     errors[item] = getLimitNumberMessage(this.state.self_exclusions[item]);
-                } else if (this.state.self_exclusions[item] && +values[item] <= 0) {
+                } else if (this.state.self_exclusions[item] && +values[item] < 0) {
                     errors[item] = more_than_zero_message;
                 } else if (+values[item] > max_number) {
                     errors[item] = max_number_message;
@@ -203,6 +203,7 @@ class SelfExclusion extends React.Component {
 
     handleSubmit = async (values, { setSubmitting }) => {
         const need_logout_exclusions = ['exclude_until', 'timeout_until'];
+        const string_exclusions = ['exclude_until'];
         const has_need_logout = this.state.changed_attributes.some((attr) => need_logout_exclusions.includes(attr));
 
         const makeRequest = () =>
@@ -212,7 +213,7 @@ class SelfExclusion extends React.Component {
                 };
 
                 this.state.changed_attributes.forEach((attr) => {
-                    request[attr] = values[attr];
+                    request[attr] = string_exclusions.includes(attr) ? values[attr] : +values[attr];
                 });
 
                 WS.authorized.setSelfExclusion(request).then((response) => resolve(response));
@@ -320,7 +321,7 @@ class SelfExclusion extends React.Component {
             show_article,
             submit_error_message,
         } = this.state;
-        const { is_virtual, is_switching, currency } = this.props;
+        const { is_virtual, is_switching, currency, is_eu } = this.props;
 
         if (is_virtual) return <DemoMessage />;
 
@@ -354,6 +355,13 @@ class SelfExclusion extends React.Component {
                                 setFieldValue,
                             }) => (
                                 <Form className='self-exclusion__form' noValidate>
+                                    <Modal
+                                        className='self_exclusion__article-modal'
+                                        is_open={show_article}
+                                        toggleModal={this.toggleArticle}
+                                    >
+                                        <ArticleContent toggleModal={this.toggleArticle} />
+                                    </Modal>
                                     {is_confirm_page ? (
                                         <>
                                             <Modal
@@ -434,30 +442,48 @@ class SelfExclusion extends React.Component {
                                                     } else if (need_amount.includes(key)) {
                                                         value = `${values[key]}`;
                                                     }
+                                                    const checked_value = +values[key] == 0 ? 'Removed' : value;
 
                                                     return (
                                                         <div key={idx} className='self-exclusion__confirm-item'>
                                                             <p className='self-exclusion__confirm-label'>
                                                                 {this.exclusion_texts[key]}
                                                             </p>
-                                                            <p className='self-exclusion__confirm-value'>{value}</p>
+                                                            <p className='self-exclusion__confirm-value'>
+                                                                {checked_value}
+                                                            </p>
                                                         </div>
                                                     );
                                                 })}
                                                 <p className='self-exclusion__confirm-note'>
-                                                    <Localize
-                                                        i18n_default_text='You’ll be able to adjust these limits at any time. You can reduce your limits from the <0>self-exclusion page</0>. To increase or remove your limits, please contact our <1>Customer Support team</1>.'
-                                                        components={[
-                                                            <span key={0} className='self-exclusion__text-highlight' />,
-                                                            <a
-                                                                key={1}
-                                                                className='link link--orange'
-                                                                rel='noopener noreferrer'
-                                                                target='_blank'
-                                                                href={getDerivComLink('/contact-us')}
-                                                            />,
-                                                        ]}
-                                                    />
+                                                    {is_eu ? (
+                                                        <Localize
+                                                            i18n_default_text='You’ll be able to adjust these limits at any time. You can reduce your limits from the <0>self-exclusion page</0>. To increase or remove your limits, please contact our <1>Customer Support team</1>.'
+                                                            components={[
+                                                                <span
+                                                                    key={0}
+                                                                    className='self-exclusion__text-highlight'
+                                                                />,
+                                                                <a
+                                                                    key={1}
+                                                                    className='link link--orange'
+                                                                    rel='noopener noreferrer'
+                                                                    target='_blank'
+                                                                    href={getDerivComLink('/contact-us')}
+                                                                />,
+                                                            ]}
+                                                        />
+                                                    ) : (
+                                                        <Localize
+                                                            i18n_default_text='We’ll update your limits. Click <0>Agree and accept</0> to acknowledge that you are fully responsible for your actions, and we are not liable for any addiction or loss.'
+                                                            components={[
+                                                                <strong
+                                                                    key={0}
+                                                                    className='self-exclusion__confirm-bold'
+                                                                />,
+                                                            ]}
+                                                        />
+                                                    )}
                                                 </p>
                                                 <p className='self-exclusion__error'>{submit_error_message}</p>
                                                 <Button
@@ -472,13 +498,6 @@ class SelfExclusion extends React.Component {
                                         </>
                                     ) : (
                                         <>
-                                            <Modal
-                                                className='self_exclusion__article-modal'
-                                                is_open={show_article}
-                                                toggleModal={this.toggleArticle}
-                                            >
-                                                <ArticleContent toggleModal={this.toggleArticle} />
-                                            </Modal>
                                             <h2 className='self-exclusion__header'>
                                                 {localize('Your stake and loss limits')}
                                             </h2>

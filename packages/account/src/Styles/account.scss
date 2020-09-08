@@ -798,6 +798,9 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin: 2.4rem 0;
                 max-width: 67.2rem;
             }
+            &-bold {
+                @include typeface(--paragraph-left-bold-red);
+            }
         }
         &__back {
             @include typeface(--paragraph-left-bold-prominent);

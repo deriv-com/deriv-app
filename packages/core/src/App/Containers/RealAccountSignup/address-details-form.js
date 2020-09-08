@@ -2,7 +2,7 @@ import { localize } from '@deriv/translations';
 import AddressDetails from 'App/Containers/RealAccountSignup/address-details.jsx';
 import { generateValidationFunction, getDefaultFields } from './form-validations';
 
-const address_details_config = ({ account_settings }) => {
+const address_details_config = ({ account_settings, is_svg }) => {
     if (!account_settings) {
         return {};
     }
@@ -16,7 +16,7 @@ const address_details_config = ({ account_settings }) => {
                 ['address', localize('Address is not in a proper format')],
                 ['length', localize('This should not exceed {{max}} characters.', { max: 70 }), { max: 70 }],
                 ['po_box', localize('P.O. Box is not accepted in address')],
-            ],
+            ].filter(x => (is_svg ? x.indexOf('po_box') !== 0 : x)),
         },
         address_line_2: {
             supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
@@ -24,7 +24,7 @@ const address_details_config = ({ account_settings }) => {
             rules: [
                 ['length', localize('This should not exceed {{max}} characters.', { max: 70 }), { max: 70 }],
                 ['po_box', localize('P.O. Box is not accepted in address')],
-            ],
+            ].filter(x => (is_svg ? x.indexOf('po_box') !== 0 : x)),
         },
         address_city: {
             supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
@@ -74,7 +74,8 @@ const address_details_config = ({ account_settings }) => {
 };
 
 export const addressDetailsConfig = ({ upgrade_info, real_account_signup_target, residence, account_settings }) => {
-    const config = address_details_config({ account_settings });
+    const is_svg = upgrade_info?.can_upgrade_to === 'svg';
+    const config = address_details_config({ account_settings, is_svg });
     return {
         header: {
             active_title: localize('Complete your address details'),
@@ -87,7 +88,7 @@ export const addressDetailsConfig = ({ upgrade_info, real_account_signup_target,
                 real_account_signup_target,
                 transformConfig(transformForResidence(config, residence), real_account_signup_target)
             ),
-            is_svg: upgrade_info?.can_upgrade_to === 'svg',
+            is_svg,
         },
         passthrough: ['residence_list', 'is_fully_authenticated'],
     };

@@ -82,7 +82,7 @@ class AddressDetails extends React.Component {
                 validate={this.handleValidate}
                 validateOnMount
                 onSubmit={(values, actions) => {
-                    if (isDesktop() && values.address_state) {
+                    if (values.address_state) {
                         values.address_state = this.props.states_list.length
                             ? this.state.address_state_to_display
                                 ? getLocation(this.props.states_list, this.state.address_state_to_display, 'value')

@@ -229,7 +229,14 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
         renderCellContent: ({ cell_value, row_obj, is_footer }) => {
             if (is_footer) return localize('Total');
 
-            return <MarketSymbolIconRow action={cell_value} key={row_obj.id} payload={row_obj.contract_info} />;
+            return (
+                <MarketSymbolIconRow
+                    action={cell_value}
+                    key={row_obj.id}
+                    payload={row_obj.contract_info}
+                    should_show_multiplier={false}
+                />
+            );
         },
     },
     {
@@ -260,7 +267,11 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
         },
     },
     {
-        title: isMobile() ? <Localize i18n_default_text='Total stake' /> : <Localize i18n_default_text='Buy price' />,
+        title: isMobile() ? (
+            <Localize i18n_default_text='Total buy price' />
+        ) : (
+            <Localize i18n_default_text='Buy price' />
+        ),
         col_index: 'purchase',
         renderCellContent: ({ cell_value }) => <Money amount={cell_value} currency={currency} />,
     },

@@ -115,7 +115,7 @@ class TogglePositionsDrawerDialog extends React.Component {
                         onClose={this.toggleDialog}
                         wrapper_classname='contract-update'
                     >
-                        <Div100vhContainer className='contract-update__wrapper' height_offset='75px'>
+                        <Div100vhContainer className='contract-update__wrapper' height_offset='40px'>
                             <ContractUpdateForm contract={this.contract} toggleDialog={this.toggleDialog} />
                         </Div100vhContainer>
                     </MobileDialog>

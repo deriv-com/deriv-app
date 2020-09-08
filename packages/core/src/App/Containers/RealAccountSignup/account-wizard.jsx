@@ -80,15 +80,17 @@ class AccountWizard extends React.Component {
                 mounted: false,
             });
 
+            // If residence list is present, attempt to set phone field with the proper default value
+            // Otherwise, leave empty.
             if (!this.residence_list?.length) {
                 const setDefaultPhone = country_code => {
+                    const items = [...this.state.items];
                     if ('phone' in items[1].form_value) {
                         items[1].form_value.phone = items[1].form_value.phone || country_code || '';
                         this.setState(items);
                     }
                 };
 
-                const items = [...this.state.items];
                 this.getCountryCode().then(setDefaultPhone);
             }
 

@@ -201,7 +201,7 @@ class MT5PasswordManagerModal extends React.Component {
                     max_number: 25,
                 });
             } else if (!validPassword(values.new_password)) {
-                errors.new_password = getPreBuildDVRs().password.message;
+                errors.new_password = getPreBuildDVRs().password.message();
             } else if (values.new_password.toLowerCase() === email.toLowerCase()) {
                 errors.new_password = localize('Your password cannot be the same as your email address.');
             }

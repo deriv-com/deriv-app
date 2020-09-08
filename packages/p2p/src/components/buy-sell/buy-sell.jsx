@@ -79,6 +79,7 @@ const BuySell = ({ navigate }) => {
             </div>
             <BuySellTableContent key={table_type} is_buy={table_type === 'buy'} setSelectedAd={setSelectedAd} />
             <Modal
+                className='buy-sell__popup'
                 height={table_type === 'buy' ? '400px' : '649px'}
                 width='456px'
                 is_open={should_show_popup}

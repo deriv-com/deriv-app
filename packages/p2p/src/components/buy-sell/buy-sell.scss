@@ -57,6 +57,10 @@
         align-items: center;
     }
     &__popup {
+        .dc-modal-footer {
+            margin-top: auto;
+        }
+
         &-field {
             margin-bottom: 0 !important;
             flex: 1;

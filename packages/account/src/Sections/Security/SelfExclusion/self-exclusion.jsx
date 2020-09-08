@@ -285,7 +285,7 @@ class SelfExclusion extends React.Component {
             }
             this.setState({
                 is_loading: false,
-                self_exclusions: { ...this.state.self_exclusions, ...response_to_string },
+                self_exclusions: { ...this.exclusion_data, ...response_to_string },
             });
         }
     };

@@ -231,6 +231,55 @@ class PersonalDetailsForm extends React.Component {
         return !this.state.changeable_fields.some((field) => field === name);
     }
 
+    componentDidMount() {
+        const { fetchResidenceList, fetchStatesList, has_residence } = this.props;
+
+        fetchResidenceList();
+        if (has_residence) {
+            this.setState({ is_state_loading: true }, () => {
+                fetchStatesList().then(() => {
+                    this.setState({ is_state_loading: false });
+                });
+            });
+        }
+        this.initializeFormValues();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.account_settings !== prevProps.account_settings) {
+            this.initializeFormValues();
+        }
+    }
+
+    initializeFormValues() {
+        WS.wait('landing_company', 'get_account_status', 'get_settings').then(() => {
+            const { getChangeableFields, is_virtual, account_settings } = this.props;
+
+            // Convert to boolean
+            account_settings.email_consent = !!account_settings.email_consent;
+
+            const hidden_settings = [
+                'account_opening_reason',
+                !this.props.is_eu && 'tax_residence',
+                !this.props.is_eu && 'tax_identification_number',
+                'client_tnc_status',
+                'country_code',
+                'has_secret_answer',
+                'is_authenticated_payment_agent',
+                'user_hash',
+                'country',
+                'salutation',
+                'request_professional_status',
+            ];
+            const form_initial_values = removeObjProperties(hidden_settings, account_settings);
+            this.setState({
+                changeable_fields: is_virtual ? [] : getChangeableFields(),
+                is_loading: false,
+                form_initial_values,
+            });
+        });
+    }
+
     render() {
         const {
             form_initial_values: { ...form_initial_values },
@@ -826,55 +875,6 @@ class PersonalDetailsForm extends React.Component {
                 )}
             </Formik>
         );
-    }
-
-    componentDidMount() {
-        const { fetchResidenceList, fetchStatesList, has_residence } = this.props;
-
-        fetchResidenceList();
-        if (has_residence) {
-            this.setState({ is_state_loading: true }, () => {
-                fetchStatesList().then(() => {
-                    this.setState({ is_state_loading: false });
-                });
-            });
-        }
-        this.initializeFormValues();
-    }
-
-    componentDidUpdate(prevProps) {
-        if (this.props.account_settings !== prevProps.account_settings) {
-            this.initializeFormValues();
-        }
-    }
-
-    initializeFormValues() {
-        WS.wait('landing_company', 'get_account_status', 'get_settings').then(() => {
-            const { getChangeableFields, is_virtual, account_settings } = this.props;
-
-            // Convert to boolean
-            account_settings.email_consent = !!account_settings.email_consent;
-
-            const hidden_settings = [
-                'account_opening_reason',
-                !this.props.is_eu && 'tax_residence',
-                !this.props.is_eu && 'tax_identification_number',
-                'client_tnc_status',
-                'country_code',
-                'has_secret_answer',
-                'is_authenticated_payment_agent',
-                'user_hash',
-                'country',
-                'salutation',
-                'request_professional_status',
-            ];
-            const form_initial_values = removeObjProperties(hidden_settings, account_settings);
-            this.setState({
-                changeable_fields: is_virtual ? [] : getChangeableFields(),
-                is_loading: false,
-                form_initial_values,
-            });
-        });
     }
 }
 

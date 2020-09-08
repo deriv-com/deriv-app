@@ -285,12 +285,6 @@ const BinarySocketBase = (() => {
             contract_id,
         });
 
-    const getSettings = () => {
-        deriv_api.send({
-            get_settings: 1,
-        });
-    };
-
     const cancelContract = contract_id => deriv_api.send({ cancel: contract_id });
 
     const p2pAdvertiserInfo = () => deriv_api.send({ p2p_advertiser_info: 1 });
@@ -341,7 +335,6 @@ const BinarySocketBase = (() => {
         close,
         contractUpdate,
         contractUpdateHistory,
-        getSettings,
         mt5NewAccount,
         mt5PasswordChange,
         mt5PasswordReset,

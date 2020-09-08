@@ -108,6 +108,13 @@
         margin: 2px;
         background-color: var(--general-section-1);
     }
+    &__duration {
+        &-dropdown {
+            width: 100%;
+            margin-left: 0rem;
+            margin-right: 1.2rem;
+        }
+    }
     &__leading {
         .dc-input__field {
             padding-left: 6rem;

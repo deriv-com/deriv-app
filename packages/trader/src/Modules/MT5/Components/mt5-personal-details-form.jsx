@@ -55,7 +55,7 @@ export const InputField = ({ name, optional = false, ...props }) => (
     </Field>
 );
 
-const validatePersonalDetails = (values, residence_list, account_opening_reason, landing_company) => {
+const validatePersonalDetails = ({ values, residence_list, account_opening_reason, landing_company }) => {
     const is_tin_required = landing_company?.config?.tax_details_required ?? false;
     const tin_regex = landing_company?.config?.tin_format?.[0] ?? true;
 
@@ -164,17 +164,17 @@ const MT5PersonalDetailsForm = ({
             }}
             enableReinitialize
             validateOnMount={({ initialValues }) => {
-                const initial_errors = validatePersonalDetails(
-                    initialValues,
+                const initial_errors = validatePersonalDetails({
+                    values: initialValues,
                     residence_list,
                     account_opening_reason,
-                    landing_company
-                );
+                    landing_company,
+                });
                 is_initial_valid = Object.entries(initial_errors).length === 0 && initial_errors.constructor === Object;
                 return initial_errors;
             }}
             validate={values =>
-                validatePersonalDetails(values, residence_list, account_opening_reason, landing_company)
+                validatePersonalDetails({ values, residence_list, account_opening_reason, landing_company })
             }
             onSubmit={onSubmitForm}
         >

@@ -26,7 +26,7 @@ module.exports = function(env, argv) {
         plugins: plugins({
             base,
             is_test_env: true,
-            env,
+            env: {},
         }),
         resolve: {
             alias: ALIASES,

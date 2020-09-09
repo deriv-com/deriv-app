@@ -60,6 +60,10 @@ module.exports = function(env, argv) {
             filename: 'js/core.[name].[contenthash].js',
             publicPath: base,
         },
-        plugins: plugins(base, false),
+        plugins: plugins({
+            base,
+            is_test_env: false,
+            env,
+        }),
     };
 };

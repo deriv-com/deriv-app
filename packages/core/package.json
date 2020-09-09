@@ -8,6 +8,7 @@
     "start": "npm run test && npm run serve",
     "serve": "f() { echo \"Serving...\" && sudo ./node_modules/.bin/webpack-dev-server --config \"./build/webpack.config.js\" --env.open $1;}; f",
     "build": "f () { webpack --config \"./build/webpack.config.js\" --env.base $1;}; f",
+    "build-crypto": "f () { webpack --config \"./build/webpack.config.js\" --env.is_crypto_app --env.base $1;}; f",
     "build:travis": "echo \"No build:travis specified\"",
     "prettify": "prettier --write \"./{script,src,build}/**/*.{js,jsx,scss}\"",
     "precommit": "lint-staged",

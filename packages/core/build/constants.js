@@ -13,6 +13,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const AssetsManifestPlugin = require('webpack-manifest-plugin');
 const { GenerateSW } = require('workbox-webpack-plugin');
+const DefinePlugin = require('webpack').DefinePlugin;
 
 const {
     copyConfig,
@@ -130,7 +131,10 @@ const MINIMIZERS = !IS_RELEASE
           new OptimizeCssAssetsPlugin(),
       ];
 
-const plugins = (base, is_test_env, is_mocha_only) => [
+const plugins = ({ base, is_test_env, env }) => [
+    new DefinePlugin({
+        'process.env.is_crypto_app': JSON.stringify(env.is_crypto_app),
+    }),
     new CleanWebpackPlugin(),
     new CopyPlugin(copyConfig(base)),
     new HtmlWebPackPlugin(htmlOutputConfig()),
@@ -142,7 +146,7 @@ const plugins = (base, is_test_env, is_mocha_only) => [
     ...(IS_RELEASE
         ? []
         : [new AssetsManifestPlugin({ fileName: 'asset-manifest.json', filter: file => file.name !== 'CNAME' })]),
-    ...(is_test_env && !is_mocha_only
+    ...(is_test_env && !env.mocha_only
         ? [new StylelintPlugin(stylelintConfig())]
         : [
               new GenerateSW(generateSWConfig()),

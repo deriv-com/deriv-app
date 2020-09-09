@@ -116,9 +116,7 @@ export const getProfitTableColumnsTemplate = (currency, items_count) => [
     {
         title: localize('Sell time'),
         col_index: 'sell_time',
-        renderHeader: ({ title }) => {
-            return <span>{title}</span>;
-        },
+        renderHeader: ({ title }) => <span>{title}</span>,
         renderCellContent: ({ cell_value, is_footer }) => {
             if (is_footer) return '';
             return (

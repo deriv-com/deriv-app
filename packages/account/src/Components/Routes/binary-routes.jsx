@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch } from 'react-router-dom';
-import getRoutesConfig from 'Constants/routes-config';
 import { PlatformContext } from '@deriv/shared';
+import getRoutesConfig from 'Constants/routes-config';
 import RouteWithSubRoutes from './route-with-sub-routes.jsx';
 
 const BinaryRoutes = (props) => {

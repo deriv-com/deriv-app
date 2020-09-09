@@ -96,7 +96,8 @@ class SelfExclusion extends React.Component {
 
         // Messages
         const valid_number_message = localize('Should be a valid number');
-        const more_than_zero_message = localize('Please input number greater than or equal to 0');
+        const more_than_equal_zero_message = localize('Please input number greater than or equal to 0');
+        const more_than_zero_message = localize('Please input number greater than 0');
         const max_number_message = localize('Reached maximum number of digits');
         const max_decimal_message = (
             <Localize
@@ -170,7 +171,9 @@ class SelfExclusion extends React.Component {
                     is_eu
                 ) {
                     errors[item] = getLimitNumberMessage(this.state.self_exclusions[item]);
-                } else if (this.state.self_exclusions[item] && +values[item] < 0) {
+                } else if (this.state.self_exclusions[item] && +values[item] < 0 && !is_eu) {
+                    errors[item] = more_than_equal_zero_message;
+                } else if (+values[item] <= 0 && is_eu) {
                     errors[item] = more_than_zero_message;
                 } else if (+values[item] > max_number) {
                     errors[item] = max_number_message;
@@ -196,7 +199,6 @@ class SelfExclusion extends React.Component {
                 }
             }
         });
-        console.log(+values.max_balance);
 
         return errors;
     };
@@ -442,7 +444,7 @@ class SelfExclusion extends React.Component {
                                                     } else if (need_amount.includes(key)) {
                                                         value = `${values[key]}`;
                                                     }
-                                                    const checked_value = +values[key] == 0 ? 'Removed' : value;
+                                                    const checked_value = +values[key] === 0 ? 'Removed' : value;
 
                                                     return (
                                                         <div key={idx} className='self-exclusion__confirm-item'>

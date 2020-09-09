@@ -223,6 +223,11 @@ const BinarySocketBase = (() => {
             mt5_password_reset: 1,
         });
 
+    const getFinancialAssessment = () =>
+        deriv_api.send({
+            get_financial_assessment: 1,
+        });
+
     const profitTable = (limit, offset, date_boundaries) =>
         deriv_api.send({ profit_table: 1, description: 1, limit, offset, ...date_boundaries });
 
@@ -335,6 +340,7 @@ const BinarySocketBase = (() => {
         close,
         contractUpdate,
         contractUpdateHistory,
+        getFinancialAssessment,
         mt5NewAccount,
         mt5PasswordChange,
         mt5PasswordReset,

@@ -3,12 +3,12 @@ import { historyToTicks, getLast } from 'binary-utils';
 import { doUntilDone, getUUID } from '../tradeEngine/utils/helpers';
 import { observer as globalObserver } from '../../utils/observer';
 
-const parseTick = tick => ({
+const parseTick = (tick) => ({
     epoch: +tick.epoch,
     quote: +tick.quote,
 });
 
-const parseOhlc = ohlc => ({
+const parseOhlc = (ohlc) => ({
     open: +ohlc.open,
     high: +ohlc.high,
     low: +ohlc.low,
@@ -16,7 +16,7 @@ const parseOhlc = ohlc => ({
     epoch: +(ohlc.open_time || ohlc.epoch),
 });
 
-const parseCandles = candles => candles.map(t => parseOhlc(t));
+const parseCandles = (candles) => candles.map((t) => parseOhlc(t));
 
 const updateTicks = (ticks, newTick) => (getLast(ticks).epoch >= newTick.epoch ? ticks : [...ticks.slice(1), newTick]);
 
@@ -36,7 +36,7 @@ const updateCandles = (candles, ohlc) => {
     return [...prevCandles, ohlc];
 };
 
-const getType = isCandle => (isCandle ? 'candles' : 'ticks');
+const getType = (isCandle) => (isCandle ? 'candles' : 'ticks');
 
 export default class TicksService {
     constructor(api) {
@@ -48,6 +48,7 @@ export default class TicksService {
         this.subscriptions = new Map();
         this.ticks_history_promise = null;
         this.active_symbols_promise = null;
+        this.candles_promise = null;
 
         this.observe();
     }
@@ -58,8 +59,8 @@ export default class TicksService {
         }
 
         if (!this.active_symbols_promise) {
-            this.active_symbols_promise = new Promise(resolve => {
-                this.api.getActiveSymbolsBrief().then(r => {
+            this.active_symbols_promise = new Promise((resolve) => {
+                this.api.getActiveSymbolsBrief().then((r) => {
                     const { active_symbols: symbols } = r;
                     this.pipSizes = symbols
                         .reduce((s, i) => s.set(i.symbol, +(+i.pip).toExponential().substring(3)), new Map())
@@ -94,7 +95,7 @@ export default class TicksService {
 
         const key = getUUID();
 
-        this.request(options).catch(e => globalObserver.emit('Error', e));
+        this.request(options).catch((e) => globalObserver.emit('Error', e));
 
         if (type === 'ticks') {
             this.tickListeners = this.tickListeners.setIn([symbol, key], callback);
@@ -155,7 +156,7 @@ export default class TicksService {
             ...(tickSubscription || []),
         ];
 
-        Promise.all(subscription.map(id => doUntilDone(() => this.api.unsubscribeByID(id))));
+        Promise.all(subscription.map((id) => doUntilDone(() => this.api.unsubscribeByID(id))));
 
         this.subscriptions = new Map();
     }
@@ -169,7 +170,7 @@ export default class TicksService {
         const listeners = this.tickListeners.get(symbol);
 
         if (listeners) {
-            listeners.forEach(callback => callback(this.ticks.get(symbol)));
+            listeners.forEach((callback) => callback(this.ticks.get(symbol)));
         }
     }
 
@@ -182,12 +183,12 @@ export default class TicksService {
         const listeners = this.ohlcListeners.getIn(address);
 
         if (listeners) {
-            listeners.forEach(callback => callback(this.candles.getIn(address)));
+            listeners.forEach((callback) => callback(this.candles.getIn(address)));
         }
     }
 
     observe() {
-        this.api.events.on('tick', r => {
+        this.api.events.on('tick', (r) => {
             const {
                 tick,
                 tick: { symbol, id },
@@ -199,7 +200,7 @@ export default class TicksService {
             }
         });
 
-        this.api.events.on('ohlc', r => {
+        this.api.events.on('ohlc', (r) => {
             const {
                 ohlc,
                 ohlc: { symbol, granularity, id },
@@ -217,41 +218,44 @@ export default class TicksService {
     }
 
     requestStream(options) {
-        return this.requestPipSizes().then(() => this.requestTicks(options));
+        const { style } = options;
+
+        if (!this.ticks_history_promise && style === 'ticks') {
+            this.ticks_history_promise = this.requestPipSizes().then(() => this.requestTicks(options));
+        } else if (!this.candles_promise && style === 'candles') {
+            this.candles_promise = this.requestPipSizes().then(() => this.requestTicks(options));
+        }
+        return style === 'ticks' ? this.ticks_history_promise : this.candles_promise;
     }
 
     requestTicks(options) {
         const { symbol, granularity, style } = options;
 
-        if (!this.ticks_history_promise) {
-            this.ticks_history_promise = new Promise((resolve, reject) => {
-                doUntilDone(() =>
-                    this.api.getTickHistory(symbol, {
-                        subscribe: 1,
-                        end: 'latest',
-                        count: 1000,
-                        granularity: granularity ? Number(granularity) : undefined,
-                        style,
-                    })
-                )
-                    .then(r => {
-                        if (style === 'ticks') {
-                            const ticks = historyToTicks(r.history);
+        return new Promise((resolve, reject) => {
+            doUntilDone(() =>
+                this.api.getTickHistory(symbol, {
+                    subscribe: 1,
+                    end: 'latest',
+                    count: 1000,
+                    granularity: granularity ? Number(granularity) : undefined,
+                    style,
+                })
+            )
+                .then((r) => {
+                    if (style === 'ticks') {
+                        const ticks = historyToTicks(r.history);
 
-                            this.updateTicksAndCallListeners(symbol, ticks);
-                            resolve(ticks);
-                        } else {
-                            const candles = parseCandles(r.candles);
+                        this.updateTicksAndCallListeners(symbol, ticks);
+                        resolve(ticks);
+                    } else {
+                        const candles = parseCandles(r.candles);
 
-                            this.updateCandlesAndCallListeners([symbol, Number(granularity)], candles);
+                        this.updateCandlesAndCallListeners([symbol, Number(granularity)], candles);
 
-                            resolve(candles);
-                        }
-                    })
-                    .catch(reject);
-            });
-        }
-
-        return this.ticks_history_promise;
+                        resolve(candles);
+                    }
+                })
+                .catch(reject);
+        });
     }
 }

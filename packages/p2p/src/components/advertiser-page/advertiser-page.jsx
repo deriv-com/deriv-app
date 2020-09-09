@@ -20,7 +20,7 @@ const RowComponent = React.memo(({ data, is_buy_advert, showAdPopup, style }) =>
                 <Table.Cell>
                     {data.display_min_available}&ndash;{data.display_max_available} {data.offer_currency}
                 </Table.Cell>
-                <Table.Cell className='advertiser-page__adverts-price' flex='2fr'>
+                <Table.Cell className='advertiser-page__adverts-price'>
                     {data.display_price_rate} {data.transaction_currency}
                 </Table.Cell>
                 {is_my_ad ? (
@@ -72,15 +72,27 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
 
     React.useEffect(() => {
         if (is_mounted) {
-            setIsLoading(true);
-            advertiserStats();
             advertiserAdverts();
+            advertiserStats();
         }
     }, [is_mounted]);
 
     React.useEffect(() => {
         advertiserAdverts();
     }, [active_index]);
+
+    const advertiserAdverts = () => {
+        return new Promise(resolve => {
+            requestWS({
+                p2p_advert_list: 1,
+                counterparty_type,
+                advertiser_id,
+            }).then(response => {
+                setAdverts(response);
+                resolve();
+            });
+        });
+    };
 
     const advertiserStats = () => {
         return new Promise(resolve => {
@@ -91,19 +103,6 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
                 const { p2p_advertiser_stats } = response;
                 setStats(p2p_advertiser_stats);
                 setIsLoading(false);
-                resolve();
-            });
-        });
-    };
-
-    const advertiserAdverts = () => {
-        return new Promise(resolve => {
-            requestWS({
-                p2p_advert_list: 1,
-                counterparty_type,
-                advertiser_id,
-            }).then(response => {
-                setAdverts(response);
                 resolve();
             });
         });

@@ -31,7 +31,7 @@ const BuySellForm = ({ ad, handleClose, handleConfirm }) => {
             p2p_order_create: 1,
             advert_id: ad.id,
             amount: values.amount,
-            ...(ad.type === buy_sell.sell && {
+            ...(ad.type === buy_sell.SELL && {
                 contact_info: values.contact_info,
                 payment_info: values.payment_info,
             }),

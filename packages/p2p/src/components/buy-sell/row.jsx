@@ -49,7 +49,7 @@ export const RowComponent = React.memo(({ data, is_buy, setSelectedAd, showAdver
                 <Table.Cell>
                     {data.display_min_available}&ndash;{data.display_max_available} {data.offer_currency}
                 </Table.Cell>
-                <Table.Cell className='buy-sell__price' flex='2fr'>
+                <Table.Cell className='buy-sell__price'>
                     {data.display_price_rate} {data.transaction_currency}
                 </Table.Cell>
                 <Table.Cell>{data.display_payment_method}</Table.Cell>

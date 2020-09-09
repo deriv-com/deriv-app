@@ -7,53 +7,66 @@ import { localize } from '@deriv/translations';
 const SetResidenceForm = ({
     class_prefix = 'set-residence',
     children,
+    default_value,
     header_text,
     errors,
     touched,
     setFieldTouched,
     setFieldValue,
     residence_list,
-}) => (
-    <div className={`${class_prefix}__residence-selection`}>
-        {!!header_text && <p className={`${class_prefix}__heading`}>{header_text}</p>}
-        <p className={`${class_prefix}__${header_text ? 'text' : 'heading'}`}>{localize('Where do you live?')}</p>
-        <Field name='residence'>
-            {({ field }) => (
-                <React.Fragment>
-                    <DesktopWrapper>
-                        <Autocomplete
-                            {...field}
-                            autoComplete='off'
-                            className={`${class_prefix}__residence-field`}
-                            type='text'
-                            label={localize('Choose country')}
-                            error={touched.residence && errors.residence}
-                            required
-                            list_items={residence_list}
-                            onItemSelection={({ value, text }) => setFieldValue('residence', value ? text : '', true)}
-                        />
-                    </DesktopWrapper>
-                    <MobileWrapper>
-                        <SelectNative
-                            placeholder={localize('Please select')}
-                            label={localize('Choose country')}
-                            value={field.value}
-                            list_items={residence_list}
-                            error={touched.residence && errors.residence}
-                            required
-                            use_text
-                            onChange={e => {
-                                setFieldTouched('residence', true);
-                                setFieldValue('residence', e.target.value, true);
-                            }}
-                        />
-                    </MobileWrapper>
-                </React.Fragment>
-            )}
-        </Field>
-        {children}
-    </div>
-);
+}) => {
+    React.useEffect(() => {
+        if (default_value) {
+            setFieldTouched('residence', true);
+            setFieldValue('residence', default_value, true);
+        }
+    }, [setFieldTouched, setFieldValue, default_value]);
+
+    return (
+        <div className={`${class_prefix}__residence-selection`}>
+            {!!header_text && <p className={`${class_prefix}__heading`}>{header_text}</p>}
+            <p className={`${class_prefix}__${header_text ? 'text' : 'heading'}`}>{localize('Where do you live?')}</p>
+            <Field name='residence'>
+                {({ field }) => (
+                    <React.Fragment>
+                        <DesktopWrapper>
+                            <Autocomplete
+                                {...field}
+                                autoComplete='off'
+                                className={`${class_prefix}__residence-field`}
+                                type='text'
+                                label={localize('Choose country')}
+                                error={touched.residence && errors.residence}
+                                required
+                                list_items={residence_list}
+                                onItemSelection={({ value, text }) =>
+                                    setFieldValue('residence', value ? text : '', true)
+                                }
+                            />
+                        </DesktopWrapper>
+                        <MobileWrapper>
+                            <SelectNative
+                                placeholder={localize('Please select')}
+                                label={localize('Choose country')}
+                                value={field.value}
+                                list_items={residence_list}
+                                error={touched.residence && errors.residence}
+                                required
+                                use_text
+                                onChange={e => {
+                                    setFieldTouched('residence', true);
+                                    console.warn(e.target.value);
+                                    setFieldValue('residence', e.target.value, true);
+                                }}
+                            />
+                        </MobileWrapper>
+                    </React.Fragment>
+                )}
+            </Field>
+            {children}
+        </div>
+    );
+};
 
 SetResidenceForm.propTypes = {
     children: PropTypes.node,

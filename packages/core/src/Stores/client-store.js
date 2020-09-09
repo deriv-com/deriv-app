@@ -566,6 +566,11 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get clients_country() {
+        return this.website_status?.clients_country;
+    }
+
+    @computed
     get is_eu_country() {
         const country = this.website_status.clients_country;
         if (country) return isEuCountry(country);

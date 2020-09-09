@@ -148,7 +148,7 @@ class TradingDatePicker extends React.Component {
     render() {
         const { id, mode, name, validation_errors } = this.props;
 
-        const has_error = !!validation_errors[name].length;
+        const has_error = !!validation_errors[name]?.length;
 
         return (
             <div
@@ -167,7 +167,7 @@ class TradingDatePicker extends React.Component {
                         alignment='left'
                         display_format='DD MMM YYYY'
                         show_leading_icon
-                        error={validation_errors[name].length ? '' : undefined}
+                        error={has_error ? '' : undefined}
                         mode={mode}
                         max_date={this.max_date_duration}
                         min_date={this.min_date_expiry}

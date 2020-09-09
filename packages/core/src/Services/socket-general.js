@@ -157,10 +157,12 @@ const BinarySocketGeneral = (() => {
                 common_store.setError(true, { message: response.error.message });
                 break;
             case 'InvalidToken':
-                if (['cashier', 'paymentagent_withdraw', 'mt5_password_reset'].includes(msg_type)) {
+                if (
+                    ['cashier', 'paymentagent_withdraw', 'mt5_password_reset', 'new_account_virtual'].includes(msg_type)
+                ) {
                     return;
                 }
-                if (!['reset_password', 'new_account_virtual'].includes(msg_type)) {
+                if (!['reset_password'].includes(msg_type)) {
                     if (window.TrackJS) window.TrackJS.track('Custom InvalidToken error');
                 }
                 client_store.logout().then(() => {

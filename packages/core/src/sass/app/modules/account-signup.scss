@@ -2,6 +2,17 @@
 .account-signup {
     margin: 1.6rem 1.6rem 0;
 
+    &__error-wrapper {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 0.8rem;
+        margin-left: auto;
+
+        @include mobile {
+            justify-items: center;
+            margin-left: unset;
+        }
+    }
     &__residence-selection,
     &__password-selection {
         display: flex;
@@ -52,6 +63,15 @@
         font-size: 1.2rem;
         text-align: center;
         margin: 1rem 0 2.4rem;
+
+        &--error {
+            color: var(--status-danger);
+
+            @include mobile {
+                margin-top: -1.4rem;
+                margin-bottom: 0.8rem;
+            }
+        }
     }
     &__btn {
         align-self: flex-end;

@@ -2,93 +2,108 @@ import classNames from 'classnames';
 import { Field, Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Dialog, PasswordInput, PasswordMeter } from '@deriv/components';
+import { Button, Dialog, Loading, PasswordInput, PasswordMeter } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
+import { getLocation } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { validLength, validPassword, getPreBuildDVRs } from 'Utils/Validator/declarative-validation-rules';
+import { WS } from 'Services';
 import { website_name } from 'App/Constants/app-config';
+import { redirectToSignUp } from '_common/base/login';
 import ResidenceForm from '../SetResidenceModal/set-residence-form.jsx';
 import 'Sass/app/modules/account-signup.scss';
 
-const signupInitialValues = { password: '', residence: '' };
+const AccountSignup = ({ ...props }) => {
+    const [api_error, setApiError] = React.useState(false);
+    const [is_loading, setIsLoading] = React.useState(true);
+    const [country, setCountry] = React.useState('');
+    const [pw_input, setPWInput] = React.useState('');
+    const [has_valid_residence, setHasValidResidence] = React.useState(false);
 
-const validateSignup = (values, residence_list) => {
-    const errors = {};
+    const { clients_country, enableApp, fetchResidenceList, isModalVisible, onSignup, residence_list } = props;
 
-    if (
-        !validLength(values.password, {
-            min: 8,
-            max: 25,
-        })
-    ) {
-        errors.password = localize('You should enter {{min_number}}-{{max_number}} characters.', {
-            min_number: 8,
-            max_number: 25,
+    React.useEffect(() => {
+        WS.wait('website_status').then(async () => {
+            await fetchResidenceList();
+            if (clients_country) {
+                setCountry(getLocation(residence_list, clients_country, 'text'));
+            }
+            setIsLoading(false);
         });
-    } else if (!validPassword(values.password)) {
-        errors.password = getPreBuildDVRs().password.message;
-    }
+    }, [clients_country, fetchResidenceList, residence_list]);
 
-    if (!values.residence) {
-        errors.residence = true;
-    } else {
-        const index_of_selection = residence_list.findIndex(
-            item => item.text.toLowerCase() === values.residence.toLowerCase()
-        );
+    const updatePassword = string => {
+        setPWInput(string);
+    };
 
-        if (index_of_selection === -1 || residence_list[index_of_selection].disabled === 'DISABLED') {
-            errors.residence = localize('Unfortunately, {{website_name}} is not available in your country.', {
-                website_name,
+    const onResidenceSelection = React.useCallback(() => {
+        setHasValidResidence(true);
+    }, [setHasValidResidence]);
+
+    const onSignupComplete = React.useCallback(
+        error => {
+            if (error) {
+                setApiError(error);
+            } else {
+                isModalVisible(false);
+                enableApp();
+            }
+        },
+        [enableApp, isModalVisible]
+    );
+
+    const validateSignup = (values, list) => {
+        const errors = {};
+
+        if (
+            !validLength(values.password, {
+                min: 8,
+                max: 25,
+            })
+        ) {
+            errors.password = localize('You should enter {{min_number}}-{{max_number}} characters.', {
+                min_number: 8,
+                max_number: 25,
             });
+        } else if (!validPassword(values.password)) {
+            errors.password = getPreBuildDVRs().password.message;
         }
-    }
 
-    return errors;
-};
-
-class AccountSignup extends React.Component {
-    state = {
-        has_valid_residence: false,
-        pw_input: '',
-    };
-
-    updatePassword = string => {
-        this.setState({ pw_input: string });
-    };
-
-    onResidenceSelection = () => {
-        this.setState({ has_valid_residence: true });
-    };
-
-    onSignupComplete = error => {
-        // Handle lower level modal controls due to overriding modal rendering
-        this.props.isModalVisible(false);
-        this.props.enableApp();
-
-        // Error would be returned on invalid token (and the like) cases.
-        // TODO: Proper error handling (currently we have no place to put the message)
-        if (error) {
-            throw Error(error);
-        }
-    };
-
-    render() {
-        const { onSignup, residence_list } = this.props;
-
-        const validateSignupPassthrough = values => validateSignup(values, residence_list);
-        const onSignupPassthrough = values => {
-            const index_of_selection = residence_list.findIndex(
+        if (!values.residence) {
+            errors.residence = true;
+        } else {
+            const index_of_selection = list.findIndex(
                 item => item.text.toLowerCase() === values.residence.toLowerCase()
             );
 
+            if (index_of_selection === -1 || list[index_of_selection].disabled === 'DISABLED') {
+                errors.residence = localize('Unfortunately, {{website_name}} is not available in your country.', {
+                    website_name,
+                });
+            }
+        }
+        return errors;
+    };
+
+    const onSignupPassthrough = React.useCallback(
+        values => {
+            const index_of_selection = residence_list.findIndex(
+                item => item.text.toLowerCase() === values.residence.toLowerCase()
+            );
             const modded_values = { ...values, residence: residence_list[index_of_selection].value };
-            onSignup(modded_values, this.onSignupComplete);
-        };
-        return (
-            <div className='account-signup'>
+            onSignup(modded_values, onSignupComplete);
+        },
+        [residence_list, onSignup, onSignupComplete]
+    );
+
+    return (
+        <div className='account-signup'>
+            {is_loading ? (
+                <Loading is_fullscreen={false} />
+            ) : (
                 <Formik
-                    initialValues={signupInitialValues}
-                    validate={validateSignupPassthrough}
+                    initialValues={{ password: '', residence: '' }}
+                    validate={values => validateSignup(values, residence_list)}
                     onSubmit={onSignupPassthrough}
                 >
                     {({
@@ -103,7 +118,7 @@ class AccountSignup extends React.Component {
                     }) => (
                         <Form>
                             <React.Fragment>
-                                {!this.state.has_valid_residence ? (
+                                {!has_valid_residence ? (
                                     <ResidenceForm
                                         header_text={localize('Thanks for verifying your email')}
                                         class_prefix='account-signup'
@@ -112,6 +127,7 @@ class AccountSignup extends React.Component {
                                         setFieldTouched={setFieldTouched}
                                         setFieldValue={setFieldValue}
                                         residence_list={residence_list}
+                                        default_value={country}
                                     >
                                         <Button
                                             className={classNames('account-signup__btn', {
@@ -119,7 +135,7 @@ class AccountSignup extends React.Component {
                                             })}
                                             type='button'
                                             is_disabled={!values.residence || !!errors.residence}
-                                            onClick={this.onResidenceSelection}
+                                            onClick={onResidenceSelection}
                                             primary
                                             text={localize('Next')}
                                         />
@@ -132,7 +148,7 @@ class AccountSignup extends React.Component {
                                         <Field name='password'>
                                             {({ field }) => (
                                                 <PasswordMeter
-                                                    input={this.state.pw_input}
+                                                    input={pw_input}
                                                     has_error={!!(touched.password && errors.password)}
                                                 >
                                                     <PasswordInput
@@ -146,7 +162,7 @@ class AccountSignup extends React.Component {
                                                         onChange={e => {
                                                             const input = e.target;
                                                             setFieldTouched('password', true);
-                                                            if (input) this.updatePassword(input.value);
+                                                            if (input) updatePassword(input.value);
                                                             handleChange(e);
                                                         }}
                                                     />
@@ -156,27 +172,48 @@ class AccountSignup extends React.Component {
                                         <p className='account-signup__subtext'>
                                             <Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters, numbers, and symbols.' />
                                         </p>
-
-                                        <Button
-                                            className={classNames('account-signup__btn', {
-                                                'account-signup__btn--disabled':
-                                                    !values.password || errors.password || isSubmitting,
-                                            })}
-                                            type='submit'
-                                            is_disabled={!values.password || !!errors.password || isSubmitting}
-                                            text={localize('Start trading')}
-                                            primary
-                                        />
+                                        {api_error ? (
+                                            <React.Fragment>
+                                                <p className='account-signup__subtext account-signup__subtext--error'>
+                                                    {api_error}
+                                                </p>
+                                                <div className='account-signup__error-wrapper'>
+                                                    <Button
+                                                        secondary
+                                                        text={localize('Cancel')}
+                                                        type='button'
+                                                        onClick={() => isModalVisible(false)}
+                                                    />
+                                                    <Button
+                                                        primary
+                                                        text={localize('New sign up')}
+                                                        type='button'
+                                                        onClick={redirectToSignUp}
+                                                    />
+                                                </div>
+                                            </React.Fragment>
+                                        ) : (
+                                            <Button
+                                                className={classNames('account-signup__btn', {
+                                                    'account-signup__btn--disabled':
+                                                        !values.password || errors.password || isSubmitting,
+                                                })}
+                                                type='submit'
+                                                is_disabled={!values.password || !!errors.password || isSubmitting}
+                                                text={localize('Start trading')}
+                                                primary
+                                            />
+                                        )}
                                     </div>
                                 )}
                             </React.Fragment>
                         </Form>
                     )}
                 </Formik>
-            </div>
-        );
-    }
-}
+            )}
+        </div>
+    );
+};
 
 AccountSignup.propTypes = {
     onSignup: PropTypes.func,
@@ -185,7 +222,9 @@ AccountSignup.propTypes = {
 
 const AccountSignupModal = ({
     enableApp,
+    clients_country,
     disableApp,
+    fetchResidenceList,
     is_eu,
     is_loading,
     is_visible,
@@ -213,7 +252,9 @@ const AccountSignupModal = ({
         >
             <AccountSignup
                 onSignup={onSignup}
+                clients_country={clients_country}
                 residence_list={residence_list}
+                fetchResidenceList={fetchResidenceList}
                 is_eu={is_eu}
                 isModalVisible={toggleAccountSignupModal}
                 enableApp={enableApp}
@@ -223,8 +264,10 @@ const AccountSignupModal = ({
 };
 
 AccountSignupModal.propTypes = {
+    clients_country: PropTypes.string,
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
+    fetchResidenceList: PropTypes.func,
     is_eu: PropTypes.bool,
     is_loading: PropTypes.bool,
     is_visible: PropTypes.bool,
@@ -237,6 +280,8 @@ export default connect(({ ui, client }) => ({
     toggleAccountSignupModal: ui.toggleAccountSignupModal,
     enableApp: ui.enableApp,
     disableApp: ui.disableApp,
+    clients_country: client.clients_country,
+    fetchResidenceList: client.fetchResidenceList,
     is_eu: client.is_eu,
     is_loading: ui.is_loading,
     onSignup: client.onSignup,

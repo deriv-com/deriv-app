@@ -65,7 +65,18 @@ const QuickStrategyForm = ({
                                 <Field name='quick-strategy__symbol'>
                                     {({ field }) => (
                                         <>
-                                            {!is_mobile ? (
+                                            {is_mobile ? (
+                                                <Dropdown
+                                                    placeholder={localize('Asset')}
+                                                    is_align_text_left
+                                                    list={symbol_dropdown}
+                                                    name='symbol'
+                                                    value={selected_symbol.value}
+                                                    onChange={e => {
+                                                        onChangeDropdownItem('symbol', e.target.value, setFieldValue);
+                                                    }}
+                                                />
+                                            ) : (
                                                 <Autocomplete
                                                     {...field}
                                                     autoComplete='off'
@@ -89,17 +100,6 @@ const QuickStrategyForm = ({
                                                         )
                                                     }
                                                 />
-                                            ) : (
-                                                <Dropdown
-                                                    placeholder={localize('Asset')}
-                                                    is_align_text_left
-                                                    list={symbol_dropdown}
-                                                    name='symbol'
-                                                    value={selected_symbol.value}
-                                                    onChange={e => {
-                                                        onChangeDropdownItem('symbol', e.target.value, setFieldValue);
-                                                    }}
-                                                />
                                             )}
                                         </>
                                     )}
@@ -109,7 +109,22 @@ const QuickStrategyForm = ({
                                 <Field name='quick-strategy__trade-type'>
                                     {({ field }) => (
                                         <>
-                                            {!is_mobile ? (
+                                            {is_mobile ? (
+                                                <Dropdown
+                                                    placeholder={localize('Trade type')}
+                                                    is_align_text_left
+                                                    list={trade_type_dropdown}
+                                                    name='trade_type'
+                                                    value={selected_trade_type.value}
+                                                    onChange={e => {
+                                                        onChangeDropdownItem(
+                                                            'trade-type',
+                                                            e.target.value,
+                                                            setFieldValue
+                                                        );
+                                                    }}
+                                                />
+                                            ) : (
                                                 <Autocomplete
                                                     {...field}
                                                     autoComplete='off'
@@ -137,21 +152,6 @@ const QuickStrategyForm = ({
                                                         )
                                                     }
                                                 />
-                                            ) : (
-                                                <Dropdown
-                                                    placeholder={localize('Trade type')}
-                                                    is_align_text_left
-                                                    list={trade_type_dropdown}
-                                                    name='trade_type'
-                                                    value={selected_trade_type.value}
-                                                    onChange={e => {
-                                                        onChangeDropdownItem(
-                                                            'trade-type',
-                                                            e.target.value,
-                                                            setFieldValue
-                                                        );
-                                                    }}
-                                                />
                                             )}
                                         </>
                                     )}
@@ -161,7 +161,23 @@ const QuickStrategyForm = ({
                                 <Field name='quick-strategy__duration-unit'>
                                     {({ field }) => (
                                         <>
-                                            {!is_mobile ? (
+                                            {is_mobile ? (
+                                                <Dropdown
+                                                    placeholder={localize('Duration unit')}
+                                                    className='quick-strategy__duration-dropdown'
+                                                    is_align_text_left
+                                                    list={duration_unit_dropdown}
+                                                    name='duration-unit'
+                                                    value={selected_duration_unit.value}
+                                                    onChange={e => {
+                                                        onChangeDropdownItem(
+                                                            'duration-unit',
+                                                            e.target.value,
+                                                            setFieldValue
+                                                        );
+                                                    }}
+                                                />
+                                            ) : (
                                                 <Autocomplete
                                                     {...field}
                                                     autoComplete='off'
@@ -180,22 +196,6 @@ const QuickStrategyForm = ({
                                                         onChangeDropdownItem('duration-unit', value, setFieldValue);
                                                     }}
                                                     onScrollStop={() => onScrollStopDropdownList('duration-unit')}
-                                                />
-                                            ) : (
-                                                <Dropdown
-                                                    placeholder={localize('Duration unit')}
-                                                    className='quick-strategy__duration-dropdown'
-                                                    is_align_text_left
-                                                    list={duration_unit_dropdown}
-                                                    name='duration-unit'
-                                                    value={selected_duration_unit.value}
-                                                    onChange={e => {
-                                                        onChangeDropdownItem(
-                                                            'duration-unit',
-                                                            e.target.value,
-                                                            setFieldValue
-                                                        );
-                                                    }}
                                                 />
                                             )}
                                         </>

@@ -1,3 +1,3 @@
-import PopoverMessageCheckbox from './popover-message-checkbox';
+import PopoverMessageCheckbox from './popover-message-checkbox.jsx';
 
 export default PopoverMessageCheckbox;

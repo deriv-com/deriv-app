@@ -39,13 +39,10 @@ const MultiplierCardBody = ({
                     'dc-contract-card-items-wrapper': !is_mobile,
                 })}
             >
-                <ContractCardItem header={getCardLabels().STAKE} className='positions-drawer-card__stake'>
+                <ContractCardItem header={getCardLabels().STAKE} className='dc-contract-card__stake'>
                     <Money amount={buy_price - cancellation_price} currency={currency} />
                 </ContractCardItem>
-                <ContractCardItem
-                    header={getCardLabels().CURRENT_STAKE}
-                    className='positions-drawer-card__current-stake'
-                >
+                <ContractCardItem header={getCardLabels().CURRENT_STAKE} className='dc-contract-card__current-stake'>
                     <div
                         className={classNames({
                             'dc-contract-card--profit': +profit > 0,
@@ -57,7 +54,7 @@ const MultiplierCardBody = ({
                 </ContractCardItem>
                 <ContractCardItem
                     header={getCardLabels().DEAL_CANCEL_FEE}
-                    className='positions-drawer-card__deal-cancel-fee'
+                    className='dc-contract-card__deal-cancel-fee'
                 >
                     {cancellation_price ? (
                         <Money amount={cancellation_price} currency={currency} />
@@ -65,13 +62,13 @@ const MultiplierCardBody = ({
                         <strong>-</strong>
                     )}
                 </ContractCardItem>
-                <ContractCardItem header={getCardLabels().TAKE_PROFIT} className='positions-drawer-card__take-profit'>
+                <ContractCardItem header={getCardLabels().TAKE_PROFIT} className='dc-contract-card__take-profit'>
                     {take_profit ? <Money amount={take_profit} currency={currency} /> : <strong>-</strong>}
                 </ContractCardItem>
-                <ContractCardItem header={getCardLabels().BUY_PRICE} className='positions-drawer-card__buy-price'>
+                <ContractCardItem header={getCardLabels().BUY_PRICE} className='dc-contract-card__buy-price'>
                     <Money amount={buy_price} currency={currency} />
                 </ContractCardItem>
-                <ContractCardItem header={getCardLabels().STOP_LOSS} className='positions-drawer-card__stop-loss'>
+                <ContractCardItem header={getCardLabels().STOP_LOSS} className='dc-contract-card__stop-loss'>
                     {stop_loss ? (
                         <React.Fragment>
                             <strong>-</strong>

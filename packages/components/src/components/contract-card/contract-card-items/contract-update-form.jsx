@@ -167,7 +167,7 @@ class ContractUpdateForm extends React.Component {
                         <span>{getCardLabels().TOTAL_PROFIT_LOSS}</span>
                         <div
                             className={classNames(
-                                'dc-contract-card__profit-loss dc-contract-card__total-profit-loss-value',
+                                'dc-contract-card__profit-loss dc-contract-card-item__total-profit-loss-value',
                                 {
                                     'dc-contract-card__profit-loss--is-crypto': isCryptocurrency(currency),
                                     'dc-contract-card__profit-loss--negative': total_profit < 0,

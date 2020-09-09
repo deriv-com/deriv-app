@@ -2,22 +2,13 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import {
-    Button,
-    ContractCard,
-    DesktopWrapper,
-    Icon,
-    MobileWrapper,
-    Money,
-    ProgressSliderMobile,
-} from '@deriv/components';
+import { Button, ContractCard, Icon, Money, ProgressSliderMobile } from '@deriv/components';
 import { getContractPath, isMultiplierContract, isHighLow, isCryptocurrency } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
 import { connect } from 'Stores/connect';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import { getContractTypeDisplay, getCardLabels } from 'Constants/contract';
-import ContractTypeCell from './contract-type-cell.jsx';
 import ResultMobile from './result-mobile.jsx';
 
 const PositionsModalCard = ({
@@ -70,10 +61,11 @@ const PositionsModalCard = ({
                     <span className='positions-modal-card__symbol'>{contract_info.display_name}</span>
                 </div>
                 <div className='positions-modal-card__type'>
-                    <ContractTypeCell
+                    <ContractCard.ContractTypeCell
+                        getContractTypeDisplay={getContractTypeDisplay}
+                        is_high_low={isHighLow({ shortcode: contract_info.shortcode })}
                         multiplier={contract_info.multiplier}
                         type={type}
-                        is_high_low={isHighLow({ shortcode: contract_info.shortcode })}
                     />
                 </div>
                 <CSSTransition

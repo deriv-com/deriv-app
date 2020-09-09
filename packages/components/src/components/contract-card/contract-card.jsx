@@ -4,6 +4,7 @@ import ContractCardLoader from './contract-card-loader';
 import ContractCardHeader from './contract-card-items/contract-card-header.jsx';
 import ContractCardBody from './contract-card-items/contract-card-body.jsx';
 import ContractCardFooter from './contract-card-items/contract-card-footer.jsx';
+import ContractTypeCell from './contract-card-items/contract-type-cell.jsx';
 import ResultOverlay from './result-overlay';
 import DesktopWrapper from '../desktop-wrapper';
 
@@ -50,6 +51,7 @@ ContractCard.Header = ContractCardHeader;
 ContractCard.Body = ContractCardBody;
 ContractCard.Footer = ContractCardFooter;
 ContractCard.Loader = ContractCardLoader;
+ContractCard.ContractTypeCell = ContractTypeCell;
 
 ContractCard.propTypes = {
     contract_info: PropTypes.object,

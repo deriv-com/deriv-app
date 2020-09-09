@@ -62,6 +62,7 @@ export { default as PageOverlay } from './components/page-overlay';
 export { default as PasswordInput } from './components/password-input';
 export { default as PasswordMeter } from './components/password-meter';
 export { default as Popover } from './components/popover';
+export { default as PopoverMessageCheckbox } from './components/popover-message-checkbox';
 export { default as ProgressBar } from './components/progress-bar';
 export { default as ProgressIndicator } from './components/progress-indicator';
 export { default as ProgressSlider } from './components/progress-slider';

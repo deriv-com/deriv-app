@@ -103,6 +103,7 @@ class ToggleCardDialog extends React.Component {
                     message={
                         <PopoverMessageCheckbox
                             defaultChecked={!should_show_cancellation_warning}
+                            checkboxLabel={getCardLabels().DONT_SHOW_THIS_AGAIN}
                             message={getCardLabels().TAKE_PROFIT_LOSS_NOT_AVAILABLE}
                             name='should_show_cancellation_warning'
                             onChange={() => toggleCancellationWarning()}

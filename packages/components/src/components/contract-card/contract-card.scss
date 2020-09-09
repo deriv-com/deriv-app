@@ -271,6 +271,41 @@
             padding: 0.4rem 0rem;
         }
     }
+    &__profit-loss {
+        font-size: 1.2em;
+        text-align: center;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        font-weight: bold;
+
+        &-label {
+            font-size: 1em;
+            margin-bottom: 4px;
+            font-weight: normal;
+            white-space: nowrap;
+            max-width: 90px;
+        }
+        &--is-crypto {
+            margin-left: -6px;
+        }
+        &--negative {
+            color: var(--text-loss-danger);
+
+            &:before {
+                content: '-';
+                color: inherit;
+            }
+        }
+        &--positive {
+            color: var(--text-profit-success);
+
+            &:before {
+                content: '+';
+                color: inherit;
+            }
+        }
+    }
     &-item {
         &__header {
             line-height: 1.4;
@@ -279,7 +314,6 @@
             @include typeface(--small-left-bold-black);
             display: flex;
             align-self: flex-start;
-            color: var(--text-prominent);
             line-height: 1.5;
 
             &--is-crypto {
@@ -321,6 +355,12 @@
                 &-value {
                     margin-left: 0.2rem;
                 }
+            }
+
+            &-label,
+            &-value {
+                font-size: 1.4rem;
+                line-height: 2rem;
             }
         }
     }
@@ -415,13 +455,13 @@
             text-align: left;
         }
     }
-    .contract-type__type-wrapper {
+    .dc-contract-type__type-wrapper {
         width: unset;
         height: unset;
     }
 }
 
-/** @define contract-type */
+/** @define dc-contract-type */
 .dc-contract-type {
     display: flex;
     flex-direction: row;
@@ -462,7 +502,7 @@
     }
 }
 
-/** @define remaining-time; */
+/** @define dc-remaining-time; weak */
 .dc-remaining-time {
     display: inline;
 }

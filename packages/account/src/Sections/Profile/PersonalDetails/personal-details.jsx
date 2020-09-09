@@ -92,13 +92,11 @@ class PersonalDetailsForm extends React.Component {
         }
 
         if (request.citizen) {
-            request.citizen = request.citizen ? getLocation(this.props.residence_list, request.citizen, 'value') : '';
+            request.citizen = getLocation(this.props.residence_list, request.citizen, 'value');
         }
 
         if (request.place_of_birth) {
-            request.place_of_birth = request.place_of_birth
-                ? getLocation(this.props.residence_list, request.place_of_birth, 'value')
-                : '';
+            request.place_of_birth = getLocation(this.props.residence_list, request.place_of_birth, 'value');
         }
 
         if (request.address_state) {

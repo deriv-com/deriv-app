@@ -46,6 +46,7 @@ import './common/ic-arrow-right.svg';
 import './common/ic-arrow-up.svg';
 import './common/ic-bank.svg';
 import './common/ic-bell.svg';
+import './common/ic-black-warning.svg';
 import './common/ic-box.svg';
 import './common/ic-calendar-datefrom.svg';
 import './common/ic-calendar-dateto.svg';

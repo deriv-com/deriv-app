@@ -133,6 +133,7 @@ class AddCryptoCurrency extends React.Component {
                             </React.Fragment>
                         )}
                         <FormSubmitButton
+                            className='currency-selector__button'
                             is_disabled={isSubmitting || !values.currency}
                             label={localize('Add account')}
                             is_center={true}

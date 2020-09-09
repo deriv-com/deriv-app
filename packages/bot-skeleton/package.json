@@ -42,7 +42,6 @@
     "prettier": "^1.19.1"
   },
   "dependencies": {
-    "@binary-com/binary-indicators": "^1.6.3",
     "@deriv/shared": "^1.0.0",
     "@deriv/translations": "^1.0.0",
     "binary-live-api": "^29.0.1",

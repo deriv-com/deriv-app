@@ -1,9 +1,8 @@
-import { Money, Button, Drawer, Tabs, Modal, ThemedScrollbars } from '@deriv/components';
+import { Button, Dialog, Drawer, Modal, Money, Tabs, ThemedScrollbars } from '@deriv/components';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import React from 'react';
 import { localize, Localize } from '@deriv/translations';
-import Dialog from './dialog.jsx';
 import Journal from './journal.jsx';
 import Summary from './summary.jsx';
 import Transactions from './transactions.jsx';
@@ -93,7 +92,7 @@ const drawerFooter = ({ is_clear_stat_disabled, onClearStatClick }) => (
             id='db-run-panel__clear-button'
             className='run-panel__footer-button'
             is_disabled={is_clear_stat_disabled}
-            text={localize('Clear stat')}
+            text={localize('Reset')}
             onClick={onClearStatClick}
             has_effect
             secondary
@@ -191,6 +190,7 @@ class RunPanel extends React.PureComponent {
             onRunButtonClick,
             onCancelButtonClick,
             toggleStatisticsInfoModal,
+            onCloseDialog,
         } = this.props;
         const content = drawerContent({ active_index, is_drawer_open, setActiveTabIndex, ...this.props });
         const footer = drawerFooter({ is_clear_stat_disabled, onClearStatClick });
@@ -201,7 +201,7 @@ class RunPanel extends React.PureComponent {
                     <Drawer
                         className={!is_mobile ? 'run-panel__container' : undefined}
                         contentClassName='run-panel__content'
-                        clear_stat_button_text={localize('Clear stat')}
+                        clear_stat_button_text={localize('Reset')}
                         footer={!is_mobile && footer}
                         is_clear_stat_disabled={is_clear_stat_disabled}
                         is_mobile={is_mobile}
@@ -216,9 +216,14 @@ class RunPanel extends React.PureComponent {
                 </div>
                 <Dialog
                     title={dialog_options.title}
-                    is_open={is_dialog_open}
-                    onOkButtonClick={onOkButtonClick}
-                    onCancelButtonClick={onCancelButtonClick}
+                    is_visible={is_dialog_open}
+                    cancel_button_text={dialog_options.cancel_button_text || localize('Cancel')}
+                    onCancel={onCancelButtonClick}
+                    confirm_button_text={dialog_options.ok_button_text || localize('OK')}
+                    onConfirm={onOkButtonClick || onCloseDialog}
+                    is_mobile_full_width={false}
+                    className={'dc-dialog__wrapper--fixed'}
+                    has_close_icon
                 >
                     {dialog_options.message}
                 </Dialog>
@@ -247,6 +252,8 @@ RunPanel.propTypes = {
     onCancelButtonClick: PropTypes.func,
     onClearStatClick: PropTypes.func,
     onMount: PropTypes.func,
+    onCancelButtonClick: PropTypes.func,
+    onCloseDialog: PropTypes.func,
     onOkButtonClick: PropTypes.func,
     onRunButtonClick: PropTypes.func,
     onUnmount: PropTypes.func,
@@ -273,6 +280,8 @@ export default connect(({ run_panel, core, ui }) => ({
     onCancelButtonClick: run_panel.onCancelButtonClick,
     onClearStatClick: run_panel.onClearStatClick,
     onMount: run_panel.onMount,
+    onCancelButtonClick: run_panel.onCancelButtonClick,
+    onCloseDialog: run_panel.onCloseDialog,
     onOkButtonClick: run_panel.onOkButtonClick,
     onRunButtonClick: run_panel.onRunButtonClick,
     onUnmount: run_panel.onUnmount,

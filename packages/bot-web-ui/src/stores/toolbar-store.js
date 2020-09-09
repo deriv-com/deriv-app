@@ -90,7 +90,7 @@ export default class ToolbarStore {
     }
 
     @action.bound
-    onResetCancelButtonClick() {
+    closeResetDialog() {
         this.is_dialog_open = false;
     }
 
@@ -110,7 +110,7 @@ export default class ToolbarStore {
             'reset'
         );
 
-        this.is_dialog_open = false;
+        this.closeResetDialog();
     }
 
     onSortClick = () => {

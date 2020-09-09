@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, HintBox, Icon, Loading, Popover } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
+import { website_name } from 'App/Constants/app-config';
 import { connect } from 'Stores/connect';
 
 const OnRampProviderPopup = ({
@@ -93,8 +94,8 @@ const OnRampProviderPopup = ({
                 </h2>
                 <div className='on-ramp__popup-disclaimer-text'>
                     <Localize
-                        i18n_default_text="Please note that by clicking 'Continue', you'll leave Deriv.app. Your payment will be processed by {{ service }}, a third-party payment service provider. We are not liable for {{ service }}'s security or performance."
-                        values={{ service: selected_provider.name }}
+                        i18n_default_text="Please note that by clicking 'Continue', you'll leave {{ website_name }}. Your payment will be processed by {{ service }}, a third-party payment service provider. We are not liable for {{ service }}'s security or performance."
+                        values={{ service: selected_provider.name, website_name }}
                     />
                 </div>
             </div>

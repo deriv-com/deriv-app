@@ -1,5 +1,5 @@
 import React from 'react';
-import { PlatformContext } from './platform-context';
+import { PlatformContext } from '@deriv/shared';
 
 const DERIV_CRYPTO_KEY = 'is_deriv_crypto_app';
 

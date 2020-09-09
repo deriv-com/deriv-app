@@ -1,8 +1,7 @@
 import React from 'react';
 import { Field, Form, Formik } from 'formik';
 import { Button, Input, Checkbox } from '@deriv/components';
-import { getAppId, getSocketURL } from '@deriv/shared';
-import { PlatformContext } from 'App/Containers/PlatformContainer/platform-context';
+import { getAppId, getSocketURL, PlatformContext } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 // eslint-disable-next-line import/extensions
 

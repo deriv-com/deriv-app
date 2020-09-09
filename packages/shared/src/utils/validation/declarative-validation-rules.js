@@ -73,7 +73,6 @@ export const validNumber = (value, opts) => {
         const max_value = addComma(options.max);
         message = form_error_messages.maxNumber(max_value);
     }
-
     return { is_ok, message };
 };
 
@@ -97,10 +96,7 @@ const initPreBuildDVRs = () => ({
         message: form_error_messages.letter_symbol,
     },
     number: {
-        func: (...args) => {
-            const { is_ok } = validNumber(...args);
-            return is_ok;
-        },
+        func: (...args) => validNumber(...args),
         message: form_error_messages.number,
     },
     password: {

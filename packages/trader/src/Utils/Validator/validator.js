@@ -18,8 +18,8 @@ class Validator {
      * @param {string} attribute
      * @param {object} rule
      */
-    addFailure(attribute, rule) {
-        let message = rule.options.message || getPreBuildDVRs()[rule.name].message();
+    addFailure(attribute, rule, error_message) {
+        let message = error_message || rule.options.message || getPreBuildDVRs()[rule.name].message();
         if (rule.name === 'length') {
             message = template(message, [
                 rule.options.min === rule.options.max ? rule.options.min : `${rule.options.min}-${rule.options.max}`,
@@ -59,15 +59,22 @@ class Validator {
                     return;
                 }
 
-                const is_valid = ruleObject.validator(
-                    this.input[attribute],
-                    ruleObject.options,
-                    this.store,
-                    this.input
-                );
+                let is_valid, error_message;
+                if (ruleObject.name === 'number') {
+                    const { is_ok, message } = ruleObject.validator(
+                        this.input[attribute],
+                        ruleObject.options,
+                        this.store,
+                        this.input
+                    );
+                    is_valid = is_ok;
+                    error_message = message;
+                } else {
+                    is_valid = ruleObject.validator(this.input[attribute], ruleObject.options, this.store, this.input);
+                }
 
                 if (!is_valid) {
-                    this.addFailure(attribute, ruleObject);
+                    this.addFailure(attribute, ruleObject, error_message);
                 }
             });
         });

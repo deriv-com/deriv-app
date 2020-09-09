@@ -1,4 +1,4 @@
-import InputWithCheckBox from './input-with-checkbox';
-import './input-field.scss';
+import InputWithCheckBox from './input-with-checkbox.jsx';
+import './input-with-checkbox.scss';
 
 export default InputWithCheckBox;

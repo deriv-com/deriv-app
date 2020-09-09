@@ -28,11 +28,11 @@ class ToggleCardDialog extends React.Component {
     toggleDialog = e => {
         e.preventDefault();
         e.stopPropagation();
-        const { addToast, should_show_cancellation_warning, is_valid_to_cancel } = this.props;
+        const { addToast, getCardLabels, should_show_cancellation_warning, is_valid_to_cancel } = this.props;
         if (isMobile() && should_show_cancellation_warning && is_valid_to_cancel) {
             addToast({
                 key: 'deal_cancellation_active',
-                content: 'Take profit and/or stop loss are not available while deal cancellation is active.',
+                content: getCardLabels().TAKE_PROFIT_LOSS_NOT_AVAILABLE,
                 type: 'error',
             });
         }
@@ -77,9 +77,10 @@ class ToggleCardDialog extends React.Component {
             getContractById,
             is_valid_to_cancel,
             removeToast,
+            setCurrentFocus,
             should_show_cancellation_warning,
+            status,
             toggleCancellationWarning,
-            updateLimitOrder,
         } = this.props;
 
         const edit_icon = (
@@ -102,9 +103,7 @@ class ToggleCardDialog extends React.Component {
                     message={
                         <PopoverMessageCheckbox
                             defaultChecked={!should_show_cancellation_warning}
-                            message={
-                                'Take profit and/or stop loss are not available while deal cancellation is active.'
-                            }
+                            message={getCardLabels().TAKE_PROFIT_LOSS_NOT_AVAILABLE}
                             name='should_show_cancellation_warning'
                             onChange={() => toggleCancellationWarning()}
                         />
@@ -135,8 +134,9 @@ class ToggleCardDialog extends React.Component {
                                 getContractById={getContractById}
                                 removeToast={removeToast}
                                 contract={this.contract}
+                                setCurrentFocus={setCurrentFocus}
+                                status={status}
                                 toggleDialog={this.toggleDialog}
-                                updateLimitOrder={updateLimitOrder}
                             />
                         </Div100vhContainer>
                     </MobileDialog>
@@ -156,8 +156,9 @@ class ToggleCardDialog extends React.Component {
                             getContractById={getContractById}
                             removeToast={removeToast}
                             contract={this.contract}
+                            setCurrentFocus={setCurrentFocus}
+                            status={status}
                             toggleDialog={this.toggleDialog}
-                            updateLimitOrder={updateLimitOrder}
                         />
                     </ContractCardDialog>
                 </DesktopWrapper>
@@ -166,9 +167,17 @@ class ToggleCardDialog extends React.Component {
     }
 }
 
-PropTypes.ToggleCardDialog = {
+ToggleCardDialog.propTypes = {
+    addToast: PropTypes.func,
+    contract_id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    getCardLabels: PropTypes.func,
+    getContractById: PropTypes.func,
     is_valid_to_cancel: PropTypes.bool,
-    contract_id: PropTypes.string,
+    removeToast: PropTypes.func,
+    setCurrentFocus: PropTypes.func,
+    should_show_cancellation_warning: PropTypes.bool,
+    status: PropTypes.string,
+    toggleCancellationWarning: PropTypes.func,
 };
 
 export default ToggleCardDialog;

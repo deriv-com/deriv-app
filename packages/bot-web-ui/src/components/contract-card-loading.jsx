@@ -2,13 +2,7 @@ import React from 'react';
 import ContentLoader from 'react-content-loader';
 
 const ContractCardLoader = () => (
-    <ContentLoader
-        height={153}
-        width={334}
-        speed={3}
-        // primaryColor={'var(--general-section-1)'}
-        // secondaryColor={'var(--general-hover)'}
-    >
+    <ContentLoader height={153} width={334} speed={3}>
         <rect x='12' y='15' rx='0' ry='0' width='41' height='25' />
         <rect x='61' y='24' rx='0' ry='0' width='91' height='8' />
         <rect x='180' y='15' rx='0' ry='0' width='41' height='25' />

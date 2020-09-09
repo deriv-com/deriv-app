@@ -23,6 +23,11 @@ export const getCardLabels = () => ({
     DAY: localize('Day'),
     SELL: localize('Sell'),
     SELL_CONTRACT: localize('Sell contract'),
+    INCREMENT_VALUE: localize('Increment value'),
+    DECREMENT_VALUE: localize('Decrement value'),
+    TAKE_PROFIT_LOSS_NOT_AVAILABLE: localize(
+        'Take profit and/or stop loss are not available while deal cancellation is active.'
+    ),
 });
 
 export const getSupportedContracts = is_high_low => ({

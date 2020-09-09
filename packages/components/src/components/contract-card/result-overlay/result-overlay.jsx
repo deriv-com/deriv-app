@@ -91,6 +91,10 @@ class ResultOverlay extends React.PureComponent {
 
 ResultOverlay.propTypes = {
     contract_id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    getCardLabels: PropTypes.func,
+    getContractPath: PropTypes.func,
+    is_multiplier: PropTypes.bool,
+    is_positions: PropTypes.bool,
     is_unsupported: PropTypes.bool,
     is_visible: PropTypes.bool,
     onClick: PropTypes.func,

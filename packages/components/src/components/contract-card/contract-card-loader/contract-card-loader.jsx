@@ -3,13 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const ContractCardLoader = ({ speed }) => (
-    <ContentLoader
-        height={173}
-        width={218}
-        speed={speed}
-        primaryColor={'var(--general-section-1)'}
-        secondaryColor={'var(--general-hover)'}
-    >
+    <ContentLoader height={173} width={218} speed={speed}>
         <rect x='43' y='19' rx='0' ry='0' width='56' height='8' />
         <rect x='147' y='19' rx='0' ry='0' width='56' height='8' />
         <rect x='12' y='50' rx='0' ry='0' width='44' height='8' />

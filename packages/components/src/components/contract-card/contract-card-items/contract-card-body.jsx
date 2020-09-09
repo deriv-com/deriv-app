@@ -196,8 +196,12 @@ const ContractCardBody = ({
 ContractCardBody.propTypes = {
     contract_info: PropTypes.object,
     currency: PropTypes.string,
+    getCardLabels: PropTypes.func,
+    is_mobile: PropTypes.bool,
     is_multiplier: PropTypes.bool,
+    is_sold: PropTypes.bool,
     status: PropTypes.string,
+    server_time: PropTypes.object,
 };
 
 export default ContractCardBody;

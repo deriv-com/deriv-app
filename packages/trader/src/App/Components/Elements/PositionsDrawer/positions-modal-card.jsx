@@ -2,7 +2,15 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { Button, ContractCard, Icon, Money, ProgressSliderMobile } from '@deriv/components';
+import {
+    Button,
+    ContractCard,
+    DesktopWrapper,
+    Icon,
+    MobileWrapper,
+    Money,
+    ProgressSliderMobile,
+} from '@deriv/components';
 import { getContractPath, isMultiplierContract, isHighLow, isCryptocurrency } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
@@ -35,13 +43,13 @@ const PositionsModalCard = ({
     result,
     sell_price,
     server_time,
+    setCurrentFocus,
     should_show_cancellation_warning,
     status,
     toggleCancellationWarning,
     togglePositions,
     toggleUnsupportedContractModal,
     type,
-    updateLimitOrder,
 }) => {
     const loader_el = (
         <div className='positions-modal-card__content-loader'>
@@ -183,29 +191,65 @@ const PositionsModalCard = ({
         </React.Fragment>
     );
 
-    const contract_multiplier_el = (
-        <React.Fragment>
-            <ContractCard
-                addToast={addToast}
+    const card_multiplier_header = (
+        <ContractCard.Header
+            contract_info={contract_info}
+            getCardLabels={getCardLabels}
+            getContractTypeDisplay={getContractTypeDisplay}
+            has_progress_slider={!is_multiplier}
+            is_mobile={is_mobile}
+            is_sell_requested={is_sell_requested}
+            onClickSell={onClickSell}
+            server_time={server_time}
+        />
+    );
+
+    const card_multiplier_body = (
+        <div className={'dc-contract-card__separatorclass'}>
+            <ContractCard.Body
                 contract_info={contract_info}
                 contract_update={contract_update}
                 currency={currency}
                 getCardLabels={getCardLabels}
-                getContractById={getContractById}
-                getContractTypeDisplay={getContractTypeDisplay}
-                id={id}
                 is_mobile={is_mobile}
                 is_multiplier={is_multiplier}
-                is_positions={false}
-                onClickCancel={onClickCancel}
-                removeToast={removeToast}
-                server_time={server_time}
-                should_show_cancellation_warning={should_show_cancellation_warning}
-                should_show_result_overlay={false}
                 status={status}
-                toggleCancellationWarning={toggleCancellationWarning}
-                updateLimitOrder={updateLimitOrder}
+                server_time={server_time}
             />
+        </div>
+    );
+
+    const card_multiplier_footer = (
+        <ContractCard.Footer
+            addToast={addToast}
+            contract_info={contract_info}
+            getCardLabels={getCardLabels}
+            getContractById={getContractById}
+            is_multiplier={is_multiplier}
+            is_sell_requested={is_sell_requested}
+            onClickCancel={onClickCancel}
+            onClickSell={onClickSell}
+            removeToast={removeToast}
+            setCurrentFocus={setCurrentFocus}
+            should_show_cancellation_warning={should_show_cancellation_warning}
+            status={status}
+            toggleCancellationWarning={toggleCancellationWarning}
+        />
+    );
+
+    const contract_multiplier_el = (
+        <React.Fragment>
+            <ContractCard
+                contract_info={contract_info}
+                getCardLabels={getCardLabels}
+                is_multiplier={is_multiplier}
+                profit_loss={profit_loss}
+                should_show_result_overlay={false}
+            >
+                {card_multiplier_header}
+                {card_multiplier_body}
+                {card_multiplier_footer}
+            </ContractCard>
         </React.Fragment>
     );
 
@@ -259,6 +303,7 @@ PositionsModalCard.propTypes = {
     result: PropTypes.string,
     sell_time: PropTypes.number,
     server_time: PropTypes.object,
+    setCurrentFocus: PropTypes.func,
     status: PropTypes.string,
     togglePositions: PropTypes.func,
     toggleUnsupportedContractModal: PropTypes.func,
@@ -271,6 +316,7 @@ export default connect(({ common, ui, modules }) => ({
     is_mobile: ui.is_mobile,
     removeToast: ui.removeToast,
     server_time: common.server_time,
+    setCurrentFocus: ui.setCurrentFocus,
     should_show_cancellation_warning: ui.should_show_cancellation_warning,
     toggleCancellationWarning: ui.toggleCancellationWarning,
     updateLimitOrder: modules.contract_trade.updateLimitOrder,

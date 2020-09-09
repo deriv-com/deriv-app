@@ -106,9 +106,14 @@ const ContractCardHeader = ({
 
 ContractCardHeader.propTypes = {
     contract_info: PropTypes.object,
-    has_progress_slider: PropTypes.bool,
+    getCardLabels: PropTypes.func,
     getContractTypeDisplay: PropTypes.func,
-    is_positions: PropTypes.bool,
+    has_progress_slider: PropTypes.bool,
+    is_mobile: PropTypes.bool,
+    is_sell_requested: PropTypes.bool,
+    is_sold: PropTypes.bool,
+    onClickSell: PropTypes.func,
+    server_time: PropTypes.object,
 };
 
 export default ContractCardHeader;

@@ -14,7 +14,6 @@ import Icon from '../../icon';
 import MobileWrapper from '../../mobile-wrapper';
 import Money from '../../money';
 import InputWithCheckbox from '../../input-wth-checkbox';
-import { localize } from '@deriv/translations';
 
 class ContractUpdateForm extends React.Component {
     componentWillUnmount() {
@@ -104,12 +103,12 @@ class ContractUpdateForm extends React.Component {
     };
 
     onClick = e => {
-        this.props.updateLimitOrder();
+        this.props.contract.updateLimitOrder();
         this.props.toggleDialog(e);
     };
 
     render() {
-        const { addToast, removeToast, getCardLabels, status } = this.props;
+        const { addToast, getCardLabels, removeToast, setCurrentFocus, status } = this.props;
         const {
             contract_update_take_profit,
             has_contract_update_take_profit,
@@ -134,6 +133,7 @@ class ContractUpdateForm extends React.Component {
                 error_message_alignment='right'
                 value={contract_update_take_profit}
                 is_disabled={!!is_valid_to_cancel}
+                setCurrentFocus={setCurrentFocus}
             />
         );
 
@@ -154,6 +154,7 @@ class ContractUpdateForm extends React.Component {
                 error_message_alignment='right'
                 value={contract_update_stop_loss}
                 is_disabled={!!is_valid_to_cancel}
+                setCurrentFocus={setCurrentFocus}
             />
         );
 
@@ -163,7 +164,7 @@ class ContractUpdateForm extends React.Component {
             <React.Fragment>
                 <MobileWrapper>
                     <div className='dc-contract-card-dialog__total-profit'>
-                        <span>{localize('Total profit/loss:')}</span>
+                        <span>{getCardLabels().TOTAL_PROFIT_LOSS}</span>
                         <div
                             className={classNames(
                                 'dc-contract-card__profit-loss dc-contract-card__total-profit-loss-value',
@@ -206,11 +207,13 @@ class ContractUpdateForm extends React.Component {
 }
 
 ContractUpdateForm.propTypes = {
+    addToast: PropTypes.func,
     contract: PropTypes.object,
-    currency: PropTypes.string,
-    resetContractUpdate: PropTypes.func,
+    getCardLabels: PropTypes.func,
+    removeToast: PropTypes.func,
+    setCurrentFocus: PropTypes.func,
+    status: PropTypes.string,
     toggleDialog: PropTypes.func,
-    validation_errors: PropTypes.object,
 };
 
 export default ContractUpdateForm;

@@ -18,9 +18,10 @@ const CardFooter = ({
     onClickCancel,
     onClickSell,
     removeToast,
+    setCurrentFocus,
     should_show_cancellation_warning,
+    status,
     toggleCancellationWarning,
-    updateLimitOrder,
 }) => {
     const is_valid_to_cancel = isValidToCancel(contract_info);
     const is_valid_to_sell = isValidToSell(contract_info);
@@ -63,9 +64,10 @@ const CardFooter = ({
                                 getContractById={getContractById}
                                 is_valid_to_cancel={is_valid_to_cancel}
                                 removeToast={removeToast}
+                                setCurrentFocus={setCurrentFocus}
                                 should_show_cancellation_warning={should_show_cancellation_warning}
+                                status={status}
                                 toggleCancellationWarning={toggleCancellationWarning}
-                                updateLimitOrder={updateLimitOrder}
                             />
                         )}
                     </div>
@@ -93,11 +95,20 @@ const CardFooter = ({
 };
 
 CardFooter.propTypes = {
+    addToast: PropTypes.func,
     contract_info: PropTypes.object,
+    getCardLabels: PropTypes.func,
+    getContractById: PropTypes.func,
     is_multiplier: PropTypes.bool,
+    is_positions: PropTypes.bool,
     is_sell_requested: PropTypes.bool,
     onClickCancel: PropTypes.func,
     onClickSell: PropTypes.func,
+    removeToast: PropTypes.func,
+    setCurrentFocus: PropTypes.func,
+    should_show_cancellation_warning: PropTypes.bool,
+    status: PropTypes.string,
+    toggleCancellationWarning: PropTypes.func,
 };
 
 export default CardFooter;

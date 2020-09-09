@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { isMobile, isDesktop, getDecimalPlaces } from '@deriv/shared';
-import InputField from './input-field.jsx';
+import InputField from '../input-field';
 import Checkbox from '../checkbox';
 import Popover from '../popover';
 

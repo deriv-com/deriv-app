@@ -7,11 +7,11 @@ import RemainingTime from '../../remaining-time';
 
 const MultiplierCloseActions = ({
     className,
+    contract_info,
     getCardLabels,
+    is_sell_requested,
     onClickCancel,
     onClickSell,
-    contract_info,
-    is_sell_requested,
 }) => {
     const { contract_id, cancellation: { date_expiry: cancellation_date_expiry } = {}, profit } = contract_info;
 
@@ -54,7 +54,9 @@ const MultiplierCloseActions = ({
 };
 
 MultiplierCloseActions.propTypes = {
+    className: PropTypes.string,
     contract_info: PropTypes.object,
+    getCardLabels: PropTypes.func,
     is_sell_requested: PropTypes.bool,
     onClickCancel: PropTypes.func,
     onClickSell: PropTypes.func,

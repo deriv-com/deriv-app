@@ -4,7 +4,7 @@ import { Button, Icon } from '@deriv/components';
 import { getDerivComLink } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 
-const SignupErrorContent = ({ message, code, onConfirm }) => {
+const SignupErrorContent = ({ message, code, onConfirm, onRetry }) => {
     const Heading = () => {
         switch (code) {
             case 'InvalidPhone':
@@ -54,6 +54,12 @@ const SignupErrorContent = ({ message, code, onConfirm }) => {
 
     const ErrorCTA = () => {
         switch (code) {
+            case 'CurrencyTypeNotAllowed':
+                return (
+                    <Button primary onClick={onRetry} large>
+                        <Localize i18n_default_text='Try again using a different currency' />
+                    </Button>
+                );
             case 'InvalidPhone':
                 return (
                     <Button primary onClick={onConfirm} large>
@@ -93,6 +99,7 @@ SignupErrorContent.propTypes = {
     code: PropTypes.string,
     message: PropTypes.string,
     onConfirm: PropTypes.func,
+    onRetry: PropTypes.func,
 };
 
 export default SignupErrorContent;

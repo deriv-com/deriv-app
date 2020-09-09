@@ -87,6 +87,7 @@ class RealAccountSignup extends React.Component {
                             message={this.props.state_value.error_message}
                             code={this.props.state_value.error_code}
                             onConfirm={this.openPersonalDetails}
+                            onRetry={this.openCurrencySelector}
                         />
                     ),
                     title: () => localize('Add a real account'),
@@ -184,6 +185,12 @@ class RealAccountSignup extends React.Component {
     openPersonalDetails = () => {
         this.props.setParams({
             active_modal_index: 0,
+        });
+    };
+
+    openCurrencySelector = () => {
+        this.props.setParams({
+            active_modal_index: 1,
         });
     };
 

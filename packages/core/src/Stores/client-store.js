@@ -88,6 +88,8 @@ export default class ClientStore extends BaseStore {
     };
     @observable has_cookie_account = false;
 
+    @observable financial_assessment = null;
+
     is_mt5_account_list_updated = false;
 
     constructor(root_store) {
@@ -1798,6 +1800,16 @@ export default class ClientStore extends BaseStore {
         this.clearRealityCheckTimeout();
         LocalStore.remove('reality_check_duration');
         LocalStore.remove('reality_check_dismissed');
+    }
+
+    @action.bound
+    fetchFinancialAssessment() {
+        return new Promise(async resolve => {
+            const { get_financial_assessment } = await WS.getFinancialAssessment();
+
+            runInAction(() => (this.financial_assessment = get_financial_assessment));
+            resolve(get_financial_assessment);
+        });
     }
 }
 /* eslint-enable */

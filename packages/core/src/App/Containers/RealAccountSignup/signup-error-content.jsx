@@ -61,9 +61,9 @@ const SignupErrorContent = ({ message, code, onConfirm }) => {
     const ErrorCTA = () => {
         switch (code) {
             case 'CurrencyTypeNotAllowed':
-                return <TryAgain text={localize('Try again using a different currency')} />;
+                return <TryAgain text={localize('Try a different currency')} />;
             case 'InvalidPhone':
-                return <TryAgain text={localize('Try again using a different phone number')} />;
+                return <TryAgain text={localize('Try a different phone number')} />;
             case 'DuplicateAccount':
                 return null;
             default:

@@ -152,6 +152,11 @@
     form {
         width: 100%;
 
+        @include tablet-up {
+            display: grid;
+            grid-template-rows: minmax(20rem, 1fr);
+        }
+
         .currency-selector {
             &__radio-group {
                 display: flex;
@@ -189,17 +194,9 @@
                 margin-top: 1.6rem;
             }
         }
-        @include desktop {
-            display: grid;
-            grid-template-rows: minmax(20rem, 1fr);
-        }
-        @include tablet {
-            display: grid;
-            grid-template-rows: minmax(20rem, 1fr);
-        }
     }
     &__body {
-        display: grid;
+        display: flex;
 
         & .details-form {
             @include tablet {

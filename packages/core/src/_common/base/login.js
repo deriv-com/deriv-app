@@ -33,6 +33,7 @@ const Login = (() => {
         // TODO: [app-link-refactor] - Remove backwards compatibility for `deriv.app`
         const default_login_url_app = `https://oauth.deriv.app/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
         const default_login_url = `https://oauth.deriv.com/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
+        const default_deriv_crypto_url = `https://oauth.deriv-crypto.com/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
 
         if (server_url && /qa/.test(server_url)) {
             return `https://${server_url}/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
@@ -44,6 +45,12 @@ const Login = (() => {
         }
         if (getAppId() === domain_app_ids['app.deriv.com'] && /^app\.deriv\.com$/.test(window.location.hostname)) {
             return default_login_url;
+        }
+        if (
+            getAppId() === domain_app_ids['deriv-crypto.com'] &&
+            /^(www\.)?deriv-crypto\.com$/.test(window.location.hostname)
+        ) {
+            return default_deriv_crypto_url;
         }
         return urlForCurrentDomain(default_login_url);
     };

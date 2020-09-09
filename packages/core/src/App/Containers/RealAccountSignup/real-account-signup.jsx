@@ -41,9 +41,11 @@ class RealAccountSignup extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            current_action: null,
             is_loading: false,
             modal_content: [
                 {
+                    action: 'signup',
                     body: () => (
                         <AccountWizard
                             onFinishSuccess={this.showStatusDialog}
@@ -57,6 +59,7 @@ class RealAccountSignup extends React.Component {
                     title: WizardHeading,
                 },
                 {
+                    action: 'multi',
                     body: () => (
                         <AddOrManageAccounts
                             onSuccessSetAccountCurrency={this.showSetCurrencySuccess}
@@ -86,8 +89,7 @@ class RealAccountSignup extends React.Component {
                         <SignupErrorContent
                             message={this.props.state_value.error_message}
                             code={this.props.state_value.error_code}
-                            onConfirm={this.openPersonalDetails}
-                            onRetry={this.openCurrencySelector}
+                            onConfirm={this.onErrorConfirm}
                         />
                     ),
                     title: () => localize('Add a real account'),
@@ -156,10 +158,12 @@ class RealAccountSignup extends React.Component {
             this.cacheFormValues(payload);
         }
 
-        this.props.setParams({
-            active_modal_index: 4,
-            error_message: error.message,
-            error_code: error.code,
+        this.setState({ current_action: this.state.modal_content[this.active_modal_index]?.action }, () => {
+            this.props.setParams({
+                active_modal_index: 4,
+                error_message: error.message,
+                error_code: error.code,
+            });
         });
     };
 
@@ -182,15 +186,9 @@ class RealAccountSignup extends React.Component {
         }
     };
 
-    openPersonalDetails = () => {
+    onErrorConfirm = () => {
         this.props.setParams({
-            active_modal_index: 0,
-        });
-    };
-
-    openCurrencySelector = () => {
-        this.props.setParams({
-            active_modal_index: 1,
+            active_modal_index: this.state.current_action === 'multi' ? 1 : 0,
         });
     };
 

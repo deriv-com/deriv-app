@@ -30,12 +30,7 @@ export const Unsupported = () => (
             <Localize
                 i18n_default_text='To continue trading with us, you need to send us a copy of any one of these government-issued photo ID documents via <0>LiveChat</0>.'
                 components={[
-                    <a
-                        key={0}
-                        className='link link--orange'
-                        href='javascript:;'
-                        onClick={() => window.LC_API.open_chat_window()}
-                    />,
+                    <span key={0} className='link link--orange' onClick={() => window.LC_API.open_chat_window()} />,
                 ]}
             />
         }

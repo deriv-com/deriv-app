@@ -28,14 +28,13 @@ export const Unsupported = () => (
         message={localize('Verify your identity')}
         text={
             <Localize
-                i18n_default_text='To continue trading with us, you need to email a copy of any one of these government-issued photo ID documents to <0>authentications@deriv.com</0>.'
+                i18n_default_text='To continue trading with us, you need to send us a copy of any one of these government-issued photo ID documents via <0>LiveChat</0>.'
                 components={[
                     <a
                         key={0}
                         className='link link--orange'
-                        rel='noopener noreferrer'
-                        target='_blank'
-                        href='mailto:authentications@deriv.com'
+                        href='javascript:;'
+                        onClick={() => window.LC_API.open_chat_window()}
                     />,
                 ]}
             />

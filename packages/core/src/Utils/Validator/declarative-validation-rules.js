@@ -128,7 +128,10 @@ const initPreBuildDVRs = () => ({
         func: validAddress,
         message: localize(
             'Only letters, numbers, space, and these special characters are allowed: {{permitted_characters}}',
-            { permitted_characters: "- . ' # ; : ( ) , @ /" }
+            {
+                permitted_characters: "- . ' # ; : ( ) , @ /",
+                interpolation: { escapeValue: false },
+            }
         ),
     },
     barrier: {

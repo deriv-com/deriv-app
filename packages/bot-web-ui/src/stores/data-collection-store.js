@@ -105,7 +105,7 @@ export default class DataCollectionStore {
     }
 
     cleanXmlDom = xml_dom => {
-        const useless_attributes = ['x', 'y'];
+        const useless_attributes = ['x', 'y', 'id'];
         const updated_dom = cloneObject(xml_dom);
         const removeAttributesRecursively = element => {
             useless_attributes.forEach(useless_attribute => element.removeAttribute(useless_attribute));

@@ -96,12 +96,13 @@ class PersonalDetailsForm extends React.Component {
         }
 
         if (this.props.is_eu) {
-            request.tax_residence = request.tax_residence
-                ? getLocation(this.props.residence_list, request.tax_residence, 'value')
-                : '';
-            request.tax_identification_number = request?.tax_identification_number
-                ? request?.tax_identification_number.trim()
-                : '';
+            if (request.tax_residence) {
+                request.tax_residence = getLocation(this.props.residence_list, request.tax_residence, 'value');
+            }
+
+            if (request.tax_identification_number) {
+                request.tax_identification_number = request.tax_identification_number.trim();
+            }
         }
 
         if (request.citizen) {
@@ -261,7 +262,9 @@ class PersonalDetailsForm extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (
-            Object.values(this.props.account_settings).join('|') !== Object.values(prevProps.account_settings).join('|')
+            Object.values(this.props.account_settings).join('|') !==
+                Object.values(prevProps.account_settings).join('|') ||
+            this.props.is_eu !== prevProps.is_eu
         ) {
             this.initializeFormValues();
         }

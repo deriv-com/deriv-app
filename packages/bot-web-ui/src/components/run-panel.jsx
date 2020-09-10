@@ -110,8 +110,7 @@ const MobileDrawerFooter = () => {
     );
 };
 
-const StatisticsInfoModal = props => {
-    const { is_mobile, is_statistics_info_modal_open, toggleStatisticsInfoModal } = props;
+const StatisticsInfoModal = ({ is_mobile, is_statistics_info_modal_open, toggleStatisticsInfoModal }) => {
     return (
         <Modal
             className={classNames('statistics__modal', { 'statistics__modal--mobile': is_mobile })}

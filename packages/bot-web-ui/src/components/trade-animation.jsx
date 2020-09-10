@@ -15,8 +15,7 @@ const CircularWrapper = ({ className }) => (
     </div>
 );
 
-const AnimationInfo = props => {
-    const { toggleAnimationInfoModal } = props;
+const AnimationInfo = ({ toggleAnimationInfoModal }) => {
     return (
         <div className='animation__info' onClick={toggleAnimationInfoModal}>
             <Icon icon='IcInfoOutline' id='db-animation__clear-stat' />
@@ -24,8 +23,7 @@ const AnimationInfo = props => {
     );
 };
 
-const AnimationInfoModal = props => {
-    const { is_mobile, is_animation_info_modal_open, toggleAnimationInfoModal } = props;
+const AnimationInfoModal = ({ is_mobile, is_animation_info_modal_open, toggleAnimationInfoModal }) => {
     return (
         <Modal
             className={classNames('animation__modal', { 'animation__modal--mobile': is_mobile })}

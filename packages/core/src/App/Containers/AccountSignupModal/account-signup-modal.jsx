@@ -3,10 +3,9 @@ import { Field, Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Dialog, PasswordInput, PasswordMeter } from '@deriv/components';
+import { validPassword, validLength, website_name, getPreBuildDVRs } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { validLength, validPassword, getPreBuildDVRs } from 'Utils/Validator/declarative-validation-rules';
-import { website_name } from 'App/Constants/app-config';
 import ResidenceForm from '../SetResidenceModal/set-residence-form.jsx';
 import 'Sass/app/modules/account-signup.scss';
 

@@ -9,14 +9,14 @@ import {
     getCurrencyDisplayCode,
     isEmptyObject,
     getPropertyValue,
+    getMT5AccountDisplay,
+    getMT5Account,
 } from '@deriv/shared';
-
 import BinarySocket from '_common/base/socket_base';
 import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services';
 import OnRampStore from './on-ramp-store';
 import BaseStore from '../../base-store';
-import { getMT5AccountDisplay } from '../../Helpers/client';
 
 const bank_default_option = [{ text: localize('All payment agents'), value: 0 }];
 
@@ -1038,7 +1038,7 @@ export default class CashierStore extends BaseStore {
                 currency: account.currency,
                 is_crypto: isCryptocurrency(account.currency),
                 is_mt: account.account_type === 'mt5',
-                ...(account.mt5_group && { mt_icon: getMT5AccountDisplay(account.mt5_group) }),
+                ...(account.mt5_group && { mt_icon: getMT5Account(account.mt5_group) }),
             };
             // set current logged in client as the default transfer from account
             if (account.loginid === this.root_store.client.loginid) {

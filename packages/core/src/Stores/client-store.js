@@ -9,6 +9,7 @@ import {
     isDesktopOs,
     getUrlSmartTrader,
     toMoment,
+    getMT5AccountType,
     isBot,
 } from '@deriv/shared';
 
@@ -18,13 +19,12 @@ import { redirectToLogin } from '_common/base/login';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
 import { localize } from '@deriv/translations';
-
 import { LocalStore, State } from '_common/storage';
 import { isEuCountry } from '_common/utility';
 import BinarySocketGeneral from 'Services/socket-general';
 import { handleClientNotifications } from './Helpers/client-notifications';
 import BaseStore from './base-store';
-import { getClientAccountType, getMT5AccountType } from './Helpers/client';
+import { getClientAccountType } from './Helpers/client';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
 
 const storage_key = 'client.accounts';

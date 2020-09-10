@@ -1,4 +1,4 @@
-import { getPreBuildDVRs } from 'Utils/Validator/declarative-validation-rules';
+import { getPreBuildDVRs } from '@deriv/shared';
 
 /**
  * Prepare default field and names for form.

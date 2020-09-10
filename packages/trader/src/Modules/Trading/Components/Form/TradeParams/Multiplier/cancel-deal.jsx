@@ -29,11 +29,11 @@ const CancelDeal = ({
         if (is_do_not_show_ref.current) {
             toggleCancellationWarning();
         }
-    }, [is_do_not_show_selected]);
+    }, [toggleCancellationWarning]);
 
     const onPopoverCheckboxChange = React.useCallback(() => {
-        setDoNotShowSelected(is_do_not_show_selected => !is_do_not_show_selected);
-    }, [is_do_not_show_selected]);
+        setDoNotShowSelected(prevState => !prevState);
+    }, []);
 
     const input = (
         <Checkbox

@@ -18,6 +18,22 @@ const CancelDeal = ({
     toggleCancellationWarning,
 }) => {
     const should_show_popover = (has_take_profit || has_stop_loss) && should_show_cancellation_warning;
+    const [is_do_not_show_selected, setDoNotShowSelected] = React.useState(!should_show_cancellation_warning);
+    const is_do_not_show_ref = React.useRef(is_do_not_show_selected);
+
+    React.useEffect(() => {
+        is_do_not_show_ref.current = is_do_not_show_selected;
+    }, [is_do_not_show_selected]);
+
+    const onPopoverClose = React.useCallback(() => {
+        if (is_do_not_show_ref.current) {
+            toggleCancellationWarning();
+        }
+    }, [is_do_not_show_selected]);
+
+    const onPopoverCheckboxChange = React.useCallback(() => {
+        setDoNotShowSelected(is_do_not_show_selected => !is_do_not_show_selected);
+    }, [is_do_not_show_selected]);
 
     const input = (
         <Checkbox
@@ -40,14 +56,15 @@ const CancelDeal = ({
                         margin={2}
                         message={
                             <PopoverMessageCheckbox
-                                defaultChecked={!should_show_cancellation_warning}
+                                defaultChecked={is_do_not_show_selected}
                                 message={localize(
                                     'Take profit and/or stop loss are not available while deal cancellation is active.'
                                 )}
                                 name='should_show_cancellation_warning'
-                                onChange={() => toggleCancellationWarning()}
+                                onChange={onPopoverCheckboxChange}
                             />
                         }
+                        onBubbleClose={onPopoverClose}
                         relative_render
                     >
                         {input}

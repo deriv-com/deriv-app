@@ -30,11 +30,13 @@ const Popover = ({ ...props }) => {
     }, [is_bubble_open]);
 
     const toggleOpen = React.useCallback(() => {
+        if (props.onOpen) props.onOpen();
         if (has_external_open_state) return;
         setIsPopoverOpen(Boolean(props.message));
-    }, [props.message]);
+    }, [props.message, props.onOpen]);
 
     const toggleClose = React.useCallback(() => {
+        if (props.onClose) props.onClose();
         if (has_external_open_state) return;
         if (props.is_bubble_hover_enabled) {
             setTimeout(() => {
@@ -45,15 +47,17 @@ const Popover = ({ ...props }) => {
         } else {
             setIsPopoverOpen(false);
         }
-    }, [props.is_bubble_hover_enabled]);
+    }, [props.is_bubble_hover_enabled, props.onCloseCallback]);
 
     const onMouseEnter = React.useCallback(() => {
         setIsBubbleOpen(true);
+        if (props.onBubbleOpen) props.onBubbleOpen();
     }, []);
 
     const onMouseLeave = React.useCallback(() => {
         setIsPopoverOpen(false);
         setIsBubbleOpen(false);
+        if (props.onBubbleClose) props.onBubbleClose();
     }, []);
 
     const {
@@ -240,6 +244,10 @@ Popover.propTypes = {
     relative_render: PropTypes.bool,
     margin: PropTypes.number,
     message: PropTypes.oneOfType([PropTypes.node, PropTypes.object, PropTypes.string]),
+    onOpen: PropTypes.func,
+    onClose: PropTypes.func,
+    onBubbleOpen: PropTypes.func,
+    onBubbleClose: PropTypes.func,
     zIndex: PropTypes.number,
     should_disable_pointer_events: PropTypes.bool,
 };

@@ -23,7 +23,7 @@ const AccountSignup = ({ ...props }) => {
     const { clients_country, enableApp, isModalVisible, onSignup, residence_list } = props;
 
     React.useEffect(() => {
-        WS.wait('website_status').then(async () => {
+        WS.wait('website_status', 'residence_list').then(() => {
             if (clients_country && residence_list) {
                 setCountry(getLocation(residence_list, clients_country, 'text'));
             }

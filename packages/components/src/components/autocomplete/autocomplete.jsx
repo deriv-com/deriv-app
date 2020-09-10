@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { matchStringByChar } from '@deriv/shared';
 import Icon from '../icon';
 import Input from '../input';
 import DropdownList from '../dropdown-list';
@@ -15,11 +16,11 @@ const KEY_CODE = {
 
 const getFilteredItems = (val, list) => {
     const is_string_array = list.length && typeof list[0] === 'string';
-
-    return list.filter(item =>
-        is_string_array ? item.toLowerCase().includes(val) : item.text.toLowerCase().includes(val)
-    );
+    return list.filter(item => {
+        return is_string_array ? matchStringByChar(item, val) : matchStringByChar(item.text, val);
+    });
 };
+
 class Autocomplete extends React.PureComponent {
     dropdown_ref = React.createRef();
     list_wrapper_ref = React.createRef();

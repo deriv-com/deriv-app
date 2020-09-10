@@ -1,6 +1,12 @@
 export const toTitleCase = str =>
     (str || '').replace(/\w[^\s/\\]*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
 
+export const matchStringByChar = (s, p) => {
+    if (p?.length < 1) return true;
+    const z = p.split('').reduce((a, b) => `${a}[^${b}]*${b}`);
+    return RegExp(z, 'i').test(s);
+};
+
 export const padLeft = (txt, len, char) => {
     const text = String(txt || '');
     return text.length >= len ? text : `${Array(len - text.length + 1).join(char)}${text}`;

@@ -20,17 +20,16 @@ const AccountSignup = ({ ...props }) => {
     const [pw_input, setPWInput] = React.useState('');
     const [has_valid_residence, setHasValidResidence] = React.useState(false);
 
-    const { clients_country, enableApp, fetchResidenceList, isModalVisible, onSignup, residence_list } = props;
+    const { clients_country, enableApp, isModalVisible, onSignup, residence_list } = props;
 
     React.useEffect(() => {
         WS.wait('website_status').then(async () => {
-            await fetchResidenceList();
-            if (clients_country) {
+            if (clients_country && residence_list) {
                 setCountry(getLocation(residence_list, clients_country, 'text'));
             }
             setIsLoading(false);
         });
-    }, [clients_country, fetchResidenceList, residence_list]);
+    }, [clients_country, residence_list]);
 
     const updatePassword = string => {
         setPWInput(string);

@@ -19,7 +19,7 @@ export const SVGDescription = () => (
         <p>
             <Localize
                 i18n_default_text={
-                    'Your account will be opened with Deriv (SVG) Limited, and will be subject to the jurisdiction and laws of Saint Vincent and the Grenadines.'
+                    'Your account will be opened with Deriv (SVG) LLC, and will be subject to the jurisdiction and laws of Saint Vincent and the Grenadines.'
                 }
             />
         </p>

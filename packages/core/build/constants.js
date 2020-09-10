@@ -133,7 +133,7 @@ const MINIMIZERS = !IS_RELEASE
 
 const plugins = ({ base, is_test_env, env }) => [
     new DefinePlugin({
-        'process.env.is_crypto_app': JSON.stringify(env.is_crypto_app),
+        'process.env.is_crypto_app': JSON.stringify(env.IS_DERIV_CRYPTO),
     }),
     new CleanWebpackPlugin(),
     new CopyPlugin(copyConfig(base)),

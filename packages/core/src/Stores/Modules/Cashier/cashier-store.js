@@ -760,6 +760,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setIsTryWithdrawSuccessful(is_try_withdraw_successful) {
+        this.setErrorMessage('');
         this.config.payment_agent.is_try_withdraw_successful = is_try_withdraw_successful;
     }
 
@@ -1077,6 +1078,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setIsTryTransferSuccessful(is_try_transfer_successful) {
+        this.setErrorMessage('');
         this.config[this.active_container].is_try_transfer_successful = is_try_transfer_successful;
     }
 

@@ -41,7 +41,7 @@ const DatePickerInput = ({
         <DatePickerIcon
             onClick={onClick}
             className={classNames({
-                'dc-datepicker__icon': typeof onClick === 'function', // If has an onclick function add class
+                'dc-datepicker__icon': typeof onClick === 'function',
             })}
             icon='IcCalendar'
         />
@@ -72,7 +72,7 @@ const DatePickerInput = ({
             onClick={onClick}
             placeholder={placeholder}
             readOnly={readOnly}
-            leading_icon={show_leading_icon ? OpenIcon : undefined}
+            leading_icon={show_leading_icon && OpenIcon}
             trailing_icon={show_leading_icon ? undefined : trailing_icon}
             type={readOnly ? 'text' : 'number'}
             value={is_placeholder_visible || !value ? '' : value}

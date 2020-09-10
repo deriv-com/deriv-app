@@ -7,7 +7,7 @@ import { daysFromTodayTo, epochToMoment, toMoment } from '@deriv/shared';
 import InputField from 'App/Components/Form/InputField/input-field.jsx';
 import CompositeCalendarMobile from './composite-calendar-mobile.jsx';
 import SideList from './side-list.jsx';
-import CalendarIcon from './calenar-icon.jsx';
+import CalendarIcon from './calendar-icon.jsx';
 
 const TwoMonthPicker = Loadable({
     loader: () => import(/* webpackChunkName: "two-month-picker" */ './two-month-picker.jsx'),

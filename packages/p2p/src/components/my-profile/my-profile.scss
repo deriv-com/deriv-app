@@ -1,73 +1,114 @@
 .my-profile {
-    padding: 2.4rem;
-
-    &__name {
-        color: var(--text-general);
-        font-size: var(--text-size-s);
-        font-weight: bold;
-        margin-bottom: 2.4rem;
-    }
-
-    &__data {
-        border: 1px solid var(--border-normal);
+    &__header {
         display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
+        height: fit-content;
         justify-content: space-between;
-        padding: 1.6rem 0;
-    }
+        width: 657px;
 
-    &__cell {
-        border-left: 1px solid var(--border-normal);
-        display: flex;
-        flex-direction: column;
-        padding: 0 3.2rem;
-
-        &:first-child {
-            border: none;
-        }
-
-        &-title {
-            color: var(--text-less-prominent);
-            // TODO: Change this to css variable when this font-size added:
-            font-size: 1rem;
-            position: relative;
-            transform: translateY(50%);
-        }
-
-        &-data {
+        &-avatar {
+            align-items: center;
+            border-radius: 50%;
+            color: var(--text-colored-background);
             display: flex;
+            font-size: var(--text-size-xs);
+            height: 3.2rem;
+            justify-content: center;
+            margin-right: 0.8rem;
+            width: 3.2rem;
+        }
 
-            &-main {
-                color: var(--text-general);
-                font-size: var(--text-size-l);
-                font-weight: bold;
-                line-height: 1.25;
-                margin-right: 0.8rem;
+        &-details {
+            display: flex;
+        }
+
+        &-name {
+            align-self: center;
+            font-size: var(--text-size-s);
+            height: fit-content;
+            width: fit-content;
+        }
+
+        &-verification {
+            align-items: center;
+            display: flex;
+            font-size: var(--text-size-xs);
+
+            &-status {
+                margin-left: 1.6rem;
             }
 
-            &-dimension {
+            &-icon {
+                margin-left: 0.4rem;
+                vertical-align: bottom;
+            }
+        }
+    }
+    &__stats {
+        border-bottom: none;
+        display: flex;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: 46px;
+        height: fit-content;
+        margin: 2.4rem 0;
+
+        &-cell {
+            display: block;
+            text-align-last: center;
+            width: 217px;
+
+            &-header {
+                color: #999999;
+                font-size: var(--text-size-xs);
+                line-height: 20px;
+            }
+
+            &-info {
                 font-size: var(--text-size-s);
-                line-height: 1.5;
+                font-weight: bold;
+                line-height: 24px;
+            }
+            &-separator {
+                border-right: 1px solid #f2f3f4;
+            }
+        }
+    }
+    &__separator {
+        display: flex;
+
+        &-text {
+            display: flex;
+            font-size: var(--text-size-xs);
+            font-weight: bold;
+        }
+        &-horizontal_line {
+            align-self: center;
+            border-bottom: 1px solid #f2f3f4;
+            margin-left: 1.6rem;
+            width: 564px;
+        }
+    }
+    &__form {
+        &-textarea {
+            margin-top: 2.5rem;
+            width: 657px;
+
+            .dc-input__hint {
+                top: 9.6rem;
             }
 
-            &-sub {
-                display: flex;
-                flex-direction: column;
-                justify-content: space-evenly;
-
-                &-upper {
-                    color: var(--text-profit-success);
-                    // TODO: Change this to css variable when this font-size added:
-                    font-size: 1rem;
-                }
-
-                &-lower {
-                    color: var(--text-loss-danger);
-                    // TODO: Change this to css variable when this font-size added:
-                    font-size: 1rem;
-                }
+            .dc-input__counter {
+                right: 0rem;
+                top: 9.6rem;
             }
+        }
+    }
+    &__footer {
+        border-top: 2px solid #f2f3f4;
+        padding-right: 2.4rem;
+        width: 657px;
+
+        &-button {
+            margin-left: 0.8rem;
         }
     }
 }

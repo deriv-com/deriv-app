@@ -21,26 +21,22 @@ const FormWithConfirmation = ({
     width,
 }) => {
     const { modal_root_id } = React.useContext(Dp2pContext);
-
-    const handleSubmit = (values, { setStatus, setSubmitting }) => {
-        onClickConfirm(setStatus);
-        setSubmitting(false);
-    };
+    const handleSubmit = (values, { setStatus }) => onClickConfirm(setStatus);
 
     return (
         <Formik initialValues={{ need_confirmation: false }} onSubmit={handleSubmit}>
-            {({ isSubmitting, setFieldValue, values, status }) => (
-                <Modal
-                    className={className}
-                    is_confirmation_modal
-                    is_open={should_show_popup}
-                    portalId={modal_root_id}
-                    title={title}
-                    toggleModal={() => setShouldShowPopup(false)}
-                    width={width}
-                >
-                    <Modal.Body>
-                        <Form noValidate>
+            {({ isSubmitting, setFieldValue, values, status, submitForm }) => (
+                <Form noValidate>
+                    <Modal
+                        className={className}
+                        is_confirmation_modal
+                        is_open={should_show_popup}
+                        portalId={modal_root_id}
+                        title={title}
+                        toggleModal={() => setShouldShowPopup(false)}
+                        width={width}
+                    >
+                        <Modal.Body>
                             <div className='orders__popup-content'>
                                 {message}
                                 <div className='orders__popup-field'>
@@ -62,25 +58,31 @@ const FormWithConfirmation = ({
                                     </Field>
                                 </div>
                             </div>
-                        </Form>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button.Group>
-                            {status?.error_message && <FormError message={status.error_message} />}
-                            {has_cancel && (
-                                <Button onClick={onCancel} secondary large>
-                                    {cancel_text}
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button.Group>
+                                {status?.error_message && <FormError message={status.error_message} />}
+                                {has_cancel && (
+                                    <Button onClick={onCancel} secondary large type='button'>
+                                        {cancel_text}
+                                    </Button>
+                                )}
+                                <Button
+                                    onClick={submitForm}
+                                    primary
+                                    large
+                                    type='button'
+                                    is_disabled={isSubmitting || !values.need_confirmation}
+                                >
+                                    {localize('Release {{amount}} {{currency}}', {
+                                        amount: order.display_offer_amount,
+                                        currency: order.offer_currency,
+                                    })}
                                 </Button>
-                            )}
-                            <Button is_disabled={isSubmitting || !values.need_confirmation} primary large>
-                                {localize('Release {{amount}} {{currency}}', {
-                                    amount: order.display_offer_amount,
-                                    currency: order.offer_currency,
-                                })}
-                            </Button>
-                        </Button.Group>
-                    </Modal.Footer>
-                </Modal>
+                            </Button.Group>
+                        </Modal.Footer>
+                    </Modal>
+                </Form>
             )}
         </Formik>
     );

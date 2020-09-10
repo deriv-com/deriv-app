@@ -425,6 +425,18 @@
                 max-width: 50%;
             }
         }
+        &-error {
+            max-width: 40rem;
+            margin: auto;
+
+            @include mobile {
+                margin-top: 1.6rem;
+            }
+
+            .cashier__form-error {
+                margin-right: 0;
+            }
+        }
         &-submit {
             margin: 2.4rem auto;
             width: 40rem;

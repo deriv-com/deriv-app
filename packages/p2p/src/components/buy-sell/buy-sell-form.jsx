@@ -178,7 +178,7 @@ const BuySellForm = ({ advert, handleClose, handleConfirm }) => {
                                             </span>
                                             {description.split('\n').map((text, idx) => (
                                                 <div className='buy-sell__popup-info--text' key={idx}>
-                                                    {text ?? '-'}
+                                                    {text || '-'}
                                                 </div>
                                             ))}
                                         </div>

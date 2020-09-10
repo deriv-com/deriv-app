@@ -591,7 +591,7 @@ class PersonalDetailsForm extends React.Component {
                                             {/* </fieldset> */}
                                             {this.props.is_eu && (
                                                 <React.Fragment>
-                                                    {/* Hide Tax Information, uncomment block below to re-enable */}
+                                                    <FormSubHeader title={localize('Tax information')} />
                                                     {'tax_residence' in values && (
                                                         <fieldset className='account-form__fieldset'>
                                                             <Field name='tax_residence'>
@@ -655,7 +655,6 @@ class PersonalDetailsForm extends React.Component {
                                                             </Field>
                                                         </fieldset>
                                                     )}
-                                                    <FormSubHeader title={localize('Tax information')} />
                                                     {'tax_identification_number' in values && (
                                                         <fieldset className='account-form__fieldset'>
                                                             <Input

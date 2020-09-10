@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik, Form } from 'formik';
 import { Button, DesktopWrapper, Input } from '@deriv/components';
-import { getDecimalPlaces } from '@deriv/shared';
+import { getDecimalPlaces, validNumber } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { getPreBuildDVRs, validNumber } from 'Utils/Validator/declarative-validation-rules';
 import FormError from '../Error/form-error.jsx';
 
 const validateTransfer = (values, { balance, currency, transfer_limit }) => {
@@ -16,19 +15,19 @@ const validateTransfer = (values, { balance, currency, transfer_limit }) => {
         errors.loginid = localize('Please enter a valid client login ID.');
     }
 
+    const { is_ok, message } = validNumber(values.amount, {
+        type: 'float',
+        decimals: getDecimalPlaces(currency),
+        ...(transfer_limit.min && {
+            min: transfer_limit.min,
+            max: transfer_limit.max,
+        }),
+    });
+
     if (!values.amount) {
         errors.amount = localize('This field is required.');
-    } else if (
-        !validNumber(values.amount, {
-            type: 'float',
-            decimals: getDecimalPlaces(currency),
-            ...(transfer_limit.min && {
-                min: transfer_limit.min,
-                max: transfer_limit.max,
-            }),
-        })
-    ) {
-        errors.amount = getPreBuildDVRs().number.message;
+    } else if (!is_ok) {
+        errors.amount = message;
     } else if (+balance < +values.amount) {
         errors.amount = localize('Insufficient balance.');
     }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, DesktopWrapper, Icon, Popover } from '@deriv/components';
+import { Button, Icon, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import PropTypes from 'prop-types';
 import { connect } from '../stores/connect';
@@ -15,29 +15,23 @@ const Download = ({ tab, onClickDownloadTransaction, onClickDownloadJournal, is_
         popover_message = localize('Download your journal.');
     }
     return (
-        <DesktopWrapper>
-            <Popover
-                className='run-panel__info'
-                classNameBubble='run-panel__info--bubble'
-                alignment='bottom'
-                message={popover_message}
-                zIndex={5}
-            >
-                <Button
-                    id='download-button'
-                    is_disabled={is_clear_stat_disabled}
-                    className='download__button'
-                    icon={
-                        <Icon
-                            icon='IcDownload'
-                            color={is_clear_stat_disabled && 'disabled'}
-                            className='download__icon'
-                        />
-                    }
-                    onClick={clickFunction}
-                />
-            </Popover>
-        </DesktopWrapper>
+        <Popover
+            className='run-panel__info'
+            classNameBubble='run-panel__info--bubble'
+            alignment='bottom'
+            message={popover_message}
+            zIndex={5}
+        >
+            <Button
+                id='download-button'
+                is_disabled={is_clear_stat_disabled}
+                className='download__button'
+                icon={
+                    <Icon icon='IcDownload' color={is_clear_stat_disabled && 'disabled'} className='download__icon' />
+                }
+                onClick={clickFunction}
+            />
+        </Popover>
     );
 };
 

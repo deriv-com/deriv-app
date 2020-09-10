@@ -14,6 +14,7 @@ import Orders from './orders/orders.jsx';
 import NicknameForm from './nickname/nickname-form.jsx';
 import Download from './verification/download.jsx';
 import Verification from './verification/verification.jsx';
+import MyProfile from './my-profile/my-profile.jsx';
 import './app.scss';
 
 const allowed_currency = 'USD';
@@ -22,7 +23,7 @@ const path = {
     buy_sell: 0,
     orders: 1,
     my_ads: 2,
-    // my_profile: 3,
+    my_profile: 3,
 };
 
 class App extends React.Component {
@@ -445,10 +446,9 @@ class App extends React.Component {
                                     <div label={localize('My ads')}>
                                         <MyAds navigate={this.redirectTo} params={parameters} />
                                     </div>
-                                    {/* TODO [p2p-uncomment] uncomment this when profile is ready */}
-                                    {/* <div label={localize('My profile')}>
-                                    <MyProfile navigate={this.redirectTo} params={parameters} />
-                                </div> */}
+                                    <div label={localize('My profile')}>
+                                        <MyProfile navigate={this.redirectTo} params={parameters} />
+                                    </div>
                                 </Tabs>
                             )}
                         </>

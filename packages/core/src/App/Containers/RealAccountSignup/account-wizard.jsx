@@ -97,7 +97,7 @@ class AccountWizard extends React.Component {
                     });
                     this.setState({
                         items,
-                        step: 1,
+                        step: this.props.step ?? 1,
                     });
                 }
             })
@@ -336,6 +336,7 @@ AccountWizard.propTypes = {
     residence: PropTypes.string,
     residence_list: PropTypes.array,
     setAccountCurrency: PropTypes.func,
+    step: PropTypes.number,
 };
 
 export default connect(({ client, ui }) => ({

@@ -37,6 +37,9 @@
             transform: translate3d(0, 0, 0);
             opacity: 1;
         }
+        &--fixed {
+            position: fixed;
+        }
     }
     &__dialog {
         max-width: 560px;
@@ -60,6 +63,15 @@
         margin-bottom: 2.4rem;
         line-height: 1.5;
         color: var(--text-prominent);
+
+        &-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+        &--close {
+            cursor: pointer;
+        }
     }
     &__content {
         align-self: flex-start;

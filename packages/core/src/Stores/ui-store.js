@@ -244,9 +244,7 @@ export default class UIStore extends BaseStore {
     @action.bound
     filterNotificationMessages() {
         this.notifications = this.notification_messages.filter(notification => {
-            if (notification.platform === undefined) {
-                return true;
-            } else if (notification.platform.includes(getPathname())) {
+            if (notification.platform === undefined || notification.platform.includes(getPathname())) {
                 return true;
             } else if (!notification.platform.includes(getPathname())) {
                 if (notification.is_disposable) {

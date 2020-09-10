@@ -20,18 +20,18 @@ export const isMT5 = () =>
     (/^\/(br_)/.test(window.location.pathname) && window.location.pathname.split('/')[2] === 'mt5');
 
 export const getPathname = () => {
-    if (isBot()) {
-        return platform_name.DBot;
-    } else if (isMT5()) {
-        return platform_name.DMT5;
-    } else if (window.location.pathname.split('/')[1] === '') {
-        return platform_name.DTrader;
-    } else if (window.location.pathname.split('/')[1] === 'reports') {
-        return 'Reports';
-    } else if (window.location.pathname.split('/')[1] === 'cashier') {
-        return 'Cashier';
+    if (isBot()) return platform_name.DBot;
+    if (isMT5()) return platform_name.DMT5;
+    switch (window.location.pathname.split('/')[1]) {
+        case '':
+            return platform_name.DTrader;
+        case 'reports':
+            return 'Reports';
+        case 'cashier':
+            return 'Cashier';
+        default:
+            return platform_name.SmartTrader;
     }
-    return platform_name.SmartTrader;
 };
 
 export const getPlatformHeader = routing_history => {

@@ -55,8 +55,13 @@ export const InputField = ({ name, optional = false, ...props }) => (
     </Field>
 );
 
-const validatePersonalDetails = ({ values, residence_list, account_opening_reason, landing_company }) => {
-    const is_tin_required = landing_company?.config?.tax_details_required ?? false;
+const validatePersonalDetails = ({
+    values,
+    residence_list,
+    account_opening_reason,
+    landing_company,
+    is_tin_required,
+}) => {
     const tin_regex = landing_company?.config?.tin_format?.[0] ?? true;
 
     const validations = {
@@ -144,6 +149,8 @@ const MT5PersonalDetailsForm = ({
 }) => {
     let is_initial_valid = false;
     const account_opening_reason = getAccountOpeningReasonList();
+    const is_tin_required = landing_company?.config?.tax_details_required ?? false;
+
     const handleCancel = values => {
         onSave(index, values);
         onCancel();
@@ -169,12 +176,19 @@ const MT5PersonalDetailsForm = ({
                     residence_list,
                     account_opening_reason,
                     landing_company,
+                    is_tin_required,
                 });
                 is_initial_valid = Object.entries(initial_errors).length === 0 && initial_errors.constructor === Object;
                 return initial_errors;
             }}
             validate={values =>
-                validatePersonalDetails({ values, residence_list, account_opening_reason, landing_company })
+                validatePersonalDetails({
+                    values,
+                    residence_list,
+                    account_opening_reason,
+                    landing_company,
+                    is_tin_required,
+                })
             }
             onSubmit={onSubmitForm}
         >
@@ -279,6 +293,7 @@ const MT5PersonalDetailsForm = ({
                                             placeholder={localize('Tax identification number')}
                                             value={values.tax_identification_number}
                                             onBlur={handleBlur}
+                                            optional={!is_tin_required}
                                         />
                                         <FormSubHeader title={localize('Account opening reason')} />
                                         <Field name='account_opening_reason'>

@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { compressImg, convertToBase64, isImageType, getFormatFromMIME } from 'Duplicated/_common/image_utility';
+import { compressImg, convertToBase64, isImageType, getFormatFromMIME } from 'Helpers/image_utility';
 
 export const compressImageFiles = (files) => {
     const promises = [];

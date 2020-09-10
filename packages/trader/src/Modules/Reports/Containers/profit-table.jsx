@@ -4,9 +4,8 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { DesktopWrapper, MobileWrapper, DataList, DataTable } from '@deriv/components';
-import { urlFor, isDesktop } from '@deriv/shared';
+import { urlFor, isDesktop, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { website_name } from 'App/Constants/app-config';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
 import CompositeCalendar from 'App/Components/Form/CompositeCalendar';
 import { getContractPath } from 'App/Components/Routes/helpers';
@@ -125,14 +124,12 @@ class ProfitTable extends React.Component {
         if (error) return <p>{error}</p>;
 
         const filter_component = (
-            <React.Fragment>
-                <CompositeCalendar
-                    input_date_range={filtered_date_range}
-                    onChange={handleDateChange}
-                    from={date_from}
-                    to={date_to}
-                />
-            </React.Fragment>
+            <CompositeCalendar
+                input_date_range={filtered_date_range}
+                onChange={handleDateChange}
+                from={date_from}
+                to={date_to}
+            />
         );
 
         this.columns = getProfitTableColumnsTemplate(currency, data.length);

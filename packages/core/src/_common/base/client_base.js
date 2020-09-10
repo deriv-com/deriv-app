@@ -177,18 +177,6 @@ const ClientBase = (() => {
     const shouldCompleteTax = (account_status = State.getResponse('get_account_status')) =>
         isAccountOfType('financial') && !/crs_tin_information/.test((account_status || {}).status);
 
-    // remove manager id or master distinction from group
-    // remove EUR or GBP or Bbook or HighRisk distinction from group
-    const getMT5AccountType = group =>
-        group
-            ? group
-                  .replace('\\', '_')
-                  .replace(/_(\d+|master|EUR|GBP|Bbook|HighRisk)/i, '')
-                  // TODO: [remove-standard-advanced] remove standard and advanced when API groups are updated
-                  .replace(/_standard$/, '_financial')
-                  .replace(/_advanced$/, '_financial_stp')
-            : '';
-
     const getBasicUpgradeInfo = () => {
         const upgradeable_landing_companies = State.getResponse('authorize.upgradeable_landing_companies');
 
@@ -331,7 +319,6 @@ const ClientBase = (() => {
         currentLandingCompany,
         shouldCompleteTax,
         getAllAccountsObject,
-        getMT5AccountType,
         getBasicUpgradeInfo,
         getLandingCompanyValue,
         getRiskAssessment,

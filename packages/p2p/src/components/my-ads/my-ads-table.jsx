@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Dialog, Icon, Loading, Table, ProgressIndicator } from '@deriv/components';
+import { Button, Icon, Loading, Table, ProgressIndicator } from '@deriv/components';
 import { localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
 import Empty from 'Components/empty/empty.jsx';
@@ -71,7 +71,7 @@ const MyAdsTable = ({ onClickCreate }) => {
     const [api_error_message, setApiErrorMessage] = React.useState('');
     const [has_more_items_to_load, setHasMoreItemsToLoad] = React.useState(false);
     const [selected_ad_id, setSelectedAdId] = React.useState('');
-    const [show_popup, setShowPopup] = React.useState(false);
+    const [should_show_popup, setShouldShowPopup] = React.useState(false);
     const [ads, setAds] = React.useState([]);
 
     React.useEffect(() => {
@@ -105,12 +105,12 @@ const MyAdsTable = ({ onClickCreate }) => {
 
     const onClickDelete = id => {
         setSelectedAdId(id);
-        setShowPopup(true);
+        setShouldShowPopup(true);
     };
 
     const onClickCancel = () => {
         setSelectedAdId('');
-        setShowPopup(false);
+        setShouldShowPopup(false);
     };
 
     const onClickConfirm = showError => {
@@ -121,7 +121,7 @@ const MyAdsTable = ({ onClickCreate }) => {
                 // remove the deleted ad from the list of items
                 const updated_items = ads.filter(ad => ad.id !== response.p2p_advert_update.id);
                 setAds(updated_items);
-                setShowPopup(false);
+                setShouldShowPopup(false);
             }
         });
     };
@@ -179,21 +179,17 @@ const MyAdsTable = ({ onClickCreate }) => {
                         />
                     </Table.Body>
                 </Table>
-                {show_popup && (
-                    <div className='orders__dialog'>
-                        <Dialog is_visible={!!show_popup}>
-                            <Popup
-                                has_cancel
-                                title={localize('Delete this ad')}
-                                message={localize("You won't be able to restore it later.")}
-                                cancel_text={localize('Cancel')}
-                                confirm_text={localize('Delete')}
-                                onCancel={onClickCancel}
-                                onClickConfirm={onClickConfirm}
-                            />
-                        </Dialog>
-                    </div>
-                )}
+                <Popup
+                    cancel_text={localize('Cancel')}
+                    confirm_text={localize('Delete')}
+                    has_cancel
+                    message={localize("You won't be able to restore it later.")}
+                    onCancel={onClickCancel}
+                    onClickConfirm={onClickConfirm}
+                    setShouldShowPopup={setShouldShowPopup}
+                    should_show_popup={should_show_popup}
+                    title={localize('Delete this ad')}
+                />
             </React.Fragment>
         );
     }

@@ -1,12 +1,11 @@
 import React from 'react';
-import { getDerivComLink, routes, isMobile, formatDate, isEmptyObject } from '@deriv/shared';
+import { getDerivComLink, routes, isMobile, formatDate, isEmptyObject, website_name } from '@deriv/shared';
 
 import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services';
 
 import { getRiskAssessment, isAccountOfType, shouldAcceptTnc, shouldCompleteTax } from '_common/base/client_base';
 import { BinaryLink } from 'App/Components/Routes';
-import { website_name } from 'App/Constants/app-config';
 import { LocalStore, State } from '_common/storage';
 
 // TODO: Update links to app_2 links when components are done.

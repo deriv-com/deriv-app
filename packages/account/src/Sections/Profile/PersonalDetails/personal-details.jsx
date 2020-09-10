@@ -503,6 +503,18 @@ class PersonalDetailsForm extends React.Component {
                                         <Input
                                             data-lpignore='true'
                                             type='text'
+                                            name='residence'
+                                            label={localize('Country of residence*')}
+                                            value={values.residence}
+                                            required
+                                            disabled={this.isChangeableField('residence')}
+                                            error={touched.residence && errors.residence}
+                                        />
+                                    </fieldset>
+                                    <fieldset className='account-form__fieldset'>
+                                        <Input
+                                            data-lpignore='true'
+                                            type='text'
                                             name='email'
                                             label={localize('Email address*')}
                                             value={values.email}

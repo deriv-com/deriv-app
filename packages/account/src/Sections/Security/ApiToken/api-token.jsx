@@ -58,10 +58,14 @@ class ApiToken extends React.Component {
             errors.token_name = localize('Only letters, numbers, and underscores are allowed.');
         } else if (token_name.length < MIN_TOKEN) {
             errors.token_name = localize(
-                `Length of token name must be between ${MIN_TOKEN} and ${MAX_TOKEN} characters.`
+                'Length of token name must be between {{MIN_TOKEN}} and {{MAX_TOKEN}} characters.',
+                {
+                    MIN_TOKEN,
+                    MAX_TOKEN,
+                }
             );
         } else if (token_name.length > MAX_TOKEN) {
-            errors.token_name = localize(`Maximum ${MAX_TOKEN} characters.`);
+            errors.token_name = localize('Maximum {{MAX_TOKEN}} characters.', { MAX_TOKEN });
         }
 
         return errors;

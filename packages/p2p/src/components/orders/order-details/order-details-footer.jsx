@@ -125,7 +125,9 @@ const OrderDetailsFooter = ({ order_information, cancelPopup, showPopup }) => {
         const options = {
             title: localize('Have you received payment?'),
             className: 'order-details__popup-no-border',
-            message: localize('Please check your bank account or e-wallet to make sure you have received payment.'),
+            message: localize(
+                'Please confirm only after checking your bank or e-wallet account to make sure you have received payment'
+            ),
             need_confirmation: true,
             order_information,
             onClickConfirm: sendOrderConfirmRequest,

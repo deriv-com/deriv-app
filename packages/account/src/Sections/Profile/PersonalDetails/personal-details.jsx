@@ -81,17 +81,26 @@ class PersonalDetailsForm extends React.Component {
 
     makeSettingsRequest = (settings) => {
         if (this.props.is_virtual) return { email_consent: +settings.email_consent };
-        const request = filterObjProperties(settings, this.state.changeable_fields);
+        const request = filterObjProperties(settings, [...this.state.changeable_fields]);
+
         request.email_consent = +request.email_consent; // checkbox is boolean but api expects number (1 or 0)
-        request.first_name = request.first_name.trim();
-        request.last_name = request.last_name.trim();
-        request.date_of_birth = toMoment(request.date_of_birth).format('YYYY-MM-DD');
+        if (request.first_name) {
+            request.first_name = request.first_name.trim();
+        }
+
+        if (request.last_name) {
+            request.last_name = request.last_name.trim();
+        }
+        if (request.date_of_birth) {
+            request.date_of_birth = toMoment(request.date_of_birth).format('YYYY-MM-DD');
+        }
+
         if (this.props.is_eu) {
             request.tax_residence = request.tax_residence
                 ? getLocation(this.props.residence_list, request.tax_residence, 'value')
                 : '';
-            request.tax_identification_number = request.tax_identification_number
-                ? request.tax_identification_number.trim()
+            request.tax_identification_number = request?.tax_identification_number
+                ? request?.tax_identification_number.trim()
                 : '';
         }
 

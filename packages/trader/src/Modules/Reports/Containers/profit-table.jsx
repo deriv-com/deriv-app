@@ -125,14 +125,12 @@ class ProfitTable extends React.Component {
         if (error) return <p>{error}</p>;
 
         const filter_component = (
-            <React.Fragment>
-                <CompositeCalendar
-                    input_date_range={filtered_date_range}
-                    onChange={handleDateChange}
-                    from={date_from}
-                    to={date_to}
-                />
-            </React.Fragment>
+            <CompositeCalendar
+                input_date_range={filtered_date_range}
+                onChange={handleDateChange}
+                from={date_from}
+                to={date_to}
+            />
         );
 
         this.columns = getProfitTableColumnsTemplate(currency, data.length);

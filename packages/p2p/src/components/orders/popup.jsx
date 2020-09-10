@@ -90,7 +90,7 @@ const Popup = ({
                     <ThemedScrollbars height='130px'>
                         <div className='orders__popup-content'>
                             {message}
-                            {payment_confirm ? (
+                            {payment_confirm && (
                                 <div className='order-details__popup-checkBox'>
                                     <Checkbox
                                         onChange={() => setShouldDisableConfirm(!should_disable_confirm)}
@@ -101,8 +101,6 @@ const Popup = ({
                                         })}
                                     />
                                 </div>
-                            ) : (
-                                ''
                             )}
                         </div>
                     </ThemedScrollbars>

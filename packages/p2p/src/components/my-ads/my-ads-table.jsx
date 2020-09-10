@@ -84,7 +84,7 @@ const MyAdsTable = ({ onClickCreate }) => {
     const [has_more_items_to_load, setHasMoreItemsToLoad] = React.useState(false);
     const [selected_ad_id, setSelectedAdId] = React.useState('');
     const [show_popup, setShowPopup] = React.useState(false);
-    const [ads, setAds] = React.useState([]);
+    const [adverts, setAdverts] = React.useState([]);
 
     React.useEffect(() => {
         is_mounted.current = true;
@@ -103,7 +103,7 @@ const MyAdsTable = ({ onClickCreate }) => {
                     if (!response.error) {
                         const { list } = response.p2p_advertiser_adverts;
                         setHasMoreItemsToLoad(list.length >= list_item_limit);
-                        setAds(ads.concat(list));
+                        setAdverts(adverts.concat(list));
                         item_offset.current += list.length;
                     } else {
                         setApiErrorMessage(response.error.message);
@@ -131,8 +131,8 @@ const MyAdsTable = ({ onClickCreate }) => {
                 showError({ error_message: response.error.message });
             } else {
                 // remove the deleted ad from the list of items
-                const updated_items = ads.filter(ad => ad.id !== response.p2p_advert_update.id);
-                setAds(updated_items);
+                const updated_items = adverts.filter(ad => ad.id !== response.p2p_advert_update.id);
+                setAdverts(updated_items);
                 setShowPopup(false);
             }
         });
@@ -145,7 +145,7 @@ const MyAdsTable = ({ onClickCreate }) => {
         return <TableError message={api_error_message} />;
     }
 
-    if (ads.length) {
+    if (adverts.length) {
         const item_height = 56;
         const height_values = [
             height_constants.screen,
@@ -181,7 +181,7 @@ const MyAdsTable = ({ onClickCreate }) => {
                     <Table.Body>
                         <InfiniteLoaderList
                             autosizer_height={`calc(${height_values.join(' - ')})`}
-                            items={ads.slice()}
+                            items={adverts.slice()}
                             item_size={item_height}
                             row_actions={{ onClickDelete }}
                             RenderComponent={RowComponent}
@@ -211,7 +211,7 @@ const MyAdsTable = ({ onClickCreate }) => {
     }
 
     return (
-        <Empty icon='IcCashierNoAds' title={localize('You have no ads')}>
+        <Empty icon='IcCashierNoAds' title={localize('You have no adverts')}>
             <Button primary large className='p2p-empty__button' onClick={() => onClickCreate()}>
                 {localize('Create new ad')}
             </Button>

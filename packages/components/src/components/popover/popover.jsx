@@ -47,18 +47,18 @@ const Popover = ({ ...props }) => {
         } else {
             setIsPopoverOpen(false);
         }
-    }, [props.is_bubble_hover_enabled, props.onCloseCallback]);
+    }, [props.is_bubble_hover_enabled, props.onClose]);
 
     const onMouseEnter = React.useCallback(() => {
         setIsBubbleOpen(true);
         if (props.onBubbleOpen) props.onBubbleOpen();
-    }, []);
+    }, [props.onBubbleOpen]);
 
     const onMouseLeave = React.useCallback(() => {
         setIsPopoverOpen(false);
         setIsBubbleOpen(false);
         if (props.onBubbleClose) props.onBubbleClose();
-    }, []);
+    }, [props.onBubbleClose]);
 
     const {
         alignment,

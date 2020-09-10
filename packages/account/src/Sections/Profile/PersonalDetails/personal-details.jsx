@@ -292,7 +292,7 @@ class PersonalDetailsForm extends React.Component {
             show_form,
         } = this.state;
 
-        const { is_fully_authenticated, residence_list, states_list } = this.props;
+        const { residence_list, states_list } = this.props;
 
         if (api_error) return <LoadErrorMessage error_message={api_error} />;
 
@@ -492,7 +492,6 @@ class PersonalDetailsForm extends React.Component {
                                                                     setFieldValue('citizen', value ? text : '', true)
                                                                 }
                                                                 required={this.props.is_eu}
-                                                                disabled={!this.isChangeableField('citizen')}
                                                             />
                                                         )}
                                                     </Field>
@@ -892,7 +891,6 @@ export default connect(({ client }) => ({
     account_settings: client.account_settings,
     has_residence: client.has_residence,
     getChangeableFields: client.getChangeableFields,
-    is_fully_authenticated: client.is_fully_authenticated,
     is_eu: client.is_eu,
     is_virtual: client.is_virtual,
     residence_list: client.residence_list,

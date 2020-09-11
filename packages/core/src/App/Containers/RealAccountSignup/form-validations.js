@@ -1,5 +1,5 @@
-import { getPreBuildDVRs } from '@deriv/shared';
 import fromEntries from 'object.fromentries';
+import { getPreBuildDVRs } from '@deriv/shared';
 
 /**
  * Prepare default field and names for form.

@@ -16,24 +16,6 @@ $side-padding: 1.2em;
             padding: 0 1.6rem 1.6rem;
         }
 
-        &-description {
-            &--heading {
-                @include typeface(--title-left-bold-black, none);
-                color: var(--text-prominent);
-                line-height: 1.55;
-            }
-            &--paragraph {
-                @include typeface(--paragraph-left-normal-black, none);
-                color: var(--text-general);
-
-                @include mobile {
-                    padding: 0.8rem 0 1.6rem;
-                }
-            }
-            @include mobile {
-                margin-top: 0.8rem;
-            }
-        }
         &-filter {
             position: relative;
             display: flex;
@@ -41,6 +23,7 @@ $side-padding: 1.2em;
             width: 100%;
             @include desktop {
                 max-width: 36rem;
+                margin-left: auto;
             }
         }
 

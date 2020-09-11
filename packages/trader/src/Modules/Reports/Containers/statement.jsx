@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper, DataList, DataTable, Money } from '@deriv/components';
-import { urlFor, isDesktop, website_name } from '@deriv/shared';
+import { urlFor, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
 import CompositeCalendar from 'App/Components/Form/CompositeCalendar/composite-calendar.jsx';
@@ -139,23 +139,6 @@ class Statement extends React.Component {
         );
     }
 
-    getReportsMetaProps(is_mx_mlt) {
-        const reports_meta_props = {};
-
-        if (is_mx_mlt) {
-            Object.assign(reports_meta_props, { optional_component: this.getAccountStatistics() });
-        }
-        if (isDesktop()) {
-            Object.assign(reports_meta_props, {
-                i18n_heading: localize('Statement'),
-                i18n_message: localize(
-                    'View all transactions on your account, including trades, deposits, and withdrawals.'
-                ),
-            });
-        }
-        return reports_meta_props;
-    }
-
     render() {
         const {
             component_icon,
@@ -198,7 +181,7 @@ class Statement extends React.Component {
                 <ReportsMeta
                     className={is_mx_mlt ? undefined : 'reports__meta--statement'}
                     filter_component={filter_component}
-                    {...this.getReportsMetaProps(is_mx_mlt)}
+                    optional_component={is_mx_mlt && this.getAccountStatistics()}
                 />
                 {data.length === 0 || is_empty ? (
                     <PlaceholderComponent
@@ -210,34 +193,38 @@ class Statement extends React.Component {
                         localized_message={localize('You have no transactions yet.')}
                         localized_period_message={localize('You have no transactions for this period.')}
                     />
-                ) : this.should_show_loading_placeholder ? (
-                    <PlaceholderComponent is_loading={this.should_show_loading_placeholder} />
                 ) : (
                     <React.Fragment>
-                        <DesktopWrapper>
-                            <DataTable
-                                className='statement'
-                                data_source={data}
-                                columns={this.columns}
-                                onScroll={handleScroll}
-                                getRowAction={row => this.getRowAction(row)}
-                                is_empty={is_empty}
-                                custom_width={'100%'}
-                                getRowSize={() => 63}
-                                content_loader={ReportsTableRowLoader}
-                            />
-                        </DesktopWrapper>
-                        <MobileWrapper>
-                            <DataList
-                                className='statement'
-                                data_source={data}
-                                rowRenderer={this.mobileRowRenderer}
-                                getRowAction={this.getRowAction}
-                                onScroll={handleScroll}
-                                custom_width={'100%'}
-                                getRowSize={() => 176}
-                            />
-                        </MobileWrapper>
+                        {this.should_show_loading_placeholder ? (
+                            <PlaceholderComponent is_loading={this.should_show_loading_placeholder} />
+                        ) : (
+                            <React.Fragment>
+                                <DesktopWrapper>
+                                    <DataTable
+                                        className='statement'
+                                        data_source={data}
+                                        columns={this.columns}
+                                        onScroll={handleScroll}
+                                        getRowAction={row => this.getRowAction(row)}
+                                        is_empty={is_empty}
+                                        custom_width={'100%'}
+                                        getRowSize={() => 63}
+                                        content_loader={ReportsTableRowLoader}
+                                    />
+                                </DesktopWrapper>
+                                <MobileWrapper>
+                                    <DataList
+                                        className='statement'
+                                        data_source={data}
+                                        rowRenderer={this.mobileRowRenderer}
+                                        getRowAction={this.getRowAction}
+                                        onScroll={handleScroll}
+                                        custom_width={'100%'}
+                                        getRowSize={() => 176}
+                                    />
+                                </MobileWrapper>
+                            </React.Fragment>
+                        )}
                     </React.Fragment>
                 )}
             </React.Fragment>

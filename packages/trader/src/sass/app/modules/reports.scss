@@ -10,11 +10,12 @@ $side-padding: 1.2em;
         width: 100%;
         display: flex;
         justify-content: space-between;
-        padding: 0 24px 16px;
+        padding: 0 2.4rem 1.6rem;
 
-        &--statement {
-            justify-content: flex-end;
+        @include mobile {
+            padding: 0 1.6rem 1.6rem;
         }
+
         &-description {
             &--heading {
                 @include typeface(--title-left-bold-black, none);
@@ -37,8 +38,10 @@ $side-padding: 1.2em;
             position: relative;
             display: flex;
             justify-content: flex-end;
-            max-width: 36rem;
             width: 100%;
+            @include desktop {
+                max-width: 36rem;
+            }
         }
 
         @include desktop {
@@ -58,6 +61,9 @@ $side-padding: 1.2em;
         display: flex;
         flex-direction: column;
         width: 100%;
+    }
+    &__route-selection {
+        padding: 1.6rem;
     }
     .unknown-icon {
         margin-left: 8px;
@@ -114,7 +120,7 @@ $side-padding: 1.2em;
 
         &__data-list-body,
         &__data-list-footer {
-            padding: 0 24px;
+            padding: 0 1.6rem;
         }
         &__data-list-body {
             height: 100%;
@@ -221,7 +227,12 @@ $side-padding: 1.2em;
         justify-content: flex-end;
     }
     &__account-statistics {
-        width: 43.2rem;
+        @include desktop {
+            width: 43.2rem;
+        }
+        @include mobile {
+            margin: 0.8rem 0;
+        }
         height: 6.4rem;
         display: flex;
         flex-direction: row;
@@ -338,7 +349,7 @@ $side-padding: 1.2em;
 
         &__data-list-body,
         &__data-list-footer {
-            padding: 0 24px;
+            padding: 0 1.6rem;
         }
         &__data-list-body {
             height: calc(100% - 50px);
@@ -380,7 +391,7 @@ $side-padding: 1.2em;
     }
     &__row {
         /*                     icon   refId buy_time  buy_price sell_time  sell_price profit/loss */
-        grid-template-columns: 0.8fr 1.2fr 1fr 0.8fr 1fr 1fr 1fr;
+        grid-template-columns: 0.9fr 1.2fr 1fr 0.8fr 1fr 1fr 1fr;
     }
     .buy_price,
     .sell_price,
@@ -791,7 +802,7 @@ $side-padding: 1.2em;
     .open-positions {
         &__row {
             /*                     icon multiplier stake cancellation buy_price  limit_order current_stake total_profit_loss action */
-            grid-template-columns: 5.5rem 6rem 1fr 1fr 1fr 1fr 1fr 1.1fr 10rem;
+            grid-template-columns: 6.5rem 6rem 1fr 1fr 1fr 1fr 1fr 1.1fr 10rem;
 
             &-action {
                 display: flex;

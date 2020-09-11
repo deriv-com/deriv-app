@@ -1,10 +1,16 @@
-import sma, { simpleMovingAverageArray as smaa } from '@binary-com/binary-indicators/lib/simpleMovingAverage';
-import ema, { exponentialMovingAverageArray as emaa } from '@binary-com/binary-indicators/lib/exponentialMovingAverage';
-import bb, { bollingerBandsArray as bba } from '@binary-com/binary-indicators/lib/bollingerBands';
-import rsi, { relativeStrengthIndexArray as rsia } from '@binary-com/binary-indicators/lib/relativeStrengthIndex';
-import macda from '@binary-com/binary-indicators/lib/macd';
+import {
+    simpleMovingAverage as sma,
+    simpleMovingAverageArray as smaa,
+    bollingerBands as bb,
+    bollingerBandsArray as bba,
+    exponentialMovingAverage as ema,
+    exponentialMovingAverageArray as emaa,
+    relativeStrengthIndex as rsi,
+    relativeStrengthIndexArray as rsia,
+    macdArray as macda,
+} from '@deriv/shared';
 
-export default Interface =>
+export default (Interface) =>
     class extends Interface {
         getIndicatorsInterface() {
             return {
@@ -15,8 +21,8 @@ export default Interface =>
                 rsi: (input, periods) => this.decorate(rsi, input, { periods }),
                 rsia: (input, periods) => this.decorate(rsia, input, { periods }),
                 bb: (input, config, field) => this.decorate(bb, input, config)[field],
-                bba: (input, config, field) => this.decorate(bba, input, config).map(r => r[field]),
-                macda: (input, config, field) => this.decorate(macda, input, config).map(r => r[field]),
+                bba: (input, config, field) => this.decorate(bba, input, config).map((r) => r[field]),
+                macda: (input, config, field) => this.decorate(macda, input, config).map((r) => r[field]),
             };
         }
 

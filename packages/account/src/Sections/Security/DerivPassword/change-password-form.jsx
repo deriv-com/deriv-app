@@ -3,8 +3,7 @@ import React from 'react';
 import { Formik } from 'formik';
 import { Button, Loading, PasswordInput, PasswordMeter } from '@deriv/components';
 import { withRouter } from 'react-router-dom';
-import { routes, isMobile } from '@deriv/shared';
-
+import { routes, isMobile, validPassword, validLength, getPreBuildDVRs } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
@@ -52,14 +51,17 @@ class ChangePasswordForm extends React.Component {
         });
 
         if (values.new_password) {
-            if (!/^[ -~]{6,25}$/.test(values.new_password)) {
-                errors.new_password = localize('Password length should be between 6 to 25 characters.');
+            if (!validLength(values.new_password, { min: 8, max: 25 })) {
+                errors.new_password = localize('Password length should be between 8 to 25 characters.');
             }
             if (values.old_password === values.new_password) {
                 errors.new_password = localize('Current password and new password cannot be the same.');
             }
-            if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+/.test(values.new_password)) {
-                errors.new_password = localize('Password should have lower and uppercase letters with numbers.');
+            if (values.new_password.toLowerCase() === this.props.email.toLowerCase()) {
+                errors.new_password = localize('Your password cannot be the same as your email address.');
+            }
+            if (!validPassword(values.new_password)) {
+                errors.new_password = getPreBuildDVRs().password.message;
             }
         }
 
@@ -173,4 +175,5 @@ class ChangePasswordForm extends React.Component {
 // ChangePasswordForm.propTypes = {};
 export default connect(({ client }) => ({
     logout: client.logout,
+    email: client.email,
 }))(withRouter(ChangePasswordForm));

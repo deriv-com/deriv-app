@@ -1,8 +1,8 @@
 import React from 'react';
-import { Loading, Button, Input } from '@deriv/components';
-import { Formik } from 'formik';
+import { Autocomplete, Loading, Button, Input, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
+import { Formik, Field } from 'formik';
 import { localize } from '@deriv/translations';
-import { isMobile, validAddress, validPostCode, validLetterSymbol, validLength } from '@deriv/shared';
+import { isMobile, validAddress, validPostCode, validLetterSymbol, validLength, getLocation } from '@deriv/shared';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 import FormFooter from 'Components/form-footer';
@@ -32,22 +32,25 @@ class ProofOfAddressForm extends React.Component {
     }
 
     componentDidMount() {
-        WS.wait('get_settings').then(() => {
-            const {
-                address_line_1,
-                address_line_2,
-                address_city,
-                address_state,
-                address_postcode,
-            } = this.props.account_settings;
+        const { fetchResidenceList, fetchStatesList } = this.props;
 
-            this.setState({
-                address_line_1,
-                address_line_2,
-                address_city,
-                address_state,
-                address_postcode,
-                is_loading: false,
+        fetchResidenceList().then(() => {
+            Promise.all([fetchStatesList(), WS.wait('get_settings')]).then(() => {
+                const {
+                    address_line_1,
+                    address_line_2,
+                    address_city,
+                    address_state,
+                    address_postcode,
+                } = this.props.account_settings;
+                this.setState({
+                    address_line_1,
+                    address_line_2,
+                    address_city,
+                    address_state,
+                    address_postcode,
+                    is_loading: false,
+                });
             });
         });
     }
@@ -64,7 +67,10 @@ class ProofOfAddressForm extends React.Component {
         const permitted_characters = "- . ' # ; : ( ) , @ /";
         const address_validation_message = localize(
             'Only letters, numbers, space, and these special characters are allowed: {{ permitted_characters }}',
-            { permitted_characters }
+            {
+                permitted_characters,
+                interpolation: { escapeValue: false },
+            }
         );
 
         if (values.address_line_1 && !validAddress(values.address_line_1)) {
@@ -215,25 +221,41 @@ class ProofOfAddressForm extends React.Component {
             is_submit_success,
         } = this.state;
 
+        const form_initial_values = {
+            address_line_1,
+            address_line_2,
+            address_city,
+            address_state,
+            address_postcode,
+        };
+
         if (api_initial_load_error) {
             return <LoadErrorMessage error_message={api_initial_load_error} />;
         }
         if (is_loading) return <Loading is_fullscreen={false} className='account___intial-loader' />;
         const mobile_scroll_offset = status && status.msg ? '200px' : '154px';
 
+        if (form_initial_values.address_state) {
+            form_initial_values.address_state = this.props.states_list.length
+                ? getLocation(this.props.states_list, form_initial_values.address_state, 'text')
+                : form_initial_values.address_state;
+        } else {
+            form_initial_values.address_state = '';
+        }
+
         return (
-            <Formik
-                initialValues={{
-                    address_line_1,
-                    address_line_2,
-                    address_city,
-                    address_state,
-                    address_postcode,
-                }}
-                onSubmit={this.onSubmit}
-                validate={this.validateFields}
-            >
-                {({ values, errors, status, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
+            <Formik initialValues={form_initial_values} onSubmit={this.onSubmit} validate={this.validateFields}>
+                {({
+                    values,
+                    errors,
+                    status,
+                    touched,
+                    handleChange,
+                    handleBlur,
+                    handleSubmit,
+                    isSubmitting,
+                    setFieldValue,
+                }) => (
                     <>
                         <LeaveConfirm onDirty={isMobile() ? this.showForm : null} />
                         {show_form && (
@@ -293,17 +315,60 @@ class ProofOfAddressForm extends React.Component {
                                                 />
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
-                                                <Input
-                                                    data-lpignore='true'
-                                                    autoComplete='off' // prevent chrome autocomplete
-                                                    type='text'
-                                                    name='address_state'
-                                                    label={localize('State/Province (optional)')}
-                                                    value={values.address_state}
-                                                    error={touched.address_state && errors.address_state}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                />
+                                                {this.props.states_list.length ? (
+                                                    <>
+                                                        <DesktopWrapper>
+                                                            <Field name='address_state'>
+                                                                {({ field }) => (
+                                                                    <Autocomplete
+                                                                        {...field}
+                                                                        data-lpignore='true'
+                                                                        autoComplete='new-password' // prevent chrome autocomplete
+                                                                        type='text'
+                                                                        label={localize('State/Province (optional)')}
+                                                                        error={
+                                                                            touched.address_state &&
+                                                                            errors.address_state
+                                                                        }
+                                                                        list_items={this.props.states_list}
+                                                                        onItemSelection={({ value, text }) =>
+                                                                            setFieldValue(
+                                                                                'address_state',
+                                                                                value ? text : '',
+                                                                                true
+                                                                            )
+                                                                        }
+                                                                    />
+                                                                )}
+                                                            </Field>
+                                                        </DesktopWrapper>
+                                                        <MobileWrapper>
+                                                            <SelectNative
+                                                                placeholder={localize('Please select')}
+                                                                label={localize('State/Province (optional)')}
+                                                                value={values.address_state}
+                                                                list_items={this.props.states_list}
+                                                                error={touched.address_state && errors.address_state}
+                                                                use_text={true}
+                                                                onChange={(e) =>
+                                                                    setFieldValue('address_state', e.target.value, true)
+                                                                }
+                                                            />
+                                                        </MobileWrapper>
+                                                    </>
+                                                ) : (
+                                                    <Input
+                                                        data-lpignore='true'
+                                                        autoComplete='off' // prevent chrome autocomplete
+                                                        type='text'
+                                                        name='address_state'
+                                                        label={localize('State/Province (optional)')}
+                                                        value={values.address_state}
+                                                        error={touched.address_state && errors.address_state}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                    />
+                                                )}
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
                                                 <Input
@@ -369,4 +434,7 @@ export default connect(({ client, ui }) => ({
     addNotificationByKey: ui.addNotificationMessageByKey,
     removeNotificationMessage: ui.removeNotificationMessage,
     removeNotificationByKey: ui.removeNotificationByKey,
+    states_list: client.states_list,
+    fetchResidenceList: client.fetchResidenceList,
+    fetchStatesList: client.fetchStatesList,
 }))(ProofOfAddressForm);

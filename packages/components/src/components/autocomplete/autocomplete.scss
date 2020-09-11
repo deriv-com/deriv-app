@@ -35,6 +35,11 @@
             }
         }
     }
+    .dc-input__field {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        max-width: calc(100% - 2rem);
+    }
     .dc-dropdown-list {
         box-shadow: 0 8px 16px 0 var(--shadow-menu);
         background: var(--general-main-2);

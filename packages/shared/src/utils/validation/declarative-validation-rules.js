@@ -11,7 +11,7 @@ const validRequired = (value /* , options, field */) => {
     return str.length > 0;
 };
 export const validAddress = value => !/[`~!$%^&*_=+[}{\]\\"?><|]+/.test(value);
-export const validPostCode = value => /^[a-zA-Z\s\W\d-]*$/.test(value);
+export const validPostCode = value => value === '' || /^[A-Za-z0-9][A-Za-z0-9\s-]*$/.test(value);
 export const validTaxID = value => /^[a-zA-Z0-9]*[\w-]*$/.test(value);
 export const validPhone = value => /^\+(?:[0-9] ?){6,14}[0-9]$/.test(value);
 export const validCountryCode = (list, value) => list.some(item => value.startsWith(`+${item.phone_idd}`));
@@ -48,7 +48,7 @@ export const validNumber = (value, opts) => {
 
     if (!(options.type === 'float' ? /^\d*(\.\d+)?$/ : /^\d+$/).test(value) || isNaN(value)) {
         is_ok = false;
-        message = form_error_messages.number;
+        message = form_error_messages.number();
     } else if (
         options.type === 'float' &&
         options.decimals &&
@@ -73,7 +73,6 @@ export const validNumber = (value, opts) => {
         const max_value = addComma(options.max);
         message = form_error_messages.maxNumber(max_value);
     }
-
     return { is_ok, message };
 };
 
@@ -96,7 +95,10 @@ const initPreBuildDVRs = () => ({
         func: validLetterSymbol,
         message: form_error_messages.letter_symbol,
     },
-    number: { func: validNumber, message: '' },
+    number: {
+        func: (...args) => validNumber(...args),
+        message: form_error_messages.number,
+    },
     password: {
         func: validPassword,
         message: form_error_messages.password,

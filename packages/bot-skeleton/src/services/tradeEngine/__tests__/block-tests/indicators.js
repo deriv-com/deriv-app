@@ -1,11 +1,15 @@
 import { expect } from 'chai';
-
-import bb, { bollingerBandsArray as bba } from '@binary-com/binary-indicators/lib/bollingerBands';
-import rsi, { relativeStrengthIndexArray as rsia } from '@binary-com/binary-indicators/lib/relativeStrengthIndex';
-import ema, { exponentialMovingAverageArray as emaa } from '@binary-com/binary-indicators/lib/exponentialMovingAverage';
-import sma, { simpleMovingAverageArray as smaa } from '@binary-com/binary-indicators/lib/simpleMovingAverage';
-import macda from '@binary-com/binary-indicators/lib/macd';
-
+import {
+    simpleMovingAverage as sma,
+    simpleMovingAverageArray as smaa,
+    bollingerBands as bb,
+    bollingerBandsArray as bba,
+    exponentialMovingAverage as ema,
+    exponentialMovingAverageArray as emaa,
+    relativeStrengthIndex as rsi,
+    relativeStrengthIndexArray as rsia,
+    macdArray as macda,
+} from '@deriv/shared';
 import { runAndGetResult } from '../tools';
 
 const periods = 12;
@@ -44,8 +48,8 @@ const getIndicatorsFromApi = () =>
 describe('Relative Strength Index', () => {
     let result, expected;
 
-    beforeAll(done =>
-        getIndicatorsFromApi().then(r => {
+    beforeAll((done) =>
+        getIndicatorsFromApi().then((r) => {
             result = r;
             const { ticks } = result;
 
@@ -53,12 +57,12 @@ describe('Relative Strength Index', () => {
                 sma: sma(ticks, { periods }),
                 smaa: smaa(ticks, { periods }),
                 bb: bb(ticks, bbOption)[1],
-                bba: bba(ticks, bbOption).map(e => e[2]),
+                bba: bba(ticks, bbOption).map((e) => e[2]),
                 ema: ema(ticks, { periods }),
                 emaa: emaa(ticks, { periods }),
                 rsi: rsi(ticks, { periods }),
                 rsia: rsia(ticks, { periods }),
-                macda: macda(ticks, macdOption).map(e => e[0]),
+                macda: macda(ticks, macdOption).map((e) => e[0]),
             };
 
             done();
@@ -66,7 +70,7 @@ describe('Relative Strength Index', () => {
     );
 
     it('Indicator values are set correctly', () => {
-        Object.keys(expected).forEach(name => {
+        Object.keys(expected).forEach((name) => {
             const endResult = JSON.parse(JSON.stringify(result[name]));
             const expectedResult = JSON.parse(JSON.stringify(expected[name]));
             expect(endResult).to.deep.equal(expectedResult);

@@ -221,12 +221,11 @@ export default class CashierStore extends BaseStore {
 
             // show p2p if:
             // 1. we have not already checked this before, and
-            // 2. client is not virtual, and
-            // 3. p2p call does not return error code `PermissionDenied`
+            // 2. client is not virtual
             if (!this.is_p2p_visible && !this.root_store.client.is_virtual) {
                 const advertiser_info = await WS.authorized.p2pAdvertiserInfo();
                 const advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
-                if (advertiser_error === 'PermissionDenied') return;
+                if (advertiser_error === 'PermissionDenied') this.setIsP2pVisible(true);
 
                 this.is_p2p_advertiser = !advertiser_error;
                 this.setIsP2pVisible(true);
@@ -761,6 +760,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setIsTryWithdrawSuccessful(is_try_withdraw_successful) {
+        this.setErrorMessage('');
         this.config.payment_agent.is_try_withdraw_successful = is_try_withdraw_successful;
     }
 
@@ -971,16 +971,21 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setTransferLimit() {
+        const is_mt_transfer =
+            this.config.account_transfer.selected_from.is_mt || this.config.account_transfer.selected_to.is_mt;
         const transfer_limit = getPropertyValue(getCurrencies(), [
             this.config.account_transfer.selected_from.currency,
             'transfer_between_accounts',
-            'limits',
+            is_mt_transfer ? 'limits_mt5' : 'limits',
         ]);
+        const balance = this.config.account_transfer.selected_from.balance;
         const decimal_places = getDecimalPlaces(this.config.account_transfer.selected_from.currency);
         // we need .toFixed() so that it doesn't display in scientific notation, e.g. 1e-8 for currencies with 8 decimal places
         this.config.account_transfer.transfer_limit = {
-            max: transfer_limit.max ? transfer_limit.max.toFixed(decimal_places) : null,
-            min: transfer_limit.min ? transfer_limit.min.toFixed(decimal_places) : null,
+            max: transfer_limit.max
+                ? Math.min(transfer_limit.max, +balance || transfer_limit.max).toFixed(decimal_places) // in case balance is 0, just use transfer_limit.max
+                : balance,
+            min: transfer_limit.min ? (+transfer_limit.min).toFixed(decimal_places) : null,
         };
     }
 
@@ -1073,6 +1078,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setIsTryTransferSuccessful(is_try_transfer_successful) {
+        this.setErrorMessage('');
         this.config[this.active_container].is_try_transfer_successful = is_try_transfer_successful;
     }
 
@@ -1132,6 +1138,7 @@ export default class CashierStore extends BaseStore {
             );
         }
         this.setTransferFee();
+        this.setTransferLimit();
     }
 
     requestTransferBetweenAccounts = async ({ amount }) => {

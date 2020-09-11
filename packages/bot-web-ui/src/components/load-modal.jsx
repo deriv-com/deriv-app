@@ -6,6 +6,7 @@ import GoogleDrive from './load-modal/google-drive.jsx';
 import Local from './load-modal/local.jsx';
 import Recent from './load-modal/recent.jsx';
 import { connect } from '../stores/connect';
+import { tabs_title } from '../constants/load-modal';
 import '../assets/sass/load-modal.scss';
 
 const LoadModal = ({
@@ -17,6 +18,7 @@ const LoadModal = ({
     recent_workspaces,
     setActiveTabIndex,
     should_rerender_tabs,
+    tab_name,
     toggleLoadModal,
 }) => {
     const header_text = localize('Load strategy');
@@ -75,12 +77,12 @@ const LoadModal = ({
                     </div>
                 </Tabs>
             </Modal.Body>
-            {loaded_local_file && (
+            {loaded_local_file && tab_name === tabs_title.TAB_LOCAL && (
                 <Modal.Footer has_separator>
                     <Local.Footer />
                 </Modal.Footer>
             )}
-            {recent_workspaces.length > 0 && (
+            {recent_workspaces.length > 0 && tab_name === tabs_title.TAB_RECENT && (
                 <Modal.Footer has_separator>
                     <Recent.Footer />
                 </Modal.Footer>
@@ -110,5 +112,6 @@ export default connect(({ load_modal, ui }) => ({
     recent_workspaces: load_modal.recent_workspaces,
     setActiveTabIndex: load_modal.setActiveTabIndex,
     should_rerender_tabs: load_modal.should_rerender_tabs,
+    tab_name: load_modal.tab_name,
     toggleLoadModal: load_modal.toggleLoadModal,
 }))(LoadModal);

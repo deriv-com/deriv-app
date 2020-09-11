@@ -435,7 +435,7 @@ $MIN_HEIGHT_FLOATING: calc(
     }
     .account-management__text-container {
         margin-top: 10px;
-        max-width: 467px;
+        max-width: 672px;
         margin-bottom: 2em;
     }
     .account-management-flex-wrapper {
@@ -1104,7 +1104,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin-top: 0.5em;
 
                 .account-form__fieldset {
-                    margin-bottom: 3em;
+                    margin-bottom: 4em; // The gap for the error message is dependent on the font-size, better to be `em` instead of `rem`
                 }
             }
         }
@@ -1257,7 +1257,7 @@ $MIN_HEIGHT_FLOATING: calc(
             flex: 1;
 
             .account-form__fieldset {
-                margin-bottom: 3em;
+                margin-bottom: 4em; // The gap for the error message is dependent on the font-size, better to be `em` instead of `rem`
             }
             @include mobile {
                 min-width: 100%;
@@ -1751,7 +1751,7 @@ $MIN_HEIGHT_FLOATING: calc(
     @include mobile {
         max-height: 70vh;
     }
-    .have-open-positions-or-balance-scroll {
+    .deactivate-account-error-scroll {
         overflow-y: auto;
     }
     .dc-modal-header {
@@ -1797,7 +1797,7 @@ $MIN_HEIGHT_FLOATING: calc(
         }
     }
 
-    .have-open-positions-or-balance {
+    .deactivate-account-error {
         padding: 0 24px 24px 24px;
         &__title {
             color: var(--text-prominent);
@@ -1809,11 +1809,6 @@ $MIN_HEIGHT_FLOATING: calc(
             display: flex;
             align-items: center;
         }
-        &__accounts-data {
-            display: flex;
-            flex-direction: column;
-            margin-left: 8px;
-        }
         &__accounts-loginid {
             color: var(--text-prominent);
             font-size: var(--text-size-xxxs);
@@ -1824,33 +1819,12 @@ $MIN_HEIGHT_FLOATING: calc(
             font-size: var(--text-size-xs);
             line-height: 1.43;
         }
-        &__accounts-button {
-            margin-top: 16px;
-            float: right;
-        }
-        &__accounts-wrapper {
-            display: flex;
-            padding: 3px 3px 3px 16px;
-            align-items: center;
-        }
-        &__balance {
+        &__account {
             margin-left: 8px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-
-            &--currency {
-                color: var(--text-prominent);
-                font-size: var(--text-size-xs);
-                line-height: 1.43;
-            }
-            &--id {
-                color: var(--text-prominent);
-                font-size: var(--text-size-xxxs);
-                line-height: 1.4;
-            }
         }
-
         &__container {
             display: flex;
             padding: 3px 3px 3px 16px;
@@ -1858,7 +1832,7 @@ $MIN_HEIGHT_FLOATING: calc(
             align-items: center;
             max-width: 264px;
         }
-        &__money {
+        &__details {
             color: var(--text-prominent);
             font-size: var(--text-size-xs);
             line-height: 1.43;

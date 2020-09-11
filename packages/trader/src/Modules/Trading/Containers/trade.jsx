@@ -28,6 +28,7 @@ class Trade extends React.Component {
     state = {
         digits: [],
         tick: {},
+        try_synthetic_indices: false,
     };
 
     componentDidMount() {
@@ -41,6 +42,9 @@ class Trade extends React.Component {
     componentDidUpdate(prevProps) {
         if (isMobile() && prevProps.symbol !== this.props.symbol) {
             this.setState({ digits: [] });
+        }
+        if (prevProps.symbol !== this.props.symbol) {
+            this.setState({ try_synthetic_indices: false });
         }
     }
 
@@ -64,6 +68,19 @@ class Trade extends React.Component {
         this.setState({
             is_digits_widget_active: index === 0,
         });
+    };
+
+    onTrySyntheticIndicesClick = () => {
+        this.setState(
+            {
+                try_synthetic_indices: true,
+            },
+            () => {
+                this.setState({
+                    try_synthetic_indices: false,
+                });
+            }
+        );
     };
 
     render() {
@@ -96,7 +113,7 @@ class Trade extends React.Component {
                         <DesktopWrapper>
                             <div className='chart-container__wrapper'>
                                 <ChartLoader is_visible={this.props.is_chart_loading} />
-                                <ChartTrade />
+                                <ChartTrade try_synthetic_indices={this.state.try_synthetic_indices} />
                             </div>
                         </DesktopWrapper>
                         <MobileWrapper>
@@ -116,6 +133,7 @@ class Trade extends React.Component {
                                     <DigitsWidget digits={this.state.digits} tick={this.state.tick} />
                                 )}
                                 <ChartTrade
+                                    try_synthetic_indices={this.state.try_synthetic_indices}
                                     bottomWidgets={this.props.show_digits_stats ? this.bottomWidgets : undefined}
                                     is_digits_widget_active={
                                         this.props.show_digits_stats ? this.state.is_digits_widget_active : undefined
@@ -129,7 +147,7 @@ class Trade extends React.Component {
                     <Test />
                 </Div100vhContainer>
                 <div className={form_wrapper_class}>
-                    {this.props.is_market_closed && <MarketIsClosedOverlay />}
+                    {this.props.is_market_closed && <MarketIsClosedOverlay onClick={this.onTrySyntheticIndicesClick} />}
                     <FormLayout
                         is_market_closed={this.props.is_market_closed}
                         is_trade_enabled={is_trade_enabled && this.props.network_status.class === 'online'}
@@ -188,12 +206,16 @@ const ChartMarkers = connect(({ modules, ui, client }) => ({
 class ChartTradeClass extends React.Component {
     state = {
         active_markets: [],
+        active_category: null,
     };
     bottomWidgets = ({ digits, tick }) => <ChartBottomWidgets digits={digits} tick={tick} />;
     topWidgets = ({ ...props }) => {
-        const { is_digits_widget_active } = this.props;
+        const { is_digits_widget_active, try_synthetic_indices } = this.props;
+
         return (
             <ChartTopWidgets
+                active_category={try_synthetic_indices ? 'synthetic_index' : null}
+                open={!!try_synthetic_indices}
                 charts_ref={this.charts_ref}
                 is_digits_widget_active={is_digits_widget_active}
                 {...props}
@@ -230,7 +252,14 @@ class ChartTradeClass extends React.Component {
     }
 
     render() {
-        const { show_digits_stats, main_barrier, should_refresh, extra_barriers = [], symbol } = this.props;
+        const {
+            show_digits_stats,
+            main_barrier,
+            should_refresh,
+            extra_barriers = [],
+            symbol,
+            try_synthetic_indices,
+        } = this.props;
         const { active_markets } = this.state;
 
         const barriers = main_barrier ? [main_barrier, ...extra_barriers] : extra_barriers;

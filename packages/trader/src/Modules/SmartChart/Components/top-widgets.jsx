@@ -37,9 +37,13 @@ const TopWidgets = ({
     y_axis_width,
     theme,
     is_digits_widget_active,
+    active_category,
+    open,
 }) => {
     const ChartTitleLocal = (
         <ChartTitle
+            active_category={active_category}
+            open={open}
             enabled={is_title_enabled}
             onChange={onSymbolChange}
             searchInputClassName='data-hj-whitelist'

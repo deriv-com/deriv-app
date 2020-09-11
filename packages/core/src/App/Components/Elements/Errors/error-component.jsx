@@ -18,10 +18,13 @@ const ErrorComponent = ({
     const history = useHistory();
 
     React.useEffect(() => {
+        if (!history) return undefined;
         return history.listen(() => {
-            setError(false, null);
+            if (typeof setError === 'function') {
+                setError(false, null);
+            }
         });
-    }, []);
+    }, [history, setError]);
 
     const refresh_message = should_show_refresh ? (
         <Localize i18n_default_text='Please refresh this page to continue.' />

@@ -133,19 +133,6 @@
                         &__sender-name {
                             display: none;
                         }
-                        &--incoming {
-                            padding-left: 0px !important;
-
-                            .sendbird-file-message__tooltip,
-                            &:hover .sendbird-file-message__tooltip {
-                                background-color: var(--general-active);
-                                border-bottom-left-radius: $BORDER_RADIUS;
-
-                                &__text {
-                                    color: var(--text-prominent);
-                                }
-                            }
-                        }
                     }
 
                     &-user-message {
@@ -171,7 +158,19 @@
                                 background-color: var(--general-active);
                             }
 
-                            .sendbird-user-message__tooltip,
+                            .sendbird-user-message__text-balloon {
+                                background-color: var(--general-section-1);
+
+                                .sendbird-label {
+                                    color: var(--text-prominent);
+                                }
+                            }
+
+                            sendbird-label
+                                sendbird-user-message__text-balloon__inner__text-place__text
+                                sendbird-label--body-1
+                                sendbird-label--color-onbackground-1
+                                .sendbird-user-message__tooltip,
                             &:hover .sendbird-user-message__tooltip {
                                 background-color: var(--general-active);
                                 border-bottom-left-radius: $BORDER_RADIUS;
@@ -188,6 +187,14 @@
                                 border-bottom-right-radius: 4px;
 
                                 &__text {
+                                    color: var(--text-colored-background);
+                                }
+                            }
+
+                            .sendbird-user-message__text-balloon {
+                                background-color: var(--brand-secondary);
+
+                                .sendbird-label {
                                     color: var(--text-colored-background);
                                 }
                             }
@@ -407,33 +414,17 @@
         width: 100%;
         border-top: 2px solid var(--general-section-1);
     }
-    &__popup {
-        margin-top: 1.4rem;
-        &--danger {
-            color: var(--status-danger);
-            font-weight: bold;
-        }
-        &--bold {
-            font-weight: bold;
-        }
-    }
     &__empty-space {
         height: 72px;
     }
-    &__popup-no-border {
-        .orders__popup-content {
-            padding: 0 2.4rem;
-        }
-        .orders__popup-header,
-        .orders__popup-footer {
-            border-top: unset;
-            border-bottom: unset;
-        }
-        .dc-checkbox {
-            margin-top: 1rem;
-            &__box {
-                margin-left: 0;
-            }
+}
+
+.dc-modal__container_orders__popup {
+    .dc-checkbox {
+        margin-top: 2.4rem;
+
+        &__box {
+            margin-left: 0;
         }
     }
 }

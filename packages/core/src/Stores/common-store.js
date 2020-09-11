@@ -1,5 +1,5 @@
 import { action, observable } from 'mobx';
-import { routes, toMoment, getUrlSmartTrader } from '@deriv/shared';
+import { routes, toMoment, getUrlSmartTrader, isMobile } from '@deriv/shared';
 import ServerTime from '_common/base/server_time';
 import { currentLanguage } from 'Utils/Language/index';
 import BaseStore from './base-store';
@@ -98,18 +98,31 @@ export default class CommonStore extends BaseStore {
                 redirect_label: error.redirect_label,
                 redirectOnClick: error.redirectOnClick,
                 should_show_refresh: error.should_show_refresh,
+                redirect_to: error.redirect_to,
+                should_clear_error_on_click: error.should_clear_error_on_click,
+                setError: this.setError,
             }),
         };
     }
 
     @action.bound
-    showError(message, header, redirect_label, redirectOnClick, should_show_refresh) {
+    showError({
+        message,
+        header,
+        redirect_label,
+        redirectOnClick,
+        should_show_refresh,
+        redirect_to,
+        should_clear_error_on_click,
+    }) {
         this.setError(true, {
             header,
             message,
             redirect_label,
             redirectOnClick,
             should_show_refresh,
+            redirect_to,
+            should_clear_error_on_click,
             type: 'error',
         });
     }
@@ -126,7 +139,15 @@ export default class CommonStore extends BaseStore {
 
     @action.bound
     setServicesError(error) {
-        this.services_error = error;
+        if (isMobile()) {
+            this.root_store.ui.addToast({
+                content: error.message,
+                type: 'error',
+            });
+        } else {
+            this.services_error = error;
+            this.root_store.ui.toggleServicesErrorModal(true);
+        }
     }
 
     @action.bound
@@ -182,8 +203,8 @@ export default class CommonStore extends BaseStore {
                 this.app_routing_history.splice(0, route_to_item_idx + 1);
                 // remove once p2p is ready
                 const ui_store = this.root_store.ui;
-                if (route_to_item.pathname === routes.cashier_p2p)
-                    history.push(`${route_to_item.pathname}${ui_store.is_mobile ? '#verification' : '#show_p2p'}`);
+                if (route_to_item.pathname === routes.cashier_p2p && ui_store.is_mobile)
+                    history.push(`${route_to_item.pathname}#verification`);
                 else history.push(route_to_item.pathname);
                 return;
             }

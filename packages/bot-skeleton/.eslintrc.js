@@ -80,6 +80,7 @@ module.exports = {
       'airbnb-base',
       'binary',
       'plugin:react/recommended',
+      'plugin:react-hooks/recommended'
   ],
   parserOptions: {
       ecmaVersion : 6,
@@ -91,8 +92,5 @@ module.exports = {
         react: {
             version: '16',
         },
-        'import/resolver': {
-            webpack: { config: 'webpack.config.js' }
-        }
     },
 };

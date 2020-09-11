@@ -37,6 +37,7 @@ class App extends React.Component {
 
         this.ws_subscriptions = {};
         this.list_item_limit = 20;
+        this.is_active_tab = true;
         this.state = {
             active_index: 0,
             loginid: this.props.client.loginid,
@@ -101,18 +102,13 @@ class App extends React.Component {
         Object.keys(this.ws_subscriptions).forEach(key => this.ws_subscriptions[key].unsubscribe());
     }
 
-    createAdvertiser(name) {
-        this.ws_subscriptions.advertiser_subscription = subscribeWS({ p2p_advertiser_create: 1, name, subscribe: 1 }, [
-            this.setCreateAdvertiser,
-        ]);
-    }
-
     redirectTo = (path_name, params = null) => {
         this.setState({ active_index: path[path_name], parameters: params });
     };
 
     toggleNicknamePopup = () => {
         this.setState({ show_popup: !this.state.show_popup });
+        this.resetNicknameErrorState();
     };
 
     onNicknamePopupClose = () => {
@@ -123,21 +119,31 @@ class App extends React.Component {
         this.setState({ active_index: idx, parameters: null });
     };
 
-    setCreateAdvertiser = response => {
-        const { p2p_advertiser_create } = response;
-
-        if (response.error) {
-            this.setState({ nickname_error: response.error.message });
-        } else {
-            this.setState({
-                advertiser_id: p2p_advertiser_create.id,
-                is_advertiser: !!p2p_advertiser_create.is_approved,
-                nickname: p2p_advertiser_create.name,
-                nickname_error: undefined,
+    createAdvertiser = name => {
+        return new Promise(resolve => {
+            requestWS({ p2p_advertiser_create: 1, name }).then(response => {
+                const { p2p_advertiser_create } = response;
+                if (response) {
+                    if (response.error) {
+                        this.setState({ nickname_error: response.error.message });
+                    } else {
+                        this.setState({
+                            advertiser_id: p2p_advertiser_create.id,
+                            is_advertiser: !!p2p_advertiser_create.is_approved,
+                            nickname: p2p_advertiser_create.name,
+                            nickname_error: undefined,
+                        });
+                        this.setChatInfo(p2p_advertiser_create.chat_user_id, p2p_advertiser_create.chat_token);
+                        this.toggleNicknamePopup();
+                    }
+                    resolve();
+                }
             });
-            this.setChatInfo(p2p_advertiser_create.chat_user_id, p2p_advertiser_create.chat_token);
-            this.toggleNicknamePopup();
-        }
+        });
+    };
+
+    resetNicknameErrorState = () => {
+        this.setState({ nickname_error: undefined });
     };
 
     setIsAdvertiser = response => {
@@ -305,6 +311,7 @@ class App extends React.Component {
     };
 
     changeOrderToggle = value => {
+        this.is_active_tab = value === 'active';
         this.setState({ order_table_type: value });
     };
 
@@ -329,9 +336,11 @@ class App extends React.Component {
             className,
             client: { currency, local_currency_config, is_virtual, residence },
             custom_strings,
+            modal_root_id,
             order_id,
             setOrderId,
             should_show_verification,
+            is_dark_mode_on,
             is_mobile,
             poi_url,
         } = this.props;
@@ -354,6 +363,7 @@ class App extends React.Component {
                     local_currency_config,
                     residence,
                     advertiser_id,
+                    is_active_tab: this.is_active_tab,
                     is_advertiser: this.state.is_advertiser,
                     is_listed: this.state.is_listed,
                     setIsListed: is_listed => this.setState({ is_listed }),
@@ -361,9 +371,11 @@ class App extends React.Component {
                     nickname: this.state.nickname,
                     setNickname: nickname => this.setState({ nickname }),
                     setChatInfo: this.setChatInfo,
+                    is_dark_mode_on,
                     is_restricted,
                     email_domain: getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
                     list_item_limit: this.list_item_limit,
+                    modal_root_id,
                     order_offset,
                     orders,
                     order_id,
@@ -379,6 +391,7 @@ class App extends React.Component {
                     order_table_type,
                     changeOrderToggle: this.changeOrderToggle,
                     createAdvertiser: this.createAdvertiser.bind(this),
+                    resetNicknameErrorState: this.resetNicknameErrorState,
                     is_mobile,
                     poi_url,
                 }}
@@ -461,6 +474,7 @@ App.propTypes = {
         residence: PropTypes.string.isRequired,
     }),
     lang: PropTypes.string,
+    modal_root_id: PropTypes.string.isRequired,
     order_id: PropTypes.string,
     setNotificationCount: PropTypes.func,
     websocket_api: PropTypes.object.isRequired,

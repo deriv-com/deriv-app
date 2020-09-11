@@ -4,9 +4,8 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { DesktopWrapper, MobileWrapper, DataList, DataTable } from '@deriv/components';
-import { urlFor } from '@deriv/shared';
+import { urlFor, isDesktop, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { website_name } from 'App/Constants/app-config';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
 import CompositeCalendar from 'App/Components/Form/CompositeCalendar';
 import { getContractPath } from 'App/Components/Routes/helpers';
@@ -29,7 +28,7 @@ class ProfitTable extends React.Component {
     }
 
     mobileRowRenderer = ({ row, is_footer }) => {
-        const duration_type = getContractDurationType(row.longcode);
+        const duration_type = getContractDurationType(row.longcode, row.shortcode);
         const duration_classname = `duration-type__${duration_type.toLowerCase()}`;
 
         if (is_footer) {
@@ -125,14 +124,12 @@ class ProfitTable extends React.Component {
         if (error) return <p>{error}</p>;
 
         const filter_component = (
-            <React.Fragment>
-                <CompositeCalendar
-                    input_date_range={filtered_date_range}
-                    onChange={handleDateChange}
-                    from={date_from}
-                    to={date_to}
-                />
-            </React.Fragment>
+            <CompositeCalendar
+                input_date_range={filtered_date_range}
+                onChange={handleDateChange}
+                from={date_from}
+                to={date_to}
+            />
         );
 
         this.columns = getProfitTableColumnsTemplate(currency, data.length);
@@ -144,11 +141,16 @@ class ProfitTable extends React.Component {
         return (
             <React.Fragment>
                 <ReportsMeta
-                    i18n_heading={localize('Profit table')}
-                    i18n_message={localize(
-                        'View all trades purchased on your account, and a summary of your total profit/loss.'
-                    )}
+                    {...(isDesktop()
+                        ? {
+                              i18n_heading: localize('Profit table'),
+                              i18n_message: localize(
+                                  'View all trades purchased on your account, and a summary of your total profit/loss.'
+                              ),
+                          }
+                        : {})}
                     filter_component={filter_component}
+                    className='profit-table__filter'
                 />
                 {data.length === 0 || is_empty ? (
                     <PlaceholderComponent
@@ -220,7 +222,7 @@ ProfitTable.propTypes = {
 
 export default connect(({ modules, client }) => ({
     currency: client.currency,
-    data: modules.profit_table.data_source,
+    data: modules.profit_table.data,
     date_from: modules.profit_table.date_from,
     date_to: modules.profit_table.date_to,
     error: modules.profit_table.error,

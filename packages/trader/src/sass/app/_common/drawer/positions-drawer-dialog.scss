@@ -2,7 +2,6 @@
 .positions-drawer-dialog {
     position: fixed;
     display: grid;
-    grid-gap: 0.8rem;
     background: var(--general-main-2);
     border-radius: $BORDER_RADIUS;
     box-shadow: 0 4px 8px 2px var(--shadow-menu);
@@ -32,6 +31,32 @@
             width: 100%;
         }
     }
+    &__form {
+        display: grid;
+        flex: 1;
+        @include mobile {
+            grid-template-rows: auto auto 1fr;
+            grid-gap: 1.6rem;
+            margin: 1.6rem;
+        }
+        @include desktop {
+            grid-gap: 0.8rem;
+        }
+
+        .dc-checkbox__box {
+            margin-left: 0;
+        }
+    }
+    &__total-profit {
+        height: 5.2rem;
+        padding: 1.6rem;
+        background: var(--general-section-2);
+        color: var(--text-general);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 1.4rem;
+    }
 }
 
 /** @define positions-drawer-dialog-toggle; */
@@ -40,7 +65,7 @@
     width: 108px;
     height: 80px;
     right: 4px;
-    top: 98px;
+    top: 96px;
     border: 1px solid var(--general-section-1);
     border-radius: 4px;
 

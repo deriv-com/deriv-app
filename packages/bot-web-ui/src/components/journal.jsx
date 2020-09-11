@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ContentLoader from 'react-content-loader';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { Checkbox, Icon, ThemedScrollbars, useOnClickOutside } from '@deriv/components';
+import { Checkbox, Icon, ThemedScrollbars, useOnClickOutside, DesktopWrapper } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { message_types } from '@deriv/bot-skeleton';
 import { log_types } from '@deriv/bot-skeleton/src/constants/messages';
+import Download from './download.jsx';
 import { contract_stages } from '../constants/contract-stage';
 import { connect } from '../stores/connect';
 import '../assets/sass/journal.scss';
@@ -127,6 +128,9 @@ const Tools = ({ checked_filters, filters, filterMessage, is_filter_dialog_visib
     return (
         <>
             <div className='journal-tools__container'>
+                <DesktopWrapper>
+                    <Download tab='journal' />
+                </DesktopWrapper>
                 <div ref={toggle_ref} className='journal-tools__container-filter' onClick={toggleFilterDialog}>
                     <span className='journal-tools__container-filter--label'>
                         <Localize i18n_default_text='Filters' />

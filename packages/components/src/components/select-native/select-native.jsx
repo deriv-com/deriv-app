@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import FieldError from '../field-error';
+import Field from '../field';
 import Icon from '../icon/icon.jsx';
 
 class SelectNative extends React.Component {
@@ -28,6 +28,7 @@ class SelectNative extends React.Component {
             error,
             hint,
             disabled,
+            should_show_empty_option = true,
             ...props
         } = this.props;
         return (
@@ -66,7 +67,7 @@ class SelectNative extends React.Component {
                                     {/* In native select, first option is selected by default.
                                         Added an empty option to avoid it from selecting first item
                                         from list_items provided */}
-                                    <option value=''>{placeholder}</option>
+                                    {should_show_empty_option && <option value=''>{placeholder}</option>}
                                     {/* Safari on ios allows to select a disabled option.
                                         So, we should avoid showing it */}
                                     {list_items
@@ -93,7 +94,7 @@ class SelectNative extends React.Component {
                                 ))
                             )}
                         </select>
-                        {error && <FieldError message={error} />}
+                        {error && <Field message={error} type='error' />}
                     </div>
                 </div>
                 {!error && hint && <p className='dc-select-native__hint'>{hint}</p>}
@@ -102,21 +103,27 @@ class SelectNative extends React.Component {
     }
 }
 
-SelectNative.props = {
+const list_items_shape = PropTypes.oneOfType([
+    PropTypes.arrayOf(
+        PropTypes.shape({
+            disabled: PropTypes.bool,
+            nativepicker_text: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+            text: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+            value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        })
+    ),
+    PropTypes.object,
+    PropTypes.array,
+]);
+
+SelectNative.propTypes = {
     className: PropTypes.string,
     classNameDisplay: PropTypes.string,
-    list_items: PropTypes.oneOfType([
-        PropTypes.arrayOf(PropTypes.string),
-        PropTypes.arrayOf(
-            PropTypes.shape({
-                text: PropTypes.string.isRequired,
-                value: PropTypes.string.isRequired,
-            })
-        ),
-    ]),
+    list_items: list_items_shape,
     value: PropTypes.string,
     label: PropTypes.string,
     onChange: PropTypes.func,
+    should_show_empty_option: PropTypes.bool,
 };
 
 export default SelectNative;

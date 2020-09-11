@@ -1,5 +1,7 @@
+import classNames from 'classnames';
 import React from 'react';
-import { Button, Icon } from '@deriv/components';
+import { Button, Icon, Div100vhContainer } from '@deriv/components';
+import { isDesktop, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 
 const FinishedSetCurrency = ({ current, onCancel, onSubmit, prev }) => {
@@ -10,14 +12,16 @@ const FinishedSetCurrency = ({ current, onCancel, onSubmit, prev }) => {
     const IconWon = ({ className }) => <Icon className={className} icon='IcCheckmarkCircle' color='green' />;
 
     return (
-        <div className='success-change'>
-            <div className='success-change__icon-area'>
+        <Div100vhContainer className='status-dialog' is_disabled={isDesktop()} height_offset='40px'>
+            <div className={classNames('status-dialog__icon-area', { 'status-dialog__icon-area--center': isMobile() })}>
                 <IconPrevCurrency />
                 <IconArrow />
                 <IconNextCurrency />
                 <IconWon className='bottom-right-overlay' />
             </div>
-            <div className='success-change__body-area'>
+            <div
+                className={classNames('status-dialog__body-area', { 'status-dialog__body-area--no-grow': isMobile() })}
+            >
                 <h2>
                     <Localize i18n_default_text='Success!' />
                 </h2>
@@ -29,11 +33,11 @@ const FinishedSetCurrency = ({ current, onCancel, onSubmit, prev }) => {
                     components={[<p key={current} />]}
                 />
             </div>
-            <div className='success-change__btn-area'>
+            <div className='status-dialog__btn-area'>
                 <Button onClick={onCancel} text={localize('Maybe later')} secondary />
                 <Button onClick={onSubmit} text={localize('Deposit now')} primary />
             </div>
-        </div>
+        </Div100vhContainer>
     );
 };
 

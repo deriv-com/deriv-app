@@ -54,7 +54,11 @@
         }
     }
     &__content {
-        height: calc(100% - 4.2rem);
+        height: calc(100% - 8.4rem);
+
+        &--mobile {
+            height: calc(100% - 4.2rem);
+        }
     }
     &__scrollbar {
         height: 100%;
@@ -66,7 +70,7 @@
         grid-template-columns: $grid-template-columns;
         grid-template-rows: auto auto;
         grid-template-areas: ('trade-type entry-spot stake' 'trade-type exit-spot  profit');
-        padding: 0.8rem 0rem;
+        padding: 0.8rem 0;
 
         &-wrapper {
             height: 5.2rem;

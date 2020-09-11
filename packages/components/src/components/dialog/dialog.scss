@@ -16,7 +16,7 @@
     bottom: 0;
 
     &__wrapper {
-        position: absolute;
+        position: fixed;
         left: 0;
         top: 0;
         width: 100%;
@@ -36,6 +36,9 @@
         &--enter-done {
             transform: translate3d(0, 0, 0);
             opacity: 1;
+        }
+        &--fixed {
+            position: fixed;
         }
     }
     &__dialog {
@@ -60,6 +63,15 @@
         margin-bottom: 2.4rem;
         line-height: 1.5;
         color: var(--text-prominent);
+
+        &-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+        &--close {
+            cursor: pointer;
+        }
     }
     &__content {
         align-self: flex-start;
@@ -68,6 +80,7 @@
         line-height: 1.43;
         color: var(--text-general);
         max-width: calc(440px - 4.8rem);
+        width: 100%;
 
         /* postcss-bem-linter: ignore */
         .dc-input__label {
@@ -84,10 +97,16 @@
         width: 100%;
         @include mobile {
             flex-wrap: wrap;
+            align-items: flex-start;
         }
     }
     &__button {
         margin-left: 0.8rem;
+        @include mobile {
+            &:not(:last-child) {
+                margin-bottom: 1rem;
+            }
+        }
     }
 }
 

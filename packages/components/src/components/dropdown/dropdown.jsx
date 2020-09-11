@@ -43,6 +43,7 @@ const Dropdown = ({
 
     const [is_list_visible, setIsListVisible] = React.useState(!!is_nativepicker_visible);
     const [list_dimensions, setListDimensions] = React.useState([0, 0]);
+    const initial_render = React.useRef(true);
 
     const onClickOutSide = () => {
         if (typeof handleBlur === 'function') handleBlur({ target: { name } });
@@ -86,6 +87,7 @@ const Dropdown = ({
             'dc-dropdown--left': is_alignment_left,
             'dc-dropdown--show': is_list_visible,
             'dc-dropdown--disabled': isSingleOption() || disabled,
+            'dc-dropdown--error': error,
         });
     };
 
@@ -129,7 +131,7 @@ const Dropdown = ({
     }, [is_nativepicker, is_nativepicker_visible]);
 
     React.useEffect(() => {
-        if (!is_list_visible && value) dropdown_ref.current.focus();
+        if (!initial_render.current && !is_list_visible && value) dropdown_ref.current.focus();
     }, [is_list_visible]);
 
     const handleSelect = item => {
@@ -245,6 +247,12 @@ const Dropdown = ({
         />
     );
 
+    React.useEffect(() => {
+        if (initial_render.current) {
+            initial_render.current = false;
+        }
+    }, []);
+
     return (
         <React.Fragment>
             <input
@@ -290,10 +298,11 @@ const Dropdown = ({
                             className={classNames('dc-dropdown__select-arrow', {
                                 'dc-dropdown__select-arrow--left': is_alignment_left,
                                 'dc-dropdown__select-arrow--up': is_list_visible,
+                                'dc-dropdown__select-arrow--error': error || hint,
                             })}
                         />
                     )}
-                    {error && <p className='dc-field-error'>{error}</p>}
+                    {error && <p className='dc-field--error'>{error}</p>}
                     {is_nativepicker ? (
                         <NativeSelect
                             ref={native_select_ref}

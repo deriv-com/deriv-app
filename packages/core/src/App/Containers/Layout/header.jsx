@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
-import { routes, isMobile, getDecimalPlaces } from '@deriv/shared';
-
+import { routes, isMobile, getDecimalPlaces, getPlatformHeader } from '@deriv/shared';
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
@@ -40,7 +39,6 @@ class Header extends React.Component {
             is_acc_switcher_disabled,
             is_app_disabled,
             is_dark_mode,
-            is_high_risk,
             is_logged_in,
             is_logging_in,
             is_mt5_allowed,
@@ -52,6 +50,7 @@ class Header extends React.Component {
             is_virtual,
             disableApp,
             logoutClient,
+            needs_financial_assessment,
             notifications_count,
             setDarkMode,
             toggleAccountsDialog,
@@ -62,8 +61,7 @@ class Header extends React.Component {
         const filterPlatformsForClients = payload =>
             payload.filter(config => {
                 // non-CR clients cannot open MT5 account
-                const is_mt5_eligible = !(is_logged_in && config.link_to === routes.mt5 && !is_mt5_allowed);
-                return is_mt5_eligible;
+                return !(is_logged_in && config.link_to === routes.mt5 && !is_mt5_allowed);
             });
 
         return (
@@ -89,12 +87,14 @@ class Header extends React.Component {
                                 location={this.props.location}
                                 logoutClient={logoutClient}
                                 is_dark_mode={is_dark_mode}
-                                is_high_risk={is_high_risk}
                                 is_logged_in={is_logged_in}
                                 is_p2p_visible={is_p2p_visible}
                                 is_payment_agent_transfer_visible={is_payment_agent_transfer_visible}
                                 is_payment_agent_visible={is_payment_agent_visible}
+                                is_virtual={is_virtual}
+                                needs_financial_assessment={needs_financial_assessment}
                                 toggleTheme={setDarkMode}
+                                platform_header={getPlatformHeader(app_routing_history)}
                                 platform_switcher={
                                     <PlatformSwitcher
                                         app_routing_history={app_routing_history}
@@ -166,7 +166,6 @@ Header.propTypes = {
     is_acc_switcher_on: PropTypes.bool,
     is_app_disabled: PropTypes.bool,
     is_dark_mode: PropTypes.bool,
-    is_high_risk: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
     is_notifications_visible: PropTypes.bool,
@@ -176,6 +175,7 @@ Header.propTypes = {
     is_route_modal_on: PropTypes.bool,
     is_virtual: PropTypes.bool,
     logoutClient: PropTypes.func,
+    needs_financial_assessment: PropTypes.bool,
     notifications_count: PropTypes.any,
     setDarkMode: PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
@@ -194,14 +194,14 @@ export default connect(({ client, common, ui, modules }) => ({
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
     logoutClient: client.logout,
+    needs_financial_assessment: client.needs_financial_assessment,
     is_virtual: client.is_virtual,
     enableApp: ui.enableApp,
     header_extension: ui.header_extension,
     is_acc_switcher_disabled: ui.is_account_switcher_disabled,
-    is_acc_switcher_on: ui.is_accounts_switcher_on,
+    is_acc_switcher_on: !!ui.is_accounts_switcher_on,
     is_dark_mode: ui.is_dark_mode_on,
     is_app_disabled: ui.is_app_disabled,
-    is_high_risk: client.is_high_risk,
     is_loading: ui.is_loading,
     is_mt5_allowed: client.is_mt5_allowed,
     notifications_count: ui.notifications.length,

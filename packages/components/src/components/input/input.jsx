@@ -1,13 +1,15 @@
 import classNames from 'classnames';
 import React from 'react';
-import FieldError from '../field-error';
+import Field from '../field';
 
 const Input = (
     {
         className,
         classNameError,
+        classNameWarn,
         disabled,
         error,
+        warn,
         hint,
         leading_icon,
         has_character_counter,
@@ -57,6 +59,7 @@ const Input = (
                         'dc-input__field--placeholder-visible': !label && props.placeholder,
                     })}
                     disabled={disabled}
+                    data-lpignore={props.type === 'password' ? undefined : true}
                 />
             )}
             {trailing_icon &&
@@ -68,7 +71,8 @@ const Input = (
                     {label}
                 </label>
             )}
-            {error && <FieldError className={classNameError} message={error} />}
+            {error && <Field className={classNameError} message={error} type='error' />}
+            {warn && <Field className={classNameWarn} message={warn} type='warn' />}
             {!error && hint && <p className='dc-input__hint'>{hint}</p>}
             {has_character_counter && (
                 <p className='dc-input__counter'>

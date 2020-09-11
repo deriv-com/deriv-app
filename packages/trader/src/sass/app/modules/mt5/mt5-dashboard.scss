@@ -79,7 +79,7 @@
         &--heading {
             @include typeface(--title-left-bold-black, none);
             color: var(--text-prominent);
-            line-height: 1.5em;
+            line-height: 1.5;
         }
     }
     &__missing-real {
@@ -92,7 +92,7 @@
 
         &--heading {
             color: var(--text-prominent);
-            line-height: 1.5rem;
+            line-height: 1.5;
             @include typeface(--title-left-bold-black, none);
             @include mobile {
                 font-size: 1.2rem;
@@ -239,7 +239,7 @@
     position: relative;
 
     &__table-row {
-        grid-template-columns: 1.5fr 1fr 2fr 1fr;
+        grid-template-columns: var(--mt5-compare-accounts-template-columns);
         box-shadow: inset 0 -1px 0 0 var(--general-section-1);
     }
 
@@ -367,6 +367,7 @@
 .mt5-real-accounts-display,
 .mt5-demo-accounts-display {
     display: flex;
+    justify-content: center;
     margin-top: 2.4em;
     justify-content: center;
 
@@ -396,12 +397,12 @@
     &--heading {
         @include typeface(--title-left-bold-black, none);
         color: var(--text-prominent);
-        line-height: 1.5em;
+        line-height: 1.5;
     }
     &--paragraph {
         @include typeface(--paragraph-left-normal-black, none);
         color: var(--text-general);
-        line-height: 1.45em;
+        line-height: 1.45;
     }
     &--balance {
         @include typeface(--title-left-bold-black);
@@ -496,7 +497,7 @@
             .mt5-account-card--paragraph {
                 @include typeface(--paragraph-left-bold-black, none);
                 color: var(--text-prominent);
-                line-height: 1.45em;
+                line-height: 1.45;
             }
         }
     }
@@ -506,7 +507,7 @@
         margin-bottom: 1.6rem;
 
         &.mt5-account-card--paragraph {
-            line-height: 1.4em;
+            line-height: 1.4;
         }
     }
     &__account-selection {
@@ -580,8 +581,8 @@
 
 .mt5-password-manager {
     margin: 5.6rem auto 3.2rem;
-    max-width: calc(400px + 1rem); // needs extra padding for the scrollbar, otherwise it will cover the words
     width: 100%;
+    height: 100%;
 
     &--paragraph {
         @include typeface(--paragraph-left-normal-black, none);
@@ -597,6 +598,9 @@
     &__investor-wrapper {
         margin: 3.2rem 0.5rem 0;
 
+        & .dc-input__label {
+            top: 0.9rem;
+        }
         @include mobile {
             padding-bottom: 12rem;
         }
@@ -634,6 +638,7 @@
         @include mobile {
             width: 100%;
             margin-top: 0.8rem;
+            max-width: 30rem;
         }
     }
     &__success {
@@ -650,17 +655,34 @@
         &-btn {
             margin-top: 3.2rem;
             width: 6.4rem;
+
+            @include mobile {
+                width: 100%;
+                max-width: 30rem;
+            }
         }
-    }
-    @include mobile {
-        padding: 0 1.6rem;
-        margin-top: 2.4rem;
     }
     .multi-step__header {
         margin: 0 0 2.4rem 0;
     }
     .multi-step__component {
         text-align: center;
+    }
+    @include desktop {
+        max-width: calc(400px + 1rem); // needs extra padding for the scrollbar, otherwise it will cover the words
+    }
+    @include mobile {
+        padding: 0 1.6rem;
+        margin-top: 2.4rem;
+
+        &__scroll-wrapper {
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        /* iPhone SE screen width fixes due to UI space restrictions */
+        @media only screen and (max-width: 320px) {
+            padding: 0;
+        }
     }
 }
 
@@ -671,21 +693,25 @@
     position: relative;
     width: 100%;
 
-    &__heading {
-        padding: 2em 2em 0 2em;
-    }
-    &__form,
-    &__body {
-        display: grid;
-    }
     &__form {
-        grid-template-rows: minmax(20rem, 1fr) 7rem;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+
+        .details-form {
+            flex: 1;
+        }
     }
     @include desktop {
         overflow: hidden;
+
+        & .details-form__description {
+            width: 100%;
+            text-align: center;
+        }
     }
     @include mobile {
-        overflow: auto;
+        overflow: hidden;
         grid-template-rows: 7rem minmax(10rem, 1fr);
         &__heading {
             padding: unset;
@@ -715,6 +741,9 @@
         .dc-form-submit-button {
             background-color: inherit;
         }
+    }
+    .dc-autocomplete {
+        margin-bottom: 2.4rem;
     }
 }
 
@@ -747,8 +776,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    height: 11em;
-    margin: 12.7em 0 12em;
+    height: 11rem;
+    margin: 12.7rem 0 12rem;
 
     &__heading {
         @include typeface(--title-left-bold-black);
@@ -757,14 +786,15 @@
     &__description {
         @include typeface(--paragraph-center-normal-black);
         color: var(--text-prominent);
-        margin: 0.6em 0 0;
+        margin: 0.6rem 0 0;
     }
     &__btn-area {
-        margin: 3.2em 0 0;
+        margin: 3.2rem 0 0;
 
-        .btn--primary {
-            width: 90px !important;
-            height: 40px !important;
+        .dc-btn {
+            width: auto;
+            min-width: 9rem;
+            height: 4rem;
         }
     }
 }
@@ -785,14 +815,15 @@
             width: 904px;
         }
         &_mt5-password-manager__modal {
-            height: 688px;
+            height: 100% !important;
+            min-height: calc(100vh - 22rem);
             width: 904px;
+            max-height: calc(100vh - 48px - 36px) !important;
         }
     }
 }
 
 .mt5-details-form {
-    height: 100%;
     @include tablet {
         display: grid;
         grid-template-rows: 7rem minmax(10rem, 1fr);
@@ -802,57 +833,14 @@
         padding: 0;
     }
     & .mt5-tax-identification-number {
-        margin-top: 1em;
+        margin-top: 1rem;
     }
     & .dc-autocomplete {
-        margin-bottom: 2.4em;
+        margin-bottom: 2.4rem;
         &__input-field {
             .dc-input {
                 margin-bottom: 0;
             }
-        }
-    }
-}
-
-.account-form {
-    &__header {
-        font-size: var(--text-size-xs);
-        font-weight: bold;
-        margin-bottom: 1.6em;
-        position: relative;
-        height: 1.6em;
-    }
-    &__header:not(:first-child) {
-        margin-top: 1.6em;
-    }
-    &__header:before {
-        border-top: 1px solid var(--general-section-1);
-        content: '';
-        height: 100%;
-        left: 0;
-        position: absolute;
-        top: 0.5em;
-        width: 100%;
-    }
-    &__title {
-        background: var(--general-main-1);
-        color: var(--text-prominent);
-        padding-right: 8px;
-        position: absolute;
-    }
-    &__subtitle {
-        color: var(--text-prominent);
-        font-weight: normal;
-        padding-left: 8px;
-    }
-    @include mobile {
-        overflow: auto;
-
-        &__title {
-            background: inherit;
-        }
-        &__subtitle {
-            font-size: 1.2rem;
         }
     }
 }
@@ -863,7 +851,8 @@
             width: 25px;
         }
         &-section {
-            margin-top: 0em;
+            margin-top: 0;
+            display: flex;
         }
         &-list {
             width: 100%;
@@ -907,14 +896,14 @@
         }
         &-box {
             display: flex;
-            margin-bottom: 2em;
+            margin-bottom: 2rem;
             align-items: center;
             justify-content: flex-start;
         }
         &-item {
             min-width: 238px;
             width: 100%;
-            margin-left: 1em;
+            margin-left: 1rem;
             font-size: var(--text-size-xxs);
             line-height: 1.5;
             color: var(--text-prominent);
@@ -935,10 +924,6 @@
         li {
             margin: 0 0 1.5rem 0;
         }
-        .dc-field-error {
-            top: 0;
-            right: 5%;
-        }
     }
     &__field-area {
         max-width: 556px;
@@ -950,7 +935,7 @@
     &__inline-fields {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
-        grid-gap: 1em;
+        grid-gap: 1rem;
 
         .dc-dropdown-container {
             margin-top: 0;
@@ -961,7 +946,8 @@
             background: var(--general-section-2);
         }
         &__field-area {
-            padding: 0 1.6rem;
+            padding: 0 1.6rem 3.2rem;
+            max-height: calc(100% - 0.8rem);
         }
         &__inline-fields {
             display: flex;
@@ -972,7 +958,7 @@
             }
         }
         &__file-upload {
-            .dc-field-error {
+            .dc-field--error {
                 top: 50%;
                 left: 0;
                 right: unset;
@@ -992,21 +978,29 @@
         @include mobile {
             position: relative;
         }
+        .dc-themed-scrollbars {
+            height: 100%;
+        }
     }
     & .details-form {
         display: grid;
-        grid-template-rows: minmax(10rem, 1fr) 7.2rem;
+        grid-template-rows: minmax(10rem, 1fr) 8.2rem;
         height: 100%;
         position: relative;
+
+        @include mobile {
+            max-height: calc(100% - 1rem);
+        }
+    }
+    @include mobile {
+        overflow: hidden;
     }
 }
 .dc-modal__container_mt5-financial-stp-signup-modal {
+    max-height: calc(100vh - 102px) !important;
     @include desktop {
         display: grid;
         grid-template-rows: 6rem minmax(20rem, 1fr);
-    }
-    @include tablet {
-        max-height: calc(100vh - 102px); // HEADER and FOOTER
     }
 }
 .dc-modal__container_mt5-password-modal {
@@ -1014,8 +1008,20 @@
         background-color: unset;
         padding-bottom: 1.2rem;
 
+        @include mobile {
+            border-top: none;
+            bottom: 0;
+        }
         .dc-btn:first-child {
             margin-left: 0;
+        }
+    }
+    .dc-input {
+        &__label {
+            top: 0.9rem;
+        }
+        &__hint {
+            top: 4.8rem;
         }
     }
 }
@@ -1045,14 +1051,31 @@
                 margin-left: 0;
             }
         }
+        @include mobile {
+            padding: 0.8rem 1.6rem 1.6rem;
+            display: flex;
+            grid-gap: 0.6rem;
+
+            & .dc-btn {
+                width: 100%;
+
+                &:only-child {
+                    max-width: 14rem;
+                    width: auto;
+                    min-width: 9rem;
+                }
+            }
+        }
     }
 }
 .dc-modal__container_mt5-success-dialog {
     .success-change__icon-area {
         width: 128px;
         margin: 2.4rem auto 0;
+        position: relative;
 
         &--large .bottom-right-overlay {
+            position: absolute;
             left: 76px;
             top: 76px;
 
@@ -1062,16 +1085,11 @@
             }
         }
         &--xlarge .bottom-right-overlay {
-            left: 104px;
-            top: 80px;
-
-            @include mobile {
-                left: 78px;
-                top: 74px;
-            }
-        }
-        @include mobile {
-            width: 96px;
+            position: absolute;
+            bottom: 0.8rem;
+            right: -2.8rem;
+            height: 5.2rem;
+            width: 5.2rem;
         }
     }
     .dc-modal-body {
@@ -1088,4 +1106,5 @@
         }
     }
 }
+
 /* stylelint-enable */

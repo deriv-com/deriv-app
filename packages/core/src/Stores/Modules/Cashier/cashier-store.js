@@ -1,4 +1,5 @@
-import { action, computed, observable, toJS } from 'mobx';
+import React from 'react';
+import { action, computed, observable, toJS, reaction } from 'mobx';
 import {
     routes,
     isCryptocurrency,
@@ -8,16 +9,36 @@ import {
     getCurrencyDisplayCode,
     isEmptyObject,
     getPropertyValue,
+    getMT5AccountDisplay,
+    getMT5Account,
 } from '@deriv/shared';
-
 import BinarySocket from '_common/base/socket_base';
-import { localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services';
 import OnRampStore from './on-ramp-store';
 import BaseStore from '../../base-store';
-import { getMT5AccountDisplay } from '../../Helpers/client';
 
 const bank_default_option = [{ text: localize('All payment agents'), value: 0 }];
+
+const hasTransferNotAllowedLoginid = loginid => loginid.startsWith('MX');
+
+const getSelectedError = (selected_value, is_from_account) => {
+    if (is_from_account) {
+        return (
+            <Localize
+                i18n_default_text='Transfer from {{selected_value}} is not allowed, Please choose another account from dropdown'
+                values={{ selected_value }}
+            />
+        );
+    }
+
+    return (
+        <Localize
+            i18n_default_text='Transfer to {{selected_value}} is not allowed, Please choose another account from dropdown'
+            values={{ selected_value }}
+        />
+    );
+};
 
 class Config {
     container = '';
@@ -39,6 +60,10 @@ class ConfigError {
     @observable fields = '';
     @observable is_show_full_page = false;
     @observable onClickButton = null;
+    @observable is_ask_uk_funds_protection = false;
+    @observable is_self_exclusion_max_turnover_set = false;
+    @observable is_ask_authentication = false;
+    @observable is_ask_financial_risk_approval = false;
 }
 
 class ConfigPaymentAgent {
@@ -196,12 +221,11 @@ export default class CashierStore extends BaseStore {
 
             // show p2p if:
             // 1. we have not already checked this before, and
-            // 2. client is not virtual, and
-            // 3. p2p call does not return error code `PermissionDenied`
+            // 2. client is not virtual
             if (!this.is_p2p_visible && !this.root_store.client.is_virtual) {
                 const advertiser_info = await WS.authorized.p2pAdvertiserInfo();
                 const advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
-                if (advertiser_error === 'PermissionDenied') return;
+                if (advertiser_error === 'PermissionDenied') this.setIsP2pVisible(true);
 
                 this.is_p2p_advertiser = !advertiser_error;
                 this.setIsP2pVisible(true);
@@ -232,6 +256,13 @@ export default class CashierStore extends BaseStore {
         this.onRemount = this.onMount;
         await this.onMountCommon();
 
+        reaction(
+            () => [this.root_store.client.is_tnc_needed],
+            () => {
+                this.onMount();
+            }
+        );
+
         if (this.containers.indexOf(this.active_container) === -1) {
             throw new Error('Cashier Store onMount requires a valid container name.');
         }
@@ -246,7 +277,6 @@ export default class CashierStore extends BaseStore {
 
         // if session has timed out reset everything
         this.setIframeUrl('');
-
         if (
             (this.active_container === this.config.withdraw.container && !verification_code) ||
             this.root_store.client.is_virtual
@@ -262,10 +292,9 @@ export default class CashierStore extends BaseStore {
         if (current_container !== this.active_container) {
             return;
         }
-
         if (response_cashier.error) {
+            this.handleCashierError(response_cashier.error);
             this.setLoading(false);
-            this.setErrorMessage(response_cashier.error);
             this.setSessionTimeout(true);
             this.clearTimeoutCashierUrl();
             if (verification_code) {
@@ -284,6 +313,72 @@ export default class CashierStore extends BaseStore {
             this.setSessionTimeout(false);
             this.setTimeoutCashierUrl();
         }
+    }
+
+    @computed
+    get is_cashier_locked() {
+        if (!this.root_store.client.account_status.status) return false;
+        const { status } = this.root_store.client.account_status;
+
+        return status.some(status_name => status_name === 'cashier_locked');
+    }
+
+    @computed
+    get is_deposit_locked() {
+        const {
+            is_authentication_needed,
+            is_tnc_needed,
+            is_financial_account,
+            is_financial_information_incomplete,
+            is_trading_experience_incomplete,
+            account_status,
+            is_eu,
+        } = this.root_store.client;
+        if (!account_status.status) return false;
+
+        const need_authentication =
+            this.config.deposit.error.is_ask_authentication || (is_authentication_needed && is_eu);
+        const need_financial_assessment =
+            is_financial_account && (is_financial_information_incomplete || is_trading_experience_incomplete);
+
+        return (
+            need_authentication ||
+            is_tnc_needed ||
+            need_financial_assessment ||
+            this.config.deposit.error.is_ask_financial_risk_approval
+        );
+    }
+
+    @computed
+    get is_withdrawal_locked() {
+        if (!this.root_store.client.account_status.status) return false;
+        const { authentication } = this.root_store.client.account_status;
+        const need_poi = authentication.needs_verification.includes('identity');
+
+        const need_authentication = this.config.withdraw.error.is_ask_authentication && need_poi;
+
+        return (
+            this.root_store.client.is_withdrawal_lock ||
+            need_authentication ||
+            this.config.withdraw.error.is_ask_financial_risk_approval
+        );
+    }
+
+    @computed
+    get is_transfer_locked() {
+        const {
+            is_financial_account,
+            is_financial_information_incomplete,
+            is_trading_experience_incomplete,
+            account_status,
+        } = this.root_store.client;
+
+        if (!account_status.status) return false;
+
+        const need_financial_assessment =
+            is_financial_account && (is_financial_information_incomplete || is_trading_experience_incomplete);
+
+        return need_financial_assessment && this.config.account_transfer.error.is_ask_financial_risk_approval;
     }
 
     @action.bound
@@ -326,17 +421,77 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    setErrorMessage(error, onClickButton) {
+    setErrorMessage(error, onClickButton, is_show_full_page) {
         // for errors that need to show a button, reset the form
         this.config[this.active_container].error = {
             onClickButton,
             code: error.code,
             message: error.message,
-            is_show_full_page: /InvalidToken|ASK_TNC_APPROVAL|ASK_FIX_DETAILS|WrongResponse/.test(error.code),
+            is_show_full_page: is_show_full_page || /InvalidToken|WrongResponse/.test(error.code),
             ...(getPropertyValue(error, ['details', 'fields']) && {
                 fields: error.details.fields,
             }),
         };
+    }
+    @action.bound
+    handleCashierError(error) {
+        switch (error.code) {
+            case 'ASK_TNC_APPROVAL':
+                this.setErrorMessage(error, null, true);
+                break;
+            case 'ASK_FIX_DETAILS':
+                this.setErrorMessage(error, null, true);
+                break;
+            case 'ASK_UK_FUNDS_PROTECTION':
+                this.config[this.active_container].error = {
+                    is_ask_uk_funds_protection: true,
+                };
+                break;
+            case 'ASK_SELF_EXCLUSION_MAX_TURNOVER_SET':
+                this.config[this.active_container].error = {
+                    is_self_exclusion_max_turnover_set: true,
+                };
+                break;
+            case 'ASK_AUTHENTICATE':
+            case 'ASK_AGE_VERIFICATION':
+                this.config[this.active_container].error = {
+                    is_ask_authentication: true,
+                };
+                break;
+            case 'FinancialAssessmentRequired':
+            case 'ASK_FINANCIAL_RISK_APPROVAL':
+                this.config[this.active_container].error = {
+                    is_ask_financial_risk_approval: true,
+                };
+                break;
+            default:
+                this.config[this.active_container].error = {
+                    is_ask_uk_funds_protection: false,
+                    is_self_exclusion_max_turnover_set: false,
+                    is_ask_authentication: false,
+                    is_ask_financial_risk_approval: false,
+                };
+                this.setErrorMessage(error);
+        }
+    }
+
+    @action.bound
+    setErrorConfig(config_name, value) {
+        this.config[this.active_container].error = {
+            [config_name]: value,
+        };
+    }
+
+    @action.bound
+    submitFundsProtection() {
+        WS.send({ ukgc_funds_protection: 1, tnc_approval: 1 }).then(response => {
+            if (response.error) {
+                this.setErrorConfig('message', response.error.message);
+            } else {
+                this.setErrorConfig('is_ask_uk_funds_protection', false);
+                this.onMount();
+            }
+        });
     }
 
     @action.bound
@@ -605,6 +760,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setIsTryWithdrawSuccessful(is_try_withdraw_successful) {
+        this.setErrorMessage('');
         this.config.payment_agent.is_try_withdraw_successful = is_try_withdraw_successful;
     }
 
@@ -815,16 +971,21 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setTransferLimit() {
+        const is_mt_transfer =
+            this.config.account_transfer.selected_from.is_mt || this.config.account_transfer.selected_to.is_mt;
         const transfer_limit = getPropertyValue(getCurrencies(), [
             this.config.account_transfer.selected_from.currency,
             'transfer_between_accounts',
-            'limits',
+            is_mt_transfer ? 'limits_mt5' : 'limits',
         ]);
+        const balance = this.config.account_transfer.selected_from.balance;
         const decimal_places = getDecimalPlaces(this.config.account_transfer.selected_from.currency);
         // we need .toFixed() so that it doesn't display in scientific notation, e.g. 1e-8 for currencies with 8 decimal places
         this.config.account_transfer.transfer_limit = {
-            max: transfer_limit.max ? transfer_limit.max.toFixed(decimal_places) : null,
-            min: transfer_limit.min ? transfer_limit.min.toFixed(decimal_places) : null,
+            max: transfer_limit.max
+                ? Math.min(transfer_limit.max, +balance || transfer_limit.max).toFixed(decimal_places) // in case balance is 0, just use transfer_limit.max
+                : balance,
+            min: transfer_limit.min ? (+transfer_limit.min).toFixed(decimal_places) : null,
         };
     }
 
@@ -877,12 +1038,21 @@ export default class CashierStore extends BaseStore {
                 currency: account.currency,
                 is_crypto: isCryptocurrency(account.currency),
                 is_mt: account.account_type === 'mt5',
-                ...(account.mt5_group && { mt_icon: getMT5AccountDisplay(account.mt5_group) }),
+                ...(account.mt5_group && { mt_icon: getMT5Account(account.mt5_group) }),
             };
             // set current logged in client as the default transfer from account
             if (account.loginid === this.root_store.client.loginid) {
+                // check if selected from is not allowed account
+                if (hasTransferNotAllowedLoginid(obj_values.value)) {
+                    obj_values.error = getSelectedError(obj_values.value, true);
+                }
+
                 this.setSelectedFrom(obj_values);
             } else if (isEmptyObject(this.config.account_transfer.selected_to)) {
+                if (hasTransferNotAllowedLoginid(obj_values.value)) {
+                    // check if selected to is not allowed account
+                    obj_values.error = getSelectedError(obj_values.value);
+                }
                 // set the first available account as the default transfer to account
                 this.setSelectedTo(obj_values);
             }
@@ -908,6 +1078,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setIsTryTransferSuccessful(is_try_transfer_successful) {
+        this.setErrorMessage('');
         this.config[this.active_container].is_try_transfer_successful = is_try_transfer_successful;
     }
 
@@ -926,6 +1097,7 @@ export default class CashierStore extends BaseStore {
     @action.bound
     onChangeTransferFrom({ target }) {
         this.setErrorMessage('');
+        this.config.account_transfer.selected_from.error = '';
 
         const accounts = this.config.account_transfer.accounts_list;
         const selected_from = accounts.find(account => account.value === target.value);
@@ -944,6 +1116,10 @@ export default class CashierStore extends BaseStore {
             this.onChangeTransferTo({ target: { value: first_fiat.value } });
         }
 
+        if (hasTransferNotAllowedLoginid(selected_from.value)) {
+            selected_from.error = getSelectedError(selected_from.value, true);
+        }
+
         this.config.account_transfer.selected_from = selected_from;
         this.setMinimumFee();
         this.setTransferLimit();
@@ -952,10 +1128,17 @@ export default class CashierStore extends BaseStore {
     @action.bound
     onChangeTransferTo({ target }) {
         this.setErrorMessage('');
+        this.config.account_transfer.selected_to.error = '';
 
         const accounts = this.config.account_transfer.accounts_list;
         this.config.account_transfer.selected_to = accounts.find(account => account.value === target.value) || {};
+        if (hasTransferNotAllowedLoginid(this.config.account_transfer.selected_to.value)) {
+            this.config.account_transfer.selected_to.error = getSelectedError(
+                this.config.account_transfer.selected_to.value
+            );
+        }
         this.setTransferFee();
+        this.setTransferLimit();
     }
 
     requestTransferBetweenAccounts = async ({ amount }) => {

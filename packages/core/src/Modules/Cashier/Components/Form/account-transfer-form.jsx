@@ -3,28 +3,32 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik, Form } from 'formik';
 import { Button, Dropdown, Icon, Input, Money, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
-import { getDecimalPlaces, getCurrencyDisplayCode } from '@deriv/shared';
+import { getDecimalPlaces, getCurrencyDisplayCode, validNumber, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { website_name } from 'App/Constants/app-config';
 import { connect } from 'Stores/connect';
-import { getPreBuildDVRs, validNumber } from 'Utils/Validator/declarative-validation-rules';
 import FormError from '../Error/form-error.jsx';
 import Loading from '../../../../templates/_common/components/loading.jsx';
 
-const AccountOption = ({ account, idx }) => (
-    <React.Fragment key={idx}>
-        {(account.currency || account.mt_icon) && (
-            <Icon
-                icon={account.mt_icon ? `IcMt5-${account.mt_icon}` : `IcCurrency-${account.currency.toLowerCase()}`}
-                className='account-transfer__currency-icon'
-            />
-        )}
-        <span className='account-transfer__currency'>{account.text}</span>
-        <span className='account-transfer__balance cashier__drop-down-display-brackets'>
-            <Money amount={account.balance} currency={account.currency} />
-        </span>
-    </React.Fragment>
-);
+const AccountOption = ({ account, idx }) => {
+    return (
+        <React.Fragment key={idx}>
+            {(account.currency || account.mt_icon) && (
+                <Icon
+                    icon={account.mt_icon ? `IcMt5-${account.mt_icon}` : `IcCurrency-${account.currency.toLowerCase()}`}
+                    className='account-transfer__currency-icon'
+                />
+            )}
+            <div className='account-transfer__currency-wrapper'>
+                <span className='account-transfer__currency'>{account.text}</span>
+                <span className='account-transfer__loginid'>{account.value}</span>
+            </div>
+
+            <span className='account-transfer__balance cashier__drop-down-display-brackets'>
+                <Money amount={account.balance} currency={account.currency} />
+            </span>
+        </React.Fragment>
+    );
+};
 
 const AccountTransferBullet = ({ children }) => (
     <div className='account-transfer__bullet-wrapper'>
@@ -97,24 +101,19 @@ const AccountTransferForm = ({
     error,
 }) => {
     const validateAmount = amount => {
-        let error_message;
+        if (!amount) return localize('This field is required.');
 
-        if (!amount) {
-            error_message = localize('This field is required.');
-        } else if (
-            !validNumber(amount, {
-                type: 'float',
-                decimals: getDecimalPlaces(selected_from.currency),
-                min: transfer_limit.min,
-                max: transfer_limit.max,
-            })
-        ) {
-            error_message = getPreBuildDVRs().number.message;
-        } else if (+selected_from.balance < +amount) {
-            error_message = localize('Insufficient balance.');
-        }
+        const { is_ok, message } = validNumber(amount, {
+            type: 'float',
+            decimals: getDecimalPlaces(selected_from.currency),
+            min: transfer_limit.min,
+            max: transfer_limit.max,
+        });
+        if (!is_ok) return message;
 
-        return error_message;
+        if (+selected_from.balance < +amount) return localize('Insufficient balance.');
+
+        return undefined;
     };
 
     const onTransferPassthrough = async (values, actions) => {
@@ -197,7 +196,6 @@ const AccountTransferForm = ({
             );
         }
     }, [transfer_fee, selected_from, minimum_fee, mt5_total_transfers, internal_total_transfers, setSideNote]);
-
     return (
         <div className='cashier__wrapper account-transfer__wrapper'>
             <React.Fragment>
@@ -210,7 +208,16 @@ const AccountTransferForm = ({
                     }}
                     onSubmit={onTransferPassthrough}
                 >
-                    {({ errors, isSubmitting, isValid, touched, validateField, handleChange }) => (
+                    {({
+                        errors,
+                        isSubmitting,
+                        isValid,
+                        touched,
+                        validateField,
+                        setFieldValue,
+                        setFieldError,
+                        handleChange,
+                    }) => (
                         <React.Fragment>
                             {isSubmitting ? (
                                 <div className='cashier__loader-wrapper'>
@@ -237,7 +244,10 @@ const AccountTransferForm = ({
                                                     onChangeTransferFrom(e);
                                                     handleChange(e);
                                                     validateField('amount');
+                                                    setFieldValue('amount', '');
+                                                    setFieldError('amount', '');
                                                 }}
+                                                error={selected_from.error}
                                             />
                                         </DesktopWrapper>
                                         <MobileWrapper>
@@ -252,7 +262,10 @@ const AccountTransferForm = ({
                                                     onChangeTransferFrom(e);
                                                     handleChange(e);
                                                     validateField('amount');
+                                                    setFieldValue('amount', '');
+                                                    setFieldError('amount', '');
                                                 }}
+                                                error={selected_from.error}
                                             />
                                         </MobileWrapper>
                                         <DesktopWrapper>
@@ -271,6 +284,7 @@ const AccountTransferForm = ({
                                                 value={selected_to.value}
                                                 onChange={onChangeTransferTo}
                                                 hint={transfer_to_hint}
+                                                error={selected_to.error}
                                             />
                                         </DesktopWrapper>
                                         <MobileWrapper>
@@ -283,6 +297,7 @@ const AccountTransferForm = ({
                                                 list_items={to_accounts}
                                                 onChange={onChangeTransferTo}
                                                 hint={transfer_to_hint}
+                                                error={selected_to.error}
                                             />
                                         </MobileWrapper>
                                     </div>
@@ -340,7 +355,13 @@ const AccountTransferForm = ({
                                         <Button
                                             className='cashier__form-submit-button'
                                             type='submit'
-                                            is_disabled={!isValid || isSubmitting || !+remaining_transfers}
+                                            is_disabled={
+                                                !isValid ||
+                                                isSubmitting ||
+                                                !+remaining_transfers ||
+                                                !!selected_from.error ||
+                                                !!selected_to.error
+                                            }
                                             primary
                                             large
                                         >

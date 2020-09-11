@@ -2,13 +2,15 @@
     $strategy-modal: 'modal--strategy';
 
     &__container {
-        .modal__scrollbar {
-            max-height: 516px;
-            margin-bottom: 75px;
-        }
         &_#{$strategy-modal} {
+            max-height: 57.1rem !important;
+
+            .modal__scrollbar {
+                max-height: 516px;
+                margin-bottom: 75px;
+            }
             .modal__content {
-                padding: 24px;
+                padding: 1.6rem 2.4rem;
                 height: calc(100% - 200px);
                 max-height: 636px;
             }
@@ -31,20 +33,16 @@
         overflow: auto;
     }
     &__form {
-        padding: 0 1.6rem;
-        height: 100%;
-        max-height: calc(100vh - 120px);
-
-        &-content {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+        @include mobile {
+            padding: 0 1.6rem;
+            height: 100%;
         }
+
         &-row {
             align-items: flex-end;
             display: flex;
             justify-content: space-between;
-            margin: 25px 0;
+            margin: 2.5rem 0;
 
             &:first-child {
                 margin-top: 0;
@@ -61,20 +59,25 @@
             }
             &--multiple {
                 > *:first-child {
-                    margin-right: 12px;
+                    margin-right: 1.2rem;
                 }
                 > * + * {
-                    margin-left: 12px;
+                    margin-left: 1.2rem;
                 }
             }
         }
         &-footer {
-            width: 100%;
-            background-color: var(--general-main-1);
-            position: fixed;
-            bottom: 0;
-            right: 0;
-            padding: 1.6rem;
+            border-top: 1px solid var(--general-section-1);
+            padding: 1.4rem 2.4rem 0;
+            margin: 0 -2.4rem;
+
+            @include mobile {
+                padding: 1.6rem 0;
+                margin: unset;
+            }
+        }
+        .dc-autocomplete {
+            margin-bottom: unset;
         }
         .dc-input {
             margin-bottom: 0;
@@ -142,7 +145,6 @@
                     display: flex;
                     flex-direction: column;
                     height: 100%;
-                    max-height: calc(100vh - 80px);
 
                     &__list {
                         width: 100%;

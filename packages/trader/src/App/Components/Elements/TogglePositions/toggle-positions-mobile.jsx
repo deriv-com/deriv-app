@@ -6,10 +6,25 @@ import { localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
 import EmptyPortfolioMessage from 'Modules/Reports/Components/empty-portfolio-message.jsx';
 import PositionsModalCard from 'App/Components/Elements/PositionsDrawer/positions-modal-card.jsx';
+import { filterByContractType } from 'App/Components/Elements/PositionsDrawer/helpers';
 import { connect } from 'Stores/connect';
 import TogglePositions from './toggle-positions.jsx';
 
 class TogglePositionsMobile extends React.Component {
+    filtered_positions = [];
+
+    closeModal = () => {
+        const { togglePositionsDrawer, onClickRemove } = this.props;
+
+        this.filtered_positions.slice(0, 5).map(position => {
+            const { contract_info } = position;
+            if (contract_info?.is_sold) {
+                onClickRemove(contract_info.contract_id);
+            }
+        });
+        togglePositionsDrawer();
+    };
+
     render() {
         const {
             all_positions,
@@ -18,14 +33,25 @@ class TogglePositionsMobile extends React.Component {
             is_empty,
             onClickSell,
             onClickRemove,
+            onClickCancel,
+            symbol,
             togglePositionsDrawer,
             toggleUnsupportedContractModal,
+            trade_contract_type,
         } = this.props;
+
+        this.filtered_positions = all_positions.filter(
+            p =>
+                p.contract_info &&
+                symbol === p.contract_info.underlying &&
+                filterByContractType(p.contract_info, trade_contract_type)
+        );
+
         // Show only 5 most recent open contracts
         const body_content = (
             <React.Fragment>
                 <TransitionGroup component='div'>
-                    {all_positions.slice(0, 5).map(portfolio_position => (
+                    {this.filtered_positions.slice(0, 5).map(portfolio_position => (
                         <CSSTransition
                             appear
                             key={portfolio_position.id}
@@ -41,6 +67,7 @@ class TogglePositionsMobile extends React.Component {
                         >
                             <PositionsModalCard
                                 onClickSell={onClickSell}
+                                onClickCancel={onClickCancel}
                                 onClickRemove={onClickRemove}
                                 key={portfolio_position.id}
                                 currency={currency}
@@ -63,7 +90,7 @@ class TogglePositionsMobile extends React.Component {
                 />
                 <Modal
                     is_open={this.props.is_positions_drawer_on}
-                    toggleModal={this.props.togglePositionsDrawer}
+                    toggleModal={this.closeModal}
                     id='dt_mobile_positions'
                     is_vertical_top
                     has_close_icon
@@ -77,7 +104,7 @@ class TogglePositionsMobile extends React.Component {
                                 <Icon icon='IcPortfolio' className='positions-modal__title-icon' />
                                 {localize('Recent positions')}
                             </span>
-                            <div className='positions-modal__close-btn' onClick={this.props.togglePositionsDrawer}>
+                            <div className='positions-modal__close-btn' onClick={this.closeModal}>
                                 <Icon icon='IcMinusBold' />
                             </div>
                         </div>
@@ -86,11 +113,11 @@ class TogglePositionsMobile extends React.Component {
                         </div>
                         <div className='positions-modal__footer'>
                             <BinaryLink
-                                onClick={this.props.togglePositionsDrawer}
+                                onClick={this.closeModal}
                                 className='dc-btn dc-btn--secondary dc-btn__large positions-modal__footer-btn'
                                 to={routes.positions}
                             >
-                                <span className='dc-btn__text'>{localize('View more')}</span>
+                                <span className='dc-btn__text'>{localize('Go to Reports')}</span>
                             </BinaryLink>
                         </div>
                     </Div100vhContainer>
@@ -101,7 +128,10 @@ class TogglePositionsMobile extends React.Component {
 }
 // TODO: Needs to be connected to store due to issue with trade-header-extensions not updating all_positions prop
 // Fixes issue with positions not updated in positions modal
-export default connect(({ ui }) => ({
+export default connect(({ modules, ui }) => ({
+    symbol: modules.trade.symbol,
+    trade_contract_type: modules.trade.contract_type,
+    onClickRemove: modules.portfolio.removePositionById,
     togglePositionsDrawer: ui.togglePositionsDrawer,
     is_positions_drawer_on: ui.is_positions_drawer_on,
 }))(TogglePositionsMobile);

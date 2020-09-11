@@ -1,13 +1,15 @@
 import classnames from 'classnames';
-import { ThemedScrollbars, Icon } from '@deriv/components';
+import { ThemedScrollbars, Icon, DesktopWrapper } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { PropTypes } from 'prop-types';
 import React from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import Transaction from './transaction.jsx';
+import Download from './download.jsx';
 import { transaction_elements } from '../constants/transactions';
 import { connect } from '../stores/connect';
 import { contract_stages } from '../constants/contract-stage';
+import '../assets/sass/download.scss';
 import '../assets/sass/transactions.scss';
 
 class Transactions extends React.PureComponent {
@@ -28,6 +30,11 @@ class Transactions extends React.PureComponent {
                     'run-panel-tab__content--mobile': is_mobile && is_drawer_open,
                 })}
             >
+                <DesktopWrapper>
+                    <div className='download__container'>
+                        <Download tab='transactions' />
+                    </div>
+                </DesktopWrapper>
                 <div className='transactions__header'>
                     <span className='transactions__header-column transactions__header-type'>{localize('Type')}</span>
                     <span className='transactions__header-column transactions__header-spot'>
@@ -37,7 +44,12 @@ class Transactions extends React.PureComponent {
                         {localize('Buy price and P/L')}
                     </span>
                 </div>
-                <div className='transactions__content'>
+                <div
+                    className={classnames({
+                        transactions__content: !is_mobile,
+                        'transactions__content--mobile': is_mobile,
+                    })}
+                >
                     <ThemedScrollbars autoHide hideHorizontal className='transactions__scrollbar'>
                         {elements.length ? (
                             <TransitionGroup>

@@ -68,6 +68,7 @@
         @include mobile {
             padding: 0;
             margin-bottom: 0.8rem;
+            background-color: transparent;
         }
 
         /* postcss-bem-linter: ignore */
@@ -113,6 +114,7 @@
         .dc-datepicker {
             .dc-input {
                 border: 1px solid var(--fill-normal);
+                background-color: var(--general-main-1);
                 margin-bottom: 0;
 
                 &__field {
@@ -159,7 +161,7 @@
         float: left;
         font-size: 10px;
         height: 32px;
-        left: 32px;
+        left: 48px;
         align-items: center;
         justify-content: center;
         width: 20px;
@@ -368,6 +370,28 @@
             align-self: flex-end;
         }
     }
+    &__deal-cancellation-popover {
+        width: 28rem;
+    }
+    &__cancel-deal-info {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        @include mobile {
+            padding: 0rem 0.4rem;
+            min-height: 1.4rem;
+
+            .trade-container__price-info-basis {
+                color: var(--text-general);
+            }
+            .trade-container__price-info-value {
+                color: var(--text-prominent);
+                font-size: 1rem;
+            }
+        }
+    }
     &__popover {
         /* postcss-bem-linter: ignore */
         .dc-checkbox {
@@ -426,6 +450,12 @@
         @include mobile {
             padding: initial;
             position: relative;
+
+            &:not(&--has-cancellation) {
+                .btn-purchase--multiplier {
+                    height: 86px;
+                }
+            }
         }
     }
     &__loading {
@@ -512,20 +542,6 @@
         left: 0;
         width: calc(100vw - 1.6rem);
         transform: translate(0.8rem, 0);
-    }
-}
-
-/** @define popup-root */
-@include mobile {
-    .popup-root {
-        width: 100vw;
-        height: 100vh;
-
-        /* postcss-bem-linter: ignore */
-        .dc-toast-error {
-            z-index: 9999;
-            top: 2em;
-        }
     }
 }
 

@@ -1,46 +1,75 @@
 import classNames from 'classnames';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { Icon, Modal, Loading, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
-import { routes, isNavigationFromPlatform, getCurrencyDisplayCode } from '@deriv/shared';
+import { Modal, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
+import { routes, isNavigationFromPlatform } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import ModalLoginPrompt from './modal-login-prompt.jsx';
 import AccountWizard from './account-wizard.jsx';
 import AddOrManageAccounts from './add-or-manage-accounts.jsx';
 import FinishedSetCurrency from './finished-set-currency.jsx';
-import ModalLoginPrompt from './modal-login-prompt.jsx';
 import SignupErrorContent from './signup-error-content.jsx';
-import SuccessDialog from '../Modals/success-dialog.jsx';
+import StatusDialogContainer from './status-dialog-container.jsx';
 import 'Sass/account-wizard.scss';
 import 'Sass/real-account-signup.scss';
+
+const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_residence, is_belgium_residence }) => {
+    if (!currency && real_account_signup_target !== 'maltainvest') {
+        return <Localize i18n_default_text='Set a currency for your real account' />;
+    }
+
+    if (
+        (real_account_signup_target === 'iom' && is_isle_of_man_residence) ||
+        (real_account_signup_target === 'malta' && is_belgium_residence)
+    ) {
+        return <Localize i18n_default_text='Add a Deriv Synthetic account' />;
+    }
+
+    switch (real_account_signup_target) {
+        case 'malta':
+        case 'iom':
+            return <Localize i18n_default_text='Add a Deriv Synthetic account' />;
+        case 'maltainvest':
+            return <Localize i18n_default_text='Add a Deriv Financial account' />;
+        default:
+            return <Localize i18n_default_text='Add a Deriv account' />;
+    }
+};
 
 class RealAccountSignup extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            is_loading: false,
             modal_content: [
                 {
-                    value: () => (
+                    body: () => (
                         <AccountWizard
-                            onSuccessAddCurrency={this.showAddCurrencySuccess}
-                            onLoading={this.showLoadingModal}
+                            onFinishSuccess={this.showStatusDialog}
+                            is_loading={this.state.is_loading}
+                            setLoading={this.setLoading}
                             onError={this.showErrorModal}
+                            onClose={this.closeModal}
                             onSuccessSetAccountCurrency={this.showSetCurrencySuccess}
                         />
                     ),
+                    title: WizardHeading,
                 },
                 {
-                    value: () => (
+                    body: () => (
                         <AddOrManageAccounts
                             onSuccessSetAccountCurrency={this.showSetCurrencySuccess}
-                            onSuccessAddCurrency={this.showAddCurrencySuccess}
-                            onLoading={this.showLoadingModal}
+                            onSuccessAddCurrency={this.showStatusDialog}
+                            is_loading={this.state.is_loading}
+                            setLoading={this.setLoading}
                             onError={this.showErrorModal}
                         />
                     ),
+                    title: () => localize('Add or manage account'),
                 },
                 {
-                    value: () => (
+                    body: () => (
                         <FinishedSetCurrency
                             prev={this.props.state_value.previous_currency}
                             current={this.props.state_value.current_currency}
@@ -50,57 +79,45 @@ class RealAccountSignup extends React.Component {
                     ),
                 },
                 {
-                    value: () => (
-                        <SuccessDialog
-                            has_cancel
-                            onCancel={this.closeModalWithHooks}
-                            onSubmit={this.closeModalThenOpenCashier}
-                            message={this.props.state_value.success_message}
-                            icon={
-                                <Icon
-                                    icon={`IcCurrency-${this.props.state_value.current_currency.toLowerCase()}`}
-                                    size={120}
-                                />
-                            }
-                            text_submit={localize('Deposit now')}
-                            text_cancel={RealAccountSignup.text_cancel()}
-                        />
-                    ),
+                    body: () => <StatusDialogContainer />,
                 },
                 {
-                    value: () => <Loading is_fullscreen={false} />,
-                },
-                {
-                    value: () => (
+                    body: () => (
                         <SignupErrorContent
                             message={this.props.state_value.error_message}
                             code={this.props.state_value.error_code}
                             onConfirm={this.openPersonalDetails}
                         />
                     ),
+                    title: () => localize('Add a real account'),
                 },
             ],
         };
     }
 
     get modal_height() {
-        const { currency, has_real_account } = this.props;
+        const { currency, has_real_account, is_eu, is_eu_enabled } = this.props; // TODO [deriv-eu] remove is_eu_enabled once eu is released.
+        if (this.active_modal_index === 3) return 'auto'; // Status dialog
         if (!currency) return '688px'; // Set currency modal
-        if (has_real_account && currency) return '702px'; // Add or manage account modal
+        if (has_real_account && currency) {
+            if (is_eu && is_eu_enabled && this.active_modal_index === 1) {
+                // TODO [deriv-eu] remove is_eu_enabled once eu is released.
+                // Manage account
+                return '379px'; // Since crypto is disabled for EU clients, lower the height of modal
+            }
+            if (this.active_modal_index === 2) {
+                return 'auto';
+            }
+            return '644px'; // Add or manage account modal
+        }
         return '740px'; // Account wizard modal
     }
 
-    get labels() {
-        return [
-            this.props.currency ? localize('Add a real account') : localize('Set a currency for your Real Account'),
-            localize('Add or manage account'),
-            null,
-            null,
-            null,
-            localize('Add a real account'),
-            localize('Create a DMT5 real Financial STP account'),
-        ];
-    }
+    showStatusDialog = () => {
+        this.props.setParams({
+            active_modal_index: 3,
+        });
+    };
 
     closeModalThenOpenCashier = () => {
         this.props.closeRealAccountSignup();
@@ -115,30 +132,8 @@ class RealAccountSignup extends React.Component {
         });
     };
 
-    showAddCurrencySuccess = currency => {
-        this.props.setParams({
-            current_currency: currency,
-            active_modal_index: 3,
-            success_message: (
-                <Localize
-                    i18n_default_text='<0>You have added a Deriv {{currency}} account.</0><0>Make a deposit now to start trading.</0>'
-                    values={{
-                        currency: getCurrencyDisplayCode(currency),
-                    }}
-                    components={[<p key={currency} />]}
-                />
-            ),
-        });
-    };
-
-    closeModalWithHooks = () => {
-        this.closeModal();
-    };
-
-    showLoadingModal = () => {
-        this.props.setParams({
-            active_modal_index: 4,
-        });
+    setLoading = is_loading => {
+        this.setState({ is_loading });
     };
 
     cacheFormValues = payload => {
@@ -161,13 +156,20 @@ class RealAccountSignup extends React.Component {
         }
 
         this.props.setParams({
-            active_modal_index: 5,
+            active_modal_index: 4,
             error_message: error.message,
             error_code: error.code,
         });
     };
 
-    closeModal = () => {
+    closeModal = e => {
+        // Do not close modal on external link click event
+        if (e?.target.getAttribute('rel') === 'noopener noreferrer') {
+            return;
+        }
+        if (e?.target.closest('.redirect-notice')) {
+            return;
+        }
         if (this.active_modal_index !== 3) {
             sessionStorage.removeItem('post_real_account_signup');
             localStorage.removeItem('real_account_signup_wizard');
@@ -185,12 +187,18 @@ class RealAccountSignup extends React.Component {
         });
     };
 
+    get is_manage_target() {
+        return this.props.real_account_signup_target === 'manage';
+    }
+
     get active_modal_index() {
-        const ACCOUNT_WIZARD = 1;
-        const ADD_OR_MANAGE_ACCOUNT = 0;
+        const ACCOUNT_WIZARD = 0;
+        const ADD_OR_MANAGE_ACCOUNT = 1;
 
         if (this.props.state_value.active_modal_index === -1) {
-            return this.props.has_real_account && this.props.currency ? ACCOUNT_WIZARD : ADD_OR_MANAGE_ACCOUNT;
+            return this.props.has_real_account && this.props.currency && this.is_manage_target
+                ? ADD_OR_MANAGE_ACCOUNT
+                : ACCOUNT_WIZARD;
         }
 
         return this.props.state_value.active_modal_index;
@@ -206,42 +214,54 @@ class RealAccountSignup extends React.Component {
 
     render() {
         const { is_real_acc_signup_on, is_logged_in } = this.props;
-        const title = this.labels[this.active_modal_index];
-        const Body = is_logged_in
-            ? this.state.modal_content[this.active_modal_index].value
-            : () => <ModalLoginPrompt />;
-        const has_close_icon =
-            this.active_modal_index < 2 || this.active_modal_index === 5 || this.active_modal_index === 6;
-
+        const { title: Title, body: ModalContent } = is_logged_in
+            ? this.state.modal_content[this.active_modal_index]
+            : {
+                  title: this.state.modal_content[this.active_modal_index].title
+                      ? () => this.state.modal_content[this.active_modal_index].title
+                      : null,
+                  body: ModalLoginPrompt,
+              };
+        const has_close_icon = this.active_modal_index < 2 || this.active_modal_index === 4;
         return (
             <>
                 <DesktopWrapper>
                     <Modal
                         id='real_account_signup_modal'
                         className={classNames('real-account-signup-modal', {
-                            'dc-modal__container_real-account-signup-modal--error': this.active_modal_index === 5,
+                            'dc-modal__container_real-account-signup-modal--error': this.active_modal_index === 4,
                             'dc-modal__container_real-account-signup-modal--success':
-                                this.active_modal_index >= 2 && this.active_modal_index < 5,
+                                this.active_modal_index >= 2 && this.active_modal_index < 4,
                         })}
                         is_open={is_real_acc_signup_on}
                         has_close_icon={has_close_icon}
-                        title={title}
+                        renderTitle={() => {
+                            if (Title) {
+                                return <Title {...this.props} />;
+                            }
+                            return null;
+                        }}
                         toggleModal={this.closeModal}
                         height={this.modal_height}
-                        width='904px'
+                        width={!has_close_icon ? 'auto' : '904px'}
                     >
-                        <Body />
+                        <ModalContent passthrough={this.props.state_index} is_loading={this.state.is_loading} />
                     </Modal>
                 </DesktopWrapper>
                 <MobileWrapper>
                     <MobileDialog
                         portal_element_id='modal_root'
-                        title={title}
                         wrapper_classname='account-signup-mobile-dialog'
                         visible={is_real_acc_signup_on}
                         onClose={this.closeModal}
+                        renderTitle={() => {
+                            if (Title) {
+                                return <Title {...this.props} />;
+                            }
+                            return null;
+                        }}
                     >
-                        <Body />
+                        <ModalContent passthrough={this.props.state_index} is_loading={this.state.is_loading} />
                     </MobileDialog>
                 </MobileWrapper>
             </>
@@ -254,11 +274,17 @@ export default connect(({ ui, client, common }) => ({
     can_change_fiat_currency: client.can_change_fiat_currency,
     has_real_account: client.has_active_real_account,
     currency: client.currency,
+    is_eu: client.is_eu,
+    is_eu_enabled: ui.is_eu_enabled, // TODO [deriv-eu] remove is_eu_enabled once eu is released.
     is_real_acc_signup_on: ui.is_real_acc_signup_on,
+    real_account_signup_target: ui.real_account_signup_target,
     is_logged_in: client.is_logged_in,
     closeRealAccountSignup: ui.closeRealAccountSignup,
     closeSignupAndOpenCashier: ui.closeSignupAndOpenCashier,
     setParams: ui.setRealAccountSignupParams,
+    residence: client.residence,
+    is_isle_of_man_residence: client.residence === 'im', // TODO: [deriv-eu] refactor this once more residence checks are required
+    is_belgium_residence: client.residence === 'be', // TODO: [deriv-eu] refactor this once more residence checks are required
     state_value: ui.real_account_signup,
     routing_history: common.app_routing_history,
 }))(withRouter(RealAccountSignup));

@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { localize } from '@deriv/translations';
 import { Button, Icon } from '@deriv/components';
+import FormError from './Error/form-error.jsx';
 
 const Row = ({ label, value }) => (
     <div className='cashier__confirm-row'>
@@ -20,7 +21,7 @@ const Row = ({ label, value }) => (
     </div>
 );
 
-const Confirm = ({ data, header, onClickBack, onClickConfirm }) => (
+const Confirm = ({ data, error_message, header, onClickBack, onClickConfirm }) => (
     <div className='cashier__wrapper'>
         <Icon icon='IcConfirmDetails' width='128' height='128' />
         <h2 className='cashier__header cashier__confirm-header'>{header}</h2>
@@ -31,6 +32,11 @@ const Confirm = ({ data, header, onClickBack, onClickConfirm }) => (
                 ))}
             </div>
         </div>
+        {error_message && (
+            <div className='cashier__confirm-error'>
+                <FormError error_message={error_message} />
+            </div>
+        )}
         <div className='cashier__confirm-submit'>
             <Button large text={localize('Back')} onClick={onClickBack} secondary />
             <Button large text={localize('Confirm')} onClick={onClickConfirm} primary />
@@ -42,7 +48,7 @@ Confirm.propTypes = {
     data: PropTypes.arrayOf(
         PropTypes.shape({
             label: PropTypes.string,
-            value: PropTypes.oneOfType(PropTypes.string, PropTypes.arrayOf(PropTypes.string), PropTypes.node),
+            value: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string), PropTypes.node]),
         })
     ),
     header: PropTypes.string,

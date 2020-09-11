@@ -6,19 +6,19 @@ import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { Hr, RadioButtonGroup, RadioButton } from './currency-selector.jsx';
 
-const messages = [
-    'Choose your preferred cryptocurrency',
-    'You can open an account for each cryptocurrency.',
-    'Add a real account',
-    'Choose a currency you would like to trade with.',
+const messages = () => [
+    localize('Choose your preferred cryptocurrency'),
+    localize('You can open an account for each cryptocurrency.'),
+    localize('Add a real account'),
+    localize('Choose a currency you would like to trade with.'),
 ];
 
 const Headers = ({ heading, subheading }) => (
     <React.Fragment>
-        <h1>
+        <h1 className='add-crypto-currency__title'>
             <Localize i18n_default_text={heading} />
         </h1>
-        <h3>
+        <h3 className='add-crypto-currency__sub-title'>
             <Localize i18n_default_text={subheading} />
         </h3>
     </React.Fragment>
@@ -69,8 +69,8 @@ class AddCryptoCurrency extends React.Component {
                     isSubmitting,
                 }) => (
                     <form onSubmit={handleSubmit}>
-                        {!this.can_add_fiat && <Headers heading={messages[0]} subheading={messages[1]} />}
-                        {this.can_add_fiat && <Headers heading={messages[2]} subheading={messages[3]} />}
+                        {!this.can_add_fiat && <Headers heading={messages()[0]} subheading={messages()[1]} />}
+                        {this.can_add_fiat && <Headers heading={messages()[2]} subheading={messages()[3]} />}
                         {this.props.available_crypto_currencies.length !== 0 ? (
                             <RadioButtonGroup
                                 id='crypto_currency'
@@ -116,6 +116,7 @@ class AddCryptoCurrency extends React.Component {
                                 <Hr />
                                 <RadioButtonGroup
                                     id='fiat_currency'
+                                    is_fiat
                                     className='currency-selector__radio-group'
                                     label={localize('Fiat currencies')}
                                     value={values.currency}
@@ -136,6 +137,7 @@ class AddCryptoCurrency extends React.Component {
                             </React.Fragment>
                         )}
                         <FormSubmitButton
+                            className='currency-selector__button'
                             is_disabled={isSubmitting || !values.currency}
                             label={localize('Add account')}
                             is_center={true}

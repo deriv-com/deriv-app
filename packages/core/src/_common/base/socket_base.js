@@ -4,7 +4,7 @@ const getSocketURL = require('@deriv/shared').getSocketURL;
 const cloneObject = require('@deriv/shared').cloneObject;
 const getPropertyValue = require('@deriv/shared').getPropertyValue;
 const { getLanguage } = require('@deriv/translations');
-const website_name = require('App/Constants/app-config').website_name;
+const website_name = require('@deriv/shared').website_name;
 const ClientBase = require('./client_base');
 const SocketCache = require('./socket_cache');
 const APIMiddleware = require('./api_middleware');
@@ -200,6 +200,8 @@ const BinarySocketBase = (() => {
             ...values,
         });
 
+    const newAccountRealMaltaInvest = values => deriv_api.send({ new_account_maltainvest: 1, ...values });
+
     const mt5NewAccount = values =>
         deriv_api.send({
             mt5_new_account: 1,
@@ -219,6 +221,11 @@ const BinarySocketBase = (() => {
         deriv_api.send({
             ...payload,
             mt5_password_reset: 1,
+        });
+
+    const getFinancialAssessment = () =>
+        deriv_api.send({
+            get_financial_assessment: 1,
         });
 
     const profitTable = (limit, offset, date_boundaries) =>
@@ -296,6 +303,7 @@ const BinarySocketBase = (() => {
     // subscribe method export for P2P use only
     // so that subscribe remains private
     const p2pSubscribe = (request, cb) => subscribe(request, cb);
+    const accountStatistics = () => deriv_api.send({ account_statistics: 1 });
 
     const realityCheck = () => deriv_api.send({ reality_check: 1 });
 
@@ -332,11 +340,13 @@ const BinarySocketBase = (() => {
         close,
         contractUpdate,
         contractUpdateHistory,
+        getFinancialAssessment,
         mt5NewAccount,
         mt5PasswordChange,
         mt5PasswordReset,
         newAccountVirtual,
         newAccountReal,
+        newAccountRealMaltaInvest,
         p2pAdvertiserInfo,
         p2pSubscribe,
         profitTable,
@@ -360,6 +370,7 @@ const BinarySocketBase = (() => {
         transferBetweenAccounts,
         loginHistory,
         closeAndOpenNewConnection,
+        accountStatistics,
         realityCheck,
     };
 })();

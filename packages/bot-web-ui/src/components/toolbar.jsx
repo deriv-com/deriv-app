@@ -1,9 +1,8 @@
-import { Button, Icon, Input, ThemedScrollbars, Popover } from '@deriv/components';
+import { Button, Icon, Input, ThemedScrollbars, Popover, Dialog } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { Field, Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Dialog from './dialog.jsx';
 import LoadModal from './load-modal.jsx';
 import SaveModal from './save-modal.jsx';
 import TradeAnimation from './trade-animation.jsx';
@@ -52,7 +51,7 @@ const SearchBox = ({ is_search_loading, onSearch, onSearchBlur, onSearchClear, o
 );
 
 const IconButton = ({ popover_message, icon, icon_id, icon_color, iconOnClick }) => (
-    <Popover alignment='bottom' message={popover_message} zIndex={popover_zindex.TOOLBAR}>
+    <Popover alignment='bottom' message={popover_message} zIndex={popover_zindex.TOOLBAR} should_disable_pointer_events>
         <Icon
             icon={icon}
             id={icon_id}
@@ -64,7 +63,7 @@ const IconButton = ({ popover_message, icon, icon_id, icon_color, iconOnClick })
 );
 
 const ToolbarButton = ({ popover_message, button_id, button_classname, buttonOnClick, icon, button_text }) => (
-    <Popover alignment='bottom' message={popover_message}>
+    <Popover alignment='bottom' message={popover_message} should_disable_pointer_events>
         <Button id={button_id} className={button_classname} has_effect onClick={buttonOnClick} icon={icon} green>
             {button_text}
         </Button>
@@ -142,7 +141,7 @@ const Toolbar = props => {
         active_tab,
         is_dialog_open,
         onOkButtonClick,
-        onCancelButtonClick,
+        closeResetDialog,
         onToolboxToggle,
         toggleStrategyModal,
         toggleLoadModal,
@@ -206,9 +205,14 @@ const Toolbar = props => {
             <LoadModal />
             <Dialog
                 title={localize('Are you sure?')}
-                is_open={is_dialog_open}
-                onOkButtonClick={onOkButtonClick}
-                onCancelButtonClick={onCancelButtonClick}
+                is_visible={is_dialog_open}
+                confirm_button_text={localize('OK')}
+                onConfirm={onOkButtonClick}
+                cancel_button_text={localize('Cancel')}
+                onCancel={closeResetDialog}
+                is_mobile_full_width={false}
+                className={'dc-dialog__wrapper--fixed'}
+                has_close_icon
             >
                 {localize('Any unsaved changes will be lost.')}
             </Dialog>
@@ -226,7 +230,7 @@ Toolbar.propTypes = {
     is_search_loading: PropTypes.bool,
     is_stop_button_disabled: PropTypes.bool,
     is_stop_button_visible: PropTypes.bool,
-    onCancelButtonClick: PropTypes.func,
+    closeResetDialog: PropTypes.func,
     onGoogleDriveClick: PropTypes.func,
     onOkButtonClick: PropTypes.func,
     onResetClick: PropTypes.func,
@@ -254,7 +258,7 @@ export default connect(({ main_content, run_panel, save_modal, load_modal, toolb
     is_search_loading: toolbar.is_search_loading,
     is_stop_button_disabled: run_panel.is_stop_button_disabled,
     is_stop_button_visible: run_panel.is_stop_button_visible,
-    onCancelButtonClick: toolbar.onResetCancelButtonClick,
+    closeResetDialog: toolbar.closeResetDialog,
     onGoogleDriveClick: toolbar.onGoogleDriveClick,
     onOkButtonClick: toolbar.onResetOkButtonClick,
     onResetClick: toolbar.onResetClick,

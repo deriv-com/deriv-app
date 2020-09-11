@@ -46,6 +46,7 @@ export const icons = {
         'IcArrowUp',
         'IcBank',
         'IcBell',
+        'IcBlackWarning',
         'IcBox',
         'IcCalendarDatefrom',
         'IcCalendarDateto',

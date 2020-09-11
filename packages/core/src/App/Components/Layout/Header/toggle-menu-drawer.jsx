@@ -46,7 +46,6 @@ class ToggleMenuDrawer extends React.Component {
         // TODO: find better fix for no-op issue
         this.is_mounted = false;
         this.state = {
-            needs_financial_assessment: false,
             is_open: false,
             needs_verification: false,
             primary_routes_config: [],
@@ -60,16 +59,9 @@ class ToggleMenuDrawer extends React.Component {
         WS.wait('authorize', 'get_account_status').then(() => {
             if (this.props.account_status) {
                 const { status } = this.props.account_status;
-                const needs_financial_assessment =
-                    !this.props.is_virtual &&
-                    (this.props.is_svg
-                        ? this.props.is_high_risk
-                        : this.props.is_high_risk ||
-                          this.props.is_financial_information_incomplete ||
-                          this.props.is_financial_account ||
-                          this.props.is_trading_experience_incomplete);
+
                 const allow_document_upload = status?.includes('allow_document_upload');
-                if (this.is_mounted) this.setState({ needs_financial_assessment, allow_document_upload });
+                if (this.is_mounted) this.setState({ allow_document_upload });
             }
         });
         this.processRoutes();
@@ -84,16 +76,8 @@ class ToggleMenuDrawer extends React.Component {
         // we need to add this update once account_status changes
         // TODO: Refactor ToggleMenuDrawer into functional component with hooks to eliminate need for componentDidUpdate
         if (this.props.account_status !== prevProps.account_status) {
-            const needs_financial_assessment =
-                !this.props.is_virtual &&
-                (this.props.is_svg
-                    ? this.props.is_high_risk
-                    : this.props.is_high_risk ||
-                      this.props.is_financial_information_incomplete ||
-                      this.props.is_financial_account ||
-                      this.props.is_trading_experience_incomplete);
             const allow_document_upload = this.props.account_status?.status?.includes('allow_document_upload');
-            if (this.is_mounted) this.setState({ needs_financial_assessment, allow_document_upload });
+            if (this.is_mounted) this.setState({ allow_document_upload });
         }
     }
 
@@ -114,7 +98,9 @@ class ToggleMenuDrawer extends React.Component {
     };
 
     getRoutesWithSubMenu = route_config => {
-        const { needs_financial_assessment, allow_document_upload } = this.state;
+        const { allow_document_upload } = this.state;
+        const { needs_financial_assessment } = this.props;
+
         const has_access = route_config.is_authenticated ? this.props.is_logged_in : true;
         if (!has_access) return null;
 
@@ -130,7 +116,6 @@ class ToggleMenuDrawer extends React.Component {
                 </MobileDrawer.Item>
             );
         }
-
         const has_subroutes = route_config.routes.some(route => route.subroutes);
         return (
             <MobileDrawer.SubMenu

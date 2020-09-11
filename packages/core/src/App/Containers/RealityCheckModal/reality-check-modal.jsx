@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Input } from '@deriv/components';
-import { routes } from '@deriv/shared';
+import { routes, validNumber } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { getPreBuildDVRs, validNumber } from 'Utils/Validator/declarative-validation-rules';
 import BriefModal from './brief-modal.jsx';
 import SummaryModal from './summary-modal.jsx';
 
@@ -66,8 +65,9 @@ const RealityCheckModal = ({
 
         if (!values.interval) {
             error.interval = localize('This field is required.');
-        } else if (!validNumber(values.interval, { type: 'number', min: 10, max: 60 })) {
-            error.interval = getPreBuildDVRs().number.message;
+        } else {
+            const { is_ok, message } = validNumber(values.interval, { type: 'number', min: 10, max: 60 });
+            if (!is_ok) error.interval = message;
         }
 
         return error;

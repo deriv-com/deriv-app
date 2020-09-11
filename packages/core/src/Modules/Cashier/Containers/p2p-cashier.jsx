@@ -64,6 +64,7 @@ class P2PCashier extends React.Component {
                 client={{ currency, local_currency_config, is_virtual, residence, loginid }}
                 server_time={ServerTime}
                 setNotificationCount={setNotificationCount}
+                modal_root_id='modal_root'
                 order_id={order_id}
                 setOrderId={this.setQueryOrder}
                 is_dark_mode_on={is_dark_mode_on}

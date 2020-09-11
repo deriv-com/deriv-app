@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { localize } from '@deriv/translations';
-import { website_name } from 'App/Constants/app-config';
+import { website_name } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import CurrencySelector from './currency-selector.jsx';
 import { generateValidationFunction } from './form-validations';

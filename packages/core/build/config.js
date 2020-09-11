@@ -138,6 +138,7 @@ const htmlInjectConfig = () => ({
 
 const htmlPreloadConfig = () => ({
     rel: 'preload',
+    include: 'initial',
     as(entry) {
         if (/\.css$/.test(entry)) return 'style';
         if (/\.woff$/.test(entry)) return 'font';

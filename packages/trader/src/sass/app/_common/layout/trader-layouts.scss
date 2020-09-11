@@ -703,10 +703,8 @@ $FLOATING_HEADER_HEIGHT: 41px;
     &-update {
         /* postcss-bem-linter: ignore */
         &__wrapper {
-            display: grid;
-            grid-template-rows: auto auto 1fr;
-            grid-gap: 1.6rem;
-            margin: 1.6rem;
+            display: flex;
+            flex-direction: column;
 
             /* postcss-bem-linter: ignore */
             & .dc-tooltip:before,

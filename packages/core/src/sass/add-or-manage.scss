@@ -14,11 +14,12 @@
         }
         &-message p:first-child {
             margin-top: 6rem;
-            padding-top: 1.1rem;
             background-color: var(--general-section-1);
             font-size: 1.2rem;
             height: 58px;
-            vertical-align: middle;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             border-radius: $BORDER_RADIUS;
         }
     }
@@ -123,8 +124,8 @@
     &__icon-area {
         display: flex;
         align-items: center;
-        width: 100%;
-        justify-content: space-between;
+        width: auto;
+        justify-content: center;
         position: relative;
 
         .bottom-right-overlay {
@@ -140,6 +141,12 @@
         }
         svg {
             display: block;
+
+            &.dc-icon {
+                &--red {
+                    margin: 0 1rem;
+                }
+            }
 
             @include mobile {
                 max-width: 96px;

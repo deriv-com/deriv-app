@@ -3,7 +3,7 @@ import React from 'react';
 import { Dialog } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { website_name } from '../../../../Constants/app-config';
+import { website_name } from '@deriv/shared';
 
 class UnsupportedContractModal extends React.Component {
     render() {

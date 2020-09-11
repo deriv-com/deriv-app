@@ -76,12 +76,7 @@ const Orders = ({ chat_info, navigate, params }) => {
 
     React.useEffect(() => {
         is_mounted.current = true;
-
-        // Clear details when unmounting
-        return () => {
-            is_mounted.current = false;
-            hideDetails();
-        };
+        return () => (is_mounted.current = false);
     }, []);
 
     return (

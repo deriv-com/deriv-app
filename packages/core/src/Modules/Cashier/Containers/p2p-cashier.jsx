@@ -10,80 +10,80 @@ import ServerTime from '_common/base/server_time';
 import { routes } from '@deriv/shared';
 
 /* P2P will use the same websocket connection as Deriv/Binary, we need to pass it as a prop */
-class P2PCashier extends React.Component {
-    state = {
-        order_id: null,
-    };
+const P2PCashier = ({
+    currency,
+    history,
+    is_dark_mode_on,
+    is_mobile,
+    is_virtual,
+    local_currency_config,
+    location,
+    loginid,
+    residence,
+    setNotificationCount,
+}) => {
+    React.useEffect(() => {
+        const url_params = new URLSearchParams(location.search);
+        const passed_order_id = url_params.get('order');
 
-    setQueryOrder = input_order_id => {
-        const { history, location } = this.props;
-        const current_query_param = queryString.parse(this.props.location.search);
+        if (passed_order_id) {
+            setQueryOrder(passed_order_id);
+        }
+
+        return () => setOrderId(null);
+    }, []);
+
+    const [order_id, setOrderId] = React.useState(null);
+
+    const setQueryOrder = input_order_id => {
+        const current_query_param = queryString.parse(location.search);
         delete current_query_param.order;
 
         const order_id_param = input_order_id
             ? { ...current_query_param, order: input_order_id }
             : { ...current_query_param };
 
-        if (this.state.order_id !== input_order_id) {
+        if (order_id !== input_order_id) {
             // Changing query params
             history.push({
                 pathname: '/cashier/p2p',
                 search: queryString.stringify(order_id_param),
                 hash: location.hash,
             });
-            this.setState({ order_id: input_order_id });
+
+            setOrderId(input_order_id);
         }
     };
 
-    componentDidMount() {
-        const url_params = new URLSearchParams(this.props.location.search);
-        const order_id = url_params.get('order');
-
-        if (order_id) {
-            this.setQueryOrder(order_id);
-        }
-    }
-    render() {
-        const {
-            currency,
-            local_currency_config,
-            loginid,
-            is_dark_mode_on,
-            is_virtual,
-            residence,
-            setNotificationCount,
-            location,
-            is_mobile,
-        } = this.props;
-        const { order_id } = this.state;
-        return (
-            <P2P
-                should_show_verification={/verification/.test(location.hash)}
-                websocket_api={WS}
-                lang={getLanguage()}
-                client={{ currency, local_currency_config, is_virtual, residence, loginid }}
-                server_time={ServerTime}
-                setNotificationCount={setNotificationCount}
-                modal_root_id='modal_root'
-                order_id={order_id}
-                setOrderId={this.setQueryOrder}
-                is_dark_mode_on={is_dark_mode_on}
-                is_mobile={is_mobile}
-                poi_url={routes.proof_of_identity}
-            />
-        );
-    }
-}
+    return (
+        <P2P
+            client={{ currency, local_currency_config, is_virtual, residence, loginid }}
+            is_dark_mode_on={is_dark_mode_on}
+            is_mobile={is_mobile}
+            lang={getLanguage()}
+            modal_root_id='modal_root'
+            order_id={order_id}
+            poi_url={routes.proof_of_identity}
+            server_time={ServerTime}
+            setNotificationCount={setNotificationCount}
+            setOrderId={setQueryOrder}
+            should_show_verification={/verification/.test(location.hash)}
+            websocket_api={WS}
+        />
+    );
+};
 
 P2PCashier.propTypes = {
     currency: PropTypes.string,
-    local_currency_config: PropTypes.object,
-    loginid: PropTypes.string,
+    history: PropTypes.object,
     is_dark_mode_on: PropTypes.bool,
+    is_mobile: PropTypes.bool,
     is_virtual: PropTypes.bool,
+    local_currency_config: PropTypes.object,
+    location: PropTypes.object,
+    loginid: PropTypes.string,
     residence: PropTypes.string,
     setNotificationCount: PropTypes.func,
-    is_mobile: PropTypes.bool,
 };
 
 export default withRouter(

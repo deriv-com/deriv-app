@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Dialog, ThemedScrollbars } from '@deriv/components';
+import { ThemedScrollbars } from '@deriv/components';
 import { getFormattedText } from '@deriv/shared';
 import { Localize, localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
@@ -38,13 +38,12 @@ const OrderDetails = ({ order_information, chat_info }) => {
 
     const is_mounted = React.useRef(false);
     const [channel_url, setChannelUrl] = React.useState(chat_channel_url);
-    const [show_popup, setShowPopup] = React.useState(false);
+    const [should_show_popup, setShouldShowPopup] = React.useState(false);
     const [popup_options, setPopupOptions] = React.useState({});
-
-    const onCancelClick = () => setShowPopup(false);
+    const onCancelClick = () => setShouldShowPopup(false);
     const handleShowPopup = options => {
         setPopupOptions(options);
-        setShowPopup(true);
+        setShouldShowPopup(true);
     };
 
     React.useEffect(() => {
@@ -152,13 +151,12 @@ const OrderDetails = ({ order_information, chat_info }) => {
                         nickname={other_user_details.name}
                     />
                 )}
-                {show_popup && (
-                    <div className='orders__dialog'>
-                        <Dialog is_visible={show_popup}>
-                            <Popup {...popup_options} onCancel={onCancelClick} />
-                        </Dialog>
-                    </div>
-                )}
+                <Popup
+                    {...popup_options}
+                    onCancel={onCancelClick}
+                    should_show_popup={should_show_popup}
+                    setShouldShowPopup={setShouldShowPopup}
+                />
             </div>
         </div>
     );

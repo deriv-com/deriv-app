@@ -401,30 +401,17 @@
             margin-left: auto;
         }
     }
-    &__popup {
-        margin-top: 1.4rem;
-        &--danger {
-            color: var(--status-danger);
-            font-weight: bold;
-        }
-        &--bold {
-            font-weight: bold;
-        }
+    &__empty-space {
+        height: 72px;
     }
-    &__popup-no-border {
-        .orders__popup-content {
-            padding: 0 2.4rem;
-        }
-        .orders__popup-header,
-        .orders__popup-footer {
-            border-top: unset;
-            border-bottom: unset;
-        }
-        .dc-checkbox {
-            margin-top: 1rem;
-            &__box {
-                margin-left: 0;
-            }
+}
+
+.dc-modal__container_orders__popup {
+    .dc-checkbox {
+        margin-top: 2.4rem;
+
+        &__box {
+            margin-left: 0;
         }
     }
 }

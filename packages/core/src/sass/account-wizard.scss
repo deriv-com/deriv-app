@@ -152,6 +152,11 @@
     form {
         width: 100%;
 
+        @include tablet-up {
+            display: grid;
+            grid-template-rows: minmax(20rem, 1fr);
+        }
+
         .currency-selector {
             &__radio-group {
                 display: flex;
@@ -189,30 +194,10 @@
                 margin-top: 1.6rem;
             }
         }
-        // fix for safari bug with autoheight wrapper not working properly for calculating modal footer offset
-        @media not all and (min-resolution: 0.001dpcm) {
-            // stylelint-disable-line
-            @supports (-webkit-appearance: none) and (stroke-color: transparent) {
-                @include desktop {
-                    max-height: calc(100% - 48px);
-                }
-                @include tablet {
-                    max-height: calc(100% - 48px);
-                }
-            }
-        }
-        @include desktop {
-            height: 100%;
-            display: grid;
-            grid-template-rows: minmax(20rem, 1fr);
-        }
-        @include tablet {
-            height: 100%;
-            display: grid;
-            grid-template-rows: minmax(20rem, 1fr);
-        }
     }
     &__body {
+        display: flex;
+
         & .details-form {
             @include tablet {
                 grid-template-rows: minmax(10rem, 1fr);

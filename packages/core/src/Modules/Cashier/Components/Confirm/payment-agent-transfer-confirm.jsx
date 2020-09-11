@@ -9,6 +9,7 @@ const PaymentAgentTransferConfirm = ({
     amount,
     currency,
     description,
+    error_message,
     loginid,
     requestPaymentAgentTransfer,
     setIsTryTransferSuccessful,
@@ -22,6 +23,7 @@ const PaymentAgentTransferConfirm = ({
             { label: localize('Amount'), value: <Money currency={currency} amount={amount} /> },
             { label: localize('Description'), value: description },
         ]}
+        error_message={error_message}
         header={localize('Please confirm the transaction details in order to complete the transfer:')}
         onClickBack={() => {
             setIsTryTransferSuccessful(false);
@@ -48,6 +50,7 @@ export default connect(({ client, modules }) => ({
     loginid: client.loginid,
     amount: modules.cashier.config.payment_agent_transfer.confirm.amount,
     description: modules.cashier.config.payment_agent_transfer.confirm.description,
+    error_message: modules.cashier.config.payment_agent_transfer.error.message,
     requestPaymentAgentTransfer: modules.cashier.requestPaymentAgentTransfer,
     setIsTryTransferSuccessful: modules.cashier.setIsTryTransferSuccessful,
     transfer_to: modules.cashier.config.payment_agent_transfer.confirm.client_id,

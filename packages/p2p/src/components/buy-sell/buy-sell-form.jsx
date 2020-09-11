@@ -1,16 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
-import { Input, Button, ThemedScrollbars } from '@deriv/components';
+import { Input } from '@deriv/components';
 import { formatMoney, getDecimalPlaces, getRoundedNumber, getFormattedText } from '@deriv/shared';
 import { localize, Localize } from 'Components/i18next';
 import { countDecimalPlaces } from 'Utils/string';
 import { requestWS } from 'Utils/websocket';
 import { textValidator, lengthValidator } from 'Utils/validations';
-import IconClose from 'Assets/icon-close.jsx';
-import FormError from '../form/error.jsx';
 
-const BuySellForm = ({ advert, handleClose, handleConfirm }) => {
+const BuySellForm = ({ advert, handleClose, handleConfirm, setErrorMessage, setIsSubmitDisabled, setSubmitForm }) => {
+    const is_mounted = React.useRef(false);
+
+    React.useEffect(() => {
+        is_mounted.current = true;
+        return () => (is_mounted.current = false);
+    }, []);
+
     const {
         account_currency,
         contact_info,
@@ -39,8 +44,12 @@ const BuySellForm = ({ advert, handleClose, handleConfirm }) => {
         ...(is_sell_advert ? { contact_info, payment_info } : {}),
     };
 
-    const handleSubmit = async (values, { setStatus, setSubmitting }) => {
-        setStatus({ error_message: '' });
+    const handleSubmit = async (values, { setSubmitting }) => {
+        if (is_mounted.current) {
+            setSubmitting(true);
+        }
+
+        setErrorMessage(null);
 
         const order = await requestWS({
             p2p_order_create: 1,
@@ -55,15 +64,17 @@ const BuySellForm = ({ advert, handleClose, handleConfirm }) => {
                 : {}),
         });
 
-        if (!order.error) {
-            const response = await requestWS({ p2p_order_info: 1, id: order.p2p_order_create.id });
-            handleClose();
-            handleConfirm(response.p2p_order_info);
+        if (order.error) {
+            setErrorMessage(order.error.message);
         } else {
-            setStatus({ error_message: order.error.message });
+            const response = await requestWS({ p2p_order_info: 1, id: order.p2p_order_create.id });
+            handleConfirm(response.p2p_order_info);
+            handleClose();
         }
 
-        setSubmitting(false);
+        if (is_mounted.current) {
+            setSubmitting(false);
+        }
     };
 
     const validatePopup = values => {
@@ -131,170 +142,146 @@ const BuySellForm = ({ advert, handleClose, handleConfirm }) => {
     };
 
     return (
-        <React.Fragment>
-            <div className='buy-sell__popup-header'>
-                <div className='buy-sell__popup-header_wrapper'>
-                    <h2 className='buy-sell__popup-header--title'>
-                        {is_sell_advert
-                            ? localize('Sell {{ currency }}', { currency: account_currency })
-                            : localize('Buy {{ currency }}', { currency: account_currency })}
-                    </h2>
-                    <IconClose className='buy-sell__popup-close_icon' onClick={handleClose} />
-                </div>
-            </div>
-            <Formik
-                validate={validatePopup}
-                initialValues={initial_values}
-                initialErrors={is_sell_advert ? { contact_info: true, payment_info: true } : {}}
-                onSubmit={handleSubmit}
-            >
-                {({ errors, isSubmitting, isValid, status, touched, setFieldValue, values }) => {
-                    return (
-                        <Form noValidate>
-                            <ThemedScrollbars height='307px'>
-                                <div className='buy-sell__popup-content'>
-                                    <div className='buy-sell__popup-field_wrapper'>
-                                        <div className='buy-sell__popup-field'>
-                                            <span className='buy-sell__popup-info--title'>
-                                                {is_buy_advert ? localize('Seller') : localize('Buyer')}
-                                            </span>
-                                            <div className='buy-sell__popup-info--text'>{advertiser_name}</div>
-                                        </div>
-                                        <div className='buy-sell__popup-field'>
-                                            <span className='buy-sell__popup-info--title'>
-                                                {localize('Rate (1 {{ currency }})', { currency: account_currency })}
-                                            </span>
-                                            <div className='buy-sell__popup-info--text'>
-                                                {getFormattedText(price, local_currency)}
-                                            </div>
-                                        </div>
+        <Formik
+            validate={validatePopup}
+            initialValues={initial_values}
+            initialErrors={is_sell_advert ? { contact_info: true, payment_info: true } : {}}
+            onSubmit={handleSubmit}
+        >
+            {({ errors, isSubmitting, isValid, setFieldValue, submitForm, touched, values }) => {
+                setIsSubmitDisabled(!isValid || isSubmitting);
+                setSubmitForm(submitForm);
+
+                return (
+                    <Form noValidate>
+                        <div className='buy-sell__popup-content'>
+                            <div className='buy-sell__popup-field-wrapper'>
+                                <div className='buy-sell__popup-field'>
+                                    <span className='buy-sell__popup-info--title'>
+                                        {is_buy_advert ? localize('Seller') : localize('Buyer')}
+                                    </span>
+                                    <div className='buy-sell__popup-info--text'>{advertiser_name}</div>
+                                </div>
+                                <div className='buy-sell__popup-field'>
+                                    <span className='buy-sell__popup-info--title'>
+                                        {localize('Rate (1 {{ currency }})', { currency: account_currency })}
+                                    </span>
+                                    <div className='buy-sell__popup-info--text'>
+                                        {getFormattedText(price, local_currency)}
                                     </div>
-                                    <div className='buy-sell__popup-field_wrapper'>
-                                        <div className='buy-sell__popup-field'>
-                                            <span className='buy-sell__popup-info--title'>
-                                                {is_buy_advert
-                                                    ? localize("Seller's instructions")
-                                                    : localize("Buyer's instructions")}
-                                            </span>
-                                            {description.split('\n').map((text, idx) => (
-                                                <div className='buy-sell__popup-info--text' key={idx}>
-                                                    {text || '-'}
-                                                </div>
-                                            ))}
+                                </div>
+                            </div>
+                            <div className='buy-sell__popup-field-wrapper'>
+                                <div className='buy-sell__popup-field'>
+                                    <span className='buy-sell__popup-info--title'>
+                                        {is_buy_advert
+                                            ? localize("Seller's instructions")
+                                            : localize("Buyer's instructions")}
+                                    </span>
+                                    {description.split('\n').map((text, idx) => (
+                                        <div className='buy-sell__popup-info--text' key={idx}>
+                                            {text || '-'}
                                         </div>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className='buy-sell__popup-field-wrapper'>
+                                <Field name='amount'>
+                                    {({ field }) => (
+                                        <Input
+                                            {...field}
+                                            data-lpignore='true'
+                                            type='number'
+                                            error={errors.amount}
+                                            label={localize('Amount')}
+                                            hint={
+                                                <Localize
+                                                    i18n_default_text='Limits: {{min}}–{{max}} {{currency}}'
+                                                    values={{
+                                                        min: min_order_amount_limit_display,
+                                                        max: max_order_amount_limit_display,
+                                                        currency: account_currency,
+                                                    }}
+                                                />
+                                            }
+                                            className='buy-sell__popup-field'
+                                            trailing_icon={
+                                                <span className='buy-sell__popup-field--trailing'>
+                                                    {account_currency}
+                                                </span>
+                                            }
+                                            onChange={event => {
+                                                if (event.target.value === '') {
+                                                    setFieldValue('amount', '');
+                                                    setReceiveAmount(0);
+                                                    return;
+                                                }
+
+                                                const input_amount = getRoundedNumber(
+                                                    event.target.value,
+                                                    account_currency
+                                                );
+                                                setFieldValue('amount', getRoundedNumber(input_amount));
+                                                setReceiveAmount(
+                                                    getRoundedNumber(input_amount * price, account_currency)
+                                                );
+                                            }}
+                                            required
+                                            value={values.amount}
+                                        />
+                                    )}
+                                </Field>
+                                <div className='buy-sell__popup-field buy-sell__popup-field--receive-amount'>
+                                    <span className='buy-sell__popup-info--title'>
+                                        {is_sell_advert ? localize('You receive') : localize("You'll send")}
+                                    </span>
+                                    <div className='buy-sell__popup-info--text buy-sell__popup-info--strong'>
+                                        {getFormattedText(receive_amount, local_currency)}
                                     </div>
-                                    <div className='buy-sell__popup-field_wrapper'>
-                                        <Field name='amount'>
+                                </div>
+                            </div>
+                            {is_sell_advert && (
+                                <React.Fragment>
+                                    <div className='buy-sell__popup-field--textarea'>
+                                        <Field name='payment_info'>
                                             {({ field }) => (
                                                 <Input
                                                     {...field}
                                                     data-lpignore='true'
-                                                    type='number'
-                                                    error={errors.amount}
-                                                    label={localize('Amount')}
-                                                    hint={
-                                                        <Localize
-                                                            i18n_default_text='Limits: {{min}}–{{max}} {{currency}}'
-                                                            values={{
-                                                                min: min_order_amount_limit_display,
-                                                                max: max_order_amount_limit_display,
-                                                                currency: account_currency,
-                                                            }}
-                                                        />
-                                                    }
-                                                    className='buy-sell__popup-field'
-                                                    trailing_icon={
-                                                        <span className='buy-sell__popup-field--trailing'>
-                                                            {account_currency}
-                                                        </span>
-                                                    }
-                                                    onChange={event => {
-                                                        if (event.target.value === '') {
-                                                            setFieldValue('amount', '');
-                                                            setReceiveAmount(0);
-                                                            return;
-                                                        }
-
-                                                        const input_amount = getRoundedNumber(
-                                                            event.target.value,
-                                                            account_currency
-                                                        );
-                                                        setFieldValue('amount', getRoundedNumber(input_amount));
-                                                        setReceiveAmount(
-                                                            getRoundedNumber(input_amount * price, account_currency)
-                                                        );
-                                                    }}
+                                                    type='textarea'
+                                                    error={touched.payment_info && errors.payment_info}
+                                                    hint={localize('Bank name, account number, beneficiary name')}
+                                                    label={localize('Your bank details')}
                                                     required
-                                                    value={values.amount}
+                                                    has_character_counter
+                                                    max_characters={300}
                                                 />
                                             )}
                                         </Field>
-                                        <div className='buy-sell__popup-field buy-sell__popup-field--receive-amount'>
-                                            <span className='buy-sell__popup-info--title'>
-                                                {is_sell_advert ? localize('You receive') : localize("You'll send")}
-                                            </span>
-                                            <div className='buy-sell__popup-info--text buy-sell__popup-info--strong'>
-                                                {getFormattedText(receive_amount, local_currency)}
-                                            </div>
-                                        </div>
                                     </div>
-                                    {is_sell_advert && (
-                                        <React.Fragment>
-                                            <div className='buy-sell__popup-field--textarea'>
-                                                <Field name='payment_info'>
-                                                    {({ field }) => (
-                                                        <Input
-                                                            {...field}
-                                                            data-lpignore='true'
-                                                            type='textarea'
-                                                            error={touched.payment_info && errors.payment_info}
-                                                            hint={localize(
-                                                                'Bank name, account number, beneficiary name'
-                                                            )}
-                                                            label={localize('Your bank details')}
-                                                            required
-                                                            has_character_counter
-                                                            max_characters={300}
-                                                        />
-                                                    )}
-                                                </Field>
-                                            </div>
-                                            <div className='buy-sell__popup-field--textarea'>
-                                                <Field name='contact_info'>
-                                                    {({ field }) => (
-                                                        <Input
-                                                            {...field}
-                                                            data-lpignore='true'
-                                                            type='textarea'
-                                                            error={touched.contact_info && errors.contact_info}
-                                                            label={localize('Your contact details')}
-                                                            required
-                                                            has_character_counter
-                                                            max_characters={300}
-                                                        />
-                                                    )}
-                                                </Field>
-                                            </div>
-                                        </React.Fragment>
-                                    )}
-                                </div>
-                            </ThemedScrollbars>
-                            <div className='buy-sell__popup-footer'>
-                                {status && status.error_message && <FormError message={status.error_message} />}
-                                <Button.Group>
-                                    <Button secondary type='button' onClick={handleClose} large>
-                                        {localize('Cancel')}
-                                    </Button>
-                                    <Button is_disabled={isSubmitting || !isValid} primary large type='submit'>
-                                        {localize('Confirm')}
-                                    </Button>
-                                </Button.Group>
-                            </div>
-                        </Form>
-                    );
-                }}
-            </Formik>
-        </React.Fragment>
+                                    <div className='buy-sell__popup-field--textarea'>
+                                        <Field name='contact_info'>
+                                            {({ field }) => (
+                                                <Input
+                                                    {...field}
+                                                    data-lpignore='true'
+                                                    type='textarea'
+                                                    error={touched.contact_info && errors.contact_info}
+                                                    label={localize('Your contact details')}
+                                                    required
+                                                    has_character_counter
+                                                    max_characters={300}
+                                                />
+                                            )}
+                                        </Field>
+                                    </div>
+                                </React.Fragment>
+                            )}
+                        </div>
+                    </Form>
+                );
+            }}
+        </Formik>
     );
 };
 

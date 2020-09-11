@@ -95,7 +95,7 @@ const OrderDetailsFooter = ({ order_information, cancelPopup, showPopup }) => {
                 currency: local_currency,
                 other_user_name: other_user_details.name,
             }),
-            payment_confirm: true,
+            should_confirm_payment: true,
             order_information,
             has_cancel: true,
             cancel_text: localize("I haven't paid yet"),

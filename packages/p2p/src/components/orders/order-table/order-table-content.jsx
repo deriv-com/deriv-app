@@ -58,8 +58,8 @@ const OrderTableContent = ({ showDetails, is_active }) => {
                     } else {
                         setApiErrorMessage(response.error.message);
                     }
+                    setIsLoading(false);
                 }
-                setIsLoading(false);
                 resolve();
             });
         });

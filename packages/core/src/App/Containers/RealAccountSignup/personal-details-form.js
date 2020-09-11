@@ -1,7 +1,6 @@
-import { toMoment } from '@deriv/shared';
+import { toMoment, getPreBuildDVRs } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import PersonalDetails from 'App/Containers/RealAccountSignup/personal-details.jsx';
-import { getPreBuildDVRs } from 'Utils/Validator/declarative-validation-rules';
 import { generateValidationFunction, getDefaultFields } from './form-validations';
 
 const personal_details_config = ({ residence_list, account_settings }) => {
@@ -30,7 +29,7 @@ const personal_details_config = ({ residence_list, account_settings }) => {
                 default_value: account_settings.first_name ?? '',
                 rules: [
                     ['req', localize('First name is required')],
-                    ['letter_symbol', getPreBuildDVRs().letter_symbol.message],
+                    ['letter_symbol', getPreBuildDVRs().letter_symbol.message()],
                     ['length', localize('First name should be between 2 and 30 characters.'), { min: 2, max: 30 }],
                 ],
             },
@@ -39,7 +38,7 @@ const personal_details_config = ({ residence_list, account_settings }) => {
                 default_value: account_settings.last_name ?? '',
                 rules: [
                     ['req', localize('Last name is required')],
-                    ['letter_symbol', getPreBuildDVRs().letter_symbol.message],
+                    ['letter_symbol', getPreBuildDVRs().letter_symbol.message()],
                     ['length', localize('Last name should be between 2 and 30 characters.'), { min: 2, max: 30 }],
                 ],
             },

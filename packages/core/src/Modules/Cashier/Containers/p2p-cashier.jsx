@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import queryString from 'query-string';
 import P2P from '@deriv/p2p';
 import { getLanguage } from '@deriv/translations';
 import { WS } from 'Services';
@@ -22,6 +21,8 @@ const P2PCashier = ({
     residence,
     setNotificationCount,
 }) => {
+    const [order_id, setOrderId] = React.useState(null);
+
     React.useEffect(() => {
         const url_params = new URLSearchParams(location.search);
         const passed_order_id = url_params.get('order');
@@ -30,24 +31,25 @@ const P2PCashier = ({
             setQueryOrder(passed_order_id);
         }
 
-        return () => setOrderId(null);
+        return () => setQueryOrder(null);
     }, []);
 
-    const [order_id, setOrderId] = React.useState(null);
-
     const setQueryOrder = input_order_id => {
-        const current_query_param = queryString.parse(location.search);
-        delete current_query_param.order;
+        const current_query_params = new URLSearchParams(location.search);
 
-        const order_id_param = input_order_id
-            ? { ...current_query_param, order: input_order_id }
-            : { ...current_query_param };
+        if (current_query_params.has('order')) {
+            current_query_params.delete('order');
+        }
+
+        if (input_order_id) {
+            current_query_params.append('order', input_order_id);
+        }
 
         if (order_id !== input_order_id) {
             // Changing query params
             history.push({
-                pathname: '/cashier/p2p',
-                search: queryString.stringify(order_id_param),
+                pathname: routes.cashier_p2p,
+                search: current_query_params.toString(),
                 hash: location.hash,
             });
 

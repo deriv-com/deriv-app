@@ -27,7 +27,7 @@ const Orders = ({ chat_info, navigate, params }) => {
         setOrderId(null);
     };
 
-    const getOrderDetails = () => {
+    const subscribeToCurrentOrder = () => {
         order_info_subscription.current = subscribeWS(
             {
                 p2p_order_info: 1,
@@ -38,11 +38,17 @@ const Orders = ({ chat_info, navigate, params }) => {
         );
     };
 
+    const unsubscribeFromCurrentOrder = () => {
+        if (order_info_subscription.current?.unsubscribe) {
+            order_info_subscription.current.unsubscribe();
+        }
+    };
+
     const setOrderDetails = response => {
         if (!response.error) {
             setDetails(new OrderInfo(response));
         } else {
-            order_info_subscription.current.unsubscribe();
+            unsubscribeFromCurrentOrder();
         }
     };
 
@@ -62,22 +68,25 @@ const Orders = ({ chat_info, navigate, params }) => {
     };
 
     React.useEffect(() => {
-        if (order_info_subscription.current) {
-            order_info_subscription.current.unsubscribe();
-        }
+        is_mounted.current = true;
+
+        return () => {
+            unsubscribeFromCurrentOrder();
+            is_mounted.current = false;
+        };
+    }, []);
+
+    React.useEffect(() => {
+        unsubscribeFromCurrentOrder();
+
         if (order_id) {
-            getOrderDetails(order_id);
+            subscribeToCurrentOrder();
         }
     }, [order_id]);
 
     React.useEffect(() => {
         setNav(params?.nav ?? nav);
     }, [params]);
-
-    React.useEffect(() => {
-        is_mounted.current = true;
-        return () => (is_mounted.current = false);
-    }, []);
 
     return (
         <div className={classNames('orders', { 'orders--order-view': !!order_details })}>

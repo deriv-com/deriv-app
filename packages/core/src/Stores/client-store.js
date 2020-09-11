@@ -23,7 +23,7 @@ import { isEuCountry } from '_common/utility';
 import BinarySocketGeneral from 'Services/socket-general';
 import { handleClientNotifications } from './Helpers/client-notifications';
 import BaseStore from './base-store';
-import { getClientAccountType } from './Helpers/client';
+import { getClientAccountType, getAccountTitle } from './Helpers/client';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
 
 const storage_key = 'client.accounts';

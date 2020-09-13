@@ -2,12 +2,11 @@ const { getLanguage } = require('@deriv/translations');
 const isMobile = require('@deriv/shared').isMobileOs;
 const getDerivComLink = require('@deriv/shared').getDerivComLink;
 const urlForCurrentDomain = require('@deriv/shared').urlForCurrentDomain;
-const website_name = require('Duplicated/App/Constants/app-config').website_name;
-const getElementById = require('../common_functions').getElementById;
+const website_name = require('@deriv/shared').website_name;
+const domain_app_ids = require('@deriv/shared').domain_app_ids;
+const getAppId = require('@deriv/shared').getAppId;
 const isStorageSupported = require('../storage').isStorageSupported;
 const LocalStore = require('../storage').LocalStore;
-const domain_app_ids = require('../../config').domain_app_ids;
-const getAppId = require('../../config').getAppId;
 
 const Login = (() => {
     const redirectToLogin = (is_logged_in) => {
@@ -52,23 +51,9 @@ const Login = (() => {
     // TODO: update this to handle logging into /app/ url
     const isLoginPages = () => /logged_inws|redirect/i.test(window.location.pathname);
 
-    const socialLoginUrl = (brand) => `${loginUrl()}&social_signup=${brand}`;
-
-    const initOneAll = () => {
-        ['google', 'facebook'].forEach((provider) => {
-            const el_button = getElementById(`#button_${provider}`);
-            el_button.removeEventListener('click');
-            el_button.addEventListener('click', (e) => {
-                e.preventDefault();
-                window.location.href = socialLoginUrl(provider);
-            });
-        });
-    };
-
     return {
         redirectToLogin,
         isLoginPages,
-        initOneAll,
         redirectToSignUp,
     };
 })();

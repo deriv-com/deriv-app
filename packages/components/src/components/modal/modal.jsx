@@ -18,6 +18,7 @@ const ModalElement = ({
     id,
     title,
     className,
+    is_confirmation_modal,
     is_vertical_centered,
     is_vertical_bottom,
     is_vertical_top,
@@ -76,6 +77,7 @@ const ModalElement = ({
                 'dc-modal__container--is-vertical-centered': is_vertical_centered,
                 'dc-modal__container--is-vertical-bottom': is_vertical_bottom,
                 'dc-modal__container--is-vertical-top': is_vertical_top,
+                'dc-modal__container--is-confirmation-modal': is_confirmation_modal,
             })}
             style={{
                 height: height || 'auto',
@@ -164,6 +166,7 @@ const Modal = ({
     onUnmount,
     portalId,
     small,
+    is_confirmation_modal,
     is_vertical_bottom,
     is_vertical_centered,
     is_vertical_top,
@@ -193,6 +196,7 @@ const Modal = ({
             header={header}
             id={id}
             is_open={is_open}
+            is_confirmation_modal={is_confirmation_modal}
             is_vertical_bottom={is_vertical_bottom}
             is_vertical_centered={is_vertical_centered}
             is_vertical_top={is_vertical_top}
@@ -229,6 +233,7 @@ Modal.propTypes = {
     height: PropTypes.string,
     id: PropTypes.string,
     is_open: PropTypes.bool,
+    is_confirmation_modal: PropTypes.bool,
     is_vertical_bottom: PropTypes.bool,
     is_vertical_centered: PropTypes.bool,
     is_vertical_top: PropTypes.bool,

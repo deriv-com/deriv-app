@@ -1,4 +1,5 @@
 import moment from 'moment';
+import Cookies from 'js-cookie';
 import { action, computed, observable, runInAction, when, reaction, toJS } from 'mobx';
 import {
     setCurrencies,
@@ -8,6 +9,8 @@ import {
     isDesktopOs,
     getUrlSmartTrader,
     toMoment,
+    getMT5AccountType,
+    isBot,
 } from '@deriv/shared';
 
 import { requestLogout, WS } from 'Services';
@@ -16,13 +19,12 @@ import { redirectToLogin } from '_common/base/login';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
 import { localize } from '@deriv/translations';
-
 import { LocalStore, State } from '_common/storage';
 import { isEuCountry } from '_common/utility';
 import BinarySocketGeneral from 'Services/socket-general';
 import { handleClientNotifications } from './Helpers/client-notifications';
 import BaseStore from './base-store';
-import { getClientAccountType, getMT5AccountType } from './Helpers/client';
+import { getClientAccountType } from './Helpers/client';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
 
 const storage_key = 'client.accounts';
@@ -78,10 +80,15 @@ export default class ClientStore extends BaseStore {
     };
     @observable account_limits = {};
 
+    @observable self_exclusion = {};
+
     @observable local_currency_config = {
         currency: '',
         decimal_places: undefined,
     };
+    @observable has_cookie_account = false;
+
+    @observable financial_assessment = null;
 
     is_mt5_account_list_updated = false;
 
@@ -89,6 +96,20 @@ export default class ClientStore extends BaseStore {
         const local_storage_properties = ['device_data'];
         super({ root_store, local_storage_properties, store_name });
 
+        reaction(
+            () => [
+                this.is_logged_in,
+                this.loginid,
+                this.email,
+                this.landing_company,
+                this.currency,
+                this.residence,
+                this.account_settings,
+            ],
+            () => {
+                this.setCookieAccount();
+            }
+        );
         when(
             () => this.should_have_real_account,
             () => {
@@ -132,7 +153,8 @@ export default class ClientStore extends BaseStore {
             this.root_store.ui.is_eu_enabled || // TODO: [deriv-eu] Remove this after complete EU merge into production
             !this.is_logged_in ||
             this.is_virtual ||
-            this.accounts[this.loginid].landing_company_shortcode === 'svg'
+            this.accounts[this.loginid].landing_company_shortcode === 'svg' ||
+            isBot()
         );
     }
 
@@ -613,6 +635,54 @@ export default class ClientStore extends BaseStore {
                         resolve(data);
                     }
                 });
+            });
+        });
+    }
+
+    @action.bound
+    setCookieAccount() {
+        const domain = window.location.hostname.includes('deriv.com') ? 'deriv.com' : 'binary.sx';
+        const { loginid, email, landing_company_shortcode, currency, residence, account_settings } = this;
+        const { first_name, last_name } = account_settings;
+        if (loginid && email && first_name) {
+            const client_information = {
+                loginid,
+                email,
+                landing_company_shortcode,
+                currency,
+                residence,
+                first_name,
+                last_name,
+            };
+            Cookies.set('client_information', client_information, { domain });
+            this.has_cookie_account = true;
+        } else {
+            Cookies.remove('client_information', { domain });
+            this.has_cookie_account = false;
+        }
+    }
+    getSelfExclusion() {
+        return new Promise(resolve => {
+            WS.authorized.storage.getSelfExclusion().then(data => {
+                runInAction(() => {
+                    if (data.get_self_exclusion) {
+                        this.self_exclusion = data.get_self_exclusion;
+                    } else {
+                        this.self_exclusion = false;
+                    }
+                    resolve(data);
+                });
+            });
+        });
+    }
+    @action.bound
+    updateSelfExclusion(values) {
+        return new Promise(resolve => {
+            WS.authorized.storage.setSelfExclusion(values).then(data => {
+                if (!data.error) {
+                    this.getSelfExclusion();
+                }
+                resolve(data);
             });
         });
     }
@@ -1682,6 +1752,17 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get needs_financial_assessment() {
+        if (this.is_virtual) return false;
+        if (this.is_high_risk || this.is_financial_information_incomplete) return true;
+        if (!this.is_svg) {
+            if (this.is_financial_account || this.is_trading_experience_incomplete) return true;
+        }
+
+        return false;
+    }
+
+    @computed
     get has_residence() {
         return !!this.accounts[this.loginid]?.residence;
     }
@@ -1725,6 +1806,16 @@ export default class ClientStore extends BaseStore {
         this.clearRealityCheckTimeout();
         LocalStore.remove('reality_check_duration');
         LocalStore.remove('reality_check_dismissed');
+    }
+
+    @action.bound
+    fetchFinancialAssessment() {
+        return new Promise(async resolve => {
+            const { get_financial_assessment } = await WS.getFinancialAssessment();
+
+            runInAction(() => (this.financial_assessment = get_financial_assessment));
+            resolve(get_financial_assessment);
+        });
     }
 }
 /* eslint-enable */

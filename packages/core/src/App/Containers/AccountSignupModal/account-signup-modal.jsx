@@ -3,10 +3,9 @@ import { Field, Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Dialog, PasswordInput, PasswordMeter } from '@deriv/components';
+import { validPassword, validLength, website_name, getPreBuildDVRs } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { validPassword } from 'Utils/Validator/declarative-validation-rules';
-import { website_name } from 'App/Constants/app-config';
 import ResidenceForm from '../SetResidenceModal/set-residence-form.jsx';
 import 'Sass/app/modules/account-signup.scss';
 
@@ -14,10 +13,19 @@ const signupInitialValues = { password: '', residence: '' };
 
 const validateSignup = (values, residence_list) => {
     const errors = {};
-    const min_password_length = 6;
 
-    if (values.password && (values.password.length < min_password_length || !validPassword(values.password))) {
-        errors.password = true;
+    if (
+        !validLength(values.password, {
+            min: 8,
+            max: 25,
+        })
+    ) {
+        errors.password = localize('You should enter {{min_number}}-{{max_number}} characters.', {
+            min_number: 8,
+            max_number: 25,
+        });
+    } else if (!validPassword(values.password)) {
+        errors.password = getPreBuildDVRs().password.message;
     }
 
     if (!values.residence) {
@@ -145,7 +153,7 @@ class AccountSignup extends React.Component {
                                             )}
                                         </Field>
                                         <p className='account-signup__subtext'>
-                                            <Localize i18n_default_text='Strong passwords contain at least 6 characters, combine uppercase and lowercase letters, numbers, and symbols.' />
+                                            <Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters, numbers, and symbols.' />
                                         </p>
 
                                         <Button

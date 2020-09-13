@@ -3,11 +3,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper, ProgressBar, Tabs, DataList, DataTable } from '@deriv/components';
-import { urlFor, isMobile } from '@deriv/shared';
+import { urlFor, isMobile, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
 import { getTimePercentage } from 'App/Components/Elements/PositionsDrawer/helpers';
-import { website_name } from 'App/Constants/app-config';
 import { getContractPath } from 'App/Components/Routes/helpers';
 import { getContractDurationType } from 'Modules/Reports/Helpers/market-underlying';
 import EmptyTradeHistoryMessage from 'Modules/Reports/Components/empty-trade-history-message.jsx';
@@ -19,7 +18,6 @@ import PositionsCard from 'App/Components/Elements/PositionsDrawer/PositionsDraw
 import PlaceholderComponent from 'Modules/Reports/Components/placeholder-component.jsx';
 import { connect } from 'Stores/connect';
 import { isMultiplierContract } from 'Stores/Modules/Contract/Helpers/multiplier';
-import { ReportsMeta } from '../Components/reports-meta.jsx';
 
 const EmptyPlaceholderWrapper = props => (
     <React.Fragment>
@@ -354,14 +352,6 @@ class OpenPositions extends React.Component {
         return (
             <React.Fragment>
                 <NotificationMessages />
-                <DesktopWrapper>
-                    <ReportsMeta
-                        i18n_heading={localize('Open positions')}
-                        i18n_message={localize(
-                            'View all active trades on your account that can still incur a profit or a loss.'
-                        )}
-                    />
-                </DesktopWrapper>
                 {has_multiplier_contract ? (
                     <Tabs
                         active_index={active_index}

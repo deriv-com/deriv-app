@@ -1,9 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Icon, Money } from '@deriv/components';
-import { formatMoney, getCurrencyDisplayCode } from '@deriv/shared';
+import { formatMoney, getCurrencyDisplayCode, getMT5AccountDisplay } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { getMT5AccountDisplay } from 'Stores/Helpers/client';
 
 const AccountList = ({
     account_type,
@@ -19,8 +18,6 @@ const AccountList = ({
     onClickAccount,
     selected_loginid,
 }) => {
-    if (is_disabled && !currency) return null;
-
     const market_type = React.useMemo(() => {
         if (loginid.startsWith('MX') || loginid.startsWith('MLT')) {
             return localize('Synthetic');
@@ -29,6 +26,8 @@ const AccountList = ({
         }
         return '';
     }, [loginid]);
+
+    if (is_disabled && !currency) return null;
 
     return (
         <>

@@ -13,7 +13,7 @@ import {
     SelectNative,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { isDesktop, isMobile } from '@deriv/shared';
+import { isDesktop, isMobile, getLocation } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { splitValidationResultTypes } from 'App/Containers/RealAccountSignup/helpers/utils';
 
@@ -25,7 +25,7 @@ const InputField = props => {
                     <Input
                         type='text'
                         autoComplete='off'
-                        maxLength='30'
+                        maxLength={props.maxLength || '30'}
                         error={touched[field.name] && errors[field.name]}
                         {...field}
                         {...props}
@@ -34,15 +34,6 @@ const InputField = props => {
             )}
         </Field>
     );
-};
-
-const getLocation = (location_list, value, type) => {
-    const location_obj = location_list.find(
-        location => location[type === 'text' ? 'value' : 'text'].toLowerCase() === value.toLowerCase()
-    );
-
-    if (location_obj) return location_obj[type];
-    return '';
 };
 
 class AddressDetails extends React.Component {
@@ -91,7 +82,7 @@ class AddressDetails extends React.Component {
                 validate={this.handleValidate}
                 validateOnMount
                 onSubmit={(values, actions) => {
-                    if (isDesktop() && values.address_state) {
+                    if (values.address_state) {
                         values.address_state = this.props.states_list.length
                             ? this.state.address_state_to_display
                                 ? getLocation(this.props.states_list, this.state.address_state_to_display, 'value')
@@ -130,11 +121,13 @@ class AddressDetails extends React.Component {
                                                         ? localize('First line of address*')
                                                         : localize('First line of address')
                                                 }
+                                                maxLength={255}
                                                 placeholder={localize('First line of address')}
                                             />
                                             <InputField
                                                 name='address_line_2'
                                                 label={localize('Second line of address')}
+                                                maxLength={255}
                                                 placeholder={localize('Second line of address')}
                                             />
                                             <InputField
@@ -177,16 +170,23 @@ class AddressDetails extends React.Component {
                                                                 <SelectNative
                                                                     placeholder={localize('Please select')}
                                                                     label={localize('State/Province')}
-                                                                    value={values.address_state}
+                                                                    value={
+                                                                        this.state.address_state_to_display
+                                                                            ? this.state.address_state_to_display
+                                                                            : values.address_state
+                                                                    }
                                                                     list_items={this.props.states_list}
                                                                     use_text={true}
-                                                                    onChange={e =>
+                                                                    onChange={e => {
                                                                         setFieldValue(
                                                                             'address_state',
                                                                             e.target.value,
                                                                             true
-                                                                        )
-                                                                    }
+                                                                        );
+                                                                        this.setState({
+                                                                            address_state_to_display: '',
+                                                                        });
+                                                                    }}
                                                                 />
                                                             </MobileWrapper>
                                                         </>

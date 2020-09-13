@@ -1,7 +1,7 @@
 const Cookies = require('js-cookie');
 const getPropertyValue = require('@deriv/shared').getPropertyValue;
 const isEmptyObject = require('@deriv/shared').isEmptyObject;
-const isProduction = require('../config').isProduction;
+const isProduction = require('@deriv/shared').isProduction;
 
 const getObject = function (key) {
     return JSON.parse(this.getItem(key) || '{}');

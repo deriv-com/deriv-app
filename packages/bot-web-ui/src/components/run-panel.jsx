@@ -1,13 +1,13 @@
-import { Money, Button, Drawer, Tabs, Popover } from '@deriv/components';
+import { Money, Button, Drawer, Tabs, Popover, Dialog } from '@deriv/components';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import React from 'react';
 import { localize } from '@deriv/translations';
-import Dialog from './dialog.jsx';
 import Journal from './journal.jsx';
 import Summary from './summary.jsx';
 import Transactions from './transactions.jsx';
 import TradeAnimation from './trade-animation.jsx';
+import SelfExclusion from './self-exclusion.jsx';
 import { popover_zindex } from '../constants/z-indexes';
 import { connect } from '../stores/connect';
 import '../assets/sass/run-panel.scss';
@@ -121,7 +121,7 @@ const drawerFooter = ({ is_clear_stat_disabled, onClearStatClick }) => (
             id='db-run-panel__clear-button'
             className='run-panel__footer-button'
             is_disabled={is_clear_stat_disabled}
-            text={localize('Clear stat')}
+            text={localize('Reset')}
             onClick={onClearStatClick}
             has_effect
             secondary
@@ -147,7 +147,6 @@ class RunPanel extends React.PureComponent {
     componentWillUnmount() {
         this.props.onUnmount();
     }
-
     render() {
         const {
             active_index,
@@ -160,7 +159,9 @@ class RunPanel extends React.PureComponent {
             toggleDrawer,
             is_dialog_open,
             onOkButtonClick,
+            onRunButtonClick,
             onCancelButtonClick,
+            onCloseDialog,
         } = this.props;
         const content = drawerContent({ active_index, is_drawer_open, setActiveTabIndex, ...this.props });
         const footer = drawerFooter({ is_clear_stat_disabled, onClearStatClick });
@@ -171,7 +172,7 @@ class RunPanel extends React.PureComponent {
                     <Drawer
                         className={!is_mobile ? 'run-panel__container' : undefined}
                         contentClassName='run-panel__content'
-                        clear_stat_button_text={localize('Clear stat')}
+                        clear_stat_button_text={localize('Reset')}
                         footer={!is_mobile && footer}
                         is_clear_stat_disabled={is_clear_stat_disabled}
                         is_mobile={is_mobile}
@@ -186,12 +187,21 @@ class RunPanel extends React.PureComponent {
                 </div>
                 <Dialog
                     title={dialog_options.title}
-                    is_open={is_dialog_open}
-                    onOkButtonClick={onOkButtonClick}
-                    onCancelButtonClick={onCancelButtonClick}
+                    is_visible={is_dialog_open}
+                    cancel_button_text={dialog_options.cancel_button_text || localize('Cancel')}
+                    onCancel={onCancelButtonClick}
+                    confirm_button_text={dialog_options.ok_button_text || localize('OK')}
+                    onConfirm={onOkButtonClick || onCloseDialog}
+                    is_mobile_full_width={false}
+                    className={'dc-dialog__wrapper--fixed'}
+                    has_close_icon
                 >
                     {dialog_options.message}
                 </Dialog>
+                <SelfExclusion
+                    onRunButtonClick={onRunButtonClick}
+                    onCancelButtonClick={this.props.resetSelfExclusion}
+                />
             </>
         );
     }
@@ -204,10 +214,12 @@ RunPanel.propTypes = {
     is_dialog_open: PropTypes.bool,
     is_drawer_open: PropTypes.bool,
     is_mobile: PropTypes.bool,
-    onCancelButtonClick: PropTypes.func,
     onClearStatClick: PropTypes.func,
     onMount: PropTypes.func,
+    onCancelButtonClick: PropTypes.func,
+    onCloseDialog: PropTypes.func,
     onOkButtonClick: PropTypes.func,
+    onRunButtonClick: PropTypes.func,
     onUnmount: PropTypes.func,
     setActiveTabIndex: PropTypes.func,
     toggleDrawer: PropTypes.func,
@@ -227,10 +239,12 @@ export default connect(({ run_panel, core, ui }) => ({
     is_dialog_open: run_panel.is_dialog_open,
     is_drawer_open: run_panel.is_drawer_open,
     is_mobile: ui.is_mobile,
-    onCancelButtonClick: run_panel.onCancelButtonClick,
     onClearStatClick: run_panel.onClearStatClick,
     onMount: run_panel.onMount,
+    onCancelButtonClick: run_panel.onCancelButtonClick,
+    onCloseDialog: run_panel.onCloseDialog,
     onOkButtonClick: run_panel.onOkButtonClick,
+    onRunButtonClick: run_panel.onRunButtonClick,
     onUnmount: run_panel.onUnmount,
     setActiveTabIndex: run_panel.setActiveTabIndex,
     toggleDrawer: run_panel.toggleDrawer,

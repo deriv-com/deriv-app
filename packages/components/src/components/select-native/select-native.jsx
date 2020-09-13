@@ -28,6 +28,7 @@ class SelectNative extends React.Component {
             error,
             hint,
             disabled,
+            should_show_empty_option = true,
             ...props
         } = this.props;
         return (
@@ -66,7 +67,7 @@ class SelectNative extends React.Component {
                                     {/* In native select, first option is selected by default.
                                         Added an empty option to avoid it from selecting first item
                                         from list_items provided */}
-                                    <option value=''>{placeholder}</option>
+                                    {should_show_empty_option && <option value=''>{placeholder}</option>}
                                     {/* Safari on ios allows to select a disabled option.
                                         So, we should avoid showing it */}
                                     {list_items
@@ -122,6 +123,7 @@ SelectNative.propTypes = {
     value: PropTypes.string,
     label: PropTypes.string,
     onChange: PropTypes.func,
+    should_show_empty_option: PropTypes.bool,
 };
 
 export default SelectNative;

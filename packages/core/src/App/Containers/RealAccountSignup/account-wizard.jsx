@@ -3,22 +3,12 @@ import PropTypes from 'prop-types';
 import fromEntries from 'object.fromentries';
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Div100vhContainer, FormProgress } from '@deriv/components';
-import { isDesktop, toMoment } from '@deriv/shared';
+import { isDesktop, toMoment, getLocation } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { makeCancellablePromise } from '_common/base/cancellable_promise';
 import LoadingModal from './real-account-signup-loader.jsx';
 import { getItems } from './account-wizard-form';
-
-// TODO: [deriv-eu] remove and merge this with the original function in PersonalDetails
-const getLocation = (location_list, value, type) => {
-    const location_obj = location_list.find(
-        location => location[type === 'text' ? 'value' : 'text'].toLowerCase() === value.toLowerCase()
-    );
-
-    if (location_obj) return location_obj[type];
-    return '';
-};
 
 const SetCurrencyHeader = ({ has_target, has_real_account, has_currency, items, step }) => (
     <React.Fragment>
@@ -79,42 +69,45 @@ class AccountWizard extends React.Component {
         this.props.fetchStatesList();
         const { cancel, promise } = makeCancellablePromise(this.props.fetchResidenceList());
         this.cancel = cancel;
+        const { cancel: cancelFinancialAssessment, promise: financial_assessment_promise } = makeCancellablePromise(
+            this.props.fetchFinancialAssessment()
+        );
+        this.cancelFinancialAssessment = cancelFinancialAssessment;
 
-        promise
-            .then(() => {
-                this.setState({
-                    items: getItems(this.props),
-                    mounted: false,
-                });
-
-                if (!this.residence_list?.length) {
-                    const items = this.state.items.slice(0);
-                    this.getCountryCode().then(phone_idd => {
-                        if ('phone' in items[1].form_value) {
-                            items[1].form_value.phone = items[1].form_value.phone || phone_idd || '';
-                            this.setState(items);
-                        }
-                    });
-                }
-
-                const previous_data = this.fetchFromStorage();
-                if (previous_data.length > 0) {
-                    const items = this.state.items.slice(0);
-                    previous_data.forEach((item, index) => {
-                        if (item instanceof Object) {
-                            items[index].form_value = item;
-                        }
-                    });
-                    this.setState({
-                        items,
-                        step: 1,
-                    });
-                }
-            })
-            // eslint-disable-next-line no-unused-vars
-            .catch(error => {
-                // Cancelled. no op.
+        Promise.all([promise, financial_assessment_promise]).then(() => {
+            this.setState({
+                items: getItems(this.props),
+                mounted: false,
             });
+
+            // If residence list is present, attempt to set phone field with the proper default value
+            // Otherwise, leave empty.
+            if (!this.residence_list?.length) {
+                const setDefaultPhone = country_code => {
+                    const items = [...this.state.items];
+                    if ('phone' in items[1].form_value) {
+                        items[1].form_value.phone = items[1].form_value.phone || country_code || '';
+                        this.setState(items);
+                    }
+                };
+
+                this.getCountryCode().then(setDefaultPhone);
+            }
+
+            const previous_data = this.fetchFromStorage();
+            if (previous_data.length > 0) {
+                const items = [...this.state.items];
+                previous_data.forEach((item, index) => {
+                    if (item instanceof Object) {
+                        items[index].form_value = item;
+                    }
+                });
+                this.setState({
+                    items,
+                    step: 1,
+                });
+            }
+        });
     }
 
     fetchFromStorage = () => {
@@ -152,12 +145,6 @@ class AccountWizard extends React.Component {
                     values.tax_residence = values.tax_residence
                         ? getLocation(this.props.residence_list, values.tax_residence, 'value')
                         : values.tax_residence;
-                }
-
-                if (values.address_state) {
-                    values.address_state = this.props.states_list.length
-                        ? getLocation(this.props.states_list, values.address_state, 'value')
-                        : values.address_state;
                 }
 
                 return {
@@ -210,6 +197,7 @@ class AccountWizard extends React.Component {
     prevStep = () => {
         if (this.state.step - 1 < 0) {
             this.cancel();
+            this.cancelFinancialAssessment();
             this.props.onClose();
             return;
         }
@@ -369,4 +357,7 @@ export default connect(({ client, ui }) => ({
     fetchStatesList: client.fetchStatesList,
     fetchResidenceList: client.fetchResidenceList,
     refreshNotifications: client.refreshNotifications,
+    fetchFinancialAssessment: client.fetchFinancialAssessment,
+    needs_financial_assessment: client.needs_financial_assessment,
+    financial_assessment: client.financial_assessment,
 }))(AccountWizard);

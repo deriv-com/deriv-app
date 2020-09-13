@@ -33,6 +33,7 @@ export const icons = {
         'IcAccountTrashCan',
         'IcAddRounded',
         'IcAdd',
+        'IcAdjustment',
         'IcAlertDanger',
         'IcAlertInfo',
         'IcAlertSuccess',
@@ -196,7 +197,6 @@ export const icons = {
         'IcWip',
         'IcZoomIn',
         'IcZoomOut',
-        'IcAdjustment',
     ],
     contract: [
         'IcContractBarrier',

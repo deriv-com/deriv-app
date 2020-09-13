@@ -23,8 +23,8 @@ const Label = ({ mode, children, size = 'regular', className }) => {
     return (
         <span
             className={classNames('dc-label', className, {
-                [`dc-label--${scale}`]: scale,
-                [`dc-label--${type}`]: type,
+                [`dc-label--general--${scale}`]: scale,
+                [`dc-label--general--${type}`]: type,
             })}
         >
             {children}

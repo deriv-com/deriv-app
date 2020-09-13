@@ -8,121 +8,77 @@
     margin: 0 2px;
     position: relative;
 
+    &:after {
+        opacity: 0.16;
+        content: '';
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        position: absolute;
+        border-radius: $BORDER_RADIUS * 3;
+    }
     /* TODO: change all :after to normal background color once styleguide ready */
-    &--default {
-        color: var(--status-default);
+    &--general {
+        &--default {
+            color: var(--status-default);
 
-        &:after {
-            background-color: var(--status-default);
-            opacity: 0.16;
-            content: '';
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            position: absolute;
-            border-radius: $BORDER_RADIUS * 3;
+            &:after {
+                background-color: var(--status-default);
+            }
         }
-    }
-    &--adjustment {
-        color: var(--status-adjustment);
+        &--adjustment {
+            color: var(--status-adjustment);
 
-        &:after {
-            background-color: var(--status-adjustment);
-            opacity: 0.16;
-            content: '';
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            position: absolute;
-            border-radius: $BORDER_RADIUS * 3;
+            &:after {
+                background-color: var(--status-adjustment);
+            }
         }
-    }
-    &--danger {
-        color: var(--status-danger);
+        &--danger {
+            color: var(--status-danger);
 
-        &:after {
-            background-color: var(--status-danger);
-            opacity: 0.16;
-            content: '';
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            position: absolute;
-            border-radius: $BORDER_RADIUS * 3;
+            &:after {
+                background-color: var(--status-danger);
+            }
         }
-    }
-    &--warn {
-        color: var(--status-warning);
+        &--warn {
+            color: var(--status-warning);
 
-        &:after {
-            background-color: var(--status-warning);
-            opacity: 0.16;
-            content: '';
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            position: absolute;
-            border-radius: $BORDER_RADIUS * 3;
+            &:after {
+                background-color: var(--status-warning);
+            }
         }
-    }
-    &--success {
-        color: var(--status-success);
+        &--success {
+            color: var(--status-success);
 
-        &:after {
+            &:after {
+                background-color: var(--status-success);
+            }
+        }
+        &--default-invert {
+            color: var(--status-less-prominent);
+
+            &:after {
+                background-color: var(--status-less-prominent);
+            }
+        }
+        &--success-invert {
+            color: var(--text-colored-background);
             background-color: var(--status-success);
-            opacity: 0.16;
-            content: '';
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            position: absolute;
-            border-radius: $BORDER_RADIUS * 3;
         }
-    }
-    // TODO: change styleguide badges to include new design
-    &--default-invert {
-        color: var(--text-less-prominent);
+        &--warn-invert {
+            color: var(--text-colored-background);
+            background-color: var(--status-warning);
+        }
+        &--info {
+            color: var(--status-info);
 
-        &:after {
-            background-color: var(--text-less-prominent);
-            opacity: 0.16;
-            content: '';
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            position: absolute;
-            border-radius: $BORDER_RADIUS * 3;
+            &:after {
+                background-color: var(--status-info);
+            }
         }
     }
-    &--success-invert {
-        color: var(--text-colored-background);
-        background-color: var(--status-success);
-    }
-    &--warn-invert {
-        color: var(--text-colored-background);
-        background-color: var(--status-warning);
-    }
-    &--info {
-        color: var(--status-info);
 
-        &:after {
-            background-color: var(--status-info);
-            opacity: 0.16;
-            content: '';
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            position: absolute;
-            border-radius: $BORDER_RADIUS * 3;
-        }
-    }
     &--large {
         height: 28px;
         border-radius: $BORDER_RADIUS * 5;

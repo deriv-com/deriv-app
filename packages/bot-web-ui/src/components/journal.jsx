@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ContentLoader from 'react-content-loader';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { Checkbox, Icon, ThemedScrollbars, useOnClickOutside } from '@deriv/components';
+import { Checkbox, Icon, ThemedScrollbars, useOnClickOutside, DesktopWrapper } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { message_types } from '@deriv/bot-skeleton';
 import { log_types } from '@deriv/bot-skeleton/src/constants/messages';
@@ -128,7 +128,9 @@ const Tools = ({ checked_filters, filters, filterMessage, is_filter_dialog_visib
     return (
         <>
             <div className='journal-tools__container'>
-                <Download tab='journal' />
+                <DesktopWrapper>
+                    <Download tab='journal' />
+                </DesktopWrapper>
                 <div ref={toggle_ref} className='journal-tools__container-filter' onClick={toggleFilterDialog}>
                     <span className='journal-tools__container-filter--label'>
                         <Localize i18n_default_text='Filters' />
@@ -205,7 +207,7 @@ const Journal = ({
             })}
         >
             <Tools {...props} />
-            <ThemedScrollbars className='journal__scrollbars' height={'calc(100% - 9.2rem)'}>
+            <ThemedScrollbars className='journal__scrollbars' height={'calc(100% - 4.2rem)'}>
                 <div className='journal__item-list'>
                     {filtered_messages.length ? (
                         <TransitionGroup>

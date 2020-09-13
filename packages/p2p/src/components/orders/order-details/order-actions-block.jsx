@@ -97,7 +97,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
                 currency: transaction_currency,
                 advertiser_name,
             }),
-            payment_confirm: true,
+            should_confirm_payment: true,
             order: {
                 transaction_currency,
                 display_transaction_amount,

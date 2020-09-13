@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import { getPropertyValue, isEmptyObject } from '@deriv/shared';
+import { getPropertyValue, isEmptyObject } from '../object/object';
 
 const getObject = function(key) {
     return JSON.parse(this.getItem(key) || '{}');

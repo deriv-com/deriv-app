@@ -3,8 +3,8 @@ const getPropertyValue = require('@deriv/shared').getPropertyValue;
 const isEmptyObject = require('@deriv/shared').isEmptyObject;
 const { localize } = require('@deriv/translations');
 const SocketCache = require('./socket_cache');
-const LocalStore = require('../storage').LocalStore;
-const State = require('../storage').State;
+const LocalStore = require('@deriv/shared').LocalStore;
+const State = require('@deriv/shared').State;
 
 const ClientBase = (() => {
     const storage_key = 'client.accounts';

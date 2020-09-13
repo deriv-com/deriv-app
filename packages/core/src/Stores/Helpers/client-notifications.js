@@ -6,7 +6,7 @@ import { WS } from 'Services';
 
 import { getRiskAssessment, isAccountOfType, shouldAcceptTnc, shouldCompleteTax } from '_common/base/client_base';
 import { BinaryLink } from 'App/Components/Routes';
-import { LocalStore, State } from '_common/storage';
+import { LocalStore, State } from '@deriv/shared';
 
 // TODO: Update links to app_2 links when components are done.
 /* eslint-disable react/jsx-no-target-blank */

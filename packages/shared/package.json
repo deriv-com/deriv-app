@@ -55,6 +55,7 @@
     "stylelint-selector-bem-pattern": "^2.1.0"
   },
   "dependencies": {
+    "js-cookie": "^2.2.1",
     "react": "^16.13.1"
   }
 }

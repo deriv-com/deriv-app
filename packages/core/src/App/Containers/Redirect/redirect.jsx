@@ -1,8 +1,8 @@
+import { loginUrl, routes } from '@deriv/shared';
+import { getLanguage } from '@deriv/translations';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { routes } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import Login from '_common/base/login';
 
 const Redirect = ({
     history,
@@ -49,7 +49,9 @@ const Redirect = ({
         }
         case 'verification': {
             sessionStorage.setItem('redirect_url', `${routes.cashier_p2p}#verification`);
-            window.location.href = Login.loginUrl();
+            window.location.href = loginUrl({
+                language: getLanguage(),
+            });
             break;
         }
         case 'mt5_password_reset':

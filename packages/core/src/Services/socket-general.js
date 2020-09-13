@@ -3,7 +3,7 @@ import { getPropertyValue } from '@deriv/shared';
 import Login from '_common/base/login';
 import ServerTime from '_common/base/server_time';
 import BinarySocket from '_common/base/socket_base';
-import { State } from '_common/storage';
+import { State } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import WS from './ws-methods';
 

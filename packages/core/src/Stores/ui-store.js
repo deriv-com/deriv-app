@@ -1,7 +1,7 @@
+import { action, autorun, computed, observable } from 'mobx';
 import { getPlatformHeader, isEmptyObject, LocalStore, unique } from '@deriv/shared';
 import { sortNotifications } from 'App/Components/Elements/NotificationMessage';
 import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
-import { action, autorun, computed, observable } from 'mobx';
 import BaseStore from './base-store';
 import { clientNotifications, excluded_notifications } from './Helpers/client-notifications';
 

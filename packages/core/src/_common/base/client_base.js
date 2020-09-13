@@ -1,10 +1,10 @@
 const isCryptocurrency = require('@deriv/shared').isCryptocurrency;
 const getPropertyValue = require('@deriv/shared').getPropertyValue;
 const isEmptyObject = require('@deriv/shared').isEmptyObject;
-const { localize } = require('@deriv/translations');
-const SocketCache = require('./socket_cache');
 const LocalStore = require('@deriv/shared').LocalStore;
 const State = require('@deriv/shared').State;
+const { localize } = require('@deriv/translations');
+const SocketCache = require('./socket_cache');
 
 const ClientBase = (() => {
     const storage_key = 'client.accounts';

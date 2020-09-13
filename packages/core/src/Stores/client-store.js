@@ -1,3 +1,6 @@
+import Cookies from 'js-cookie';
+import { action, computed, observable, reaction, runInAction, toJS, when } from 'mobx';
+import moment from 'moment';
 import {
     getMT5AccountType,
     getPropertyValue,
@@ -12,9 +15,6 @@ import {
     toMoment,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import Cookies from 'js-cookie';
-import { action, computed, observable, reaction, runInAction, toJS, when } from 'mobx';
-import moment from 'moment';
 import { requestLogout, WS } from 'Services';
 import BinarySocketGeneral from 'Services/socket-general';
 import ClientBase from '_common/base/client_base';

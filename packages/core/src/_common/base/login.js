@@ -1,10 +1,8 @@
-const isMobile = require('@deriv/shared').isMobileOs;
-const getAppId = require('@deriv/shared').getAppId;
 const getDerivComLink = require('@deriv/shared').getDerivComLink;
-const urlForCurrentDomain = require('@deriv/shared').urlForCurrentDomain;
+const isStorageSupported = require('@deriv/shared').isStorageSupported;
+const loginUrl = require('@deriv/shared').loginUrl;
 const { getLanguage } = require('@deriv/translations');
 const Client = require('./client_base');
-const isStorageSupported = require('@deriv/shared').isStorageSupported;
 
 const Login = (() => {
     const redirectToLogin = () => {

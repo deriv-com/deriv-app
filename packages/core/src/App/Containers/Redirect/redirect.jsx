@@ -1,7 +1,7 @@
-import { loginUrl, routes } from '@deriv/shared';
-import { getLanguage } from '@deriv/translations';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import { loginUrl, routes } from '@deriv/shared';
+import { getLanguage } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
 const Redirect = ({

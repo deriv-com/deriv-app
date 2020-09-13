@@ -19,17 +19,12 @@ const CancelDeal = ({
 }) => {
     const should_show_popover = (has_take_profit || has_stop_loss) && should_show_cancellation_warning;
     const [is_do_not_show_selected, setDoNotShowSelected] = React.useState(!should_show_cancellation_warning);
-    const is_do_not_show_ref = React.useRef(is_do_not_show_selected);
 
-    React.useEffect(() => {
-        is_do_not_show_ref.current = is_do_not_show_selected;
-    }, [is_do_not_show_selected]);
-
-    const onPopoverClose = React.useCallback(() => {
-        if (is_do_not_show_ref.current) {
+    const onPopoverClose = () => {
+        if (is_do_not_show_selected) {
             toggleCancellationWarning();
         }
-    }, [toggleCancellationWarning]);
+    };
 
     const onPopoverCheckboxChange = React.useCallback(() => {
         setDoNotShowSelected(prevState => !prevState);

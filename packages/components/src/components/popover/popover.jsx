@@ -10,12 +10,12 @@ const Popover = ({ ...props }) => {
     const [is_popover_open, setIsPopoverOpen] = React.useState(false);
     const [is_bubble_open, setIsBubbleOpen] = React.useState(false);
     const [popover_ref, setPopoverRef] = React.useState(undefined);
-    const bubbleRef = React.useRef(is_bubble_open);
+    const bubble_ref = React.useRef(is_bubble_open);
 
     const has_external_open_state = props.is_open !== undefined;
 
     React.useEffect(() => {
-        bubbleRef.current = is_bubble_open;
+        bubble_ref.current = is_bubble_open;
     }, [is_bubble_open]);
 
     React.useEffect(() => {
@@ -41,8 +41,8 @@ const Popover = ({ ...props }) => {
         if (props.is_bubble_hover_enabled) {
             setTimeout(() => {
                 // add delay to check if mouse is hovered on popover bubble
-                // because of JS closures, there is no guaranty that the state used inside a setTimeout is updated. so we use bubbleRef.
-                setIsPopoverOpen(bubbleRef.current);
+                // because of JS closures, there is no guaranty that the state used inside a setTimeout is updated. so we use bubble_ref.
+                setIsPopoverOpen(bubble_ref.current);
             }, 50);
         } else {
             setIsPopoverOpen(false);

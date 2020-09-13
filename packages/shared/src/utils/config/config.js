@@ -18,7 +18,7 @@ export const domain_app_ids = {
     // these domains as supported "production domains"
     'deriv.app': 16929, // TODO: [app-link-refactor] - Remove backwards compatibility for `deriv.app`
     'app.deriv.com': 16929,
-    'deriv-crypto.com': DERIV_CRYPTO_APP_ID,
+    'derivcrypto.com': DERIV_CRYPTO_APP_ID,
     'binary.com': 1,
 };
 const binary_desktop_app_id = 14473;

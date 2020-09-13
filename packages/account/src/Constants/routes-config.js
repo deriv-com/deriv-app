@@ -22,7 +22,7 @@ import {
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
 
 // Order matters
-const initRoutesConfig = ({ is_deriv_crypto }) => [
+const initRoutesConfig = ({ hide_crypto_routes }) => [
     {
         path: routes.account_deactivated,
         component: AccountDeactivated,
@@ -46,7 +46,7 @@ const initRoutesConfig = ({ is_deriv_crypto }) => [
                         title: localize('Personal details'),
                         default: true,
                     },
-                    ...(!is_deriv_crypto
+                    ...(!hide_crypto_routes
                         ? [
                               {
                                   path: routes.financial_assessment,
@@ -57,7 +57,7 @@ const initRoutesConfig = ({ is_deriv_crypto }) => [
                         : []),
                 ],
             },
-            ...(!is_deriv_crypto
+            ...(!hide_crypto_routes
                 ? [
                       {
                           title: localize('Verification'),
@@ -132,9 +132,9 @@ let routesConfig;
 // For default page route if page/path is not found, must be kept at the end of routes_config array
 const route_default = { component: Page404, title: localize('Error 404') };
 
-const getRoutesConfig = ({ is_deriv_crypto = false }) => {
+const getRoutesConfig = ({ hide_crypto_routes = true }) => {
     if (!routesConfig) {
-        routesConfig = initRoutesConfig({ is_deriv_crypto });
+        routesConfig = initRoutesConfig({ hide_crypto_routes });
         routesConfig.push(route_default);
     }
     return routesConfig;

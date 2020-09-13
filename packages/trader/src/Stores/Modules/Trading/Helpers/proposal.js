@@ -1,6 +1,6 @@
 import { getDecimalPlaces, getPropertyValue, convertToUnix, toMoment } from '@deriv/shared';
 
-import { isVisible } from '_common/common_functions';
+const isVisible = elem => !(!elem || (elem.offsetWidth === 0 && elem.offsetHeight === 0));
 
 const map_error_field = {
     barrier: 'barrier_1',

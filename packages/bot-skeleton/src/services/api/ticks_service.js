@@ -48,6 +48,7 @@ export default class TicksService {
         this.subscriptions = new Map();
         this.ticks_history_promise = null;
         this.active_symbols_promise = null;
+        this.candles_promise = null;
 
         this.observe();
     }
@@ -217,41 +218,44 @@ export default class TicksService {
     }
 
     requestStream(options) {
-        return this.requestPipSizes().then(() => this.requestTicks(options));
+        const { style } = options;
+
+        if (!this.ticks_history_promise && style === 'ticks') {
+            this.ticks_history_promise = this.requestPipSizes().then(() => this.requestTicks(options));
+        } else if (!this.candles_promise && style === 'candles') {
+            this.candles_promise = this.requestPipSizes().then(() => this.requestTicks(options));
+        }
+        return style === 'ticks' ? this.ticks_history_promise : this.candles_promise;
     }
 
     requestTicks(options) {
         const { symbol, granularity, style } = options;
 
-        if (!this.ticks_history_promise) {
-            this.ticks_history_promise = new Promise((resolve, reject) => {
-                doUntilDone(() =>
-                    this.api.getTickHistory(symbol, {
-                        subscribe: 1,
-                        end: 'latest',
-                        count: 1000,
-                        granularity: granularity ? Number(granularity) : undefined,
-                        style,
-                    })
-                )
-                    .then(r => {
-                        if (style === 'ticks') {
-                            const ticks = historyToTicks(r.history);
+        return new Promise((resolve, reject) => {
+            doUntilDone(() =>
+                this.api.getTickHistory(symbol, {
+                    subscribe: 1,
+                    end: 'latest',
+                    count: 1000,
+                    granularity: granularity ? Number(granularity) : undefined,
+                    style,
+                })
+            )
+                .then(r => {
+                    if (style === 'ticks') {
+                        const ticks = historyToTicks(r.history);
 
-                            this.updateTicksAndCallListeners(symbol, ticks);
-                            resolve(ticks);
-                        } else {
-                            const candles = parseCandles(r.candles);
+                        this.updateTicksAndCallListeners(symbol, ticks);
+                        resolve(ticks);
+                    } else {
+                        const candles = parseCandles(r.candles);
 
-                            this.updateCandlesAndCallListeners([symbol, Number(granularity)], candles);
+                        this.updateCandlesAndCallListeners([symbol, Number(granularity)], candles);
 
-                            resolve(candles);
-                        }
-                    })
-                    .catch(reject);
-            });
-        }
-
-        return this.ticks_history_promise;
+                        resolve(candles);
+                    }
+                })
+                .catch(reject);
+        });
     }
 }

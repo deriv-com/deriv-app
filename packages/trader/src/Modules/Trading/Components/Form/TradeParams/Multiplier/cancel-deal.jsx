@@ -27,7 +27,7 @@ const CancelDeal = ({
     };
 
     const onPopoverCheckboxChange = React.useCallback(() => {
-        setDoNotShowSelected(prevState => !prevState);
+        setDoNotShowSelected(prev_state => !prev_state);
     }, []);
 
     const input = (

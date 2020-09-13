@@ -47,7 +47,9 @@ const OrderDetails = ({ order_details, chat_info }) => {
 
         if (!channel_url && is_mounted.current) {
             chatCreate(id).then(response => {
-                setChannelUrl(response.channel_url);
+                if (!response.error) {
+                    setChannelUrl(response.channel_url);
+                }
             });
         }
 

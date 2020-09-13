@@ -54,7 +54,7 @@ export default class GeneralStore {
                         this.setNicknameError(response.error.message);
                     } else {
                         this.setAdvertiserId(p2p_advertiser_create.id);
-                        this.setIsAdvertiser(p2p_advertiser_create.is_approved === 1);
+                        this.setIsAdvertiser(!!p2p_advertiser_create.is_approved);
                         this.setNickname(p2p_advertiser_create.name);
                         this.setNicknameError(undefined);
                         this.setChatInfo(p2p_advertiser_create.chat_user_id, p2p_advertiser_create.chat_token);
@@ -330,8 +330,8 @@ export default class GeneralStore {
 
         if (!response.error) {
             this.setAdvertiserId(p2p_advertiser_info.id);
-            this.setIsAdvertiser(p2p_advertiser_info.is_approved === 1);
-            this.setIsListed(p2p_advertiser_info.is_listed === 1);
+            this.setIsAdvertiser(!!p2p_advertiser_info.is_approved);
+            this.setIsListed(!!p2p_advertiser_info.is_listed);
             this.setNickname(p2p_advertiser_info.name);
         } else {
             this.ws_subscriptions.advertiser_subscription.unsubscribe();

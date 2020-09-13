@@ -30,10 +30,9 @@ const Login = (() => {
         const marketing_queries = `&signup_device=${signup_device}${
             date_first_contact ? `&date_first_contact=${date_first_contact}` : ''
         }`;
-        // TODO: [app-link-refactor] - Remove backwards compatibility for `deriv.app`
-        const default_login_url_app = `https://oauth.deriv.app/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
-        const default_login_url = `https://oauth.deriv.com/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
-        const default_deriv_crypto_url = `https://oauth.deriv-crypto.com/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
+        const getOAuthUrl = domain => {
+            return `https://oauth.${domain}/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
+        };
 
         if (server_url && /qa/.test(server_url)) {
             return `https://${server_url}/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
@@ -41,18 +40,18 @@ const Login = (() => {
 
         // TODO: [app-link-refactor] - Remove backwards compatibility for `deriv.app`
         if (getAppId() === domain_app_ids['deriv.app'] && /^(www\.)?deriv\.app$/.test(window.location.hostname)) {
-            return default_login_url_app;
+            return getOAuthUrl('deriv.app');
         }
         if (getAppId() === domain_app_ids['app.deriv.com'] && /^app\.deriv\.com$/.test(window.location.hostname)) {
-            return default_login_url;
+            return getOAuthUrl('app.deriv.com');
         }
         if (
-            getAppId() === domain_app_ids['deriv-crypto.com'] &&
-            /^(www\.)?deriv-crypto\.com$/.test(window.location.hostname)
+            getAppId() === domain_app_ids['derivcrypto.com'] &&
+            /^(app\.)?derivcrypto\.com$/.test(window.location.hostname)
         ) {
-            return default_deriv_crypto_url;
+            return getOAuthUrl('app.derivcrypto.com');
         }
-        return urlForCurrentDomain(default_login_url);
+        return urlForCurrentDomain(getOAuthUrl('deriv.com'));
     };
 
     // TODO: update this to handle logging into /app/ url

@@ -3,9 +3,8 @@ import * as PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Button, Icon, PasswordMeter, PasswordInput, FormSubmitButton, Loading, Modal } from '@deriv/components';
-import { routes } from '@deriv/shared';
+import { routes, validLength, validPassword, getPreBuildDVRs } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { validLength, validPassword, getPreBuildDVRs } from 'Utils/Validator/declarative-validation-rules';
 import { connect } from 'Stores/connect';
 import { getMtCompanies } from 'Stores/Modules/MT5/Helpers/mt5-config';
 import { WS } from 'Services/ws-methods';
@@ -168,7 +167,7 @@ class MT5ResetPasswordModal extends React.Component {
                                                                 hint={
                                                                     !has_warning &&
                                                                     localize(
-                                                                        'Minimum of eight lower and uppercase English letters with numbers'
+                                                                        'Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers.'
                                                                     )
                                                                 }
                                                             />

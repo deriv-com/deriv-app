@@ -5,6 +5,7 @@ import { height_constants } from 'Utils/height_constants';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { requestWS } from 'Utils/websocket';
+import Empty from 'Components/empty/empty.jsx';
 import Popup from '../buy-sell/popup.jsx';
 import { buy_sell } from '../../constants/buy-sell';
 import { localize } from '../i18next';
@@ -46,6 +47,7 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
     const [ad, setAd] = React.useState(null);
     const [adverts, setAdverts] = React.useState([]);
     const [counterparty_type, setCounterpartyType] = React.useState(buy_sell.BUY);
+    const [has_adverts, setHasAdverts] = React.useState(false);
     const height_values = [
         height_constants.screen,
         height_constants.core_header,
@@ -88,6 +90,7 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
                 counterparty_type,
                 advertiser_id,
             }).then(response => {
+                setHasAdverts(!!response.length);
                 setAdverts(response);
                 resolve();
             });
@@ -102,8 +105,8 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
             }).then(response => {
                 const { p2p_advertiser_stats } = response;
                 setStats(p2p_advertiser_stats);
-                setIsLoading(false);
                 resolve();
+                setIsLoading(false);
             });
         });
     };
@@ -209,10 +212,10 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
                             </div>
                         </Table.Cell>
                         <Popover
-                            className='advertiser-page__popover'
+                            className='advertiser-page__popover-icon'
                             alignment='top'
                             message={localize(
-                                "These fields are based on last 30 days' activity: Completion, Buy, Sell, Avg. release."
+                                "These fields are based on the last 30 days' activity: Completion, Buy, Sell, and Avg. release."
                             )}
                         >
                             <Icon icon='IcInfoOutline' size={16} />
@@ -231,23 +234,27 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
                         <div label={localize('Sell')} />
                     </Tabs>
                     <div className='advertiser-page__adverts-table'>
-                        <Table>
-                            <Table.Header>
-                                <Table.Row className='advertiser-page__adverts-table_row'>
-                                    <Table.Head>{localize('Limits')}</Table.Head>
-                                    <Table.Head>{localize('Rate (1 USD)')}</Table.Head>
-                                    <Table.Head>{''}</Table.Head>
-                                </Table.Row>
-                            </Table.Header>
-                            <Table.Body>
-                                <InfiniteLoaderList
-                                    autosizer_height={`calc(${height_values.join(' - ')})`}
-                                    items={adverts}
-                                    item_size={item_height}
-                                    RenderComponent={Row}
-                                />
-                            </Table.Body>
-                        </Table>
+                        {has_adverts ? (
+                            <Table>
+                                <Table.Header>
+                                    <Table.Row className='advertiser-page__adverts-table_row'>
+                                        <Table.Head>{localize('Limits')}</Table.Head>
+                                        <Table.Head>{localize('Rate (1 USD)')}</Table.Head>
+                                        <Table.Head>{''}</Table.Head>
+                                    </Table.Row>
+                                </Table.Header>
+                                <Table.Body>
+                                    <InfiniteLoaderList
+                                        autosizer_height={`calc(${height_values.join(' - ')})`}
+                                        items={adverts}
+                                        item_size={item_height}
+                                        RenderComponent={Row}
+                                    />
+                                </Table.Body>
+                            </Table>
+                        ) : (
+                            <Empty icon='IcCashierNoAds' title={localize('No ads')} />
+                        )}
                     </div>
                 </div>
             </div>

@@ -60,6 +60,7 @@
             width: 127px;
 
             &-header {
+                color: $color-grey-1;
                 font-size: var(--text-size-xs);
                 line-height: 20px;
             }
@@ -75,11 +76,17 @@
         }
     }
 
+    &__popover {
+        &-icon {
+            margin: 1.6rem 0.8rem;
+        }
+    }
+
     &__adverts {
         &-button {
+            align-items: center;
             display: flex;
             justify-content: center;
-            align-items: center;
         }
         &-price {
             color: var(--text-profit-success);
@@ -89,7 +96,7 @@
             width: 657px;
         }
         &-table_row {
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: 3fr 2fr 1fr;
         }
         &-tabs {
             width: 228px;

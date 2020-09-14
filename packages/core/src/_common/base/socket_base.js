@@ -3,12 +3,12 @@ const getAppId = require('@deriv/shared').getAppId;
 const getSocketURL = require('@deriv/shared').getSocketURL;
 const cloneObject = require('@deriv/shared').cloneObject;
 const getPropertyValue = require('@deriv/shared').getPropertyValue;
+const State = require('@deriv/shared').State;
 const { getLanguage } = require('@deriv/translations');
-const website_name = require('App/Constants/app-config').website_name;
+const website_name = require('@deriv/shared').website_name;
 const ClientBase = require('./client_base');
 const SocketCache = require('./socket_cache');
 const APIMiddleware = require('./api_middleware');
-const { State } = require('../storage');
 
 /*
  * An abstraction layer over native javascript WebSocket,
@@ -223,6 +223,11 @@ const BinarySocketBase = (() => {
             mt5_password_reset: 1,
         });
 
+    const getFinancialAssessment = () =>
+        deriv_api.send({
+            get_financial_assessment: 1,
+        });
+
     const profitTable = (limit, offset, date_boundaries) =>
         deriv_api.send({ profit_table: 1, description: 1, limit, offset, ...date_boundaries });
 
@@ -335,6 +340,7 @@ const BinarySocketBase = (() => {
         close,
         contractUpdate,
         contractUpdateHistory,
+        getFinancialAssessment,
         mt5NewAccount,
         mt5PasswordChange,
         mt5PasswordReset,

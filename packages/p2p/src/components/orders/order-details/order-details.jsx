@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Dialog } from '@deriv/components';
 import { localize } from 'Components/i18next';
 import { chatCreate } from 'Utils/sendbird';
 import OrderDetailsStatusBlock from './order-details-status-block.jsx';
@@ -35,18 +34,21 @@ const OrderDetails = ({ order_details, chat_info }) => {
     } = order_details;
     const is_mounted = React.useRef(false);
     const [channel_url, setChannelUrl] = React.useState(chat_channel_url);
-    const [show_popup, setShowPopup] = React.useState(false);
+    const [should_show_popup, setShouldShowPopup] = React.useState(false);
     const [popup_options, setPopupOptions] = React.useState({});
-    const onCancelClick = () => setShowPopup(false);
+    const onCancelClick = () => setShouldShowPopup(false);
     const handleShowPopup = options => {
         setPopupOptions(options);
-        setShowPopup(true);
+        setShouldShowPopup(true);
     };
     React.useEffect(() => {
         is_mounted.current = true;
-        if (!channel_url) {
-            chatCreate(id).then(val => {
-                if (is_mounted.current) setChannelUrl(val.channel_url);
+
+        if (!channel_url && is_mounted.current) {
+            chatCreate(id).then(response => {
+                if (!response.error) {
+                    setChannelUrl(response.channel_url);
+                }
             });
         }
 
@@ -137,13 +139,12 @@ const OrderDetails = ({ order_details, chat_info }) => {
                 {channel_url && (
                     <OrderDetailsChatbox {...chat_info} channel_url={channel_url} nickname={advertiser_name} />
                 )}
-                {show_popup && (
-                    <div className='orders__dialog'>
-                        <Dialog is_visible={show_popup}>
-                            <Popup {...popup_options} onCancel={onCancelClick} />
-                        </Dialog>
-                    </div>
-                )}
+                <Popup
+                    {...popup_options}
+                    onCancel={onCancelClick}
+                    should_show_popup={should_show_popup}
+                    setShouldShowPopup={setShouldShowPopup}
+                />
             </div>
         </div>
     );

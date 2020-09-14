@@ -19,14 +19,6 @@ const copyConfig = base => [
     { from: path.resolve(__dirname, '../src/public/images/favicons/**') },
     { from: path.resolve(__dirname, '../src/public/images/common/logos/platform_logos/**') },
     // { from: path.resolve(__dirname, '../src/_common/lib/pushwooshSDK/**'), flatten: true },
-    // {
-    //     from: path.resolve(__dirname, '../src/templates/app/manifest.json'),
-    //     to: 'manifest.json',
-    //     toType: 'file',
-    //     transform(content, path) {
-    //         return transformContentUrlBase(content, path, base);
-    //     }
-    // },
 ];
 
 const generateSWConfig = () => ({
@@ -53,12 +45,6 @@ const htmlOutputConfig = () => ({
 const htmlInjectConfig = () => ({
     links: [
         'css/smartcharts.css',
-        {
-            path: 'manifest.json',
-            attributes: {
-                rel: 'manifest',
-            },
-        },
         {
             path: 'public/images/favicons',
             glob: '*',

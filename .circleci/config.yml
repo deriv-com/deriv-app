@@ -67,12 +67,20 @@ commands:
             - "packages/trader/node_modules"
             - "packages/translations/node_modules"
             # VERIFY_CACHE_FOLDERS_END (DO NOT REMOVE)
+
   build:
     description: "Build"
     steps:
       - run:
           name: "Build all packages"
           command: npm run build
+
+  build_crypto:
+    description: "Build Crypto"
+    steps:
+      - run:
+          name: "Build all packages"
+          command: npm run build crypto
 
   notify_slack:
     description: "Notify slack"
@@ -178,6 +186,28 @@ jobs:
       - notify_slack
     environment:
       NODE_ENV: staging
+  build_crypto:
+    docker:
+      - image: circleci/node:12.18.0-stretch
+    steps: 
+      - git_checkout_from_cache
+      - npm_install_from_cache
+      - build_crypto
+
+  release_staging_crypto:
+    docker:
+      - image: circleci/node:12.18.0-stretch
+    steps:
+      - git_checkout_from_cache
+      - npm_install_from_cache
+      - build_crypto
+      - deploy:
+          target_branch: staging-crypto
+        docker_build_push
+        k8s_deploy_crypto
+        notify_slack
+    environment:
+      NODE_ENV: staging
 
   release_production:
     docker:
@@ -195,6 +225,23 @@ jobs:
       - notify_slack
     environment:
       NODE_ENV: staging
+  release_production_crypto:
+    docker:
+      - image: circleci/node:12.18.0-stretch
+    steps:
+      - git_checkout_from_cache
+      - npm_install_from_cache
+      - build_crypto
+      - deploy:
+          target_branch: production-crypto
+      - docker_build_push:
+          docker_image_latest_tag: latest
+      - k8s_deploy:
+          k8s_svc_name: production-deriv-crypto
+      - notify_slack
+    environment:
+      NODE_ENV: staging
+
 
 workflows:
   build:
@@ -206,6 +253,10 @@ workflows:
 
   release_staging:
     jobs:
+      - build_crypto:
+          filters: 
+            branches: 
+              only: /^master-crypto$/
       - release_staging:
           filters:
             branches:
@@ -213,6 +264,13 @@ workflows:
 
   release_production:
     jobs:
+      - release_production_crypto:
+        context: binary-frontend-artifact-upload-crypto
+        filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^crypto-production.*/
       - release_production:
           context: binary-frontend-artifact-upload
           filters:

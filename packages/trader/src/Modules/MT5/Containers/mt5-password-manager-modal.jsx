@@ -267,7 +267,7 @@ class MT5PasswordManagerModal extends React.Component {
                                                 hint={
                                                     !has_warning &&
                                                     localize(
-                                                        'Minimum of eight lower and uppercase English letters with numbers'
+                                                        'Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers.'
                                                     )
                                                 }
                                                 error={touched.new_password && errors.new_password}
@@ -363,7 +363,7 @@ class MT5PasswordManagerModal extends React.Component {
                                                     hint={
                                                         !has_warning &&
                                                         localize(
-                                                            'Minimum of eight lower and uppercase English letters with numbers'
+                                                            'Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers.'
                                                         )
                                                     }
                                                     error={touched.new_password && errors.new_password}

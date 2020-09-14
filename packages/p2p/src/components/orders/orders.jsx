@@ -31,7 +31,7 @@ const Orders = ({ params, navigate, chat_info }) => {
         setOrderInformation(null);
     };
 
-    const getOrderDetails = () => {
+    const subscribeToCurrentOrder = () => {
         order_info_subscription.current = subscribeWS(
             {
                 p2p_order_info: 1,
@@ -42,11 +42,17 @@ const Orders = ({ params, navigate, chat_info }) => {
         );
     };
 
+    const unsubscribeFromCurrentOrder = () => {
+        if (order_info_subscription.current?.unsubscribe) {
+            order_info_subscription.current.unsubscribe();
+        }
+    };
+
     const setOrderDetails = response => {
         if (!response.error) {
             setQueryDetails(response.p2p_order_info);
         } else {
-            order_info_subscription.current.unsubscribe();
+            unsubscribeFromCurrentOrder();
         }
     };
 
@@ -84,11 +90,10 @@ const Orders = ({ params, navigate, chat_info }) => {
     }, []);
 
     React.useEffect(() => {
-        if (order_info_subscription.current) {
-            order_info_subscription.current.unsubscribe();
-        }
+        unsubscribeFromCurrentOrder();
+
         if (order_id) {
-            getOrderDetails(order_id);
+            subscribeToCurrentOrder();
         }
     }, [order_id]);
 

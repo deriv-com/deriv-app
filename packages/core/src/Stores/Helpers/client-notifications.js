@@ -1,9 +1,17 @@
 import React from 'react';
-import { getDerivComLink, routes, isMobile, formatDate, isEmptyObject, website_name } from '@deriv/shared';
+import {
+    formatDate,
+    getDerivComLink,
+    isEmptyObject,
+    isMobile,
+    LocalStore,
+    routes,
+    State,
+    website_name,
+} from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { WS } from 'Services';
 import { BinaryLink } from 'App/Components/Routes';
-import { LocalStore, State } from '_common/storage';
+import { WS } from 'Services';
 
 // TODO: Update links to app_2 links when components are done.
 /* eslint-disable react/jsx-no-target-blank */

@@ -1,29 +1,29 @@
-import moment from 'moment';
 import Cookies from 'js-cookie';
-import { action, computed, observable, runInAction, when, reaction, toJS } from 'mobx';
+import { action, computed, observable, reaction, runInAction, toJS, when } from 'mobx';
+import moment from 'moment';
 import {
-    setCurrencies,
-    isEmptyObject,
-    getPropertyValue,
-    removeEmptyPropertiesFromObject,
-    isDesktopOs,
-    getUrlSmartTrader,
-    toMoment,
     getMT5AccountType,
+    getPropertyValue,
+    getUrlSmartTrader,
     isBot,
+    isDesktopOs,
+    isEmptyObject,
+    LocalStore,
+    removeEmptyPropertiesFromObject,
+    setCurrencies,
+    State,
+    toMoment,
 } from '@deriv/shared';
-
+import { localize } from '@deriv/translations';
 import { requestLogout, WS } from 'Services';
+import BinarySocketGeneral from 'Services/socket-general';
 import { redirectToLogin } from '_common/base/login';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
-import { localize } from '@deriv/translations';
-import { LocalStore, State } from '_common/storage';
 import { isEuCountry } from '_common/utility';
-import BinarySocketGeneral from 'Services/socket-general';
-import { handleClientNotifications } from './Helpers/client-notifications';
 import BaseStore from './base-store';
 import { getClientAccountType, getAccountTitle, getLandingCompanyValue } from './Helpers/client';
+import { handleClientNotifications } from './Helpers/client-notifications';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
 
 const storage_key = 'client.accounts';

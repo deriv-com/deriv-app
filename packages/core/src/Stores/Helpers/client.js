@@ -34,11 +34,13 @@ export const getAccountTitle = loginid => {
     return types_map[getClientAccountType(loginid)] || types_map.default;
 };
 
-export const getLandingCompanyValue = (loginid, landing_company, key, isAccountOfType) => {
+export const getLandingCompanyValue = ({ loginid, landing_company, isAccountOfType }) => {
+    const key = 'changeable_fields';
     let landing_company_object;
-    if (loginid.financial || isAccountOfType({ type: 'financial' })) {
+
+    if (loginid.financial || isAccountOfType('financial')) {
         landing_company_object = getPropertyValue(landing_company, 'financial_company');
-    } else if (loginid.real || isAccountOfType({ type: 'real' })) {
+    } else if (loginid.real || isAccountOfType('real')) {
         landing_company_object = getPropertyValue(landing_company, 'gaming_company');
 
         // handle accounts that don't have gaming company

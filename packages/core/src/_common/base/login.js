@@ -5,13 +5,12 @@ const getDerivComLink = require('@deriv/shared').getDerivComLink;
 const urlForCurrentDomain = require('@deriv/shared').urlForCurrentDomain;
 const { getLanguage } = require('@deriv/translations');
 const website_name = require('@deriv/shared').website_name;
-const Client = require('./client_base');
 const isStorageSupported = require('../storage').isStorageSupported;
 const LocalStore = require('../storage').LocalStore;
 
 const Login = (() => {
-    const redirectToLogin = () => {
-        if (!Client.isLoggedIn() && !isLoginPages() && isStorageSupported(sessionStorage)) {
+    const redirectToLogin = is_logged_in => {
+        if (!is_logged_in && !isLoginPages() && isStorageSupported(sessionStorage)) {
             sessionStorage.setItem('redirect_url', window.location.href);
             window.location.href = loginUrl();
         }

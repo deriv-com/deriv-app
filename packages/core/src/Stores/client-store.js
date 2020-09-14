@@ -23,7 +23,7 @@ import { isEuCountry } from '_common/utility';
 import BinarySocketGeneral from 'Services/socket-general';
 import { handleClientNotifications } from './Helpers/client-notifications';
 import BaseStore from './base-store';
-import { getClientAccountType, getAccountTitle } from './Helpers/client';
+import { getClientAccountType, getAccountTitle, getLandingCompanyValue } from './Helpers/client';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
 
 const storage_key = 'client.accounts';
@@ -887,6 +887,23 @@ export default class ClientStore extends BaseStore {
         );
     };
 
+    getRiskAssessment = () => {
+        if (!this.account_status) return false;
+
+        const status = this.account_status.status;
+        const is_high_risk = /high/.test(this.account_status.risk_classification);
+
+        return this.isAccountOfType('financial')
+            ? /(financial_assessment|trading_experience)_not_complete/.test(status)
+            : is_high_risk && /financial_assessment_not_complete/.test(status);
+    };
+
+    shouldCompleteTax = () => {
+        if (!this.isAccountOfType('financial')) return false;
+
+        return !/crs_tin_information/.test((this.account_status || {}).status);
+    };
+
     @action.bound
     updateAccountList(account_list) {
         account_list.forEach(account => {
@@ -928,14 +945,7 @@ export default class ClientStore extends BaseStore {
         this.root_store.ui.removeNotifications();
         this.root_store.ui.removeAllNotificationMessages();
         const client = this.accounts[this.loginid];
-        const { has_missing_required_field } = handleClientNotifications(
-            client,
-            this.account_settings,
-            this.account_status,
-            this.root_store.ui.addNotificationMessage,
-            this.loginid,
-            this.root_store.ui
-        );
+        const { has_missing_required_field } = handleClientNotifications(client, this, this.root_store.ui);
         this.setHasMissingRequiredField(has_missing_required_field);
     }
 
@@ -1003,10 +1013,7 @@ export default class ClientStore extends BaseStore {
                     if (client && !client.is_virtual) {
                         const { has_missing_required_field } = handleClientNotifications(
                             client,
-                            this.account_settings,
-                            this.account_status,
-                            this.root_store.ui.addNotificationMessage,
-                            this.loginid,
+                            this,
                             this.root_store.ui
                         );
                         this.setHasMissingRequiredField(has_missing_required_field);
@@ -1718,18 +1725,14 @@ export default class ClientStore extends BaseStore {
     @action.bound
     getChangeableFields() {
         const landing_company = State.getResponse('landing_company');
+        const { is_fully_authenticated, loginid, isAccountOfType, landing_company_shortcode } = this;
+
         const has_changeable_field =
-            (this.root_store.ui.is_eu_enabled || this.landing_company_shortcode === 'svg') &&
-            !this.is_fully_authenticated;
+            (this.root_store.ui.is_eu_enabled || landing_company_shortcode === 'svg') && !is_fully_authenticated;
 
         if (has_changeable_field) {
             let changeable_fields = [];
-            const changeable = getLandingCompanyValue(
-                this.loginid,
-                landing_company,
-                'changeable_fields',
-                this.isAccountOfType
-            );
+            const changeable = getLandingCompanyValue({ loginid, landing_company, isAccountOfType });
 
             if (changeable && changeable.only_before_auth) {
                 changeable_fields = [...changeable.only_before_auth];

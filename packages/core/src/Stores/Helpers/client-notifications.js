@@ -1,10 +1,7 @@
 import React from 'react';
 import { getDerivComLink, routes, isMobile, formatDate, isEmptyObject, website_name } from '@deriv/shared';
-
 import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services';
-
-import { getRiskAssessment, isAccountOfType, shouldAcceptTnc, shouldCompleteTax } from '_common/base/client_base';
 import { BinaryLink } from 'App/Components/Routes';
 import { LocalStore, State } from '_common/storage';
 
@@ -310,7 +307,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
     return notifications;
 };
 
-const hasMissingRequiredField = (account_settings, client) => {
+const hasMissingRequiredField = (account_settings, client, isAccountOfType) => {
     if (!account_settings) return false;
 
     const { is_svg, landing_company_shortcode } = client;
@@ -339,8 +336,8 @@ const hasMissingRequiredField = (account_settings, client) => {
 
     function getRequiredFields() {
         if (!isAccountOfType('financial')) return [];
-        const { residence } = client;
 
+        const { residence } = client;
         const required_settings_fields = [
             'account_opening_reason',
             'address_line_1',
@@ -349,6 +346,7 @@ const hasMissingRequiredField = (account_settings, client) => {
             'tax_identification_number',
             'tax_residence',
         ];
+
         const address_postcode_is_required = residence === 'gb' || landing_company_shortcode === 'iom';
         if (address_postcode_is_required) required_settings_fields.push('address_postcode');
 
@@ -368,7 +366,14 @@ const addVerificationNotifications = (identity, document, addNotificationMessage
     if (document.status === 'expired') addNotificationMessage(clientNotifications().poa_expired);
 };
 
-const checkAccountStatus = (account_status, client, addNotificationMessage, loginid) => {
+const checkAccountStatus = (
+    account_status,
+    client,
+    addNotificationMessage,
+    loginid,
+    getRiskAssessment,
+    shouldCompleteTax
+) => {
     if (isEmptyObject(account_status)) return {};
     if (loginid !== LocalStore.get('active_loginid')) return {};
 
@@ -443,28 +448,39 @@ export const excluded_notifications = isMobile()
           'new_version_available',
       ];
 
-export const handleClientNotifications = (
-    client,
-    account_settings,
-    account_status,
-    addNotificationMessage,
-    loginid,
-    ui
-) => {
+export const handleClientNotifications = (client, client_store, ui_store) => {
     const { currency, excluded_until } = client;
+    const {
+        loginid,
+        account_status,
+        account_settings,
+        getRiskAssessment,
+        is_tnc_needed,
+        isAccountOfType,
+        shouldCompleteTax,
+    } = client_store;
+    const { addNotificationMessage } = ui_store;
+
     if (loginid !== LocalStore.get('active_loginid')) return {};
-    if (!currency) addNotificationMessage(clientNotifications(ui).currency);
+    if (!currency) addNotificationMessage(clientNotifications(ui_store).currency);
     if (excluded_until) {
-        addNotificationMessage(clientNotifications(ui).self_exclusion(excluded_until));
+        addNotificationMessage(clientNotifications(ui_store).self_exclusion(excluded_until));
     }
 
-    const { has_risk_assessment } = checkAccountStatus(account_status, client, addNotificationMessage, loginid);
+    const { has_risk_assessment } = checkAccountStatus(
+        account_status,
+        client,
+        addNotificationMessage,
+        loginid,
+        getRiskAssessment,
+        shouldCompleteTax
+    );
 
-    if (shouldAcceptTnc(account_settings)) addNotificationMessage(clientNotifications(ui).tnc);
+    if (is_tnc_needed) addNotificationMessage(clientNotifications(ui_store).tnc);
 
-    const has_missing_required_field = hasMissingRequiredField(account_settings, client);
+    const has_missing_required_field = hasMissingRequiredField(account_settings, client, isAccountOfType);
     if (has_missing_required_field) {
-        addNotificationMessage(clientNotifications(ui).required_fields);
+        addNotificationMessage(clientNotifications(ui_store).required_fields);
     }
 
     return {

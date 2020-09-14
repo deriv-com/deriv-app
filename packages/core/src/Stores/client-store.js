@@ -1453,6 +1453,7 @@ export default class ClientStore extends BaseStore {
 
             // delete account query params - but keep other query params (e.g. utm)
             Object.keys(obj_params).forEach(key => search_params.delete(key));
+            search_params.delete('state'); // remove unused state= query string
             search_params = search_params?.toString();
             const search_param_without_account = search_params ? `?${search_params}` : '/';
             history.replaceState(null, null, `${search_param_without_account}${window.location.hash}`);

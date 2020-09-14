@@ -5,10 +5,10 @@ import { doUntilDone } from '../utils/helpers';
 
 const AFTER_FINISH_TIMEOUT = 5;
 
-export default (Engine) =>
+export default Engine =>
     class OpenContract extends Engine {
         observeOpenContract() {
-            this.listen('proposal_open_contract', (r) => {
+            this.listen('proposal_open_contract', r => {
                 const contract = r.proposal_open_contract;
 
                 if (!this.expectedContractId(contract.contract_id)) {
@@ -47,7 +47,7 @@ export default (Engine) =>
         }
 
         waitForAfter() {
-            return new Promise((resolve) => {
+            return new Promise(resolve => {
                 this.afterPromise = resolve;
             });
         }
@@ -58,7 +58,7 @@ export default (Engine) =>
             }
             this.contractId = contractId;
 
-            doUntilDone(() => this.api.subscribeToOpenContract(contractId)).then((r) => {
+            doUntilDone(() => this.api.subscribeToOpenContract(contractId)).then(r => {
                 ({
                     proposal_open_contract: { id: this.openContractId },
                 } = r);

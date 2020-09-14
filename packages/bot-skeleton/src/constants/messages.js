@@ -35,4 +35,5 @@ export const log_types = Object.freeze({
     NOT_OFFERED: 'not_offered',
     PROFIT: 'profit',
     LOST: 'lost',
+    PASSED_ERROR: 'passed_error',
 });

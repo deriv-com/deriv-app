@@ -77,8 +77,6 @@ export const registerStream = (observer, name, cb) => {
 
 const maxRetries = 12;
 
-const notifyRetry = (msg, error, delay) => log(`${msg}: ${error.error.msg_type}, ${localize('retrying in')} ${delay}s`);
-
 const getBackoffDelay = (error, delayIndex) => {
     const offset = 0.5; // 500ms
 
@@ -90,15 +88,20 @@ const getBackoffDelay = (error, delayIndex) => {
 
     const maxExpTries = 4;
     const exponentialIncrease = 2 ** delayIndex + offset;
+    const log_type = 'passed_error';
+    const extra = {};
+    let msg;
 
     if (errorCode === 'RateLimit' || delayIndex < maxExpTries) {
-        notifyRetry(localize('Rate limit reached for'), error, exponentialIncrease);
+        msg = 'Rate limit reached for';
+        extra.longcode = `${msg}: ${error.error.msg_type}, retrying in ${exponentialIncrease} s`;
+        log(log_type, extra);
         return exponentialIncrease * 1000;
     }
 
     const linearIncrease = exponentialIncrease + (maxExpTries - delayIndex + 1);
-
-    notifyRetry(localize('Request failed for'), error, linearIncrease);
+    msg = 'Request failed for';
+    extra.longcode = `${msg}: ${error.error.msg_type}, retrying in ${exponentialIncrease} s`;
     return linearIncrease * 1000;
 };
 
@@ -123,7 +126,6 @@ export const recoverFromError = (f, r, types, delayIndex) =>
                 reject(e);
                 return;
             }
-
             r(e.name, () => new Promise(delayPromise => setTimeout(delayPromise, getBackoffDelay(e, delayIndex))));
         });
     });

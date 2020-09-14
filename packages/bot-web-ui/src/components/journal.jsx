@@ -70,6 +70,16 @@ const FormatMessage = ({ logType, className, extra }) => {
                     />
                 );
             }
+            case log_types.PASSED_ERROR: {
+                const { longcode } = extra;
+                return (
+                    <Localize
+                        i18n_default_text='<0>{{longcode}}</0>'
+                        values={{ longcode }}
+                        components={[<span key={0} className='journal__text--error' />]}
+                    />
+                );
+            }
             default:
                 return null;
         }

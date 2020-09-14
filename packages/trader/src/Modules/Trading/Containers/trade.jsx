@@ -14,11 +14,11 @@ import AllMarkers from '../../SmartChart/Components/all-markers.jsx';
 const BottomWidgetsMobile = ({ tick, digits, setTick, setDigits }) => {
     React.useEffect(() => {
         setTick(tick);
-    }, [tick]);
+    }, [tick, setTick]);
 
     React.useEffect(() => {
         setDigits(digits);
-    }, digits);
+    }, [digits, setDigits]);
 
     // render nothing for bottom widgets on chart in mobile
     return null;

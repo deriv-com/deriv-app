@@ -1035,7 +1035,7 @@ export default class CashierStore extends BaseStore {
                 currency: account.currency,
                 is_crypto: isCryptocurrency(account.currency),
                 is_mt: account.account_type === 'mt5',
-                ...(account.mt5_group && { mt_icon: getMT5AccountDisplay(account.mt5_group) }),
+                ...(account.mt5_group && { mt_icon: getMT5AccountDisplay(account.mt5_group, false) }),
             };
             // set current logged in client as the default transfer from account
             if (account.loginid === this.root_store.client.loginid) {

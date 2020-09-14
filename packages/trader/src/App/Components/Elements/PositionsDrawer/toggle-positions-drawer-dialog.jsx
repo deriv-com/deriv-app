@@ -74,7 +74,7 @@ class TogglePositionsDrawerDialog extends React.Component {
                 className='positions-drawer-dialog-toggle__icon'
                 icon='IcEdit'
                 color={is_valid_to_cancel && 'disabled'}
-                size={16}
+                size={12}
             />
         );
 

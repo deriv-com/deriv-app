@@ -60,7 +60,7 @@ const validatePersonalDetails = (values, residence_list, account_opening_reason)
         citizen: [v => !!v, v => residence_list.map(i => i.text).includes(v)],
         tax_residence: [v => !!v, v => residence_list.map(i => i.text).includes(v)],
         tax_identification_number: [v => !!v, v => /^[\w-]{0,20}$/.test(v)],
-        account_opening_reason: [v => !!v, v => account_opening_reason.map(i => i.text).includes(v)],
+        account_opening_reason: [v => !!v, v => account_opening_reason.map(i => i.value).includes(v)],
     };
 
     const mappedKey = {

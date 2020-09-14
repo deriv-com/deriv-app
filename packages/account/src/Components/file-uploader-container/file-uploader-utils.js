@@ -41,7 +41,7 @@ export const readFiles = (files) => {
 
             fr.onerror = () => {
                 resolve({
-                    message: localize('Unable to read file [_1]', f.name),
+                    message: localize('Unable to read file {{name}}', { name: f.name }),
                 });
             };
             // Reading file

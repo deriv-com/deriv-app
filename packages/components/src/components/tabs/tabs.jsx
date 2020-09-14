@@ -84,24 +84,27 @@ class Tabs extends React.Component {
                     ref={this.setTabsWrapperRef}
                 >
                     {React.Children.map(children, (child, index) => {
-                        const { count, header_content, label } = child.props;
+                        if (child) {
+                            const { count, header_content, label } = child.props;
 
-                        return (
-                            <Tab
-                                count={count}
-                                is_active={index === active_index}
-                                key={label}
-                                is_label_hidden={children.length === 1 && single_tab_has_no_label}
-                                label={label}
-                                top={top}
-                                bottom={bottom}
-                                header_fit_content={header_fit_content}
-                                active_tab_ref={index === active_index ? this.setActiveTabRef : null}
-                                header_content={header_content}
-                                onClick={() => this.onTabItemClick(index)}
-                                setActiveLineStyle={this.setActiveLineStyle}
-                            />
-                        );
+                            return (
+                                <Tab
+                                    count={count}
+                                    is_active={index === active_index}
+                                    key={label}
+                                    is_label_hidden={children.length === 1 && single_tab_has_no_label}
+                                    label={label}
+                                    top={top}
+                                    bottom={bottom}
+                                    header_fit_content={header_fit_content}
+                                    active_tab_ref={index === active_index ? this.setActiveTabRef : null}
+                                    header_content={header_content}
+                                    onClick={() => this.onTabItemClick(index)}
+                                    setActiveLineStyle={this.setActiveLineStyle}
+                                />
+                            );
+                        }
+                        return null;
                     })}
                     <span
                         className={classNames('dc-tabs__active-line', {

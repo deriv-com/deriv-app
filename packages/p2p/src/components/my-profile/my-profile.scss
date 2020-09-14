@@ -50,11 +50,12 @@
         grid-template-rows: 46px;
         height: fit-content;
         margin: 2.4rem 0;
+        width: 657px;
 
         &-cell {
             display: block;
             text-align-last: center;
-            width: 217px;
+            width: 158px;
 
             &-header {
                 color: #999999;
@@ -67,9 +68,18 @@
                 font-weight: bold;
                 line-height: 24px;
             }
+
             &-separator {
                 border-right: 1px solid #f2f3f4;
             }
+        }
+    }
+    &__popover {
+        &-icon {
+            margin: 1.6rem 0.8rem;
+        }
+        &-text {
+            margin-right: 2rem;
         }
     }
     &__separator {

@@ -446,9 +446,11 @@ class App extends React.Component {
                                     <div label={localize('My ads')}>
                                         <MyAds navigate={this.redirectTo} params={parameters} />
                                     </div>
-                                    <div label={localize('My profile')}>
-                                        <MyProfile navigate={this.redirectTo} params={parameters} />
-                                    </div>
+                                    {this.state.nickname && (
+                                        <div label={localize('My profile')}>
+                                            <MyProfile navigate={this.redirectTo} params={parameters} />
+                                        </div>
+                                    )}
                                 </Tabs>
                             )}
                         </>

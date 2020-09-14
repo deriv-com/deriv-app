@@ -17,10 +17,9 @@ import {
     UILoader,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { isMobile } from '@deriv/shared';
+import { isMobile, validLength, validPassword, getPreBuildDVRs } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import MT5Store from 'Stores/Modules/MT5/mt5-store';
-import { validLength, validPassword, getPreBuildDVRs } from 'Utils/Validator/declarative-validation-rules';
 
 const CountdownComponent = ({ count_from = 60, onTimeout }) => {
     const [count, setCount] = React.useState(count_from);
@@ -202,7 +201,7 @@ class MT5PasswordManagerModal extends React.Component {
                     max_number: 25,
                 });
             } else if (!validPassword(values.new_password)) {
-                errors.new_password = getPreBuildDVRs().password.message;
+                errors.new_password = getPreBuildDVRs().password.message();
             } else if (values.new_password.toLowerCase() === email.toLowerCase()) {
                 errors.new_password = localize('Your password cannot be the same as your email address.');
             }
@@ -268,7 +267,7 @@ class MT5PasswordManagerModal extends React.Component {
                                                 hint={
                                                     !has_warning &&
                                                     localize(
-                                                        'Minimum of eight lower and uppercase English letters with numbers'
+                                                        'Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers.'
                                                     )
                                                 }
                                                 error={touched.new_password && errors.new_password}
@@ -364,7 +363,7 @@ class MT5PasswordManagerModal extends React.Component {
                                                     hint={
                                                         !has_warning &&
                                                         localize(
-                                                            'Minimum of eight lower and uppercase English letters with numbers'
+                                                            'Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers.'
                                                         )
                                                     }
                                                     error={touched.new_password && errors.new_password}

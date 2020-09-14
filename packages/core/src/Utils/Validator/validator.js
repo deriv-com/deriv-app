@@ -1,5 +1,5 @@
+import { getPreBuildDVRs } from '@deriv/shared';
 import { template } from '_common/utility';
-import { getPreBuildDVRs } from './declarative-validation-rules';
 import Error from './errors';
 
 class Validator {
@@ -19,7 +19,7 @@ class Validator {
      * @param {object} rule
      */
     addFailure(attribute, rule) {
-        let message = rule.options.message || getPreBuildDVRs()[rule.name].message;
+        let message = rule.options.message || getPreBuildDVRs()[rule.name].message();
         if (rule.name === 'length') {
             message = template(message, [
                 rule.options.min === rule.options.max ? rule.options.min : `${rule.options.min}-${rule.options.max}`,

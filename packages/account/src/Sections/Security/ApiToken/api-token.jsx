@@ -16,7 +16,7 @@ import {
 } from '@deriv/components';
 import { getPropertyValue, formatDate } from '@deriv/shared';
 
-import { localize, Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 import LoadErrorMessage from 'Components/load-error-message';
@@ -438,15 +438,7 @@ class ApiToken extends React.Component {
                         </Formik>
                     </ThemedScrollbars>
                     <DesktopWrapper>
-                        <Article
-                            title={localize('API token')}
-                            descriptions={[
-                                <Localize
-                                    key={0}
-                                    i18n_default_text="To access our mobile apps and other third-party apps, you'll first need to generate an API token."
-                                />,
-                            ]}
-                        />
+                        <Article />
                     </DesktopWrapper>
                 </div>
             </section>

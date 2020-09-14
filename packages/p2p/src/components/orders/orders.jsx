@@ -113,16 +113,15 @@ const Orders = ({ params, navigate, chat_info }) => {
     }, [orders]);
 
     if (order_information) {
-        const { offered_currency } = order_information;
-
+        const { account_currency } = order_information;
         return (
             <div className='orders orders--order-view'>
                 <PageReturn
                     onClick={hideDetails}
                     page_title={
                         order_information.is_buy_ad
-                            ? localize('Buy {{offered_currency}} order', { offered_currency })
-                            : localize('Sell {{offered_currency}} order', { offered_currency })
+                            ? localize('Buy {{offered_currency}} order', { offered_currency: account_currency })
+                            : localize('Sell {{offered_currency}} order', { offered_currency: account_currency })
                     }
                 />
                 <OrderDetails order_information={order_information} chat_info={chat_info} />

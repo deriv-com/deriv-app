@@ -41,7 +41,7 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
                         tax_identification_number: '',
                         account_opening_reason: '',
                     },
-                    props: ['residence_list', 'is_fully_authenticated', 'is_loading'],
+                    props: ['residence_list', 'is_fully_authenticated', 'is_loading', 'landing_company'],
                 },
                 {
                     header: {
@@ -284,6 +284,7 @@ export default connect(({ client, modules: { mt5 }, ui }) => ({
     addNotificationByKey: ui.addNotificationMessageByKey,
     get_settings: client.account_settings,
     is_fully_authenticated: client.is_fully_authenticated,
+    landing_company: client.landing_company,
     openPendingDialog: mt5.openPendingDialog,
     refreshNotifications: client.refreshNotifications,
     removeNotificationMessage: ui.removeNotificationMessage,

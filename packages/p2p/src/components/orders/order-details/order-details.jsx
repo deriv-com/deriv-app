@@ -44,9 +44,12 @@ const OrderDetails = ({ order_details, chat_info }) => {
     };
     React.useEffect(() => {
         is_mounted.current = true;
-        if (!channel_url) {
-            chatCreate(id).then(val => {
-                if (is_mounted.current) setChannelUrl(val.channel_url);
+
+        if (!channel_url && is_mounted.current) {
+            chatCreate(id).then(response => {
+                if (!response.error) {
+                    setChannelUrl(response.channel_url);
+                }
             });
         }
 

@@ -13,7 +13,7 @@ const validRequired = (value /* , options, field */) => {
 export const validAddress = value => !/[`~!$%^&*_=+[}{\]\\"?><|]+/.test(value);
 export const validPostCode = value => value === '' || /^[A-Za-z0-9][A-Za-z0-9\s-]*$/.test(value);
 export const validTaxID = value => /^[a-zA-Z0-9]*[\w-]*$/.test(value);
-export const validPhone = value => /^\+(?:[0-9] ?){6,14}[0-9]$/.test(value);
+export const validPhone = value => /^\+((-|\s)*[0-9])*$/.test(value);
 export const validCountryCode = (list, value) => list.some(item => value.startsWith(`+${item.phone_idd}`));
 export const validLetterSymbol = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><,|\d]+/.test(value);
 export const validLength = (value, options) =>

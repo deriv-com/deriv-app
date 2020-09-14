@@ -13,17 +13,19 @@ export const showUnavailableLocationError = flow(function*(showError, is_logged_
         residence_list.residence_list.find(obj_country => obj_country.value === clients_country_code) || {}
     ).text;
 
-    showError(
-        localize('If you have an account, log in to continue.'),
-        clients_country_text
-            ? localize('Sorry, this app is unavailable in {{clients_country}}.', {
-                  clients_country: clients_country_text,
-              })
-            : localize('Sorry, this app is unavailable in your current location.'),
-        localize('Log in'),
-        () => redirectToLogin(is_logged_in),
-        false
-    );
+    const header = clients_country_text
+        ? localize('Sorry, this app is unavailable in {{clients_country}}.', {
+              clients_country: clients_country_text,
+          })
+        : localize('Sorry, this app is unavailable in your current location.');
+
+    showError({
+        message: localize('If you have an account, log in to continue.'),
+        header,
+        redirect_label: localize('Log in'),
+        redirectOnClick: () => redirectToLogin(is_logged_in),
+        should_show_refresh: false,
+    });
 });
 
 export const isMarketClosed = (active_symbols = [], symbol) => {

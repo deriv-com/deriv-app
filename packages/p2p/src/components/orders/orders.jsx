@@ -78,13 +78,8 @@ const Orders = ({ params, navigate, chat_info }) => {
     React.useEffect(() => {
         is_mounted.current = true;
 
-        if (params?.order_info) {
-            setQueryDetails(params.order_info);
-        }
-
-        // Clear details when unmounting
         return () => {
-            hideDetails();
+            unsubscribeFromCurrentOrder();
             is_mounted.current = false;
         };
     }, []);

@@ -200,7 +200,7 @@ class Chart extends React.Component {
         };
 
         if (isMobile()) {
-            margin.bottom = 16;
+            margin.bottom = 48;
         }
 
         return margin;

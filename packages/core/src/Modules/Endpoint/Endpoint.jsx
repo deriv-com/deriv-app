@@ -146,6 +146,7 @@ const Endpoint = ({ is_eu_enabled, toggleIsEuEnabled }) => {
                             localStorage.removeItem('config.app_id');
                             localStorage.removeItem('config.server_url');
                             localStorage.removeItem('is_eu_enabled');
+                            localStorage.removeItem(platform_store.DERIV_CRYPTO_KEY);
                             location.reload();
                         }}
                         text='Reset to original settings'

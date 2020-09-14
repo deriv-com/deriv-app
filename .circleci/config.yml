@@ -79,8 +79,8 @@ commands:
     description: "Build Crypto"
     steps:
       - run:
-          name: "Build all packages"
-          command: npm run build crypto
+          name: "Build all packages for crypto"
+          command: npm run build:crypto
 
   notify_slack:
     description: "Notify slack"

@@ -116,7 +116,7 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
                         id='dt_exit_spot_label'
                         icon={<Icon icon='IcContractExitSpot' size={24} />}
                         label={localize('Exit spot')}
-                        value={exit_spot || ' - '}
+                        value={addCommaToNumber(exit_spot) || ' - '}
                         value2={toGMTFormat(epochToMoment(exit_tick_time)) || ' - '}
                     />
                 )}

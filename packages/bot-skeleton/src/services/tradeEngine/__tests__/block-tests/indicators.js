@@ -48,8 +48,8 @@ const getIndicatorsFromApi = () =>
 describe('Relative Strength Index', () => {
     let result, expected;
 
-    beforeAll((done) =>
-        getIndicatorsFromApi().then((r) => {
+    beforeAll(done =>
+        getIndicatorsFromApi().then(r => {
             result = r;
             const { ticks } = result;
 
@@ -57,12 +57,12 @@ describe('Relative Strength Index', () => {
                 sma: sma(ticks, { periods }),
                 smaa: smaa(ticks, { periods }),
                 bb: bb(ticks, bbOption)[1],
-                bba: bba(ticks, bbOption).map((e) => e[2]),
+                bba: bba(ticks, bbOption).map(e => e[2]),
                 ema: ema(ticks, { periods }),
                 emaa: emaa(ticks, { periods }),
                 rsi: rsi(ticks, { periods }),
                 rsia: rsia(ticks, { periods }),
-                macda: macda(ticks, macdOption).map((e) => e[0]),
+                macda: macda(ticks, macdOption).map(e => e[0]),
             };
 
             done();
@@ -70,7 +70,7 @@ describe('Relative Strength Index', () => {
     );
 
     it('Indicator values are set correctly', () => {
-        Object.keys(expected).forEach((name) => {
+        Object.keys(expected).forEach(name => {
             const endResult = JSON.parse(JSON.stringify(result[name]));
             const expectedResult = JSON.parse(JSON.stringify(expected[name]));
             expect(endResult).to.deep.equal(expectedResult);

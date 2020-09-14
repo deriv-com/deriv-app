@@ -10,7 +10,7 @@ import {
     macdArray as macda,
 } from '@deriv/shared';
 
-export default (Interface) =>
+export default Interface =>
     class extends Interface {
         getIndicatorsInterface() {
             return {
@@ -21,8 +21,8 @@ export default (Interface) =>
                 rsi: (input, periods) => this.decorate(rsi, input, { periods }),
                 rsia: (input, periods) => this.decorate(rsia, input, { periods }),
                 bb: (input, config, field) => this.decorate(bb, input, config)[field],
-                bba: (input, config, field) => this.decorate(bba, input, config).map((r) => r[field]),
-                macda: (input, config, field) => this.decorate(macda, input, config).map((r) => r[field]),
+                bba: (input, config, field) => this.decorate(bba, input, config).map(r => r[field]),
+                macda: (input, config, field) => this.decorate(macda, input, config).map(r => r[field]),
             };
         }
 

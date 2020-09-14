@@ -108,7 +108,7 @@ Blockly.Blocks.trade_definition = {
             const blocks_in_trade_options = this.getBlocksInStatement('TRADE_OPTIONS');
 
             if (blocks_in_trade_options.length > 0) {
-                blocks_in_trade_options.forEach((block) => {
+                blocks_in_trade_options.forEach(block => {
                     if (!/^trade_definition_.+$/.test(block.type)) {
                         runIrreversibleEvents(() => {
                             block.unplug(true);
@@ -124,7 +124,7 @@ Blockly.Blocks.trade_definition = {
     },
 };
 
-Blockly.JavaScript.trade_definition = (block) => {
+Blockly.JavaScript.trade_definition = block => {
     const { client } = DBotStore.instance;
 
     if (!client || !client.is_logged_in) {
@@ -150,7 +150,7 @@ Blockly.JavaScript.trade_definition = (block) => {
     const { opposites } = config;
     const contract_type_list =
         contract_type === 'both'
-            ? opposites[trade_type.toUpperCase()].map((opposite) => Object.keys(opposite)[0])
+            ? opposites[trade_type.toUpperCase()].map(opposite => Object.keys(opposite)[0])
             : [contract_type];
 
     const initialization = Blockly.JavaScript.statementToCode(block, 'INITIALIZATION');

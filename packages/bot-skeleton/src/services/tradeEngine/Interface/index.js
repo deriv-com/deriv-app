@@ -40,28 +40,28 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
     }
 
     getBotInterface() {
-        const getDetail = (i) => createDetails(this.tradeEngine.data.contract)[i];
+        const getDetail = i => createDetails(this.tradeEngine.data.contract)[i];
 
         return {
             init: (...args) => this.tradeEngine.init(...args),
             start: (...args) => this.tradeEngine.start(...args),
             stop: (...args) => this.tradeEngine.stop(...args),
-            purchase: (contract_type) => this.tradeEngine.purchase(contract_type),
-            getAskPrice: (contract_type) => Number(this.getProposal(contract_type).ask_price),
-            getPayout: (contract_type) => Number(this.getProposal(contract_type).payout),
+            purchase: contract_type => this.tradeEngine.purchase(contract_type),
+            getAskPrice: contract_type => Number(this.getProposal(contract_type).ask_price),
+            getPayout: contract_type => Number(this.getProposal(contract_type).payout),
             getPurchaseReference: () => this.tradeEngine.getPurchaseReference(),
             isSellAvailable: () => this.tradeEngine.isSellAtMarketAvailable(),
             sellAtMarket: () => this.tradeEngine.sellAtMarket(),
             getSellPrice: () => this.getSellPrice(),
-            isResult: (result) => getDetail(10) === result,
-            isTradeAgain: (result) => globalObserver.emit('bot.trade_again', result),
-            readDetails: (i) => getDetail(i - 1),
+            isResult: result => getDetail(10) === result,
+            isTradeAgain: result => globalObserver.emit('bot.trade_again', result),
+            readDetails: i => getDetail(i - 1),
         };
     }
 
     sleep(arg = 1) {
         return new Promise(
-            (r) =>
+            r =>
                 setTimeout(() => {
                     r();
                     setTimeout(() => this.observer.emit('CONTINUE'), 0);
@@ -72,7 +72,7 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
 
     getProposal(contract_type) {
         return this.data.proposals.find(
-            (proposal) =>
+            proposal =>
                 proposal.contract_type === contract_type &&
                 proposal.purchase_reference === this.tradeEngine.getPurchaseReference()
         );

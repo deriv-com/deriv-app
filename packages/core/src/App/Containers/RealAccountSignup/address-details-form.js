@@ -1,3 +1,4 @@
+import { getErrorMessages } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import AddressDetails from 'App/Containers/RealAccountSignup/address-details.jsx';
 import { generateValidationFunction, getDefaultFields } from './form-validations';
@@ -15,7 +16,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
                 ['req', localize('Address line 1 is required')],
                 ['address', localize('Address is not in a proper format')],
                 ['length', localize('This should not exceed {{max}} characters.', { max: 70 }), { max: 70 }],
-                ['po_box', localize('P.O. Box is not accepted in address')],
+                ['po_box', getErrorMessages().po_box()],
             ].filter(x => (is_svg ? x.indexOf('po_box') !== 0 : x)),
         },
         address_line_2: {
@@ -23,7 +24,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
             default_value: account_settings.address_line_2 ?? '',
             rules: [
                 ['length', localize('This should not exceed {{max}} characters.', { max: 70 }), { max: 70 }],
-                ['po_box', localize('P.O. Box is not accepted in address')],
+                ['po_box', getErrorMessages().po_box()],
             ].filter(x => (is_svg ? x.indexOf('po_box') !== 0 : x)),
         },
         address_city: {
@@ -67,7 +68,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
                     }),
                     { min: 0, max: 20 },
                 ],
-                ['postcode', localize('Only letters, numbers, space, and hyphen are allowed.')],
+                ['postcode', getErrorMessages().postcode()],
             ],
         },
     };

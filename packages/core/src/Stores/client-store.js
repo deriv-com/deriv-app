@@ -829,7 +829,7 @@ export default class ClientStore extends BaseStore {
                 await this.init();
                 resolve(response);
             } else {
-                reject(response.error.message);
+                reject(response.error);
             }
         });
     }
@@ -851,7 +851,7 @@ export default class ClientStore extends BaseStore {
                 this.accountRealReaction(response);
                 resolve(response);
             } else {
-                reject(response.error.message);
+                reject(response.error);
             }
         });
     }

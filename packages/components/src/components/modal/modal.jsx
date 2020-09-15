@@ -23,6 +23,7 @@ const ModalElement = ({
     is_vertical_bottom,
     is_vertical_top,
     is_title_centered,
+    has_outer_content,
     header,
     portalId,
     children,
@@ -78,6 +79,7 @@ const ModalElement = ({
                 'dc-modal__container--is-vertical-bottom': is_vertical_bottom,
                 'dc-modal__container--is-vertical-top': is_vertical_top,
                 'dc-modal__container--is-confirmation-modal': is_confirmation_modal,
+                'dc-modal__container--has-outer-content': has_outer_content,
             })}
             style={{
                 height: height || 'auto',
@@ -159,6 +161,7 @@ const Modal = ({
     id,
     is_open,
     has_close_icon,
+    has_outer_content,
     height,
     onEntered,
     onExited,
@@ -204,6 +207,7 @@ const Modal = ({
             title={title}
             toggleModal={toggleModal}
             has_close_icon={has_close_icon}
+            has_outer_content={has_outer_content}
             height={height}
             onMount={onMount}
             onUnmount={onUnmount}

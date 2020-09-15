@@ -1597,8 +1597,10 @@ export default class ClientStore extends BaseStore {
                     event: 'virtual_signup',
                 });
 
-                if (this.root_store.ui.is_eu_enabled) {
+                if (this.root_store.ui.is_eu_enabled && this.is_uk) {
                     this.root_store.ui.showAccountTypesModalForEuropean();
+                } else {
+                    this.root_store.ui.toggleWelcomeModal(true);
                 }
             }
         });

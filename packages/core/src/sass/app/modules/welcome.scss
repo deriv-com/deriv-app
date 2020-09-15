@@ -1,0 +1,128 @@
+.welcome {
+    &__title {
+        font-size: 1.6rem;
+        font-weight: bold;
+        line-height: 1.5;
+        margin: 2.4rem;
+        text-align: center;
+    }
+    &__message {
+        display: none;
+        flex-direction: row;
+        position: fixed;
+        align-items: center;
+
+        &__text {
+            color: var(--text-colored-background);
+            font-size: 1.6rem;
+            font-weight: bold;
+            padding-left: 0.8rem;
+        }
+        &--left {
+            top: 50%;
+            left: -1.6rem;
+            transform: translateX(-100%);
+
+            .welcome__message__text {
+                width: 12rem;
+            }
+        }
+        &--right {
+            top: 50%;
+            right: -1.6rem;
+            transform: translateX(100%);
+        }
+        &--visible {
+            display: flex;
+        }
+    }
+    &-column {
+        width: 32rem;
+        height: 46.3rem;
+        position: relative;
+        padding: 1.6rem;
+
+        &:hover {
+            box-shadow: 0 0 3rem 0.5rem var(--shadow-drop);
+        }
+        &__icons {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+        }
+        &__icon {
+            margin: 0.8rem 0.6rem 1.6rem;
+        }
+        &__title {
+            font-size: 1.6rem;
+            font-weight: bold;
+            line-height: 1.5;
+            text-align: center;
+        }
+        &__description {
+            font-size: 1.2rem;
+            line-height: 1.5;
+            height: 7.8rem;
+            text-align: center;
+            padding: 0.8rem 1.6rem 1.6rem;
+            border-bottom: 1px solid var(--general-section-1);
+        }
+        &__button {
+            width: calc(100% - 3.2rem);
+            position: absolute;
+            bottom: 1.6rem;
+            left: 1.6rem;
+        }
+        &__platforms {
+            &__title {
+                font-size: 1.4rem;
+                font-weight: bold;
+                line-height: 1.5;
+                text-align: center;
+                padding: 2.4rem 1.6rem 1.6rem;
+            }
+            &__container {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+        &__platform {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            grid-template-rows: auto auto;
+            grid-column-gap: 0.8rem;
+            margin-bottom: 1.6rem;
+
+            &__icon {
+                grid-row: 1 / -1;
+                grid-column: 1;
+            }
+            &__title {
+                font-size: 1.2rem;
+                font-weight: bold;
+                line-height: 1.5;
+                grid-row: 1;
+                grid-column: 2;
+            }
+            &__description {
+                font-size: 1.2rem;
+                line-height: 1.5;
+                color: var(--text-less-prominent);
+                grid-row: 2;
+                grid-column: 2;
+            }
+        }
+    }
+    &__body {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+    }
+    &__footer {
+        font-size: 1.2rem;
+        line-height: 1.5;
+        color: var(--text-less-prominent);
+        padding: 2.4rem;
+        text-align: center;
+    }
+}

@@ -19,7 +19,6 @@ $side-padding: 1.2em;
         &-filter {
             position: relative;
             display: flex;
-            justify-content: flex-end;
             width: 100%;
             @include desktop {
                 max-width: 36rem;

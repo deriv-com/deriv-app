@@ -28,9 +28,8 @@ class Statement extends React.Component {
     }
 
     componentDidMount() {
+        const { is_mx_mlt } = this.props;
         this.props.onMount();
-        const is_mx_mlt =
-            this.props.landing_company_shortcode === 'iom' || this.props.landing_company_shortcode === 'malta';
 
         if (is_mx_mlt)
             WS.accountStatistics().then(response => {
@@ -148,6 +147,7 @@ class Statement extends React.Component {
             date_to,
             is_empty,
             is_loading,
+            is_mx_mlt,
             error,
             filtered_date_range,
             handleScroll,
@@ -173,8 +173,6 @@ class Statement extends React.Component {
             map[item.col_index] = item;
             return map;
         }, {});
-        const is_mx_mlt =
-            this.props.landing_company_shortcode === 'iom' || this.props.landing_company_shortcode === 'malta';
 
         return (
             <React.Fragment>
@@ -193,38 +191,34 @@ class Statement extends React.Component {
                         localized_message={localize('You have no transactions yet.')}
                         localized_period_message={localize('You have no transactions for this period.')}
                     />
+                ) : this.should_show_loading_placeholder ? (
+                    <PlaceholderComponent is_loading={this.should_show_loading_placeholder} />
                 ) : (
                     <React.Fragment>
-                        {this.should_show_loading_placeholder ? (
-                            <PlaceholderComponent is_loading={this.should_show_loading_placeholder} />
-                        ) : (
-                            <React.Fragment>
-                                <DesktopWrapper>
-                                    <DataTable
-                                        className='statement'
-                                        data_source={data}
-                                        columns={this.columns}
-                                        onScroll={handleScroll}
-                                        getRowAction={row => this.getRowAction(row)}
-                                        is_empty={is_empty}
-                                        custom_width={'100%'}
-                                        getRowSize={() => 63}
-                                        content_loader={ReportsTableRowLoader}
-                                    />
-                                </DesktopWrapper>
-                                <MobileWrapper>
-                                    <DataList
-                                        className='statement'
-                                        data_source={data}
-                                        rowRenderer={this.mobileRowRenderer}
-                                        getRowAction={this.getRowAction}
-                                        onScroll={handleScroll}
-                                        custom_width={'100%'}
-                                        getRowSize={() => 176}
-                                    />
-                                </MobileWrapper>
-                            </React.Fragment>
-                        )}
+                        <DesktopWrapper>
+                            <DataTable
+                                className='statement'
+                                data_source={data}
+                                columns={this.columns}
+                                onScroll={handleScroll}
+                                getRowAction={row => this.getRowAction(row)}
+                                is_empty={is_empty}
+                                custom_width={'100%'}
+                                getRowSize={() => 63}
+                                content_loader={ReportsTableRowLoader}
+                            />
+                        </DesktopWrapper>
+                        <MobileWrapper>
+                            <DataList
+                                className='statement'
+                                data_source={data}
+                                rowRenderer={this.mobileRowRenderer}
+                                getRowAction={this.getRowAction}
+                                onScroll={handleScroll}
+                                custom_width={'100%'}
+                                getRowSize={() => 176}
+                            />
+                        </MobileWrapper>
                     </React.Fragment>
                 )}
             </React.Fragment>
@@ -251,6 +245,7 @@ Statement.propTypes = {
 
 export default connect(({ modules, client }) => ({
     currency: client.currency,
+    is_mx_mlt: client.standpoint.iom || client.standpoint.malta,
     date_from: modules.statement.date_from,
     date_to: modules.statement.date_to,
     data: modules.statement.data,

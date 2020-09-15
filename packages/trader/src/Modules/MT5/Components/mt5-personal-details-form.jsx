@@ -55,14 +55,10 @@ export const InputField = ({ name, optional = false, ...props }) => (
     </Field>
 );
 
-const validatePersonalDetails = ({
-    values,
-    residence_list,
-    account_opening_reason,
-    landing_company,
-    is_tin_required,
-}) => {
-    const tin_regex = landing_company?.config?.tin_format?.[0] ?? true;
+const validatePersonalDetails = ({ values, residence_list, account_opening_reason, is_tin_required }) => {
+    const [tax_residence_obj] = residence_list.filter(res => res.text === values.tax_residence && res.tin_format);
+    const [tin_format] = tax_residence_obj?.tin_format ?? [];
+    const tin_regex = tin_format || false;
 
     const validations = {
         citizen: [v => !!v, v => residence_list.map(i => i.text).includes(v)],
@@ -175,7 +171,6 @@ const MT5PersonalDetailsForm = ({
                     values: initialValues,
                     residence_list,
                     account_opening_reason,
-                    landing_company,
                     is_tin_required,
                 });
                 is_initial_valid = Object.entries(initial_errors).length === 0 && initial_errors.constructor === Object;
@@ -186,7 +181,6 @@ const MT5PersonalDetailsForm = ({
                     values,
                     residence_list,
                     account_opening_reason,
-                    landing_company,
                     is_tin_required,
                 })
             }

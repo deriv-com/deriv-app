@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Dialog, Icon, Loading, Popover, Table, Tabs } from '@deriv/components';
+import { useIsMounted } from '@deriv/shared';
 import { generateHexColourFromNickname, getShortNickname } from 'Utils/string';
 import { height_constants } from 'Utils/height_constants';
 import Dp2pContext from 'Components/context/dp2p-context';
@@ -41,7 +42,7 @@ const RowComponent = React.memo(({ data, is_buy_advert, showAdPopup, style }) =>
 RowComponent.displayName = 'RowComponent';
 
 const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
-    const { is_advertiser } = React.useContext(Dp2pContext);
+    const { currency, is_advertiser } = React.useContext(Dp2pContext);
     const { advertiser_name, advertiser_id } = selected_ad;
     const [active_index, setActiveIndex] = React.useState(0);
     const [ad, setAd] = React.useState(null);
@@ -62,23 +63,18 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
     ];
     const item_height = 56;
     const [is_loading, setIsLoading] = React.useState(true);
-    const [is_mounted, setIsMounted] = React.useState(false);
+    const isMounted = useIsMounted();
     const short_name = getShortNickname(advertiser_name);
     const [show_ad_popup, setShowAdPopup] = React.useState(false);
     const [stats, setStats] = React.useState({});
     const { buy_orders_count, completion_rate, release_time_avg, sell_orders_count, total_orders_count } = stats;
 
     React.useEffect(() => {
-        setIsMounted(true);
-        return () => setIsMounted(false);
-    }, []);
-
-    React.useEffect(() => {
-        if (is_mounted) {
+        if (isMounted.current) {
             getAdvertiserAdverts();
             getAdvertiserStats();
         }
-    }, [is_mounted]);
+    }, []);
 
     React.useEffect(() => {
         getAdvertiserAdverts();
@@ -108,7 +104,7 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
                 p2p_advertiser_stats: 1,
                 id: advertiser_id,
             }).then(response => {
-                if (!response.erro) {
+                if (!response.error) {
                     const { p2p_advertiser_stats } = response;
                     setStats(p2p_advertiser_stats);
                 } else {
@@ -221,7 +217,7 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
                         <Table.Cell className='advertiser-page__stats-cell'>
                             <div className='advertiser-page__stats-cell-header'>{localize('Avg. release')}</div>
                             <div className='advertiser-page__stats-cell-info'>
-                                {release_time_avg ? `${(release_time_avg / 3600).toFixed(2)} min` : '-'}
+                                {release_time_avg ? `${(release_time_avg / 3600).toFixed(2)} ${localize('min')}` : '-'}
                             </div>
                         </Table.Cell>
                         <Popover
@@ -252,7 +248,7 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
                                 <Table.Header>
                                     <Table.Row className='advertiser-page__adverts-table_row'>
                                         <Table.Head>{localize('Limits')}</Table.Head>
-                                        <Table.Head>{localize('Rate (1 USD)')}</Table.Head>
+                                        <Table.Head>{localize('Rate (1 {{currency}})', { currency })}</Table.Head>
                                         <Table.Head>{''}</Table.Head>
                                     </Table.Row>
                                 </Table.Header>

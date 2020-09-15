@@ -1,5 +1,6 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
+import { useIsMounted } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { TableError } from 'Components/table/table-error.jsx';
@@ -18,21 +19,24 @@ const MyAdsState = ({ message }) => (
 const MyAds = () => {
     const { is_advertiser, is_restricted, setPoiStatus } = React.useContext(Dp2pContext);
     const [is_loading, setIsLoading] = React.useState(true);
+    const isMounted = useIsMounted();
     const [show_ad_form, setShowAdForm] = React.useState(false);
 
     React.useEffect(() => {
-        if (!is_advertiser) {
-            requestWS({ get_account_status: 1 }).then(response => {
-                if (!response.error) {
-                    const { get_account_status } = response;
-                    const { status } = get_account_status.authentication.identity;
+        if (isMounted.current) {
+            if (!is_advertiser) {
+                requestWS({ get_account_status: 1 }).then(response => {
+                    if (isMounted.current && !response.error) {
+                        const { get_account_status } = response;
+                        const { status } = get_account_status.authentication.identity;
 
-                    setPoiStatus(status);
-                }
+                        setPoiStatus(status);
+                    }
+                    setIsLoading(false);
+                });
+            } else {
                 setIsLoading(false);
-            });
-        } else {
-            setIsLoading(false);
+            }
         }
     }, []);
 

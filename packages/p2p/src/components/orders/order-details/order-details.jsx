@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useIsMounted } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import { chatCreate } from 'Utils/sendbird';
 import OrderDetailsStatusBlock from './order-details-status-block.jsx';
@@ -32,7 +33,7 @@ const OrderDetails = ({ order_details, chat_info }) => {
         payment_info,
         transaction_currency,
     } = order_details;
-    const is_mounted = React.useRef(false);
+    const isMounted = useIsMounted();
     const [channel_url, setChannelUrl] = React.useState(chat_channel_url);
     const [should_show_popup, setShouldShowPopup] = React.useState(false);
     const [popup_options, setPopupOptions] = React.useState({});
@@ -42,17 +43,13 @@ const OrderDetails = ({ order_details, chat_info }) => {
         setShouldShowPopup(true);
     };
     React.useEffect(() => {
-        is_mounted.current = true;
-
-        if (!channel_url && is_mounted.current) {
+        if (!channel_url && isMounted.current) {
             chatCreate(id).then(response => {
                 if (!response.error) {
                     setChannelUrl(response.channel_url);
                 }
             });
         }
-
-        return () => (is_mounted.current = false);
     }, []);
 
     return (

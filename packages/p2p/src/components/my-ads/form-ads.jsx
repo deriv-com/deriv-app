@@ -246,8 +246,8 @@ const FormAds = ({ handleShowForm }) => {
                                                         is_align_text_left
                                                         className='p2p-my-ads__form-field'
                                                         list={[
-                                                            { text: 'Buy', value: buy_sell.BUY },
-                                                            { text: 'Sell', value: buy_sell.SELL },
+                                                            { text: localize('Buy'), value: buy_sell.BUY },
+                                                            { text: localize('Sell'), value: buy_sell.SELL },
                                                         ]}
                                                         error={touched.type && errors.type}
                                                     />
@@ -295,7 +295,7 @@ const FormAds = ({ handleShowForm }) => {
                                                         data-lpignore='true'
                                                         type='text'
                                                         error={touched.price_rate && errors.price_rate}
-                                                        label={localize('Fixed rate (1 USD)')}
+                                                        label={localize('Fixed rate (1 {{currency}})', { currency })}
                                                         hint={localize('Per 1 {{currency}}', { currency })}
                                                         className='p2p-my-ads__form-field'
                                                         trailing_icon={

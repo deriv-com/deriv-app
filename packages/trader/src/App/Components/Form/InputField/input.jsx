@@ -35,7 +35,7 @@ const Input = ({
         if (current_focus === name) {
             ref.current.focus();
         }
-    }, [current_focus, name]);
+    }, [current_focus, name, ref]);
 
     const onBlur = () => setCurrentFocus(null);
     const onFocus = () => setCurrentFocus(name);

@@ -62,6 +62,7 @@ commands:
             - "packages/bot-web-ui/node_modules"
             - "packages/components/node_modules"
             - "packages/core/node_modules"
+            - "packages/indicators/node_modules"
             - "packages/p2p/node_modules"
             - "packages/shared/node_modules"
             - "packages/trader/node_modules"

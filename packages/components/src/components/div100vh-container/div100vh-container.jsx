@@ -38,8 +38,9 @@ Div100vhContainer.propTypes = {
     id: PropTypes.string,
     children: PropTypes.any,
     height_offset: PropTypes.string,
-    max_height_offset: PropTypes.string,
+    is_bypassed: PropTypes.bool,
     is_disabled: PropTypes.bool,
+    max_height_offset: PropTypes.string,
 };
 
 export default Div100vhContainer;

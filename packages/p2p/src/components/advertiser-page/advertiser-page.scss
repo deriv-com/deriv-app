@@ -6,6 +6,11 @@
         overflow-y: scroll;
     }
 
+    &__error {
+        color: $color-red-4;
+        font-size: var(--text-size-xs);
+    }
+
     &__header {
         display: flex;
         height: fit-content;

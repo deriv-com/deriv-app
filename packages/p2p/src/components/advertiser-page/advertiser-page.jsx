@@ -47,6 +47,7 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
     const [ad, setAd] = React.useState(null);
     const [adverts, setAdverts] = React.useState([]);
     const [counterparty_type, setCounterpartyType] = React.useState(buy_sell.BUY);
+    const [error_message, setErrorMessage] = React.useState('');
     const [has_adverts, setHasAdverts] = React.useState(false);
     const height_values = [
         height_constants.screen,
@@ -74,37 +75,45 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
 
     React.useEffect(() => {
         if (is_mounted) {
-            advertiserAdverts();
-            advertiserStats();
+            getAdvertiserAdverts();
+            getAdvertiserStats();
         }
     }, [is_mounted]);
 
     React.useEffect(() => {
-        advertiserAdverts();
+        getAdvertiserAdverts();
     }, [active_index]);
 
-    const advertiserAdverts = () => {
+    const getAdvertiserAdverts = () => {
         return new Promise(resolve => {
             requestWS({
                 p2p_advert_list: 1,
                 counterparty_type,
                 advertiser_id,
             }).then(response => {
-                setHasAdverts(!!response.length);
-                setAdverts(response);
+                if (!response.error) {
+                    setHasAdverts(!!response.length);
+                    setAdverts(response);
+                } else {
+                    setErrorMessage(response.error);
+                }
                 resolve();
             });
         });
     };
 
-    const advertiserStats = () => {
+    const getAdvertiserStats = () => {
         return new Promise(resolve => {
             requestWS({
                 p2p_advertiser_stats: 1,
                 id: advertiser_id,
             }).then(response => {
-                const { p2p_advertiser_stats } = response;
-                setStats(p2p_advertiser_stats);
+                if (!response.erro) {
+                    const { p2p_advertiser_stats } = response;
+                    setStats(p2p_advertiser_stats);
+                } else {
+                    setErrorMessage(response.error);
+                }
                 resolve();
                 setIsLoading(false);
             });
@@ -144,6 +153,10 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
 
     if (is_loading) {
         return <Loading is_fullscreen={false} />;
+    }
+
+    if (error_message) {
+        return <div className='advertiser-page__error'>{error_message}</div>;
     }
 
     if (show_ad_popup) {

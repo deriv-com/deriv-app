@@ -1,10 +1,10 @@
 export const getUrlSmartTrader = () => {
-    // TODO: [app-link-refactor] - Remove backwards compatibility for `deriv.app`
-    if (
-        /^staging\.deriv\.app$/i.test(window.location.hostname) ||
-        /^staging-app\.deriv\.com$/i.test(window.location.hostname)
-    ) {
+    if (/^staging-app\.deriv\.com$/i.test(window.location.hostname)) {
         return 'https://staging-smarttrader.deriv.com';
+    }
+
+    if (/^staging-app\.derivcrypto\.com$/i.test(window.location.hostname)) {
+        return 'https://staging-smarttrader.derivcrypto.com';
     }
 
     return 'https://smarttrader.deriv.com';

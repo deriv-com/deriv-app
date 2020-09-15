@@ -3,13 +3,14 @@ import { plusIconDark, minusIconDark } from '../images';
 
 Blockly.Blocks.controls_if = {
     init() {
+        this.value_connections = [null];
+        this.statement_connections = [null];
+        this.else_statement_connection = null;
         this.else_if_count = 0;
         this.else_count = 0;
 
         this.jsonInit(this.definition());
-
-        const addInputIcon = this.getAddInputIcon();
-        this.appendDummyInput('MUTATOR').appendField(addInputIcon);
+        this.updateShape();
     },
     definition() {
         return {
@@ -71,160 +72,203 @@ Blockly.Blocks.controls_if = {
     domToMutation(xmlElement) {
         this.else_if_count = parseInt(xmlElement.getAttribute('elseif')) || 0;
         this.else_count = parseInt(xmlElement.getAttribute('else')) || 0;
-        this.updateShape();
+        this.rebuildShape();
     },
-    updateShape() {
-        // Delete everything.
-        this.removeInput('ELSE', true);
-        this.removeInput('ELSE_LABEL', true);
-        this.removeInput('DELETE_ELSE', true);
+    rebuildShape() {
+        const value_connections = [null];
+        const statement_connections = [null];
+        const else_statement_connection = this.getInput('ELSE')?.connection?.targetConnection || null;
 
         let i = 1;
 
-        while (this.getInput(`IF${i}`)) {
-            this.removeInput(`IF_LABEL${i}`, true);
-            this.removeInput(`IF${i}`, true);
-            this.removeInput(`THEN_LABEL${i}`, true);
-            this.removeInput(`DELETE_ICON${i}`, true);
-            this.removeInput(`DO${i}`, true);
+        while (true) {
+            const input_names = this.getIfInputNames(i);
+            const if_input = this.getInput(input_names.IF);
+
+            if (!if_input) {
+                break;
+            }
+
+            const do_input = this.getInput(input_names.DO);
+            value_connections.push(if_input.connection.targetConnection);
+            statement_connections.push(do_input.connection.targetConnection);
+            i++;
+        }
+
+        this.updateShape();
+        this.reconnectChildBlocks(value_connections, statement_connections, else_statement_connection);
+    },
+    update(updateFn) {
+        Blockly.Events.setGroup(true);
+
+        const old_mutation_dom = this.mutationToDom();
+        const old_mutation = old_mutation_dom && Blockly.Xml.domToText(old_mutation_dom);
+        const is_rendered = this.rendered;
+
+        this.rendered = false;
+
+        if (updateFn) {
+            updateFn.call(this);
+        }
+
+        this.updateShape();
+        this.rendered = is_rendered;
+        this.initSvg();
+
+        const group = Blockly.Events.getGroup();
+        const new_mutation_dom = this.mutationToDom();
+        const new_mutation = new_mutation_dom && Blockly.Xml.domToText(new_mutation_dom);
+
+        if (old_mutation !== new_mutation) {
+            const change_event = new Blockly.Events.BlockChange(this, 'mutation', null, old_mutation, new_mutation);
+            Blockly.Events.fire(change_event);
+
+            setTimeout(() => {
+                Blockly.Events.setGroup(group);
+                this.bumpNeighbours_();
+                Blockly.Events.setGroup(false);
+            }, Blockly.BUMP_DELAY);
+        }
+
+        if (this.rendered) {
+            this.render();
+        }
+
+        Blockly.Events.setGroup(false);
+    },
+    updateShape() {
+        if (this.getInput('ELSE')) {
+            this.removeInput('ELSE');
+            this.removeInput('ELSE_LABEL');
+            this.removeInput('DELETE_ELSE');
+        }
+
+        let i = 1;
+
+        while (true) {
+            const input_names = this.getIfInputNames(i);
+
+            if (!this.getInput(input_names.IF)) {
+                break;
+            }
+
+            this.removeInput(input_names.IF_LABEL);
+            this.removeInput(input_names.IF);
+            this.removeInput(input_names.THEN_LABEL);
+            this.removeInput(input_names.DELETE_ICON);
+            this.removeInput(input_names.DO);
+
             i++;
         }
 
         if (this.getInput('MUTATOR')) {
-            this.removeInput('MUTATOR');
+            this.removeInput('MUTATOR'); // "+" icon.
         }
 
-        // Rebuild block
+        // Rebuild else if statements
         for (let j = 1; j <= this.else_if_count; j++) {
-            this.appendDummyInput(`IF_LABEL${j}`).appendField(localize('else if'));
-            this.appendValueInput(`IF${j}`).setCheck('Boolean');
-            this.appendDummyInput(`THEN_LABEL${j}`).appendField(localize('then'));
-            this.appendDummyInput(`DELETE_ICON${j}`).appendField(this.getRemoveInputIcon(j, false));
-            this.appendStatementInput(`DO${j}`);
+            const input_names = this.getIfInputNames(j);
+            const removeElseIf = () => this.modifyElseIf(false, j);
+
+            this.appendDummyInput(input_names.IF_LABEL).appendField(localize('else if'));
+            this.appendValueInput(input_names.IF).setCheck('Boolean');
+            this.appendDummyInput(input_names.THEN_LABEL).appendField(localize('then'));
+            this.appendDummyInput(input_names.DELETE_ICON).appendField(
+                new Blockly.FieldImage(minusIconDark, 24, 24, '-', removeElseIf)
+            );
+            this.appendStatementInput(input_names.DO);
         }
 
-        if (this.else_count) {
+        // Rebuild else statement
+        if (this.else_count > 0) {
+            const removeElse = () => this.modifyElse(false);
             this.appendDummyInput('ELSE_LABEL').appendField(localize('else'));
-            this.appendDummyInput('DELETE_ELSE').appendField(this.getRemoveInputIcon(this.else_if_count + 1, true));
+            this.appendDummyInput('DELETE_ELSE').appendField(
+                new Blockly.FieldImage(minusIconDark, 24, 24, '-', removeElse, false)
+            );
             this.appendStatementInput('ELSE');
         }
 
-        this.appendDummyInput('MUTATOR').appendField(this.getAddInputIcon());
+        const addElseIf = () => {
+            if (this.else_count === 0) {
+                this.modifyElse(true);
+            } else {
+                if (!this.else_if_count) {
+                    this.else_if_count = 0;
+                }
+
+                this.modifyElseIf(true);
+            }
+        };
+
+        // Re-add the "+" icon
+        this.appendDummyInput('MUTATOR').appendField(
+            new Blockly.FieldImage(plusIconDark, 24, 24, '+', addElseIf, false)
+        );
 
         this.initSvg();
         this.render();
     },
-    getAddInputIcon() {
-        const onAddClick = () => {
-            if (!this.workspace || this.isInFlyout) {
-                return;
+    storeConnections(arg = 0) {
+        this.value_connections = [null];
+        this.statement_connections = [null];
+        this.else_statement_connection = null;
+
+        for (let i = 1; i <= this.else_if_count; i++) {
+            if (arg !== i) {
+                const input_names = this.getIfInputNames(i);
+
+                this.value_connections.push(this.getInput(input_names.IF).connection.targetConnection);
+                this.statement_connections.push(this.getInput(input_names.DO).connection.targetConnection);
             }
+        }
 
-            const old_mutation_dom = this.mutationToDom();
-            const new_input_num = this.else_if_count + 1;
+        const else_input = this.getInput('ELSE');
 
-            if (this.else_count === 0) {
-                // No `elseif`, just add an `else`-statement
-                this.appendDummyInput('ELSE_LABEL').appendField(localize('else'));
-                this.appendDummyInput('DELETE_ELSE').appendField(this.getRemoveInputIcon(new_input_num, true));
-                this.appendStatementInput('ELSE');
-
-                this.else_count++;
-            } else {
-                // We've already got else + elseifs, keep adding elseifs into infinity.
-                this.appendDummyInput(`IF_LABEL${new_input_num}`).appendField(localize('else if'));
-                this.appendValueInput(`IF${new_input_num}`).setCheck('Boolean');
-                this.appendDummyInput(`THEN_LABEL${new_input_num}`).appendField(localize('then'));
-                this.appendDummyInput(`DELETE_ICON${new_input_num}`).appendField(
-                    this.getRemoveInputIcon(new_input_num, false)
-                );
-                this.appendStatementInput(`DO${new_input_num}`);
-
-                this.else_if_count++;
-            }
-
-            // We already have an else, this input needs to be moved to the bottom where it belongs.
-            if (this.getInput('ELSE')) {
-                this.moveInputBefore('ELSE_LABEL', null);
-                this.moveInputBefore('DELETE_ELSE', null);
-                this.moveInputBefore('ELSE', null);
-            }
-
-            // Move plus-icon to the bottom
-            this.moveInputBefore('MUTATOR', null);
-
-            this.initSvg();
-            this.render();
-
-            // Fire a mutation event so this can be undone/redone.
-            const old_mutation = Blockly.Xml.domToText(old_mutation_dom);
-            const new_mutation = Blockly.Xml.domToText(this.mutationToDom());
-
-            Blockly.Events.fire(new Blockly.Events.Change(this, 'mutation', null, old_mutation, new_mutation));
-        };
-
-        return new Blockly.FieldImage(plusIconDark, 24, 24, '+', onAddClick.bind(this));
+        if (else_input) {
+            this.else_statement_connection = else_input.connection.targetConnection;
+        }
     },
-    getRemoveInputIcon(index, is_else_stack) {
-        const onRemoveClick = () => {
-            if (!this.workspace || this.isInFlyout) {
-                return;
+    reconnectChildBlocks(opt_value_conns, opt_statement_conns, opt_else_statement_conns) {
+        const value_connections = opt_value_conns ?? this.value_connections;
+        const statement_connections = opt_statement_conns ?? this.statement_connections;
+        const else_statement_connection = opt_else_statement_conns ?? this.else_statement_connection;
+
+        for (let i = 1; i <= this.else_if_count; i++) {
+            const input_names = this.getIfInputNames(i);
+            const value_connection = value_connections[i];
+            const statement_connection = statement_connections[i];
+
+            if (value_connection && this.getInput(input_names.IF)) {
+                Blockly.Mutator.reconnect(value_connection, this, input_names.IF);
             }
-
-            const old_mutation_dom = this.mutationToDom();
-
-            if (is_else_stack) {
-                this.removeInput('ELSE_LABEL');
-                this.removeInput('DELETE_ELSE');
-                this.removeInput('ELSE');
-                this.else_count = 0;
-            } else {
-                // Determine which label it is, has to be done inside this function.
-                const input_names = ['IF_LABEL', 'IF', 'THEN_LABEL', 'DELETE_ICON', 'DO'];
-
-                input_names.forEach(input_name => {
-                    this.removeInput(`${input_name}${index}`);
-
-                    // Re-number inputs w/ indexes larger than this one, e.g. when removing `IF5` becomes `IF4`
-                    let i = 1;
-                    let j = 0;
-
-                    // e.g. we've removed `IF5`, name of larger input `IF6` should become `IF5`
-                    let larger_input = this.getInput(input_name + (index + i));
-
-                    while (larger_input) {
-                        const newIndex = index + j;
-                        larger_input.name = input_name + newIndex;
-
-                        // Re-attach click handler with correct index.
-                        if (input_name === 'DELETE_ICON') {
-                            for (let k = 0; k < larger_input.fieldRow.length; k++) {
-                                const field = larger_input.fieldRow[k];
-                                field.dispose();
-                                larger_input.fieldRow.splice(k, 1);
-                            }
-
-                            larger_input.appendField(this.getRemoveInputIcon(newIndex, false));
-                        }
-
-                        i++;
-                        j++;
-
-                        larger_input = this.getInput(input_name + (index + i));
-                    }
-                });
-
-                this.else_if_count--;
+            if (statement_connection && this.getInput(input_names.DO)) {
+                Blockly.Mutator.reconnect(statement_connection, this, input_names.DO);
             }
+        }
 
-            // Fire a mutation event so this can be undone/redone.
-            const old_mutation = Blockly.Xml.domToText(old_mutation_dom);
-            const new_mutation = Blockly.Xml.domToText(this.mutationToDom());
-
-            Blockly.Events.fire(new Blockly.Events.Change(this, 'mutation', null, old_mutation, new_mutation));
+        if (else_statement_connection && this.getInput('ELSE')) {
+            Blockly.Mutator.reconnect(else_statement_connection, this, 'ELSE');
+        }
+    },
+    modifyElse(is_add) {
+        const update = () => {
+            this.else_count += is_add ? 1 : -1;
         };
 
-        return new Blockly.FieldImage(minusIconDark, 24, 24, '-', onRemoveClick.bind(this));
+        this.storeConnections();
+        this.update(update);
+        this.reconnectChildBlocks();
+    },
+    modifyElseIf(is_add, opt_idx) {
+        this.storeConnections(opt_idx);
+
+        const update = () => {
+            this.else_if_count += is_add ? 1 : -1;
+        };
+
+        this.update(update);
+        this.reconnectChildBlocks();
     },
     getRequiredValueInputs() {
         const required_inputs = {};
@@ -233,6 +277,15 @@ Blockly.Blocks.controls_if = {
             .forEach(input => (required_inputs[input.name] = null));
 
         return required_inputs;
+    },
+    getIfInputNames: idx => {
+        return {
+            IF_LABEL: `IF_LABEL${idx}`,
+            IF: `IF${idx}`,
+            THEN_LABEL: `THEN_LABEL${idx}`,
+            DELETE_ICON: `DELETE_ICON${idx}`,
+            DO: `DO${idx}`,
+        };
     },
 };
 

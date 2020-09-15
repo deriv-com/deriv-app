@@ -166,7 +166,8 @@ const MT5PersonalDetailsForm = ({
                 account_opening_reason: value.account_opening_reason,
             }}
             enableReinitialize
-            validateOnMount={({ initialValues }) => {
+            validateOnMount
+            isInitialValid={({ initialValues }) => {
                 const initial_errors = validatePersonalDetails({
                     values: initialValues,
                     residence_list,

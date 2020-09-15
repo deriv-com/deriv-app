@@ -4,19 +4,19 @@ import React from 'react';
 import {
     Autocomplete,
     AutoHeightWrapper,
+    DesktopWrapper,
     Div100vhContainer,
     Dropdown,
-    ThemedScrollbars,
+    FormSubmitButton,
     Input,
     Loading,
-    Modal,
-    FormSubmitButton,
-    DesktopWrapper,
     MobileWrapper,
+    Modal,
     SelectNative,
+    ThemedScrollbars,
 } from '@deriv/components';
 import { FormSubHeader } from '@deriv/account';
-import { isDesktop, isMobile, isDeepEqual } from '@deriv/shared';
+import { isDeepEqual, isDesktop, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 
 const getAccountOpeningReasonList = () => [
@@ -81,27 +81,21 @@ const validatePersonalDetails = ({
         account_opening_reason: localize('Account opening reason'),
     };
 
-    const common_messages = [
-        localize('{{field_name}} is required'),
-        localize('{{field_name}} is not properly formatted.'),
-    ];
+    const common_messages = ['{{field_name}} is required', '{{field_name}} is not properly formatted.'];
 
     const errors = {};
 
     Object.entries(validations).forEach(([key, rules]) => {
         const error_index = rules.findIndex(v => !v(values[key]));
         if (error_index !== -1) {
-            switch (key) {
-                default:
-                    errors[key] = errors[key] = (
-                        <Localize
-                            i18n_default_text={common_messages[error_index]}
-                            values={{
-                                field_name: mappedKey[key],
-                            }}
-                        />
-                    );
-            }
+            errors[key] = errors[key] = (
+                <Localize
+                    i18n_default_text={common_messages[error_index]}
+                    values={{
+                        field_name: mappedKey[key],
+                    }}
+                />
+            );
         }
     });
 
@@ -147,7 +141,6 @@ const MT5PersonalDetailsForm = ({
     value,
     index,
 }) => {
-    let is_initial_valid = false;
     const account_opening_reason = getAccountOpeningReasonList();
     const is_tin_required = landing_company?.config?.tax_details_required ?? false;
 
@@ -170,17 +163,7 @@ const MT5PersonalDetailsForm = ({
                 account_opening_reason: value.account_opening_reason,
             }}
             enableReinitialize
-            validateOnMount={({ initialValues }) => {
-                const initial_errors = validatePersonalDetails({
-                    values: initialValues,
-                    residence_list,
-                    account_opening_reason,
-                    landing_company,
-                    is_tin_required,
-                });
-                is_initial_valid = Object.entries(initial_errors).length === 0 && initial_errors.constructor === Object;
-                return initial_errors;
-            }}
+            validateOnMount
             validate={values =>
                 validatePersonalDetails({
                     values,
@@ -201,7 +184,11 @@ const MT5PersonalDetailsForm = ({
                             onSubmit={handleSubmit}
                             autoComplete='off'
                         >
-                            <Div100vhContainer className='details-form' height_offset='179px' is_disabled={isDesktop()}>
+                            <Div100vhContainer
+                                className='details-form'
+                                max_autoheight_offset='179px'
+                                is_disabled={isDesktop()}
+                            >
                                 <p className='details-form__description'>
                                     <Localize
                                         i18n_default_text={
@@ -287,14 +274,17 @@ const MT5PersonalDetailsForm = ({
                                                 />
                                             </MobileWrapper>
                                         </fieldset>
-                                        <InputField
-                                            id='real_mt5_tax_identification_number'
-                                            name='tax_identification_number'
-                                            placeholder={localize('Tax identification number')}
-                                            value={values.tax_identification_number}
-                                            onBlur={handleBlur}
-                                            optional={!is_tin_required}
-                                        />
+                                        <fieldset className='account-form__fieldset'>
+                                            <InputField
+                                                id='real_mt5_tax_identification_number'
+                                                name='tax_identification_number'
+                                                label={localize('Tax identification number')}
+                                                placeholder={localize('Tax identification number')}
+                                                value={values.tax_identification_number}
+                                                onBlur={handleBlur}
+                                                optional={!is_tin_required}
+                                            />
+                                        </fieldset>
                                         <FormSubHeader title={localize('Account opening reason')} />
                                         <Field name='account_opening_reason'>
                                             {({ field }) => (
@@ -351,7 +341,6 @@ const MT5PersonalDetailsForm = ({
                                     cancel_label={localize('Previous')}
                                     is_disabled={
                                         isSubmitting ||
-                                        (Object.keys(touched).length === 0 && !is_initial_valid) ||
                                         (Object.keys(touched).length > 0 && Object.keys(errors).length > 0)
                                     }
                                     is_absolute={isMobile()}

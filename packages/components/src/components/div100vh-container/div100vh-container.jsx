@@ -11,12 +11,22 @@ import Div100vh from 'react-div-100vh';
     e.g - style={{ height: calc(100rvh - 100px )}}
 */
 /* To manually remove rvh calculation and revert to default browser calculation use is_disabled */
-const Div100vhContainer = ({ children, className, is_disabled, id, height_offset, max_autoheight_offset }) => {
+/* To bypass usage of component altogether, use is_bypassed */
+const Div100vhContainer = ({
+    children,
+    className,
+    is_bypassed,
+    is_disabled,
+    id,
+    height_offset,
+    max_autoheight_offset,
+}) => {
     const height_rule = height_offset ? `calc(100rvh - ${height_offset})` : 'calc(100rvh)';
     const height_style = {
         height: max_autoheight_offset ? null : height_rule,
         maxHeight: max_autoheight_offset ? `calc(100rvh - ${max_autoheight_offset})` : null,
     };
+    if (is_bypassed) return children;
     return (
         <Div100vh id={id} className={className} style={is_disabled ? {} : height_style}>
             {children}

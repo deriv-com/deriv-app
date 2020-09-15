@@ -70,6 +70,11 @@
     .input-element {
         width: 100%;
     }
+    @include mobile {
+        &__wrapper {
+            max-height: 480px;
+        }
+    }
 }
 
 .mt5-password-modal__message {
@@ -286,6 +291,11 @@
             & .dc-icon {
                 width: 8.8rem;
                 height: auto;
+
+                /* iPhone SE screen width fixes due to UI space restrictions */
+                @media only screen and (max-width: 340px) {
+                    width: 7rem;
+                }
             }
             p {
                 line-height: 20px;

@@ -2,7 +2,7 @@ import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
-import { FormSubmitButton, Icon, Modal, PasswordInput, PasswordMeter } from '@deriv/components';
+import { Div100vhContainer, FormSubmitButton, Icon, Modal, PasswordInput, PasswordMeter } from '@deriv/components';
 import { isMobile, routes, validLength, validPassword, getPreBuildDVRs } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import SuccessDialog from 'App/Containers/Modals/success-dialog.jsx';
@@ -120,60 +120,66 @@ const MT5PasswordModal = ({
                         isSubmitting,
                         touched,
                     }) => (
-                        <form onSubmit={handleSubmit}>
-                            <h2>
-                                <Localize
-                                    i18n_default_text='Choose a password for your DMT5 {{ account_type }} account'
-                                    values={{
-                                        account_type: account_title,
-                                    }}
-                                />
-                            </h2>
-                            <div className='dc-modal__container_mt5-password-modal__body'>
-                                <div className='input-element'>
-                                    <PasswordMeter
-                                        input={values.password}
-                                        has_error={!!(touched.password && errors.password)}
-                                    >
-                                        {({ has_warning }) => (
-                                            <PasswordInput
-                                                autoComplete='password'
-                                                label={localize('Create a password')}
-                                                error={touched.password && errors.password}
-                                                hint={
-                                                    !has_warning &&
-                                                    localize(
-                                                        'Minimum of eight lower and uppercase English letters with numbers'
-                                                    )
-                                                }
-                                                name='password'
-                                                value={values.password}
-                                                onBlur={handleBlur}
-                                                onChange={e => {
-                                                    setFieldTouched('password', true);
-                                                    handleChange(e);
-                                                }}
-                                            />
-                                        )}
-                                    </PasswordMeter>
-                                </div>
-                                {is_real_financial_stp && (
-                                    <div className='dc-modal__container_mt5-password-modal__description'>
-                                        <Localize i18n_default_text='Your MT5 Financial STP account will be opened through Deriv (FX) Ltd. All trading in this account is subject to the regulations and guidelines of the Labuan Financial Services Authority (LFSA). All other accounts, including your Deriv account, are not subject to the regulations and guidelines of the Labuan Financial Services Authority (LFSA).' />
+                        <Div100vhContainer
+                            className='dc-modal__container_mt5-password-modal__wrapper'
+                            height_offset='20px'
+                            is_bypassed={!isMobile() || !is_real_financial_stp}
+                        >
+                            <form onSubmit={handleSubmit}>
+                                <h2>
+                                    <Localize
+                                        i18n_default_text='Choose a password for your DMT5 {{ account_type }} account'
+                                        values={{
+                                            account_type: account_title,
+                                        }}
+                                    />
+                                </h2>
+                                <div className='dc-modal__container_mt5-password-modal__body'>
+                                    <div className='input-element'>
+                                        <PasswordMeter
+                                            input={values.password}
+                                            has_error={!!(touched.password && errors.password)}
+                                        >
+                                            {({ has_warning }) => (
+                                                <PasswordInput
+                                                    autoComplete='password'
+                                                    label={localize('Create a password')}
+                                                    error={touched.password && errors.password}
+                                                    hint={
+                                                        !has_warning &&
+                                                        localize(
+                                                            'Minimum of eight lower and uppercase English letters with numbers'
+                                                        )
+                                                    }
+                                                    name='password'
+                                                    value={values.password}
+                                                    onBlur={handleBlur}
+                                                    onChange={e => {
+                                                        setFieldTouched('password', true);
+                                                        handleChange(e);
+                                                    }}
+                                                />
+                                            )}
+                                        </PasswordMeter>
                                     </div>
-                                )}
-                            </div>
-                            <FormSubmitButton
-                                is_disabled={isSubmitting || !values.password || Object.keys(errors).length > 0}
-                                has_cancel
-                                cancel_label={localize('Cancel')}
-                                onCancel={closeModal}
-                                is_absolute={isMobile()}
-                                is_loading={isSubmitting}
-                                label={localize('Add account')}
-                                form_error={form_error}
-                            />
-                        </form>
+                                    {is_real_financial_stp && (
+                                        <div className='dc-modal__container_mt5-password-modal__description'>
+                                            <Localize i18n_default_text='Your MT5 Financial STP account will be opened through Deriv (FX) Ltd. All trading in this account is subject to the regulations and guidelines of the Labuan Financial Services Authority (LFSA). All other accounts, including your Deriv account, are not subject to the regulations and guidelines of the Labuan Financial Services Authority (LFSA).' />
+                                        </div>
+                                    )}
+                                </div>
+                                <FormSubmitButton
+                                    is_disabled={isSubmitting || !values.password || Object.keys(errors).length > 0}
+                                    has_cancel
+                                    cancel_label={localize('Cancel')}
+                                    onCancel={closeModal}
+                                    is_absolute={isMobile()}
+                                    is_loading={isSubmitting}
+                                    label={localize('Add account')}
+                                    form_error={form_error}
+                                />
+                            </form>
+                        </Div100vhContainer>
                     )}
                 </Formik>
             </Modal>

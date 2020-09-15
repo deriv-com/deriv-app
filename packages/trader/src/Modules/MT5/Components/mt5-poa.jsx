@@ -31,6 +31,8 @@ import { InputField } from './mt5-personal-details-form.jsx';
 const form = React.createRef();
 
 class MT5POA extends React.Component {
+    // TODO: Refactor to functional component with hooks
+    is_mounted = false;
     file_uploader_ref = undefined;
     state = {
         document_file: undefined,
@@ -178,13 +180,22 @@ class MT5POA extends React.Component {
     };
 
     componentDidMount() {
+        this.is_mounted = true;
         WS.authorized.getAccountStatus().then(response => {
-            const { get_account_status } = response;
-            const { document, identity } = get_account_status.authentication;
-            const has_poi = !!(identity && identity.status === 'none');
-            this.setState({ poa_status: document.status, has_poi, is_loading: false });
-            this.props.refreshNotifications();
+            WS.wait('states_list').then(() => {
+                const { get_account_status } = response;
+                const { document, identity } = get_account_status.authentication;
+                const has_poi = !!(identity && identity.status === 'none');
+                if (this.is_mounted) {
+                    this.setState({ poa_status: document.status, has_poi, is_loading: false });
+                    this.props.refreshNotifications();
+                }
+            });
         });
+    }
+
+    componentWillUnmount() {
+        this.is_mounted = false;
     }
 
     handleResubmit = () => {
@@ -216,10 +227,9 @@ class MT5POA extends React.Component {
                     document_file: this.state.document_file,
                 }}
                 validateOnMount
-                isInitialValid={({ initialValues }) => this.validateForm(initialValues)}
                 validate={this.validateForm}
                 onSubmit={this.onSubmit}
-                ref={form}
+                innerRef={form}
             >
                 {({
                     errors,
@@ -273,40 +283,62 @@ class MT5POA extends React.Component {
                                                         placeholder={localize('Town/City*')}
                                                     />
                                                     <fieldset className='address-state__fieldset'>
-                                                        <DesktopWrapper>
-                                                            <Field name='address_state'>
-                                                                {({ field }) => (
-                                                                    <Dropdown
-                                                                        is_alignment_top={window.innerHeight < 930}
-                                                                        id='address_state'
-                                                                        required
-                                                                        className='address_state-dropdown'
-                                                                        is_align_text_left
-                                                                        list={states_list}
-                                                                        error={
-                                                                            touched[field.name] && errors[field.name]
-                                                                        }
-                                                                        name='address_state'
+                                                        {states_list?.length > 0 ? (
+                                                            <React.Fragment>
+                                                                <DesktopWrapper>
+                                                                    <Field name='address_state'>
+                                                                        {({ field }) => (
+                                                                            <Dropdown
+                                                                                is_alignment_top={
+                                                                                    window.innerHeight < 930
+                                                                                }
+                                                                                id='address_state'
+                                                                                required
+                                                                                className='address_state-dropdown'
+                                                                                is_align_text_left
+                                                                                list={states_list}
+                                                                                error={
+                                                                                    touched[field.name] &&
+                                                                                    errors[field.name]
+                                                                                }
+                                                                                name='address_state'
+                                                                                value={values.address_state}
+                                                                                onChange={handleChange}
+                                                                                placeholder={localize(
+                                                                                    'State/Province*'
+                                                                                )}
+                                                                            />
+                                                                        )}
+                                                                    </Field>
+                                                                </DesktopWrapper>
+                                                                <MobileWrapper>
+                                                                    <SelectNative
+                                                                        label={localize('State/Province*')}
                                                                         value={values.address_state}
-                                                                        onChange={handleChange}
-                                                                        placeholder={localize('State/Province*')}
+                                                                        list_items={states_list}
+                                                                        error={
+                                                                            touched.address_state &&
+                                                                            errors.address_state
+                                                                        }
+                                                                        onChange={e =>
+                                                                            setFieldValue(
+                                                                                'address_state',
+                                                                                e.target.value,
+                                                                                true
+                                                                            )
+                                                                        }
+                                                                        required
                                                                     />
-                                                                )}
-                                                            </Field>
-                                                        </DesktopWrapper>
-                                                        <MobileWrapper>
-                                                            <SelectNative
+                                                                </MobileWrapper>
+                                                            </React.Fragment>
+                                                        ) : (
+                                                            // Fallback to input field when states list is empty / unavailable for country
+                                                            <InputField
+                                                                name='address_state'
                                                                 label={localize('State/Province*')}
-                                                                value={values.address_state}
-                                                                list_items={states_list}
-                                                                error={touched.address_state && errors.address_state}
-                                                                use_text={true}
-                                                                onChange={e =>
-                                                                    setFieldValue('address_state', e.target.value, true)
-                                                                }
-                                                                required
+                                                                placeholder={localize('State/Province*')}
                                                             />
-                                                        </MobileWrapper>
+                                                        )}
                                                     </fieldset>
                                                     <InputField
                                                         name='address_postcode'

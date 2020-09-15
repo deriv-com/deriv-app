@@ -27,7 +27,7 @@ const CollapsibleTradeParams = ({
 }) => {
     React.useEffect(() => {
         if (previous_symbol && is_allow_equal && has_allow_equals) setIsTradeParamsExpanded(true);
-    }, [previous_symbol]);
+    }, [previous_symbol, is_allow_equal, has_allow_equals, setIsTradeParamsExpanded]);
 
     const is_collapsed = !is_trade_params_expanded;
 

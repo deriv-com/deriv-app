@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Icon } from '@deriv/components';
 import { getDerivComLink } from '@deriv/shared';
-import { Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 
 const SignupErrorContent = ({ message, code, onConfirm }) => {
     const Heading = () => {
@@ -52,14 +52,18 @@ const SignupErrorContent = ({ message, code, onConfirm }) => {
         }
     };
 
+    const TryAgain = ({ text }) => (
+        <Button primary onClick={onConfirm} large>
+            {text}
+        </Button>
+    );
+
     const ErrorCTA = () => {
         switch (code) {
+            case 'CurrencyTypeNotAllowed':
+                return <TryAgain text={localize('Try a different currency')} />;
             case 'InvalidPhone':
-                return (
-                    <Button primary onClick={onConfirm} large>
-                        <Localize i18n_default_text='Try again using a different phone number' />
-                    </Button>
-                );
+                return <TryAgain text={localize('Try a different phone number')} />;
             case 'DuplicateAccount':
                 return null;
             default:

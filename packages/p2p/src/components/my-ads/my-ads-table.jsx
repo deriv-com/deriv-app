@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Icon, Loading, Table, ProgressIndicator } from '@deriv/components';
+import { useIsMounted } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
 import Empty from 'Components/empty/empty.jsx';
@@ -65,7 +66,7 @@ RowComponent.displayName = 'RowComponent';
 
 const MyAdsTable = ({ onClickCreate }) => {
     const { currency, list_item_limit, is_listed } = React.useContext(Dp2pContext);
-    const is_mounted = React.useRef(false);
+    const isMounted = useIsMounted();
     const item_offset = React.useRef(0);
     const [is_loading, setIsLoading] = React.useState(true);
     const [api_error_message, setApiErrorMessage] = React.useState('');
@@ -75,10 +76,9 @@ const MyAdsTable = ({ onClickCreate }) => {
     const [ads, setAds] = React.useState([]);
 
     React.useEffect(() => {
-        is_mounted.current = true;
-        loadMoreAds(item_offset.current);
-
-        return () => (is_mounted.current = false);
+        if (isMounted.current) {
+            loadMoreAds(item_offset.current);
+        }
     }, []);
 
     const loadMoreAds = start_idx => {
@@ -88,7 +88,7 @@ const MyAdsTable = ({ onClickCreate }) => {
                 offset: start_idx,
                 limit: list_item_limit,
             }).then(response => {
-                if (is_mounted.current) {
+                if (isMounted.current) {
                     if (!response.error) {
                         setHasMoreItemsToLoad(response.length >= list_item_limit);
                         setAds(ads.concat(response));

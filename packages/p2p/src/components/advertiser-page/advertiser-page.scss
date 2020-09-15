@@ -3,7 +3,7 @@
         display: flex;
         flex-flow: column;
         max-height: 555px;
-        overflow-y: scroll;
+        overflow-y: hidden;
     }
 
     &__error {
@@ -105,6 +105,11 @@
         }
         &-tabs {
             width: 228px;
+        }
+        &-scrollbar {
+            height: 482px;
+            position: absolute;
+            width: 657px;
         }
     }
 }

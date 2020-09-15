@@ -16,7 +16,6 @@ const Orders = ({ chat_info, navigate, params }) => {
     );
     const [order_details, setDetails] = React.useState(null);
     const [nav, setNav] = React.useState(params?.nav);
-    const is_mounted = React.useRef(false);
     const order_info_subscription = React.useRef(null);
     const hideDetails = () => {
         if (nav) {
@@ -68,11 +67,8 @@ const Orders = ({ chat_info, navigate, params }) => {
     };
 
     React.useEffect(() => {
-        is_mounted.current = true;
-
         return () => {
             unsubscribeFromCurrentOrder();
-            is_mounted.current = false;
         };
     }, []);
 

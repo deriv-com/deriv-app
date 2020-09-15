@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
-import { routes, getDerivComLink } from '@deriv/shared';
+import { routes, getStaticUrl, PlatformContext } from '@deriv/shared';
 import { Icon, Checklist } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -36,6 +36,7 @@ const DepositsLocked = ({
         ? localize('Check proof of address document verification status')
         : localize('Upload a proof of address to verify your address');
     const history = useHistory();
+    const { is_deriv_crypto } = React.useContext(PlatformContext);
 
     // handle TnC
     const acceptTnc = async () => {
@@ -76,7 +77,9 @@ const DepositsLocked = ({
                                       className='link'
                                       rel='noopener noreferrer'
                                       target='_blank'
-                                      href={getDerivComLink('terms-and-conditions')}
+                                      href={getStaticUrl('terms-and-conditions', {
+                                          is_deriv_crypto,
+                                      })}
                                   />,
                               ]}
                           />

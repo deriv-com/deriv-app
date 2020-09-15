@@ -27,7 +27,7 @@ describe('Regular expression checks', () => {
                         className='link'
                         target='_blank'
                         rel='noopener noreferrer'
-                        href={getDerivComLink('terms-and-conditions/#general')}
+                        href={getStaticUrl('terms-and-conditions/#general')}
                     />,
                 ]}
             />
@@ -78,10 +78,7 @@ describe('Regular expression checks', () => {
             localize('It\\'s time to win.');
             const Component = <Localize i18n_default_text='It\\'s time to {{ status }}, isn\\'t it?' values={{ status: 'win' }} />;
         `);
-        expect(messages).to.deep.equal([
-            "It's time to win.",
-            "It's time to {{ status }}, isn't it?",
-        ]);
+        expect(messages).to.deep.equal(["It's time to win.", "It's time to {{ status }}, isn't it?"]);
     });
 });
 

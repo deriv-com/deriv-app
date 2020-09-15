@@ -1,7 +1,7 @@
 import { Field, Formik } from 'formik';
 import React from 'react';
 import { Div100vhContainer, Modal, ThemedScrollbars, FormSubmitButton, AutoHeightWrapper } from '@deriv/components';
-import { getDerivComLink, isDesktop, isMobile } from '@deriv/shared';
+import { getStaticUrl, isDesktop, isMobile, PlatformContext } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import CheckboxField from 'App/Containers/RealAccountSignup/checkbox-field.jsx';
 import { Hr } from './currency-selector.jsx';
@@ -9,6 +9,8 @@ import { SharedMessage, BrokerSpecificMessage } from './terms-of-use-messages.js
 import 'Sass/terms-of-use.scss';
 
 class TermsOfUse extends React.Component {
+    static contextType = PlatformContext;
+
     render() {
         return (
             <Formik
@@ -60,7 +62,9 @@ class TermsOfUse extends React.Component {
                                                             className='link'
                                                             target='_blank'
                                                             rel='noopener noreferrer'
-                                                            href={getDerivComLink('/terms-and-conditions')}
+                                                            href={getStaticUrl('/terms-and-conditions', {
+                                                                is_deriv_crypto: this.context.is_deriv_crypto,
+                                                            })}
                                                         />,
                                                     ]}
                                                 />

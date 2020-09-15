@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Icon } from '@deriv/components';
-import { getDerivComLink } from '@deriv/shared';
+import { getStaticUrl, PlatformContext } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 
 const SignupErrorContent = ({ message, code, onConfirm }) => {
+    const { is_deriv_crypto } = React.useContext(PlatformContext);
     const Heading = () => {
         switch (code) {
             case 'InvalidPhone':
@@ -69,7 +70,7 @@ const SignupErrorContent = ({ message, code, onConfirm }) => {
             default:
                 return (
                     <a
-                        href={getDerivComLink('help-centre')}
+                        href={getStaticUrl('help-centre', { is_deriv_crypto })}
                         type='button'
                         className='dc-btn dc-btn--primary'
                         target='_blank'

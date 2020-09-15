@@ -2,11 +2,12 @@ import classnames from 'classnames';
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import { Button, Icon } from '@deriv/components';
-import { getDerivComLink } from '@deriv/shared';
+import { getStaticUrl, PlatformContext } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from '../../stores/connect';
 
 const GoogleDrive = ({ is_authorised, is_open_button_loading, onDriveConnect, onDriveOpen, is_mobile }) => {
+    const { is_deriv_crypto } = React.useContext(PlatformContext);
     return (
         <div className='load-strategy__container'>
             <div className='load-strategy__google-drive'>
@@ -48,14 +49,14 @@ const GoogleDrive = ({ is_authorised, is_open_button_loading, onDriveConnect, on
                                         className='link'
                                         target='_blank'
                                         rel='noopener noreferrer'
-                                        href={getDerivComLink('tnc/security-and-privacy.pdf')}
+                                        href={getStaticUrl('tnc/security-and-privacy.pdf', { is_deriv_crypto })}
                                     />,
                                     <a
                                         key={1}
                                         className='link'
                                         target='_blank'
                                         rel='noopener noreferrer'
-                                        href={getDerivComLink('terms-and-conditions')}
+                                        href={getStaticUrl('terms-and-conditions', { is_deriv_crypto })}
                                     />,
                                 ]}
                             />

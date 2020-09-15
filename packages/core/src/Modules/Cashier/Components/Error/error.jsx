@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Icon, ButtonLink } from '@deriv/components';
-import { getDerivComLink } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import { getStaticUrl, PlatformContext } from '@deriv/shared';
 
 const ErrorComponent = ({ header, message, button_link, onClickButton, button_text, footer }) => (
     <div className='cashier__wrapper cashier__wrapper-error'>
@@ -23,6 +23,7 @@ const ErrorComponent = ({ header, message, button_link, onClickButton, button_te
 );
 
 class Error extends React.Component {
+    static contextType = PlatformContext;
     error_fields = {
         address_city: localize('Town/City'),
         address_line_1: localize('First line of home address'),
@@ -98,7 +99,9 @@ class Error extends React.Component {
                                         className='link'
                                         target='_blank'
                                         rel='noopener noreferrer'
-                                        href={getDerivComLink('help-centre')}
+                                        href={getStaticUrl('help-centre', {
+                                            is_deriv_crypto: this.context.is_deriv_crypto,
+                                        })}
                                     />,
                                 ]}
                             />

@@ -2,7 +2,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Popover, DesktopWrapper, Loading, MobileWrapper } from '@deriv/components';
-import { getDerivComLink, formatMoney, isMobile } from '@deriv/shared';
+import { getStaticUrl, formatMoney, isMobile, PlatformContext } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import LoadErrorMessage from 'Components/load-error-message';
 import FormBody from 'Components/form-body';
@@ -61,6 +61,7 @@ const ExtraInfo = ({ message, ...props }) => (
 );
 
 class AccountLimits extends React.Component {
+    static contextType = PlatformContext;
     state = { is_loading: true };
 
     componentDidMount() {
@@ -115,7 +116,9 @@ class AccountLimits extends React.Component {
                                     className='link link--orange'
                                     rel='noopener noreferrer'
                                     target='_blank'
-                                    href={getDerivComLink('/help-centre')}
+                                    href={getStaticUrl('/help-centre', {
+                                        is_deriv_crypto: this.context.is_deriv_crypto,
+                                    })}
                                 />,
                             ]}
                         />

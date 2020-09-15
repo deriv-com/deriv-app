@@ -144,8 +144,13 @@ export const setUrlLanguage = lang => {
     default_language = lang;
 };
 
-export const getDerivComLink = (path = '') => {
-    const host = 'https://deriv.com';
+export const getStaticUrl = (
+    path = '',
+    options = {
+        is_deriv_crypto: false,
+    }
+) => {
+    const host = options.is_deriv_crypto ? 'https://derivcrypto.com' : 'https://deriv.com';
     let lang = default_language?.toLowerCase();
     if (lang && lang !== 'en') lang = `/${lang}`;
     else lang = '';

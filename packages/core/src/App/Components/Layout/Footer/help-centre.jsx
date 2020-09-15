@@ -1,9 +1,11 @@
 import React from 'react';
 import { Popover, Icon } from '@deriv/components';
-import { getDerivComLink } from '@deriv/shared';
+import { getStaticUrl, PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 const HelpCentre = () => {
+    const { is_deriv_crypto } = React.useContext(PlatformContext);
+
     return (
         <Popover
             className='footer__link'
@@ -12,7 +14,7 @@ const HelpCentre = () => {
             message={localize('Help centre')}
         >
             <a
-                href={getDerivComLink('/help-centre/')}
+                href={getStaticUrl('/help-centre/', { is_deriv_crypto })}
                 id='dt_help_centre'
                 target='_blank'
                 rel='noopener noreferrer'

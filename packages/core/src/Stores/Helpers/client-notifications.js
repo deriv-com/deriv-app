@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     formatDate,
-    getDerivComLink,
+    getStaticUrl,
     isEmptyObject,
     isMobile,
     LocalStore,
@@ -16,7 +16,7 @@ import { WS } from 'Services';
 
 // TODO: Update links to app_2 links when components are done.
 /* eslint-disable react/jsx-no-target-blank */
-export const clientNotifications = (ui = {}, client = {}) => {
+export const clientNotifications = (ui = {}, client = {}, { is_deriv_crypto }) => {
     const notifications = {
         currency: {
             action: {
@@ -42,7 +42,14 @@ export const clientNotifications = (ui = {}, client = {}) => {
                         exclusion_end: formatDate(excluded_until, 'DD/MM/YYYY'),
                         interpolation: { escapeValue: false },
                     }}
-                    components={[<a key={0} className='link' target='_blank' href={getDerivComLink('contact-us')} />]}
+                    components={[
+                        <a
+                            key={0}
+                            className='link'
+                            target='_blank'
+                            href={getStaticUrl('contact-us', { is_deriv_crypto })}
+                        />,
+                    ]}
                 />
             ),
             type: 'danger',
@@ -105,7 +112,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
                 action: {
                     text: localize('Contact us'),
                     onClick: () => {
-                        window.open(getDerivComLink('contact-us'));
+                        window.open(getStaticUrl('contact-us', { is_deriv_crypto }));
                     },
                 },
             }),
@@ -116,7 +123,14 @@ export const clientNotifications = (ui = {}, client = {}) => {
             ) : (
                 <Localize
                     i18n_default_text='Trading and deposits have been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
-                    components={[<a key={0} className='link' target='_blank' href={getDerivComLink('contact-us')} />]}
+                    components={[
+                        <a
+                            key={0}
+                            className='link'
+                            target='_blank'
+                            href={getStaticUrl('contact-us', { is_deriv_crypto })}
+                        />,
+                    ]}
                 />
             ),
             type: 'danger',
@@ -137,7 +151,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
                 action: {
                     text: localize('Contact us'),
                     onClick: () => {
-                        window.open(getDerivComLink('contact-us'));
+                        window.open(getStaticUrl('contact-us', { is_deriv_crypto }));
                     },
                 },
             }),
@@ -148,7 +162,14 @@ export const clientNotifications = (ui = {}, client = {}) => {
             ) : (
                 <Localize
                     i18n_default_text='Digital Options Trading has been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
-                    components={[<a key={0} className='link' target='_blank' href={getDerivComLink('contact-us')} />]}
+                    components={[
+                        <a
+                            key={0}
+                            className='link'
+                            target='_blank'
+                            href={getStaticUrl('contact-us', { is_deriv_crypto })}
+                        />,
+                    ]}
                 />
             ),
             type: 'danger',
@@ -194,7 +215,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
                             className='link'
                             rel='noopener'
                             target='_blank'
-                            href={getDerivComLink('terms-and-conditions')}
+                            href={getStaticUrl('terms-and-conditions', { is_deriv_crypto })}
                         />,
                     ]}
                 />

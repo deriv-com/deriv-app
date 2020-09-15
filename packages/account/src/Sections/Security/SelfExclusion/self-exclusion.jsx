@@ -18,10 +18,11 @@ import {
     epochToMoment,
     isDesktop,
     isMobile,
-    getDerivComLink,
     formatMoney,
     hasCorrectDecimalPlaces,
     getDecimalPlaces,
+    getStaticUrl,
+    PlatformContext,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -31,6 +32,7 @@ import LoadErrorMessage from 'Components/load-error-message';
 import Article from './article.jsx';
 
 class SelfExclusion extends React.Component {
+    static contextType = PlatformContext;
     exclusion_data = {
         max_turnover: '',
         max_losses: '',
@@ -436,7 +438,9 @@ class SelfExclusion extends React.Component {
                                                                 className='link link--orange'
                                                                 rel='noopener noreferrer'
                                                                 target='_blank'
-                                                                href={getDerivComLink('/contact-us')}
+                                                                href={getStaticUrl('/contact-us', {
+                                                                    is_deriv_crypto: this.context.is_deriv_crypto,
+                                                                })}
                                                             />,
                                                         ]}
                                                     />

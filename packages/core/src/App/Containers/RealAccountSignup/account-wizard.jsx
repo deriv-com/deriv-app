@@ -85,7 +85,7 @@ class AccountWizard extends React.Component {
             if (!this.residence_list?.length) {
                 const setDefaultPhone = country_code => {
                     const items = [...this.state.items];
-                    if ('phone' in items[1].form_value) {
+                    if (items.length > 1 && 'phone' in items[1].form_value) {
                         items[1].form_value.phone = items[1].form_value.phone || country_code || '';
                         this.setState(items);
                     }

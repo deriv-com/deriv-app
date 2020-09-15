@@ -81,21 +81,17 @@ const validatePersonalDetails = ({
         account_opening_reason: localize('Account opening reason'),
     };
 
-    const common_messages = ['{{field_name}} is required', '{{field_name}} is not properly formatted.'];
+    const field_error_messages = field_name => [
+        localize('{{field_name}} is required', { field_name }),
+        localize('{{field_name}} is not properly formatted.', { field_name }),
+    ];
 
     const errors = {};
 
     Object.entries(validations).forEach(([key, rules]) => {
         const error_index = rules.findIndex(v => !v(values[key]));
         if (error_index !== -1) {
-            errors[key] = errors[key] = (
-                <Localize
-                    i18n_default_text={common_messages[error_index]}
-                    values={{
-                        field_name: mappedKey[key],
-                    }}
-                />
-            );
+            errors[key] = <React.Fragment>{field_error_messages(mappedKey[key])[error_index]}</React.Fragment>;
         }
     });
 

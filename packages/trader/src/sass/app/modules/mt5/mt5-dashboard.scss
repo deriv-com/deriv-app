@@ -931,6 +931,12 @@
     &__field-area {
         max-width: 556px;
         margin: 0 auto;
+
+        & .dc-dropdown__display-placeholder-text,
+        & .dc-input__label,
+        & .dc-dropdown__display {
+            background: var(--general-main-2);
+        }
         @include mobile {
             overflow: auto;
         }

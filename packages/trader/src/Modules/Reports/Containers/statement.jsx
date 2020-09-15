@@ -20,7 +20,7 @@ import Shortcode from '../Helpers/shortcode';
 class Statement extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { total_deposits: 0, total_withdrawals: 0 };
+        this.state = { total_deposits: 0, total_withdrawals: 0, is_account_statistics_loaded: false };
     }
 
     get should_show_loading_placeholder() {
@@ -28,18 +28,21 @@ class Statement extends React.Component {
     }
 
     componentDidMount() {
-        const { is_mx_mlt } = this.props;
         this.props.onMount();
+    }
 
-        if (is_mx_mlt)
+    componentDidUpdate() {
+        const { is_mx_mlt } = this.props;
+        if (is_mx_mlt && !this.state.is_account_statistics_loaded)
             WS.accountStatistics().then(response => {
                 if (response.error) {
-                    this.setState({ api_error: response.error.message });
+                    this.setState({ api_error: response.error.message, is_account_statistics_loaded: true });
                     return;
                 }
                 this.setState({
                     total_deposits: response.account_statistics.total_deposits,
                     total_withdrawals: response.account_statistics.total_withdrawals,
+                    is_account_statistics_loaded: true,
                 });
             });
     }

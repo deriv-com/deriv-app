@@ -38,7 +38,7 @@ const getAccountOpeningReasonList = () => [
     },
 ];
 
-export const InputField = ({ name, optional = false, ...props }) => (
+export const InputField = ({ maxLength, name, optional = false, ...props }) => (
     <Field name={name}>
         {({ field, form: { errors, touched } }) => (
             <Input
@@ -46,7 +46,7 @@ export const InputField = ({ name, optional = false, ...props }) => (
                 required={!optional}
                 name={name}
                 autoComplete='off'
-                maxLength='30'
+                maxLength={maxLength || '30'}
                 error={touched[field.name] && errors[field.name]}
                 {...field}
                 {...props}

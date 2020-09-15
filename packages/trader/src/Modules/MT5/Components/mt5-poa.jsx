@@ -25,7 +25,7 @@ import {
 } from '@deriv/account';
 import { WS } from 'Services/ws-methods';
 import { localize } from '@deriv/translations';
-import { isDesktop, isMobile, validAddress, validLength, validPostCode } from '@deriv/shared';
+import { isDesktop, isMobile, validAddress, validLength, validLetterSymbol, validPostCode } from '@deriv/shared';
 import { InputField } from './mt5-personal-details-form.jsx';
 
 const form = React.createRef();
@@ -51,9 +51,9 @@ class MT5POA extends React.Component {
         }
 
         const validations = {
-            address_line_1: [v => !!v, v => validAddress(v)],
-            address_line_2: [v => !v || validAddress(v)],
-            address_city: [v => !!v, v => validLength(v, { min: 1, max: 35 })],
+            address_line_1: [v => !!v, v => validAddress(v), v => validLength(v, { max: 70 })],
+            address_line_2: [v => !v || validAddress(v), v => validLength(v, { max: 70 })],
+            address_city: [v => !!v, v => validLength(v, { min: 1, max: 35 }), v => validLetterSymbol(v)],
             address_state: [v => !!v, v => !v || validLength(v, { min: 1, max: 35 })],
             address_postcode: [v => validLength(v, { min: 1, max: 20 }), v => validPostCode(v)],
             document_file: [v => !!v, ([file]) => !!file?.name],
@@ -63,18 +63,26 @@ class MT5POA extends React.Component {
             address_line_1: [
                 localize('First line of address is required'),
                 localize('First line of address is not in a proper format.'),
+                localize('This should not exceed {{max}} characters.', { max: 70 }),
             ],
-            address_line_2: [localize('Second line of address is not in a proper format.')],
-            address_city: [localize('Town/City is required'), localize('Town/City is not in a proper format.')],
+            address_line_2: [
+                localize('Second line of address is not in a proper format.'),
+                localize('This should not exceed {{max}} characters.', { max: 70 }),
+            ],
+            address_city: [
+                localize('Town/City is required.'),
+                localize('This should not exceed {{max_number}} characters.', {
+                    max_number: 35,
+                }),
+                localize('Town/City is not in a proper format.'),
+            ],
             address_state: [
-                localize('State/Province is required'),
+                localize('State/Province is required.'),
                 localize('State/Province is not in a proper format.'),
             ],
             address_postcode: [
-                localize('Please enter a {{field_name}} under {{max_number}} characters.', {
-                    field_name: localize('postal/ZIP code'),
+                localize('This should not exceed {{max_number}} characters.', {
                     max_number: 20,
-                    interpolation: { escapeValue: false },
                 }),
                 localize('Only letters, numbers, space, and hyphen are allowed.'),
             ],
@@ -235,6 +243,7 @@ class MT5POA extends React.Component {
                     errors,
                     handleSubmit,
                     isSubmitting,
+                    handleBlur,
                     handleChange,
                     setFieldTouched,
                     setFieldValue,
@@ -265,22 +274,28 @@ class MT5POA extends React.Component {
                                                 />
                                                 <InputField
                                                     name='address_line_1'
+                                                    maxLength={255}
                                                     required
                                                     label={localize('First line of address*')}
                                                     placeholder={localize('First line of address*')}
+                                                    onBlur={handleBlur}
                                                 />
                                                 <InputField
                                                     name='address_line_2'
+                                                    maxLength={255}
                                                     label={localize('Second line of address (optional)')}
                                                     optional
                                                     placeholder={localize('Second line of address')}
+                                                    onBlur={handleBlur}
                                                 />
                                                 <div className='mt5-proof-of-address__inline-fields'>
                                                     <InputField
+                                                        maxLength={255}
                                                         name='address_city'
                                                         required
                                                         label={localize('Town/City*')}
                                                         placeholder={localize('Town/City*')}
+                                                        onBlur={handleBlur}
                                                     />
                                                     <fieldset className='address-state__fieldset'>
                                                         {states_list?.length > 0 ? (
@@ -337,13 +352,16 @@ class MT5POA extends React.Component {
                                                                 name='address_state'
                                                                 label={localize('State/Province*')}
                                                                 placeholder={localize('State/Province*')}
+                                                                onBlur={handleBlur}
                                                             />
                                                         )}
                                                     </fieldset>
                                                     <InputField
+                                                        maxLength={255}
                                                         name='address_postcode'
                                                         label={localize('Postal/ZIP code*')}
                                                         placeholder={localize('Postal/ZIP code*')}
+                                                        onBlur={handleBlur}
                                                     />
                                                 </div>
                                                 <div className='mt5-proof-of-address__file-upload'>

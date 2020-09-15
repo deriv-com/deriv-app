@@ -1,4 +1,8 @@
 .my-profile {
+    &__error {
+        color: $color-red-4;
+        font-size: var(--text-size-xs);
+    }
     &__header {
         display: flex;
         height: fit-content;
@@ -58,7 +62,7 @@
             width: 158px;
 
             &-header {
-                color: #999999;
+                color: $color-grey-1;
                 font-size: var(--text-size-xs);
                 line-height: 20px;
             }
@@ -70,7 +74,7 @@
             }
 
             &-separator {
-                border-right: 1px solid #f2f3f4;
+                border-right: 1px solid $color-grey-2;
             }
         }
     }
@@ -92,7 +96,7 @@
         }
         &-horizontal_line {
             align-self: center;
-            border-bottom: 1px solid #f2f3f4;
+            border-bottom: 1px solid $color-grey-2;
             margin-left: 1.6rem;
             width: 564px;
         }
@@ -113,7 +117,7 @@
         }
     }
     &__footer {
-        border-top: 2px solid #f2f3f4;
+        border-top: 2px solid $color-grey-2;
         padding-right: 2.4rem;
         width: 657px;
 

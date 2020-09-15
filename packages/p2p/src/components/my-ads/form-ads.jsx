@@ -20,10 +20,10 @@ const FormAds = ({ handleShowForm }) => {
     const { contact_info, default_advert_description, payment_info } = advertiser_info;
 
     React.useEffect(() => {
-        advertiserInfo();
+        getAdvertiserInfo();
     }, []);
 
-    const advertiserInfo = () => {
+    const getAdvertiserInfo = () => {
         return new Promise(resolve => {
             requestWS({
                 p2p_advertiser_info: 1,
@@ -31,9 +31,11 @@ const FormAds = ({ handleShowForm }) => {
                 if (!response.error) {
                     const { p2p_advertiser_info } = response;
                     setAdvertiserInfo(p2p_advertiser_info);
-                    setIsLoading(false);
+                } else {
+                    setErrorMessage(response.error);
                 }
                 resolve();
+                setIsLoading(false);
             });
         });
     };
@@ -133,9 +135,9 @@ const FormAds = ({ handleShowForm }) => {
             price_rate: localize('Fixed rate'),
         };
 
-        const common_messages = field_name => [localize('{{field_name}} is required', { field_name })];
+        const getCommonMessages = field_name => [localize('{{field_name}} is required', { field_name })];
 
-        const contact_info_messages = field_name => [
+        const getContactInfoMmessages = field_name => [
             localize('{{field_name}} is required', { field_name }),
             localize(
                 "{{field_name}} can only include letters, numbers, spaces, and any of these symbols: -+.,'#@():;",
@@ -144,7 +146,7 @@ const FormAds = ({ handleShowForm }) => {
             localize('{{field_name}} has exceeded maximum length', { field_name }),
         ];
 
-        const default_advert_description_messages = field_name => [
+        const getDefaultAdvertDescriptionMessages = field_name => [
             localize('{{field_name}} has exceeded maximum length', { field_name }),
             localize(
                 "{{field_name}} can only include letters, numbers, spaces, and any of these symbols: -+.,'#@():;",
@@ -152,7 +154,7 @@ const FormAds = ({ handleShowForm }) => {
             ),
         ];
 
-        const offer_amount_messages = field_name => [
+        const getOfferAmountMessages = field_name => [
             localize('{{field_name}} is required', { field_name }),
             // TODO: uncomment this when we have available_price
             // localize('Min is {{value}}', { value: available_price }),
@@ -162,7 +164,7 @@ const FormAds = ({ handleShowForm }) => {
             localize('{{field_name}} should not be below Max limit', { field_name }),
         ];
 
-        const max_transaction_limit_messages = field_name => [
+        const getMaxTransactionLimitMessages = field_name => [
             localize('{{field_name}} is required', { field_name }),
             localize('Enter a valid amount'),
             localize('Enter a valid amount'),
@@ -170,7 +172,7 @@ const FormAds = ({ handleShowForm }) => {
             localize('{{field_name}} should not be below Min limit', { field_name }),
         ];
 
-        const min_transaction_limit_messages = field_name => [
+        const getMinTransactionLimitMessages = field_name => [
             localize('{{field_name}} is required', { field_name }),
             localize('Enter a valid amount'),
             localize('Enter a valid amount'),
@@ -178,7 +180,7 @@ const FormAds = ({ handleShowForm }) => {
             localize('{{field_name}} should not exceed Max limit', { field_name }),
         ];
 
-        const price_rate_messages = field_name => [
+        const getPriceRateMessages = field_name => [
             localize('{{field_name}} is required', { field_name }),
             localize('Enter a valid amount'),
             localize('Enter a valid amount'),
@@ -192,25 +194,25 @@ const FormAds = ({ handleShowForm }) => {
                 switch (key) {
                     case 'contact_info':
                     case 'payment_info':
-                        errors[key] = contact_info_messages(mapped_key[key])[error_index];
+                        errors[key] = getContactInfoMmessages(mapped_key[key])[error_index];
                         break;
                     case 'default_advert_description':
-                        errors[key] = default_advert_description_messages(mapped_key[key])[error_index];
+                        errors[key] = getDefaultAdvertDescriptionMessages(mapped_key[key])[error_index];
                         break;
                     case 'offer_amount':
-                        errors[key] = offer_amount_messages(mapped_key[key])[error_index];
+                        errors[key] = getOfferAmountMessages(mapped_key[key])[error_index];
                         break;
                     case 'max_transaction':
-                        errors[key] = max_transaction_limit_messages(mapped_key[key])[error_index];
+                        errors[key] = getMaxTransactionLimitMessages(mapped_key[key])[error_index];
                         break;
                     case 'min_transaction':
-                        errors[key] = min_transaction_limit_messages(mapped_key[key])[error_index];
+                        errors[key] = getMinTransactionLimitMessages(mapped_key[key])[error_index];
                         break;
                     case 'price_rate':
-                        errors[key] = price_rate_messages(mapped_key[key])[error_index];
+                        errors[key] = getPriceRateMessages(mapped_key[key])[error_index];
                         break;
                     default:
-                        errors[key] = common_messages(mapped_key[key])[error_index];
+                        errors[key] = getCommonMessages(mapped_key[key])[error_index];
                 }
             }
         });
@@ -232,7 +234,6 @@ const FormAds = ({ handleShowForm }) => {
                         min_transaction: '',
                         offer_amount: '',
                         payment_info,
-                        // payment_method: 'bank_transfer',
                         price_rate: '',
                         type: 'buy',
                     }}
@@ -245,7 +246,7 @@ const FormAds = ({ handleShowForm }) => {
                             <div className='p2p-my-ads__form'>
                                 <Form noValidate>
                                     <ThemedScrollbars className='p2p-my-ads__form-scrollbar'>
-                                        <p className='p2p-my-ads__form-summary'>
+                                        <div className='p2p-my-ads__form-summary'>
                                             <AdSummary
                                                 offer_amount={errors.offer_amount ? '' : values.offer_amount}
                                                 offer_currency={currency}
@@ -253,7 +254,7 @@ const FormAds = ({ handleShowForm }) => {
                                                 price_rate={errors.price_rate ? '' : values.price_rate}
                                                 type={values.type}
                                             />
-                                        </p>
+                                        </div>
                                         <div className='p2p-my-ads__form-container'>
                                             <Field name='type'>
                                                 {({ field }) => (
@@ -263,8 +264,8 @@ const FormAds = ({ handleShowForm }) => {
                                                         is_align_text_left
                                                         className='p2p-my-ads__form-field'
                                                         list={[
-                                                            { text: 'Buy', value: 'buy' },
-                                                            { text: 'Sell', value: 'sell' },
+                                                            { text: localize('Buy'), value: 'buy' },
+                                                            { text: localize('Sell'), value: 'sell' },
                                                         ]}
                                                         error={touched.type && errors.type}
                                                     />
@@ -293,18 +294,6 @@ const FormAds = ({ handleShowForm }) => {
                                             </Field>
                                         </div>
                                         <div className='p2p-my-ads__form-container'>
-                                            {/* <Field name='payment_method'>
-                                                    {({ field }) => (
-                                                        <Dropdown
-                                                            {...field}
-                                                            placeholder={localize('Payment method')}
-                                                            is_align_text_left
-                                                            className='p2p-my-ads__form-field'
-                                                            list={[{ text: 'Bank transfer', value: 'bank_transfer' }]}
-                                                            error={touched.payment_method && errors.payment_method}
-                                                        />
-                                                    )}
-                                                </Field> */}
                                             <Field name='price_rate'>
                                                 {({ field }) => (
                                                     <Input
@@ -312,7 +301,7 @@ const FormAds = ({ handleShowForm }) => {
                                                         data-lpignore='true'
                                                         type='text'
                                                         error={touched.price_rate && errors.price_rate}
-                                                        label={localize('Fixed rate (1 USD)')}
+                                                        label={localize('Fixed rate (1 {{currency}})', { currency })}
                                                         hint={localize('Per 1 {{currency}}', {
                                                             currency,
                                                         })}
@@ -431,7 +420,7 @@ const FormAds = ({ handleShowForm }) => {
                                         {error_message && (
                                             <div className='p2p-my-ads__form-error'>
                                                 <Icon icon='IcAlertDanger' />
-                                                <p>{error_message}</p>
+                                                <div>{error_message}</div>
                                             </div>
                                         )}
                                         <Button

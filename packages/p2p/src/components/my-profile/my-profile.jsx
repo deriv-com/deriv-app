@@ -5,15 +5,20 @@ import { requestWS } from 'Utils/websocket';
 import { localize } from 'Components/i18next';
 import FooterActions from 'Components/footer-actions/footer-actions.jsx';
 import { textValidator } from 'Utils/validations';
+import Dp2pContext from 'Components/context/dp2p-context';
 import { generateHexColourFromNickname, getShortNickname } from 'Utils/string';
+import FormError from '../form/error.jsx';
 import './my-profile.scss';
 
 const MyProfile = () => {
     const [advertiser_info, setAdvertiserInfo] = React.useState({});
+    const { currency } = React.useContext(Dp2pContext);
+    const [error_message, setErrorMessage] = React.useState('');
+    const [form_error, setFormError] = React.useState('');
     const [has_poa, setHasPoa] = React.useState(false);
     const [has_poi, setHasPoi] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(true);
-    const [is_mounted, setIsMounted] = React.useState(false);
+    const is_mounted = React.useRef(false);
     const [nickname, setNickname] = React.useState(null);
     const [stats, setStats] = React.useState({});
     const {
@@ -27,19 +32,20 @@ const MyProfile = () => {
     const { buy_orders_count, sell_orders_count, total_orders_count } = stats;
 
     React.useEffect(() => {
-        setIsMounted(true);
-        return () => setIsMounted(false);
+        is_mounted.current = true;
+
+        return () => (is_mounted.current = false);
     }, []);
 
     React.useEffect(() => {
-        if (is_mounted) {
-            advertiserAccountStatus();
-            advertiserStats();
-            advertiserInfo();
+        if (is_mounted.current) {
+            getAdvertiserAccountStatus();
+            getAdvertiserStats();
+            getAdvertiserInfo();
         }
-    }, [is_mounted]);
+    }, [is_mounted.current]);
 
-    const advertiserAccountStatus = () => {
+    const getAdvertiserAccountStatus = () => {
         return new Promise(resolve => {
             requestWS({
                 get_account_status: 1,
@@ -49,13 +55,15 @@ const MyProfile = () => {
                     const { authentication } = get_account_status;
                     setHasPoa(!(authentication.document && authentication.document.status === 'none'));
                     setHasPoi(!(authentication.identity && authentication.identity.status === 'none'));
+                } else {
+                    setErrorMessage(response.error);
                 }
                 resolve();
             });
         });
     };
 
-    const advertiserInfo = () => {
+    const getAdvertiserInfo = () => {
         return new Promise(resolve => {
             requestWS({
                 p2p_advertiser_info: 1,
@@ -64,21 +72,27 @@ const MyProfile = () => {
                     const { p2p_advertiser_info } = response;
                     setAdvertiserInfo(p2p_advertiser_info);
                     setNickname(p2p_advertiser_info.name);
-                    setIsLoading(false);
+                } else {
+                    setErrorMessage(response.error);
                 }
                 resolve();
+                setIsLoading(false);
             });
         });
     };
 
-    const advertiserStats = () => {
+    const getAdvertiserStats = () => {
         return new Promise(resolve => {
             requestWS({
                 p2p_advertiser_stats: 1,
                 id,
             }).then(response => {
-                const { p2p_advertiser_stats } = response;
-                setStats(p2p_advertiser_stats);
+                if (!response.error) {
+                    const { p2p_advertiser_stats } = response;
+                    setStats(p2p_advertiser_stats);
+                } else {
+                    setErrorMessage(response.error);
+                }
                 resolve();
             });
         });
@@ -91,8 +105,12 @@ const MyProfile = () => {
                 contact_info: values.contact_info,
                 payment_info: values.payment_info,
                 default_advert_description: values.default_advert_description,
+            }).then(response => {
+                if (response.error) {
+                    setFormError(response.error);
+                }
+                resolve();
             });
-            resolve();
         });
     };
 
@@ -111,7 +129,7 @@ const MyProfile = () => {
 
         const errors = {};
 
-        const error_messages = field_name => [
+        const getErrorMessages = field_name => [
             localize(
                 "{{field_name}} can only include letters, numbers, spaces, and any of these symbols: -+.,'#@():;",
                 {
@@ -127,10 +145,10 @@ const MyProfile = () => {
                     case 'contact_info':
                     case 'default_advert_description':
                     case 'payment_info':
-                        errors[key] = error_messages(mapped_key[key])[error_index];
+                        errors[key] = getErrorMessages(mapped_key[key])[error_index];
                         break;
                     default: {
-                        errors[key] = error_messages[error_index];
+                        errors[key] = getErrorMessages[error_index];
                         break;
                     }
                 }
@@ -142,6 +160,9 @@ const MyProfile = () => {
 
     if (is_loading) {
         return <Loading is_fullscreen={false} />;
+    }
+    if (error_message) {
+        return <div className='my-profile__error'>{error_message}</div>;
     }
 
     return (
@@ -185,27 +206,33 @@ const MyProfile = () => {
                         <Table.Row className='my-profile__stats'>
                             <div className='my-profile__stats-cell-separator' />
                             <Table.Cell className='my-profile__stats-cell'>
-                                <div className='my-profile__stats-cell-header'>
-                                    {localize('Daily Limit (Buy/Sell)')}
-                                </div>
-                                <div className='my-profile__stats-cell-info'>
-                                    {`${Math.floor(daily_buy_limit)} / ${Math.floor(daily_sell_limit)}` || '-'}
-                                </div>
-                            </Table.Cell>
-                            <div className='my-profile__stats-cell-separator' />
-                            <Table.Cell className='my-profile__stats-cell'>
                                 <div className='my-profile__stats-cell-header'>{localize('Total Trades')}</div>
                                 <div className='my-profile__stats-cell-info'>{total_orders_count || '-'}</div>
                             </Table.Cell>
                             <div className='my-profile__stats-cell-separator' />
                             <Table.Cell className='my-profile__stats-cell'>
-                                <div className='my-profile__stats-cell-header'>{localize('Sell')}</div>
+                                <div className='my-profile__stats-cell-header'>
+                                    {localize('Buy ({{currency}})', { currency })}
+                                </div>
+                                <div className='my-profile__stats-cell-info'>{buy_orders_count || '-'}</div>
+                            </Table.Cell>
+                            <div className='my-profile__stats-cell-separator' />
+                            <Table.Cell className='my-profile__stats-cell'>
+                                <div className='my-profile__stats-cell-header'>
+                                    {localize('Sell ({{currency}})', { currency })}
+                                </div>
                                 <div className='my-profile__stats-cell-info'>{sell_orders_count || '-'}</div>
                             </Table.Cell>
                             <div className='my-profile__stats-cell-separator' />
                             <Table.Cell className='my-profile__stats-cell'>
-                                <div className='my-profile__stats-cell-header'>{localize('Buy')}</div>
-                                <div className='my-profile__stats-cell-info'>{buy_orders_count || '-'}</div>
+                                <div className='my-profile__stats-cell-header'>
+                                    {localize('Buy / Sell limit ({{currency}})', { currency })}
+                                </div>
+                                <div className='my-profile__stats-cell-info'>
+                                    {daily_buy_limit && daily_sell_limit
+                                        ? `${Math.floor(daily_buy_limit)} / ${Math.floor(daily_sell_limit)}`
+                                        : '-'}
+                                </div>
                             </Table.Cell>
                             <div className='my-profile__stats-cell-separator' />
                             <Popover
@@ -279,6 +306,7 @@ const MyProfile = () => {
                                             )}
                                         </Field>
                                         <FooterActions className='my-profile__footer' has_border>
+                                            <FormError message={form_error} />
                                             <Button
                                                 className='my-profile__footer-button'
                                                 secondary

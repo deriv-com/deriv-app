@@ -14,7 +14,7 @@ const TradeFooterExtensions = ({
     togglePositionsDrawer,
 }) => {
     React.useEffect(() => populateFooter());
-    React.useEffect(() => () => populateFooterExtensions([]), []);
+    React.useEffect(() => () => populateFooterExtensions([]), [populateFooterExtensions]);
 
     const TogglePositionsIcon = () => (
         <TogglePositions

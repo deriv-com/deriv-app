@@ -238,7 +238,6 @@ Statement.propTypes = {
     history: PropTypes.object,
     is_empty: PropTypes.bool,
     is_loading: PropTypes.bool,
-    landing_company_shortcode: PropTypes.string,
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
 };
@@ -257,7 +256,6 @@ export default connect(({ modules, client }) => ({
     is_empty: modules.statement.is_empty,
     is_loading: modules.statement.is_loading,
     is_switching: client.is_switching,
-    landing_company_shortcode: client.landing_company_shortcode,
     onMount: modules.statement.onMount,
     onUnmount: modules.statement.onUnmount,
 }))(withRouter(Statement));

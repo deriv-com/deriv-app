@@ -193,6 +193,52 @@ class Statement extends React.Component {
         const is_mx_mlt =
             this.props.landing_company_shortcode === 'iom' || this.props.landing_company_shortcode === 'malta';
 
+        let page_main_content;
+        if (data === 0 || is_empty) {
+            page_main_content = (
+                <PlaceholderComponent
+                    is_loading={is_loading}
+                    has_selected_date={has_selected_date}
+                    is_empty={is_empty}
+                    empty_message_component={EmptyTradeHistoryMessage}
+                    component_icon={component_icon}
+                    localized_message={localize('You have no transactions yet.')}
+                    localized_period_message={localize('You have no transactions for this period.')}
+                />
+            );
+        } else if (this.should_show_loading_placeholder) {
+            page_main_content = <PlaceholderComponent is_loading={this.should_show_loading_placeholder} />;
+        } else {
+            page_main_content = (
+                <React.Fragment>
+                    <DesktopWrapper>
+                        <DataTable
+                            className='statement'
+                            data_source={data}
+                            columns={this.columns}
+                            onScroll={handleScroll}
+                            getRowAction={row => this.getRowAction(row)}
+                            is_empty={is_empty}
+                            custom_width={'100%'}
+                            getRowSize={() => 63}
+                            content_loader={ReportsTableRowLoader}
+                        />
+                    </DesktopWrapper>
+                    <MobileWrapper>
+                        <DataList
+                            className='statement'
+                            data_source={data}
+                            rowRenderer={this.mobileRowRenderer}
+                            getRowAction={this.getRowAction}
+                            onScroll={handleScroll}
+                            custom_width={'100%'}
+                            getRowSize={() => 176}
+                        />
+                    </MobileWrapper>
+                </React.Fragment>
+            );
+        }
+
         return (
             <React.Fragment>
                 <ReportsMeta
@@ -200,46 +246,7 @@ class Statement extends React.Component {
                     filter_component={filter_component}
                     {...this.getReportsMetaProps(is_mx_mlt)}
                 />
-                {data.length === 0 || is_empty ? (
-                    <PlaceholderComponent
-                        is_loading={is_loading}
-                        has_selected_date={has_selected_date}
-                        is_empty={is_empty}
-                        empty_message_component={EmptyTradeHistoryMessage}
-                        component_icon={component_icon}
-                        localized_message={localize('You have no transactions yet.')}
-                        localized_period_message={localize('You have no transactions for this period.')}
-                    />
-                ) : this.should_show_loading_placeholder ? (
-                    <PlaceholderComponent is_loading={this.should_show_loading_placeholder} />
-                ) : (
-                    <React.Fragment>
-                        <DesktopWrapper>
-                            <DataTable
-                                className='statement'
-                                data_source={data}
-                                columns={this.columns}
-                                onScroll={handleScroll}
-                                getRowAction={row => this.getRowAction(row)}
-                                is_empty={is_empty}
-                                custom_width={'100%'}
-                                getRowSize={() => 63}
-                                content_loader={ReportsTableRowLoader}
-                            />
-                        </DesktopWrapper>
-                        <MobileWrapper>
-                            <DataList
-                                className='statement'
-                                data_source={data}
-                                rowRenderer={this.mobileRowRenderer}
-                                getRowAction={this.getRowAction}
-                                onScroll={handleScroll}
-                                custom_width={'100%'}
-                                getRowSize={() => 176}
-                            />
-                        </MobileWrapper>
-                    </React.Fragment>
-                )}
+                {page_main_content}
             </React.Fragment>
         );
     }

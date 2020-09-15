@@ -58,7 +58,7 @@ export const InputField = ({ name, optional = false, ...props }) => (
 const validatePersonalDetails = ({ values, residence_list, account_opening_reason, is_tin_required }) => {
     const [tax_residence_obj] = residence_list.filter(res => res.text === values.tax_residence && res.tin_format);
     const [tin_format] = tax_residence_obj?.tin_format ?? [];
-    const tin_regex = tin_format || false;
+    const tin_regex = tin_format || '^[A-Za-z0-9./s-]{0,25}$'; // fallback to API's default rule check
 
     const validations = {
         citizen: [v => !!v, v => residence_list.map(i => i.text).includes(v)],

@@ -626,6 +626,9 @@
     }
     &__new-password {
         margin-bottom: 8.6rem;
+        .dc-input__hint {
+            text-align: left;
+        }
     }
     &__actions {
         align-items: center;

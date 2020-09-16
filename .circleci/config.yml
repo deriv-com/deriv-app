@@ -68,6 +68,23 @@ commands:
             - "packages/translations/node_modules"
             # VERIFY_CACHE_FOLDERS_END (DO NOT REMOVE)
 
+  sync_crypto:
+    description: "Synchronize master-crypto with crypto"
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Install and configure dependencies
+          command: |
+            git config user.email "ci-build@binary.com"
+            git config user.name "ci-build"
+      - add_ssh_keys:
+          fingerprints:
+            - "7f:ca:3e:82:6a:5e:bc:9f:63:ff:3f:aa:5d:20:46:09"
+      - run:
+          name: Push to master-crypto branch
+          command: git checkout master-crypto && git pull master --ff-only
+
   build:
     description: "Build"
     steps:
@@ -112,7 +129,7 @@ commands:
             git config user.name "ci-build"
       - add_ssh_keys:
           fingerprints:
-            - "01:67:4a:6d:26:9c:70:c4:1a:60:91:88:d9:dd:f0:83"
+            - "7f:ca:3e:82:6a:5e:bc:9f:63:ff:3f:aa:5d:20:46:09"
       - run:
           name: Deploy docs to gh-pages branch
           command: /home/circleci/.npm-packages/bin/gh-pages -d packages/core/dist --branch << parameters.target_branch >> --message '[skip ci]'
@@ -244,6 +261,9 @@ jobs:
       - notify_slack
     environment:
       NODE_ENV: staging
+  sync_crypto:
+    steps:
+      - git_push_to_crypto
 
   release_staging_crypto:
     docker:
@@ -255,7 +275,7 @@ jobs:
       - deploy:
           target_branch: staging-crypto
       - docker_build_push_crypto
-      - k8s_deploy
+      - k8s_deploy_crypto
       - notify_slack
     environment:
       NODE_ENV: staging
@@ -305,6 +325,10 @@ workflows:
   release_staging:
     jobs:
       - release_staging:
+          filters:
+            branches:
+              only: /^master$/
+      - sync_crypto:
           filters:
             branches:
               only: /^master$/

@@ -24,6 +24,7 @@ const validEmail = value => /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$/.
 const validGeneral = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><|]+/.test(value);
 const validRegular = (value, options) => options.regex.test(value);
 const confirmRequired = value => value === true;
+const checkPOBox = value => !/p[.\s]+o[.\s]+box/i.test(value);
 const validEmailToken = value => value.trim().length === 8;
 
 let pre_build_dvrs, form_error_messages;
@@ -104,6 +105,7 @@ const initPreBuildDVRs = () => ({
         message: form_error_messages.password,
     },
     phone: { func: validPhone, message: form_error_messages.phone },
+    po_box: { func: checkPOBox, message: form_error_messages.po_box },
     postcode: { func: validPostCode, message: form_error_messages.postcode },
     regular: { func: validRegular, message: '' },
     req: { func: validRequired, message: '' },

@@ -85,7 +85,7 @@ const WelcomeModal = ({ toggleAccountsDialog, toggleWelcomeModal, history }) => 
             has_close_icon={false}
             has_outer_content={true}
         >
-            <ThemedScrollbars height={600}>
+            <ThemedScrollbars height={700}>
                 <h2 className='welcome__title'>{localize('Where would you like to start?')}</h2>
                 <div
                     className={classNames('welcome__message', 'welcome__message--left', {

@@ -1,5 +1,10 @@
 .dc-modal__container_welcome {
     overflow: visible;
+
+    @include mobile {
+        overflow: auto;
+        max-height: 95vh;
+    }
 }
 
 .welcome {
@@ -37,7 +42,9 @@
             transform: translate(100%, -50%);
         }
         &--visible {
-            display: flex;
+            @include desktop {
+                display: flex;
+            }
         }
     }
     &-column {
@@ -133,7 +140,9 @@
         display: flex;
         flex-direction: row;
         justify-content: space-evenly;
-        flex-wrap: wrap;
+        @include mobile {
+            flex-wrap: wrap;
+        }
     }
     &__footer {
         font-size: 1.2rem;

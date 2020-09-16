@@ -126,6 +126,7 @@ const submitForm = (values, actions, idx, onSubmitFn, is_dirty, residence_list) 
 const MT5PersonalDetailsForm = ({
     onSave,
     is_fully_authenticated,
+    is_loading,
     landing_company,
     residence_list,
     onCancel,
@@ -145,6 +146,7 @@ const MT5PersonalDetailsForm = ({
         submitForm(values, actions, index, onSubmit, !isDeepEqual(value, values), residence_list);
 
     if (residence_list.length === 0) return <Loading is_fullscreen={false} />;
+    if (is_loading) return <Loading is_fullscreen={false} />;
 
     return (
         <Formik
@@ -154,8 +156,9 @@ const MT5PersonalDetailsForm = ({
                 tax_identification_number: value.tax_identification_number,
                 account_opening_reason: value.account_opening_reason,
             }}
-            enableReinitialize
             validateOnMount
+            validateOnChange
+            validateOnBlur
             validate={values =>
                 validatePersonalDetails({
                     values,
@@ -166,7 +169,17 @@ const MT5PersonalDetailsForm = ({
             }
             onSubmit={onSubmitForm}
         >
-            {({ handleSubmit, isSubmitting, handleChange, handleBlur, errors, touched, values, setFieldValue }) => (
+            {({
+                handleSubmit,
+                isSubmitting,
+                handleChange,
+                handleBlur,
+                errors,
+                touched,
+                values,
+                setFieldValue,
+                isValid,
+            }) => (
                 <AutoHeightWrapper default_height={200} height_offset={isDesktop() ? 148 : null}>
                     {({ height, setRef }) => (
                         <form
@@ -330,10 +343,7 @@ const MT5PersonalDetailsForm = ({
                             <Modal.Footer is_bypassed={isMobile()}>
                                 <FormSubmitButton
                                     cancel_label={localize('Previous')}
-                                    is_disabled={
-                                        isSubmitting ||
-                                        (Object.keys(touched).length > 0 && Object.keys(errors).length > 0)
-                                    }
+                                    is_disabled={isSubmitting || !isValid}
                                     is_absolute={isMobile()}
                                     label={localize('Next')}
                                     onCancel={() => handleCancel(values)}
@@ -349,6 +359,7 @@ const MT5PersonalDetailsForm = ({
 
 MT5PersonalDetailsForm.propTypes = {
     is_fully_authenticated: PropTypes.bool,
+    is_loading: PropTypes.bool,
     onCancel: PropTypes.func,
     onSave: PropTypes.func,
     onSubmit: PropTypes.func,

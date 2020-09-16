@@ -1,5 +1,5 @@
 import { action, autorun, computed, observable } from 'mobx';
-import { getPlatformHeader, unique, isEmptyObject } from '@deriv/shared';
+import { getPlatformIconOrHeader, unique, isEmptyObject } from '@deriv/shared';
 
 import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
 import { LocalStore } from '_common/storage';
@@ -163,24 +163,28 @@ export default class UIStore extends BaseStore {
 
         window.addEventListener('resize', this.handleResize);
         autorun(() => {
-            // TODO: [disable-dark-bot] Delete this condition when Bot is ready
-            const new_app_routing_history = this.root_store.common.app_routing_history.slice();
-            const platform = getPlatformHeader(new_app_routing_history);
-            if (platform === 'DBot') {
-                document.body.classList.remove('theme--dark');
-                document.body.classList.add('theme--light');
-                return;
-            }
-
-            if (this.is_dark_mode_on) {
-                document.body.classList.remove('theme--light');
-                document.body.classList.add('theme--dark');
-            } else {
-                document.body.classList.remove('theme--dark');
-                document.body.classList.add('theme--light');
-            }
+            this.changeTheme();
         });
     }
+
+    changeTheme = () => {
+        // TODO: [disable-dark-bot] Delete this condition when Bot is ready
+        const new_app_routing_history = this.root_store.common.app_routing_history.slice();
+        const platform = getPlatformIconOrHeader(new_app_routing_history, true);
+        if (platform === 'DBot') {
+            document.body.classList.remove('theme--dark');
+            document.body.classList.add('theme--light');
+            return;
+        }
+
+        if (this.is_dark_mode_on) {
+            document.body.classList.remove('theme--light');
+            document.body.classList.add('theme--dark');
+        } else {
+            document.body.classList.remove('theme--dark');
+            document.body.classList.add('theme--light');
+        }
+    };
 
     @action.bound
     init(notification_messages) {

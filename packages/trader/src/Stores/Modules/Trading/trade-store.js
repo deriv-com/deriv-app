@@ -1050,7 +1050,7 @@ export default class TradeStore extends BaseStore {
             this.root_store.ui.toggleNotificationsModal();
         }
         // clear url query string
-        window.history.pushState(null, null, window.location.pathname);
+        window.history.replaceState(null, null, window.location.pathname);
         if (this.prev_chart_layout) {
             this.prev_chart_layout.is_used = false;
         }

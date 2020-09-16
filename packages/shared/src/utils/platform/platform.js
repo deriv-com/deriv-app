@@ -12,18 +12,21 @@ export const isMT5 = () =>
     /^\/mt5/.test(window.location.pathname) ||
     (/^\/(br_)/.test(window.location.pathname) && window.location.pathname.split('/')[2] === 'mt5');
 
-export const getPlatformHeader = routing_history => {
-    if (isBot() || isNavigationFromPlatform(routing_history, routes.bot)) return 'DBot';
-    if (isMT5() || isNavigationFromPlatform(routing_history, routes.mt5)) return 'DMT5';
-    if (isNavigationFromPlatform(routing_history, routes.smarttrader)) return 'SmartTrader';
-    return 'DTrader';
-};
+export const isTrader = () =>
+    (/^\//.test(window.location.pathname) && window.location.pathname.length === 1) ||
+    (/^\/(br_)/.test(window.location.pathname) && window.location.pathname.split('/')[2] === '');
 
-export const getPlatformIcon = routing_history => {
-    if (isBot() || isNavigationFromPlatform(routing_history, routes.bot)) return 'IcBrandDbot';
-    if (isMT5() || isNavigationFromPlatform(routing_history, routes.mt5)) return 'IcBrandDmt5';
-    if (isNavigationFromPlatform(routing_history, routes.smarttrader)) return 'IcBrandSmarttrader';
-    return 'IcBrandDtrader';
+export const getPlatformIconOrHeader = (routing_history, isHeader) => {
+    const should_be_bot = isBot() || (!isTrader() && !isMT5() && isNavigationFromPlatform(routing_history, routes.bot));
+    if (should_be_bot) return isHeader ? 'DBot' : 'IcBrandDbot';
+
+    const should_be_mt5 = isMT5() || (!isTrader() && !isBot() && isNavigationFromPlatform(routing_history, routes.mt5));
+    if (should_be_mt5) return isHeader ? 'DMT5' : 'IcBrandDmt5';
+
+    const should_be_smartTrader = isNavigationFromPlatform(routing_history, routes.smarttrader);
+    if (should_be_smartTrader) return isHeader ? 'SmartTrader' : 'IcBrandSmarttrader';
+
+    return isHeader ? 'DTrader' : 'IcBrandDtrader';
 };
 
 export const getPlatformRedirect = routing_history => {

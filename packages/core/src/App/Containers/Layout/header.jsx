@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
-import { routes, isMobile, getDecimalPlaces, getPlatformHeader } from '@deriv/shared';
+import { routes, isMobile, getDecimalPlaces, getPlatformIconOrHeader } from '@deriv/shared';
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
@@ -94,7 +94,7 @@ class Header extends React.Component {
                                 is_virtual={is_virtual}
                                 needs_financial_assessment={needs_financial_assessment}
                                 toggleTheme={setDarkMode}
-                                platform_header={getPlatformHeader(app_routing_history)}
+                                platform_header={getPlatformIconOrHeader(app_routing_history, true)}
                                 platform_switcher={
                                     <PlatformSwitcher
                                         app_routing_history={app_routing_history}

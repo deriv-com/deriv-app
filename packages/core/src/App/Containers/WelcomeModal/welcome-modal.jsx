@@ -1,8 +1,11 @@
-import PropTypes from 'prop-types';
 import React from 'react';
+import { withRouter } from 'react-router';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Modal, Icon, Button } from '@deriv/components';
+import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
 
 const WelcomeColumn = ({
     button_text,
@@ -63,8 +66,16 @@ WelcomeColumn.propTypes = {
     title: PropTypes.string,
 };
 
-const WelcomeModal = () => {
+const WelcomeModal = ({ toggleAccountsDialog, toggleWelcomeModal, history }) => {
     const [hovered, setHovered] = React.useState(null);
+    const switchToRealAccount = React.useCallback(() => {
+        toggleWelcomeModal(false);
+        toggleAccountsDialog(true);
+    }, []);
+    const switchToDMT5 = React.useCallback(() => {
+        toggleWelcomeModal(false);
+        history.push(routes.mt5);
+    }, []);
     return (
         <Modal
             width='904px'
@@ -100,7 +111,7 @@ const WelcomeModal = () => {
                     )}
                     icons={['IcPercentSolid']}
                     is_hovered={hovered === 'left'}
-                    onButtonClick={() => {}}
+                    onButtonClick={switchToDMT5}
                     platforms={[
                         {
                             icon: 'IcBrandDmt5',
@@ -124,7 +135,7 @@ const WelcomeModal = () => {
                     )}
                     icons={['IcUpDownSolid', 'IcCrossSolid']}
                     is_hovered={hovered === 'right'}
-                    onButtonClick={() => {}}
+                    onButtonClick={switchToRealAccount}
                     platforms={[
                         {
                             icon: 'IcBrandDtrader',
@@ -155,4 +166,9 @@ const WelcomeModal = () => {
     );
 };
 
-export default WelcomeModal;
+export default withRouter(
+    connect(({ ui }) => ({
+        toggleAccountsDialog: ui.toggleAccountsDialog,
+        toggleWelcomeModal: ui.toggleWelcomeModal,
+    }))(WelcomeModal)
+);

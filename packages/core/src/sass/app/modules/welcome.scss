@@ -21,7 +21,7 @@
         &--left {
             top: 50%;
             left: -1.6rem;
-            transform: translateX(-100%);
+            transform: translate(-100%, -50%);
 
             .welcome__message__text {
                 width: 12rem;
@@ -30,7 +30,7 @@
         &--right {
             top: 50%;
             right: -1.6rem;
-            transform: translateX(100%);
+            transform: translate(100%, -50%);
         }
         &--visible {
             display: flex;

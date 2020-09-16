@@ -44,6 +44,18 @@
 
         &:hover {
             box-shadow: 0 0 3rem 0.5rem var(--shadow-drop);
+            background-repeat: no-repeat;
+            background-position: top right;
+        }
+        &--left {
+            &:hover {
+                background-image: url('~Images/common/welcome-bg-blue.svg');
+            }
+        }
+        &--right {
+            &:hover {
+                background-image: url('~Images/common/welcome-bg-red.svg');
+            }
         }
         &__icons {
             display: flex;

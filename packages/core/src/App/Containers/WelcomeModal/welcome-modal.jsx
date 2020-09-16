@@ -6,6 +6,7 @@ import { localize } from '@deriv/translations';
 
 const WelcomeColumn = ({
     button_text,
+    className,
     description,
     icons,
     is_hovered,
@@ -16,7 +17,11 @@ const WelcomeColumn = ({
     title,
 }) => {
     return (
-        <div className='welcome-column' onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+        <div
+            className={classNames('welcome-column', className)}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+        >
             <div className='welcome-column__icons'>
                 {icons.map((icon, index) => (
                     <Icon className='welcome-column__icon' icon={icon} key={index} size={48} />
@@ -89,6 +94,7 @@ const WelcomeModal = () => {
             <div className='welcome__body'>
                 <WelcomeColumn
                     button_text={localize('Start here')}
+                    className='welcome-column--left'
                     description={localize(
                         'Trade with leverage and low spreads for better returns on successful trades.'
                     )}
@@ -112,6 +118,7 @@ const WelcomeModal = () => {
                 />
                 <WelcomeColumn
                     button_text={localize('Start here')}
+                    className='welcome-column--right'
                     description={localize(
                         'Earn fixed payouts with options, or trade multipliers to combine the upside of margin trading with the simplicity of options.'
                     )}

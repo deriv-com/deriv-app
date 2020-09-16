@@ -65,7 +65,7 @@ const validatePersonalDetails = ({ values, residence_list, account_opening_reaso
         tax_residence: [v => !!v, v => residence_list.map(i => i.text).includes(v)],
         tax_identification_number: [
             v => (is_tin_required || tin_format ? !!v : true),
-            v => (is_tin_required && tin_regex ? v.match(tin_regex) : true),
+            v => (tin_regex ? v.match(tin_regex) : true),
         ],
         account_opening_reason: [v => !!v, v => account_opening_reason.map(i => i.text).includes(v)],
     };

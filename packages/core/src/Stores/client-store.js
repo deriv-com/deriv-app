@@ -1489,6 +1489,7 @@ export default class ClientStore extends BaseStore {
                     };
                 }
             });
+            this.root_store.ui.toggleWelcomeModal(true);
             return authorize_response;
         }
     }

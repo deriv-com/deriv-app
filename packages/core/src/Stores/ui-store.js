@@ -1,11 +1,9 @@
 import { action, autorun, computed, observable } from 'mobx';
-import { getPlatformIconOrHeader, unique, isEmptyObject } from '@deriv/shared';
-
-import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
-import { LocalStore } from '_common/storage';
+import { getPlatformIconOrHeader, isEmptyObject, LocalStore, unique } from '@deriv/shared';
 import { sortNotifications } from 'App/Components/Elements/NotificationMessage';
-import { clientNotifications, excluded_notifications } from './Helpers/client-notifications';
+import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
 import BaseStore from './base-store';
+import { clientNotifications, excluded_notifications } from './Helpers/client-notifications';
 
 const store_name = 'ui_store';
 

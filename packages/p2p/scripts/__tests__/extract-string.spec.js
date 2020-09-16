@@ -22,12 +22,12 @@ describe('Regular expression checks', () => {
             <Localize
                 i18n_default_text='Please accept our updated <0>terms and conditions</0> to continue.'
                 components={[
-                    <a
+                    <StaticUrl
                         key={0}
                         className='link'
                         target='_blank'
                         rel='noopener noreferrer'
-                        href={getStaticUrl('terms-and-conditions/#general')}
+                        href='terms-and-conditions/#general'
                     />,
                 ]}
             />

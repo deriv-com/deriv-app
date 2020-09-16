@@ -63,6 +63,7 @@ export { default as ProgressBar } from './components/progress-bar';
 export { default as ProgressIndicator } from './components/progress-indicator';
 export { default as RadioGroup } from './components/radio-group';
 export { default as SelectNative } from './components/select-native';
+export { default as StaticUrl } from './components/static-url';
 export { default as SendEmailTemplate } from './components/send-email-template';
 export { default as SwipeableWrapper } from './components/swipeable-wrapper';
 export { default as RelativeDatepicker } from './components/relative-datepicker';

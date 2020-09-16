@@ -1,7 +1,14 @@
 import { Field, Formik } from 'formik';
 import React from 'react';
-import { Div100vhContainer, Modal, ThemedScrollbars, FormSubmitButton, AutoHeightWrapper } from '@deriv/components';
-import { getStaticUrl, isDesktop, isMobile, PlatformContext } from '@deriv/shared';
+import {
+    Div100vhContainer,
+    Modal,
+    ThemedScrollbars,
+    FormSubmitButton,
+    AutoHeightWrapper,
+    StaticUrl,
+} from '@deriv/components';
+import { isDesktop, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import CheckboxField from 'App/Containers/RealAccountSignup/checkbox-field.jsx';
 import { Hr } from './currency-selector.jsx';
@@ -9,8 +16,6 @@ import { SharedMessage, BrokerSpecificMessage } from './terms-of-use-messages.js
 import 'Sass/terms-of-use.scss';
 
 class TermsOfUse extends React.Component {
-    static contextType = PlatformContext;
-
     render() {
         return (
             <Formik
@@ -57,14 +62,12 @@ class TermsOfUse extends React.Component {
                                                 <Localize
                                                     i18n_default_text='I agree to the <0>terms and conditions</0>.'
                                                     components={[
-                                                        <a
+                                                        <StaticUrl
                                                             key={0}
                                                             className='link'
                                                             target='_blank'
                                                             rel='noopener noreferrer'
-                                                            href={getStaticUrl('/terms-and-conditions', {
-                                                                is_deriv_crypto: this.context.is_deriv_crypto,
-                                                            })}
+                                                            href='/terms-and-conditions'
                                                         />,
                                                     ]}
                                                 />

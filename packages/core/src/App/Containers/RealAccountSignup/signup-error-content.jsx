@@ -1,11 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Icon } from '@deriv/components';
-import { getStaticUrl, PlatformContext } from '@deriv/shared';
+import { Button, Icon, StaticUrl } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 
 const SignupErrorContent = ({ message, code, onConfirm }) => {
-    const { is_deriv_crypto } = React.useContext(PlatformContext);
     const Heading = () => {
         switch (code) {
             case 'InvalidPhone':
@@ -69,8 +67,8 @@ const SignupErrorContent = ({ message, code, onConfirm }) => {
                 return null;
             default:
                 return (
-                    <a
-                        href={getStaticUrl('help-centre', { is_deriv_crypto })}
+                    <StaticUrl
+                        href='help-centre'
                         type='button'
                         className='dc-btn dc-btn--primary'
                         target='_blank'
@@ -79,7 +77,7 @@ const SignupErrorContent = ({ message, code, onConfirm }) => {
                         <span className='dc-btn__text'>
                             <Localize i18n_default_text='OK' />
                         </span>
-                    </a>
+                    </StaticUrl>
                 );
         }
     };

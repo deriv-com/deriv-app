@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
-import { routes, getStaticUrl, PlatformContext } from '@deriv/shared';
-import { Icon, Checklist } from '@deriv/components';
+import { routes } from '@deriv/shared';
+import { Icon, Checklist, StaticUrl } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services';
@@ -36,7 +36,6 @@ const DepositsLocked = ({
         ? localize('Check proof of address document verification status')
         : localize('Upload a proof of address to verify your address');
     const history = useHistory();
-    const { is_deriv_crypto } = React.useContext(PlatformContext);
 
     // handle TnC
     const acceptTnc = async () => {
@@ -72,14 +71,12 @@ const DepositsLocked = ({
                           <Localize
                               i18n_default_text='Accept our updated <0>terms and conditions</0>'
                               components={[
-                                  <a
+                                  <StaticUrl
                                       key={0}
                                       className='link'
                                       rel='noopener noreferrer'
                                       target='_blank'
-                                      href={getStaticUrl('terms-and-conditions', {
-                                          is_deriv_crypto,
-                                      })}
+                                      href='terms-and-conditions'
                                   />,
                               ]}
                           />

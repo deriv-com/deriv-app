@@ -1,10 +1,9 @@
 import React from 'react';
-import { PlatformContext, getStaticUrl } from '@deriv/shared';
+import { StaticUrl } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import Article from 'Components/article';
 
 const SEArticle = () => {
-    const { is_deriv_crypto } = React.useContext(PlatformContext);
     return (
         <Article
             title={localize('About self-exclusion')}
@@ -13,14 +12,12 @@ const SEArticle = () => {
                     key={0}
                     i18n_default_text='Self-exclusion helps you control the amount of money and time you spend on your trading activities. The limits you set here will help you exercise <0>responsible trading</0>.'
                     components={[
-                        <a
+                        <StaticUrl
                             key={0}
                             className='link link--orange'
                             rel='noopener noreferrer'
                             target='_blank'
-                            href={getStaticUrl('/responsible-trading', {
-                                is_deriv_crypto,
-                            })}
+                            href='/responsible-trading'
                         />,
                     ]}
                 />,
@@ -40,14 +37,12 @@ const SEArticle = () => {
                             key={0}
                             className='self-exclusion__text-highlight self-exclusion__text-highlight--small'
                         />,
-                        <a
+                        <StaticUrl
                             key={1}
                             className='link link--orange'
                             rel='noopener noreferrer'
                             target='_blank'
-                            href={getStaticUrl('/contact-us', {
-                                is_deriv_crypto,
-                            })}
+                            href='/contact-us'
                         />,
                     ]}
                 />,

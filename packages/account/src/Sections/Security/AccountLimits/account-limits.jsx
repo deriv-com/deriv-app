@@ -1,8 +1,8 @@
 // import PropTypes      from 'prop-types';
 import classNames from 'classnames';
 import React from 'react';
-import { Popover, DesktopWrapper, Loading, MobileWrapper } from '@deriv/components';
-import { getStaticUrl, formatMoney, isMobile, PlatformContext } from '@deriv/shared';
+import { StaticUrl, Popover, DesktopWrapper, Loading, MobileWrapper } from '@deriv/components';
+import { formatMoney, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import LoadErrorMessage from 'Components/load-error-message';
 import FormBody from 'Components/form-body';
@@ -61,7 +61,6 @@ const ExtraInfo = ({ message, ...props }) => (
 );
 
 class AccountLimits extends React.Component {
-    static contextType = PlatformContext;
     state = { is_loading: true };
 
     componentDidMount() {
@@ -111,14 +110,12 @@ class AccountLimits extends React.Component {
                         <Localize
                             i18n_default_text='These are default limits that we apply to your accounts. To learn more about trading limits and how they apply, please go to the <0>Help Centre</0>.'
                             components={[
-                                <a
+                                <StaticUrl
                                     key={0}
                                     className='link link--orange'
                                     rel='noopener noreferrer'
                                     target='_blank'
-                                    href={getStaticUrl('/help-centre', {
-                                        is_deriv_crypto: this.context.is_deriv_crypto,
-                                    })}
+                                    href='/help-centre'
                                 />,
                             ]}
                         />

@@ -9,6 +9,7 @@ import {
     State,
     website_name,
 } from '@deriv/shared';
+import { StaticUrl } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { getRiskAssessment, isAccountOfType, shouldAcceptTnc, shouldCompleteTax } from '_common/base/client_base';
 import { BinaryLink } from 'App/Components/Routes';
@@ -16,7 +17,7 @@ import { WS } from 'Services';
 
 // TODO: Update links to app_2 links when components are done.
 /* eslint-disable react/jsx-no-target-blank */
-export const clientNotifications = (ui = {}, client = {}, { is_deriv_crypto }) => {
+export const clientNotifications = (ui = {}, client = {}) => {
     const notifications = {
         currency: {
             action: {
@@ -42,14 +43,7 @@ export const clientNotifications = (ui = {}, client = {}, { is_deriv_crypto }) =
                         exclusion_end: formatDate(excluded_until, 'DD/MM/YYYY'),
                         interpolation: { escapeValue: false },
                     }}
-                    components={[
-                        <a
-                            key={0}
-                            className='link'
-                            target='_blank'
-                            href={getStaticUrl('contact-us', { is_deriv_crypto })}
-                        />,
-                    ]}
+                    components={[<StaticUrl key={0} className='link' target='_blank' href='contact-us' />]}
                 />
             ),
             type: 'danger',
@@ -111,7 +105,7 @@ export const clientNotifications = (ui = {}, client = {}, { is_deriv_crypto }) =
             ...(isMobile() && {
                 action: {
                     text: localize('Contact us'),
-                    onClick: () => {
+                    onClick: ({ is_deriv_crypto }) => {
                         window.open(getStaticUrl('contact-us', { is_deriv_crypto }));
                     },
                 },
@@ -123,14 +117,7 @@ export const clientNotifications = (ui = {}, client = {}, { is_deriv_crypto }) =
             ) : (
                 <Localize
                     i18n_default_text='Trading and deposits have been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
-                    components={[
-                        <a
-                            key={0}
-                            className='link'
-                            target='_blank'
-                            href={getStaticUrl('contact-us', { is_deriv_crypto })}
-                        />,
-                    ]}
+                    components={[<StaticUrl key={0} className='link' target='_blank' href='contact-us' />]}
                 />
             ),
             type: 'danger',
@@ -150,7 +137,7 @@ export const clientNotifications = (ui = {}, client = {}, { is_deriv_crypto }) =
             ...(isMobile() && {
                 action: {
                     text: localize('Contact us'),
-                    onClick: () => {
+                    onClick: ({ is_deriv_crypto }) => {
                         window.open(getStaticUrl('contact-us', { is_deriv_crypto }));
                     },
                 },
@@ -162,14 +149,7 @@ export const clientNotifications = (ui = {}, client = {}, { is_deriv_crypto }) =
             ) : (
                 <Localize
                     i18n_default_text='Digital Options Trading has been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
-                    components={[
-                        <a
-                            key={0}
-                            className='link'
-                            target='_blank'
-                            href={getStaticUrl('contact-us', { is_deriv_crypto })}
-                        />,
-                    ]}
+                    components={[<StaticUrl key={0} className='link' target='_blank' href='contact-us' />]}
                 />
             ),
             type: 'danger',
@@ -210,12 +190,12 @@ export const clientNotifications = (ui = {}, client = {}, { is_deriv_crypto }) =
                 <Localize
                     i18n_default_text='Please accept our <0>updated Terms and Conditions</0> to proceed.'
                     components={[
-                        <a
+                        <StaticUrl
                             key={0}
                             className='link'
                             rel='noopener'
                             target='_blank'
-                            href={getStaticUrl('terms-and-conditions', { is_deriv_crypto })}
+                            href='terms-and-conditions'
                         />,
                     ]}
                 />

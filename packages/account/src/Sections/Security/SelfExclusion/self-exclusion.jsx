@@ -11,6 +11,7 @@ import {
     Icon,
     Button,
     DatePicker,
+    StaticUrl,
 } from '@deriv/components';
 import {
     getPropertyValue,
@@ -21,8 +22,6 @@ import {
     formatMoney,
     hasCorrectDecimalPlaces,
     getDecimalPlaces,
-    getStaticUrl,
-    PlatformContext,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -32,7 +31,6 @@ import LoadErrorMessage from 'Components/load-error-message';
 import Article from './article.jsx';
 
 class SelfExclusion extends React.Component {
-    static contextType = PlatformContext;
     exclusion_data = {
         max_turnover: '',
         max_losses: '',
@@ -433,14 +431,12 @@ class SelfExclusion extends React.Component {
                                                         i18n_default_text='You’ll be able to adjust these limits at any time. You can reduce your limits from the <0>self-exclusion page</0>. To increase or remove your limits, please contact our <1>Customer Support team</1>.'
                                                         components={[
                                                             <span key={0} className='self-exclusion__text-highlight' />,
-                                                            <a
+                                                            <StaticUrl
                                                                 key={1}
                                                                 className='link link--orange'
                                                                 rel='noopener noreferrer'
                                                                 target='_blank'
-                                                                href={getStaticUrl('/contact-us', {
-                                                                    is_deriv_crypto: this.context.is_deriv_crypto,
-                                                                })}
+                                                                href='/contact-us'
                                                             />,
                                                         ]}
                                                     />

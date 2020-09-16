@@ -1,7 +1,7 @@
 import React from 'react';
-import { Icon, Popover } from '@deriv/components';
-import { getStaticUrl, PlatformContext } from '@deriv/shared';
+import { Icon, Popover, StaticUrl } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { PlatformContext } from '@deriv/shared';
 
 export const GoToDeriv = () => {
     const { is_deriv_crypto } = React.useContext(PlatformContext);
@@ -9,9 +9,9 @@ export const GoToDeriv = () => {
 
     return (
         <Popover alignment='top' message={message} className='footer__link'>
-            <a href={getStaticUrl('/', { is_deriv_crypto })} target='_blank' rel='nofollow noreferrer'>
+            <StaticUrl href='/' target='_blank' rel='nofollow noreferrer'>
                 <Icon icon='IcDerivOutline' className='footer__icon ic-deriv__icon' />
-            </a>
+            </StaticUrl>
         </Popover>
     );
 };

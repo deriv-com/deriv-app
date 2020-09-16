@@ -7,20 +7,18 @@ import { tabs_title } from '../constants/bot-contents';
 import { connect } from '../stores/connect';
 import '../assets/sass/bot-footer-extensions.scss';
 
-const SecurityAndPrivacy = () => {
-    return (
-        <Popover alignment='top' message={localize('Security and privacy')}>
-            <StaticUrl
-                className='footer__link'
-                href='tnc/security-and-privacy.pdf'
-                rel='noopener noreferrer'
-                target='_blank'
-            >
-                <Icon icon='IcSecurityAndPrivacy' />
-            </StaticUrl>
-        </Popover>
-    );
-};
+const SecurityAndPrivacy = () => (
+    <Popover alignment='top' message={localize('Security and privacy')}>
+        <StaticUrl
+            className='footer__link'
+            href='tnc/security-and-privacy.pdf'
+            rel='noopener noreferrer'
+            target='_blank'
+        >
+            <Icon icon='IcSecurityAndPrivacy' />
+        </StaticUrl>
+    </Popover>
+);
 
 const BotFooterExtensions = ({ active_tab, populateFooterExtensions, setActiveTab }) => {
     React.useEffect(() => populateFooter());

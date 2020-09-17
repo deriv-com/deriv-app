@@ -7,24 +7,24 @@ import Dp2pContext from 'Components/context/dp2p-context';
 import { secondsToTimer } from 'Utils/date-time';
 import ServerTime from 'Utils/server-time';
 
+// TODO: Refactor "advert" as it can also be an "order", try to use two separate
+// "RowComponents" for orders and adverts.
 const OrderRowComponent = React.memo(({ advert, onOpenDetails, style, is_active }) => {
     const {
         account_currency,
         amount_display,
         id,
-        is_buy_ad,
-        is_buyer_cancelled_order,
-        is_buyer_confirmed_order,
+        is_buy_order,
         is_completed_order,
-        is_expired_order,
-        is_pending_order,
-        is_refunded_order,
         local_currency,
         order_expiry_milliseconds,
         order_purchase_datetime,
         other_user_details,
         price_display,
         status_string,
+        should_highlight_danger,
+        should_highlight_alert,
+        should_highlight_disabled,
     } = advert;
     const [remaining_time, setRemainingTime] = React.useState();
     const { getLocalStorageSettingsForLoginId } = React.useContext(Dp2pContext);
@@ -65,27 +65,23 @@ const OrderRowComponent = React.memo(({ advert, onOpenDetails, style, is_active 
                     'orders__table-row--attention': !isOrderSeen(id),
                 })}
             >
-                <Table.Cell>{is_buy_ad ? localize('Buy') : localize('Sell')}</Table.Cell>
+                <Table.Cell>{is_buy_order ? localize('Buy') : localize('Sell')}</Table.Cell>
                 <Table.Cell>{id}</Table.Cell>
                 <Table.Cell>{other_user_details.name}</Table.Cell>
                 <Table.Cell>
                     <div
                         className={classNames('orders__table-status', {
-                            'orders__table-status--primary':
-                                (is_buyer_confirmed_order && !is_buy_ad) || (is_buy_ad && is_pending_order),
-                            'orders__table-status--secondary':
-                                (!is_buy_ad && is_pending_order) || (is_buyer_confirmed_order && is_buy_ad),
+                            'orders__table-status--danger': should_highlight_danger,
+                            'orders__table-status--alert': should_highlight_alert,
                             'orders__table-status--success': is_completed_order,
-                            // 'orders__table-status--info': is_refunded_order,
-                            'orders__table-status--disabled':
-                                is_buyer_cancelled_order || is_expired_order || is_refunded_order,
+                            'orders__table-status--disabled': should_highlight_disabled,
                         })}
                     >
                         {status_string}
                     </div>
                 </Table.Cell>
-                <Table.Cell>{is_buy_ad ? transaction_amount : offer_amount}</Table.Cell>
-                <Table.Cell>{is_buy_ad ? offer_amount : transaction_amount}</Table.Cell>
+                <Table.Cell>{is_buy_order ? transaction_amount : offer_amount}</Table.Cell>
+                <Table.Cell>{is_buy_order ? offer_amount : transaction_amount}</Table.Cell>
                 <Table.Cell>
                     {is_active ? <div className='orders__table-time'>{remaining_time}</div> : order_purchase_datetime}
                 </Table.Cell>
@@ -100,7 +96,7 @@ OrderRowComponent.propTypes = {
         amount_display: PropTypes.string,
         display_status: PropTypes.string,
         id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-        is_buy_ad: PropTypes.bool,
+        is_buy_order: PropTypes.bool,
         local_currency: PropTypes.string,
         order_purchase_datetime: PropTypes.string,
         price_display: PropTypes.string,

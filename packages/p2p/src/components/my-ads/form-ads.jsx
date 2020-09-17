@@ -92,7 +92,7 @@ class FormAds extends React.Component {
                         validate={this.validateFormAds}
                     >
                         {({ isSubmitting, errors, handleChange, touched, isValid, values }) => {
-                            const is_sell_ad = values.type === 'sell';
+                            const is_sell_advert = values.type === 'sell';
                             return (
                                 <div className='p2p-my-ads__form'>
                                     <Form noValidate>
@@ -212,7 +212,7 @@ class FormAds extends React.Component {
                                                     )}
                                                 </Field>
                                             </div>
-                                            {is_sell_ad && (
+                                            {is_sell_advert && (
                                                 <Field name='payment_info'>
                                                     {({ field }) => (
                                                         <Input
@@ -230,7 +230,7 @@ class FormAds extends React.Component {
                                                     )}
                                                 </Field>
                                             )}
-                                            {is_sell_ad && (
+                                            {is_sell_advert && (
                                                 <Field name='contact_info'>
                                                     {({ field }) => (
                                                         <Input

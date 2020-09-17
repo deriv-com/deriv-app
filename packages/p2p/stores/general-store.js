@@ -1,7 +1,8 @@
 import { observable, action } from 'mobx';
-import { orderToggleIndex } from '../src/components/orders/order-info.js';
 import { getPropertyValue, isEmptyObject, isProduction } from '@deriv/shared';
-import { init as WebsocketInit, requestWS, subscribeWS } from '../src/utils/websocket.js';
+import { orderToggleIndex } from 'Components/orders/order-info.js';
+import { getExtendedOrderDetails } from 'Utils/orders.js';
+import { init as WebsocketInit, requestWS, subscribeWS } from 'Utils/websocket.js';
 
 export default class GeneralStore {
     @observable active_index = 0;
@@ -82,7 +83,7 @@ export default class GeneralStore {
     handleNotifications(old_orders, new_orders) {
         const { is_cached, notifications } = this.getLocalStorageSettingsForLoginId();
         new_orders.forEach(new_order => {
-            const order_info = getExtendedOrderDetails(new_order, this.props.loginid);
+            const order_info = getExtendedOrderDetails(new_order, this.client.loginid);
             const notification = notifications.find(n => n.order_id === new_order.id);
             const old_order = old_orders.find(o => o.id === new_order.id);
             const is_current_order = new_order.id === this.props?.order_id;

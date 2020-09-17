@@ -38,7 +38,7 @@ export const RowComponent = React.memo(({ advert, setSelectedAdvert, style }) =>
     } = advert;
     const { advertiser_id } = React.useContext(Dp2pContext);
     const is_my_advert = advert.advertiser_details.id === advertiser_id;
-    const is_buy_ad = counterparty_type === 'buy';
+    const is_buy_advert = counterparty_type === 'buy';
     const { name: advertiser_name } = advert.advertiser_details;
     const advertiser_short_name = getShortNickname(advertiser_name);
 
@@ -65,7 +65,7 @@ export const RowComponent = React.memo(({ advert, setSelectedAdvert, style }) =>
                 ) : (
                     <Table.Cell className='buy-sell__button'>
                         <Button primary small onClick={() => setSelectedAdvert(advert)}>
-                            {is_buy_ad ? localize('Buy') : localize('Sell')} {account_currency}
+                            {is_buy_advert ? localize('Buy') : localize('Sell')} {account_currency}
                         </Button>
                     </Table.Cell>
                 )}

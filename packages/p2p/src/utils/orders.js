@@ -5,10 +5,10 @@ const getPaymentMethodsMap = () => ({
     bank_transfer: localize('Bank transfer'),
 });
 
-const getOrderLabels = (is_my_ad, is_buy_ad, order_details) => {
+const getOrderLabels = (is_my_ad, is_buy_order, order_details) => {
     const labels = {};
 
-    if (is_buy_ad) {
+    if (is_buy_order) {
         if (is_my_ad) {
             labels.other_party_role = localize('Buyer');
             labels.left_send_or_receive = localize('Receive');
@@ -60,10 +60,14 @@ const getOrderLabels = (is_my_ad, is_buy_ad, order_details) => {
 };
 
 export const getExtendedOrderDetails = (order_details, loginid) => {
+    if (!loginid) {
+        throw new Error('Missing required loginid');
+    }
+
     const { advert_details, advertiser_details, client_details, status, type } = order_details;
 
-    const is_buy_ad = type === 'buy';
-    const is_sell_ad = type === 'sell';
+    const is_buy_order = type === 'buy';
+    const is_sell_order = type === 'sell';
 
     const is_buyer_cancelled_order = status === 'cancelled';
     const is_buyer_confirmed_order = status === 'buyer-confirmed';
@@ -77,14 +81,32 @@ export const getExtendedOrderDetails = (order_details, loginid) => {
     const is_active_order = is_pending_order || is_buyer_confirmed_order || is_expired_order;
     const is_inactive_order = is_buyer_cancelled_order || is_refunded_order || is_completed_order;
 
-    // Status highlighting (alert = yellow, danger = red)
-    const should_highlight_alert = (is_buy_ad && is_buyer_confirmed_order) || (!is_buy_ad && is_pending_order);
-    const should_highlight_danger = (is_buy_ad && is_pending_order) || (!is_buy_ad && is_buyer_confirmed_order);
+    // Status highlighting (alert = yellow, danger = red, disabled = grey)
+    let should_highlight_alert, should_highlight_danger;
+    const should_highlight_disabled = is_buyer_cancelled_order || is_expired_order || is_refunded_order;
+
+    if (is_my_ad) {
+        if (is_buy_order) {
+            should_highlight_alert = is_pending_order;
+            should_highlight_danger = is_buyer_confirmed_order;
+        } else {
+            should_highlight_alert = is_buyer_confirmed_order;
+            should_highlight_danger = is_pending_order;
+        }
+    } else {
+        if (is_buy_order) {
+            should_highlight_alert = is_buyer_confirmed_order;
+            should_highlight_danger = is_pending_order;
+        } else {
+            should_highlight_alert = is_pending_order;
+            should_highlight_danger = is_buyer_confirmed_order;
+        }
+    }
 
     // Order details footer.
     let should_show_cancel_and_paid_button, should_show_complain_and_received_button, status_string;
 
-    if (is_buy_ad) {
+    if (is_buy_order) {
         should_show_cancel_and_paid_button = !is_my_ad && is_pending_order;
         should_show_complain_and_received_button = is_my_ad && (is_buyer_confirmed_order || is_expired_order);
     } else {
@@ -101,17 +123,17 @@ export const getExtendedOrderDetails = (order_details, loginid) => {
 
     if (is_pending_order) {
         if (is_my_ad) {
-            status_string = is_buy_ad ? localize('Wait for payment') : localize('Pay now');
+            status_string = is_buy_order ? localize('Wait for payment') : localize('Pay now');
         } else {
-            status_string = is_buy_ad ? localize('Pay now') : localize('Wait for payment');
+            status_string = is_buy_order ? localize('Pay now') : localize('Wait for payment');
         }
     } else if (is_buyer_cancelled_order) {
         status_string = localize('Cancelled');
     } else if (is_buyer_confirmed_order) {
         if (is_my_ad) {
-            status_string = is_buy_ad ? localize('Confirm payment') : localize('Wait for release');
+            status_string = is_buy_order ? localize('Confirm payment') : localize('Wait for release');
         } else {
-            status_string = is_buy_ad ? localize('Wait for release') : localize('Confirm payment');
+            status_string = is_buy_order ? localize('Wait for release') : localize('Confirm payment');
         }
     } else if (is_expired_order || is_refunded_order) {
         status_string = localize('Expired');
@@ -124,7 +146,7 @@ export const getExtendedOrderDetails = (order_details, loginid) => {
     return {
         ...order_details,
         is_active_order,
-        is_buy_ad,
+        is_buy_order,
         is_buyer_cancelled_order,
         is_buyer_confirmed_order,
         is_completed_order,
@@ -133,8 +155,8 @@ export const getExtendedOrderDetails = (order_details, loginid) => {
         is_my_ad,
         is_pending_order,
         is_refunded_order,
-        is_sell_ad,
-        labels: getOrderLabels(is_my_ad, is_buy_ad, order_details),
+        is_sell_order,
+        labels: getOrderLabels(is_my_ad, is_buy_order, order_details),
         my_user_details: is_my_ad ? advertiser_details : client_details,
         order_expiry_milliseconds: convertToMillis(order_details.expiry_time),
         order_purchase_datetime: getFormattedDateString(new Date(convertToMillis(order_details.created_time))),
@@ -143,6 +165,7 @@ export const getExtendedOrderDetails = (order_details, loginid) => {
         purchase_time: getFormattedDateString(new Date(convertToMillis(order_details.created_time))),
         should_highlight_alert,
         should_highlight_danger,
+        should_highlight_disabled,
         should_show_cancel_and_paid_button,
         should_show_complain_and_received_button,
         should_show_order_footer,

@@ -103,6 +103,7 @@ const App = observer(props => {
                 orders: general_store.orders,
                 poi_status: general_store.poi_status,
                 poi_url,
+                resetNicknameErrorState: general_store.resetNicknameErrorState,
                 residence: general_store.client.residence,
                 setChatInfo: general_store.setChatInfo,
                 setIsListed: is_listed => {

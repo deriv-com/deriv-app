@@ -49,6 +49,7 @@
         position: relative;
         padding-top: 3.6rem;
         z-index: 1;
+        height: calc(100% - 0.4rem);
         background: var(--general-section-2);
         transition: all 0.2s ease-out;
 

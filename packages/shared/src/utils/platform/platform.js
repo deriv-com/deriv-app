@@ -16,7 +16,7 @@ export const isTrader = () =>
     (/^\//.test(window.location.pathname) && window.location.pathname.length === 1) ||
     (/^\/(br_)/.test(window.location.pathname) && window.location.pathname.split('/')[2] === '');
 
-export const getPlatformIconOrHeader = (routing_history, isHeader) => {
+const getPlatformIconOrHeader = (routing_history, isHeader) => {
     const should_be_bot = isBot() || (!isTrader() && !isMT5() && isNavigationFromPlatform(routing_history, routes.bot));
     if (should_be_bot) return isHeader ? 'DBot' : 'IcBrandDbot';
 
@@ -27,6 +27,18 @@ export const getPlatformIconOrHeader = (routing_history, isHeader) => {
     if (should_be_smartTrader) return isHeader ? 'SmartTrader' : 'IcBrandSmarttrader';
 
     return isHeader ? 'DTrader' : 'IcBrandDtrader';
+};
+
+export const getPlatformInformation = routing_history => {
+    let header, icon;
+
+    header = getPlatformIconOrHeader(routing_history, true);
+    icon = getPlatformIconOrHeader(routing_history, false);
+
+    return {
+        header,
+        icon,
+    };
 };
 
 export const getPlatformRedirect = routing_history => {

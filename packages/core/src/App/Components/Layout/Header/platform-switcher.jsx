@@ -4,7 +4,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 import { Icon } from '@deriv/components';
-import { getPlatformIconOrHeader, isMobile } from '@deriv/shared';
+import { getPlatformInformation, isMobile } from '@deriv/shared';
 
 import { PlatformSwitcherLoader } from './Components/Preloader/platform-switcher.jsx';
 import { PlatformDropdown } from './platform-dropdown.jsx';
@@ -47,11 +47,11 @@ class PlatformSwitcher extends React.PureComponent {
                 >
                     <Icon
                         className='platform-switcher__icon'
-                        icon={getPlatformIconOrHeader(this.props.app_routing_history, false)}
+                        icon={getPlatformInformation(this.props.app_routing_history).icon}
                         size={32}
                     />
                     <h1 className='platform-switcher__header'>
-                        {getPlatformIconOrHeader(this.props.app_routing_history, true)}
+                        {getPlatformInformation(this.props.app_routing_history).header}
                     </h1>
                     <Icon className='platform-switcher__arrow' icon='IcChevronDownBold' />
                 </div>

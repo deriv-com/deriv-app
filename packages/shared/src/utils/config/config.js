@@ -2,7 +2,8 @@
 import { isBot } from '../platform';
 
 const DERIV_CRYPTO_STAGING_APP_ID = 2586;
-const DERIV_CRYPTO_STAGING_DBOT_APP_ID = 16929;
+const DERIV_CRYPTO_STAGING_DBOT_APP_ID = 19112; // TODO [app-id] Once Crypto DBOT app id is ready, update these
+const DERIV_CRYPTO_DBOT_APP_ID = 19111; // TODO [app-id] Once Crypto DBOT app id is ready, update these
 const DERIV_CRYPTO_APP_ID = 1411;
 
 /*
@@ -63,6 +64,9 @@ export const getAppId = () => {
         window.localStorage.removeItem('config.default_app_id');
         const current_domain = getCurrentProductionDomain();
         app_id = domain_app_ids[current_domain] || (isBot() ? 19111 : 16929);
+        if (is_crypto_app) {
+            app_id = domain_app_ids[current_domain] || (isBot() ? DERIV_CRYPTO_DBOT_APP_ID : DERIV_CRYPTO_APP_ID);
+        }
     }
     return app_id;
 };

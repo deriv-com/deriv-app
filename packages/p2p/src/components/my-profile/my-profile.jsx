@@ -212,7 +212,7 @@ const MyProfile = () => {
                         <Table.Row className='my-profile__stats'>
                             <div className='my-profile__stats-cell-separator' />
                             <Table.Cell className='my-profile__stats-cell'>
-                                <div className='my-profile__stats-cell-header'>{localize('Total trades')}</div>
+                                <div className='my-profile__stats-cell-header'>{localize('Total orders')}</div>
                                 <div className='my-profile__stats-cell-info'>{total_orders_count || '-'}</div>
                             </Table.Cell>
                             <div className='my-profile__stats-cell-separator' />

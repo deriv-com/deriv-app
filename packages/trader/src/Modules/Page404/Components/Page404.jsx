@@ -6,6 +6,7 @@ import { localize } from '@deriv/translations';
 
 const Page404 = () => (
     <PageError
+        buttonOnClick={() => {}}
         header={localize('We couldn’t find that page')}
         messages={[
             localize('You may have followed a broken link, or the page has moved to a new address.'),

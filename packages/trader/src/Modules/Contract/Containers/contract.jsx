@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { withRouter } from 'react-router';
+import { Redirect, withRouter } from 'react-router';
 import { CSSTransition } from 'react-transition-group';
 import { routes } from '@deriv/shared';
 import ErrorComponent from 'App/Components/Elements/Errors';
@@ -19,6 +19,10 @@ class Contract extends React.Component {
     }
 
     render() {
+        if (!/\d+/.test(this.props.match.params.contract_id)) {
+            return <Redirect to='/404' />;
+        }
+
         return (
             <React.Fragment>
                 {this.props.has_error ? (

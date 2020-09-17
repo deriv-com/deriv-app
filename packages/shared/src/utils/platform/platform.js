@@ -16,29 +16,18 @@ export const isTrader = () =>
     (/^\//.test(window.location.pathname) && window.location.pathname.length === 1) ||
     (/^\/(br_)/.test(window.location.pathname) && window.location.pathname.split('/')[2] === '');
 
-const getPlatformIconOrHeader = (routing_history, isHeader) => {
+// TODO: Replace platform names with `platform_name` enum after merging "carol/journal error notification"
+export const getPlatformInformation = routing_history => {
     const should_be_bot = isBot() || (!isTrader() && !isMT5() && isNavigationFromPlatform(routing_history, routes.bot));
-    if (should_be_bot) return isHeader ? 'DBot' : 'IcBrandDbot';
+    if (should_be_bot) return { header: 'DBot', icon: 'IcBrandDbot' };
 
     const should_be_mt5 = isMT5() || (!isTrader() && !isBot() && isNavigationFromPlatform(routing_history, routes.mt5));
-    if (should_be_mt5) return isHeader ? 'DMT5' : 'IcBrandDmt5';
+    if (should_be_mt5) return { header: 'DMT5', icon: 'IcBrandDmt5' };
 
     const should_be_smartTrader = isNavigationFromPlatform(routing_history, routes.smarttrader);
-    if (should_be_smartTrader) return isHeader ? 'SmartTrader' : 'IcBrandSmarttrader';
+    if (should_be_smartTrader) return { header: 'SmartTrader', icon: 'IcBrandSmarttrader' };
 
-    return isHeader ? 'DTrader' : 'IcBrandDtrader';
-};
-
-export const getPlatformInformation = routing_history => {
-    let header, icon;
-
-    header = getPlatformIconOrHeader(routing_history, true);
-    icon = getPlatformIconOrHeader(routing_history, false);
-
-    return {
-        header,
-        icon,
-    };
+    return { header: 'DTrader', icon: 'IcBrandDtrader' };
 };
 
 export const getPlatformRedirect = routing_history => {

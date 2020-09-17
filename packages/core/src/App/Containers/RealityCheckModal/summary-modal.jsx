@@ -66,7 +66,7 @@ const SummaryModal = ({
                 ...reality_check,
             });
         });
-    }, []);
+    }, [server_time]);
 
     const getSessionDuration = (start_time, current_time) => {
         const session_duration = getDiffDuration(start_time, current_time);

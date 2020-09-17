@@ -181,7 +181,7 @@ const AccountTransferForm = ({
 
     React.useEffect(() => {
         onMount();
-    }, []);
+    }, [onMount]);
 
     React.useEffect(() => {
         if (Object.keys(from_accounts).length && typeof setSideNote === 'function') {
@@ -195,7 +195,15 @@ const AccountTransferForm = ({
                 />
             );
         }
-    }, [transfer_fee, selected_from, minimum_fee, mt5_total_transfers, internal_total_transfers, setSideNote]);
+    }, [
+        transfer_fee,
+        selected_from,
+        minimum_fee,
+        mt5_total_transfers,
+        internal_total_transfers,
+        setSideNote,
+        from_accounts,
+    ]);
     return (
         <div className='cashier__wrapper account-transfer__wrapper'>
             <React.Fragment>

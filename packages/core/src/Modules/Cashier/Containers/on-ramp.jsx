@@ -20,7 +20,7 @@ const OnRamp = ({
     React.useEffect(() => {
         onMount();
         return () => onUnmount();
-    }, []);
+    }, [onMount, onUnmount]);
 
     return (
         <div className='cashier__wrapper cashier__wrapper--align-left on-ramp'>

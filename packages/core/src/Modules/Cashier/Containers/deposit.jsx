@@ -24,7 +24,7 @@ const Deposit = ({
     React.useEffect(() => {
         setActiveTab(container);
         onMount();
-    }, []);
+    }, [container, onMount, setActiveTab]);
     if (is_virtual) {
         return <Virtual />;
     }

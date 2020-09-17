@@ -66,7 +66,7 @@ RowComponent.displayName = 'RowComponent';
 
 const MyAdsTable = ({ onClickCreate }) => {
     const { currency, list_item_limit, is_listed } = React.useContext(Dp2pContext);
-    const isMounted = useIsMounted();
+    const is_mounted = useIsMounted();
     const item_offset = React.useRef(0);
     const [is_loading, setIsLoading] = React.useState(true);
     const [api_error_message, setApiErrorMessage] = React.useState('');
@@ -76,7 +76,7 @@ const MyAdsTable = ({ onClickCreate }) => {
     const [ads, setAds] = React.useState([]);
 
     React.useEffect(() => {
-        if (isMounted.current) {
+        if (is_mounted) {
             loadMoreAds(item_offset.current);
         }
     }, []);
@@ -88,7 +88,7 @@ const MyAdsTable = ({ onClickCreate }) => {
                 offset: start_idx,
                 limit: list_item_limit,
             }).then(response => {
-                if (isMounted.current) {
+                if (is_mounted) {
                     if (!response.error) {
                         setHasMoreItemsToLoad(response.length >= list_item_limit);
                         setAds(ads.concat(response));

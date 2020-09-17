@@ -42,8 +42,8 @@ const RowComponent = React.memo(({ data, is_buy_advert, showAdPopup, style }) =>
 RowComponent.displayName = 'RowComponent';
 
 const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
-    const { currency, is_advertiser } = React.useContext(Dp2pContext);
-    const { advertiser_name, advertiser_id } = selected_ad;
+    const { is_advertiser } = React.useContext(Dp2pContext);
+    const { advertiser_name, advertiser_id, offer_currency } = selected_ad;
     const [active_index, setActiveIndex] = React.useState(0);
     const [ad, setAd] = React.useState(null);
     const [adverts, setAdverts] = React.useState([]);
@@ -63,14 +63,14 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
     ];
     const item_height = 56;
     const [is_loading, setIsLoading] = React.useState(true);
-    const isMounted = useIsMounted();
+    const is_mounted = useIsMounted();
     const short_name = getShortNickname(advertiser_name);
     const [show_ad_popup, setShowAdPopup] = React.useState(false);
     const [stats, setStats] = React.useState({});
     const { buy_orders_count, completion_rate, release_time_avg, sell_orders_count, total_orders_count } = stats;
 
     React.useEffect(() => {
-        if (isMounted.current) {
+        if (is_mounted) {
             getAdvertiserAdverts();
             getAdvertiserStats();
         }
@@ -248,7 +248,9 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
                                 <Table.Header>
                                     <Table.Row className='advertiser-page__adverts-table_row'>
                                         <Table.Head>{localize('Limits')}</Table.Head>
-                                        <Table.Head>{localize('Rate (1 {{currency}})', { currency })}</Table.Head>
+                                        <Table.Head>
+                                            {localize('Rate (1 {{offer_currency}})', { offer_currency })}
+                                        </Table.Head>
                                         <Table.Head>{''}</Table.Head>
                                     </Table.Row>
                                 </Table.Header>

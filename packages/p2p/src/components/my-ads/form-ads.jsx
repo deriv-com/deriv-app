@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
 import { Dropdown, Loading, Icon, Input, Button, ThemedScrollbars } from '@deriv/components';
-import { getDecimalPlaces } from '@deriv/shared';
+import { getDecimalPlaces, useIsMounted } from '@deriv/shared';
 import Dp2pContext from 'Components/context/dp2p-context';
 import FooterActions from 'Components/footer-actions/footer-actions.jsx';
 import { localize } from 'Components/i18next';
@@ -17,6 +17,7 @@ const FormAds = ({ handleShowForm }) => {
     const { currency, local_currency_config } = React.useContext(Dp2pContext);
     const [error_message, setErrorMessage] = React.useState('');
     const [is_loading, setIsLoading] = React.useState(true);
+    const is_mounted = useIsMounted();
 
     React.useEffect(() => {
         setIsLoading(false);
@@ -45,7 +46,7 @@ const FormAds = ({ handleShowForm }) => {
         }
         requestWS(create_advert).then(response => {
             // If we get an error we should let the user submit the form again else we just go back to the list of ads
-            if (response.error) {
+            if (response.error && is_mounted) {
                 setErrorMessage(response.error.message);
                 setSubmitting(false);
             } else {
@@ -228,7 +229,7 @@ const FormAds = ({ handleShowForm }) => {
                             <div className='p2p-my-ads__form'>
                                 <Form noValidate>
                                     <ThemedScrollbars className='p2p-my-ads__form-scrollbar'>
-                                        <p className='p2p-my-ads__form-summary'>
+                                        <div className='p2p-my-ads__form-summary'>
                                             <AdSummary
                                                 offer_amount={errors.offer_amount ? '' : values.offer_amount}
                                                 offer_currency={currency}
@@ -236,7 +237,7 @@ const FormAds = ({ handleShowForm }) => {
                                                 price_rate={errors.price_rate ? '' : values.price_rate}
                                                 type={values.type}
                                             />
-                                        </p>
+                                        </div>
                                         <div className='p2p-my-ads__form-container'>
                                             <Field name='type'>
                                                 {({ field }) => (
@@ -412,7 +413,7 @@ const FormAds = ({ handleShowForm }) => {
                                         {error_message && (
                                             <div className='p2p-my-ads__form-error'>
                                                 <Icon icon='IcAlertDanger' />
-                                                <p>{error_message}</p>
+                                                <div>{error_message}</div>
                                             </div>
                                         )}
                                         <Button

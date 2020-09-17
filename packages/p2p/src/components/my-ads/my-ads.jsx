@@ -19,24 +19,21 @@ const MyAdsState = ({ message }) => (
 const MyAds = () => {
     const { is_advertiser, is_restricted, setPoiStatus } = React.useContext(Dp2pContext);
     const [is_loading, setIsLoading] = React.useState(true);
-    const isMounted = useIsMounted();
+    const is_mounted = useIsMounted();
     const [show_ad_form, setShowAdForm] = React.useState(false);
 
     React.useEffect(() => {
-        if (isMounted.current) {
+        if (is_mounted) {
             if (!is_advertiser) {
                 requestWS({ get_account_status: 1 }).then(response => {
-                    if (isMounted.current && !response.error) {
+                    if (is_mounted && !response.error) {
                         const { get_account_status } = response;
                         const { status } = get_account_status.authentication.identity;
-
                         setPoiStatus(status);
                     }
-                    setIsLoading(false);
                 });
-            } else {
-                setIsLoading(false);
             }
+            setIsLoading(false);
         }
     }, []);
 

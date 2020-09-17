@@ -33,7 +33,7 @@ const OrderDetails = ({ order_details, chat_info }) => {
         payment_info,
         transaction_currency,
     } = order_details;
-    const isMounted = useIsMounted();
+    const is_mounted = useIsMounted();
     const [channel_url, setChannelUrl] = React.useState(chat_channel_url);
     const [should_show_popup, setShouldShowPopup] = React.useState(false);
     const [popup_options, setPopupOptions] = React.useState({});
@@ -43,9 +43,9 @@ const OrderDetails = ({ order_details, chat_info }) => {
         setShouldShowPopup(true);
     };
     React.useEffect(() => {
-        if (!channel_url && isMounted.current) {
+        if (!channel_url) {
             chatCreate(id).then(response => {
-                if (!response.error) {
+                if (!response.error && is_mounted) {
                     setChannelUrl(response.channel_url);
                 }
             });

@@ -1,6 +1,6 @@
 .my-profile {
     &__error {
-        color: $color-red-4;
+        color: var(--text-loss-danger);
         font-size: var(--text-size-xs);
     }
     &__header {
@@ -27,13 +27,16 @@
 
         &-name {
             align-self: center;
+            color: var(--text-prominent);
             font-size: var(--text-size-s);
+            font-weight: bold;
             height: fit-content;
             width: fit-content;
         }
 
         &-verification {
             align-items: center;
+            color: var(--text-less-prominent);
             display: flex;
             font-size: var(--text-size-xs);
 
@@ -58,11 +61,11 @@
 
         &-cell {
             display: block;
-            text-align-last: center;
+            text-align: center;
             width: 158px;
 
             &-header {
-                color: $color-grey-1;
+                color: var(--text-less-prominent);
                 font-size: var(--text-size-xs);
                 line-height: 20px;
             }
@@ -74,7 +77,7 @@
             }
 
             &-separator {
-                border-right: 1px solid $color-grey-2;
+                border-right: 1px solid var(--general-section-1);
             }
         }
     }
@@ -90,13 +93,14 @@
         display: flex;
 
         &-text {
+            color: var(--text-prominent);
             display: flex;
             font-size: var(--text-size-xs);
             font-weight: bold;
         }
         &-horizontal_line {
             align-self: center;
-            border-bottom: 1px solid $color-grey-2;
+            border-bottom: 1px solid var(--general-section-1);
             margin-left: 1.6rem;
             width: 564px;
         }
@@ -117,7 +121,7 @@
         }
     }
     &__footer {
-        border-top: 2px solid $color-grey-2;
+        border-top: 2px solid var(--general-section-1);
         padding-right: 2.4rem;
         width: 657px;
 

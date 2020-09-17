@@ -12,7 +12,9 @@ import './my-profile.scss';
 
 const MyProfile = () => {
     const [advertiser_info, setAdvertiserInfo] = React.useState({});
+    const [contact_info, setContactInfo] = React.useState('');
     const { currency } = React.useContext(Dp2pContext);
+    const [default_advert_description, setDefaultAdvertDescription] = React.useState('');
     const [error_message, setErrorMessage] = React.useState('');
     const [form_error, setFormError] = React.useState('');
     const [has_poa, setHasPoa] = React.useState(false);
@@ -20,15 +22,9 @@ const MyProfile = () => {
     const [is_loading, setIsLoading] = React.useState(true);
     const is_mounted = React.useRef(false);
     const [nickname, setNickname] = React.useState(null);
+    const [payment_info, setPaymentInfo] = React.useState('');
     const [stats, setStats] = React.useState({});
-    const {
-        contact_info,
-        daily_buy_limit,
-        daily_sell_limit,
-        default_advert_description,
-        id,
-        payment_info,
-    } = advertiser_info;
+    const { daily_buy_limit, daily_sell_limit, id } = advertiser_info;
     const { buy_orders_count, sell_orders_count, total_orders_count } = stats;
 
     React.useEffect(() => {
@@ -53,8 +49,8 @@ const MyProfile = () => {
                 if (!response.error) {
                     const { get_account_status } = response;
                     const { authentication } = get_account_status;
-                    setHasPoa(!(authentication.document && authentication.document.status === 'none'));
-                    setHasPoi(!(authentication.identity && authentication.identity.status === 'none'));
+                    setHasPoa(authentication.document && authentication.document.status === 'verified');
+                    setHasPoi(authentication.identity && authentication.identity.status === 'verified');
                 } else {
                     setErrorMessage(response.error);
                 }
@@ -72,6 +68,9 @@ const MyProfile = () => {
                     const { p2p_advertiser_info } = response;
                     setAdvertiserInfo(p2p_advertiser_info);
                     setNickname(p2p_advertiser_info.name);
+                    setContactInfo(p2p_advertiser_info.contact_info);
+                    setDefaultAdvertDescription(p2p_advertiser_info.default_advert_description);
+                    setPaymentInfo(p2p_advertiser_info.payment_info);
                 } else {
                     setErrorMessage(response.error);
                 }
@@ -99,6 +98,7 @@ const MyProfile = () => {
     };
 
     const handleSubmit = values => {
+        setIsLoading(true);
         return new Promise(resolve => {
             requestWS({
                 p2p_advertiser_update: 1,
@@ -106,10 +106,16 @@ const MyProfile = () => {
                 payment_info: values.payment_info,
                 default_advert_description: values.default_advert_description,
             }).then(response => {
-                if (response.error) {
+                if (!response.error) {
+                    const { p2p_advertiser_update } = response;
+                    setContactInfo(p2p_advertiser_update.contact_info);
+                    setDefaultAdvertDescription(p2p_advertiser_update.default_advert_description);
+                    setPaymentInfo(p2p_advertiser_update.payment_info);
+                } else {
                     setFormError(response.error);
                 }
                 resolve();
+                setIsLoading(false);
             });
         });
     };
@@ -206,7 +212,7 @@ const MyProfile = () => {
                         <Table.Row className='my-profile__stats'>
                             <div className='my-profile__stats-cell-separator' />
                             <Table.Cell className='my-profile__stats-cell'>
-                                <div className='my-profile__stats-cell-header'>{localize('Total Trades')}</div>
+                                <div className='my-profile__stats-cell-header'>{localize('Total trades')}</div>
                                 <div className='my-profile__stats-cell-info'>{total_orders_count || '-'}</div>
                             </Table.Cell>
                             <div className='my-profile__stats-cell-separator' />
@@ -239,7 +245,7 @@ const MyProfile = () => {
                                 classNameBubble='my-profile__popover-text'
                                 alignment='top'
                                 message={localize(
-                                    "These fields are based on the last 24 hours' activity: Total trades, Sell, and Buy."
+                                    "These fields are based on the last 24 hours' activity: Buy, Sell, and Limit."
                                 )}
                             >
                                 <Icon className='my-profile__popover-icon' icon='IcInfoOutline' size={16} />
@@ -309,6 +315,7 @@ const MyProfile = () => {
                                             <FormError message={form_error} />
                                             <Button
                                                 className='my-profile__footer-button'
+                                                is_disabled={!dirty || isSubmitting}
                                                 secondary
                                                 large
                                                 onClick={resetForm}
@@ -317,9 +324,9 @@ const MyProfile = () => {
                                             </Button>
                                             <Button
                                                 className='my-profile__footer-button'
+                                                is_disabled={!dirty || isSubmitting || !isValid}
                                                 primary
                                                 large
-                                                is_disabled={!dirty || isSubmitting || !isValid}
                                             >
                                                 {localize('Save')}
                                             </Button>

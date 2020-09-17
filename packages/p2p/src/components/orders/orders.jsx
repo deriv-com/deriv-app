@@ -7,12 +7,13 @@ import { getExtendedOrderDetails } from 'Utils/orders';
 import { subscribeWS } from 'Utils/websocket';
 import OrderDetails from './order-details/order-details.jsx';
 import OrderTable from './order-table/order-table.jsx';
+import { useStores } from 'Stores';
 import './orders.scss';
 
 const Orders = ({ params, navigate, chat_info }) => {
+    const { general_store } = useStores();
     const {
         getLocalStorageSettingsForLoginId,
-        loginid,
         order_id,
         orders,
         setOrderId,
@@ -57,7 +58,7 @@ const Orders = ({ params, navigate, chat_info }) => {
     };
 
     const setQueryDetails = input_order => {
-        const input_order_information = getExtendedOrderDetails(input_order, loginid);
+        const input_order_information = getExtendedOrderDetails(input_order, general_store.client.loginid);
 
         setOrderId(input_order_information.id); // Sets the id in URL
         setOrderInformation(input_order_information);
@@ -119,7 +120,7 @@ const Orders = ({ params, navigate, chat_info }) => {
                 <PageReturn
                     onClick={hideDetails}
                     page_title={
-                        order_information.is_buy_ad
+                        order_information.is_buy_order
                             ? localize('Buy {{offered_currency}} order', { offered_currency: account_currency })
                             : localize('Sell {{offered_currency}} order', { offered_currency: account_currency })
                     }

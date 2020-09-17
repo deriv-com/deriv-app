@@ -14,7 +14,7 @@ import Orders from './orders/orders.jsx';
 import NicknameForm from './nickname/nickname-form.jsx';
 import Download from './verification/download.jsx';
 import Verification from './verification/verification.jsx';
-import { useStores } from '../../stores';
+import { useStores } from 'Stores';
 import './app.scss';
 
 const allowed_currency = 'USD';

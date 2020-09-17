@@ -8,16 +8,17 @@ import Dp2pContext from 'Components/context/dp2p-context';
 import Empty from 'Components/empty/empty.jsx';
 import OrderTableHeader from 'Components/orders/order-table/order-table-header.jsx';
 import OrderRowComponent from 'Components/orders/order-table/order-table-row.jsx';
+import { useStores } from 'Stores';
 import { height_constants } from 'Utils/height_constants';
 import { getExtendedOrderDetails } from 'Utils/orders';
 import { requestWS } from 'Utils/websocket';
 
 const OrderTableContent = ({ showDetails, is_active }) => {
+    const { general_store } = useStores();
     const {
         changeTab,
         is_active_tab,
         list_item_limit,
-        loginid,
         order_offset,
         order_table_type,
         orders,
@@ -76,7 +77,7 @@ const OrderTableContent = ({ showDetails, is_active }) => {
 
     if (orders.length) {
         const modified_list = orders
-            .map(order => getExtendedOrderDetails(order, loginid))
+            .map(order => getExtendedOrderDetails(order, general_store.client.loginid))
             .filter(order => (is_active ? order.is_active_order : order.is_inactive_order));
 
         const item_height = 72;

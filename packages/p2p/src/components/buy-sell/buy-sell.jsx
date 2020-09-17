@@ -39,7 +39,7 @@ const BuySell = ({ navigate }) => {
     const [selected_ad_state, setSelectedAdState] = React.useState({});
     const [should_show_popup, setShouldShowPopup] = React.useState(false);
     const [should_show_verification, setShouldShowVerification] = React.useState(false);
-    const { is_advertiser, modal_root_id, nickname } = React.useContext(Dp2pContext);
+    const { is_advertiser, modal_root_id, nickname, setOrderId } = React.useContext(Dp2pContext);
     const [is_submit_disabled, setIsSubmitDisabled] = React.useState(true);
     const [error_message, setErrorMessage] = React.useState(null);
 
@@ -47,7 +47,10 @@ const BuySell = ({ navigate }) => {
     const hideVerification = () => setShouldShowVerification(false);
     const onCancelClick = () => setShouldShowPopup(false);
     const onChangeTableType = event => setTableType(event.target.value);
-    const onConfirmClick = order_info => navigate('orders', { order_info, nav: { location: 'buy_sell' } });
+    const onConfirmClick = order_info => {
+        setOrderId(order_info.id);
+        navigate('orders', { nav: { location: 'buy_sell' } });
+    };
     const setSelectedAdvert = selected_ad => {
         if (!is_advertiser) {
             setShouldShowVerification(true);

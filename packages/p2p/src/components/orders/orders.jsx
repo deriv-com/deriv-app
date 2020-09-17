@@ -24,8 +24,8 @@ const Orders = ({ params, navigate, chat_info }) => {
     const is_mounted = React.useRef(false);
     const order_info_subscription = React.useRef(null);
 
-    const hideDetails = () => {
-        if (nav) {
+    const hideDetails = should_navigate => {
+        if (should_navigate && nav) {
             navigate(nav.location);
         }
         setOrderId(null);
@@ -51,7 +51,8 @@ const Orders = ({ params, navigate, chat_info }) => {
 
     const setOrderDetails = response => {
         if (!response.error) {
-            setQueryDetails(response.p2p_order_info);
+            const { p2p_order_info } = response;
+            setQueryDetails(p2p_order_info);
         } else {
             unsubscribeFromCurrentOrder();
         }
@@ -81,6 +82,7 @@ const Orders = ({ params, navigate, chat_info }) => {
 
         return () => {
             unsubscribeFromCurrentOrder();
+            hideDetails(false);
             is_mounted.current = false;
         };
     }, []);
@@ -98,11 +100,9 @@ const Orders = ({ params, navigate, chat_info }) => {
     }, [params]);
 
     React.useEffect(() => {
-        if (!is_mounted.current) return;
-
-        // If orders was updated, find current viewed order (if any)
-        // and trigger a re-render (in case status was updated).
-        if (order_id) {
+        if (is_mounted.current && order_id) {
+            // If orders was updated, find current viewed order (if any)
+            // and trigger a re-render (in case status was updated).
             const order = orders.find(o => o.id === order_id);
 
             if (order) {
@@ -118,7 +118,7 @@ const Orders = ({ params, navigate, chat_info }) => {
         return (
             <div className='orders orders--order-view'>
                 <PageReturn
-                    onClick={hideDetails}
+                    onClick={() => hideDetails(true)}
                     page_title={
                         order_information.is_buy_order
                             ? localize('Buy {{offered_currency}} order', { offered_currency: account_currency })

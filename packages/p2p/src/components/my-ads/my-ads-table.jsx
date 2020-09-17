@@ -195,12 +195,12 @@ const MyAdsTable = ({ onClickCreate }) => {
                     cancel_text={localize('Cancel')}
                     confirm_text={localize('Delete')}
                     has_cancel
-                    message={localize("You won't be able to restore it later.")}
+                    message={localize('You will NOT be able to restore it.')}
                     onCancel={onClickCancel}
                     onClickConfirm={onClickConfirm}
                     setShouldShowPopup={setShouldShowPopup}
                     should_show_popup={should_show_popup}
-                    title={localize('Delete this ad')}
+                    title={localize('Do you want to delete this ad?')}
                 />
             </React.Fragment>
         );

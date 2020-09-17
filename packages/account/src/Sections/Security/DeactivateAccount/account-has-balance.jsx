@@ -6,8 +6,13 @@ import { localize, Localize } from '@deriv/translations';
 const getDerivAccount = (client_accounts, login_id) =>
     client_accounts.find((client_account) => client_account.loginid === login_id);
 
-const getMT5Account = (mt5_login_list, login_id) =>
-    mt5_login_list.find((account_obj) => account_obj.login === login_id);
+const getMT5Account = (mt5_login_list, login_id) => {
+    for (const key in mt5_login_list) {
+        if (mt5_login_list[key].login === login_id) {
+            return mt5_login_list[key];
+        }
+    }
+};
 
 const Wrapper = ({ children, title }) => (
     <div className='deactivate-account-error'>
@@ -113,7 +118,7 @@ const AccountHasBalanceOrOpenPositions = ({ details, mt5_login_list, client_acco
                     {mt5_open_positions.map((account) => (
                         <Content
                             key={account.login}
-                            currency_icon={`IcMt5-${getMT5Account(account.group)}`}
+                            currency_icon={`IcMt5-${getMT5AccountDisplay(account.group)}`}
                             loginid={account.display_login}
                             title={getMT5AccountDisplay(account.group)}
                             value={
@@ -131,7 +136,7 @@ const AccountHasBalanceOrOpenPositions = ({ details, mt5_login_list, client_acco
                     {mt5_balance.map((account) => (
                         <Content
                             key={account.login}
-                            currency_icon={`IcMt5-${getMT5Account(account.group)}`}
+                            currency_icon={`IcMt5-${getMT5AccountDisplay(account.group)}`}
                             loginid={account.display_login}
                             title={getMT5AccountDisplay(account.group)}
                             value={

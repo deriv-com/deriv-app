@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { eu_real_financial_specs } from 'Modules/MT5/Constants/mt5-specifications';
 import { MT5AccountCard } from './mt5-account-card.jsx';
 import Loading from '../../../templates/_common/components/loading.jsx';

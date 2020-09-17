@@ -262,6 +262,7 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
                         is_loading={this.state.is_loading}
                         onCancel={this.prevStep}
                         onSave={this.saveFormData}
+                        form_error={this.state.form_error}
                         {...passthrough}
                     />
                 </div>

@@ -64,7 +64,7 @@ const validatePersonalDetails = ({ values, residence_list, account_opening_reaso
         citizen: [v => !!v, v => residence_list.map(i => i.text).includes(v)],
         tax_residence: [v => !!v, v => residence_list.map(i => i.text).includes(v)],
         tax_identification_number: [
-            v => (is_tin_required || tin_format ? !!v : true),
+            v => ((!values.tax_residence && is_tin_required) || tin_format ? !!v : true),
             v => (tin_regex ? v.match(tin_regex) : true),
         ],
         account_opening_reason: [v => !!v, v => account_opening_reason.map(i => i.text).includes(v)],
@@ -133,6 +133,7 @@ const MT5PersonalDetailsForm = ({
     onSubmit,
     value,
     index,
+    form_error,
 }) => {
     const account_opening_reason = getAccountOpeningReasonList();
     const is_tin_required = landing_company?.config?.tax_details_required ?? false;
@@ -286,7 +287,7 @@ const MT5PersonalDetailsForm = ({
                                                 placeholder={localize('Tax identification number')}
                                                 value={values.tax_identification_number}
                                                 onBlur={handleBlur}
-                                                optional={!is_tin_required}
+                                                optional
                                             />
                                         </fieldset>
                                         <FormSubHeader title={localize('Account opening reason')} />
@@ -337,10 +338,16 @@ const MT5PersonalDetailsForm = ({
                                                 </React.Fragment>
                                             )}
                                         </Field>
+                                        {form_error && isMobile() && (
+                                            <p className='mt5-personal-details-form-error'>{form_error}</p>
+                                        )}
                                     </div>
                                 </ThemedScrollbars>
                             </Div100vhContainer>
                             <Modal.Footer is_bypassed={isMobile()}>
+                                {form_error && isDesktop() && (
+                                    <p className='mt5-personal-details-form-error'>{form_error}</p>
+                                )}
                                 <FormSubmitButton
                                     cancel_label={localize('Previous')}
                                     is_disabled={isSubmitting || !isValid}

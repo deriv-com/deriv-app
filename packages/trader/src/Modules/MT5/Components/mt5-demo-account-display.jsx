@@ -87,12 +87,7 @@ const MT5DemoAccountDisplay = ({
                         type: 'financial',
                     }}
                     existing_data={current_list['demo.financial']}
-                    commission_message={
-                        <Localize
-                            i18n_default_text='No commission <0>(excluding cryptocurrencies)</0>'
-                            components={[<span key={0} className='mt5-dashboard--hint' />]}
-                        />
-                    }
+                    commission_message={<Localize i18n_default_text='No commission' />}
                     onSelectAccount={openMt5Account}
                     onPasswordManager={openPasswordManager}
                     onClickFund={() =>
@@ -133,12 +128,7 @@ const MT5DemoAccountDisplay = ({
                     }}
                     is_logged_in={is_logged_in}
                     existing_data={current_list['demo.financial_stp']}
-                    commission_message={
-                        <Localize
-                            i18n_default_text='No commission <0>(excluding cryptocurrencies)</0>'
-                            components={[<span key={0} className='mt5-dashboard--hint' />]}
-                        />
-                    }
+                    commission_message={<Localize i18n_default_text='No commission' />}
                     onSelectAccount={() =>
                         onSelectAccount({
                             category: 'demo',

@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import { localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
 import PageReturn from 'Components/page-return/page-return.jsx';
+import { useStores } from 'Stores';
 import { getExtendedOrderDetails } from 'Utils/orders';
 import { subscribeWS } from 'Utils/websocket';
 import OrderDetails from './order-details/order-details.jsx';
 import OrderTable from './order-table/order-table.jsx';
-import { useStores } from 'Stores';
 import './orders.scss';
 
 const Orders = ({ params, navigate, chat_info }) => {

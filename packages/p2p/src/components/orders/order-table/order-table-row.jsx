@@ -21,10 +21,10 @@ const OrderRowComponent = React.memo(({ advert, onOpenDetails, style, is_active 
         order_purchase_datetime,
         other_user_details,
         price_display,
-        status_string,
-        should_highlight_danger,
         should_highlight_alert,
+        should_highlight_danger,
         should_highlight_disabled,
+        status_string,
     } = advert;
     const [remaining_time, setRemainingTime] = React.useState();
     const { getLocalStorageSettingsForLoginId } = React.useContext(Dp2pContext);

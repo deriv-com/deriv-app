@@ -81,9 +81,14 @@ export const getExtendedOrderDetails = (order_details, loginid) => {
     const is_active_order = is_pending_order || is_buyer_confirmed_order || is_expired_order;
     const is_inactive_order = is_buyer_cancelled_order || is_refunded_order || is_completed_order;
 
-    // Status highlighting (alert = yellow, danger = red, disabled = grey)
-    let should_highlight_alert, should_highlight_danger;
     const should_highlight_disabled = is_buyer_cancelled_order || is_expired_order || is_refunded_order;
+
+    // Status highlighting (alert = yellow, danger = red, disabled = grey)
+    let should_highlight_alert,
+        should_highlight_danger,
+        should_show_cancel_and_paid_button,
+        should_show_complain_and_received_button,
+        status_string;
 
     if (is_my_ad) {
         if (is_buy_order) {
@@ -94,6 +99,7 @@ export const getExtendedOrderDetails = (order_details, loginid) => {
             should_highlight_danger = is_pending_order;
         }
     } else {
+        // eslint-disable-next-line no-lonely-if
         if (is_buy_order) {
             should_highlight_alert = is_buyer_confirmed_order;
             should_highlight_danger = is_pending_order;
@@ -102,9 +108,6 @@ export const getExtendedOrderDetails = (order_details, loginid) => {
             should_highlight_danger = is_buyer_confirmed_order;
         }
     }
-
-    // Order details footer.
-    let should_show_cancel_and_paid_button, should_show_complain_and_received_button, status_string;
 
     if (is_buy_order) {
         should_show_cancel_and_paid_button = !is_my_ad && is_pending_order;
@@ -115,7 +118,6 @@ export const getExtendedOrderDetails = (order_details, loginid) => {
     }
 
     const should_show_only_complain_button = is_expired_order;
-
     const should_show_order_footer =
         should_show_cancel_and_paid_button ||
         should_show_complain_and_received_button ||
@@ -168,8 +170,8 @@ export const getExtendedOrderDetails = (order_details, loginid) => {
         should_highlight_disabled,
         should_show_cancel_and_paid_button,
         should_show_complain_and_received_button,
-        should_show_order_footer,
         should_show_only_complain_button,
+        should_show_order_footer,
         status_string,
     };
 };

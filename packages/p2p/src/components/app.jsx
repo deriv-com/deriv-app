@@ -7,6 +7,7 @@ import { Tabs, Modal } from '@deriv/components';
 import { Dp2pProvider } from 'Components/context/dp2p-context';
 import ServerTime from 'Utils/server-time';
 import { waitWS } from 'Utils/websocket';
+import { useStores } from 'Stores';
 import { localize, setLanguage } from './i18next';
 import BuySell from './buy-sell/buy-sell.jsx';
 import MyAds from './my-ads/my-ads.jsx';
@@ -14,7 +15,6 @@ import Orders from './orders/orders.jsx';
 import NicknameForm from './nickname/nickname-form.jsx';
 import Download from './verification/download.jsx';
 import Verification from './verification/verification.jsx';
-import { useStores } from 'Stores';
 import './app.scss';
 
 const allowed_currency = 'USD';

@@ -30,6 +30,7 @@ const BuySellForm = ({ advert, handleClose, handleConfirm, setErrorMessage, setI
         payment_info,
         price,
     } = advert;
+
     const { name: advertiser_name } = advert.advertiser_details;
     // A user creates a sell order on a buy advert. Leave
     // below line for extra context.

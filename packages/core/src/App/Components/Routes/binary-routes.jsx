@@ -10,6 +10,7 @@ const BinaryRoutes = props => {
 
     React.useEffect(() => {
         props.pushDataLayer({ event: 'page_load' });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location]);
 
     return (

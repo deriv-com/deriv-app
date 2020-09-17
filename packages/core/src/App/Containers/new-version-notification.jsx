@@ -27,7 +27,7 @@ const NewVersionNotification = ({ onUpdate }) => {
             document.removeEventListener('ListenPWAUpdate', addUpdateListener);
             document.removeEventListener('UpdateAvailable', onUpdate);
         };
-    }, []);
+    }, [onUpdate]);
 
     return null;
 };

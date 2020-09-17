@@ -52,7 +52,7 @@ const AppContents = ({
             pushDataLayer({ event: 'allow_tracking' });
             setIsGtmTracking(true);
         }
-    }, [is_eu_country]);
+    }, [is_eu_country, tracking_status, pushDataLayer, is_gtm_tracking]);
 
     React.useEffect(() => {
         if (!tracking_status && !is_logged_in && !is_logging_in) {
@@ -60,7 +60,7 @@ const AppContents = ({
                 setShowCookieBanner(is_eu_country);
             });
         }
-    }, [is_logged_in, is_eu_country, is_logging_in]);
+    }, [is_logged_in, is_eu_country, is_logging_in, tracking_status]);
 
     // Segment page view trigger
     identifyEvent();

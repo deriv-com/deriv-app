@@ -955,6 +955,9 @@ export default class ClientStore extends BaseStore {
 
         this.setLoginId(LocalStore.get('active_loginid'));
         this.setAccounts(LocalStore.getObject(storage_key));
+        if (this.is_logged_in && !this.switched && !this.has_any_real_account) {
+            this.root_store.ui.toggleWelcomeModal(true);
+        }
         this.setSwitched('');
         let client = this.accounts[this.loginid];
         // If there is an authorize_response, it means it was the first login
@@ -1489,7 +1492,6 @@ export default class ClientStore extends BaseStore {
                     };
                 }
             });
-            this.root_store.ui.toggleWelcomeModal(true);
             return authorize_response;
         }
     }
@@ -1598,11 +1600,11 @@ export default class ClientStore extends BaseStore {
                     event: 'virtual_signup',
                 });
 
-                if (this.root_store.ui.is_eu_enabled && this.is_uk) {
+                if (this.root_store.ui.is_eu_enabled) {
                     this.root_store.ui.showAccountTypesModalForEuropean();
-                } else {
-                    this.root_store.ui.toggleWelcomeModal(true);
                 }
+
+                this.root_store.ui.toggleWelcomeModal(true);
             }
         });
     }

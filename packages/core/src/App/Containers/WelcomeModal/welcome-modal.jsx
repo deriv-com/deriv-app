@@ -68,14 +68,17 @@ WelcomeColumn.propTypes = {
 
 const WelcomeModal = ({ toggleAccountsDialog, toggleWelcomeModal, history }) => {
     const [hovered, setHovered] = React.useState(null);
+
     const switchToRealAccount = React.useCallback(() => {
         toggleWelcomeModal(false);
-        toggleAccountsDialog(true);
+        history.push(routes.trade);
     }, []);
+
     const switchToDMT5 = React.useCallback(() => {
         toggleWelcomeModal(false);
         history.push(routes.mt5);
     }, []);
+
     return (
         <Modal
             width='904px'

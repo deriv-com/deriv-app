@@ -66,18 +66,18 @@ WelcomeColumn.propTypes = {
     title: PropTypes.string,
 };
 
-const WelcomeModal = ({ toggleAccountsDialog, toggleWelcomeModal, history }) => {
+const WelcomeModal = ({ toggleWelcomeModal, history }) => {
     const [hovered, setHovered] = React.useState(null);
 
     const switchToRealAccount = React.useCallback(() => {
         toggleWelcomeModal(false);
         history.push(routes.trade);
-    }, []);
+    }, [toggleWelcomeModal, history]);
 
     const switchToDMT5 = React.useCallback(() => {
         toggleWelcomeModal(false);
         history.push(routes.mt5);
-    }, []);
+    }, [toggleWelcomeModal, history]);
 
     return (
         <Modal
@@ -173,7 +173,6 @@ const WelcomeModal = ({ toggleAccountsDialog, toggleWelcomeModal, history }) => 
 
 export default withRouter(
     connect(({ ui }) => ({
-        toggleAccountsDialog: ui.toggleAccountsDialog,
         toggleWelcomeModal: ui.toggleWelcomeModal,
     }))(WelcomeModal)
 );

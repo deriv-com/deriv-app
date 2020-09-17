@@ -1,7 +1,5 @@
-const Cookies = require('js-cookie');
-const isProduction = require('@deriv/shared').isProduction;
-const isEmptyObject = require('@deriv/shared').isEmptyObject;
-const getPropertyValue = require('@deriv/shared').getPropertyValue;
+import Cookies from 'js-cookie';
+import { getPropertyValue, isEmptyObject } from '../object/object';
 
 const getObject = function(key) {
     return JSON.parse(this.getItem(key) || '{}');
@@ -22,7 +20,7 @@ if (typeof Storage !== 'undefined') {
     Storage.prototype.setObject = setObject;
 }
 
-const isStorageSupported = storage => {
+export const isStorageSupported = storage => {
     if (typeof storage === 'undefined') {
         return false;
     }
@@ -116,7 +114,7 @@ InScriptStore.prototype = {
     },
 };
 
-const State = new InScriptStore();
+export const State = new InScriptStore();
 State.prototype = InScriptStore.prototype;
 /**
  * Shorthand function to get values from response object of State
@@ -135,19 +133,16 @@ State.prototype.getResponse = function(pathname) {
 State.prototype.getByMsgType = State.getResponse;
 State.set('response', {});
 
-const CookieStorage = function(cookie_name, cookie_domain) {
+export const CookieStorage = function(cookie_name, cookie_domain) {
     const hostname = window.location.hostname;
 
     this.initialized = false;
     this.cookie_name = cookie_name;
     this.domain =
         cookie_domain ||
-        (isProduction()
-            ? `.${hostname
-                  .split('.')
-                  .slice(-2)
-                  .join('.')}`
-            : hostname);
+        /* eslint-disable no-nested-ternary */
+        (hostname.includes('binary.sx') ? 'binary.sx' : 'deriv.com');
+    /* eslint-enable no-nested-ternary */
     this.path = '/';
     this.expires = new Date('Thu, 1 Jan 2037 12:00:00 GMT');
     this.value = {};
@@ -195,7 +190,7 @@ CookieStorage.prototype = {
     },
 };
 
-const removeCookies = (...cookie_names) => {
+export const removeCookies = (...cookie_names) => {
     const domains = [
         `.${document.domain
             .split('.')
@@ -221,27 +216,9 @@ const removeCookies = (...cookie_names) => {
     });
 };
 
-let SessionStore, LocalStore;
-
-if (isStorageSupported(window.localStorage)) {
-    LocalStore = new Store(window.localStorage);
-}
-if (isStorageSupported(window.sessionStorage)) {
-    SessionStore = new Store(window.sessionStorage);
-}
-
-if (!LocalStore) {
-    LocalStore = new InScriptStore();
-}
-if (!SessionStore) {
-    SessionStore = new InScriptStore();
-}
-
-module.exports = {
-    isStorageSupported,
-    CookieStorage,
-    removeCookies,
-    State,
-    SessionStore,
-    LocalStore,
-};
+export const LocalStore = isStorageSupported(window.localStorage)
+    ? new Store(window.localStorage)
+    : new InScriptStore();
+export const SessionStore = isStorageSupported(window.sessionStorage)
+    ? new Store(window.sessionStorage)
+    : new InScriptStore();

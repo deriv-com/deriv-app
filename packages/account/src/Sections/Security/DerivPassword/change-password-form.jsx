@@ -3,7 +3,7 @@ import React from 'react';
 import { Formik } from 'formik';
 import { Button, Loading, PasswordInput, PasswordMeter } from '@deriv/components';
 import { withRouter } from 'react-router-dom';
-import { routes, isMobile, validPassword, validLength, getPreBuildDVRs } from '@deriv/shared';
+import { routes, isMobile, validPassword, validLength, getErrorMessages } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
@@ -61,7 +61,7 @@ class ChangePasswordForm extends React.Component {
                 errors.new_password = localize('Your password cannot be the same as your email address.');
             }
             if (!validPassword(values.new_password)) {
-                errors.new_password = getPreBuildDVRs().password.message;
+                errors.new_password = getErrorMessages().password();
             }
         }
 

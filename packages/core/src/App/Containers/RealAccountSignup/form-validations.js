@@ -1,3 +1,4 @@
+import fromEntries from 'object.fromentries';
 import { getPreBuildDVRs } from '@deriv/shared';
 
 /**
@@ -15,7 +16,7 @@ export const getDefaultFields = (landing_company, schema) => {
 };
 
 export const filterByLandingCompany = (landing_company, schema) =>
-    Object.fromEntries(Object.entries(schema).filter(([, opts]) => opts.supported_in.includes(landing_company)));
+    fromEntries(Object.entries(schema).filter(([, opts]) => opts.supported_in.includes(landing_company)));
 
 /**
  * Generate validation function for the landing_company

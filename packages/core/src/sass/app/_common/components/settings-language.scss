@@ -8,7 +8,7 @@
     }
     &__language-container {
         display: grid;
-        grid-template-columns: repeat(5, fit-content(90px));
+        grid-template-columns: repeat(4, minmax(90px, 1fr));
         grid-template-rows: repeat(5, auto);
         grid-gap: 16px;
     }

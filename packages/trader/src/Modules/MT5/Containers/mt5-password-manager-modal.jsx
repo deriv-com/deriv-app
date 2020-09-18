@@ -36,7 +36,8 @@ const CountdownComponent = ({ count_from = 60, onTimeout }) => {
         onTimeout();
 
         return () => {};
-    }, [count, onTimeout]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [count]);
     return <span className='countdown'>{count}</span>;
 };
 
@@ -48,7 +49,8 @@ const MT5PasswordReset = ({ sendVerifyEmail, password_type, account_type, accoun
         localStorage.setItem('mt5_reset_password_intent', [account_group, account_type].join('.'));
         localStorage.setItem('mt5_reset_password_type', password_type);
         sendVerifyEmail();
-    }, [account_group, account_type, sendVerifyEmail, password_type]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const onClickVerification = () => {
         setResendVerification(true);

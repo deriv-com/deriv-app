@@ -30,12 +30,12 @@ const Input = ({
     setCurrentFocus,
     type,
 }) => {
-    const ref = React.createRef();
+    const ref = React.useRef();
     React.useEffect(() => {
         if (current_focus === name) {
             ref.current.focus();
         }
-    }, [current_focus, name, ref]);
+    }, [current_focus, name]);
 
     const onBlur = () => setCurrentFocus(null);
     const onFocus = () => setCurrentFocus(name);

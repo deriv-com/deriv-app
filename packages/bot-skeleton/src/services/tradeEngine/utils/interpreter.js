@@ -176,7 +176,14 @@ export default class Interpreter {
     }
 
     stop() {
-        if (this.bot.tradeEngine.isSold === false && !this.is_error_triggered) {
+        const global_timeouts = globalObserver.getState('global_timeouts') ?? [];
+
+        if (!this.bot.contractId && global_timeouts.length > 0) {
+            // When user is rate limited, allow them to stop the bot immediately
+            // granted there is no active contract.
+            global_timeouts.forEach(global_timeout => clearTimeout(global_timeout));
+            this.terminateSession();
+        } else if (this.bot.tradeEngine.isSold === false && !this.is_error_triggered) {
             globalObserver.register('contract.status', contractStatus => {
                 if (contractStatus.id === 'contract.sold') {
                     this.terminateSession();

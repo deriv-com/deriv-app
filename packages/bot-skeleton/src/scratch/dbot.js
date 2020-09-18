@@ -4,11 +4,12 @@ import { hasAllRequiredBlocks, updateDisabledBlocks } from './utils';
 import main_xml from './xml/main.xml';
 import toolbox_xml from './xml/toolbox.xml';
 import DBotStore from './dbot-store';
-import { getSavedWorkspaces } from '../utils/local-storage';
+import { save_types } from '../constants';
 import { config } from '../constants/config';
+import { getSavedWorkspaces, saveWorkspaceToRecent } from '../utils/local-storage';
+import { observer as globalObserver } from '../utils/observer';
 import ApiHelpers from '../services/api/api-helpers';
 import Interpreter from '../services/tradeEngine/utils/interpreter';
-import { observer as globalObserver } from '../utils/observer';
 
 class DBot {
     constructor() {
@@ -54,6 +55,11 @@ class DBot {
                 this.workspace.addChangeListener(this.valueInputLimitationsListener.bind(this));
                 this.workspace.addChangeListener(event => updateDisabledBlocks(this.workspace, event));
                 this.workspace.addChangeListener(event => this.workspace.dispatchBlockEventEffects(event));
+
+                setInterval(() => {
+                    // Periodically save the workspace.
+                    saveWorkspaceToRecent(Blockly.Xml.workspaceToDom(this.workspace), save_types.UNSAVED);
+                }, 10000);
 
                 this.addBeforeRunFunction(this.unselectBlocks.bind(this));
                 this.addBeforeRunFunction(this.disableStrayBlocks.bind(this));

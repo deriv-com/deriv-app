@@ -31,26 +31,25 @@ const RedirectNoticeModal = ({ is_logged_in, is_eu }) => {
         window.open(external_link);
     };
 
-    const onClickExternalLink = React.useCallback(
-        e => {
-            if (isThirdPartyLink(e.target.href) && is_logged_in && is_eu) {
-                setExternalLink(e.target.href);
-                e.preventDefault();
-                setDialogStatus(true);
-            }
-        },
-        [is_logged_in, is_eu]
-    );
+    const onClickExternalLink = e => {
+        if (isThirdPartyLink(e.target.href) && is_logged_in && is_eu) {
+            setExternalLink(e.target.href);
+            e.preventDefault();
+            setDialogStatus(true);
+        }
+    };
 
     React.useEffect(() => {
         document.addEventListener('click', onClickExternalLink);
-    }, [onClickExternalLink]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [is_logged_in, is_eu]);
 
     React.useEffect(() => {
         return () => {
             document.removeEventListener('click', onClickExternalLink);
         };
-    }, [onClickExternalLink]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         dialog_status && (

@@ -181,7 +181,8 @@ const AccountTransferForm = ({
 
     React.useEffect(() => {
         onMount();
-    }, [onMount]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     React.useEffect(() => {
         if (Object.keys(from_accounts).length && typeof setSideNote === 'function') {

@@ -20,7 +20,8 @@ const OnRamp = ({
     React.useEffect(() => {
         onMount();
         return () => onUnmount();
-    }, [onMount, onUnmount]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <div className='cashier__wrapper cashier__wrapper--align-left on-ramp'>

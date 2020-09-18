@@ -52,7 +52,8 @@ const AppContents = ({
             pushDataLayer({ event: 'allow_tracking' });
             setIsGtmTracking(true);
         }
-    }, [is_eu_country, tracking_status, pushDataLayer, is_gtm_tracking]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [is_eu_country]);
 
     React.useEffect(() => {
         if (!tracking_status && !is_logged_in && !is_logging_in) {

@@ -66,7 +66,8 @@ const SummaryModal = ({
                 ...reality_check,
             });
         });
-    }, [server_time]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const getSessionDuration = (start_time, current_time) => {
         const session_duration = getDiffDuration(start_time, current_time);

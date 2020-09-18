@@ -18,7 +18,7 @@ const BinaryRoutes = (props) => {
             }}
         >
             <Switch>
-                {getRoutesConfig({ hide_crypto_routes: is_deriv_crypto }).map((route, idx) => (
+                {getRoutesConfig({ is_deriv_crypto }).map((route, idx) => (
                     <RouteWithSubRoutes key={idx} {...route} {...props} />
                 ))}
             </Switch>

@@ -18,7 +18,7 @@ const BinaryRoutes = props => {
         <React.Suspense fallback={<Loading />}>
             <Prompt when={props.prompt_when} message={props.promptFn} />
             <Switch>
-                {getRoutesConfig({ hide_crypto_routes: is_deriv_crypto }).map((route, idx) => (
+                {getRoutesConfig({ is_deriv_crypto }).map((route, idx) => (
                     <RouteWithSubRoutes key={idx} {...route} {...props} />
                 ))}
             </Switch>

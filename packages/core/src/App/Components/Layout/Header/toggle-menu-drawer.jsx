@@ -178,7 +178,7 @@ class ToggleMenuDrawer extends React.Component {
 
     processRoutes() {
         const { is_deriv_crypto } = this.context;
-        const routes_config = getRoutesConfig({ hide_crypto_routes: is_deriv_crypto });
+        const routes_config = getRoutesConfig({ is_deriv_crypto });
         const primary_routes = [routes.reports, routes.account, routes.cashier];
         const secondary_routes = [];
 

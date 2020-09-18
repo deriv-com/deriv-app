@@ -36,7 +36,7 @@ const Bot = React.lazy(() => {
     return import(/* webpackChunkName: "bot" */ '@deriv/bot-web-ui');
 });
 
-const getModules = ({ hide_crypto_routes }) => {
+const getModules = ({ is_deriv_crypto }) => {
     const modules = [
         {
             path: routes.bot,
@@ -66,19 +66,20 @@ const getModules = ({ hide_crypto_routes }) => {
                             title: localize('Personal details'),
                             default: true,
                         },
-                        ...(!hide_crypto_routes
-                            ? [
+                        ...(is_deriv_crypto
+                            ? []
+                            : [
                                   {
                                       path: routes.financial_assessment,
                                       component: Account,
                                       title: localize('Financial assessment'),
                                   },
-                              ]
-                            : []),
+                              ]),
                     ],
                 },
-                ...(!hide_crypto_routes
-                    ? [
+                ...(is_deriv_crypto
+                    ? []
+                    : [
                           {
                               title: localize('Verification'),
                               icon: 'IcVerification',
@@ -95,8 +96,7 @@ const getModules = ({ hide_crypto_routes }) => {
                                   },
                               ],
                           },
-                      ]
-                    : []),
+                      ]),
                 {
                     title: localize('Security and safety'),
                     icon: 'IcSecurity',
@@ -201,7 +201,7 @@ const lazyLoadComplaintsPolicy = makeLazyLoader(() =>
 
 // Order matters
 // TODO: search tag: test-route-parent-info -> Enable test for getting route parent info when there are nested routes
-const initRoutesConfig = ({ hide_crypto_routes }) => [
+const initRoutesConfig = ({ is_deriv_crypto }) => [
     { path: routes.index, component: RouterRedirect, title: '', to: routes.root },
     { path: routes.endpoint, component: Endpoint, title: 'Endpoint' }, // doesn't need localization as it's for internal use
     { path: routes.redirect, component: Redirect, title: localize('Redirect') },
@@ -226,24 +226,25 @@ const initRoutesConfig = ({ hide_crypto_routes }) => [
                 title: localize('Withdrawal'),
                 icon_component: 'IcWalletMinus',
             },
-            ...(!hide_crypto_routes
-                ? [
+            ...(is_deriv_crypto
+                ? []
+                : [
                       {
                           path: routes.cashier_pa,
                           component: lazyLoadCashierComponent('PaymentAgent'),
                           title: localize('Payment agents'),
                           icon_component: 'IcPaymentAgent',
                       },
-                  ]
-                : []),
+                  ]),
             {
                 path: routes.cashier_acc_transfer,
                 component: lazyLoadCashierComponent('AccountTransfer'),
                 title: localize('Transfer'),
                 icon_component: 'IcAccountTransfer',
             },
-            ...(!hide_crypto_routes
-                ? [
+            ...(is_deriv_crypto
+                ? []
+                : [
                       {
                           path: routes.cashier_pa_transfer,
                           component: lazyLoadCashierComponent('PaymentAgentTransfer'),
@@ -256,8 +257,7 @@ const initRoutesConfig = ({ hide_crypto_routes }) => [
                           title: localize('DP2P'),
                           icon_component: 'IcDp2p',
                       },
-                  ]
-                : []),
+                  ]),
             {
                 id: 'gtm-onramp-tab',
                 path: routes.cashier_onramp,
@@ -274,7 +274,7 @@ const initRoutesConfig = ({ hide_crypto_routes }) => [
         icon_component: 'IcComplaintsPolicy',
         is_authenticated: true,
     },
-    ...getModules({ hide_crypto_routes }),
+    ...getModules({ is_deriv_crypto }),
 ];
 
 let routesConfig;
@@ -282,9 +282,10 @@ let routesConfig;
 // For default page route if page/path is not found, must be kept at the end of routes_config array
 const route_default = { component: Page404, title: localize('Error 404') };
 
-const getRoutesConfig = ({ hide_crypto_routes = true }) => {
+// is_deriv_crypto = true as default to prevent route ui blinking
+const getRoutesConfig = ({ is_deriv_crypto = true }) => {
     if (!routesConfig) {
-        routesConfig = initRoutesConfig({ hide_crypto_routes });
+        routesConfig = initRoutesConfig({ is_deriv_crypto });
         routesConfig.push(route_default);
     }
     return routesConfig;

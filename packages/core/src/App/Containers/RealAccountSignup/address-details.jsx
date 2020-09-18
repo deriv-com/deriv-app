@@ -83,22 +83,10 @@ class AddressDetails extends React.Component {
                 validate={this.handleValidate}
                 validateOnMount
                 onSubmit={(values, actions) => {
-                    if (values.address_state) {
-                        let add_state;
-                        if (this.props.states_list.length) {
-                            if (this.state.address_state_to_display) {
-                                add_state = getLocation(
-                                    this.props.states_list,
-                                    this.state.address_state_to_display,
-                                    'value'
-                                );
-                            } else {
-                                add_state = getLocation(this.props.states_list, values.address_state, 'value');
-                            }
-                        } else {
-                            add_state = values.address_state;
-                        }
-                        values.address_state = add_state;
+                    if (values.address_state && this.props.states_list.length) {
+                        values.address_state = this.state.address_state_to_display
+                            ? getLocation(this.props.states_list, this.state.address_state_to_display, 'value')
+                            : getLocation(this.props.states_list, values.address_state, 'value');
                     }
                     this.props.onSubmit(this.props.index, values, actions.setSubmitting);
                 }}

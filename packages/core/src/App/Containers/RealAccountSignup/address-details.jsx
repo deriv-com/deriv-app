@@ -8,6 +8,7 @@ import {
     Div100vhContainer,
     FormSubmitButton,
     Input,
+    Loading,
     MobileWrapper,
     ThemedScrollbars,
     SelectNative,
@@ -148,7 +149,12 @@ class AddressDetails extends React.Component {
                                                 }
                                                 placeholder={localize('Town/City')}
                                             />
-                                            {this.should_render_address_state && (
+                                            {!this.state.has_fetched_states_list && (
+                                                <div className='details-form__loader'>
+                                                    <Loading is_fullscreen={false} />
+                                                </div>
+                                            )}
+                                            {this.props.states_list?.length > 0 ? (
                                                 <Field name='address_state'>
                                                     {({ field }) => (
                                                         <>
@@ -202,6 +208,13 @@ class AddressDetails extends React.Component {
                                                         </>
                                                     )}
                                                 </Field>
+                                            ) : (
+                                                // Fallback to input field when states list is empty / unavailable for country
+                                                <InputField
+                                                    name='address_state'
+                                                    label={localize('State/Province')}
+                                                    placeholder={localize('State/Province')}
+                                                />
                                             )}
                                             <InputField
                                                 name='address_postcode'

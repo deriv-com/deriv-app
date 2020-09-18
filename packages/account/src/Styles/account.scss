@@ -1028,6 +1028,9 @@ $MIN_HEIGHT_FLOATING: calc(
                 .browser {
                     padding-right: 1.5rem;
                 }
+                .ip-value {
+                    padding-right: 1.5rem;
+                }
             }
 
             &__table {
@@ -1036,7 +1039,7 @@ $MIN_HEIGHT_FLOATING: calc(
             }
             &__row {
                 /* Date-Action-Browser-IP-Status */
-                grid-template-columns: 184px 65px 248px 133px 70px;
+                grid-template-columns: 184px 65px 248px 308px 70px;
                 padding: 0px;
             }
             .table__cell {

@@ -1349,6 +1349,9 @@ export default class ClientStore extends BaseStore {
         this.user_id = null;
         this.upgrade_info = undefined;
         this.accounts = {};
+        localStorage.setItem('active_loginid', this.loginid);
+        localStorage.setItem('client.accounts', JSON.stringify(this.accounts));
+
         runInAction(async () => {
             this.responsePayoutCurrencies(await WS.payoutCurrencies());
         });

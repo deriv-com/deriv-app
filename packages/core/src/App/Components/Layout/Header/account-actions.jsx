@@ -129,7 +129,7 @@ export class AccountActions extends React.Component {
         }
         return (
             <React.Fragment>
-                <LoginButton className='acc-info__button' />
+                <LoginButton is_logged_in={is_logged_in} className='acc-info__button' />
                 <SignupButton className='acc-info__button' />
             </React.Fragment>
         );

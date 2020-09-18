@@ -1,6 +1,6 @@
 import { getRoundedNumber } from '@deriv/shared';
 import { sell, openContractReceived } from './state/actions';
-import { contractStatus, contractSettled, contract as broadcastContract } from '../utils/broadcast';
+import { contractStatus, contract as broadcastContract } from '../utils/broadcast';
 import { doUntilDone } from '../utils/helpers';
 
 const AFTER_FINISH_TIMEOUT = 5;
@@ -22,7 +22,6 @@ export default Engine =>
                 broadcastContract({ accountID: this.accountInfo.loginid, ...contract });
 
                 if (this.isSold) {
-                    contractSettled(contract);
                     this.contractId = '';
                     this.updateTotals(contract);
                     contractStatus({

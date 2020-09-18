@@ -23,10 +23,6 @@ class Statement extends React.Component {
         this.state = { total_deposits: 0, total_withdrawals: 0 };
     }
 
-    get should_show_loading_placeholder() {
-        return this.props.is_loading || this.props.is_switching;
-    }
-
     componentDidMount() {
         this.props.onMount();
         const is_mx_mlt =
@@ -193,52 +189,6 @@ class Statement extends React.Component {
         const is_mx_mlt =
             this.props.landing_company_shortcode === 'iom' || this.props.landing_company_shortcode === 'malta';
 
-        let page_main_content;
-        if (data === 0 || is_empty) {
-            page_main_content = (
-                <PlaceholderComponent
-                    is_loading={is_loading}
-                    has_selected_date={has_selected_date}
-                    is_empty={is_empty}
-                    empty_message_component={EmptyTradeHistoryMessage}
-                    component_icon={component_icon}
-                    localized_message={localize('You have no transactions yet.')}
-                    localized_period_message={localize('You have no transactions for this period.')}
-                />
-            );
-        } else if (this.should_show_loading_placeholder) {
-            page_main_content = <PlaceholderComponent is_loading={this.should_show_loading_placeholder} />;
-        } else {
-            page_main_content = (
-                <React.Fragment>
-                    <DesktopWrapper>
-                        <DataTable
-                            className='statement'
-                            data_source={data}
-                            columns={this.columns}
-                            onScroll={handleScroll}
-                            getRowAction={row => this.getRowAction(row)}
-                            is_empty={is_empty}
-                            custom_width={'100%'}
-                            getRowSize={() => 63}
-                            content_loader={ReportsTableRowLoader}
-                        />
-                    </DesktopWrapper>
-                    <MobileWrapper>
-                        <DataList
-                            className='statement'
-                            data_source={data}
-                            rowRenderer={this.mobileRowRenderer}
-                            getRowAction={this.getRowAction}
-                            onScroll={handleScroll}
-                            custom_width={'100%'}
-                            getRowSize={() => 176}
-                        />
-                    </MobileWrapper>
-                </React.Fragment>
-            );
-        }
-
         return (
             <React.Fragment>
                 <ReportsMeta
@@ -246,7 +196,54 @@ class Statement extends React.Component {
                     filter_component={filter_component}
                     {...this.getReportsMetaProps(is_mx_mlt)}
                 />
-                {page_main_content}
+                {this.props.is_switching ? (
+                    <PlaceholderComponent is_loading={true} />
+                ) : (
+                    <React.Fragment>
+                        {data.length === 0 || is_empty ? (
+                            <PlaceholderComponent
+                                is_loading={is_loading}
+                                has_selected_date={has_selected_date}
+                                is_empty={is_empty}
+                                empty_message_component={EmptyTradeHistoryMessage}
+                                component_icon={component_icon}
+                                localized_message={localize('You have no transactions yet.')}
+                                localized_period_message={localize('You have no transactions for this period.')}
+                            />
+                        ) : (
+                            <React.Fragment>
+                                <DesktopWrapper>
+                                    <DataTable
+                                        className='statement'
+                                        data_source={data}
+                                        columns={this.columns}
+                                        onScroll={handleScroll}
+                                        getRowAction={row => this.getRowAction(row)}
+                                        is_empty={is_empty}
+                                        custom_width={'100%'}
+                                        getRowSize={() => 63}
+                                        content_loader={ReportsTableRowLoader}
+                                    >
+                                        <PlaceholderComponent is_loading={is_loading} />
+                                    </DataTable>
+                                </DesktopWrapper>
+                                <MobileWrapper>
+                                    <DataList
+                                        className='statement'
+                                        data_source={data}
+                                        rowRenderer={this.mobileRowRenderer}
+                                        getRowAction={this.getRowAction}
+                                        onScroll={handleScroll}
+                                        custom_width={'100%'}
+                                        getRowSize={() => 176}
+                                    >
+                                        <PlaceholderComponent is_loading={is_loading} />
+                                    </DataList>
+                                </MobileWrapper>
+                            </React.Fragment>
+                        )}
+                    </React.Fragment>
+                )}
             </React.Fragment>
         );
     }
@@ -264,6 +261,7 @@ Statement.propTypes = {
     history: PropTypes.object,
     is_empty: PropTypes.bool,
     is_loading: PropTypes.bool,
+    is_switching: PropTypes.bool,
     landing_company_shortcode: PropTypes.string,
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,

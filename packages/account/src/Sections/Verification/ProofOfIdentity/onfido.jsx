@@ -109,6 +109,6 @@ Onfido.propTypes = {
     documents_supported: PropTypes.array,
     handleComplete: PropTypes.func,
     has_poa: PropTypes.bool,
-    onfido_service_token: PropTypes.string,
+    onfido_service_token: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
     status: PropTypes.oneOf(Object.keys(onfido_status_codes)),
 };

@@ -17,7 +17,7 @@ import {
     UILoader,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { isMobile, validLength, validPassword, getPreBuildDVRs } from '@deriv/shared';
+import { isMobile, validLength, validPassword, getErrorMessages } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import MT5Store from 'Stores/Modules/MT5/mt5-store';
 
@@ -203,7 +203,7 @@ class MT5PasswordManagerModal extends React.Component {
                     max_number: 25,
                 });
             } else if (!validPassword(values.new_password)) {
-                errors.new_password = getPreBuildDVRs().password.message();
+                errors.new_password = getErrorMessages().password();
             } else if (values.new_password.toLowerCase() === email.toLowerCase()) {
                 errors.new_password = localize('Your password cannot be the same as your email address.');
             }

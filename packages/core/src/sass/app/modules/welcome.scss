@@ -9,11 +9,8 @@
 
 .welcome {
     &__title {
-        font-size: 1.6rem;
-        font-weight: bold;
-        line-height: 1.5;
+        @include typeface(--title-center-bold-prominent);
         margin: 2.4rem;
-        text-align: center;
     }
     &__message {
         display: none;
@@ -22,9 +19,7 @@
         align-items: center;
 
         &__text {
-            color: var(--text-colored-background);
-            font-size: 1.6rem;
-            font-weight: bold;
+            @include typeface(--title-left-bold-active);
             padding-left: 0.8rem;
         }
         &--left {
@@ -77,17 +72,13 @@
             margin: 0.8rem 0.6rem 1.6rem;
         }
         &__title {
-            font-size: 1.6rem;
-            font-weight: bold;
-            line-height: 1.5;
-            text-align: center;
+            @include typeface(--title-center-bold-prominent);
         }
         &__description {
-            font-size: 1.2rem;
+            @include typeface(--small-center-normal-prominent);
             line-height: 1.5;
             height: 7.8rem;
-            text-align: center;
-            padding: 0.8rem 1.6rem 1.6rem;
+            padding: 0.8rem 0 1.6rem;
             border-bottom: 1px solid var(--general-section-1);
         }
         &__button {
@@ -98,10 +89,7 @@
         }
         &__platforms {
             &__title {
-                font-size: 1.4rem;
-                font-weight: bold;
-                line-height: 1.5;
-                text-align: center;
+                @include typeface(--paragraph-center-bold-prominent);
                 padding: 2.4rem 1.6rem 1.6rem;
             }
             &__container {
@@ -114,6 +102,7 @@
             grid-template-columns: auto 1fr;
             grid-template-rows: auto auto;
             grid-column-gap: 0.8rem;
+            grid-row-gap: 0.4rem;
             margin-bottom: 1.6rem;
 
             &__icon {
@@ -121,16 +110,12 @@
                 grid-column: 1;
             }
             &__title {
-                font-size: 1.2rem;
-                font-weight: bold;
-                line-height: 1.5;
+                @include typeface(--small-left-bold-prominent);
                 grid-row: 1;
                 grid-column: 2;
             }
             &__description {
-                font-size: 1.2rem;
-                line-height: 1.5;
-                color: var(--text-less-prominent);
+                @include typeface(--small-left-normal-grey);
                 grid-row: 2;
                 grid-column: 2;
             }
@@ -145,10 +130,7 @@
         }
     }
     &__footer {
-        font-size: 1.2rem;
-        line-height: 1.5;
-        color: var(--text-less-prominent);
+        @include typeface(--small-center-normal-grey);
         padding: 2.4rem;
-        text-align: center;
     }
 }

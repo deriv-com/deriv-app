@@ -69,15 +69,13 @@ WelcomeColumn.propTypes = {
 const WelcomeModal = ({ toggleWelcomeModal, history }) => {
     const [hovered, setHovered] = React.useState(null);
 
-    const switchToRealAccount = React.useCallback(() => {
-        toggleWelcomeModal(false);
-        history.push(routes.trade);
-    }, [toggleWelcomeModal, history]);
-
-    const switchToDMT5 = React.useCallback(() => {
-        toggleWelcomeModal(false);
-        history.push(routes.mt5);
-    }, [toggleWelcomeModal, history]);
+    const switchPlatform = React.useCallback(
+        route => {
+            toggleWelcomeModal(false);
+            history.push(route);
+        },
+        [toggleWelcomeModal, history]
+    );
 
     return (
         <Modal
@@ -115,7 +113,7 @@ const WelcomeModal = ({ toggleWelcomeModal, history }) => {
                         )}
                         icons={['IcPercentSolid']}
                         is_hovered={hovered === 'left'}
-                        onButtonClick={switchToDMT5}
+                        onButtonClick={() => switchPlatform(routes.mt5)}
                         platforms={[
                             {
                                 icon: 'IcBrandDmt5',
@@ -139,7 +137,7 @@ const WelcomeModal = ({ toggleWelcomeModal, history }) => {
                         )}
                         icons={['IcUpDownSolid', 'IcCrossSolid']}
                         is_hovered={hovered === 'right'}
-                        onButtonClick={switchToRealAccount}
+                        onButtonClick={() => switchPlatform(routes.trade)}
                         platforms={[
                             {
                                 icon: 'IcBrandDtrader',

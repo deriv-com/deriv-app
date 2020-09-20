@@ -25,7 +25,7 @@ const InputField = props => {
                     <Input
                         type='text'
                         autoComplete='off'
-                        maxLength='30'
+                        maxLength={props.maxLength || '30'}
                         error={touched[field.name] && errors[field.name]}
                         {...field}
                         {...props}
@@ -82,7 +82,7 @@ class AddressDetails extends React.Component {
                 validate={this.handleValidate}
                 validateOnMount
                 onSubmit={(values, actions) => {
-                    if (isDesktop() && values.address_state) {
+                    if (values.address_state) {
                         values.address_state = this.props.states_list.length
                             ? this.state.address_state_to_display
                                 ? getLocation(this.props.states_list, this.state.address_state_to_display, 'value')
@@ -121,11 +121,13 @@ class AddressDetails extends React.Component {
                                                         ? localize('First line of address*')
                                                         : localize('First line of address')
                                                 }
+                                                maxLength={255}
                                                 placeholder={localize('First line of address')}
                                             />
                                             <InputField
                                                 name='address_line_2'
                                                 label={localize('Second line of address')}
+                                                maxLength={255}
                                                 placeholder={localize('Second line of address')}
                                             />
                                             <InputField
@@ -168,16 +170,23 @@ class AddressDetails extends React.Component {
                                                                 <SelectNative
                                                                     placeholder={localize('Please select')}
                                                                     label={localize('State/Province')}
-                                                                    value={values.address_state}
+                                                                    value={
+                                                                        this.state.address_state_to_display
+                                                                            ? this.state.address_state_to_display
+                                                                            : values.address_state
+                                                                    }
                                                                     list_items={this.props.states_list}
                                                                     use_text={true}
-                                                                    onChange={e =>
+                                                                    onChange={e => {
                                                                         setFieldValue(
                                                                             'address_state',
                                                                             e.target.value,
                                                                             true
-                                                                        )
-                                                                    }
+                                                                        );
+                                                                        this.setState({
+                                                                            address_state_to_display: '',
+                                                                        });
+                                                                    }}
                                                                 />
                                                             </MobileWrapper>
                                                         </>

@@ -11,6 +11,7 @@ const PlaceholderComponent = props => {
                     component_icon={props.component_icon}
                     has_selected_date={props.has_selected_date}
                     localized_message={props.localized_message}
+                    localized_period_message={props.localized_period_message}
                 />
             )}
             {props.is_loading && <Loading />}

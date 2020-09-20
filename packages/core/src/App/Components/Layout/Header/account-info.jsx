@@ -46,7 +46,7 @@ const AccountInfo = ({
                         'acc-info--is-virtual': is_virtual,
                         'acc-info--is-disabled': is_disabled,
                     })}
-                    onClick={is_disabled ? undefined : toggleDialog}
+                    onClick={is_disabled ? undefined : () => toggleDialog()}
                 >
                     <span className='acc-info__id'>
                         <DesktopWrapper>

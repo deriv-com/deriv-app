@@ -9,6 +9,7 @@ import {
     isDesktopOs,
     getUrlSmartTrader,
     toMoment,
+    getMT5AccountType,
     isBot,
 } from '@deriv/shared';
 
@@ -18,13 +19,12 @@ import { redirectToLogin } from '_common/base/login';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
 import { localize } from '@deriv/translations';
-
 import { LocalStore, State } from '_common/storage';
 import { isEuCountry } from '_common/utility';
 import BinarySocketGeneral from 'Services/socket-general';
 import { handleClientNotifications } from './Helpers/client-notifications';
 import BaseStore from './base-store';
-import { getClientAccountType, getMT5AccountType } from './Helpers/client';
+import { getClientAccountType } from './Helpers/client';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
 
 const storage_key = 'client.accounts';
@@ -87,6 +87,8 @@ export default class ClientStore extends BaseStore {
         decimal_places: undefined,
     };
     @observable has_cookie_account = false;
+
+    @observable financial_assessment = null;
 
     is_mt5_account_list_updated = false;
 
@@ -1750,6 +1752,17 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get needs_financial_assessment() {
+        if (this.is_virtual) return false;
+        if (this.is_high_risk || this.is_financial_information_incomplete) return true;
+        if (!this.is_svg) {
+            if (this.is_financial_account || this.is_trading_experience_incomplete) return true;
+        }
+
+        return false;
+    }
+
+    @computed
     get has_residence() {
         return !!this.accounts[this.loginid]?.residence;
     }
@@ -1793,6 +1806,16 @@ export default class ClientStore extends BaseStore {
         this.clearRealityCheckTimeout();
         LocalStore.remove('reality_check_duration');
         LocalStore.remove('reality_check_dismissed');
+    }
+
+    @action.bound
+    fetchFinancialAssessment() {
+        return new Promise(async resolve => {
+            const { get_financial_assessment } = await WS.getFinancialAssessment();
+
+            runInAction(() => (this.financial_assessment = get_financial_assessment));
+            resolve(get_financial_assessment);
+        });
     }
 }
 /* eslint-enable */

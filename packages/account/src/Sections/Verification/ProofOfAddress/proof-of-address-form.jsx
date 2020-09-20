@@ -2,15 +2,9 @@ import React from 'react';
 import { Autocomplete, Loading, Button, Input, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
 import { Formik, Field } from 'formik';
 import { localize } from '@deriv/translations';
-import { isMobile, getLocation } from '@deriv/shared';
+import { isMobile, validAddress, validPostCode, validLetterSymbol, validLength, getLocation } from '@deriv/shared';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
-import {
-    validAddress,
-    validPostCode,
-    validLetterSymbol,
-    validLength,
-} from 'Duplicated/Utils/Validator/declarative-validation-rules';
 import FormFooter from 'Components/form-footer';
 import FormBody from 'Components/form-body';
 import FormSubHeader from 'Components/form-sub-header';
@@ -73,7 +67,10 @@ class ProofOfAddressForm extends React.Component {
         const permitted_characters = "- . ' # ; : ( ) , @ /";
         const address_validation_message = localize(
             'Only letters, numbers, space, and these special characters are allowed: {{ permitted_characters }}',
-            { permitted_characters }
+            {
+                permitted_characters,
+                interpolation: { escapeValue: false },
+            }
         );
 
         if (values.address_line_1 && !validAddress(values.address_line_1)) {

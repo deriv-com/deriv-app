@@ -39,9 +39,6 @@ class Header extends React.Component {
             is_acc_switcher_disabled,
             is_app_disabled,
             is_dark_mode,
-            is_financial_account,
-            is_financial_information_incomplete,
-            is_high_risk,
             is_logged_in,
             is_logging_in,
             is_mt5_allowed,
@@ -50,11 +47,10 @@ class Header extends React.Component {
             is_payment_agent_visible,
             is_payment_agent_transfer_visible,
             is_route_modal_on,
-            is_trading_experience_incomplete,
-            is_svg,
             is_virtual,
             disableApp,
             logoutClient,
+            needs_financial_assessment,
             notifications_count,
             setDarkMode,
             toggleAccountsDialog,
@@ -91,16 +87,12 @@ class Header extends React.Component {
                                 location={this.props.location}
                                 logoutClient={logoutClient}
                                 is_dark_mode={is_dark_mode}
-                                is_high_risk={is_high_risk}
-                                is_financial_information_incomplete={is_financial_information_incomplete}
-                                is_financial_account={is_financial_account}
-                                is_trading_experience_incomplete={is_trading_experience_incomplete}
                                 is_logged_in={is_logged_in}
                                 is_p2p_visible={is_p2p_visible}
                                 is_payment_agent_transfer_visible={is_payment_agent_transfer_visible}
                                 is_payment_agent_visible={is_payment_agent_visible}
-                                is_svg={is_svg}
                                 is_virtual={is_virtual}
+                                needs_financial_assessment={needs_financial_assessment}
                                 toggleTheme={setDarkMode}
                                 platform_header={getPlatformHeader(app_routing_history)}
                                 platform_switcher={
@@ -174,7 +166,6 @@ Header.propTypes = {
     is_acc_switcher_on: PropTypes.bool,
     is_app_disabled: PropTypes.bool,
     is_dark_mode: PropTypes.bool,
-    is_high_risk: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
     is_notifications_visible: PropTypes.bool,
@@ -184,6 +175,7 @@ Header.propTypes = {
     is_route_modal_on: PropTypes.bool,
     is_virtual: PropTypes.bool,
     logoutClient: PropTypes.func,
+    needs_financial_assessment: PropTypes.bool,
     notifications_count: PropTypes.any,
     setDarkMode: PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
@@ -199,13 +191,10 @@ export default connect(({ client, common, ui, modules }) => ({
     is_payment_agent_transfer_visible: modules.cashier.is_payment_agent_transfer_visible,
     balance: client.balance,
     currency: client.currency,
-    is_financial_account: client.is_financial_account,
-    is_financial_information_incomplete: client.is_financial_information_incomplete,
-    is_trading_experience_incomplete: client.is_trading_experience_incomplete,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
-    is_svg: client.is_svg,
     logoutClient: client.logout,
+    needs_financial_assessment: client.needs_financial_assessment,
     is_virtual: client.is_virtual,
     enableApp: ui.enableApp,
     header_extension: ui.header_extension,
@@ -213,7 +202,6 @@ export default connect(({ client, common, ui, modules }) => ({
     is_acc_switcher_on: !!ui.is_accounts_switcher_on,
     is_dark_mode: ui.is_dark_mode_on,
     is_app_disabled: ui.is_app_disabled,
-    is_high_risk: client.is_high_risk,
     is_loading: ui.is_loading,
     is_mt5_allowed: client.is_mt5_allowed,
     notifications_count: ui.notifications.length,

@@ -95,7 +95,7 @@ class AddOrManageAccounts extends React.Component {
                     top
                     header_fit_content={isDesktop()}
                 >
-                    <div label={localize('Add account')}>
+                    <div label={localize('Cryptocurrencies')}>
                         <div
                             className={classNames('add-crypto-currency', {
                                 'account-wizard--disabled': this.no_crypto_available,
@@ -118,12 +118,13 @@ class AddOrManageAccounts extends React.Component {
                                 onSubmit={this.updateValue}
                                 value={this.state.form_value}
                                 form_error={this.state.form_error}
+                                should_show_crypto_only={true}
                                 {...this.props}
                             />
                         </div>
                     </div>
-                    <div label={localize('Change currency')}>
-                        {this.props.has_fiat && (
+                    <div label={localize('Fiat currencies')}>
+                        {this.props.has_fiat ? (
                             <div
                                 className={classNames('change-currency', {
                                     'account-wizard--disabled': !this.props.can_change_fiat_currency,
@@ -159,6 +160,15 @@ class AddOrManageAccounts extends React.Component {
                                     {...this.props}
                                 />
                             </div>
+                        ) : (
+                            <AddCryptoCurrency
+                                className='account-wizard__body'
+                                onSubmit={this.updateValue}
+                                value={this.state.form_value}
+                                form_error={this.state.form_error}
+                                should_show_fiat_only={true}
+                                {...this.props}
+                            />
                         )}
                     </div>
                 </Tabs>

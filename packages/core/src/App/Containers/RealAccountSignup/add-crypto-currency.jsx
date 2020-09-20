@@ -38,7 +38,7 @@ class AddCryptoCurrency extends React.Component {
     }
 
     get can_add_fiat() {
-        return !this.props.has_fiat;
+        return !this.props.has_fiat && !this.props.should_show_crypto_only;
     }
 
     get crypto_currencies() {
@@ -96,46 +96,47 @@ class AddCryptoCurrency extends React.Component {
                                 </RadioButtonGroup>
                             </React.Fragment>
                         )}
-                        {this.props.available_crypto_currencies.length !== 0 ? (
-                            <RadioButtonGroup
-                                id='crypto_currency'
-                                className='currency-selector__radio-group with-margin'
-                                label={localize('Cryptocurrencies')}
-                                value={values.currency}
-                                error={errors.currency}
-                                touched={touched.currency}
-                                is_title_enabled={this.can_add_fiat}
-                            >
-                                {this.crypto_currencies.map(currency => (
-                                    <Field
-                                        key={currency.value}
-                                        component={RadioButton}
-                                        name='currency'
-                                        id={currency.value}
-                                        label={currency.name}
-                                        selected={this.canAddCrypto(currency)}
-                                    />
-                                ))}
-                            </RadioButtonGroup>
-                        ) : (
-                            <RadioButtonGroup
-                                id='crypto_currency'
-                                className='currency-selector__radio-group with-margin'
-                                label={localize('Cryptocurrencies')}
-                                is_title_enabled={this.can_add_fiat}
-                            >
-                                {this.crypto_currencies.map(currency => (
-                                    <Field
-                                        key={currency.value}
-                                        component={RadioButton}
-                                        name='currency'
-                                        id={currency.value}
-                                        label={currency.name}
-                                        selected
-                                    />
-                                ))}
-                            </RadioButtonGroup>
-                        )}
+                        {!this.props.should_show_fiat_only &&
+                            (this.props.available_crypto_currencies.length !== 0 ? (
+                                <RadioButtonGroup
+                                    id='crypto_currency'
+                                    className='currency-selector__radio-group with-margin'
+                                    label={localize('Cryptocurrencies')}
+                                    value={values.currency}
+                                    error={errors.currency}
+                                    touched={touched.currency}
+                                    is_title_enabled={this.can_add_fiat}
+                                >
+                                    {this.crypto_currencies.map(currency => (
+                                        <Field
+                                            key={currency.value}
+                                            component={RadioButton}
+                                            name='currency'
+                                            id={currency.value}
+                                            label={currency.name}
+                                            selected={this.canAddCrypto(currency)}
+                                        />
+                                    ))}
+                                </RadioButtonGroup>
+                            ) : (
+                                <RadioButtonGroup
+                                    id='crypto_currency'
+                                    className='currency-selector__radio-group with-margin'
+                                    label={localize('Cryptocurrencies')}
+                                    is_title_enabled={this.can_add_fiat}
+                                >
+                                    {this.crypto_currencies.map(currency => (
+                                        <Field
+                                            key={currency.value}
+                                            component={RadioButton}
+                                            name='currency'
+                                            id={currency.value}
+                                            label={currency.name}
+                                            selected
+                                        />
+                                    ))}
+                                </RadioButtonGroup>
+                            ))}
                         <FormSubmitButton
                             className='currency-selector__button'
                             is_disabled={isSubmitting || !values.currency}

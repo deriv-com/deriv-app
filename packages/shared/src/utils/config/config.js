@@ -6,6 +6,7 @@ import { getPlatformFromUrl } from '../url/url';
 const DERIV_CRYPTO_STAGING_APP_ID = 16929;
 const DERIV_CRYPTO_STAGING_DBOT_APP_ID = 16929;
 const DERIV_CRYPTO_APP_ID = 16929;
+const DERIV_CRYPTO_DBOT_APP_ID = 23681;
 
 /*
  * Configuration values needed in js codes
@@ -56,6 +57,8 @@ export const getAppId = () => {
         app_id = isBot() ? DERIV_CRYPTO_STAGING_DBOT_APP_ID : DERIV_CRYPTO_STAGING_APP_ID;
     } else if (/localhost/i.test(window.location.hostname)) {
         app_id = 17044;
+    } else if (getPlatformFromUrl().is_deriv_crypto && isBot()) {
+        app_id = DERIV_CRYPTO_DBOT_APP_ID;
     } else {
         window.localStorage.removeItem('config.default_app_id');
         const current_domain = getCurrentProductionDomain();

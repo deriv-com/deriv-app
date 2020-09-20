@@ -19,7 +19,7 @@ class Contract extends React.Component {
     }
 
     render() {
-        if (!/\d+/.test(this.props.match.params.contract_id)) {
+        if (isNaN(this.props.match.params.contract_id)) {
             return <Redirect to='/404' />;
         }
 

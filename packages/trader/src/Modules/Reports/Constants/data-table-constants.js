@@ -127,6 +127,14 @@ export const getProfitTableColumnsTemplate = (currency, items_count) => [
         title: localize('Sell time'),
         col_index: 'sell_time',
         renderHeader: ({ title }) => <span>{title}</span>,
+        renderCellContent: ({ cell_value, is_footer }) => {
+            if (is_footer) return '';
+            return (
+                <span>
+                    {cell_value} {localize('GMT')}
+                </span>
+            );
+        },
     },
     {
         title: localize('Sell price'),

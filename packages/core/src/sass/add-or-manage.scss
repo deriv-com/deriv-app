@@ -14,11 +14,12 @@
         }
         &-message p:first-child {
             margin-top: 6rem;
-            padding-top: 1.1rem;
             background-color: var(--general-section-1);
             font-size: 1.2rem;
             height: 58px;
-            vertical-align: middle;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             border-radius: $BORDER_RADIUS;
         }
     }

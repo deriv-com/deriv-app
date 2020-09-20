@@ -13,19 +13,21 @@ import {
     SelectNative,
     DateOfBirthPicker,
 } from '@deriv/components';
-import { toMoment, isMobile, getLocation } from '@deriv/shared';
-import { localize } from '@deriv/translations';
-import { WS } from 'Services/ws-methods';
-import { connect } from 'Stores/connect';
 import {
+    toMoment,
+    isMobile,
     validAddress,
     validPostCode,
     validTaxID,
     validPhone,
-    validCountryCode,
     validLetterSymbol,
     validLength,
-} from 'Duplicated/Utils/Validator/declarative-validation-rules';
+    validCountryCode,
+    getLocation,
+} from '@deriv/shared';
+import { localize } from '@deriv/translations';
+import { WS } from 'Services/ws-methods';
+import { connect } from 'Stores/connect';
 // import { account_opening_reason_list }         from './constants';
 import LeaveConfirm from 'Components/leave-confirm';
 import FormFooter from 'Components/form-footer';
@@ -192,7 +194,10 @@ class PersonalDetailsForm extends React.Component {
         const permitted_characters = "- . ' # ; : ( ) , @ /";
         const address_validation_message = localize(
             'Only letters, numbers, space, and these special characters are allowed: {{ permitted_characters }}',
-            { permitted_characters }
+            {
+                permitted_characters,
+                interpolation: { escapeValue: false },
+            }
         );
 
         if (values.address_line_1 && !validAddress(values.address_line_1)) {

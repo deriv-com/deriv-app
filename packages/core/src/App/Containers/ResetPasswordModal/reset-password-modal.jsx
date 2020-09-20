@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Formik, Form } from 'formik';
 import { Button, Dialog, PasswordInput, PasswordMeter } from '@deriv/components';
+import { validPassword, validLength, getPreBuildDVRs } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { validLength, validPassword, getPreBuildDVRs } from 'Utils/Validator/declarative-validation-rules';
 import { redirectToLogin } from '_common/base/login';
 import { WS } from 'Services/index';
 

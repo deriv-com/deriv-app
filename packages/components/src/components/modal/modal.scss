@@ -62,6 +62,23 @@
                 border-bottom: none;
             }
         }
+        &--is-confirmation-modal {
+            .dc-modal {
+                &-header {
+                    border-bottom: none;
+
+                    &__title {
+                        padding: 2.4rem;
+                    }
+                }
+                &-body {
+                    padding: 0 2.4rem;
+                }
+                &-footer {
+                    padding: 2.4rem;
+                }
+            }
+        }
         @include desktop {
             min-width: 400px !important;
             max-height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT}) !important;
@@ -158,6 +175,7 @@
         display: flex;
         justify-content: flex-end;
         padding: 1.6rem;
+        margin-top: auto;
 
         .dc-btn {
             margin: 0 0.8rem;

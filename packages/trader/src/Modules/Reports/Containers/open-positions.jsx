@@ -92,7 +92,7 @@ const OpenPositionsTable = ({
                                 getRowAction={getRowAction}
                                 custom_width='100%'
                                 getRowSize={() => {
-                                    if (isMobile() && is_multiplier_tab) return 228;
+                                    if (isMobile() && is_multiplier_tab) return 248;
                                     if (isMobile()) return 208;
                                     return 194;
                                 }}

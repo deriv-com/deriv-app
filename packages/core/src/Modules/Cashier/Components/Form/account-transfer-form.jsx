@@ -92,7 +92,7 @@ const AccountTransferForm = ({
     selected_to,
     requestTransferBetweenAccounts,
     accounts_list,
-    setSideNote,
+    setSideNotes,
     transfer_fee,
     minimum_fee,
     onChangeTransferFrom,
@@ -184,18 +184,19 @@ const AccountTransferForm = ({
     }, []);
 
     React.useEffect(() => {
-        if (Object.keys(from_accounts).length && typeof setSideNote === 'function') {
-            setSideNote(
+        if (Object.keys(from_accounts).length && typeof setSideNotes === 'function') {
+            setSideNotes([
                 <AccountTransferNote
                     mt5_total_transfers={mt5_total_transfers}
                     internal_total_transfers={internal_total_transfers}
                     transfer_fee={transfer_fee}
                     currency={selected_from.currency}
                     minimum_fee={minimum_fee}
-                />
-            );
+                    key={0}
+                />,
+            ]);
         }
-    }, [transfer_fee, selected_from, minimum_fee, mt5_total_transfers, internal_total_transfers, setSideNote]);
+    }, [transfer_fee, selected_from, minimum_fee, mt5_total_transfers, internal_total_transfers, setSideNotes]);
     return (
         <div className='cashier__wrapper account-transfer__wrapper'>
             <React.Fragment>
@@ -399,7 +400,7 @@ AccountTransferForm.propTypes = {
     selected_from: PropTypes.object,
     selected_to: PropTypes.object,
     setErrorMessage: PropTypes.func,
-    setSideNote: PropTypes.func,
+    setSideNotes: PropTypes.func,
     transfer_fee: PropTypes.number,
     transfer_limit: PropTypes.object,
 };

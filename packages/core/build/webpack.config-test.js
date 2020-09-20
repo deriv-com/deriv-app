@@ -23,7 +23,11 @@ module.exports = function(env, argv) {
             filename: 'js/[name].[hash].js',
             publicPath: '/',
         },
-        plugins: plugins(base, true, env && env.mocha_only),
+        plugins: plugins({
+            base,
+            is_test_env: true,
+            env: {},
+        }),
         resolve: {
             alias: ALIASES,
             extensions: ['.js', '.jsx'],

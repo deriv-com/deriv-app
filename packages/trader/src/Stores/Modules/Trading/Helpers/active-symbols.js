@@ -2,7 +2,7 @@ import { flow } from 'mobx';
 import { localize } from '@deriv/translations';
 import { ClientBase } from '_common/base/client_base';
 import { redirectToLogin } from '_common/base/login';
-import { LocalStore } from '_common/storage';
+import { LocalStore } from '@deriv/shared';
 import { WS } from 'Services/ws-methods';
 
 export const showUnavailableLocationError = flow(function*(showError) {

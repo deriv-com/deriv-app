@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import Loadable from 'react-loadable';
-import { Icon, DesktopWrapper, MobileWrapper } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { daysFromTodayTo, epochToMoment, toMoment } from '@deriv/shared';
 import InputField from 'App/Components/Form/InputField/input-field.jsx';
 import CompositeCalendarMobile from './composite-calendar-mobile.jsx';
 import SideList from './side-list.jsx';
+import CalendarIcon from './calendar-icon.jsx';
 
 const TwoMonthPicker = Loadable({
     loader: () => import(/* webpackChunkName: "two-month-picker" */ './two-month-picker.jsx'),
@@ -177,7 +178,7 @@ class CompositeCalendar extends React.PureComponent {
                             id='dt_calendar_input_from'
                             is_read_only={true}
                             placeholder={localize('Date from')}
-                            icon={() => <Icon icon='IcCalendarDatefrom' className='inline-icon' />}
+                            icon={CalendarIcon}
                             onClick={this.showCalendar.bind(this, 'from')}
                             value={this.from_date_label}
                         />
@@ -185,7 +186,7 @@ class CompositeCalendar extends React.PureComponent {
                             id='dt_calendar_input_to'
                             is_read_only={true}
                             placeholder={localize('Date to')}
-                            icon={() => <Icon icon='IcCalendarDateto' className='inline-icon' />}
+                            icon={CalendarIcon}
                             onClick={this.showCalendar.bind(this, 'to')}
                             value={this.to_date_label}
                         />

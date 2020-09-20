@@ -19,11 +19,26 @@ class ToggleCardDialog extends React.Component {
             is_visible: false,
             top: 0,
             left: 0,
+            is_do_not_show_selected: !this.props.should_show_cancellation_warning,
         };
         this.toggle_ref = React.createRef();
         this.dialog_ref = React.createRef();
         this.contract = props.getContractById(props.contract_id);
     }
+
+    onPopoverClose = () => {
+        if (this.state.is_do_not_show_selected) {
+            this.props.toggleCancellationWarning();
+        }
+    };
+
+    onPopoverCheckboxChange = () => {
+        this.setState(prev_state => {
+            return {
+                is_do_not_show_selected: !prev_state.is_do_not_show_selected,
+            };
+        });
+    };
 
     toggleDialog = e => {
         e.preventDefault();
@@ -80,7 +95,6 @@ class ToggleCardDialog extends React.Component {
             setCurrentFocus,
             should_show_cancellation_warning,
             status,
-            toggleCancellationWarning,
         } = this.props;
 
         const edit_icon = (
@@ -102,13 +116,14 @@ class ToggleCardDialog extends React.Component {
                     zIndex={2}
                     message={
                         <PopoverMessageCheckbox
-                            defaultChecked={!should_show_cancellation_warning}
+                            defaultChecked={this.state.is_do_not_show_selected}
                             checkboxLabel={getCardLabels().DONT_SHOW_THIS_AGAIN}
                             message={getCardLabels().TAKE_PROFIT_LOSS_NOT_AVAILABLE}
                             name='should_show_cancellation_warning'
-                            onChange={() => toggleCancellationWarning()}
+                            onChange={this.onPopoverCheckboxChange}
                         />
                     }
+                    onBubbleClose={this.onPopoverClose}
                 >
                     <div className='dc-contract-card-dialog-toggle__wrapper'>{edit_icon}</div>
                 </Popover>

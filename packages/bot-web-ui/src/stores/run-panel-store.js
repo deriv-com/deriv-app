@@ -395,6 +395,7 @@ export default class RunPanelStore {
         const { journal, ui } = this.root_store;
         journal.onError(data);
         if (journal.journal_filters.some(filter => filter === message_types.ERROR)) {
+            this.toggleDrawer(true);
             this.setActiveTabIndex(run_panel.JOURNAL);
         } else {
             ui.addNotificationMessage(journalError(this.switchToJournal));

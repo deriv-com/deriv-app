@@ -4,16 +4,16 @@ orbs:
   slack: circleci/slack@3.4.2
 commands:
   git_checkout_from_cache:
-    description: "Git checkout and save cache"
+    description: 'Git checkout and save cache'
     steps:
       - restore_cache:
-          name: "Git restore cache"
+          name: 'Git restore cache'
           keys:
             - source-v{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-{{ .Revision }}
             - source-v{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-
             - source-v{{ .Environment.CACHE_VERSION }}-
       - run:
-          name: "Fetch git tags"
+          name: 'Fetch git tags'
           command: |
             mkdir -p ~/.ssh
             echo 'github.com ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ==' >> ~/.ssh/known_hosts
@@ -24,25 +24,25 @@ commands:
             fi
       - checkout
       - run:
-          name: "Compress git objects"
+          name: 'Compress git objects'
           command: git gc
       - save_cache:
           name: Git save cache
           key: source-v{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-{{ .Revision }}
           paths:
-            - ".git"
+            - '.git'
 
   npm_install_from_cache:
-    description: "npm install and save cache"
+    description: 'npm install and save cache'
     steps:
       - run:
-          name: "Create cache key"
+          name: 'Create cache key'
           command: echo $(find . ./packages/ -maxdepth 2 -name package-lock.json -type f -exec md5sum {} \; | sort -n | md5sum | cut -d' ' -f1) >> CACHE_KEY1
       - restore_cache:
           keys:
             - node-v{{ .Environment.CACHE_VERSION }}-{{ checksum "CACHE_KEY1" }}
       - run:
-          name: "Install npm packages"
+          name: 'Install npm packages'
           command: |
             if [ -d "./node_modules" ]; then
               echo "Found cache. Using cached node_modules."
@@ -52,47 +52,47 @@ commands:
               npm run bootstrap
             fi
       - save_cache:
-          name: "Saving node_modules cache"
+          name: 'Saving node_modules cache'
           key: node-v{{ .Environment.CACHE_VERSION }}-{{ checksum "CACHE_KEY1" }}
           paths:
             # VERIFY_CACHE_FOLDERS_START (DO NOT REMOVE)
-            - "node_modules"
-            - "packages/account/node_modules"
-            - "packages/bot-skeleton/node_modules"
-            - "packages/bot-web-ui/node_modules"
-            - "packages/components/node_modules"
-            - "packages/core/node_modules"
-            - "packages/p2p/node_modules"
-            - "packages/shared/node_modules"
-            - "packages/trader/node_modules"
-            - "packages/translations/node_modules"
+            - 'node_modules'
+            - 'packages/account/node_modules'
+            - 'packages/bot-skeleton/node_modules'
+            - 'packages/bot-web-ui/node_modules'
+            - 'packages/components/node_modules'
+            - 'packages/core/node_modules'
+            - 'packages/p2p/node_modules'
+            - 'packages/shared/node_modules'
+            - 'packages/trader/node_modules'
+            - 'packages/translations/node_modules'
             # VERIFY_CACHE_FOLDERS_END (DO NOT REMOVE)
 
   build:
-    description: "Build"
+    description: 'Build'
     steps:
       - run:
-          name: "Build all packages"
+          name: 'Build all packages'
           command: npm run build
 
   build_crypto:
-    description: "Build crypto"
+    description: 'Build crypto'
     steps:
       - run:
-          name: "Build all packages for deriv crypto"
+          name: 'Build all packages for deriv crypto'
           command: npm run build:crypto
 
   notify_slack:
-    description: "Notify slack"
+    description: 'Notify slack'
     steps:
       - slack/status:
           include_project_field: false
-          failure_message: "Release failed for app.deriv.com with version *$(cat packages/core/dist/version)*"
-          success_message: "Release succeeded for app.deriv.com with version *$(cat packages/core/dist/version)*"
+          failure_message: 'Release failed for app.deriv.com with version *$(cat packages/core/dist/version)*'
+          success_message: 'Release succeeded for app.deriv.com with version *$(cat packages/core/dist/version)*'
           webhook: ${SLACK_WEBHOOK}
 
   deploy:
-    description: "Deploy to static branches"
+    description: 'Deploy to static branches'
     parameters:
       target_branch:
         type: string
@@ -112,20 +112,20 @@ commands:
             git config user.name "ci-build"
       - add_ssh_keys:
           fingerprints:
-            - "01:67:4a:6d:26:9c:70:c4:1a:60:91:88:d9:dd:f0:83"
+            - '01:67:4a:6d:26:9c:70:c4:1a:60:91:88:d9:dd:f0:83'
       - run:
           name: Deploy docs to gh-pages branch
           command: /home/circleci/.npm-packages/bin/gh-pages -d packages/core/dist --branch << parameters.target_branch >> --message '[skip ci]'
 
   docker_build_push:
-    description: "Build and Push image to docker hub"
+    description: 'Build and Push image to docker hub'
     parameters:
       docker_image_latest_tag:
         type: string
-        default: "latest-staging"
+        default: 'latest-staging'
       docker_image_name:
         type: string
-        default: "deriv-app"
+        default: 'deriv-app'
     steps:
       - setup_remote_docker:
           docker_layer_caching: true
@@ -141,14 +141,14 @@ commands:
             docker push ${DOCKHUB_ORGANISATION}/<< parameters.docker_image_name >>
 
   k8s_deploy:
-    description: "Deploy to k8s cluster"
+    description: 'Deploy to k8s cluster'
     parameters:
       k8s_svc_name:
         type: string
-        default: "staging-deriv-app"
+        default: 'staging-deriv-app'
       k8s_image_name:
         type: string
-        default: "deriv-app"
+        default: 'deriv-app'
     steps:
       - k8s/install-kubectl
       - run:
@@ -213,11 +213,11 @@ jobs:
       - deploy:
           target_branch: staging-crypto
       - docker_build_push:
-          docker_image_name: deriv-crypto
+          docker_image_name: deriv-app-crypto
           docker_image_latest_tag: latest-staging-crypto
       - k8s_deploy:
-          k8s_svc_name: staging-deriv-crypto
-          k8s_image_name: deriv-crypto
+          k8s_svc_name: staging-deriv-app-crypto
+          k8s_image_name: deriv-app-crypto
       - notify_slack
     environment:
       NODE_ENV: staging
@@ -249,11 +249,11 @@ jobs:
       - deploy:
           target_branch: production-crypto
       - docker_build_push:
-          docker_image_name: deriv-crypto
+          docker_image_name: deriv-app-crypto
           docker_image_latest_tag: latest
       - k8s_deploy:
-          k8s_svc_name: production-deriv-crypto
-          k8s_image_name: deriv-crypto
+          k8s_svc_name: production-deriv-app-crypto
+          k8s_image_name: deriv-app-crypto
       - notify_slack
     environment:
       NODE_ENV: staging

@@ -20,7 +20,9 @@ const FormAds = ({ handleShowForm }) => {
     const is_mounted = useIsMounted();
 
     React.useEffect(() => {
-        setIsLoading(false);
+        if (is_mounted) {
+            setIsLoading(false);
+        }
     }, []);
 
     const handleSubmit = (values, { setSubmitting }) => {
@@ -45,12 +47,14 @@ const FormAds = ({ handleShowForm }) => {
             create_advert.description = values.default_advert_description;
         }
         requestWS(create_advert).then(response => {
-            // If we get an error we should let the user submit the form again else we just go back to the list of ads
-            if (response.error && is_mounted) {
-                setErrorMessage(response.error.message);
-                setSubmitting(false);
-            } else {
-                handleShowForm(false);
+            if (is_mounted) {
+                // If we get an error we should let the user submit the form again else we just go back to the list of ads
+                if (response.error) {
+                    setErrorMessage(response.error.message);
+                    setSubmitting(false);
+                } else {
+                    handleShowForm(false);
+                }
             }
         });
     };

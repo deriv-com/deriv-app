@@ -52,14 +52,15 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
     const [has_adverts, setHasAdverts] = React.useState(false);
     const height_values = [
         height_constants.screen,
+        height_constants.advertiser_page_content,
         height_constants.core_header,
-        height_constants.page_overlay_header,
-        height_constants.page_overlay_content_padding,
-        height_constants.tabs,
+        height_constants.core_footer,
         height_constants.filters,
         height_constants.filters_margin,
+        height_constants.page_overlay_header,
+        height_constants.page_overlay_content_padding,
         height_constants.table_header,
-        height_constants.core_footer,
+        height_constants.tabs,
     ];
     const item_height = 56;
     const [is_loading, setIsLoading] = React.useState(true);

@@ -106,6 +106,9 @@
         &-tabs {
             width: 228px;
         }
+        &-list {
+            height: calc(100% - 200px);
+        }
         &-scrollbar {
             height: 482px;
             position: absolute;

@@ -8,6 +8,7 @@ import {
     Div100vhContainer,
     Dropdown,
     FormSubmitButton,
+    FormSubmitErrorMessage,
     Input,
     Loading,
     MobileWrapper,
@@ -345,9 +346,7 @@ const MT5PersonalDetailsForm = ({
                                 </ThemedScrollbars>
                             </Div100vhContainer>
                             <Modal.Footer is_bypassed={isMobile()}>
-                                {form_error && isDesktop() && (
-                                    <p className='mt5-personal-details-form-error'>{form_error}</p>
-                                )}
+                                {form_error && isDesktop() && <FormSubmitErrorMessage message={form_error} />}
                                 <FormSubmitButton
                                     cancel_label={localize('Previous')}
                                     is_disabled={isSubmitting || !isValid}

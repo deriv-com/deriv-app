@@ -51,8 +51,8 @@ class AddOrManageAccounts extends React.Component {
                             response.echo_req.set_account_currency
                         );
                     })
-                    .catch(error_message => {
-                        this.props.onError(error_message);
+                    .catch(error => {
+                        this.props.onError(error);
                     })
                     .finally(() => this.props.setLoading(false));
             } else {
@@ -63,8 +63,8 @@ class AddOrManageAccounts extends React.Component {
                         this.props.onSuccessSetAccountCurrency('', value);
                         setSubmitting(false);
                     })
-                    .catch(error_message => {
-                        this.props.onError(error_message);
+                    .catch(error => {
+                        this.props.onError(error);
                     })
                     .finally(() => this.props.setLoading(false));
             }

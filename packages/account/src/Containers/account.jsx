@@ -61,6 +61,7 @@ class Account extends React.Component {
 
         const subroutes = flatten(this.props.routes.map((i) => i.subroutes));
         let list_groups = [...this.props.routes];
+
         list_groups = list_groups.map((route_group) => ({
             icon: route_group.icon,
             label: route_group.title,

@@ -8,6 +8,7 @@ import CashierLocked from '../Components/Error/cashier-locked.jsx';
 import DepositsLocked from '../Components/Error/deposit-locked.jsx';
 import FundsProtection from '../Components/Error/funds-protection.jsx';
 import MaxTurnover from '../Components/Form/max-turnover-form.jsx';
+import USDTSideNote from '../Components/usdt-side-note.jsx';
 
 const Deposit = ({
     is_cashier_locked,
@@ -19,12 +20,23 @@ const Deposit = ({
     setActiveTab,
     onMount,
     container,
+    currency,
     is_loading,
+    setSideNotes,
 }) => {
     React.useEffect(() => {
         setActiveTab(container);
         onMount();
     }, []);
+
+    React.useEffect(() => {
+        if (iframe_height) {
+            if (/^(UST|eUSDT)$/i.test(currency) && typeof setSideNotes === 'function') {
+                setSideNotes([<USDTSideNote key={0} />]);
+            }
+        }
+    }, [iframe_height]);
+
     if (is_virtual) {
         return <Virtual />;
     }
@@ -57,6 +69,7 @@ Deposit.propTypes = {
     is_virtual: PropTypes.bool,
     onMount: PropTypes.func,
     setActiveTab: PropTypes.func,
+    setSideNotes: PropTypes.func,
     standpoint: PropTypes.object,
 };
 
@@ -65,6 +78,7 @@ export default connect(({ client, modules }) => ({
     is_deposit_locked: modules.cashier.is_deposit_locked,
     is_virtual: client.is_virtual,
     container: modules.cashier.config.deposit.container,
+    currency: client.currency,
     error: modules.cashier.config.deposit.error,
     iframe_height: modules.cashier.config.deposit.iframe_height,
     iframe_url: modules.cashier.config.deposit.iframe_url,

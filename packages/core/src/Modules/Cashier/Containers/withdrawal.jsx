@@ -8,10 +8,22 @@ import NoBalance from '../Components/Error/no-balance.jsx';
 import Virtual from '../Components/Error/virtual.jsx';
 import WithdrawalLocked from '../Components/Error/withdrawal-locked.jsx';
 import CashierLocked from '../Components/Error/cashier-locked.jsx';
+import USDTSideNote from '../Components/usdt-side-note.jsx';
 
 class Withdrawal extends React.Component {
     componentDidMount() {
         this.props.setActiveTab(this.props.container);
+    }
+
+    componentDidUpdate(prev_props) {
+        if (
+            prev_props.verification_code !== this.props.verification_code ||
+            prev_props.iframe_url !== this.props.iframe_url
+        ) {
+            if (/^(UST|eUSDT)$/i.test(this.props.currency) && typeof this.props.setSideNotes === 'function') {
+                this.props.setSideNotes([<USDTSideNote key={0} />]);
+            }
+        }
     }
 
     componentWillUnmount() {
@@ -55,6 +67,7 @@ Withdrawal.propTypes = {
 
 export default connect(({ client, modules }) => ({
     balance: client.balance,
+    currency: client.currency,
     is_virtual: client.is_virtual,
     verification_code: client.verification_code.payment_withdraw,
     container: modules.cashier.config.withdraw.container,

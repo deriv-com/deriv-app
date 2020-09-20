@@ -102,7 +102,7 @@ export const CryptoConfig = (() => {
             },
             DAI: {
                 display_code: 'DAI',
-                name: 'Multi-Collateral',
+                name: 'Multi-Collateral DAI',
                 min_withdrawal: 0.002,
                 pa_max_withdrawal: 5,
                 pa_min_withdrawal: 0.002,

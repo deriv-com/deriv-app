@@ -191,11 +191,6 @@
         }
         .bottom-right-overlay {
             bottom: 2rem;
-            right: 15rem;
-
-            @include mobile {
-                right: 11rem;
-            }
         }
     }
     &__body-area {

@@ -1,15 +1,5 @@
-import { expect, setURL } from '../../../test_utils/common';
-import {
-    reset,
-    urlFor,
-    websiteUrl,
-    paramsHash,
-    urlForCurrentDomain,
-    getHostMap,
-    param,
-    urlForStatic,
-    resetStaticHost,
-} from '../url';
+import { expect } from '../../../test_utils/common';
+import { reset, urlFor, websiteUrl, paramsHash, param, urlForStatic, resetStaticHost } from '../url';
 
 // Testable URLs
 const urls = ['https://app.deriv.com', 'https://app.derivcrypto.com'];

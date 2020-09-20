@@ -1,6 +1,6 @@
 // const Cookies = require('js-cookie');
 import { isBot } from '../platform';
-import { getPlatformFromUrl } from '../url/url';
+import { getPlatformFromUrl } from '../url/helpers';
 
 // TODO [app-link-refactor] - Replace with dedicated deriv crypto app id
 const DERIV_CRYPTO_STAGING_APP_ID = 16929;

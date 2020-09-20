@@ -1,3 +1,4 @@
+import { getPlatformFromUrl } from './helpers';
 import { getCurrentProductionDomain } from '../config/config';
 
 const default_domain = 'binary.com';
@@ -157,11 +158,3 @@ export const getStaticUrl = (
 
     return `${host}${lang}/${normalizePath(path)}`;
 };
-
-export const getPlatformFromUrl = (domain = window.location.hostname) => ({
-    is_staging_deriv_crypto: /^staging-app\.deriv\.com$/i.test(domain),
-    is_staging_deriv_app: /^staging-app\.derivcrypto\.com$/i.test(domain),
-    is_deriv_crypto: /^app\.derivcrypto\.com$/i.test(domain),
-    is_deriv_app: /^app\.deriv\.com$/i.test(domain),
-    is_test_link: /^(.*)\.binary\.sx)$/i.test(domain),
-});

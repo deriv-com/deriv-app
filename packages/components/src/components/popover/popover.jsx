@@ -10,8 +10,13 @@ const Popover = ({ ...props }) => {
     const [is_popover_open, setIsPopoverOpen] = React.useState(false);
     const [is_bubble_open, setIsBubbleOpen] = React.useState(false);
     const [popover_ref, setPopoverRef] = React.useState(undefined);
+    const bubble_ref = React.useRef(is_bubble_open);
 
     const has_external_open_state = props.is_open !== undefined;
+
+    React.useEffect(() => {
+        bubble_ref.current = is_bubble_open;
+    }, [is_bubble_open]);
 
     React.useEffect(() => {
         if (ref.current) {
@@ -25,30 +30,35 @@ const Popover = ({ ...props }) => {
     }, [is_bubble_open]);
 
     const toggleOpen = React.useCallback(() => {
+        if (props.onOpen) props.onOpen();
         if (has_external_open_state) return;
         setIsPopoverOpen(Boolean(props.message));
-    }, [props.message]);
+    }, [props.message, props.onOpen]);
 
     const toggleClose = React.useCallback(() => {
+        if (props.onClose) props.onClose();
         if (has_external_open_state) return;
         if (props.is_bubble_hover_enabled) {
             setTimeout(() => {
                 // add delay to check if mouse is hovered on popover bubble
-                setIsPopoverOpen(props.is_bubble_hover_enabled ? is_bubble_open : false);
+                // because of JS closures, there is no guaranty that the state used inside a setTimeout is updated. so we use bubble_ref.
+                setIsPopoverOpen(bubble_ref.current);
             }, 50);
         } else {
             setIsPopoverOpen(false);
         }
-    }, [props.is_bubble_hover_enabled]);
+    }, [props.is_bubble_hover_enabled, props.onClose]);
 
     const onMouseEnter = React.useCallback(() => {
         setIsBubbleOpen(true);
-    }, []);
+        if (props.onBubbleOpen) props.onBubbleOpen();
+    }, [props.onBubbleOpen]);
 
     const onMouseLeave = React.useCallback(() => {
         setIsPopoverOpen(false);
         setIsBubbleOpen(false);
-    }, []);
+        if (props.onBubbleClose) props.onBubbleClose();
+    }, [props.onBubbleClose]);
 
     const {
         alignment,
@@ -234,6 +244,10 @@ Popover.propTypes = {
     relative_render: PropTypes.bool,
     margin: PropTypes.number,
     message: PropTypes.oneOfType([PropTypes.node, PropTypes.object, PropTypes.string]),
+    onOpen: PropTypes.func,
+    onClose: PropTypes.func,
+    onBubbleOpen: PropTypes.func,
+    onBubbleClose: PropTypes.func,
     zIndex: PropTypes.number,
     should_disable_pointer_events: PropTypes.bool,
 };

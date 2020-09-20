@@ -17,6 +17,7 @@ const Card = ({ contract_type, onClick }) => (
         </ThemedScrollbars>
         <Button
             id={`dt_contract_info_${contract_type.value}_btn`}
+            className='contract-type-info__button'
             onClick={e => onClick(contract_type, e)}
             text={localize('Choose {{contract_type}}', {
                 contract_type: contract_type.text,

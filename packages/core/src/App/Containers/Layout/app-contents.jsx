@@ -4,12 +4,10 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import WS from 'Services/ws-methods';
 import { DesktopWrapper, MobileWrapper, ThemedScrollbars } from '@deriv/components';
+import { CookieStorage, isMobile, TRACKING_STATUS_KEY } from '@deriv/shared';
 import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
-import { isMobile } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import { CookieStorage } from '_common/storage';
 import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';
-import { TRACKING_STATUS_KEY } from '../../Constants/app-config';
 // import InstallPWA    from './install-pwa.jsx';
 
 const tracking_status_cookie = new CookieStorage(TRACKING_STATUS_KEY);

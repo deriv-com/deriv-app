@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Form, Field } from 'formik';
-import { getDecimalPlaces, routes } from '@deriv/shared';
+import { getDecimalPlaces, routes, validNumber } from '@deriv/shared';
 import { Button, Input } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
 import { connect } from 'Stores/connect';
-import { getPreBuildDVRs, validNumber } from 'Utils/Validator/declarative-validation-rules';
 import { WS } from 'Services';
 
 const MaxTurnoverForm = ({ onMount, setErrorConfig, currency }) => {
@@ -22,15 +21,14 @@ const MaxTurnoverForm = ({ onMount, setErrorConfig, currency }) => {
 
         if (!values.max_30day_turnover) {
             errors.max_30day_turnover = localize('This field is required.');
-        } else if (
-            !validNumber(values.max_30day_turnover, {
+        } else {
+            const { is_ok, message } = validNumber(values.max_30day_turnover, {
                 type: 'float',
                 decimals: getDecimalPlaces(currency),
                 min: min_number,
                 max: max_number,
-            })
-        ) {
-            errors.max_30day_turnover = getPreBuildDVRs().number.message;
+            });
+            if (!is_ok) errors.max_30day_turnover = message;
         }
 
         return errors;

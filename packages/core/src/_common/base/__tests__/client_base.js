@@ -1,7 +1,7 @@
 const setCurrencies = require('@deriv/shared').setCurrencies;
+const State = require('@deriv/shared').State;
 const Client = require('../client_base');
 const { api, expect, setURL } = require('../../__tests__/tests_common');
-const State = require('../../storage').State;
 const Url = require('../../url');
 
 describe('ClientBase', () => {

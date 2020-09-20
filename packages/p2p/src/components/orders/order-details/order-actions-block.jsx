@@ -97,7 +97,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
                 currency: transaction_currency,
                 advertiser_name,
             }),
-            payment_confirm: true,
+            should_confirm_payment: true,
             order: {
                 transaction_currency,
                 display_transaction_amount,
@@ -129,7 +129,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
             title: localize('Have you received payment?'),
             className: 'order-details__popup-no-border',
             message: localize(
-                'Please confirm only after checking your bank or e-wallet account to make sure you have received payment'
+                'Please confirm only after checking your bank or e-wallet account to make sure you have received payment.'
             ),
             need_confirmation: true,
             order: {

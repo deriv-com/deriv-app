@@ -3,6 +3,11 @@
         color: var(--text-loss-danger);
         font-size: var(--text-size-xs);
     }
+    &__scrollbar {
+        height: calc(100% - 150px);
+        position: absolute;
+        width: calc(100% - 4.8rem);
+    }
     &__header {
         display: flex;
         height: fit-content;
@@ -122,7 +127,10 @@
     }
     &__footer {
         border-top: 2px solid var(--general-section-1);
+        bottom: 36px;
+        left: unset;
         padding-right: 2.4rem;
+        position: fixed;
         width: 657px;
 
         &-button {

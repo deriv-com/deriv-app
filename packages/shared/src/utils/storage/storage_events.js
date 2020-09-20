@@ -1,9 +1,11 @@
+import { getPlatformFromUrl } from '../url/url';
+
 export const getUrlSmartTrader = () => {
-    if (/^staging-app\.deriv\.com$/i.test(window.location.hostname)) {
+    if (getPlatformFromUrl().is_staging_deriv_app) {
         return 'https://staging-smarttrader.deriv.com';
     }
 
-    if (/^staging-app\.derivcrypto\.com$/i.test(window.location.hostname)) {
+    if (getPlatformFromUrl().is_staging_deriv_crypto) {
         return 'https://staging-smarttrader.derivcrypto.com';
     }
 

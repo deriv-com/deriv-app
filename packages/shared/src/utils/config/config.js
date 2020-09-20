@@ -1,5 +1,6 @@
 // const Cookies = require('js-cookie');
 import { isBot } from '../platform';
+import { getPlatformFromUrl } from '../url/url';
 
 // TODO [app-link-refactor] - Replace with dedicated deriv crypto app id
 const DERIV_CRYPTO_STAGING_APP_ID = 16929;
@@ -47,10 +48,10 @@ export const getAppId = () => {
     } else if (user_app_id.length) {
         window.localStorage.setItem('config.default_app_id', user_app_id);
         app_id = user_app_id;
-    } else if (/staging-app\.deriv\.com/i.test(window.location.hostname)) {
+    } else if (getPlatformFromUrl().is_staging_deriv_app) {
         window.localStorage.removeItem('config.default_app_id');
         app_id = isBot() ? 19112 : 16303; // it's being used in endpoint chrome extension - please do not remove
-    } else if (/staging-app\.derivcrypto\.com/i.test(window.location.hostname)) {
+    } else if (getPlatformFromUrl().is_staging_deriv_crypto) {
         window.localStorage.removeItem('config.default_app_id');
         app_id = isBot() ? DERIV_CRYPTO_STAGING_DBOT_APP_ID : DERIV_CRYPTO_STAGING_APP_ID;
     } else if (/localhost/i.test(window.location.hostname)) {
@@ -84,7 +85,8 @@ export const getSocketURL = () => {
 };
 
 export const checkAndSetEndpointFromUrl = () => {
-    if (/^(staging-app\.derivcrypto\.com|staging-app\.deriv\.com|(.*)\.binary\.sx)$/i.test(location.hostname)) {
+    const { is_staging_deriv_app, is_staging_deriv_crypto, is_test_link } = getPlatformFromUrl();
+    if (is_staging_deriv_app || is_staging_deriv_crypto || is_test_link) {
         const url_params = new URLSearchParams(location.search.slice(1));
 
         if (url_params.has('qa_server') && url_params.has('app_id')) {

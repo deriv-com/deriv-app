@@ -60,13 +60,13 @@ export const urlFor = (
     const lang = language?.toLowerCase?.() ?? default_language;
     let domain = `https://${window.location.hostname}/`;
     if (legacy) {
-        if (/staging-app\.deriv\.com/.test(domain)) {
+        if (getPlatformFromUrl().is_staging_deriv_app) {
             domain = domain.replace(/staging-app\.deriv\.com/, `staging.binary.com/${lang || 'en'}`);
-        } else if (/staging-app\.derivcrypto\.com/.test(domain)) {
+        } else if (getPlatformFromUrl().is_staging_deriv_crypto) {
             domain = domain.replace(/staging-app\.derivcrypto\.com/, `staging.binary.com/${lang || 'en'}`);
-        } else if (/app\.deriv\.com/.test(domain)) {
+        } else if (getPlatformFromUrl().is_deriv_app) {
             domain = domain.replace(/app\.deriv\.com/, `binary.com/${lang || 'en'}`);
-        } else if (/app\.derivcrypto\.com/.test(domain)) {
+        } else if (getPlatformFromUrl().is_deriv_crypto) {
             domain = domain.replace(/app\.derivcrypto\.com/, `binary.com/${lang || 'en'}`);
         } else {
             domain = `https://binary.com/${lang || 'en'}/`;
@@ -157,3 +157,11 @@ export const getStaticUrl = (
 
     return `${host}${lang}/${normalizePath(path)}`;
 };
+
+export const getPlatformFromUrl = (domain = window.location.hostname) => ({
+    is_staging_deriv_crypto: /^staging-app\.deriv\.com$/i.test(domain),
+    is_staging_deriv_app: /^staging-app\.derivcrypto\.com$/i.test(domain),
+    is_deriv_crypto: /^app\.derivcrypto\.com$/i.test(domain),
+    is_deriv_app: /^app\.deriv\.com$/i.test(domain),
+    is_test_link: /^(.*)\.binary\.sx)$/i.test(domain),
+});

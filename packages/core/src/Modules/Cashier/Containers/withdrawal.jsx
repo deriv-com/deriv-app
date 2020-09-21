@@ -10,48 +10,55 @@ import WithdrawalLocked from '../Components/Error/withdrawal-locked.jsx';
 import CashierLocked from '../Components/Error/cashier-locked.jsx';
 import USDTSideNote from '../Components/usdt-side-note.jsx';
 
-class Withdrawal extends React.Component {
-    componentDidMount() {
-        this.props.setActiveTab(this.props.container);
-    }
+const Withdrawal = ({
+    balance,
+    container,
+    currency,
+    error,
+    iframe_url,
+    is_cashier_locked,
+    is_virtual,
+    is_withdrawal_locked,
+    setActiveTab,
+    setErrorMessage,
+    setSideNotes,
+    verification_code,
+}) => {
+    React.useEffect(() => {
+        setActiveTab(container);
+        return () => {
+            setErrorMessage('');
+        };
+    }, []);
 
-    componentDidUpdate(prev_props) {
-        if (
-            prev_props.verification_code !== this.props.verification_code ||
-            prev_props.iframe_url !== this.props.iframe_url
-        ) {
-            if (/^(UST|eUSDT)$/i.test(this.props.currency) && typeof this.props.setSideNotes === 'function') {
-                this.props.setSideNotes([<USDTSideNote key={0} />]);
+    React.useEffect(() => {
+        if (iframe_url || verification_code) {
+            if (/^(UST|eUSDT)$/i.test(currency) && typeof setSideNotes === 'function') {
+                setSideNotes([<USDTSideNote key={0} />]);
             }
         }
-    }
+    }, [iframe_url, verification_code]);
 
-    componentWillUnmount() {
-        this.props.setErrorMessage('');
+    if (verification_code || iframe_url) {
+        return <Withdraw />;
     }
-
-    render() {
-        if (this.props.verification_code || this.props.iframe_url) {
-            return <Withdraw />;
-        }
-        if (this.props.is_virtual) {
-            return <Virtual />;
-        }
-        if (!+this.props.balance) {
-            return <NoBalance />;
-        }
-        if (this.props.is_cashier_locked) {
-            return <CashierLocked />;
-        }
-        if (this.props.is_withdrawal_locked) {
-            return <WithdrawalLocked />;
-        }
-        if (this.props.error.message) {
-            return <Error error={this.props.error} container='withdraw' />;
-        }
-        return <SendEmail />;
+    if (is_virtual) {
+        return <Virtual />;
     }
-}
+    if (!+balance) {
+        return <NoBalance />;
+    }
+    if (is_cashier_locked) {
+        return <CashierLocked />;
+    }
+    if (is_withdrawal_locked) {
+        return <WithdrawalLocked />;
+    }
+    if (error.message) {
+        return <Error error={error} container='withdraw' />;
+    }
+    return <SendEmail />;
+};
 
 Withdrawal.propTypes = {
     balance: PropTypes.string,

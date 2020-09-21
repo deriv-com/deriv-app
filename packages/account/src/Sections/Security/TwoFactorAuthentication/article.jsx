@@ -1,6 +1,6 @@
 import React from 'react';
-import Article from 'Components/article';
 import { localize, Localize } from '@deriv/translations';
+import Article from 'Components/article';
 
 const TFAArticle = () => (
     <Article

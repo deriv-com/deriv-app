@@ -339,14 +339,11 @@ const MT5PersonalDetailsForm = ({
                                                 </React.Fragment>
                                             )}
                                         </Field>
-                                        {form_error && isMobile() && (
-                                            <p className='mt5-personal-details-form-error'>{form_error}</p>
-                                        )}
                                     </div>
                                 </ThemedScrollbars>
                             </Div100vhContainer>
                             <Modal.Footer is_bypassed={isMobile()}>
-                                {form_error && isDesktop() && <FormSubmitErrorMessage message={form_error} />}
+                                {form_error && <FormSubmitErrorMessage message={form_error} />}
                                 <FormSubmitButton
                                     cancel_label={localize('Previous')}
                                     is_disabled={isSubmitting || !isValid}

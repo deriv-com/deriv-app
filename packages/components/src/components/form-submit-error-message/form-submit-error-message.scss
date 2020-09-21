@@ -18,5 +18,7 @@
 
     @include mobile {
         padding: 0 1.6rem 1rem;
+        position: absolute;
+        bottom: 7rem;
     }
 }

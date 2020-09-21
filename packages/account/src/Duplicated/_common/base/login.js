@@ -5,9 +5,9 @@ const urlForCurrentDomain = require('@deriv/shared').urlForCurrentDomain;
 const website_name = require('@deriv/shared').website_name;
 const domain_app_ids = require('@deriv/shared').domain_app_ids;
 const getAppId = require('@deriv/shared').getAppId;
+const CookieStorage = require('../storage').CookieStorage;
 const isStorageSupported = require('../storage').isStorageSupported;
 const LocalStore = require('../storage').LocalStore;
-const CookieStorage = require('../storage').CookieStorage;
 
 const Login = (() => {
     const redirectToLogin = (is_logged_in) => {

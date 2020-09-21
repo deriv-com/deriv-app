@@ -6,9 +6,9 @@ const urlForCurrentDomain = require('@deriv/shared').urlForCurrentDomain;
 const { getLanguage } = require('@deriv/translations');
 const website_name = require('@deriv/shared').website_name;
 const Client = require('./client_base');
+const CookieStorage = require('../storage').CookieStorage;
 const isStorageSupported = require('../storage').isStorageSupported;
 const LocalStore = require('../storage').LocalStore;
-const CookieStorage = require('../storage').CookieStorage;
 
 const Login = (() => {
     const redirectToLogin = () => {

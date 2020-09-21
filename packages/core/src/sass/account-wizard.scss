@@ -108,8 +108,6 @@
     position: relative;
     width: 100%;
     @include desktop {
-        overflow: auto;
-
         .currency-list__items {
             &__is-fiat {
                 width: 100%;

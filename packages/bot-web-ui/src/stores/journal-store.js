@@ -5,6 +5,9 @@ import { message_types } from '@deriv/bot-skeleton';
 import { config } from '@deriv/bot-skeleton/src/constants/config';
 import { storeSetting, getSetting } from '../utils/settings';
 import { isCustomJournalMessage } from '../utils/journal-notifications';
+import { LocalStore } from '../../../core/src/_common/storage';
+
+const storage_key = 'journal_cache';
 
 export default class JournalStore {
     constructor(root_store) {
@@ -30,7 +33,9 @@ export default class JournalStore {
     ];
 
     @observable is_filter_dialog_visible = false;
-    @observable unfiltered_messages = [];
+    @observable unfiltered_messages = Array.isArray(LocalStore.getObject(storage_key))
+        ? LocalStore.getObject(storage_key)
+        : [];
     @observable journal_filters = getSetting('journal_filter') || this.filters.map(filter => filter.id);
 
     @action.bound
@@ -76,14 +81,20 @@ export default class JournalStore {
         const unique_id = Blockly.utils.genUid();
 
         this.unfiltered_messages.unshift({ date, time, message, message_type, className, unique_id, extra });
+        LocalStore.setObject(storage_key, this.unfiltered_messages);
     }
 
     @computed
     get filtered_messages() {
-        // filter messages based on filtered-checkbox
-        return this.unfiltered_messages.filter(
-            message =>
-                this.journal_filters.length && this.journal_filters.some(filter => message.message_type === filter)
+        return (
+            this.unfiltered_messages
+                .concat(LocalStore.getObject(storage_key))
+                // filter messages based on filtered-checkbox
+                .filter(
+                    message =>
+                        this.journal_filters.length &&
+                        this.journal_filters.some(filter => message.message_type === filter)
+                )
         );
     }
 
@@ -106,5 +117,6 @@ export default class JournalStore {
     @action.bound
     clear() {
         this.unfiltered_messages.clear();
+        LocalStore.setObject(storage_key, this.unfiltered_messages);
     }
 }

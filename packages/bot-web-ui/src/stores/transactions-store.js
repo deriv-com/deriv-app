@@ -2,13 +2,16 @@ import { action, observable } from 'mobx';
 import { formatDate } from '@deriv/shared';
 import { isEnded } from '@deriv/bot-skeleton';
 import { transaction_elements } from '../constants/transactions';
+import { LocalStore } from '../../../core/src/_common/storage';
+
+const storage_key = 'transaction_cache';
 
 export default class TransactionsStore {
     constructor(root_store) {
         this.root_store = root_store;
     }
 
-    @observable elements = [];
+    @observable elements = Array.isArray(LocalStore.getObject(storage_key)) ? LocalStore.getObject(storage_key) : [];
     @observable active_transaction_id = null;
 
     @action.bound
@@ -41,6 +44,8 @@ export default class TransactionsStore {
             transaction_ids: data.transaction_ids,
             underlying: data.underlying,
         };
+
+        this.elements.concat(LocalStore.getObject(storage_key));
 
         const same_contract_index = this.elements.findIndex(
             c =>
@@ -77,6 +82,7 @@ export default class TransactionsStore {
         }
 
         this.elements = this.elements.slice(); // force array update
+        LocalStore.setObject(storage_key, this.elements);
     }
 
     @action.bound
@@ -113,5 +119,6 @@ export default class TransactionsStore {
     @action.bound
     clear() {
         this.elements = this.elements.slice(0, 0); // force array update
+        LocalStore.setObject(storage_key, this.elements);
     }
 }

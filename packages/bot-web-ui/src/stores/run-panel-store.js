@@ -3,6 +3,9 @@ import { localize } from '@deriv/translations';
 import { error_types, unrecoverable_errors, observer, message_types } from '@deriv/bot-skeleton';
 import { contract_stages } from '../constants/contract-stage';
 import { switch_account_notification } from '../utils/bot-notifications';
+import { LocalStore } from '../../../core/src/_common/storage';
+
+const storage_key = 'statistics_cache';
 
 export default class RunPanelStore {
     constructor(root_store) {
@@ -13,14 +16,16 @@ export default class RunPanelStore {
 
     run_id = '';
 
-    @observable statistics = {
-        lost_contracts: 0,
-        number_of_runs: 0,
-        total_profit: 0,
-        total_payout: 0,
-        total_stake: 0,
-        won_contracts: 0,
-    };
+    @observable statistics = this.root_store.core.client.is_logged_in
+        ? LocalStore.getObject(storage_key)
+        : {
+              lost_contracts: 0,
+              number_of_runs: 0,
+              total_profit: 0,
+              total_payout: 0,
+              total_stake: 0,
+              won_contracts: 0,
+          };
 
     @observable active_index = 0;
     @observable contract_stage = contract_stages.NOT_RUNNING;
@@ -354,6 +359,7 @@ export default class RunPanelStore {
                 break;
             }
         }
+        LocalStore.setObject(storage_key, this.statistics);
     }
 
     @action.bound
@@ -367,6 +373,7 @@ export default class RunPanelStore {
             won_contracts: 0,
         };
         observer.emit('statistics.clear');
+        LocalStore.setObject(storage_key, this.statistics);
     }
 
     @action.bound

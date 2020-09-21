@@ -38,6 +38,7 @@ const StatisticsTile = props => (
             alignment={props.alignment}
             message={props.tooltip}
             zIndex={popover_zindex.SUMMARY_TOOLTIPS}
+            should_disable_pointer_events
         >
             <div className='run-panel__tile-title'>{props.title}</div>
             <div className={classNames('run-panel__tile-content', props.contentClassName)}>{props.content}</div>

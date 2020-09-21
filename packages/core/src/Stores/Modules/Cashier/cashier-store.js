@@ -179,6 +179,11 @@ export default class CashierStore extends BaseStore {
         return this.config.payment_agent_transfer.is_payment_agent;
     }
 
+    @computed
+    get is_p2p_enabled() {
+        return this.is_p2p_visible && !this.root_store.client.is_eu;
+    }
+
     @action.bound
     setAccountSwitchListener() {
         // cashier inits once and tries to stay active until switching account
@@ -222,18 +227,16 @@ export default class CashierStore extends BaseStore {
             // show p2p if:
             // 1. we have not already checked this before, and
             // 2. client is not virtual
-            // 3. client is not EU user.
             if (!this.is_p2p_visible && !this.root_store.client.is_virtual) {
                 const advertiser_info = await WS.authorized.p2pAdvertiserInfo();
                 const advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
-                if (advertiser_error === 'PermissionDenied') this.setIsP2pVisible(true);
+                if (advertiser_error === 'RestrictedCountry') {
+                    this.setIsP2pVisible(false);
+                } else {
+                    this.setIsP2pVisible(true);
+                }
 
                 this.is_p2p_advertiser = !advertiser_error;
-                this.setIsP2pVisible(true);
-                when(
-                    () => this.root_store.client.is_eu,
-                    () => this.setIsP2pVisible(false)
-                );
             }
         }
     }

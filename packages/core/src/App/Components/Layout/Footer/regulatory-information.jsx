@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Modal, Popover } from '@deriv/components';
+import { Icon, Modal, Popover, StaticUrl } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import MGALogo from 'Assets/SvgComponents/footer/mga.svg';
 
@@ -12,8 +12,8 @@ const MLTRegulatoryInformation = () => (
             <Localize
                 i18n_default_text='Synthetic indices in the EU and the UK are offered by Deriv (Europe) Limited, W Business Centre, Level 3, Triq Dun Karm, Birkirkara BKR 9033, Malta, licensed and regulated respectively by the Malta Gaming Authority in Malta (licence no. <0>MGA/B2C/102/2000</0>) and the UK Gambling Commission (account no. <1>39495</1>). For more information, please read our <2>Terms and conditions</2>.'
                 components={[
-                    <a
-                        href='https://deriv.com/regulatory/Deriv_(Europe)_Limited.pdf'
+                    <StaticUrl
+                        href='/regulatory/Deriv_(Europe)_Limited.pdf'
                         target='_blank'
                         rel='nofollow noreferrer'
                         key={0}
@@ -26,8 +26,8 @@ const MLTRegulatoryInformation = () => (
                         key={1}
                         className='footer-regulatory-information__link'
                     />,
-                    <a
-                        href='https://deriv.com/terms-and-conditions'
+                    <StaticUrl
+                        href='/terms-and-conditions'
                         target='_blank'
                         rel='nofollow noreferrer'
                         key={2}

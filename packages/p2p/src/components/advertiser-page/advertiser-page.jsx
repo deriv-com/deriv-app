@@ -88,13 +88,15 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
                 counterparty_type,
                 advertiser_id,
             }).then(response => {
-                if (!response.error) {
-                    setHasAdverts(!!response.length);
-                    setAdverts(response);
-                } else {
-                    setErrorMessage(response.error);
+                if (is_mounted) {
+                    if (!response.error) {
+                        setHasAdverts(!!response.length);
+                        setAdverts(response);
+                    } else {
+                        setErrorMessage(response.error);
+                    }
+                    resolve();
                 }
-                resolve();
             });
         });
     };
@@ -105,24 +107,28 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
                 p2p_advertiser_stats: 1,
                 id: advertiser_id,
             }).then(response => {
-                if (!response.error) {
-                    const { p2p_advertiser_stats } = response;
-                    setStats(p2p_advertiser_stats);
-                } else {
-                    setErrorMessage(response.error);
+                if (is_mounted) {
+                    if (!response.error) {
+                        const { p2p_advertiser_stats } = response;
+                        setStats(p2p_advertiser_stats);
+                    } else {
+                        setErrorMessage(response.error);
+                    }
+                    resolve();
+                    setIsLoading(false);
                 }
-                resolve();
-                setIsLoading(false);
             });
         });
     };
 
     const handleTabItemClick = idx => {
-        setActiveIndex(idx);
-        if (idx === 0) {
-            setCounterpartyType(buy_sell.BUY);
-        } else {
-            setCounterpartyType(buy_sell.SELL);
+        if (is_mounted) {
+            setActiveIndex(idx);
+            if (idx === 0) {
+                setCounterpartyType(buy_sell.BUY);
+            } else {
+                setCounterpartyType(buy_sell.SELL);
+            }
         }
     };
 

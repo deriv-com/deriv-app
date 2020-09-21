@@ -1,5 +1,5 @@
 import { action, autorun, computed, observable } from 'mobx';
-import { getPlatformHeader, isEmptyObject, LocalStore, unique } from '@deriv/shared';
+import { getPlatformHeader, isEmptyObject, LocalStore, unique, isTouchDevice } from '@deriv/shared';
 import { sortNotifications } from 'App/Components/Elements/NotificationMessage';
 import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
 import BaseStore from './base-store';
@@ -602,6 +602,7 @@ export default class UIStore extends BaseStore {
     @action.bound
     setCurrentFocus(value) {
         this.current_focus = value;
+        this.is_keyboard_active = this.current_focus !== null && this.is_mobile && isTouchDevice();
     }
 
     @action.bound

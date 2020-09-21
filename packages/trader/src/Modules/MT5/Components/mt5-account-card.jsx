@@ -11,11 +11,11 @@ const Example = ({ existing_data }) => {
             <Localize
                 i18n_default_text='<0>Account login no.</0><1>{{display_login}}</1>'
                 values={{
-                    display_login: existing_data.display_login,
+                    display_login: existing_data?.display_login,
                 }}
                 components={[<span key={0} />, <strong key={1} />]}
             />
-            <Mt5AccountCopy text={existing_data.display_login} />
+            <Mt5AccountCopy text={existing_data?.display_login} />
         </div>
     );
 };

@@ -51,6 +51,7 @@ const CancelDeal = ({
                         message={
                             <PopoverMessageCheckbox
                                 defaultChecked={is_do_not_show_selected}
+                                checkboxLabel={localize("Don't show this again")}
                                 message={localize(
                                     'Take profit and/or stop loss are not available while deal cancellation is active.'
                                 )}

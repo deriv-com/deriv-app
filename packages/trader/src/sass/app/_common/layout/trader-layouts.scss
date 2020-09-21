@@ -134,10 +134,10 @@ $FLOATING_HEADER_HEIGHT: 41px;
                     padding-top: 0;
 
                     &.contract-drawer--is-expanded {
-                        transform: translateY(calc(-100% + 222));
+                        transform: translateY(calc(-100% + 242px));
                     }
                     & .dc-contract-card {
-                        min-height: 144px;
+                        min-height: 164px;
                     }
                 }
                 & .dc-contract-card {

@@ -65,6 +65,7 @@ export default class ClientStore extends BaseStore {
 
     @observable upgradeable_landing_companies = [];
     @observable mt5_login_list = [];
+    @observable mt5_login_list_error = null;
     @observable statement = [];
     @observable obj_total_balance = {
         amount_real: undefined,
@@ -1662,6 +1663,7 @@ export default class ClientStore extends BaseStore {
     resetMt5ListPopulatedState() {
         this.is_mt5_account_list_updated = false;
         this.is_populating_mt5_account_list = true;
+        this.mt5_login_list_error = null;
     }
 
     @action.bound
@@ -1676,6 +1678,7 @@ export default class ClientStore extends BaseStore {
     responseMt5LoginList(response) {
         this.is_populating_mt5_account_list = false;
         this.is_mt5_account_list_updated = true;
+        this.mt5_login_list_error = null;
         /** we need to update mt5_login_list on mount of account switcher
          *  to get the new MT5 balances (balance does not stream for MT5 accounts due to API restriction)
          *  but to avoid spamming this call since the rate limit is strict
@@ -1693,6 +1696,8 @@ export default class ClientStore extends BaseStore {
                     group: getMT5AccountType(account.group),
                     display_login: account.login.replace(/^(MT[DR]?)/i, ''),
                 }));
+        } else {
+            this.mt5_login_list_error = response.error;
         }
     }
 

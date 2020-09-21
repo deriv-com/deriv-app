@@ -918,13 +918,11 @@ $MIN_HEIGHT_FLOATING: calc(
                 max-height: calc(100% - 72px);
             }
         }
-
         &__scrollbars {
             height: 100%;
             width: 100%;
             flex: 1;
         }
-
         &-title {
             @include mobile {
                 padding-bottom: 0.8rem;

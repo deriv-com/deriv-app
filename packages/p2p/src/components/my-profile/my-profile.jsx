@@ -30,31 +30,29 @@ const MyProfile = () => {
     React.useEffect(() => {
         is_mounted.current = true;
 
+        getAdvertiserAccountStatus();
+        getAdvertiserStats();
+        getAdvertiserInfo();
+
         return () => (is_mounted.current = false);
     }, []);
-
-    React.useEffect(() => {
-        if (is_mounted.current) {
-            getAdvertiserAccountStatus();
-            getAdvertiserStats();
-            getAdvertiserInfo();
-        }
-    }, [is_mounted.current]);
 
     const getAdvertiserAccountStatus = () => {
         return new Promise(resolve => {
             requestWS({
                 get_account_status: 1,
             }).then(response => {
-                if (!response.error) {
-                    const { get_account_status } = response;
-                    const { authentication } = get_account_status;
-                    setHasPoa(authentication.document && authentication.document.status === 'verified');
-                    setHasPoi(authentication.identity && authentication.identity.status === 'verified');
-                } else {
-                    setErrorMessage(response.error);
+                if (is_mounted.current) {
+                    if (!response.error) {
+                        const { get_account_status } = response;
+                        const { authentication } = get_account_status;
+                        setHasPoa(authentication.document && authentication.document.status === 'verified');
+                        setHasPoi(authentication.identity && authentication.identity.status === 'verified');
+                    } else {
+                        setErrorMessage(response.error);
+                    }
+                    resolve();
                 }
-                resolve();
             });
         });
     };
@@ -64,18 +62,20 @@ const MyProfile = () => {
             requestWS({
                 p2p_advertiser_info: 1,
             }).then(response => {
-                if (!response.error) {
-                    const { p2p_advertiser_info } = response;
-                    setAdvertiserInfo(p2p_advertiser_info);
-                    setNickname(p2p_advertiser_info.name);
-                    setContactInfo(p2p_advertiser_info.contact_info);
-                    setDefaultAdvertDescription(p2p_advertiser_info.default_advert_description);
-                    setPaymentInfo(p2p_advertiser_info.payment_info);
-                } else {
-                    setErrorMessage(response.error);
+                if (is_mounted.current) {
+                    if (!response.error) {
+                        const { p2p_advertiser_info } = response;
+                        setAdvertiserInfo(p2p_advertiser_info);
+                        setNickname(p2p_advertiser_info.name);
+                        setContactInfo(p2p_advertiser_info.contact_info);
+                        setDefaultAdvertDescription(p2p_advertiser_info.default_advert_description);
+                        setPaymentInfo(p2p_advertiser_info.payment_info);
+                    } else {
+                        setErrorMessage(response.error);
+                    }
+                    resolve();
+                    setIsLoading(false);
                 }
-                resolve();
-                setIsLoading(false);
             });
         });
     };
@@ -86,13 +86,15 @@ const MyProfile = () => {
                 p2p_advertiser_stats: 1,
                 id,
             }).then(response => {
-                if (!response.error) {
-                    const { p2p_advertiser_stats } = response;
-                    setStats(p2p_advertiser_stats);
-                } else {
-                    setErrorMessage(response.error);
+                if (is_mounted.current) {
+                    if (!response.error) {
+                        const { p2p_advertiser_stats } = response;
+                        setStats(p2p_advertiser_stats);
+                    } else {
+                        setErrorMessage(response.error);
+                    }
+                    resolve();
                 }
-                resolve();
             });
         });
     };
@@ -106,16 +108,18 @@ const MyProfile = () => {
                 payment_info: values.payment_info,
                 default_advert_description: values.default_advert_description,
             }).then(response => {
-                if (!response.error) {
-                    const { p2p_advertiser_update } = response;
-                    setContactInfo(p2p_advertiser_update.contact_info);
-                    setDefaultAdvertDescription(p2p_advertiser_update.default_advert_description);
-                    setPaymentInfo(p2p_advertiser_update.payment_info);
-                } else {
-                    setFormError(response.error);
+                if (is_mounted.current) {
+                    if (!response.error) {
+                        const { p2p_advertiser_update } = response;
+                        setContactInfo(p2p_advertiser_update.contact_info);
+                        setDefaultAdvertDescription(p2p_advertiser_update.default_advert_description);
+                        setPaymentInfo(p2p_advertiser_update.payment_info);
+                    } else {
+                        setFormError(response.error);
+                    }
+                    resolve();
+                    setIsLoading(false);
                 }
-                resolve();
-                setIsLoading(false);
             });
         });
     };

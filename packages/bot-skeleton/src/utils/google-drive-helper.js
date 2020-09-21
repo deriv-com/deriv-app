@@ -1,6 +1,5 @@
-import { localize } from '@deriv/translations';
+import { localize, getLanguage } from '@deriv/translations';
 import { trackAndEmitError } from './error';
-import { getLanguage } from './lang/lang';
 import { observer as globalObserver } from './observer';
 import { config } from '../constants/config';
 import { loadWorkspace, loadBlocks } from '../scratch/dbot';
@@ -110,12 +109,12 @@ class GoogleDrive {
     getPickerLanguage() {
         const language = getLanguage();
 
-        if (language === 'zhTw') {
+        if (language === 'ZH_TW') {
             return 'zh-TW';
-        } else if (language === 'zhCn') {
+        } else if (language === 'ZH-CN') {
             return 'zh-CN';
         }
-        return language;
+        return language.toLowerCase();
     }
 
     createFilePicker() {

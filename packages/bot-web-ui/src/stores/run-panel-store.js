@@ -3,7 +3,8 @@ import { localize } from '@deriv/translations';
 import { error_types, unrecoverable_errors, observer, message_types } from '@deriv/bot-skeleton';
 import { contract_stages } from '../constants/contract-stage';
 import { switch_account_notification } from '../utils/bot-notifications';
-import { LocalStore } from '../../../core/src/_common/storage';
+
+const LocalStore = require('../../../core/src/_common/storage').LocalStore;
 
 const storage_key = 'statistics_cache';
 

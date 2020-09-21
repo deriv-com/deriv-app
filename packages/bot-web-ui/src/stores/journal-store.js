@@ -5,7 +5,8 @@ import { message_types } from '@deriv/bot-skeleton';
 import { config } from '@deriv/bot-skeleton/src/constants/config';
 import { storeSetting, getSetting } from '../utils/settings';
 import { isCustomJournalMessage } from '../utils/journal-notifications';
-import { LocalStore } from '../../../core/src/_common/storage';
+
+const LocalStore = require('../../../core/src/_common/storage').LocalStore;
 
 const storage_key = 'journal_cache';
 

@@ -2,7 +2,8 @@ import { action, observable } from 'mobx';
 import { formatDate } from '@deriv/shared';
 import { isEnded } from '@deriv/bot-skeleton';
 import { transaction_elements } from '../constants/transactions';
-import { LocalStore } from '../../../core/src/_common/storage';
+
+const LocalStore = require('../../../core/src/_common/storage').LocalStore;
 
 const storage_key = 'transaction_cache';
 

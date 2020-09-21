@@ -82,7 +82,7 @@
             transform-origin: top left;
 
             &-text {
-                font-size: 1.4em;
+                font-size: 1.4rem;
                 padding: 0 4px;
                 color: var(--color-grey);
                 background: var(--fill-normal);
@@ -276,7 +276,7 @@
     }
     &--has-placeholder {
         .dc-dropdown__display {
-            height: 4em;
+            height: 4rem;
 
             .dc-dropdown__display-placeholder-text {
                 color: var(--text-less-prominent);

@@ -45,7 +45,7 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
                 },
                 {
                     header: {
-                        active_title: localize('Complete your personal details'),
+                        active_title: localize('Complete your proof of identity'),
                         title: localize('Proof of identity'),
                     },
                     body: MT5POI,
@@ -61,7 +61,7 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
                 },
                 {
                     header: {
-                        active_title: localize('Complete your personal details'),
+                        active_title: localize('Complete your proof of address'),
                         title: localize('Proof of address'),
                     },
                     body: MT5POA,

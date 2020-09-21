@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper, DataList, DataTable, Money } from '@deriv/components';
-import { urlFor, isDesktop, website_name } from '@deriv/shared';
+import { urlFor, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
 import CompositeCalendar from 'App/Components/Form/CompositeCalendar/composite-calendar.jsx';
@@ -127,22 +127,6 @@ class Statement extends React.Component {
         );
     }
 
-    getReportsMetaProps(is_mx_mlt) {
-        const reports_meta_props = {};
-
-        if (is_mx_mlt) {
-            Object.assign(reports_meta_props, { optional_component: this.getAccountStatistics() });
-        } else if (isDesktop()) {
-            Object.assign(reports_meta_props, {
-                i18n_heading: localize('Statement'),
-                i18n_message: localize(
-                    'View all transactions on your account, including trades, deposits, and withdrawals.'
-                ),
-            });
-        }
-        return reports_meta_props;
-    }
-
     render() {
         const {
             component_icon,
@@ -185,7 +169,7 @@ class Statement extends React.Component {
                 <ReportsMeta
                     className={is_mx_mlt ? undefined : 'reports__meta--statement'}
                     filter_component={filter_component}
-                    optional_component={is_mx_mlt && !is_switching && this.getAccountStatistics()}
+                    optional_component={!is_switching && is_mx_mlt && this.getAccountStatistics()}
                 />
                 {is_switching ? (
                     <PlaceholderComponent is_loading={true} />

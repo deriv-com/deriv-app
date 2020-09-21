@@ -8,6 +8,7 @@ import { isDesktop, isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 class MT5POI extends React.PureComponent {
+    // TODO: Refactor into functional component with hooks
     state = {
         poi_state: 'none',
     };

@@ -1,10 +1,9 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import { removeBranchName, routes, isEmptyObject } from '@deriv/shared';
+import { removeBranchName, routes, isEmptyObject, default_title } from '@deriv/shared';
 
 import { redirectToLogin, redirectToSignUp } from '_common/base/login';
 import LoginPrompt from 'App/Components/Elements/login-prompt.jsx';
-import { default_title } from 'App/Constants/app-config';
 import { connect } from 'Stores/connect';
 
 const RouteWithSubRoutes = route => {

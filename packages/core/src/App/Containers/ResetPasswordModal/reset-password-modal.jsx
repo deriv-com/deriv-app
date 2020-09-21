@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Formik, Form } from 'formik';
 import { Button, Dialog, PasswordInput, PasswordMeter } from '@deriv/components';
+import { validPassword, validLength, getErrorMessages } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { validLength, validPassword, getPreBuildDVRs } from 'Utils/Validator/declarative-validation-rules';
 import { redirectToLogin } from '_common/base/login';
 import { WS } from 'Services/index';
 
@@ -62,7 +62,7 @@ class ResetPassword extends React.Component {
                 max_number: 25,
             });
         } else if (!validPassword(values.password)) {
-            errors.password = getPreBuildDVRs().password.message;
+            errors.password = getErrorMessages().password();
         }
 
         return errors;

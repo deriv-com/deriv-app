@@ -1,30 +1,30 @@
-import moment from 'moment';
 import Cookies from 'js-cookie';
-import { action, computed, observable, runInAction, when, reaction, toJS } from 'mobx';
+import { action, computed, observable, reaction, runInAction, toJS, when } from 'mobx';
+import moment from 'moment';
 import {
-    setCurrencies,
-    isEmptyObject,
+    getMT5AccountType,
     getPropertyValue,
-    removeEmptyPropertiesFromObject,
-    isDesktopOs,
     getUrlSmartTrader,
-    toMoment,
     isBot,
+    isDesktopOs,
+    isEmptyObject,
+    LocalStore,
+    removeEmptyPropertiesFromObject,
+    setCurrencies,
+    State,
+    toMoment,
 } from '@deriv/shared';
-
+import { localize } from '@deriv/translations';
 import { requestLogout, WS } from 'Services';
+import BinarySocketGeneral from 'Services/socket-general';
 import ClientBase from '_common/base/client_base';
 import { redirectToLogin } from '_common/base/login';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
-import { localize } from '@deriv/translations';
-
-import { LocalStore, State } from '_common/storage';
 import { isEuCountry } from '_common/utility';
-import BinarySocketGeneral from 'Services/socket-general';
-import { handleClientNotifications } from './Helpers/client-notifications';
 import BaseStore from './base-store';
-import { getClientAccountType, getMT5AccountType } from './Helpers/client';
+import { getClientAccountType } from './Helpers/client';
+import { handleClientNotifications } from './Helpers/client-notifications';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
 
 const storage_key = 'client.accounts';
@@ -827,7 +827,7 @@ export default class ClientStore extends BaseStore {
                 await this.init();
                 resolve(response);
             } else {
-                reject(response.error.message);
+                reject(response.error);
             }
         });
     }
@@ -849,7 +849,7 @@ export default class ClientStore extends BaseStore {
                 this.accountRealReaction(response);
                 resolve(response);
             } else {
-                reject(response.error.message);
+                reject(response.error);
             }
         });
     }

@@ -299,15 +299,8 @@
             font-size: 1.6rem !important;
         }
         &-body {
-            height: 45rem;
-
-            @media (max-height: 800px) {
-                height: 30rem;
-            }
-
-            @media (max-height: 600px) {
-                height: 20rem;
-            }
+            height: calc(100vh - 40.6rem);
+            min-height: 10rem;
 
             &--mobile {
                 padding: 0.6rem 0 1.6rem !important;

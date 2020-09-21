@@ -2,7 +2,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Popover, DesktopWrapper, Loading, MobileWrapper, ThemedScrollbars } from '@deriv/components';
-import { formatMoney, isMobile } from '@deriv/shared';
+import { formatMoney, isMobile, isDesktop } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import LoadErrorMessage from 'Components/load-error-message';
 import FormBody from 'Components/form-body';
@@ -111,7 +111,7 @@ class AccountLimits extends React.Component {
                         <MobileWrapper>
                             <Article />
                         </MobileWrapper>
-                        <FormBody scroll_offset={isMobile() && '90px'}>
+                        <FormBody scroll_offset={isMobile() ? '0px' : null}>
                             <div className='account-limit-container__content'>
                                 <table className='account-management-table'>
                                     <thead>

@@ -638,6 +638,11 @@ $MIN_HEIGHT_FLOATING: calc(
                 justify-content: flex-start;
                 height: 100%;
             }
+            @include mobile {
+                flex-direction: column;
+                overflow-y: auto;
+                overflow-x: hidden;
+            }
         }
         &__title {
             @include typeface(--title-left-bold-prominent, none);
@@ -914,8 +919,13 @@ $MIN_HEIGHT_FLOATING: calc(
 
             @include mobile {
                 flex-direction: column;
-                overflow-y: auto;
-                max-height: calc(100% - 72px);
+
+                .account__scrollbars_container--grid-layout {
+                    overflow: unset;
+                }
+                &:last-child {
+                    padding-bottom: 1.6rem;
+                }
             }
         }
         &__scrollbars {

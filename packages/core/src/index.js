@@ -13,4 +13,4 @@ if (
 }
 
 // eslint-disable-next-line
-import App from 'App/app.jsx';
+import Platform from './platform.jsx';

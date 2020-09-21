@@ -11,6 +11,7 @@ import {
     isMobile,
     initFormErrorMessages,
     setSharedMT5Text,
+    PlatformContext,
 } from '@deriv/shared';
 import { initializeTranslations, getLanguage } from '@deriv/translations';
 import Client from '_common/base/client_base';
@@ -34,11 +35,14 @@ import { MT5_TEXT } from '../Constants/mt5-text';
 // eslint-disable-next-line import/no-unresolved
 import 'Sass/app.scss';
 
-const App = ({ root_store }) => {
+const App = () => {
     const l = window.location;
     const base = l.pathname.split('/')[1];
     const has_base = /^\/(br_)/.test(l.pathname);
     const url_params = new URLSearchParams(l.search);
+    const platform_context = React.useContext(PlatformContext);
+    const root_store = initStore(AppNotificationMessages, platform_context);
+
     React.useEffect(() => {
         checkAndSetEndpointFromUrl();
         initializeTranslations();
@@ -123,14 +127,4 @@ const App = ({ root_store }) => {
     );
 };
 
-App.propTypes = {
-    root_store: PropTypes.object,
-};
-
 export default App;
-
-const root_store = initStore(AppNotificationMessages);
-
-const wrapper = document.getElementById('deriv_app');
-// eslint-disable-next-line no-unused-expressions
-wrapper ? ReactDOM.render(<App root_store={root_store} />, wrapper) : false;

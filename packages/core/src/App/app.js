@@ -25,10 +25,10 @@ const setStorageEvents = root_store => {
     });
 };
 
-const initStore = notification_messages => {
+const initStore = (notification_messages, platform_context) => {
     Client.init();
 
-    const root_store = new RootStore();
+    const root_store = new RootStore(platform_context);
 
     setStorageEvents(root_store);
 

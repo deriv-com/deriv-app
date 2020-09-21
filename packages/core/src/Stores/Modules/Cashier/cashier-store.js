@@ -1053,6 +1053,12 @@ export default class CashierStore extends BaseStore {
                     // check if selected to is not allowed account
                     obj_values.error = getSelectedError(obj_values.value);
                 }
+                if (
+                    this.root_store.platform.is_deriv_crypto &&
+                    obj_values.currency === this.config.account_transfer.selected_from.currency
+                ) {
+                    this.setSelectedFrom(obj_values);
+                }
                 // set the first available account as the default transfer to account
                 this.setSelectedTo(obj_values);
             }

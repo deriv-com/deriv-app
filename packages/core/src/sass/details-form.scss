@@ -86,6 +86,12 @@
             overflow-y: scroll;
         }
     }
+    &__loader {
+        .barspinner {
+            margin-top: 0.4rem;
+            margin-bottom: 3.2rem;
+        }
+    }
     &__tax {
         position: relative;
 

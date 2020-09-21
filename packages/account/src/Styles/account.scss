@@ -1025,10 +1025,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 .action {
                     text-transform: capitalize;
                 }
-                .browser {
-                    padding-right: 1.5rem;
-                }
-                .ip-value {
+                .browser, .ip-value {
                     padding-right: 1.5rem;
                 }
             }

@@ -50,16 +50,16 @@ class DBot {
                 });
 
                 this.workspace.cached_xml = { main: main_xml, toolbox: toolbox_xml };
-                Blockly.derivWorkspace = this.workspace;
+                this.workspace.save_workspace_interval = setInterval(() => {
+                    // Periodically save the workspace.
+                    saveWorkspaceToRecent(Blockly.Xml.workspaceToDom(this.workspace), save_types.UNSAVED);
+                }, 10000);
 
                 this.workspace.addChangeListener(this.valueInputLimitationsListener.bind(this));
                 this.workspace.addChangeListener(event => updateDisabledBlocks(this.workspace, event));
                 this.workspace.addChangeListener(event => this.workspace.dispatchBlockEventEffects(event));
 
-                setInterval(() => {
-                    // Periodically save the workspace.
-                    saveWorkspaceToRecent(Blockly.Xml.workspaceToDom(this.workspace), save_types.UNSAVED);
-                }, 10000);
+                Blockly.derivWorkspace = this.workspace;
 
                 this.addBeforeRunFunction(this.unselectBlocks.bind(this));
                 this.addBeforeRunFunction(this.disableStrayBlocks.bind(this));

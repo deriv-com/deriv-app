@@ -1,7 +1,7 @@
 import React from 'react';
 import QRCode from 'qrcode.react';
 import { Timeline, DesktopWrapper, MobileWrapper, ThemedScrollbars, Clipboard, Icon, Loading } from '@deriv/components';
-import { getPropertyValue } from '@deriv/shared';
+import { getPropertyValue, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
@@ -106,7 +106,12 @@ class TwoFactorAuthentication extends React.Component {
                     </ThemedScrollbars>
                 ) : (
                     <div className='two-factor__wrapper'>
-                        <ThemedScrollbars autoHide className='two-factor__scrollbars' hideHorizontal={true}>
+                        <ThemedScrollbars
+                            is_bypassed={isMobile()}
+                            autoHide
+                            className='two-factor__scrollbars'
+                            hideHorizontal={true}
+                        >
                             <MobileWrapper>
                                 <Article />
                             </MobileWrapper>

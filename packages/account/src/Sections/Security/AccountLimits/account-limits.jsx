@@ -107,7 +107,7 @@ class AccountLimits extends React.Component {
         return (
             <section className='account-limit-container'>
                 <div className='account-limit-container__wrapper'>
-                    <ThemedScrollbars className='account-limit-container__scrollbars'>
+                    <ThemedScrollbars is_bypassed={isMobile()} className='account-limit-container__scrollbars'>
                         <MobileWrapper>
                             <Article />
                         </MobileWrapper>
@@ -222,21 +222,19 @@ class AccountLimits extends React.Component {
                                         </tbody>
                                     )}
                                 </table>
-                                {!is_fully_authenticated ? (
-                                    <TextContainer>
-                                        <Text size='small' color='grey'>
-                                            {localize('Stated limits are subject to change without prior notice.')}
-                                        </Text>
-                                    </TextContainer>
-                                ) : (
-                                    <TextContainer>
+                                <TextContainer>
+                                    {is_fully_authenticated ? (
                                         <Text>
                                             {localize(
                                                 'Your account is fully authenticated and your withdrawal limits have been lifted.'
                                             )}
                                         </Text>
-                                    </TextContainer>
-                                )}
+                                    ) : (
+                                        <Text size='small' color='grey'>
+                                            {localize('Stated limits are subject to change without prior notice.')}
+                                        </Text>
+                                    )}
+                                </TextContainer>
                             </div>
                         </FormBody>
                     </ThemedScrollbars>

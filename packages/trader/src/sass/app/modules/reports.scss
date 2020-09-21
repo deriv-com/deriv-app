@@ -278,7 +278,7 @@ $side-padding: 1.2em;
         }
         &-title {
             text-align: left;
-            color: $color-grey-1;
+            color: var(--text-less-prominent);
             font-size: 1.4rem;
             margin-bottom: 9px;
 

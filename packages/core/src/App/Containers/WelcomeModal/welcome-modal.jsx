@@ -79,7 +79,7 @@ const WelcomeModal = ({ toggleWelcomeModal, history }) => {
 
     return (
         <Modal
-            width='904px'
+            width='760px'
             className='welcome'
             is_open={true}
             toggleModal={() => {}}

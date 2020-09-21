@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik, Form } from 'formik';
 import { Button, Dropdown, Icon, Input, Money, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
@@ -400,6 +401,23 @@ const AccountTransferForm = ({
             </React.Fragment>
         </div>
     );
+};
+
+AccountTransferForm.propTypes = {
+    account_limits: PropTypes.object,
+    accounts_list: PropTypes.array,
+    error: PropTypes.object,
+    minimum_fee: PropTypes.string,
+    onChangeTransferFrom: PropTypes.func,
+    onChangeTransferTo: PropTypes.func,
+    onMount: PropTypes.func,
+    requestTransferBetweenAccounts: PropTypes.func,
+    selected_from: PropTypes.object,
+    selected_to: PropTypes.object,
+    setErrorMessage: PropTypes.func,
+    setSideNote: PropTypes.func,
+    transfer_fee: PropTypes.number,
+    transfer_limit: PropTypes.object,
 };
 
 export default connect(({ client, modules }) => ({

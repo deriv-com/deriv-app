@@ -8,6 +8,7 @@ const website_name = require('@deriv/shared').website_name;
 const Client = require('./client_base');
 const isStorageSupported = require('../storage').isStorageSupported;
 const LocalStore = require('../storage').LocalStore;
+const CookieStorage = require('../storage').CookieStorage;
 
 const Login = (() => {
     const redirectToLogin = () => {
@@ -24,8 +25,10 @@ const Login = (() => {
     const loginUrl = () => {
         const server_url = localStorage.getItem('config.server_url');
         const language = getLanguage();
-        const signup_device = LocalStore.get('signup_device') || (isMobile() ? 'mobile' : 'desktop');
-        const date_first_contact = LocalStore.get('date_first_contact');
+        const sign_up_device_cookie = new CookieStorage('signup_device');
+        const signup_device = sign_up_device_cookie.get('signup_device') || (isMobile() ? 'mobile' : 'desktop');
+        const date_first_contact_cookie = new CookieStorage('date_first_contact');
+        const date_first_contact = date_first_contact_cookie.get('date_first_contact');
         const marketing_queries = `&signup_device=${signup_device}${
             date_first_contact ? `&date_first_contact=${date_first_contact}` : ''
         }`;

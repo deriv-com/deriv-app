@@ -19,7 +19,7 @@ import { redirectToLogin } from '_common/base/login';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
 import { localize } from '@deriv/translations';
-import { LocalStore, State } from '_common/storage';
+import { CookieStorage, LocalStore, State } from '_common/storage';
 import { isEuCountry } from '_common/utility';
 import BinarySocketGeneral from 'Services/socket-general';
 import { handleClientNotifications } from './Helpers/client-notifications';
@@ -1523,6 +1523,20 @@ export default class ClientStore extends BaseStore {
     setDeviceData() {
         // Set client URL params on init
         const url_params = new URLSearchParams(window.location.search);
+        const date_first_contact_cookie = new CookieStorage('date_first_contact');
+        const signup_device_cookie = new CookieStorage('signup_device');
+
+        if (!date_first_contact_cookie.get('date_first_contact')) {
+            date_first_contact_cookie.set(
+                'date_first_contact',
+                this.root_store.coomon.server_time.format('YYYY-MM-DD')
+            );
+        }
+
+        if (!signup_device_cookie.get('signup_device')) {
+            signup_device_cookie.set('signup_device', isDesktopOs() ? 'desktop' : 'mobile');
+        }
+
         const device_data = {
             ...(url_params.get('affiliate_token') && { affiliate_token: url_params.get('affiliate_token') }),
             ...(url_params.get('gclid_url') && { gclid_url: url_params.get('gclid_url') }),
@@ -1530,11 +1544,11 @@ export default class ClientStore extends BaseStore {
             // date_first_contact should be preserved to the first client contact
             ...(!this.device_data.date_first_contact && {
                 date_first_contact:
-                    url_params.get('date_first_contact') || this.root_store.common.server_time.format('YYYY-MM-DD'),
+                    url_params.get('date_first_contact') || date_first_contact_cookie.get('date_first_contact'),
             }),
 
             // signup device can be set anytime even if there is no url parameter by using isDesktopOs function
-            signup_device: url_params.get('signup_device') || isDesktopOs() ? 'desktop' : 'mobile',
+            signup_device: url_params.get('signup_device') || signup_device_cookie.get('signup_device'),
 
             // url params can be stored only if utm_source is available
             ...(url_params.get('utm_source') && {

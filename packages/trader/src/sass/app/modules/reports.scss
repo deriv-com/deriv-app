@@ -10,7 +10,7 @@ $side-padding: 1.2em;
         width: 100%;
         display: flex;
         justify-content: space-between;
-        padding: 0 2.4rem 1.6rem;
+        padding: 0 2.4rem 1.6rem 0;
 
         @include mobile {
             padding: 0 1.6rem 1.6rem;
@@ -228,45 +228,73 @@ $side-padding: 1.2em;
     }
     &__account-statistics {
         @include desktop {
-            width: 43.2rem;
+            width: 52rem;
         }
         @include mobile {
-            margin: 0.8rem 0;
+            margin: 0.8rem 0 1.6rem;
+            order: 1;
+            height: 4rem;
         }
-        height: 6.4rem;
+        height: 4.8rem;
         display: flex;
         flex-direction: row;
         text-align: left;
 
-        :last-child {
-            border-right: unset;
+        &-item {
+            flex: 1;
+            border-right: 1px solid $color-grey-2;
+            display: flex;
+            max-width: 19rem;
+
+            &:last-child {
+                border-right: unset;
+            }
+            &:first-child {
+                .statement__account-statistics--is-rectangle {
+                    padding-left: 0;
+                }
+            }
+            &:not(:first-child) {
+                justify-content: center;
+            }
         }
-        :first-child {
-            padding-left: 0;
+        &-total-withdrawal {
+            @include desktop {
+                min-width: 19rem;
+            }
+            @include mobile {
+                min-width: 12.3rem;
+            }
         }
         &--is-rectangle {
-            text-align: left;
             height: 100%;
-            border-right: 1px solid $color-grey-2;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding: 8px 0 0 16px;
-            align-items: flex-start;
-            max-width: 14.4rem;
-            width: 100%;
+
+            @include desktop {
+                padding: 0.4rem 1.6rem;
+            }
         }
         &-title {
             text-align: left;
             color: $color-grey-1;
-            font-size: 14px;
+            font-size: 1.4rem;
             margin-bottom: 9px;
+
+            @include mobile {
+                font-size: 1rem;
+            }
         }
         &-amount {
             text-align: left;
             font-weight: bold;
-            font-size: 16px;
+            font-size: 1.6rem;
             color: var(--text-prominent);
+
+            @include mobile {
+                font-size: 1.4rem;
+            }
         }
     }
 }

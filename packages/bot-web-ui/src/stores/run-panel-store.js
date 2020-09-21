@@ -4,7 +4,7 @@ import { error_types, unrecoverable_errors, observer, message_types } from '@der
 import { contract_stages } from '../constants/contract-stage';
 import { switch_account_notification } from '../utils/bot-notifications';
 
-const storage_key = 'statistics_cache';
+const statistics_storage_key = 'statistics_cache';
 
 export default class RunPanelStore {
     constructor(root_store) {
@@ -16,7 +16,7 @@ export default class RunPanelStore {
     run_id = '';
 
     @observable statistics = this.root_store.core.client.is_logged_in
-        ? localStorage.getObject(storage_key)
+        ? JSON.parse(localStorage.getItem(statistics_storage_key))
         : {
               lost_contracts: 0,
               number_of_runs: 0,
@@ -358,7 +358,7 @@ export default class RunPanelStore {
                 break;
             }
         }
-        localStorage.setObject(storage_key, this.statistics);
+        localStorage.setItem(statistics_storage_key, JSON.stringify(this.statistics));
     }
 
     @action.bound
@@ -372,7 +372,7 @@ export default class RunPanelStore {
             won_contracts: 0,
         };
         observer.emit('statistics.clear');
-        localStorage.setObject(storage_key, this.statistics);
+        localStorage.setItem(statistics_storage_key, JSON.stringify(this.statistics));
     }
 
     @action.bound

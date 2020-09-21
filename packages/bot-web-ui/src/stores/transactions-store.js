@@ -3,15 +3,15 @@ import { formatDate } from '@deriv/shared';
 import { isEnded } from '@deriv/bot-skeleton';
 import { transaction_elements } from '../constants/transactions';
 
-const storage_key = 'transaction_cache';
+const transaction_storage_key = 'transaction_cache';
 
 export default class TransactionsStore {
     constructor(root_store) {
         this.root_store = root_store;
     }
 
-    @observable elements = Array.isArray(localStorage.getObject(storage_key))
-        ? localStorage.getObject(storage_key)
+    @observable elements = Array.isArray(JSON.parse(localStorage.getItem(transaction_storage_key)))
+        ? JSON.parse(localStorage.getItem(transaction_storage_key))
         : [];
     @observable active_transaction_id = null;
 
@@ -45,8 +45,7 @@ export default class TransactionsStore {
             transaction_ids: data.transaction_ids,
             underlying: data.underlying,
         };
-
-        this.elements.concat(localStorage.getObject(storage_key));
+        this.elements.concat(JSON.parse(localStorage.getItem(transaction_storage_key)));
 
         const same_contract_index = this.elements.findIndex(
             c =>
@@ -83,7 +82,7 @@ export default class TransactionsStore {
         }
 
         this.elements = this.elements.slice(); // force array update
-        localStorage.setObject(storage_key, this.elements);
+        localStorage.setItem(transaction_storage_key, JSON.stringify(this.elements));
     }
 
     @action.bound
@@ -120,6 +119,6 @@ export default class TransactionsStore {
     @action.bound
     clear() {
         this.elements = this.elements.slice(0, 0); // force array update
-        localStorage.setObject(storage_key, this.elements);
+        localStorage.setItem(transaction_storage_key, JSON.stringify(this.elements));
     }
 }

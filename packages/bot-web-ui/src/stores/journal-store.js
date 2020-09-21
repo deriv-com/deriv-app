@@ -6,7 +6,7 @@ import { config } from '@deriv/bot-skeleton/src/constants/config';
 import { storeSetting, getSetting } from '../utils/settings';
 import { isCustomJournalMessage } from '../utils/journal-notifications';
 
-const storage_key = 'journal_cache';
+const journal_storage_key = 'journal_cache';
 
 export default class JournalStore {
     constructor(root_store) {
@@ -32,8 +32,8 @@ export default class JournalStore {
     ];
 
     @observable is_filter_dialog_visible = false;
-    @observable unfiltered_messages = Array.isArray(localStorage.getObject(storage_key))
-        ? localStorage.getObject(storage_key)
+    @observable unfiltered_messages = Array.isArray(JSON.parse(localStorage.getItem(journal_storage_key)))
+        ? JSON.parse(localStorage.getItem(journal_storage_key))
         : [];
     @observable journal_filters = getSetting('journal_filter') || this.filters.map(filter => filter.id);
 
@@ -80,14 +80,14 @@ export default class JournalStore {
         const unique_id = Blockly.utils.genUid();
 
         this.unfiltered_messages.unshift({ date, time, message, message_type, className, unique_id, extra });
-        localStorage.setObject(storage_key, this.unfiltered_messages);
+        localStorage.setItem(journal_storage_key, JSON.stringify(this.unfiltered_messages));
     }
 
     @computed
     get filtered_messages() {
         return (
             this.unfiltered_messages
-                .concat(localStorage.getObject(storage_key))
+                .concat(JSON.parse(localStorage.getItem(journal_storage_key)))
                 // filter messages based on filtered-checkbox
                 .filter(
                     message =>
@@ -116,6 +116,6 @@ export default class JournalStore {
     @action.bound
     clear() {
         this.unfiltered_messages.clear();
-        localStorage.setObject(storage_key, this.unfiltered_messages);
+        localStorage.setItem(journal_storage_key, JSON.stringify(this.unfiltered_messages));
     }
 }

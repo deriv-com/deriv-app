@@ -1,6 +1,4 @@
-import PropTypes from 'prop-types';
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 // Initialize i18n by importing it here
 // eslint-disable-next-line no-unused-vars

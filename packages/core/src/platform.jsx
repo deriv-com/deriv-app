@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import PlatformContainer from './App/Containers/PlatformContainer/PlatformContainer';
+import PlatformContainer from './App/Containers/PlatformContainer';
 import App from './App/app.jsx';
 
 const Platform = () => {

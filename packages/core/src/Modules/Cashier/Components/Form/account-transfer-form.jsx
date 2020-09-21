@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik, Form } from 'formik';
 import { Button, Dropdown, Icon, Input, Money, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';

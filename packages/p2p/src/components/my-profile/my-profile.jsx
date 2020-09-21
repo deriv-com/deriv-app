@@ -51,8 +51,8 @@ const MyProfile = () => {
                     } else {
                         setErrorMessage(response.error);
                     }
-                    resolve();
                 }
+                resolve();
             });
         });
     };
@@ -73,9 +73,9 @@ const MyProfile = () => {
                     } else {
                         setErrorMessage(response.error);
                     }
-                    resolve();
-                    setIsLoading(false);
                 }
+                resolve();
+                setIsLoading(false);
             });
         });
     };
@@ -93,8 +93,8 @@ const MyProfile = () => {
                     } else {
                         setErrorMessage(response.error);
                     }
-                    resolve();
                 }
+                resolve();
             });
         });
     };

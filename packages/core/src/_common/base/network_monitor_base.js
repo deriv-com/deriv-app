@@ -26,7 +26,7 @@ const NetworkMonitorBase = (() => {
             }
         };
 
-        ws_config = Object.assign({ wsEvent, isOnline }, socket_general_functions);
+        ws_config = { wsEvent, isOnline, ...socket_general_functions };
 
         if ('onLine' in navigator) {
             window.addEventListener('online', () => {

@@ -89,7 +89,7 @@ const ClientBase = (() => {
 
     const getAccountOfType = (type, only_enabled) => {
         const id = getAllLoginids().find(loginid => isAccountOfType(type, loginid, only_enabled));
-        return id ? Object.assign({ loginid: id }, get(null, id)) : {};
+        return id ? { loginid: id, ...get(null, id) } : {};
     };
 
     const hasAccountType = (type, only_enabled) => !isEmptyObject(getAccountOfType(type, only_enabled));

@@ -96,9 +96,9 @@
 
 .currency-hr {
     height: 2px;
-    margin: 1.6rem 0 0;
-    width: 100%;
-    border-top: 1px solid var(--general-section-2);
+    margin: 1.6rem auto;
+    width: 90%;
+    border-top: 1px solid var(--general-section-1);
 
     @include mobile {
         border-top-width: 2px;

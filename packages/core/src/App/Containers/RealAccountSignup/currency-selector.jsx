@@ -216,6 +216,7 @@ class CurrencySelector extends React.Component {
                                                 />
                                             ))}
                                         </RadioButtonGroup>
+                                        <Hr />
                                         {this.state.crypto_currencies.length > 0 && (
                                             <React.Fragment>
                                                 <RadioButtonGroup

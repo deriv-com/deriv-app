@@ -1,5 +1,5 @@
 import React from 'react';
-import { action, computed, observable, toJS, reaction, when } from 'mobx';
+import { action, computed, observable, toJS, reaction } from 'mobx';
 import {
     routes,
     isCryptocurrency,

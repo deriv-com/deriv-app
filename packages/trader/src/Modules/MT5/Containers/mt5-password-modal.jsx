@@ -200,6 +200,7 @@ const MT5PasswordModal = ({
             </DesktopWrapper>
             <MobileWrapper>
                 <MobileDialog
+                    has_full_height
                     portal_element_id='modal_root'
                     visible={should_show_password}
                     onClose={closeModal}

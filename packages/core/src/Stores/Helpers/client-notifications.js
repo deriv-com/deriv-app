@@ -426,7 +426,7 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
     if (mt5_withdrawal_locked) addNotificationMessage(clientNotifications().mt5_withdrawal_locked);
     if (document_needs_action) addNotificationMessage(clientNotifications().document_needs_action);
     if (unwelcome && !should_show_max_turnover) addNotificationMessage(clientNotifications().unwelcome);
-    if (is_mf_retail) addNotificationMessage(clientNotifications().mf_retail);
+    else if (is_mf_retail) addNotificationMessage(clientNotifications().mf_retail);
 
     if (has_risk_assessment) addNotificationMessage(clientNotifications().risk);
     if (shouldCompleteTax(account_status)) addNotificationMessage(clientNotifications().tax);

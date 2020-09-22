@@ -73,9 +73,9 @@ const MyProfile = () => {
                     } else {
                         setErrorMessage(response.error);
                     }
+                    setIsLoading(false);
                 }
                 resolve();
-                setIsLoading(false);
             });
         });
     };

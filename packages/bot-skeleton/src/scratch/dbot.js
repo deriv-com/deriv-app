@@ -148,6 +148,7 @@ class DBot {
             var BinaryBotPrivateAfterPurchase;
             var BinaryBotPrivateLastTickTime;
             var BinaryBotPrivateTickAnalysisList = [];
+            var BinaryBotPrivateHasCalledTradeOptions = false;
             function BinaryBotPrivateRun(f, arg) {
                 if (f) return f(arg);
                 return false;
@@ -166,13 +167,17 @@ class DBot {
                 for (var BinaryBotPrivateI = 0; BinaryBotPrivateI < BinaryBotPrivateTickAnalysisList.length; BinaryBotPrivateI++) {
                     BinaryBotPrivateRun(BinaryBotPrivateTickAnalysisList[BinaryBotPrivateI]);
                 }
-            }   
+            }
             var BinaryBotPrivateLimitations = ${JSON.stringify(limitations)};
             ${Blockly.JavaScript.workspaceToCode(this.workspace)}
             BinaryBotPrivateRun(BinaryBotPrivateInit);
             while (true) {
                 BinaryBotPrivateTickAnalysis();
                 BinaryBotPrivateRun(BinaryBotPrivateStart);
+                if (!BinaryBotPrivateHasCalledTradeOptions) {
+                    sleep(1);
+                    continue;
+                }
                 while (watch('before')) {
                     BinaryBotPrivateTickAnalysis();
                     BinaryBotPrivateRun(BinaryBotPrivateBeforePurchase);

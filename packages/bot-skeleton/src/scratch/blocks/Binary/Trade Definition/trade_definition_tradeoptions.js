@@ -454,6 +454,7 @@ Blockly.JavaScript.trade_definition_tradeoptions = block => {
             secondBarrierOffset: ${second_barrier_offset_value || 'undefined'},
             basis              : '${block.type === 'trade_definition_tradeoptions' ? 'stake' : 'payout'}',
         });
+        BinaryBotPrivateHasCalledTradeOptions = true;
     `;
 
     return code;

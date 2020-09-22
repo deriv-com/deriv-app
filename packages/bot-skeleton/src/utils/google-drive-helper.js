@@ -2,9 +2,8 @@ import { localize, getLanguage } from '@deriv/translations';
 import { trackAndEmitError } from './error';
 import { observer as globalObserver } from './observer';
 import { config } from '../constants/config';
-import { loadWorkspace, loadBlocks } from '../scratch/dbot';
+import { loadWorkspace, loadBlocks } from '../scratch/utils';
 
-/* eslint-disable */
 class GoogleDrive {
     constructor() {
         this.botFolderName = `Binary Bot - ${localize('Strategies')}`;
@@ -16,7 +15,7 @@ class GoogleDrive {
         this.getScript('https://apis.google.com/js/api.js', () => this.init());
     }
 
-    getScript(source, callback) {
+    getScript = (source, callback) => {
         let script = document.createElement('script');
         const prior = document.getElementsByTagName('script')[0];
 
@@ -33,7 +32,7 @@ class GoogleDrive {
 
         script.src = source;
         prior.parentNode.insertBefore(script, prior);
-    }
+    };
 
     init() {
         gapi.load('client:auth2', () => {

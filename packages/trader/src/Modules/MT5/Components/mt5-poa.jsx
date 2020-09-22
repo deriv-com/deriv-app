@@ -411,11 +411,17 @@ class MT5POA extends React.Component {
                                         </ThemedScrollbars>
                                     )}
                                     <Modal.Footer is_bypassed={isMobile()}>
-                                        {is_form_visible && (
+                                        {(this.state.poa_status === PoaStatusCodes.verified || is_form_visible) && (
                                             <FormSubmitButton
                                                 has_cancel
                                                 cancel_label={localize('Previous')}
-                                                is_disabled={!!Object.keys(errors).length || isSubmitting}
+                                                is_disabled={
+                                                    !(
+                                                        this.state.poa_status === PoaStatusCodes.verified ||
+                                                        !!Object.keys(errors).length === 0 ||
+                                                        isSubmitting
+                                                    )
+                                                }
                                                 label={localize('Next')}
                                                 is_absolute={isMobile()}
                                                 is_loading={isSubmitting}

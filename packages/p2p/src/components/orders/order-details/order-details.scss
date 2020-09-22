@@ -155,30 +155,22 @@
 
                             .sendbird-user-message__text-balloon,
                             .sendbird-user-message__text-balloon:hover {
-                                background-color: var(--general-section-1);
-                                border-bottom-left-radius: $BORDER_RADIUS;
+                                background-color: var(--general-active) !important;
+                                border-bottom-left-radius: $BORDER_RADIUS !important;
 
                                 .sendbird-label--color-onbackground-1 {
-                                    color: var(--text-prominent);
+                                    color: var(--text-general) !important;
                                 }
                             }
                         }
                         &--outgoing {
                             .sendbird-user-message__text-balloon,
                             .sendbird-user-message__text-balloon:hover {
-                                background-color: var(--brand-secondary);
-                                border-bottom-right-radius: 4px;
+                                background-color: var(--brand-secondary) !important;
+                                border-bottom-right-radius: $BORDER_RADIUS !important;
 
                                 .sendbird-label--color-onbackground-1 {
-                                    color: var(--text-colored-background);
-                                }
-                            }
-
-                            .sendbird-user-message__text-balloon {
-                                background-color: var(--brand-secondary);
-
-                                .sendbird-label {
-                                    color: var(--text-colored-background);
+                                    color: var(--text-colored-background) !important;
                                 }
                             }
                         }

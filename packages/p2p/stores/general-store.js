@@ -219,7 +219,13 @@ export default class GeneralStore {
                     // Refresh chat token ±1 hour before it expires (BE will refresh the token
                     // when we request within 2 hours of the token expiring)
                     const expiry_moment = epochToMoment(service_token.sendbird.expiry_time);
-                    const delay_ms = expiry_moment.diff(this.props.server_time);
+                    const delay_ms = expiry_moment.diff(
+                        this.props.server_time
+                            .get()
+                            .clone()
+                            .subtract(1, 'hour')
+                    );
+
                     this.timeouts.push(setTimeout(getSendbirdServiceToken, delay_ms));
                 });
             };

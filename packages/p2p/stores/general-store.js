@@ -156,7 +156,7 @@ export default class GeneralStore {
 
     @action.bound
     onUnmount() {
-        this.timeouts.forEach(timeout => clearInterval(timeout));
+        this.timeouts.forEach(timeout => clearTimeout(timeout));
         Object.keys(this.ws_subscriptions).forEach(key => this.ws_subscriptions[key].unsubscribe());
     }
 

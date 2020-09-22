@@ -35,7 +35,7 @@ export default class GeneralStore {
     };
     props = {};
     ws_subscriptions = {};
-    timeouts = [];
+    service_token_timeout;
 
     get client() {
         return this.props?.client || {};
@@ -58,7 +58,7 @@ export default class GeneralStore {
                         this.setIsAdvertiser(!!p2p_advertiser_create.is_approved);
                         this.setNickname(p2p_advertiser_create.name);
                         this.setNicknameError(undefined);
-                        this.setChatInfo(p2p_advertiser_create.chat_user_id, p2p_advertiser_create.chat_token);
+                        this.setChatInfo(response);
                         this.toggleNicknamePopup();
                     }
                     resolve();
@@ -156,7 +156,7 @@ export default class GeneralStore {
 
     @action.bound
     onUnmount() {
-        this.timeouts.forEach(timeout => clearTimeout(timeout));
+        clearTimeout(this.service_token_timeout);
         Object.keys(this.ws_subscriptions).forEach(key => this.ws_subscriptions[key].unsubscribe());
     }
 
@@ -196,42 +196,49 @@ export default class GeneralStore {
     }
 
     @action.bound
-    setChatInfo(p2p_advertiser_info_response) {
-        if (p2p_advertiser_info_response.error) {
+    setChatInfo(response) {
+        if (this.service_token_timeout) return;
+        if (response.error) {
             this.ws_subscriptions.advertiser_subscription?.unsubscribe();
-        } else {
-            const { p2p_advertiser_info } = p2p_advertiser_info_response;
-
-            const getSendbirdServiceToken = () => {
-                requestWS({ service: 'sendbird', service_token: 1 }).then(response => {
-                    const { service_token } = response;
-
-                    runInAction(() => {
-                        this.chat_info = {
-                            app_id: getSocketURL().endsWith('binaryws.com')
-                                ? '1465991C-5D64-4C88-8BD9-B0D7A6455E69'
-                                : '4E259BA5-C383-4624-89A6-8365E06D9D39',
-                            user_id: p2p_advertiser_info.chat_user_id,
-                            token: service_token.sendbird.token,
-                        };
-                    });
-
-                    // Refresh chat token ±1 hour before it expires (BE will refresh the token
-                    // when we request within 2 hours of the token expiring)
-                    const expiry_moment = epochToMoment(service_token.sendbird.expiry_time);
-                    const delay_ms = expiry_moment.diff(
-                        this.props.server_time
-                            .get()
-                            .clone()
-                            .subtract(1, 'hour')
-                    );
-
-                    this.timeouts.push(setTimeout(getSendbirdServiceToken, delay_ms));
-                });
-            };
-
-            getSendbirdServiceToken();
+            return;
         }
+
+        // Response could be both from p2p_advertiser_create or p2p_advertiser_info.
+        const advertiser_info = response.p2p_advertiser_create || response.p2p_advertiser_info;
+
+        const getSendbirdServiceToken = () => {
+            requestWS({ service: 'sendbird', service_token: 1 }).then(service_token_response => {
+                if (service_token_response.error) {
+                    return;
+                }
+
+                const { service_token } = service_token_response;
+
+                runInAction(() => {
+                    this.chat_info = {
+                        app_id: getSocketURL().endsWith('binaryws.com')
+                            ? '1465991C-5D64-4C88-8BD9-B0D7A6455E69'
+                            : '4E259BA5-C383-4624-89A6-8365E06D9D39',
+                        user_id: advertiser_info.chat_user_id,
+                        token: service_token.sendbird.token,
+                    };
+                });
+
+                // Refresh chat token ±1 hour before it expires (BE will refresh the token
+                // when we request within 2 hours of the token expiring)
+                const expiry_moment = epochToMoment(service_token.sendbird.expiry_time);
+                const delay_ms = expiry_moment.diff(
+                    this.props.server_time
+                        .get()
+                        .clone()
+                        .subtract(1, 'hour')
+                );
+
+                this.service_token_timeout = setTimeout(() => getSendbirdServiceToken(), delay_ms);
+            });
+        };
+
+        getSendbirdServiceToken();
     }
 
     @action.bound

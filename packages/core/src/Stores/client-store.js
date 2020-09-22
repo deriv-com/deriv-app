@@ -1529,7 +1529,7 @@ export default class ClientStore extends BaseStore {
         if (!date_first_contact_cookie.get('date_first_contact')) {
             date_first_contact_cookie.set(
                 'date_first_contact',
-                this.root_store.coomon.server_time.format('YYYY-MM-DD')
+                this.root_store.common.server_time.format('YYYY-MM-DD')
             );
         }
 

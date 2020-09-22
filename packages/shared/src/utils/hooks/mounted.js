@@ -6,7 +6,9 @@ export const useIsMounted = () => {
     React.useEffect(() => {
         is_mounted.current = true;
 
-        return () => (is_mounted.current = false);
+        return () => {
+            is_mounted.current = false;
+        };
     }, []);
-    return is_mounted;
+    return () => is_mounted.current;
 };

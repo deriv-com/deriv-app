@@ -15,7 +15,7 @@ import { buy_sell } from '../../constants/buy-sell';
 
 const BuySellTableContent = ({ is_buy, setSelectedAd, showAdvertiserPage }) => {
     const { list_item_limit } = React.useContext(Dp2pContext);
-    const is_mounted = useIsMounted();
+    const isMounted = useIsMounted();
     const item_offset = React.useRef(0);
     const [has_more_items_to_load, setHasMoreItemsToLoad] = React.useState(false);
     const [api_error_message, setApiErrorMessage] = React.useState('');
@@ -23,14 +23,14 @@ const BuySellTableContent = ({ is_buy, setSelectedAd, showAdvertiserPage }) => {
     const [items, setItems] = React.useState([]);
 
     React.useEffect(() => {
-        if (is_mounted) {
+        if (isMounted()) {
             loadMoreItems(item_offset.current, list_item_limit);
         }
     }, []);
 
     React.useEffect(() => {
         setIsLoading(true);
-        if (is_mounted) {
+        if (isMounted()) {
             loadMoreItems(item_offset.current, list_item_limit);
         }
     }, [is_buy]);
@@ -43,7 +43,7 @@ const BuySellTableContent = ({ is_buy, setSelectedAd, showAdvertiserPage }) => {
                 offset: start_idx,
                 limit: list_item_limit,
             }).then(response => {
-                if (is_mounted) {
+                if (isMounted()) {
                     if (!response.error) {
                         setHasMoreItemsToLoad(response.length >= list_item_limit);
                         setItems(items.concat(response));

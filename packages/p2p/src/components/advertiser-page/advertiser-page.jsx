@@ -64,14 +64,14 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
     ];
     const item_height = 56;
     const [is_loading, setIsLoading] = React.useState(true);
-    const is_mounted = useIsMounted();
+    const isMounted = useIsMounted();
     const short_name = getShortNickname(advertiser_name);
     const [show_ad_popup, setShowAdPopup] = React.useState(false);
     const [stats, setStats] = React.useState({});
     const { buy_orders_count, completion_rate, release_time_avg, sell_orders_count, total_orders_count } = stats;
 
     React.useEffect(() => {
-        if (is_mounted) {
+        if (isMounted()) {
             getAdvertiserAdverts();
             getAdvertiserStats();
         }
@@ -88,15 +88,15 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
                 counterparty_type,
                 advertiser_id,
             }).then(response => {
-                if (is_mounted) {
+                if (isMounted()) {
                     if (!response.error) {
                         setHasAdverts(!!response.length);
                         setAdverts(response);
                     } else {
                         setErrorMessage(response.error);
                     }
-                    resolve();
                 }
+                resolve();
             });
         });
     };
@@ -107,22 +107,22 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
                 p2p_advertiser_stats: 1,
                 id: advertiser_id,
             }).then(response => {
-                if (is_mounted) {
+                if (isMounted()) {
                     if (!response.error) {
                         const { p2p_advertiser_stats } = response;
                         setStats(p2p_advertiser_stats);
                     } else {
                         setErrorMessage(response.error);
                     }
-                    resolve();
-                    setIsLoading(false);
                 }
+                resolve();
+                setIsLoading(false);
             });
         });
     };
 
     const handleTabItemClick = idx => {
-        if (is_mounted) {
+        if (isMounted()) {
             setActiveIndex(idx);
             if (idx === 0) {
                 setCounterpartyType(buy_sell.BUY);

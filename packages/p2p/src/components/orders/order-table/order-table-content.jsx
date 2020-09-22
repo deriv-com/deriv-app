@@ -24,13 +24,13 @@ const OrderTableContent = ({ showDetails, is_active }) => {
         setOrders,
         setOrderOffset,
     } = React.useContext(Dp2pContext);
-    const is_mounted = useIsMounted();
+    const isMounted = useIsMounted();
     const [has_more_items_to_load, setHasMoreItemsToLoad] = React.useState(false);
     const [api_error_message, setApiErrorMessage] = React.useState('');
     const [is_loading, setIsLoading] = React.useState(true);
 
     React.useEffect(() => {
-        if (is_mounted) {
+        if (isMounted()) {
             setIsLoading(true);
             loadMoreOrders();
         }
@@ -44,7 +44,7 @@ const OrderTableContent = ({ showDetails, is_active }) => {
                 limit: list_item_limit,
                 active: is_active_tab ? 1 : 0,
             }).then(response => {
-                if (is_mounted) {
+                if (isMounted()) {
                     if (!response.error) {
                         const { list } = response.p2p_order_list;
                         setHasMoreItemsToLoad(list.length >= list_item_limit);

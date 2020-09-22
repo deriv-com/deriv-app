@@ -116,7 +116,7 @@ const App = observer(props => {
                 setOrderOffset: order_offset => {
                     general_store.setOrderOffset(order_offset);
                 },
-                setPoiStatus: poi => this.setState({ poi_status: poi }),
+                setPoiStatus: general_store.setPoiStatus,
                 toggleNicknamePopup: general_store.toggleNicknamePopup,
                 updateP2pNotifications: general_store.updateP2pNotifications,
             }}

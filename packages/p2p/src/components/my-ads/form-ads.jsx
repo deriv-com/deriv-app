@@ -17,10 +17,10 @@ const FormAds = ({ handleShowForm }) => {
     const { currency, local_currency_config } = React.useContext(Dp2pContext);
     const [error_message, setErrorMessage] = React.useState('');
     const [is_loading, setIsLoading] = React.useState(true);
-    const is_mounted = useIsMounted();
+    const isMounted = useIsMounted();
 
     React.useEffect(() => {
-        if (is_mounted) {
+        if (isMounted()) {
             setIsLoading(false);
         }
     }, []);
@@ -47,7 +47,7 @@ const FormAds = ({ handleShowForm }) => {
             create_advert.description = values.default_advert_description;
         }
         requestWS(create_advert).then(response => {
-            if (is_mounted) {
+            if (isMounted()) {
                 // If we get an error we should let the user submit the form again else we just go back to the list of ads
                 if (response.error) {
                     setErrorMessage(response.error.message);

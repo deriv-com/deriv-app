@@ -130,7 +130,7 @@
         @supports (-webkit-appearance: none) {
             /* postcss-bem-linter: ignore */
             & > div:nth-child(1) & > div:nth-child(1) {
-                overflow-y: hidden !important;
+                overflow-y: auto;
                 overflow-x: hidden !important;
 
                 /* postcss-bem-linter: ignore */

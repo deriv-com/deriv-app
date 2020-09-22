@@ -50,8 +50,8 @@ const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
                         setApiErrorMessage(response.error.message);
                     }
                     setIsLoading(false);
-                    resolve();
                 }
+                resolve();
             });
         });
     };

@@ -1,6 +1,6 @@
 import { observable, action, runInAction } from 'mobx';
 import OrderInfo, { orderToggleIndex } from '../src/components/orders/order-info.js';
-import { epochToMoment, isEmptyObject, isProduction } from '@deriv/shared';
+import { epochToMoment, getSocketURL, isEmptyObject } from '@deriv/shared';
 import { init as WebsocketInit, getModifiedP2POrderList, requestWS, subscribeWS } from '../src/utils/websocket.js';
 
 export default class GeneralStore {
@@ -35,6 +35,7 @@ export default class GeneralStore {
     };
     props = {};
     ws_subscriptions = {};
+    timeouts = [];
 
     get client() {
         return this.props?.client || {};
@@ -154,6 +155,12 @@ export default class GeneralStore {
     }
 
     @action.bound
+    onUnmount() {
+        this.timeouts.forEach(timeout => clearInterval(timeout));
+        Object.keys(this.ws_subscriptions).forEach(key => this.ws_subscriptions[key].unsubscribe());
+    }
+
+    @action.bound
     onNicknamePopupClose() {
         this.setShowPopup(false);
     }
@@ -201,7 +208,7 @@ export default class GeneralStore {
 
                     runInAction(() => {
                         this.chat_info = {
-                            app_id: isProduction()
+                            app_id: getSocketURL().endsWith('binaryws.com')
                                 ? '1465991C-5D64-4C88-8BD9-B0D7A6455E69'
                                 : '4E259BA5-C383-4624-89A6-8365E06D9D39',
                             user_id: p2p_advertiser_info.chat_user_id,
@@ -213,7 +220,7 @@ export default class GeneralStore {
                     // when we request within 2 hours of the token expiring)
                     const expiry_moment = epochToMoment(service_token.sendbird.expiry_time);
                     const delay_ms = expiry_moment.diff(this.props.server_time);
-                    setTimeout(getSendbirdServiceToken, delay_ms);
+                    this.timeouts.push(setTimeout(getSendbirdServiceToken, delay_ms));
                 });
             };
 

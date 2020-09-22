@@ -99,7 +99,7 @@ export default Engine =>
         }
 
         getSellPrice() {
-            const { bid_price: bidPrice, buy_price: buyPrice, currency } = this.data.get('contract');
+            const { bid_price: bidPrice, buy_price: buyPrice, currency } = this.data.contract;
             return getRoundedNumber(Number(bidPrice) - Number(buyPrice), currency);
         }
     };

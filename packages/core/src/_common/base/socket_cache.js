@@ -2,7 +2,7 @@ const moment = require('moment');
 const isEmptyObject = require('@deriv/shared').isEmptyObject;
 const getPropertyValue = require('@deriv/shared').getPropertyValue;
 const getStaticHash = require('_common/utility.js').getStaticHash;
-const LocalStore = require('../storage').LocalStore;
+const LocalStore = require('@deriv/shared').LocalStore;
 
 /*
  * Caches WS responses to reduce delay time and number of requests

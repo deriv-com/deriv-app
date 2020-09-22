@@ -174,7 +174,7 @@ const App = observer(props => {
                                 <div label={localize('My ads')}>
                                     <MyAds navigate={general_store.redirectTo} params={general_store.parameters} />
                                 </div>
-                                {general_store.nickname && (
+                                {general_store.is_advertiser && (
                                     <div label={localize('My profile')}>
                                         <MyProfile
                                             navigate={general_store.redirectTo}

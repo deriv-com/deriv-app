@@ -211,139 +211,138 @@ const MyProfile = () => {
                         )}
                     </div>
                 </div>
-                {has_poi && (
-                    <React.Fragment>
-                        <Table>
-                            <Table.Row className='my-profile__stats'>
-                                <div className='my-profile__stats-cell-separator' />
-                                <Table.Cell className='my-profile__stats-cell'>
-                                    <div className='my-profile__stats-cell-header'>{localize('Total orders')}</div>
-                                    <div className='my-profile__stats-cell-info'>{total_orders_count || '-'}</div>
-                                </Table.Cell>
-                                <div className='my-profile__stats-cell-separator' />
-                                <Table.Cell className='my-profile__stats-cell'>
-                                    <div className='my-profile__stats-cell-header'>
-                                        {localize('Buy ({{currency}})', { currency })}
-                                    </div>
-                                    <div className='my-profile__stats-cell-info'>{buy_orders_count || '-'}</div>
-                                </Table.Cell>
-                                <div className='my-profile__stats-cell-separator' />
-                                <Table.Cell className='my-profile__stats-cell'>
-                                    <div className='my-profile__stats-cell-header'>
-                                        {localize('Sell ({{currency}})', { currency })}
-                                    </div>
-                                    <div className='my-profile__stats-cell-info'>{sell_orders_count || '-'}</div>
-                                </Table.Cell>
-                                <div className='my-profile__stats-cell-separator' />
-                                <Table.Cell className='my-profile__stats-cell'>
-                                    <div className='my-profile__stats-cell-header'>
-                                        {localize('Buy / Sell limit ({{currency}})', { currency })}
-                                    </div>
-                                    <div className='my-profile__stats-cell-info'>
-                                        {daily_buy_limit && daily_sell_limit
-                                            ? `${Math.floor(daily_buy_limit)} / ${Math.floor(daily_sell_limit)}`
-                                            : '-'}
-                                    </div>
-                                </Table.Cell>
-                                <div className='my-profile__stats-cell-separator' />
-                                <Popover
-                                    classNameBubble='my-profile__popover-text'
-                                    alignment='top'
-                                    message={localize(
-                                        "These fields are based on the last 24 hours' activity: Buy, Sell, and Limit."
-                                    )}
-                                >
-                                    <Icon className='my-profile__popover-icon' icon='IcInfoOutline' size={16} />
-                                </Popover>
-                            </Table.Row>
-                        </Table>
-                        <div className='my-profile__separator'>
-                            <div className='my-profile__separator-text'>{localize('Ad template')}</div>
-                            <div className='my-profile__separator-horizontal_line' />
-                        </div>
-                        <Formik
-                            enableReinitialize={true}
-                            initialValues={{
-                                contact_info,
-                                default_advert_description,
-                                payment_info,
-                            }}
-                            onSubmit={handleSubmit}
-                            validate={validateForm}
-                        >
-                            {({ dirty, errors, isSubmitting, isValid, resetForm }) => {
-                                return (
-                                    <Form noValidate>
-                                        <React.Fragment>
-                                            <Field name='payment_info'>
-                                                {({ field }) => (
-                                                    <Input
-                                                        {...field}
-                                                        type='textarea'
-                                                        label={localize('Payment details')}
-                                                        error={errors.payment_info}
-                                                        hint={localize('e.g. your bank/e-wallet account details')}
-                                                        className='my-profile__form-textarea'
-                                                        has_character_counter
-                                                        max_characters={300}
-                                                    />
-                                                )}
-                                            </Field>
-                                            <Field name='contact_info'>
-                                                {({ field }) => (
-                                                    <Input
-                                                        {...field}
-                                                        type='textarea'
-                                                        label={localize('Contact details')}
-                                                        error={errors.contact_info}
-                                                        className='my-profile__form-textarea'
-                                                        has_character_counter
-                                                        max_characters={300}
-                                                    />
-                                                )}
-                                            </Field>
-                                            <Field name='default_advert_description'>
-                                                {({ field }) => (
-                                                    <Input
-                                                        {...field}
-                                                        type='textarea'
-                                                        label={localize('Instructions')}
-                                                        error={errors.default_advert_description}
-                                                        hint={localize('This information will be visible to everyone.')}
-                                                        className='my-profile__form-textarea'
-                                                        has_character_counter
-                                                        max_characters={300}
-                                                    />
-                                                )}
-                                            </Field>
 
-                                            <FooterActions className='my-profile__footer' has_border>
-                                                <FormError message={form_error} />
-                                                <Button
-                                                    className='my-profile__footer-button'
-                                                    is_disabled={!dirty || isSubmitting}
-                                                    secondary
-                                                    large
-                                                    onClick={resetForm}
-                                                >
-                                                    {localize('Cancel')}
-                                                </Button>
-                                                <Button
-                                                    className='my-profile__footer-button'
-                                                    is_disabled={!dirty || isSubmitting || !isValid}
-                                                    primary
-                                                    large
-                                                >
-                                                    {localize('Save')}
-                                                </Button>
-                                            </FooterActions>
-                                        </React.Fragment>
-                                    </Form>
-                                );
-                            }}
-                        </Formik>
-                    </React.Fragment>
-                )}
+                <React.Fragment>
+                    <Table>
+                        <Table.Row className='my-profile__stats'>
+                            <div className='my-profile__stats-cell-separator' />
+                            <Table.Cell className='my-profile__stats-cell'>
+                                <div className='my-profile__stats-cell-header'>{localize('Total orders')}</div>
+                                <div className='my-profile__stats-cell-info'>{total_orders_count || '-'}</div>
+                            </Table.Cell>
+                            <div className='my-profile__stats-cell-separator' />
+                            <Table.Cell className='my-profile__stats-cell'>
+                                <div className='my-profile__stats-cell-header'>
+                                    {localize('Buy ({{currency}})', { currency })}
+                                </div>
+                                <div className='my-profile__stats-cell-info'>{buy_orders_count || '-'}</div>
+                            </Table.Cell>
+                            <div className='my-profile__stats-cell-separator' />
+                            <Table.Cell className='my-profile__stats-cell'>
+                                <div className='my-profile__stats-cell-header'>
+                                    {localize('Sell ({{currency}})', { currency })}
+                                </div>
+                                <div className='my-profile__stats-cell-info'>{sell_orders_count || '-'}</div>
+                            </Table.Cell>
+                            <div className='my-profile__stats-cell-separator' />
+                            <Table.Cell className='my-profile__stats-cell'>
+                                <div className='my-profile__stats-cell-header'>
+                                    {localize('Buy / Sell limit ({{currency}})', { currency })}
+                                </div>
+                                <div className='my-profile__stats-cell-info'>
+                                    {daily_buy_limit && daily_sell_limit
+                                        ? `${Math.floor(daily_buy_limit)} / ${Math.floor(daily_sell_limit)}`
+                                        : '-'}
+                                </div>
+                            </Table.Cell>
+                            <div className='my-profile__stats-cell-separator' />
+                            <Popover
+                                classNameBubble='my-profile__popover-text'
+                                alignment='top'
+                                message={localize(
+                                    "These fields are based on the last 24 hours' activity: Buy, Sell, and Limit."
+                                )}
+                            >
+                                <Icon className='my-profile__popover-icon' icon='IcInfoOutline' size={16} />
+                            </Popover>
+                        </Table.Row>
+                    </Table>
+                    <div className='my-profile__separator'>
+                        <div className='my-profile__separator-text'>{localize('Ad template')}</div>
+                        <div className='my-profile__separator-horizontal_line' />
+                    </div>
+                    <Formik
+                        enableReinitialize={true}
+                        initialValues={{
+                            contact_info,
+                            default_advert_description,
+                            payment_info,
+                        }}
+                        onSubmit={handleSubmit}
+                        validate={validateForm}
+                    >
+                        {({ dirty, errors, isSubmitting, isValid, resetForm }) => {
+                            return (
+                                <Form noValidate>
+                                    <React.Fragment>
+                                        <Field name='payment_info'>
+                                            {({ field }) => (
+                                                <Input
+                                                    {...field}
+                                                    type='textarea'
+                                                    label={localize('Payment details')}
+                                                    error={errors.payment_info}
+                                                    hint={localize('e.g. your bank/e-wallet account details')}
+                                                    className='my-profile__form-textarea'
+                                                    has_character_counter
+                                                    max_characters={300}
+                                                />
+                                            )}
+                                        </Field>
+                                        <Field name='contact_info'>
+                                            {({ field }) => (
+                                                <Input
+                                                    {...field}
+                                                    type='textarea'
+                                                    label={localize('Contact details')}
+                                                    error={errors.contact_info}
+                                                    className='my-profile__form-textarea'
+                                                    has_character_counter
+                                                    max_characters={300}
+                                                />
+                                            )}
+                                        </Field>
+                                        <Field name='default_advert_description'>
+                                            {({ field }) => (
+                                                <Input
+                                                    {...field}
+                                                    type='textarea'
+                                                    label={localize('Instructions')}
+                                                    error={errors.default_advert_description}
+                                                    hint={localize('This information will be visible to everyone.')}
+                                                    className='my-profile__form-textarea'
+                                                    has_character_counter
+                                                    max_characters={300}
+                                                />
+                                            )}
+                                        </Field>
+
+                                        <FooterActions className='my-profile__footer' has_border>
+                                            <FormError message={form_error} />
+                                            <Button
+                                                className='my-profile__footer-button'
+                                                is_disabled={!dirty || isSubmitting}
+                                                secondary
+                                                large
+                                                onClick={resetForm}
+                                            >
+                                                {localize('Cancel')}
+                                            </Button>
+                                            <Button
+                                                className='my-profile__footer-button'
+                                                is_disabled={!dirty || isSubmitting || !isValid}
+                                                primary
+                                                large
+                                            >
+                                                {localize('Save')}
+                                            </Button>
+                                        </FooterActions>
+                                    </React.Fragment>
+                                </Form>
+                            );
+                        }}
+                    </Formik>
+                </React.Fragment>
             </ThemedScrollbars>
         </div>
     );

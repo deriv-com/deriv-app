@@ -1,6 +1,6 @@
-import { observable, action } from 'mobx';
+import { observable, action, runInAction } from 'mobx';
 import OrderInfo, { orderToggleIndex } from '../src/components/orders/order-info.js';
-import { getPropertyValue, isEmptyObject, isProduction } from '@deriv/shared';
+import { isEmptyObject, isProduction } from '@deriv/shared';
 import { init as WebsocketInit, getModifiedP2POrderList, requestWS, subscribeWS } from '../src/utils/websocket.js';
 
 export default class GeneralStore {
@@ -139,7 +139,7 @@ export default class GeneralStore {
                     p2p_advertiser_info: 1,
                     subscribe: 1,
                 },
-                [this.updateAdvertiserInfo, this.setChatInfoUsingAdvertiserInfo]
+                [this.updateAdvertiserInfo, this.setChatInfo]
             ),
             order_list_subscription: subscribeWS(
                 {
@@ -189,31 +189,35 @@ export default class GeneralStore {
     }
 
     @action.bound
-    setChatInfo(user_id, token) {
-        this.chat_info = {
-            app_id: isProduction() ? '1465991C-5D64-4C88-8BD9-B0D7A6455E69' : '4E259BA5-C383-4624-89A6-8365E06D9D39',
-            user_id: user_id,
-            token: token,
-        };
+    setChatInfo(p2p_advertiser_info_response) {
+        if (p2p_advertiser_info_response.error) {
+            this.ws_subscriptions.advertiser_subscription?.unsubscribe();
+        } else {
+            const { p2p_advertiser_info } = p2p_advertiser_info_response;
 
-        if (!this.chat_info.token) {
-            requestWS({ service_token: 1, service: 'sendbird' }).then(response => {
-                this.chat_info.token = response.service_token.sendbird.token;
-            });
+            const getSendbirdServiceToken = () => {
+                requestWS({ service: 'sendbird', service_token: 1 }).then(response => {
+                    const { service_token } = response;
+
+                    runInAction(() => {
+                        this.chat_info = {
+                            app_id: isProduction()
+                                ? '1465991C-5D64-4C88-8BD9-B0D7A6455E69'
+                                : '4E259BA5-C383-4624-89A6-8365E06D9D39',
+                            user_id: p2p_advertiser_info.chat_user_id,
+                            token: service_token.sendbird.token,
+                        };
+                    });
+
+                    // Refresh chat token ±1 hour before it expires.
+                    const request_new_token_in_ms =
+                        Math.floor(service_token.sendbird.expiry_time * 1000) - Date.now() - 3600000;
+                    setTimeout(getSendbirdServiceToken, request_new_token_in_ms);
+                });
+            };
+
+            getSendbirdServiceToken();
         }
-    }
-
-    @action.bound
-    setChatInfoUsingAdvertiserInfo(response) {
-        const { p2p_advertiser_info } = response;
-        if (response.error) {
-            this.ws_subscriptions.advertiser_subscription.unsubscribe();
-            return;
-        }
-        const user_id = getPropertyValue(p2p_advertiser_info, ['chat_user_id']);
-        const token = getPropertyValue(p2p_advertiser_info, ['chat_token']);
-
-        this.setChatInfo(user_id, token);
     }
 
     @action.bound

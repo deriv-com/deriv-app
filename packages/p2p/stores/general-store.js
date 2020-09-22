@@ -1,6 +1,6 @@
 import { observable, action, runInAction } from 'mobx';
 import OrderInfo, { orderToggleIndex } from '../src/components/orders/order-info.js';
-import { isEmptyObject, isProduction } from '@deriv/shared';
+import { epochToMoment, isEmptyObject, isProduction } from '@deriv/shared';
 import { init as WebsocketInit, getModifiedP2POrderList, requestWS, subscribeWS } from '../src/utils/websocket.js';
 
 export default class GeneralStore {
@@ -209,10 +209,11 @@ export default class GeneralStore {
                         };
                     });
 
-                    // Refresh chat token ±1 hour before it expires.
-                    const request_new_token_in_ms =
-                        Math.floor(service_token.sendbird.expiry_time * 1000) - Date.now() - 3600000;
-                    setTimeout(getSendbirdServiceToken, request_new_token_in_ms);
+                    // Refresh chat token ±1 hour before it expires (BE will refresh the token
+                    // when we request within 2 hours of the token expiring)
+                    const expiry_moment = epochToMoment(service_token.sendbird.expiry_time);
+                    const delay_ms = expiry_moment.diff(this.props.server_time);
+                    setTimeout(getSendbirdServiceToken, delay_ms);
                 });
             };
 

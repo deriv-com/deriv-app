@@ -16,7 +16,6 @@ module.exports = function (env, argv) {
             'form-body': 'Components/form-body',
             'form-footer': 'Components/form-footer',
             'form-sub-header': 'Components/form-sub-header',
-            'form-submit-error-message': 'Components/form-submit-error-message',
             'icon-message-content': 'Components/icon-message-content',
             'leave-confirm': 'Components/leave-confirm',
             'load-error-message': 'Components/load-error-message',

@@ -11,20 +11,26 @@ export default class RunPanelStore {
         this.root_store = root_store;
         this.dbot = this.root_store.dbot;
         this.registerCoreReactions();
+
+        reaction(
+            () => this.statistics,
+            statistics => sessionStorage.setItem(statistics_storage_key, JSON.stringify(statistics))
+        );
     }
 
     run_id = '';
 
-    @observable statistics = this.root_store.core.client.is_logged_in
-        ? JSON.parse(localStorage.getItem(statistics_storage_key))
-        : {
-              lost_contracts: 0,
-              number_of_runs: 0,
-              total_profit: 0,
-              total_payout: 0,
-              total_stake: 0,
-              won_contracts: 0,
-          };
+    @observable statistics =
+        JSON.parse(sessionStorage.getItem(statistics_storage_key)) !== (undefined || null)
+            ? JSON.parse(sessionStorage.getItem(statistics_storage_key))
+            : {
+                  lost_contracts: 0,
+                  number_of_runs: 0,
+                  total_profit: 0,
+                  total_payout: 0,
+                  total_stake: 0,
+                  won_contracts: 0,
+              };
 
     @observable active_index = 0;
     @observable contract_stage = contract_stages.NOT_RUNNING;
@@ -358,7 +364,15 @@ export default class RunPanelStore {
                 break;
             }
         }
-        localStorage.setItem(statistics_storage_key, JSON.stringify(this.statistics));
+
+        this.statistics = {
+            lost_contracts: this.statistics.lost_contracts,
+            number_of_runs: this.statistics.number_of_runs,
+            total_profit: this.statistics.total_profit,
+            total_payout: this.statistics.total_payout,
+            total_stake: this.statistics.total_stake,
+            won_contracts: this.statistics.won_contracts,
+        };
     }
 
     @action.bound
@@ -372,7 +386,6 @@ export default class RunPanelStore {
             won_contracts: 0,
         };
         observer.emit('statistics.clear');
-        localStorage.setItem(statistics_storage_key, JSON.stringify(this.statistics));
     }
 
     @action.bound

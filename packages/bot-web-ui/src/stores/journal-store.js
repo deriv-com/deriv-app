@@ -1,4 +1,4 @@
-import { observable, action, computed } from 'mobx';
+import { observable, action, computed, reaction } from 'mobx';
 import { localize } from '@deriv/translations';
 import { formatDate } from '@deriv/shared';
 import { message_types } from '@deriv/bot-skeleton';
@@ -12,6 +12,11 @@ export default class JournalStore {
     constructor(root_store) {
         this.root_store = root_store;
         this.dbot = this.root_store.dbot;
+
+        reaction(
+            () => this.unfiltered_messages,
+            messages => sessionStorage.setItem(journal_storage_key, JSON.stringify(messages))
+        );
     }
 
     getServerTime() {
@@ -32,8 +37,8 @@ export default class JournalStore {
     ];
 
     @observable is_filter_dialog_visible = false;
-    @observable unfiltered_messages = Array.isArray(JSON.parse(localStorage.getItem(journal_storage_key)))
-        ? JSON.parse(localStorage.getItem(journal_storage_key))
+    @observable unfiltered_messages = Array.isArray(JSON.parse(sessionStorage.getItem(journal_storage_key)))
+        ? JSON.parse(sessionStorage.getItem(journal_storage_key))
         : [];
     @observable journal_filters = getSetting('journal_filter') || this.filters.map(filter => filter.id);
 
@@ -80,14 +85,13 @@ export default class JournalStore {
         const unique_id = Blockly.utils.genUid();
 
         this.unfiltered_messages.unshift({ date, time, message, message_type, className, unique_id, extra });
-        localStorage.setItem(journal_storage_key, JSON.stringify(this.unfiltered_messages));
+        this.unfiltered_messages = this.unfiltered_messages.slice(); // force array update
     }
 
     @computed
     get filtered_messages() {
         return (
             this.unfiltered_messages
-                .concat(JSON.parse(localStorage.getItem(journal_storage_key)))
                 // filter messages based on filtered-checkbox
                 .filter(
                     message =>
@@ -115,7 +119,6 @@ export default class JournalStore {
 
     @action.bound
     clear() {
-        this.unfiltered_messages.clear();
-        localStorage.setItem(journal_storage_key, JSON.stringify(this.unfiltered_messages));
+        this.unfiltered_messages = this.unfiltered_messages.slice(0, 0); // force array update
     }
 }

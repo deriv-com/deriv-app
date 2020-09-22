@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Div100vhContainer, ThemedScrollbars } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { getCurrencyDisplayCode, isDesktop, isMobile } from '@deriv/shared';
-import { website_name } from 'App/Constants/app-config';
+import { getCurrencyDisplayCode, isDesktop, isMobile, website_name } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import AddCryptoCurrency from './add-crypto-currency.jsx';
 import ChangeAccountCurrency from './change-account-currency.jsx';
@@ -44,8 +43,8 @@ class AddOrManageAccounts extends React.Component {
                             response.echo_req.set_account_currency
                         );
                     })
-                    .catch(error_message => {
-                        this.props.onError(error_message);
+                    .catch(error => {
+                        this.props.onError(error);
                     })
                     .finally(() => this.props.setLoading(false));
             } else {
@@ -56,8 +55,8 @@ class AddOrManageAccounts extends React.Component {
                         this.props.onSuccessAddCurrency(value);
                         setSubmitting(false);
                     })
-                    .catch(error_message => {
-                        this.props.onError(error_message);
+                    .catch(error => {
+                        this.props.onError(error);
                     })
                     .finally(() => this.props.setLoading(false));
             }

@@ -25,13 +25,14 @@ import {
 } from '@deriv/account';
 import { WS } from 'Services/ws-methods';
 import { localize } from '@deriv/translations';
-import { isDesktop, isMobile } from '@deriv/shared';
-import { validAddress, validLength, validPostCode } from 'Utils/Validator/declarative-validation-rules';
+import { isDesktop, isMobile, validAddress, validLength, validLetterSymbol, validPostCode } from '@deriv/shared';
 import { InputField } from './mt5-personal-details-form.jsx';
 
 const form = React.createRef();
 
 class MT5POA extends React.Component {
+    // TODO: Refactor to functional component with hooks
+    is_mounted = false;
     file_uploader_ref = undefined;
     state = {
         document_file: undefined,
@@ -50,9 +51,9 @@ class MT5POA extends React.Component {
         }
 
         const validations = {
-            address_line_1: [v => !!v, v => validAddress(v)],
-            address_line_2: [v => !v || validAddress(v)],
-            address_city: [v => !!v, v => validLength(v, { min: 1, max: 35 })],
+            address_line_1: [v => !!v, v => validAddress(v), v => validLength(v, { max: 70 })],
+            address_line_2: [v => !v || validAddress(v), v => validLength(v, { max: 70 })],
+            address_city: [v => !!v, v => validLength(v, { min: 1, max: 35 }), v => validLetterSymbol(v)],
             address_state: [v => !!v, v => !v || validLength(v, { min: 1, max: 35 })],
             address_postcode: [v => validLength(v, { min: 1, max: 20 }), v => validPostCode(v)],
             document_file: [v => !!v, ([file]) => !!file?.name],
@@ -62,18 +63,26 @@ class MT5POA extends React.Component {
             address_line_1: [
                 localize('First line of address is required'),
                 localize('First line of address is not in a proper format.'),
+                localize('This should not exceed {{max}} characters.', { max: 70 }),
             ],
-            address_line_2: [localize('Second line of address is not in a proper format.')],
-            address_city: [localize('Town/City is required'), localize('Town/City is not in a proper format.')],
+            address_line_2: [
+                localize('Second line of address is not in a proper format.'),
+                localize('This should not exceed {{max}} characters.', { max: 70 }),
+            ],
+            address_city: [
+                localize('Town/City is required.'),
+                localize('This should not exceed {{max_number}} characters.', {
+                    max_number: 35,
+                }),
+                localize('Town/City is not in a proper format.'),
+            ],
             address_state: [
-                localize('State/Province is required'),
+                localize('State/Province is required.'),
                 localize('State/Province is not in a proper format.'),
             ],
             address_postcode: [
-                localize('Please enter a {{field_name}} under {{max_number}} characters.', {
-                    field_name: localize('postal/ZIP code'),
+                localize('This should not exceed {{max_number}} characters.', {
                     max_number: 20,
-                    interpolation: { escapeValue: false },
                 }),
                 localize('Only letters, numbers, space, and hyphen are allowed.'),
             ],
@@ -179,13 +188,22 @@ class MT5POA extends React.Component {
     };
 
     componentDidMount() {
+        this.is_mounted = true;
         WS.authorized.getAccountStatus().then(response => {
-            const { get_account_status } = response;
-            const { document, identity } = get_account_status.authentication;
-            const has_poi = !!(identity && identity.status === 'none');
-            this.setState({ poa_status: document.status, has_poi, is_loading: false });
-            this.props.refreshNotifications();
+            WS.wait('states_list').then(() => {
+                const { get_account_status } = response;
+                const { document, identity } = get_account_status.authentication;
+                const has_poi = !!(identity && identity.status === 'none');
+                if (this.is_mounted) {
+                    this.setState({ poa_status: document.status, has_poi, is_loading: false });
+                    this.props.refreshNotifications();
+                }
+            });
         });
+    }
+
+    componentWillUnmount() {
+        this.is_mounted = false;
     }
 
     handleResubmit = () => {
@@ -217,15 +235,15 @@ class MT5POA extends React.Component {
                     document_file: this.state.document_file,
                 }}
                 validateOnMount
-                isInitialValid={({ initialValues }) => this.validateForm(initialValues)}
                 validate={this.validateForm}
                 onSubmit={this.onSubmit}
-                ref={form}
+                innerRef={form}
             >
                 {({
                     errors,
                     handleSubmit,
                     isSubmitting,
+                    handleBlur,
                     handleChange,
                     setFieldTouched,
                     setFieldValue,
@@ -256,63 +274,94 @@ class MT5POA extends React.Component {
                                                 />
                                                 <InputField
                                                     name='address_line_1'
+                                                    maxLength={255}
                                                     required
                                                     label={localize('First line of address*')}
                                                     placeholder={localize('First line of address*')}
+                                                    onBlur={handleBlur}
                                                 />
                                                 <InputField
                                                     name='address_line_2'
+                                                    maxLength={255}
                                                     label={localize('Second line of address (optional)')}
                                                     optional
                                                     placeholder={localize('Second line of address')}
+                                                    onBlur={handleBlur}
                                                 />
                                                 <div className='mt5-proof-of-address__inline-fields'>
                                                     <InputField
+                                                        maxLength={255}
                                                         name='address_city'
                                                         required
                                                         label={localize('Town/City*')}
                                                         placeholder={localize('Town/City*')}
+                                                        onBlur={handleBlur}
                                                     />
                                                     <fieldset className='address-state__fieldset'>
-                                                        <DesktopWrapper>
-                                                            <Field name='address_state'>
-                                                                {({ field }) => (
-                                                                    <Dropdown
-                                                                        is_alignment_top={window.innerHeight < 930}
-                                                                        id='address_state'
-                                                                        required
-                                                                        className='address_state-dropdown'
-                                                                        is_align_text_left
-                                                                        list={states_list}
-                                                                        error={
-                                                                            touched[field.name] && errors[field.name]
-                                                                        }
-                                                                        name='address_state'
+                                                        {states_list?.length > 0 ? (
+                                                            <React.Fragment>
+                                                                <DesktopWrapper>
+                                                                    <Field name='address_state'>
+                                                                        {({ field }) => (
+                                                                            <Dropdown
+                                                                                is_alignment_top={
+                                                                                    window.innerHeight < 930
+                                                                                }
+                                                                                id='address_state'
+                                                                                required
+                                                                                className='address_state-dropdown'
+                                                                                is_align_text_left
+                                                                                list={states_list}
+                                                                                error={
+                                                                                    touched[field.name] &&
+                                                                                    errors[field.name]
+                                                                                }
+                                                                                name='address_state'
+                                                                                value={values.address_state}
+                                                                                onChange={handleChange}
+                                                                                placeholder={localize(
+                                                                                    'State/Province*'
+                                                                                )}
+                                                                            />
+                                                                        )}
+                                                                    </Field>
+                                                                </DesktopWrapper>
+                                                                <MobileWrapper>
+                                                                    <SelectNative
+                                                                        label={localize('State/Province*')}
                                                                         value={values.address_state}
-                                                                        onChange={handleChange}
-                                                                        placeholder={localize('State/Province*')}
+                                                                        list_items={states_list}
+                                                                        error={
+                                                                            touched.address_state &&
+                                                                            errors.address_state
+                                                                        }
+                                                                        onChange={e =>
+                                                                            setFieldValue(
+                                                                                'address_state',
+                                                                                e.target.value,
+                                                                                true
+                                                                            )
+                                                                        }
+                                                                        required
                                                                     />
-                                                                )}
-                                                            </Field>
-                                                        </DesktopWrapper>
-                                                        <MobileWrapper>
-                                                            <SelectNative
+                                                                </MobileWrapper>
+                                                            </React.Fragment>
+                                                        ) : (
+                                                            // Fallback to input field when states list is empty / unavailable for country
+                                                            <InputField
+                                                                name='address_state'
                                                                 label={localize('State/Province*')}
-                                                                value={values.address_state}
-                                                                list_items={states_list}
-                                                                error={touched.address_state && errors.address_state}
-                                                                use_text={true}
-                                                                onChange={e =>
-                                                                    setFieldValue('address_state', e.target.value, true)
-                                                                }
-                                                                required
+                                                                placeholder={localize('State/Province*')}
+                                                                onBlur={handleBlur}
                                                             />
-                                                        </MobileWrapper>
+                                                        )}
                                                     </fieldset>
                                                     <InputField
+                                                        maxLength={255}
                                                         name='address_postcode'
                                                         label={localize('Postal/ZIP code*')}
                                                         placeholder={localize('Postal/ZIP code*')}
+                                                        onBlur={handleBlur}
                                                     />
                                                 </div>
                                                 <div className='mt5-proof-of-address__file-upload'>

@@ -52,6 +52,9 @@
         background: var(--general-section-2);
         transition: all 0.2s ease-out;
 
+        &--is-full-height {
+            height: calc(100% - 0.4rem);
+        }
         > div {
             height: 100%;
         }

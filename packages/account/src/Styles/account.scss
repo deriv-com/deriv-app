@@ -435,7 +435,7 @@ $MIN_HEIGHT_FLOATING: calc(
     }
     .account-management__text-container {
         margin-top: 10px;
-        max-width: 467px;
+        max-width: 672px;
         margin-bottom: 2em;
     }
     .account-management-flex-wrapper {
@@ -1104,7 +1104,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin-top: 0.5em;
 
                 .account-form__fieldset {
-                    margin-bottom: 3em;
+                    margin-bottom: 4em; // The gap for the error message is dependent on the font-size, better to be `em` instead of `rem`
                 }
             }
         }
@@ -1257,7 +1257,7 @@ $MIN_HEIGHT_FLOATING: calc(
             flex: 1;
 
             .account-form__fieldset {
-                margin-bottom: 3em;
+                margin-bottom: 4em; // The gap for the error message is dependent on the font-size, better to be `em` instead of `rem`
             }
             @include mobile {
                 min-width: 100%;
@@ -1391,29 +1391,6 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin-top: 2px;
             }
         }
-    }
-}
-
-/** @define form-submit-error-message; weak */
-.form-submit-error-message {
-    display: flex;
-    align-items: center;
-    margin-right: auto;
-    font-size: var(--text-size-xxs);
-    font-weight: bold;
-    flex: 1;
-    color: var(--text-prominent);
-
-    p {
-        padding-left: 16px;
-
-        @include mobile {
-            line-height: 20px;
-        }
-    }
-
-    @include mobile {
-        padding: 0 1.6rem 1rem;
     }
 }
 

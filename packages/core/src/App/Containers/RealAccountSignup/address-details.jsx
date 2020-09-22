@@ -8,6 +8,7 @@ import {
     Div100vhContainer,
     FormSubmitButton,
     Input,
+    Loading,
     MobileWrapper,
     ThemedScrollbars,
     SelectNative,
@@ -82,7 +83,7 @@ class AddressDetails extends React.Component {
                 validate={this.handleValidate}
                 validateOnMount
                 onSubmit={(values, actions) => {
-                    if (isDesktop() && values.address_state) {
+                    if (values.address_state) {
                         values.address_state = this.props.states_list.length
                             ? this.state.address_state_to_display
                                 ? getLocation(this.props.states_list, this.state.address_state_to_display, 'value')
@@ -138,7 +139,12 @@ class AddressDetails extends React.Component {
                                                 }
                                                 placeholder={localize('Town/City')}
                                             />
-                                            {this.should_render_address_state && (
+                                            {!this.state.has_fetched_states_list && (
+                                                <div className='details-form__loader'>
+                                                    <Loading is_fullscreen={false} />
+                                                </div>
+                                            )}
+                                            {this.props.states_list?.length > 0 ? (
                                                 <Field name='address_state'>
                                                     {({ field }) => (
                                                         <>
@@ -170,21 +176,35 @@ class AddressDetails extends React.Component {
                                                                 <SelectNative
                                                                     placeholder={localize('Please select')}
                                                                     label={localize('State/Province')}
-                                                                    value={values.address_state}
+                                                                    value={
+                                                                        this.state.address_state_to_display
+                                                                            ? this.state.address_state_to_display
+                                                                            : values.address_state
+                                                                    }
                                                                     list_items={this.props.states_list}
                                                                     use_text={true}
-                                                                    onChange={e =>
+                                                                    onChange={e => {
                                                                         setFieldValue(
                                                                             'address_state',
                                                                             e.target.value,
                                                                             true
-                                                                        )
-                                                                    }
+                                                                        );
+                                                                        this.setState({
+                                                                            address_state_to_display: '',
+                                                                        });
+                                                                    }}
                                                                 />
                                                             </MobileWrapper>
                                                         </>
                                                     )}
                                                 </Field>
+                                            ) : (
+                                                // Fallback to input field when states list is empty / unavailable for country
+                                                <InputField
+                                                    name='address_state'
+                                                    label={localize('State/Province')}
+                                                    placeholder={localize('State/Province')}
+                                                />
                                             )}
                                             <InputField
                                                 name='address_postcode'

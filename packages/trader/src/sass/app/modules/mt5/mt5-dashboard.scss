@@ -1115,5 +1115,13 @@
         }
     }
 }
+.mt5-personal-details-form-error {
+    @include typeface(--paragraph-left-normal-red);
+    @include desktop {
+        white-space: nowrap;
+        display: flex;
+        align-items: flex-end;
+    }
+}
 
 /* stylelint-enable */

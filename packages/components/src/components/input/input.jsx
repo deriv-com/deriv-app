@@ -9,18 +9,24 @@ const Input = (
         classNameWarn,
         disabled,
         error,
-        warn,
-        hint,
-        leading_icon,
         has_character_counter,
+        hint,
+        initial_character_count,
+        label,
+        leading_icon,
         max_characters,
         trailing_icon,
-        label,
+        warn,
         ...props
     },
     ref
 ) => {
     const [counter, setCounter] = React.useState(0);
+
+    React.useEffect(() => {
+        if (initial_character_count) setCounter(initial_character_count);
+    }, []);
+
     const changeHandler = e => {
         let input_value = e.target.value;
         if (max_characters && input_value.length >= max_characters) {

@@ -117,9 +117,9 @@ const MyProfile = () => {
                     } else {
                         setFormError(response.error);
                     }
-                    resolve();
                     setIsLoading(false);
                 }
+                resolve();
             });
         });
     };
@@ -285,6 +285,7 @@ const MyProfile = () => {
                                                     hint={localize('e.g. your bank/e-wallet account details')}
                                                     className='my-profile__form-textarea'
                                                     has_character_counter
+                                                    initial_character_count={payment_info.length}
                                                     max_characters={300}
                                                 />
                                             )}
@@ -298,6 +299,7 @@ const MyProfile = () => {
                                                     error={errors.contact_info}
                                                     className='my-profile__form-textarea'
                                                     has_character_counter
+                                                    initial_character_count={contact_info.length}
                                                     max_characters={300}
                                                 />
                                             )}
@@ -312,6 +314,7 @@ const MyProfile = () => {
                                                     hint={localize('This information will be visible to everyone.')}
                                                     className='my-profile__form-textarea'
                                                     has_character_counter
+                                                    initial_character_count={default_advert_description.length}
                                                     max_characters={300}
                                                 />
                                             )}

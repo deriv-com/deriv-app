@@ -134,8 +134,7 @@ const AccountTransferForm = ({
 
     accounts_list.forEach((account, idx) => {
         const text = <AccountOption idx={idx} account={account} />;
-        const value = account.value;
-        const currency = account.currency;
+        const { value, currency } = account;
         (account.is_mt ? mt_accounts_from : accounts_from).push({
             text,
             value,
@@ -148,13 +147,13 @@ const AccountTransferForm = ({
             const is_selected_from_mt = selected_from.is_mt && account.is_mt;
             const is_selected_from_crypto = selected_from.is_crypto && account.is_crypto;
             let is_disabled = false;
-            if (!is_deriv_crypto) {
+            if (is_deriv_crypto) {
+                // can only transfer to same currency, regardless of mt or crypto account
+                is_disabled = selected_from.currency !== account.currency;
+            } else {
                 // cannot transfer to MT account from MT
                 // cannot transfer to crypto account from crypto
                 is_disabled = is_selected_from_mt || is_selected_from_crypto;
-            } else {
-                // can only transfer to same currency, regardless of mt or crypto account
-                is_disabled = selected_from.currency !== account.currency;
             }
             (account.is_mt ? mt_accounts_to : accounts_to).push({
                 text,

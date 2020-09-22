@@ -37,6 +37,15 @@
         &__description {
             display: none;
         }
+        &__deposit-warn {
+            width: 70%;
+            margin: 2.8rem auto 0;
+            padding: 10px;
+            @include typeface(--paragraph-center-normal-prominent);
+            font-size: 1.2rem;
+            background-color: var(--general-section-1);
+            border-radius: $BORDER_RADIUS;
+        }
     }
     .with-margin--is-header {
         font-size: 1.6rem;
@@ -58,6 +67,8 @@
         .dc-form-submit-button--absolute {
             position: fixed;
             padding: 1.4rem;
+            width: 100%;
+            right: 0;
         }
     }
 
@@ -91,6 +102,7 @@
             .dc-form-submit-button--relative {
                 position: fixed;
                 background-color: unset;
+                right: 0;
             }
         }
         .account-wizard--disabled {

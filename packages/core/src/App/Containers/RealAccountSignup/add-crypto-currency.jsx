@@ -10,7 +10,7 @@ import { RadioButtonGroup, RadioButton } from './currency-selector.jsx';
 const messages = () => [
     localize('Choose your preferred cryptocurrency'),
     localize('You can open an account for each cryptocurrency.'),
-    localize('Add a real account'),
+    localize('Add real account'),
     localize('Choose a currency you would like to trade with.'),
 ];
 
@@ -78,7 +78,6 @@ class AddCryptoCurrency extends React.Component {
                                     id='fiat_currency'
                                     is_fiat
                                     className='currency-selector__radio-group'
-                                    label={localize('Fiat currencies')}
                                     value={values.currency}
                                     error={errors.currency}
                                     touched={touched.currency}
@@ -95,6 +94,11 @@ class AddCryptoCurrency extends React.Component {
                                     ))}
                                 </RadioButtonGroup>
                             </React.Fragment>
+                        )}
+                        {this.can_add_fiat && (
+                            <p className='currency-selector__deposit-warn'>
+                                <Localize i18n_default_text='You’ll be not able to change currency once you have made a deposit.' />
+                            </p>
                         )}
                         {!this.props.should_show_fiat_only &&
                             (this.props.available_crypto_currencies.length !== 0 ? (

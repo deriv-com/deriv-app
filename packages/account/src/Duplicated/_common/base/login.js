@@ -26,7 +26,7 @@ const Login = (() => {
         const server_url = localStorage.getItem('config.server_url');
         const language = getLanguage();
         const sign_up_device_cookie = new CookieStorage('signup_device');
-        const signup_device = sign_up_device_cookie.get('signup_device') || (isMobile() ? 'mobile' : 'desktop');
+        const signup_device = sign_up_device_cookie.get('signup_device');
         const date_first_contact_cookie = new CookieStorage('date_first_contact');
         const date_first_contact = date_first_contact_cookie.get('date_first_contact');
         const marketing_queries = `&signup_device=${signup_device}${

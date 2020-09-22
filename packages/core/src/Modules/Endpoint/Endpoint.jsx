@@ -43,7 +43,7 @@ const Endpoint = ({ is_eu_enabled, toggleIsEuEnabled }) => (
 
             if (!values.server) {
                 errors.server = 'Server is required.';
-            } else if (!/^[\w|.]+$/.test(values.server)) {
+            } else if (!/^[\w|\-|.]+$/.test(values.server)) {
                 errors.server = 'Please enter a valid server.';
             }
 

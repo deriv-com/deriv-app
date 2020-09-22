@@ -71,7 +71,7 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
     }
 
     getProposal(contract_type) {
-        return this.data.proposals.find(
+        return this.tradeEngine.data.proposals.find(
             proposal =>
                 proposal.contract_type === contract_type &&
                 proposal.purchase_reference === this.tradeEngine.getPurchaseReference()

@@ -16,15 +16,7 @@ const CookieBanner = ({ onAccept, onDecline, is_open, is_dark_mode }) => (
             <br />
             <Localize
                 i18n_default_text='If you agree to our use of cookies, click on Accept. For more information, <0>see our policy</0>.'
-                components={[
-                    <StaticUrl
-                        key={0}
-                        className='link link--red'
-                        rel='noopener noreferrer'
-                        target='_blank'
-                        href='/terms-and-conditions'
-                    />,
-                ]}
+                components={[<StaticUrl key={0} className='link link--red' href='/terms-and-conditions' />]}
             />
             <Button className='cookie-banner__btn-dont-accept' secondary onClick={onDecline}>
                 {localize('Don’t accept')}

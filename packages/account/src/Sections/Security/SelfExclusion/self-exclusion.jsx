@@ -434,8 +434,6 @@ class SelfExclusion extends React.Component {
                                                             <StaticUrl
                                                                 key={1}
                                                                 className='link link--orange'
-                                                                rel='noopener noreferrer'
-                                                                target='_blank'
                                                                 href='/contact-us'
                                                             />,
                                                         ]}

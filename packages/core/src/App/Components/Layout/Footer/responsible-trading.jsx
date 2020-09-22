@@ -4,7 +4,7 @@ import { localize } from '@deriv/translations';
 
 export const ResponsibleTrading = () => (
     <Popover alignment='top' message={localize('Responsible trading')} className='footer__link'>
-        <StaticUrl href='/responsible-trading' target='_blank' rel='nofollow noreferrer'>
+        <StaticUrl href='/responsible-trading'>
             <Icon icon='IcVerification' className='footer__icon ic-deriv__icon' />
         </StaticUrl>
     </Popover>

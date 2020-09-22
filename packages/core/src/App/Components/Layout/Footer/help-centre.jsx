@@ -9,13 +9,7 @@ export const HelpCentre = () => (
         alignment='top'
         message={localize('Help centre')}
     >
-        <StaticUrl
-            href='/help-centre/'
-            id='dt_help_centre'
-            target='_blank'
-            rel='noopener noreferrer'
-            aria-label={localize('Help centre')}
-        >
+        <StaticUrl href='/help-centre/' id='dt_help_centre' aria-label={localize('Help centre')}>
             <Icon icon='IcHelpCentre' className='footer__icon' />
         </StaticUrl>
     </Popover>

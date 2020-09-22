@@ -70,15 +70,7 @@ const DepositsLocked = ({
                       content: (
                           <Localize
                               i18n_default_text='Accept our updated <0>terms and conditions</0>'
-                              components={[
-                                  <StaticUrl
-                                      key={0}
-                                      className='link'
-                                      rel='noopener noreferrer'
-                                      target='_blank'
-                                      href='terms-and-conditions'
-                                  />,
-                              ]}
+                              components={[<StaticUrl key={0} className='link' href='terms-and-conditions' />]}
                           />
                       ),
                       status: 'button-action',

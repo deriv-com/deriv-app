@@ -10,15 +10,7 @@ const SEArticle = () => (
             <Localize
                 key={0}
                 i18n_default_text='Self-exclusion helps you control the amount of money and time you spend on your trading activities. The limits you set here will help you exercise <0>responsible trading</0>.'
-                components={[
-                    <StaticUrl
-                        key={0}
-                        className='link link--orange'
-                        rel='noopener noreferrer'
-                        target='_blank'
-                        href='/responsible-trading'
-                    />,
-                ]}
+                components={[<StaticUrl key={0} className='link link--orange' href='/responsible-trading' />]}
             />,
             <Localize
                 key={1}
@@ -33,13 +25,7 @@ const SEArticle = () => (
                 i18n_default_text='You’ll be able to adjust these limits at any time. You can reduce your limits from the <0>self-exclusion page</0>. To increase or remove your limits, please contact our <1>Customer Support team</1>.'
                 components={[
                     <span key={0} className='self-exclusion__text-highlight self-exclusion__text-highlight--small' />,
-                    <StaticUrl
-                        key={1}
-                        className='link link--orange'
-                        rel='noopener noreferrer'
-                        target='_blank'
-                        href='/contact-us'
-                    />,
+                    <StaticUrl key={1} className='link link--orange' href='/contact-us' />,
                 ]}
             />,
         ]}

@@ -22,7 +22,7 @@ const AccountDeactivated = ({ logout }) => {
         if (timer > 0) {
             setTimer(timer - 1);
         } else {
-            window.location.href = getStaticUrl('', { is_deriv_crypto });
+            window.location.href = getStaticUrl('/', { is_deriv_crypto });
         }
     };
     return (

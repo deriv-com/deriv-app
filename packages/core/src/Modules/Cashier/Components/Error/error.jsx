@@ -91,15 +91,7 @@ class Error extends React.Component {
                         footer={
                             <Localize
                                 i18n_default_text='Need help? <0>Contact us</0>.'
-                                components={[
-                                    <StaticUrl
-                                        key={0}
-                                        className='link'
-                                        target='_blank'
-                                        rel='noopener noreferrer'
-                                        href='help-centre'
-                                    />,
-                                ]}
+                                components={[<StaticUrl key={0} className='link' href='help-centre' />]}
                             />
                         }
                     />

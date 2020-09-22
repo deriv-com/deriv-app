@@ -109,15 +109,7 @@ class AccountLimits extends React.Component {
                     <Text className='account-limit-container__main-text'>
                         <Localize
                             i18n_default_text='These are default limits that we apply to your accounts. To learn more about trading limits and how they apply, please go to the <0>Help Centre</0>.'
-                            components={[
-                                <StaticUrl
-                                    key={0}
-                                    className='link link--orange'
-                                    rel='noopener noreferrer'
-                                    target='_blank'
-                                    href='/help-centre'
-                                />,
-                            ]}
+                            components={[<StaticUrl key={0} className='link link--orange' href='/help-centre' />]}
                         />
                     </Text>
                     <div className='account-limit-container__content'>

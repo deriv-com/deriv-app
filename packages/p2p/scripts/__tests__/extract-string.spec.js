@@ -25,8 +25,6 @@ describe('Regular expression checks', () => {
                     <StaticUrl
                         key={0}
                         className='link'
-                        target='_blank'
-                        rel='noopener noreferrer'
                         href='terms-and-conditions/#general'
                     />,
                 ]}

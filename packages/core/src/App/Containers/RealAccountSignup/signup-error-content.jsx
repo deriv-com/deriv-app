@@ -67,13 +67,7 @@ const SignupErrorContent = ({ message, code, onConfirm }) => {
                 return null;
             default:
                 return (
-                    <StaticUrl
-                        href='help-centre'
-                        type='button'
-                        className='dc-btn dc-btn--primary'
-                        target='_blank'
-                        rel='noopener noreferrer'
-                    >
+                    <StaticUrl href='help-centre' type='button' className='dc-btn dc-btn--primary'>
                         <span className='dc-btn__text'>
                             <Localize i18n_default_text='OK' />
                         </span>

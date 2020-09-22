@@ -25,8 +25,6 @@ describe('Regular expression checks', () => {
                     <StaticUrl
                         key={0}
                         className='link'
-                        target='_blank'
-                        rel='noopener noreferrer'
                         href='terms-and-conditions/#general'
                     />,
                 ]}
@@ -38,8 +36,6 @@ describe('Regular expression checks', () => {
                     <a
                         key={0}
                         href='https://www.bestchange.com/?p=1095016'
-                        rel='noopener noreferrer'
-                        target='_blank'
                         className='link'
                     />,
                 ]}

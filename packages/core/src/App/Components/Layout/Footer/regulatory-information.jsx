@@ -14,25 +14,15 @@ const MLTRegulatoryInformation = () => (
                 components={[
                     <StaticUrl
                         href='/regulatory/Deriv_(Europe)_Limited.pdf'
-                        target='_blank'
-                        rel='nofollow noreferrer'
                         key={0}
                         className='footer-regulatory-information__link'
                     />,
                     <a
                         href='https://secure.gamblingcommission.gov.uk/PublicRegister/Search/Detail/39495'
-                        target='_blank'
-                        rel='nofollow noreferrer'
                         key={1}
                         className='footer-regulatory-information__link'
                     />,
-                    <StaticUrl
-                        href='/terms-and-conditions'
-                        target='_blank'
-                        rel='nofollow noreferrer'
-                        key={2}
-                        className='footer-regulatory-information__link'
-                    />,
+                    <StaticUrl href='/terms-and-conditions' key={2} className='footer-regulatory-information__link' />,
                 ]}
             />
         </p>

@@ -9,7 +9,7 @@ export const GoToDeriv = () => {
 
     return (
         <Popover alignment='top' message={message} className='footer__link'>
-            <StaticUrl href='/' target='_blank' rel='nofollow noreferrer'>
+            <StaticUrl href='/'>
                 <Icon icon='IcDerivOutline' className='footer__icon ic-deriv__icon' />
             </StaticUrl>
         </Popover>

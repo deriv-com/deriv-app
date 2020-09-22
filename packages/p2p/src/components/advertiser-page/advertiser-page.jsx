@@ -114,9 +114,9 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
                     } else {
                         setErrorMessage(response.error);
                     }
+                    setIsLoading(false);
                 }
                 resolve();
-                setIsLoading(false);
             });
         });
     };

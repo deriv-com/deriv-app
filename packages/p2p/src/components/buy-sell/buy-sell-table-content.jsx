@@ -29,8 +29,8 @@ const BuySellTableContent = ({ is_buy, setSelectedAd, showAdvertiserPage }) => {
     }, []);
 
     React.useEffect(() => {
-        setIsLoading(true);
         if (isMounted()) {
+            setIsLoading(true);
             loadMoreItems(item_offset.current, list_item_limit);
         }
     }, [is_buy]);

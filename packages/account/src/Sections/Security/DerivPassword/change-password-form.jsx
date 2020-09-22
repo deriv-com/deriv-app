@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Formik } from 'formik';
-import { Button, Loading, PasswordInput, PasswordMeter } from '@deriv/components';
+import { FormSubmitErrorMessage, Button, Loading, PasswordInput, PasswordMeter } from '@deriv/components';
 import { withRouter } from 'react-router-dom';
 import { routes, isMobile, validPassword, validLength, getErrorMessages } from '@deriv/shared';
 import { localize } from '@deriv/translations';
@@ -10,7 +10,6 @@ import { connect } from 'Stores/connect';
 import FormSubHeader from 'Components/form-sub-header';
 import FormBody from 'Components/form-body';
 import FormFooter from 'Components/form-footer';
-import FormSubmitErrorMessage from 'Components/form-submit-error-message';
 
 class ChangePasswordForm extends React.Component {
     state = {

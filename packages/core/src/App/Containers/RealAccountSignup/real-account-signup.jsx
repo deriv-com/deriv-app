@@ -96,6 +96,7 @@ class RealAccountSignup extends React.Component {
                             onSubmit={this.closeModalThenOpenCashier}
                         />
                     ),
+                    title: () => localize('Add or manage account'),
                 },
                 {
                     body: () => <StatusDialogContainer />,

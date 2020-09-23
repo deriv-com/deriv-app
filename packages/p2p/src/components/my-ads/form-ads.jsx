@@ -8,7 +8,7 @@ import FooterActions from 'Components/footer-actions/footer-actions.jsx';
 import { localize } from 'Components/i18next';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import { countDecimalPlaces } from 'Utils/string';
-import { textValidator, lengthValidator } from 'Utils/validations';
+import { decimalValidator, lengthValidator, textValidator } from 'Utils/validations';
 import { requestWS } from 'Utils/websocket';
 import AdSummary from './my-ads-summary.jsx';
 
@@ -319,14 +319,14 @@ class FormAds extends React.Component {
             max_transaction: [
                 v => !!v,
                 v => !isNaN(v),
-                v => v > 0 && countDecimalPlaces(v) <= getDecimalPlaces(this.context.currency),
+                v => v > 0 && decimalValidator(v) && countDecimalPlaces(v) <= getDecimalPlaces(this.context.currency),
                 v => (values.offer_amount ? +v <= values.offer_amount : true),
                 v => (values.min_transaction ? +v >= values.min_transaction : true),
             ],
             min_transaction: [
                 v => !!v,
                 v => !isNaN(v),
-                v => v > 0 && countDecimalPlaces(v) <= getDecimalPlaces(this.context.currency),
+                v => v > 0 && decimalValidator(v) && countDecimalPlaces(v) <= getDecimalPlaces(this.context.currency),
                 v => (values.offer_amount ? +v <= values.offer_amount : true),
                 v => (values.max_transaction ? +v <= values.max_transaction : true),
             ],
@@ -336,14 +336,17 @@ class FormAds extends React.Component {
                 // v => v > available_price,
                 // TODO: remove v > 0 check when we have available_price
                 v => !isNaN(v),
-                v => v > 0 && countDecimalPlaces(v) <= getDecimalPlaces(this.context.currency),
+                v => v > 0 && decimalValidator(v) && countDecimalPlaces(v) <= getDecimalPlaces(this.context.currency),
                 v => (values.min_transaction ? +v >= values.min_transaction : true),
                 v => (values.max_transaction ? +v >= values.max_transaction : true),
             ],
             price_rate: [
                 v => !!v,
                 v => !isNaN(v),
-                v => v > 0 && countDecimalPlaces(v) <= this.context.local_currency_config.decimal_places,
+                v =>
+                    v > 0 &&
+                    decimalValidator(v) &&
+                    countDecimalPlaces(v) <= this.context.local_currency_config.decimal_places,
             ],
         };
 

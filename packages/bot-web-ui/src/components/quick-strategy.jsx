@@ -72,6 +72,7 @@ const QuickStrategyForm = ({
                                                     list={symbol_dropdown}
                                                     name='symbol'
                                                     value={selected_symbol.value}
+                                                    is_nativepicker={true}
                                                     onChange={e => {
                                                         onChangeDropdownItem('symbol', e.target.value, setFieldValue);
                                                     }}
@@ -116,6 +117,7 @@ const QuickStrategyForm = ({
                                                     list={trade_type_dropdown}
                                                     name='trade_type'
                                                     value={selected_trade_type.value}
+                                                    is_nativepicker={true}
                                                     onChange={e => {
                                                         onChangeDropdownItem(
                                                             'trade-type',
@@ -169,6 +171,7 @@ const QuickStrategyForm = ({
                                                     list={duration_unit_dropdown}
                                                     name='duration-unit'
                                                     value={selected_duration_unit.value}
+                                                    is_nativepicker={true}
                                                     onChange={e => {
                                                         onChangeDropdownItem(
                                                             'duration-unit',

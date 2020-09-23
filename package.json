@@ -8,6 +8,7 @@
     "eslint-config-binary": "^1.0.2",
     "eslint-config-prettier": "^6.11.0",
     "eslint-formatter-pretty": "^4.0.0",
+    "eslint-import-resolver-webpack": "^0.12.2",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.20.6",

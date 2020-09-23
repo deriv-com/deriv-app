@@ -1528,11 +1528,7 @@ export default class ClientStore extends BaseStore {
             this.root_store.coomon.server_time.format('YYYY-MM-DD')
         );
         const signup_device_cookie = setDeviceDataCookie('signup_device', isDesktopOs() ? 'desktop' : 'mobile');
-        const device_data = createDeviceDataObject(
-            this.device_data.date_first_contact,
-            date_first_contact_cookie,
-            signup_device_cookie
-        );
+        const device_data = createDeviceDataObject(date_first_contact_cookie, signup_device_cookie);
 
         this.device_data = { ...this.device_data, ...device_data };
     }

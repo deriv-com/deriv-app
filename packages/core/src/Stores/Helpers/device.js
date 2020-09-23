@@ -1,6 +1,6 @@
 import { CookieStorage } from '_common/storage';
 
-export const createDeviceDataObject = (date_first_contact, date_first_contact_cookie, signup_device_cookie) => {
+export const createDeviceDataObject = (date_first_contact_cookie, signup_device_cookie) => {
     const url_params = new URLSearchParams(window.location.search);
     const device_data = {
         ...(url_params.get('affiliate_token') && { affiliate_token: url_params.get('affiliate_token') }),

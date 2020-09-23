@@ -64,4 +64,4 @@ const FinishedSetCurrency = ({ current, onCancel, onSubmit, prev }) => {
     );
 };
 
-export default FinishedSetCurrency;
+export default React.memo(FinishedSetCurrency);

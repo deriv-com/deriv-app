@@ -160,7 +160,7 @@ export const load = ({
     }, 500);
 };
 
-export const loadBlocks = (xml, drop_event, event_group, workspace) => {
+const loadBlocks = (xml, drop_event, event_group, workspace) => {
     Blockly.Events.setGroup(event_group);
 
     const block_ids = Blockly.Xml.domToWorkspace(xml, workspace);
@@ -173,7 +173,7 @@ export const loadBlocks = (xml, drop_event, event_group, workspace) => {
     }
 };
 
-export const loadWorkspace = async (xml, event_group, workspace) => {
+const loadWorkspace = async (xml, event_group, workspace) => {
     Blockly.Events.setGroup(event_group);
     await workspace.asyncClear();
 

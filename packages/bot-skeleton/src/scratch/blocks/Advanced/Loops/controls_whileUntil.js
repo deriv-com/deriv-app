@@ -6,7 +6,7 @@ Blockly.Blocks.controls_whileUntil = {
     },
     definition() {
         return {
-            message0: localize('repeat {{ while_or_until }} {{ boolean }}', { while_or_until: '%1', until: '%2' }),
+            message0: localize('repeat {{ while_or_until }} {{ boolean }}', { while_or_until: '%1', boolean: '%2' }),
             args0: [
                 {
                     type: 'field_dropdown',

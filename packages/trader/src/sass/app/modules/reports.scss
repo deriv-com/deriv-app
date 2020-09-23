@@ -287,11 +287,10 @@ $side-padding: 1.2em;
             }
         }
         &-amount {
-            text-align: left;
+            text-align: center;
             font-weight: bold;
             font-size: 1.6rem;
             color: var(--text-prominent);
-            text-align: center;
 
             @include mobile {
                 font-size: 1.4rem;

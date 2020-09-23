@@ -243,11 +243,14 @@ class CurrencySelector extends React.Component {
                                 </Div100vhContainer>
                                 <Modal.Footer is_bypassed={isMobile()}>
                                     <FormSubmitButton
+                                        className={
+                                            this.props.set_currency
+                                                ? 'currency-selector--set-currency'
+                                                : 'currency-selector--deriv-account'
+                                        }
                                         is_disabled={isSubmitting || !values.currency}
                                         is_center={!has_currency}
-                                        has_cancel={!this.props.set_currency}
-                                        onCancel={this.props.onCancel}
-                                        cancel_label={localize('Cancel')}
+                                        is_absolute={this.props.set_currency}
                                         label={this.props.set_currency ? localize('Set currency') : localize('Next')}
                                     />
                                 </Modal.Footer>

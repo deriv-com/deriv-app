@@ -207,6 +207,17 @@
             &__button {
                 margin-top: 1.6rem;
             }
+            @include mobile {
+                &--deriv-account {
+                    border-top: 2px solid var(--general-section-1);
+                    padding-top: 10px;
+
+                    .dc-btn:last-child {
+                        width: 90%;
+                        margin: 0 auto;
+                    }
+                }
+            }
         }
     }
     &__body {

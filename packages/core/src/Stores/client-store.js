@@ -728,7 +728,7 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    asyncaccountRealReaction(response) {
+    async accountRealReaction(response) {
         return new Promise(resolve => {
             runInAction(() => {
                 this.is_populating_account_list = true;
@@ -786,8 +786,8 @@ export default class ClientStore extends BaseStore {
                 await this.setAccountCurrency(currency);
             }
             localStorage.removeItem('real_account_signup_wizard');
-            this.root_store.gtm.pushDataLayer({ event: 'real_signup' });
-            Promise.resolve({
+            await this.root_store.gtm.pushDataLayer({ event: 'real_signup' });
+            return Promise.resolve({
                 ...response,
                 ...(is_maltainvest_account
                     ? {
@@ -798,9 +798,9 @@ export default class ClientStore extends BaseStore {
                       }
                     : {}),
             });
-        } else {
-            Promise.reject(response.error);
         }
+
+        return Promise.reject(response.error);
     }
 
     @action.bound
@@ -825,10 +825,9 @@ export default class ClientStore extends BaseStore {
                 key: 'currency',
             });
             await this.init();
-            Promise.resolve(response);
-        } else {
-            Promise.reject(response.error);
+            return Promise.resolve(response);
         }
+        return Promise.reject(response.error);
     }
 
     @action.bound
@@ -844,11 +843,10 @@ export default class ClientStore extends BaseStore {
             date_of_birth: toMoment(date_of_birth).format('YYYY-MM-DD'),
         });
         if (!response.error) {
-            this.accountRealReaction(response);
-            Promise.resolve(response);
-        } else {
-            Promise.reject(response.error);
+            await this.accountRealReaction(response);
+            return Promise.resolve(response);
         }
+        return Promise.reject(response.error);
     }
 
     @computed
@@ -963,7 +961,7 @@ export default class ClientStore extends BaseStore {
                 // Client comes back from oauth and logs in
                 await this.root_store.segment.identifyEvent();
 
-                this.root_store.gtm.pushDataLayer({
+                await this.root_store.gtm.pushDataLayer({
                     event: 'login',
                 });
             } else {
@@ -1016,7 +1014,7 @@ export default class ClientStore extends BaseStore {
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
             WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
-            this.getLimits();
+            await this.getLimits();
         } else {
             this.resetMt5AccountListPopulation();
         }

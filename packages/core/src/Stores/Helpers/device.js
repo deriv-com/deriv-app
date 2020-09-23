@@ -7,10 +7,13 @@ export const createDeviceDataObject = (date_first_contact, date_first_contact_co
         ...(url_params.get('gclid_url') && { gclid_url: url_params.get('gclid_url') }),
 
         // date_first_contact should be preserved to the first client contact
-        ...(!date_first_contact && {
-            date_first_contact:
-                url_params.get('date_first_contact') || date_first_contact_cookie.get('date_first_contact'),
-        }),
+        ...(url_params.get('date_first_contact')
+            ? {
+                  date_first_contact: url_params.get('date_first_contact'),
+              }
+            : {
+                  date_first_contact: date_first_contact_cookie.get('date_first_contact'),
+              }),
 
         // signup device can be set anytime even if there is no url parameter by using isDesktopOs function
         signup_device: url_params.get('signup_device') || signup_device_cookie.get('signup_device'),

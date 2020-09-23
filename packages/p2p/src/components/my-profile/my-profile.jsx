@@ -1,6 +1,7 @@
 import React from 'react';
 import { Field, Form, Formik } from 'formik';
 import { Button, Icon, Input, Loading, Popover, Table, ThemedScrollbars } from '@deriv/components';
+import classNames from 'classnames';
 import { requestWS } from 'Utils/websocket';
 import { localize } from 'Components/i18next';
 import FooterActions from 'Components/footer-actions/footer-actions.jsx';
@@ -19,8 +20,10 @@ const MyProfile = () => {
     const [form_error, setFormError] = React.useState('');
     const [has_poa, setHasPoa] = React.useState(false);
     const [has_poi, setHasPoi] = React.useState(false);
+    const [is_button_loading, setIsButtonLoading] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(true);
     const is_mounted = React.useRef(false);
+    const [is_submit_success, setIsSubmitSuccess] = React.useState(false);
     const [nickname, setNickname] = React.useState(null);
     const [payment_info, setPaymentInfo] = React.useState('');
     const [stats, setStats] = React.useState({});
@@ -100,7 +103,9 @@ const MyProfile = () => {
     };
 
     const handleSubmit = values => {
-        setIsLoading(true);
+        if (is_mounted.current) {
+            setIsButtonLoading(true);
+        }
         return new Promise(resolve => {
             requestWS({
                 p2p_advertiser_update: 1,
@@ -114,10 +119,12 @@ const MyProfile = () => {
                         setContactInfo(p2p_advertiser_update.contact_info);
                         setDefaultAdvertDescription(p2p_advertiser_update.default_advert_description);
                         setPaymentInfo(p2p_advertiser_update.payment_info);
+                        setIsButtonLoading(false);
+                        setIsSubmitSuccess(true);
                     } else {
                         setFormError(response.error);
                     }
-                    setIsLoading(false);
+                    setTimeout(() => setIsSubmitSuccess(false), 3000);
                 }
                 resolve();
             });
@@ -271,7 +278,7 @@ const MyProfile = () => {
                         onSubmit={handleSubmit}
                         validate={validateForm}
                     >
-                        {({ dirty, errors, isSubmitting, isValid, resetForm }) => {
+                        {({ dirty, errors, isSubmitting, isValid }) => {
                             return (
                                 <Form noValidate>
                                     <React.Fragment>
@@ -322,23 +329,19 @@ const MyProfile = () => {
 
                                         <FooterActions className='my-profile__footer' has_border>
                                             <FormError message={form_error} />
+
                                             <Button
-                                                className='my-profile__footer-button'
-                                                is_disabled={!dirty || isSubmitting}
-                                                secondary
-                                                large
-                                                onClick={resetForm}
-                                            >
-                                                {localize('Cancel')}
-                                            </Button>
-                                            <Button
-                                                className='my-profile__footer-button'
+                                                className={classNames('my-profile__footer-button', {
+                                                    'dc-btn--green': is_submit_success,
+                                                })}
                                                 is_disabled={!dirty || isSubmitting || !isValid}
+                                                is_loading={is_button_loading}
+                                                is_submit_success={is_submit_success}
+                                                text={localize('Save')}
+                                                has_effect
                                                 primary
                                                 large
-                                            >
-                                                {localize('Save')}
-                                            </Button>
+                                            />
                                         </FooterActions>
                                     </React.Fragment>
                                 </Form>

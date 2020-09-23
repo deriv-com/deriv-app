@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
     Autocomplete,
-    Dropdown,
+    SelectNative,
     Button,
     Icon,
     Input,
@@ -66,13 +66,11 @@ const QuickStrategyForm = ({
                                     {({ field }) => (
                                         <>
                                             {is_mobile ? (
-                                                <Dropdown
-                                                    placeholder={localize('Asset')}
-                                                    is_align_text_left
-                                                    list={symbol_dropdown}
-                                                    name='symbol'
+                                                <SelectNative
+                                                    list_items={symbol_dropdown}
                                                     value={selected_symbol.value}
-                                                    is_nativepicker={true}
+                                                    label={localize('Asset')}
+                                                    should_show_empty_option={false}
                                                     onChange={e => {
                                                         onChangeDropdownItem('symbol', e.target.value, setFieldValue);
                                                     }}
@@ -111,13 +109,11 @@ const QuickStrategyForm = ({
                                     {({ field }) => (
                                         <>
                                             {is_mobile ? (
-                                                <Dropdown
-                                                    placeholder={localize('Trade type')}
-                                                    is_align_text_left
-                                                    list={trade_type_dropdown}
-                                                    name='trade_type'
+                                                <SelectNative
+                                                    list_items={trade_type_dropdown}
                                                     value={selected_trade_type.value}
-                                                    is_nativepicker={true}
+                                                    label={localize('Trade type')}
+                                                    should_show_empty_option={false}
                                                     onChange={e => {
                                                         onChangeDropdownItem(
                                                             'trade-type',
@@ -164,14 +160,11 @@ const QuickStrategyForm = ({
                                     {({ field }) => (
                                         <>
                                             {is_mobile ? (
-                                                <Dropdown
-                                                    placeholder={localize('Duration unit')}
-                                                    className='quick-strategy__duration-dropdown'
-                                                    is_align_text_left
-                                                    list={duration_unit_dropdown}
-                                                    name='duration-unit'
+                                                <SelectNative
+                                                    list_items={duration_unit_dropdown}
                                                     value={selected_duration_unit.value}
-                                                    is_nativepicker={true}
+                                                    label={localize('Duration unit')}
+                                                    should_show_empty_option={false}
                                                     onChange={e => {
                                                         onChangeDropdownItem(
                                                             'duration-unit',

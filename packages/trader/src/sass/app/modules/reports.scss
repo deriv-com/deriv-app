@@ -37,10 +37,10 @@ $side-padding: 1.2em;
         &-filter {
             position: relative;
             display: flex;
-            justify-content: flex-end;
             width: 100%;
             @include desktop {
                 max-width: 36rem;
+                margin-left: auto;
             }
         }
 
@@ -242,7 +242,7 @@ $side-padding: 1.2em;
 
         &-item {
             flex: 1;
-            border-right: 1px solid $color-grey-2;
+            border-right: 1px solid var(--border-normal);
             display: flex;
             max-width: 19rem;
 
@@ -291,6 +291,7 @@ $side-padding: 1.2em;
             font-weight: bold;
             font-size: 1.6rem;
             color: var(--text-prominent);
+            text-align: center;
 
             @include mobile {
                 font-size: 1.4rem;

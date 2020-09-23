@@ -31,15 +31,6 @@ module.exports = {
     },
     module: {
         rules: [
-            !is_serve
-                ? {
-                      enforce: 'pre',
-                      test: /\.(js|jsx)$/,
-                      exclude: /node_modules/,
-                      include: /src/,
-                      loader: 'eslint-loader',
-                  }
-                : {},
             {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,

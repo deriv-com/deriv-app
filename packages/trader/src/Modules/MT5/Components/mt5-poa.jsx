@@ -202,6 +202,17 @@ class MT5POA extends React.Component {
         });
     }
 
+    isFormDisabled(dirty, errors, isSubmitting) {
+        if (this.state.poa_status && this.state.poa_status === PoaStatusCodes.verified) {
+            return false;
+        }
+        if (Object.keys(errors).length !== 0) {
+            return true;
+        }
+
+        return false;
+    }
+
     componentWillUnmount() {
         this.is_mounted = false;
     }
@@ -240,6 +251,7 @@ class MT5POA extends React.Component {
                 innerRef={form}
             >
                 {({
+                    dirty,
                     errors,
                     handleSubmit,
                     isSubmitting,
@@ -415,13 +427,7 @@ class MT5POA extends React.Component {
                                             <FormSubmitButton
                                                 has_cancel
                                                 cancel_label={localize('Previous')}
-                                                is_disabled={
-                                                    !(
-                                                        this.state.poa_status === PoaStatusCodes.verified ||
-                                                        !!Object.keys(errors).length === 0 ||
-                                                        isSubmitting
-                                                    )
-                                                }
+                                                is_disabled={this.isFormDisabled(dirty, errors, isSubmitting)}
                                                 label={localize('Next')}
                                                 is_absolute={isMobile()}
                                                 is_loading={isSubmitting}

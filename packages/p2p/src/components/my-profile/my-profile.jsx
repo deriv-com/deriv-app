@@ -119,11 +119,12 @@ const MyProfile = () => {
                         setContactInfo(p2p_advertiser_update.contact_info);
                         setDefaultAdvertDescription(p2p_advertiser_update.default_advert_description);
                         setPaymentInfo(p2p_advertiser_update.payment_info);
-                        setIsButtonLoading(false);
+
                         setIsSubmitSuccess(true);
                     } else {
                         setFormError(response.error);
                     }
+                    setIsButtonLoading(false);
                     setTimeout(() => setIsSubmitSuccess(false), 3000);
                 }
                 resolve();

@@ -385,7 +385,7 @@ class MT5POA extends React.Component {
                                         </ThemedScrollbars>
                                     )}
                                     {this.state.poa_status !== PoaStatusCodes.none && !resubmit_poa && (
-                                        <ThemedScrollbars height={height}>
+                                        <ThemedScrollbars height={height} is_bypassed={isMobile()}>
                                             {submitted_poa && (
                                                 <PoaSubmitted
                                                     is_description_disabled={true}

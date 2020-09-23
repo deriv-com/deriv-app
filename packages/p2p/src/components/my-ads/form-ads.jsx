@@ -89,7 +89,7 @@ class FormAds extends React.Component {
                         onSubmit={this.handleSubmit}
                         validate={this.validateFormAds}
                     >
-                        {({ isSubmitting, errors, handleChange, touched, isValid, values }) => {
+                        {({ dirty, errors, handleChange, isSubmitting, isValid, touched, values }) => {
                             const is_sell_ad = values.type === 'sell';
                             return (
                                 <div className='p2p-my-ads__form'>
@@ -296,7 +296,7 @@ class FormAds extends React.Component {
                                                 className='p2p-my-ads__form-button'
                                                 primary
                                                 large
-                                                is_disabled={isSubmitting || !isValid}
+                                                is_disabled={isSubmitting || !isValid || !dirty}
                                             >
                                                 {localize('Post ad')}
                                             </Button>

@@ -748,29 +748,28 @@
     .dc-autocomplete {
         margin-bottom: 2.4rem;
     }
-}
-
-.account-management {
-    &__message-icon {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    &__message-content {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-        align-items: center;
-        height: 24em;
-        padding: 0 3em;
-    }
-    &__message {
-        @include typeface(--title-center-bold-black);
-        color: var(--text-prominent);
-    }
-    &__text {
-        @include typeface(--paragraph-center-normal-black);
-        color: var(--text-prominent);
+    .account-management {
+        &__message-icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        &__message-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            height: 24rem;
+            padding: 0 3rem;
+        }
+        &__message {
+            @include typeface(--title-center-bold-black);
+            color: var(--text-prominent);
+        }
+        &__text {
+            @include typeface(--paragraph-center-normal-black);
+            color: var(--text-prominent);
+        }
     }
 }
 

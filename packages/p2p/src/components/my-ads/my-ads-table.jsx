@@ -3,7 +3,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Icon, Loading, Table, ProgressIndicator } from '@deriv/components';
 import { localize } from 'Components/i18next';
-import Dp2pContext from 'Components/context/dp2p-context';
 import Empty from 'Components/empty/empty.jsx';
 import ToggleAds from 'Components/my-ads/toggle-ads.jsx';
 import Popup from 'Components/orders/popup.jsx';
@@ -12,6 +11,7 @@ import { TableError } from 'Components/table/table-error.jsx';
 import { height_constants } from 'Utils/height_constants';
 import { requestWS } from 'Utils/websocket';
 import { MyAdsLoader } from './my-ads-loader.jsx';
+import { useStores } from '../../../stores';
 
 const getHeaders = offered_currency => [
     { text: localize('Ad ID') },
@@ -64,7 +64,7 @@ RowComponent.propTypes = {
 RowComponent.displayName = 'RowComponent';
 
 const MyAdsTable = ({ onClickCreate }) => {
-    const { currency, list_item_limit, is_listed } = React.useContext(Dp2pContext);
+    const { general_store } = useStores();
     const is_mounted = React.useRef(false);
     const item_offset = React.useRef(0);
     const [is_loading, setIsLoading] = React.useState(true);
@@ -86,17 +86,17 @@ const MyAdsTable = ({ onClickCreate }) => {
             requestWS({
                 p2p_advertiser_adverts: 1,
                 offset: start_idx,
-                limit: list_item_limit,
+                limit: general_store.list_item_limit,
             }).then(response => {
                 if (is_mounted.current) {
                     if (!response.error) {
-                        setHasMoreItemsToLoad(response.length >= list_item_limit);
+                        setHasMoreItemsToLoad(response.length >= general_store.list_item_limit);
                         setAds(ads.concat(response));
-                        setIsLoading(false);
                         item_offset.current += response.length;
                     } else {
                         setApiErrorMessage(response.api_error_message);
                     }
+                    setIsLoading(false);
                     resolve();
                 }
             });
@@ -156,12 +156,12 @@ const MyAdsTable = ({ onClickCreate }) => {
                 </div>
                 <Table
                     className={classNames('p2p-my-ads__table', {
-                        'p2p-my-ads__table--disabled': !is_listed,
+                        'p2p-my-ads__table--disabled': !general_store.is_listed,
                     })}
                 >
                     <Table.Header>
                         <Table.Row className='p2p-my-ads__table-row'>
-                            {getHeaders(currency).map(header => (
+                            {getHeaders(general_store.client.currency).map(header => (
                                 <Table.Head key={header.text}>{header.text}</Table.Head>
                             ))}
                         </Table.Row>
@@ -204,7 +204,7 @@ const MyAdsTable = ({ onClickCreate }) => {
 };
 
 MyAdsTable.propTypes = {
-    is_enabled: PropTypes.bool,
+    onClickCreate: PropTypes.func,
 };
 
 export default MyAdsTable;

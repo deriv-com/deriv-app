@@ -317,9 +317,7 @@ export default class PortfolioStore extends BaseStore {
 
     @action.bound
     accountSwitcherListener() {
-        return new Promise(async resolve => {
-            return resolve(this.initializePortfolio());
-        });
+        return Promise.resolve(this.initializePortfolio());
     }
 
     @action.bound

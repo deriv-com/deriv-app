@@ -18,8 +18,6 @@ const index_lookup = {
 };
 
 class MT5FinancialStpRealAccountSignup extends React.Component {
-    state = {};
-
     constructor(props) {
         super(props);
 
@@ -41,11 +39,11 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
                         tax_identification_number: '',
                         account_opening_reason: '',
                     },
-                    props: ['residence_list', 'is_fully_authenticated', 'is_loading', 'landing_company'],
+                    props: ['residence_list', 'is_fully_authenticated', 'landing_company'],
                 },
                 {
                     header: {
-                        active_title: localize('Complete your personal details'),
+                        active_title: localize('Complete your proof of identity'),
                         title: localize('Proof of identity'),
                     },
                     body: MT5POI,
@@ -61,7 +59,7 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
                 },
                 {
                     header: {
-                        active_title: localize('Complete your personal details'),
+                        active_title: localize('Complete your proof of address'),
                         title: localize('Proof of address'),
                     },
                     body: MT5POA,
@@ -216,12 +214,9 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
     render() {
         const BodyComponent = this.getCurrent('body');
         const form_value = this.getCurrent('form_value');
-        const passthrough = (this.getCurrent('props') || []).reduce(
-            (arr, item) => {
-                return Object.assign(arr, { [item]: this.props[item] });
-            },
-            { is_loading: this.state.is_loading }
-        );
+        const passthrough = (this.getCurrent('props') || []).reduce((arr, item) => {
+            return Object.assign(arr, { [item]: this.props[item] });
+        }, {});
         const height = this.getCurrent('height') || 'auto';
         return (
             <Div100vhContainer
@@ -267,6 +262,7 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
                         is_loading={this.state.is_loading}
                         onCancel={this.prevStep}
                         onSave={this.saveFormData}
+                        form_error={this.state.form_error}
                         {...passthrough}
                     />
                 </div>

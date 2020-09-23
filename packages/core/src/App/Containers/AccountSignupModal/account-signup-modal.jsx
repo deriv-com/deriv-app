@@ -3,7 +3,7 @@ import { Field, Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Dialog, PasswordInput, PasswordMeter } from '@deriv/components';
-import { validPassword, validLength, website_name, getPreBuildDVRs } from '@deriv/shared';
+import { validPassword, validLength, website_name, getErrorMessages } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import ResidenceForm from '../SetResidenceModal/set-residence-form.jsx';
@@ -25,7 +25,7 @@ const validateSignup = (values, residence_list) => {
             max_number: 25,
         });
     } else if (!validPassword(values.password)) {
-        errors.password = getPreBuildDVRs().password.message;
+        errors.password = getErrorMessages().password();
     }
 
     if (!values.residence) {

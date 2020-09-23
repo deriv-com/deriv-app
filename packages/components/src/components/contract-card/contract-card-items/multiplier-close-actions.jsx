@@ -12,6 +12,7 @@ const MultiplierCloseActions = ({
     is_sell_requested,
     onClickCancel,
     onClickSell,
+    server_time,
 }) => {
     const { contract_id, cancellation: { date_expiry: cancellation_date_expiry } = {}, profit } = contract_info;
 
@@ -46,7 +47,14 @@ const MultiplierCloseActions = ({
                     secondary
                 >
                     {getCardLabels().CANCEL}
-                    {cancellation_date_expiry && <RemainingTime end_time={cancellation_date_expiry} format='mm:ss' />}
+                    {cancellation_date_expiry && (
+                        <RemainingTime
+                            end_time={cancellation_date_expiry}
+                            format='mm:ss'
+                            getCardLabels={getCardLabels}
+                            start_time={server_time}
+                        />
+                    )}
                 </Button>
             )}
         </React.Fragment>
@@ -60,6 +68,7 @@ MultiplierCloseActions.propTypes = {
     is_sell_requested: PropTypes.bool,
     onClickCancel: PropTypes.func,
     onClickSell: PropTypes.func,
+    server_time: PropTypes.object,
 };
 
 export default MultiplierCloseActions;

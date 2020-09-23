@@ -100,6 +100,7 @@ const PositionsDrawerCard = ({
             onClickSell={onClickSell}
             removeToast={removeToast}
             setCurrentFocus={setCurrentFocus}
+            server_time={server_time}
             should_show_cancellation_warning={should_show_cancellation_warning}
             status={status}
             toggleCancellationWarning={toggleCancellationWarning}

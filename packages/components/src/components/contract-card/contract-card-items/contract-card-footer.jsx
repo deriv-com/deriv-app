@@ -19,6 +19,7 @@ const CardFooter = ({
     onClickSell,
     removeToast,
     setCurrentFocus,
+    server_time,
     should_show_cancellation_warning,
     status,
     toggleCancellationWarning,
@@ -55,6 +56,7 @@ const CardFooter = ({
                             is_sell_requested={is_sell_requested}
                             onClickCancel={onClickCancel}
                             onClickSell={onClickSell}
+                            server_time={server_time}
                         />
                         {(is_valid_to_sell || is_valid_to_cancel) && (
                             <ToggleCardDialog

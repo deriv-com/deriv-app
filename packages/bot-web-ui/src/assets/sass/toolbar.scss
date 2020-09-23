@@ -13,10 +13,6 @@
             margin: 0 4px;
             height: calc(56px - 16px) !important;
 
-            @include mobile {
-                max-width: 6.9rem;
-            }
-
             & .dc-btn__icon {
                 padding-right: 0.4rem;
             }

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { Button, Icon } from '@deriv/components';
+import { Button, Icon, Text } from '@deriv/components';
 import { routes, getCurrencyDisplayCode } from '@deriv/shared';
 
 import { localize, Localize } from '@deriv/translations';
@@ -35,6 +35,7 @@ class NoBalance extends React.Component {
                     primary
                     large
                 />
+                <Text size='25px'>{localize('test the text component')}</Text>
             </div>
         );
     };

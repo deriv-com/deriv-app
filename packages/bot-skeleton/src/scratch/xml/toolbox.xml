@@ -385,8 +385,8 @@
             </block>
             <block type="atr_statement">
                 <statement name="STATEMENT">
-                    <block type="input_list" deletable="false" movable="false">
-                        <value name="INPUT_LIST">
+                    <block type="tick_list" deletable="false" movable="false">
+                        <value name="TICK_LIST">
                         </value>
                         <next>
                             <block type="candle_list" deletable="false" movable="false">
@@ -408,8 +408,8 @@
             </block>
             <block type="atra_statement">
                 <statement name="STATEMENT">
-                    <block type="input_list" deletable="false" movable="false">
-                        <value name="INPUT_LIST">
+                    <block type="tick_list" deletable="false" movable="false">
+                        <value name="TICK_LIST">
                         </value>
                         <next>
                             <block type="candle_list" deletable="false" movable="false">
@@ -432,8 +432,8 @@
             <block type="so_statement">
             <field name="STOCHASTIC_OSCILLATOR_PERIOD">0</field>
                 <statement name="STATEMENT">
-                    <block type="input_list" deletable="false" movable="false">
-                        <value name="INPUT_LIST">
+                    <block type="tick_list" deletable="false" movable="false">
+                        <value name="TICK_LIST">
                         </value>
                         <next>
                             <block type="candle_list" deletable="false" movable="false">
@@ -450,14 +450,14 @@
                                             <block type="k_slowing_period" deletable="false" movable="false">
                                                 <value name="K_SLOWING_PERIOD">
                                                     <shadow type="math_number">
-                                                        <field name="NUM">10</field>
+                                                        <field name="NUM">14</field>
                                                     </shadow>
                                                 </value>
                                                 <next>
                                                     <block type="d_period" deletable="false" movable="false">
                                                         <value name="D_PERIOD">
                                                             <shadow type="math_number">
-                                                                <field name="NUM">10</field>
+                                                                <field name="NUM">14</field>
                                                             </shadow>
                                                         </value>
                                                     </block>
@@ -474,8 +474,8 @@
             <block type="soa_statement">
             <field name="STOCHASTIC_OSCILLATOR_PERIOD">0</field>
                 <statement name="STATEMENT">
-                    <block type="input_list" deletable="false" movable="false">
-                        <value name="INPUT_LIST">
+                    <block type="tick_list" deletable="false" movable="false">
+                        <value name="TICK_LIST">
                         </value>
                         <next>
                             <block type="candle_list" deletable="false" movable="false">
@@ -492,14 +492,14 @@
                                             <block type="k_slowing_period" deletable="false" movable="false">
                                                 <value name="K_SLOWING_PERIOD">
                                                     <shadow type="math_number">
-                                                        <field name="NUM">10</field>
+                                                        <field name="NUM">14</field>
                                                     </shadow>
                                                 </value>
                                                 <next>
                                                     <block type="d_period" deletable="false" movable="false">
                                                         <value name="D_PERIOD">
                                                             <shadow type="math_number">
-                                                                <field name="NUM">10</field>
+                                                                <field name="NUM">14</field>
                                                             </shadow>
                                                         </value>
                                                     </block>
@@ -507,6 +507,52 @@
                                             </block>
                                         </next>
                                     </block>       
+                                </next>
+                            </block>
+                        </next>
+                    </block>
+                </statement>
+            </block>
+            <block type="wr_statement">
+                <statement name="STATEMENT">
+                    <block type="tick_list" deletable="false" movable="false">
+                        <value name="TICK_LIST">
+                        </value>
+                        <next>
+                            <block type="candle_list" deletable="false" movable="false">
+                                <value name="CANDLE_LIST">
+                                </value>
+                                <next>
+                                    <block type="period" deletable="false" movable="false">
+                                        <value name="PERIOD">
+                                            <shadow type="math_number">
+                                                <field name="NUM">14</field>
+                                            </shadow>
+                                        </value>
+                                    </block>
+                                </next>
+                            </block>
+                        </next>
+                    </block>
+                </statement>
+            </block>
+            <block type="wra_statement">
+                <statement name="STATEMENT">
+                    <block type="tick_list" deletable="false" movable="false">
+                        <value name="TICK_LIST">
+                        </value>
+                        <next>
+                            <block type="candle_list" deletable="false" movable="false">
+                                <value name="CANDLE_LIST">
+                                </value>
+                                <next>
+                                    <block type="period" deletable="false" movable="false">
+                                        <value name="PERIOD">
+                                            <shadow type="math_number">
+                                                <field name="NUM">14</field>
+                                            </shadow>
+                                        </value>
+                                    </block>
                                 </next>
                             </block>
                         </next>

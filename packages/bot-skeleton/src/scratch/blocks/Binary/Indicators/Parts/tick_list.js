@@ -1,13 +1,13 @@
 import { localize } from '@deriv/translations';
 
-Blockly.Blocks.candle_list = {
+Blockly.Blocks.tick_list = {
     init() {
         this.jsonInit({
-            message0: localize('Candle List %1'),
+            message0: localize('Tick List %1'),
             args0: [
                 {
                     type: 'input_value',
-                    name: 'CANDLE_LIST',
+                    name: 'TICK_LIST',
                     check: 'Array',
                 },
             ],
@@ -32,9 +32,9 @@ Blockly.Blocks.candle_list = {
     ],
     getRequiredValueInputs() {
         return {
-            CANDLE_LIST: null,
+            TICK_LIST: null,
         };
     },
 };
 
-Blockly.JavaScript.candle_list = () => {};
+Blockly.JavaScript.tick_list = () => {};

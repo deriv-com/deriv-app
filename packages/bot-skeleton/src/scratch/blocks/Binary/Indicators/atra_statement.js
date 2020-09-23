@@ -2,7 +2,7 @@ import { localize } from '@deriv/translations';
 
 Blockly.Blocks.atra_statement = {
     protected_statements: ['STATEMENT'],
-    required_child_blocks: ['input_list', 'candle_list', 'period'],
+    required_child_blocks: ['tick_list', 'candle_list', 'period'],
     init() {
         this.jsonInit(this.definition());
     },
@@ -38,7 +38,7 @@ Blockly.Blocks.atra_statement = {
     },
     meta() {
         return {
-            display_name: localize('Average True Range Array'),
+            display_name: localize('Average True Range Array (ATRA)'),
             description: localize('Average True Range Array indicator description text'),
         };
     },
@@ -51,10 +51,10 @@ Blockly.JavaScript.atra_statement = block => {
         block.getFieldValue('VARIABLE'),
         Blockly.Variables.NAME_TYPE
     );
-    const input = block.childValueToCode('input_list', 'INPUT_LIST');
+    const ticks = block.childValueToCode('tick_list', 'TICK_LIST');
     const candle = block.childValueToCode('candle_list', 'CANDLE_LIST');
     const period = block.childValueToCode('period', 'PERIOD');
-    const code = `${var_name} = Bot.atra({data: ${input}, candle: ${candle}}, ${period});\n`;
+    const code = `${var_name} = Bot.atra({data: ${ticks}, candle: ${candle}}, ${period});\n`;
 
     return code;
 };

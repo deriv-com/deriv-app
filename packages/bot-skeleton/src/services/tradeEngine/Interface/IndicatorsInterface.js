@@ -18,6 +18,8 @@ import {
     averageTrueRangeArray as atra,
     stochasticOscillator as so,
     stochasticOscillatorArray as soa,
+    williamRIndicator as wr,
+    williamRIndicatorArray as wra,
 } from '@deriv/shared';
 
 export default Interface =>
@@ -43,6 +45,8 @@ export default Interface =>
                 atra: (input, periods) => this.decorate(atra, input, { periods }),
                 so: (input, config) => this.decorate(so, input, config),
                 soa: (input, config) => this.decorate(soa, input, config),
+                wr: (input, periods) => this.decorate(wr, input, { periods }),
+                wra: (input, periods) => this.decorate(wra, input, { periods }),
             };
         }
 

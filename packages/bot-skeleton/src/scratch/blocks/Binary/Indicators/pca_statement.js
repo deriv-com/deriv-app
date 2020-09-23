@@ -9,7 +9,7 @@ Blockly.Blocks.pca_statement = {
     },
     definition() {
         return {
-            message0: localize('set %1 to Price Channel %2 %3'),
+            message0: localize('set %1 to Price Channel Array %2 %3'),
             message1: '%1',
             args0: [
                 {
@@ -44,7 +44,7 @@ Blockly.Blocks.pca_statement = {
     },
     meta() {
         return {
-            display_name: localize('Price Channel Array'),
+            display_name: localize('Price Channel Array (%PCA)'),
             description: localize('Return maximal and minimal prices for selected period'),
         };
     },

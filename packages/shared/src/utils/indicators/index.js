@@ -8,3 +8,4 @@ export * from './parabolic-sar';
 export * from './fractal';
 export * from './average-true-range';
 export * from './stochastic-oscillator';
+export * from './willaim-r-indicator';

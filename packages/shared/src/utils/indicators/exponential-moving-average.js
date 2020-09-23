@@ -18,7 +18,7 @@ export const exponentialMovingAverage = (data, config, init_val) => {
     const vals = takeField(data, field);
 
     if (init_val) {
-        return (vals[0] - init_val) * weighting_multiplier + init_val;
+        return +((vals[0] - init_val) * weighting_multiplier + init_val).toFixed(pipSize);
     }
 
     if (Object.is(init_val, NaN)) {

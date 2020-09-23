@@ -62,8 +62,6 @@ Blockly.Blocks.input_list = {
         }
     },
     allowed_parents: [
-        'atr_statement',
-        'atra_statement',
         'bb_statement',
         'bba_statement',
         'ema_statement',
@@ -79,8 +77,6 @@ Blockly.Blocks.input_list = {
         'rsia_statement',
         'sma_statement',
         'smaa_statement',
-        'so_statement',
-        'soa_statement',
     ],
     getRequiredValueInputs() {
         return {

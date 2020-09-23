@@ -40,6 +40,8 @@ Blockly.Blocks.period = {
         'rsia_statement',
         'sma_statement',
         'smaa_statement',
+        'wr_statement',
+        'wra_statement',
     ],
     getRequiredValueInputs() {
         return {

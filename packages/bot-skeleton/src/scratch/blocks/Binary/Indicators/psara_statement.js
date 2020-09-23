@@ -38,7 +38,7 @@ Blockly.Blocks.psara_statement = {
     },
     meta() {
         return {
-            display_name: localize('Parabolic SAR Array'),
+            display_name: localize('Parabolic SAR Array (PSARA)'),
             description: localize('Parabolic SAR Array description text'),
         };
     },

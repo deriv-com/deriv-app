@@ -17,4 +17,6 @@ import './sma_statement';
 import './smaa_statement';
 import './so_statement';
 import './soa_statement';
+import './wr_statement';
+import './wra_statement';
 import './Parts';

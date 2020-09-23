@@ -3,7 +3,7 @@ import { config } from '../../../../constants/config';
 
 Blockly.Blocks.soa_statement = {
     protected_statements: ['STATEMENT'],
-    required_child_blocks: ['input_list', 'candle_list', 'k_period', 'k_slowing_period', 'd_period'],
+    required_child_blocks: ['tick_list', 'candle_list', 'k_period', 'k_slowing_period', 'd_period'],
     init() {
         this.jsonInit(this.definition());
     },
@@ -58,12 +58,12 @@ Blockly.JavaScript.soa_statement = block => {
         Blockly.Variables.NAME_TYPE
     );
     const so_result = block.getFieldValue('STOCHASTIC_OSCILLATOR_PERIOD');
-    const input = block.childValueToCode('input_list', 'INPUT_LIST');
+    const ticks = block.childValueToCode('tick_list', 'TICK_LIST');
     const candle = block.childValueToCode('candle_list', 'CANDLE_LIST');
     const k_period = block.childValueToCode('k_period', 'K_PERIOD');
     const k_slowing_period = block.childValueToCode('k_slowing_period', 'K_SLOWING_PERIOD');
     const d_period = block.childValueToCode('d_period', 'D_PERIOD');
-    const code = `${var_name} = Bot.soa({ data: ${input}, candle: ${candle}}, {k_period: ${k_period}, k_slowing_period: ${k_slowing_period}, d_period: ${d_period}, type: ${so_result}});\n`;
+    const code = `${var_name} = Bot.soa({ data: ${ticks}, candle: ${candle}}, {k_period: ${k_period}, k_slowing_period: ${k_slowing_period}, d_period: ${d_period}, type: ${so_result}});\n`;
 
     return code;
 };

@@ -44,7 +44,7 @@ Blockly.Blocks.pc_statement = {
     },
     meta() {
         return {
-            display_name: localize('Price Channel'),
+            display_name: localize('Price Channel (%PC)'),
             description: localize('Return maximal and minimal prices for selected period'),
         };
     },

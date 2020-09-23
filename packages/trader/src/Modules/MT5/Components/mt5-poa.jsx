@@ -202,7 +202,7 @@ class MT5POA extends React.Component {
         });
     }
 
-    isFormDisabled(dirty, errors, isSubmitting) {
+    isFormDisabled(dirty, errors) {
         if (this.state.poa_status && this.state.poa_status === PoaStatusCodes.verified) {
             return false;
         }
@@ -427,7 +427,7 @@ class MT5POA extends React.Component {
                                             <FormSubmitButton
                                                 has_cancel
                                                 cancel_label={localize('Previous')}
-                                                is_disabled={this.isFormDisabled(dirty, errors, isSubmitting)}
+                                                is_disabled={this.isFormDisabled(dirty, errors)}
                                                 label={localize('Next')}
                                                 is_absolute={isMobile()}
                                                 is_loading={isSubmitting}

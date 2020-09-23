@@ -339,7 +339,13 @@ class OpenPositions extends React.Component {
             totals: active_positions_filtered_totals,
         };
         this.columns = is_multiplier_selected
-            ? getMultiplierOpenPositionsColumnsTemplate({ currency, onClickCancel, onClickSell, getPositionById })
+            ? getMultiplierOpenPositionsColumnsTemplate({
+                  currency,
+                  onClickCancel,
+                  onClickSell,
+                  getPositionById,
+                  server_time,
+              })
             : getOpenPositionsColumnsTemplate(currency);
 
         this.columns_map = this.columns.reduce((map, item) => {

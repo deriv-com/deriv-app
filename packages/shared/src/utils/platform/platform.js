@@ -12,6 +12,12 @@ export const isMT5 = () =>
     /^\/mt5/.test(window.location.pathname) ||
     (/^\/(br_)/.test(window.location.pathname) && window.location.pathname.split('/')[2] === 'mt5');
 
+export const isP2P = (routing_history, platform_route) => {
+    const routing_history_index = routing_history.length > 1 ? 1 : 0;
+    const history_item = routing_history[routing_history_index];
+    return history_item?.pathname === platform_route;
+};
+
 export const getPlatformHeader = routing_history => {
     if (isBot() || isNavigationFromPlatform(routing_history, routes.bot)) return 'DBot';
     if (isMT5() || isNavigationFromPlatform(routing_history, routes.mt5)) return 'DMT5';
@@ -29,10 +35,9 @@ export const getPlatformIcon = routing_history => {
 export const getPlatformRedirect = routing_history => {
     if (isBot() || isNavigationFromPlatform(routing_history, routes.bot)) return { name: 'DBot', route: routes.bot };
     if (isMT5() || isNavigationFromPlatform(routing_history, routes.mt5)) return { name: 'DMT5', route: routes.mt5 };
+    if (isP2P(routing_history, routes.cashier_p2p)) return { name: 'P2P', route: routes.cashier_p2p };
     if (isNavigationFromPlatform(routing_history, routes.smarttrader))
         return { name: 'SmartTrader', route: routes.smarttrader };
-    if (isNavigationFromPlatform(routing_history, routes.cashier_p2p, true))
-        return { name: 'P2P', route: routes.cashier_p2p };
     return { name: 'DTrader', route: routes.trade };
 };
 

@@ -62,7 +62,6 @@ const validatePersonalDetails = (values, residence_list, account_opening_reason)
         tax_identification_number: [v => !!v, v => /^[\w-]{0,20}$/.test(v)],
         account_opening_reason: [v => !!v, v => account_opening_reason.map(i => i.value).includes(v)],
     };
-
     const mappedKey = {
         citizen: localize('Citizenship'),
         tax_residence: localize('Tax residence'),
@@ -285,7 +284,6 @@ const MT5PersonalDetailsForm = ({
                                                                 errors.account_opening_reason
                                                             }
                                                             {...field}
-                                                            required
                                                         />
                                                     </DesktopWrapper>
                                                     <MobileWrapper>
@@ -294,7 +292,6 @@ const MT5PersonalDetailsForm = ({
                                                             label={localize('Account opening reason')}
                                                             list_items={account_opening_reason}
                                                             value={values.account_opening_reason}
-                                                            use_text={true}
                                                             error={
                                                                 touched.account_opening_reason &&
                                                                 errors.account_opening_reason
@@ -308,7 +305,6 @@ const MT5PersonalDetailsForm = ({
                                                                 );
                                                             }}
                                                             {...field}
-                                                            required
                                                         />
                                                     </MobileWrapper>
                                                 </React.Fragment>

@@ -36,9 +36,13 @@ export default class JournalStore {
         { id: message_types.SUCCESS, label: localize('System') },
     ];
 
+    getJournalStorageKey = key => {
+        return JSON.parse(sessionStorage.getItem(key));
+    };
+
     @observable is_filter_dialog_visible = false;
-    @observable unfiltered_messages = Array.isArray(JSON.parse(sessionStorage.getItem(journal_storage_key)))
-        ? JSON.parse(sessionStorage.getItem(journal_storage_key))
+    @observable unfiltered_messages = Array.isArray(this.getJournalStorageKey(journal_storage_key))
+        ? this.getJournalStorageKey(journal_storage_key)
         : [];
     @observable journal_filters = getSetting('journal_filter') || this.filters.map(filter => filter.id);
 

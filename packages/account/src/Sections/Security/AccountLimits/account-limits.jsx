@@ -213,7 +213,7 @@ class AccountLimits extends React.Component {
                             {!is_fully_authenticated && (
                                 <tbody>
                                     <Row>
-                                        <Td>{localize('Total withdrawal allowed')}</Td>
+                                        <Td>{localize('Total withdrawal limit')}</Td>
                                         <Td>{formatMoney(currency, num_of_days_limit, true)}</Td>
                                     </Row>
                                     <Row>

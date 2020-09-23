@@ -42,35 +42,21 @@ export const getPlatformRedirect = routing_history => {
 };
 
 export const isNavigationFromPlatform = (app_routing_history, platform_route, should_ignore_parent_path = false) => {
-    if (app_routing_history.length > 0) {
+    const app_routing_history_length = app_routing_history.length;
+
+    if (app_routing_history_length > 0) {
+        // Look for the most recent tab visited
         const getParentPath = pathname => (/^http/.test(pathname) ? false : pathname.split('/')[1]);
+        const recent_history_index = app_routing_history_length > 1 ? 1 : 0;
+        const history_item = app_routing_history[recent_history_index];
+        const history_item_parent_path = getParentPath(history_item.pathname);
 
-        for (let i = 0; i < app_routing_history.length; i++) {
-            const history_item = app_routing_history[i];
-            const history_item_parent_path = getParentPath(history_item.pathname);
-            const next_history_item = app_routing_history.length > i + 1 && app_routing_history[i + 1];
-
-            if (
-                history_item_parent_path === getParentPath(platform_route) ||
-                (should_ignore_parent_path && history_item.pathname === platform_route)
-            ) {
-                return true;
-            } else if (!next_history_item) {
-                return false;
-            } else if (history_item_parent_path === getParentPath(next_history_item.pathname)) {
-                // Continue walking until we see passed in platform_route.
-                continue; // eslint-disable-line no-continue
-            } else {
-                // Return false when path matches a platform parent path, but don't return anything
-                // when a non-platform path was seen. i.e. navigating between /cashier and /reports
-                // should not affect navigating back to platform when clicking cross.
-                const platform_parent_paths = [routes.mt5, routes.bot, routes.trade].map(route => getParentPath(route));
-                const is_other_platform_path = platform_parent_paths.includes(history_item_parent_path);
-
-                if (is_other_platform_path) {
-                    break;
-                }
-            }
+        if (
+            history_item_parent_path === getParentPath(platform_route) &&
+            should_ignore_parent_path &&
+            history_item.pathname === platform_route
+        ) {
+            return true;
         }
     }
 

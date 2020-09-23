@@ -746,12 +746,11 @@ export default class ClientStore extends BaseStore {
 
                 runInAction(() => (client_accounts[client_id] = new_data));
                 this.setLoginInformation(client_accounts, client_id);
-                WS.authorized.storage
-                    .getSettings()
-                    .then(get_settings_response => this.setAccountSettings(get_settings_response.get_settings));
+                WS.authorized.storage.getSettings().then(get_settings_response => {
+                    this.setAccountSettings(get_settings_response.get_settings);
+                    resolve();
+                });
             });
-
-            resolve();
         });
     }
 

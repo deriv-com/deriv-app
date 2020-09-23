@@ -3,7 +3,12 @@ import React from 'react';
 import { Money, Icon, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isMobile, epochToMoment, toGMTFormat } from '@deriv/shared';
-import { getBarrierLabel, getBarrierValue, isDigitType } from 'App/Components/Elements/PositionsDrawer/helpers';
+import {
+    getBarrierLabel,
+    getBarrierValue,
+    isDigitType,
+    addCommaToNumber,
+} from 'App/Components/Elements/PositionsDrawer/helpers';
 import {
     getCancellationPrice,
     isCancellationExpired,
@@ -102,7 +107,7 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
                         id='dt_entry_spot_label'
                         icon={<Icon icon='IcContractEntrySpot' size={24} />}
                         label={localize('Entry spot')}
-                        value={entry_spot_display_value || ' - '}
+                        value={addCommaToNumber(entry_spot_display_value) || ' - '}
                         value2={toGMTFormat(epochToMoment(entry_tick_time)) || ' - '}
                     />
                 )}
@@ -111,7 +116,7 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
                         id='dt_exit_spot_label'
                         icon={<Icon icon='IcContractExitSpot' size={24} />}
                         label={localize('Exit spot')}
-                        value={exit_spot || ' - '}
+                        value={addCommaToNumber(exit_spot) || ' - '}
                         value2={toGMTFormat(epochToMoment(exit_tick_time)) || ' - '}
                     />
                 )}

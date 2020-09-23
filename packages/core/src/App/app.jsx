@@ -20,6 +20,7 @@ import SmartTraderIFrame from 'Modules/SmartTraderIFrame';
 import AppToastMessages from './Containers/app-toast-messages.jsx';
 import ErrorBoundary from './Components/Elements/Errors/error-boundary.jsx';
 import AppContents from './Containers/Layout/app-contents.jsx';
+import PlatformContainer from './Containers/PlatformContainer/PlatformContainer.jsx';
 import Footer from './Containers/Layout/footer.jsx';
 import Header from './Containers/Layout/header.jsx';
 import AppNotificationMessages from './Containers/app-notification-messages.jsx';
@@ -102,7 +103,7 @@ const App = ({ root_store }) => {
     return (
         <Router basename={has_base ? `/${base}` : null}>
             <MobxContentProvider store={root_store}>
-                <React.Fragment>
+                <PlatformContainer>
                     <Header />
                     <ErrorBoundary>
                         <AppContents>
@@ -116,7 +117,7 @@ const App = ({ root_store }) => {
                     <AppModals url_action_param={url_params.get('action')} />
                     <SmartTraderIFrame />
                     <AppToastMessages />
-                </React.Fragment>
+                </PlatformContainer>
             </MobxContentProvider>
         </Router>
     );

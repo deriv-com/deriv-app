@@ -3,6 +3,7 @@ const { ALIASES, IS_RELEASE, MINIMIZERS, plugins, rules } = require('./constants
 const { openChromeBasedOnPlatform } = require('./helpers');
 
 module.exports = function(env, argv) {
+    console.log(`Building application for ${env.is_crypto_app === 'true' ? 'Deriv Crypto' : 'Deriv App'}...`);
     const base = env && env.base && env.base !== true ? '/' + env.base + '/' : '/';
     const sub_path = env && env.open && env.open !== true ? env.open : '';
 
@@ -60,6 +61,10 @@ module.exports = function(env, argv) {
             filename: 'js/core.[name].[contenthash].js',
             publicPath: base,
         },
-        plugins: plugins(base, false),
+        plugins: plugins({
+            base,
+            is_test_env: false,
+            env,
+        }),
     };
 };

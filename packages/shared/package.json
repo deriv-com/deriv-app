@@ -16,8 +16,7 @@
     "serve": "echo \"No serve specified\"",
     "build": "echo \"No build specified\"",
     "build:travis": "echo \"No build:travis specified\"",
-    "test": "jest --all && npm run test:stylelint",
-    "test:stylelint": "stylelint --fix \"./src/styles/**/*.s?(a|c)ss\"",
+    "test": "jest --all",
     "deploy": "echo \"No deploy specified\"",
     "deploy:clean": "echo \"No deploy:clean specified\"",
     "deploy:folder": "echo \"No deploy:folder specified\"",
@@ -39,10 +38,7 @@
     "jsdom": "^16.2.1",
     "lint-staged": "^10.0.6",
     "moment": "^2.24.0",
-    "node-sass": "^4.12.0",
-    "prettier": "^1.19.1",
-    "stylelint": "^10.1.0",
-    "stylelint-selector-bem-pattern": "^2.1.0"
+    "node-sass": "^4.12.0"
   },
   "dependencies": {
     "js-cookie": "^2.2.1",

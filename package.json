@@ -15,7 +15,10 @@
     "eslint-plugin-react-hooks": "^4.1.2",
     "husky": "^4.2.5",
     "lerna": "^3.22.0",
-    "lint-staged": "^10.4.0"
+    "lint-staged": "^10.4.0",
+    "stylelint-formatter-pretty": "^2.1.0",
+    "stylelint-selector-bem-pattern": "^2.1.0",
+    "stylelint-webpack-plugin": "^2.1.0"
   },
   "scripts": {
     "bootstrap": "f () { npm ci && lerna link && lerna bootstrap --ci --scope=@deriv/${1:-'*'} && lerna link && npm run build:travis ;}; f",
@@ -33,10 +36,10 @@
     "publish:p2p": "f () { lerna publish from-package ;}; f",
     "serve": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run serve $npm_config_open;}; f",
     "start": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run start ;}; f",
-    "test": "f () { bash ./scripts/circleci-config.test.sh && eslint \"./packages/*/src/**/*.?(js|jsx)\" && lerna exec --scope=@deriv/${1:-'*'} --parallel -- npm run test ;}; f",
+    "test": "f () { bash ./scripts/circleci-config.test.sh && npm run test:stylelint  && eslint \"./packages/*/src/**/*.?(js|jsx)\" && lerna exec --scope=@deriv/${1:-'*'} --parallel -- npm run test ;}; f",
     "test:eslint": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run test:eslint ;}; f",
     "test:mocha": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run test:mocha ;}; f",
-    "test:stylelint": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run test:stylelint ;}; f",
+    "test:stylelint": "stylelint \"./packages/{account/src/Styles,components/src/components,(trader|core)/src/sass,bot-web-ui/src/assets/sass,p2p/src/components,shared/src/styles}/**/*.s?(a|c)ss\"",
     "translate": "f () { lerna exec --scope @deriv/translations -- npm run translate ;}; f"
   },
   "husky": {

@@ -10,8 +10,7 @@ import {
     SwipeableWrapper,
     FadeWrapper,
 } from '@deriv/components';
-import { isDesktop, isMobile, isEmptyObject } from '@deriv/shared';
-import { getPlatformRedirect } from '@deriv/shared';
+import { isDesktop, isMobile, isEmptyObject, getPlatformRedirect } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
 import ContractDrawer from 'App/Components/Elements/ContractDrawer';

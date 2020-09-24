@@ -121,7 +121,7 @@ const StatisticsInfoModal = ({ is_mobile, is_statistics_info_modal_open, toggleS
         >
             <Modal.Body>
                 <div className={classNames('statistics__modal-body', { 'statistics__modal-body--mobile': is_mobile })}>
-                    <ThemedScrollbars>
+                    <ThemedScrollbars className='statistics__modal-scrollbar'>
                         <p className='statistics__modal-body--content no-margin'>{localize('Total stake')}</p>
                         <p>
                             {localize(

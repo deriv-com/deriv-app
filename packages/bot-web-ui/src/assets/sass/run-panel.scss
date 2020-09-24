@@ -316,11 +316,18 @@
                 }
             }
         }
+        &-scrollbar {
+            padding-right: 1.2rem;
+        }
     }
 }
 
 .dc-modal__container_statistics__modal {
     @include mobile {
         width: 31.2rem !important;
+    }
+
+    .dc-modal-body {
+        padding: 2.4rem 1.2rem 2.4rem 2.4rem;
     }
 }

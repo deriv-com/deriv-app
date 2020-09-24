@@ -16,8 +16,6 @@
     "serve": "echo \"No serve specified\"",
     "build": "echo \"No build specified\"",
     "build:travis": "echo \"No build:travis specified\"",
-    "prettify": "prettier --write \"./src/**/*.{js,jsx,scss}\"",
-    "precommit": "lint-staged",
     "test": "jest --all && npm run test:stylelint",
     "test:stylelint": "stylelint --fix \"./src/styles/**/*.s?(a|c)ss\"",
     "deploy": "echo \"No deploy specified\"",

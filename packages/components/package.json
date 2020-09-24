@@ -10,8 +10,6 @@
     "build": "rimraf lib && npm run build:icons && webpack --mode=production --optimize-minimize --progress",
     "build:icons": "node -e 'require(\"./utils/build-icons\").buildIcons()' && npm run prettify",
     "build:travis": "rimraf lib && webpack --mode=production --optimize-minimize",
-    "prettify": "prettier --write \"./{utils,src,stories}/**/*.{js,jsx,scss}\"",
-    "precommit": "lint-staged",
     "test": "npm run test:stylelint",
     "test:stylelint": "stylelint --fix \"./src/**/*.s?(a|c)ss\"",
     "deploy": "echo \"No deploy specified\"",

@@ -9,8 +9,6 @@
         "serve": "f() { echo \"Serving...\" && sudo ./node_modules/.bin/webpack-dev-server --config \"./build/webpack.config.js\" --env.open $1;}; f",
         "build": "f () { webpack --config \"./build/webpack.config.js\" --env.base $1 --env.is_crypto_app=${IS_CRYPTO_APP:-false};}; f",
         "build:travis": "echo \"No build:travis specified\"",
-        "prettify": "prettier --write \"./{script,src,build}/**/*.{js,jsx,scss}\"",
-        "precommit": "lint-staged",
         "test": "npm run test:stylelint",
         "test:temp": "mochapack -r babel-polyfill -r jsdom-global/register -r mock-local-storage --webpack-config \"./build/webpack.config-test.js\" \"src/**/__tests__/*.js\" --require ignore-styles",
         "test:stylelint": "stylelint \"./src/sass/**/*.s?(a|c)ss\"",

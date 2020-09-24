@@ -14,8 +14,6 @@
     "test": "mocha ./scripts/**/**.spec.js",
     "build": "echo \"No build specified\"",
     "build:travis": "echo \"No build:travis specified\"",
-    "prettify": "prettier --write \"./{script,src}/**/*.{js,jsx,scss}\"",
-    "precommit": "lint-staged",
     "serve": "rimraf lib && cross-env BUILD_MODE='serve' webpack --mode=production --progress --watch",
     "start": "rimraf lib && npm run test && npm run serve",
     "translate": "sh ./scripts/update-translations.sh",

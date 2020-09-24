@@ -16,8 +16,6 @@
         "build:travis": "rimraf lib && webpack --optimize-minimize",
         "serve": "rimraf lib && cross-env BUILD_MODE='serve' webpack --progress --watch",
         "start": "rimraf lib && npm run test && npm run serve",
-        "prettify": "prettier --write \"./{script,src}/**/*.{js,jsx,scss}\"",
-        "precommit": "lint-staged",
         "deploy": "echo \"No deploy specified\"",
         "deploy:clean": "echo \"No deploy:clean specified\"",
         "deploy:folder": "echo \"No deploy:folder specified\"",

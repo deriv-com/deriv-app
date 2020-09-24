@@ -6,6 +6,7 @@ import {
     Autocomplete,
     Checkbox,
     Button,
+    FormSubmitErrorMessage,
     Input,
     DesktopWrapper,
     Loading,
@@ -33,7 +34,6 @@ import LeaveConfirm from 'Components/leave-confirm';
 import FormFooter from 'Components/form-footer';
 import FormBody from 'Components/form-body';
 import FormSubHeader from 'Components/form-sub-header';
-import FormSubmitErrorMessage from 'Components/form-submit-error-message';
 import LoadErrorMessage from 'Components/load-error-message';
 
 const removeObjProperties = (property_arr, { ...obj }) => {

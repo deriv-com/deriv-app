@@ -150,7 +150,7 @@
         margin-right: 0.8rem;
         position: relative;
 
-        &:after {
+        &:not(:last-child):after {
             position: absolute;
             content: '';
             bottom: 0;
@@ -160,16 +160,20 @@
             background: var(--border-disabled);
         }
         &__cta-button {
-            margin: 8px 0 0 auto;
-            height: 24px !important;
-            width: 106px;
+            margin: 0.8rem 0 0.8rem auto;
+            height: 2.4rem;
+            width: 10.6rem;
 
             .dc-btn__text {
                 font-size: 1.2rem;
             }
             @include mobile {
-                margin: 8px 0 16px auto;
+                margin: 0.8px 0 1.6rem auto;
             }
+        }
+        &__link-wrapper {
+            display: flex;
+            justify-content: flex-end;
         }
         &__title {
             font-size: 1.4rem;

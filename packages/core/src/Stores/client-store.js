@@ -365,8 +365,16 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get allow_authentication() {
+        return this.account_status?.status?.some(status => status === 'allow_document_upload');
+    }
+
+    @computed
     get is_authentication_needed() {
-        return this.account_status?.authentication?.needs_verification?.length;
+        return (
+            this.account_status?.authentication?.needs_verification?.length ||
+            !!this.account_status?.prompt_client_to_authenticate
+        );
     }
 
     @computed

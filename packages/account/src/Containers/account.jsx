@@ -20,14 +20,14 @@ class Account extends React.Component {
     };
 
     componentDidMount() {
-        const { account_status, is_authentication_needed, toggleAccount } = this.props;
+        const { account_status, allow_authentication, toggleAccount } = this.props;
         this.is_mounted = true;
         WS.wait('authorize', 'get_account_status').then(() => {
             if (account_status) {
                 if (this.is_mounted)
                     this.setState({
                         is_loading: false,
-                        allow_document_upload: is_authentication_needed,
+                        allow_document_upload: allow_authentication,
                     });
             }
         });
@@ -40,7 +40,7 @@ class Account extends React.Component {
         // TODO: Refactor account.jsx into functional component with hooks to eliminate need for componentDidUpdate
         if (this.props.account_status !== prevProps.account_status) {
             if (this.is_mounted) {
-                this.setState({ allow_document_upload: this.props.is_authentication_needed });
+                this.setState({ allow_document_upload: this.props.allow_authentication });
             }
         }
     }
@@ -145,6 +145,7 @@ class Account extends React.Component {
 
 Account.propTypes = {
     account_status: PropTypes.object,
+    allow_authentication: PropTypes.bool,
     currency: PropTypes.string,
     history: PropTypes.object,
     is_virtual: PropTypes.bool,
@@ -160,7 +161,7 @@ export default connect(({ client, common, ui }) => ({
     currency: client.currency,
     is_virtual: client.is_virtual,
     is_visible: ui.is_account_settings_visible,
-    is_authentication_needed: client.is_authentication_needed,
+    allow_authentication: client.allow_authentication,
     needs_financial_assessment: client.needs_financial_assessment,
     toggleAccount: ui.toggleAccountSettings,
 }))(withRouter(Account));

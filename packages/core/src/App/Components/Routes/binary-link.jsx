@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
@@ -20,6 +21,9 @@ const BinaryLink = ({ active_class, to, children, href, has_error, setError, ...
 
     return to && !href ? (
         <span
+            className={classNames({
+                [`${active_class}__link-wrapper`]: !!active_class,
+            })}
             onClick={() => {
                 if (has_error) setError(false, null);
             }}

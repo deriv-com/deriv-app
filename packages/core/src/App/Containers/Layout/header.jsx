@@ -30,6 +30,7 @@ class Header extends React.Component {
         const {
             account_status,
             acc_switcher_disabled_message,
+            allow_authentication,
             app_routing_history,
             balance,
             currency,
@@ -86,6 +87,7 @@ class Header extends React.Component {
                                 disableApp={disableApp}
                                 location={this.props.location}
                                 logoutClient={logoutClient}
+                                allow_authentication={allow_authentication}
                                 is_dark_mode={is_dark_mode}
                                 is_logged_in={is_logged_in}
                                 is_p2p_visible={is_p2p_visible}
@@ -157,6 +159,7 @@ class Header extends React.Component {
 Header.propTypes = {
     account_status: PropTypes.object,
     acc_switcher_disabled_message: PropTypes.string,
+    allow_authentication: PropTypes.bool,
     app_routing_history: PropTypes.array,
     balance: PropTypes.string,
     currency: PropTypes.string,
@@ -185,6 +188,7 @@ Header.propTypes = {
 export default connect(({ client, common, ui, modules }) => ({
     acc_switcher_disabled_message: ui.account_switcher_disabled_message,
     account_status: client.account_status,
+    allow_authentication: client.allow_authentication,
     app_routing_history: common.app_routing_history,
     is_p2p_visible: modules.cashier.is_p2p_visible,
     is_payment_agent_visible: modules.cashier.is_payment_agent_visible,

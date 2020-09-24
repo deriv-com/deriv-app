@@ -34,24 +34,17 @@ const getKeyHash = string => crc32(string);
         for (let i = 0; i < file_paths.length; i++) {
             const file_path = file_paths[i];
 
-            if (file_path.endsWith('xml')) {
-                fs.readFile(file_path, (error, data) => {
-                    messages.push(getStringsFromXmlFile(data.toString()))
-                });
-            } else {
+            try {
                 if (program.verbose) {
                     console.log(file_path);
                 }
-    
-                try {
-                    const file = fs.readFileSync(file_path, 'utf8');
-                    messages.push(...getStringsFromInput(file));
-                } catch (e) {
-                    console.log(e);
-                }
+
+                const file = fs.readFileSync(file_path, 'utf8');
+                messages.push(...(file_path.endsWith('xml') ? getStringsFromXmlFile(file) : getStringsFromInput(file)));
+            } catch (e) {
+                console.log(e);
             }
         }
-
         // Push static strings to list of messages to be added to JSON
         messages.push(...static_strings);
 

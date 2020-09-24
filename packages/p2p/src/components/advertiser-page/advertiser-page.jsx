@@ -62,13 +62,20 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
         height_constants.table_header,
         height_constants.tabs,
     ];
-    const item_height = 56;
     const [is_loading, setIsLoading] = React.useState(true);
     const isMounted = useIsMounted();
+    const item_height = 56;
     const short_name = getShortNickname(advertiser_name);
     const [show_ad_popup, setShowAdPopup] = React.useState(false);
     const [stats, setStats] = React.useState({});
-    const { buy_orders_count, completion_rate, release_time_avg, sell_orders_count, total_orders_count } = stats;
+    const {
+        buy_completion_rate,
+        buy_orders_count,
+        release_time_avg,
+        sell_orders_count,
+        total_completion_rate,
+        total_orders_count,
+    } = stats;
 
     React.useEffect(() => {
         if (isMounted()) {
@@ -216,8 +223,15 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
                         <div className='advertiser-page__stats-cell-separator' />
                         <Table.Cell className='advertiser-page__stats-cell'>
                             <div className='advertiser-page__stats-cell-header'>{localize('Completion')}</div>
-                            <div className='advertiser-page__stats-cell-info'>
-                                {completion_rate ? `${completion_rate}%` : '-'}
+                            <div className='advertiser-page__stats-cell-completion'>
+                                <div className='advertiser-page__stats-cell-info'>
+                                    {total_completion_rate ? `${total_completion_rate}%` : '-'}
+                                </div>
+                                {buy_completion_rate && (
+                                    <div className='advertiser-page__stats-cell-info_buy'>
+                                        {`  (${localize('Buy')} ${buy_completion_rate}%)`}
+                                    </div>
+                                )}
                             </div>
                         </Table.Cell>
                         <div className='advertiser-page__stats-cell-separator' />

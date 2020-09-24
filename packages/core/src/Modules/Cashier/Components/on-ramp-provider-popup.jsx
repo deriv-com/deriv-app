@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, HintBox, Icon, Loading, Popover } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { website_name } from 'App/Constants/app-config';
+import { website_name } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 
 const OnRampProviderPopup = ({

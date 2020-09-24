@@ -234,7 +234,7 @@
             }
             @include mobile {
                 min-height: auto;
-                min-width: auto;
+                min-width: calc(100% - 4rem);
                 display: flex;
                 align-items: center;
             }
@@ -424,6 +424,18 @@
             > :last-child {
                 text-align: right;
                 max-width: 50%;
+            }
+        }
+        &-error {
+            max-width: 40rem;
+            margin: auto;
+
+            @include mobile {
+                margin-top: 1.6rem;
+            }
+
+            .cashier__form-error {
+                margin-right: 0;
             }
         }
         &-submit {

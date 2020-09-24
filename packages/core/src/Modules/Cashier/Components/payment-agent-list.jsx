@@ -4,7 +4,7 @@ import React from 'react';
 import { Accordion, Button, DesktopWrapper, Dropdown, MobileWrapper, SelectNative } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { website_name } from 'App/Constants/app-config';
+import { website_name } from '@deriv/shared';
 import PaymentAgentDetails from './payment-agent-details.jsx';
 import EmailSent from './Email/email-sent.jsx';
 import Loading from '../../../templates/_common/components/loading.jsx';

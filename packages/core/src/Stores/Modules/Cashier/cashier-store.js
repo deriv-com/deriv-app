@@ -9,14 +9,14 @@ import {
     getCurrencyDisplayCode,
     isEmptyObject,
     getPropertyValue,
+    getMT5AccountDisplay,
+    getMT5Account,
 } from '@deriv/shared';
-
 import BinarySocket from '_common/base/socket_base';
 import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services';
 import OnRampStore from './on-ramp-store';
 import BaseStore from '../../base-store';
-import { getMT5AccountDisplay } from '../../Helpers/client';
 
 const hasTransferNotAllowedLoginid = loginid => loginid.startsWith('MX');
 
@@ -758,6 +758,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setIsTryWithdrawSuccessful(is_try_withdraw_successful) {
+        this.setErrorMessage('');
         this.config.payment_agent.is_try_withdraw_successful = is_try_withdraw_successful;
     }
 
@@ -1035,7 +1036,7 @@ export default class CashierStore extends BaseStore {
                 currency: account.currency,
                 is_crypto: isCryptocurrency(account.currency),
                 is_mt: account.account_type === 'mt5',
-                ...(account.mt5_group && { mt_icon: getMT5AccountDisplay(account.mt5_group, false) }),
+                ...(account.mt5_group && { mt_icon: getMT5Account(account.mt5_group) }),
             };
             // set current logged in client as the default transfer from account
             if (account.loginid === this.root_store.client.loginid) {
@@ -1075,6 +1076,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setIsTryTransferSuccessful(is_try_transfer_successful) {
+        this.setErrorMessage('');
         this.config[this.active_container].is_try_transfer_successful = is_try_transfer_successful;
     }
 

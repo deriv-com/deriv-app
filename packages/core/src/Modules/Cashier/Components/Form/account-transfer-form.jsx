@@ -3,11 +3,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik, Form } from 'formik';
 import { Button, Dropdown, Icon, Input, Money, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
-import { getDecimalPlaces, getCurrencyDisplayCode } from '@deriv/shared';
+import { getDecimalPlaces, getCurrencyDisplayCode, validNumber, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { website_name } from 'App/Constants/app-config';
 import { connect } from 'Stores/connect';
-import { getPreBuildDVRs, validNumber } from 'Utils/Validator/declarative-validation-rules';
 import FormError from '../Error/form-error.jsx';
 import Loading from '../../../../templates/_common/components/loading.jsx';
 
@@ -111,24 +109,19 @@ const AccountTransferForm = ({
     error,
 }) => {
     const validateAmount = amount => {
-        let error_message;
+        if (!amount) return localize('This field is required.');
 
-        if (!amount) {
-            error_message = localize('This field is required.');
-        } else if (
-            !validNumber(amount, {
-                type: 'float',
-                decimals: getDecimalPlaces(selected_from.currency),
-                min: transfer_limit.min,
-                max: transfer_limit.max,
-            })
-        ) {
-            error_message = getPreBuildDVRs().number.message;
-        } else if (+selected_from.balance < +amount) {
-            error_message = localize('Insufficient balance.');
-        }
+        const { is_ok, message } = validNumber(amount, {
+            type: 'float',
+            decimals: getDecimalPlaces(selected_from.currency),
+            min: transfer_limit.min,
+            max: transfer_limit.max,
+        });
+        if (!is_ok) return message;
 
-        return error_message;
+        if (+selected_from.balance < +amount) return localize('Insufficient balance.');
+
+        return undefined;
     };
 
     const onTransferPassthrough = async (values, actions) => {

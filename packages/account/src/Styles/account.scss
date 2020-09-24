@@ -124,6 +124,22 @@ $MIN_HEIGHT_FLOATING: calc(
         &-title {
             @include typeface(--paragraph-left-bold-prominent, none);
             margin-bottom: 0.8rem;
+            max-width: 18.8rem;
+        }
+        &-description {
+            @include typeface(--small-left-normal-black, none);
+            line-height: 1.5;
+            margin-bottom: 1.6rem;
+        }
+        &-link {
+            display: flex;
+            @include typeface(--small-left-normal-red, none);
+
+            &--icon {
+                margin-left: 4px;
+                width: 16px;
+                height: 16px;
+            }
         }
         &-text {
             @include typeface(--small-left-normal-black, none);
@@ -435,7 +451,7 @@ $MIN_HEIGHT_FLOATING: calc(
     }
     .account-management__text-container {
         margin-top: 10px;
-        max-width: 467px;
+        max-width: 672px;
         margin-bottom: 2em;
     }
     .account-management-flex-wrapper {
@@ -732,7 +748,7 @@ $MIN_HEIGHT_FLOATING: calc(
             height: 100%;
         }
         & .dc-input__label {
-            background: var(--general-section-1);
+            background: var(--general-main-1);
         }
         & .dc-field--error {
             padding-left: 0;
@@ -784,6 +800,9 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin: 2.4rem 0;
                 max-width: 67.2rem;
             }
+            &-bold {
+                @include typeface(--paragraph-left-bold-red);
+            }
         }
         &__back {
             @include typeface(--paragraph-left-bold-prominent);
@@ -816,7 +835,8 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &__item {
-            background: var(--general-section-1);
+            background: var(--general-main-1);
+            border: 1px solid var(--border-normal);
             padding: 1.6rem;
             border-radius: 4px;
 
@@ -1394,29 +1414,6 @@ $MIN_HEIGHT_FLOATING: calc(
     }
 }
 
-/** @define form-submit-error-message; weak */
-.form-submit-error-message {
-    display: flex;
-    align-items: center;
-    margin-right: auto;
-    font-size: var(--text-size-xxs);
-    font-weight: bold;
-    flex: 1;
-    color: var(--text-prominent);
-
-    p {
-        padding-left: 16px;
-
-        @include mobile {
-            line-height: 20px;
-        }
-    }
-
-    @include mobile {
-        padding: 0 1.6rem 1rem;
-    }
-}
-
 /** @define initial-loader; weak */
 .initial-loader--btn {
     .initial-loader__barspinner--rect {
@@ -1596,6 +1593,35 @@ $MIN_HEIGHT_FLOATING: calc(
     }
 }
 
+.dc-modal__container_self_exclusion__article-modal {
+    .self-exclusion {
+        &__article {
+            width: 440px;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+
+            &-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 1.6rem 2.4rem;
+                @include typeface(--title-center-bold-prominent, none);
+                border-bottom: 1px solid var(--border-normal);
+            }
+            &-icon {
+                cursor: pointer;
+            }
+            &-text {
+                @include typeface(--paragraph-left-normal-black, none);
+            }
+            &-content {
+                padding: 2.4rem;
+            }
+        }
+    }
+}
+
 .dc-modal__container_self_exclusion__modal {
     .self-exclusion {
         &__popup {
@@ -1645,6 +1671,7 @@ $MIN_HEIGHT_FLOATING: calc(
 /** @define proof-of-identity */
 .proof-of-identity {
     height: 100%;
+    width: 100%;
 
     &__redirect {
         width: auto !important;

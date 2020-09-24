@@ -56,6 +56,10 @@
     }
     &__content {
         height: calc(100% - 8.4rem);
+
+        &--mobile {
+            height: calc(100% - 4.2rem);
+        }
     }
     &__scrollbar {
         height: 100%;

@@ -15,11 +15,26 @@ class TogglePositionsDrawerDialog extends React.Component {
             is_visible: false,
             top: 0,
             left: 0,
+            is_do_not_show_selected: !this.props.should_show_cancellation_warning,
         };
         this.toggle_ref = React.createRef();
         this.dialog_ref = React.createRef();
         this.contract = props.getContractById(props.contract_id);
     }
+
+    onPopoverClose = () => {
+        if (this.state.is_do_not_show_selected) {
+            this.props.toggleCancellationWarning();
+        }
+    };
+
+    onPopoverCheckboxChange = () => {
+        this.setState(prev_state => {
+            return {
+                is_do_not_show_selected: !prev_state.is_do_not_show_selected,
+            };
+        });
+    };
 
     toggleDialog = e => {
         e.preventDefault();
@@ -67,7 +82,7 @@ class TogglePositionsDrawerDialog extends React.Component {
     };
 
     render() {
-        const { is_valid_to_cancel, should_show_cancellation_warning, toggleCancellationWarning } = this.props;
+        const { is_valid_to_cancel, should_show_cancellation_warning } = this.props;
 
         const edit_icon = (
             <Icon
@@ -88,14 +103,15 @@ class TogglePositionsDrawerDialog extends React.Component {
                     zIndex={2}
                     message={
                         <PopoverMessageCheckbox
-                            defaultChecked={!should_show_cancellation_warning}
+                            defaultChecked={this.state.is_do_not_show_selected}
                             message={localize(
                                 'Take profit and/or stop loss are not available while deal cancellation is active.'
                             )}
                             name='should_show_cancellation_warning'
-                            onChange={() => toggleCancellationWarning()}
+                            onChange={this.onPopoverCheckboxChange}
                         />
                     }
+                    onBubbleClose={this.onPopoverClose}
                 >
                     <div className='positions-drawer-dialog-toggle__wrapper'>{edit_icon}</div>
                 </Popover>

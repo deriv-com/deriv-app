@@ -13,6 +13,7 @@ export const FORM_ERROR_MESSAGES = {
     general: () => localize('Only letters, numbers, space, hyphen, period, and apostrophe are allowed.'),
     letter_symbol: () => localize('Only letters, space, hyphen, period, and apostrophe are allowed.'),
     password: () => localize('Password should have lower and uppercase English letters with numbers.'),
+    po_box: () => localize('P.O. Box is not accepted in address'),
     phone: () => localize('Only numbers and spaces are allowed.'),
     postcode: () => localize('Only letters, numbers, space, and hyphen are allowed.'),
     signup_token: () => localize('The length of token should be 8.'),

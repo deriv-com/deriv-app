@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { LocalStore } from '_common/storage';
+import { LocalStore } from '@deriv/shared';
 import { pickDefaultSymbol } from '../active-symbols';
 import React from 'react';
 

@@ -1,4 +1,4 @@
-import { CookieStorage } from '_common/storage';
+import { CookieStorage } from '@deriv/shared';
 
 export const createDeviceDataObject = (date_first_contact_cookie, signup_device_cookie) => {
     const url_params = new URLSearchParams(window.location.search);

@@ -8,6 +8,7 @@
   "scripts": {
     "bootstrap": "f () { npm ci && lerna link && lerna bootstrap --ci --scope=@deriv/${1:-'*'} && lerna link && npm run build:travis ;}; f",
     "build": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run build $2 ;}; f",
+    "build:crypto": "export IS_CRYPTO_APP=true && npm run build && export IS_CRYPTO_APP=",
     "build:local": "f () { lerna exec --scope @deriv/trader --scope @deriv/bot-web-ui --parallel -- npm run build $1 ;}; f",
     "build:travis": "lerna exec --scope @deriv/shared --scope @deriv/components --scope @deriv/translations  --scope @deriv/account --scope @deriv/p2p -- npm run build:travis",
     "build:prod": "export NODE_ENV=staging && npm run build && export NODE_ENV=",

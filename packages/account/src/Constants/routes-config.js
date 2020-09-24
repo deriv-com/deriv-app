@@ -22,7 +22,7 @@ import {
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
 
 // Order matters
-const initRoutesConfig = ({ hide_crypto_routes }) => [
+const initRoutesConfig = ({ is_deriv_crypto }) => [
     {
         path: routes.account_deactivated,
         component: AccountDeactivated,
@@ -46,19 +46,20 @@ const initRoutesConfig = ({ hide_crypto_routes }) => [
                         title: localize('Personal details'),
                         default: true,
                     },
-                    ...(!hide_crypto_routes
-                        ? [
+                    ...(is_deriv_crypto
+                        ? []
+                        : [
                               {
                                   path: routes.financial_assessment,
                                   component: FinancialAssessment,
                                   title: localize('Financial assessment'),
                               },
-                          ]
-                        : []),
+                          ]),
                 ],
             },
-            ...(!hide_crypto_routes
-                ? [
+            ...(is_deriv_crypto
+                ? []
+                : [
                       {
                           title: localize('Verification'),
                           icon: 'IcVerification',
@@ -75,8 +76,7 @@ const initRoutesConfig = ({ hide_crypto_routes }) => [
                               },
                           ],
                       },
-                  ]
-                : []),
+                  ]),
             {
                 title: localize('Security and safety'),
                 icon: 'IcSecurity',
@@ -132,9 +132,9 @@ let routesConfig;
 // For default page route if page/path is not found, must be kept at the end of routes_config array
 const route_default = { component: Page404, title: localize('Error 404') };
 
-const getRoutesConfig = ({ hide_crypto_routes = true }) => {
+const getRoutesConfig = ({ is_deriv_crypto }) => {
     if (!routesConfig) {
-        routesConfig = initRoutesConfig({ hide_crypto_routes });
+        routesConfig = initRoutesConfig({ is_deriv_crypto });
         routesConfig.push(route_default);
     }
     return routesConfig;

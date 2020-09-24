@@ -2,7 +2,17 @@ import classNames from 'classnames';
 import React from 'react';
 import { Formik } from 'formik';
 import { withRouter } from 'react-router';
-import { Loading, Button, Dropdown, Modal, Icon, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
+import {
+    FormSubmitErrorMessage,
+    Loading,
+    Button,
+    Dropdown,
+    Modal,
+    Icon,
+    DesktopWrapper,
+    MobileWrapper,
+    SelectNative,
+} from '@deriv/components';
 import { routes, isMobile, isDesktop } from '@deriv/shared';
 
 import { localize, Localize } from '@deriv/translations';
@@ -12,7 +22,6 @@ import LeaveConfirm from 'Components/leave-confirm';
 import IconMessageContent from 'Components/icon-message-content';
 import DemoMessage from 'Components/demo-message';
 import LoadErrorMessage from 'Components/load-error-message';
-import FormSubmitErrorMessage from 'Components/form-submit-error-message';
 import FormBody from 'Components/form-body';
 import FormSubHeader from 'Components/form-sub-header';
 import FormFooter from 'Components/form-footer';

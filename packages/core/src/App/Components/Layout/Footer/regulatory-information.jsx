@@ -10,10 +10,10 @@ const MLTRegulatoryInformation = () => (
         </div>
         <p>
             <Localize
-                i18n_default_text='Synthetic indices in the EU and the UK are offered by Deriv (Europe) Limited, W Business Centre, Level 3, Triq Dun Karm, Birkirkara BKR 9033, Malta, licensed and regulated respectively by the Malta Gaming Authority in Malta (licence no. <0>MGA/B2C/102/2000</0>) and the UK Gambling Commission (account no. <1>39495</1>). For more information, please read our <2>Terms and conditions</2>.'
+                i18n_default_text='Synthetic indices in the EU and the UK are offered by Deriv (Europe) Limited, licensed by the Malta Gaming Authority (<0>licence no. MGA/B2C/102/2000</0>), by the UK Gambling Commission for clients in the UK (<1>account no. 39495</1>), and by the Revenue Commissioners for clients in Ireland (<2>licence no. 1010285</2>).'
                 components={[
                     <a
-                        href='https://deriv.com/regulatory/Deriv_(Europe)_Limited.pdf'
+                        href='https://deriv.com/regulatory/Deriv_(Europe)_Ltd.pdf'
                         target='_blank'
                         rel='nofollow noreferrer'
                         key={0}
@@ -27,7 +27,7 @@ const MLTRegulatoryInformation = () => (
                         className='footer-regulatory-information__link'
                     />,
                     <a
-                        href='https://deriv.com/terms-and-conditions'
+                        href='https://deriv.com/regulatory/DEL_Remote_Bookmarker_License.pdf'
                         target='_blank'
                         rel='nofollow noreferrer'
                         key={2}
@@ -43,7 +43,7 @@ const MXRegulatoryInformation = () => (
     <div className='footer-regulatory-information'>
         <p>
             <Localize
-                i18n_default_text='Synthetic indices in the Isle of Man and the UK are offered by Deriv (MX) Ltd, licensed and regulated respectively by the Gambling Supervision Commission in the Isle of Man and the Gambling Commission in the UK (account no. <0>39172</0>).'
+                i18n_default_text='Synthetic indices in the Isle of Man and the UK are offered by Deriv (MX) Ltd, licensed by the Gambling Supervision Commission in the Isle of Man and by the UK Gambling Commission for clients in the UK (<0>account no. 39172</0>).'
                 components={[
                     <a
                         href='https://secure.gamblingcommission.gov.uk/PublicRegister/Search/Detail/39172'
@@ -58,8 +58,30 @@ const MXRegulatoryInformation = () => (
     </div>
 );
 
+const MFRegulatoryInformation = () => (
+    <div className='footer-regulatory-information'>
+        <p>
+            <Localize
+                i18n_default_text='Financial products in the EU are offered by Deriv Investments (Europe) Limited, licensed as a Category 3 Investment Services provider by the Malta Financial Services Authority (<0>licence no. IS/70156</0>).'
+                components={[
+                    <a
+                        href='https://deriv.com/regulatory/Deriv_Investments_(Europe)_Limited.pdf'
+                        target='_blank'
+                        rel='nofollow noreferrer'
+                        key={0}
+                        className='footer-regulatory-information__link'
+                    />,
+                ]}
+            />
+        </p>
+    </div>
+);
+
 export const RegulatoryInformation = ({ standpoint, is_eu }) => {
     const [should_show_modal, showModal] = React.useState(false);
+    const is_only_mx = standpoint.iom && !standpoint.maltainvest;
+    const is_only_mlt = standpoint.malta && !standpoint.maltainvest;
+    const is_mf = standpoint.maltainvest;
     if (!is_eu) return null;
     return (
         <div className='footer__link'>
@@ -75,8 +97,9 @@ export const RegulatoryInformation = ({ standpoint, is_eu }) => {
                 toggleModal={() => showModal(false)}
                 title={localize('Regulatory Information')}
             >
-                {standpoint.iom && <MXRegulatoryInformation />}
-                {standpoint.malta && <MLTRegulatoryInformation />}
+                {is_only_mx && <MXRegulatoryInformation />}
+                {is_only_mlt && <MLTRegulatoryInformation />}
+                {is_mf && <MFRegulatoryInformation />}
             </Modal>
         </div>
     );

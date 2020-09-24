@@ -1,34 +1,35 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { VariableSizeList as List } from 'react-window';
 import { NavLink } from 'react-router-dom';
-import { isMobile } from '@deriv/shared';
+import { TransitionGroup } from 'react-transition-group';
+import { CellMeasurer, CellMeasurerCache } from 'react-virtualized/dist/es/CellMeasurer';
+import { AutoSizer } from 'react-virtualized/dist/es/AutoSizer';
+import { List } from 'react-virtualized/dist/es/List';
 import DataListCell from './data-list-cell.jsx';
-import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars.jsx';
 
-const ThemedScrollbarsWrapper = React.forwardRef((props, ref) => (
-    <ThemedScrollbars {...props} forwardedRef={ref}>
-        {props.children}
-    </ThemedScrollbars>
-));
-// Display name is required by Developer Tools to give a name to the components we use.
-// If a component doesn't have a displayName is will be shown as <Unknown />. Hence, name is set.
-ThemedScrollbarsWrapper.displayName = 'ThemedScrollbars';
+const ContentWrapper = React.forwardRef(({ measure, style, children }, ref) => {
+    React.useEffect(() => {
+        measure();
+    }, []);
+    return (
+        <div ref={ref} style={style}>
+            {children}
+        </div>
+    );
+});
+ContentWrapper.displayName = 'ContentWrapper';
 
 class DataList extends React.PureComponent {
     constructor(props) {
         super(props);
-        this.state = {
-            height: 200,
-            width: 200,
-        };
-    }
-
-    componentDidMount() {
-        this.setState({
-            height: this.props.custom_height || this.el_list_body.clientHeight,
-            width: this.props.custom_width || this.el_list_body.clientWidth,
+        this.cache = new CellMeasurerCache({
+            fixedWidth: true,
+            defaultHeight: 89,
+            keyMapper: row_index => {
+                const row_key = this.props.keyMapper?.(this.props.data_source[row_index]) || row_index;
+                return row_key;
+            },
         });
     }
 
@@ -37,34 +38,45 @@ class DataList extends React.PureComponent {
         return <React.Fragment>{rowRenderer({ row: footer, is_footer: true })}</React.Fragment>;
     };
 
-    rowRenderer = ({ style, ...args }) => {
-        const { data_source, rowRenderer, getRowAction } = this.props;
-        const row = data_source[args.index];
+    rowRenderer = ({ style, index, key, parent }) => {
+        const { data_source, rowRenderer, getRowAction, keyMapper } = this.props;
+        const row = data_source[index];
         const to = getRowAction && getRowAction(row);
-        const contract_id = row.contract_id || row.id;
-        return typeof to === 'string' ? (
-            <NavLink
-                id={`dt_reports_contract_${contract_id}`}
-                className={'data-list__item--wrapper'}
-                to={{
-                    pathname: to,
-                    state: {
-                        from_table_row: true,
-                    },
-                }}
-                style={style}
-            >
-                <div className='data-list__item'>{rowRenderer({ row, ...args })}</div>
-            </NavLink>
-        ) : (
-            <div className='data-list__item--wrapper' style={style}>
-                <div className='data-list__item'>{rowRenderer({ row, ...args })}</div>
-            </div>
+        const row_key = keyMapper?.(row) || key;
+
+        const content =
+            typeof to === 'string' ? (
+                <NavLink
+                    id={`dt_reports_contract_${row_key}`}
+                    className={'data-list__item--wrapper'}
+                    to={{
+                        pathname: to,
+                        state: {
+                            from_table_row: true,
+                        },
+                    }}
+                >
+                    <div className='data-list__item'>{rowRenderer({ row })}</div>
+                </NavLink>
+            ) : (
+                <div className='data-list__item--wrapper'>
+                    <div className='data-list__item'>{rowRenderer({ row })}</div>
+                </div>
+            );
+
+        return (
+            <CellMeasurer cache={this.cache} columnIndex={0} key={row_key} rowIndex={index} parent={parent}>
+                {({ registerChild, measure }) => (
+                    <ContentWrapper ref={registerChild} measure={measure} style={style} key={row_key}>
+                        {content}
+                    </ContentWrapper>
+                )}
+            </CellMeasurer>
         );
     };
 
     render() {
-        const { className, children, data_source, getRowSize, onScroll, footer } = this.props;
+        const { className, children, data_source, onScroll, footer } = this.props;
 
         return (
             <div className={classNames(className, 'data-list', `${className}__data-list`)} onScroll={onScroll}>
@@ -72,16 +84,24 @@ class DataList extends React.PureComponent {
                     className={classNames('data-list__body', `${className}__data-list-body`)}
                     ref={ref => (this.el_list_body = ref)}
                 >
-                    <List
-                        className={className}
-                        height={this.state.height}
-                        itemCount={data_source.length}
-                        itemSize={getRowSize}
-                        width={this.state.width}
-                        outerElementType={isMobile() ? null : ThemedScrollbarsWrapper}
-                    >
-                        {this.rowRenderer}
-                    </List>
+                    <AutoSizer>
+                        {({ width, height }) => (
+                            <TransitionGroup>
+                                <List
+                                    className={className}
+                                    deferredMeasurementCache={this.cache}
+                                    width={width}
+                                    height={height}
+                                    overscanRowCount={0}
+                                    rowCount={data_source.length}
+                                    rowHeight={this.cache.rowHeight}
+                                    rowRenderer={this.rowRenderer}
+                                    autoHeight
+                                    // outerElementType={isMobile() ? null : ThemedScrollbarsWrapper}
+                                />
+                            </TransitionGroup>
+                        )}
+                    </AutoSizer>
                     {children}
                 </div>
                 {footer && (

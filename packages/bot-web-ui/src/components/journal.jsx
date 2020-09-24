@@ -2,8 +2,8 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ContentLoader from 'react-content-loader';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { Checkbox, Icon, ThemedScrollbars, useOnClickOutside, DesktopWrapper } from '@deriv/components';
+import { CSSTransition } from 'react-transition-group';
+import { Checkbox, Icon, ThemedScrollbars, useOnClickOutside, DesktopWrapper, DataList } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { message_types } from '@deriv/bot-skeleton';
 import { log_types } from '@deriv/bot-skeleton/src/constants/messages';
@@ -191,6 +191,26 @@ const JournalLoader = ({ is_mobile }) => (
     </ContentLoader>
 );
 
+const JournalRow = ({ date, time, message, message_type, className, extra }) => {
+    const date_el = DateItem({ date, time });
+    const [inProp, setInProp] = React.useState(false);
+
+    React.useEffect(() => {
+        setInProp(true);
+    }, []);
+
+    return (
+        <CSSTransition in={inProp} timeout={5000} classNames='list__animation'>
+            <div className='journal__item'>
+                <div className='journal__item-content'>
+                    {getJournalItemContent(message, message_type, className, extra)}
+                </div>
+                <div className='journal__text-datetime'>{date_el}</div>
+            </div>
+        </CSSTransition>
+    );
+};
+
 const Journal = ({
     contract_stage,
     filtered_messages,
@@ -210,23 +230,12 @@ const Journal = ({
             <ThemedScrollbars className='journal__scrollbars' height={'calc(100% - 4.2rem)'}>
                 <div className='journal__item-list'>
                     {filtered_messages.length ? (
-                        <TransitionGroup>
-                            {filtered_messages.map(item => {
-                                const { date, time, message, message_type, className, unique_id, extra } = item;
-                                const date_el = DateItem({ date, time });
-
-                                return (
-                                    <CSSTransition key={unique_id} timeout={500} classNames='list__animation'>
-                                        <div className='journal__item'>
-                                            <div className='journal__item-content'>
-                                                {getJournalItemContent(message, message_type, className, extra)}
-                                            </div>
-                                            <div className='journal__text-datetime'>{date_el}</div>
-                                        </div>
-                                    </CSSTransition>
-                                );
-                            })}
-                        </TransitionGroup>
+                        <DataList
+                            data_source={filtered_messages}
+                            rowRenderer={({ row }) => <JournalRow {...row} />}
+                            getRowSize={() => 80}
+                            keyMapper={row => row.unique_id}
+                        />
                     ) : (
                         <>
                             {contract_stage >= contract_stages.STARTING &&

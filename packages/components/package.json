@@ -93,6 +93,7 @@
     "react-swipeable": "^5.5.1",
     "react-tiny-popover": "^5.1.0",
     "react-transition-group": "^4.2.2",
+    "react-virtualized": "^9.22.2",
     "react-window": "^1.8.5"
   }
 }

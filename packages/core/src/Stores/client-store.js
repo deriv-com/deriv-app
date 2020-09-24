@@ -1525,7 +1525,7 @@ export default class ClientStore extends BaseStore {
         // Set client URL params on init
         const date_first_contact_cookie = setDeviceDataCookie(
             'date_first_contact',
-            this.root_store.coomon.server_time.format('YYYY-MM-DD')
+            this.root_store.common.server_time.format('YYYY-MM-DD')
         );
         const signup_device_cookie = setDeviceDataCookie('signup_device', isDesktopOs() ? 'desktop' : 'mobile');
         const device_data = createDeviceDataObject(date_first_contact_cookie, signup_device_cookie);

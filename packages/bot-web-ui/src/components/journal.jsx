@@ -233,7 +233,6 @@ const Journal = ({
                         <DataList
                             data_source={filtered_messages}
                             rowRenderer={({ row }) => <JournalRow {...row} />}
-                            getRowSize={() => 80}
                             keyMapper={row => row.unique_id}
                         />
                     ) : (

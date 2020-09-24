@@ -8,24 +8,11 @@ import { AutoSizer } from 'react-virtualized/dist/es/AutoSizer';
 import { List } from 'react-virtualized/dist/es/List';
 import DataListCell from './data-list-cell.jsx';
 
-const ContentWrapper = React.forwardRef(({ measure, style, children }, ref) => {
-    React.useEffect(() => {
-        measure();
-    }, []);
-    return (
-        <div ref={ref} style={style}>
-            {children}
-        </div>
-    );
-});
-ContentWrapper.displayName = 'ContentWrapper';
-
 class DataList extends React.PureComponent {
     constructor(props) {
         super(props);
         this.cache = new CellMeasurerCache({
             fixedWidth: true,
-            defaultHeight: 89,
             keyMapper: row_index => {
                 const row_key = this.props.keyMapper?.(this.props.data_source[row_index]) || row_index;
                 return row_key;
@@ -66,11 +53,7 @@ class DataList extends React.PureComponent {
 
         return (
             <CellMeasurer cache={this.cache} columnIndex={0} key={row_key} rowIndex={index} parent={parent}>
-                {({ registerChild, measure }) => (
-                    <ContentWrapper ref={registerChild} measure={measure} style={style} key={row_key}>
-                        {content}
-                    </ContentWrapper>
-                )}
+                <div style={style}>{content}</div>
             </CellMeasurer>
         );
     };

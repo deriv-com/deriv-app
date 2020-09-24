@@ -10,7 +10,6 @@ import FormError from '../Error/form-error.jsx';
 import Loading from '../../../../templates/_common/components/loading.jsx';
 
 const AccountOption = ({ account, idx }) => {
-    console.log(account);
     return (
         <React.Fragment key={idx}>
             {(account.currency || account.mt_icon) && (
@@ -204,7 +203,7 @@ const AccountTransferForm = ({
             );
         }
     }, [transfer_fee, selected_from, minimum_fee, mt5_total_transfers, internal_total_transfers, setSideNote]);
-    console.log(from_accounts);
+
     return (
         <div className='cashier__wrapper account-transfer__wrapper'>
             <React.Fragment>

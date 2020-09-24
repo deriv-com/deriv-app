@@ -73,7 +73,7 @@ module.exports = {
         "string-quotes"                                    : "single",
         "time-min-milliseconds"                            : 100,
         "unit-case"                                        : "lower",
-        "unit-whitelist"                                   : ["fr", "px", "em", "rem", "%", "vw", "vh", "deg", "ms", "s"],
+        "unit-allowed-list"                                   : ["fr", "px", "em", "rem", "%", "vw", "vh", "deg", "ms", "s", "dpcm"],
         "value-keyword-case"                               : "lower",
         "value-list-comma-newline-after"                   : "never-multi-line",
         "value-list-comma-newline-before"                  : "never-multi-line",

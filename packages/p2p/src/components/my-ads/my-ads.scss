@@ -81,7 +81,6 @@
                 padding-left: 1.6rem;
             }
         }
-
         .dc-input__hint {
             font-size: var(--text-size-xxs);
         }
@@ -111,7 +110,6 @@
         &-row {
             grid-template-columns: 1fr 2fr 2fr 2fr 2fr 1fr;
         }
-
         &--disabled {
             .dc-table__cell {
                 color: var(--text-disabled);

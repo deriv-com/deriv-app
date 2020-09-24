@@ -41,6 +41,7 @@
     "test:eslint": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run test:eslint ;}; f",
     "test:mocha": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run test:mocha ;}; f",
     "test:stylelint": "stylelint \"./packages/{account/src/Styles,components/src/components,(trader|core)/src/sass,bot-web-ui/src/assets/sass,p2p/src/components,shared/src/styles}/**/*.s?(a|c)ss\"",
+    "stylelint:fix": "stylelint \"./packages/{account/src/Styles,components/src/components,(trader|core)/src/sass,bot-web-ui/src/assets/sass,p2p/src/components,shared/src/styles}/**/*.s?(a|c)ss\" --fix",
     "translate": "f () { lerna exec --scope @deriv/translations -- npm run translate ;}; f"
   },
   "husky": {

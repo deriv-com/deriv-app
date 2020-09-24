@@ -1,3 +1,4 @@
+/** @define order-details; weak */
 .order-details {
     &__container {
         display: flex;
@@ -17,7 +18,6 @@
                 max-width: calc(50% - 32px);
                 box-shadow: 0 8px 8px 0 var(--shadow-menu), 0 0 8px 0 var(--shadow-menu);
             }
-
             &-conversation {
                 display: none;
                 width: 100%;
@@ -28,7 +28,6 @@
                 &__messages {
                     background-color: var(--general-main-2);
                 }
-
                 &__footer {
                     padding: 16px 24px 26px;
                     border-top: 2px solid var(--general-section-2);
@@ -66,7 +65,6 @@
                         fill: var(--text-general) !important;
                     }
                 }
-
                 .sendbird {
                     &-separator {
                         &__left,
@@ -79,7 +77,6 @@
                             text-align: center;
                         }
                     }
-
                     &-label {
                         &--caption-3 {
                             font-size: 10px;
@@ -89,12 +86,12 @@
                             color: var(--text-less-prominent);
                         }
                     }
-
                     &-avatar {
                         display: table;
                         width: 40px !important;
                         height: 40px !important;
                         color: var(--text-colored-background);
+
                         &-text {
                             display: table-cell;
                             position: relative;
@@ -108,12 +105,10 @@
                             display: none;
                         }
                     }
-
                     &-thumbnail {
                         &--incoming {
                             padding-left: 0px !important;
                         }
-
                         &__img {
                             width: 100%;
                             border-bottom-left-radius: 4px;
@@ -125,7 +120,6 @@
                             display: none;
                         }
                     }
-
                     &-file-message {
                         &__more {
                             display: none !important;
@@ -134,7 +128,6 @@
                             display: none;
                         }
                     }
-
                     &-user-message {
                         &__sender-name {
                             display: none;
@@ -157,7 +150,6 @@
                             .sendbird-user-message__tooltip {
                                 background-color: var(--general-active);
                             }
-
                             .sendbird-user-message__text-balloon {
                                 background-color: var(--general-section-1);
 
@@ -165,12 +157,11 @@
                                     color: var(--text-prominent);
                                 }
                             }
-
-                            sendbird-label
-                                sendbird-user-message__text-balloon__inner__text-place__text
-                                sendbird-label--body-1
-                                sendbird-label--color-onbackground-1
-                                .sendbird-user-message__tooltip,
+                            .sendbird-label,
+                            .sendbird-user-message__text-balloon__inner__text-place__text,
+                            .sendbird-label--body-1,
+                            .sendbird-label--color-onbackground-1,
+                            .sendbird-user-message__tooltip,
                             &:hover .sendbird-user-message__tooltip {
                                 background-color: var(--general-active);
                                 border-bottom-left-radius: $BORDER_RADIUS;
@@ -190,7 +181,6 @@
                                     color: var(--text-colored-background);
                                 }
                             }
-
                             .sendbird-user-message__text-balloon {
                                 background-color: var(--brand-secondary);
 
@@ -203,7 +193,6 @@
                             display: none;
                         }
                     }
-
                     &-chat-header {
                         border-radius: $BORDER_RADIUS $BORDER_RADIUS 0 0;
                         border-bottom: none;
@@ -215,11 +204,9 @@
                             align-items: flex-start;
                             margin-right: 0;
                         }
-
                         &__right {
                             display: none;
                         }
-
                         &__title {
                             font-size: 16px;
                             padding-left: 16px;
@@ -229,7 +216,6 @@
                             margin-left: 0;
                             color: var(--text-prominent);
                         }
-
                         &__subtitle {
                             display: flex;
                             align-self: flex-end;
@@ -238,7 +224,6 @@
                             color: var(--text-less-prominent);
                         }
                     }
-
                     &-notification {
                         margin: 0 1.6rem 1.6rem;
                         background-color: var(--button-primary-default);
@@ -247,7 +232,6 @@
                             background-color: var(--button-primary-hover);
                         }
                     }
-
                     &-chat-footer {
                         &--textarea {
                             &__character-count {
@@ -259,16 +243,13 @@
                             }
                         }
                     }
-
                     &-iconbutton {
                         svg {
                             fill: var(--text-general) !important;
                         }
-
                         .icon-send_svg__fill {
                             fill: var(--text-general) !important;
                         }
-
                         &:hover {
                             background-color: var(--general-hover) !important;
                         }
@@ -277,7 +258,6 @@
             }
         }
     }
-
     &__wrapper {
         width: 456px;
 
@@ -379,7 +359,6 @@
             &-value {
                 font-size: 1.4rem;
                 line-height: 1.43;
-                word-break: all;
                 color: var(--text-general);
                 word-break: break-word;
             }

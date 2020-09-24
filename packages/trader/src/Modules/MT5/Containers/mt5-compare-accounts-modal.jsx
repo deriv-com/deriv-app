@@ -8,10 +8,64 @@ import {
     MobileWrapper,
     Table,
     UILoader,
+    ThemedScrollbars,
 } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+
+const MT5CompareAccountDescription = () => (
+    <ol className='mt5-compare-account--description'>
+        <li>
+            <strong>{localize('Maximum leverage')}</strong>
+            <p>
+                {localize(
+                    'Leverage gives you the ability to trade a larger position using your existing capital. Leverage varies across different symbols.'
+                )}
+            </p>
+        </li>
+        <li>
+            <strong>{localize('Order execution')}</strong>
+            <p>
+                {localize(
+                    "All 3 account types use market execution. This means you agree with the broker's price in advance and will place orders at the broker's price."
+                )}
+            </p>
+        </li>
+        <li>
+            <strong>{localize('Spread')}</strong>
+            <p>
+                {localize(
+                    "The spread is the difference between the buy price and sell price. A variable spread means that the spread is constantly changing, depending on market conditions. A fixed spread remains constant but is subject to alteration, at the Broker's absolute discretion."
+                )}
+            </p>
+        </li>
+        <li>
+            <strong>{localize('Commission')}</strong>
+            <p>{localize('Deriv charges no commission across all account types, except for cryptocurrencies.')}</p>
+        </li>
+        <li>
+            <strong>{localize('Margin call')}</strong>
+            <p>
+                {localize(
+                    'When the remaining funds in your account is deemed insufficient to cover the leverage or margin requirements, your account will be placed under margin call. To prevent a margin call escalating to a stop out level, you can deposit  apitional funds into your account or close any open positions.'
+                )}
+            </p>
+        </li>
+        <li>
+            <strong>{localize('Stop out level')}</strong>
+            <p>
+                {localize(
+                    'If your account reaches the stop out level, then your account will be in stop out state. Trading positions and orders on your account are forcibly closed until there are no more open positions or until your margin level increases above the stop out level.'
+                )}
+            </p>
+        </li>
+        <li>
+            <strong>{localize('Cryptocurrency trading')}</strong>
+            <p>{localize('Indicates the availability of cryptocurrency trading on a particular account.')}</p>
+        </li>
+    </ol>
+);
 
 const MT5AttributeDescriberModal = ({ is_visible, toggleModal, message }) => (
     <Modal is_open={is_visible} small toggleModal={toggleModal}>
@@ -77,57 +131,25 @@ const compareAccountsData = ({ landing_companies, is_eu, is_eu_country, is_logge
                 financial_stp: localize('USD'),
             },
             {
-                attribute: (
-                    <MT5AttributeDescriber
-                        name={localize('Maximum leverage')}
-                        counter={1}
-                        tooltip={localize(
-                            'Leverage gives you the ability to trade a larger position using your existing capital. Leverage varies across different symbols.'
-                        )}
-                    />
-                ),
+                attribute: <MT5AttributeDescriber name={localize('Maximum leverage')} />,
                 synthetic: localize('Up to 1:1000'),
                 financial: show_eu_related ? localize('Up to 1:30') : localize('Up to 1:1000'),
                 financial_stp: localize('Up to 1:100'),
             },
             {
-                attribute: (
-                    <MT5AttributeDescriber
-                        name={localize('Order execution')}
-                        counter={2}
-                        tooltip={localize(
-                            "All 3 account types use market execution. This means you agree with the broker's price in advance and will place orders at the broker's price."
-                        )}
-                    />
-                ),
+                attribute: <MT5AttributeDescriber name={localize('Order execution')} />,
                 synthetic: localize('Market'),
                 financial: localize('Market'),
                 financial_stp: localize('Market'),
             },
             {
-                attribute: (
-                    <MT5AttributeDescriber
-                        name={localize('Spread')}
-                        counter={3}
-                        tooltip={localize(
-                            "The spread is the difference between the buy price and sell price. A variable spread means that the spread is constantly changing, depending on market conditions. A fixed spread remains constant but is subject to alteration, at the Broker's absolute discretion."
-                        )}
-                    />
-                ),
+                attribute: <MT5AttributeDescriber name={localize('Spread')} />,
                 synthetic: localize('Fixed/Variable'),
                 financial: localize('Variable'),
                 financial_stp: localize('Variable'),
             },
             {
-                attribute: (
-                    <MT5AttributeDescriber
-                        name={localize('Commission')}
-                        counter={4}
-                        tooltip={localize(
-                            'Deriv charges no commission across all account types, except for cryptocurrencies.'
-                        )}
-                    />
-                ),
+                attribute: <MT5AttributeDescriber name={localize('Commission')} />,
                 synthetic: localize('No'),
                 financial: localize('No'),
                 financial_stp: localize('No'),
@@ -139,29 +161,13 @@ const compareAccountsData = ({ landing_companies, is_eu, is_eu_country, is_logge
                 financial_stp: localize('No'),
             },
             {
-                attribute: (
-                    <MT5AttributeDescriber
-                        name={localize('Margin call')}
-                        counter={5}
-                        tooltip={localize(
-                            'When the remaining funds in your account is deemed insufficient to cover the leverage or margin requirements, your account will be placed under margin call. To prevent a margin call escalating to a stop out level, you can deposit  additional funds into your account or close any open positions.'
-                        )}
-                    />
-                ),
+                attribute: <MT5AttributeDescriber name={localize('Margin call')} />,
                 synthetic: localize('100%'),
                 financial: show_eu_related ? localize('100%') : localize('150%'),
                 financial_stp: localize('150%'),
             },
             {
-                attribute: (
-                    <MT5AttributeDescriber
-                        name={localize('Stop out level')}
-                        counter={6}
-                        tooltip={localize(
-                            'If your account reaches the stop out level, then your account will be in stop out state. Trading positions and orders on your account are forcibly closed until there are no more open positions or until your margin level increases above the stop out level.'
-                        )}
-                    />
-                ),
+                attribute: <MT5AttributeDescriber name={localize('Stop out level')} />,
                 synthetic: localize('50%'),
                 financial: show_eu_related ? localize('50%') : localize('75%'),
                 financial_stp: localize('75%'),
@@ -173,15 +179,7 @@ const compareAccountsData = ({ landing_companies, is_eu, is_eu_country, is_logge
                 financial_stp: localize('50+'),
             },
             {
-                attribute: (
-                    <MT5AttributeDescriber
-                        name={localize('Cryptocurrency trading')}
-                        counter={7}
-                        tooltip={localize(
-                            'Indicates the availability of cryptocurrency trading on a particular account.'
-                        )}
-                    />
-                ),
+                attribute: <MT5AttributeDescriber name={localize('Cryptocurrency trading')} />,
                 synthetic: localize('N/A'),
                 financial: localize('24/7'),
                 financial_stp: localize('24/7'),
@@ -237,58 +235,61 @@ const ModalContent = ({ is_eu, landing_companies, is_eu_country, is_logged_in })
                 '--mt5-compare-accounts-template-columns': template_columns,
             }}
         >
-            <Table fixed scroll_height={isMobile() ? '100%' : 'calc(100% - 130px)'}>
-                <Table.Header>
-                    <Table.Row className='mt5-compare-accounts__table-row'>
-                        <Table.Head fixed />
-                        {is_logged_in ? (
-                            <React.Fragment>
-                                {landing_companies?.mt_gaming_company?.financial && (
+            <ThemedScrollbars>
+                <Table fixed scroll_height={isMobile() ? '100%' : 'calc(100% - 130px)'}>
+                    <Table.Header>
+                        <Table.Row className='mt5-compare-accounts__table-row'>
+                            <Table.Head fixed />
+                            {is_logged_in ? (
+                                <React.Fragment>
+                                    {landing_companies?.mt_gaming_company?.financial && (
+                                        <Table.Head>{localize('Synthetic')}</Table.Head>
+                                    )}
+                                    {landing_companies?.mt_financial_company?.financial && (
+                                        <Table.Head>
+                                            {localize('Financial')}
+                                            <span className='mt5-compare-accounts__star'>*</span>
+                                        </Table.Head>
+                                    )}
+                                    {landing_companies?.mt_financial_company?.financial_stp && (
+                                        <Table.Head>
+                                            {localize('Financial STP')}
+                                            <span className='mt5-compare-accounts__star'>*</span>
+                                        </Table.Head>
+                                    )}
+                                </React.Fragment>
+                            ) : (
+                                <React.Fragment>
                                     <Table.Head>{localize('Synthetic')}</Table.Head>
-                                )}
-                                {landing_companies?.mt_financial_company?.financial && (
                                     <Table.Head>
                                         {localize('Financial')}
                                         <span className='mt5-compare-accounts__star'>*</span>
                                     </Table.Head>
-                                )}
-                                {landing_companies?.mt_financial_company?.financial_stp && (
                                     <Table.Head>
                                         {localize('Financial STP')}
                                         <span className='mt5-compare-accounts__star'>*</span>
                                     </Table.Head>
-                                )}
-                            </React.Fragment>
-                        ) : (
-                            <React.Fragment>
-                                <Table.Head>{localize('Synthetic')}</Table.Head>
-                                <Table.Head>
-                                    {localize('Financial')}
-                                    <span className='mt5-compare-accounts__star'>*</span>
-                                </Table.Head>
-                                <Table.Head>
-                                    {localize('Financial STP')}
-                                    <span className='mt5-compare-accounts__star'>*</span>
-                                </Table.Head>
-                            </React.Fragment>
-                        )}
-                    </Table.Row>
-                </Table.Header>
-                <Table.Body>
-                    {cols.map((row, i) => (
-                        <Table.Row key={i} className='mt5-compare-accounts__table-row'>
-                            {Object.keys(row).map((col, j) => (
-                                <Table.Cell key={j} fixed={j === 0}>
-                                    {row[col]}
-                                </Table.Cell>
-                            ))}
+                                </React.Fragment>
+                            )}
                         </Table.Row>
-                    ))}
-                </Table.Body>
-            </Table>
-            <DesktopWrapper>
-                <MT5CompareAccountHint />
-            </DesktopWrapper>
+                    </Table.Header>
+                    <Table.Body>
+                        {cols.map((row, i) => (
+                            <Table.Row key={i} className='mt5-compare-accounts__table-row'>
+                                {Object.keys(row).map((col, j) => (
+                                    <Table.Cell key={j} fixed={j === 0}>
+                                        {row[col]}
+                                    </Table.Cell>
+                                ))}
+                            </Table.Row>
+                        ))}
+                    </Table.Body>
+                </Table>
+                <DesktopWrapper>
+                    <MT5CompareAccountHint />
+                    <MT5CompareAccountDescription />
+                </DesktopWrapper>
+            </ThemedScrollbars>
         </div>
     );
 };

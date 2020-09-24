@@ -235,7 +235,7 @@
     flex-flow: column nowrap;
     flex-grow: 1;
     background: inherit;
-    height: 100%;
+    height: calc(100% - 58px);
     position: relative;
 
     &__table-row {
@@ -278,10 +278,6 @@
 
     .dc-table {
         padding: 0 30px;
-        @include desktop {
-            position: absolute;
-            height: 100%;
-        }
 
         &__header {
             border-bottom: none;
@@ -352,15 +348,42 @@
     font-size: 12px;
     line-height: 1.5em;
     width: 100%;
-    padding: 1.6rem 2.4rem 0.8rem 2.4rem;
+    padding: 1.6rem 2.4rem;
 
     @include mobile {
         padding: 1.6rem;
         border-top: 2px solid var(--border-disabled);
     }
-    @include desktop {
-        position: absolute;
-        bottom: 0;
+}
+
+.mt5-compare-account--description {
+    color: var(--button-primary-default);
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1.5em;
+    width: 100%;
+    padding: 0rem 2.4rem 2.4rem;
+    list-style: decimal inside none;
+
+    @include mobile {
+        padding: 1.6rem;
+        border-top: 2px solid var(--border-disabled);
+    }
+
+    li {
+        margin-bottom: 1rem;
+    }
+    strong {
+        color: var(--text-general);
+        margin-bottom: 0.5rem;
+    }
+    p {
+        color: var(--text-general);
+        padding-left: 1.5rem;
+        font-size: 12px;
+        letter-spacing: 0px;
+        line-height: 18px;
+        font-weight: normal;
     }
 }
 

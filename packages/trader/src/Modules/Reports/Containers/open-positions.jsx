@@ -178,6 +178,7 @@ class OpenPositions extends React.Component {
                     is_link_disabled
                     onClickCancel={onClickCancel}
                     onClickSell={onClickSell}
+                    server_time={server_time}
                     status={status}
                 />
             );
@@ -307,6 +308,7 @@ class OpenPositions extends React.Component {
             onClickCancel,
             onClickSell,
             getPositionById,
+            server_time,
         } = this.props;
 
         const { has_multiplier_contract, active_index } = this.state;

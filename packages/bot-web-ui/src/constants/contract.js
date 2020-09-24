@@ -4,6 +4,7 @@ export const getCardLabels = () => ({
     APPLY: localize('Apply'),
     STAKE: localize('Stake:'),
     CLOSE: localize('Close'),
+    CANCEL: localize('Cancel'),
     CURRENT_STAKE: localize('Current stake:'),
     DEAL_CANCEL_FEE: localize('Deal cancel. fee:'),
     TAKE_PROFIT: localize('Take profit:'),

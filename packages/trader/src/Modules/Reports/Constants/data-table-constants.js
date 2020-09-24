@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Icon, Label, Money, MultiplierCloseActions } from '@deriv/components';
+import { Icon, Label, Money, ContractCard } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import ProgressSliderStream from 'App/Containers/ProgressSliderStream';
@@ -353,7 +353,7 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
 
             return (
                 <div className='open-positions__row-action'>
-                    <MultiplierCloseActions
+                    <ContractCard.MultiplierCloseActions
                         contract_info={contract_info}
                         getCardLabels={getCardLabels}
                         is_sell_requested={is_sell_requested}

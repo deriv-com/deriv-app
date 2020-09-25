@@ -285,10 +285,8 @@ const ModalContent = ({ is_eu, landing_companies, is_eu_country, is_logged_in })
                         ))}
                     </Table.Body>
                 </Table>
-                <DesktopWrapper>
-                    <MT5CompareAccountHint />
-                    <MT5CompareAccountDescription />
-                </DesktopWrapper>
+                <MT5CompareAccountHint />
+                <MT5CompareAccountDescription />
             </ThemedScrollbars>
         </div>
     );
@@ -342,7 +340,6 @@ const CompareAccountsModal = ({
                     wrapper_classname='mt5-dashboard__compare-accounts'
                     visible={is_compare_accounts_visible}
                     onClose={toggleCompareAccounts}
-                    footer={<MT5CompareAccountHint />}
                 >
                     <ModalContent
                         is_logged_in={is_logged_in}

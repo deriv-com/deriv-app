@@ -303,7 +303,9 @@ class DeactivateAccountReason extends React.Component {
                                         data-lpignore='true'
                                         autoComplete='off' // prevent chrome autocomplete
                                         type='textarea'
-                                        placeholder='If you don’t mind sharing, which other trading platforms do you use?'
+                                        placeholder={localize(
+                                            'If you don’t mind sharing, which other trading platforms do you use?'
+                                        )}
                                         name='otherTradingPlatforms'
                                         value={values.otherTradingPlatforms}
                                         onChange={handleChange}
@@ -318,7 +320,7 @@ class DeactivateAccountReason extends React.Component {
                                         data-lpignore='true'
                                         autoComplete='off' // prevent chrome autocomplete
                                         type='textarea'
-                                        placeholder='What could we do to improve?'
+                                        placeholder={localize('What could we do to improve?')}
                                         name='doToImprove'
                                         value={values.doToImprove}
                                         onChange={handleChange}

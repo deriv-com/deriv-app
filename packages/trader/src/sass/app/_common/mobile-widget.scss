@@ -88,6 +88,12 @@
         }
     }
 }
+/** @define mobile-widget-dialog */
+.mobile-widget-dialog {
+    &__wrapper {
+        overflow-y: scroll;
+    }
+}
 
 /** @define fieldset-minimized */
 .fieldset-minimized {

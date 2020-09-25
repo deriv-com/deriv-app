@@ -662,6 +662,7 @@ $MIN_HEIGHT_FLOATING: calc(
 
             @include mobile {
                 padding-top: 2.4rem;
+                margin-right: 1.2rem;
             }
         }
         &__input-group {

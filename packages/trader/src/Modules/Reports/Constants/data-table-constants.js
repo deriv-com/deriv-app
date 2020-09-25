@@ -147,7 +147,7 @@ export const getProfitTableColumnsTemplate = (currency, items_count) => [
 ];
 export const getOpenPositionsColumnsTemplate = currency => [
     {
-        title: 'Type',
+        title: localize('Type'),
         col_index: 'type',
         renderCellContent: ({ cell_value, row_obj, is_footer }) => {
             if (is_footer) return localize('Total');

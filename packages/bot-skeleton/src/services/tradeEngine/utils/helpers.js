@@ -52,13 +52,28 @@ const getBackoffDelayInMs = (error, delay_index) => {
     const max_delay = 15;
     const next_delay_in_seconds = Math.min(base_delay * delay_index, max_delay);
 
-    const localize_args = { message_type: error.error.msg_type, delay: next_delay_in_seconds };
-    const error_message =
-        error?.name === 'RateLimit'
-            ? localize('Rate limit reached for: {{ message_type }}, retrying in {{ delay }}s', localize_args)
-            : localize('Request failed for: {{ message_type }}, retrying in {{ delay }}s', localize_args);
-
-    logError(error_message);
+    if (error?.name === 'RateLimit') {
+        logError(
+            localize('You are rate limited for: {{ message_type }}, retrying in {{ delay }}s (ID: {{ request }})', {
+                message_type: error.error.msg_type,
+                delay: next_delay_in_seconds,
+                request: error.error.echo_req.req_id,
+            })
+        );
+    } else if (error?.name === 'DisconnectError') {
+        logError(
+            localize('You are disconnected, retrying in {{ delay }}s', {
+                delay: next_delay_in_seconds,
+            })
+        );
+    } else {
+        logError(
+            localize('Request failed for: {{ message_type }}, retrying in {{ delay }}s', {
+                message_type: error.msg_type || localize('unknown'),
+                delay: next_delay_in_seconds,
+            })
+        );
+    }
 
     return next_delay_in_seconds * 1000;
 };
@@ -95,8 +110,20 @@ export const recoverFromError = (promiseFn, recoverFn, errors_to_ignore, delay_i
                     error.name,
                     () =>
                         new Promise(recoverResolve => {
-                            const global_timeouts = globalObserver.getState('global_timeouts') ?? [];
-                            global_timeouts.push(setTimeout(recoverResolve, getBackoffDelayInMs(error, delay_index)));
+                            const getGlobalTimeouts = () => globalObserver.getState('global_timeouts') ?? [];
+
+                            const timeout = setTimeout(() => {
+                                globalObserver.setState({
+                                    global_timeouts: getGlobalTimeouts().filter(
+                                        global_timeout => global_timeout !== timeout
+                                    ),
+                                });
+                                recoverResolve();
+                            }, getBackoffDelayInMs(error, delay_index));
+
+                            const global_timeouts = getGlobalTimeouts();
+
+                            global_timeouts.push(timeout);
                             globalObserver.setState({ global_timeouts });
                         })
                 );
@@ -111,12 +138,12 @@ export const doUntilDone = (promiseFn, errors_to_ignore) => {
     let delay_index = 1;
 
     return new Promise((resolve, reject) => {
-        const repeatFn = () => {
-            const recoverFn = (error_code, makeDelay) => {
-                delay_index++;
-                makeDelay().then(repeatFn);
-            };
+        const recoverFn = (error_code, makeDelay) => {
+            delay_index++;
+            makeDelay().then(repeatFn);
+        };
 
+        const repeatFn = () => {
             recoverFromError(promiseFn, recoverFn, errors_to_ignore, delay_index)
                 .then(resolve)
                 .catch(reject);

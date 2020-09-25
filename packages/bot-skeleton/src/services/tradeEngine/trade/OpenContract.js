@@ -3,8 +3,6 @@ import { sell, openContractReceived } from './state/actions';
 import { contractStatus, contract as broadcastContract } from '../utils/broadcast';
 import { doUntilDone } from '../utils/helpers';
 
-const AFTER_FINISH_TIMEOUT = 5;
-
 export default Engine =>
     class OpenContract extends Engine {
         observeOpenContract() {
@@ -34,13 +32,8 @@ export default Engine =>
                     }
 
                     this.store.dispatch(sell());
-
-                    this.cancelSubscriptionTimeout();
                 } else {
                     this.store.dispatch(openContractReceived());
-                    if (!this.isExpired) {
-                        this.resetSubscriptionTimeout();
-                    }
                 }
             });
         }
@@ -52,45 +45,31 @@ export default Engine =>
         }
 
         subscribeToOpenContract(contractId = this.contractId) {
-            if (this.contractId !== contractId) {
-                this.resetSubscriptionTimeout();
-            }
             this.contractId = contractId;
 
-            doUntilDone(() => this.api.subscribeToOpenContract(contractId)).then(r => {
-                ({
-                    proposal_open_contract: { id: this.openContractId },
-                } = r);
-            });
-        }
-
-        resetSubscriptionTimeout(timeout = AFTER_FINISH_TIMEOUT) {
-            this.cancelSubscriptionTimeout();
-            this.subscriptionTimeout = setInterval(() => {
-                this.subscribeToOpenContract();
-                this.resetSubscriptionTimeout(timeout);
-            }, timeout * 1000);
-        }
-
-        cancelSubscriptionTimeout() {
-            clearTimeout(this.subscriptionTimeout);
+            this.api
+                .subscribeToOpenContract(contractId)
+                .then(response => {
+                    this.openContractId = response.proposal_open_contract.id;
+                })
+                .catch(error => {
+                    if (error.name !== 'AlreadySubscribed') {
+                        doUntilDone(() =>
+                            this.api.subscribeToOpenContract(contractId).then(response => {
+                                this.openContractId = response.proposal_open_contract.id;
+                            })
+                        );
+                    }
+                });
         }
 
         setContractFlags(contract) {
-            const {
-                is_expired: isExpired,
-                is_valid_to_sell: isValidToSell,
-                is_sold: isSold,
-                entry_tick: entryTick,
-            } = contract;
+            const { is_expired, is_valid_to_sell, is_sold, entry_tick } = contract;
 
-            this.isSold = Boolean(isSold);
-
-            this.isSellAvailable = !this.isSold && Boolean(isValidToSell);
-
-            this.isExpired = Boolean(isExpired);
-
-            this.hasEntryTick = Boolean(entryTick);
+            this.isSold = Boolean(is_sold);
+            this.isSellAvailable = !this.isSold && Boolean(is_valid_to_sell);
+            this.isExpired = Boolean(is_expired);
+            this.hasEntryTick = Boolean(entry_tick);
         }
 
         expectedContractId(contractId) {

@@ -278,6 +278,7 @@ const ReplayChart = connect(({ modules, ui, common }) => {
     const contract_config = contract_store.contract_config;
     const is_chart_ready = contract_replay.is_chart_ready;
     /**
+     * TODO: remove forcing light theme once DBot supports dark theme
      * DBot does not support for dark theme since till now,
      * as a result, if any user come to report detail pages
      * from DBot, we should force it to have light theme

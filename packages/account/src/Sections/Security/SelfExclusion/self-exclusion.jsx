@@ -432,7 +432,7 @@ class SelfExclusion extends React.Component {
                                                     let value = '';
 
                                                     if (need_date_format.includes(key)) {
-                                                        value = toMoment(values[key]).format('DD MMM YYYY');
+                                                        value = toMoment(values[key]).format('DD/MM/YYYY');
                                                     } else if (need_money_format.includes(key)) {
                                                         value = `${formatMoney(
                                                             currency,
@@ -440,7 +440,7 @@ class SelfExclusion extends React.Component {
                                                             true
                                                         )} ${currency}`;
                                                     } else if (need_minutes.includes(key)) {
-                                                        value = `${values[key]} Minutes`;
+                                                        value = localize('{{value}} mins', { value: values[key] });
                                                     } else if (need_amount.includes(key)) {
                                                         value = `${values[key]}`;
                                                     }

@@ -4,7 +4,7 @@ import React from 'react';
 import { FormSubmitButton } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { isMobile } from '@deriv/shared';
+import { isMobile, reorderCurrencies } from '@deriv/shared';
 import { RadioButtonGroup, RadioButton } from './currency-selector.jsx';
 
 const messages = () => [
@@ -33,7 +33,7 @@ class AddCryptoCurrency extends React.Component {
     static getDerivedStateFromProps(props) {
         const fiat = props.legal_allowed_currencies.filter(currency => currency.type === 'fiat');
         return {
-            available_fiat_currencies: fiat,
+            available_fiat_currencies: reorderCurrencies(fiat),
         };
     }
 
@@ -42,7 +42,10 @@ class AddCryptoCurrency extends React.Component {
     }
 
     get crypto_currencies() {
-        return this.props.legal_allowed_currencies.filter(currency => currency.type === 'crypto');
+        return reorderCurrencies(
+            this.props.legal_allowed_currencies.filter(currency => currency.type === 'crypto'),
+            'crypto'
+        );
     }
 
     canAddCrypto = currency => {

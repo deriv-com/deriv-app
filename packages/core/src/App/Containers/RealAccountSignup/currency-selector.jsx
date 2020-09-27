@@ -11,7 +11,7 @@ import {
     Icon,
     ThemedScrollbars,
 } from '@deriv/components';
-import { getCurrencyDisplayCode, isMobile, isDesktop } from '@deriv/shared';
+import { getCurrencyDisplayCode, isMobile, isDesktop, reorderCurrencies } from '@deriv/shared';
 
 import { connect } from 'Stores/connect';
 import { Localize, localize } from '@deriv/translations';
@@ -123,21 +123,6 @@ RadioButtonGroup.defaultProps = {
 
 export const Hr = () => <div className='currency-hr' />;
 
-export const reorderFiatCurrencies = list => {
-    // The order should be custom
-    // [USD, EUR, GBP, AUD]
-    const order = ['USD', 'EUR', 'GBP', 'AUD'];
-    return list.sort((a, b) => {
-        if (order.indexOf(a.value) < order.indexOf(b.value)) {
-            return -1;
-        }
-        if (order.indexOf(a.value) > order.indexOf(b.value)) {
-            return 1;
-        }
-        return 0;
-    });
-};
-
 class CurrencySelector extends React.Component {
     constructor(props) {
         super(props);
@@ -155,8 +140,8 @@ class CurrencySelector extends React.Component {
         const fiat = next_props.legal_allowed_currencies.filter(currency => currency.type === 'fiat');
 
         return {
-            fiat_currencies: reorderFiatCurrencies(fiat),
-            crypto_currencies: crypto,
+            fiat_currencies: reorderCurrencies(fiat),
+            crypto_currencies: reorderCurrencies(crypto, 'crypto'),
         };
     }
 

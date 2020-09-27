@@ -86,7 +86,6 @@ class App extends React.Component {
         this.registerClickOutsideBlockly();
         this.registerBeforeUnload();
         this.root_store.main_content.getCachedActiveTab();
-        this.root_store.ui.changeTheme();
     }
 
     componentDidUpdate() {

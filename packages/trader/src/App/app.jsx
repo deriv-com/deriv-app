@@ -29,10 +29,6 @@ class App extends React.Component {
         this.root_store.ui.setPromptHandler(false);
     }
 
-    componentDidMount() {
-        this.root_store.ui.changeTheme();
-    }
-
     render() {
         return (
             <MobxContentProvider store={this.root_store}>

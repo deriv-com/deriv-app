@@ -4,8 +4,10 @@ import PropTypes from 'prop-types';
 
 const Article = ({ className, title, descriptions }) => (
     <article className={classNames('account__article', className)}>
-        <h4 className='account__article-title'>{title}</h4>
-        <ul className='account__article-list'>
+        <h4 className='account__article-title' data-testid='title'>
+            {title}
+        </h4>
+        <ul className='account__article-list' data-testid='description'>
             {descriptions &&
                 descriptions.map((desc, idx) => (
                     <li key={idx}>

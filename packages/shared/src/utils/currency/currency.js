@@ -2,6 +2,37 @@ import { getPropertyValue, deepFreeze } from '../object';
 
 let currencies_config = {};
 
+const fiat_currencies_display_order = ['USD', 'EUR', 'GBP', 'AUD'];
+const crypto_currencies_display_order = [
+    'BTC',
+    'ETH',
+    'LTC',
+    'UST',
+    'eUSDT',
+    'BUSD',
+    'DAI',
+    'EURS',
+    'IDK',
+    'PAX',
+    'TUSD',
+    'USDC',
+    'USDK',
+];
+
+export const reorderCurrencies = (list, type = 'fiat') => {
+    const new_order = type === 'fiat' ? fiat_currencies_display_order : crypto_currencies_display_order;
+
+    return list.sort((a, b) => {
+        if (new_order.indexOf(a.value) < new_order.indexOf(b.value)) {
+            return -1;
+        }
+        if (new_order.indexOf(a.value) > new_order.indexOf(b.value)) {
+            return 1;
+        }
+        return 0;
+    });
+};
+
 export const AMOUNT_MAX_LENGTH = 10;
 
 export const getRoundedNumber = (number, currency) => {
@@ -122,7 +153,7 @@ export const CryptoConfig = (() => {
                 min_withdrawal: 0.002,
                 pa_max_withdrawal: 5,
                 pa_min_withdrawal: 0.002,
-                fractional_digits: 2,
+                fractional_digits: 0,
             },
             PAX: {
                 display_code: 'PAX',

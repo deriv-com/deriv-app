@@ -161,7 +161,10 @@ $side-padding: 1.2em;
     }
     &__row {
         /* icon refId currency tr_time transaction cred/debt balance */
-        grid-template-columns: 0.8fr 1.4fr 1.4fr 1.2fr 1fr 1.2fr 1fr;
+        grid-template-columns: minmax(120px, 0.8fr) minmax(85px, 1.4fr) minmax(110px, 1.2fr) minmax(85px, 1.2fr) minmax(
+                85px,
+                1fr
+            ) minmax(85px, 1.2fr) minmax(85px, 1fr);
 
         .date {
             text-align: left;
@@ -341,6 +344,11 @@ $side-padding: 1.2em;
 
 /** @define profit-table; weak */
 .profit-table {
+    .table__head,
+    .table__foot {
+        font-weight: bold;
+    }
+
     @include desktop {
         height: 100%;
     }
@@ -392,7 +400,10 @@ $side-padding: 1.2em;
     }
     &__row {
         /* icon refId currency buy_time buy_price sell_time sell_price profit/loss */
-        grid-template-columns: 0.6fr 1fr 1fr 1.2fr 1fr 1.2fr 1fr 1fr;
+        grid-template-columns: minmax(120px, 0.6fr) minmax(130px, 1fr) minmax(85px, 1fr) minmax(85px, 1.2fr) minmax(
+                85px,
+                1fr
+            ) minmax(85px, 1.2fr) minmax(85px, 1fr) minmax(85px, 1fr);
     }
     .buy_price,
     .sell_price,
@@ -555,7 +566,7 @@ $side-padding: 1.2em;
                 }
                 /* postcss-bem-linter: ignore */
                 & .positions-drawer-dialog-toggle {
-                    top: 51px;
+                    top: 71px;
                     width: 124px;
                     right: 9px;
                     border-color: var(--border-hover);
@@ -711,8 +722,11 @@ $side-padding: 1.2em;
         margin-top: 20px;
 
         .table__head {
-            @media only screen and (max-width: 1160px) and (min-width: 1024px) {
-                white-space: unset;
+            @include desktop {
+                .profit,
+                .indicative {
+                    white-space: break-spaces;
+                }
             }
 
             .table__cell {
@@ -725,15 +739,17 @@ $side-padding: 1.2em;
             .open-positions__row_wrapper {
                 border-bottom: 1px solid var(--general-section-1);
             }
-            .payout,
-            .purchase {
-                padding-right: 2rem;
-            }
+        }
+        .table__foot {
+            font-weight: bold;
         }
     }
     &__row {
         /* icon refId currency buy_price potential_payout potential_profit indicative_price rem_time */
-        grid-template-columns: 0.8fr 1.2fr 1fr 1fr 1.4fr 2fr 1.2fr 2fr;
+        grid-template-columns: minmax(110px, 0.8fr) minmax(130px, 1.2fr) minmax(100px, 1fr) minmax(90px, 1.4fr) minmax(
+                90px,
+                1.4fr
+            ) minmax(120px, 2fr) minmax(120px, 1.2fr) minmax(85px, 2fr);
         width: 100%;
         grid-auto-rows: auto;
 
@@ -798,7 +814,10 @@ $side-padding: 1.2em;
     .open-positions {
         &__row {
             /* icon multiplier currency stake cancellation buy_price limit_order current_stake total_profit_loss action */
-            grid-template-columns: 0.5fr 0.9fr 0.8fr 0.8fr 1.5fr 1fr 1fr 1.2fr 1.1fr 1.2fr;
+            grid-template-columns: minmax(85px, 0.7fr) minmax(75px, 0.8fr) minmax(65px, 0.5fr) minmax(105px, 0.8fr) minmax(
+                    100px,
+                    0.8fr
+                ) minmax(105px, 1fr) minmax(105px, 1fr) minmax(105px, 1.2fr) minmax(115px, 1.1fr) minmax(90px, 1.2fr); // 0.5fr 0.9fr 0.8fr 0.8fr 1.5fr 1fr 1fr 1.2fr 1.1fr 1.2fr;
 
             &-action {
                 display: flex;
@@ -823,7 +842,6 @@ $side-padding: 1.2em;
             }
             .limit_order {
                 flex-direction: column;
-                line-height: 2rem;
                 align-items: flex-end;
                 text-align: right;
             }
@@ -833,6 +851,8 @@ $side-padding: 1.2em;
                 @include desktop {
                     justify-content: flex-end;
                     text-align: right;
+                    width: 100%;
+                    white-space: break-spaces;
                 }
             }
             .action {

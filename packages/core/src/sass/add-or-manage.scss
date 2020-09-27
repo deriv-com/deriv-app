@@ -88,13 +88,6 @@
         .currency-selector__radio-group.with-margin {
             margin-bottom: 7rem;
         }
-        .dc-form-submit-button--relative {
-            height: 72px;
-            position: fixed;
-            padding: 15px;
-            // bottom: 56px;
-            border-top: 2px solid var(--general-section-1);
-        }
         & .change-currency {
             .currency-list__items {
                 margin-bottom: 12rem;
@@ -117,8 +110,13 @@
             }
         }
         & .dc-form-submit-button {
-            position: relative;
-            border: none;
+            position: fixed;
+            padding: 15px;
+            height: 72px;
+            bottom: 0;
+            width: 100%;
+            background-color: var(--general-main-1);
+            border: 2px solid var(--general-section-1);
         }
     }
 }
@@ -196,6 +194,7 @@
         &--center {
             justify-content: center;
             width: auto;
+            margin-top: 3rem;
         }
     }
     &__icon-area.set-currency {
@@ -230,10 +229,12 @@
 
             @include mobile {
                 padding: 0 1rem;
+                line-height: 2rem;
             }
         }
         &--no-grow {
             flex-grow: 0;
+            margin-bottom: 2rem;
         }
     }
     &__btn-area {
@@ -268,4 +269,8 @@
         height: 100%;
         padding: 2rem 0 0;
     }
+}
+
+.dc-mobile-dialog--enter-done .dc-mobile-dialog__content {
+    transform: unset;
 }

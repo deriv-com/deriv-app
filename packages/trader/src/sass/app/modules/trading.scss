@@ -379,6 +379,9 @@
         width: 28rem;
     }
     &__cancel-deal-info {
+        .trade-container__price-info-currency {
+            font-size: 1.1rem;
+        }
         display: flex;
         flex-direction: row;
         justify-content: space-between;

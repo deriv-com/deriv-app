@@ -1,9 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
+import { baseStyles, responsiveStyles } from '../responsive-style';
 
-export const Text = styled.p`
-    font-size: ${props => props.size || '16px'};
+const Text = styled.p`
+    font-size: ${props => props.font_size};
+    line-height: ${props => props.line_height || '1.5'};
+    font-weight: ${props => props.font_weight || 'normal'};
+    ${baseStyles}
+    ${responsiveStyles}
 `;
 
 export default Text;

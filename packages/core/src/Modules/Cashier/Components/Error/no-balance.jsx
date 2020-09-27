@@ -24,9 +24,19 @@ class NoBalance extends React.Component {
                         values={{ currency: getCurrencyDisplayCode(this.props.currency) }}
                     />
                 </h2>
-                <p className='cashier__text'>
+                <Text
+                    font_size='1.4rem'
+                    line_height='1.43'
+                    max_width='70%'
+                    margin_left='auto'
+                    margin_right='auto'
+                    mobileL={{ margin: '0', padding: '0', max_width: '100%', text_align: 'left' }}
+                >
                     <Localize i18n_default_text='Please make a deposit to use this feature.' />
-                </p>
+                </Text>
+                {/* <p className='cashier__text'>
+                    <Localize i18n_default_text='Please make a deposit to use this feature.' />
+                </p> */}
                 <Button
                     className='cashier__no-balance-button'
                     has_effect
@@ -35,7 +45,6 @@ class NoBalance extends React.Component {
                     primary
                     large
                 />
-                <Text size='25px'>{localize('test the text component')}</Text>
             </div>
         );
     };

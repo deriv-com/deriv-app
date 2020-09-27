@@ -15,13 +15,7 @@ export default class TransactionsStore {
         );
     }
 
-    getTransactionStorageKey = key => {
-        return JSON.parse(sessionStorage.getItem(key));
-    };
-
-    @observable elements = Array.isArray(this.getTransactionStorageKey(transaction_storage_key))
-        ? this.getTransactionStorageKey(transaction_storage_key)
-        : [];
+    @observable elements = JSON.parse(sessionStorage.getItem(transaction_storage_key)) ?? [];
 
     @observable active_transaction_id = null;
 

@@ -20,21 +20,14 @@ export default class RunPanelStore {
 
     run_id = '';
 
-    getStatisticsStorageKey = key => {
-        return JSON.parse(sessionStorage.getItem(key));
+    @observable statistics = JSON.parse(sessionStorage.getItem(statistics_storage_key)) ?? {
+        lost_contracts: 0,
+        number_of_runs: 0,
+        total_profit: 0,
+        total_payout: 0,
+        total_stake: 0,
+        won_contracts: 0,
     };
-
-    @observable statistics =
-        this.getStatisticsStorageKey(statistics_storage_key) !== (undefined || null)
-            ? this.getStatisticsStorageKey(statistics_storage_key)
-            : {
-                  lost_contracts: 0,
-                  number_of_runs: 0,
-                  total_profit: 0,
-                  total_payout: 0,
-                  total_stake: 0,
-                  won_contracts: 0,
-              };
 
     @observable active_index = 0;
     @observable contract_stage = contract_stages.NOT_RUNNING;

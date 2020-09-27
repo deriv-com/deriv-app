@@ -8,7 +8,7 @@ import { findRouteByPath, normalizePath } from './helpers';
 const BinaryLink = ({ active_class, to, children, ...props }) => {
     const { is_deriv_crypto } = React.useContext(PlatformContext);
     const path = normalizePath(to);
-    const route = findRouteByPath(path, getRoutesConfig({ hide_crypto_routes: is_deriv_crypto }));
+    const route = findRouteByPath(path, getRoutesConfig({ is_deriv_crypto }));
 
     if (!route) {
         throw new Error(`Route not found: ${to}`);

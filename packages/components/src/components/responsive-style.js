@@ -1,5 +1,5 @@
 import { css } from 'styled-components';
-import { Margins, Paddings } from '../components/function';
+import { Margins, Paddings } from './function';
 
 export const size = {
     mobileS: 320,
@@ -63,8 +63,8 @@ export const baseStyles = ({
     height: ${height};
     max_height: ${max_height};
     min_height: ${min_height};
-    color: var(--text- ${color});
-    text-align: ${props => props.text_align};
+    color: ${color};
+    text-align: ${text_align};
     ${Margins({ margin, margin_top, margin_left, margin_right, margin_bottom })}
     ${Paddings({ padding, padding_top, padding_left, padding_right, padding_bottom })}
 `;

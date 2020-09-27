@@ -12,10 +12,6 @@ export const isMT5 = () =>
     /^\/mt5/.test(window.location.pathname) ||
     (/^\/(br_)/.test(window.location.pathname) && window.location.pathname.split('/')[2] === 'mt5');
 
-export const isTrader = () =>
-    (/^\//.test(window.location.pathname) && window.location.pathname.length === 1) ||
-    (/^\/(br_)/.test(window.location.pathname) && window.location.pathname.split('/')[2] === '');
-
 // TODO: Replace platform names with `platform_name` enum after merging "carol/journal error notification"
 export const getPlatformInformation = routing_history => {
     const should_be_bot = isBot() || isNavigationFromPlatform(routing_history, routes.bot);

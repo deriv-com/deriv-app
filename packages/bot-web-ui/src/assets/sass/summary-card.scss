@@ -31,4 +31,24 @@
             border: 1px solid var(--border-normal);
         }
     }
+    .dc-contract-card {
+        padding: 1.6rem;
+    }
+    .dc-contract-card__grid-underlying-trade {
+        grid-template-columns: 1.5fr 1fr;
+    }
+    .dc-contract-card-items-wrapper {
+        grid-template-columns: 1.5fr 1fr;
+    }
+    &--mobile {
+        .dc-contract-card {
+            padding: 1.6rem 0.8rem 0.8rem;
+        }
+        .dc-contract-card__grid-underlying-trade--mobile {
+            grid-template-columns: 1fr 1.25fr;
+        }
+        .dc-contract-card-items-wrapper {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
 }

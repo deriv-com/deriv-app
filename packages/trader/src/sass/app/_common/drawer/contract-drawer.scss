@@ -247,7 +247,6 @@ $header-height: 4em;
         align-items: center;
         justify-content: center;
         transition: transform 0.25s ease, opacity 0.25s linear;
-        padding-top: 8px;
         border-top: 1px solid var(--general-section-1);
 
         &--enter-done {
@@ -280,7 +279,7 @@ $header-height: 4em;
             }
         }
         .positions-drawer-dialog-toggle {
-            top: 103px;
+            top: 123px;
             right: 6px;
             width: 108px;
         }

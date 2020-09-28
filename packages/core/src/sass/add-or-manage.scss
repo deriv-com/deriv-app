@@ -117,6 +117,10 @@
             width: 100%;
             background-color: var(--general-main-1);
             border: 2px solid var(--general-section-1);
+
+            button {
+                width: 100%;
+            }
         }
     }
 }

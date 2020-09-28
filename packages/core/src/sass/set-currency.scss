@@ -71,6 +71,10 @@
             }
             .dc-form-submit-button {
                 position: fixed;
+
+                button {
+                    width: 100%;
+                }
             }
             .dc-modal-footer {
                 background-color: var(--general-main-1);

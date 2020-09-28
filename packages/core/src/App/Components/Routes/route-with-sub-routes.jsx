@@ -19,7 +19,14 @@ const RouteWithSubRoutes = route => {
             }
             result = <Redirect to={to} />;
         } else if (route.is_authenticated && !route.is_logged_in) {
-            result = <LoginPrompt onLogin={redirectToLogin} onSignup={redirectToSignUp} page_title={route.title} />;
+            result = (
+                <LoginPrompt
+                    {...props}
+                    onLogin={redirectToLogin}
+                    onSignup={redirectToSignUp}
+                    page_title={route.title}
+                />
+            );
         } else {
             const default_subroute = route.routes ? route.routes.find(r => r.default) : {};
             const has_default_subroute = !isEmptyObject(default_subroute);

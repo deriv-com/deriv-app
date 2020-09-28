@@ -1,3 +1,4 @@
+import React from 'react';
 import { str as crc32 } from 'crc-32';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
@@ -139,4 +140,24 @@ const loadIncontextTranslation = () => {
         `;
         document.head.appendChild(jipt);
     }
+};
+
+export const useOnLoadTranslation = () => {
+    const [is_loaded, setLoaded] = React.useState(false);
+
+    React.useEffect(() => {
+        const is_english = i18n.language === 'EN';
+
+        if (is_english) {
+            setLoaded(true);
+        } else {
+            i18n.store.on('added', () => {
+                setLoaded(true);
+            });
+        }
+
+        return () => i18n.store.off('added');
+    }, []);
+
+    return [is_loaded, setLoaded];
 };

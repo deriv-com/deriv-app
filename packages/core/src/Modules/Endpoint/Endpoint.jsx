@@ -27,7 +27,6 @@ const InputField = props => {
 // doesn't need localization as it's for internal use
 const Endpoint = ({ is_eu_enabled, toggleIsEuEnabled }) => {
     const platform_store = React.useContext(PlatformContext);
-    console.log(platform_store);
     return (
         <Formik
             initialValues={{

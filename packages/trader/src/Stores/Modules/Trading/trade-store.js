@@ -1031,6 +1031,9 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     onUnmount() {
+        if (this.should_skip_prepost_lifecycle) {
+            return;
+        }
         this.disposePreSwitchAccount();
         this.disposeSwitchAccount();
         this.disposeLogout();

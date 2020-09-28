@@ -25,11 +25,15 @@ export default class PortfolioStore extends BaseStore {
 
     @action.bound
     initializePortfolio = async () => {
+        if (this.is_subscribed_to_poc) {
+            this.clearTable();
+        }
         this.is_loading = true;
         await WS.wait('authorize');
         WS.portfolio().then(this.portfolioHandler);
         WS.subscribeProposalOpenContract(null, this.proposalOpenContractQueueHandler);
         WS.subscribeTransaction(this.transactionHandler);
+        this.is_subscribed_to_poc = true;
     };
 
     @action.bound
@@ -40,6 +44,7 @@ export default class PortfolioStore extends BaseStore {
         this.error = '';
         this.updatePositions();
         WS.forgetAll('proposal_open_contract', 'transaction');
+        this.is_subscribed_to_poc = false;
     }
 
     @action.bound

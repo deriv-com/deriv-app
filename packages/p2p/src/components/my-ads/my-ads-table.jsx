@@ -68,7 +68,7 @@ const MyAdsTable = ({ onClickCreate }) => {
     const { currency, list_item_limit, is_listed } = React.useContext(Dp2pContext);
     const isMounted = useIsMounted();
     const item_offset = React.useRef(0);
-    const [is_loading, setIsLoading] = React.useState(true);
+    const [is_loading, setIsLoading] = React.useState(false);
     const [api_error_message, setApiErrorMessage] = React.useState('');
     const [has_more_items_to_load, setHasMoreItemsToLoad] = React.useState(false);
     const [selected_ad_id, setSelectedAdId] = React.useState('');
@@ -77,6 +77,7 @@ const MyAdsTable = ({ onClickCreate }) => {
 
     React.useEffect(() => {
         if (isMounted()) {
+            setIsLoading(true);
             loadMoreAds(item_offset.current);
         }
     }, []);
@@ -115,6 +116,7 @@ const MyAdsTable = ({ onClickCreate }) => {
 
     const onClickConfirm = showError => {
         requestWS({ p2p_advert_update: 1, id: selected_ad_id, delete: 1 }).then(response => {
+            // if (isMounted()) {
             if (response.error) {
                 showError({ error_message: response.error.message });
             } else {
@@ -123,6 +125,7 @@ const MyAdsTable = ({ onClickCreate }) => {
                 setAds(updated_items);
                 setShouldShowPopup(false);
             }
+            // }
         });
     };
 

@@ -50,7 +50,6 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
     const [ad, setAd] = React.useState(null);
     const [adverts, setAdverts] = React.useState([]);
     const [counterparty_type, setCounterpartyType] = React.useState(buy_sell.BUY);
-    const Form = nickname ? BuySellForm : NicknameForm;
     const [error_message, setErrorMessage] = React.useState('');
     const [form_error_message, setFormErrorMessage] = React.useState('');
     const [has_adverts, setHasAdverts] = React.useState(false);
@@ -82,6 +81,11 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
         total_completion_rate,
         total_orders_count,
     } = stats;
+    const Form = nickname ? BuySellForm : NicknameForm;
+    const modal_title =
+        counterparty_type === buy_sell.BUY
+            ? localize('Buy {{ currency }}', { currency: offer_currency })
+            : localize('Sell {{ currency }}', { currency: offer_currency });
 
     React.useEffect(() => {
         if (isMounted()) {
@@ -186,7 +190,7 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
                         height={counterparty_type === buy_sell.BUY ? '400px' : '649px'}
                         width='456px'
                         is_open={show_ad_popup}
-                        title={`${counterparty_type} ${offer_currency}`}
+                        title={modal_title}
                         toggleModal={onCancelClick}
                     >
                         {/* Parent height - Modal.Header height - Modal.Footer height */}

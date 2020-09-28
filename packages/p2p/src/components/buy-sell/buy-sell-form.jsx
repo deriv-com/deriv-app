@@ -120,12 +120,12 @@ const BuySellForm = ({ ad, handleClose, handleConfirm, setIsSubmitDisabled, setE
 
     return (
         <Formik validate={validatePopup} initialValues={initial_values} onSubmit={handleSubmit}>
-            {({ errors, isSubmitting, isValid, handleChange, status, touched, submitForm }) => {
+            {({ errors, handleChange, isSubmitting, isValid, status, submitForm, touched }) => {
                 // Use custom is_valid value as isValid doesn't work.
                 const is_valid = is_buyer ? Object.keys(errors).length === 0 : isValid;
 
-                setIsSubmitDisabled(isSubmitting || !is_valid);
                 setErrorMessage(status && status.error_message);
+                setIsSubmitDisabled(isSubmitting || !is_valid);
                 setSubmitForm(submitForm);
 
                 return (

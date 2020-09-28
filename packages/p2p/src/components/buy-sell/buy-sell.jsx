@@ -80,7 +80,7 @@ const BuySell = ({ navigate }) => {
 
     const Form = nickname ? BuySellForm : NicknameForm;
     const modal_title =
-        table_type === 'buy'
+        table_type === buy_sell.BUY
             ? localize('Buy {{ currency }}', { currency: selected_ad.offer_currency })
             : localize('Sell {{ currency }}', { currency: selected_ad.offer_currency });
 
@@ -99,13 +99,13 @@ const BuySell = ({ navigate }) => {
             </div>
             <BuySellTableContent
                 key={table_type}
-                is_buy={table_type === 'buy'}
+                is_buy={table_type === buy_sell.BUY}
                 setSelectedAd={setSelectedAdvert}
                 showAdvertiserPage={showAdvertiserPage}
             />
             <Modal
                 className='buy-sell__popup'
-                height={table_type === 'buy' ? '400px' : '649px'}
+                height={table_type === buy_sell.BUY ? '400px' : '649px'}
                 width='456px'
                 is_open={should_show_popup}
                 title={modal_title}

@@ -90,7 +90,7 @@ class DeactivateAccountReason extends React.Component {
         const error = {};
         const selected_reason_count = selectedReasons(values).length;
         if (!selected_reason_count) {
-            error.empty_reason = 'please select at least one reason';
+            error.empty_reason = localize('please select at least one reason');
         }
         if ((values.otherTradingPlatforms + values.doToImprove).length > 0) {
             const max_characters = 250;
@@ -328,7 +328,11 @@ class DeactivateAccountReason extends React.Component {
                                 )}
                             </Field>
                             {this.state.remaining_characters >= 0 && (
-                                <p>{`Remaining characters: ${this.state.remaining_characters}`}</p>
+                                <p>
+                                    {localize('Remaining characters: {{remaining_characters}}', {
+                                        remaining_characters: this.state.remaining_characters,
+                                    })}
+                                </p>
                             )}
                             {Object.keys(errors).length > 0 &&
                                 Object.entries(errors).map(([key, value]) => (

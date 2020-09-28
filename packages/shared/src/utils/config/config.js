@@ -49,7 +49,7 @@ export const getAppId = () => {
         window.localStorage.setItem('config.default_app_id', user_app_id);
         app_id = user_app_id;
     } else if (
-        /staging\.deriv\.app/i.test(window.location.hostname) || // TODO: [app-link-refactor] - Remove backwards compatibility for `deriv.app`
+        /staging\.derivcrypto\.com/i.test(window.location.hostname) ||
         /staging-app\.deriv\.com/i.test(window.location.hostname)
     ) {
         window.localStorage.removeItem('config.default_app_id');
@@ -92,8 +92,7 @@ export const getSocketURL = () => {
 };
 
 export const checkAndSetEndpointFromUrl = () => {
-    // TODO: [app-link-refactor] - Remove backwards compatibility for `deriv.app`
-    if (/^(staging\.deriv\.app|staging-app\.deriv\.com|(.*)\.binary\.sx)$/i.test(location.hostname)) {
+    if (/^(staging\.derivcrypto\.com|staging-app\.deriv\.com|(.*)\.binary\.sx)$/i.test(location.hostname)) {
         const url_params = new URLSearchParams(location.search.slice(1));
 
         if (url_params.has('qa_server') && url_params.has('app_id')) {

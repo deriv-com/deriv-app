@@ -112,19 +112,22 @@ export const recoverFromError = (promiseFn, recoverFn, errors_to_ignore, delay_i
                         new Promise(recoverResolve => {
                             const getGlobalTimeouts = () => globalObserver.getState('global_timeouts') ?? [];
 
-                            const timeout = setTimeout(() => {
-                                globalObserver.setState({
-                                    global_timeouts: getGlobalTimeouts().filter(
-                                        global_timeout => global_timeout !== timeout
-                                    ),
-                                });
-                                recoverResolve();
-                            }, getBackoffDelayInMs(error, delay_index));
+                            // Allow user to cancel "buy"-requests. See interpreter.
+                            if (error?.msg_type === 'buy') {
+                                const timeout = setTimeout(() => {
+                                    globalObserver.setState({
+                                        global_timeouts: getGlobalTimeouts().filter(
+                                            global_timeout => global_timeout !== timeout
+                                        ),
+                                    });
+                                    recoverResolve();
+                                }, getBackoffDelayInMs(error, delay_index));
 
-                            const global_timeouts = getGlobalTimeouts();
+                                const global_timeouts = getGlobalTimeouts();
 
-                            global_timeouts.push(timeout);
-                            globalObserver.setState({ global_timeouts });
+                                global_timeouts.push(timeout);
+                                globalObserver.setState({ global_timeouts });
+                            }
                         })
                 );
             });

@@ -41,9 +41,7 @@ export default Engine =>
                 const sellContractAndGetContractInfo = () => {
                     return this.api
                         .sellContract(contract_id, 0)
-                        .then(sell_response => {
-                            return this.api.getContractInfo(contract_id).then(() => sell_response);
-                        })
+                        .then(sell_response => this.api.getContractInfo(contract_id).then(() => sell_response))
                         .catch(error => {
                             if (error.name === 'InvalidOfferings') {
                                 // "InvalidOfferings" may occur when user tries to sell the contract too close
@@ -56,7 +54,7 @@ export default Engine =>
                             const sell_error = {
                                 name: error.name,
                                 message: error.message,
-                                msg_type: error.error.msg_type,
+                                msg_type: error.msg_type || error.error?.msg_type,
                                 error: { ...error.error },
                             };
 
@@ -88,24 +86,22 @@ export default Engine =>
 
                 // Restart buy/sell on error is enabled, don't recover from sell error.
                 if (!this.options.timeMachineEnabled) {
-                    doUntilDone(sellContractAndGetContractInfo, errors_to_ignore).then(sell_response => {
-                        return onContractSold(sell_response);
-                    });
-                } else {
-                    // If not enabled, try to recover from sell error.
-                    const recoverFn = (error_code, makeDelay) => {
-                        return makeDelay().then(() => this.observer.emit('REVERT', 'during'));
-                    };
-
-                    return recoverFromError(
-                        sellContractAndGetContractInfo,
-                        recoverFn,
-                        errors_to_ignore,
-                        delay_index++
-                    ).then(sell_response => {
-                        onContractSold(sell_response);
-                    });
+                    return doUntilDone(sellContractAndGetContractInfo, errors_to_ignore).then(sell_response =>
+                        onContractSold(sell_response)
+                    );
                 }
+
+                // If above checkbox not checked, try to recover from sell error.
+                const recoverFn = (error_code, makeDelay) => {
+                    return makeDelay().then(() => this.observer.emit('REVERT', 'during'));
+                };
+
+                return recoverFromError(
+                    sellContractAndGetContractInfo,
+                    recoverFn,
+                    errors_to_ignore,
+                    delay_index++
+                ).then(sell_response => onContractSold(sell_response));
             });
         }
     };

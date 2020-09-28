@@ -139,7 +139,7 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
                             if (is_same_contract && is_open_contract) {
                                 doUntilDone(() => this.api.getContractInfo(contract.contract_id));
                             }
-                        }, 5000);
+                        }, 1000);
                     }
                 });
 

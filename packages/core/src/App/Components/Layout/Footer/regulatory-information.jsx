@@ -78,8 +78,8 @@ const MFRegulatoryInformation = () => (
 );
 
 export const RegulatoryInformation = ({ landing_company, is_eu }) => {
-    if (!is_eu) return null;
     const [should_show_modal, showModal] = React.useState(false);
+    if (!is_eu) return null;
     const is_mx = landing_company === 'iom';
     const is_mlt = landing_company === 'malta';
     const is_mf = landing_company === 'maltainvest';

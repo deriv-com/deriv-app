@@ -24,17 +24,19 @@ class Cashier extends React.Component {
         this.props.toggleCashier();
         // we still need to populate the tabs shown on cashier
         await WS.wait('authorize');
-        this.props.onMount();
-        this.props.setAccountSwitchListener();
+        if (!this.props.is_virtual) {
+            this.props.onMount();
+            this.props.setAccountSwitchListener();
 
-        // TODO: Remove L21, L31, and L38 code blocks once landscape design is ready
-        // doughflow iframe inconjunction with android's virtual keyboard causes issues with css screen height calculation (thus falsely triggering landscape blocker in Android)
-        // this is due to the onscreen virtual keyboard resizing the innerHeight of the window and ignoring the actual height of content within the iframe
-        if (isMobile() && isTouchDevice()) {
-            window.addEventListener('resize', this.handleOnScreenKeyboard);
+            // TODO: Remove L21, L31, and L38 code blocks once landscape design is ready
+            // doughflow iframe inconjunction with android's virtual keyboard causes issues with css screen height calculation (thus falsely triggering landscape blocker in Android)
+            // this is due to the onscreen virtual keyboard resizing the innerHeight of the window and ignoring the actual height of content within the iframe
+            if (isMobile() && isTouchDevice()) {
+                window.addEventListener('resize', this.handleOnScreenKeyboard);
+            }
+
+            this.checkIsP2pRestricted();
         }
-
-        this.checkIsP2pRestricted();
     }
 
     componentWillUnmount() {

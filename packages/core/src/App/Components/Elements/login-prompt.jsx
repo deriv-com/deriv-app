@@ -28,7 +28,7 @@ const LoginPrompt = ({ onLogin, onSignup, page_title }) => (
 LoginPrompt.propTypes = {
     onLogin: PropTypes.func,
     onSignup: PropTypes.func,
-    page_title: PropTypes.string,
+    page_title: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
 };
 
 export default LoginPrompt;

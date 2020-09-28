@@ -287,7 +287,7 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
                         )}
                     </div>
                     <div>
-                        {typeof stop_loss === 'object' && stop_loss !== null && stop_loss.order_amount ? (
+                        {stop_loss?.order_amount ? (
                             <Money has_sign amount={stop_loss.order_amount} currency={currency} />
                         ) : (
                             '-'

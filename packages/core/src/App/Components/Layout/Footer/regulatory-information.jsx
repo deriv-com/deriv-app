@@ -77,12 +77,13 @@ const MFRegulatoryInformation = () => (
     </div>
 );
 
-export const RegulatoryInformation = ({ standpoint, is_eu }) => {
-    const [should_show_modal, showModal] = React.useState(false);
-    const is_only_mx = standpoint.iom && !standpoint.maltainvest;
-    const is_only_mlt = standpoint.malta && !standpoint.maltainvest;
-    const is_mf = standpoint.maltainvest;
+export const RegulatoryInformation = ({ landing_company, is_eu }) => {
     if (!is_eu) return null;
+    const [should_show_modal, showModal] = React.useState(false);
+    const is_mx = landing_company === 'iom';
+    const is_mlt = landing_company === 'malta';
+    const is_mf = landing_company === 'maltainvest';
+
     return (
         <div className='footer__link'>
             <Popover alignment='top' message={localize('Regulatory Information')}>
@@ -97,8 +98,8 @@ export const RegulatoryInformation = ({ standpoint, is_eu }) => {
                 toggleModal={() => showModal(false)}
                 title={localize('Regulatory Information')}
             >
-                {is_only_mx && <MXRegulatoryInformation />}
-                {is_only_mlt && <MLTRegulatoryInformation />}
+                {is_mx && <MXRegulatoryInformation />}
+                {is_mlt && <MLTRegulatoryInformation />}
                 {is_mf && <MFRegulatoryInformation />}
             </Modal>
         </div>

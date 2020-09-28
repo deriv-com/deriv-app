@@ -8,7 +8,7 @@ const PlatformContainer = ({ ...props }) => {
     const [deriv_crypto, setDerivCrypto] = React.useState(is_crypto_app || process.env.IS_CRYPTO_APP);
 
     const platform_store = {
-        is_deriv_crypto: !!deriv_crypto,
+        is_deriv_crypto: deriv_crypto === 'true',
         setDerivCrypto,
         DERIV_CRYPTO_KEY,
     };

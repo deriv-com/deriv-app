@@ -30,7 +30,7 @@ const LoadModal = ({
                 className='load-strategy'
                 header={localize('Load strategy')}
                 onClickClose={toggleLoadModal}
-                offset='80px'
+                height_offset='80px'
                 page_overlay
             >
                 <Tabs

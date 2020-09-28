@@ -7,12 +7,8 @@
     top: calc(#{$MOBILE_HEADER_HEIGHT} + #{$MOBILE_WRAPPER_HEADER_HEIGHT});
     background: var(--general-main-1);
 
-    &--is-mobile {
-        width: 100%;
-
-        form {
-            height: 100%;
-        }
+    form {
+        height: 100%;
     }
     & .dc {
         &-page-overlay {

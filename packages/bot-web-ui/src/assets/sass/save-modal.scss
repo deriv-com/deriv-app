@@ -127,12 +127,19 @@ div.radio-group {
 }
 
 .save-modal__wrapper {
+    position: fixed;
+    top: 40px;
+    z-index: 10;
     @include mobile {
         form {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             height: 100%;
+
+            &--acitve-keyboard {
+                justify-content: flex-start;
+            }
         }
         & .dc-input {
             width: 100% !important;
@@ -149,13 +156,24 @@ div.radio-group {
             height: calc(100% - #{$MOBILE_WRAPPER_FOOTER_HEIGHT});
         }
         & .modal__footer {
+            position: fixed;
+            bottom: 0px;
+            left: 0px;
             display: flex;
             flex-direction: row;
             justify-content: flex-end;
             padding: 1.4rem;
             height: #{$MOBILE_WRAPPER_FOOTER_HEIGHT};
             border-top: solid 0.1em var(--general-section-1);
+            width: 100%;
 
+            &--active-keyboard {
+                margin-top: 1.6rem;
+                position: relative;
+                display: block;
+                left: unset;
+                bottom: unset;
+            }
             &--button {
                 float: right;
                 margin-left: 0.8rem;

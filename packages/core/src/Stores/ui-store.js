@@ -52,7 +52,7 @@ export default class UIStore extends BaseStore {
 
     @observable screen_width = window.innerWidth;
     @observable screen_height = window.innerHeight;
-    @observable is_keyboard_active = false;
+    @observable is_onscreen_keyboard_active = false;
 
     @observable notifications = [];
     @observable notification_messages = [];
@@ -210,10 +210,6 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     handleResize() {
-        if (this.is_mobile) {
-            this.is_keyboard_active =
-                window.innerWidth === this.screen_width && this.screen_height > window.innerHeight;
-        }
         this.screen_width = window.innerWidth;
         this.screen_height = window.innerHeight;
     }
@@ -600,9 +596,14 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
+    toggleOnScreenKeyboard() {
+        this.is_onscreen_keyboard_active = this.current_focus !== null && this.is_mobile && isTouchDevice();
+    }
+
+    @action.bound
     setCurrentFocus(value) {
         this.current_focus = value;
-        this.is_keyboard_active = this.current_focus !== null && this.is_mobile && isTouchDevice();
+        this.toggleOnScreenKeyboard();
     }
 
     @action.bound

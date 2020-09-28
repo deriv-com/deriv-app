@@ -19,7 +19,7 @@ export const formatMoney = (currency_value, amount, exclude_currency, decimals =
     let decimal_places;
     // Cryptos except IDK: minimum of 2, maximum of 8 decimal places without trailing zeros
     if (isCryptocurrency(currency_value) && currency_value !== 'IDK') {
-        const without_trailing_zeros = money.replace(/(\d+\.\d*[^0])0+$/, '$1');
+        const without_trailing_zeros = money.replace(/(\d+\.\d*?)0+$/, '$1');
         decimal_places = Math.max(2, (without_trailing_zeros.toString().split('.')[1] || []).length);
     } else {
         decimal_places = decimals || getDecimalPlaces(currency_value);

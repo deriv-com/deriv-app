@@ -9,16 +9,40 @@ import { requestWS } from 'Utils/websocket';
 import { textValidator, lengthValidator } from 'Utils/validations';
 
 const BuySellForm = ({ ad, handleClose, handleConfirm, setIsSubmitDisabled, setErrorMessage, setSubmitForm }) => {
+    const [contact_info, setContactInfo] = React.useState('');
+    const is_buyer = ad.type === 'buy';
+    const is_mounted = React.useRef(false);
+    const [payment_info, setPaymentInfo] = React.useState('');
     const [total_amount, setTotalAmount] = React.useState(
         formatMoney(ad.transaction_currency, ad.min_available * ad.price_rate, true, ad.transaction_currency_decimals)
     );
-    const is_buyer = ad.type === 'buy';
-    const initial_values = {
-        amount: ad.min_available,
-        ...(!is_buyer && {
-            contact_info: ad.contact_info,
-            payment_info: ad.payment_info,
-        }),
+
+    React.useEffect(() => {
+        is_mounted.current = true;
+        if (!is_buyer) {
+            getAdvertiserInfo();
+        }
+        return () => (is_mounted.current = false);
+    }, []);
+
+    const getAdvertiserInfo = () => {
+        return new Promise(resolve => {
+            requestWS({
+                p2p_advertiser_info: 1,
+            }).then(response => {
+                if (is_mounted.current) {
+                    if (!response.error) {
+                        const { p2p_advertiser_info } = response;
+                        setContactInfo(p2p_advertiser_info.contact_info);
+                        setPaymentInfo(p2p_advertiser_info.payment_info);
+                    } else {
+                        setContactInfo('');
+                        setPaymentInfo('');
+                    }
+                }
+                resolve();
+            });
+        });
     };
 
     const handleSubmit = async (values, { setStatus, setSubmitting }) => {
@@ -118,7 +142,16 @@ const BuySellForm = ({ ad, handleClose, handleConfirm, setIsSubmitDisabled, setE
     };
 
     return (
-        <Formik validate={validatePopup} initialValues={initial_values} onSubmit={handleSubmit}>
+        <Formik
+            enableReinitialize={true}
+            validate={validatePopup}
+            initialValues={{
+                amount: ad.min_available,
+                contact_info,
+                payment_info,
+            }}
+            onSubmit={handleSubmit}
+        >
             {({ errors, isSubmitting, isValid, handleChange, status, touched, submitForm }) => {
                 // Use custom is_valid value as isValid doesn't work.
                 const is_valid = is_buyer ? Object.keys(errors).length === 0 : isValid;
@@ -233,6 +266,7 @@ const BuySellForm = ({ ad, handleClose, handleConfirm, setIsSubmitDisabled, setE
                                                 label={localize('Your bank details')}
                                                 required
                                                 has_character_counter
+                                                initial_character_count={payment_info.length}
                                                 max_characters={300}
                                             />
                                         )}
@@ -249,6 +283,7 @@ const BuySellForm = ({ ad, handleClose, handleConfirm, setIsSubmitDisabled, setE
                                                 label={localize('Your contact details')}
                                                 required
                                                 has_character_counter
+                                                initial_character_count={contact_info.length}
                                                 max_characters={300}
                                             />
                                         )}

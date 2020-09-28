@@ -119,7 +119,6 @@ const MyProfile = () => {
                         setContactInfo(p2p_advertiser_update.contact_info);
                         setDefaultAdvertDescription(p2p_advertiser_update.default_advert_description);
                         setPaymentInfo(p2p_advertiser_update.payment_info);
-
                         setIsSubmitSuccess(true);
                     } else {
                         setFormError(response.error);
@@ -254,15 +253,17 @@ const MyProfile = () => {
                                 </div>
                             </Table.Cell>
                             <div className='my-profile__stats-cell-separator' />
-                            <Popover
-                                classNameBubble='my-profile__popover-text'
-                                alignment='top'
-                                message={localize(
-                                    "These fields are based on the last 24 hours' activity: Buy, Sell, and Limit."
-                                )}
-                            >
-                                <Icon className='my-profile__popover-icon' icon='IcInfoOutline' size={16} />
-                            </Popover>
+                            <Table.Cell>
+                                <Popover
+                                    classNameBubble='my-profile__popover-text'
+                                    alignment='top'
+                                    message={localize(
+                                        "These fields are based on the last 24 hours' activity: Buy, Sell, and Limit."
+                                    )}
+                                >
+                                    <Icon className='my-profile__popover-icon' icon='IcInfoOutline' size={16} />
+                                </Popover>
+                            </Table.Cell>
                         </Table.Row>
                     </Table>
                     <div className='my-profile__separator'>

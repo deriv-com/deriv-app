@@ -25,7 +25,7 @@ const Input = (
 
     React.useEffect(() => {
         if (initial_character_count) setCounter(initial_character_count);
-    }, []);
+    }, [initial_character_count]);
 
     const changeHandler = e => {
         let input_value = e.target.value;

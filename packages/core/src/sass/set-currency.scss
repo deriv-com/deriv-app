@@ -37,9 +37,6 @@
         &__description {
             display: none;
         }
-        .currency-list__items__is-crypto {
-            margin-bottom: 8rem;
-        }
 
         @include desktop {
             &__crypto .currency-list__items {

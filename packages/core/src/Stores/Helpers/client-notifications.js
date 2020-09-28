@@ -404,8 +404,8 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
 
     const needs_authentication = needs_verification.length || allow_document_upload;
     const has_risk_assessment = getRiskAssessment(account_status);
-    const needs_poa = needs_authentication && needs_verification.includes('document');
-    const needs_poi = needs_authentication && needs_verification.includes('identity');
+    const needs_poa = needs_authentication && needs_verification.includes('document') && document.status !== 'expired';
+    const needs_poi = needs_authentication && needs_verification.includes('identity') && identity.status !== 'expired';
 
     if (needs_poa) addNotificationMessage(clientNotifications().needs_poa);
     if (needs_poi) addNotificationMessage(clientNotifications().needs_poi);

@@ -16,8 +16,14 @@ export const formatMoney = (currency_value, amount, exclude_currency, decimals =
     let money = amount;
     if (money) money = String(money).replace(/,/g, '');
     const sign = money && Number(money) < 0 ? '-' : '';
-    const decimal_places = decimals || getDecimalPlaces(currency_value);
-
+    let decimal_places;
+    // Cryptos except IDK: minimum of 2, maximum of 8 decimal places without trailing zeros
+    if (isCryptocurrency(currency_value) && currency_value !== 'IDK') {
+        const without_trailing_zeros = money.replace(/(\d+\.\d*[^0])0+$/, '$1');
+        decimal_places = Math.max(2, (without_trailing_zeros.toString().split('.')[1] || []).length);
+    } else {
+        decimal_places = decimals || getDecimalPlaces(currency_value);
+    }
     money = isNaN(money) ? 0 : Math.abs(money);
     if (typeof Intl !== 'undefined') {
         const options = {

@@ -21,18 +21,18 @@ describe('CurrencyUtils', () => {
             expect(CurrencyUtils.formatMoney('GBP', '123.55')).to.eq(`${CurrencyUtils.formatCurrency('GBP')}123.55`);
             expect(CurrencyUtils.formatMoney('EUR', '123.55')).to.eq(`${CurrencyUtils.formatCurrency('EUR')}123.55`);
             expect(CurrencyUtils.formatMoney('AUD', '123.55')).to.eq(`${CurrencyUtils.formatCurrency('AUD')}123.55`);
-            expect(CurrencyUtils.formatMoney('BTC', '0.005432110')).to.eq(
+            expect(CurrencyUtils.formatMoney('BTC', '0.00543211')).to.eq(
                 `${CurrencyUtils.formatCurrency('BTC')}0.00543211`
-            );
-            expect(CurrencyUtils.formatMoney('BTC', '0.005432116')).to.eq(
-                `${CurrencyUtils.formatCurrency('BTC')}0.00543212`
             );
             expect(CurrencyUtils.formatMoney('BTC', '0.00000001')).to.eq(
                 `${CurrencyUtils.formatCurrency('BTC')}0.00000001`
             );
-            // don't remove trailing zeroes for now
+            // Remove trailing zeroes for cryptos
             expect(CurrencyUtils.formatMoney('BTC', '0.00010000')).to.eq(
-                `${CurrencyUtils.formatCurrency('BTC')}0.00010000`
+                `${CurrencyUtils.formatCurrency('BTC')}0.0001`
+            );
+            expect(CurrencyUtils.formatMoney('BTC', '0.05432110')).to.eq(
+                `${CurrencyUtils.formatCurrency('BTC')}0.0543211`
             );
         });
 

@@ -38,9 +38,8 @@ class VerticalTabHeaders extends React.PureComponent {
         let calculated_offset = 0;
 
         this.headers = this.ref.current.querySelectorAll('.dc-vertical-tab__header__link');
-        const label = selected.label?.props ? selected.label?.props?.i18n_default_text : selected.label;
-        const title = selected.title?.props ? selected.title?.props?.i18n_default_text : selected.title;
-        const selected_el = [...this.headers].find(header => header.innerText === (label || title));
+
+        const selected_el = [...this.headers].find(header => header.id === selected.path);
 
         if (selected_el) {
             const extra_offset = this.props.is_floating ? 18 : 10;

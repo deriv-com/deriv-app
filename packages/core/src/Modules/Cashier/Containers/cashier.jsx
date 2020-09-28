@@ -88,8 +88,7 @@ class Cashier extends React.Component {
                         ...(route.path === routes.cashier_p2p && { count: this.props.p2p_notification_count }),
                         default: route.default,
                         icon: route.icon_component,
-                        // since route.title is a constant string (and needs to be), we need to run it through `localize()` to get latest runtime language string
-                        label: localize(route.title),
+                        label: route.title,
                         value: route.component,
                         path: route.path,
                         has_side_note: route.path !== routes.cashier_p2p, // Set to true to create the 3-column effect without passing any content. If there is content, the content should be passed in.

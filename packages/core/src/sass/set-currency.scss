@@ -72,6 +72,9 @@
             &__container--no-top-margin {
                 height: unset;
             }
+            .dc-form-submit-button {
+                position: fixed;
+            }
             .dc-modal-footer {
                 background-color: var(--general-main-1);
                 position: fixed;

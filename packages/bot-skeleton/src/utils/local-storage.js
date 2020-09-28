@@ -7,6 +7,9 @@ import { save_types } from '../constants/save-type';
  * @param {Blockly.Events} event // Blockly event object
  */
 export const saveWorkspaceToRecent = (xml, save_type = save_types.UNSAVED) => {
+    // Ensure strategies don't go through expensive conversion.
+    xml.setAttribute('is_dbot', true);
+
     const { save_modal } = DBotStore.instance;
     const workspace_id = Blockly.derivWorkspace.current_strategy_id || Blockly.utils.genUid();
     const workspaces = JSON.parse(localStorage.getItem('saved_workspaces')) || [];

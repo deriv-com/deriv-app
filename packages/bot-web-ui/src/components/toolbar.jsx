@@ -1,5 +1,5 @@
 import { Button, Icon, Input, ThemedScrollbars, Popover, Dialog } from '@deriv/components';
-import { Localize,localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { Field, Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -207,18 +207,18 @@ const Toolbar = props => {
             <Dialog
                 title={localize('Are you sure?')}
                 is_visible={is_dialog_open}
-                confirm_button_text={localize('OK')}
+                confirm_button_text={is_running ? localize('Yes') : localize('OK')}
                 onConfirm={onOkButtonClick}
-                cancel_button_text={localize('Cancel')}
+                cancel_button_text={is_running ? localize('No') : localize('Cancel')}
                 onCancel={closeResetDialog}
                 is_mobile_full_width={false}
-                className={'dc-dialog__wrapper--fixed'}
+                className={'toolbar__dialog dc-dialog__wrapper--fixed'}
                 has_close_icon
             >
                 {is_running ? (
                     <Localize
-                        i18n_default_text='Deriv Bot will not place any new trades. Any trades already placed (but not expired) will be completed by our system. Any unsaved changes will be lost.<0>Note: Please see the Binary.com statement page for details of all confirmed transactions.</0>'
-                        components={[<div key={0} className='bot-dialog__text--second' />]}
+                        i18n_default_text='DBot will not proceed with any new trades. Any ongoing trades will be completed by our system. Any unsaved changes will be lost.<0>Note: Please check your statement to view completed transactions.</0>'
+                        components={[<div key={0} className='toolbar__dialog-text--second' />]}
                     />
                 ) : (
                     localize('Any unsaved changes will be lost.')

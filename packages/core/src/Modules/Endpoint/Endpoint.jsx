@@ -55,7 +55,6 @@ const Endpoint = ({ is_eu_enabled, toggleIsEuEnabled }) => {
                 localStorage.setItem('config.app_id', values.app_id);
                 localStorage.setItem('config.server_url', values.server);
                 localStorage.setItem('is_eu_enabled', values.is_eu_enabled);
-                console.log(values);
                 localStorage.setItem(platform_store.DERIV_CRYPTO_KEY, values.is_deriv_crypto_enabled);
                 toggleIsEuEnabled(values.is_eu_enabled);
                 platform_store.setDerivCrypto(values.is_deriv_crypto_enabled);

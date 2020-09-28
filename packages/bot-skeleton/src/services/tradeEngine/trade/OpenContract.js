@@ -21,12 +21,15 @@ export default Engine =>
 
                 if (this.isSold) {
                     this.contractId = '';
+
+                    clearTimeout(this.transaction_recovery_timeout);
                     this.updateTotals(contract);
                     contractStatus({
                         id: 'contract.sold',
                         data: contract.transaction_ids.sell,
                         contract,
                     });
+
                     if (this.afterPromise) {
                         this.afterPromise();
                     }

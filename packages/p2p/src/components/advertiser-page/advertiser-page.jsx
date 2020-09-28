@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Dialog, Icon, Loading, Popover, Table, Tabs, ThemedScrollbars } from '@deriv/components';
+import { Button, Icon, Loading, Modal, Popover, Table, Tabs, ThemedScrollbars } from '@deriv/components';
 import { useIsMounted } from '@deriv/shared';
 import { generateHexColourFromNickname, getShortNickname } from 'Utils/string';
 import { height_constants } from 'Utils/height_constants';
@@ -7,8 +7,10 @@ import Dp2pContext from 'Components/context/dp2p-context';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { requestWS } from 'Utils/websocket';
 import Empty from 'Components/empty/empty.jsx';
-import Popup from '../buy-sell/popup.jsx';
+import NicknameForm from '../nickname/nickname-form.jsx';
 import { buy_sell } from '../../constants/buy-sell';
+import BuySellForm from '../buy-sell/buy-sell-form.jsx';
+import FormError from '../form/error.jsx';
 import { localize } from '../i18next';
 import './advertiser-page.scss';
 
@@ -42,13 +44,15 @@ const RowComponent = React.memo(({ data, is_buy_advert, showAdPopup, style }) =>
 RowComponent.displayName = 'RowComponent';
 
 const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
-    const { is_advertiser } = React.useContext(Dp2pContext);
+    const { is_advertiser, nickname } = React.useContext(Dp2pContext);
     const { advertiser_name, advertiser_id, offer_currency } = selected_ad;
     const [active_index, setActiveIndex] = React.useState(0);
     const [ad, setAd] = React.useState(null);
     const [adverts, setAdverts] = React.useState([]);
     const [counterparty_type, setCounterpartyType] = React.useState(buy_sell.BUY);
+    const Form = nickname ? BuySellForm : NicknameForm;
     const [error_message, setErrorMessage] = React.useState('');
+    const [form_error_message, setFormErrorMessage] = React.useState('');
     const [has_adverts, setHasAdverts] = React.useState(false);
     const height_values = [
         height_constants.screen,
@@ -63,11 +67,13 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
         height_constants.tabs,
     ];
     const [is_loading, setIsLoading] = React.useState(true);
+    const [is_submit_disabled, setIsSubmitDisabled] = React.useState(true);
     const isMounted = useIsMounted();
     const item_height = 56;
     const short_name = getShortNickname(advertiser_name);
     const [show_ad_popup, setShowAdPopup] = React.useState(false);
     const [stats, setStats] = React.useState({});
+    const submitForm = React.useRef(() => {});
     const {
         buy_completion_rate,
         buy_orders_count,
@@ -152,6 +158,8 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
         <RowComponent {...props} is_buy_advert={counterparty_type === buy_sell.BUY} showAdPopup={showAdPopup} />
     );
 
+    const setSubmitForm = submitFormFn => (submitForm.current = submitFormFn);
+
     const showAdPopup = advert => {
         if (!is_advertiser) {
             showVerification();
@@ -169,19 +177,44 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
         return <div className='advertiser-page__error'>{error_message}</div>;
     }
 
-    if (show_ad_popup) {
-        return (
-            <div className='buy-sell__dialog'>
-                <Dialog is_visible={show_ad_popup}>
-                    <Popup ad={ad} handleClose={onCancelClick} handleConfirm={onConfirmClick} />
-                </Dialog>
-            </div>
-        );
-    }
-
     return (
         <div className='advertiser-page'>
             <div className='advertiser-page__container'>
+                {show_ad_popup && (
+                    <Modal
+                        className='buy-sell__popup'
+                        height={counterparty_type === buy_sell.BUY ? '400px' : '649px'}
+                        width='456px'
+                        is_open={show_ad_popup}
+                        title={`${counterparty_type} ${offer_currency}`}
+                        toggleModal={onCancelClick}
+                    >
+                        {/* Parent height - Modal.Header height - Modal.Footer height */}
+                        <ThemedScrollbars height='calc(100% - 5.8rem - 7.4rem)'>
+                            <Modal.Body>
+                                <Form
+                                    ad={ad}
+                                    handleClose={onCancelClick}
+                                    handleConfirm={onConfirmClick}
+                                    setIsSubmitDisabled={setIsSubmitDisabled}
+                                    setErrorMessage={setFormErrorMessage}
+                                    setSubmitForm={setSubmitForm}
+                                />
+                            </Modal.Body>
+                        </ThemedScrollbars>
+                        <Modal.Footer has_separator>
+                            <FormError message={form_error_message} />
+                            <Button.Group>
+                                <Button secondary type='button' onClick={onCancelClick} large>
+                                    {localize('Cancel')}
+                                </Button>
+                                <Button is_disabled={is_submit_disabled} primary large onClick={submitForm.current}>
+                                    {localize('Confirm')}
+                                </Button>
+                            </Button.Group>
+                        </Modal.Footer>
+                    </Modal>
+                )}
                 <div className='advertiser-page__header'>
                     <div className='advertiser-page__header-details'>
                         <div
@@ -207,7 +240,7 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
                 <Table>
                     <Table.Row className='advertiser-page__stats'>
                         <Table.Cell className='advertiser-page__stats-cell'>
-                            <div className='advertiser-page__stats-cell-header'>{localize('Total Trades')}</div>
+                            <div className='advertiser-page__stats-cell-header'>{localize('Total orders')}</div>
                             <div className='advertiser-page__stats-cell-info'>{total_orders_count || '-'}</div>
                         </Table.Cell>
                         <div className='advertiser-page__stats-cell-separator' />
@@ -227,25 +260,23 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
                                 <div className='advertiser-page__stats-cell-info'>
                                     {total_completion_rate ? `${total_completion_rate}%` : '-'}
                                 </div>
-                                {buy_completion_rate && (
-                                    <div className='advertiser-page__stats-cell-info_buy'>
-                                        {`  (${localize('Buy')} ${buy_completion_rate}%)`}
-                                    </div>
-                                )}
+                                <div className='advertiser-page__stats-cell-info_buy'>
+                                    {`  (${localize('Buy')} ${buy_completion_rate}%)`}
+                                </div>
                             </div>
                         </Table.Cell>
                         <div className='advertiser-page__stats-cell-separator' />
                         <Table.Cell className='advertiser-page__stats-cell'>
                             <div className='advertiser-page__stats-cell-header'>{localize('Avg. release')}</div>
                             <div className='advertiser-page__stats-cell-info'>
-                                {release_time_avg ? `${(release_time_avg / 3600).toFixed(2)} ${localize('min')}` : '-'}
+                                {release_time_avg ? `${(release_time_avg / 60).toFixed(2)} ${localize('min')}` : '-'}
                             </div>
                         </Table.Cell>
                         <Popover
                             className='advertiser-page__popover-icon'
                             alignment='top'
                             message={localize(
-                                "These fields are based on the last 30 days' activity: Completion, Buy, Sell, and Avg. release."
+                                "These fields are based on the last 30 days' activity: Buy, Sell, Completion, and Avg. release."
                             )}
                         >
                             <Icon icon='IcInfoOutline' size={16} />

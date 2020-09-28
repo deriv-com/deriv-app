@@ -24,6 +24,7 @@ import * as SocketCache from '_common/base/socket_cache';
 import { isEuCountry } from '_common/utility';
 import BaseStore from './base-store';
 import { getClientAccountType } from './Helpers/client';
+import { createDeviceDataObject, setDeviceDataCookie } from './Helpers/device';
 import { handleClientNotifications } from './Helpers/client-notifications';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
 
@@ -1522,27 +1523,13 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setDeviceData() {
         // Set client URL params on init
-        const url_params = new URLSearchParams(window.location.search);
-        const device_data = {
-            ...(url_params.get('affiliate_token') && { affiliate_token: url_params.get('affiliate_token') }),
-            ...(url_params.get('gclid_url') && { gclid_url: url_params.get('gclid_url') }),
+        const date_first_contact_cookie = setDeviceDataCookie(
+            'date_first_contact',
+            this.root_store.coomon.server_time.format('YYYY-MM-DD')
+        );
+        const signup_device_cookie = setDeviceDataCookie('signup_device', isDesktopOs() ? 'desktop' : 'mobile');
+        const device_data = createDeviceDataObject(date_first_contact_cookie, signup_device_cookie);
 
-            // date_first_contact should be preserved to the first client contact
-            ...(!this.device_data.date_first_contact && {
-                date_first_contact:
-                    url_params.get('date_first_contact') || this.root_store.common.server_time.format('YYYY-MM-DD'),
-            }),
-
-            // signup device can be set anytime even if there is no url parameter by using isDesktopOs function
-            signup_device: url_params.get('signup_device') || isDesktopOs() ? 'desktop' : 'mobile',
-
-            // url params can be stored only if utm_source is available
-            ...(url_params.get('utm_source') && {
-                utm_campaign: url_params.get('utm_campaign') || '',
-                utm_medium: url_params.get('utm_medium') || '',
-                utm_source: url_params.get('utm_source'), // since the check is done previously
-            }),
-        };
         this.device_data = { ...this.device_data, ...device_data };
     }
 

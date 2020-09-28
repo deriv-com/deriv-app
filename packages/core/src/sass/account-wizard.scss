@@ -152,12 +152,17 @@
     form {
         width: 100%;
 
+        @include tablet-up {
+            display: grid;
+            grid-template-rows: minmax(20rem, 1fr);
+        }
+
         .currency-selector {
             &__radio-group {
                 display: flex;
                 flex-direction: column;
                 flex-grow: 1;
-                justify-content: space-around;
+                justify-content: center;
                 align-items: center;
 
                 &--is-header {
@@ -185,31 +190,14 @@
                     }
                 }
             }
-        }
-        // fix for safari bug with autoheight wrapper not working properly for calculating modal footer offset
-        @media not all and (min-resolution: 0.001dpcm) {
-            // stylelint-disable-line
-            @supports (-webkit-appearance: none) and (stroke-color: transparent) {
-                @include desktop {
-                    max-height: calc(100% - 48px);
-                }
-                @include tablet {
-                    max-height: calc(100% - 48px);
-                }
+            &__button {
+                margin-top: 1.6rem;
             }
-        }
-        @include desktop {
-            height: 100%;
-            display: grid;
-            grid-template-rows: minmax(20rem, 1fr);
-        }
-        @include tablet {
-            height: 100%;
-            display: grid;
-            grid-template-rows: minmax(20rem, 1fr);
         }
     }
     &__body {
+        display: flex;
+
         & .details-form {
             @include tablet {
                 grid-template-rows: minmax(10rem, 1fr);
@@ -351,6 +339,8 @@
 
 .add-crypto-currency,
 .change-currency {
+    padding-bottom: 1.6rem;
+
     &__title,
     &__sub-title {
         @include typeface(--title-left-bold-black);
@@ -364,6 +354,9 @@
         font-size: var(--text-size-xxs);
         font-weight: normal;
         margin-bottom: 1rem;
+    }
+    &__button {
+        margin-top: 1.6rem;
     }
     @include tablet {
         form {

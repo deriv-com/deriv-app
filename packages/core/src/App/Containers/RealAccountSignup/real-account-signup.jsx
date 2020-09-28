@@ -37,13 +37,20 @@ const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_re
     }
 };
 
+const map_error_to_step = {
+    CurrencyTypeNotAllowed: 0,
+    InvalidPhone: 1,
+};
+
 class RealAccountSignup extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            current_action: null,
             is_loading: false,
             modal_content: [
                 {
+                    action: 'signup',
                     body: () => (
                         <AccountWizard
                             onFinishSuccess={this.showStatusDialog}
@@ -52,11 +59,13 @@ class RealAccountSignup extends React.Component {
                             onError={this.showErrorModal}
                             onClose={this.closeModal}
                             onSuccessSetAccountCurrency={this.showSetCurrencySuccess}
+                            step={map_error_to_step[this.props.state_value.error_code] ?? 1}
                         />
                     ),
                     title: WizardHeading,
                 },
                 {
+                    action: 'multi',
                     body: () => (
                         <AddOrManageAccounts
                             onSuccessSetAccountCurrency={this.showSetCurrencySuccess}
@@ -86,7 +95,7 @@ class RealAccountSignup extends React.Component {
                         <SignupErrorContent
                             message={this.props.state_value.error_message}
                             code={this.props.state_value.error_code}
-                            onConfirm={this.openPersonalDetails}
+                            onConfirm={this.onErrorConfirm}
                         />
                     ),
                     title: () => localize('Add a real account'),
@@ -103,12 +112,12 @@ class RealAccountSignup extends React.Component {
             if (is_eu && is_eu_enabled && this.active_modal_index === 1) {
                 // TODO [deriv-eu] remove is_eu_enabled once eu is released.
                 // Manage account
-                return '400px'; // Since crypto is disabled for EU clients, lower the height of modal
+                return '379px'; // Since crypto is disabled for EU clients, lower the height of modal
             }
             if (this.active_modal_index === 2) {
                 return 'auto';
             }
-            return '702px'; // Add or manage account modal
+            return '644px'; // Add or manage account modal
         }
         return '740px'; // Account wizard modal
     }
@@ -155,10 +164,12 @@ class RealAccountSignup extends React.Component {
             this.cacheFormValues(payload);
         }
 
-        this.props.setParams({
-            active_modal_index: 4,
-            error_message: error.message,
-            error_code: error.code,
+        this.setState({ current_action: this.state.modal_content[this.active_modal_index]?.action }, () => {
+            this.props.setParams({
+                active_modal_index: 4,
+                error_message: error.message,
+                error_code: error.code,
+            });
         });
     };
 
@@ -181,9 +192,9 @@ class RealAccountSignup extends React.Component {
         }
     };
 
-    openPersonalDetails = () => {
+    onErrorConfirm = () => {
         this.props.setParams({
-            active_modal_index: 0,
+            active_modal_index: this.state.current_action === 'multi' ? 1 : 0,
         });
     };
 

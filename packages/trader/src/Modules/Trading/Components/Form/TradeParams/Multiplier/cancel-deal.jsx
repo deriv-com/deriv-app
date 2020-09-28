@@ -18,6 +18,17 @@ const CancelDeal = ({
     toggleCancellationWarning,
 }) => {
     const should_show_popover = (has_take_profit || has_stop_loss) && should_show_cancellation_warning;
+    const [is_do_not_show_selected, setDoNotShowSelected] = React.useState(!should_show_cancellation_warning);
+
+    const onPopoverClose = () => {
+        if (is_do_not_show_selected) {
+            toggleCancellationWarning();
+        }
+    };
+
+    const onPopoverCheckboxChange = React.useCallback(() => {
+        setDoNotShowSelected(prev_state => !prev_state);
+    }, []);
 
     const input = (
         <Checkbox
@@ -40,14 +51,15 @@ const CancelDeal = ({
                         margin={2}
                         message={
                             <PopoverMessageCheckbox
-                                defaultChecked={!should_show_cancellation_warning}
+                                defaultChecked={is_do_not_show_selected}
                                 message={localize(
                                     'Take profit and/or stop loss are not available while deal cancellation is active.'
                                 )}
                                 name='should_show_cancellation_warning'
-                                onChange={() => toggleCancellationWarning()}
+                                onChange={onPopoverCheckboxChange}
                             />
                         }
+                        onBubbleClose={onPopoverClose}
                         relative_render
                     >
                         {input}
@@ -60,8 +72,9 @@ const CancelDeal = ({
                     icon='info'
                     id='dt_cancellation-checkbox__tooltip'
                     message={localize(
-                        'Allows you to cancel your trade within a chosen time frame should the market move against your favour.'
+                        'Cancel your trade anytime within a chosen time-frame. Triggered automatically if your trade reaches the stop out level within the chosen time-frame.'
                     )}
+                    classNameBubble='trade-container__deal-cancellation-popover'
                     margin={210}
                     relative_render
                 />

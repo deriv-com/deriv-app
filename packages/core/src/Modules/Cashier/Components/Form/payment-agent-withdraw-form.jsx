@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik, Form } from 'formik';
 import { Button, DesktopWrapper, Dropdown, Input, MobileWrapper, Money, SelectNative } from '@deriv/components';
-import { getDecimalPlaces } from '@deriv/shared';
+import { getDecimalPlaces, validNumber } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { validNumber, getPreBuildDVRs } from 'Utils/Validator/declarative-validation-rules';
 import Error from '../Error/error.jsx';
 import PaymentAgentWithdrawConfirm from '../Confirm/payment-agent-withdraw-confirm.jsx';
 import PaymentAgentReceipt from '../Receipt/payment-agent-receipt.jsx';
@@ -22,19 +21,19 @@ const validateWithdrawal = (values, { balance, currency, payment_agent }) => {
         errors.payment_agent = localize('Please enter a valid payment agent ID.');
     }
 
+    const { is_ok, message } = validNumber(values.amount, {
+        type: 'float',
+        decimals: getDecimalPlaces(currency),
+        ...(payment_agent.min_withdrawal && {
+            min: payment_agent.min_withdrawal,
+            max: payment_agent.max_withdrawal,
+        }),
+    });
+
     if (!values.amount) {
         errors.amount = localize('This field is required.');
-    } else if (
-        !validNumber(values.amount, {
-            type: 'float',
-            decimals: getDecimalPlaces(currency),
-            ...(payment_agent.min_withdrawal && {
-                min: payment_agent.min_withdrawal,
-                max: payment_agent.max_withdrawal,
-            }),
-        })
-    ) {
-        errors.amount = getPreBuildDVRs().number.message;
+    } else if (!is_ok) {
+        errors.amount = message;
     } else if (+balance < +values.amount) {
         errors.amount = localize('Insufficient balance.');
     }

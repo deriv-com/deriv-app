@@ -3,12 +3,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper, DataList, DataTable, Money } from '@deriv/components';
-import { urlFor } from '@deriv/shared';
+import { urlFor, isDesktop, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
 import CompositeCalendar from 'App/Components/Form/CompositeCalendar/composite-calendar.jsx';
 import { getContractPath } from 'App/Components/Routes/helpers';
-import { website_name } from 'App/Constants/app-config';
 import { getSupportedContracts } from 'Constants';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';
@@ -105,25 +104,9 @@ class Statement extends React.Component {
         return action;
     };
 
-    render() {
-        const {
-            component_icon,
-            currency,
-            data,
-            date_from,
-            date_to,
-            is_empty,
-            is_loading,
-            error,
-            filtered_date_range,
-            handleScroll,
-            handleDateChange,
-            has_selected_date,
-        } = this.props;
-
-        if (error) return <p>{error}</p>;
-
-        const account_statistics_component = (
+    getAccountStatistics() {
+        const { currency } = this.props;
+        return (
             <React.Fragment>
                 <div className='statement__account-statistics'>
                     <div className='statement__account-statistics--is-rectangle'>
@@ -150,6 +133,42 @@ class Statement extends React.Component {
                 </div>
             </React.Fragment>
         );
+    }
+
+    getReportsMetaProps(is_mx_mlt) {
+        const reports_meta_props = {};
+
+        if (is_mx_mlt) {
+            Object.assign(reports_meta_props, { optional_component: this.getAccountStatistics() });
+        }
+        if (isDesktop()) {
+            Object.assign(reports_meta_props, {
+                i18n_heading: localize('Statement'),
+                i18n_message: localize(
+                    'View all transactions on your account, including trades, deposits, and withdrawals.'
+                ),
+            });
+        }
+        return reports_meta_props;
+    }
+
+    render() {
+        const {
+            component_icon,
+            currency,
+            data,
+            date_from,
+            date_to,
+            is_empty,
+            is_loading,
+            error,
+            filtered_date_range,
+            handleScroll,
+            handleDateChange,
+            has_selected_date,
+        } = this.props;
+
+        if (error) return <p>{error}</p>;
 
         const filter_component = (
             <React.Fragment>
@@ -175,56 +194,55 @@ class Statement extends React.Component {
                 <ReportsMeta
                     className={is_mx_mlt ? undefined : 'reports__meta--statement'}
                     filter_component={filter_component}
-                    {...(is_mx_mlt
-                        ? { optional_component: account_statistics_component }
-                        : {
-                              i18n_heading: localize('Statement'),
-                              i18n_message: localize(
-                                  'View all transactions on your account, including trades, deposits, and withdrawals.'
-                              ),
-                          })}
+                    {...this.getReportsMetaProps(is_mx_mlt)}
                 />
-                {data.length === 0 || is_empty ? (
-                    <PlaceholderComponent
-                        is_loading={is_loading}
-                        has_selected_date={has_selected_date}
-                        is_empty={is_empty}
-                        empty_message_component={EmptyTradeHistoryMessage}
-                        component_icon={component_icon}
-                        localized_message={localize('You have no transactions yet.')}
-                        localized_period_message={localize('You have no transactions for this period.')}
-                    />
+                {this.props.is_switching ? (
+                    <PlaceholderComponent is_loading={true} />
                 ) : (
-                    <>
-                        <DesktopWrapper>
-                            <DataTable
-                                className='statement'
-                                data_source={data}
-                                columns={this.columns}
-                                onScroll={handleScroll}
-                                getRowAction={row => this.getRowAction(row)}
+                    <React.Fragment>
+                        {data.length === 0 || is_empty ? (
+                            <PlaceholderComponent
+                                is_loading={is_loading}
+                                has_selected_date={has_selected_date}
                                 is_empty={is_empty}
-                                custom_width={'100%'}
-                                getRowSize={() => 63}
-                                content_loader={ReportsTableRowLoader}
-                            >
-                                <PlaceholderComponent is_loading={is_loading} />
-                            </DataTable>
-                        </DesktopWrapper>
-                        <MobileWrapper>
-                            <DataList
-                                className='statement'
-                                data_source={data}
-                                rowRenderer={this.mobileRowRenderer}
-                                getRowAction={this.getRowAction}
-                                onScroll={handleScroll}
-                                custom_width={'100%'}
-                                getRowSize={() => 176}
-                            >
-                                <PlaceholderComponent is_loading={is_loading} />
-                            </DataList>
-                        </MobileWrapper>
-                    </>
+                                empty_message_component={EmptyTradeHistoryMessage}
+                                component_icon={component_icon}
+                                localized_message={localize('You have no transactions yet.')}
+                                localized_period_message={localize('You have no transactions for this period.')}
+                            />
+                        ) : (
+                            <React.Fragment>
+                                <DesktopWrapper>
+                                    <DataTable
+                                        className='statement'
+                                        data_source={data}
+                                        columns={this.columns}
+                                        onScroll={handleScroll}
+                                        getRowAction={row => this.getRowAction(row)}
+                                        is_empty={is_empty}
+                                        custom_width={'100%'}
+                                        getRowSize={() => 63}
+                                        content_loader={ReportsTableRowLoader}
+                                    >
+                                        <PlaceholderComponent is_loading={is_loading} />
+                                    </DataTable>
+                                </DesktopWrapper>
+                                <MobileWrapper>
+                                    <DataList
+                                        className='statement'
+                                        data_source={data}
+                                        rowRenderer={this.mobileRowRenderer}
+                                        getRowAction={this.getRowAction}
+                                        onScroll={handleScroll}
+                                        custom_width={'100%'}
+                                        getRowSize={() => 176}
+                                    >
+                                        <PlaceholderComponent is_loading={is_loading} />
+                                    </DataList>
+                                </MobileWrapper>
+                            </React.Fragment>
+                        )}
+                    </React.Fragment>
                 )}
             </React.Fragment>
         );
@@ -243,6 +261,7 @@ Statement.propTypes = {
     history: PropTypes.object,
     is_empty: PropTypes.bool,
     is_loading: PropTypes.bool,
+    is_switching: PropTypes.bool,
     landing_company_shortcode: PropTypes.string,
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
@@ -260,6 +279,7 @@ export default connect(({ modules, client }) => ({
     has_selected_date: modules.statement.has_selected_date,
     is_empty: modules.statement.is_empty,
     is_loading: modules.statement.is_loading,
+    is_switching: client.is_switching,
     landing_company_shortcode: client.landing_company_shortcode,
     onMount: modules.statement.onMount,
     onUnmount: modules.statement.onUnmount,

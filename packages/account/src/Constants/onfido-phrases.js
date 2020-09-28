@@ -11,47 +11,11 @@ const onfido_phrases = {
         ),
         dismiss_alert: <Localize i18n_default_text='Dismiss alert' />,
         document_types: <Localize i18n_default_text='Documents you can use to verify your identity' />,
-        replay_video: <Localize i18n_default_text='Replay your recorded video' />,
-        selfie_video_actions: <Localize i18n_default_text='Actions to record a selfie video' />,
         shutter: <Localize i18n_default_text='Take a photo' />,
-        start_recording: <Localize i18n_default_text='Start recording' />,
-        stop_recording: <Localize i18n_default_text='Stop recording' />,
     },
     back: <Localize i18n_default_text='back' />,
-    bank_building_society_statement: <Localize i18n_default_text='Bank or building society statement' />,
-    benefit_letters: <Localize i18n_default_text='Benefits Letter' />,
     cancel: <Localize i18n_default_text='Cancel' />,
     capture: {
-        bank_building_society_statement: {
-            front: {
-                instructions: <Localize i18n_default_text='Provide the whole document page for best results' />,
-                sub_title: <Localize i18n_default_text='Must be issued in the <strong>last 3 months</strong>' />,
-                title: <Localize i18n_default_text='Submit statement' />,
-                webcam: (
-                    <Localize i18n_default_text='Position your bank statement in the frame (it will be automatically detected)' />
-                ),
-            },
-        },
-        benefit_letters: {
-            front: {
-                instructions: <Localize i18n_default_text='Provide the whole document page for best results' />,
-                sub_title: <Localize i18n_default_text='Must be issued in the <strong>last 12 months</strong>' />,
-                title: <Localize i18n_default_text='Submit letter' />,
-                webcam: (
-                    <Localize i18n_default_text='Position your benefits letter in the frame (it will be automatically detected)' />
-                ),
-            },
-        },
-        council_tax: {
-            front: {
-                instructions: <Localize i18n_default_text='Provide the whole document page for best results' />,
-                sub_title: <Localize i18n_default_text='Must be issued in the <strong>last 12 months</strong>' />,
-                title: <Localize i18n_default_text='Submit letter' />,
-                webcam: (
-                    <Localize i18n_default_text='Position your council tax letter in the frame (it will be automatically detected)' />
-                ),
-            },
-        },
         driving_licence: {
             back: {
                 instructions: <Localize i18n_default_text='Upload back of license from your computer' />,
@@ -84,40 +48,6 @@ const onfido_phrases = {
             title: <Localize i18n_default_text='Take a selfie' />,
             upload_title: <Localize i18n_default_text='Selfie' />,
         },
-        government_letter: {
-            front: {
-                instructions: <Localize i18n_default_text='Provide the whole document page for best results' />,
-                sub_title: <Localize i18n_default_text='Must be issued in the <strong>last 12 months</strong>' />,
-                title: <Localize i18n_default_text='Government Letter' />,
-                webcam: (
-                    <Localize i18n_default_text='Position your government letter in the frame (it will be automatically detected)' />
-                ),
-            },
-        },
-        liveness: {
-            challenges: {
-                done_next: <Localize i18n_default_text="When you're done, press next" />,
-                done_stop: <Localize i18n_default_text="When you're done, press stop" />,
-                left: <Localize i18n_default_text='left' />,
-                movement: <Localize i18n_default_text='Look over your %{side} shoulder' />,
-                next: <Localize i18n_default_text='Next' />,
-                position_face: <Localize i18n_default_text='Position your face in the oval' />,
-                recite: <Localize i18n_default_text='Say each digit out loud' />,
-                right: <Localize i18n_default_text='right' />,
-            },
-            intro: {
-                continue: <Localize i18n_default_text='Continue' />,
-                speak_out_loud: <Localize i18n_default_text='One will involve <strong>speaking out loud</strong>' />,
-                title: <Localize i18n_default_text="Let's make sure nobody's impersonating you" />,
-                two_actions: (
-                    <Localize i18n_default_text="We'll ask you to film yourself performing <strong>2 simple actions</strong>" />
-                ),
-            },
-            press_record: <Localize i18n_default_text='Press record and follow the instructions' />,
-            recording: <Localize i18n_default_text='Recording' />,
-            start: <Localize i18n_default_text='Start' />,
-            stop: <Localize i18n_default_text='Stop' />,
-        },
         national_identity_card: {
             back: {
                 instructions: <Localize i18n_default_text='Upload back of card from your computer' />,
@@ -147,16 +77,6 @@ const onfido_phrases = {
         take_photo: <Localize i18n_default_text='Take photo' />,
         upload_document: <Localize i18n_default_text='Upload' />,
         upload_file: <Localize i18n_default_text='or upload photo – no scans or photocopies' />,
-        utility_bill: {
-            front: {
-                instructions: <Localize i18n_default_text='Provide the whole document page for best results' />,
-                sub_title: <Localize i18n_default_text='Must be issued in the <strong>last 3 months</strong>' />,
-                title: <Localize i18n_default_text='Submit bill' />,
-                webcam: (
-                    <Localize i18n_default_text='Position your utility bill in the frame (it will be automatically detected)' />
-                ),
-            },
-        },
     },
     close: <Localize i18n_default_text='close' />,
     complete: {
@@ -164,17 +84,8 @@ const onfido_phrases = {
         submessage: <Localize i18n_default_text='Thank you' />,
     },
     confirm: {
-        bank_building_society_statement: {
-            message: <Localize i18n_default_text='Make sure details are clear to read, with no blur or glare' />,
-        },
-        benefit_letters: {
-            message: <Localize i18n_default_text='Make sure details are clear to read, with no blur or glare' />,
-        },
         confirm: <Localize i18n_default_text='Confirm' />,
         continue: <Localize i18n_default_text='Continue' />,
-        council_tax: {
-            message: <Localize i18n_default_text='Make sure details are clear to read, with no blur or glare' />,
-        },
         document: {
             alt: <Localize i18n_default_text='Photo of your document' />,
             title: <Localize i18n_default_text='Check readability' />,
@@ -194,9 +105,6 @@ const onfido_phrases = {
                 message: <Localize i18n_default_text='Make sure your selfie clearly shows your face' />,
                 title: <Localize i18n_default_text='Check selfie' />,
             },
-            video: {
-                title: <Localize i18n_default_text='Check selfie video' />,
-            },
         },
         national_identity_card: {
             message: (
@@ -209,12 +117,8 @@ const onfido_phrases = {
             ),
         },
         redo: <Localize i18n_default_text='Redo' />,
-        utility_bill: {
-            message: <Localize i18n_default_text='Make sure details are clear to read, with no blur or glare' />,
-        },
     },
     continue: <Localize i18n_default_text='Continue' />,
-    council_tax: <Localize i18n_default_text='Council Tax Letter' />,
     cross_device: {
         client_success: {
             body: <Localize i18n_default_text='Your computer may take a few seconds to update' />,
@@ -301,21 +205,6 @@ const onfido_phrases = {
             passport_hint: <Localize i18n_default_text='Face photo page' />,
             title: <Localize i18n_default_text='Verify your identity' />,
         },
-        proof_of_address: {
-            benefits_letter_hint: (
-                <Localize i18n_default_text='Government authorised household benefits eg. Jobseeker allowance, Housing benefit, Tax credits' />
-            ),
-            estatements_accepted: <Localize i18n_default_text='e-statements accepted' />,
-            government_letter_hint: (
-                <Localize i18n_default_text='Any government issued letter eg. Benefits entitlement, Voting letters, Tax letters, etc' />
-            ),
-            hint: (
-                <Localize i18n_default_text='These are the documents most likely to show your current home address' />
-            ),
-            title: <Localize i18n_default_text='Select a %{country} document' />,
-            utility_bill_hint: <Localize i18n_default_text='Gas, electricity, water, landline, or broadband' />,
-            utility_bill_warning: <Localize i18n_default_text='Sorry, no mobile phone bills' />,
-        },
     },
     driving_licence: <Localize i18n_default_text="Driver's license" />,
     errors: {
@@ -371,12 +260,6 @@ const onfido_phrases = {
         lazy_loading: {
             message: <Localize i18n_default_text='An error occurred while loading the component' />,
         },
-        liveness_timeout: {
-            instruction: (
-                <Localize i18n_default_text="Remember to press stop when you're done. <fallback>Redo video actions</fallback>" />
-            ),
-            message: <Localize i18n_default_text='Looks like you took too long' />,
-        },
         multiple_faces: {
             instruction: <Localize i18n_default_text='Only your face can be in the selfie' />,
             message: <Localize i18n_default_text='Multiple faces found' />,
@@ -410,7 +293,6 @@ const onfido_phrases = {
             message: <Localize i18n_default_text='Unsupported browser' />,
         },
     },
-    government_letter: <Localize i18n_default_text='Government Letter' />,
     image_quality_guide: {
         all_good: {
             image_alt_text: <Localize i18n_default_text='Document example' />,
@@ -479,29 +361,10 @@ const onfido_phrases = {
     },
     national_identity_card: <Localize i18n_default_text='Identity Card' />,
     passport: <Localize i18n_default_text='Passport' />,
-    proof_of_address: {
-        guidance: {
-            continue: <Localize i18n_default_text='Continue' />,
-            current_address: <Localize i18n_default_text='Current address' />,
-            full_name: <Localize i18n_default_text='Full name' />,
-            issue_date: <Localize i18n_default_text='Issue date or summary period' />,
-            logo: <Localize i18n_default_text='Logo' />,
-            make_sure_it_shows: <Localize i18n_default_text='Make sure it clearly shows:' />,
-        },
-        intro: {
-            is_recent: <Localize i18n_default_text='Is your most <strong>recent</strong> document' />,
-            matches_signup: <Localize i18n_default_text='<strong>Matches</strong> the address you used on signup' />,
-            requirements: <Localize i18n_default_text="You'll need a document that:" />,
-            shows_address: <Localize i18n_default_text='Shows your <strong>current</strong> address' />,
-            start: <Localize i18n_default_text='Start verification' />,
-            title: <Localize i18n_default_text="Let's verify your %{country} address" />,
-        },
-    },
     short_driving_licence: <Localize i18n_default_text='license' />,
     short_national_identity_card: <Localize i18n_default_text='card' />,
     short_passport: <Localize i18n_default_text='passport' />,
     SMS_BODY: <Localize i18n_default_text='Continue your identity verification by tapping' />,
-    utility_bill: <Localize i18n_default_text='Utility Bill' />,
     webcam_permissions: {
         access_denied: <Localize i18n_default_text='Camera access is denied' />,
         allow: <Localize i18n_default_text='Allow' />,

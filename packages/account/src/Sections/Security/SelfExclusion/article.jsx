@@ -1,7 +1,6 @@
 import React from 'react';
-import { StaticUrl } from '@deriv/components';
+import { Icon, StaticUrl } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { Icon } from '@deriv/components';
 import { connect } from 'Stores/connect';
 
 const SEArticle = ({ toggleArticle, is_eu }) => {

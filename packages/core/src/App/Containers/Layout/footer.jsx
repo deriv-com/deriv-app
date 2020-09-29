@@ -68,7 +68,7 @@ const Footer = ({
                 <GoToDeriv />
                 <ResponsibleTrading />
                 {is_logged_in && <AccountLimits />}
-                {is_eu_enabled && (
+                {is_eu_enabled && !is_virtual && (
                     <RegulatoryInformation
                         landing_company={
                             landing_company_shortcode // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
@@ -113,6 +113,7 @@ export default withRouter(
         is_eu: client.is_eu,
         is_loading: ui.is_loading,
         is_settings_modal_on: ui.is_settings_modal_on,
+        is_virtual: client.is_virtual,
         landing_company_shortcode: client.landing_company_shortcode,
         disableApp: ui.disableApp,
         toggleSettingsModal: ui.toggleSettingsModal,

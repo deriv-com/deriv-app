@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, ButtonToggle, Modal, ThemedScrollbars } from '@deriv/components';
+import { useIsMounted } from '@deriv/shared';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { localize } from 'Components/i18next';
 import BuySellForm from './buy-sell-form.jsx';
@@ -26,7 +27,7 @@ const buy_sell_filters = [
 
 const BuySell = ({ navigate }) => {
     const { is_advertiser, modal_root_id, nickname, setOrderId } = React.useContext(Dp2pContext);
-    const is_mounted = React.useRef(false);
+
     const submitForm = React.useRef(() => {});
     const [error_message, setErrorMessage] = React.useState(null);
     const [is_submit_disabled, setIsSubmitDisabled] = React.useState(true);
@@ -34,11 +35,13 @@ const BuySell = ({ navigate }) => {
     const [should_show_popup, setShouldShowPopup] = React.useState(false);
     const [should_show_verification, setShouldShowVerification] = React.useState(false);
     const [show_advertiser_page, setShowAdvertiserPage] = React.useState(false);
-
     const [table_type, setTableType] = React.useState(buy_sell.BUY);
+    const isMounted = useIsMounted();
 
     React.useEffect(() => {
-        if (!should_show_popup) setErrorMessage(null);
+        if (isMounted()) {
+            if (!should_show_popup) setErrorMessage(null);
+        }
     }, [should_show_popup]);
 
     const hideAdvertiserPage = () => setShowAdvertiserPage(false);
@@ -72,7 +75,7 @@ const BuySell = ({ navigate }) => {
     // Some state is managed externally, ensure our host component is mounted
     // when those external components try to update it.
     const stateUpdateWrapper = updateFn => (...args) => {
-        if (is_mounted.current) {
+        if (isMounted()) {
             updateFn(...args);
         }
     };

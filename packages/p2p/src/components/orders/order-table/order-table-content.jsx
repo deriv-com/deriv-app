@@ -26,10 +26,11 @@ const OrderTableContent = ({ showDetails, is_active }) => {
         setOrderOffset,
         setOrders,
     } = React.useContext(Dp2pContext);
-    const isMounted = useIsMounted();
-    const [has_more_items_to_load, setHasMoreItemsToLoad] = React.useState(false);
+
     const [api_error_message, setApiErrorMessage] = React.useState('');
+    const [has_more_items_to_load, setHasMoreItemsToLoad] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(true);
+    const isMounted = useIsMounted();
 
     React.useEffect(() => {
         if (isMounted()) {

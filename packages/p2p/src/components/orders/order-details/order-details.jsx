@@ -36,10 +36,11 @@ const OrderDetails = ({ order_information, chat_info }) => {
         status_string,
     } = order_information;
 
-    const isMounted = useIsMounted();
     const [channel_url, setChannelUrl] = React.useState(chat_channel_url);
     const [should_show_popup, setShouldShowPopup] = React.useState(false);
     const [popup_options, setPopupOptions] = React.useState({});
+    const isMounted = useIsMounted();
+
     const onCancelClick = () => setShouldShowPopup(false);
     const handleShowPopup = options => {
         setPopupOptions(options);

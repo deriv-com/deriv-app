@@ -169,9 +169,7 @@ const AdvertiserPage = ({ navigate, selected_advert, showVerification }) => {
         navigate('orders', { order_info, nav });
     };
 
-    const Row = props => (
-        <RowComponent {...props} is_buy_advert={counterparty_type === buy_sell.BUY} showAdPopup={showAdPopup} />
-    );
+    const Row = props => <RowComponent {...props} showAdPopup={showAdPopup} />;
 
     const setSubmitForm = submitFormFn => (submitForm.current = submitFormFn);
 

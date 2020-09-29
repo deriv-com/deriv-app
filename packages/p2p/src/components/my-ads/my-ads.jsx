@@ -20,8 +20,8 @@ const MyAds = () => {
     const { is_advertiser, is_restricted, setPoiStatus } = React.useContext(Dp2pContext);
     const [error_message, setErrorMessage] = React.useState('');
     const [is_loading, setIsLoading] = React.useState(true);
-    const isMounted = useIsMounted();
     const [show_ad_form, setShowAdForm] = React.useState(false);
+    const isMounted = useIsMounted();
 
     React.useEffect(() => {
         if (isMounted()) {

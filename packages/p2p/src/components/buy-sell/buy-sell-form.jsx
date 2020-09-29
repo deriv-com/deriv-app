@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
 import { Input } from '@deriv/components';
-import { formatMoney, getDecimalPlaces, getRoundedNumber, getFormattedText } from '@deriv/shared';
+import { formatMoney, getDecimalPlaces, getRoundedNumber, getFormattedText, useIsMounted } from '@deriv/shared';
 import { localize, Localize } from 'Components/i18next';
 import { countDecimalPlaces } from 'Utils/string';
 import { requestWS } from 'Utils/websocket';
@@ -10,12 +10,7 @@ import { textValidator, lengthValidator } from 'Utils/validations';
 import { buy_sell } from '../../constants/buy-sell';
 
 const BuySellForm = ({ advert, handleClose, handleConfirm, setErrorMessage, setIsSubmitDisabled, setSubmitForm }) => {
-    const is_mounted = React.useRef(false);
-
-    React.useEffect(() => {
-        is_mounted.current = true;
-        return () => (is_mounted.current = false);
-    }, []);
+    const isMounted = useIsMounted();
 
     const {
         account_currency,
@@ -48,7 +43,7 @@ const BuySellForm = ({ advert, handleClose, handleConfirm, setErrorMessage, setI
     };
 
     const handleSubmit = async (values, { setSubmitting }) => {
-        if (is_mounted.current) {
+        if (isMounted()) {
             setSubmitting(true);
         }
 
@@ -75,7 +70,7 @@ const BuySellForm = ({ advert, handleClose, handleConfirm, setErrorMessage, setI
             handleClose();
         }
 
-        if (is_mounted.current) {
+        if (isMounted()) {
             setSubmitting(false);
         }
     };

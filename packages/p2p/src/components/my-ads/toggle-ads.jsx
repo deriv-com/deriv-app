@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ToggleSwitch } from '@deriv/components';
+import { useIsMounted } from '@deriv/shared';
 import classNames from 'classnames';
 import { localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
@@ -21,44 +22,37 @@ ToggleMessage.propTypes = {
     is_enabled: PropTypes.bool.isRequired,
 };
 
-class ToggleAds extends React.Component {
-    state = {
-        error: '',
-    };
+const ToggleAds = () => {
+    const { is_listed, setIsListed } = React.useContext(Dp2pContext);
+    const [error, setError] = React.useState('');
+    const isMounted = useIsMounted();
 
-    handleToggle = () => {
-        const is_listed = this.context.is_listed ? 0 : 1;
-        requestWS({ p2p_advertiser_update: 1, is_listed }).then(response => {
-            if (response.error) {
-                this.setState({ error: response.error.message });
-            } else {
-                const { p2p_advertiser_update } = response;
-                this.context.setIsListed(p2p_advertiser_update.is_listed === 1);
+    const handleToggle = () => {
+        const is_listed_value = is_listed ? 0 : 1;
+        requestWS({ p2p_advertiser_update: 1, is_listed: is_listed_value }).then(response => {
+            if (isMounted()) {
+                if (response.error) {
+                    setError(response.error.message);
+                } else {
+                    const { p2p_advertiser_update } = response;
+                    setIsListed(p2p_advertiser_update.is_listed === 1);
+                }
             }
         });
     };
 
-    render() {
-        return (
-            <div className={classNames('toggle-ads', this.context.is_listed ? 'toggle-ads--on' : 'toggle-ads--off')}>
-                <ToggleMessage
-                    is_enabled={this.context.is_listed}
-                    className='toggle-ads__message'
-                    error={this.state.error}
-                    is_loading={this.state.is_loading}
-                />
-                <ToggleSwitch
-                    id='toggle-my-ads'
-                    className='toggle-ads__switch'
-                    classNameLabel='toggle-ads__switch'
-                    is_enabled={this.context.is_listed}
-                    handleToggle={this.handleToggle}
-                />
-            </div>
-        );
-    }
-}
+    return (
+        <div className={classNames('toggle-ads', is_listed ? 'toggle-ads--on' : 'toggle-ads--off')}>
+            <ToggleMessage is_enabled={is_listed} className='toggle-ads__message' error={error} />
+            <ToggleSwitch
+                id='toggle-my-ads'
+                className='toggle-ads__switch'
+                classNameLabel='toggle-ads__switch'
+                is_enabled={is_listed}
+                handleToggle={handleToggle}
+            />
+        </div>
+    );
+};
 
 export default ToggleAds;
-
-ToggleAds.contextType = Dp2pContext;

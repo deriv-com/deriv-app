@@ -235,7 +235,7 @@ const FormAds = ({ handleShowForm }) => {
                 onSubmit={handleSubmit}
                 validate={validateFormAds}
             >
-                {({ isSubmitting, errors, handleChange, touched, isValid, values }) => {
+                {({ dirty, errors, handleChange, isSubmitting, isValid, touched, values }) => {
                     const is_sell_ad = values.type === buy_sell.SELL;
                     return (
                         <div className='p2p-my-ads__form'>
@@ -427,7 +427,7 @@ const FormAds = ({ handleShowForm }) => {
                                             className='p2p-my-ads__form-button'
                                             primary
                                             large
-                                            is_disabled={isSubmitting || !isValid}
+                                            is_disabled={!dirty || isSubmitting || !isValid}
                                         >
                                             {localize('Post ad')}
                                         </Button>

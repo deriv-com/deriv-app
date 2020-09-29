@@ -25,28 +25,37 @@ const buy_sell_filters = [
 ];
 
 const BuySell = ({ navigate }) => {
-    const { is_advertiser, modal_root_id, nickname } = React.useContext(Dp2pContext);
+    const { is_advertiser, modal_root_id, nickname, setOrderId } = React.useContext(Dp2pContext);
+    const is_mounted = React.useRef(false);
+    const submitForm = React.useRef(() => {});
     const [error_message, setErrorMessage] = React.useState(null);
     const [is_submit_disabled, setIsSubmitDisabled] = React.useState(true);
-    const [selected_ad, setSelectedAd] = React.useState({});
+    const [selected_ad_state, setSelectedAdState] = React.useState({});
     const [should_show_popup, setShouldShowPopup] = React.useState(false);
     const [should_show_verification, setShouldShowVerification] = React.useState(false);
     const [show_advertiser_page, setShowAdvertiserPage] = React.useState(false);
-    const submitForm = React.useRef(() => {});
+
     const [table_type, setTableType] = React.useState(buy_sell.BUY);
+
+    React.useEffect(() => {
+        if (!should_show_popup) setErrorMessage(null);
+    }, [should_show_popup]);
 
     const hideAdvertiserPage = () => setShowAdvertiserPage(false);
     const hideVerification = () => setShouldShowVerification(false);
 
     const onCancelClick = () => setShouldShowPopup(false);
     const onChangeTableType = event => setTableType(event.target.value);
-    const onConfirmClick = order_info => navigate('orders', { order_info, nav: { location: 'buy_sell' } });
+    const onConfirmClick = order_info => {
+        setOrderId(order_info.id);
+        navigate('orders', { nav: { location: 'buy_sell' } });
+    };
 
     const setSelectedAdvert = selected_advert => {
         if (!is_advertiser) {
             setShouldShowVerification(true);
         } else {
-            setSelectedAd(selected_advert);
+            setSelectedAdState(selected_advert);
             setShouldShowPopup(true);
         }
     };
@@ -54,11 +63,19 @@ const BuySell = ({ navigate }) => {
     const setSubmitForm = submitFormFn => (submitForm.current = submitFormFn);
 
     const showAdvertiserPage = selected_advert => {
-        setSelectedAd(selected_advert);
+        setSelectedAdState(selected_advert);
         setShowAdvertiserPage(true);
     };
 
     const showVerification = () => setShouldShowVerification(true);
+
+    // Some state is managed externally, ensure our host component is mounted
+    // when those external components try to update it.
+    const stateUpdateWrapper = updateFn => (...args) => {
+        if (is_mounted.current) {
+            updateFn(...args);
+        }
+    };
 
     if (should_show_verification) {
         return (
@@ -73,7 +90,11 @@ const BuySell = ({ navigate }) => {
         return (
             <>
                 <PageReturn onClick={hideAdvertiserPage} page_title={localize("Advertiser's page")} />
-                <AdvertiserPage navigate={navigate} selected_ad={selected_ad} showVerification={showVerification} />
+                <AdvertiserPage
+                    navigate={navigate}
+                    selected_advert={selected_ad_state}
+                    showVerification={showVerification}
+                />
             </>
         );
     }
@@ -81,8 +102,8 @@ const BuySell = ({ navigate }) => {
     const Form = nickname ? BuySellForm : NicknameForm;
     const modal_title =
         table_type === buy_sell.BUY
-            ? localize('Buy {{ currency }}', { currency: selected_ad.offer_currency })
-            : localize('Sell {{ currency }}', { currency: selected_ad.offer_currency });
+            ? localize('Buy {{ currency }}', { currency: selected_ad_state.offer_currency })
+            : localize('Sell {{ currency }}', { currency: selected_ad_state.offer_currency });
 
     return (
         <div className='buy-sell'>
@@ -100,7 +121,7 @@ const BuySell = ({ navigate }) => {
             <BuySellTableContent
                 key={table_type}
                 is_buy={table_type === buy_sell.BUY}
-                setSelectedAd={setSelectedAdvert}
+                setSelectedAdvert={setSelectedAdvert}
                 showAdvertiserPage={showAdvertiserPage}
             />
             <Modal
@@ -116,17 +137,17 @@ const BuySell = ({ navigate }) => {
                 <ThemedScrollbars height='calc(100% - 5.8rem - 7.4rem)'>
                     <Modal.Body>
                         <Form
-                            ad={selected_ad}
-                            handleClose={onCancelClick}
+                            advert={selected_ad_state}
+                            handleClose={stateUpdateWrapper(onCancelClick)}
                             handleConfirm={onConfirmClick}
-                            setIsSubmitDisabled={setIsSubmitDisabled}
-                            setErrorMessage={setErrorMessage}
+                            setIsSubmitDisabled={stateUpdateWrapper(setIsSubmitDisabled)}
+                            setErrorMessage={stateUpdateWrapper(setErrorMessage)}
                             setSubmitForm={setSubmitForm}
                         />
                     </Modal.Body>
                 </ThemedScrollbars>
                 <Modal.Footer has_separator>
-                    <FormError message={error_message} />
+                    {error_message && <FormError message={error_message} />}
                     <Button.Group>
                         <Button secondary type='button' onClick={onCancelClick} large>
                             {localize('Cancel')}

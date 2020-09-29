@@ -13,7 +13,7 @@ import { RowComponent, BuySellRowLoader } from './row.jsx';
 import { BuySellTable } from './buy-sell-table.jsx';
 import { buy_sell } from '../../constants/buy-sell';
 
-const BuySellTableContent = ({ is_buy, setSelectedAd, showAdvertiserPage }) => {
+const BuySellTableContent = ({ is_buy, setSelectedAdvert, showAdvertiserPage }) => {
     const { list_item_limit } = React.useContext(Dp2pContext);
     const isMounted = useIsMounted();
     const item_offset = React.useRef(0);
@@ -45,9 +45,11 @@ const BuySellTableContent = ({ is_buy, setSelectedAd, showAdvertiserPage }) => {
             }).then(response => {
                 if (isMounted()) {
                     if (!response.error) {
-                        setHasMoreItemsToLoad(response.length >= list_item_limit);
-                        setItems(items.concat(response));
-                        item_offset.current += response.length;
+                        const { list } = response.p2p_advert_list;
+
+                        setHasMoreItemsToLoad(list.length >= list_item_limit);
+                        setItems(items.concat(list));
+                        item_offset.current += list.length;
                     } else {
                         setApiErrorMessage(response.error.message);
                     }
@@ -69,7 +71,7 @@ const BuySellTableContent = ({ is_buy, setSelectedAd, showAdvertiserPage }) => {
         <RowComponent
             {...props}
             is_buy={is_buy}
-            setSelectedAd={setSelectedAd}
+            setSelectedAdvert={setSelectedAdvert}
             showAdvertiserPage={showAdvertiserPage}
         />
     );
@@ -107,7 +109,7 @@ const BuySellTableContent = ({ is_buy, setSelectedAd, showAdvertiserPage }) => {
 
 BuySellTableContent.propTypes = {
     is_buy: PropTypes.bool,
-    setSelectedAd: PropTypes.func,
+    setSelectedAdvert: PropTypes.func,
     showAdvertiserPage: PropTypes.func,
 };
 

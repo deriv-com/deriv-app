@@ -1,10 +1,8 @@
 import { action, computed, observable, toJS } from 'mobx';
-import { isDesktop, LocalStore } from '@deriv/shared';
-import ContractStore from './contract-store';
+import { isDesktop, isEnded, isMultiplierContract, LocalStore } from '@deriv/shared';
 import { switch_to_tick_chart } from './Helpers/chart-notifications';
-import { isMultiplierContract } from './Helpers/multiplier';
+import ContractStore from './contract-store';
 import { isCallPut } from './Helpers/contract-type';
-import { isEnded } from './Helpers/logic';
 import { getContractTypesConfig } from '../Trading/Constants/contract';
 import BaseStore from '../../base-store';
 

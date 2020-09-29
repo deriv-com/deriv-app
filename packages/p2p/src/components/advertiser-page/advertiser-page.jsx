@@ -14,25 +14,36 @@ import FormError from '../form/error.jsx';
 import { localize } from '../i18next';
 import './advertiser-page.scss';
 
-const RowComponent = React.memo(({ data, is_buy_advert, showAdPopup, style }) => {
+const RowComponent = React.memo(({ advert, showAdPopup, style }) => {
     const { advertiser_id } = React.useContext(Dp2pContext);
-    const is_my_ad = data.advertiser_id === advertiser_id;
+    const {
+        account_currency,
+        advertiser_details,
+        counterparty_type,
+        local_currency,
+        max_order_amount_limit_display,
+        min_order_amount_limit_display,
+        price_display,
+    } = advert;
+
+    const is_buy_advert = counterparty_type === buy_sell.BUY;
+    const is_my_advert = advertiser_details.id === advertiser_id;
 
     return (
         <div style={style}>
             <Table.Row className='advertiser-page__adverts-table_row'>
                 <Table.Cell>
-                    {data.display_min_available}&ndash;{data.display_max_available} {data.offer_currency}
+                    {min_order_amount_limit_display}&ndash;{max_order_amount_limit_display} {account_currency}
                 </Table.Cell>
                 <Table.Cell className='advertiser-page__adverts-price'>
-                    {data.display_price_rate} {data.transaction_currency}
+                    {price_display} {local_currency}
                 </Table.Cell>
-                {is_my_ad ? (
+                {is_my_advert ? (
                     <Table.Cell />
                 ) : (
                     <Table.Cell className='advertiser-page__adverts-button'>
-                        <Button primary small onClick={() => showAdPopup(data)}>
-                            {is_buy_advert ? localize('Buy') : localize('Sell')} {data.offer_currency}
+                        <Button primary small onClick={() => showAdPopup(advert)}>
+                            {is_buy_advert ? localize('Buy') : localize('Sell')} {account_currency}
                         </Button>
                     </Table.Cell>
                 )}
@@ -43,16 +54,16 @@ const RowComponent = React.memo(({ data, is_buy_advert, showAdPopup, style }) =>
 
 RowComponent.displayName = 'RowComponent';
 
-const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
+const AdvertiserPage = ({ navigate, selected_advert, showVerification }) => {
     const { is_advertiser, nickname } = React.useContext(Dp2pContext);
-    const { advertiser_name, advertiser_id, offer_currency } = selected_ad;
+    const { advertiser_details, account_currency } = selected_advert;
     const [active_index, setActiveIndex] = React.useState(0);
     const [ad, setAd] = React.useState(null);
     const [adverts, setAdverts] = React.useState([]);
     const [counterparty_type, setCounterpartyType] = React.useState(buy_sell.BUY);
     const [error_message, setErrorMessage] = React.useState('');
     const [form_error_message, setFormErrorMessage] = React.useState('');
-    const [has_adverts, setHasAdverts] = React.useState(false);
+
     const height_values = [
         height_constants.screen,
         height_constants.advertiser_page_content,
@@ -69,7 +80,7 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
     const [is_submit_disabled, setIsSubmitDisabled] = React.useState(true);
     const isMounted = useIsMounted();
     const item_height = 56;
-    const short_name = getShortNickname(advertiser_name);
+    const short_name = getShortNickname(advertiser_details.name);
     const [show_ad_popup, setShowAdPopup] = React.useState(false);
     const [stats, setStats] = React.useState({});
     const submitForm = React.useRef(() => {});
@@ -84,8 +95,8 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
     const Form = nickname ? BuySellForm : NicknameForm;
     const modal_title =
         counterparty_type === buy_sell.BUY
-            ? localize('Buy {{ currency }}', { currency: offer_currency })
-            : localize('Sell {{ currency }}', { currency: offer_currency });
+            ? localize('Buy {{ currency }}', { currency: account_currency })
+            : localize('Sell {{ currency }}', { currency: account_currency });
 
     React.useEffect(() => {
         if (isMounted()) {
@@ -103,12 +114,12 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
             requestWS({
                 p2p_advert_list: 1,
                 counterparty_type,
-                advertiser_id,
+                advertiser_id: advertiser_details.id,
             }).then(response => {
                 if (isMounted()) {
                     if (!response.error) {
-                        setHasAdverts(!!response.length);
-                        setAdverts(response);
+                        const { list } = response.p2p_advert_list;
+                        setAdverts(list);
                     } else {
                         setErrorMessage(response.error);
                     }
@@ -122,7 +133,7 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
         return new Promise(resolve => {
             requestWS({
                 p2p_advertiser_stats: 1,
-                id: advertiser_id,
+                id: advertiser_details.id,
             }).then(response => {
                 if (isMounted()) {
                     if (!response.error) {
@@ -197,7 +208,7 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
                         <ThemedScrollbars height='calc(100% - 5.8rem - 7.4rem)'>
                             <Modal.Body>
                                 <Form
-                                    ad={ad}
+                                    advert={ad}
                                     handleClose={onCancelClick}
                                     handleConfirm={onConfirmClick}
                                     setIsSubmitDisabled={setIsSubmitDisabled}
@@ -223,11 +234,11 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
                     <div className='advertiser-page__header-details'>
                         <div
                             className='advertiser-page__header-avatar'
-                            style={{ backgroundColor: generateHexColourFromNickname(advertiser_name) }}
+                            style={{ backgroundColor: generateHexColourFromNickname(advertiser_details.name) }}
                         >
                             {short_name}
                         </div>
-                        <div className='advertiser-page__header-name'>{advertiser_name}</div>
+                        <div className='advertiser-page__header-name'>{advertiser_details.name}</div>
                     </div>
                     {/* TODO: add check for id and address verified */}
                     {/* <div className='advertiser-page__header-verification'>
@@ -301,13 +312,13 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
                         <div label={localize('Sell')} />
                     </Tabs>
                     <div className='advertiser-page__adverts-table'>
-                        {has_adverts ? (
+                        {adverts.length ? (
                             <Table>
                                 <Table.Header>
                                     <Table.Row className='advertiser-page__adverts-table_row'>
                                         <Table.Head>{localize('Limits')}</Table.Head>
                                         <Table.Head>
-                                            {localize('Rate (1 {{offer_currency}})', { offer_currency })}
+                                            {localize('Rate (1 {{account_currency}})', { account_currency })}
                                         </Table.Head>
                                         <Table.Head>{''}</Table.Head>
                                     </Table.Row>

@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper, ProgressBar, Tabs, DataList, DataTable } from '@deriv/components';
-import { urlFor, isMobile, website_name } from '@deriv/shared';
+import { urlFor, isMobile, isMultiplierContract, getTimePercentage, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
-import { getTimePercentage } from 'App/Components/Elements/PositionsDrawer/helpers';
 import { getContractPath } from 'App/Components/Routes/helpers';
 import { getContractDurationType } from 'Modules/Reports/Helpers/market-underlying';
 import EmptyTradeHistoryMessage from 'Modules/Reports/Components/empty-trade-history-message.jsx';
@@ -17,7 +16,6 @@ import {
 import PositionsCard from 'App/Components/Elements/PositionsDrawer/PositionsDrawerCard/positions-drawer-card.jsx';
 import PlaceholderComponent from 'Modules/Reports/Components/placeholder-component.jsx';
 import { connect } from 'Stores/connect';
-import { isMultiplierContract } from 'Stores/Modules/Contract/Helpers/multiplier';
 
 const EmptyPlaceholderWrapper = props => (
     <React.Fragment>
@@ -92,7 +90,7 @@ const OpenPositionsTable = ({
                                 getRowAction={getRowAction}
                                 custom_width='100%'
                                 getRowSize={() => {
-                                    if (isMobile() && is_multiplier_tab) return 228;
+                                    if (isMobile() && is_multiplier_tab) return 242;
                                     if (isMobile()) return 208;
                                     return 194;
                                 }}
@@ -180,6 +178,7 @@ class OpenPositions extends React.Component {
                     is_link_disabled
                     onClickCancel={onClickCancel}
                     onClickSell={onClickSell}
+                    server_time={server_time}
                     status={status}
                 />
             );
@@ -309,6 +308,7 @@ class OpenPositions extends React.Component {
             onClickCancel,
             onClickSell,
             getPositionById,
+            server_time,
         } = this.props;
 
         const { has_multiplier_contract, active_index } = this.state;
@@ -341,7 +341,13 @@ class OpenPositions extends React.Component {
             totals: active_positions_filtered_totals,
         };
         this.columns = is_multiplier_selected
-            ? getMultiplierOpenPositionsColumnsTemplate({ currency, onClickCancel, onClickSell, getPositionById })
+            ? getMultiplierOpenPositionsColumnsTemplate({
+                  currency,
+                  onClickCancel,
+                  onClickSell,
+                  getPositionById,
+                  server_time,
+              })
             : getOpenPositionsColumnsTemplate(currency);
 
         this.columns_map = this.columns.reduce((map, item) => {
@@ -398,7 +404,6 @@ OpenPositions.propTypes = {
     error: PropTypes.string,
     history: PropTypes.object,
     is_loading: PropTypes.bool,
-    is_mobile: PropTypes.bool,
     is_tablet: PropTypes.bool,
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,

@@ -14,27 +14,6 @@
         color: var(--text-profit-success);
         font-weight: bold;
     }
-    &__dialog {
-        position: absolute;
-        height: 100%;
-        width: 100%;
-        top: 0;
-        left: 0;
-        background: var(--shadow-menu);
-
-        & .dc-dialog__dialog {
-            width: auto;
-            height: auto;
-            padding: 0;
-            max-height: 55.3rem;
-            min-width: 44rem;
-        }
-        & .dc-dialog__content {
-            margin-bottom: 0;
-            width: 100%;
-            max-width: 44rem;
-        }
-    }
     &__icon {
         display: flex;
         align-items: center;
@@ -49,7 +28,7 @@
         white-space: nowrap;
     }
     &__table-row {
-        grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
+        grid-template-columns: 2fr 1fr 1fr 1fr;
     }
     &__cell {
         cursor: pointer;
@@ -65,42 +44,49 @@
             margin-bottom: 0 !important;
             flex: 1;
 
+            &-wrapper {
+                gap: 2.4rem;
+                display: flex;
+                margin-bottom: 1.6rem;
+                align-items: center;
+
+                > .dc-input {
+                    margin-top: 1rem; // Compensate for label.
+                }
+            }
+            &--textarea {
+                margin-top: 4.3rem;
+
+                .dc-input__hint {
+                    top: 9.7rem;
+                }
+                .dc-input__counter {
+                    top: 9.7rem;
+                    right: 0rem;
+                }
+            }
             &--trailing {
                 font-size: var(--text-size-xxs);
                 color: var(--text-less-prominent);
             }
-            &-wrapper {
-                display: flex;
-                gap: 1.6rem;
-                justify-content: space-between;
-                margin-bottom: 1.6rem;
-
-                &--extra-space {
-                    margin-bottom: 2.4rem;
-                }
-                &--textarea {
-                    margin-top: 4.3rem;
-
-                    .dc-input__hint {
-                        top: 9.7rem;
-                    }
-                    .dc-input__counter {
-                        top: 9.7rem;
-                        right: 0rem;
-                    }
-                }
+            &--receive-amount {
+                margin-top: 1rem;
             }
-            &-label {
+        }
+        &-info {
+            margin-bottom: 1.6rem;
+
+            &--title {
                 color: var(--text-less-prominent);
                 font-size: var(--text-size-xxs);
             }
-            &-value {
+            &--text {
                 color: var(--text-general);
                 font-size: var(--text-size-xs);
-
-                &--strong {
-                    font-weight: bold;
-                }
+                word-break: break-word;
+            }
+            &--strong {
+                font-weight: bold;
             }
         }
     }

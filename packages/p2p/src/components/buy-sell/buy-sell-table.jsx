@@ -13,7 +13,6 @@ export const BuySellTable = ({ children }) => {
                     <Table.Head>{localize('Advertisers')}</Table.Head>
                     <Table.Head>{localize('Limits')}</Table.Head>
                     <Table.Head>{localize('Rate (1 {{currency}})', { currency })}</Table.Head>
-                    <Table.Head>{localize('Payment method')}</Table.Head>
                     <Table.Head>{''}</Table.Head>
                 </Table.Row>
             </Table.Header>

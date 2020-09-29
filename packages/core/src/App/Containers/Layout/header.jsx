@@ -157,7 +157,7 @@ const Header = ({
 Header.propTypes = {
     acc_switcher_disabled_message: PropTypes.string,
     account_status: PropTypes.object,
-    addNotificationMessage: PropTypes.bool,
+    addNotificationMessage: PropTypes.func,
     app_routing_history: PropTypes.array,
     balance: PropTypes.string,
     currency: PropTypes.string,

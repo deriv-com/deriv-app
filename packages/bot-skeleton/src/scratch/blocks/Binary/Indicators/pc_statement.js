@@ -3,7 +3,7 @@ import { config } from '../../../../constants/config';
 
 Blockly.Blocks.pc_statement = {
     protected_statements: ['STATEMENT'],
-    required_child_blocks: ['input_list', 'period'],
+    required_child_blocks: ['candle_list', 'period'],
     init() {
         this.jsonInit(this.definition());
     },
@@ -58,7 +58,7 @@ Blockly.JavaScript.pc_statement = block => {
         Blockly.Variables.NAME_TYPE
     );
     const pc_result = block.getFieldValue('PRICECHANNEL_RESULT');
-    const input = block.childValueToCode('input_list', 'INPUT_LIST');
+    const input = block.childValueToCode('candle_list', 'CANDLE_LIST');
     const period = block.childValueToCode('period', 'PERIOD');
     const code = `${var_name} = Bot.pc(${input}, ${period}, ${pc_result});\n`;
 

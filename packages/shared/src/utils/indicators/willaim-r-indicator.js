@@ -1,4 +1,3 @@
-import { slidingWindowMax, slidingWindowMin } from './math';
 import { sequence } from '../object';
 
 const calcWilliamRIndicator = (low_list, high_list, close_list, period, pipSize) => {
@@ -7,7 +6,7 @@ const calcWilliamRIndicator = (low_list, high_list, close_list, period, pipSize)
     sequence(low_list.length - period + 1).map((x, i) => {
         const min = Math.min(...low_list.slice(i, i + period));
         const max = Math.max(...high_list.slice(i, i + period));
-        list[i] = +((max - close_list[i + period - 1]) / (max - min)).toFixed(pipSize);
+        list[i] = (+((max - close_list[i + period - 1]) / (max - min)) * -100).toFixed(pipSize);
     });
 
     return list;
@@ -21,8 +20,9 @@ const calcWilliamRIndicator = (low_list, high_list, close_list, period, pipSize)
  *  pipSize: number,
  * }
  */
-export const williamRIndicator = (input, config) => {
-    return williamRIndicatorArray(input, config)[0];
+export const williamRIndicator = (data, config) => {
+    const result = williamRIndicatorArray(data, config);
+    return result[result.length - 1];
 };
 
 /**
@@ -33,13 +33,25 @@ export const williamRIndicator = (input, config) => {
  *  pipSize: number,
  * }
  */
-export const williamRIndicatorArray = (input, config) => {
-    const { data, candle } = input;
+export const williamRIndicatorArray = (data, config) => {
     const { period = 14, pipSize = 2 } = config;
-    const high_list = slidingWindowMax(data, period);
-    const low_list = slidingWindowMin(data, period);
-    const close_list = candle.map(item => {
-        return isNaN(item) ? (item.close ? item.close : NaN) : item;
+    const high_list = data.map(item => {
+        if (isNaN(item)) {
+            return item.high ? item.high : NaN;
+        }
+        return item;
+    });
+    const low_list = data.map(item => {
+        if (isNaN(item)) {
+            return item.low ? item.low : NaN;
+        }
+        return item;
+    });
+    const close_list = data.map(item => {
+        if (isNaN(item)) {
+            return item.close ? item.close : NaN;
+        }
+        return item;
     });
     return calcWilliamRIndicator(low_list, high_list, close_list, period, pipSize);
 };

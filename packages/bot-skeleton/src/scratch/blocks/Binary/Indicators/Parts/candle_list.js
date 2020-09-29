@@ -25,6 +25,12 @@ Blockly.Blocks.candle_list = {
     allowed_parents: [
         'atr_statement',
         'atra_statement',
+        'fr_statement',
+        'fra_statement',
+        'pc_statement',
+        'pca_statement',
+        'psar_statement',
+        'psara_statement',
         'so_statement',
         'soa_statement',
         'wr_statement',

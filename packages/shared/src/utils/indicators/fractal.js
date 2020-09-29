@@ -1,74 +1,71 @@
-import { slidingWindowMax, slidingWindowMin } from './math';
 import { sequence } from '../object';
 
-const calcFractal = (low_list, high_list, pipSize) => {
-    const n = low_list.length,
-        low_ref = low_list[n - 3],
-        high_ref = high_list[n - 3];
-    let result_low = null,
-        result_high = null;
+const calcFractal = (data, field, pipSize) => {
+    const n = data.length;
+    let result = null;
 
-    if (
-        low_ref < low_list[n - 2] &&
-        low_ref < low_list[n - 1] &&
-        low_ref <= low_list[n - 4] &&
-        low_ref <= low_list[n - 5]
-    ) {
-        result_low = low_ref;
+    if (field) {
+        const high_list = data.map(item => {
+            if (isNaN(item)) {
+                return item.high ? item.high : NaN;
+            }
+            return item;
+        });
+        const high_ref = high_list[n - 3];
+        if (
+            high_ref > high_list[n - 2] &&
+            high_ref > high_list[n - 1] &&
+            high_ref >= high_list[n - 4] &&
+            high_ref >= high_list[n - 5]
+        ) {
+            result = high_ref;
+        } else {
+            result = null;
+        }
     } else {
-        result_low = null;
+        const low_list = data.map(item => {
+            if (isNaN(item)) {
+                return item.low ? item.low : NaN;
+            }
+            return item;
+        });
+        const low_ref = low_list[n - 3];
+        if (
+            low_ref < low_list[n - 2] &&
+            low_ref < low_list[n - 1] &&
+            low_ref <= low_list[n - 4] &&
+            low_ref <= low_list[n - 5]
+        ) {
+            result = low_ref;
+        } else {
+            result = null;
+        }
     }
-
-    if (
-        high_ref > high_list[n - 2] &&
-        high_ref > high_list[n - 1] &&
-        high_ref >= high_list[n - 4] &&
-        high_ref >= high_list[n - 5]
-    ) {
-        result_high = high_ref;
-    } else {
-        result_high = null;
-    }
-    return [
-        result_low ? +result_low.toFixed(pipSize) : result_low,
-        result_high ? +result_high.toFixed(pipSize) : result_high,
-    ];
+    return result ? +result.toFixed(pipSize) : result;
 };
 
 /**
  * @param {Array} data
  * @param {Object} config of type
  * {
- *  periods: number,
  *  pipSize: number,
+ *  field: number,
  * }
  */
 export const fractal = (data, config) => {
-    const { periods = 20, pipSize = 2 } = config;
-    if (data.length < periods) {
-        throw new Error('Periods longer than data length');
-    }
-    const low_list = slidingWindowMin(data, periods);
-    const high_list = slidingWindowMax(data, periods);
-    return calcFractal(low_list, high_list, pipSize);
+    const { pipSize = 2, field } = config;
+    return calcFractal(data, field, pipSize);
 };
 
 /**
  * @param {Array} data
  * @param {Object} config of type
  * {
- *  periods: number,
  *  pipSize: number,
+ *  field: number,
  * }
  */
 export const fractalArray = (data, config) => {
-    const { periods = 20, pipSize = 2 } = config;
-    if (data.length < periods) {
-        throw new Error('Periods longer than data length');
-    }
-    const low_list = slidingWindowMin(data, periods);
-    const high_list = slidingWindowMax(data, periods);
-    return sequence(low_list.length - 4).map((x, i) =>
-        calcFractal(low_list.slice(i, i + 5), high_list.slice(i, i + 5), pipSize)
-    );
+    const { pipSize = 2, field } = config;
+    return sequence(data.length - 4).map((x, i) => calcFractal(data.slice(i, i + 5), field, pipSize));
 };

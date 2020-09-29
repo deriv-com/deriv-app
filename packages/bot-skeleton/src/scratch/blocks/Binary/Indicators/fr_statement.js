@@ -3,7 +3,7 @@ import { config } from '../../../../constants/config';
 
 Blockly.Blocks.fr_statement = {
     protected_statements: ['STATEMENT'],
-    required_child_blocks: ['input_list', 'period'],
+    required_child_blocks: ['candle_list'],
     init() {
         this.jsonInit(this.definition());
     },
@@ -58,9 +58,8 @@ Blockly.JavaScript.fr_statement = block => {
         Blockly.Variables.NAME_TYPE
     );
     const fr_result = block.getFieldValue('FRACTAL_RESULT');
-    const input = block.childValueToCode('input_list', 'INPUT_LIST');
-    const period = block.childValueToCode('period', 'PERIOD');
-    const code = `${var_name} = Bot.fr(${input}, ${period}, ${fr_result});\n`;
+    const input = block.childValueToCode('candle_list', 'CANDLE_LIST');
+    const code = `${var_name} = Bot.fr(${input}, ${fr_result});\n`;
 
     return code;
 };

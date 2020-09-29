@@ -1,4 +1,4 @@
-import { slidingWindowMax, slidingWindowMin, mean } from './math';
+import { mean } from './math';
 import { sequence } from '../object';
 
 const calcStochasticOscillator = (
@@ -24,9 +24,11 @@ const calcStochasticOscillator = (
     });
 
     sequence(low_list.length - k_period - k_slowing_period + 2).map((x, i) => {
-        k_list[i] = +(
-            close_min_list.slice(i, i + k_slowing_period).reduce((a, b) => a + b, 0) /
-            max_min_list.slice(i, i + k_slowing_period).reduce((a, b) => a + b, 0)
+        k_list[i] = (
+            +(
+                close_min_list.slice(i, i + k_slowing_period).reduce((a, b) => a + b, 0) /
+                max_min_list.slice(i, i + k_slowing_period).reduce((a, b) => a + b, 0)
+            ) * 100
         ).toFixed(pipSize);
     });
 
@@ -50,8 +52,9 @@ const calcStochasticOscillator = (
  *  pipSize: number,
  * }
  */
-export const stochasticOscillator = (input, config) => {
-    return stochasticOscillatorArray(input, config)[0];
+export const stochasticOscillator = (data, config) => {
+    const result = stochasticOscillatorArray(data, config);
+    return result[result.length - 1];
 };
 
 /**
@@ -65,13 +68,25 @@ export const stochasticOscillator = (input, config) => {
  *  pipSize: number,
  * }
  */
-export const stochasticOscillatorArray = (input, config) => {
-    const { data, candle } = input;
-    const { k_period = 14, k_slowing_period = 10, d_period = 10, type = 0, pipSize = 2 } = config;
-    const high_list = slidingWindowMax(data, k_period);
-    const low_list = slidingWindowMin(data, k_period);
-    const close_list = candle.map(item => {
-        return isNaN(item) ? (item.close ? item.close : NaN) : item;
+export const stochasticOscillatorArray = (data, config) => {
+    const { k_period = 14, k_slowing_period = 14, d_period = 14, type = 0, pipSize = 2 } = config;
+    const high_list = data.map(item => {
+        if (isNaN(item)) {
+            return item.high ? item.high : NaN;
+        }
+        return item;
+    });
+    const low_list = data.map(item => {
+        if (isNaN(item)) {
+            return item.low ? item.low : NaN;
+        }
+        return item;
+    });
+    const close_list = data.map(item => {
+        if (isNaN(item)) {
+            return item.close ? item.close : NaN;
+        }
+        return item;
     });
     return calcStochasticOscillator(
         low_list,

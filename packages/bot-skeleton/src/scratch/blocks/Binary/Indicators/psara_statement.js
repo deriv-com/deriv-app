@@ -2,7 +2,7 @@ import { localize } from '@deriv/translations';
 
 Blockly.Blocks.psara_statement = {
     protected_statements: ['STATEMENT'],
-    required_child_blocks: ['input_list', 'period'],
+    required_child_blocks: ['candle_list'],
     init() {
         this.jsonInit(this.definition());
     },
@@ -51,9 +51,8 @@ Blockly.JavaScript.psara_statement = block => {
         block.getFieldValue('VARIABLE'),
         Blockly.Variables.NAME_TYPE
     );
-    const input = block.childValueToCode('input_list', 'INPUT_LIST');
-    const period = block.childValueToCode('period', 'PERIOD');
-    const code = `${var_name} = Bot.psara(${input}, ${period});\n`;
+    const input = block.childValueToCode('candle_list', 'CANDLE_LIST');
+    const code = `${var_name} = Bot.psara(${input});\n`;
 
     return code;
 };

@@ -2,7 +2,7 @@ import { localize } from '@deriv/translations';
 
 Blockly.Blocks.wra_statement = {
     protected_statements: ['STATEMENT'],
-    required_child_blocks: ['tick_list', 'candle_list', 'period'],
+    required_child_blocks: ['candle_list', 'period'],
     init() {
         this.jsonInit(this.definition());
     },
@@ -51,10 +51,9 @@ Blockly.JavaScript.wra_statement = block => {
         block.getFieldValue('VARIABLE'),
         Blockly.Variables.NAME_TYPE
     );
-    const ticks = block.childValueToCode('tick_list', 'TICK_LIST');
     const candle = block.childValueToCode('candle_list', 'CANDLE_LIST');
     const period = block.childValueToCode('period', 'PERIOD');
-    const code = `${var_name} = Bot.wra({ data: ${ticks}, candle: ${candle}}, {period: ${period}});\n`;
+    const code = `${var_name} = Bot.wra(${candle}, ${period});\n`;
 
     return code;
 };

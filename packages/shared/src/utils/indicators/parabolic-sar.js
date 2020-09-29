@@ -1,33 +1,36 @@
-import { slidingWindowMax, slidingWindowMin } from './math';
-
 /**
  * @param {Array} data
  * @param {Object} config of type
  * {
- *  periods: number,
  *  pipSize: number,
  * }
  */
 export const parabolicSAR = (data, config) => {
-    const sar_list = parabolicSARArray(data, config);
-    return sar_list[sar_list.length - 1];
+    const result = parabolicSARArray(data, config);
+    return result[result.length - 1];
 };
 
 /**
  * @param {Array} data
  * @param {Object} config of type
  * {
- *  periods: number
  *  pipSize: number,
  * }
  */
 export const parabolicSARArray = (data, config) => {
-    const { periods = 20, pipSize = 2 } = config;
-    if (data.length < periods) {
-        throw new Error('Periods longer than data length');
-    }
-    const high_list = slidingWindowMax(data, periods);
-    const low_list = slidingWindowMin(data, periods);
+    const { pipSize = 2 } = config;
+    const high_list = data.map(item => {
+        if (isNaN(item)) {
+            return item.high ? item.high : NaN;
+        }
+        return item;
+    });
+    const low_list = data.map(item => {
+        if (isNaN(item)) {
+            return item.low ? item.low : NaN;
+        }
+        return item;
+    });
     const sar_step = 0.02;
     const sar_max = 0.2;
     const sar_list = [].fill(0, 0, high_list.length - 1);

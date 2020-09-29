@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, ButtonToggle, Modal, ThemedScrollbars } from '@deriv/components';
 import Dp2pContext from 'Components/context/dp2p-context';
-import { localize, Localize } from 'Components/i18next';
+import { localize } from 'Components/i18next';
 import BuySellForm from './buy-sell-form.jsx';
 import BuySellTableContent from './buy-sell-table-content.jsx';
 import FormError from '../form/error.jsx';

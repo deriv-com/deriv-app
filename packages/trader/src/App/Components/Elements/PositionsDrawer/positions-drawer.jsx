@@ -6,12 +6,12 @@ import { NavLink } from 'react-router-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { VariableSizeList as List } from 'react-window';
 import { Icon, ThemedScrollbars } from '@deriv/components';
-import { routes } from '@deriv/shared';
+import { routes, isValidToSell, isMultiplierContract, isHighLow } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import EmptyPortfolioMessage from 'Modules/Reports/Components/empty-portfolio-message.jsx';
 import { connect } from 'Stores/connect';
-import { isValidToSell } from 'Stores/Modules/Contract/Helpers/logic';
-import { isMultiplierContract } from 'Stores/Modules/Contract/Helpers/multiplier';
+import { getContractTypesConfig } from 'Stores/Modules/Trading/Constants/contract';
+import { isCallPut } from 'Stores/Modules/Contract/Helpers/contract-type';
 import { filterByContractType } from './helpers';
 import PositionsDrawerCard from './PositionsDrawerCard';
 
@@ -64,6 +64,7 @@ class PositionsDrawer extends React.Component {
             onClickSell,
             onClickRemove,
             onHoverPosition,
+            server_time,
             toggleUnsupportedContractModal,
         } = this.props;
         const portfolio_position = data[index];
@@ -79,10 +80,10 @@ class PositionsDrawer extends React.Component {
                         isScrolling
                             ? {}
                             : {
-                                  appear: 'positions-drawer-card__wrapper--enter',
-                                  enter: 'positions-drawer-card__wrapper--enter',
-                                  enterDone: 'positions-drawer-card__wrapper--enter-done',
-                                  exit: 'positions-drawer-card__wrapper--exit',
+                                  appear: 'contract-card__wrapper--enter',
+                                  enter: 'contract-card__wrapper--enter',
+                                  enterDone: 'contract-card__wrapper--enter-done',
+                                  exit: 'contract-card__wrapper--exit',
                               }
                     }
                     unmountOnExit
@@ -99,6 +100,7 @@ class PositionsDrawer extends React.Component {
                         }}
                         key={portfolio_position.id}
                         currency={currency}
+                        server_time={server_time}
                         show_transition={!isScrolling}
                         toggleUnsupportedContractModal={toggleUnsupportedContractModal}
                         {...portfolio_position}
@@ -106,6 +108,18 @@ class PositionsDrawer extends React.Component {
                 </CSSTransition>
             </div>
         );
+    };
+
+    filterByContractType = ({ contract_type, shortcode }) => {
+        const { trade_contract_type } = this.props;
+        const is_call_put = isCallPut(trade_contract_type);
+        const is_high_low = isHighLow({ shortcode });
+        const trade_types = is_call_put
+            ? ['CALL', 'CALLE', 'PUT', 'PUTE']
+            : getContractTypesConfig()[trade_contract_type]?.trade_types;
+        const match = trade_types?.includes(contract_type);
+        if (trade_contract_type === 'high_low') return is_high_low;
+        return match && !is_high_low;
     };
 
     hasPositionsHeightChanged = (newPositionsHeight, oldPositionsHeight) => {
@@ -142,13 +156,13 @@ class PositionsDrawer extends React.Component {
         const is_tick_contract = contract_info.tick_count > 0;
 
         if (contract_info.is_sold) {
-            return is_multiplier_contract ? 250 : 158;
+            return is_multiplier_contract ? 248 : 151;
         } else if (is_tick_contract) {
-            return 202;
+            return 193;
         }
 
-        const classic_contract_height = is_valid_to_sell ? 228 : 188;
-        return is_multiplier_contract ? 290 : classic_contract_height;
+        const classic_contract_height = is_valid_to_sell ? 232 : 183;
+        return is_multiplier_contract ? 297 : classic_contract_height;
     };
 
     render() {
@@ -247,6 +261,7 @@ PositionsDrawer.propTypes = {
     currency: PropTypes.string,
     error: PropTypes.string,
     is_empty: PropTypes.bool,
+    is_mobile: PropTypes.bool,
     is_positions_drawer_on: PropTypes.bool,
     onChangeContractUpdate: PropTypes.func,
     onClickContractUpdate: PropTypes.func,
@@ -259,7 +274,7 @@ PositionsDrawer.propTypes = {
     toggleDrawer: PropTypes.func,
 };
 
-export default connect(({ modules, client, ui }) => ({
+export default connect(({ client, common, modules, ui }) => ({
     currency: client.currency,
     all_positions: modules.portfolio.all_positions,
     error: modules.portfolio.error,
@@ -270,8 +285,10 @@ export default connect(({ modules, client, ui }) => ({
     onHoverPosition: modules.portfolio.onHoverPosition,
     onMount: modules.portfolio.onMount,
     onUnmount: modules.portfolio.onUnmount,
+    server_time: common.server_time,
     symbol: modules.trade.symbol,
     trade_contract_type: modules.trade.contract_type,
+    is_mobile: ui.is_mobile,
     is_positions_drawer_on: ui.is_positions_drawer_on,
     toggleDrawer: ui.togglePositionsDrawer,
     toggleUnsupportedContractModal: ui.toggleUnsupportedContractModal,

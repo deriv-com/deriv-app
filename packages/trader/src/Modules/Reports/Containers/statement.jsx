@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper, DataList, DataTable, Money } from '@deriv/components';
-import { urlFor, isDesktop, website_name } from '@deriv/shared';
+import { extractInfoFromShortcode, isDesktop, urlFor, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
 import CompositeCalendar from 'App/Components/Form/CompositeCalendar/composite-calendar.jsx';
@@ -15,16 +15,11 @@ import { getStatementTableColumnsTemplate } from '../Constants/data-table-consta
 import PlaceholderComponent from '../Components/placeholder-component.jsx';
 import { ReportsMeta } from '../Components/reports-meta.jsx';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message.jsx';
-import Shortcode from '../Helpers/shortcode';
 
 class Statement extends React.Component {
     constructor(props) {
         super(props);
         this.state = { total_deposits: 0, total_withdrawals: 0 };
-    }
-
-    get should_show_loading_placeholder() {
-        return this.props.is_loading || this.props.is_switching;
     }
 
     componentDidMount() {
@@ -76,9 +71,7 @@ class Statement extends React.Component {
         let action;
 
         if (row_obj.id && ['buy', 'sell'].includes(row_obj.action_type)) {
-            action = getSupportedContracts()[
-                Shortcode.extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase()
-            ]
+            action = getSupportedContracts()[extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase()]
                 ? getContractPath(row_obj.id)
                 : {
                       component: (
@@ -200,44 +193,52 @@ class Statement extends React.Component {
                     filter_component={filter_component}
                     {...this.getReportsMetaProps(is_mx_mlt)}
                 />
-                {data.length === 0 || is_empty ? (
-                    <PlaceholderComponent
-                        is_loading={is_loading}
-                        has_selected_date={has_selected_date}
-                        is_empty={is_empty}
-                        empty_message_component={EmptyTradeHistoryMessage}
-                        component_icon={component_icon}
-                        localized_message={localize('You have no transactions yet.')}
-                        localized_period_message={localize('You have no transactions for this period.')}
-                    />
-                ) : this.should_show_loading_placeholder ? (
-                    <PlaceholderComponent is_loading={this.should_show_loading_placeholder} />
+                {this.props.is_switching ? (
+                    <PlaceholderComponent is_loading={true} />
                 ) : (
                     <React.Fragment>
-                        <DesktopWrapper>
-                            <DataTable
-                                className='statement'
-                                data_source={data}
-                                columns={this.columns}
-                                onScroll={handleScroll}
-                                getRowAction={row => this.getRowAction(row)}
+                        {data.length === 0 || is_empty ? (
+                            <PlaceholderComponent
+                                is_loading={is_loading}
+                                has_selected_date={has_selected_date}
                                 is_empty={is_empty}
-                                custom_width={'100%'}
-                                getRowSize={() => 63}
-                                content_loader={ReportsTableRowLoader}
+                                empty_message_component={EmptyTradeHistoryMessage}
+                                component_icon={component_icon}
+                                localized_message={localize('You have no transactions yet.')}
+                                localized_period_message={localize('You have no transactions for this period.')}
                             />
-                        </DesktopWrapper>
-                        <MobileWrapper>
-                            <DataList
-                                className='statement'
-                                data_source={data}
-                                rowRenderer={this.mobileRowRenderer}
-                                getRowAction={this.getRowAction}
-                                onScroll={handleScroll}
-                                custom_width={'100%'}
-                                getRowSize={() => 176}
-                            />
-                        </MobileWrapper>
+                        ) : (
+                            <React.Fragment>
+                                <DesktopWrapper>
+                                    <DataTable
+                                        className='statement'
+                                        data_source={data}
+                                        columns={this.columns}
+                                        onScroll={handleScroll}
+                                        getRowAction={row => this.getRowAction(row)}
+                                        is_empty={is_empty}
+                                        custom_width={'100%'}
+                                        getRowSize={() => 63}
+                                        content_loader={ReportsTableRowLoader}
+                                    >
+                                        <PlaceholderComponent is_loading={is_loading} />
+                                    </DataTable>
+                                </DesktopWrapper>
+                                <MobileWrapper>
+                                    <DataList
+                                        className='statement'
+                                        data_source={data}
+                                        rowRenderer={this.mobileRowRenderer}
+                                        getRowAction={this.getRowAction}
+                                        onScroll={handleScroll}
+                                        custom_width={'100%'}
+                                        getRowSize={() => 176}
+                                    >
+                                        <PlaceholderComponent is_loading={is_loading} />
+                                    </DataList>
+                                </MobileWrapper>
+                            </React.Fragment>
+                        )}
                     </React.Fragment>
                 )}
             </React.Fragment>
@@ -257,6 +258,7 @@ Statement.propTypes = {
     history: PropTypes.object,
     is_empty: PropTypes.bool,
     is_loading: PropTypes.bool,
+    is_switching: PropTypes.bool,
     landing_company_shortcode: PropTypes.string,
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,

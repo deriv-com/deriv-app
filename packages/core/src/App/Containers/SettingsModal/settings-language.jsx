@@ -1,9 +1,9 @@
+import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React from 'react';
 import { Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { getAllowedLanguages, getURL, currentLanguage } from 'Utils/Language';
+import { getAllowedLanguages, changeLanguage, currentLanguage } from 'Utils/Language';
 
 const isCurrentLanguage = lang => lang === currentLanguage;
 
@@ -49,16 +49,16 @@ const LanguageSettings = () => (
                         <LanguageLink lang={key} />
                     </NonClickableLink>
                 ) : (
-                    <a
+                    <span
                         id={`dt_settings_${key}_button`}
                         key={key}
-                        href={getURL(key)}
+                        onClick={() => changeLanguage(key)}
                         className={classNames('settings-language__language-link', {
                             'settings-language__language-link--active': isCurrentLanguage(key),
                         })}
                     >
                         <LanguageLink lang={key} key={key} />
-                    </a>
+                    </span>
                 )
             )}
         </div>

@@ -23,6 +23,7 @@
             padding: 16px;
             text-decoration: none;
             background-color: var(--state-normal);
+            cursor: pointer;
 
             &--active {
                 border: 1px solid var(--border-active);

@@ -1,5 +1,6 @@
 import { isProduction, urlForLanguage } from '@deriv/shared';
 import { getLanguage, getAllLanguages } from '@deriv/translations';
+import * as SocketCache from '_common/base/socket_cache';
 
 export const currentLanguage = getLanguage();
 
@@ -20,3 +21,9 @@ export const getAllowedLanguages = () => {
 };
 
 export const getURL = lang => urlForLanguage(lang);
+
+export const changeLanguage = key => {
+    SocketCache.clear();
+
+    window.location.replace(getURL(key));
+};

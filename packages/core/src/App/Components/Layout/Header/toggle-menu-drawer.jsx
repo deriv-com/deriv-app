@@ -8,25 +8,27 @@ import { NetworkStatus } from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
 import { BinaryLink } from 'App/Components/Routes';
 import getRoutesConfig from 'App/Constants/routes-config';
-import { getAllowedLanguages, getURL, currentLanguage } from 'Utils/Language';
+import { getAllowedLanguages, currentLanguage, changeLanguage } from 'Utils/Language';
 import LiveChat from '../../Elements/live-chat.jsx';
 
 const MenuLink = ({ link_to, icon, is_active, is_disabled, is_external, suffix_icon, text, onClickLink }) => {
     if (is_external) {
         return (
-            <a
-                href={link_to}
+            <span
                 className={classNames('header__menu-mobile-link', {
                     'header__menu-mobile-link--disabled': is_disabled,
                     'header__menu-mobile-link--active': is_active,
                 })}
                 active_class='header__menu-mobile-link--active'
-                onClick={onClickLink}
+                onClick={() => {
+                    onClickLink();
+                    changeLanguage(link_to);
+                }}
             >
                 <Icon className='header__menu-mobile-link-icon' icon={icon} />
                 <span className='header__menu-mobile-link-text'>{text}</span>
                 {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
-            </a>
+            </span>
         );
     } else if (!link_to) {
         return (
@@ -206,7 +208,7 @@ class ToggleMenuDrawer extends React.Component {
                         <MenuLink
                             is_external
                             is_active={currentLanguage === lang}
-                            link_to={getURL(lang)}
+                            link_to={lang}
                             icon={`IcFlag${lang.replace('_', '-')}`}
                             text={getAllowedLanguages()[lang]}
                             onClickLink={this.toggleDrawer}

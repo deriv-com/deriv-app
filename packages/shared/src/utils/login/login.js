@@ -20,13 +20,13 @@ export const loginUrl = ({ language }) => {
     }
 
     if (getAppId() === domain_app_ids['app.deriv.com'] && /^app\.deriv\.com$/.test(window.location.hostname)) {
-        return getOAuthUrl('app.deriv.com');
+        return getOAuthUrl('deriv.com');
     }
     if (
         getAppId() === domain_app_ids['derivcrypto.com'] &&
         /^(app\.)?derivcrypto\.com$/.test(window.location.hostname)
     ) {
-        return getOAuthUrl('app.derivcrypto.com');
+        return getOAuthUrl('derivcrypto.com');
     }
     return urlForCurrentDomain(getOAuthUrl('deriv.com'));
 };

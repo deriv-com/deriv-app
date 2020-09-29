@@ -1,11 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Checkbox, Popover, Dropdown } from '@deriv/components';
+import { Checkbox, Dropdown, Popover, PopoverMessageCheckbox } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { connect } from 'Stores/connect';
 import { onToggleCancellation, onChangeCancellationDuration } from 'Stores/Modules/Contract/Helpers/multiplier';
-import PopoverMessageCheckbox from 'Modules/Trading/Components/Elements/popover-message-checkbox.jsx';
 
 const CancelDeal = ({
     cancellation_range_list,
@@ -52,6 +51,7 @@ const CancelDeal = ({
                         message={
                             <PopoverMessageCheckbox
                                 defaultChecked={is_do_not_show_selected}
+                                checkboxLabel={localize("Don't show this again")}
                                 message={localize(
                                     'Take profit and/or stop loss are not available while deal cancellation is active.'
                                 )}

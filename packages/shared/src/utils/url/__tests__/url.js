@@ -1,5 +1,17 @@
 import { expect } from '../../../test_utils/common';
-import { reset, urlFor, websiteUrl, paramsHash, param, urlForStatic, resetStaticHost } from '../url';
+import {
+    reset,
+    urlFor,
+    websiteUrl,
+    paramsHash,
+    urlForCurrentDomain,
+    getHostMap,
+    param,
+    urlForStatic,
+    resetStaticHost,
+    getPath,
+    getContractPath,
+} from '../url';
 
 // Testable URLs
 const urls = ['https://app.deriv.com', 'https://app.derivcrypto.com'];
@@ -111,6 +123,29 @@ describe('Url', () => {
             describe('.websiteUrl()', () => {
                 it('returns expected value', () => {
                     expect(website_url).to.eq(`${url}/`);
+                });
+            });
+
+            describe('getPath', () => {
+                it('should return param values in params as a part of path', () => {
+                    expect(getPath('/contract/:contract_id', { contract_id: 37511105068 })).to.equal(
+                        '/contract/37511105068'
+                    );
+                    expect(
+                        getPath('/something_made_up/:something_made_up_param1/:something_made_up_param2', {
+                            something_made_up_param1: '789',
+                            something_made_up_param2: '123456',
+                        })
+                    ).to.equal('/something_made_up/789/123456');
+                });
+                it('should return path as before if there is no params', () => {
+                    expect(getPath('/contract')).to.equal('/contract');
+                });
+            });
+
+            describe('getContractPath', () => {
+                it('should return the path of contract with contract_id passed', () => {
+                    expect(getContractPath(1234)).to.equal('/contract/1234');
                 });
             });
         });

@@ -11,7 +11,7 @@ import { requestWS } from 'Utils/websocket';
 import { RowComponent, BuySellRowLoader } from './row.jsx';
 import { BuySellTable } from './buy-sell-table.jsx';
 
-const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
+const BuySellTableContent = ({ is_buy, setSelectedAdvert }) => {
     const { list_item_limit } = React.useContext(Dp2pContext);
     const is_mounted = React.useRef(false);
     const item_offset = React.useRef(0);
@@ -43,9 +43,11 @@ const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
             }).then(response => {
                 if (is_mounted.current) {
                     if (!response.error) {
-                        setHasMoreItemsToLoad(response.length >= list_item_limit);
-                        setItems(items.concat(response));
-                        item_offset.current += response.length;
+                        const { list } = response.p2p_advert_list;
+
+                        setHasMoreItemsToLoad(list.length >= list_item_limit);
+                        setItems(items.concat(list));
+                        item_offset.current += list.length;
                     } else {
                         setApiErrorMessage(response.error.message);
                     }
@@ -63,7 +65,7 @@ const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
         return <TableError message={api_error_message} />;
     }
 
-    const Row = props => <RowComponent {...props} is_buy={is_buy} setSelectedAd={setSelectedAd} />;
+    const Row = props => <RowComponent {...props} setSelectedAdvert={setSelectedAdvert} />;
 
     if (items.length) {
         const item_height = 56;
@@ -98,7 +100,7 @@ const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
 
 BuySellTableContent.propTypes = {
     is_buy: PropTypes.bool,
-    setSelectedAd: PropTypes.func,
+    setSelectedAdvert: PropTypes.func,
 };
 
 export default BuySellTableContent;

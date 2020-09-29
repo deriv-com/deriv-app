@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { extractInfoFromShortcode, isHighLow } from '@deriv/shared';
 import { Icon, Popover, IconTradeTypes } from '@deriv/components';
 import { getMarketName, getTradeTypeName } from '../Helpers/market-underlying';
-import Shortcode from '../Helpers/shortcode';
 
 const MarketSymbolIconRow = ({ payload, show_description, should_show_multiplier = true }) => {
     const should_show_category_icon = typeof payload.shortcode === 'string';
-    const info_from_shortcode = Shortcode.extractInfoFromShortcode(payload.shortcode);
+    const info_from_shortcode = extractInfoFromShortcode(payload.shortcode);
 
     if (should_show_category_icon && info_from_shortcode) {
         return (
@@ -41,7 +41,7 @@ const MarketSymbolIconRow = ({ payload, show_description, should_show_multiplier
                     >
                         <IconTradeTypes
                             type={
-                                Shortcode.isHighLow({ shortcode_info: info_from_shortcode })
+                                isHighLow({ shortcode_info: info_from_shortcode })
                                     ? `${info_from_shortcode.category.toLowerCase()}_barrier`
                                     : info_from_shortcode.category.toLowerCase()
                             }

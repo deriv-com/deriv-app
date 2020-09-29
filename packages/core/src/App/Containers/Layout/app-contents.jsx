@@ -55,6 +55,12 @@ const AppContents = ({
     }, [is_eu_country]);
 
     React.useEffect(() => {
+        pushDataLayer({
+            logged_in: is_logged_in,
+        });
+    }, [is_logged_in]);
+
+    React.useEffect(() => {
         if (!tracking_status && !is_logged_in && !is_logging_in) {
             WS.wait('website_status').then(() => {
                 setShowCookieBanner(is_eu_country);

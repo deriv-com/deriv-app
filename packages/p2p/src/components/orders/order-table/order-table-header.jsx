@@ -14,7 +14,7 @@ const OrderTableHeader = ({ is_active, children }) => (
             >
                 <Table.Head>{localize('Order')}</Table.Head>
                 <Table.Head>{localize('Order ID')}</Table.Head>
-                {/* <Table.Head>{localize('Counterparty')}</Table.Head> */}
+                <Table.Head>{localize('Counterparty')}</Table.Head>
                 <Table.Head>{localize('Status')}</Table.Head>
                 <Table.Head>{localize('Send')}</Table.Head>
                 <Table.Head>{localize('Receive')}</Table.Head>

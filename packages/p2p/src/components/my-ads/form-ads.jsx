@@ -113,8 +113,8 @@ class FormAds extends React.Component {
                                                             is_align_text_left
                                                             className='p2p-my-ads__form-field'
                                                             list={[
-                                                                { text: 'Buy', value: 'buy' },
-                                                                { text: 'Sell', value: 'sell' },
+                                                                { text: localize('Buy'), value: 'buy' },
+                                                                { text: localize('Sell'), value: 'sell' },
                                                             ]}
                                                             error={touched.type && errors.type}
                                                         />

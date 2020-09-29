@@ -28,7 +28,7 @@ const populateInitialResponses = async () => {
 };
 
 const map_payment_method = {
-    bank_transfer: localize('Bank transfer'),
+    bank_transfer: () => localize('Bank transfer'),
 };
 
 const getModifiedP2PAdvertList = (response, is_original) => {
@@ -82,7 +82,7 @@ const getModifiedP2PAdvertList = (response, is_original) => {
             display_max_order_amount: fmtMoney(offer_currency, max_transaction),
             display_min_order_amount: fmtMoney(offer_currency, min_transaction),
             display_offer_amount: fmtMoney(offer_currency, offer_amount),
-            display_payment_method: map_payment_method[payment_method] || payment_method,
+            display_payment_method: map_payment_method[payment_method]() || payment_method,
             display_price_rate: fmtMoney(transaction_currency, price_rate),
             id: filtered_list[i].id,
             // for view in my ads tab (advertiser perspective), we should show the original type of the ad

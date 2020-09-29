@@ -23,15 +23,15 @@ const getHeaders = offered_currency => [
 ];
 
 const type = {
-    buy: localize('Buy'),
-    sell: localize('Sell'),
+    buy: () => localize('Buy'),
+    sell: () => localize('Sell'),
 };
 
 const RowComponent = React.memo(({ data, row_actions, style }) => (
     <div style={style}>
         <Table.Row className='p2p-my-ads__table-row'>
             <Table.Cell>
-                {type[data.type]} {data.id}
+                {type[data.type]()} {data.id}
             </Table.Cell>
             <Table.Cell>
                 {data.display_min_order_amount}-{data.display_max_order_amount} {data.offer_currency}

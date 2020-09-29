@@ -3,8 +3,10 @@
     align-items: center;
     justify-content: flex-end;
     align-self: flex-end;
-    width: 100%;
 
+    &:only-child {
+        width: 100%;
+    }
     .dc-btn {
         margin: 0 0.8rem;
 
@@ -47,6 +49,7 @@
             padding: 1.6rem;
             border-top: 2px solid var(--general-disabled);
             max-height: 70px;
+            width: 100%;
 
             .dc-btn {
                 height: 40px;

@@ -8,6 +8,7 @@ const ThemedScrollbars = ({
     height,
     width,
     autohide = true,
+    style = {},
     is_bypassed,
     is_only_horizontal,
     has_horizontal,
@@ -28,6 +29,7 @@ const ThemedScrollbars = ({
             style={{
                 maxHeight: height || '100%',
                 maxWidth: width || 'none',
+                ...style,
             }}
             onScroll={onScroll}
         >

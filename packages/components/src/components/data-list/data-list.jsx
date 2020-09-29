@@ -7,8 +7,15 @@ import { CellMeasurer, CellMeasurerCache } from 'react-virtualized/dist/es/CellM
 import { AutoSizer } from 'react-virtualized/dist/es/AutoSizer';
 import { List } from 'react-virtualized/dist/es/List';
 import DataListCell from './data-list-cell.jsx';
+import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars.jsx';
 
 class DataList extends React.PureComponent {
+    state = {
+        scrollTop: 0,
+    };
+    transition_cache = {};
+    current_data_length = 0;
+
     constructor(props) {
         super(props);
         this.cache = new CellMeasurerCache({
@@ -18,6 +25,7 @@ class DataList extends React.PureComponent {
                 return row_key;
             },
         });
+        this.setTransitionCache();
     }
 
     footerRowRenderer = () => {
@@ -30,12 +38,12 @@ class DataList extends React.PureComponent {
         const row = data_source[index];
         const to = getRowAction && getRowAction(row);
         const row_key = keyMapper?.(row) || key;
+        const can_show_transition = !this.transition_cache[row_key];
 
         const content =
             typeof to === 'string' ? (
                 <NavLink
                     id={`dt_reports_contract_${row_key}`}
-                    className={'data-list__item--wrapper'}
                     to={{
                         pathname: to,
                         state: {
@@ -43,56 +51,91 @@ class DataList extends React.PureComponent {
                         },
                     }}
                 >
-                    <div className='data-list__item'>{rowRenderer({ row })}</div>
+                    <div className='data-list__item'>{rowRenderer({ row, can_show_transition })}</div>
                 </NavLink>
             ) : (
-                <div className='data-list__item--wrapper'>
-                    <div className='data-list__item'>{rowRenderer({ row })}</div>
-                </div>
+                <div className='data-list__item'>{rowRenderer({ row, can_show_transition })}</div>
             );
 
         return (
             <CellMeasurer cache={this.cache} columnIndex={0} key={row_key} rowIndex={index} parent={parent}>
-                <div style={style}>{content}</div>
+                <div className='data-list__item--wrapper' style={style}>
+                    {content}
+                </div>
             </CellMeasurer>
         );
     };
 
+    handleScroll = ev => {
+        const { scrollTop } = ev.target;
+        this.setState({ scrollTop });
+        if (this.props.onScroll) {
+            this.props.onScroll(ev);
+        }
+    };
+
+    componentDidUpdate() {
+        if (this.props.data_source.length !== this.current_data_length) {
+            this.list_ref.recomputeGridSize(0);
+            this.setTransitionCache();
+            this.current_data_length = this.props.data_source.length;
+        }
+    }
+
+    setTransitionCache() {
+        this.props.data_source.forEach((item, index) => {
+            const row_key = this.props.keyMapper?.(item) || `${index}-0`;
+            this.transition_cache[row_key] = true;
+        });
+    }
+
     render() {
-        const { className, children, data_source, onScroll, footer } = this.props;
+        const { className, children, data_source, footer } = this.props;
 
         return (
-            <div className={classNames(className, 'data-list', `${className}__data-list`)} onScroll={onScroll}>
-                <div
-                    className={classNames('data-list__body', `${className}__data-list-body`)}
-                    ref={ref => (this.el_list_body = ref)}
-                >
-                    <AutoSizer>
-                        {({ width, height }) => (
-                            <TransitionGroup>
-                                <List
-                                    className={className}
-                                    deferredMeasurementCache={this.cache}
-                                    width={width}
-                                    height={height}
-                                    overscanRowCount={0}
-                                    rowCount={data_source.length}
-                                    rowHeight={this.cache.rowHeight}
-                                    rowRenderer={this.rowRenderer}
-                                    autoHeight
-                                    // outerElementType={isMobile() ? null : ThemedScrollbarsWrapper}
-                                />
-                            </TransitionGroup>
+            <AutoSizer>
+                {({ width, height }) => (
+                    <div className={classNames(className, 'data-list', { [`${className}__data-list`]: className })}>
+                        <div className={classNames('data-list__body', { [`${className}__data-list-body`]: className })}>
+                            <ThemedScrollbars
+                                style={{
+                                    height,
+                                    width,
+                                }}
+                                onScroll={this.handleScroll}
+                                autoHide
+                            >
+                                <TransitionGroup>
+                                    <List
+                                        ref={ref => (this.list_ref = ref)}
+                                        className={className}
+                                        deferredMeasurementCache={this.cache}
+                                        width={width}
+                                        height={height}
+                                        overscanRowCount={1}
+                                        rowCount={data_source.length}
+                                        rowHeight={this.cache.rowHeight}
+                                        rowRenderer={this.rowRenderer}
+                                        scrollingResetTimeInterval={0}
+                                        scrollTop={this.state.scrollTop}
+                                        autoHeight
+                                    />
+                                </TransitionGroup>
+                            </ThemedScrollbars>
+                            {children}
+                        </div>
+                        {footer && (
+                            <div
+                                className={classNames('data-list__footer', {
+                                    [`${className}__data-list-footer`]: className,
+                                })}
+                            >
+                                {this.footerRowRenderer()}
+                            </div>
                         )}
-                    </AutoSizer>
-                    {children}
-                </div>
-                {footer && (
-                    <div className={classNames('data-list__footer', `${className}__data-list-footer`)}>
-                        {this.footerRowRenderer()}
                     </div>
                 )}
-            </div>
+            </AutoSizer>
         );
     }
 }

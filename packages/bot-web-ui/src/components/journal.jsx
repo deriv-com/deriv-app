@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ContentLoader from 'react-content-loader';
 import { CSSTransition } from 'react-transition-group';
-import { Checkbox, Icon, ThemedScrollbars, useOnClickOutside, DesktopWrapper, DataList } from '@deriv/components';
+import { Checkbox, Icon, useOnClickOutside, DesktopWrapper, DataList } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { message_types } from '@deriv/bot-skeleton';
 import { log_types } from '@deriv/bot-skeleton/src/constants/messages';
@@ -191,16 +191,17 @@ const JournalLoader = ({ is_mobile }) => (
     </ContentLoader>
 );
 
-const JournalRow = ({ date, time, message, message_type, className, extra }) => {
+const JournalItem = ({ row, can_show_transition }) => {
+    const { date, time, message, message_type, className, extra } = row;
     const date_el = DateItem({ date, time });
-    const [inProp, setInProp] = React.useState(false);
+    const [in_prop, setInProp] = React.useState(false);
 
     React.useEffect(() => {
-        setInProp(true);
-    }, []);
+        if (can_show_transition) setInProp(true);
+    }, [can_show_transition]);
 
     return (
-        <CSSTransition in={inProp} timeout={5000} classNames='list__animation'>
+        <CSSTransition in={in_prop} timeout={500} classNames='list__animation'>
             <div className='journal__item'>
                 <div className='journal__item-content'>
                     {getJournalItemContent(message, message_type, className, extra)}
@@ -227,40 +228,39 @@ const Journal = ({
             })}
         >
             <Tools {...props} />
-            <ThemedScrollbars className='journal__scrollbars' height={'calc(100% - 4.2rem)'}>
-                <div className='journal__item-list'>
-                    {filtered_messages.length ? (
-                        <DataList
-                            data_source={filtered_messages}
-                            rowRenderer={({ row }) => <JournalRow {...row} />}
-                            keyMapper={row => row.unique_id}
-                        />
-                    ) : (
-                        <>
-                            {contract_stage >= contract_stages.STARTING &&
-                            !!props.checked_filters.length &&
-                            is_stop_button_visible ? (
-                                <JournalLoader is_mobile={is_mobile} />
-                            ) : (
-                                <div className='journal-empty'>
-                                    <Icon icon='IcBox' className='journal-empty__icon' size={64} color='secondary' />
-                                    <h4 className='journal-empty__header'>
-                                        {localize('There are no messages to display')}
-                                    </h4>
-                                    <div className='journal-empty__message'>
-                                        <span>{localize('Here are the possible reasons:')}</span>
-                                        <ul className='journal-empty__list'>
-                                            <li>{localize('The bot is not running')}</li>
-                                            <li>{localize('The stats are cleared')}</li>
-                                            <li>{localize('All messages are filtered out')}</li>
-                                        </ul>
-                                    </div>
+            <div className='journal__item-list'>
+                {filtered_messages.length ? (
+                    <DataList
+                        className='journal'
+                        data_source={filtered_messages}
+                        rowRenderer={props => <JournalItem {...props} />}
+                        keyMapper={row => row.unique_id}
+                    />
+                ) : (
+                    <>
+                        {contract_stage >= contract_stages.STARTING &&
+                        !!props.checked_filters.length &&
+                        is_stop_button_visible ? (
+                            <JournalLoader is_mobile={is_mobile} />
+                        ) : (
+                            <div className='journal-empty'>
+                                <Icon icon='IcBox' className='journal-empty__icon' size={64} color='secondary' />
+                                <h4 className='journal-empty__header'>
+                                    {localize('There are no messages to display')}
+                                </h4>
+                                <div className='journal-empty__message'>
+                                    <span>{localize('Here are the possible reasons:')}</span>
+                                    <ul className='journal-empty__list'>
+                                        <li>{localize('The bot is not running')}</li>
+                                        <li>{localize('The stats are cleared')}</li>
+                                        <li>{localize('All messages are filtered out')}</li>
+                                    </ul>
                                 </div>
-                            )}
-                        </>
-                    )}
-                </div>
-            </ThemedScrollbars>
+                            </div>
+                        )}
+                    </>
+                )}
+            </div>
         </div>
     );
 };

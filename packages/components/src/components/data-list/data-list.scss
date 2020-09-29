@@ -20,7 +20,6 @@
     }
     &__item {
         height: 100%;
-        background-color: var(--general-section-1);
 
         &--wrapper {
             text-decoration: none;
@@ -64,4 +63,8 @@
             }
         }
     }
+}
+
+.ReactVirtualized__List {
+    outline: 0;
 }

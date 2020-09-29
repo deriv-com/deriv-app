@@ -3,7 +3,7 @@ import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Modal, Icon, Button, ThemedScrollbars } from '@deriv/components';
-import { routes } from '@deriv/shared';
+import { routes, isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
@@ -48,8 +48,8 @@ const WelcomeColumn = ({
                 className='welcome-column__button'
                 onClick={onButtonClick}
                 large
-                primary={is_hovered}
-                secondary={!is_hovered}
+                primary={is_hovered || isMobile()}
+                secondary={!(is_hovered || isMobile())}
             >
                 {button_text}
             </Button>

@@ -11,11 +11,6 @@ import { getContractCategoryLabel, getContractsList, getFilteredList } from '../
 class Dialog extends React.PureComponent {
     dialog_ref = React.createRef();
     input_ref = React.createRef();
-    scrollbar_ref = React.createRef();
-    vertical_tab_headers = [];
-    is_user_scroll = false;
-    scroll_timeout = null;
-    scrollTopPos = null;
 
     state = {
         is_filtered_list_empty: false,
@@ -41,17 +36,6 @@ class Dialog extends React.PureComponent {
         return null;
     }
 
-    componentDidUpdate() {
-        if (this.props.is_open) {
-            if (!this.vertical_tab_headers.length) {
-                this.vertical_tab_headers = this.getVerticalTabHeaders();
-            }
-            if (this.scrollbar_ref.current && !this.is_user_scroll && this.should_scroll) {
-                this.scroll();
-            }
-        }
-    }
-
     onChange = e => {
         if (this.props.is_info_dialog_open) {
             this.props.onBackButtonClick();
@@ -59,40 +43,19 @@ class Dialog extends React.PureComponent {
         if (this.state.input_value) {
             this.onClickClearInput();
         }
+        if (this.props.onCategoryClick) {
+            this.props.onCategoryClick(e);
+        }
         this.setState({
             selected: e,
         });
     };
 
-    onScroll = e => {
-        this.is_user_scroll = true;
-        const offset_top = e.target.scrollTop + 20; // add 20px of padding top and bottom
-        const closest = this.vertical_tab_headers.reduce((prev, curr) => (curr.offset_top < offset_top ? curr : prev));
-        if (closest !== -1) {
-            this.setState({
-                selected: {
-                    label: closest.label,
-                },
-            });
-        }
-
-        const element = e.target;
-        this.scrollTopPos = element.scrollTop;
-        if (this.scrollTopPos === element.scrollTop) {
-            clearTimeout(this.scroll_timeout);
-        }
-        this.scroll_timeout = setTimeout(() => {
-            this.is_user_scroll = false;
-        }, 150);
-    };
-
     onChangeInput = e => {
-        this.is_user_scroll = true; // set to true to prevent calling this.scroll() when input changes
         this.setState({
             input_value: e.target.value,
         });
-        const filtered_items = this.contracts_list.filter(item => item.indexOf(e.target.value.toLowerCase()) !== -1);
-        this.filterList(filtered_items);
+        this.props.onChangeInput(e.target.value);
     };
 
     onClickClearInput = () => {
@@ -101,40 +64,12 @@ class Dialog extends React.PureComponent {
             input_value: '',
             selected: null,
         });
-        this.filterList(this.contracts_list);
+        this.props.onChangeInput('');
     };
-
-    filterList = filtered_items => {
-        const filtered_list = getFilteredList(this.props.list, filtered_items);
-        this.props.onChangeInput(filtered_list);
-        this.setState({
-            is_filtered_list_empty: !filtered_list.length,
-            selected: filtered_list[0],
-        });
-    };
-
-    getVerticalTabHeaders = () => {
-        const { current } = this.dialog_ref;
-        const headers = current.querySelectorAll('.dc-vertical-tab__header');
-        const list_labels = current.querySelectorAll('.contract-type-list__label');
-
-        return [...list_labels].map((label, i) => ({
-            label: label.innerText,
-            offset_top: label.offsetTop - headers[i].offsetTop + 40,
-        }));
-    };
-
-    scroll() {
-        this.scrollbar_ref.current.scrollTo({ top: this.offset_top, behavior: 'smooth' }); // scroll to selected contract category label
-    }
-
-    get contracts_list() {
-        return getContractsList(this.props.list);
-    }
 
     get contract_category() {
-        const { list, item } = this.props;
-        const label = getContractCategoryLabel(list, item);
+        const { category, item } = this.props;
+        const label = getContractCategoryLabel(category, item);
 
         return {
             label,
@@ -145,17 +80,8 @@ class Dialog extends React.PureComponent {
         return this.state.selected || this.contract_category;
     }
 
-    get offset_top() {
-        return this.vertical_tab_headers.find(header => header.label === this.selected.label).offset_top;
-    }
-
-    get should_scroll() {
-        if (!this.state.selected) return true;
-        return this.offset_top !== Math.ceil(this.scrollbar_ref.current.scrollTop);
-    }
-
     render() {
-        const { children, is_info_dialog_open, is_open, item, list, onBackButtonClick } = this.props;
+        const { children, is_info_dialog_open, is_open, item, category, onBackButtonClick } = this.props;
 
         const action_bar_items = is_info_dialog_open ? (
             <Header title={item.text} onClickGoBack={onBackButtonClick} />
@@ -184,7 +110,7 @@ class Dialog extends React.PureComponent {
                         <VerticalTab.Layout>
                             <VerticalTab.Headers
                                 header_title={localize('Trade types')}
-                                items={list}
+                                items={category}
                                 selected={this.selected}
                                 onChange={this.onChange}
                             />
@@ -195,13 +121,7 @@ class Dialog extends React.PureComponent {
                                         <NoResultsMessage text={this.state.input_value} />
                                     )}
                                     {!is_info_dialog_open ? (
-                                        <ThemedScrollbars
-                                            refSetter={this.scrollbar_ref}
-                                            height='calc(100vh - 172px)'
-                                            onScroll={this.onScroll}
-                                        >
-                                            {children}
-                                        </ThemedScrollbars>
+                                        <ThemedScrollbars height='calc(100vh - 172px)'>{children}</ThemedScrollbars>
                                     ) : (
                                         children
                                     )}

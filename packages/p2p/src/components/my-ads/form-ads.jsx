@@ -17,10 +17,13 @@ const FormAds = ({ handleShowForm }) => {
     const { currency, local_currency_config } = React.useContext(Dp2pContext);
     const [error_message, setErrorMessage] = React.useState('');
     const [is_loading, setIsLoading] = React.useState(true);
+    const is_mounted = React.useRef(false);
     const { contact_info, default_advert_description, payment_info } = advertiser_info;
 
     React.useEffect(() => {
+        is_mounted.current = true;
         getAdvertiserInfo();
+        return () => (is_mounted.current = false);
     }, []);
 
     const getAdvertiserInfo = () => {
@@ -28,14 +31,16 @@ const FormAds = ({ handleShowForm }) => {
             requestWS({
                 p2p_advertiser_info: 1,
             }).then(response => {
-                if (!response.error) {
-                    const { p2p_advertiser_info } = response;
-                    setAdvertiserInfo(p2p_advertiser_info);
-                } else {
-                    setErrorMessage(response.error);
+                if (is_mounted.current) {
+                    if (!response.error) {
+                        const { p2p_advertiser_info } = response;
+                        setAdvertiserInfo(p2p_advertiser_info);
+                    } else {
+                        setErrorMessage(response.error);
+                    }
+                    setIsLoading(false);
                 }
                 resolve();
-                setIsLoading(false);
             });
         });
     };

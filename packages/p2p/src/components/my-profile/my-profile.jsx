@@ -124,7 +124,11 @@ const MyProfile = () => {
                         setFormError(response.error);
                     }
                     setIsButtonLoading(false);
-                    setTimeout(() => setIsSubmitSuccess(false), 3000);
+                    setTimeout(() => {
+                        if (is_mounted.current) {
+                            setIsSubmitSuccess(false);
+                        }
+                    }, 3000);
                 }
                 resolve();
             });

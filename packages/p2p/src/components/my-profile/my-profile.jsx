@@ -4,7 +4,6 @@ import { Button, Icon, Input, Loading, Popover, Table, ThemedScrollbars } from '
 import classNames from 'classnames';
 import { requestWS } from 'Utils/websocket';
 import { localize } from 'Components/i18next';
-import FooterActions from 'Components/footer-actions/footer-actions.jsx';
 import { textValidator } from 'Utils/validations';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { generateHexColourFromNickname, getShortNickname } from 'Utils/string';
@@ -332,8 +331,7 @@ const MyProfile = () => {
                                                 />
                                             )}
                                         </Field>
-
-                                        <FooterActions className='my-profile__footer' has_border>
+                                        <div className='my-profile__footer'>
                                             <FormError message={form_error} />
 
                                             <Button
@@ -348,7 +346,7 @@ const MyProfile = () => {
                                                 primary
                                                 large
                                             />
-                                        </FooterActions>
+                                        </div>
                                     </React.Fragment>
                                 </Form>
                             );

@@ -48,7 +48,9 @@ export const getAppId = () => {
     let app_id = null;
     const user_app_id = ''; // you can insert Application ID of your registered application here
     const config_app_id = window.localStorage.getItem('config.app_id');
-    const is_crypto_app = window.localStorage.getItem('is_deriv_crypto_app') === 'true';
+    const is_crypto_app = window.localStorage.getItem('is_deriv_crypto_app')
+        ? window.localStorage.getItem('is_deriv_crypto_app') === 'true'
+        : process.env.IS_CRYPTO_APP;
 
     if (config_app_id) {
         app_id = config_app_id;

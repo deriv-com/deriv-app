@@ -51,11 +51,8 @@ const App = observer(props => {
         waitWS('authorize').then(() => {
             general_store.onMount();
         });
-        return () => {
-            Object.keys(general_store.ws_subscriptions).forEach(key =>
-                general_store.ws_subscriptions[key].unsubscribe()
-            );
-        };
+
+        return () => general_store.onUnmount();
     }, []);
 
     React.useEffect(() => {

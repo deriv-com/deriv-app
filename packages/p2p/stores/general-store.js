@@ -1,5 +1,5 @@
-import { observable, action } from 'mobx';
-import { getPropertyValue, isEmptyObject, isProduction } from '@deriv/shared';
+import { observable, action, runInAction } from 'mobx';
+import { isEmptyObject, epochToMoment, getSocketURL } from '@deriv/shared';
 import { orderToggleIndex } from 'Components/orders/order-info.js';
 import { getExtendedOrderDetails } from 'Utils/orders.js';
 import { init as WebsocketInit, requestWS, subscribeWS } from 'Utils/websocket.js';
@@ -36,6 +36,7 @@ export default class GeneralStore {
     };
     props = {};
     ws_subscriptions = {};
+    service_token_timeout;
 
     get client() {
         return this.props?.client || {};
@@ -58,7 +59,7 @@ export default class GeneralStore {
                         this.setIsAdvertiser(!!p2p_advertiser_create.is_approved);
                         this.setNickname(p2p_advertiser_create.name);
                         this.setNicknameError(undefined);
-                        this.setChatInfo(p2p_advertiser_create.chat_user_id, p2p_advertiser_create.chat_token);
+                        this.setChatInfo(response);
                         this.toggleNicknamePopup();
                     }
                     resolve();
@@ -140,7 +141,7 @@ export default class GeneralStore {
                     p2p_advertiser_info: 1,
                     subscribe: 1,
                 },
-                [this.updateAdvertiserInfo, this.setChatInfoUsingAdvertiserInfo]
+                [this.updateAdvertiserInfo, this.setChatInfo]
             ),
             order_list_subscription: subscribeWS(
                 {
@@ -152,6 +153,12 @@ export default class GeneralStore {
                 [this.setP2pOrderList]
             ),
         };
+    }
+
+    @action.bound
+    onUnmount() {
+        clearTimeout(this.service_token_timeout);
+        Object.keys(this.ws_subscriptions).forEach(key => this.ws_subscriptions[key].unsubscribe());
     }
 
     @action.bound
@@ -190,31 +197,49 @@ export default class GeneralStore {
     }
 
     @action.bound
-    setChatInfo(user_id, token) {
-        this.chat_info = {
-            app_id: isProduction() ? '1465991C-5D64-4C88-8BD9-B0D7A6455E69' : '4E259BA5-C383-4624-89A6-8365E06D9D39',
-            user_id: user_id,
-            token: token,
-        };
-
-        if (!this.chat_info.token) {
-            requestWS({ service_token: 1, service: 'sendbird' }).then(response => {
-                this.chat_info.token = response.service_token.sendbird.token;
-            });
-        }
-    }
-
-    @action.bound
-    setChatInfoUsingAdvertiserInfo(response) {
-        const { p2p_advertiser_info } = response;
+    setChatInfo(response) {
+        if (this.service_token_timeout) return;
         if (response.error) {
-            this.ws_subscriptions.advertiser_subscription.unsubscribe();
+            this.ws_subscriptions.advertiser_subscription?.unsubscribe();
             return;
         }
-        const user_id = getPropertyValue(p2p_advertiser_info, ['chat_user_id']);
-        const token = getPropertyValue(p2p_advertiser_info, ['chat_token']);
 
-        this.setChatInfo(user_id, token);
+        // Response could be both from p2p_advertiser_create or p2p_advertiser_info.
+        const advertiser_info = response.p2p_advertiser_create || response.p2p_advertiser_info;
+
+        const getSendbirdServiceToken = () => {
+            requestWS({ service: 'sendbird', service_token: 1 }).then(service_token_response => {
+                if (service_token_response.error) {
+                    return;
+                }
+
+                const { service_token } = service_token_response;
+
+                runInAction(() => {
+                    this.chat_info = {
+                        app_id: getSocketURL().endsWith('binaryws.com')
+                            ? '1465991C-5D64-4C88-8BD9-B0D7A6455E69'
+                            : '4E259BA5-C383-4624-89A6-8365E06D9D39',
+                        user_id: advertiser_info.chat_user_id,
+                        token: service_token.sendbird.token,
+                    };
+                });
+
+                // Refresh chat token ±1 hour before it expires (BE will refresh the token
+                // when we request within 2 hours of the token expiring)
+                const expiry_moment = epochToMoment(service_token.sendbird.expiry_time);
+                const delay_ms = expiry_moment.diff(
+                    this.props.server_time
+                        .get()
+                        .clone()
+                        .subtract(1, 'hour')
+                );
+
+                this.service_token_timeout = setTimeout(() => getSendbirdServiceToken(), delay_ms);
+            });
+        };
+
+        getSendbirdServiceToken();
     }
 
     @action.bound

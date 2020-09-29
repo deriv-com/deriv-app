@@ -1,5 +1,3 @@
-export const isMultiplierContract = contract_type => /MULT/i.test(contract_type);
-
 export const onToggleCancellation = ({ has_cancellation, onChangeMultiple }) => {
     // e.target.checked is not reliable, we have to toggle its previous value
     const new_val = !has_cancellation;

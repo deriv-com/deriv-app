@@ -183,6 +183,7 @@ const PositionsModalCard = ({
     const contract_multiplier_el = (
         <React.Fragment>
             <CardHeader contract_info={contract_info} has_progress_slider={!is_multiplier} />
+            <CurrencyBadge currency={contract_info?.currency ?? ''} />
             <CardBody
                 contract_info={contract_info}
                 contract_update={contract_update}

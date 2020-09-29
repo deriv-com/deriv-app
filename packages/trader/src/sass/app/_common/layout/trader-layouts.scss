@@ -692,6 +692,18 @@ $FLOATING_HEADER_HEIGHT: 41px;
     }
 }
 
+// TODO: improve handling of rendering markets dropdown via portals from smartcharts library
+/** @define smartcharts-portal; weak */
+.smartcharts-portal {
+    @include mobile {
+        &--open {
+            .smartcharts {
+                z-index: 9999;
+            }
+        }
+    }
+}
+
 /** @define contract; weak */
 .contract {
     // TODO: Remove below if redundant

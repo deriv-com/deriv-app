@@ -1,34 +1,46 @@
 import { jest } from '@jest/globals';
-import { Provider } from 'mobx-react';
-import { MobxContentProvider } from '../../../Stores/connect.js';
-import RootStore from '../../../Stores';
 import React from 'react';
 import { cleanup, render } from '@testing-library/react';
-import PersonalDetailsForm from './personal-details.jsx';
-import fc from 'fast-check';
+import { createBrowserHistory } from 'history';
+import { Router } from 'react-router';
+import { WS } from 'Services/ws-methods';
+import { PersonalDetailsForm } from './personal-details.jsx';
 
-const mock_root_store = {
-    client: {
-        fetchResidenceList: jest.fn(),
+jest.mock('Services/ws-methods', () => ({
+    __esModule: true, // this property makes it work,
+    default: 'mockedDefaultExport',
+    WS: {
+        wait: (...payload) => {
+            return Promise.resolve([...payload]);
+        },
     },
-};
-const WS_mock = jest.mock('Services/ws-methods', () => {
-    return {
-        wait: jest.fn(() => Promise.resolve()),
-    };
-});
-
-afterEach(cleanup);
+}));
 
 describe('<PersonalDetailsForm />', () => {
+    const history = createBrowserHistory();
     it('should_render_successfully', () => {
-        const root_store = new RootStore(mock_root_store);
-        expect(
-            render(
-                <MobxContentProvider store={root_store}>
-                    <PersonalDetailsForm />
-                </MobxContentProvider>
-            )
-        ).toBeTruthy();
+        const residence_list = [
+            {
+                text: 'Text',
+                value: 'value',
+            },
+        ];
+        const screen = render(
+            <Router history={history}>
+                <PersonalDetailsForm
+                    fetchResidenceList={() => Promise.resolve(residence_list)}
+                    fetchStatesList={() => Promise.resolve(residence_list)}
+                    residence_list={residence_list}
+                    has_residence={true}
+                    account_settings={{
+                        email_consent: 1,
+                    }}
+                    getChangeableFields={() => []}
+                    is_virtual={false}
+                    states_list={residence_list}
+                />
+            </Router>
+        );
+        expect(screen).toBeTruthy();
     });
 });

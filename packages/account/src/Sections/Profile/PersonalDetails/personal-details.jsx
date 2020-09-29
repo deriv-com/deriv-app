@@ -54,7 +54,7 @@ const InputGroup = ({ children, className }) => (
     </fieldset>
 );
 
-class PersonalDetailsForm extends React.Component {
+export class PersonalDetailsForm extends React.Component {
     state = { is_loading: true, is_state_loading: false, show_form: true };
 
     onSubmit = (values, { setStatus, setSubmitting }) => {
@@ -843,8 +843,10 @@ class PersonalDetailsForm extends React.Component {
 
         fetchResidenceList();
         if (has_residence) {
+            console.log('state fetching');
             this.setState({ is_state_loading: true }, () => {
                 fetchStatesList().then(() => {
+                    console.log('state fetched');
                     this.setState({ is_state_loading: false });
                 });
             });
@@ -853,6 +855,7 @@ class PersonalDetailsForm extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
+        console.log('component updated');
         if (this.props.account_settings !== prevProps.account_settings) {
             this.initializeFormValues();
         }

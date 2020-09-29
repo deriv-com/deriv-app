@@ -38,7 +38,7 @@ const Redirect = ({
             break;
         }
         case 'add_account': {
-            fetchResidenceList().then(openRealAccountSignup);
+            fetchResidenceList().then(() => openRealAccountSignup());
 
             const ext_platform_url = url_params.get('ext_platform_url');
             if (ext_platform_url) {

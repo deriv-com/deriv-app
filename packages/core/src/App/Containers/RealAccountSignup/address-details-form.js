@@ -115,7 +115,7 @@ const transformForResidence = (rules, residence) => {
     return rules;
 };
 
-const transformConfig = (config, { real_account_signup_target }) => {
+const transformConfig = (config, real_account_signup_target) => {
     // Remove required rule for svg clients
     if (!real_account_signup_target || real_account_signup_target === 'svg') {
         config.address_state.rules.shift();

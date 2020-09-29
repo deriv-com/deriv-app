@@ -116,16 +116,16 @@ const MyAdsTable = ({ onClickCreate }) => {
 
     const onClickConfirm = showError => {
         requestWS({ p2p_advert_update: 1, id: selected_ad_id, delete: 1 }).then(response => {
-            // if (isMounted()) {
-            if (response.error) {
-                showError({ error_message: response.error.message });
-            } else {
-                // remove the deleted ad from the list of items
-                const updated_items = ads.filter(ad => ad.id !== response.p2p_advert_update.id);
-                setAds(updated_items);
-                setShouldShowPopup(false);
+            if (isMounted()) {
+                if (response.error) {
+                    showError({ error_message: response.error.message });
+                } else {
+                    // remove the deleted ad from the list of items
+                    const updated_items = ads.filter(ad => ad.id !== response.p2p_advert_update.id);
+                    setAds(updated_items);
+                    setShouldShowPopup(false);
+                }
             }
-            // }
         });
     };
 

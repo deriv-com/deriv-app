@@ -265,7 +265,9 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
                                     {total_completion_rate ? `${total_completion_rate}%` : '-'}
                                 </div>
                                 <div className='advertiser-page__stats-cell-info_buy'>
-                                    {`  (${localize('Buy')} ${buy_completion_rate}%)`}
+                                    {localize('(Buy {{ buy_completion_rate }}%)', {
+                                        buy_completion_rate: buy_completion_rate || 0,
+                                    })}
                                 </div>
                             </div>
                         </Table.Cell>
@@ -273,7 +275,7 @@ const AdvertiserPage = ({ navigate, selected_ad, showVerification }) => {
                         <Table.Cell className='advertiser-page__stats-cell'>
                             <div className='advertiser-page__stats-cell-header'>{localize('Avg. release')}</div>
                             <div className='advertiser-page__stats-cell-info'>
-                                {release_time_avg ? `${(release_time_avg / 60).toFixed(2)} ${localize('min')}` : '-'}
+                                {release_time_avg ? localize('{{release_time_avg}} min', { release_time_avg }) : '-'}
                             </div>
                         </Table.Cell>
                         <Popover

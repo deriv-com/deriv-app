@@ -13,8 +13,8 @@ export const getFormattedText = (number, currency) => {
 };
 
 export const formatMoney = (currency_value, amount, exclude_currency, decimals = 0, minimumFractionDigits = 0) => {
-    let money = amount;
-    if (money) money = String(money).replace(/,/g, '');
+    let money = String(amount);
+    if (money) money = money.replace(/,/g, '');
     const sign = money && Number(money) < 0 ? '-' : '';
     let decimal_places;
     // Cryptos except IDK: minimum of 2, maximum of 8 decimal places without trailing zeros

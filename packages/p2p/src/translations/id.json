@@ -54,7 +54,6 @@
     "1371193412": "Batal",
     "1430413419": "Maksimum adalah {{value}} {{currency}}",
     "1438799865": "Keamanan Deposit",
-    "1529172230": "Hanya lakukan konfirmasi setelah mengecek rekening bank atau e-wallet Anda untuk memastikan pembayaran telah diterima",
     "1557777688": "Anda tidak memiliki order",
     "1630260135": "Instruksi pembeli",
     "1675716253": "Batasan minimum",
@@ -125,6 +124,7 @@
     "-563116612": "Saya belum membayar",
     "-1392383387": "Saya sudah membayar",
     "-1485778481": "Apakah Anda sudah menerima pembayaran?",
+    "-403938778": "Hanya lakukan konfirmasi setelah mengecek rekening bank atau e-wallet Anda untuk memastikan pembayaran telah diterima.",
     "-727273667": "Komplain",
     "-418870584": "Batalkan order",
     "-1956755526": "{{offered_amount}} {{offered_currency}} telah di kreditkan kedalam akun Anda",
@@ -142,7 +142,7 @@
     "-471540636": "Saya telah menerima {{amount}} {{currency}}.",
     "-1709848333": "DP2P sudah tersedia untuk Anda",
     "-857786650": "Periksa status verifikasi Anda.",
-    "-1219721129": "Kami memerlukan Anda untuk mengirim dokumen untuk memverifikasi \n    identitas Anda.",
+    "-612892886": "Kami memerlukan Anda untuk mengirim dokumen untuk memverifikasi identitas Anda.",
     "-2090325029": "Verifikasi identitas sudah lengkap.",
     "-1263329152": "Kasir P2P Anda telah diblokir. Silakan hubungi customer support."
 }

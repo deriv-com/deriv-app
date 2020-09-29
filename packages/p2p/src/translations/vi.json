@@ -54,7 +54,6 @@
     "1371193412": "Huỷ",
     "1430413419": "Tối đa là {{value}} {{currency}}",
     "1438799865": "Tiền gửi đảm bảo",
-    "1529172230": "Vui lòng chỉ xác nhận sau khi đã kiểm tra tài khoản ngân hàng hoặc ví điện tử của bạn để chắc chắn bạn đã nhận khoản thanh toán",
     "1557777688": "Bạn không có đơn hàng nào",
     "1630260135": "Chỉ dẫn của người mua",
     "1675716253": "Giới hạn tối thiểu",
@@ -125,6 +124,7 @@
     "-563116612": "Tôi chưa thanh toán",
     "-1392383387": "Tôi đã thanh toán",
     "-1485778481": "Bạn đã nhận được thanh toán chưa?",
+    "-403938778": "Please confirm only after checking your bank or e-wallet account to make sure you have received payment.",
     "-727273667": "Khiếu nại",
     "-418870584": "Hủy đơn hàng",
     "-1956755526": "{{offered_amount}} {{offered_currency}} đã được chuyển vào tài khoản của bạn",
@@ -142,7 +142,7 @@
     "-471540636": "Tôi đã nhận {{amount}} {{currency}}.",
     "-1709848333": "DP2P đã sẵn sàng cho bạn",
     "-857786650": "Kiểm tra tình trạng xác minh của bạn.",
-    "-1219721129": "Chúng tôi sẽ cần bạn tải lên các tài liệu để xác minh \n    danh tính của bạn.",
+    "-612892886": "We’ll need you to upload your documents to verify your identity.",
     "-2090325029": "Xác minh danh tính đã hoàn tất.",
     "-1263329152": "Thu ngân P2P của bạn đã bị chặn. Vui lòng liên hệ với bộ phận hỗ trợ khách hàng."
 }

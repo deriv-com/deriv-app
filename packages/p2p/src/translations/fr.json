@@ -54,7 +54,6 @@
     "1371193412": "Annuler",
     "1430413419": "Le maximum est {{currency}}{{value}}",
     "1438799865": "Dépôt de Garantie",
-    "1529172230": "Veuillez confirmer uniquement après avoir vérifié votre compte bancaire ou votre portefeuille électronique pour vous assurer que vous avez reçu le paiement",
     "1557777688": "Vous n'avez aucune commande",
     "1630260135": "Instructions de l'acheteur",
     "1675716253": "Limite minimale",
@@ -125,6 +124,7 @@
     "-563116612": "Je n'ai pas encore payé",
     "-1392383387": "J'ai payé",
     "-1485778481": "Avez-vous reçu un paiement?",
+    "-403938778": "Please confirm only after checking your bank or e-wallet account to make sure you have received payment.",
     "-727273667": "Se plaindre",
     "-418870584": "Annuler l'ordre",
     "-1956755526": "{{offered_amount}} {{offered_currency}} a été déposé sur votre compte",
@@ -142,7 +142,7 @@
     "-471540636": "J'ai reçu {{amount}}{{currency}}.",
     "-1709848333": "DP2P est prêt pour vous",
     "-857786650": "Vérifiez votre statut de vérification.",
-    "-1219721129": "Nous aurons besoin que vous téléchargiez vos documents pour vérifier\n    votre identité.",
+    "-612892886": "We’ll need you to upload your documents to verify your identity.",
     "-2090325029": "La vérification d'identité est terminée.",
     "-1263329152": "Votre caisse P2P a été bloquée. Veuillez contacter le service client."
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, ButtonToggle, Modal, ThemedScrollbars } from '@deriv/components';
 import Dp2pContext from 'Components/context/dp2p-context';
-import { localize } from 'Components/i18next';
+import { localize, Localize } from 'Components/i18next';
 import BuySellForm from './buy-sell-form.jsx';
 import BuySellTableContent from './buy-sell-table-content.jsx';
 import FormError from '../form/error.jsx';
@@ -11,7 +11,7 @@ import PageReturn from '../page-return/page-return.jsx';
 import Verification from '../verification/verification.jsx';
 import './buy-sell.scss';
 
-const buy_sell_filters = [
+const buy_sell_filters = () => [
     {
         text: localize('Buy'),
         value: 'buy',
@@ -68,7 +68,7 @@ const BuySell = ({ navigate }) => {
         <div className='buy-sell'>
             <div className='buy-sell__header'>
                 <ButtonToggle
-                    buttons_arr={buy_sell_filters}
+                    buttons_arr={buy_sell_filters()}
                     className='buy-sell__header__filters'
                     is_animated
                     name='filter'

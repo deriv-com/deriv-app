@@ -16,17 +16,14 @@ const Verification = () => {
             case 'none':
             default:
                 return (
-                    <Localize
-                        i18n_default_text='We’ll need you to upload your documents to verify 
-    your identity.'
-                    />
+                    <Localize i18n_default_text='We’ll need you to upload your documents to verify your identity.' />
                 );
             case 'verified':
                 return <Localize i18n_default_text='Identity verification is complete.' />;
         }
     };
 
-    const items = [
+    const items = () => [
         {
             content: nickname ? <p>{nickname}</p> : <Localize i18n_default_text='Choose your nickname' />,
             status: nickname ? 'done' : 'action',
@@ -64,7 +61,7 @@ const Verification = () => {
                     </p>
                 </div>
             </div>
-            <Checklist className='p2p-verification__checklist' items={items} />
+            <Checklist className='p2p-verification__checklist' items={items()} />
         </div>
     );
 };

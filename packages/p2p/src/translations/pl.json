@@ -54,7 +54,6 @@
     "1371193412": "Anuluj",
     "1430413419": "Maksimum to {{currency}} {{value}}",
     "1438799865": "Depozyt zabezpieczający",
-    "1529172230": "Przed potwierdzeniem sprawdź swoje konto w banku lub e-portfelu, aby upewnić się, że płatność wpłynęła",
     "1557777688": "Nie masz żadnych zleceń",
     "1630260135": "Instrukcje dla kupującego",
     "1675716253": "Min. limit",
@@ -125,6 +124,7 @@
     "-563116612": "Jeszcze nie zapłacono",
     "-1392383387": "Zapłaciłem",
     "-1485778481": "Otrzymano płatność?",
+    "-403938778": "Please confirm only after checking your bank or e-wallet account to make sure you have received payment.",
     "-727273667": "Skarga",
     "-418870584": "Anuluj zlecenie",
     "-1956755526": "{{offered_currency}} {{offered_amount}} zostało wpłacone na Twoje konto",
@@ -142,7 +142,7 @@
     "-471540636": "Otrzymano {{amount}} {{currency}}.",
     "-1709848333": "DP2P jest już gotowy",
     "-857786650": "Sprawdź status weryfikacji.",
-    "-1219721129": "Będziemy musieli przesłać Twoje dokumenty, aby zweryfikować \n    Twoją tożsamość.",
+    "-612892886": "We’ll need you to upload your documents to verify your identity.",
     "-2090325029": "Weryfikacja tożsamości została zakończona.",
     "-1263329152": "Twój kasjer P2P został zablokowany. Skontaktuj się z działem obsługi klienta."
 }

@@ -54,7 +54,6 @@
     "1371193412": "Cancelar",
     "1430413419": "O máximo é {{value}} {{currency}}",
     "1438799865": "Depósito de Segurança",
-    "1529172230": "Por favor confirme somente após verificar seu banco ou conta da carteira eletrônica para ter certeza de que recebeu o pagamento",
     "1557777688": "Você não tem anúncios",
     "1630260135": "Instruções do comprador",
     "1675716253": "Limite mín",
@@ -125,6 +124,7 @@
     "-563116612": "Ainda não paguei",
     "-1392383387": "Eu paguei",
     "-1485778481": "Você recebeu o pagamento?",
+    "-403938778": "Please confirm only after checking your bank or e-wallet account to make sure you have received payment.",
     "-727273667": "Reclamar",
     "-418870584": "Cancelar pedido",
     "-1956755526": "{{offered_amount}} {{offered_currency}} foi depositado em sua conta",
@@ -142,7 +142,7 @@
     "-471540636": "Eu recebi {{amount}} {{currency}}.",
     "-1709848333": "DP2P está pronto para você",
     "-857786650": "Verifique o seu status de verificação.",
-    "-1219721129": "Precisamos que você envie seus documentos para verificação  \n    da sua identidade.",
+    "-612892886": "We’ll need you to upload your documents to verify your identity.",
     "-2090325029": "A verificação de identidade foi concluída.",
     "-1263329152": "Seu caixa P2P foi bloqueado. Entre em contato com o suporte ao cliente."
 }

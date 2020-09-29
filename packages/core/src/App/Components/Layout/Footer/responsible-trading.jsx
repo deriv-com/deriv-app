@@ -1,12 +1,11 @@
 import React from 'react';
-import { Icon, Popover } from '@deriv/components';
-import { getDerivComLink } from '@deriv/shared';
+import { Icon, Popover, StaticUrl } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
 export const ResponsibleTrading = () => (
     <Popover alignment='top' message={localize('Responsible trading')} className='footer__link'>
-        <a href={getDerivComLink('/responsible-trading')} target='_blank' rel='nofollow noreferrer'>
+        <StaticUrl href='/responsible-trading'>
             <Icon icon='IcVerification' className='footer__icon ic-deriv__icon' />
-        </a>
+        </StaticUrl>
     </Popover>
 );

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper, DataList, DataTable, Money } from '@deriv/components';
-import { urlFor, isDesktop, website_name } from '@deriv/shared';
+import { extractInfoFromShortcode, isDesktop, urlFor, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
 import CompositeCalendar from 'App/Components/Form/CompositeCalendar/composite-calendar.jsx';
@@ -15,7 +15,6 @@ import { getStatementTableColumnsTemplate } from '../Constants/data-table-consta
 import PlaceholderComponent from '../Components/placeholder-component.jsx';
 import { ReportsMeta } from '../Components/reports-meta.jsx';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message.jsx';
-import Shortcode from '../Helpers/shortcode';
 
 class Statement extends React.Component {
     constructor(props) {
@@ -69,9 +68,7 @@ class Statement extends React.Component {
         let action;
 
         if (row_obj.id && ['buy', 'sell'].includes(row_obj.action_type)) {
-            action = getSupportedContracts()[
-                Shortcode.extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase()
-            ]
+            action = getSupportedContracts()[extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase()]
                 ? getContractPath(row_obj.id)
                 : {
                       component: (

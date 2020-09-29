@@ -58,7 +58,7 @@
             background: var(--state-hover);
             cursor: pointer;
 
-            & ~ .input-wrapper__input {
+            & ~ .dc-input-wrapper__input {
                 @extend .input:hover;
             }
         }

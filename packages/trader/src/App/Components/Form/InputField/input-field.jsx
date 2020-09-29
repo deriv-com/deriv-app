@@ -222,7 +222,7 @@ class InputField extends React.Component {
                 checked={checked}
                 current_focus={current_focus}
                 className={classNames(
-                    is_increment_input ? 'input-wrapper__input' : '',
+                    is_increment_input ? 'dc-input-wrapper__input' : '',
                     inline_prefix ? 'input--has-inline-prefix' : '',
                     'input',
                     { 'input--error': has_error },

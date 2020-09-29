@@ -4,7 +4,7 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { DesktopWrapper, MobileWrapper, DataList, DataTable } from '@deriv/components';
-import { urlFor, isDesktop, website_name } from '@deriv/shared';
+import { extractInfoFromShortcode, isDesktop, urlFor, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
 import CompositeCalendar from 'App/Components/Form/CompositeCalendar';
@@ -16,7 +16,6 @@ import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message.
 import PlaceholderComponent from '../Components/placeholder-component.jsx';
 import { ReportsMeta } from '../Components/reports-meta.jsx';
 import { getProfitTableColumnsTemplate } from '../Constants/data-table-constants';
-import Shortcode from '../Helpers/shortcode';
 
 class ProfitTable extends React.Component {
     componentDidMount() {
@@ -86,7 +85,7 @@ class ProfitTable extends React.Component {
     };
 
     getRowAction = row_obj =>
-        getSupportedContracts()[Shortcode.extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase()]
+        getSupportedContracts()[extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase()]
             ? getContractPath(row_obj.contract_id)
             : {
                   component: (

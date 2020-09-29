@@ -1,4 +1,4 @@
-import { expect, setURL } from '../../../test_utils/common';
+import { expect } from '../../../test_utils/common';
 import {
     reset,
     urlFor,
@@ -14,7 +14,7 @@ import {
 } from '../url';
 
 // Testable URLs
-const urls = ['https://app.deriv.com'];
+const urls = ['https://app.deriv.com', 'https://app.derivcrypto.com'];
 
 function mockLocation(url) {
     // Mocking global location
@@ -42,8 +42,9 @@ describe('Url', () => {
                 url_with_qs = `${url_no_qs}?${query_string}`;
             });
             it('assert mocking globals is working', () => {
-                expect(window.location.hostname).to.be.eq('app.deriv.com');
-                expect(location.hostname).to.be.eq('app.deriv.com');
+                const fqdn = url.replace('https://', '');
+                expect(window.location.hostname).to.be.eq(fqdn);
+                expect(location.hostname).to.be.eq(fqdn);
                 expect(window.location.href).to.be.eq(websiteUrl());
             });
             describe('.urlFor()', () => {
@@ -89,58 +90,6 @@ describe('Url', () => {
                     expect(paramsHash()).to.deep.eq({});
                 });
             });
-
-            if (!/app\.deriv\.com/.test(url)) {
-                describe('.urlForCurrentDomain()', () => {
-                    const path_query_hash = 'path/to/file.html?q=value&n=1#hash';
-
-                    it('updates domain correctly', () => {
-                        expect(urlForCurrentDomain('https://www.app.deriv.com/')).to.eq(`${url}/`);
-                        expect(urlForCurrentDomain(`https://www.app.deriv.com/${path_query_hash}`)).to.eq(
-                            `${url}/${path_query_hash}`
-                        );
-                    });
-                    it('updates host maps correctly', () => {
-                        const host_map = getHostMap();
-                        Object.keys(host_map).forEach(host => {
-                            expect(urlForCurrentDomain(`https://${host}/`)).to.eq(`https://${host_map[host]}/`);
-                            expect(urlForCurrentDomain(`https://${host}/${path_query_hash}`)).to.eq(
-                                `https://${host_map[host]}/${path_query_hash}`
-                            );
-                        });
-                    });
-                    it("doesn't update email links", () => {
-                        ['mailto:affiliates@binary.com', 'mailto:email@otherdomain.com'].forEach(email_link => {
-                            expect(urlForCurrentDomain(email_link)).to.eq(email_link);
-                        });
-                    });
-                    it("doesn't update the third party domains", () => {
-                        expect(urlForCurrentDomain('https://www.otherdomain.com')).to.eq('https://www.otherdomain.com');
-                        expect(urlForCurrentDomain('https://www.otherdomain.com/')).to.eq(
-                            'https://www.otherdomain.com/'
-                        );
-                        expect(urlForCurrentDomain('https://subdomain.otherdomain.com/')).to.eq(
-                            'https://subdomain.otherdomain.com/'
-                        );
-                        expect(urlForCurrentDomain('mailto:email@otherdomain.com')).to.eq(
-                            'mailto:email@otherdomain.com'
-                        );
-                    });
-                    it("doesn't update when current domain is not supported", () => {
-                        setURL('https://user.github.io/');
-                        [
-                            'https://app.deriv.com',
-                            'https://www.app.deriv.com/',
-                            'https://bot.binary.com',
-                            'mailto:affiliates@binary.com',
-                        ].forEach(u => {
-                            expect(urlForCurrentDomain(u)).to.eq(u);
-                        });
-                        setURL(url); // reset for the next test
-                    });
-                });
-            }
-
             describe('.urlForStatic()', () => {
                 beforeEach(() => {
                     resetStaticHost();

@@ -3,37 +3,33 @@ import PropTypes from 'prop-types';
 import { Button } from '@deriv/components';
 import { localize, Localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
-import FooterActions from 'Components/footer-actions/footer-actions.jsx';
 import Dp2pContext from 'Components/context/dp2p-context';
 
-const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
+const OrderDetailsFooter = ({ order_information, cancelPopup, showPopup }) => {
     const { email_domain } = React.useContext(Dp2pContext);
     const {
-        advertiser_name,
-        display_offer_amount,
-        display_transaction_amount,
-        is_buyer,
-        is_buyer_confirmed,
-        is_pending,
-        offer_currency,
         id,
-        setStatus,
-        transaction_currency,
-        is_expired,
-    } = order_details;
-    let buttons_to_render = null;
-    const cancelOrder = () => {
-        const cancel = async setFormStatus => {
+        local_currency,
+        other_user_details,
+        price_display,
+        should_show_complain_and_received_button,
+        should_show_cancel_and_paid_button,
+        should_show_only_complain_button,
+    } = order_information;
+
+    const showCancelOrderPopup = () => {
+        const sendOrderCancelRequest = async setFormStatus => {
             setFormStatus({ error_message: '' });
+
             const cancel_response = await requestWS({ p2p_order_cancel: 1, id });
 
             if (!cancel_response.error) {
-                setStatus(cancel_response.p2p_order_cancel.status);
                 cancelPopup();
             } else {
                 setFormStatus({ error_message: cancel_response.error.message });
             }
         };
+
         const options = {
             title: localize('Do you want to cancel this order?'),
             className: 'order-details__popup-no-border',
@@ -42,10 +38,12 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
             has_cancel: true,
             cancel_text: localize('Do not cancel'),
             min_height: 130,
-            onClickConfirm: cancel,
+            onClickConfirm: sendOrderCancelRequest,
         };
+
         showPopup(options);
     };
+
     const showComplainPopup = () => {
         const options = {
             title: localize('Did something go wrong?'),
@@ -67,64 +65,63 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
                 />
             ),
             confirm_text: localize('Close'),
-            onClickConfirm: () => {
-                cancelPopup();
-            },
+            onClickConfirm: () => cancelPopup(),
         };
+
         showPopup(options);
     };
 
-    const paidOrder = () => {
-        const payOrder = async setFormStatus => {
+    const showPaidOrderPopup = () => {
+        const sendOrderConfirmRequest = async setFormStatus => {
             setFormStatus({ error_message: '' });
 
             const update_response = await requestWS({
                 p2p_order_confirm: 1,
                 id,
             });
+
             if (!update_response.error) {
-                setStatus(update_response.p2p_order_confirm.status);
                 cancelPopup();
             } else {
                 setFormStatus({ error_message: update_response.error.message });
             }
         };
+
         const options = {
             title: localize('Confirm payment?'),
             className: 'order-details__popup-no-border',
-            message: localize("Please make sure that you've paid {{amount}} {{currency}} to {{advertiser_name}}.", {
-                amount: display_transaction_amount,
-                currency: transaction_currency,
-                advertiser_name,
+            message: localize("Please make sure that you've paid {{amount}} {{currency}} to {{other_user_name}}.", {
+                amount: price_display,
+                currency: local_currency,
+                other_user_name: other_user_details.name,
             }),
             should_confirm_payment: true,
-            order: {
-                transaction_currency,
-                display_transaction_amount,
-            },
+            order_information,
             has_cancel: true,
             cancel_text: localize("I haven't paid yet"),
             confirm_text: localize("I've paid"),
-            onClickConfirm: payOrder,
+            onClickConfirm: sendOrderConfirmRequest,
         };
+
         showPopup(options);
     };
 
-    const receivedFunds = () => {
-        const receive = async setFormStatus => {
+    const showReceivedFundsPopup = () => {
+        const sendOrderConfirmRequest = async setFormStatus => {
             setFormStatus({ error_message: '' });
 
             const update_response = await requestWS({
                 p2p_order_confirm: 1,
                 id,
             });
+
             if (!update_response.error) {
-                setStatus(update_response.p2p_order_confirm.status);
                 cancelPopup();
             } else {
                 setFormStatus({ error_message: update_response.error.message });
             }
         };
+
         const options = {
             title: localize('Have you received payment?'),
             className: 'order-details__popup-no-border',
@@ -132,75 +129,70 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
                 'Please confirm only after checking your bank or e-wallet account to make sure you have received payment.'
             ),
             need_confirmation: true,
-            order: {
-                display_offer_amount,
-                offer_currency,
-                transaction_currency,
-                display_transaction_amount,
-            },
-            onClickConfirm: receive,
+            order_information,
+            onClickConfirm: sendOrderConfirmRequest,
             has_cancel: true,
             cancel_text: localize('Cancel'),
         };
+
         showPopup(options);
     };
 
-    if ((is_buyer_confirmed || is_expired) && !is_buyer) {
-        buttons_to_render = (
-            <React.Fragment>
-                <div className='order-details__separator' />
-                <FooterActions className='order-details__justify-space  order-details__footer'>
-                    <Button className='order-details__complain-button' large tertiary onClick={showComplainPopup}>
-                        {localize('Complain')}
-                    </Button>
-                    <Button
-                        className='order-details__actions-button order-details__footer--right'
-                        large
-                        primary
-                        onClick={receivedFunds}
-                    >
-                        {localize("I've received funds")}
-                    </Button>
-                </FooterActions>
-            </React.Fragment>
+    if (should_show_complain_and_received_button) {
+        return (
+            <div className='order-details__footer'>
+                <React.Fragment>
+                    <div className='order-details__footer--left'>
+                        <Button large tertiary onClick={showComplainPopup}>
+                            {localize('Complain')}
+                        </Button>
+                    </div>
+                    <div className='order-details__footer--right'>
+                        <Button large primary onClick={showReceivedFundsPopup}>
+                            {localize("I've received funds")}
+                        </Button>
+                    </div>
+                </React.Fragment>
+            </div>
         );
     }
 
-    if (is_pending && is_buyer) {
-        buttons_to_render = (
-            <React.Fragment>
-                <div className='order-details__separator' />
-                <FooterActions class='order-details__footer'>
-                    <Button className='order-details__actions-button' large secondary onClick={cancelOrder}>
-                        {localize('Cancel order')}
-                    </Button>
-                    <Button className='order-details__actions-button' large primary onClick={paidOrder}>
-                        {localize("I've paid")}
-                    </Button>
-                </FooterActions>
-            </React.Fragment>
-        );
-    }
-    if (is_buyer && (is_expired || is_buyer_confirmed)) {
-        buttons_to_render = (
-            <React.Fragment>
-                <div className='order-details__separator' />
-                <FooterActions className='order-details__justify-start  order-details__footer'>
-                    <Button large tertiary onClick={showComplainPopup}>
-                        {localize('Complain')}
-                    </Button>
-                </FooterActions>
-            </React.Fragment>
+    if (should_show_cancel_and_paid_button) {
+        return (
+            <div className='order-details__footer'>
+                <div className='order-details__footer--right'>
+                    <Button.Group>
+                        <Button large secondary onClick={showCancelOrderPopup}>
+                            {localize('Cancel order')}
+                        </Button>
+                        <Button large primary onClick={showPaidOrderPopup}>
+                            {localize("I've paid")}
+                        </Button>
+                    </Button.Group>
+                </div>
+            </div>
         );
     }
 
-    return buttons_to_render;
+    if (should_show_only_complain_button) {
+        return (
+            <div className='order-details__footer'>
+                <div className='order-details__footer--left'>
+                    <Button className='order-details__footer-button--left' large tertiary onClick={showComplainPopup}>
+                        {localize('Complain')}
+                    </Button>
+                </div>
+            </div>
+        );
+    }
+
+    return null;
 };
 
-OrderActionsBlock.propTypes = {
+OrderDetailsFooter.propTypes = {
     cancelPopup: PropTypes.func,
     order_details: PropTypes.object,
     showPopup: PropTypes.func,
 };
 
-export default OrderActionsBlock;
+export default OrderDetailsFooter;

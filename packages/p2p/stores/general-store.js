@@ -1,7 +1,8 @@
 import { observable, action } from 'mobx';
-import OrderInfo, { orderToggleIndex } from '../src/components/orders/order-info.js';
 import { getPropertyValue, isEmptyObject, isProduction } from '@deriv/shared';
-import { init as WebsocketInit, getModifiedP2POrderList, requestWS, subscribeWS } from '../src/utils/websocket.js';
+import { orderToggleIndex } from 'Components/orders/order-info.js';
+import { getExtendedOrderDetails } from 'Utils/orders.js';
+import { init as WebsocketInit, requestWS, subscribeWS } from 'Utils/websocket.js';
 
 export default class GeneralStore {
     @observable active_index = 0;
@@ -82,7 +83,7 @@ export default class GeneralStore {
     handleNotifications(old_orders, new_orders) {
         const { is_cached, notifications } = this.getLocalStorageSettingsForLoginId();
         new_orders.forEach(new_order => {
-            const order_info = new OrderInfo(new_order);
+            const order_info = getExtendedOrderDetails(new_order, this.client.loginid);
             const notification = notifications.find(n => n.order_id === new_order.id);
             const old_order = old_orders.find(o => o.id === new_order.id);
             const is_current_order = new_order.id === this.props?.order_id;
@@ -272,24 +273,24 @@ export default class GeneralStore {
             this.ws_subscriptions.order_list_subscription.unsubscribe();
             return;
         }
-        const { p2p_order_list } = order_response;
+        const { p2p_order_list, p2p_order_info } = order_response;
 
         if (p2p_order_list) {
             const { list } = p2p_order_list;
             // it's an array of orders from p2p_order_list
             this.handleNotifications(this.orders, list);
             this.setOrderOffset(list.length);
-            this.setOrders(getModifiedP2POrderList(list));
-        } else {
+            this.setOrders(list);
+        } else if (p2p_order_info) {
             // it's a single order from p2p_order_info
-            const idx_order_to_update = this.orders.findIndex(order => order.id === order_response.id);
+            const idx_order_to_update = this.orders.findIndex(order => order.id === p2p_order_info.id);
             const updated_orders = [...this.orders];
             // if it's a new order, add it to the top of the list
             if (idx_order_to_update < 0) {
-                updated_orders.unshift(order_response);
+                updated_orders.unshift(p2p_order_info);
             } else {
                 // otherwise, update the correct order
-                updated_orders[idx_order_to_update] = order_response;
+                updated_orders[idx_order_to_update] = p2p_order_info;
             }
             // trigger re-rendering by setting orders again
             this.handleNotifications(this.orders, updated_orders);

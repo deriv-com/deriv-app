@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon, Money } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { isMobile } from '@deriv/shared';
 
 class IndicativeCell extends React.PureComponent {
     constructor(props) {
@@ -34,7 +35,7 @@ class IndicativeCell extends React.PureComponent {
                     )}
                 </div>
 
-                {status === 'no-resale' && (
+                {status === 'no-resale' && !isMobile() && (
                     <div className='open-positions__indicative-no-resale-msg indicative__no-resale-msg'>
                         {localize('Resale not offered')}
                     </div>

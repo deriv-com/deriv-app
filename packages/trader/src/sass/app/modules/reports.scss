@@ -529,6 +529,7 @@ $side-padding: 1.2em;
                     /* postcss-bem-linter: ignore */
                     &__grid-underlying-trade {
                         border-bottom: 1px solid var(--general-main-1);
+                        margin-bottom: 5px;
                     }
                     /* postcss-bem-linter: ignore */
                     &__grid-items {
@@ -676,6 +677,16 @@ $side-padding: 1.2em;
             clear: both;
             text-align: right;
             font-size: smaller;
+
+            @include mobile {
+                text-align: center;
+                line-height: 1.43;
+                font-size: 1.4rem;
+                border-top: 1px solid var(--general-main-1);
+                padding: 0.7rem 0;
+                width: 90%;
+                margin: 0 auto;
+            }
         }
     }
     &__profit-loss {

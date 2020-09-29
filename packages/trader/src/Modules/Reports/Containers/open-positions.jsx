@@ -90,8 +90,8 @@ const OpenPositionsTable = ({
                                 getRowAction={getRowAction}
                                 custom_width='100%'
                                 getRowSize={() => {
-                                    if (isMobile() && is_multiplier_tab) return 248;
-                                    if (isMobile()) return 208;
+                                    if (isMobile() && is_multiplier_tab) return 253;
+                                    if (isMobile()) return 232;
                                     return 194;
                                 }}
                             >
@@ -208,6 +208,25 @@ class OpenPositions extends React.Component {
                     <DataList.Cell row={row} column={this.columns_map.payout} />
                     <DataList.Cell className='data-list__row-cell--amount' row={row} column={this.columns_map.profit} />
                 </div>
+                <DataList.Cell
+                    row={{
+                        col_index: 'resale_not_offered',
+                        ...row,
+                    }}
+                    column={{
+                        title: '',
+                        col_index: 'resale_not_offered',
+                        renderCellContent: () => {
+                            return row.contract_info && !row.is_valid_to_sell ? (
+                                <div className='open-positions__indicative-no-resale-msg indicative__no-resale-msg'>
+                                    {localize('Resale not offered')}
+                                </div>
+                            ) : (
+                                ''
+                            );
+                        },
+                    }}
+                />
             </>
         );
     };

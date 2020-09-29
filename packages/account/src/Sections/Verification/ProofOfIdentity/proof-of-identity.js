@@ -14,7 +14,7 @@ export const getIdentityStatus = (identity, needs_verification, onfido_unsupport
     const further_resubmissions_allowed = needs_verification?.includes('identity');
 
     if (onfido_unsupported) return onfido_status_codes.unsupported;
-    if (!further_resubmissions_allowed) {
+    if (further_resubmissions_allowed) {
         if (status === 'none') {
             return onfido_status_codes.onfido;
         }

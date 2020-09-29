@@ -4,11 +4,13 @@ import { PlatformContext } from '@deriv/shared';
 const DERIV_CRYPTO_KEY = 'is_deriv_crypto_app';
 
 const PlatformContainer = ({ ...props }) => {
-    const is_crypto_app = window.localStorage.getItem(DERIV_CRYPTO_KEY);
-    const [deriv_crypto, setDerivCrypto] = React.useState(is_crypto_app || process.env.IS_CRYPTO_APP);
+    const is_crypto_app = window.localStorage.getItem('is_deriv_crypto_app')
+        ? window.localStorage.getItem('is_deriv_crypto_app') === 'true'
+        : process.env.IS_CRYPTO_APP;
+    const [deriv_crypto, setDerivCrypto] = React.useState(is_crypto_app);
 
     const platform_store = {
-        is_deriv_crypto: deriv_crypto === 'true',
+        is_deriv_crypto: deriv_crypto,
         setDerivCrypto,
         DERIV_CRYPTO_KEY,
     };

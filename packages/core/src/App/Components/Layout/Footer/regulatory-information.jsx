@@ -13,7 +13,7 @@ const MLTRegulatoryInformation = () => (
                 i18n_default_text='Synthetic indices in the EU and the UK are offered by Deriv (Europe) Limited, licensed by the Malta Gaming Authority (<0>licence no. MGA/B2C/102/2000</0>), by the UK Gambling Commission for clients in the UK (<1>account no. 39495</1>), and by the Revenue Commissioners for clients in Ireland (<2>licence no. 1010285</2>).'
                 components={[
                     <a
-                        href='https://deriv.com/regulatory/Deriv_(Europe)_Ltd.pdf'
+                        href='https://deriv.com/regulatory/Deriv_(Europe)_Limited.pdf'
                         target='_blank'
                         rel='nofollow noreferrer'
                         key={0}

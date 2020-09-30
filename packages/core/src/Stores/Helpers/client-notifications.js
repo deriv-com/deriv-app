@@ -394,7 +394,7 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
     const is_mf_retail = client.landing_company_shortcode === 'maltainvest' && !professional;
     const should_show_max_turnover = client.landing_company_shortcode === 'iom' && max_turnover_limit_not_set;
 
-    const needs_authentication = needs_verification.length || prompt_client_to_authenticate;
+    const needs_authentication = needs_verification.length || allow_document_upload;
     const has_risk_assessment = getRiskAssessment(account_status);
     const needs_poa = needs_authentication && needs_verification.includes('document');
     const needs_poi = needs_authentication && needs_verification.includes('identity');

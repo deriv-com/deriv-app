@@ -6,8 +6,8 @@ import Icon from '../icon/icon.jsx';
 
 const Wizard = React.forwardRef(({ children, steps, lbl_previous, has_prev, lbl_next, has_next, className }, ref) => {
     const [step, setStep] = React.useState(0);
-    const [last_step] = React.useState(steps.length - 1);
     const [component, setComponent] = React.useState(steps[0].component);
+    const last_step = steps.length - 1;
 
     const nextStep = () => {
         const next_step = step + 1;
@@ -34,6 +34,7 @@ const Wizard = React.forwardRef(({ children, steps, lbl_previous, has_prev, lbl_
     };
 
     React.useImperativeHandle(ref, () => ({
+        prevStep,
         nextStep,
         selectStep,
     }));

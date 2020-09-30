@@ -166,7 +166,7 @@ Header.propTypes = {
     currency: PropTypes.string,
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
-    header_extension: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+    header_extension: PropTypes.any,
     is_acc_switcher_disabled: PropTypes.bool,
     is_acc_switcher_on: PropTypes.bool,
     is_app_disabled: PropTypes.bool,

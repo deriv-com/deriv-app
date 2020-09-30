@@ -387,6 +387,7 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
         unwelcome,
         professional,
         max_turnover_limit_not_set,
+        allow_document_upload,
     } = getStatusValidations(status);
 
     addVerificationNotifications(identity, document, addNotificationMessage);

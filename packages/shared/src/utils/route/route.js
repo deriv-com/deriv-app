@@ -4,3 +4,5 @@ export const getSelectedRoute = ({ routes, pathname }) => {
 
     return route;
 };
+
+export const isRouteVisible = (route, is_logged_in) => !(route && route.is_authenticated && !is_logged_in);

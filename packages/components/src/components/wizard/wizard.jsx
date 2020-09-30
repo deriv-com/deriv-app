@@ -40,23 +40,23 @@ const Wizard = React.forwardRef(({ children, steps, lbl_previous, has_prev, lbl_
     }));
 
     const prevButton = () =>
-        step !== 0 ? (
+        step === 0 ? (
+            <div className='wizard__placeholder' />
+        ) : (
             <a onClick={prevStep} className='wizard__btn wizard__btn-left'>
                 <Icon icon='IcArrowLeftBold' className='wizard__btn-icon-left' />
                 {lbl_previous}
             </a>
-        ) : (
-            <div className='wizard__placeholder' />
         );
 
     const nextButton = () =>
-        step !== last_step ? (
+        step === last_step ? (
+            <div className='wizard__placeholder' />
+        ) : (
             <a onClick={nextStep} className='wizard__btn wizard__btn-right'>
                 {lbl_next}
                 <Icon icon='IcArrowRightBold' className='wizard__btn-icon-right' />
             </a>
-        ) : (
-            <div className='wizard__placeholder' />
         );
 
     return (

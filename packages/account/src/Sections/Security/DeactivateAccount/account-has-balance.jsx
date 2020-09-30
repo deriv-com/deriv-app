@@ -1,12 +1,12 @@
 import React from 'react';
 import { Button, Icon, Money, ThemedScrollbars } from '@deriv/components';
-import { formatMoney, getMT5AccountDisplay } from '@deriv/shared';
+import { formatMoney, getMT5Account, getMT5AccountDisplay } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 
 const getDerivAccount = (client_accounts, login_id) =>
     client_accounts.find((client_account) => client_account.loginid === login_id);
 
-const getMT5Account = (mt5_login_list, login_id) =>
+const getCurrMT5Account = (mt5_login_list, login_id) =>
     mt5_login_list.find((account_obj) => account_obj.login === login_id);
 
 const Wrapper = ({ children, title }) => (
@@ -44,7 +44,7 @@ const AccountHasBalanceOrOpenPositions = ({ details, mt5_login_list, client_acco
             if (deriv_account) {
                 deriv_open_positions.push({ ...deriv_account, ...info });
             } else {
-                const mt5_account = getMT5Account(mt5_login_list, login_id);
+                const mt5_account = getCurrMT5Account(mt5_login_list, login_id);
                 if (mt5_account) {
                     mt5_open_positions.push({ ...mt5_account, ...info });
                 }
@@ -61,7 +61,7 @@ const AccountHasBalanceOrOpenPositions = ({ details, mt5_login_list, client_acco
             if (deriv_account) {
                 deriv_balance.push({ ...deriv_account, ...info });
             } else {
-                const mt5_account = getMT5Account(mt5_login_list, login_id);
+                const mt5_account = getCurrMT5Account(mt5_login_list, login_id);
                 if (mt5_account) {
                     mt5_balance.push({ ...mt5_account, ...info });
                 }

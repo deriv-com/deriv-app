@@ -151,18 +151,15 @@ class PositionsDrawer extends React.Component {
     getPositionHeight = position => {
         // React window doesn't work with dynamic height. This is a work around to get height of a position based on different combinations.
         const { contract_info } = position;
-        const is_valid_to_sell = isValidToSell(contract_info);
         const is_multiplier_contract = isMultiplierContract(contract_info.contract_type);
         const is_tick_contract = contract_info.tick_count > 0;
 
         if (contract_info.is_sold) {
             return is_multiplier_contract ? 248 : 151;
         } else if (is_tick_contract) {
-            return 217;
+            return 229;
         }
-
-        const classic_contract_height = is_valid_to_sell ? 232 : 203;
-        return is_multiplier_contract ? 297 : classic_contract_height;
+        return is_multiplier_contract ? 297 : 222;
     };
 
     render() {

@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
 import { Icon, Money, DesktopWrapper, Button } from '@deriv/components';
+import { isReleaseVisible } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { isOpen } from 'Stores/Modules/Contract/Helpers/logic';
 import { connect } from 'Stores/connect';
 
 class IndicativeCell extends React.PureComponent {
@@ -44,7 +44,7 @@ class IndicativeCell extends React.PureComponent {
                         </React.Fragment>
                     )}
                 </div>
-                {!is_footer && (
+                {!is_footer && contract_info && isReleaseVisible(contract_info) && (
                     <DesktopWrapper>
                         {is_valid_to_sell ? (
                             <Button
@@ -61,11 +61,9 @@ class IndicativeCell extends React.PureComponent {
                                 secondary
                             />
                         ) : (
-                            isOpen(contract_info) && (
-                                <div className='open-positions__indicative-no-resale-msg indicative__no-resale-msg'>
-                                    {localize('Resale not offered')}
-                                </div>
-                            )
+                            <div className='open-positions__indicative-no-resale-msg indicative__no-resale-msg'>
+                                {localize('Resale not offered')}
+                            </div>
                         )}
                     </DesktopWrapper>
                 )}

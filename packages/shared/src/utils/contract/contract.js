@@ -20,12 +20,19 @@ export const isEnded = contract_info =>
         contract_info.is_settleable
     );
 
+export const isOpen = contract_info => contract_info.status === 'open';
+
 export const isUserSold = contract_info => contract_info.status === 'sold';
 
 export const isValidToCancel = contract_info => !!contract_info.is_valid_to_cancel;
 
 export const isValidToSell = contract_info =>
     !isEnded(contract_info) && !isUserSold(contract_info) && +contract_info.is_valid_to_sell === 1;
+
+export const isReleaseVisible = contract_info => {
+    const has_contract_entered = !!contract_info.entry_spot;
+    return has_contract_entered && isOpen(contract_info);
+};
 
 export const isMultiplierContract = contract_type => /MULT/i.test(contract_type);
 

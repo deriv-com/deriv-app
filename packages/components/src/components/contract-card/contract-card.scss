@@ -378,10 +378,6 @@
             padding: 0.8rem 0;
             margin: 0 0.8rem;
         }
-        &--enter-done {
-            opacity: 1;
-            transform: translateY(0);
-        }
         &--enter,
         &--exit {
             opacity: 0;
@@ -436,7 +432,7 @@
         }
     }
     &__no-resale-msg {
-        padding: 0.4rem 0rem;
+        padding: 0.65rem 0rem;
     }
     .contract-audit {
         &__wrapper {

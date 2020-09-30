@@ -2,7 +2,8 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { isValidToCancel, isValidToSell } from '@deriv/shared';
+import { isValidToCancel, isValidToSell, isReleaseVisible } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import ToggleCardDialog from './toggle-card-dialog.jsx';
 import MultiplierCloseActions from './multiplier-close-actions.jsx';
 import Button from '../../button';
@@ -26,13 +27,12 @@ const CardFooter = ({
 }) => {
     const is_valid_to_cancel = isValidToCancel(contract_info);
     const is_valid_to_sell = isValidToSell(contract_info);
-    const show_sell = !!(is_valid_to_sell || (is_multiplier && !contract_info.is_sold));
 
-    if (!show_sell) return null;
+    const should_show_contract_release = isReleaseVisible(contract_info);
 
     return (
         <CSSTransition
-            in={show_sell}
+            in={should_show_contract_release}
             timeout={250}
             classNames={{
                 enter: 'dc-contract-card__sell-button--enter',
@@ -79,16 +79,20 @@ const CardFooter = ({
                             'dc-contract-card__sell-button--positions': is_positions,
                         })}
                     >
-                        <Button
-                            id={`dc_contract_card_${contract_info.contract_id}_button`}
-                            className={classNames('dc-btn--sell', {
-                                'dc-btn--loading': is_sell_requested,
-                            })}
-                            is_disabled={!is_valid_to_sell || is_sell_requested}
-                            text={getCardLabels().SELL_CONTRACT}
-                            onClick={() => onClickSell(contract_info.contract_id)}
-                            secondary
-                        />
+                        {is_valid_to_sell ? (
+                            <Button
+                                id={`dc_contract_card_${contract_info.contract_id}_button`}
+                                className={classNames('dc-btn--sell', {
+                                    'dc-btn--loading': is_sell_requested,
+                                })}
+                                is_disabled={!is_valid_to_sell || is_sell_requested}
+                                text={getCardLabels().SELL}
+                                onClick={() => onClickSell(contract_info.contract_id)}
+                                secondary
+                            />
+                        ) : (
+                            <div className='dc-contract-card__no-resale-msg'>{localize('Resale not offered')}</div>
+                        )}
                     </div>
                 )}
             </div>

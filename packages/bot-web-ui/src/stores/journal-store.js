@@ -7,15 +7,26 @@ import { storeSetting, getSetting } from '../utils/settings';
 import { isCustomJournalMessage } from '../utils/journal-notifications';
 
 const journal_storage_key = 'journal_cache';
+let get_journal_messages;
 
 export default class JournalStore {
     constructor(root_store) {
         this.root_store = root_store;
         this.dbot = this.root_store.dbot;
 
+        get_journal_messages = JSON.parse(sessionStorage.getItem(journal_storage_key));
+
         reaction(
             () => this.unfiltered_messages,
-            messages => sessionStorage.setItem(journal_storage_key, JSON.stringify(messages))
+            messages => {
+                const { client } = this.root_store.core;
+                const stored_journals = JSON.parse(sessionStorage.getItem(journal_storage_key)) ?? {};
+
+                const new_messages = { journal_message: messages };
+                stored_journals[client.loginid] = new_messages;
+
+                sessionStorage.setItem(journal_storage_key, JSON.stringify(stored_journals));
+            }
         );
     }
 
@@ -37,7 +48,9 @@ export default class JournalStore {
     ];
 
     @observable is_filter_dialog_visible = false;
-    @observable unfiltered_messages = JSON.parse(sessionStorage.getItem(journal_storage_key)) ?? [];
+    @observable unfiltered_messages = get_journal_messages
+        ? get_journal_messages[this.root_store.core.client.loginid]?.journal_message
+        : [];
 
     @observable journal_filters = getSetting('journal_filter') || this.filters.map(filter => filter.id);
 

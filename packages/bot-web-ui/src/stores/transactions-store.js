@@ -4,18 +4,31 @@ import { isEnded } from '@deriv/bot-skeleton';
 import { transaction_elements } from '../constants/transactions';
 
 const transaction_storage_key = 'transaction_cache';
+let get_transaction_elements;
 
 export default class TransactionsStore {
     constructor(root_store) {
         this.root_store = root_store;
 
+        get_transaction_elements = JSON.parse(sessionStorage.getItem(transaction_storage_key));
+
         reaction(
             () => this.elements,
-            elements => sessionStorage.setItem(transaction_storage_key, JSON.stringify(elements))
+            elements => {
+                const { client } = this.root_store.core;
+                const stored_transactions = JSON.parse(sessionStorage.getItem(transaction_storage_key)) ?? {};
+
+                const new_elements = { transaction_element: elements };
+                stored_transactions[client.loginid] = new_elements;
+
+                sessionStorage.setItem(transaction_storage_key, JSON.stringify(stored_transactions));
+            }
         );
     }
 
-    @observable elements = JSON.parse(sessionStorage.getItem(transaction_storage_key)) ?? [];
+    @observable elements = get_transaction_elements
+        ? get_transaction_elements[this.root_store.core.client.loginid]?.transaction_element
+        : [];
 
     @observable active_transaction_id = null;
 

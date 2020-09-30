@@ -6,28 +6,80 @@ import { switch_account_notification } from '../utils/bot-notifications';
 
 const statistics_storage_key = 'statistics_cache';
 
+const empty_statistic = {
+    lost_contracts: 0,
+    number_of_runs: 0,
+    total_profit: 0,
+    total_payout: 0,
+    total_stake: 0,
+    won_contracts: 0,
+};
+let get_statistics;
+
 export default class RunPanelStore {
     constructor(root_store) {
         this.root_store = root_store;
         this.dbot = this.root_store.dbot;
         this.registerCoreReactions();
 
+        get_statistics = JSON.parse(sessionStorage.getItem(statistics_storage_key));
+
         reaction(
             () => this.statistics,
-            statistics => sessionStorage.setItem(statistics_storage_key, JSON.stringify(statistics))
+            statistics => {
+                const { client } = this.root_store.core;
+                const stored_statistics = JSON.parse(sessionStorage.getItem(statistics_storage_key)) ?? {};
+
+                const new_statistics = { statistic: statistics };
+                stored_statistics[client.loginid] = new_statistics;
+
+                sessionStorage.setItem(statistics_storage_key, JSON.stringify(stored_statistics));
+            }
+        );
+
+        reaction(
+            () => this.root_store.core.client.loginid,
+            () => {
+                const { core, transactions, journal, contract_card } = this.root_store;
+                const { client } = core;
+
+                if (client.is_logged_in) {
+                    const statictics = JSON.parse(sessionStorage.getItem(statistics_storage_key));
+                    const journal_messages = JSON.parse(sessionStorage.getItem('journal_cache'));
+                    const transaction_elements = JSON.parse(sessionStorage.getItem('transaction_cache'));
+
+                    this.statistics =
+                        statictics && statictics[client.loginid]
+                            ? statictics[client.loginid].statistic
+                            : empty_statistic;
+
+                    journal.unfiltered_messages =
+                        journal_messages && journal_messages[client.loginid]
+                            ? journal_messages[client.loginid].journal_message
+                            : [];
+                    transactions.elements =
+                        transaction_elements && transaction_elements[client.loginid]
+                            ? transaction_elements[client.loginid].transaction_element
+                            : [];
+                } else {
+                    this.statistics = empty_statistic;
+                    journal.unfiltered_messages = [];
+                    transactions.elements = [];
+                }
+
+                this.is_running = false;
+                this.has_open_contract = false;
+                contract_card.clear();
+                this.setContractStage(contract_stages.NOT_RUNNING);
+            }
         );
     }
 
     run_id = '';
 
-    @observable statistics = JSON.parse(sessionStorage.getItem(statistics_storage_key)) ?? {
-        lost_contracts: 0,
-        number_of_runs: 0,
-        total_profit: 0,
-        total_payout: 0,
-        total_stake: 0,
-        won_contracts: 0,
-    };
+    @observable statistics = get_statistics
+        ? get_statistics[this.root_store.core.client.loginid]?.statistic
+        : empty_statistic;
 
     @observable active_index = 0;
     @observable contract_stage = contract_stages.NOT_RUNNING;
@@ -374,14 +426,7 @@ export default class RunPanelStore {
 
     @action.bound
     clear() {
-        this.statistics = {
-            lost_contracts: 0,
-            number_of_runs: 0,
-            total_profit: 0,
-            total_payout: 0,
-            total_stake: 0,
-            won_contracts: 0,
-        };
+        this.statistics = empty_statistic;
         observer.emit('statistics.clear');
     }
 
@@ -439,7 +484,6 @@ export default class RunPanelStore {
                         }
                         this.dbot.terminateBot();
                         RunPanelStore.unregisterBotListeners();
-                        this.clearStat();
                     }
                 );
             } else {

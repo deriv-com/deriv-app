@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import ProgressSlider from 'App/Components/Elements/PositionsDrawer/ProgressSlider/positions-progress-slider.jsx';
+import { ProgressSlider } from '@deriv/components';
+import { getCurrentTick } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import { getCurrentTick } from 'Stores/Modules/Portfolio/Helpers/details';
+import { getCardLabels } from 'Constants/contract';
 
-const ProgressSliderStream = ({ contract_info, is_loading }) => {
+const ProgressSliderStream = ({ contract_info, is_loading, server_time }) => {
     if (!contract_info) {
         return <div />;
     }
@@ -12,10 +13,11 @@ const ProgressSliderStream = ({ contract_info, is_loading }) => {
 
     return (
         <ProgressSlider
-            is_loading={is_loading}
-            expiry_time={contract_info.date_expiry}
-            has_result={false}
             current_tick={current_tick}
+            expiry_time={contract_info.date_expiry}
+            getCardLabels={getCardLabels}
+            is_loading={is_loading}
+            server_time={server_time}
             start_time={contract_info.date_start}
             ticks_count={contract_info.tick_count}
         />
@@ -25,8 +27,10 @@ const ProgressSliderStream = ({ contract_info, is_loading }) => {
 ProgressSliderStream.propTypes = {
     contract_info: PropTypes.object,
     is_loading: PropTypes.bool,
+    server_time: PropTypes.object,
 };
 
-export default connect(({ modules }) => ({
+export default connect(({ common, modules }) => ({
     is_loading: modules.portfolio.is_loading,
+    server_time: common.server_time,
 }))(ProgressSliderStream);

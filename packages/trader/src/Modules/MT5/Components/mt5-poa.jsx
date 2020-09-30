@@ -202,6 +202,17 @@ class MT5POA extends React.Component {
         });
     }
 
+    isFormDisabled(dirty, errors) {
+        if (this.state.poa_status && this.state.poa_status === PoaStatusCodes.verified) {
+            return false;
+        }
+        if (Object.keys(errors).length !== 0) {
+            return true;
+        }
+
+        return false;
+    }
+
     componentWillUnmount() {
         this.is_mounted = false;
     }
@@ -240,6 +251,7 @@ class MT5POA extends React.Component {
                 innerRef={form}
             >
                 {({
+                    dirty,
                     errors,
                     handleSubmit,
                     isSubmitting,
@@ -385,7 +397,7 @@ class MT5POA extends React.Component {
                                         </ThemedScrollbars>
                                     )}
                                     {this.state.poa_status !== PoaStatusCodes.none && !resubmit_poa && (
-                                        <ThemedScrollbars height={height}>
+                                        <ThemedScrollbars height={height} is_bypassed={isMobile()}>
                                             {submitted_poa && (
                                                 <PoaSubmitted
                                                     is_description_disabled={true}
@@ -411,11 +423,11 @@ class MT5POA extends React.Component {
                                         </ThemedScrollbars>
                                     )}
                                     <Modal.Footer is_bypassed={isMobile()}>
-                                        {is_form_visible && (
+                                        {(this.state.poa_status === PoaStatusCodes.verified || is_form_visible) && (
                                             <FormSubmitButton
                                                 has_cancel
                                                 cancel_label={localize('Previous')}
-                                                is_disabled={!!Object.keys(errors).length || isSubmitting}
+                                                is_disabled={this.isFormDisabled(dirty, errors)}
                                                 label={localize('Next')}
                                                 is_absolute={isMobile()}
                                                 is_loading={isSubmitting}

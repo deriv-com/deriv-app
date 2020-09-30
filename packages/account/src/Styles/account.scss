@@ -1596,7 +1596,7 @@ $MIN_HEIGHT_FLOATING: calc(
 .dc-modal__container_self_exclusion__article-modal {
     .self-exclusion {
         &__article {
-            width: 440px;
+            max-width: 440px;
             height: auto;
             display: flex;
             flex-direction: column;

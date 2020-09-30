@@ -367,11 +367,6 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    setRealAccountSignupTarget(target = this.root_store.client.upgradeable_landing_companies?.[0]) {
-        this.real_account_signup_target = target;
-    }
-
-    @action.bound
     openRealAccountSignup(target = this.root_store.client.upgradeable_landing_companies?.[0]) {
         this.is_real_acc_signup_on = true;
         this.real_account_signup_target = target;

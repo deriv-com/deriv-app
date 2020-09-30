@@ -139,7 +139,7 @@ export const personalDetailsConfig = ({
         props: {
             validate: generateValidationFunction(
                 real_account_signup_target,
-                transformConfig(config, real_account_signup_target)
+                transformConfig(config, { real_account_signup_target })
             ),
             is_svg: upgrade_info?.can_upgrade_to === 'svg',
             account_opening_reason_list: [
@@ -180,7 +180,7 @@ export const personalDetailsConfig = ({
     };
 };
 
-const transformConfig = (config, real_account_signup_target) => {
+const transformConfig = (config, { real_account_signup_target }) => {
     // Remove required rule for malta and iom
     if (['malta', 'iom'].includes(real_account_signup_target)) {
         config.tax_residence.rules.shift();

@@ -53,7 +53,7 @@ export default class RunPanelStore {
 
     @action.bound
     async onRunButtonClick() {
-        const { core, contract_card, route_prompt_dialog, self_exclusion } = this.root_store;
+        const { core, summary_card, route_prompt_dialog, self_exclusion } = this.root_store;
         const { client, ui } = core;
 
         this.dbot.unHighlightAllBlocks();
@@ -86,7 +86,7 @@ export default class RunPanelStore {
             this.toggleDrawer(true);
             this.run_id = `run-${Date.now()}`;
 
-            contract_card.clear();
+            summary_card.clear();
             this.setContractStage(contract_stages.STARTING);
             this.dbot.runBot();
         });
@@ -126,13 +126,13 @@ export default class RunPanelStore {
 
     @action.bound
     clearStat() {
-        const { contract_card, journal, transactions } = this.root_store;
+        const { summary_card, journal, transactions } = this.root_store;
 
         this.is_running = false;
         this.has_open_contract = false;
         this.clear();
         journal.clear();
-        contract_card.clear();
+        summary_card.clear();
         transactions.clear();
         this.setContractStage(contract_stages.NOT_RUNNING);
     }
@@ -212,7 +212,7 @@ export default class RunPanelStore {
 
     // #region Bot listenets
     registerBotListeners() {
-        const { contract_card, transactions } = this.root_store;
+        const { summary_card, transactions } = this.root_store;
 
         observer.register('bot.running', this.onBotRunningEvent);
         observer.register('bot.stop', this.onBotStopEvent);
@@ -220,7 +220,7 @@ export default class RunPanelStore {
         observer.register('bot.trade_again', this.onBotTradeAgain);
         observer.register('contract.status', this.onContractStatusEvent);
         observer.register('bot.contract', this.onBotContractEvent);
-        observer.register('bot.contract', contract_card.onBotContractEvent);
+        observer.register('bot.contract', summary_card.onBotContractEvent);
         observer.register('bot.contract', transactions.onBotContractEvent);
         observer.register('Error', this.onError);
     }
@@ -379,7 +379,7 @@ export default class RunPanelStore {
     @action.bound
     onError(data) {
         if (unrecoverable_errors.includes(data.name)) {
-            this.root_store.contract_card.clear();
+            this.root_store.summary_card.clear();
             this.error_type = error_types.UNRECOVERABLE_ERRORS;
         } else {
             this.error_type = error_types.RECOVERABLE_ERRORS;

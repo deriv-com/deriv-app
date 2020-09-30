@@ -313,7 +313,6 @@ const ChartTrade = connect(({ modules, ui, common }) => ({
         countdown: ui.is_chart_countdown_visible,
         isHighestLowestMarkerEnabled: false, // TODO: Pending UI,
         language: common.current_language.toLowerCase(),
-        lang: common.current_language,
         position: ui.is_chart_layout_default ? 'bottom' : 'left',
         theme: ui.is_dark_mode_on ? 'dark' : 'light',
     },

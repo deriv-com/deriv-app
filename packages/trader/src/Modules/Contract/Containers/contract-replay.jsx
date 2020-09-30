@@ -278,7 +278,7 @@ const ReplayChart = connect(({ modules, ui, common }) => {
     const contract_config = contract_store.contract_config;
     const is_chart_ready = contract_replay.is_chart_ready;
     const settings = {
-        lang: common.current_language,
+        language: common.current_language.toLowerCase(),
         theme: ui.is_dark_mode_on ? 'dark' : 'light',
         position: ui.is_chart_layout_default ? 'bottom' : 'left',
         countdown: ui.is_chart_countdown_visible,

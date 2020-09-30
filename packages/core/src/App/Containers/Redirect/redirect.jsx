@@ -7,6 +7,7 @@ import { WS } from 'Services';
 
 const Redirect = ({
     history,
+    currency,
     setVerificationCode,
     has_any_real_account,
     openRealAccountSignup,
@@ -40,8 +41,9 @@ const Redirect = ({
         }
         case 'add_account': {
             WS.wait('get_account_status').then(() => {
-                if (has_any_real_account) openRealAccountSignup('manage');
-                else openRealAccountSignup();
+                if (!currency) return openRealAccountSignup('set_currency');
+                if (has_any_real_account) return openRealAccountSignup('manage');
+                return openRealAccountSignup();
             });
             const ext_platform_url = url_params.get('ext_platform_url');
             if (ext_platform_url) {
@@ -85,6 +87,7 @@ Redirect.propTypes = {
 
 export default withRouter(
     connect(({ client, ui }) => ({
+        currency: client.currency,
         setVerificationCode: client.setVerificationCode,
         fetchResidenceList: client.fetchResidenceList,
         has_any_real_account: client.has_any_real_account,

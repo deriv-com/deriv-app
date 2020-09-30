@@ -1,6 +1,5 @@
 import React from 'react';
 import { routes } from '@deriv/shared';
-
 import { localize } from '@deriv/translations';
 import {
     AccountLimits,
@@ -23,7 +22,7 @@ import {
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
 
 // Order matters
-const initRoutesConfig = () => [
+const initRoutesConfig = ({ is_deriv_crypto }) => [
     {
         path: routes.account_deactivated,
         component: AccountDeactivated,
@@ -47,29 +46,37 @@ const initRoutesConfig = () => [
                         title: localize('Personal details'),
                         default: true,
                     },
-                    {
-                        path: routes.financial_assessment,
-                        component: FinancialAssessment,
-                        title: localize('Financial assessment'),
-                    },
+                    ...(is_deriv_crypto
+                        ? []
+                        : [
+                              {
+                                  path: routes.financial_assessment,
+                                  component: FinancialAssessment,
+                                  title: localize('Financial assessment'),
+                              },
+                          ]),
                 ],
             },
-            {
-                title: localize('Verification'),
-                icon: 'IcVerification',
-                subroutes: [
-                    {
-                        path: routes.proof_of_identity,
-                        component: ProofOfIdentity,
-                        title: localize('Proof of identity'),
-                    },
-                    {
-                        path: routes.proof_of_address,
-                        component: ProofOfAddress,
-                        title: localize('Proof of address'),
-                    },
-                ],
-            },
+            ...(is_deriv_crypto
+                ? []
+                : [
+                      {
+                          title: localize('Verification'),
+                          icon: 'IcVerification',
+                          subroutes: [
+                              {
+                                  path: routes.proof_of_identity,
+                                  component: ProofOfIdentity,
+                                  title: localize('Proof of identity'),
+                              },
+                              {
+                                  path: routes.proof_of_address,
+                                  component: ProofOfAddress,
+                                  title: localize('Proof of address'),
+                              },
+                          ],
+                      },
+                  ]),
             {
                 title: localize('Security and safety'),
                 icon: 'IcSecurity',
@@ -125,9 +132,9 @@ let routesConfig;
 // For default page route if page/path is not found, must be kept at the end of routes_config array
 const route_default = { component: Page404, title: localize('Error 404') };
 
-const getRoutesConfig = () => {
+const getRoutesConfig = ({ is_deriv_crypto }) => {
     if (!routesConfig) {
-        routesConfig = initRoutesConfig();
+        routesConfig = initRoutesConfig({ is_deriv_crypto });
         routesConfig.push(route_default);
     }
     return routesConfig;

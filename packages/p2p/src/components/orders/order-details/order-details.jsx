@@ -1,53 +1,66 @@
+import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Dialog } from '@deriv/components';
-import { localize } from 'Components/i18next';
-import { chatCreate } from 'Utils/sendbird';
-import OrderDetailsStatusBlock from './order-details-status-block.jsx';
-import OrderInfoBlock from './order-info-block.jsx';
-import OrderDetailsAmountBlock from './order-details-amount-block.jsx';
+import { ThemedScrollbars } from '@deriv/components';
+import { getFormattedText } from '@deriv/shared';
+import { Localize, localize } from 'Components/i18next';
+import { requestWS } from 'Utils/websocket';
+import OrderDetailsFooter from './order-details-footer.jsx';
 import OrderDetailsChatbox from './order-details-chatbox.jsx';
-import OrderDetailsTimerBlock from './order-details-timer-block.jsx';
-import OrderActionsBlock from './order-actions-block.jsx';
-import OrderDetailsResultMessage from './order-details-result-message.jsx';
+import OrderDetailsTimer from './order-details-timer.jsx';
+import OrderInfoBlock from './order-info-block.jsx';
 import Popup from '../popup.jsx';
-
 import './order-details.scss';
 
-const OrderDetails = ({ order_details, chat_info }) => {
+const OrderDetails = ({ order_information, chat_info }) => {
     const {
-        advertiser_name,
-        advertiser_instructions,
+        account_currency,
+        advert_details,
+        amount_display,
         chat_channel_url,
         contact_info,
-        display_offer_amount,
-        display_price_rate,
-        display_transaction_amount,
-        is_buyer,
-        is_incoming,
-        is_expired,
-        is_completed,
-        is_buyer_cancelled,
-        offer_currency,
         id,
-        order_purchase_datetime,
+        is_buyer_confirmed_order,
+        is_completed_order,
+        is_pending_order,
+        labels,
+        local_currency,
+        other_user_details,
         payment_info,
-        transaction_currency,
-    } = order_details;
+        price,
+        purchase_time,
+        rate,
+        should_highlight_alert,
+        should_highlight_danger,
+        should_show_order_footer,
+        status_string,
+    } = order_information;
+
     const is_mounted = React.useRef(false);
     const [channel_url, setChannelUrl] = React.useState(chat_channel_url);
-    const [show_popup, setShowPopup] = React.useState(false);
+    const [should_show_popup, setShouldShowPopup] = React.useState(false);
     const [popup_options, setPopupOptions] = React.useState({});
-    const onCancelClick = () => setShowPopup(false);
+    const onCancelClick = () => setShouldShowPopup(false);
     const handleShowPopup = options => {
         setPopupOptions(options);
-        setShowPopup(true);
+        setShouldShowPopup(true);
     };
+
     React.useEffect(() => {
         is_mounted.current = true;
+
         if (!channel_url) {
-            chatCreate(id).then(val => {
-                if (is_mounted.current) setChannelUrl(val.channel_url);
+            // If order_information doesn't have channel_url this is a new order
+            // and we need to instruct BE to create a chat on Sendbird's side.
+            requestWS({ p2p_chat_create: 1, order_id: id }).then(response => {
+                if (response.error) {
+                    // TODO: Handle error.
+                    return;
+                }
+
+                if (is_mounted.current) {
+                    setChannelUrl(response.p2p_chat_create);
+                }
             });
         }
 
@@ -58,100 +71,100 @@ const OrderDetails = ({ order_details, chat_info }) => {
         <div className='order-details'>
             <div className='order-details__container'>
                 <div className='order-details__wrapper'>
-                    <div className='order-details__wrapper--inner'>
-                        <div className='order-details__header'>
-                            <span>
-                                <OrderDetailsStatusBlock order_details={order_details} />
-                                <OrderDetailsResultMessage order_details={order_details} />
-                                {!is_expired && !is_completed && !is_buyer_cancelled && (
-                                    <React.Fragment>
-                                        <OrderDetailsAmountBlock order_details={order_details} />
-                                        <h1 className='order-details__header-method'>
-                                            {order_details.display_payment_method}
-                                        </h1>
-                                    </React.Fragment>
+                    <div className='order-details__header'>
+                        <div className='order-details__header--left'>
+                            <div
+                                className={classNames(
+                                    'order-details__header-status',
+                                    'order-details__header-status--info',
+                                    {
+                                        'order-details__header-status--alert': should_highlight_alert,
+                                        'order-details__header-status--danger': should_highlight_danger,
+                                        'order-details__header-status--success': is_completed_order,
+                                    }
                                 )}
-                            </span>
-                            <OrderDetailsTimerBlock order_details={order_details} />
+                            >
+                                {status_string}
+                            </div>
+                            {is_completed_order && (
+                                <div className='order-details__wrapper-message'>{labels.result_string}</div>
+                            )}
+                            {(is_pending_order || is_buyer_confirmed_order) && (
+                                <div className='order-details__header-amount'>
+                                    {getFormattedText(price, local_currency)}
+                                </div>
+                            )}
+                            <div className='order-details__header-id'>
+                                <Localize i18n_default_text='Order ID {{ id }}' values={{ id }} />
+                            </div>
                         </div>
-                        <div className='order-details__separator' />
+                        <div className='order-details__header--right'>
+                            <OrderDetailsTimer order_information={order_information} />
+                        </div>
+                    </div>
+                    <ThemedScrollbars height='calc(100% - 11.2rem)'>
+                        {/* Above calculation is: (parent height - order header height) */}
                         <div className='order-details__info'>
                             <div className='order-details__info-columns'>
                                 <div className='order-details__info--left'>
-                                    <OrderInfoBlock
-                                        label={is_buyer ? localize('Seller') : localize('Buyer')}
-                                        // TODO: Once we have access to other party's information we can update below.
-                                        value={advertiser_name}
-                                    />
+                                    <OrderInfoBlock label={labels.other_party_role} value={other_user_details.name} />
                                 </div>
                                 <div className='order-details__info--right'>
                                     <OrderInfoBlock
-                                        label={localize('Rate (1 {{offer_currency}})', { offer_currency })}
-                                        value={`${display_price_rate} ${transaction_currency}`}
+                                        label={localize('Rate (1 {{ account_currency }})', { account_currency })}
+                                        value={getFormattedText(rate, local_currency)}
                                     />
                                 </div>
                             </div>
-                            {is_buyer && (
-                                <React.Fragment>
-                                    <OrderInfoBlock
-                                        label={localize('Seller payment instructions')}
-                                        value={payment_info || '-'}
-                                    />
-                                    <OrderInfoBlock
-                                        label={localize('Seller contact details')}
-                                        value={contact_info || '-'}
-                                    />
-                                </React.Fragment>
-                            )}
-                            {!is_incoming && (
-                                <OrderInfoBlock
-                                    label={is_buyer ? localize('Seller instructions') : localize('Buyer instructions')}
-                                    value={advertiser_instructions || '-'}
-                                />
-                            )}
                             <div className='order-details__info-columns'>
                                 <div className='order-details__info--left'>
                                     <OrderInfoBlock
-                                        label={is_buyer ? localize('Send') : localize('Receive')}
-                                        value={`${display_transaction_amount} ${transaction_currency}`}
+                                        label={labels.left_send_or_receive}
+                                        value={getFormattedText(price, local_currency)}
                                     />
-                                    <OrderInfoBlock label={localize('Order ID')} value={id} />
+                                    <OrderInfoBlock label={localize('Time')} value={purchase_time} />
                                 </div>
                                 <div className='order-details__info--right'>
                                     <OrderInfoBlock
-                                        label={is_buyer ? localize('Receive') : localize('Send')}
-                                        value={`${display_offer_amount} ${offer_currency}`}
+                                        label={labels.right_send_or_receive}
+                                        value={`${amount_display} ${account_currency}`}
                                     />
-                                    <OrderInfoBlock label={localize('Time')} value={order_purchase_datetime} />
                                 </div>
                             </div>
+                            <OrderInfoBlock label={labels.payment_details} value={payment_info || '-'} />
+                            <OrderInfoBlock label={labels.contact_details} value={contact_info || '-'} />
+                            <OrderInfoBlock label={labels.instructions} value={advert_details.description || '-'} />
                         </div>
-                        <div className='order-details__footer'>
-                            <OrderActionsBlock
-                                cancelPopup={onCancelClick}
-                                showPopup={handleShowPopup}
-                                order_details={order_details}
-                            />
-                        </div>
-                    </div>
+                    </ThemedScrollbars>
+                    {should_show_order_footer && (
+                        <OrderDetailsFooter
+                            cancelPopup={onCancelClick}
+                            showPopup={handleShowPopup}
+                            order_information={order_information}
+                        />
+                    )}
                 </div>
                 {channel_url && (
-                    <OrderDetailsChatbox {...chat_info} channel_url={channel_url} nickname={advertiser_name} />
+                    <OrderDetailsChatbox
+                        {...chat_info}
+                        channel_url={chat_channel_url}
+                        nickname={other_user_details.name}
+                    />
                 )}
-                {show_popup && (
-                    <div className='orders__dialog'>
-                        <Dialog is_visible={show_popup}>
-                            <Popup {...popup_options} onCancel={onCancelClick} />
-                        </Dialog>
-                    </div>
-                )}
+                <Popup
+                    {...popup_options}
+                    onCancel={onCancelClick}
+                    should_show_popup={should_show_popup}
+                    setShouldShowPopup={setShouldShowPopup}
+                />
             </div>
         </div>
     );
 };
 
 OrderDetails.propTypes = {
-    order_details: PropTypes.object,
+    chat_info: PropTypes.object,
+    order_information: PropTypes.object,
 };
 
 export default OrderDetails;

@@ -1,10 +1,10 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Icon, Label, Money } from '@deriv/components';
+import { Icon, Label, Money, ContractCard } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import ProgressSliderStream from 'App/Containers/ProgressSliderStream';
-import MultiplierCloseActions from 'App/Components/Elements/PositionsDrawer/PositionsDrawerCard/multiplier-close-actions.jsx';
+import { getCardLabels } from 'Constants/contract';
 import { getProfitOrLoss } from 'Modules/Reports/Helpers/profit-loss';
 import IndicativeCell from '../Components/indicative-cell.jsx';
 import MarketSymbolIconRow from '../Components/market-symbol-icon-row.jsx';
@@ -218,6 +218,7 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
     onClickCancel,
     onClickSell,
     getPositionById,
+    server_time,
 }) => [
     {
         title: 'Type',
@@ -355,11 +356,13 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
 
             return (
                 <div className='open-positions__row-action'>
-                    <MultiplierCloseActions
+                    <ContractCard.MultiplierCloseActions
                         contract_info={contract_info}
+                        getCardLabels={getCardLabels}
                         is_sell_requested={is_sell_requested}
                         onClickCancel={onClickCancel}
                         onClickSell={onClickSell}
+                        server_time={server_time}
                     />
                 </div>
             );

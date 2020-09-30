@@ -1,44 +1,12 @@
 import React from 'react';
 import { Button, Icon, Money, ThemedScrollbars } from '@deriv/components';
-import { formatMoney } from '@deriv/shared';
+import { formatMoney, getMT5Account, getMT5AccountDisplay } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-
-// TODO: [move-to-shared] - Remove the implementation in ClientBase and add this to shared utils
-const getMT5AccountType = (group) =>
-    group
-        ? group
-              .replace('\\', '_')
-              .replace(/_(\d+|master|EUR|GBP|Bbook|HighRisk)/i, '')
-              // TODO: [remove-standard-advanced] remove standard and advanced when API groups are updated
-              .replace(/_standard$/, '_financial')
-              .replace(/_advanced$/, '_financial_stp')
-        : '';
-
-const getMT5AccountDisplay = (group) => {
-    if (!group) return {};
-
-    const value = getMT5AccountType(group);
-    let display_text = localize('MT5');
-    if (/svg$/.test(value) || /malta$/.test(value)) {
-        display_text = localize('Synthetic');
-    } else if (
-        /vanuatu/.test(value) ||
-        /svg_(standard|financial)/.test(value) ||
-        /maltainvest_financial$/.test(value)
-    ) {
-        // TODO: [remove-standard-advanced] remove standard when API groups are updated
-        display_text = localize('Financial');
-    } else if (/labuan/.test(value)) {
-        display_text = localize('Financial STP');
-    }
-
-    return display_text;
-};
 
 const getDerivAccount = (client_accounts, login_id) =>
     client_accounts.find((client_account) => client_account.loginid === login_id);
 
-const getMT5Account = (mt5_login_list, login_id) =>
+const getCurrMT5Account = (mt5_login_list, login_id) =>
     mt5_login_list.find((account_obj) => account_obj.login === login_id);
 
 const Wrapper = ({ children, title }) => (
@@ -76,7 +44,7 @@ const AccountHasBalanceOrOpenPositions = ({ details, mt5_login_list, client_acco
             if (deriv_account) {
                 deriv_open_positions.push({ ...deriv_account, ...info });
             } else {
-                const mt5_account = getMT5Account(mt5_login_list, login_id);
+                const mt5_account = getCurrMT5Account(mt5_login_list, login_id);
                 if (mt5_account) {
                     mt5_open_positions.push({ ...mt5_account, ...info });
                 }
@@ -93,7 +61,7 @@ const AccountHasBalanceOrOpenPositions = ({ details, mt5_login_list, client_acco
             if (deriv_account) {
                 deriv_balance.push({ ...deriv_account, ...info });
             } else {
-                const mt5_account = getMT5Account(mt5_login_list, login_id);
+                const mt5_account = getCurrMT5Account(mt5_login_list, login_id);
                 if (mt5_account) {
                     mt5_balance.push({ ...mt5_account, ...info });
                 }
@@ -145,7 +113,7 @@ const AccountHasBalanceOrOpenPositions = ({ details, mt5_login_list, client_acco
                     {mt5_open_positions.map((account) => (
                         <Content
                             key={account.login}
-                            currency_icon={`IcMt5-${getMT5AccountDisplay(account.group)}`}
+                            currency_icon={`IcMt5-${getMT5Account(account.group)}`}
                             loginid={account.display_login}
                             title={getMT5AccountDisplay(account.group)}
                             value={
@@ -163,7 +131,7 @@ const AccountHasBalanceOrOpenPositions = ({ details, mt5_login_list, client_acco
                     {mt5_balance.map((account) => (
                         <Content
                             key={account.login}
-                            currency_icon={`IcMt5-${getMT5AccountDisplay(account.group)}`}
+                            currency_icon={`IcMt5-${getMT5Account(account.group)}`}
                             loginid={account.display_login}
                             title={getMT5AccountDisplay(account.group)}
                             value={

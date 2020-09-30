@@ -1,13 +1,14 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import { removeBranchName, routes, isEmptyObject } from '@deriv/shared';
+import { removeBranchName, routes, isEmptyObject, default_title, PlatformContext } from '@deriv/shared';
 
 import { redirectToLogin, redirectToSignUp } from '_common/base/login';
 import LoginPrompt from 'App/Components/Elements/login-prompt.jsx';
-import { default_title } from 'App/Constants/app-config';
 import { connect } from 'Stores/connect';
 
 const RouteWithSubRoutes = route => {
+    const { is_deriv_crypto } = React.useContext(PlatformContext);
+
     const renderFactory = props => {
         let result = null;
         if (route.component === Redirect) {
@@ -20,7 +21,13 @@ const RouteWithSubRoutes = route => {
             }
             result = <Redirect to={to} />;
         } else if (route.is_authenticated && !route.is_logged_in) {
-            result = <LoginPrompt onLogin={redirectToLogin} onSignup={redirectToSignUp} page_title={route.title} />;
+            result = (
+                <LoginPrompt
+                    onLogin={redirectToLogin}
+                    onSignup={() => redirectToSignUp({ is_deriv_crypto })}
+                    page_title={route.title}
+                />
+            );
         } else {
             const default_subroute = route.routes ? route.routes.find(r => r.default) : {};
             const has_default_subroute = !isEmptyObject(default_subroute);

@@ -4,9 +4,8 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { DesktopWrapper, MobileWrapper, DataList, DataTable } from '@deriv/components';
-import { urlFor, isDesktop } from '@deriv/shared';
+import { extractInfoFromShortcode, isDesktop, urlFor, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { website_name } from 'App/Constants/app-config';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
 import CompositeCalendar from 'App/Components/Form/CompositeCalendar';
 import { getContractPath } from 'App/Components/Routes/helpers';
@@ -17,7 +16,6 @@ import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message.
 import PlaceholderComponent from '../Components/placeholder-component.jsx';
 import { ReportsMeta } from '../Components/reports-meta.jsx';
 import { getProfitTableColumnsTemplate } from '../Constants/data-table-constants';
-import Shortcode from '../Helpers/shortcode';
 
 class ProfitTable extends React.Component {
     componentDidMount() {
@@ -84,7 +82,7 @@ class ProfitTable extends React.Component {
     };
 
     getRowAction = row_obj =>
-        getSupportedContracts()[Shortcode.extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase()]
+        getSupportedContracts()[extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase()]
             ? getContractPath(row_obj.contract_id)
             : {
                   component: (
@@ -153,49 +151,55 @@ class ProfitTable extends React.Component {
                     filter_component={filter_component}
                     className='profit-table__filter'
                 />
-                {data.length === 0 || is_empty ? (
-                    <PlaceholderComponent
-                        is_loading={is_loading}
-                        has_selected_date={has_selected_date}
-                        is_empty={is_empty}
-                        empty_message_component={EmptyTradeHistoryMessage}
-                        component_icon={component_icon}
-                        localized_message={localize('You have no trading activity yet.')}
-                        localized_period_message={localize('You have no trading activity for this period.')}
-                    />
+                {this.props.is_switching ? (
+                    <PlaceholderComponent is_loading={true} />
                 ) : (
-                    <>
-                        <DesktopWrapper>
-                            <DataTable
-                                className='profit-table'
-                                data_source={data}
-                                columns={this.columns}
-                                onScroll={handleScroll}
-                                footer={totals}
+                    <React.Fragment>
+                        {data.length === 0 || is_empty ? (
+                            <PlaceholderComponent
+                                is_loading={is_loading}
+                                has_selected_date={has_selected_date}
                                 is_empty={is_empty}
-                                getRowAction={this.getRowAction}
-                                custom_width={'100%'}
-                                getRowSize={() => 63}
-                                content_loader={ReportsTableRowLoader}
-                            >
-                                <PlaceholderComponent is_loading={is_loading} />
-                            </DataTable>
-                        </DesktopWrapper>
-                        <MobileWrapper>
-                            <DataList
-                                className='profit-table'
-                                data_source={data}
-                                rowRenderer={this.mobileRowRenderer}
-                                getRowAction={this.getRowAction}
-                                onScroll={handleScroll}
-                                footer={totals}
-                                custom_width={'100%'}
-                                getRowSize={() => 204}
-                            >
-                                <PlaceholderComponent is_loading={is_loading} />
-                            </DataList>
-                        </MobileWrapper>
-                    </>
+                                empty_message_component={EmptyTradeHistoryMessage}
+                                component_icon={component_icon}
+                                localized_message={localize('You have no trading activity yet.')}
+                                localized_period_message={localize('You have no trading activity for this period.')}
+                            />
+                        ) : (
+                            <>
+                                <DesktopWrapper>
+                                    <DataTable
+                                        className='profit-table'
+                                        data_source={data}
+                                        columns={this.columns}
+                                        onScroll={handleScroll}
+                                        footer={totals}
+                                        is_empty={is_empty}
+                                        getRowAction={this.getRowAction}
+                                        custom_width={'100%'}
+                                        getRowSize={() => 63}
+                                        content_loader={ReportsTableRowLoader}
+                                    >
+                                        <PlaceholderComponent is_loading={is_loading} />
+                                    </DataTable>
+                                </DesktopWrapper>
+                                <MobileWrapper>
+                                    <DataList
+                                        className='profit-table'
+                                        data_source={data}
+                                        rowRenderer={this.mobileRowRenderer}
+                                        getRowAction={this.getRowAction}
+                                        onScroll={handleScroll}
+                                        footer={totals}
+                                        custom_width={'100%'}
+                                        getRowSize={() => 204}
+                                    >
+                                        <PlaceholderComponent is_loading={is_loading} />
+                                    </DataList>
+                                </MobileWrapper>
+                            </>
+                        )}
+                    </React.Fragment>
                 )}
             </React.Fragment>
         );
@@ -216,6 +220,7 @@ ProfitTable.propTypes = {
     history: PropTypes.object,
     is_empty: PropTypes.bool,
     is_loading: PropTypes.bool,
+    is_switching: PropTypes.bool,
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
     totals: PropTypes.object,
@@ -223,6 +228,7 @@ ProfitTable.propTypes = {
 
 export default connect(({ modules, client }) => ({
     currency: client.currency,
+    is_switching: client.is_switching,
     data: modules.profit_table.data,
     date_from: modules.profit_table.date_from,
     date_to: modules.profit_table.date_to,

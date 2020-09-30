@@ -1,5 +1,5 @@
 import React from 'react';
-import { Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 
 export const getCardLabels = () => ({
     APPLY: localize('Apply'),

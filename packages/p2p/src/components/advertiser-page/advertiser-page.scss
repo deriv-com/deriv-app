@@ -124,7 +124,7 @@
             height: calc(100% - 200px);
         }
         &-scrollbar {
-            height: 482px;
+            height: calc(100vh - 527px);
             position: absolute;
             width: 657px;
         }

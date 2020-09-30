@@ -6,7 +6,7 @@ import { localize } from '@deriv/translations';
 import SearchInput from './search-input.jsx';
 import NoResultsMessage from './no-results-message.jsx';
 import { Header } from '../ContractTypeInfo';
-import { getContractCategoryLabel, getContractsList, getFilteredList } from '../../../../Helpers/contract-type';
+import { getContractCategoryLabel } from '../../../../Helpers/contract-type';
 
 class Dialog extends React.PureComponent {
     dialog_ref = React.createRef();

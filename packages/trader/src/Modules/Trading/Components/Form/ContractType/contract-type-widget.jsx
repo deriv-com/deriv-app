@@ -123,11 +123,11 @@ class ContractTypeWidget extends React.PureComponent {
                   },
               ]
         ).map(contract_category => {
-            contract_category['contract_types'] = contract_category.contract_categories.reduce(
+            contract_category.contract_types = contract_category.contract_categories.reduce(
                 (aray, x) => [...aray, ...x.contract_types],
                 []
             );
-            contract_category['icon'] = contract_type_category_icon[contract_category.label];
+            contract_category.icon = contract_type_category_icon[contract_category.label];
 
             if (search_query) {
                 contract_category.contract_categories = contract_category.contract_categories.filter(category =>

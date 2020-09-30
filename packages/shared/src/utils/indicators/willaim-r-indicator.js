@@ -6,7 +6,7 @@ const calcWilliamRIndicator = (low_list, high_list, close_list, period, pipSize)
     sequence(low_list.length - period + 1).map((x, i) => {
         const min = Math.min(...low_list.slice(i, i + period));
         const max = Math.max(...high_list.slice(i, i + period));
-        list[i] = (+((max - close_list[i + period - 1]) / (max - min)) * -100).toFixed(pipSize);
+        list[i] = +(((max - close_list[i + period - 1]) / (max - min)) * -100).toFixed(pipSize);
     });
 
     return list;

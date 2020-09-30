@@ -24,11 +24,10 @@ const calcStochasticOscillator = (
     });
 
     sequence(low_list.length - k_period - k_slowing_period + 2).map((x, i) => {
-        k_list[i] = (
-            +(
-                close_min_list.slice(i, i + k_slowing_period).reduce((a, b) => a + b, 0) /
-                max_min_list.slice(i, i + k_slowing_period).reduce((a, b) => a + b, 0)
-            ) * 100
+        k_list[i] = +(
+            (close_min_list.slice(i, i + k_slowing_period).reduce((a, b) => a + b, 0) /
+                max_min_list.slice(i, i + k_slowing_period).reduce((a, b) => a + b, 0)) *
+            100
         ).toFixed(pipSize);
     });
 

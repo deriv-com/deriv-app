@@ -1597,6 +1597,7 @@ $MIN_HEIGHT_FLOATING: calc(
     .self-exclusion {
         &__article {
             max-width: 440px;
+            max-height: 480px;
             height: auto;
             display: flex;
             flex-direction: column;

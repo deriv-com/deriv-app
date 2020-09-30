@@ -362,7 +362,9 @@ class SelfExclusion extends React.Component {
                                         is_open={show_article}
                                         toggleModal={this.toggleArticle}
                                     >
-                                        <ArticleContent toggleModal={this.toggleArticle} />
+                                        <ThemedScrollbars>
+                                            <ArticleContent toggleModal={this.toggleArticle} />
+                                        </ThemedScrollbars>
                                     </Modal>
                                     {is_confirm_page ? (
                                         <>

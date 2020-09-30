@@ -1,11 +1,12 @@
 // noop
 import React from 'react';
-import { getStaticUrl } from '@deriv/shared';
+import { getStaticUrl, PlatformContext } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { Icon } from '@deriv/components';
 import { connect } from 'Stores/connect';
 
 const ArticleContent = ({ is_eu, toggleModal }) => {
+    const { is_deriv_crypto } = React.useContext(PlatformContext);
     const eu_items = [
         <Localize
             key={0}
@@ -16,7 +17,7 @@ const ArticleContent = ({ is_eu, toggleModal }) => {
                     className='link link--orange'
                     rel='noopener noreferrer'
                     target='_blank'
-                    href={getStaticUrl('/responsible-trading')}
+                    href={getStaticUrl('/responsible-trading', { is_deriv_crypto })}
                 />,
             ]}
         />,
@@ -29,7 +30,7 @@ const ArticleContent = ({ is_eu, toggleModal }) => {
                     className='link link--orange'
                     rel='noopener noreferrer'
                     target='_blank'
-                    href={getStaticUrl('/contact-us')}
+                    href={getStaticUrl('/contact-us', { is_deriv_crypto })}
                 />,
             ]}
         />,
@@ -46,7 +47,7 @@ const ArticleContent = ({ is_eu, toggleModal }) => {
                     className='link link--orange'
                     rel='noopener noreferrer'
                     target='_blank'
-                    href={getStaticUrl('/contact-us')}
+                    href={getStaticUrl('/contact-us', { is_deriv_crypto })}
                 />,
             ]}
         />,
@@ -59,7 +60,7 @@ const ArticleContent = ({ is_eu, toggleModal }) => {
                     className='link link--orange'
                     rel='noopener noreferrer'
                     target='_blank'
-                    href={getStaticUrl('/contact-us')}
+                    href={getStaticUrl('/contact-us', { is_deriv_crypto })}
                 />,
             ]}
         />,
@@ -75,7 +76,7 @@ const ArticleContent = ({ is_eu, toggleModal }) => {
                     className='link link--orange'
                     rel='noopener noreferrer'
                     target='_blank'
-                    href={getStaticUrl('/responsible-trading')}
+                    href={getStaticUrl('/responsible-trading', { is_deriv_crypto })}
                 />,
             ]}
         />,
@@ -96,7 +97,7 @@ const ArticleContent = ({ is_eu, toggleModal }) => {
                     className='link link--orange'
                     rel='noopener noreferrer'
                     target='_blank'
-                    href={getStaticUrl('/contact-us')}
+                    href={getStaticUrl('/contact-us', { is_deriv_crypto })}
                 />,
             ]}
         />,

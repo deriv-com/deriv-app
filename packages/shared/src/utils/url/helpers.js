@@ -13,8 +13,8 @@ export const getUrlSmartTrader = () => {
 
 export const getPlatformFromUrl = (domain = window.location.hostname) => {
     return {
-        is_staging_deriv_crypto: /^staging-app\.deriv\.com$/i.test(domain),
-        is_staging_deriv_app: /^staging-app\.derivcrypto\.com$/i.test(domain),
+        is_staging_deriv_crypto: /^staging-app\.derivcrypto\.com$/i.test(domain),
+        is_staging_deriv_app: /^staging-app\.deriv\.com$/i.test(domain),
         is_deriv_crypto: /^app\.derivcrypto\.com$/i.test(domain),
         is_deriv_app: /^app\.deriv\.com$/i.test(domain),
         is_test_link: /^(.*)\.binary\.sx$/i.test(domain),

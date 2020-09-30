@@ -1,7 +1,7 @@
 import { action, observable } from 'mobx';
 import { routes, toMoment, getUrlSmartTrader, isMobile } from '@deriv/shared';
 import ServerTime from '_common/base/server_time';
-import { currentLanguage } from 'Utils/Language/index';
+import { currentLanguage, getAllowedLanguages } from 'Utils/Language/index';
 import BaseStore from './base-store';
 import { clientNotifications } from './Helpers/client-notifications';
 
@@ -12,6 +12,7 @@ export default class CommonStore extends BaseStore {
 
     @observable server_time = ServerTime.get() || toMoment(); // fallback: get current time from moment.js
     @observable current_language = currentLanguage;
+    @observable allowed_languages = Object.keys(getAllowedLanguages());
     @observable has_error = false;
 
     @observable error = {

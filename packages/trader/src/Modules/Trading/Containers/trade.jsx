@@ -260,7 +260,6 @@ class ChartTradeClass extends React.Component {
         const max_ticks = this.props.granularity === 0 ? 8 : 24;
 
         if (!symbol || active_markets.length === 0) return null;
-
         return (
             <SmartChart
                 ref={ref => (this.charts_ref = ref)}
@@ -310,9 +309,11 @@ const ChartTrade = connect(({ modules, ui, common }) => ({
     granularity: modules.contract_trade.granularity,
     chart_type: modules.contract_trade.chart_type,
     settings: {
+        activeLanguages: [...common.allowed_languages],
         assetInformation: false, // ui.is_chart_asset_info_visible,
         countdown: ui.is_chart_countdown_visible,
         isHighestLowestMarkerEnabled: false, // TODO: Pending UI,
+        language: common.current_language,
         lang: common.current_language,
         position: ui.is_chart_layout_default ? 'bottom' : 'left',
         theme: ui.is_dark_mode_on ? 'dark' : 'light',

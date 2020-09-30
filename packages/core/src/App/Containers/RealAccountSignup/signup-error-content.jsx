@@ -52,12 +52,12 @@ const TryAgain = ({ text, onConfirm }) => (
     </Button>
 );
 
-const ErrorCTA = () => {
+const ErrorCTA = ({ code, onConfirm }) => {
     switch (code) {
         case 'CurrencyTypeNotAllowed':
-            return <TryAgain text={localize('Try a different currency')} />;
+            return <TryAgain text={localize('Try a different currency')} onConfirm={onConfirm} />;
         case 'InvalidPhone':
-            return <TryAgain text={localize('Try a different phone number')} />;
+            return <TryAgain text={localize('Try a different phone number')} onConfirm={onConfirm} />;
         case 'DuplicateAccount':
             return null;
         default:

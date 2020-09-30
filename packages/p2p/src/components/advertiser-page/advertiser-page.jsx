@@ -99,10 +99,8 @@ const AdvertiserPage = ({ navigate, selected_advert, showVerification }) => {
             : localize('Sell {{ currency }}', { currency: account_currency });
 
     React.useEffect(() => {
-        if (isMounted()) {
-            getAdvertiserAdverts();
-            getAdvertiserStats();
-        }
+        getAdvertiserAdverts();
+        getAdvertiserStats();
     }, []);
 
     React.useEffect(() => {

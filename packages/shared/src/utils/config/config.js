@@ -64,10 +64,10 @@ export const getAppId = () => {
         app_id = user_app_id;
     } else if (isStaging()) {
         window.localStorage.removeItem('config.default_app_id');
-        app_id = isBot() ? 19112 : 16303; // it's being used in endpoint chrome extension - please do not remove
         if (getPlatformFromUrl().is_staging_deriv_crypto) {
-            window.localStorage.removeItem('config.default_app_id');
             app_id = isBot() ? DERIV_CRYPTO_STAGING_DBOT_APP_ID : DERIV_CRYPTO_STAGING_APP_ID;
+        } else {
+            app_id = isBot() ? 19112 : 16303; // it's being used in endpoint chrome extension - please do not remove
         }
     } else if (/localhost/i.test(window.location.hostname)) {
         app_id = 17044;

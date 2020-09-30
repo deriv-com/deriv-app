@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Icon } from '@deriv/components';
-import { getDerivComLink } from '@deriv/shared';
+import { Button, Icon, StaticUrl } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 
 const Heading = ({ code }) => {
@@ -53,27 +52,21 @@ const TryAgain = ({ text, onConfirm }) => (
     </Button>
 );
 
-const ErrorCTA = ({ code, onConfirm }) => {
+const ErrorCTA = () => {
     switch (code) {
         case 'CurrencyTypeNotAllowed':
-            return <TryAgain text={localize('Try a different currency')} onConfirm={onConfirm} />;
+            return <TryAgain text={localize('Try a different currency')} />;
         case 'InvalidPhone':
-            return <TryAgain text={localize('Try a different phone number')} onConfirm={onConfirm} />;
+            return <TryAgain text={localize('Try a different phone number')} />;
         case 'DuplicateAccount':
             return null;
         default:
             return (
-                <a
-                    href={getDerivComLink('help-centre')}
-                    type='button'
-                    className='dc-btn dc-btn--primary'
-                    target='_blank'
-                    rel='noopener noreferrer'
-                >
+                <StaticUrl href='help-centre' type='button' className='dc-btn dc-btn--primary'>
                     <span className='dc-btn__text'>
                         <Localize i18n_default_text='OK' />
                     </span>
-                </a>
+                </StaticUrl>
             );
     }
 };

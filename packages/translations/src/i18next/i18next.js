@@ -29,9 +29,8 @@ const getUrlBase = (path = '') => {
     return `/${l.pathname.split('/')[1]}${/^\//.test(path) ? path : `/${path}`}`;
 };
 
-// TODO: [app-link-refactor] - Remove backwards compatibility for `deriv.app`
 const isStaging = () =>
-    /staging\.deriv\.app|staging-app\.deriv\.com|localhost\.binary\.sx|deriv-app-git-fork-mustofa-binary-enable-language-switcher\.binary\.sx/i.test(
+    /staging-app\.derivcrypto\.com|staging-app\.deriv\.com|deriv-app-git-fork-mustofa-binary-enable-language-switcher\.binary\.sx/i.test(
         window.location.hostname
     );
 

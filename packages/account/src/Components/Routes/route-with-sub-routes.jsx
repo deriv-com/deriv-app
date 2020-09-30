@@ -1,11 +1,13 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import { isEmptyObject, routes, removeBranchName, default_title } from '@deriv/shared';
+import { isEmptyObject, routes, removeBranchName, default_title, PlatformContext } from '@deriv/shared';
 
 import { redirectToLogin, redirectToSignUp } from 'Duplicated/_common/base/login';
 import LoginPrompt from 'Duplicated/App/Components/Elements/login-prompt.jsx';
 
 const RouteWithSubRoutes = (route) => {
+    const { is_deriv_crypto } = React.useContext(PlatformContext);
+
     const renderFactory = (props) => {
         let result = null;
         if (route.component === Redirect) {
@@ -21,7 +23,7 @@ const RouteWithSubRoutes = (route) => {
             result = (
                 <LoginPrompt
                     onLogin={() => redirectToLogin(route.is_logged_in)}
-                    onSignup={redirectToSignUp}
+                    onSignup={() => redirectToSignUp({ is_deriv_crypto })}
                     page_title={route.title}
                 />
             );

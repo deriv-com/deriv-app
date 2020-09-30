@@ -39,6 +39,7 @@ const Footer = ({
     is_logged_in,
     is_route_modal_on,
     is_settings_modal_on,
+    is_virtual,
     disableApp,
     toggleSettingsModal,
     settings_extension,

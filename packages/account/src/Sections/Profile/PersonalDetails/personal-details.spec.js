@@ -1,10 +1,12 @@
 import { jest } from '@jest/globals';
 import React from 'react';
-import { cleanup, render } from '@testing-library/react';
+import { cleanup, render, waitForElementToBeRemoved, waitFor } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
-import { WS } from 'Services/ws-methods';
 import { PersonalDetailsForm } from './personal-details.jsx';
+import { WS } from 'Services/ws-methods';
+
+afterAll(cleanup);
 
 jest.mock('Services/ws-methods', () => ({
     __esModule: true, // this property makes it work,
@@ -18,7 +20,11 @@ jest.mock('Services/ws-methods', () => ({
 
 describe('<PersonalDetailsForm />', () => {
     const history = createBrowserHistory();
-    it('should_render_successfully', () => {
+
+    it('should_render_successfully', async () => {
+        const promise = Promise.resolve();
+        const fetchResidenceList = jest.fn(() => promise);
+        const fetchStatesList = jest.fn(() => promise);
         const residence_list = [
             {
                 text: 'Text',
@@ -28,8 +34,8 @@ describe('<PersonalDetailsForm />', () => {
         const screen = render(
             <Router history={history}>
                 <PersonalDetailsForm
-                    fetchResidenceList={() => Promise.resolve(residence_list)}
-                    fetchStatesList={() => Promise.resolve(residence_list)}
+                    fetchResidenceList={fetchResidenceList}
+                    fetchStatesList={fetchStatesList}
                     residence_list={residence_list}
                     has_residence={true}
                     account_settings={{
@@ -41,6 +47,9 @@ describe('<PersonalDetailsForm />', () => {
                 />
             </Router>
         );
-        expect(screen).toBeTruthy();
+        await waitForElementToBeRemoved(() => screen.container.querySelector('.account___intial-loader'));
+        await waitFor(() =>
+            screen.getByText(/Please make sure your information is correct or it may affect your trading experience./i)
+        );
     });
 });

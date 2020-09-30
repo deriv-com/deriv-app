@@ -1,6 +1,6 @@
 // noop
 import React from 'react';
-import { getDerivComLink } from '@deriv/shared';
+import { getStaticUrl } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { Icon } from '@deriv/components';
 import { connect } from 'Stores/connect';
@@ -16,7 +16,7 @@ const ArticleContent = ({ is_eu, toggleModal }) => {
                     className='link link--orange'
                     rel='noopener noreferrer'
                     target='_blank'
-                    href={getDerivComLink('/responsible-trading')}
+                    href={getStaticUrl('/responsible-trading')}
                 />,
             ]}
         />,
@@ -29,7 +29,7 @@ const ArticleContent = ({ is_eu, toggleModal }) => {
                     className='link link--orange'
                     rel='noopener noreferrer'
                     target='_blank'
-                    href={getDerivComLink('/contact-us')}
+                    href={getStaticUrl('/contact-us')}
                 />,
             ]}
         />,
@@ -46,7 +46,7 @@ const ArticleContent = ({ is_eu, toggleModal }) => {
                     className='link link--orange'
                     rel='noopener noreferrer'
                     target='_blank'
-                    href={getDerivComLink('/contact-us')}
+                    href={getStaticUrl('/contact-us')}
                 />,
             ]}
         />,
@@ -59,7 +59,7 @@ const ArticleContent = ({ is_eu, toggleModal }) => {
                     className='link link--orange'
                     rel='noopener noreferrer'
                     target='_blank'
-                    href={getDerivComLink('/contact-us')}
+                    href={getStaticUrl('/contact-us')}
                 />,
             ]}
         />,
@@ -75,7 +75,7 @@ const ArticleContent = ({ is_eu, toggleModal }) => {
                     className='link link--orange'
                     rel='noopener noreferrer'
                     target='_blank'
-                    href={getDerivComLink('/responsible-trading')}
+                    href={getStaticUrl('/responsible-trading')}
                 />,
             ]}
         />,
@@ -96,7 +96,7 @@ const ArticleContent = ({ is_eu, toggleModal }) => {
                     className='link link--orange'
                     rel='noopener noreferrer'
                     target='_blank'
-                    href={getDerivComLink('/contact-us')}
+                    href={getStaticUrl('/contact-us')}
                 />,
             ]}
         />,

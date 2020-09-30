@@ -1,4 +1,4 @@
-import { isMultiplierContract } from './multiplier';
+import { isMultiplierContract } from '@deriv/shared';
 import { BARRIER_COLORS, BARRIER_LINE_STYLES } from '../../SmartChart/Constants/barriers';
 import { ChartBarrierStore } from '../../SmartChart/chart-barrier-store';
 import { removeBarrier } from '../../SmartChart/Helpers/barriers';
@@ -61,23 +61,6 @@ export const setLimitOrderBarriers = ({ barriers, contract_type, contract_info =
         const limit_orders = Object.values(LIMIT_ORDER_TYPES);
         limit_orders.forEach(l => removeBarrier(barriers, l));
     }
-};
-
-/**
- * Get stop_loss & take_profit order amount from contract_info
- * @param {object} contract_info - proposal_open_contract response
- */
-export const getLimitOrderAmount = limit_order => {
-    if (!limit_order) return { stop_loss: 0, take_profit: 0 };
-    const {
-        stop_loss: { order_amount: stop_loss_order_amount } = {},
-        take_profit: { order_amount: take_profit_order_amount } = {},
-    } = limit_order;
-
-    return {
-        stop_loss: stop_loss_order_amount,
-        take_profit: take_profit_order_amount,
-    };
 };
 
 /**

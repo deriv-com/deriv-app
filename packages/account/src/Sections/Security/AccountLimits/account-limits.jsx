@@ -1,8 +1,8 @@
 // import PropTypes      from 'prop-types';
 import classNames from 'classnames';
 import React from 'react';
-import { Popover, DesktopWrapper, Loading, MobileWrapper } from '@deriv/components';
-import { getDerivComLink, formatMoney, isMobile } from '@deriv/shared';
+import { StaticUrl, Popover, DesktopWrapper, Loading, MobileWrapper } from '@deriv/components';
+import { formatMoney, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import LoadErrorMessage from 'Components/load-error-message';
 import FormBody from 'Components/form-body';
@@ -109,15 +109,7 @@ class AccountLimits extends React.Component {
                     <Text className='account-limit-container__main-text'>
                         <Localize
                             i18n_default_text='These are default limits that we apply to your accounts. To learn more about trading limits and how they apply, please go to the <0>Help Centre</0>.'
-                            components={[
-                                <a
-                                    key={0}
-                                    className='link link--orange'
-                                    rel='noopener noreferrer'
-                                    target='_blank'
-                                    href={getDerivComLink('/help-centre')}
-                                />,
-                            ]}
+                            components={[<StaticUrl key={0} className='link link--orange' href='/help-centre' />]}
                         />
                     </Text>
                     <div className='account-limit-container__content'>

@@ -1,6 +1,6 @@
+
 import { action, observable, reaction } from 'mobx';
-import { formatDate } from '@deriv/shared';
-import { isEnded } from '@deriv/bot-skeleton';
+import { formatDate, isEnded } from '@deriv/shared';
 import { transaction_elements } from '../constants/transactions';
 
 const transaction_storage_key = 'transaction_cache';

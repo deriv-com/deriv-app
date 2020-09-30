@@ -1,7 +1,7 @@
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 import React from 'react';
-import { PropTypes } from 'prop-types';
-import ContractCard from './contract-card.jsx';
+import SummaryCard from './summary-card.jsx';
 import { connect } from '../stores/connect';
 import '../assets/sass/summary.scss';
 
@@ -12,7 +12,7 @@ const Summary = ({ is_mobile, is_drawer_open }) => (
             'run-panel-tab__content--mobile': is_mobile && is_drawer_open,
         })}
     >
-        <ContractCard />
+        <SummaryCard />
     </div>
 );
 

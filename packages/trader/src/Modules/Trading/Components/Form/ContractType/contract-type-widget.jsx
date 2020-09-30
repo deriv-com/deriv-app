@@ -3,6 +3,7 @@ import React from 'react';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ContractType from './contract-type.jsx';
+import { contract_type_category_icon } from '../../../Helpers/contract-type';
 
 class ContractTypeWidget extends React.PureComponent {
     state = {
@@ -93,30 +94,40 @@ class ContractTypeWidget extends React.PureComponent {
 
     get list_with_category() {
         const { list, search_query } = this.state;
+        const multipliers_category = list.filter(
+            contract_category => contract_category.label === localize('Multipliers')
+        );
 
-        return [
-            {
-                label: localize('All'),
-                contract_categories: [...list],
-            },
-            {
-                label: localize('Multipliers'),
-                contract_categories: list.filter(
-                    contract_category => contract_category.label === localize('Multipliers')
-                ),
-                component: <span className='dc-vertical-tab__header--new'>{localize('NEW')}!</span>,
-            },
-            {
-                label: localize('Options'),
-                contract_categories: list.filter(
-                    contract_category => contract_category.label !== localize('Multipliers')
-                ),
-            },
-        ].map(contract_category => {
+        return (multipliers_category && multipliers_category.length
+            ? [
+                  {
+                      label: localize('All'),
+                      contract_categories: [...list],
+                  },
+                  {
+                      label: localize('Multipliers'),
+                      contract_categories: multipliers_category,
+                      component: <span className='dc-vertical-tab__header--new'>{localize('NEW')}!</span>,
+                  },
+                  {
+                      label: localize('Options'),
+                      contract_categories: list.filter(
+                          contract_category => contract_category.label !== localize('Multipliers')
+                      ),
+                  },
+              ]
+            : [
+                  {
+                      label: localize('Options'),
+                      contract_categories: [...list],
+                  },
+              ]
+        ).map(contract_category => {
             contract_category['contract_types'] = contract_category.contract_categories.reduce(
                 (aray, x) => [...aray, ...x.contract_types],
                 []
             );
+            contract_category['icon'] = contract_type_category_icon[contract_category.label];
 
             if (search_query) {
                 contract_category.contract_categories = contract_category.contract_categories.filter(category =>
@@ -130,8 +141,8 @@ class ContractTypeWidget extends React.PureComponent {
 
     get selected_category_contracts() {
         const { selected_category } = this.state;
-
-        return this.list_with_category.find(item => item.label === selected_category).contract_categories;
+        const selected_list_category = this.list_with_category.find(item => item.label === selected_category);
+        return (selected_list_category || this.list_with_category[0]).contract_categories;
     }
 
     render() {

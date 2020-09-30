@@ -20,14 +20,6 @@ class Dialog extends React.PureComponent {
     };
 
     static getDerivedStateFromProps(props, state) {
-        if (props.is_info_dialog_open && props.item.value !== state.value) {
-            return {
-                selected: {
-                    label: getContractCategoryLabel(props.list, props.item),
-                    value: props.item.value,
-                },
-            };
-        }
         if (!props.is_open && !props.is_info_dialog_open && state.selected !== null) {
             return {
                 selected: null, // reset selected header when dialog is closed
@@ -46,6 +38,7 @@ class Dialog extends React.PureComponent {
         if (this.props.onCategoryClick) {
             this.props.onCategoryClick(e);
         }
+
         this.setState({
             selected: e,
         });

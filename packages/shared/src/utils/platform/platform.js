@@ -14,14 +14,17 @@ export const isMT5 = () =>
 
 // TODO: Replace platform names with `platform_name` enum after merging "carol/journal error notification"
 export const getPlatformInformation = routing_history => {
-    const should_be_bot = isBot() || isNavigationFromPlatform(routing_history, routes.bot);
-    if (should_be_bot) return { header: 'DBot', icon: 'IcBrandDbot' };
+    if (isBot() || isNavigationFromPlatform(routing_history, routes.bot)) {
+        return { header: 'DBot', icon: 'IcBrandDbot' };
+    }
 
-    const should_be_mt5 = isMT5() || isNavigationFromPlatform(routing_history, routes.mt5);
-    if (should_be_mt5) return { header: 'DMT5', icon: 'IcBrandDmt5' };
+    if (isMT5() || isNavigationFromPlatform(routing_history, routes.mt5)) {
+        return { header: 'DMT5', icon: 'IcBrandDmt5' };
+    }
 
-    const should_be_smartTrader = isNavigationFromPlatform(routing_history, routes.smarttrader);
-    if (should_be_smartTrader) return { header: 'SmartTrader', icon: 'IcBrandSmarttrader' };
+    if (isNavigationFromPlatform(routing_history, routes.smarttrader)) {
+        return { header: 'SmartTrader', icon: 'IcBrandSmarttrader' };
+    }
 
     return { header: 'DTrader', icon: 'IcBrandDtrader' };
 };

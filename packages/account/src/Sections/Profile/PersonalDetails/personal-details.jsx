@@ -843,10 +843,8 @@ export class PersonalDetailsForm extends React.Component {
 
         fetchResidenceList();
         if (has_residence) {
-            console.log('state fetching');
             this.setState({ is_state_loading: true }, () => {
                 fetchStatesList().then(() => {
-                    console.log('state fetched');
                     this.setState({ is_state_loading: false });
                 });
             });
@@ -855,7 +853,6 @@ export class PersonalDetailsForm extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        console.log('component updated');
         if (this.props.account_settings !== prevProps.account_settings) {
             this.initializeFormValues();
         }

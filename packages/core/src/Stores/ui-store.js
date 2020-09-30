@@ -372,9 +372,9 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    openRealAccountSignup(target = this.root_store.client.upgradeable_landing_companies?.[0]) {
+    openRealAccountSignup(target) {
         this.is_real_acc_signup_on = true;
-        this.real_account_signup_target = target;
+        this.setRealAccountSignupTarget(target);
         this.is_accounts_switcher_on = false;
     }
 

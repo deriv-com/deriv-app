@@ -4,6 +4,7 @@ import React from 'react';
 import { Div100vhContainer, ThemedScrollbars } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { getCurrencyDisplayCode, isDesktop, isMobile, website_name } from '@deriv/shared';
+import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 import AddCryptoCurrency from './add-crypto-currency.jsx';
 import ChangeAccountCurrency from './change-account-currency.jsx';
@@ -22,6 +23,12 @@ class AddOrManageAccounts extends React.Component {
                 fiat: '',
             },
         };
+    }
+
+    async componentDidMount() {
+        this.props.setLoading(true);
+        await WS.mt5LoginList();
+        this.props.setLoading(false);
     }
 
     clearError = () => {
@@ -77,8 +84,7 @@ class AddOrManageAccounts extends React.Component {
 
     render() {
         if (this.props.is_loading) return <LoadingModal />;
-        console.log('has_fiat: ', this.props.has_fiat);
-        console.log('can_change_fiat: ', this.props.can_change_fiat_currency);
+
         return (
             <ThemedScrollbars is_bypassed={isMobile()} autohide={false}>
                 <Div100vhContainer

@@ -1,1 +1,1 @@
-export default from './real-account-signup-base.jsx';
+export default from './real-account-signup.jsx';

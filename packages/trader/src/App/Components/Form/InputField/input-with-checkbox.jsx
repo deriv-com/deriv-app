@@ -52,7 +52,7 @@ const InputWithCheckbox = ({
 
     const focusInput = () => {
         setTimeout(() => {
-            const el_input = input_wrapper_ref.current.nextSibling.querySelector('input.input-wrapper__input');
+            const el_input = input_wrapper_ref.current.nextSibling.querySelector('input.dc-input-wrapper__input');
             el_input.focus();
         });
     };

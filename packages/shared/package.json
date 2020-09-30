@@ -53,5 +53,9 @@
     "prettier": "^1.19.1",
     "stylelint": "^10.1.0",
     "stylelint-selector-bem-pattern": "^2.1.0"
+  },
+  "dependencies": {
+    "js-cookie": "^2.2.1",
+    "react": "^16.13.1"
   }
 }

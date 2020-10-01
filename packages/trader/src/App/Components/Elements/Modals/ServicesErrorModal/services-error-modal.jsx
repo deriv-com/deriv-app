@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Modal } from '@deriv/components';
+import { PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { title } from './constants';
 import AuthorizationRequiredModal from './authorization-required-modal.jsx';
@@ -8,6 +9,7 @@ import InsufficientBalanceModal from './insufficient-balance-modal.jsx';
 
 const ServicesErrorModal = ({ is_virtual, is_visible, is_logged_in, onConfirm, services_error }) => {
     const { code, message } = services_error;
+    const { is_deriv_crypto } = React.useContext(PlatformContext);
 
     if (!code || !message) return null;
 
@@ -30,7 +32,13 @@ const ServicesErrorModal = ({ is_virtual, is_visible, is_logged_in, onConfirm, s
         <Modal is_open={is_visible} small title={title[services_error.type]} toggleModal={onConfirm}>
             <Modal.Body>{message}</Modal.Body>
             <Modal.Footer>
-                <Button has_effect text={localize('OK')} onClick={onConfirm} primary />
+                <Button
+                    has_effect
+                    is_deriv_crypto={is_deriv_crypto}
+                    text={localize('OK')}
+                    onClick={onConfirm}
+                    primary
+                />
             </Modal.Footer>
         </Modal>
     );

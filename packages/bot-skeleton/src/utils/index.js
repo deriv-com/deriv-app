@@ -1,4 +1,4 @@
-export { isEnded, getFinalPrice, getIndicativePrice, getContractTypeName } from './contract';
+export { getContractTypeName } from './contract';
 export { createError, trackAndEmitError } from './error';
 export { observer } from './observer';
 export { importExternal } from './html-helper';

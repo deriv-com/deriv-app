@@ -1,7 +1,7 @@
 import * as PropTypes from 'prop-types';
 import React from 'react';
 import { Button, DesktopWrapper, Icon, MobileWrapper, Popover } from '@deriv/components';
-import { routes, formatMoney } from '@deriv/shared';
+import { routes, formatMoney, PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { LoginButton } from './login-button.jsx';
 import { SignupButton } from './signup-button.jsx';
@@ -14,6 +14,7 @@ const AccountInfo = React.lazy(() =>
 );
 
 export class AccountActions extends React.Component {
+    static contextType = PlatformContext;
     shouldComponentUpdate(nextProps) {
         return (
             nextProps.is_acc_switcher_disabled !== this.props.is_acc_switcher_disabled ||
@@ -129,8 +130,8 @@ export class AccountActions extends React.Component {
         }
         return (
             <React.Fragment>
-                <LoginButton is_logged_in={is_logged_in} className='acc-info__button' />
-                <SignupButton className='acc-info__button' />
+                <LoginButton className='acc-info__button' />
+                <SignupButton is_deriv_crypto={this.context.is_deriv_crypto} className='acc-info__button' />
             </React.Fragment>
         );
     }

@@ -128,7 +128,6 @@ StatusDialogContainer.propTypes = {
 
 export default connect(({ client, ui }) => ({
     landing_company_shortcode: client.landing_company_shortcode,
-    currency: client.currency,
     is_fully_authenticated: client.is_fully_authenticated,
     is_age_verified: client.is_age_verified,
     is_isle_of_man_residence: client.residence === 'im', // TODO: [deriv-eu] refactor this once more residence checks are required

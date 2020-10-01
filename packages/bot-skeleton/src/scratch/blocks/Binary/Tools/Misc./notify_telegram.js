@@ -7,7 +7,15 @@ Blockly.Blocks.notify_telegram = {
     },
     definition() {
         return {
-            message0: localize('Notify Telegram %1 Access Token: %2 Chat ID: %3 Message: %4'),
+            message0: localize(
+                'Notify Telegram {{ dummy }} Access Token: {{ input_access_token }} Chat ID: {{ input_chat_id }} Message: {{ input_message }}',
+                {
+                    dummy: '%1',
+                    input_access_token: '%2',
+                    input_chat_id: '%3',
+                    input_message: '%4',
+                }
+            ),
             args0: [
                 {
                     type: 'input_dummy',

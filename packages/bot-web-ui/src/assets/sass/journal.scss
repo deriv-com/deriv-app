@@ -51,7 +51,7 @@
     &-tools {
         &__container {
             display: flex;
-            justify-content: space-around;
+            justify-content: space-between;
             padding: 12px;
             padding-left: 16px;
             border: solid 1px var(--general-section-1);
@@ -60,7 +60,6 @@
                 display: flex;
                 justify-content: flex-end;
                 align-items: center;
-                width: 100%;
                 cursor: pointer;
 
                 &--label {

@@ -7,7 +7,10 @@ Blockly.Blocks.lists_repeat = {
     },
     definition() {
         return {
-            message0: localize('create list with item %1 repeated %2 times'),
+            message0: localize('create list with item {{ input_item }} repeated {{ number }} times', {
+                input_item: '%1',
+                number: '%2',
+            }),
             args0: [
                 {
                     type: 'input_value',

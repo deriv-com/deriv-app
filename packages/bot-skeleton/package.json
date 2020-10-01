@@ -7,7 +7,7 @@
   "scripts": {
     "start": "npm run test && npm run serve",
     "build": "shx rm -rf ./dist/ && shx mkdir -p ./dist/media && npm run build:copy",
-    "build:copy": "shx cp -r ./node_modules/scratch-blocks/media/. ./dist/media/ &&  shx cp -r ./src/assets/images/. ./dist/media/ &&  shx cp -r ./src/scratch/sounds/. ./dist/media/",
+    "build:copy": "shx cp -r ../../node_modules/scratch-blocks/media/. ./dist/media/ &&  shx cp -r ./src/assets/images/. ./dist/media/ &&  shx cp -r ./src/scratch/sounds/. ./dist/media/",
     "build:travis": "echo \"No build:travis specified\"",
     "prettify": "prettier --write \"./src/**/*.{js,jsx,scss}\"",
     "precommit": "lint-staged",

@@ -45,7 +45,7 @@ Blockly.Blocks.math_random_int = {
     },
 };
 
-Blockly.JavaScript.math_random_int = (block) => {
+Blockly.JavaScript.math_random_int = block => {
     const argument0 = Blockly.JavaScript.valueToCode(block, 'FROM', Blockly.JavaScript.ORDER_COMMA) || '0';
     const argument1 = Blockly.JavaScript.valueToCode(block, 'TO', Blockly.JavaScript.ORDER_COMMA) || '0';
 

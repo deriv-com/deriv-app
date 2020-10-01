@@ -44,7 +44,7 @@ Blockly.Blocks.lists_repeat = {
     },
 };
 
-Blockly.JavaScript.lists_repeat = (block) => {
+Blockly.JavaScript.lists_repeat = block => {
     // eslint-disable-next-line no-underscore-dangle
     const function_name = Blockly.JavaScript.provideFunction_('listsRepeat', [
         // eslint-disable-next-line no-underscore-dangle

@@ -76,7 +76,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
 
         const trade_definition_block = this.workspace
             .getAllBlocks(true)
-            .find((block) => block.type === 'trade_definition');
+            .find(block => block.type === 'trade_definition');
         if (!trade_definition_block) {
             return;
         }
@@ -204,13 +204,13 @@ Blockly.Blocks.trade_definition_tradeoptions = {
     updateDurationInput(should_use_default_unit, should_update_value) {
         const { contracts_for } = ApiHelpers.instance;
 
-        contracts_for.getDurations(this.selected_symbol, this.selected_trade_type).then((durations) => {
+        contracts_for.getDurations(this.selected_symbol, this.selected_trade_type).then(durations => {
             // Keep duration in memory so we can later reference them for validation
             this.durations = durations;
 
             const duration_field_dropdown = this.getField('DURATIONTYPE_LIST');
             const duration_input = this.getInput('DURATION');
-            const duration_options = durations.map((duration) => [duration.display, duration.unit]);
+            const duration_options = durations.map(duration => [duration.display, duration.unit]);
 
             if (duration_field_dropdown) {
                 duration_field_dropdown.updateOptions(duration_options, {
@@ -222,7 +222,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 const target_block = duration_input.connection.targetBlock();
 
                 if (target_block && target_block.isShadow()) {
-                    const min_duration = durations.find((d) => d.unit === this.selected_duration);
+                    const min_duration = durations.find(d => d.unit === this.selected_duration);
 
                     if (min_duration) {
                         runIrreversibleEvents(() => {
@@ -244,7 +244,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 this.selected_duration,
                 this.selected_barrier_types
             )
-            .then((barriers) => {
+            .then(barriers => {
                 this.createBarrierInputs(barriers);
 
                 const input_names = ['BARRIEROFFSET', 'SECONDBARRIEROFFSET'];
@@ -294,7 +294,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
     updatePredictionInput(should_use_default_value) {
         const { contracts_for } = ApiHelpers.instance;
 
-        contracts_for.getPredictionRange(this.selected_symbol, this.selected_trade_type).then((prediction_range) => {
+        contracts_for.getPredictionRange(this.selected_symbol, this.selected_trade_type).then(prediction_range => {
             this.createPredictionInput(prediction_range);
 
             if (prediction_range.length > 0) {
@@ -323,12 +323,12 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         const { BARRIER_TYPES } = config;
 
         if (other_barrier_field) {
-            const has_other_barrier = BARRIER_TYPES.findIndex((type) => type[1] === new_value) !== -1;
+            const has_other_barrier = BARRIER_TYPES.findIndex(type => type[1] === new_value) !== -1;
             const other_barrier_type = other_barrier_field.getValue();
 
             runIrreversibleEvents(() => {
                 if (has_other_barrier && (other_barrier_type === 'absolute' || should_force_distinct)) {
-                    const other_barrier_value = BARRIER_TYPES.find((type) => type[1] !== new_value);
+                    const other_barrier_value = BARRIER_TYPES.find(type => type[1] !== new_value);
                     other_barrier_field.setValue(other_barrier_value[1]);
                 } else if (new_value === 'absolute' && other_barrier_type !== 'absolute') {
                     other_barrier_field.setValue('absolute');
@@ -366,19 +366,19 @@ Blockly.Blocks.trade_definition_tradeoptions = {
     restricted_parents: ['trade_definition'],
     getRequiredValueInputs() {
         return {
-            AMOUNT: (input) => {
+            AMOUNT: input => {
                 const input_number = Number(input);
                 this.error_message = localize('Amount must be a positive number.');
                 return !isNaN(input_number) && input_number <= 0;
             },
-            DURATION: (input) => {
+            DURATION: input => {
                 const input_number = Number(input);
 
                 if (isNaN(input_number) || !this.durations.length) {
                     return false;
                 }
 
-                const duration = this.durations.find((d) => d.unit === this.selected_duration);
+                const duration = this.durations.find(d => d.unit === this.selected_duration);
 
                 if (duration) {
                     const { min, max } = duration;
@@ -407,7 +407,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
 
 Blockly.Blocks.trade_definition_tradeoptions_payout = Blockly.Blocks.trade_definition_tradeoptions;
 
-Blockly.JavaScript.trade_definition_tradeoptions = (block) => {
+Blockly.JavaScript.trade_definition_tradeoptions = block => {
     const amount = Blockly.JavaScript.valueToCode(block, 'AMOUNT', Blockly.JavaScript.ORDER_ATOMIC) || '0';
     const { currency } = DBotStore.instance.client;
     const duration_type = block.getFieldValue('DURATIONTYPE_LIST') || '0';

@@ -45,7 +45,7 @@ Blockly.Blocks.math_modulo = {
     },
 };
 
-Blockly.JavaScript.math_modulo = (block) => {
+Blockly.JavaScript.math_modulo = block => {
     const argument0 = Blockly.JavaScript.valueToCode(block, 'DIVIDEND', Blockly.JavaScript.ORDER_MODULUS) || '0';
     const argument1 = Blockly.JavaScript.valueToCode(block, 'DIVISOR', Blockly.JavaScript.ORDER_MODULUS) || '0';
 

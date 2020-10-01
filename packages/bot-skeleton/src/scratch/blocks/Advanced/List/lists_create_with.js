@@ -67,7 +67,7 @@ Blockly.Blocks.lists_create_with = {
         if (event.type === Blockly.Events.END_DRAG) {
             // Only allow "text_statement" type blocks
             const blocks_in_stack = this.getBlocksInStatement('STACK');
-            blocks_in_stack.forEach((block) => {
+            blocks_in_stack.forEach(block => {
                 if (!this.allowed_children.includes(block.type)) {
                     runIrreversibleEvents(() => {
                         block.unplug(/* healStack */ false);
@@ -79,14 +79,14 @@ Blockly.Blocks.lists_create_with = {
 };
 
 // Head's up! This is also the code generation for the "text_join" block.
-Blockly.JavaScript.lists_create_with = (block) => {
+Blockly.JavaScript.lists_create_with = block => {
     // eslint-disable-next-line no-underscore-dangle
     const var_name = Blockly.JavaScript.variableDB_.getName(
         block.getFieldValue('VARIABLE'),
         Blockly.Variables.NAME_TYPE
     );
     const blocks_in_stack = block.getBlocksInStatement('STACK');
-    const elements = blocks_in_stack.map((b) => {
+    const elements = blocks_in_stack.map(b => {
         const value = Blockly.JavaScript[b.type](b);
         return Array.isArray(value) ? value[0] : value;
     });

@@ -25,20 +25,28 @@
         align-items: center;
         justify-content: center;
         z-index: 999;
-        transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25), opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
+        transition: opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
         background-color: var(--overlay-outside-dialog);
 
         &--enter,
         &--exit {
-            transform: translate3d(0, 50px, 0);
             opacity: 0;
+
+            .dc-dialog__dialog {
+                transform: translate3d(0, 50px, 0);
+                opacity: 0;
+            }
         }
         &--enter-done {
-            transform: translate3d(0, 0, 0);
             opacity: 1;
+
+            .dc-dialog__dialog {
+                transform: translate3d(0, 0, 0);
+                opacity: 1;
+            }
         }
-        &--fixed {
-            position: fixed;
+        &--has-portal {
+            background-color: transparent;
         }
     }
     &__dialog {
@@ -56,6 +64,7 @@
         align-items: center;
         box-shadow: 0 2px 8px 0 var(--shadow-menu);
         background-color: var(--general-main-2);
+        transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25), opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
     }
     &__header {
         align-self: flex-start;

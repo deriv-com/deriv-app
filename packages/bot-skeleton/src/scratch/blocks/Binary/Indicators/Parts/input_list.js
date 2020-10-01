@@ -49,7 +49,7 @@ Blockly.Blocks.input_list = {
 
                     // Attempt to re-connect this child to its original parent.
                     const all_blocks = this.workspace.getAllBlocks();
-                    const parent_block = all_blocks.find((block) => block.id === this.required_parent_id);
+                    const parent_block = all_blocks.find(block => block.id === this.required_parent_id);
 
                     if (parent_block) {
                         const parent_connection = parent_block.getLastConnectionInStatement('STATEMENT');

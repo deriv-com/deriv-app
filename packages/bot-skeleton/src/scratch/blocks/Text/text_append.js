@@ -44,8 +44,8 @@ Blockly.Blocks.text_append = {
     },
 };
 
-Blockly.JavaScript.text_append = (block) => {
-    const forceString = (value) => {
+Blockly.JavaScript.text_append = block => {
+    const forceString = value => {
         const strRegExp = /^\s*'([^']|\\')*'\s*$/;
         if (strRegExp.test(value)) {
             return value;

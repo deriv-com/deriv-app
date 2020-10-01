@@ -58,7 +58,7 @@ Blockly.Blocks.text_indexOf = {
     },
 };
 
-Blockly.JavaScript.text_indexOf = (block) => {
+Blockly.JavaScript.text_indexOf = block => {
     const functionName = block.getFieldValue('END') === 'FIRST' ? 'indexOf' : 'lastIndexOf';
     const substring = Blockly.JavaScript.valueToCode(block, 'FIND', Blockly.JavaScript.ORDER_NONE) || "''";
     const text = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_MEMBER) || "''";

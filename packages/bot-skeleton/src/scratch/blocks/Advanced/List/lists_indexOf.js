@@ -55,7 +55,7 @@ Blockly.Blocks.lists_indexOf = {
     },
 };
 
-Blockly.JavaScript.lists_indexOf = (block) => {
+Blockly.JavaScript.lists_indexOf = block => {
     const operator = block.getFieldValue('END') === 'FIRST' ? 'indexOf' : 'lastIndexOf';
     const item = Blockly.JavaScript.valueToCode(block, 'FIND', Blockly.JavaScript.ORDER_NONE) || "''";
     const list = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_MEMBER) || "''";

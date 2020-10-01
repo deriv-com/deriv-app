@@ -48,7 +48,7 @@ Blockly.Blocks.math_single = {
     },
 };
 
-Blockly.JavaScript.math_single = (block) => {
+Blockly.JavaScript.math_single = block => {
     const operator = block.getFieldValue('OP');
 
     let code, arg;

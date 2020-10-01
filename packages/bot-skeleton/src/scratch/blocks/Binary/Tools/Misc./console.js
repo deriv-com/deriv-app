@@ -52,7 +52,7 @@ Blockly.Blocks.console = {
     },
 };
 
-Blockly.JavaScript.console = (block) => {
+Blockly.JavaScript.console = block => {
     const console_type = block.getFieldValue('CONSOLE_TYPE') || 'log';
     const message =
         Blockly.JavaScript.valueToCode(block, 'MESSAGE', Blockly.JavaScript.ORDER_ATOMIC) ||

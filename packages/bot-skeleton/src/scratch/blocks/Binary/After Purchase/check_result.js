@@ -49,7 +49,7 @@ Blockly.Blocks.contract_check_result = {
     },
 };
 
-Blockly.JavaScript.contract_check_result = (block) => {
+Blockly.JavaScript.contract_check_result = block => {
     const checkWith = block.getFieldValue('CHECK_RESULT');
 
     const code = `Bot.isResult('${checkWith}')`;

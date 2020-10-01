@@ -57,7 +57,7 @@ Blockly.Blocks.notify_telegram = {
     },
 };
 
-Blockly.JavaScript.notify_telegram = (block) => {
+Blockly.JavaScript.notify_telegram = block => {
     const access_token =
         Blockly.JavaScript.valueToCode(block, 'TELEGRAM_ACCESS_TOKEN', Blockly.JavaScript.ORDER_ATOMIC) || '';
     const chat_id = Blockly.JavaScript.valueToCode(block, 'TELEGRAM_CHAT_ID', Blockly.JavaScript.ORDER_ATOMIC) || '';

@@ -66,7 +66,7 @@ Blockly.Blocks.procedures_defnoreturn = {
         if (event.type === Blockly.Events.BLOCK_CHANGE) {
             // Sync names between definition- and execution-block
             if (event.blockId === this.id && event.name === 'NAME') {
-                this.getProcedureCallers().forEach((block) => {
+                this.getProcedureCallers().forEach(block => {
                     block.setFieldValue(event.newValue, 'NAME');
                 });
             }
@@ -84,7 +84,7 @@ Blockly.Blocks.procedures_defnoreturn = {
         // Wrap in setTimeout so block doesn't stick to mouse (Blockly.Events.END_DRAG event isn't blocked).
         setTimeout(() => {
             const promptMessage = localize('Specify a parameter name:');
-            Blockly.prompt(promptMessage, '', (paramName) => {
+            Blockly.prompt(promptMessage, '', paramName => {
                 if (paramName) {
                     const variable = Blockly.Variables.getOrCreateVariablePackage(this.workspace, null, paramName, '');
                     if (variable) {
@@ -94,7 +94,7 @@ Blockly.Blocks.procedures_defnoreturn = {
                         const paramField = this.getField('PARAMS');
                         paramField.setText(`${localize('with: ')} ${this.arguments.join(', ')}`);
 
-                        this.getProcedureCallers().forEach((block) => {
+                        this.getProcedureCallers().forEach(block => {
                             block.setProcedureParameters(this.arguments);
                             block.initSvg();
                             block.render(false);
@@ -188,7 +188,7 @@ Blockly.Blocks.procedures_defnoreturn = {
         this.arguments = [];
         this.argument_var_models = [];
 
-        xmlElement.childNodes.forEach((childNode) => {
+        xmlElement.childNodes.forEach(childNode => {
             if (childNode.nodeName.toLowerCase() === 'arg') {
                 const var_name = childNode.getAttribute('name');
                 const var_id = childNode.getAttribute('varid') || childNode.getAttribute('varId');
@@ -229,7 +229,7 @@ Blockly.Blocks.procedures_defnoreturn = {
     getProcedureCallers() {
         return this.workspace
             .getAllBlocks(false)
-            .filter((block) => block.type === this.callType && block.data === this.id);
+            .filter(block => block.type === this.callType && block.data === this.id);
     },
     /**
      * Return all variables referenced by this block.
@@ -264,7 +264,7 @@ Blockly.Blocks.procedures_defnoreturn = {
         const xmlMutation = document.createElement('mutation');
         xmlMutation.setAttribute('name', name);
 
-        this.arguments.forEach((argumentName) => {
+        this.arguments.forEach(argumentName => {
             const xmlArg = document.createElement('arg');
             xmlArg.setAttribute('name', argumentName);
             xmlMutation.appendChild(xmlArg);
@@ -278,7 +278,7 @@ Blockly.Blocks.procedures_defnoreturn = {
 
         // Add options to create getters for each parameter.
         if (!this.isCollapsed()) {
-            this.argument_var_models.forEach((argumentVarModel) => {
+            this.argument_var_models.forEach(argumentVarModel => {
                 const getOption = { enabled: true };
 
                 getOption.text = localize('Create "get %1"').replace('%1', argumentVarModel.name);
@@ -297,7 +297,7 @@ Blockly.Blocks.procedures_defnoreturn = {
     callType: 'procedures_callnoreturn',
 };
 
-Blockly.JavaScript.procedures_defnoreturn = (block) => {
+Blockly.JavaScript.procedures_defnoreturn = block => {
     // eslint-disable-next-line no-underscore-dangle
     const functionName = Blockly.JavaScript.variableDB_.getName(
         block.getFieldValue('NAME'),
@@ -326,7 +326,7 @@ Blockly.JavaScript.procedures_defnoreturn = (block) => {
     }
 
     const args = block.arguments.map(
-        (argumentName) => Blockly.JavaScript.variableDB_.getName(argumentName, Blockly.Variables.NAME_TYPE) // eslint-disable-line no-underscore-dangle
+        argumentName => Blockly.JavaScript.variableDB_.getName(argumentName, Blockly.Variables.NAME_TYPE) // eslint-disable-line no-underscore-dangle
     );
 
     // eslint-disable-next-line no-underscore-dangle

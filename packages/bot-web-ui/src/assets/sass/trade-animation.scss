@@ -66,6 +66,7 @@
     &__info {
         font-size: 10px;
         margin: 8px;
+        cursor: pointer;
     }
     // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
     &__button {
@@ -184,5 +185,31 @@
                 }
             }
         }
+    }
+    &__modal {
+        height: 28.4rem !important;
+        width: 44rem !important;
+        font-size: 1.6rem;
+        padding: 2.4rem;
+
+        &--mobile {
+            font-size: 1.6rem !important;
+        }
+        &-body {
+            height: 438px;
+
+            &--mobile {
+                padding: 1.6rem 0 !important;
+            }
+            &--content {
+                margin-top: 2rem;
+            }
+        }
+    }
+}
+
+.dc-modal__container_animation__modal {
+    @include mobile {
+        width: 31.2rem !important;
     }
 }

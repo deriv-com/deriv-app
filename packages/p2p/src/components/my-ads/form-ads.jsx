@@ -67,11 +67,13 @@ const FormAds = ({ handleShowForm }) => {
         }
         requestWS(create_advert).then(response => {
             // If we get an error we should let the user submit the form again else we just go back to the list of ads
-            if (response.error) {
-                setErrorMessage(response.error.message);
-                setSubmitting(false);
-            } else {
-                handleShowForm(false);
+            if (isMounted()) {
+                if (response.error) {
+                    setErrorMessage(response.error.message);
+                    setSubmitting(false);
+                } else {
+                    handleShowForm(false);
+                }
             }
         });
     };

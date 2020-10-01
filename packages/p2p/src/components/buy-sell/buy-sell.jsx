@@ -105,8 +105,8 @@ const BuySell = ({ navigate }) => {
     const Form = nickname ? BuySellForm : NicknameForm;
     const modal_title =
         table_type === buy_sell.BUY
-            ? localize('Buy {{ currency }}', { currency: selected_ad_state.offer_currency })
-            : localize('Sell {{ currency }}', { currency: selected_ad_state.offer_currency });
+            ? localize('Buy {{ currency }}', { currency: selected_ad_state.account_currency })
+            : localize('Sell {{ currency }}', { currency: selected_ad_state.account_currency });
 
     return (
         <div className='buy-sell'>

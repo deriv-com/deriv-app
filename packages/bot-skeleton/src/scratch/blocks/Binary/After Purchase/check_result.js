@@ -7,7 +7,7 @@ Blockly.Blocks.contract_check_result = {
     },
     definition() {
         return {
-            message0: localize('Result is %1'),
+            message0: localize('Result is {{ win_or_loss }}', { win_or_loss: '%1' }),
             args0: [
                 {
                     type: 'field_dropdown',

@@ -14,7 +14,7 @@ Blockly.Blocks.controls_if = {
     },
     definition() {
         return {
-            message0: localize('if %1 then'),
+            message0: localize('if {{ condition }} then', { condition: '%1' }),
             message1: '%1',
             args0: [
                 {

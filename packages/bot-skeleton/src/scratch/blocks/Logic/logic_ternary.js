@@ -6,9 +6,9 @@ Blockly.Blocks.logic_ternary = {
     },
     definition() {
         return {
-            message0: localize('test %1'),
-            message1: localize('if true %1'),
-            message2: localize('if false %1'),
+            message0: localize('test {{ condition }}', { condition: '%1' }),
+            message1: localize('if true {{ return_value }}', { return_value: '%1' }),
+            message2: localize('if false {{ return_value }}', { return_value: '%1' }),
             args0: [
                 {
                     type: 'input_value',

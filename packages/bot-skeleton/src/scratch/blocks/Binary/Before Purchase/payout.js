@@ -6,7 +6,7 @@ Blockly.Blocks.payout = {
     },
     definition() {
         return {
-            message0: localize('Payout %1'),
+            message0: localize('Payout {{ contract_type }}', { contract_type: '%1' }),
             args0: [
                 {
                     type: 'field_dropdown',
@@ -36,7 +36,7 @@ Blockly.Blocks.payout = {
     enforceLimitations: Blockly.Blocks.purchase.enforceLimitations,
 };
 
-Blockly.JavaScript.payout = block => {
+Blockly.JavaScript.payout = (block) => {
     const purchaseList = block.getFieldValue('PURCHASE_LIST');
 
     const code = `Bot.getPayout('${purchaseList}')`;

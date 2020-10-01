@@ -7,7 +7,10 @@ Blockly.Blocks.read_ohlc = {
     },
     definition() {
         return {
-            message0: localize('In candles list read %1 from end %2'),
+            message0: localize('In candles list read {{ candle_property }} # from end {{ input_number }}', {
+                candle_property: '%1',
+                input_number: '%2',
+            }),
             message1: localize('with interval: %1'),
             args0: [
                 {
@@ -50,7 +53,7 @@ Blockly.Blocks.read_ohlc = {
     },
 };
 
-Blockly.JavaScript.read_ohlc = block => {
+Blockly.JavaScript.read_ohlc = (block) => {
     const selectedGranularity = block.getFieldValue('CANDLEINTERVAL_LIST');
     const granularity = selectedGranularity === 'default' ? 'undefined' : selectedGranularity;
     const ohlcField = block.getFieldValue('OHLCFIELD_LIST');

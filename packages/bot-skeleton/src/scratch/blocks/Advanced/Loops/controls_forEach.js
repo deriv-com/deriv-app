@@ -6,7 +6,10 @@ Blockly.Blocks.controls_forEach = {
     },
     definition() {
         return {
-            message0: localize('for each item %1 in list %2'),
+            message0: localize('for each item {{ variable }} in list {{ input_list }}', {
+                variable: '%1',
+                input_list: '%2',
+            }),
             args0: [
                 {
                     type: 'field_variable',
@@ -50,7 +53,7 @@ Blockly.Blocks.controls_forEach = {
     },
 };
 
-Blockly.JavaScript.controls_forEach = block => {
+Blockly.JavaScript.controls_forEach = (block) => {
     // eslint-disable-next-line no-underscore-dangle
     const variable0 = Blockly.JavaScript.variableDB_.getName(block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
     const argument0 = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_ASSIGNMENT) || '[]';

@@ -6,7 +6,7 @@ Blockly.Blocks.is_candle_black = {
     },
     definition() {
         return {
-            message0: localize('Is candle black? %1'),
+            message0: localize('Is candle {{ input_candle }} black?', { input_candle: '%1' }),
             args0: [
                 {
                     type: 'input_value',
@@ -38,7 +38,7 @@ Blockly.Blocks.is_candle_black = {
     },
 };
 
-Blockly.JavaScript.is_candle_black = block => {
+Blockly.JavaScript.is_candle_black = (block) => {
     const ohlcObj = Blockly.JavaScript.valueToCode(block, 'OHLCOBJ', Blockly.JavaScript.ORDER_ATOMIC) || '{}';
 
     const code = `Bot.isCandleBlack(${ohlcObj})`;

@@ -6,7 +6,7 @@ Blockly.Blocks.controls_repeat_ext = {
     },
     definition() {
         return {
-            message0: localize('repeat %1 times'),
+            message0: localize('repeat {{ number }} times', { number: '%1' }),
             args0: [
                 {
                     type: 'input_value',
@@ -45,7 +45,7 @@ Blockly.Blocks.controls_repeat_ext = {
     },
 };
 
-Blockly.JavaScript.controls_repeat_ext = block => {
+Blockly.JavaScript.controls_repeat_ext = (block) => {
     let repeats;
     if (block.getField('TIMES')) {
         repeats = String(Number(block.getFieldValue('TIMES')));

@@ -7,7 +7,7 @@ Blockly.Blocks.check_direction = {
     },
     definition() {
         return {
-            message0: localize('Direction is %1'),
+            message0: localize('Direction is {{ direction_type }}', { direction_type: '%1' }),
             args0: [
                 {
                     type: 'field_dropdown',
@@ -34,7 +34,7 @@ Blockly.Blocks.check_direction = {
     },
 };
 
-Blockly.JavaScript.check_direction = block => {
+Blockly.JavaScript.check_direction = (block) => {
     const checkWith = block.getFieldValue('CHECK_DIRECTION');
 
     const code = `Bot.checkDirection('${checkWith}')`;

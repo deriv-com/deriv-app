@@ -6,7 +6,10 @@ Blockly.Blocks.math_random_int = {
     },
     definition() {
         return {
-            message0: localize('random integer from %1 to %2'),
+            message0: localize('random integer from {{ start_number }} to {{ end_number }}', {
+                start_number: '%1',
+                end_number: '%2',
+            }),
             args0: [
                 {
                     type: 'input_value',
@@ -42,7 +45,7 @@ Blockly.Blocks.math_random_int = {
     },
 };
 
-Blockly.JavaScript.math_random_int = block => {
+Blockly.JavaScript.math_random_int = (block) => {
     const argument0 = Blockly.JavaScript.valueToCode(block, 'FROM', Blockly.JavaScript.ORDER_COMMA) || '0';
     const argument1 = Blockly.JavaScript.valueToCode(block, 'TO', Blockly.JavaScript.ORDER_COMMA) || '0';
 

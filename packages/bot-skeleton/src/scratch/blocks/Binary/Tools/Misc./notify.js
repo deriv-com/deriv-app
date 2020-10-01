@@ -8,7 +8,14 @@ Blockly.Blocks.notify = {
     },
     definition() {
         return {
-            message0: localize('Notify %1 with sound: %2 %3'),
+            message0: localize(
+                'Notify {{ notification_type }} with sound: {{ notification_sound }} {{ input_message }}',
+                {
+                    notification_type: '%1',
+                    notification_sound: '%2',
+                    input_message: '%3',
+                }
+            ),
             args0: [
                 {
                     type: 'field_dropdown',
@@ -50,7 +57,7 @@ Blockly.Blocks.notify = {
     },
 };
 
-Blockly.JavaScript.notify = block => {
+Blockly.JavaScript.notify = (block) => {
     const notificationType = block.getFieldValue('NOTIFICATION_TYPE');
     const sound = block.getFieldValue('NOTIFICATION_SOUND');
     const message_block = block.getInputTargetBlock('MESSAGE');

@@ -12,7 +12,7 @@ Blockly.Blocks.procedures_ifreturn = {
     },
     definition() {
         return {
-            message0: localize('if %1 return %2'),
+            message0: localize('if {{ condition }} return {{ value }}', { condition: '%1', value: '%2' }),
             args0: [
                 {
                     type: 'input_value',
@@ -123,7 +123,7 @@ Blockly.Blocks.procedures_ifreturn = {
     FUNCTION_TYPES: ['procedures_defnoreturn', 'procedures_defreturn'],
 };
 
-Blockly.JavaScript.procedures_ifreturn = block => {
+Blockly.JavaScript.procedures_ifreturn = (block) => {
     const condition = Blockly.JavaScript.valueToCode(block, 'CONDITION', Blockly.JavaScript.ORDER_NONE) || 'false';
 
     let branch;

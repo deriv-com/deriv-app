@@ -10,7 +10,7 @@ Blockly.Blocks.purchase = {
     },
     definition() {
         return {
-            message0: localize('Purchase %1'),
+            message0: localize('Purchase {{ contract_type }}', { contract_type: '%1' }),
             args0: [
                 {
                     type: 'field_dropdown',
@@ -92,7 +92,7 @@ Blockly.Blocks.purchase = {
     restricted_parents: ['before_purchase'],
 };
 
-Blockly.JavaScript.purchase = block => {
+Blockly.JavaScript.purchase = (block) => {
     const purchaseList = block.getFieldValue('PURCHASE_LIST');
 
     const code = `Bot.purchase('${purchaseList}');\n`;

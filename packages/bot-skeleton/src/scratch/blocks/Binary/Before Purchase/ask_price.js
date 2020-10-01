@@ -6,7 +6,7 @@ Blockly.Blocks.ask_price = {
     },
     definition() {
         return {
-            message0: localize('Ask Price %1'),
+            message0: localize('Ask Price {{ contract_type }}', { contract_type: '%1' }),
             args0: [
                 {
                     type: 'field_dropdown',
@@ -36,7 +36,7 @@ Blockly.Blocks.ask_price = {
     enforceLimitations: Blockly.Blocks.purchase.enforceLimitations,
 };
 
-Blockly.JavaScript.ask_price = block => {
+Blockly.JavaScript.ask_price = (block) => {
     const purchaseList = block.getFieldValue('PURCHASE_LIST');
 
     const code = `Bot.getAskPrice('${purchaseList}')`;

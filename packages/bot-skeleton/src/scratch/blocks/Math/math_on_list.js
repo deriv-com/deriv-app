@@ -6,7 +6,10 @@ Blockly.Blocks.math_on_list = {
     },
     definition() {
         return {
-            message0: localize('%1 of list %2'),
+            message0: localize('{{ calculation }} of list {{ input_list }}', {
+                calculation: '%1',
+                input_list: '%2',
+            }),
             args0: [
                 {
                     type: 'field_dropdown',
@@ -53,7 +56,7 @@ Blockly.Blocks.math_on_list = {
 };
 
 /* eslint-disable no-underscore-dangle */
-Blockly.JavaScript.math_on_list = block => {
+Blockly.JavaScript.math_on_list = (block) => {
     const operation = block.getFieldValue('OP');
 
     let code, list;

@@ -7,7 +7,7 @@ Blockly.Blocks.totimestamp = {
     },
     definition() {
         return {
-            message0: `${localize('To timestamp %1')}%2`,
+            message0: localize('To timestamp {{ input_datetime }} {{ dummy }}', { input_datetime: '%1', dummy: '%2' }),
             args0: [
                 {
                     type: 'input_value',
@@ -44,7 +44,7 @@ Blockly.Blocks.totimestamp = {
     },
 };
 
-Blockly.JavaScript.totimestamp = block => {
+Blockly.JavaScript.totimestamp = (block) => {
     const datetime_string = Blockly.JavaScript.valueToCode(block, 'DATETIME', Blockly.JavaScript.ORDER_ATOMIC);
     const code = `Bot.dateTimeStringToTimestamp(${datetime_string})`;
     return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];

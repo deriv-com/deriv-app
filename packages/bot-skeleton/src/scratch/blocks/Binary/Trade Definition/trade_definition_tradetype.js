@@ -4,7 +4,10 @@ import ApiHelpers from '../../../../services/api/api-helpers';
 Blockly.Blocks.trade_definition_tradetype = {
     init() {
         this.jsonInit({
-            message0: localize('Trade Type: %1 > %2'),
+            message0: localize('Trade Type: {{ trade_type_category }} > {{ trade_type }}', {
+                trade_type_category: '%1',
+                trade_type: '%2',
+            }),
             args0: [
                 {
                     type: 'field_dropdown',
@@ -45,7 +48,7 @@ Blockly.Blocks.trade_definition_tradetype = {
                 const trade_type = this.getFieldValue('TRADETYPE_LIST');
 
                 if (event.name === 'SYMBOL_LIST') {
-                    contracts_for.getTradeTypeCategories(market, submarket, symbol).then(categories => {
+                    contracts_for.getTradeTypeCategories(market, submarket, symbol).then((categories) => {
                         const trade_type_cat_field = this.getField('TRADETYPECAT_LIST');
 
                         if (trade_type_cat_field) {
@@ -57,7 +60,7 @@ Blockly.Blocks.trade_definition_tradetype = {
                         }
                     });
                 } else if (event.name === 'TRADETYPECAT_LIST' && event.blockId === this.id) {
-                    contracts_for.getTradeTypes(market, submarket, symbol, trade_type_cat).then(trade_types => {
+                    contracts_for.getTradeTypes(market, submarket, symbol, trade_type_cat).then((trade_types) => {
                         const trade_type_field = this.getField('TRADETYPE_LIST');
 
                         trade_type_field.updateOptions(trade_types, {

@@ -7,7 +7,7 @@ Blockly.Blocks.read_details = {
     },
     definition() {
         return {
-            message0: localize('Contract Details: %1'),
+            message0: localize('Contract Details: {{ contract_detail }}', { contract_detail: '%1' }),
             args0: [
                 {
                     type: 'field_dropdown',
@@ -33,7 +33,7 @@ Blockly.Blocks.read_details = {
     restricted_parents: ['after_purchase'],
 };
 
-Blockly.JavaScript.read_details = block => {
+Blockly.JavaScript.read_details = (block) => {
     const detailIndex = block.getFieldValue('DETAIL_INDEX');
 
     const code = `Bot.readDetails(${detailIndex})`;

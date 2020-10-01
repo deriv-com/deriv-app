@@ -6,7 +6,15 @@ Blockly.Blocks.controls_for = {
     },
     definition() {
         return {
-            message0: localize('count with %1 from %2 to %3 by %4'),
+            message0: localize(
+                'count with {{ variable }} from {{ start_number }} to {{ end_number }} by {{ step_size }}',
+                {
+                    variable: '%1',
+                    start_number: '%2',
+                    end_number: '%3',
+                    step_size: '%4',
+                }
+            ),
             args0: [
                 {
                     type: 'field_variable',
@@ -64,7 +72,7 @@ Blockly.Blocks.controls_for = {
     },
 };
 
-Blockly.JavaScript.controls_for = block => {
+Blockly.JavaScript.controls_for = (block) => {
     // eslint-disable-next-line no-underscore-dangle
     const variable0 = Blockly.JavaScript.variableDB_.getName(block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
     const argument0 = Blockly.JavaScript.valueToCode(block, 'FROM', Blockly.JavaScript.ORDER_ASSIGNMENT) || '0';

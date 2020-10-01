@@ -6,7 +6,7 @@ Blockly.Blocks.logic_negate = {
     },
     definition() {
         return {
-            message0: localize('not %1'),
+            message0: localize('not {{ boolean }}', { boolean: '%1' }),
             args0: [
                 {
                     type: 'input_value',
@@ -35,7 +35,7 @@ Blockly.Blocks.logic_negate = {
     },
 };
 
-Blockly.JavaScript.logic_negate = block => {
+Blockly.JavaScript.logic_negate = (block) => {
     const order = Blockly.JavaScript.ORDER_LOGICAL_NOT;
     const argument0 = Blockly.JavaScript.valueToCode(block, 'BOOL', order) || 'true';
 

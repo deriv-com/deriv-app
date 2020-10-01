@@ -7,7 +7,14 @@ Blockly.Blocks.text_indexOf = {
     },
     definition() {
         return {
-            message0: localize('in text %1 find %2 occurence of text %3'),
+            message0: localize(
+                'in text {{ input_text1 }} find {{ first_or_last }} occurence of text {{ input_text2 }}',
+                {
+                    input_text1: '%1',
+                    first_or_last: '%2',
+                    input_text2: '%3',
+                }
+            ),
             args0: [
                 {
                     type: 'input_value',
@@ -51,7 +58,7 @@ Blockly.Blocks.text_indexOf = {
     },
 };
 
-Blockly.JavaScript.text_indexOf = block => {
+Blockly.JavaScript.text_indexOf = (block) => {
     const functionName = block.getFieldValue('END') === 'FIRST' ? 'indexOf' : 'lastIndexOf';
     const substring = Blockly.JavaScript.valueToCode(block, 'FIND', Blockly.JavaScript.ORDER_NONE) || "''";
     const text = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_MEMBER) || "''";

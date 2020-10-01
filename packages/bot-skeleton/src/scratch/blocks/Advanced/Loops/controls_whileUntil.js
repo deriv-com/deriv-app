@@ -6,7 +6,7 @@ Blockly.Blocks.controls_whileUntil = {
     },
     definition() {
         return {
-            message0: localize('repeat %1 %2'),
+            message0: localize('repeat {{ while_or_until }} {{ boolean }}', { while_or_until: '%1', boolean: '%2' }),
             args0: [
                 {
                     type: 'field_dropdown',
@@ -51,7 +51,7 @@ Blockly.Blocks.controls_whileUntil = {
     },
 };
 
-Blockly.JavaScript.controls_whileUntil = block => {
+Blockly.JavaScript.controls_whileUntil = (block) => {
     const branch = Blockly.JavaScript.statementToCode(block, 'DO');
     const until = block.getFieldValue('MODE') === 'UNTIL';
     const order = until ? Blockly.JavaScript.ORDER_LOGICAL_NOT : Blockly.JavaScript.ORDER_NONE;

@@ -6,7 +6,7 @@ Blockly.Blocks.lists_length = {
     },
     definition() {
         return {
-            message0: localize('length of %1'),
+            message0: localize('length of {{ input_list }}', { input_list: '%1' }),
             args0: [
                 {
                     type: 'input_value',
@@ -35,7 +35,7 @@ Blockly.Blocks.lists_length = {
     },
 };
 
-Blockly.JavaScript.lists_length = block => {
+Blockly.JavaScript.lists_length = (block) => {
     const list = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_MEMBER) || '[]';
 
     const code = `${list}.length`;

@@ -17,7 +17,10 @@ Blockly.Blocks.math_change = {
      */
     definition() {
         return {
-            message0: localize('change %1 by %2'),
+            message0: localize('change {{ variable }} by {{ number }}', {
+                variable: '%1',
+                number: '%2',
+            }),
             args0: [
                 {
                     type: 'field_variable',
@@ -57,7 +60,7 @@ Blockly.Blocks.math_change = {
     },
 };
 
-Blockly.JavaScript.math_change = block => {
+Blockly.JavaScript.math_change = (block) => {
     const variable = block.getFieldValue('VAR');
     // eslint-disable-next-line no-underscore-dangle
     const argument0 = Blockly.JavaScript.variableDB_.getName(variable, Blockly.Variables.NAME_TYPE);

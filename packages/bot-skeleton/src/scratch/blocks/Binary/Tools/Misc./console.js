@@ -7,7 +7,10 @@ Blockly.Blocks.console = {
     },
     definition() {
         return {
-            message0: localize('Console %1 value: %2'),
+            message0: localize('Console {{ message_type }} value: {{ input_message }}', {
+                message_type: '%1',
+                input_message: '%2',
+            }),
             args0: [
                 {
                     type: 'field_dropdown',
@@ -49,7 +52,7 @@ Blockly.Blocks.console = {
     },
 };
 
-Blockly.JavaScript.console = block => {
+Blockly.JavaScript.console = (block) => {
     const console_type = block.getFieldValue('CONSOLE_TYPE') || 'log';
     const message =
         Blockly.JavaScript.valueToCode(block, 'MESSAGE', Blockly.JavaScript.ORDER_ATOMIC) ||

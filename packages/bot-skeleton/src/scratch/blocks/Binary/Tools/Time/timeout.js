@@ -6,7 +6,11 @@ Blockly.Blocks.timeout = {
     },
     definition() {
         return {
-            message0: localize('%1 %2 Run after %3 second(s)'),
+            message0: localize('{{ dummy }} {{ stack_input }} Run after {{ number }} second(s)', {
+                dummy: '%1',
+                stack_input: '%2',
+                number: '%3',
+            }),
             args0: [
                 {
                     type: 'input_dummy',
@@ -50,7 +54,7 @@ Blockly.Blocks.timeout = {
                 'after_purchase',
                 'tick_analysis',
             ];
-            if (allowedScopes.some(scope => this.isDescendantOf(scope))) {
+            if (allowedScopes.some((scope) => this.isDescendantOf(scope))) {
                 if (this.disabled) {
                     this.setDisabled(false);
                 }
@@ -66,7 +70,7 @@ Blockly.Blocks.timeout = {
     },
 };
 
-Blockly.JavaScript.timeout = block => {
+Blockly.JavaScript.timeout = (block) => {
     const stack = Blockly.JavaScript.statementToCode(block, 'TIMEOUTSTACK');
     const seconds = Blockly.JavaScript.valueToCode(block, 'SECONDS', Blockly.JavaScript.ORDER_ATOMIC) || '1';
 

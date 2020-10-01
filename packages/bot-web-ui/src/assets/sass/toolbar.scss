@@ -77,6 +77,11 @@
     &__animation {
         margin-right: 0.5rem;
     }
+    &__dialog {
+        &-text--second {
+            margin-top: 2.4rem;
+        }
+    }
 }
 
 .loader {

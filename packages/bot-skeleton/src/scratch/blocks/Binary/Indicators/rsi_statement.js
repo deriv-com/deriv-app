@@ -8,7 +8,10 @@ Blockly.Blocks.rsi_statement = {
     },
     definition() {
         return {
-            message0: localize('set %1 to Relative Strength Index %2'),
+            message0: localize('set {{ variable }} to Relative Strength Index {{ dummy }}', {
+                variable: '%1',
+                dummy: '%2',
+            }),
             message1: '%1',
             args0: [
                 {
@@ -47,7 +50,7 @@ Blockly.Blocks.rsi_statement = {
     onchange: Blockly.Blocks.bb_statement.onchange,
 };
 
-Blockly.JavaScript.rsi_statement = block => {
+Blockly.JavaScript.rsi_statement = (block) => {
     // eslint-disable-next-line no-underscore-dangle
     const var_name = Blockly.JavaScript.variableDB_.getName(
         block.getFieldValue('VARIABLE'),

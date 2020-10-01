@@ -7,7 +7,10 @@ Blockly.Blocks.text_append = {
     },
     definition() {
         return {
-            message0: localize('to %1 append text %2'),
+            message0: localize('to {{ variable }} append text {{ input_text }}', {
+                variable: '%1',
+                input_text: '%2',
+            }),
             args0: [
                 {
                     type: 'field_variable',
@@ -41,8 +44,8 @@ Blockly.Blocks.text_append = {
     },
 };
 
-Blockly.JavaScript.text_append = block => {
-    const forceString = value => {
+Blockly.JavaScript.text_append = (block) => {
+    const forceString = (value) => {
         const strRegExp = /^\s*'([^']|\\')*'\s*$/;
         if (strRegExp.test(value)) {
             return value;

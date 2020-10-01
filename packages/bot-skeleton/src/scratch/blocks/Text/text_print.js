@@ -7,7 +7,7 @@ Blockly.Blocks.text_print = {
     },
     definition() {
         return {
-            message0: localize('print %1'),
+            message0: localize('print {{ input_text }}', { input_text: '%1' }),
             args0: [
                 {
                     type: 'input_value',
@@ -38,7 +38,7 @@ Blockly.Blocks.text_print = {
     },
 };
 
-Blockly.JavaScript.text_print = block => {
+Blockly.JavaScript.text_print = (block) => {
     const msg = Blockly.JavaScript.valueToCode(block, 'TEXT', Blockly.JavaScript.ORDER_NONE) || "''";
     const code = `window.alert(${msg});\n`;
     return code;

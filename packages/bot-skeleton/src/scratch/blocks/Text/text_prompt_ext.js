@@ -5,7 +5,7 @@ Blockly.Blocks.text_prompt_ext = {
     init() {
         this.jsonInit(this.definition());
         const typeField = this.getField('TYPE');
-        typeField.setValidator(value => {
+        typeField.setValidator((value) => {
             if (value === 'TEXT') {
                 this.setOutput(true, 'String');
             } else if (value === 'NUMBER') {
@@ -18,7 +18,10 @@ Blockly.Blocks.text_prompt_ext = {
     },
     definition() {
         return {
-            message0: localize('prompt for %1 with message %2'),
+            message0: localize('prompt for {{ string_or_number }} with message {{ input_text }}', {
+                string_or_number: '%1',
+                input_text: '%2',
+            }),
             args0: [
                 {
                     type: 'field_dropdown',
@@ -58,7 +61,7 @@ Blockly.Blocks.text_prompt_ext = {
     },
 };
 
-Blockly.JavaScript.text_prompt_ext = block => {
+Blockly.JavaScript.text_prompt_ext = (block) => {
     let msg, code;
 
     if (block.getField('TEXT')) {

@@ -9,7 +9,11 @@ Blockly.Blocks.bb_statement = {
     },
     definition() {
         return {
-            message0: localize('set %1 to Bollinger Bands %2 %3'),
+            message0: localize('set {{ variable }} to Bollinger Bands {{ band_type }} {{ dummy }}', {
+                variable: '%1',
+                band_type: '%2',
+                dummy: '%3',
+            }),
             message1: '%1',
             args0: [
                 {
@@ -57,7 +61,7 @@ Blockly.Blocks.bb_statement = {
 
         if (event.type === Blockly.Events.END_DRAG) {
             const blocksInStatement = this.getBlocksInStatement('STATEMENT');
-            blocksInStatement.forEach(block => {
+            blocksInStatement.forEach((block) => {
                 if (!this.required_child_blocks.includes(block.type)) {
                     Blockly.Events.disable();
                     block.unplug(false);
@@ -68,7 +72,7 @@ Blockly.Blocks.bb_statement = {
     },
 };
 
-Blockly.JavaScript.bb_statement = block => {
+Blockly.JavaScript.bb_statement = (block) => {
     // eslint-disable-next-line no-underscore-dangle
     const var_name = Blockly.JavaScript.variableDB_.getName(
         block.getFieldValue('VARIABLE'),

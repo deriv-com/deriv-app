@@ -7,7 +7,7 @@ Blockly.Blocks.text_isEmpty = {
     },
     definition() {
         return {
-            message0: localize('text %1 is empty'),
+            message0: localize('text {{ input_text }} is empty', { input_text: '%1' }),
             args0: [
                 {
                     type: 'input_value',
@@ -37,9 +37,9 @@ Blockly.Blocks.text_isEmpty = {
     },
 };
 
-Blockly.JavaScript.text_isEmpty = block => {
+Blockly.JavaScript.text_isEmpty = (block) => {
     const text = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_MEMBER) || "''";
-    const isVariable = block.workspace.getAllVariables().findIndex(variable => variable.name === text) !== -1;
+    const isVariable = block.workspace.getAllVariables().findIndex((variable) => variable.name === text) !== -1;
 
     const code = isVariable ? `!${text} || !${text}.length` : `!${text}.length`;
     return [code, Blockly.JavaScript.ORDER_LOGICAL_NOT];

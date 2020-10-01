@@ -7,7 +7,10 @@ Blockly.Blocks.ohlc_values_in_list = {
     },
     definition() {
         return {
-            message0: localize('Make a list of %1 values from candles list %2'),
+            message0: localize('Make a list of {{ candle_property }} values from candles list {{ candle_list }}', {
+                candle_property: '%1',
+                candle_list: '%2',
+            }),
             args0: [
                 {
                     type: 'field_dropdown',
@@ -41,7 +44,7 @@ Blockly.Blocks.ohlc_values_in_list = {
     },
 };
 
-Blockly.JavaScript.ohlc_values_in_list = block => {
+Blockly.JavaScript.ohlc_values_in_list = (block) => {
     const ohlcField = block.getFieldValue('OHLCFIELD_LIST') || 'open';
     const ohlcList = Blockly.JavaScript.valueToCode(block, 'OHLCLIST', Blockly.JavaScript.ORDER_ATOMIC) || '[]';
 

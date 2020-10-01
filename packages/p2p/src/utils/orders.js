@@ -127,7 +127,7 @@ class ExtendedOrderDetails {
     // Only show the complain button for expired orders (determined by backend), or for orders
     // that are expired (determined by FE). This logic exists because BE only expires orders
     // once a minute rather than on expiry time. FE should expire orders so users cannot
-    // execute actions such as "I've paid" or "I've received funds" on technically expired orders.
+    // execute actions such as "I've paid" or "I've received payment" on technically expired orders.
     get should_show_only_complain_button() {
         if (this.is_finalised_order) return false;
         return (this.is_expired_order || (this.is_happening_order && this.has_timer_expired)) && !this.is_my_ad;

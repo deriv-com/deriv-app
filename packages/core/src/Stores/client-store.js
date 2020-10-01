@@ -955,6 +955,9 @@ export default class ClientStore extends BaseStore {
 
         this.setLoginId(LocalStore.get('active_loginid'));
         this.setAccounts(LocalStore.getObject(storage_key));
+        if (this.is_logged_in && !this.switched && !this.has_any_real_account) {
+            this.root_store.ui.toggleWelcomeModal(true);
+        }
         this.setSwitched('');
         let client = this.accounts[this.loginid];
         // If there is an authorize_response, it means it was the first login
@@ -1600,6 +1603,8 @@ export default class ClientStore extends BaseStore {
                 if (this.root_store.ui.is_eu_enabled) {
                     this.root_store.ui.showAccountTypesModalForEuropean();
                 }
+
+                this.root_store.ui.toggleWelcomeModal(true);
             }
         });
     }

@@ -3,7 +3,7 @@ import React from 'react';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ContractType from './contract-type.jsx';
-import { contract_type_category_icon } from '../../../Helpers/contract-type';
+import { getContractTypeCategoryIcons } from '../../../Helpers/contract-type';
 
 class ContractTypeWidget extends React.PureComponent {
     state = {
@@ -94,6 +94,7 @@ class ContractTypeWidget extends React.PureComponent {
 
     get list_with_category() {
         const { list, search_query } = this.state;
+        const contract_type_category_icon = getContractTypeCategoryIcons();
         const multipliers_category = list.filter(
             contract_category => contract_category.label === localize('Multipliers')
         );

@@ -10,11 +10,11 @@ export const contract_category_icon = {
     [localize('Multipliers')]: 'IcMultiplier',
 };
 
-export const contract_type_category_icon = {
+export const getContractTypeCategoryIcons = () => ({
     [localize('All')]: 'IcCatAll',
     [localize('Options')]: 'IcCatOptions',
     [localize('Multipliers')]: 'IcCatMultiplier',
-};
+});
 
 /**
  * Returns a list of contracts in the following format:

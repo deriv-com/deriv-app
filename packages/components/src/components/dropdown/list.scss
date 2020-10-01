@@ -129,8 +129,8 @@
         // stylelint-disable-line
         @supports (-webkit-appearance: none) {
             /* postcss-bem-linter: ignore */
-            & > div:nth-child(1) > div:nth-child(1) {
-                overflow-y: scroll !important;
+            & > div:nth-child(1) & > div:nth-child(1) {
+                overflow-y: auto;
                 overflow-x: hidden !important;
 
                 /* postcss-bem-linter: ignore */

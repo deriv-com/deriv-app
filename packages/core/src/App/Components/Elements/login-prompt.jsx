@@ -17,7 +17,7 @@ const LoginPrompt = ({ onLogin, onSignup, page_title }) => (
                 key={0}
                 i18n_default_text='If you have an active account, please <0>Log in</0> for full access. Otherwise, please <1>Sign up</1> to start trading.'
                 components={[
-                    <a key={0} className='link' onClick={onLogin} />,
+                    <a key={0} className='link' onClick={() => onLogin(false)} />,
                     <a key={1} className='link' onClick={onSignup} />,
                 ]}
             />,

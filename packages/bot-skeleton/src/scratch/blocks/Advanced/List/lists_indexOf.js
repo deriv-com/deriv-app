@@ -6,7 +6,14 @@ Blockly.Blocks.lists_indexOf = {
     },
     definition() {
         return {
-            message0: localize('in list %1 find %2 occurence of item %3'),
+            message0: localize(
+                'in list {{ input_list }} find {{ first_or_last }} occurence of item {{ input_value }}',
+                {
+                    input_list: '%1',
+                    first_or_last: '%2',
+                    input_value: '%3',
+                }
+            ),
             args0: [
                 {
                     type: 'input_value',

@@ -13,9 +13,9 @@ const NetworkMonitorBase = (() => {
         blinking: { class: 'blinker', tooltip: localize('Connecting to server') },
     };
 
-    let ws_config, setNetworkStatus;
+    let setNetworkStatus;
 
-    const init = (socket_general_functions, fncUpdateUI) => {
+    const init = (socket_general_functions, fncUpdateUI, client_store) => {
         let last_status, last_is_online;
         setNetworkStatus = status => {
             const is_online = isOnline();
@@ -25,8 +25,6 @@ const NetworkMonitorBase = (() => {
                 fncUpdateUI(status_config[status], is_online);
             }
         };
-
-        ws_config = Object.assign({ wsEvent, isOnline }, socket_general_functions);
 
         if ('onLine' in navigator) {
             window.addEventListener('online', () => {
@@ -43,7 +41,9 @@ const NetworkMonitorBase = (() => {
         }
 
         if (isOnline()) {
-            BinarySocket.init({ options: ws_config });
+            const ws_config = Object.assign({ wsEvent, isOnline }, socket_general_functions);
+            BinarySocket.init({ options: ws_config, client: client_store });
+            BinarySocket.openNewConnection();
         }
 
         setNetworkStatus(isOnline() ? 'blinking' : 'offline');
@@ -60,7 +60,7 @@ const NetworkMonitorBase = (() => {
         reconnect_timeout = setTimeout(() => {
             reconnect_timeout = null;
             if (isOnline() && BinarySocket.hasReadyState(2, 3)) {
-                BinarySocket.init({ options: ws_config });
+                BinarySocket.openNewConnection();
             } else {
                 BinarySocket.send({ ping: 1 }); // get stable status sooner
             }

@@ -336,7 +336,7 @@ class SelfExclusion extends React.Component {
                 <Div100vhContainer className='self-exclusion__wrapper' is_disabled={isDesktop()} height_offset='80px'>
                     <ThemedScrollbars className='self-exclusion__scrollbars' is_bypassed={isMobile()}>
                         <MobileWrapper>
-                            <Article />
+                            <Article toggleArticle={this.toggleArticle} />
                         </MobileWrapper>
 
                         <Formik
@@ -362,7 +362,9 @@ class SelfExclusion extends React.Component {
                                         is_open={show_article}
                                         toggleModal={this.toggleArticle}
                                     >
-                                        <ArticleContent toggleModal={this.toggleArticle} />
+                                        <ThemedScrollbars>
+                                            <ArticleContent toggleModal={this.toggleArticle} />
+                                        </ThemedScrollbars>
                                     </Modal>
                                     {is_confirm_page ? (
                                         <>

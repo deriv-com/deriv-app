@@ -1,5 +1,4 @@
 import ChartStore from './chart-store';
-import ContractCardStore from './contract-card-store';
 import DownloadStore from './download-store';
 import FlyoutStore from './flyout-store';
 import FlyoutHelpStore from './flyout-help-store';
@@ -9,6 +8,7 @@ import LoadModalStore from './load-modal-store';
 import RunPanelStore from './run-panel-store';
 import SaveModalStore from './save-modal-store';
 import SummaryStore from './summary-store';
+import SummaryCardStore from './summary-card-store';
 import ToolbarStore from './toolbar-store';
 import TransactionsStore from './transactions-store';
 import QuickStrategyStore from './quick-strategy-store';
@@ -26,8 +26,8 @@ export default class RootStore {
         this.ws = ws;
         this.dbot = dbot;
         this.server_time = core.common.server_time;
+        this.summary_card = new SummaryCardStore(this);
         this.blockly_store = new BlocklyStore(this);
-        this.contract_card = new ContractCardStore(this);
         this.download = new DownloadStore(this);
         this.flyout = new FlyoutStore(this);
         this.flyout_help = new FlyoutHelpStore(this);

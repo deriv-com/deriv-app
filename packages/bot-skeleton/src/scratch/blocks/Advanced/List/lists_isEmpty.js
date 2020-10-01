@@ -6,7 +6,7 @@ Blockly.Blocks.lists_isEmpty = {
     },
     definition() {
         return {
-            message0: localize('list %1 is empty'),
+            message0: localize('list {{ input_list }} is empty', { input_list: '%1' }),
             args0: [
                 {
                     type: 'input_value',

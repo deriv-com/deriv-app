@@ -34,7 +34,7 @@ const LoginHistoryListView = ({ fields, login_history }) => (
             </Table.Row>
             <Table.Row>
                 <Table.Cell>
-                    <CellContent title={fields.ip} text={login_history.ip} />
+                    <CellContent className='ip-value' title={fields.ip} text={login_history.ip} />
                 </Table.Cell>
                 <Table.Cell>
                     <CellContent title={fields.status} text={login_history.status} />

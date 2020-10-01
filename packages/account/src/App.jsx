@@ -8,9 +8,9 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         const {
-            passthrough: { WS, root_store, client_base },
+            passthrough: { WS, root_store },
         } = props;
-        this.root_store = initStore(root_store, WS, client_base);
+        this.root_store = initStore(root_store, WS);
         setWebsocket(WS);
     }
 

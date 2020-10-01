@@ -1,4 +1,3 @@
-// import PropTypes      from 'prop-types';
 import classNames from 'classnames';
 import React from 'react';
 import { Popover, DesktopWrapper, Loading, MobileWrapper, ThemedScrollbars } from '@deriv/components';

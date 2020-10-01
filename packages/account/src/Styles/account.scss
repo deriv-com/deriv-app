@@ -1071,7 +1071,8 @@ $MIN_HEIGHT_FLOATING: calc(
                 .action {
                     text-transform: capitalize;
                 }
-                .browser {
+                .browser,
+                .ip-value {
                     padding-right: 1.5rem;
                 }
             }
@@ -1082,7 +1083,7 @@ $MIN_HEIGHT_FLOATING: calc(
             }
             &__row {
                 /* Date-Action-Browser-IP-Status */
-                grid-template-columns: 184px 65px 248px 133px 70px;
+                grid-template-columns: 184px 65px 248px minmax(133px, 308px) 80px;
                 padding: 0px;
             }
             .table__cell {
@@ -1622,7 +1623,8 @@ $MIN_HEIGHT_FLOATING: calc(
 .dc-modal__container_self_exclusion__article-modal {
     .self-exclusion {
         &__article {
-            width: 440px;
+            max-width: 440px;
+            max-height: 480px;
             height: auto;
             display: flex;
             flex-direction: column;

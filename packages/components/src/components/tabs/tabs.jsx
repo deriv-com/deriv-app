@@ -84,6 +84,7 @@ class Tabs extends React.Component {
                     ref={this.setTabsWrapperRef}
                 >
                     {React.Children.map(children, (child, index) => {
+                        if (!child) return null;
                         const { count, header_content, label } = child.props;
 
                         return (

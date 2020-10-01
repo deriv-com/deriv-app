@@ -19,10 +19,6 @@ export const loginUrl = ({ language }) => {
         return `https://${server_url}/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
     }
 
-    // TODO: [app-link-refactor] - Remove backwards compatibility for `deriv.app`
-    if (getAppId() === domain_app_ids['deriv.app'] && /^(www\.)?deriv\.app$/.test(window.location.hostname)) {
-        return getOAuthUrl('deriv.app');
-    }
     if (getAppId() === domain_app_ids['app.deriv.com'] && /^app\.deriv\.com$/.test(window.location.hostname)) {
         return getOAuthUrl('deriv.com');
     }

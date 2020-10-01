@@ -11,7 +11,7 @@ Blockly.Blocks.loader = {
     },
     definition() {
         return {
-            message0: localize('Load block from URL: %1'),
+            message0: localize('Load block from URL: {{ input_url }}', { input_url: '%1' }),
             args0: [
                 {
                     type: 'field_input',

@@ -7,7 +7,7 @@ Blockly.Blocks.text_trim = {
     },
     definition() {
         return {
-            message0: localize('trim spaces from %1 of %2'),
+            message0: localize('trim spaces from {{ side }} of {{ input_text }}', { side: '%1', input_text: '%2' }),
             args0: [
                 {
                     type: 'field_dropdown',

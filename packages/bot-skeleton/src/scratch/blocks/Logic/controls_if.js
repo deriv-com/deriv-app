@@ -174,7 +174,7 @@ Blockly.Blocks.controls_if = {
             this.appendValueInput(input_names.IF).setCheck('Boolean');
             this.appendDummyInput(input_names.THEN_LABEL).appendField(localize('then'));
             this.appendDummyInput(input_names.DELETE_ICON).appendField(
-                new Blockly.FieldImage(minusIconDark, 24, 24, '-', removeElseIf)
+                new Blockly.FieldImage(minusIconDark, 24, 24, '-', removeElseIf, this.isInFlyout)
             );
             this.appendStatementInput(input_names.DO);
         }
@@ -184,7 +184,7 @@ Blockly.Blocks.controls_if = {
             const removeElse = () => this.modifyElse(false);
             this.appendDummyInput('ELSE_LABEL').appendField(localize('else'));
             this.appendDummyInput('DELETE_ELSE').appendField(
-                new Blockly.FieldImage(minusIconDark, 24, 24, '-', removeElse, false)
+                new Blockly.FieldImage(minusIconDark, 24, 24, '-', removeElse, false, this.isInFlyout)
             );
             this.appendStatementInput('ELSE');
         }
@@ -203,7 +203,7 @@ Blockly.Blocks.controls_if = {
 
         // Re-add the "+" icon
         this.appendDummyInput('MUTATOR').appendField(
-            new Blockly.FieldImage(plusIconDark, 24, 24, '+', addElseIf, false)
+            new Blockly.FieldImage(plusIconDark, 24, 24, '+', addElseIf, false, this.isInFlyout)
         );
 
         this.initSvg();

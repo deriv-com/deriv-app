@@ -56,6 +56,10 @@
         font-size: 1.4rem;
         line-height: 1.43;
     }
+    &__action {
+        display: flex;
+        justify-content: flex-end;
+    }
     &__header {
         font-size: 1.6rem;
         font-weight: bold;

@@ -18,7 +18,7 @@ const PageError = ({
     const onClickHandler = () => {
         if (should_clear_error_on_click) {
             setError(false, null);
-        } else {
+        } else if (typeof buttonOnClick === 'function') {
             buttonOnClick();
         }
     };

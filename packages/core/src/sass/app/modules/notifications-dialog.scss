@@ -204,6 +204,10 @@
                 color: var(--text-prominent);
             }
         }
+        &__action {
+            display: flex;
+            justify-content: flex-end;
+        }
         @include mobile {
             display: flex;
             flex-direction: column;

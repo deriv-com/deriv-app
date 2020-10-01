@@ -1,9 +1,8 @@
 import * as Cookies from 'js-cookie';
 import { action, computed } from 'mobx';
-import { getAppId, toMoment, epochToMoment, getMT5AccountType } from '@deriv/shared';
+import { isLoginPages, getAppId, toMoment, epochToMoment, getMT5AccountType } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import BinarySocket from '_common/base/socket_base';
-import { isLoginPages } from '_common/base/login';
 import BaseStore from './base-store';
 
 export default class GTMStore extends BaseStore {

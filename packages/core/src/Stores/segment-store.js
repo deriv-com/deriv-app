@@ -1,8 +1,7 @@
 import { action } from 'mobx';
-import { getAppId } from '@deriv/shared';
+import { isLoginPages, getAppId } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import BinarySocket from '_common/base/socket_base';
-import { isLoginPages } from '_common/base/login';
 import BaseStore from './base-store';
 
 export default class SegmentStore extends BaseStore {

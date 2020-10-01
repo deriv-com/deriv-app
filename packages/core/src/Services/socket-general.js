@@ -1,7 +1,6 @@
 import { flow } from 'mobx';
-import { State, getPropertyValue } from '@deriv/shared';
-import { localize } from '@deriv/translations';
-import Login from '_common/base/login';
+import { isLoginPages, redirectToLogin, State, getPropertyValue } from '@deriv/shared';
+import { getLanguage, localize } from '@deriv/translations';
 import ServerTime from '_common/base/server_time';
 import BinarySocket from '_common/base/socket_base';
 import WS from './ws-methods';
@@ -17,7 +16,7 @@ const BinarySocketGeneral = (() => {
     const onOpen = is_ready => {
         // Header.hideNotification();
         if (is_ready) {
-            if (!Login.isLoginPages()) {
+            if (!isLoginPages()) {
                 if (!client_store.is_valid_login) {
                     client_store.logout();
                     return;
@@ -41,7 +40,7 @@ const BinarySocketGeneral = (() => {
                         // Dialog.alert({ id: 'authorize_error_alert', message: response.error.message });
                     }
                     client_store.logout();
-                } else if (!Login.isLoginPages() && !/authorize/.test(State.get('skip_response'))) {
+                } else if (!isLoginPages() && !/authorize/.test(State.get('skip_response'))) {
                     // is_populating_account_list is a check to avoid logout on the first logged-in session
                     // In any other case, if the response loginid does not match the store's loginid, user must be logged out
                     if (
@@ -179,7 +178,7 @@ const BinarySocketGeneral = (() => {
                         message: localize('Please Log in'),
                         should_show_refresh: false,
                         redirect_label: localize('Log in'),
-                        redirectOnClick: Login.redirectToLogin,
+                        redirectOnClick: () => redirectToLogin(false, getLanguage()),
                     });
                 });
                 break;

@@ -2,6 +2,7 @@ import Cookies from 'js-cookie';
 import { action, computed, observable, reaction, runInAction, toJS, when } from 'mobx';
 import moment from 'moment';
 import {
+    redirectToLogin,
     getMT5AccountType,
     getPropertyValue,
     getUrlSmartTrader,
@@ -14,10 +15,9 @@ import {
     State,
     toMoment,
 } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { getLanguage, localize } from '@deriv/translations';
 import { requestLogout, WS } from 'Services';
 import BinarySocketGeneral from 'Services/socket-general';
-import { redirectToLogin } from '_common/base/login';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
 import { isEuCountry } from '_common/utility';
@@ -971,7 +971,7 @@ export default class ClientStore extends BaseStore {
                 message: localize('Please Log in'),
                 should_show_refresh: false,
                 redirect_label: localize('Log in'),
-                redirectOnClick: redirectToLogin,
+                redirectOnClick: () => redirectToLogin(false, getLanguage()),
             });
             this.setIsLoggingIn(false);
             this.setInitialized(false);

@@ -1,8 +1,23 @@
 import { website_name } from '../config/app-config';
-import { LocalStore } from '../storage/storage';
+import { isStorageSupported, LocalStore } from '../storage/storage';
 import { isMobileOs } from '../os/os_detect';
 import { getAppId, domain_app_ids } from '../config/config';
-import { urlForCurrentDomain } from '../url';
+import { getStaticUrl, urlForCurrentDomain } from '../url';
+
+export const redirectToLogin = (is_logged_in, language) => {
+    if (!is_logged_in && !isLoginPages() && isStorageSupported(sessionStorage)) {
+        sessionStorage.setItem('redirect_url', window.location.href);
+        window.location.href = loginUrl({
+            language,
+        });
+    }
+};
+
+export const redirectToSignUp = ({ is_deriv_crypto }) => {
+    window.open(getStaticUrl('/signup/', { is_deriv_crypto }));
+};
+
+export const isLoginPages = () => /redirect/i.test(window.location.pathname);
 
 export const loginUrl = ({ language }) => {
     const server_url = LocalStore.get('config.server_url');

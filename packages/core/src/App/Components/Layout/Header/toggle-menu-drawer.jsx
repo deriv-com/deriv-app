@@ -1,8 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch } from '@deriv/components';
-import { routes } from '@deriv/shared';
-
+import { routes, PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services';
 import { NetworkStatus } from 'App/Components/Layout/Footer';
@@ -41,6 +40,8 @@ const MenuLink = ({ link_to, icon, is_disabled, suffix_icon, text, onClickLink }
 );
 
 class ToggleMenuDrawer extends React.Component {
+    static contextType = PlatformContext;
+
     constructor(props) {
         super(props);
         // TODO: find better fix for no-op issue
@@ -132,7 +133,7 @@ class ToggleMenuDrawer extends React.Component {
                             (route.path !== routes.cashier_pa || this.props.is_payment_agent_visible) &&
                             (route.path !== routes.cashier_pa_transfer ||
                                 this.props.is_payment_agent_transfer_visible) &&
-                            (route.path !== routes.cashier_p2p || this.props.is_p2p_visible) &&
+                            (route.path !== routes.cashier_p2p || this.props.is_p2p_enabled) &&
                             (route.path !== routes.cashier_onramp || this.props.is_onramp_tab_visible)
                         ) {
                             return (
@@ -176,7 +177,8 @@ class ToggleMenuDrawer extends React.Component {
     };
 
     processRoutes() {
-        const routes_config = getRoutesConfig();
+        const { is_deriv_crypto } = this.context;
+        const routes_config = getRoutesConfig({ is_deriv_crypto });
         const primary_routes = [routes.reports, routes.account, routes.cashier];
         const secondary_routes = [];
 

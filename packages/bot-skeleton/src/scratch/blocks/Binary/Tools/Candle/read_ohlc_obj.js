@@ -7,7 +7,10 @@ Blockly.Blocks.read_ohlc_obj = {
     },
     definition() {
         return {
-            message0: localize('Read %1 value in candle %2'),
+            message0: localize('Read {{ candle_property }} value in candle {{ input_candle }}', {
+                candle_property: '%1',
+                input_candle: '%2',
+            }),
             args0: [
                 {
                     type: 'field_dropdown',

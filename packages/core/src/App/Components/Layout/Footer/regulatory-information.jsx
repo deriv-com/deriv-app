@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Modal, Popover } from '@deriv/components';
+import { Icon, Modal, Popover, StaticUrl } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import MGALogo from 'Assets/SvgComponents/footer/mga.svg';
 
@@ -12,17 +12,13 @@ const MLTRegulatoryInformation = () => (
             <Localize
                 i18n_default_text='Synthetic indices in the EU and the UK are offered by Deriv (Europe) Limited, licensed by the Malta Gaming Authority (<0>licence no. MGA/B2C/102/2000</0>), by the UK Gambling Commission for clients in the UK (<1>account no. 39495</1>), and by the Revenue Commissioners for clients in Ireland (<2>licence no. 1010285</2>).'
                 components={[
-                    <a
-                        href='https://deriv.com/regulatory/Deriv_(Europe)_Limited.pdf'
-                        target='_blank'
-                        rel='nofollow noreferrer'
+                    <StaticUrl
+                        href='/regulatory/Deriv_(Europe)_Limited.pdf'
                         key={0}
                         className='footer-regulatory-information__link'
                     />,
                     <a
                         href='https://secure.gamblingcommission.gov.uk/PublicRegister/Search/Detail/39495'
-                        target='_blank'
-                        rel='nofollow noreferrer'
                         key={1}
                         className='footer-regulatory-information__link'
                     />,

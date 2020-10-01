@@ -22,12 +22,10 @@ describe('Regular expression checks', () => {
             <Localize
                 i18n_default_text='Please accept our updated <0>terms and conditions</0> to continue.'
                 components={[
-                    <a
+                    <StaticUrl
                         key={0}
                         className='link'
-                        target='_blank'
-                        rel='noopener noreferrer'
-                        href={getDerivComLink('terms-and-conditions/#general')}
+                        href='terms-and-conditions/#general'
                     />,
                 ]}
             />
@@ -38,8 +36,6 @@ describe('Regular expression checks', () => {
                     <a
                         key={0}
                         href='https://www.bestchange.com/?p=1095016'
-                        rel='noopener noreferrer'
-                        target='_blank'
                         className='link'
                     />,
                 ]}

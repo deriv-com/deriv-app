@@ -1,5 +1,5 @@
 import React from 'react';
-import { getDerivComLink } from '@deriv/shared';
+import { StaticUrl } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import Article from 'Components/article';
 
@@ -11,15 +11,7 @@ const ALArticle = () => (
             <Localize
                 key={1}
                 i18n_default_text='To learn more about trading limits and how they apply, please go to the <0>Help Centre.</0>'
-                components={[
-                    <a
-                        key={0}
-                        className='link link--orange'
-                        rel='noopener noreferrer'
-                        target='_blank'
-                        href={getDerivComLink('/help-centre')}
-                    />,
-                ]}
+                components={[<StaticUrl key={0} className='link link--orange' href='/help-centre' />]}
             />,
         ]}
     />

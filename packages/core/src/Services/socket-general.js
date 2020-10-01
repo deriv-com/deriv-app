@@ -142,6 +142,16 @@ const BinarySocketGeneral = (() => {
                 }
                 break;
             }
+            case 'Fiat2CryptoTransferOverLimit':
+                // if there is fiat2crypto transfer limit error, we need to refresh the account_status for authentication
+                if (msg_type === 'transfer_between_accounts') {
+                    WS.authorized.getAccountStatus().then(account_status_response => {
+                        if (!account_status_response.error) {
+                            client_store.setAccountStatus(account_status_response.get_account_status);
+                        }
+                    });
+                }
+                break;
             case 'RateLimit':
                 if (msg_type !== 'cashier_password') {
                     common_store.setError(true, {

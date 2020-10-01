@@ -6,7 +6,11 @@ Blockly.Blocks.lists_sort = {
     },
     definition() {
         return {
-            message0: localize('sort %1 %2 %3'),
+            message0: localize('sort {{ sort_type }} {{ sort_direction }} {{ input_list }}', {
+                sort_type: '%1',
+                sort_direction: '%2',
+                input_list: '%3',
+            }),
             args0: [
                 {
                     type: 'field_dropdown',

@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'Stores/connect';
 import { Localize } from '@deriv/translations';
 import { isCryptocurrency } from '@deriv/shared';
@@ -17,6 +16,7 @@ import USDTSideNote from '../Components/usdt-side-note.jsx';
 const DepositeSideNote = () => {
     const notes = [
         <Localize i18n_default_text='This address can only be used once to make a deposit.' key={0} />,
+        /*
         <Localize
             i18n_default_text='For each deposit you will have to visit here again to generate a new address.'
             key={1}
@@ -30,6 +30,7 @@ const DepositeSideNote = () => {
             key={4}
             components={[<Link to='/reports/statement' key={0} className='link link--orange' />]}
         />,
+        */
     ];
 
     return <SideNote notes={notes} />;

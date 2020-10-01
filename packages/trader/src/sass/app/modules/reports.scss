@@ -673,21 +673,6 @@ $side-padding: 1.2em;
             align-items: center;
             line-height: 16px;
         }
-        &-no-resale-msg {
-            clear: both;
-            text-align: right;
-            font-size: smaller;
-
-            @include mobile {
-                text-align: center;
-                line-height: 1.43;
-                font-size: 1.4rem;
-                border-top: 1px solid var(--general-main-1);
-                padding: 0.7rem 0;
-                width: 90%;
-                margin: 0 auto;
-            }
-        }
     }
     &__profit-loss {
         display: flex;

@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'Stores/connect';
 import { Localize } from '@deriv/translations';
 import Withdraw from '../Components/withdraw.jsx';
@@ -19,6 +18,7 @@ const WithdrawalSideNote = () => {
             i18n_default_text='Do not enter an address linked to an ICO purchase or crowdsale. If you do, the ICO tokens will not be credited into your account.'
             key={0}
         />,
+        /*
         <Localize
             i18n_default_text='Each transaction will be confirmed once we receive three confirmations from the blockchain.'
             key={1}
@@ -28,6 +28,7 @@ const WithdrawalSideNote = () => {
             key={3}
             components={[<Link to='/reports/statement' key={0} className='link link--orange' />]}
         />,
+        */
     ];
 
     return <SideNote notes={notes} />;
@@ -58,6 +59,8 @@ const Withdrawal = ({
         if (iframe_url || verification_code) {
             if (/^(UST|eUSDT)$/i.test(currency) && typeof setSideNotes === 'function') {
                 setSideNotes([<WithdrawalSideNote key={0} />, <USDTSideNote key={1} />]);
+            } else {
+                setSideNotes([<WithdrawalSideNote key={0} />]);
             }
         }
     }, [iframe_url, verification_code]);

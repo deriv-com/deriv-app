@@ -3,7 +3,7 @@ import { localize } from '@deriv/translations';
 Blockly.Blocks.fast_ema_period = {
     init() {
         this.jsonInit({
-            message0: localize('Fast EMA Period %1'),
+            message0: localize('Fast EMA Period {{ input_number }}', { input_number: '%1' }),
             args0: [
                 {
                     type: 'input_value',

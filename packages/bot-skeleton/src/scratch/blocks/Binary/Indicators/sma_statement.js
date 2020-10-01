@@ -8,7 +8,10 @@ Blockly.Blocks.sma_statement = {
     },
     definition() {
         return {
-            message0: localize('set %1 to Simple Moving Average %2'),
+            message0: localize('set {{ variable }} to Simple Moving Average {{ dummy }}', {
+                variable: '%1',
+                dummy: '%2',
+            }),
             message1: '%1',
             args0: [
                 {

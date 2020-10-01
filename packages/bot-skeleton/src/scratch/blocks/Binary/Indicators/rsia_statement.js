@@ -8,7 +8,10 @@ Blockly.Blocks.rsia_statement = {
     },
     definition() {
         return {
-            message0: localize('set %1 to Relative Strength Index Array %2'),
+            message0: localize('set {{ variable }} to Relative Strength Index Array {{ dummy }}', {
+                variable: '%1',
+                dummy: '%2',
+            }),
             message1: '%1',
             args0: [
                 {

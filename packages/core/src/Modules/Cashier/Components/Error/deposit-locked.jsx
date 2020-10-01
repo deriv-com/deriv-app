@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
-import { routes, getDerivComLink } from '@deriv/shared';
-import { Icon, Checklist } from '@deriv/components';
+import { routes } from '@deriv/shared';
+import { Icon, Checklist, StaticUrl } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services';
@@ -70,15 +70,7 @@ const DepositsLocked = ({
                       content: (
                           <Localize
                               i18n_default_text='Accept our updated <0>terms and conditions</0>'
-                              components={[
-                                  <a
-                                      key={0}
-                                      className='link'
-                                      rel='noopener noreferrer'
-                                      target='_blank'
-                                      href={getDerivComLink('terms-and-conditions')}
-                                  />,
-                              ]}
+                              components={[<StaticUrl key={0} className='link' href='terms-and-conditions' />]}
                           />
                       ),
                       status: 'button-action',

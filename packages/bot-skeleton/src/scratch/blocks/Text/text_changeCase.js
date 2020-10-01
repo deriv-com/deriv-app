@@ -7,8 +7,15 @@ Blockly.Blocks.text_changeCase = {
     },
     definition() {
         return {
-            message0: localize('to %1 %2'),
+            message0: localize('Transform {{ input_text }} to {{ transform_type }}', {
+                input_text: '%1',
+                transform_type: '%2',
+            }),
             args0: [
+                {
+                    type: 'input_value',
+                    name: 'TEXT',
+                },
                 {
                     type: 'field_dropdown',
                     name: 'CASE',
@@ -17,10 +24,6 @@ Blockly.Blocks.text_changeCase = {
                         [localize('lower case'), 'LOWERCASE'],
                         [localize('Title Case'), 'TITLECASE'],
                     ],
-                },
-                {
-                    type: 'input_value',
-                    name: 'TEXT',
                 },
             ],
             output: 'String',

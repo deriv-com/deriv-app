@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
 import { Icon, Money, DesktopWrapper, Button } from '@deriv/components';
-import { isReleaseVisible } from '@deriv/shared';
+import { hasContractEntered } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { getCardLabels } from 'Constants/contract';
 import { connect } from 'Stores/connect';
@@ -45,7 +45,7 @@ class IndicativeCell extends React.PureComponent {
                         </React.Fragment>
                     )}
                 </div>
-                {!is_footer && contract_info && isReleaseVisible(contract_info) && (
+                {!is_footer && contract_info && hasContractEntered(contract_info) && (
                     <DesktopWrapper>
                         {is_valid_to_sell ? (
                             <Button

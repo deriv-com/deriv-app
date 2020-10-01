@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { Button, ContractCard, Icon, Money, ProgressSliderMobile } from '@deriv/components';
-import { getContractPath, isMultiplierContract, isHighLow, isCryptocurrency, isReleaseVisible } from '@deriv/shared';
+import { getContractPath, isMultiplierContract, isHighLow, isCryptocurrency, hasContractEntered } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
 import { connect } from 'Stores/connect';
@@ -69,7 +69,7 @@ const PositionsModalCard = ({
                     />
                 </div>
                 <CSSTransition
-                    in={isReleaseVisible(contract_info)}
+                    in={hasContractEntered(contract_info)}
                     timeout={250}
                     classNames={{
                         enter: 'positions-modal-card__sell-button--enter',

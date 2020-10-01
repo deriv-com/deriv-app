@@ -12,7 +12,9 @@ import Loading from '../../../templates/_common/components/loading.jsx';
 class PaymentAgentTransfer extends React.Component {
     componentDidMount() {
         this.props.setActiveTab(this.props.container);
-        this.props.onMount();
+        if (!this.props.is_virtual) {
+            this.props.onMount();
+        }
     }
 
     componentWillUnmount() {

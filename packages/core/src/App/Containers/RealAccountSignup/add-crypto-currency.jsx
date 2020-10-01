@@ -8,20 +8,16 @@ import { isMobile, reorderCurrencies } from '@deriv/shared';
 import { RadioButtonGroup, RadioButton } from './currency-selector.jsx';
 
 const messages = () => [
-    localize('Choose your preferred cryptocurrency'),
-    localize('You can open an account for each cryptocurrency.'),
-    localize('Add real account'),
-    localize('Choose a currency you would like to trade with.'),
+    <Localize key={0} i18n_default_text='Choose your preferred cryptocurrency' />,
+    <Localize key={1} i18n_default_text='You can open an account for each cryptocurrency.' />,
+    <Localize key={2} i18n_default_text='Add a real account' />,
+    <Localize key={3} i18n_default_text='Choose a currency you would like to trade with.' />,
 ];
 
 const Headers = ({ heading, subheading }) => (
     <React.Fragment>
-        <h1 className='add-crypto-currency__title'>
-            <Localize i18n_default_text={heading} />
-        </h1>
-        <h3 className='add-crypto-currency__sub-title'>
-            <Localize i18n_default_text={subheading} />
-        </h3>
+        <h1 className='add-crypto-currency__title'>{heading}</h1>
+        <h3 className='add-crypto-currency__sub-title'>{subheading}</h3>
     </React.Fragment>
 );
 

@@ -13,11 +13,18 @@ const AccountOption = ({ account, idx }) => {
     return (
         <React.Fragment key={idx}>
             {(account.currency || account.mt_icon) && (
-                <Icon
-                    icon={account.mt_icon ? `IcMt5-${account.mt_icon}` : `IcCurrency-${account.currency.toLowerCase()}`}
-                    className='account-transfer__currency-icon'
-                />
+                <div>
+                    <Icon
+                        icon={
+                            account.mt_icon
+                                ? `IcMt5-${account.mt_icon}`
+                                : `IcCurrency-${account.currency.toLowerCase()}`
+                        }
+                        className='account-transfer__currency-icon'
+                    />
+                </div>
             )}
+
             <div className='account-transfer__currency-wrapper'>
                 <span className='account-transfer__currency'>{account.text}</span>
                 <span className='account-transfer__loginid'>{account.value}</span>

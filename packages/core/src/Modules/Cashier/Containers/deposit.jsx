@@ -52,7 +52,9 @@ const Deposit = ({
 }) => {
     React.useEffect(() => {
         setActiveTab(container);
-        onMount();
+        if (!is_virtual) {
+            onMount();
+        }
     }, []);
 
     React.useEffect(() => {

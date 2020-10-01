@@ -111,9 +111,9 @@
         }
     }
     &__tin-warn-divider {
-        height: 3rem;
+        height: 5rem;
         @include mobile {
-            height: 4.5rem;
+            height: 6rem;
         }
     }
     &__tin-confirm {
@@ -134,7 +134,7 @@
         font-size: var(--text-size-xxs);
         line-height: 1.8rem;
         margin: 1.6rem auto;
-        width: 40%;
+        width: 45%;
         color: var(--text-general);
         @include desktop {
             display: flex;

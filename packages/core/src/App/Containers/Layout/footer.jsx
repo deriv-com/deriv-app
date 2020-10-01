@@ -45,8 +45,12 @@ const Footer = ({
     settings_extension,
     landing_company_shortcode,
 }) => {
-    const footer_extensions_left = footer_extensions.filter(footer_extension => footer_extension.position === 'left');
-    const footer_extensions_right = footer_extensions.filter(footer_extension => footer_extension.position === 'right');
+    let footer_extensions_left = [];
+    let footer_extensions_right = [];
+    if (footer_extensions.filter) {
+        footer_extensions_left = footer_extensions.filter(footer_extension => footer_extension.position === 'left');
+        footer_extensions_right = footer_extensions.filter(footer_extension => footer_extension.position === 'right');
+    }
 
     return (
         <footer

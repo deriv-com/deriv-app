@@ -40,7 +40,11 @@ const RouteWithSubRoutes = route => {
             );
         }
 
-        const title = route.title ? `${route.title} | ` : '';
+        const title = route.title
+            ? route.title.props
+                ? `${route.title.props.i18n_default_text} | `
+                : `${route.title} | `
+            : '';
         document.title = `${title}${default_title}`;
         return result;
     };

@@ -19,7 +19,8 @@ const PageError = ({
         if (should_clear_error_on_click) {
             setError(false, null);
         } else if (typeof buttonOnClick === 'function') {
-            buttonOnClick();
+            const bt = 'asd';
+            buttonOnClick(bt);
         }
     };
 

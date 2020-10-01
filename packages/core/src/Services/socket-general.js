@@ -1,5 +1,5 @@
 import { flow } from 'mobx';
-import { isLoginPages, redirectToLogin, State, getPropertyValue } from '@deriv/shared';
+import {  redirectToLogin, State, getPropertyValue } from '@deriv/shared';
 import { getLanguage, localize } from '@deriv/translations';
 import ServerTime from '_common/base/server_time';
 import BinarySocket from '_common/base/socket_base';
@@ -14,15 +14,12 @@ const BinarySocketGeneral = (() => {
     };
 
     const onOpen = is_ready => {
-        // Header.hideNotification();
         if (is_ready) {
-            if (!isLoginPages()) {
-                if (!client_store.is_valid_login) {
-                    client_store.logout();
-                    return;
-                }
-                WS.subscribeWebsiteStatus(ResponseHandlers.websiteStatus);
+            if (!client_store.is_valid_login) {
+                client_store.logout();
+                return;
             }
+            WS.subscribeWebsiteStatus(ResponseHandlers.websiteStatus);
             ServerTime.init(() => common_store.setServerTime(ServerTime.get()));
             common_store.setIsSocketOpened(true);
         }
@@ -40,7 +37,7 @@ const BinarySocketGeneral = (() => {
                         // Dialog.alert({ id: 'authorize_error_alert', message: response.error.message });
                     }
                     client_store.logout();
-                } else if (!isLoginPages() && !/authorize/.test(State.get('skip_response'))) {
+                } else if (!/authorize/.test(State.get('skip_response'))) {
                     // is_populating_account_list is a check to avoid logout on the first logged-in session
                     // In any other case, if the response loginid does not match the store's loginid, user must be logged out
                     if (

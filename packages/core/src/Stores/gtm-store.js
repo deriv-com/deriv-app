@@ -1,6 +1,6 @@
 import * as Cookies from 'js-cookie';
 import { action, computed } from 'mobx';
-import { isLoginPages, getAppId, toMoment, epochToMoment, getMT5AccountType } from '@deriv/shared';
+import { getAppId, toMoment, epochToMoment, getMT5AccountType } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import BinarySocket from '_common/base/socket_base';
 import BaseStore from './base-store';
@@ -72,7 +72,7 @@ export default class GTMStore extends BaseStore {
      */
     @action.bound
     async pushDataLayer(data) {
-        if (this.is_gtm_applicable && !isLoginPages()) {
+        if (this.is_gtm_applicable) {
             BinarySocket.wait('authorize').then(() => {
                 const gtm_object = { ...this.common_variables, ...data };
                 if (!gtm_object.event) return;

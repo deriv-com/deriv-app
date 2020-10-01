@@ -5,7 +5,7 @@ import { getAppId, domain_app_ids } from '../config/config';
 import { getStaticUrl, urlForCurrentDomain } from '../url';
 
 export const redirectToLogin = (is_logged_in, language) => {
-    if (!is_logged_in && !isLoginPages() && isStorageSupported(sessionStorage)) {
+    if (!is_logged_in && isStorageSupported(sessionStorage)) {
         sessionStorage.setItem('redirect_url', window.location.href);
         window.location.href = loginUrl({
             language,
@@ -16,8 +16,6 @@ export const redirectToLogin = (is_logged_in, language) => {
 export const redirectToSignUp = ({ is_deriv_crypto }) => {
     window.open(getStaticUrl('/signup/', { is_deriv_crypto }));
 };
-
-export const isLoginPages = () => /redirect/i.test(window.location.pathname);
 
 export const loginUrl = ({ language }) => {
     const server_url = LocalStore.get('config.server_url');

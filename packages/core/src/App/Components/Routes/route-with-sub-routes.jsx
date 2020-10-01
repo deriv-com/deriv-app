@@ -30,7 +30,7 @@ const RouteWithSubRoutes = route => {
         } else if (route.is_authenticated && !route.is_logged_in) {
             result = (
                 <LoginPrompt
-                    onLogin={e => redirectToLogin(e, getLanguage())}
+                    onLogin={() => redirectToLogin(route.is_logged_in, getLanguage())}
                     onSignup={() => redirectToSignUp({ is_deriv_crypto })}
                     page_title={route.title}
                 />

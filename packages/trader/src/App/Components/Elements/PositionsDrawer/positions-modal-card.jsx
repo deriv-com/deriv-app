@@ -3,7 +3,14 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { Button, ContractCard, Icon, Money, ProgressSliderMobile } from '@deriv/components';
-import { getContractPath, isMultiplierContract, isHighLow, isCryptocurrency, hasContractEntered } from '@deriv/shared';
+import {
+    getContractPath,
+    isMultiplierContract,
+    isHighLow,
+    isCryptocurrency,
+    hasContractEntered,
+    isOpen,
+} from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
 import { connect } from 'Stores/connect';
@@ -50,6 +57,8 @@ const PositionsModalCard = ({
     const is_multiplier = isMultiplierContract(contract_info.contract_type);
     const fallback_result = profit_loss >= 0 ? 'won' : 'lost';
 
+    const should_show_sell = hasContractEntered(contract_info) && isOpen(contract_info);
+
     const contract_options_el = (
         <React.Fragment>
             <div className={classNames('positions-modal-card__grid', 'positions-modal-card__grid-header')}>
@@ -69,7 +78,7 @@ const PositionsModalCard = ({
                     />
                 </div>
                 <CSSTransition
-                    in={hasContractEntered(contract_info)}
+                    in={should_show_sell}
                     timeout={250}
                     classNames={{
                         enter: 'positions-modal-card__sell-button--enter',

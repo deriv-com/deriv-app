@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { isValidToCancel, isValidToSell, hasContractEntered } from '@deriv/shared';
+import { isValidToCancel, isValidToSell, hasContractEntered, isOpen } from '@deriv/shared';
 import ToggleCardDialog from './toggle-card-dialog.jsx';
 import MultiplierCloseActions from './multiplier-close-actions.jsx';
 import Button from '../../button';
@@ -27,9 +27,11 @@ const CardFooter = ({
     const is_valid_to_cancel = isValidToCancel(contract_info);
     const is_valid_to_sell = isValidToSell(contract_info);
 
+    const should_show_sell = hasContractEntered(contract_info) && isOpen(contract_info);
+
     return (
         <CSSTransition
-            in={hasContractEntered(contract_info)}
+            in={should_show_sell}
             timeout={250}
             classNames={{
                 enter: 'dc-contract-card__sell-button--enter',

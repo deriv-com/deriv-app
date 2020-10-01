@@ -29,9 +29,7 @@ export const isValidToCancel = contract_info => !!contract_info.is_valid_to_canc
 export const isValidToSell = contract_info =>
     !isEnded(contract_info) && !isUserSold(contract_info) && +contract_info.is_valid_to_sell === 1;
 
-export const hasContractEntered = contract_info => {
-    return !!contract_info.entry_spot && isOpen(contract_info);
-};
+export const hasContractEntered = contract_info => !!contract_info.entry_spot;
 
 export const isMultiplierContract = contract_type => /MULT/i.test(contract_type);
 

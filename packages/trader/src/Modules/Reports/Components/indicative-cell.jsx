@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
 import { Icon, Money, DesktopWrapper, Button } from '@deriv/components';
-import { hasContractEntered } from '@deriv/shared';
+import { hasContractEntered, isOpen } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { getCardLabels } from 'Constants/contract';
 import { connect } from 'Stores/connect';
@@ -34,6 +34,8 @@ class IndicativeCell extends React.PureComponent {
             is_sell_requested,
         } = this.props;
         const { movement } = this.state;
+        const should_show_sell = contract_info && hasContractEntered(contract_info) && isOpen(contract_info);
+
         return (
             <div className='open-positions__indicative'>
                 <div className='open-positions__indicative--amount'>
@@ -45,7 +47,7 @@ class IndicativeCell extends React.PureComponent {
                         </React.Fragment>
                     )}
                 </div>
-                {!is_footer && contract_info && hasContractEntered(contract_info) && (
+                {!is_footer && should_show_sell && (
                     <DesktopWrapper>
                         {is_valid_to_sell ? (
                             <Button

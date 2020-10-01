@@ -258,7 +258,7 @@ class ApiToken extends React.Component {
                                                     display_name={localize('Payments')}
                                                     setFieldValue={setFieldValue}
                                                     description={localize(
-                                                        'Withdraw to payment agents, transfer funds between accounts, and set/clear cashier passwords.'
+                                                        'Withdraw to payment agents, and transfer funds between accounts.'
                                                     )}
                                                 />
                                                 <Card

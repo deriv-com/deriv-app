@@ -7,7 +7,10 @@ Blockly.Blocks.variables_set = {
     definition() {
         return {
             type: 'field_variable',
-            message0: localize('set %1 to %2'),
+            message0: localize('set {{ variable }} to {{ value }}', {
+                variable: '%1',
+                value: '%2',
+            }),
             args0: [
                 {
                     type: 'field_variable',

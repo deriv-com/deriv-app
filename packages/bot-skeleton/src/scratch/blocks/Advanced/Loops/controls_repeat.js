@@ -7,7 +7,7 @@ Blockly.Blocks.controls_repeat = {
     definition() {
         return {
             type: 'controls_repeat',
-            message0: localize('repeat %1 times'),
+            message0: localize('repeat {{ number }} times', { number: '%1' }),
             args0: [
                 {
                     type: 'field_number',

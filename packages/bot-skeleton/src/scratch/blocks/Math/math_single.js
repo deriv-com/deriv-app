@@ -6,7 +6,7 @@ Blockly.Blocks.math_single = {
     },
     definition() {
         return {
-            message0: localize('%1 %2'),
+            message0: '%1 %2',
             args0: [
                 {
                     type: 'field_dropdown',

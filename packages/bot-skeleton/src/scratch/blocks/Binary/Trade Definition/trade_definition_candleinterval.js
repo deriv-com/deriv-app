@@ -4,7 +4,7 @@ import { config } from '../../../../constants/config';
 Blockly.Blocks.trade_definition_candleinterval = {
     init() {
         this.jsonInit({
-            message0: localize('Default Candle Interval: %1'),
+            message0: localize('Default Candle Interval: {{ candle_interval_type }}', { candle_interval_type: '%1' }),
             args0: [
                 {
                     type: 'field_dropdown',

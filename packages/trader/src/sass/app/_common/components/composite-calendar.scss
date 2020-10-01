@@ -53,6 +53,8 @@
 
                 @include mobile {
                     height: 4rem;
+                    text-align: left;
+                    padding-left: 3rem;
                 }
 
                 &:hover {

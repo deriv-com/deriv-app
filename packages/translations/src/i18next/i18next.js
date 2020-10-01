@@ -29,10 +29,9 @@ const getUrlBase = (path = '') => {
     return `/${l.pathname.split('/')[1]}${/^\//.test(path) ? path : `/${path}`}`;
 };
 
-const isStaging = () =>
-    /staging-app\.derivcrypto\.com|staging-app\.deriv\.com|deriv-app-git-fork-mustofa-binary-enable-language-switcher\.binary\.sx/i.test(
-        window.location.hostname
-    );
+const isStaging = () => /staging-app\.derivcrypto\.com|staging-app\.deriv\.com/i.test(window.location.hostname);
+
+const isLocal = () => /localhost\.binary\.sx/i.test(window.location.hostname);
 
 const isLanguageAvailable = lang => {
     if (!lang) return false;
@@ -40,7 +39,7 @@ const isLanguageAvailable = lang => {
     const selected_language = lang.toUpperCase();
     const is_ach = selected_language === 'ACH';
 
-    if (is_ach) return isStaging();
+    if (is_ach) return isStaging() || isLocal();
 
     return Object.keys(ALL_LANGUAGES).includes(selected_language);
 };
@@ -95,7 +94,7 @@ i18n.use(initReactI18next) // passes i18n down to react-i18next
     .init(i18n_config);
 
 export const initializeTranslations = async () => {
-    if (isStaging()) {
+    if (isStaging() || isLocal()) {
         loadIncontextTranslation();
     }
     await loadLanguageJson(initial_language);

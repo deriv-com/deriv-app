@@ -1,7 +1,7 @@
 const fs = require('fs');
 const expect = require('chai').expect;
 const getStringsFromInput = require('../extract-string').getStringsFromInput;
-const getTranslatableFiles = require('../extract-string').getTranslatableFiles;
+// const getTranslatableFiles = require('../extract-string').getTranslatableFiles;
 
 describe('Regular expression checks', () => {
     it('should extract strings from localize() correctly', () => {

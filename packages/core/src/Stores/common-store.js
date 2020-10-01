@@ -1,4 +1,4 @@
-import { action, observable } from 'mobx';
+import { action, observable, reaction } from 'mobx';
 import { routes, toMoment, getUrlSmartTrader, isMobile } from '@deriv/shared';
 import ServerTime from '_common/base/server_time';
 import { currentLanguage, getAllowedLanguages } from 'Utils/Language/index';
@@ -8,6 +8,13 @@ import { clientNotifications } from './Helpers/client-notifications';
 export default class CommonStore extends BaseStore {
     constructor(root_store) {
         super({ root_store });
+
+        reaction(
+            () => this.app_routing_history.map(i => i.pathname),
+            () => {
+                this.root_store.ui.filterNotificationMessages();
+            }
+        );
     }
 
     @observable server_time = ServerTime.get() || toMoment(); // fallback: get current time from moment.js

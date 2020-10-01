@@ -1,6 +1,5 @@
-// const Cookies = require('js-cookie');
 import { isBot } from '../platform';
-import { getPlatformFromUrl } from '../url/helpers';
+import { getPlatformFromUrl, isStaging } from '../url/helpers';
 
 const DERIV_CRYPTO_STAGING_APP_ID = 2586;
 const DERIV_CRYPTO_STAGING_DBOT_APP_ID = 19112;
@@ -34,18 +33,12 @@ export const isProduction = () => {
     return new RegExp(`^(${all_domains.join('|')})$`, 'i').test(window.location.hostname);
 };
 
-const isStaging = () => {
-    return (
-        /staging-app\.derivcrypto\.com/i.test(window.location.hostname) ||
-        /staging-app\.deriv\.com/i.test(window.location.hostname)
-    );
-};
-
 const isTestLink = () => {
     return /^((.*)\.binary\.sx)$/i.test(window.location.hostname);
 };
 
 export const getAppId = () => {
+    const { is_deriv_crypto, is_staging_deriv_crypto } = getPlatformFromUrl();
     let app_id = null;
     const user_app_id = ''; // you can insert Application ID of your registered application here
     const config_app_id = window.localStorage.getItem('config.app_id');
@@ -64,13 +57,14 @@ export const getAppId = () => {
         app_id = user_app_id;
     } else if (isStaging()) {
         window.localStorage.removeItem('config.default_app_id');
-        app_id = isBot() ? 19112 : 16303; // it's being used in endpoint chrome extension - please do not remove
-    } else if (getPlatformFromUrl().is_staging_deriv_crypto) {
-        window.localStorage.removeItem('config.default_app_id');
-        app_id = isBot() ? DERIV_CRYPTO_STAGING_DBOT_APP_ID : DERIV_CRYPTO_STAGING_APP_ID;
+        if (is_staging_deriv_crypto) {
+            app_id = isBot() ? DERIV_CRYPTO_STAGING_DBOT_APP_ID : DERIV_CRYPTO_STAGING_APP_ID;
+        } else {
+            app_id = isBot() ? 19112 : 16303; // it's being used in endpoint chrome extension - please do not remove
+        }
     } else if (/localhost/i.test(window.location.hostname)) {
         app_id = 17044;
-    } else if (getPlatformFromUrl().is_deriv_crypto && isBot()) {
+    } else if (is_deriv_crypto && isBot()) {
         app_id = DERIV_CRYPTO_DBOT_APP_ID;
     } else {
         window.localStorage.removeItem('config.default_app_id');

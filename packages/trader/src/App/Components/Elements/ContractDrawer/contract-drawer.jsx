@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
-import { isMobile, routes } from '@deriv/shared';
+import { routes, isUserSold, isMobile } from '@deriv/shared';
 import ContractAudit from 'App/Components/Elements/ContractAudit';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
+import { connect } from 'Stores/connect';
 import { getDurationPeriod, getDurationTime, getDurationUnitText } from 'Stores/Modules/Portfolio/Helpers/details';
-import { getEndTime, isUserSold } from 'Stores/Modules/Contract/Helpers/logic';
+import { getEndTime } from 'Stores/Modules/Contract/Helpers/logic';
 import ContractDrawerCard from './contract-drawer-card.jsx';
 import { SwipeableContractAudit } from './swipeable-components.jsx';
 
@@ -39,11 +40,13 @@ class ContractDrawer extends React.Component {
             contract_info,
             contract_update,
             contract_update_history,
+            is_mobile,
             is_sell_requested,
             is_dark_theme,
             is_multiplier,
             onClickCancel,
             onClickSell,
+            server_time,
             status,
             toggleHistoryTab,
         } = this.props;
@@ -73,6 +76,7 @@ class ContractDrawer extends React.Component {
                     contract_info={contract_info}
                     contract_update={contract_update}
                     currency={currency}
+                    is_mobile={is_mobile}
                     is_multiplier={is_multiplier}
                     is_sell_requested={is_sell_requested}
                     is_collapsed={this.is_collapsed}
@@ -80,8 +84,9 @@ class ContractDrawer extends React.Component {
                     onClickSell={onClickSell}
                     onSwipedUp={this.onSwipedUp}
                     onSwipedDown={this.onSwipedDown}
-                    toggleContractAuditDrawer={this.toggleContractAuditDrawer}
+                    server_time={server_time}
                     status={status}
+                    toggleContractAuditDrawer={this.toggleContractAuditDrawer}
                 />
                 <DesktopWrapper>{contract_audit}</DesktopWrapper>
             </React.Fragment>
@@ -163,9 +168,10 @@ class ContractDrawer extends React.Component {
 
 ContractDrawer.propTypes = {
     contract_info: PropTypes.object,
-    is_history_tab_active: PropTypes.bool,
     is_chart_loading: PropTypes.bool,
     is_dark_theme: PropTypes.bool,
+    is_mobile: PropTypes.bool,
+    is_history_tab_active: PropTypes.bool,
     is_sell_requested: PropTypes.bool,
     onClickCancel: PropTypes.func,
     onClickContractUpdate: PropTypes.func,
@@ -173,4 +179,9 @@ ContractDrawer.propTypes = {
     status: PropTypes.string,
 };
 
-export default withRouter(ContractDrawer);
+export default withRouter(
+    connect(({ common, ui }) => ({
+        server_time: common.server_time,
+        is_mobile: ui.is_mobile,
+    }))(ContractDrawer)
+);

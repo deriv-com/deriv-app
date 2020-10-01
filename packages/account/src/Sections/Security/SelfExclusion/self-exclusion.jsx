@@ -11,6 +11,7 @@ import {
     Icon,
     Button,
     DatePicker,
+    StaticUrl,
 } from '@deriv/components';
 import {
     getPropertyValue,
@@ -18,7 +19,6 @@ import {
     epochToMoment,
     isDesktop,
     isMobile,
-    getDerivComLink,
     formatMoney,
     hasCorrectDecimalPlaces,
     getDecimalPlaces,
@@ -336,7 +336,7 @@ class SelfExclusion extends React.Component {
                 <Div100vhContainer className='self-exclusion__wrapper' is_disabled={isDesktop()} height_offset='80px'>
                     <ThemedScrollbars className='self-exclusion__scrollbars' is_bypassed={isMobile()}>
                         <MobileWrapper>
-                            <Article />
+                            <Article toggleArticle={this.toggleArticle} />
                         </MobileWrapper>
 
                         <Formik
@@ -362,7 +362,9 @@ class SelfExclusion extends React.Component {
                                         is_open={show_article}
                                         toggleModal={this.toggleArticle}
                                     >
-                                        <ArticleContent toggleModal={this.toggleArticle} />
+                                        <ThemedScrollbars>
+                                            <ArticleContent toggleModal={this.toggleArticle} />
+                                        </ThemedScrollbars>
                                     </Modal>
                                     {is_confirm_page ? (
                                         <>
@@ -466,12 +468,10 @@ class SelfExclusion extends React.Component {
                                                                     key={0}
                                                                     className='self-exclusion__text-highlight'
                                                                 />,
-                                                                <a
+                                                                <StaticUrl
                                                                     key={1}
                                                                     className='link link--orange'
-                                                                    rel='noopener noreferrer'
-                                                                    target='_blank'
-                                                                    href={getDerivComLink('/contact-us')}
+                                                                    href='/contact-us'
                                                                 />,
                                                             ]}
                                                         />

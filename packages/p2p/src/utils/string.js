@@ -10,6 +10,10 @@ export const countDecimalPlaces = value => {
 };
 
 export const generateHexColourFromNickname = nickname => {
+    if (!nickname) {
+        return '??';
+    }
+
     const colours = [
         '#fc4400',
         '#ff8c00',
@@ -44,4 +48,4 @@ export const generateHexColourFromNickname = nickname => {
     return colours[((colour_hash % colours.length) + colours.length) % colours.length];
 };
 
-export const getShortNickname = nickname => nickname.substr(0, 2).toUpperCase();
+export const getShortNickname = nickname => nickname && nickname.substr(0, 2).toUpperCase();

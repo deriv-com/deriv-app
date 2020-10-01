@@ -1,4 +1,4 @@
-import { getUrlSmartTrader } from '../storage/storage_events';
+import { getUrlSmartTrader } from '../url/helpers';
 
 export const routes = {
     error404: '/404',

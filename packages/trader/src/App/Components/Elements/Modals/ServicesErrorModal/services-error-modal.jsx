@@ -7,14 +7,16 @@ import { title } from './constants';
 import AuthorizationRequiredModal from './authorization-required-modal.jsx';
 import InsufficientBalanceModal from './insufficient-balance-modal.jsx';
 
-const ServicesErrorModal = ({ is_virtual, is_visible, onConfirm, services_error }) => {
+const ServicesErrorModal = ({ is_virtual, is_visible, is_logged_in, onConfirm, services_error }) => {
     const { code, message } = services_error;
     const { is_deriv_crypto } = React.useContext(PlatformContext);
 
     if (!code || !message) return null;
 
     if (code === 'AuthorizationRequired') {
-        return <AuthorizationRequiredModal is_visible={is_visible} toggleModal={onConfirm} />;
+        return (
+            <AuthorizationRequiredModal is_logged_in={is_logged_in} is_visible={is_visible} toggleModal={onConfirm} />
+        );
     }
     if (code === 'InsufficientBalance') {
         return (
@@ -45,6 +47,7 @@ const ServicesErrorModal = ({ is_virtual, is_visible, onConfirm, services_error 
 ServicesErrorModal.propTypes = {
     is_visible: PropTypes.bool,
     is_virtual: PropTypes.bool,
+    is_logged_in: PropTypes.bool,
     onConfirm: PropTypes.func,
     services_error: PropTypes.object,
 };

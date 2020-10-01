@@ -99,7 +99,7 @@ class RealAccountSignup extends React.Component {
                     title: () => localize('Add or manage account'),
                 },
                 {
-                    body: () => <StatusDialogContainer />,
+                    body: () => <StatusDialogContainer currency={this.props.state_value.currency} />,
                 },
                 {
                     body: () => (
@@ -145,9 +145,10 @@ class RealAccountSignup extends React.Component {
         return '740px'; // Account wizard modal
     }
 
-    showStatusDialog = () => {
+    showStatusDialog = currency => {
         this.props.setParams({
             active_modal_index: modal_pages_indices.status_dialog,
+            currency,
         });
     };
 

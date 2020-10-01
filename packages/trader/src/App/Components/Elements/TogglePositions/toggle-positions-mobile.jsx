@@ -58,10 +58,10 @@ class TogglePositionsMobile extends React.Component {
                             in={true}
                             timeout={150}
                             classNames={{
-                                appear: 'positions-drawer-card__wrapper--enter',
-                                enter: 'positions-drawer-card__wrapper--enter',
-                                enterDone: 'positions-drawer-card__wrapper--enter-done',
-                                exit: 'positions-drawer-card__wrapper--exit',
+                                appear: 'dc-contract-card__wrapper--enter',
+                                enter: 'dc-contract-card__wrapper--enter',
+                                enterDone: 'dc-contract-card__wrapper--enter-done',
+                                exit: 'dc-contract-card__wrapper--exit',
                             }}
                             unmountOnExit
                         >

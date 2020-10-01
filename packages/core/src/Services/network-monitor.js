@@ -6,7 +6,7 @@ let common_store;
 
 const NetworkMonitor = (() => {
     const init = store => {
-        NetworkMonitorBase.init(BinarySocketGeneral.init(store), updateStore);
+        NetworkMonitorBase.init(BinarySocketGeneral.init(store), updateStore, store.client);
         common_store = store.common;
     };
 

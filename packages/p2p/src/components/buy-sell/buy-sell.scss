@@ -30,6 +30,10 @@
     &__table-row {
         grid-template-columns: 2fr 1fr 1fr 1fr;
     }
+    &__cell {
+        cursor: pointer;
+        display: flex;
+    }
     &__button {
         display: flex;
         justify-content: center;

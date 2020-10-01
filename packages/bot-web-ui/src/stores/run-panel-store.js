@@ -28,6 +28,7 @@ export default class RunPanelStore {
     @observable dialog_options = {};
     @observable has_open_contract = false;
     @observable is_running = false;
+    @observable is_statistics_info_modal_open = false;
     @observable is_drawer_open = true;
     @observable is_dialog_open = false;
 
@@ -138,6 +139,11 @@ export default class RunPanelStore {
         this.setContractStage(contract_stages.NOT_RUNNING);
     }
     // #endregion
+
+    @action.bound
+    toggleStatisticsInfoModal() {
+        this.is_statistics_info_modal_open = !this.is_statistics_info_modal_open;
+    }
 
     // #region Drawer
     @action.bound

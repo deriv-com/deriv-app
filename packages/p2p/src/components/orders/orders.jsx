@@ -4,7 +4,7 @@ import { localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import { useStores } from 'Stores';
-import { getExtendedOrderDetails } from 'Utils/orders';
+import { createExtendedOrderDetails } from 'Utils/orders';
 import { subscribeWS } from 'Utils/websocket';
 import OrderDetails from './order-details/order-details.jsx';
 import OrderTable from './order-table/order-table.jsx';
@@ -23,6 +23,7 @@ const Orders = ({ params, navigate, chat_info }) => {
     const [nav, setNav] = React.useState(params?.nav);
     const is_mounted = React.useRef(false);
     const order_info_subscription = React.useRef(null);
+    const order_rerender_timeout = React.useRef(null);
 
     const hideDetails = should_navigate => {
         if (should_navigate && nav) {
@@ -44,6 +45,8 @@ const Orders = ({ params, navigate, chat_info }) => {
     };
 
     const unsubscribeFromCurrentOrder = () => {
+        clearTimeout(order_rerender_timeout.current);
+
         if (order_info_subscription.current?.unsubscribe) {
             order_info_subscription.current.unsubscribe();
         }
@@ -59,7 +62,8 @@ const Orders = ({ params, navigate, chat_info }) => {
     };
 
     const setQueryDetails = input_order => {
-        const input_order_information = getExtendedOrderDetails(input_order, general_store.client.loginid);
+        const { client, props } = general_store;
+        const input_order_information = createExtendedOrderDetails(input_order, client.loginid, props.server_time);
 
         setOrderId(input_order_information.id); // Sets the id in URL
         setOrderInformation(input_order_information);
@@ -75,12 +79,26 @@ const Orders = ({ params, navigate, chat_info }) => {
                 updateP2pNotifications(notifications);
             }
         }
+
+        // Force a refresh of this order when it's expired to correctly
+        // reflect the status of the order. This is to work around a BE issue
+        // where they only expire contracts once a minute rather than on expiry time.
+        const { remaining_seconds } = input_order_information;
+
+        if (remaining_seconds > 0) {
+            clearTimeout(order_rerender_timeout.current);
+
+            order_rerender_timeout.current = setTimeout(() => {
+                setQueryDetails(input_order);
+            }, remaining_seconds + 1 * 1000);
+        }
     };
 
     React.useEffect(() => {
         is_mounted.current = true;
 
         return () => {
+            clearTimeout(order_rerender_timeout.current);
             unsubscribeFromCurrentOrder();
             hideDetails(false);
             is_mounted.current = false;

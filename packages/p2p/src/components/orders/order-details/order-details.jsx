@@ -19,6 +19,7 @@ const OrderDetails = ({ order_information, chat_info }) => {
         amount_display,
         chat_channel_url,
         contact_info,
+        has_timer_expired,
         id,
         is_buyer_confirmed_order,
         is_completed_order,
@@ -89,7 +90,7 @@ const OrderDetails = ({ order_information, chat_info }) => {
                             {is_completed_order && (
                                 <div className='order-details__wrapper-message'>{labels.result_string}</div>
                             )}
-                            {(is_pending_order || is_buyer_confirmed_order) && (
+                            {!has_timer_expired && (is_pending_order || is_buyer_confirmed_order) && (
                                 <div className='order-details__header-amount'>
                                     {getFormattedText(price, local_currency)}
                                 </div>

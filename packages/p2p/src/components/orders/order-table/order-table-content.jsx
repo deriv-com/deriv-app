@@ -10,7 +10,7 @@ import OrderTableHeader from 'Components/orders/order-table/order-table-header.j
 import OrderRowComponent from 'Components/orders/order-table/order-table-row.jsx';
 import { useStores } from 'Stores';
 import { height_constants } from 'Utils/height_constants';
-import { getExtendedOrderDetails } from 'Utils/orders';
+import { createExtendedOrderDetails } from 'Utils/orders';
 import { requestWS } from 'Utils/websocket';
 
 const OrderTableContent = ({ showDetails, is_active }) => {
@@ -76,8 +76,9 @@ const OrderTableContent = ({ showDetails, is_active }) => {
     const Row = row_props => <OrderRowComponent {...row_props} onOpenDetails={showDetails} is_active={is_active} />;
 
     if (orders.length) {
+        const { client, props } = general_store;
         const modified_list = orders
-            .map(order => getExtendedOrderDetails(order, general_store.client.loginid))
+            .map(order => createExtendedOrderDetails(order, client.loginid, props.server_time))
             .filter(order => (is_active ? order.is_active_order : order.is_inactive_order));
 
         const item_height = 72;

@@ -99,7 +99,7 @@ const MT5RealAccountDisplay = ({
                     has_mt5_account={has_mt5_account}
                     icon={() => <Icon icon='IcMt5SyntheticPlatform' size={64} />}
                     title={localize('Synthetic')}
-                    is_disabled={is_eu || !has_real_account}
+                    is_disabled={!is_eu && !has_real_account}
                     type={{
                         category: 'real',
                         type: 'synthetic',
@@ -120,7 +120,7 @@ const MT5RealAccountDisplay = ({
             {(landing_companies?.mt_financial_company?.financial || !is_logged_in) && (
                 <MT5AccountCard
                     has_mt5_account={has_mt5_account}
-                    is_disabled={is_eu || !has_real_account}
+                    is_disabled={!is_eu && !has_real_account}
                     icon={() => <Icon icon='IcMt5FinancialPlatform' size={64} />}
                     title={localize('Financial')}
                     type={{

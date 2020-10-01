@@ -16,6 +16,7 @@ import {
 } from 'Modules/Reports/Constants/data-table-constants';
 import PositionsCard from 'App/Components/Elements/PositionsDrawer/PositionsDrawerCard/positions-drawer-card.jsx';
 import PlaceholderComponent from 'Modules/Reports/Components/placeholder-component.jsx';
+import { getCardLabels } from 'Constants/contract';
 import { connect } from 'Stores/connect';
 
 const EmptyPlaceholderWrapper = props => (
@@ -227,7 +228,7 @@ class OpenPositions extends React.Component {
                             secondary
                         />
                     ) : (
-                        <div className='open-positions__no-resale-msg'>{localize('Resale not offered')}</div>
+                        <div className='open-positions__no-resale-msg'>{getCardLabels().RESALE_NOT_OFFERED}</div>
                     )}
                 </div>
             </>

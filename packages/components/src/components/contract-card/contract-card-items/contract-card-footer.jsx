@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { isValidToCancel, isValidToSell, isReleaseVisible } from '@deriv/shared';
-import { localize } from '@deriv/translations';
 import ToggleCardDialog from './toggle-card-dialog.jsx';
 import MultiplierCloseActions from './multiplier-close-actions.jsx';
 import Button from '../../button';
@@ -91,7 +90,7 @@ const CardFooter = ({
                                 secondary
                             />
                         ) : (
-                            <div className='dc-contract-card__no-resale-msg'>{localize('Resale not offered')}</div>
+                            <div className='dc-contract-card__no-resale-msg'>{getCardLabels().RESALE_NOT_OFFERED}</div>
                         )}
                     </div>
                 )}

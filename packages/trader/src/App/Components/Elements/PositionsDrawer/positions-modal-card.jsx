@@ -91,7 +91,9 @@ const PositionsModalCard = ({
                                 secondary
                             />
                         ) : (
-                            <div className='positions-modal-card__no-resale-msg'>{localize('Resale not offered')}</div>
+                            <div className='positions-modal-card__no-resale-msg'>
+                                {getCardLabels().RESALE_NOT_OFFERED}
+                            </div>
                         )}
                     </div>
                 </CSSTransition>

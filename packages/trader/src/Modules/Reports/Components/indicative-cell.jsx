@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { Icon, Money, DesktopWrapper, Button } from '@deriv/components';
 import { isReleaseVisible } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import { getCardLabels } from 'Constants/contract';
 import { connect } from 'Stores/connect';
 
 class IndicativeCell extends React.PureComponent {
@@ -62,7 +63,7 @@ class IndicativeCell extends React.PureComponent {
                             />
                         ) : (
                             <div className='open-positions__indicative-no-resale-msg indicative__no-resale-msg'>
-                                {localize('Resale not offered')}
+                                {getCardLabels().RESALE_NOT_OFFERED}
                             </div>
                         )}
                     </DesktopWrapper>

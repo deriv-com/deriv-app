@@ -29,6 +29,7 @@ export const getCardLabels = () => ({
         'Take profit and/or stop loss are not available while deal cancellation is active.'
     ),
     DONT_SHOW_THIS_AGAIN: localize("Don't show this again"),
+    RESALE_NOT_OFFERED: localize('Resale not offered'),
 });
 
 export const getSupportedContracts = is_high_low => ({

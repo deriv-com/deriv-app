@@ -6,7 +6,7 @@ import { NavLink } from 'react-router-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { VariableSizeList as List } from 'react-window';
 import { Icon, ThemedScrollbars } from '@deriv/components';
-import { routes, isValidToSell, isMultiplierContract, isHighLow } from '@deriv/shared';
+import { routes, isMultiplierContract, isHighLow } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import EmptyPortfolioMessage from 'Modules/Reports/Components/empty-portfolio-message.jsx';
 import { connect } from 'Stores/connect';

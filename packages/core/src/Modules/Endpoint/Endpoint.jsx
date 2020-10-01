@@ -53,6 +53,7 @@ const Endpoint = () => {
                 localStorage.setItem('config.app_id', values.app_id);
                 localStorage.setItem('config.server_url', values.server);
                 localStorage.setItem(platform_store.DERIV_CRYPTO_KEY, values.is_deriv_crypto_enabled);
+                platform_store.setDerivCrypto(values.is_deriv_crypto_enabled);
                 location.reload();
             }}
         >

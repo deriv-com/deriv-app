@@ -2,7 +2,7 @@ import * as PropTypes from 'prop-types';
 import React from 'react';
 import { Button, DesktopWrapper, Icon, MobileWrapper, Popover } from '@deriv/components';
 import { routes, formatMoney, PlatformContext } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 import { LoginButton } from './login-button.jsx';
 import { SignupButton } from './signup-button.jsx';
 import ToggleNotifications from './toggle-notifications.jsx';
@@ -77,13 +77,13 @@ export class AccountActions extends React.Component {
                             count={notifications_count}
                             is_visible={is_notifications_visible}
                             toggleDialog={toggleNotifications}
-                            tooltip_message={localize('View notifications')}
+                            tooltip_message={<Localize i18n_default_text='View notifications' />}
                             should_disable_pointer_events
                         />
                         <Popover
                             classNameBubble='account-settings-toggle__tooltip'
                             alignment='bottom'
-                            message={localize('Manage account settings')}
+                            message={<Localize i18n_default_text='Manage account settings' />}
                             should_disable_pointer_events
                             zIndex={9999}
                         >

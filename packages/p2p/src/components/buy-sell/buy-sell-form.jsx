@@ -23,7 +23,6 @@ const BuySellForm = ({ advert, handleClose, handleConfirm, setErrorMessage, setI
         min_order_amount_limit,
         min_order_amount_limit_display,
         price,
-        type,
     } = advert;
     const { name: advertiser_name } = advert.advertiser_details;
 
@@ -32,7 +31,6 @@ const BuySellForm = ({ advert, handleClose, handleConfirm, setErrorMessage, setI
     const [receive_amount, setReceiveAmount] = React.useState(
         getRoundedNumber(min_order_amount_limit * price, local_currency)
     );
-    const is_buyer = type === 'buy';
 
     // A user creates a sell order on a buy advert. Leave
     // below line for extra context.
@@ -46,7 +44,7 @@ const BuySellForm = ({ advert, handleClose, handleConfirm, setErrorMessage, setI
     };
 
     React.useEffect(() => {
-        if (!is_buyer) {
+        if (is_sell_advert) {
             getAdvertiserInfo();
         }
     }, []);

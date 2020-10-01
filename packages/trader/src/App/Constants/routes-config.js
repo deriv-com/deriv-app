@@ -3,7 +3,7 @@ import Loadable from 'react-loadable';
 import { Loading } from '@deriv/components';
 import { routes } from '@deriv/shared';
 
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import Trade from 'Modules/Trading';
 
 const ContractDetails = React.lazy(() => import(/* webpackChunkName: "contract" */ 'Modules/Contract'));
@@ -37,51 +37,49 @@ const makeLazyLoader = importFn => component_name =>
 const lazyLoadReportComponent = makeLazyLoader(() => import(/* webpackChunkName: "reports" */ 'Modules/Reports'));
 
 // Order matters
-const initRoutesConfig = () => {
-    return [
-        {
-            path: routes.contract,
-            component: ContractDetails,
-            title: localize('Contract Details'),
-            is_authenticated: true,
-        },
-        { path: routes.mt5, component: MT5, title: localize('MT5'), is_authenticated: false },
-        {
-            path: routes.reports,
-            component: lazyLoadReportComponent('Reports'),
-            is_authenticated: true,
-            title: localize('Reports'),
-            icon_component: 'IcReports',
-            routes: [
-                {
-                    path: routes.positions,
-                    component: lazyLoadReportComponent('OpenPositions'),
-                    title: localize('Open positions'),
-                    icon_component: 'IcOpenPositions',
-                    default: true,
-                },
-                {
-                    path: routes.profit,
-                    component: lazyLoadReportComponent('ProfitTable'),
-                    title: localize('Profit table'),
-                    icon_component: 'IcProfitTable',
-                },
-                {
-                    path: routes.statement,
-                    component: lazyLoadReportComponent('Statement'),
-                    title: localize('Statement'),
-                    icon_component: 'IcStatement',
-                },
-            ],
-        },
-        { path: routes.trade, component: Trade, title: localize('Trader'), exact: true },
-    ];
-};
+const initRoutesConfig = () => [
+    {
+        path: routes.contract,
+        component: ContractDetails,
+        title: <Localize i18n_default_text='Contract Details' />,
+        is_authenticated: true,
+    },
+    { path: routes.mt5, component: MT5, title: <Localize i18n_default_text='MT5' />, is_authenticated: false },
+    {
+        path: routes.reports,
+        component: lazyLoadReportComponent('Reports'),
+        is_authenticated: true,
+        title: <Localize i18n_default_text='Reports' />,
+        icon_component: 'IcReports',
+        routes: [
+            {
+                path: routes.positions,
+                component: lazyLoadReportComponent('OpenPositions'),
+                title: <Localize i18n_default_text='Open positions' />,
+                icon_component: 'IcOpenPositions',
+                default: true,
+            },
+            {
+                path: routes.profit,
+                component: lazyLoadReportComponent('ProfitTable'),
+                title: <Localize i18n_default_text='Profit table' />,
+                icon_component: 'IcProfitTable',
+            },
+            {
+                path: routes.statement,
+                component: lazyLoadReportComponent('Statement'),
+                title: <Localize i18n_default_text='Statement' />,
+                icon_component: 'IcStatement',
+            },
+        ],
+    },
+    { path: routes.trade, component: Trade, title: <Localize i18n_default_text='Trader' />, exact: true },
+];
 
 let routesConfig;
 
 // For default page route if page/path is not found, must be kept at the end of routes_config array
-const route_default = { component: Page404, title: localize('Error 404') };
+const route_default = { component: Page404, title: <Localize i18n_default_text='Error 404' /> };
 
 const getRoutesConfig = () => {
     if (!routesConfig) {

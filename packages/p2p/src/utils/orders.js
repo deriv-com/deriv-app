@@ -155,7 +155,7 @@ class ExtendedOrderDetails {
             return localize('Cancelled');
         }
         if (this.is_refunded_order) {
-            return localize('Refunded');
+            return localize('Expired');
         }
 
         // Keep this here, has_timer_expired should take priority over statuses below.

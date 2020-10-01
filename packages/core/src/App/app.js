@@ -1,5 +1,4 @@
 import { configure } from 'mobx';
-import Client from '_common/base/client_base';
 import NetworkMonitor from 'Services/network-monitor';
 // import OutdatedBrowser      from 'Services/outdated-browser';
 import RootStore from 'Stores';
@@ -26,8 +25,6 @@ const setStorageEvents = root_store => {
 };
 
 const initStore = notification_messages => {
-    Client.init();
-
     const root_store = new RootStore();
 
     setStorageEvents(root_store);

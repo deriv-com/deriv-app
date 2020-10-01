@@ -13,18 +13,38 @@ import AdSummary from './my-ads-summary.jsx';
 import { buy_sell } from '../../constants/buy-sell';
 
 const FormAds = ({ handleShowForm }) => {
+    const [advertiser_info, setAdvertiserInfo] = React.useState({});
     const { currency, local_currency_config } = React.useContext(Dp2pContext);
     const [error_message, setErrorMessage] = React.useState('');
     const [is_loading, setIsLoading] = React.useState(true);
     const isMounted = useIsMounted();
+    const { contact_info, default_advert_description, payment_info } = advertiser_info;
 
     React.useEffect(() => {
-        if (isMounted()) {
-            setIsLoading(false);
-        }
+        getAdvertiserInfo();
     }, []);
 
+    const getAdvertiserInfo = () => {
+        return new Promise(resolve => {
+            requestWS({
+                p2p_advertiser_info: 1,
+            }).then(response => {
+                if (isMounted()) {
+                    if (!response.error) {
+                        const { p2p_advertiser_info } = response;
+                        setAdvertiserInfo(p2p_advertiser_info);
+                    } else {
+                        setErrorMessage(response.error);
+                    }
+                    setIsLoading(false);
+                }
+                resolve();
+            });
+        });
+    };
+
     const handleSubmit = (values, { setSubmitting }) => {
+        const is_sell_ad = values.type === buy_sell.SELL;
         setErrorMessage('');
 
         const create_advert = {
@@ -36,30 +56,24 @@ const FormAds = ({ handleShowForm }) => {
             payment_method: 'bank_transfer', // TODO: Allow for other types of payment_method.
             rate: values.price_rate,
         };
-        if (values.contact_info) {
+        if (values.contact_info && is_sell_ad) {
             create_advert.contact_info = values.contact_info;
         }
-        if (values.payment_info) {
+        if (values.payment_info && is_sell_ad) {
             create_advert.payment_info = values.payment_info;
         }
         if (values.default_advert_description) {
             create_advert.description = values.default_advert_description;
         }
         requestWS(create_advert).then(response => {
-            if (isMounted()) {
-                // If we get an error we should let the user submit the form again else we just go back to the list of ads
-                if (response.error) {
-                    setErrorMessage(response.error.message);
-                    setSubmitting(false);
-                } else {
-                    handleShowForm(false);
-                }
+            // If we get an error we should let the user submit the form again else we just go back to the list of ads
+            if (response.error) {
+                setErrorMessage(response.error.message);
+                setSubmitting(false);
+            } else {
+                handleShowForm(false);
             }
         });
-    };
-
-    const PageReturnComponent = () => {
-        return <PageReturn onClick={() => handleShowForm(false)} page_title={localize('Create new ad')} />;
     };
 
     const restrictLength = (e, handleChange) => {
@@ -124,9 +138,9 @@ const FormAds = ({ handleShowForm }) => {
             price_rate: localize('Fixed rate'),
         };
 
-        const common_messages = field_name => [localize('{{field_name}} is required', { field_name })];
+        const getCommonMessages = field_name => [localize('{{field_name}} is required', { field_name })];
 
-        const contact_info_messages = field_name => [
+        const getContactInfoMmessages = field_name => [
             localize('{{field_name}} is required', { field_name }),
             localize(
                 "{{field_name}} can only include letters, numbers, spaces, and any of these symbols: -+.,'#@():;",
@@ -135,7 +149,7 @@ const FormAds = ({ handleShowForm }) => {
             localize('{{field_name}} has exceeded maximum length', { field_name }),
         ];
 
-        const default_advert_description_messages = field_name => [
+        const getDefaultAdvertDescriptionMessages = field_name => [
             localize('{{field_name}} has exceeded maximum length', { field_name }),
             localize(
                 "{{field_name}} can only include letters, numbers, spaces, and any of these symbols: -+.,'#@():;",
@@ -143,7 +157,7 @@ const FormAds = ({ handleShowForm }) => {
             ),
         ];
 
-        const offer_amount_messages = field_name => [
+        const getOfferAmountMessages = field_name => [
             localize('{{field_name}} is required', { field_name }),
             // TODO: uncomment this when we have available_price
             // localize('Min is {{value}}', { value: available_price }),
@@ -153,7 +167,7 @@ const FormAds = ({ handleShowForm }) => {
             localize('{{field_name}} should not be below Max limit', { field_name }),
         ];
 
-        const max_transaction_limit_messages = field_name => [
+        const getMaxTransactionLimitMessages = field_name => [
             localize('{{field_name}} is required', { field_name }),
             localize('Enter a valid amount'),
             localize('Enter a valid amount'),
@@ -161,7 +175,7 @@ const FormAds = ({ handleShowForm }) => {
             localize('{{field_name}} should not be below Min limit', { field_name }),
         ];
 
-        const min_transaction_limit_messages = field_name => [
+        const getMinTransactionLimitMessages = field_name => [
             localize('{{field_name}} is required', { field_name }),
             localize('Enter a valid amount'),
             localize('Enter a valid amount'),
@@ -169,7 +183,7 @@ const FormAds = ({ handleShowForm }) => {
             localize('{{field_name}} should not exceed Max limit', { field_name }),
         ];
 
-        const price_rate_messages = field_name => [
+        const getPriceRateMessages = field_name => [
             localize('{{field_name}} is required', { field_name }),
             localize('Enter a valid amount'),
             localize('Enter a valid amount'),
@@ -183,30 +197,34 @@ const FormAds = ({ handleShowForm }) => {
                 switch (key) {
                     case 'contact_info':
                     case 'payment_info':
-                        errors[key] = contact_info_messages(mapped_key[key])[error_index];
+                        errors[key] = getContactInfoMmessages(mapped_key[key])[error_index];
                         break;
                     case 'default_advert_description':
-                        errors[key] = default_advert_description_messages(mapped_key[key])[error_index];
+                        errors[key] = getDefaultAdvertDescriptionMessages(mapped_key[key])[error_index];
                         break;
                     case 'offer_amount':
-                        errors[key] = offer_amount_messages(mapped_key[key])[error_index];
+                        errors[key] = getOfferAmountMessages(mapped_key[key])[error_index];
                         break;
                     case 'max_transaction':
-                        errors[key] = max_transaction_limit_messages(mapped_key[key])[error_index];
+                        errors[key] = getMaxTransactionLimitMessages(mapped_key[key])[error_index];
                         break;
                     case 'min_transaction':
-                        errors[key] = min_transaction_limit_messages(mapped_key[key])[error_index];
+                        errors[key] = getMinTransactionLimitMessages(mapped_key[key])[error_index];
                         break;
                     case 'price_rate':
-                        errors[key] = price_rate_messages(mapped_key[key])[error_index];
+                        errors[key] = getPriceRateMessages(mapped_key[key])[error_index];
                         break;
                     default:
-                        errors[key] = common_messages(mapped_key[key])[error_index];
+                        errors[key] = getCommonMessages(mapped_key[key])[error_index];
                 }
             }
         });
 
         return errors;
+    };
+
+    const PageReturnComponent = () => {
+        return <PageReturn onClick={() => handleShowForm(false)} page_title={localize('Create new ad')} />;
     };
 
     if (is_loading) {
@@ -217,26 +235,30 @@ const FormAds = ({ handleShowForm }) => {
             </React.Fragment>
         );
     }
+
     return (
         <React.Fragment>
             <PageReturnComponent />
             <Formik
                 initialValues={{
-                    contact_info: '',
-                    default_advert_description: '',
+                    contact_info,
+                    default_advert_description,
                     max_transaction: '',
                     min_transaction: '',
                     offer_amount: '',
-                    payment_info: '',
-                    // payment_method: 'bank_transfer',
+                    payment_info,
                     price_rate: '',
-                    type: buy_sell.BUY,
+                    type: 'buy',
                 }}
                 onSubmit={handleSubmit}
                 validate={validateFormAds}
+                initialErrors={{
+                    // Pass one error to ensure Post ad button is disabled initially.
+                    offer_amount: true,
+                }}
             >
-                {({ dirty, errors, handleChange, isSubmitting, isValid, touched, values }) => {
-                    const is_sell_ad = values.type === buy_sell.SELL;
+                {({ errors, handleChange, isSubmitting, isValid, touched, values }) => {
+                    const is_sell_advert = values.type === 'sell';
                     return (
                         <div className='p2p-my-ads__form'>
                             <Form noValidate>
@@ -259,8 +281,8 @@ const FormAds = ({ handleShowForm }) => {
                                                     is_align_text_left
                                                     className='p2p-my-ads__form-field'
                                                     list={[
-                                                        { text: localize('Buy'), value: buy_sell.BUY },
-                                                        { text: localize('Sell'), value: buy_sell.SELL },
+                                                        { text: localize('Buy'), value: 'buy' },
+                                                        { text: localize('Sell'), value: 'sell' },
                                                     ]}
                                                     error={touched.type && errors.type}
                                                 />
@@ -297,7 +319,9 @@ const FormAds = ({ handleShowForm }) => {
                                                     type='text'
                                                     error={touched.price_rate && errors.price_rate}
                                                     label={localize('Fixed rate (1 {{currency}})', { currency })}
-                                                    hint={localize('Per 1 {{currency}}', { currency })}
+                                                    hint={localize('Per 1 {{currency}}', {
+                                                        currency,
+                                                    })}
                                                     className='p2p-my-ads__form-field'
                                                     trailing_icon={
                                                         <span className='p2p-my-ads__form-field--trailing'>
@@ -354,7 +378,7 @@ const FormAds = ({ handleShowForm }) => {
                                             )}
                                         </Field>
                                     </div>
-                                    {is_sell_ad && (
+                                    {is_sell_advert && (
                                         <Field name='payment_info'>
                                             {({ field }) => (
                                                 <Input
@@ -365,6 +389,7 @@ const FormAds = ({ handleShowForm }) => {
                                                     error={touched.payment_info && errors.payment_info}
                                                     hint={localize('e.g. your bank/e-wallet account details')}
                                                     className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
+                                                    initial_character_count={payment_info.length}
                                                     required
                                                     has_character_counter
                                                     max_characters={300}
@@ -372,7 +397,7 @@ const FormAds = ({ handleShowForm }) => {
                                             )}
                                         </Field>
                                     )}
-                                    {is_sell_ad && (
+                                    {is_sell_advert && (
                                         <Field name='contact_info'>
                                             {({ field }) => (
                                                 <Input
@@ -382,6 +407,7 @@ const FormAds = ({ handleShowForm }) => {
                                                     label={localize('Your contact details')}
                                                     error={touched.contact_info && errors.contact_info}
                                                     className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
+                                                    initial_character_count={contact_info.length}
                                                     required
                                                     has_character_counter
                                                     max_characters={300}
@@ -402,6 +428,7 @@ const FormAds = ({ handleShowForm }) => {
                                                 label={localize('Instructions (optional)')}
                                                 hint={localize('This information will be visible to everyone')}
                                                 className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
+                                                initial_character_count={default_advert_description.length}
                                                 has_character_counter
                                                 max_characters={300}
                                                 required
@@ -427,7 +454,7 @@ const FormAds = ({ handleShowForm }) => {
                                             className='p2p-my-ads__form-button'
                                             primary
                                             large
-                                            is_disabled={!dirty || isSubmitting || !isValid}
+                                            is_disabled={isSubmitting || !isValid}
                                         >
                                             {localize('Post ad')}
                                         </Button>
@@ -441,9 +468,7 @@ const FormAds = ({ handleShowForm }) => {
         </React.Fragment>
     );
 };
-
 FormAds.propTypes = {
     handleShowForm: PropTypes.func,
 };
-
 export default FormAds;

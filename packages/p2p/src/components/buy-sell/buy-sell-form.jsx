@@ -14,7 +14,6 @@ const BuySellForm = ({ advert, handleClose, handleConfirm, setErrorMessage, setI
 
     const {
         account_currency,
-        contact_info,
         counterparty_type,
         description,
         id,
@@ -23,23 +22,53 @@ const BuySellForm = ({ advert, handleClose, handleConfirm, setErrorMessage, setI
         max_order_amount_limit_display,
         min_order_amount_limit,
         min_order_amount_limit_display,
-        payment_info,
         price,
+        type,
     } = advert;
-
     const { name: advertiser_name } = advert.advertiser_details;
+
+    const [contact_info, setContactInfo] = React.useState('');
+    const [payment_info, setPaymentInfo] = React.useState('');
+    const [receive_amount, setReceiveAmount] = React.useState(
+        getRoundedNumber(min_order_amount_limit * price, local_currency)
+    );
+    const is_buyer = type === 'buy';
+
     // A user creates a sell order on a buy advert. Leave
     // below line for extra context.
     const is_buy_advert = counterparty_type === buy_sell.BUY;
     const is_sell_advert = counterparty_type === buy_sell.SELL;
-    const [receive_amount, setReceiveAmount] = React.useState(
-        getRoundedNumber(min_order_amount_limit * price, local_currency)
-    );
 
     const initial_values = {
         amount: min_order_amount_limit,
         // For sell orders we require extra information.
         ...(is_sell_advert ? { contact_info, payment_info } : {}),
+    };
+
+    React.useEffect(() => {
+        if (!is_buyer) {
+            getAdvertiserInfo();
+        }
+    }, []);
+
+    const getAdvertiserInfo = () => {
+        return new Promise(resolve => {
+            requestWS({
+                p2p_advertiser_info: 1,
+            }).then(response => {
+                if (isMounted()) {
+                    if (!response.error) {
+                        const { p2p_advertiser_info } = response;
+                        setContactInfo(p2p_advertiser_info.contact_info);
+                        setPaymentInfo(p2p_advertiser_info.payment_info);
+                    } else {
+                        setContactInfo('');
+                        setPaymentInfo('');
+                    }
+                }
+                resolve();
+            });
+        });
     };
 
     const handleSubmit = async (values, { setSubmitting }) => {
@@ -141,6 +170,7 @@ const BuySellForm = ({ advert, handleClose, handleConfirm, setErrorMessage, setI
 
     return (
         <Formik
+            enableReinitialize
             validate={validatePopup}
             initialValues={initial_values}
             initialErrors={is_sell_advert ? { contact_info: true, payment_info: true } : {}}
@@ -252,6 +282,7 @@ const BuySellForm = ({ advert, handleClose, handleConfirm, setErrorMessage, setI
                                                     label={localize('Your bank details')}
                                                     required
                                                     has_character_counter
+                                                    initial_character_count={payment_info.length}
                                                     max_characters={300}
                                                 />
                                             )}
@@ -268,6 +299,7 @@ const BuySellForm = ({ advert, handleClose, handleConfirm, setErrorMessage, setI
                                                     label={localize('Your contact details')}
                                                     required
                                                     has_character_counter
+                                                    initial_character_count={contact_info.length}
                                                     max_characters={300}
                                                 />
                                             )}

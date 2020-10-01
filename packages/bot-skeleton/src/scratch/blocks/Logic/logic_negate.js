@@ -6,7 +6,7 @@ Blockly.Blocks.logic_negate = {
     },
     definition() {
         return {
-            message0: localize('not %1'),
+            message0: localize('not {{ boolean }}', { boolean: '%1' }),
             args0: [
                 {
                     type: 'input_value',

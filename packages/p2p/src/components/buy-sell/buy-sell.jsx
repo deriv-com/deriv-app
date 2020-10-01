@@ -1,69 +1,81 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, ButtonToggle, Modal, ThemedScrollbars } from '@deriv/components';
+import { useIsMounted } from '@deriv/shared';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { localize } from 'Components/i18next';
 import BuySellForm from './buy-sell-form.jsx';
 import BuySellTableContent from './buy-sell-table-content.jsx';
-import FormError from '../form/error.jsx';
 import NicknameForm from '../nickname/nickname-form.jsx';
 import PageReturn from '../page-return/page-return.jsx';
 import Verification from '../verification/verification.jsx';
+import FormError from '../form/error.jsx';
+import AdvertiserPage from '../advertiser-page/advertiser-page.jsx';
+import { buy_sell } from '../../constants/buy-sell';
 import './buy-sell.scss';
 
 const buy_sell_filters = [
     {
         text: localize('Buy'),
-        value: 'buy',
+        value: buy_sell.BUY,
     },
     {
         text: localize('Sell'),
-        value: 'sell',
+        value: buy_sell.SELL,
     },
 ];
 
 const BuySell = ({ navigate }) => {
-    const is_mounted = React.useRef(false);
+    const { is_advertiser, modal_root_id, nickname, setOrderId } = React.useContext(Dp2pContext);
+
     const submitForm = React.useRef(() => {});
-
-    React.useEffect(() => {
-        is_mounted.current = true;
-        return () => (is_mounted.current = false);
-    }, [is_mounted]);
-
-    React.useEffect(() => {
-        if (!should_show_popup) setErrorMessage(null);
-    }, [should_show_popup]);
-
-    const [table_type, setTableType] = React.useState('buy');
+    const [error_message, setErrorMessage] = React.useState(null);
+    const [is_submit_disabled, setIsSubmitDisabled] = React.useState(true);
     const [selected_ad_state, setSelectedAdState] = React.useState({});
     const [should_show_popup, setShouldShowPopup] = React.useState(false);
     const [should_show_verification, setShouldShowVerification] = React.useState(false);
-    const { is_advertiser, modal_root_id, nickname, setOrderId } = React.useContext(Dp2pContext);
-    const [is_submit_disabled, setIsSubmitDisabled] = React.useState(true);
-    const [error_message, setErrorMessage] = React.useState(null);
+    const [show_advertiser_page, setShowAdvertiserPage] = React.useState(false);
+    const [table_type, setTableType] = React.useState(buy_sell.BUY);
+    const isMounted = useIsMounted();
 
-    const setSubmitForm = submitFormFn => (submitForm.current = submitFormFn);
+    React.useEffect(() => {
+        if (isMounted()) {
+            if (!should_show_popup) setErrorMessage(null);
+        }
+    }, [should_show_popup]);
+
+    const hideAdvertiserPage = () => setShowAdvertiserPage(false);
     const hideVerification = () => setShouldShowVerification(false);
+
     const onCancelClick = () => setShouldShowPopup(false);
     const onChangeTableType = event => setTableType(event.target.value);
     const onConfirmClick = order_info => {
         setOrderId(order_info.id);
         navigate('orders', { nav: { location: 'buy_sell' } });
     };
-    const setSelectedAdvert = selected_ad => {
+
+    const setSelectedAdvert = selected_advert => {
         if (!is_advertiser) {
             setShouldShowVerification(true);
         } else {
-            setSelectedAdState(selected_ad);
+            setSelectedAdState(selected_advert);
             setShouldShowPopup(true);
         }
     };
 
+    const setSubmitForm = submitFormFn => (submitForm.current = submitFormFn);
+
+    const showAdvertiserPage = selected_advert => {
+        setSelectedAdState(selected_advert);
+        setShowAdvertiserPage(true);
+    };
+
+    const showVerification = () => setShouldShowVerification(true);
+
     // Some state is managed externally, ensure our host component is mounted
     // when those external components try to update it.
     const stateUpdateWrapper = updateFn => (...args) => {
-        if (is_mounted.current) {
+        if (isMounted()) {
             updateFn(...args);
         }
     };
@@ -77,9 +89,22 @@ const BuySell = ({ navigate }) => {
         );
     }
 
+    if (show_advertiser_page && !should_show_verification) {
+        return (
+            <>
+                <PageReturn onClick={hideAdvertiserPage} page_title={localize("Advertiser's page")} />
+                <AdvertiserPage
+                    navigate={navigate}
+                    selected_advert={selected_ad_state}
+                    showVerification={showVerification}
+                />
+            </>
+        );
+    }
+
     const Form = nickname ? BuySellForm : NicknameForm;
     const modal_title =
-        table_type === 'buy'
+        table_type === buy_sell.BUY
             ? localize('Buy {{ currency }}', { currency: selected_ad_state.offer_currency })
             : localize('Sell {{ currency }}', { currency: selected_ad_state.offer_currency });
 
@@ -96,10 +121,15 @@ const BuySell = ({ navigate }) => {
                     has_rounded_button
                 />
             </div>
-            <BuySellTableContent key={table_type} is_buy={table_type === 'buy'} setSelectedAdvert={setSelectedAdvert} />
+            <BuySellTableContent
+                key={table_type}
+                is_buy={table_type === buy_sell.BUY}
+                setSelectedAdvert={setSelectedAdvert}
+                showAdvertiserPage={showAdvertiserPage}
+            />
             <Modal
                 className='buy-sell__popup'
-                height={table_type === 'buy' ? '400px' : '649px'}
+                height={table_type === buy_sell.BUY ? '400px' : '649px'}
                 width='456px'
                 is_open={should_show_popup}
                 title={modal_title}

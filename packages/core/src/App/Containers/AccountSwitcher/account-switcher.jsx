@@ -489,7 +489,12 @@ class AccountSwitcher extends React.Component {
                                         </div>
                                     )}
                                     {this.remaining_real_mt5.map(account => (
-                                        <div key={account.title} className='acc-switcher__new-account'>
+                                        <div
+                                            key={account.title}
+                                            className={classNames('acc-switcher__new-account', {
+                                                'acc-switcher__new-account--disabled': this.props.mt5_login_list_error,
+                                            })}
+                                        >
                                             <Icon icon={`IcMt5-${account.icon}`} size={24} />
                                             <span className='acc-switcher__new-account-text'>{account.title}</span>
                                             <Button
@@ -500,7 +505,8 @@ class AccountSwitcher extends React.Component {
                                                 is_disabled={
                                                     !this.props.has_any_real_account ||
                                                     (account.type === 'financial_stp' &&
-                                                        this.props.is_pending_authentication)
+                                                        this.props.is_pending_authentication) ||
+                                                    !!this.props.mt5_login_list_error
                                                 }
                                             >
                                                 {localize('Add')}
@@ -646,6 +652,7 @@ const account_switcher = withRouter(
         has_fiat: client.has_fiat,
         has_any_real_account: client.has_any_real_account,
         mt5_login_list: client.mt5_login_list,
+        mt5_login_list_error: client.mt5_login_list_error,
         obj_total_balance: client.obj_total_balance,
         switchAccount: client.switchAccount,
         has_malta_account: client.has_malta_account,

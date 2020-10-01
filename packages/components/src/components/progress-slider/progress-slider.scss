@@ -96,13 +96,13 @@
             height: 2px;
         }
         &--green {
-            background: var(--brand-secondary) !important;
+            background: var(--status-success) !important;
         }
-        &--orange {
-            background: var(--brand-orange) !important;
+        &--yellow {
+            background: var(--status-warning) !important;
         }
         &--red {
-            background: var(--brand-red-coral) !important;
+            background: var(--status-danger) !important;
         }
     }
     &__infinite-loader {

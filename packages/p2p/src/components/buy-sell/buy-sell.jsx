@@ -23,18 +23,35 @@ const buy_sell_filters = [
 ];
 
 const BuySell = ({ navigate }) => {
+    const is_mounted = React.useRef(false);
+    const submitForm = React.useRef(() => {});
+
+    React.useEffect(() => {
+        is_mounted.current = true;
+        return () => (is_mounted.current = false);
+    }, [is_mounted]);
+
+    React.useEffect(() => {
+        if (!should_show_popup) setErrorMessage(null);
+    }, [should_show_popup]);
+
     const [table_type, setTableType] = React.useState('buy');
     const [selected_ad_state, setSelectedAdState] = React.useState({});
     const [should_show_popup, setShouldShowPopup] = React.useState(false);
     const [should_show_verification, setShouldShowVerification] = React.useState(false);
-    const { is_advertiser, modal_root_id, nickname } = React.useContext(Dp2pContext);
+    const { is_advertiser, modal_root_id, nickname, setOrderId } = React.useContext(Dp2pContext);
     const [is_submit_disabled, setIsSubmitDisabled] = React.useState(true);
     const [error_message, setErrorMessage] = React.useState(null);
 
-    const submitForm = React.useRef(() => {});
     const setSubmitForm = submitFormFn => (submitForm.current = submitFormFn);
-
-    const setSelectedAd = selected_ad => {
+    const hideVerification = () => setShouldShowVerification(false);
+    const onCancelClick = () => setShouldShowPopup(false);
+    const onChangeTableType = event => setTableType(event.target.value);
+    const onConfirmClick = order_info => {
+        setOrderId(order_info.id);
+        navigate('orders', { nav: { location: 'buy_sell' } });
+    };
+    const setSelectedAdvert = selected_ad => {
         if (!is_advertiser) {
             setShouldShowVerification(true);
         } else {
@@ -43,7 +60,13 @@ const BuySell = ({ navigate }) => {
         }
     };
 
-    const hideVerification = () => setShouldShowVerification(false);
+    // Some state is managed externally, ensure our host component is mounted
+    // when those external components try to update it.
+    const stateUpdateWrapper = updateFn => (...args) => {
+        if (is_mounted.current) {
+            updateFn(...args);
+        }
+    };
 
     if (should_show_verification) {
         return (
@@ -53,10 +76,6 @@ const BuySell = ({ navigate }) => {
             </React.Fragment>
         );
     }
-
-    const onCancelClick = () => setShouldShowPopup(false);
-    const onConfirmClick = order_info => navigate('orders', { order_info, nav: { location: 'buy_sell' } });
-    const onChangeTableType = event => setTableType(event.target.value);
 
     const Form = nickname ? BuySellForm : NicknameForm;
     const modal_title =
@@ -77,7 +96,7 @@ const BuySell = ({ navigate }) => {
                     has_rounded_button
                 />
             </div>
-            <BuySellTableContent key={table_type} is_buy={table_type === 'buy'} setSelectedAd={setSelectedAd} />
+            <BuySellTableContent key={table_type} is_buy={table_type === 'buy'} setSelectedAdvert={setSelectedAdvert} />
             <Modal
                 className='buy-sell__popup'
                 height={table_type === 'buy' ? '400px' : '649px'}
@@ -91,17 +110,17 @@ const BuySell = ({ navigate }) => {
                 <ThemedScrollbars height='calc(100% - 5.8rem - 7.4rem)'>
                     <Modal.Body>
                         <Form
-                            ad={selected_ad_state}
-                            handleClose={onCancelClick}
+                            advert={selected_ad_state}
+                            handleClose={stateUpdateWrapper(onCancelClick)}
                             handleConfirm={onConfirmClick}
-                            setIsSubmitDisabled={setIsSubmitDisabled}
-                            setErrorMessage={setErrorMessage}
+                            setIsSubmitDisabled={stateUpdateWrapper(setIsSubmitDisabled)}
+                            setErrorMessage={stateUpdateWrapper(setErrorMessage)}
                             setSubmitForm={setSubmitForm}
                         />
                     </Modal.Body>
                 </ThemedScrollbars>
                 <Modal.Footer has_separator>
-                    <FormError message={error_message} />
+                    {error_message && <FormError message={error_message} />}
                     <Button.Group>
                         <Button secondary type='button' onClick={onCancelClick} large>
                             {localize('Cancel')}

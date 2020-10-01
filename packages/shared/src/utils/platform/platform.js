@@ -95,3 +95,9 @@ export const isNavigationFromPlatform = (app_routing_history, platform_route, sh
 
     return false;
 };
+
+export const isNavegationFromP2P = (routing_history, platform_route) => {
+    const routing_history_index = routing_history.length > 1 ? 1 : 0;
+    const history_item = routing_history[routing_history_index];
+    return history_item?.pathname === platform_route;
+};

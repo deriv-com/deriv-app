@@ -4,7 +4,10 @@ import ApiHelpers from '../../../../services/api/api-helpers';
 Blockly.Blocks.trade_definition_tradetype = {
     init() {
         this.jsonInit({
-            message0: localize('Trade Type: %1 > %2'),
+            message0: localize('Trade Type: {{ trade_type_category }} > {{ trade_type }}', {
+                trade_type_category: '%1',
+                trade_type: '%2',
+            }),
             args0: [
                 {
                     type: 'field_dropdown',

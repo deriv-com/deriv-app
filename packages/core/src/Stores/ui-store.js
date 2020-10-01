@@ -39,6 +39,7 @@ export default class UIStore extends BaseStore {
     @observable is_account_signup_modal_visible = false;
     @observable is_set_residence_modal_visible = false;
     @observable is_reset_password_modal_visible = false;
+    @observable is_account_transfer_limit_modal_visible = false;
     // @observable is_purchase_lock_on       = false;
 
     // SmartCharts Controls
@@ -83,6 +84,9 @@ export default class UIStore extends BaseStore {
 
     // account types modal
     @observable is_account_types_modal_visible = false;
+
+    // Welcome modal
+    @observable is_welcome_modal_visible = false;
 
     // set currency modal
     @observable is_set_currency_modal_visible = false;
@@ -550,6 +554,11 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
+    toggleAccountTransferLimitModal(state_change = !this.is_account_transfer_limit_modal_visible) {
+        this.is_account_transfer_limit_modal_visible = state_change;
+    }
+
+    @action.bound
     toggleAccountSignupModal(state_change = !this.is_account_signup_modal_visible) {
         this.is_account_signup_modal_visible = state_change;
     }
@@ -656,6 +665,11 @@ export default class UIStore extends BaseStore {
     @action.bound
     toggleAccountTypesModal(is_visible = !this.is_account_types_modal_visible) {
         this.is_account_types_modal_visible = is_visible;
+    }
+
+    @action.bound
+    toggleWelcomeModal(is_visible = !this.is_welcome_modal_visible) {
+        this.is_welcome_modal_visible = is_visible;
     }
 
     @action.bound

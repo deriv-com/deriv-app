@@ -61,7 +61,7 @@ describe('Url', () => {
                     ).to.eq(url_with_qs);
                 });
                 it('returns the correct language', () => {
-                    expect(urlFor('home', { language: 'es' })).to.eq(`${website_url}home.html`);
+                    expect(urlFor('home', { language: 'es' })).to.eq(`${website_url}home.html?lang=es`);
                 });
                 it('ignores invalid characters', () => {
                     expect(urlFor('`~!@#$%^&*)(=+[}{]\\"\';:?><,|')).to.eq(home_url);

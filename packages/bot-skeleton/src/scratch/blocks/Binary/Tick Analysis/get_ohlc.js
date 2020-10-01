@@ -7,8 +7,8 @@ Blockly.Blocks.get_ohlc = {
     },
     definition() {
         return {
-            message0: localize('in candle list get # from end %1'),
-            message1: localize('with interval: %1'),
+            message0: localize('in candle list get # from end {{ input_number }}', { input_number: '%1' }),
+            message1: localize('with interval: {{ candle_interval_type }}', { candle_interval_type: '%1' }),
             args0: [
                 {
                     type: 'input_value',

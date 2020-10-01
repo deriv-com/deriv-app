@@ -18,11 +18,10 @@ const TradeModals = Loadable({
 class App extends React.Component {
     constructor(props) {
         super(props);
-        // TODO: [trader-remove-client-base] - Refactor codebase to remove usage of ClientBase in Trader
         const {
-            passthrough: { WS, root_store, client_base },
+            passthrough: { WS, root_store },
         } = props;
-        this.root_store = initStore(root_store, WS, client_base);
+        this.root_store = initStore(root_store, WS);
     }
 
     componentWillUnmount() {

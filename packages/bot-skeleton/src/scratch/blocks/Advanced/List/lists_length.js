@@ -6,7 +6,7 @@ Blockly.Blocks.lists_length = {
     },
     definition() {
         return {
-            message0: localize('length of %1'),
+            message0: localize('length of {{ input_list }}', { input_list: '%1' }),
             args0: [
                 {
                     type: 'input_value',

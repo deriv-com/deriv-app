@@ -9,7 +9,7 @@ const Redirect = ({
     history,
     currency,
     setVerificationCode,
-    has_any_real_account,
+    hasAnyRealAccount,
     openRealAccountSignup,
     toggleAccountSignupModal,
     toggleResetPasswordModal,
@@ -42,7 +42,7 @@ const Redirect = ({
         case 'add_account': {
             WS.wait('get_account_status').then(() => {
                 if (!currency) return openRealAccountSignup('set_currency');
-                if (has_any_real_account) return openRealAccountSignup('manage');
+                if (hasAnyRealAccount()) return openRealAccountSignup('manage');
                 return openRealAccountSignup();
             });
             const ext_platform_url = url_params.get('ext_platform_url');
@@ -90,7 +90,7 @@ export default withRouter(
         currency: client.currency,
         setVerificationCode: client.setVerificationCode,
         fetchResidenceList: client.fetchResidenceList,
-        has_any_real_account: client.has_any_real_account,
+        hasAnyRealAccount: client.hasAnyRealAccount,
         openRealAccountSignup: ui.openRealAccountSignup,
         toggleAccountSignupModal: ui.toggleAccountSignupModal,
         toggleResetPasswordModal: ui.toggleResetPasswordModal,

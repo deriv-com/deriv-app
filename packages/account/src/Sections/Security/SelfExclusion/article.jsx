@@ -1,37 +1,20 @@
 import React from 'react';
-import { getDerivComLink } from '@deriv/shared';
+import { Icon, StaticUrl } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { Icon } from '@deriv/components';
 import { connect } from 'Stores/connect';
 
 const SEArticle = ({ toggleArticle, is_eu }) => {
     const non_eu_text = (
         <Localize
             i18n_default_text='These self-exclusion limits help you control the amount of money and time you spend trading on DTrader, DBot, and SmartTrader. The limits you set here will help you exercise <0>responsible trading</0>.'
-            components={[
-                <a
-                    key={0}
-                    className='link link--orange'
-                    rel='noopener noreferrer'
-                    target='_blank'
-                    href={getDerivComLink('/responsible-trading')}
-                />,
-            ]}
+            components={[<StaticUrl key={0} className='link link--orange' href='/responsible-trading' />]}
         />
     );
 
     const eu_text = (
         <Localize
             i18n_default_text='These trading limits and self-exclusion help you control the amount of money and time you spend on Deriv.com and exercise <0>responsible trading</0>.'
-            components={[
-                <a
-                    key={0}
-                    className='link link--orange'
-                    rel='noopener noreferrer'
-                    target='_blank'
-                    href={getDerivComLink('/responsible-trading')}
-                />,
-            ]}
+            components={[<StaticUrl key={0} className='link link--orange' href='/responsible-trading' />]}
         />
     );
 

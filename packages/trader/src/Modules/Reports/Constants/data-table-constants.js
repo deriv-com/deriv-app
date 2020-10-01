@@ -67,14 +67,16 @@ export const getStatementTableColumnsTemplate = currency => [
         col_index: 'amount',
         renderCellContent: ({ cell_value }) => (
             <div className={`amount--${getProfitOrLoss(cell_value)}`}>
-                <Money has_sign amount={cell_value.replace(/[,]+/g, '')} currency={currency} />
+                <Money has_sign amount={cell_value.replace(/[,]+/g, '')} currency={currency} should_format_crypto={0} />
             </div>
         ),
     },
     {
         title: localize('Balance'),
         col_index: 'balance',
-        renderCellContent: ({ cell_value }) => <Money amount={cell_value.replace(/[,]+/g, '')} currency={currency} />,
+        renderCellContent: ({ cell_value }) => (
+            <Money amount={cell_value.replace(/[,]+/g, '')} currency={currency} should_format_crypto={0} />
+        ),
     },
 ];
 export const getProfitTableColumnsTemplate = (currency, items_count) => [
@@ -111,7 +113,7 @@ export const getProfitTableColumnsTemplate = (currency, items_count) => [
         renderCellContent: ({ cell_value, is_footer }) => {
             if (is_footer) return '';
 
-            return <Money amount={cell_value} currency={currency} />;
+            return <Money amount={cell_value} currency={currency} should_format_crypto={0} />;
         },
     },
     {
@@ -133,7 +135,7 @@ export const getProfitTableColumnsTemplate = (currency, items_count) => [
         renderCellContent: ({ cell_value, is_footer }) => {
             if (is_footer) return '';
 
-            return <Money amount={cell_value} currency={currency} />;
+            return <Money amount={cell_value} currency={currency} should_format_crypto={0} />;
         },
     },
     {
@@ -141,7 +143,7 @@ export const getProfitTableColumnsTemplate = (currency, items_count) => [
         col_index: 'profit_loss',
         renderCellContent: ({ cell_value }) => (
             <ProfitLossCell value={cell_value}>
-                <Money has_sign amount={cell_value.replace(/[,]+/g, '')} currency={currency} />
+                <Money has_sign amount={cell_value.replace(/[,]+/g, '')} currency={currency} should_format_crypto={0} />
             </ProfitLossCell>
         ),
     },
@@ -163,13 +165,15 @@ export const getOpenPositionsColumnsTemplate = currency => [
     {
         title: localize('Buy price'),
         col_index: 'purchase',
-        renderCellContent: ({ cell_value }) => <Money amount={cell_value} currency={currency} />,
+        renderCellContent: ({ cell_value }) => (
+            <Money amount={cell_value} currency={currency} should_format_crypto={0} />
+        ),
     },
     {
         title: localize('Potential payout'),
         col_index: 'payout',
         renderCellContent: ({ cell_value }) =>
-            cell_value ? <Money amount={cell_value} currency={currency} /> : <span>-</span>,
+            cell_value ? <Money amount={cell_value} currency={currency} should_format_crypto={0} /> : <span>-</span>,
     },
     {
         title: localize('Potential profit/loss'),
@@ -185,7 +189,7 @@ export const getOpenPositionsColumnsTemplate = currency => [
                         'open-positions__profit-loss--positive': profit > 0,
                     })}
                 >
-                    <Money amount={Math.abs(profit)} currency={currency} />
+                    <Money amount={Math.abs(profit)} currency={currency} should_format_crypto={0} />
                     <div className='open-positions__profit-loss--movement'>
                         {profit > 0 ? <Icon icon='IcProfit' /> : <Icon icon='IcLoss' />}
                     </div>
@@ -246,7 +250,13 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
         renderCellContent: ({ row_obj }) => {
             if (row_obj.contract_info) {
                 const { ask_price: cancellation_price = 0 } = row_obj.contract_info.cancellation || {};
-                return <Money amount={row_obj.contract_info.buy_price - cancellation_price} currency={currency} />;
+                return (
+                    <Money
+                        amount={row_obj.contract_info.buy_price - cancellation_price}
+                        currency={currency}
+                        should_format_crypto={0}
+                    />
+                );
             }
             return '';
         },
@@ -256,7 +266,13 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
         col_index: 'cancellation',
         renderCellContent: ({ row_obj }) => {
             if (row_obj.contract_info && row_obj.contract_info.cancellation) {
-                return <Money amount={row_obj.contract_info.cancellation.ask_price} currency={currency} />;
+                return (
+                    <Money
+                        amount={row_obj.contract_info.cancellation.ask_price}
+                        currency={currency}
+                        should_format_crypto={0}
+                    />
+                );
             }
             return '-';
         },
@@ -268,7 +284,9 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
             <Localize i18n_default_text='Buy price' />
         ),
         col_index: 'purchase',
-        renderCellContent: ({ cell_value }) => <Money amount={cell_value} currency={currency} />,
+        renderCellContent: ({ cell_value }) => (
+            <Money amount={cell_value} currency={currency} should_format_crypto={0} />
+        ),
     },
     {
         title: <Localize i18n_default_text='Take profit<0 />Stop loss' components={[<br key={0} />]} />,
@@ -283,14 +301,24 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
                 <React.Fragment>
                     <div>
                         {take_profit?.order_amount ? (
-                            <Money has_sign amount={take_profit.order_amount} currency={currency} />
+                            <Money
+                                has_sign
+                                amount={take_profit.order_amount}
+                                currency={currency}
+                                should_format_crypto={0}
+                            />
                         ) : (
                             '-'
                         )}
                     </div>
                     <div>
                         {stop_loss?.order_amount ? (
-                            <Money has_sign amount={stop_loss.order_amount} currency={currency} />
+                            <Money
+                                has_sign
+                                amount={stop_loss.order_amount}
+                                currency={currency}
+                                should_format_crypto={0}
+                            />
                         ) : (
                             '-'
                         )}
@@ -317,7 +345,7 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
                         'open-positions__bid_price--positive': total_profit > 0,
                     })}
                 >
-                    <Money amount={row_obj.contract_info.bid_price} currency={currency} />
+                    <Money amount={row_obj.contract_info.bid_price} currency={currency} should_format_crypto={0} />
                 </div>
             );
         },
@@ -340,7 +368,7 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
                         'open-positions__profit-loss--positive': total_profit > 0,
                     })}
                 >
-                    <Money amount={Math.abs(total_profit)} currency={currency} />
+                    <Money amount={Math.abs(total_profit)} currency={currency} should_format_crypto={0} />
                     <div className='open-positions__profit-loss--movement'>
                         {total_profit > 0 ? <Icon icon='IcProfit' /> : <Icon icon='IcLoss' />}
                     </div>

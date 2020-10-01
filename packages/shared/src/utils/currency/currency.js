@@ -12,13 +12,20 @@ export const getFormattedText = (number, currency) => {
     return `${addComma(number, getDecimalPlaces(currency), isCryptocurrency(currency))} ${currency}`;
 };
 
-export const formatMoney = (currency_value, amount, exclude_currency, decimals = 0, minimumFractionDigits = 0) => {
+export const formatMoney = (
+    currency_value,
+    amount,
+    exclude_currency,
+    decimals = 0,
+    minimumFractionDigits = 0,
+    should_format_crypto = 1
+) => {
     let money = String(amount);
     if (money) money = money.replace(/,/g, '');
     const sign = money && Number(money) < 0 ? '-' : '';
     let decimal_places;
     // Cryptos except IDK: minimum of 2, maximum of 8 decimal places without trailing zeros
-    if (isCryptocurrency(currency_value) && currency_value !== 'IDK') {
+    if (isCryptocurrency(currency_value) && !!should_format_crypto && currency_value !== 'IDK') {
         const without_trailing_zeros = money.replace(/(\d+\.\d*?)0+$/, '$1');
         decimal_places = Math.max(2, (without_trailing_zeros.toString().split('.')[1] || []).length);
     } else {

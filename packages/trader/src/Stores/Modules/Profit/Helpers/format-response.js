@@ -10,7 +10,7 @@ export const formatProfitTableTransactions = (transaction, currency, active_symb
     const payout = parseFloat(transaction.payout);
     const sell_price = parseFloat(transaction.sell_price);
     const buy_price = parseFloat(transaction.buy_price);
-    const profit_loss = formatMoney(currency, Number(sell_price - buy_price), true);
+    const profit_loss = formatMoney(currency, Number(sell_price - buy_price), true, 0, 0, 0);
     const display_name = getSymbolDisplayName(active_symbols, getMarketInformation(transaction.shortcode).underlying);
 
     return {

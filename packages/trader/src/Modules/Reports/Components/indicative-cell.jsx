@@ -25,7 +25,7 @@ class IndicativeCell extends React.PureComponent {
         return (
             <div className='open-positions__indicative'>
                 <div className='open-positions__indicative--amount'>
-                    <Money amount={Math.abs(amount)} currency={currency} />
+                    <Money amount={Math.abs(amount)} currency={currency} should_format_crypto={0} />
                     {status !== 'no-resale' && amount !== 0 && (
                         <React.Fragment>
                             {movement === 'profit' && <Icon icon='IcProfit' />}

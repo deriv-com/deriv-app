@@ -102,7 +102,11 @@ class Statement extends React.Component {
                                 {localize('Total withdrawals')} {`(${currency})`}
                             </span>
                             <span className='statement__account-statistics-amount'>
-                                <Money amount={account_statistics.total_withdrawals} currency={currency} />
+                                <Money
+                                    amount={account_statistics.total_withdrawals}
+                                    currency={currency}
+                                    should_format_crypto={0}
+                                />
                             </span>
                         </div>
                     </div>
@@ -115,6 +119,7 @@ class Statement extends React.Component {
                                 <Money
                                     amount={account_statistics.total_deposits - account_statistics.total_withdrawals}
                                     currency={currency}
+                                    should_format_crypto={0}
                                 />
                             </span>
                         </div>

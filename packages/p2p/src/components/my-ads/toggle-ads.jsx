@@ -1,5 +1,6 @@
 import React from 'react';
 import { ToggleSwitch } from '@deriv/components';
+import { useIsMounted } from '@deriv/shared';
 import classNames from 'classnames';
 import { localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
@@ -9,17 +10,20 @@ import './my-ads.scss';
 const ToggleAds = () => {
     const { general_store } = useStores();
     const [api_error, setApiError] = React.useState(null);
+    const isMounted = useIsMounted();
 
     const handleToggle = () => {
         requestWS({
             p2p_advertiser_update: 1,
             is_listed: general_store.is_listed ? 0 : 1,
         }).then(response => {
-            if (response.error) {
-                setApiError(response.error.message);
-            } else {
-                const { is_listed } = response.p2p_advertiser_update;
-                general_store.setIsListed(is_listed === 1);
+            if (isMounted()) {
+                if (response.error) {
+                    setApiError(response.error.message);
+                } else {
+                    const { is_listed } = response.p2p_advertiser_update;
+                    general_store.setIsListed(is_listed === 1);
+                }
             }
         });
     };

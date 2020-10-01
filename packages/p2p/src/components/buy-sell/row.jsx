@@ -27,7 +27,7 @@ BuySellRowLoader.propTypes = {
     width: PropTypes.number,
 };
 
-export const RowComponent = React.memo(({ advert, setSelectedAdvert, style }) => {
+export const RowComponent = React.memo(({ advert, setSelectedAdvert, showAdvertiserPage, style }) => {
     const {
         account_currency,
         counterparty_type,
@@ -36,6 +36,7 @@ export const RowComponent = React.memo(({ advert, setSelectedAdvert, style }) =>
         min_order_amount_limit_display,
         price_display,
     } = advert;
+
     const { advertiser_id } = React.useContext(Dp2pContext);
     const is_my_advert = advert.advertiser_details.id === advertiser_id;
     const is_buy_advert = counterparty_type === 'buy';
@@ -46,18 +47,20 @@ export const RowComponent = React.memo(({ advert, setSelectedAdvert, style }) =>
         <div style={style}>
             <Table.Row className='buy-sell__table-row'>
                 <Table.Cell>
-                    <div
-                        className='buy-sell__icon'
-                        style={{ backgroundColor: generateHexColourFromNickname(advertiser_name) }}
-                    >
-                        {advertiser_short_name}
+                    <div className='buy-sell__cell' onClick={() => showAdvertiserPage(advert)}>
+                        <div
+                            className='buy-sell__icon'
+                            style={{ backgroundColor: generateHexColourFromNickname(advertiser_name) }}
+                        >
+                            {advertiser_short_name}
+                        </div>
+                        {advertiser_name}
                     </div>
-                    {advertiser_name}
                 </Table.Cell>
                 <Table.Cell>
                     {min_order_amount_limit_display}&ndash;{max_order_amount_limit_display} {account_currency}
                 </Table.Cell>
-                <Table.Cell className='buy-sell__price' flex='2fr'>
+                <Table.Cell className='buy-sell__price'>
                     {price_display} {local_currency}
                 </Table.Cell>
                 {is_my_advert ? (

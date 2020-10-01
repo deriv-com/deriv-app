@@ -7,7 +7,7 @@ Blockly.Blocks.totimestamp = {
     },
     definition() {
         return {
-            message0: `${localize('To timestamp %1')}%2`,
+            message0: localize('To timestamp {{ input_datetime }} {{ dummy }}', { input_datetime: '%1', dummy: '%2' }),
             args0: [
                 {
                     type: 'input_value',

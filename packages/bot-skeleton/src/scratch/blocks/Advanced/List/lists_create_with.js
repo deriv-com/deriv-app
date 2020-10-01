@@ -13,7 +13,7 @@ Blockly.Blocks.lists_create_with = {
     },
     definition() {
         return {
-            message0: localize('set %1 to create list with'),
+            message0: localize('set {{ variable }} to create list with', { variable: '%1' }),
             message1: '%1',
             args0: [
                 {

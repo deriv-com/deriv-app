@@ -10,14 +10,13 @@ import {
     SwipeableWrapper,
     FadeWrapper,
 } from '@deriv/components';
-import { isDesktop, isMobile, isEmptyObject } from '@deriv/shared';
+import { isDesktop, isMobile, isMultiplierContract, isEmptyObject } from '@deriv/shared';
 
 import { localize } from '@deriv/translations';
 import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
 import ContractDrawer from 'App/Components/Elements/ContractDrawer';
 import { SmartChart } from 'Modules/SmartChart';
 import { connect } from 'Stores/connect';
-import { isMultiplierContract } from 'Stores/Modules/Contract/Helpers/multiplier';
 import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget, InfoBoxWidget } from './contract-replay-widget.jsx';
 import ChartMarker from '../../SmartChart/Components/Markers/marker.jsx';
 
@@ -200,7 +199,7 @@ class Chart extends React.Component {
         };
 
         if (isMobile()) {
-            margin.bottom = 16;
+            margin.bottom = 48;
         }
 
         return margin;

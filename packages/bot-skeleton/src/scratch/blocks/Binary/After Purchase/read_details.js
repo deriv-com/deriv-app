@@ -7,7 +7,7 @@ Blockly.Blocks.read_details = {
     },
     definition() {
         return {
-            message0: localize('Contract Details: %1'),
+            message0: localize('Contract Details: {{ contract_detail }}', { contract_detail: '%1' }),
             args0: [
                 {
                     type: 'field_dropdown',

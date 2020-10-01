@@ -1025,7 +1025,7 @@ export default class ClientStore extends BaseStore {
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
             WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
-            this.getLimits();
+            if (!this.is_virtual) this.getLimits();
         } else {
             this.resetMt5AccountListPopulation();
         }
@@ -1232,7 +1232,7 @@ export default class ClientStore extends BaseStore {
 
         await this.init();
         this.broadcastAccountChange();
-        this.getLimits();
+        if (!this.is_virtual) this.getLimits();
 
         runInAction(() => (this.is_switching = false));
     }

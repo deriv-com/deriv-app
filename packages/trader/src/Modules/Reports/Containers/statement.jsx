@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper, DataList, DataTable, Money } from '@deriv/components';
-import { extractInfoFromShortcode, isDesktop, urlFor, website_name } from '@deriv/shared';
+import { extractInfoFromShortcode, urlFor, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
 import CompositeCalendar from 'App/Components/Form/CompositeCalendar/composite-calendar.jsx';
@@ -19,23 +19,25 @@ import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message.
 class Statement extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { total_deposits: 0, total_withdrawals: 0 };
+        this.state = { total_deposits: 0, total_withdrawals: 0, is_account_statistics_loaded: false };
     }
 
     componentDidMount() {
         this.props.onMount();
-        const is_mx_mlt =
-            this.props.landing_company_shortcode === 'iom' || this.props.landing_company_shortcode === 'malta';
+    }
 
-        if (is_mx_mlt)
+    componentDidUpdate() {
+        const { is_mx_mlt } = this.props;
+        if (is_mx_mlt && !this.state.is_account_statistics_loaded)
             WS.accountStatistics().then(response => {
                 if (response.error) {
-                    this.setState({ api_error: response.error.message });
+                    this.setState({ api_error: response.error.message, is_account_statistics_loaded: true });
                     return;
                 }
                 this.setState({
                     total_deposits: response.account_statistics.total_deposits,
                     total_withdrawals: response.account_statistics.total_withdrawals,
+                    is_account_statistics_loaded: true,
                 });
             });
     }
@@ -132,23 +134,6 @@ class Statement extends React.Component {
         );
     }
 
-    getReportsMetaProps(is_mx_mlt) {
-        const reports_meta_props = {};
-
-        if (is_mx_mlt) {
-            Object.assign(reports_meta_props, { optional_component: this.getAccountStatistics() });
-        }
-        if (isDesktop()) {
-            Object.assign(reports_meta_props, {
-                i18n_heading: localize('Statement'),
-                i18n_message: localize(
-                    'View all transactions on your account, including trades, deposits, and withdrawals.'
-                ),
-            });
-        }
-        return reports_meta_props;
-    }
-
     render() {
         const {
             component_icon,
@@ -158,6 +143,7 @@ class Statement extends React.Component {
             date_to,
             is_empty,
             is_loading,
+            is_mx_mlt,
             error,
             filtered_date_range,
             handleScroll,
@@ -183,15 +169,13 @@ class Statement extends React.Component {
             map[item.col_index] = item;
             return map;
         }, {});
-        const is_mx_mlt =
-            this.props.landing_company_shortcode === 'iom' || this.props.landing_company_shortcode === 'malta';
 
         return (
             <React.Fragment>
                 <ReportsMeta
                     className={is_mx_mlt ? undefined : 'reports__meta--statement'}
                     filter_component={filter_component}
-                    {...this.getReportsMetaProps(is_mx_mlt)}
+                    optional_component={is_mx_mlt && this.getAccountStatistics()}
                 />
                 {this.props.is_switching ? (
                     <PlaceholderComponent is_loading={true} />
@@ -259,13 +243,13 @@ Statement.propTypes = {
     is_empty: PropTypes.bool,
     is_loading: PropTypes.bool,
     is_switching: PropTypes.bool,
-    landing_company_shortcode: PropTypes.string,
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
 };
 
 export default connect(({ modules, client }) => ({
     currency: client.currency,
+    is_mx_mlt: client.standpoint.iom || client.standpoint.malta,
     date_from: modules.statement.date_from,
     date_to: modules.statement.date_to,
     data: modules.statement.data,
@@ -277,7 +261,6 @@ export default connect(({ modules, client }) => ({
     is_empty: modules.statement.is_empty,
     is_loading: modules.statement.is_loading,
     is_switching: client.is_switching,
-    landing_company_shortcode: client.landing_company_shortcode,
     onMount: modules.statement.onMount,
     onUnmount: modules.statement.onUnmount,
 }))(withRouter(Statement));

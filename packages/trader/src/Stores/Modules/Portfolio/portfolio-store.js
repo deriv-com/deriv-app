@@ -102,6 +102,15 @@ export default class PortfolioStore extends BaseStore {
                 return;
             }
             this.positions[i].is_loading = true;
+
+            // Sometimes when we sell a contract, we don't get `proposal_open_contract` message with exit information and status as `sold`.
+            // This is to make sure that we get `proposal_open_contract` message with exit information and status as `sold`.
+            const subscriber = WS.subscribeProposalOpenContract(contract_id, poc => {
+                this.updateContractTradeStore(poc);
+                this.updateContractReplayStore(poc);
+                this.populateResultDetails(poc);
+                subscriber.unsubscribe();
+            });
         }
     }
 

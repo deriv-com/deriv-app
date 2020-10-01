@@ -68,7 +68,9 @@ export const RowComponent = React.memo(({ advert, setSelectedAdvert, showAdverti
                 ) : (
                     <Table.Cell className='buy-sell__button'>
                         <Button primary small onClick={() => setSelectedAdvert(advert)}>
-                            {is_buy_advert ? localize('Buy') : localize('Sell')} {account_currency}
+                            {is_buy_advert
+                                ? localize('Buy {{account_currency}}', { account_currency })
+                                : localize('Sell {{account_currency}}', { account_currency })}
                         </Button>
                     </Table.Cell>
                 )}

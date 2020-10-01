@@ -93,6 +93,9 @@ class Transactions extends React.PureComponent {
                                         case transaction_elements.DIVIDER: {
                                             return row.data;
                                         }
+                                        default: {
+                                            return null;
+                                        }
                                     }
                                 }}
                             />

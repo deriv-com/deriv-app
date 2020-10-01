@@ -233,7 +233,7 @@ const Journal = ({
                     <DataList
                         className='journal'
                         data_source={filtered_messages}
-                        rowRenderer={props => <JournalItem {...props} />}
+                        rowRenderer={args => <JournalItem {...args} />}
                         keyMapper={row => row.unique_id}
                     />
                 ) : (

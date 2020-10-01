@@ -1,5 +1,5 @@
 import debounce from 'lodash.debounce';
-import { action, computed, observable } from 'mobx';
+import { action, computed, observable, runInAction } from 'mobx';
 import { toMoment } from '@deriv/shared';
 import { WS } from 'Services/ws-methods';
 
@@ -26,6 +26,8 @@ export default class StatementStore extends BaseStore {
     // `client_loginid` is only used to detect if this is in sync with the client-store, don't rely on
     // this for calculations. Use the client.currency instead.
     @observable client_loginid = '';
+
+    @observable account_statistics = {};
 
     @computed
     get is_empty() {
@@ -130,10 +132,29 @@ export default class StatementStore extends BaseStore {
     }
 
     @action.bound
+    async loadAccountStatistics() {
+        this.account_statistics = {};
+        const { client } = this.root_store;
+        const is_mx_mlt = client.standpoint.iom || client.standpoint.malta;
+        if (is_mx_mlt) {
+            const response_account_statistics = await WS.accountStatistics();
+            runInAction(() => {
+                if (response_account_statistics.error) {
+                    this.account_statistics = {};
+                    return;
+                }
+
+                this.account_statistics = response_account_statistics.account_statistics;
+            });
+        }
+    }
+
+    @action.bound
     accountSwitcherListener() {
         return new Promise(resolve => {
             this.clearTable();
             this.clearDateFilter();
+            this.loadAccountStatistics();
             return resolve(this.fetchNextBatch());
         });
     }
@@ -156,6 +177,7 @@ export default class StatementStore extends BaseStore {
         this.onNetworkStatusChange(this.networkStatusChangeListener);
         await WS.wait('authorize');
         this.fetchNextBatch(true);
+        this.loadAccountStatistics();
     }
 
     @action.bound

@@ -7,7 +7,7 @@ Blockly.Blocks.text_isEmpty = {
     },
     definition() {
         return {
-            message0: localize('text %1 is empty'),
+            message0: localize('text {{ input_text }} is empty', { input_text: '%1' }),
             args0: [
                 {
                     type: 'input_value',

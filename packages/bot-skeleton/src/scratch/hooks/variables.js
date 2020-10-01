@@ -44,13 +44,13 @@ Blockly.Variables.generateVariableFieldDom = function(variableModel) {
     /* Generates the following XML:
      * <field name="VAR" id="goKTKmYJ8DhVHpruv" variabletype="int">foo</field>
      */
-    const field = Blockly.utils.xml.createElement('field');
+    const field = document.createElement('field');
 
     field.setAttribute('name', 'VAR');
     field.setAttribute('id', variableModel.getId());
     field.setAttribute('variabletype', variableModel.type);
 
-    const name = Blockly.utils.xml.createTextNode(variableModel.name);
+    const name = document.createTextNode(variableModel.name);
     field.appendChild(name);
     return field;
 };

@@ -1,8 +1,6 @@
 import React from 'react';
 import { isBot, isMT5, urlFor } from '@deriv/shared';
-
 import DenialOfServiceModal from 'App/Components/Elements/Modals/DenialOfServiceModal';
-import AccountTransferLimit from 'App/Components/Elements/Modals/AccountTransferLimitModal';
 import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-needed-modal.jsx';
 import { connect } from 'Stores/connect';
 
@@ -21,11 +19,17 @@ const RealityCheckModal = React.lazy(() =>
 const AccountTypesModal = React.lazy(() =>
     import(/* webpackChunkName: "account-types-modal"  */ '../AccountTypesModal')
 );
+const WelcomeModal = React.lazy(() => import(/* webpackChunkName: "welcome-modal"  */ '../WelcomeModal'));
+
+const AccountTransferLimit = React.lazy(() =>
+    import(/* webpackChunkName: "account-transfer-limit-dialog"  */ '../AccountTransferLimitDialog')
+);
 
 const AppModals = ({
     is_account_needed_modal_on,
     is_account_transfer_limit_modal_visible,
     is_account_types_modal_visible,
+    is_welcome_modal_visible,
     is_denial_of_service_modal_visible,
     is_reality_check_visible,
     is_set_residence_modal_visible,
@@ -75,6 +79,10 @@ const AppModals = ({
         ComponentToLoad = <AccountTransferLimit />;
     }
 
+    if (is_welcome_modal_visible) {
+        ComponentToLoad = <WelcomeModal />;
+    }
+
     if (is_account_needed_modal_on) {
         ComponentToLoad = <MT5AccountNeededModal />;
     }
@@ -88,6 +96,7 @@ const AppModals = ({
 
 export default connect(({ client, ui }) => ({
     is_account_types_modal_visible: ui.is_account_types_modal_visible,
+    is_welcome_modal_visible: ui.is_welcome_modal_visible,
     is_account_needed_modal_on: ui.is_account_needed_modal_on,
     is_account_transfer_limit_modal_visible: ui.is_account_transfer_limit_modal_visible,
     is_set_residence_modal_visible: ui.is_set_residence_modal_visible,

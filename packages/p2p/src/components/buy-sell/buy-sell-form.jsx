@@ -9,16 +9,8 @@ import { requestWS } from 'Utils/websocket';
 import { textValidator, lengthValidator } from 'Utils/validations';
 
 const BuySellForm = ({ advert, handleClose, handleConfirm, setErrorMessage, setIsSubmitDisabled, setSubmitForm }) => {
-    const is_mounted = React.useRef(false);
-
-    React.useEffect(() => {
-        is_mounted.current = true;
-        return () => (is_mounted.current = false);
-    }, []);
-
     const {
         account_currency,
-        contact_info,
         counterparty_type,
         description,
         id,
@@ -27,22 +19,56 @@ const BuySellForm = ({ advert, handleClose, handleConfirm, setErrorMessage, setI
         max_order_amount_limit_display,
         min_order_amount_limit,
         min_order_amount_limit_display,
-        payment_info,
         price,
+        type,
     } = advert;
-
     const { name: advertiser_name } = advert.advertiser_details;
+
+    const is_mounted = React.useRef(false);
+    const [contact_info, setContactInfo] = React.useState('');
+    const [payment_info, setPaymentInfo] = React.useState('');
+    const [receive_amount, setReceiveAmount] = React.useState(
+        getRoundedNumber(min_order_amount_limit * price, local_currency)
+    );
+    const is_buyer = type === 'buy';
+
     // A user creates a sell order on a buy advert. Leave
     // below line for extra context.
     const is_buy_advert = counterparty_type === 'buy';
     const is_sell_advert = counterparty_type === 'sell';
-    const [receive_amount, setReceiveAmount] = React.useState(
-        getRoundedNumber(min_order_amount_limit * price, local_currency)
-    );
+
     const initial_values = {
         amount: min_order_amount_limit,
         // For sell orders we require extra information.
         ...(is_sell_advert ? { contact_info, payment_info } : {}),
+    };
+
+    React.useEffect(() => {
+        is_mounted.current = true;
+        if (!is_buyer) {
+            getAdvertiserInfo();
+        }
+        return () => (is_mounted.current = false);
+    }, []);
+
+    const getAdvertiserInfo = () => {
+        return new Promise(resolve => {
+            requestWS({
+                p2p_advertiser_info: 1,
+            }).then(response => {
+                if (is_mounted.current) {
+                    if (!response.error) {
+                        const { p2p_advertiser_info } = response;
+                        setContactInfo(p2p_advertiser_info.contact_info);
+                        setPaymentInfo(p2p_advertiser_info.payment_info);
+                    } else {
+                        setContactInfo('');
+                        setPaymentInfo('');
+                    }
+                }
+                resolve();
+            });
+        });
     };
 
     const handleSubmit = async (values, { setSubmitting }) => {
@@ -144,6 +170,7 @@ const BuySellForm = ({ advert, handleClose, handleConfirm, setErrorMessage, setI
 
     return (
         <Formik
+            enableReinitialize
             validate={validatePopup}
             initialValues={initial_values}
             initialErrors={is_sell_advert ? { contact_info: true, payment_info: true } : {}}

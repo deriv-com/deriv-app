@@ -2,10 +2,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Modal } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { ClientBase } from '_common/base/client_base';
 import { redirectToLogin, redirectToSignUp } from '_common/base/login';
 
-const AuthorizationRequiredModal = ({ is_visible, toggleModal, is_deriv_crypto }) => (
+const AuthorizationRequiredModal = ({ is_visible, toggleModal, is_deriv_crypto, is_logged_in }) => (
     <Modal
         id='dt_authorization_required_modal'
         is_open={is_visible}
@@ -15,12 +14,7 @@ const AuthorizationRequiredModal = ({ is_visible, toggleModal, is_deriv_crypto }
     >
         <Modal.Body>{localize('Log in or create a free account to place a trade.')}</Modal.Body>
         <Modal.Footer>
-            <Button
-                has_effect
-                text={localize('Log in')}
-                onClick={() => redirectToLogin(ClientBase.isLoggedIn())}
-                secondary
-            />
+            <Button has_effect text={localize('Log in')} onClick={() => redirectToLogin(is_logged_in)} secondary />
             <Button
                 has_effect
                 text={localize('Create free account')}
@@ -34,6 +28,7 @@ const AuthorizationRequiredModal = ({ is_visible, toggleModal, is_deriv_crypto }
 AuthorizationRequiredModal.propTypes = {
     is_deriv_crypto: PropTypes.bool,
     is_visible: PropTypes.bool,
+    is_logged_in: PropTypes.bool,
     toggleModal: PropTypes.func,
 };
 

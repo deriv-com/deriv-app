@@ -116,6 +116,10 @@
                 -webkit-box-shadow: 0 0 0 30px var(--fill-normal) inset !important;
             }
         }
+        // hide default eye icon in Edge browser
+        &::-ms-reveal {
+            display: none;
+        }
     }
     &__textarea {
         &:not(.dc-input--no-placeholder):not(:focus):empty {

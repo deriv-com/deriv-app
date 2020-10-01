@@ -47,25 +47,27 @@ const Notification = ({ data, removeNotificationMessage }) => {
                     />
                 )}
                 <p className='notification__text-body'>{data.message}</p>
-                {!isEmptyObject(data.action) && (
-                    <React.Fragment>
-                        {data.action.route ? (
-                            <BinaryLink
-                                className={classNames('dc-btn', 'dc-btn--secondary', 'notification__cta-button')}
-                                to={data.action.route}
-                            >
-                                <span className='dc-btn__text'>{data.action.text}</span>
-                            </BinaryLink>
-                        ) : (
-                            <Button
-                                className='notification__cta-button'
-                                onClick={() => data.action.onClick({ is_deriv_crypto })}
-                                text={data.action.text}
-                                secondary
-                            />
-                        )}
-                    </React.Fragment>
-                )}
+                <div className='notification__action'>
+                    {!isEmptyObject(data.action) && (
+                        <React.Fragment>
+                            {data.action.route ? (
+                                <BinaryLink
+                                    className={classNames('dc-btn', 'dc-btn--secondary', 'notification__cta-button')}
+                                    to={data.action.route}
+                                >
+                                    <span className='dc-btn__text'>{data.action.text}</span>
+                                </BinaryLink>
+                            ) : (
+                                <Button
+                                    className='notification__cta-button'
+                                    onClick={() => data.action.onClick({ is_deriv_crypto })}
+                                    text={data.action.text}
+                                    secondary
+                                />
+                            )}
+                        </React.Fragment>
+                    )}
+                </div>
             </div>
             {!data.should_hide_close_btn && <CloseButton className='notification__close-button' onClick={onClick} />}
         </div>

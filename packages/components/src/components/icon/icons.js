@@ -33,6 +33,7 @@ import './common/ic-account-transfer.svg';
 import './common/ic-account-trash-can.svg';
 import './common/ic-add-rounded.svg';
 import './common/ic-add.svg';
+import './common/ic-adjustment.svg';
 import './common/ic-alert-danger.svg';
 import './common/ic-alert-info.svg';
 import './common/ic-alert-success.svg';

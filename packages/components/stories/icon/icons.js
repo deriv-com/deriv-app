@@ -33,6 +33,7 @@ export const icons = {
         'IcAccountTrashCan',
         'IcAddRounded',
         'IcAdd',
+        'IcAdjustment',
         'IcAlertDanger',
         'IcAlertInfo',
         'IcAlertSuccess',

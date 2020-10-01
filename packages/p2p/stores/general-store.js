@@ -91,7 +91,7 @@ export default class GeneralStore {
             const notification_obj = {
                 order_id: new_order.id,
                 is_seen: is_current_order,
-                is_active: order_info.is_active,
+                is_active: order_info.is_active_order,
             };
 
             if (old_order) {
@@ -99,7 +99,7 @@ export default class GeneralStore {
                     if (notification) {
                         // If order status changed, notify the user.
                         notification.is_seen = is_current_order;
-                        notification.is_active = order_info.is_active;
+                        notification.is_active = order_info.is_active_order;
                     } else {
                         // If we have an old_order, but for some reason don't have a copy in local storage.
                         notifications.push(notification_obj);

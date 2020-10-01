@@ -110,7 +110,7 @@ class AccountLimits extends React.Component {
                         <MobileWrapper>
                             <Article />
                         </MobileWrapper>
-                        <FormBody scroll_offset={isMobile() ? '0px' : null}>
+                        <FormBody scroll_offset={isMobile() ? '0' : null}>
                             <div className='account-limit-container__content'>
                                 <table className='account-management-table'>
                                     <thead>

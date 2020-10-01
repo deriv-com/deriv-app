@@ -3,7 +3,9 @@ import { localize } from '@deriv/translations';
 Blockly.Blocks.trade_definition_restartbuysell = {
     init() {
         this.jsonInit({
-            message0: localize('Restart buy/sell on error (disable for better performance): %1'),
+            message0: localize('Restart buy/sell on error (disable for better performance): {{ checkbox }}', {
+                checkbox: '%1',
+            }),
             args0: [
                 {
                     type: 'field_image_checkbox',

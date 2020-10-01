@@ -7,7 +7,7 @@ Blockly.Blocks.text_print = {
     },
     definition() {
         return {
-            message0: localize('print %1'),
+            message0: localize('print {{ input_text }}', { input_text: '%1' }),
             args0: [
                 {
                     type: 'input_value',

@@ -10,7 +10,7 @@ import {
     Modal,
     ThemedScrollbars,
 } from '@deriv/components';
-import { isDesktop, isMobile, routes, getDerivComLink, urlFor } from '@deriv/shared';
+import { isDesktop, isMobile, routes, getStaticUrl, urlFor, PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import AccountCard from './account-card.jsx';
@@ -55,7 +55,7 @@ Box.propTypes = {
     cards: PropTypes.array,
 };
 
-const FinancialBox = ({ derivOnClick, mt5OnClick, has_maltainvest_account, add_account_label }) => {
+const FinancialBox = ({ derivOnClick, is_deriv_crypto, mt5OnClick, has_maltainvest_account, add_account_label }) => {
     return (
         <Box
             title={localize('Financial')}
@@ -82,12 +82,12 @@ const FinancialBox = ({ derivOnClick, mt5OnClick, has_maltainvest_account, add_a
                         {
                             icon: 'IcBrandDtrader',
                             name: 'DTrader',
-                            path: getDerivComLink('/dtrader'),
+                            path: getStaticUrl('/dtrader', { is_deriv_crypto }),
                         },
                         {
                             icon: 'IcBrandDbot',
                             name: 'DBot',
-                            path: getDerivComLink('/dbot'),
+                            path: getStaticUrl('/dbot', { is_deriv_crypto }),
                         },
                         {
                             icon: 'IcBrandSmarttrader',
@@ -121,7 +121,7 @@ const FinancialBox = ({ derivOnClick, mt5OnClick, has_maltainvest_account, add_a
                         {
                             icon: 'IcBrandDMT5',
                             name: 'MetaTrader 5',
-                            path: getDerivComLink('/dmt5'),
+                            path: getStaticUrl('/dmt5', { is_deriv_crypto }),
                         },
                     ]}
                 >
@@ -140,7 +140,7 @@ const FinancialBox = ({ derivOnClick, mt5OnClick, has_maltainvest_account, add_a
     );
 };
 
-const SyntheticBox = ({ derivOnClick, add_account_label }) => {
+const SyntheticBox = ({ derivOnClick, add_account_label, is_deriv_crypto }) => {
     return (
         <Box
             title={localize('Synthetic')}
@@ -177,12 +177,12 @@ const SyntheticBox = ({ derivOnClick, add_account_label }) => {
                         {
                             icon: 'IcBrandDtrader',
                             name: 'DTrader',
-                            path: getDerivComLink('dtrader'),
+                            path: getStaticUrl('dtrader', { is_deriv_crypto }),
                         },
                         {
                             icon: 'IcBrandDbot',
                             name: 'DBot',
-                            path: getDerivComLink('dbot'),
+                            path: getStaticUrl('dbot', { is_deriv_crypto }),
                         },
                         {
                             icon: 'IcBrandSmarttrader',
@@ -205,6 +205,7 @@ const SyntheticBox = ({ derivOnClick, add_account_label }) => {
 };
 
 class AccountTypesModal extends React.Component {
+    static contextType = PlatformContext;
     closeModal = () => {
         this.props.toggleAccountTypesModal(false);
     };
@@ -265,6 +266,7 @@ class AccountTypesModal extends React.Component {
                                             ? localize('Trade with this account')
                                             : localize('Add this real account')
                                     }
+                                    is_deriv_crypto={this.context.is_deriv_crypto}
                                 />
                                 <FinancialBox
                                     derivOnClick={() => {
@@ -286,6 +288,7 @@ class AccountTypesModal extends React.Component {
                                         localize('Add this real account'),
                                         localize('Deriv Financial required'),
                                     ]}
+                                    is_deriv_crypto={this.context.is_deriv_crypto}
                                 />
                             </div>
                         </div>

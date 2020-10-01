@@ -194,7 +194,9 @@ Blockly.BlockSvg.prototype.highlightExecutedBlock = function() {
     if (!Blockly.utils.hasClass(this.svgGroup_, highlight_block_class)) {
         Blockly.utils.addClass(this.svgGroup_, highlight_block_class);
         setTimeout(() => {
-            Blockly.utils.removeClass(this.svgGroup_, highlight_block_class);
+            if (this.svgGroup_) {
+                Blockly.utils.removeClass(this.svgGroup_, highlight_block_class);
+            }
         }, 1505);
     }
 };

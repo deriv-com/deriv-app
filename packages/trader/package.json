@@ -14,7 +14,6 @@
     "test": "npm run test:stylelint && npm run test:eslint",
     "test:eslint": "eslint \"./src/**/*.?(js|jsx)\"",
     "test:stylelint": "stylelint \"./src/sass/**/*.s?(a|c)ss\"",
-    "test:mocha": "mochapack -r babel-polyfill -r jsdom-global/register -r mock-local-storage --webpack-config \"./build/webpack.config-test.js\" \"src/**/__tests__/*.js\" --webpack-env.mocha_only --require ignore-styles",
     "deploy": "echo \"No deploy specified\"",
     "deploy:clean": "echo \"No deploy:clean specified\"",
     "deploy:folder": "echo \"No deploy:folder specified\"",
@@ -71,13 +70,8 @@
     "html-webpack-plugin": "^3.2.0",
     "html-webpack-tags-plugin": "^2.0.13",
     "ignore-styles": "^5.0.1",
-    "jsdom": "^9.12.0",
-    "jsdom-global": "^2.1.1",
     "lint-staged": "^10.0.6",
     "mini-css-extract-plugin": "^0.7.0",
-    "mocha": "^6.1.4",
-    "mochapack": "^1.1.1",
-    "mock-local-storage": "^1.1.8",
     "node-sass": "^4.12.0",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "postcss-loader": "^3.0.0",
@@ -140,9 +134,5 @@
     "react-window": "^1.8.4",
     "web-push-notifications": "^3.2.15",
     "workbox-webpack-plugin": "^4.3.1"
-  },
-  "peerDependencies": {
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1"
   }
 }

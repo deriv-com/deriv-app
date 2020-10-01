@@ -55,6 +55,7 @@
     "formik": "^2.1.4",
     "gh-pages": "^2.0.1",
     "immutable": "^3.8.2",
+    "react": "^16.13.1",
     "redux": "^4.0.1",
     "redux-thunk": "^2.2.0",
     "scratch-blocks": "0.1.0-prerelease.1578322100",

@@ -28,7 +28,16 @@ module.exports = function(env, argv) {
         },
         resolve: {
             symlinks: true,
-            alias: ALIASES,
+            alias: {
+                ...ALIASES,
+                react: path.resolve(__dirname, '../../../node_modules/react'),
+                'react-dom': path.resolve(__dirname, '../../../node_modules/react-dom'),
+                'react-router-dom': path.resolve(__dirname, '../../../node_modules/react-router-dom'),
+                'react-router': path.resolve(__dirname, '../../../node_modules/react-router'),
+                mobx: path.resolve(__dirname, '../../../node_modules/mobx'),
+                '@deriv/deriv-charts': path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts'),
+                'mobx-react': path.resolve(__dirname, '../../../node_modules/mobx-react'),
+            },
             extensions: ['.js', '.jsx'],
         },
         optimization: {

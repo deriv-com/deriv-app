@@ -83,6 +83,7 @@ module.exports = {
             'prop-types': 'prop-types',
             'react-transition-group': 'react-transition-group',
             react: 'react',
+            'react-content-loader': 'react-content-loader',
             'react-dom': 'react-dom',
             '@deriv/shared': '@deriv/shared',
             'react-router-dom': 'react-router-dom',

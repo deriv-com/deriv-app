@@ -3,7 +3,9 @@ import { localize } from '@deriv/translations';
 Blockly.Blocks.trade_definition_restartonerror = {
     init() {
         this.jsonInit({
-            message0: localize('Restart last trade on error (bot ignores the unsuccessful trade): %1'),
+            message0: localize('Restart last trade on error (bot ignores the unsuccessful trade): {{ checkbox }}', {
+                checkbox: '%1',
+            }),
             args0: [
                 {
                     type: 'field_image_checkbox',

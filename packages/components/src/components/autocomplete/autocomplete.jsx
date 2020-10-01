@@ -223,20 +223,17 @@ class Autocomplete extends React.PureComponent {
 
         return (
             <div className={classNames('dc-autocomplete', className)}>
-                <div
-                    ref={this.setInputWrapperRef}
-                    className='dc-autocomplete__input-field'
-                    onClick={() => {
-                        if (this.state.should_show_list) this.hideDropdownList();
-                        else this.showDropdownList();
-                    }}
-                >
+                <div ref={this.setInputWrapperRef} className='dc-autocomplete__input-field'>
                     <Input
                         {...otherProps}
                         className='dc-autocomplete__field'
                         autoComplete={autoComplete}
                         onKeyDown={this.onKeyPressed}
                         onInput={this.filterList}
+                        onClick={() => {
+                            if (this.state.should_show_list) this.hideDropdownList();
+                            else this.showDropdownList();
+                        }}
                         // Field's onBlur still needs to run to perform form functions such as validation
                         onBlur={this.onBlur}
                         value={

@@ -2,7 +2,8 @@ import { observable, action, reaction, computed, runInAction } from 'mobx';
 import { localize } from '@deriv/translations';
 import { error_types, unrecoverable_errors, observer, message_types } from '@deriv/bot-skeleton';
 import { contract_stages } from '../constants/contract-stage';
-import { switch_account_notification } from '../utils/bot-notifications';
+import { journalError, switch_account_notification } from '../utils/bot-notifications';
+import { run_panel } from '../constants/run-panel';
 
 export default class RunPanelStore {
     constructor(root_store) {
@@ -53,7 +54,7 @@ export default class RunPanelStore {
 
     @action.bound
     async onRunButtonClick() {
-        const { core, contract_card, route_prompt_dialog, self_exclusion } = this.root_store;
+        const { core, summary_card, route_prompt_dialog, self_exclusion } = this.root_store;
         const { client, ui } = core;
 
         this.dbot.unHighlightAllBlocks();
@@ -86,7 +87,7 @@ export default class RunPanelStore {
             this.toggleDrawer(true);
             this.run_id = `run-${Date.now()}`;
 
-            contract_card.clear();
+            summary_card.clear();
             this.setContractStage(contract_stages.STARTING);
             this.dbot.runBot();
         });
@@ -126,13 +127,13 @@ export default class RunPanelStore {
 
     @action.bound
     clearStat() {
-        const { contract_card, journal, transactions } = this.root_store;
+        const { summary_card, journal, transactions } = this.root_store;
 
         this.is_running = false;
         this.has_open_contract = false;
         this.clear();
         journal.clear();
-        contract_card.clear();
+        summary_card.clear();
         transactions.clear();
         this.setContractStage(contract_stages.NOT_RUNNING);
     }
@@ -212,7 +213,7 @@ export default class RunPanelStore {
 
     // #region Bot listenets
     registerBotListeners() {
-        const { contract_card, transactions } = this.root_store;
+        const { summary_card, transactions } = this.root_store;
 
         observer.register('bot.running', this.onBotRunningEvent);
         observer.register('bot.stop', this.onBotStopEvent);
@@ -220,7 +221,7 @@ export default class RunPanelStore {
         observer.register('bot.trade_again', this.onBotTradeAgain);
         observer.register('contract.status', this.onContractStatusEvent);
         observer.register('bot.contract', this.onBotContractEvent);
-        observer.register('bot.contract', contract_card.onBotContractEvent);
+        observer.register('bot.contract', summary_card.onBotContractEvent);
         observer.register('bot.contract', transactions.onBotContractEvent);
         observer.register('Error', this.onError);
     }
@@ -379,7 +380,7 @@ export default class RunPanelStore {
     @action.bound
     onError(data) {
         if (unrecoverable_errors.includes(data.name)) {
-            this.root_store.contract_card.clear();
+            this.root_store.summary_card.clear();
             this.error_type = error_types.UNRECOVERABLE_ERRORS;
         } else {
             this.error_type = error_types.RECOVERABLE_ERRORS;
@@ -391,11 +392,25 @@ export default class RunPanelStore {
 
     @action.bound
     showErrorMessage(data) {
-        const { journal } = this.root_store;
+        const { journal, ui } = this.root_store;
         journal.onError(data);
         if (journal.journal_filters.some(filter => filter === message_types.ERROR)) {
-            this.setActiveTabIndex(2);
+            this.toggleDrawer(true);
+            this.setActiveTabIndex(run_panel.JOURNAL);
+        } else {
+            ui.addNotificationMessage(journalError(this.switchToJournal));
+            ui.removeNotificationMessage({ key: 'bot_error' });
         }
+    }
+
+    @action.bound
+    switchToJournal() {
+        const { journal, ui } = this.root_store;
+        journal.journal_filters.push(message_types.ERROR);
+        this.setActiveTabIndex(run_panel.JOURNAL);
+        this.toggleDrawer(true);
+        ui.toggleNotificationsModal();
+        ui.removeNotificationByKey({ key: 'bot_error' });
     }
 
     static unregisterBotListeners() {

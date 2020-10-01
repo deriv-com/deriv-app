@@ -10,7 +10,7 @@ const LoginButton = ({ className }) => (
         className={className}
         has_effect
         text={localize('Log in')}
-        onClick={redirectToLogin}
+        onClick={() => redirectToLogin(false)}
         tertiary
     />
 );

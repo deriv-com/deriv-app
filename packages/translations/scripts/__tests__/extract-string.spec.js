@@ -22,12 +22,10 @@ describe('Regular expression checks', () => {
             <Localize
                 i18n_default_text='Please accept our updated <0>terms and conditions</0> to continue.'
                 components={[
-                    <a
+                    <StaticUrl
                         key={0}
                         className='link'
-                        target='_blank'
-                        rel='noopener noreferrer'
-                        href={getDerivComLink('terms-and-conditions/#general')}
+                        href='terms-and-conditions/#general'
                     />,
                 ]}
             />
@@ -38,8 +36,6 @@ describe('Regular expression checks', () => {
                     <a
                         key={0}
                         href='https://www.bestchange.com/?p=1095016'
-                        rel='noopener noreferrer'
-                        target='_blank'
                         className='link'
                     />,
                 ]}
@@ -78,10 +74,7 @@ describe('Regular expression checks', () => {
             localize('It\\'s time to win.');
             const Component = <Localize i18n_default_text='It\\'s time to {{ status }}, isn\\'t it?' values={{ status: 'win' }} />;
         `);
-        expect(messages).to.deep.equal([
-            "It's time to win.",
-            "It's time to {{ status }}, isn't it?",
-        ]);
+        expect(messages).to.deep.equal(["It's time to win.", "It's time to {{ status }}, isn't it?"]);
     });
 });
 
@@ -117,7 +110,6 @@ describe('Integration checks', () => {
             }
         }
 
-        const error_message = `Invalid string format passed to localize/<Localize>:\n\n\t${errors.join('\n\t')}\n\n\t`;
-        expect(errors, error_message).to.be.empty;
+        expect(errors).to.be.empty;
     });
 });

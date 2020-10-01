@@ -5,20 +5,22 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    width: 350px;
 
     &__wrapper {
         display: flex;
         flex-direction: row;
         transition: transform 0.3s linear;
-        padding: 2.4rem;
-        width: 100%;
+        padding: 2.4rem 0;
+        width: fit-content;
         height: 100%;
     }
     &__card {
         min-height: calc(100vh - 210px);
         max-height: calc(100vh - 268px);
-        width: 272px;
-        margin-right: 2.4rem;
+        background: wheat;
+        width: 350px;
+        // margin-right: 2.4rem;
         display: flex;
         flex-direction: column;
         padding-bottom: 0.8rem;

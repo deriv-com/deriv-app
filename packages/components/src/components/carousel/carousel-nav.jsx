@@ -9,9 +9,9 @@ const Nav = ({ active_index, handleNavigationClick, list }) => {
         const is_reached_end = next_idx === list.length;
 
         if (!is_reached_end) {
-            handleNavigationClick(list[next_idx]);
+            handleNavigationClick(next_idx);
         } else {
-            handleNavigationClick(list[0]);
+            handleNavigationClick(0);
         }
     };
 
@@ -19,9 +19,9 @@ const Nav = ({ active_index, handleNavigationClick, list }) => {
         const prev_idx = active_index - 1;
 
         if (prev_idx > -1) {
-            handleNavigationClick(list[prev_idx]);
+            handleNavigationClick(prev_idx);
         } else {
-            handleNavigationClick(list[list.length - 1]);
+            handleNavigationClick(list.length - 1);
         }
     };
 
@@ -35,8 +35,8 @@ const Nav = ({ active_index, handleNavigationClick, list }) => {
                     className={classNames('carousel__nav-item', 'carousel__nav-item--active')}
                     style={{ transform: `translate3d(${24 * active_index}px, 0, 0)` }}
                 />
-                {list.map((contract, idx) => (
-                    <li key={idx} className='carousel__nav-item' onClick={() => handleNavigationClick(contract)} />
+                {list.map((_, idx) => (
+                    <li key={idx} className='carousel__nav-item' onClick={() => handleNavigationClick(idx)} />
                 ))}
             </ul>
             <span id='dt_contract_info_right_nav' className='carousel__icon' onClick={handleNextClick}>

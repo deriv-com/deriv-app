@@ -282,10 +282,18 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
             return (
                 <React.Fragment>
                     <div>
-                        {take_profit ? <Money has_sign amount={take_profit.order_amount} currency={currency} /> : '-'}
+                        {take_profit?.order_amount ? (
+                            <Money has_sign amount={take_profit.order_amount} currency={currency} />
+                        ) : (
+                            '-'
+                        )}
                     </div>
                     <div>
-                        {stop_loss ? <Money has_sign amount={stop_loss.order_amount} currency={currency} /> : '-'}
+                        {stop_loss?.order_amount ? (
+                            <Money has_sign amount={stop_loss.order_amount} currency={currency} />
+                        ) : (
+                            '-'
+                        )}
                     </div>
                 </React.Fragment>
             );

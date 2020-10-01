@@ -16,4 +16,6 @@ Localize.propTypes = {
     values: PropTypes.object,
 };
 
+Localize.displayName = 'Localize';
+
 export default withI18n;

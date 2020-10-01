@@ -27,6 +27,7 @@ module.exports = function(env, argv) {
             rules: rules(),
         },
         resolve: {
+            symlinks: true,
             alias: ALIASES,
             extensions: ['.js', '.jsx'],
         },

@@ -4,6 +4,13 @@ import { routes } from '../routes';
  * These functions exist because we want to refresh the browser page on switch between Bot and the rest of the platforms.
  * */
 
+export const platform_name = Object.freeze({
+    DBot: 'DBot',
+    DTrader: 'DTrader',
+    DMT5: 'DMT5',
+    SmartTrader: 'SmartTrader',
+});
+
 export const isBot = () =>
     /^\/bot/.test(window.location.pathname) ||
     (/^\/(br_)/.test(window.location.pathname) && window.location.pathname.split('/')[2] === 'bot');
@@ -12,11 +19,26 @@ export const isMT5 = () =>
     /^\/mt5/.test(window.location.pathname) ||
     (/^\/(br_)/.test(window.location.pathname) && window.location.pathname.split('/')[2] === 'mt5');
 
+export const getPathname = () => {
+    if (isBot()) return platform_name.DBot;
+    if (isMT5()) return platform_name.DMT5;
+    switch (window.location.pathname.split('/')[1]) {
+        case '':
+            return platform_name.DTrader;
+        case 'reports':
+            return 'Reports';
+        case 'cashier':
+            return 'Cashier';
+        default:
+            return platform_name.SmartTrader;
+    }
+};
+
 export const getPlatformHeader = routing_history => {
-    if (isBot() || isNavigationFromPlatform(routing_history, routes.bot)) return 'DBot';
-    if (isMT5() || isNavigationFromPlatform(routing_history, routes.mt5)) return 'DMT5';
-    if (isNavigationFromPlatform(routing_history, routes.smarttrader)) return 'SmartTrader';
-    return 'DTrader';
+    if (isBot() || isNavigationFromPlatform(routing_history, routes.bot)) return platform_name.DBot;
+    if (isMT5() || isNavigationFromPlatform(routing_history, routes.mt5)) return platform_name.DMT5;
+    if (isNavigationFromPlatform(routing_history, routes.smarttrader)) return platform_name.SmartTrader;
+    return platform_name.DTrader;
 };
 
 export const getPlatformIcon = routing_history => {
@@ -27,12 +49,15 @@ export const getPlatformIcon = routing_history => {
 };
 
 export const getPlatformRedirect = routing_history => {
-    if (isBot() || isNavigationFromPlatform(routing_history, routes.bot)) return { name: 'DBot', route: routes.bot };
-    if (isMT5() || isNavigationFromPlatform(routing_history, routes.mt5)) return { name: 'DMT5', route: routes.mt5 };
-    if (isNavegationFromP2P(routing_history, routes.cashier_p2p)) return { name: 'P2P', route: routes.cashier_p2p };
+    if (isBot() || isNavigationFromPlatform(routing_history, routes.bot))
+        return { name: platform_name.DBot, route: routes.bot };
+    if (isMT5() || isNavigationFromPlatform(routing_history, routes.mt5))
+        return { name: platform_name.DMT5, route: routes.mt5 };
     if (isNavigationFromPlatform(routing_history, routes.smarttrader))
-        return { name: 'SmartTrader', route: routes.smarttrader };
-    return { name: 'DTrader', route: routes.trade };
+        return { name: platform_name.SmartTrader, route: routes.smarttrader };
+    if (isNavigationFromPlatform(routing_history, routes.cashier_p2p, true))
+        return { name: 'P2P', route: routes.cashier_p2p };
+    return { name: platform_name.DTrader, route: routes.trade };
 };
 
 export const isNavigationFromPlatform = (app_routing_history, platform_route, should_ignore_parent_path = false) => {

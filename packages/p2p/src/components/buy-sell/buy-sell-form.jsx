@@ -2,13 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
 import { Input } from '@deriv/components';
-import { formatMoney, getDecimalPlaces, getRoundedNumber, getFormattedText } from '@deriv/shared';
+import { formatMoney, getDecimalPlaces, getRoundedNumber, getFormattedText, useIsMounted } from '@deriv/shared';
 import { localize, Localize } from 'Components/i18next';
 import { countDecimalPlaces } from 'Utils/string';
 import { requestWS } from 'Utils/websocket';
 import { textValidator, lengthValidator } from 'Utils/validations';
+import { buy_sell } from '../../constants/buy-sell';
 
 const BuySellForm = ({ advert, handleClose, handleConfirm, setErrorMessage, setIsSubmitDisabled, setSubmitForm }) => {
+    const isMounted = useIsMounted();
+
     const {
         account_currency,
         counterparty_type,
@@ -20,22 +23,19 @@ const BuySellForm = ({ advert, handleClose, handleConfirm, setErrorMessage, setI
         min_order_amount_limit,
         min_order_amount_limit_display,
         price,
-        type,
     } = advert;
     const { name: advertiser_name } = advert.advertiser_details;
 
-    const is_mounted = React.useRef(false);
     const [contact_info, setContactInfo] = React.useState('');
     const [payment_info, setPaymentInfo] = React.useState('');
     const [receive_amount, setReceiveAmount] = React.useState(
         getRoundedNumber(min_order_amount_limit * price, local_currency)
     );
-    const is_buyer = type === 'buy';
 
     // A user creates a sell order on a buy advert. Leave
     // below line for extra context.
-    const is_buy_advert = counterparty_type === 'buy';
-    const is_sell_advert = counterparty_type === 'sell';
+    const is_buy_advert = counterparty_type === buy_sell.BUY;
+    const is_sell_advert = counterparty_type === buy_sell.SELL;
 
     const initial_values = {
         amount: min_order_amount_limit,
@@ -44,11 +44,9 @@ const BuySellForm = ({ advert, handleClose, handleConfirm, setErrorMessage, setI
     };
 
     React.useEffect(() => {
-        is_mounted.current = true;
-        if (!is_buyer) {
+        if (is_sell_advert) {
             getAdvertiserInfo();
         }
-        return () => (is_mounted.current = false);
     }, []);
 
     const getAdvertiserInfo = () => {
@@ -56,7 +54,7 @@ const BuySellForm = ({ advert, handleClose, handleConfirm, setErrorMessage, setI
             requestWS({
                 p2p_advertiser_info: 1,
             }).then(response => {
-                if (is_mounted.current) {
+                if (isMounted()) {
                     if (!response.error) {
                         const { p2p_advertiser_info } = response;
                         setContactInfo(p2p_advertiser_info.contact_info);
@@ -72,7 +70,7 @@ const BuySellForm = ({ advert, handleClose, handleConfirm, setErrorMessage, setI
     };
 
     const handleSubmit = async (values, { setSubmitting }) => {
-        if (is_mounted.current) {
+        if (isMounted()) {
             setSubmitting(true);
         }
 
@@ -99,7 +97,7 @@ const BuySellForm = ({ advert, handleClose, handleConfirm, setErrorMessage, setI
             handleClose();
         }
 
-        if (is_mounted.current) {
+        if (isMounted()) {
             setSubmitting(false);
         }
     };
@@ -282,6 +280,7 @@ const BuySellForm = ({ advert, handleClose, handleConfirm, setErrorMessage, setI
                                                     label={localize('Your bank details')}
                                                     required
                                                     has_character_counter
+                                                    initial_character_count={payment_info.length}
                                                     max_characters={300}
                                                 />
                                             )}
@@ -298,6 +297,7 @@ const BuySellForm = ({ advert, handleClose, handleConfirm, setErrorMessage, setI
                                                     label={localize('Your contact details')}
                                                     required
                                                     has_character_counter
+                                                    initial_character_count={contact_info.length}
                                                     max_characters={300}
                                                 />
                                             )}

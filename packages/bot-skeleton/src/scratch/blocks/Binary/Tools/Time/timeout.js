@@ -54,7 +54,7 @@ Blockly.Blocks.timeout = {
                 'after_purchase',
                 'tick_analysis',
             ];
-            if (allowedScopes.some(scope => this.isDescendantOf(scope))) {
+            if (allowedScopes.some((scope) => this.isDescendantOf(scope))) {
                 if (this.disabled) {
                     this.setDisabled(false);
                 }
@@ -70,7 +70,7 @@ Blockly.Blocks.timeout = {
     },
 };
 
-Blockly.JavaScript.timeout = block => {
+Blockly.JavaScript.timeout = (block) => {
     const stack = Blockly.JavaScript.statementToCode(block, 'TIMEOUTSTACK');
     const seconds = Blockly.JavaScript.valueToCode(block, 'SECONDS', Blockly.JavaScript.ORDER_ATOMIC) || '1';
 

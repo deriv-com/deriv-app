@@ -273,12 +273,12 @@ Blockly.Blocks.controls_if = {
     getRequiredValueInputs() {
         const required_inputs = {};
         this.inputList
-            .filter(input => /^IF[0-9]*?$/.test(input.name))
-            .forEach(input => (required_inputs[input.name] = null));
+            .filter((input) => /^IF[0-9]*?$/.test(input.name))
+            .forEach((input) => (required_inputs[input.name] = null));
 
         return required_inputs;
     },
-    getIfInputNames: idx => {
+    getIfInputNames: (idx) => {
         return {
             IF_LABEL: `IF_LABEL${idx}`,
             IF: `IF${idx}`,
@@ -289,7 +289,7 @@ Blockly.Blocks.controls_if = {
     },
 };
 
-Blockly.JavaScript.controls_if = block => {
+Blockly.JavaScript.controls_if = (block) => {
     // If/elseif/else condition.
     let n = 0;
     let code = '';

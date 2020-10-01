@@ -45,7 +45,7 @@ Blockly.Blocks.text_trim = {
     },
 };
 
-Blockly.JavaScript.text_trim = block => {
+Blockly.JavaScript.text_trim = (block) => {
     const operators = {
         LEFT: ".replace(/^[\\s\\xa0]+/, '')",
         RIGHT: ".replace(/[\\s\\xa0]+$/, '')",

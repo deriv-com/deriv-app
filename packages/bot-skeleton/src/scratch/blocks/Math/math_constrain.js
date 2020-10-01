@@ -52,7 +52,7 @@ Blockly.Blocks.math_constrain = {
     },
 };
 
-Blockly.JavaScript.math_constrain = block => {
+Blockly.JavaScript.math_constrain = (block) => {
     const argument0 = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_COMMA) || '0';
     const argument1 = Blockly.JavaScript.valueToCode(block, 'LOW', Blockly.JavaScript.ORDER_COMMA) || '0';
     const argument2 = Blockly.JavaScript.valueToCode(block, 'HIGH', Blockly.JavaScript.ORDER_COMMA) || '0';

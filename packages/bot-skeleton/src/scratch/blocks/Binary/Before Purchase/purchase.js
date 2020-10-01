@@ -92,7 +92,7 @@ Blockly.Blocks.purchase = {
     restricted_parents: ['before_purchase'],
 };
 
-Blockly.JavaScript.purchase = block => {
+Blockly.JavaScript.purchase = (block) => {
     const purchaseList = block.getFieldValue('PURCHASE_LIST');
 
     const code = `Bot.purchase('${purchaseList}');\n`;

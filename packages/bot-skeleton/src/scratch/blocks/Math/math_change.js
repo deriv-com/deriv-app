@@ -60,7 +60,7 @@ Blockly.Blocks.math_change = {
     },
 };
 
-Blockly.JavaScript.math_change = block => {
+Blockly.JavaScript.math_change = (block) => {
     const variable = block.getFieldValue('VAR');
     // eslint-disable-next-line no-underscore-dangle
     const argument0 = Blockly.JavaScript.variableDB_.getName(variable, Blockly.Variables.NAME_TYPE);

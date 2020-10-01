@@ -56,7 +56,7 @@ Blockly.Blocks.math_on_list = {
 };
 
 /* eslint-disable no-underscore-dangle */
-Blockly.JavaScript.math_on_list = block => {
+Blockly.JavaScript.math_on_list = (block) => {
     const operation = block.getFieldValue('OP');
 
     let code, list;

@@ -47,7 +47,7 @@ Blockly.Blocks.ohlc_values = {
     },
 };
 
-Blockly.JavaScript.ohlc_values = block => {
+Blockly.JavaScript.ohlc_values = (block) => {
     const selectedGranularity = block.getFieldValue('CANDLEINTERVAL_LIST');
     const granularity = selectedGranularity === 'default' ? 'undefined' : selectedGranularity;
     const ohlcField = block.getFieldValue('OHLCFIELD_LIST');

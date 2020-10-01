@@ -41,9 +41,9 @@ Blockly.Blocks.loader = {
 
         if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
             this.current_url = this.getFieldValue('URL');
-            const loader_blocks = this.workspace.getAllBlocks().filter(block => block.type === 'loader');
+            const loader_blocks = this.workspace.getAllBlocks().filter((block) => block.type === 'loader');
 
-            loader_blocks.forEach(loader_block => {
+            loader_blocks.forEach((loader_block) => {
                 if (loader_block.id !== this.id && loader_block.current_url === this.current_url) {
                     this.setDisabled(true);
                 }
@@ -70,21 +70,21 @@ Blockly.Blocks.loader = {
 
         runIrreversibleEvents(() => {
             // Remove blocks previously loaded by this block.
-            this.blocks_added_by_me.forEach(block => block.dispose());
+            this.blocks_added_by_me.forEach((block) => block.dispose());
         });
 
         loadBlocksFromRemote(this)
             .then(() => {
                 globalObserver.emit('ui.log.success', { log_type: log_types.LOAD_BLOCK });
             })
-            .catch(error_msg => {
+            .catch((error_msg) => {
                 globalObserver.emit('ui.log.error', error_msg);
                 this.setDisabled(true);
             });
     },
     isKnownUrl(url) {
-        const loader_blocks = this.workspace.getAllBlocks().filter(block => block.type === 'loader');
-        return loader_blocks.some(block => block.id !== this.id && block.current_url === url);
+        const loader_blocks = this.workspace.getAllBlocks().filter((block) => block.type === 'loader');
+        return loader_blocks.some((block) => block.id !== this.id && block.current_url === url);
     },
     isValidUrl(url) {
         const url_pattern = /[^/]*\.[a-zA-Z]{3}$/;

@@ -57,7 +57,7 @@ Blockly.Blocks.notify = {
     },
 };
 
-Blockly.JavaScript.notify = block => {
+Blockly.JavaScript.notify = (block) => {
     const notificationType = block.getFieldValue('NOTIFICATION_TYPE');
     const sound = block.getFieldValue('NOTIFICATION_SOUND');
     const message_block = block.getInputTargetBlock('MESSAGE');

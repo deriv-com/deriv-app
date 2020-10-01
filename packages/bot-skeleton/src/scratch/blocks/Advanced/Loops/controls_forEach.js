@@ -53,7 +53,7 @@ Blockly.Blocks.controls_forEach = {
     },
 };
 
-Blockly.JavaScript.controls_forEach = block => {
+Blockly.JavaScript.controls_forEach = (block) => {
     // eslint-disable-next-line no-underscore-dangle
     const variable0 = Blockly.JavaScript.variableDB_.getName(block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
     const argument0 = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_ASSIGNMENT) || '[]';

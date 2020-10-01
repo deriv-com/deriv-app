@@ -4,7 +4,7 @@ Blockly.Blocks.math_number_property = {
     init() {
         this.jsonInit(this.definition());
 
-        this.setOnChange(event => {
+        this.setOnChange((event) => {
             if (event.name === 'PROPERTY') {
                 const hasDivisorInput = this.getFieldValue('PROPERTY') === 'DIVISIBLE_BY';
                 this.updateShape(hasDivisorInput);
@@ -83,7 +83,7 @@ Blockly.Blocks.math_number_property = {
     },
 };
 
-Blockly.JavaScript.math_number_property = block => {
+Blockly.JavaScript.math_number_property = (block) => {
     const argument0 = Blockly.JavaScript.valueToCode(block, 'NUMBER_TO_CHECK', Blockly.JavaScript.ORDER_MODULUS) || '0';
     const property = block.getFieldValue('PROPERTY');
 

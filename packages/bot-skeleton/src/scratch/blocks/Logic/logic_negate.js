@@ -35,7 +35,7 @@ Blockly.Blocks.logic_negate = {
     },
 };
 
-Blockly.JavaScript.logic_negate = block => {
+Blockly.JavaScript.logic_negate = (block) => {
     const order = Blockly.JavaScript.ORDER_LOGICAL_NOT;
     const argument0 = Blockly.JavaScript.valueToCode(block, 'BOOL', order) || 'true';
 

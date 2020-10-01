@@ -93,7 +93,7 @@ Blockly.Blocks.text_getSubstring = {
         // Keep track of initial FieldLabel, we'll restore this when
         // input types were changed.
         if (input) {
-            input.fieldRow.some(field => {
+            input.fieldRow.some((field) => {
                 if (field instanceof Blockly.FieldLabel) {
                     old_label_text = field.text_; // eslint-disable-line no-underscore-dangle
                 }
@@ -107,7 +107,7 @@ Blockly.Blocks.text_getSubstring = {
             new_input.insertFieldAt(0, new Blockly.FieldLabel(old_label_text));
         }
 
-        const menu = new Blockly.FieldDropdown(this[`WHERE_OPTIONS_${n}`], value => {
+        const menu = new Blockly.FieldDropdown(this[`WHERE_OPTIONS_${n}`], (value) => {
             const new_at = ['FROM_START', 'FROM_END'].includes(value);
 
             if (new_at !== is_at) {
@@ -130,7 +130,7 @@ Blockly.Blocks.text_getSubstring = {
         this.render(false);
     },
     getRequiredValueInputs() {
-        const hasInput = input_name => this.getInput(input_name)?.type === Blockly.INPUT_VALUE;
+        const hasInput = (input_name) => this.getInput(input_name)?.type === Blockly.INPUT_VALUE;
         return {
             STRING: emptyTextValidator,
             ...(hasInput('AT1') ? { AT1: emptyTextValidator } : {}),
@@ -139,7 +139,7 @@ Blockly.Blocks.text_getSubstring = {
     },
 };
 
-Blockly.JavaScript.text_getSubstring = block => {
+Blockly.JavaScript.text_getSubstring = (block) => {
     const text = Blockly.JavaScript.valueToCode(block, 'STRING', Blockly.JavaScript.ORDER_FUNCTION_CALL) || "''";
     const where1 = block.getFieldValue('WHERE1');
     const where2 = block.getFieldValue('WHERE2');

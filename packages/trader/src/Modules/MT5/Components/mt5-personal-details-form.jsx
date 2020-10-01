@@ -68,9 +68,8 @@ const validatePersonalDetails = ({ values, residence_list, account_opening_reaso
             v => ((!values.tax_residence && is_tin_required) || tin_format ? !!v : true),
             v => (tin_regex ? v.match(tin_regex) : true),
         ],
-        account_opening_reason: [v => !!v, v => account_opening_reason.map(i => i.text).includes(v)],
+        account_opening_reason: [v => !!v, v => account_opening_reason.map(i => i.value).includes(v)],
     };
-
     const mappedKey = {
         citizen: localize('Citizenship'),
         tax_residence: localize('Tax residence'),
@@ -310,7 +309,6 @@ const MT5PersonalDetailsForm = ({
                                                                 errors.account_opening_reason
                                                             }
                                                             {...field}
-                                                            required
                                                         />
                                                     </DesktopWrapper>
                                                     <MobileWrapper>
@@ -319,7 +317,6 @@ const MT5PersonalDetailsForm = ({
                                                             label={localize('Account opening reason')}
                                                             list_items={account_opening_reason}
                                                             value={values.account_opening_reason}
-                                                            use_text={true}
                                                             error={
                                                                 touched.account_opening_reason &&
                                                                 errors.account_opening_reason
@@ -333,7 +330,6 @@ const MT5PersonalDetailsForm = ({
                                                                 );
                                                             }}
                                                             {...field}
-                                                            required
                                                         />
                                                     </MobileWrapper>
                                                 </React.Fragment>

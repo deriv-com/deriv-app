@@ -63,7 +63,9 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
                                 window.LiveChatWidget.call('maximize');
                             }}
                         >
-                            <Icon icon='IcLiveChat' className='livechat__icon' />
+                            <div className='livechat__icon-wrapper'>
+                                <Icon icon='IcLiveChat' className='livechat__icon' />
+                            </div>
                             <p className='livechat__title'>{localize('Live chat')}</p>
                         </div>
                     ) : (

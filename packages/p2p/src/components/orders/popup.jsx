@@ -14,7 +14,7 @@ const FormWithConfirmation = ({
     message,
     onCancel,
     onClickConfirm,
-    order,
+    order_information,
     setShouldShowPopup,
     should_show_popup,
     title,
@@ -49,8 +49,8 @@ const FormWithConfirmation = ({
                                                 }
                                                 defaultChecked={values.need_confirmation}
                                                 label={localize('I have received {{amount}} {{currency}}.', {
-                                                    amount: order.display_transaction_amount,
-                                                    currency: order.transaction_currency,
+                                                    amount: order_information.price_display,
+                                                    currency: order_information.local_currency,
                                                 })}
                                                 classNameLabel='orders__popup-field_text'
                                             />
@@ -75,8 +75,8 @@ const FormWithConfirmation = ({
                                     is_disabled={isSubmitting || !values.need_confirmation}
                                 >
                                     {localize('Release {{amount}} {{currency}}', {
-                                        amount: order.display_offer_amount,
-                                        currency: order.offer_currency,
+                                        amount: order_information.amount_display,
+                                        currency: order_information.account_currency,
                                     })}
                                 </Button>
                             </Button.Group>
@@ -96,7 +96,7 @@ const FormWithoutConfirmation = ({
     message,
     onCancel,
     onClickConfirm,
-    order,
+    order_information,
     setShouldShowPopup,
     should_confirm_payment,
     should_show_popup,
@@ -126,8 +126,8 @@ const FormWithoutConfirmation = ({
                                 onChange={() => setShouldDisableConfirm(!should_disable_confirm)}
                                 defaultChecked={!should_disable_confirm}
                                 label={localize('I have paid {{amount}} {{currency}}.', {
-                                    amount: order.display_transaction_amount,
-                                    currency: order.transaction_currency,
+                                    amount: order_information.price_display,
+                                    currency: order_information.local_currency,
                                 })}
                             />
                         </div>

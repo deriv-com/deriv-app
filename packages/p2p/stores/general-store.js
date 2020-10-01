@@ -1,7 +1,8 @@
-import { observable, action } from 'mobx';
-import OrderInfo, { orderToggleIndex } from '../src/components/orders/order-info.js';
-import { getPropertyValue, isEmptyObject, isProduction } from '@deriv/shared';
-import { init as WebsocketInit, getModifiedP2POrderList, requestWS, subscribeWS } from '../src/utils/websocket.js';
+import { observable, action, runInAction } from 'mobx';
+import { isEmptyObject, epochToMoment, getSocketURL } from '@deriv/shared';
+import { orderToggleIndex } from 'Components/orders/order-info.js';
+import { getExtendedOrderDetails } from 'Utils/orders.js';
+import { init as WebsocketInit, requestWS, subscribeWS } from 'Utils/websocket.js';
 
 export default class GeneralStore {
     @observable active_index = 0;
@@ -31,10 +32,11 @@ export default class GeneralStore {
         buy_sell: 0,
         orders: 1,
         my_ads: 2,
-        // my_profile: 3,
+        my_profile: 3,
     };
     props = {};
     ws_subscriptions = {};
+    service_token_timeout;
 
     get client() {
         return this.props?.client || {};
@@ -57,7 +59,7 @@ export default class GeneralStore {
                         this.setIsAdvertiser(!!p2p_advertiser_create.is_approved);
                         this.setNickname(p2p_advertiser_create.name);
                         this.setNicknameError(undefined);
-                        this.setChatInfo(p2p_advertiser_create.chat_user_id, p2p_advertiser_create.chat_token);
+                        this.setChatInfo(response);
                         this.toggleNicknamePopup();
                     }
                     resolve();
@@ -82,14 +84,14 @@ export default class GeneralStore {
     handleNotifications(old_orders, new_orders) {
         const { is_cached, notifications } = this.getLocalStorageSettingsForLoginId();
         new_orders.forEach(new_order => {
-            const order_info = new OrderInfo(new_order);
+            const order_info = getExtendedOrderDetails(new_order, this.client.loginid);
             const notification = notifications.find(n => n.order_id === new_order.id);
             const old_order = old_orders.find(o => o.id === new_order.id);
             const is_current_order = new_order.id === this.props?.order_id;
             const notification_obj = {
                 order_id: new_order.id,
                 is_seen: is_current_order,
-                is_active: order_info.is_active,
+                is_active: order_info.is_active_order,
             };
 
             if (old_order) {
@@ -97,7 +99,7 @@ export default class GeneralStore {
                     if (notification) {
                         // If order status changed, notify the user.
                         notification.is_seen = is_current_order;
-                        notification.is_active = order_info.is_active;
+                        notification.is_active = order_info.is_active_order;
                     } else {
                         // If we have an old_order, but for some reason don't have a copy in local storage.
                         notifications.push(notification_obj);
@@ -139,7 +141,7 @@ export default class GeneralStore {
                     p2p_advertiser_info: 1,
                     subscribe: 1,
                 },
-                [this.updateAdvertiserInfo, this.setChatInfoUsingAdvertiserInfo]
+                [this.updateAdvertiserInfo, this.setChatInfo]
             ),
             order_list_subscription: subscribeWS(
                 {
@@ -151,6 +153,12 @@ export default class GeneralStore {
                 [this.setP2pOrderList]
             ),
         };
+    }
+
+    @action.bound
+    onUnmount() {
+        clearTimeout(this.service_token_timeout);
+        Object.keys(this.ws_subscriptions).forEach(key => this.ws_subscriptions[key].unsubscribe());
     }
 
     @action.bound
@@ -189,31 +197,49 @@ export default class GeneralStore {
     }
 
     @action.bound
-    setChatInfo(user_id, token) {
-        this.chat_info = {
-            app_id: isProduction() ? '1465991C-5D64-4C88-8BD9-B0D7A6455E69' : '4E259BA5-C383-4624-89A6-8365E06D9D39',
-            user_id: user_id,
-            token: token,
-        };
-
-        if (!this.chat_info.token) {
-            requestWS({ service_token: 1, service: 'sendbird' }).then(response => {
-                this.chat_info.token = response.service_token.sendbird.token;
-            });
-        }
-    }
-
-    @action.bound
-    setChatInfoUsingAdvertiserInfo(response) {
-        const { p2p_advertiser_info } = response;
+    setChatInfo(response) {
+        if (this.service_token_timeout) return;
         if (response.error) {
-            this.ws_subscriptions.advertiser_subscription.unsubscribe();
+            this.ws_subscriptions.advertiser_subscription?.unsubscribe();
             return;
         }
-        const user_id = getPropertyValue(p2p_advertiser_info, ['chat_user_id']);
-        const token = getPropertyValue(p2p_advertiser_info, ['chat_token']);
 
-        this.setChatInfo(user_id, token);
+        // Response could be both from p2p_advertiser_create or p2p_advertiser_info.
+        const advertiser_info = response.p2p_advertiser_create || response.p2p_advertiser_info;
+
+        const getSendbirdServiceToken = () => {
+            requestWS({ service: 'sendbird', service_token: 1 }).then(service_token_response => {
+                if (service_token_response.error) {
+                    return;
+                }
+
+                const { service_token } = service_token_response;
+
+                runInAction(() => {
+                    this.chat_info = {
+                        app_id: getSocketURL().endsWith('binaryws.com')
+                            ? '1465991C-5D64-4C88-8BD9-B0D7A6455E69'
+                            : '4E259BA5-C383-4624-89A6-8365E06D9D39',
+                        user_id: advertiser_info.chat_user_id,
+                        token: service_token.sendbird.token,
+                    };
+                });
+
+                // Refresh chat token ±1 hour before it expires (BE will refresh the token
+                // when we request within 2 hours of the token expiring)
+                const expiry_moment = epochToMoment(service_token.sendbird.expiry_time);
+                const delay_ms = expiry_moment.diff(
+                    this.props.server_time
+                        .get()
+                        .clone()
+                        .subtract(1, 'hour')
+                );
+
+                this.service_token_timeout = setTimeout(() => getSendbirdServiceToken(), delay_ms);
+            });
+        };
+
+        getSendbirdServiceToken();
     }
 
     @action.bound
@@ -272,24 +298,24 @@ export default class GeneralStore {
             this.ws_subscriptions.order_list_subscription.unsubscribe();
             return;
         }
-        const { p2p_order_list } = order_response;
+        const { p2p_order_list, p2p_order_info } = order_response;
 
         if (p2p_order_list) {
             const { list } = p2p_order_list;
             // it's an array of orders from p2p_order_list
             this.handleNotifications(this.orders, list);
             this.setOrderOffset(list.length);
-            this.setOrders(getModifiedP2POrderList(list));
-        } else {
+            this.setOrders(list);
+        } else if (p2p_order_info) {
             // it's a single order from p2p_order_info
-            const idx_order_to_update = this.orders.findIndex(order => order.id === order_response.id);
+            const idx_order_to_update = this.orders.findIndex(order => order.id === p2p_order_info.id);
             const updated_orders = [...this.orders];
             // if it's a new order, add it to the top of the list
             if (idx_order_to_update < 0) {
-                updated_orders.unshift(order_response);
+                updated_orders.unshift(p2p_order_info);
             } else {
                 // otherwise, update the correct order
-                updated_orders[idx_order_to_update] = order_response;
+                updated_orders[idx_order_to_update] = p2p_order_info;
             }
             // trigger re-rendering by setting orders again
             this.handleNotifications(this.orders, updated_orders);

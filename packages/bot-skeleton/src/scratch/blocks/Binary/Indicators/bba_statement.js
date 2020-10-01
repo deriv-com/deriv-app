@@ -9,7 +9,11 @@ Blockly.Blocks.bba_statement = {
     },
     definition() {
         return {
-            message0: localize('set %1 to Bollinger Bands Array %2 %3'),
+            message0: localize('set {{ variable }} to Bollinger Bands Array {{ band_type }} {{ dummy }}', {
+                variable: '%1',
+                band_type: '%2',
+                dummy: '%3',
+            }),
             message1: '%1',
             args0: [
                 {

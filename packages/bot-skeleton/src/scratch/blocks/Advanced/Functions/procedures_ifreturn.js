@@ -12,7 +12,7 @@ Blockly.Blocks.procedures_ifreturn = {
     },
     definition() {
         return {
-            message0: localize('if %1 return %2'),
+            message0: localize('if {{ condition }} return {{ value }}', { condition: '%1', value: '%2' }),
             args0: [
                 {
                     type: 'input_value',

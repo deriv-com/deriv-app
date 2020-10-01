@@ -13,7 +13,10 @@ Blockly.Blocks.math_number_property = {
     },
     definition() {
         return {
-            message0: localize('%1 is %2'),
+            message0: localize('{{ number }} is {{ type }}', {
+                number: '%1',
+                type: '%2',
+            }),
             args0: [
                 {
                     type: 'input_value',

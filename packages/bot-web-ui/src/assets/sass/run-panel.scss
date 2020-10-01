@@ -301,6 +301,7 @@
         &-body {
             height: calc(100vh - 40.6rem);
             min-height: 10rem;
+            max-height: 45rem;
 
             &--mobile {
                 padding: 0.6rem 0 1.6rem !important;

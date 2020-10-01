@@ -162,16 +162,16 @@ TradeAnimation.propTypes = {
     should_show_overlay: PropTypes.bool,
 };
 
-export default connect(({ contract_card, run_panel, toolbar, ui }) => ({
+export default connect(({ summary_card, run_panel, toolbar, ui }) => ({
     contract_stage: run_panel.contract_stage,
     is_animation_info_modal_open: toolbar.is_animation_info_modal_open,
-    is_contract_completed: contract_card.is_contract_completed,
+    is_contract_completed: summary_card.is_contract_completed,
     is_mobile: ui.is_mobile,
     is_stop_button_visible: run_panel.is_stop_button_visible,
     is_stop_button_disabled: run_panel.is_stop_button_disabled,
     onRunButtonClick: run_panel.onRunButtonClick,
     onStopButtonClick: run_panel.onStopButtonClick,
-    profit: contract_card.profit,
+    profit: summary_card.profit,
     should_show_overlay: run_panel.should_show_overlay,
     toggleAnimationInfoModal: toolbar.toggleAnimationInfoModal,
 }))(TradeAnimation);

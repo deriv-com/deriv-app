@@ -15,6 +15,7 @@ import Orders from './orders/orders.jsx';
 import NicknameForm from './nickname/nickname-form.jsx';
 import Download from './verification/download.jsx';
 import Verification from './verification/verification.jsx';
+import MyProfile from './my-profile/my-profile.jsx';
 import './app.scss';
 
 const allowed_currency = 'USD';
@@ -172,10 +173,14 @@ const App = observer(props => {
                                 <div label={localize('My ads')}>
                                     <MyAds navigate={general_store.redirectTo} params={general_store.parameters} />
                                 </div>
-                                {/* TODO [p2p-uncomment] uncomment this when profile is ready */}
-                                {/* <div label={localize('My profile')}>
-                                    <MyProfile navigate={general_store.redirectTo} params={general_store.parameters} />
-                                </div> */}
+                                {general_store.is_advertiser && (
+                                    <div label={localize('My profile')}>
+                                        <MyProfile
+                                            navigate={general_store.redirectTo}
+                                            params={general_store.parameters}
+                                        />
+                                    </div>
+                                )}
                             </Tabs>
                         )}
                     </>

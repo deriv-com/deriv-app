@@ -65,6 +65,12 @@ const MarketSymbolIconRow = ({ payload, show_description, should_show_multiplier
                 )}
             </div>
         );
+    } else if (['adjustment'].includes(payload.action_type)) {
+        return (
+            <div className='market-symbol-icon'>
+                <Icon icon='IcAdjustment' size={32} />
+            </div>
+        );
     }
 
     return (

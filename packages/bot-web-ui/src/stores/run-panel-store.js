@@ -4,72 +4,60 @@ import { error_types, unrecoverable_errors, observer, message_types } from '@der
 import { contract_stages } from '../constants/contract-stage';
 import { switch_account_notification } from '../utils/bot-notifications';
 
-const statistics_storage_key = 'statistics_cache';
-
-const empty_statistic = {
-    lost_contracts: 0,
-    number_of_runs: 0,
-    total_profit: 0,
-    total_payout: 0,
-    total_stake: 0,
-    won_contracts: 0,
-};
-let get_statistics;
-
 export default class RunPanelStore {
     constructor(root_store) {
         this.root_store = root_store;
         this.dbot = this.root_store.dbot;
         this.registerCoreReactions();
 
-        get_statistics = JSON.parse(sessionStorage.getItem(statistics_storage_key));
+        this.statistics_storage_key = 'statistics_cache';
+        this.empty_statistics = Object.freeze({
+            lost_contracts: 0,
+            number_of_runs: 0,
+            total_profit: 0,
+            total_payout: 0,
+            total_stake: 0,
+            won_contracts: 0,
+        });
 
-        reaction(
+        this.disposeStatisticsListener = reaction(
             () => this.statistics,
             statistics => {
                 const { client } = this.root_store.core;
-                const stored_statistics = JSON.parse(sessionStorage.getItem(statistics_storage_key)) ?? {};
+                const stored_statistics = this.getSessionStorage(this.statistics_storage_key);
 
-                const new_statistics = { statistic: statistics };
+                const new_statistics = { statistics };
                 stored_statistics[client.loginid] = new_statistics;
 
-                sessionStorage.setItem(statistics_storage_key, JSON.stringify(stored_statistics));
+                sessionStorage.setItem(this.statistics_storage_key, JSON.stringify(stored_statistics));
             }
         );
 
-        reaction(
+        this.disposeSwitchAccountListener = reaction(
             () => this.root_store.core.client.loginid,
             () => {
-                const { core, transactions, journal, contract_card } = this.root_store;
+                const { core, transactions, journal, summary_card } = this.root_store;
                 const { client } = core;
 
                 if (client.is_logged_in) {
-                    const statictics = JSON.parse(sessionStorage.getItem(statistics_storage_key));
-                    const journal_messages = JSON.parse(sessionStorage.getItem('journal_cache'));
-                    const transaction_elements = JSON.parse(sessionStorage.getItem('transaction_cache'));
-
                     this.statistics =
-                        statictics && statictics[client.loginid]
-                            ? statictics[client.loginid].statistic
-                            : empty_statistic;
+                        this.getSessionStorage(this.statistics_storage_key)?.[client.loginid]?.statistics ??
+                        this.empty_statistics;
 
                     journal.unfiltered_messages =
-                        journal_messages && journal_messages[client.loginid]
-                            ? journal_messages[client.loginid].journal_message
-                            : [];
+                        this.getSessionStorage('journal_cache')?.[client.loginid]?.journal_messages ?? [];
+
                     transactions.elements =
-                        transaction_elements && transaction_elements[client.loginid]
-                            ? transaction_elements[client.loginid].transaction_element
-                            : [];
+                        this.getSessionStorage('transaction_cache')?.[client.loginid]?.transaction_elements ?? [];
                 } else {
-                    this.statistics = empty_statistic;
+                    this.statistics = this.empty_statistics;
                     journal.unfiltered_messages = [];
                     transactions.elements = [];
                 }
 
                 this.is_running = false;
                 this.has_open_contract = false;
-                contract_card.clear();
+                summary_card.clear();
                 this.setContractStage(contract_stages.NOT_RUNNING);
             }
         );
@@ -77,9 +65,9 @@ export default class RunPanelStore {
 
     run_id = '';
 
-    @observable statistics = get_statistics
-        ? get_statistics[this.root_store.core.client.loginid]?.statistic
-        : empty_statistic;
+    @observable statistics =
+        this.getSessionStorage(this.statistics_storage_key)?.[this.root_store.core.client.loginid]?.statistics ??
+        this.empty_statistics;
 
     @observable active_index = 0;
     @observable contract_stage = contract_stages.NOT_RUNNING;
@@ -93,6 +81,10 @@ export default class RunPanelStore {
     // we activate run-button and clear trade info and set the ContractStage to NOT_RUNNING
     // otherwise we keep opening new contracts and set the ContractStage to PURCHASE_SENT
     error_type = undefined;
+
+    getSessionStorage = key => {
+        return JSON.parse(sessionStorage.getItem(key)) ?? {};
+    };
 
     // #region button clicks
     @computed
@@ -426,7 +418,7 @@ export default class RunPanelStore {
 
     @action.bound
     clear() {
-        this.statistics = empty_statistic;
+        this.statistics = this.empty_statistics;
         observer.emit('statistics.clear');
     }
 
@@ -486,13 +478,8 @@ export default class RunPanelStore {
                         RunPanelStore.unregisterBotListeners();
                     }
                 );
-            } else {
-                if (typeof this.disposeLogoutListener === 'function') {
-                    this.disposeLogoutListener();
-                }
-                if (typeof this.disposeSwitchAccountListener === 'function') {
-                    this.disposeSwitchAccountListener();
-                }
+            } else if (typeof this.disposeLogoutListener === 'function') {
+                this.disposeLogoutListener();
             }
         };
 
@@ -521,8 +508,14 @@ export default class RunPanelStore {
 
     @action.bound
     onUnmount() {
+        const { journal, transactions } = this.root_store;
+
         RunPanelStore.unregisterBotListeners();
         this.disposeIsSocketOpenedListener();
+        this.disposeStatisticsListener();
+        this.disposeSwitchAccountListener();
+        journal.disposeJournalListeners();
+        transactions.disposeTransactionListeners();
 
         observer.unregisterAll('ui.log.error');
         observer.unregisterAll('ui.log.notify');

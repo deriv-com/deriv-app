@@ -15,7 +15,7 @@ export const getAllowedLanguages = () => {
         }, {});
 
     // TODO Remove this one line below when languages are available in prod.
-    if (isProduction()) language_list = { EN: 'English', ID: 'Indonesia', PT: 'Português' };
+    if (isProduction()) language_list = { EN: 'English', ID: 'Indonesia', PT: 'Português', ES: 'Español' };
 
     return language_list;
 };

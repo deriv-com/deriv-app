@@ -42,6 +42,7 @@ const initRoutesConfig = () => {
         {
             path: routes.contract,
             component: ContractDetails,
+            // Don't use `Localize` component since native html tag like `option` cannot render them
             getTitle: () => localize('Contract Details'),
             is_authenticated: true,
         },

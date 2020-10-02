@@ -27,6 +27,7 @@ const initRoutesConfig = ({ is_deriv_crypto }) => [
         path: routes.account_deactivated,
         component: AccountDeactivated,
         is_authenticated: false,
+        // Don't use `Localize` component since native html tag like `option` cannot render them
         getTitle: () => localize('Account deactivated'),
     },
     {

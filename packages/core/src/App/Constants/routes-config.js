@@ -41,6 +41,7 @@ const getModules = ({ is_deriv_crypto }) => {
         {
             path: routes.bot,
             component: Bot,
+            // Don't use `Localize` component since native html tag like `option` cannot render them
             getTitle: () => localize('Bot'),
         },
         {

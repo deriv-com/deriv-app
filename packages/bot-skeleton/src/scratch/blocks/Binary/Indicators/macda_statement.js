@@ -9,9 +9,10 @@ Blockly.Blocks.macda_statement = {
     },
     definition() {
         return {
-            message0: localize('set {{ variable }} to MACD Array {{ dummy }}', {
+            message0: localize('set {{ variable }} to MACD Array {{ dropdown }} {{ dummy }}', {
                 variable: '%1',
-                dummy: '%2',
+                dropdown: '%2',
+                dummy: '%3',
             }),
             message1: '%1',
             args0: [

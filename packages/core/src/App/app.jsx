@@ -13,7 +13,6 @@ import {
     setSharedMT5Text,
 } from '@deriv/shared';
 import { initializeTranslations, getLanguage } from '@deriv/translations';
-import Client from '_common/base/client_base';
 import WS from 'Services/ws-methods';
 import { MobxContentProvider } from 'Stores/connect';
 import SmartTraderIFrame from 'Modules/SmartTraderIFrame';
@@ -97,7 +96,6 @@ const App = ({ root_store }) => {
     const platform_passthrough = {
         root_store,
         WS,
-        client_base: Client,
     };
 
     return (

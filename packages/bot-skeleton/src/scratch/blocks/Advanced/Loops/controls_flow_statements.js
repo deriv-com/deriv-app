@@ -6,7 +6,7 @@ Blockly.Blocks.controls_flow_statements = {
     },
     definition() {
         return {
-            message0: localize('%1 of loop'),
+            message0: localize('{{ break_or_continue }} of loop', { break_or_continue: '%1' }),
             args0: [
                 {
                     type: 'field_dropdown',

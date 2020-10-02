@@ -1,4 +1,6 @@
 import React from 'react';
+import { Loading } from '@deriv/components';
+import { useIsMounted } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { TableError } from 'Components/table/table-error.jsx';
@@ -14,63 +16,67 @@ const MyAdsState = ({ message }) => (
     </div>
 );
 
-class MyAds extends React.Component {
-    state = {
-        show_form: false,
-    };
+const MyAds = () => {
+    const { is_advertiser, is_restricted, setPoiStatus } = React.useContext(Dp2pContext);
+    const [error_message, setErrorMessage] = React.useState('');
+    const [is_loading, setIsLoading] = React.useState(true);
+    const [show_ad_form, setShowAdForm] = React.useState(false);
+    const isMounted = useIsMounted();
 
-    handleShowForm = show_form => {
-        this.setState({ show_form });
-    };
-
-    componentDidMount() {
-        this.is_mounted = true;
-
-        if (!this.context.is_advertiser) {
-            requestWS({ get_account_status: 1 }).then(response => {
-                if (this.is_mounted && !response.error) {
-                    const { get_account_status } = response;
-                    const { authentication } = get_account_status;
-                    const { identity } = authentication;
-                    const { status } = identity;
-
-                    this.setState({
-                        poi_status: status,
-                    });
-                }
-
-                this.setState({ is_loading: false });
-            });
-        } else {
-            this.setState({ is_loading: false });
+    React.useEffect(() => {
+        if (isMounted()) {
+            if (!is_advertiser) {
+                requestWS({ get_account_status: 1 }).then(response => {
+                    if (isMounted()) {
+                        if (!response.error) {
+                            const { get_account_status } = response;
+                            const { status } = get_account_status.authentication.identity;
+                            setPoiStatus(status);
+                        } else {
+                            setErrorMessage(response.error);
+                        }
+                        setIsLoading(false);
+                    }
+                });
+            } else {
+                setIsLoading(false);
+            }
         }
+    }, []);
+
+    const handleShowForm = show_form => {
+        setShowAdForm(show_form);
+    };
+
+    const onClickCreate = () => {
+        setShowAdForm(true);
+    };
+
+    if (is_loading) {
+        return <Loading is_fullscreen={false} />;
     }
 
-    onClickCreate = () => {
-        this.setState({ show_form: true });
-    };
-
-    render() {
-        if (this.context.is_restricted) {
-            return <MyAdsState message={localize('P2P cashier is unavailable in your country.')} />;
-        }
-
-        if (this.context.is_advertiser) {
-            return (
-                <div className='p2p-my-ads'>
-                    {this.state.show_form ? (
-                        <FormAds handleShowForm={this.handleShowForm} />
-                    ) : (
-                        <MyAdsTable onClickCreate={this.onClickCreate} />
-                    )}
-                </div>
-            );
-        }
-
-        return <Verification />;
+    if (is_restricted) {
+        return <MyAdsState message={localize('DP2P cashier is unavailable in your country.')} />;
     }
-}
+
+    if (error_message) {
+        return <MyAdsState message={error_message} />;
+    }
+
+    if (is_advertiser) {
+        return (
+            <div className='p2p-my-ads'>
+                {show_ad_form ? (
+                    <FormAds handleShowForm={handleShowForm} />
+                ) : (
+                    <MyAdsTable onClickCreate={onClickCreate} />
+                )}
+            </div>
+        );
+    }
+
+    return <Verification />;
+};
 
 export default MyAds;
-
-MyAds.contextType = Dp2pContext;

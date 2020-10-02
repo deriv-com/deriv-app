@@ -201,6 +201,10 @@
         &-btn {
             margin-left: auto;
         }
+        &--disabled {
+            opacity: 0.5;
+            cursor: default;
+        }
     }
     &__list {
         border-radius: $BORDER_RADIUS;

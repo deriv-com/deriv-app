@@ -2021,7 +2021,7 @@
     "-206909651": "Spot masuk adalah harga pasar ketika kontrak Anda diproses oleh server kami.",
     "-149836494": "Nomor referensi transaksi Anda adalah {{transaction_id}}",
     "-1382749084": "Kembali ke trading",
-    "-1221707629": "<0>Nomor login akun.<1><1>{{display_login}}</1>",
+    "-1221707629": "<0>Nomor login akun.<0><1>{{display_login}}</1>",
     "-162753510": "Tambahkan akun riil",
     "-522767852": "DEMO",
     "-742647506": "Transfer dana",

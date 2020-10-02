@@ -102,7 +102,7 @@ class ToggleCardDialog extends React.Component {
                 className='dc-contract-card-dialog-toggle__icon'
                 icon='IcEdit'
                 color={is_valid_to_cancel && 'disabled'}
-                size={16}
+                size={12}
             />
         );
 

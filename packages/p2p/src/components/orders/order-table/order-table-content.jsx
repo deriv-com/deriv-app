@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Loading, Button } from '@deriv/components';
+import { useIsMounted } from '@deriv/shared';
 import { Localize, localize } from 'Components/i18next';
 import { TableError } from 'Components/table/table-error.jsx';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
@@ -25,18 +26,14 @@ const OrderTableContent = ({ showDetails, is_active }) => {
         setOrderOffset,
         setOrders,
     } = React.useContext(Dp2pContext);
-    const is_mounted = React.useRef(false);
-    const [has_more_items_to_load, setHasMoreItemsToLoad] = React.useState(false);
+
     const [api_error_message, setApiErrorMessage] = React.useState('');
+    const [has_more_items_to_load, setHasMoreItemsToLoad] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(true);
+    const isMounted = useIsMounted();
 
     React.useEffect(() => {
-        is_mounted.current = true;
-        return () => (is_mounted.current = false);
-    }, []);
-
-    React.useEffect(() => {
-        if (is_mounted.current) {
+        if (isMounted()) {
             setIsLoading(true);
             loadMoreOrders();
         }
@@ -50,7 +47,7 @@ const OrderTableContent = ({ showDetails, is_active }) => {
                 limit: list_item_limit,
                 active: is_active_tab ? 1 : 0,
             }).then(response => {
-                if (is_mounted.current) {
+                if (isMounted()) {
                     if (!response.error) {
                         const { list } = response.p2p_order_list;
                         setHasMoreItemsToLoad(list.length >= list_item_limit);

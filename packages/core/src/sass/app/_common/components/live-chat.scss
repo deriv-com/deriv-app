@@ -7,8 +7,15 @@
 
     &__icon {
         margin-right: 0.8rem;
+
+        &-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     }
     &__title {
         @include typeface(--paragraph-left-normal-black);
+        line-height: 1.25;
     }
 }

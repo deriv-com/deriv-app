@@ -35,7 +35,7 @@ const ProgressSlider = ({
                             <div
                                 className={classNames('dc-progress-slider__line', {
                                     'dc-progress-slider__line--green': percentage >= 50,
-                                    'dc-progress-slider__line--orange': percentage < 50 && percentage >= 20,
+                                    'dc-progress-slider__line--yellow': percentage < 50 && percentage >= 20,
                                     'dc-progress-slider__line--red': percentage < 20,
                                 })}
                                 style={{ width: `${percentage}%` }}

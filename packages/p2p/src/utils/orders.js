@@ -1,6 +1,7 @@
 import { toMoment } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import { convertToMillis, getFormattedDateString } from 'Utils/date-time';
+import { buy_sell } from '../constants/buy-sell';
 
 class ExtendedOrderDetails {
     constructor(order_details, loginid, server_time) {
@@ -16,10 +17,10 @@ class ExtendedOrderDetails {
 
     // Order statuses
     get is_buy_order() {
-        return this.order_details.type === 'buy';
+        return this.order_details.type === buy_sell.BUY;
     }
     get is_sell_order() {
-        return this.order_details.type === 'sell';
+        return this.order_details.type === buy_sell.SELL;
     }
     get is_buyer_cancelled_order() {
         return this.order_details.status === 'cancelled';
@@ -60,7 +61,7 @@ class ExtendedOrderDetails {
 
     // A happening order describes an order where an action has been taken by either side, i.e.
     // one side confirmed they've paid or received funds.
-    get is_happening_order() {
+    get is_ongoing_order() {
         return this.is_buyer_confirmed_order || this.is_buyer_cancelled_order;
     }
 
@@ -130,7 +131,7 @@ class ExtendedOrderDetails {
     // execute actions such as "I've paid" or "I've received payment" on technically expired orders.
     get should_show_only_complain_button() {
         if (this.is_finalised_order) return false;
-        return (this.is_expired_order || (this.is_happening_order && this.has_timer_expired)) && !this.is_my_ad;
+        return (this.is_expired_order || (this.is_ongoing_order && this.has_timer_expired)) && !this.is_my_ad;
     }
 
     get should_show_order_footer() {
@@ -143,7 +144,7 @@ class ExtendedOrderDetails {
 
     get should_show_order_timer() {
         if (this.is_finalised_order) return false;
-        return !this.has_timer_expired && (this.is_pending_order || this.is_happening_order);
+        return !this.has_timer_expired && (this.is_pending_order || this.is_ongoing_order);
     }
 
     get status_string() {
@@ -219,7 +220,8 @@ class ExtendedOrderDetails {
             };
         }
 
-        if (this.is_my_ad /* && !this.is_buy_order */) {
+        // !this.is_buy_order
+        if (this.is_my_ad) {
             return {
                 other_party_role: localize('Seller'),
                 left_send_or_receive: localize('Send'),

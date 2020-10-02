@@ -34,8 +34,6 @@ class Cashier extends React.Component {
             if (isMobile() && isTouchDevice()) {
                 window.addEventListener('resize', this.handleOnScreenKeyboard);
             }
-
-            this.checkIsP2pRestricted();
         }
     }
 

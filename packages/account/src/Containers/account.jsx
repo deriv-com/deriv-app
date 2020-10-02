@@ -119,7 +119,7 @@ class Account extends React.Component {
             >
                 <div className='account'>
                     <PageOverlay
-                        header={isMobile() ? selected_route.title : localize('Settings')}
+                        header={isMobile() ? selected_route.getTitle() : localize('Settings')}
                         onClickClose={this.onClickClose}
                     >
                         <DesktopWrapper>

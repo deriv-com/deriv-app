@@ -111,7 +111,7 @@ class Cashier extends React.Component {
             >
                 <div className='cashier'>
                     <PageOverlay
-                        header={isMobile() ? selected_route.title : localize('Cashier')}
+                        header={isMobile() ? selected_route.getTitle() : localize('Cashier')}
                         onClickClose={this.onClickClose}
                     >
                         <DesktopWrapper>

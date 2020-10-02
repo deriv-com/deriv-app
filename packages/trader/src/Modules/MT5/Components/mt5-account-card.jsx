@@ -96,7 +96,7 @@ const MT5AccountCard = ({
                         </tbody>
                     </table>
                 </div>
-                {existing_data?.login && is_logged_in && <Example />}
+                {existing_data?.login && is_logged_in && <Example existing_data={existing_data} />}
 
                 {((!existing_data && commission_message) || !is_logged_in) && (
                     <p className='mt5-account-card__commission mt5-account-card--paragraph'>{commission_message}</p>

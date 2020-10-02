@@ -286,7 +286,7 @@ const ReplayChart = connect(({ modules, ui, common }) => {
     const should_force_light_theme = from_platform.name === 'DBot';
 
     const settings = {
-        lang: common.current_language,
+        language: common.current_language.toLowerCase(),
         theme: ui.is_dark_mode_on && !should_force_light_theme ? 'dark' : 'light',
         position: ui.is_chart_layout_default ? 'bottom' : 'left',
         countdown: ui.is_chart_countdown_visible,

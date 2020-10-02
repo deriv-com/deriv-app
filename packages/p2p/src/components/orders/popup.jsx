@@ -60,8 +60,8 @@ const FormWithConfirmation = ({
                             </div>
                         </Modal.Body>
                         <Modal.Footer>
+                            {status?.error_message && <FormError message={status.error_message} />}
                             <Button.Group>
-                                {status?.error_message && <FormError message={status.error_message} />}
                                 {has_cancel && (
                                     <Button onClick={onCancel} secondary large type='button'>
                                         {cancel_text}
@@ -135,8 +135,8 @@ const FormWithoutConfirmation = ({
                 </div>
             </Modal.Body>
             <Modal.Footer>
+                {api_error_message?.error_message && <FormError message={api_error_message.error_message} />}
                 <Button.Group>
-                    {api_error_message?.error_message && <FormError message={api_error_message.error_message} />}
                     {has_cancel && (
                         <Button onClick={onCancel} secondary large>
                             {cancel_text}

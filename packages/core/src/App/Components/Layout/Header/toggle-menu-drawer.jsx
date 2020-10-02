@@ -133,7 +133,7 @@ class ToggleMenuDrawer extends React.Component {
                     <MenuLink
                         link_to={route_config.path}
                         icon={route_config.icon_component}
-                        text={route_config.title}
+                        text={route_config.getTitle()}
                         onClickLink={this.toggleDrawer}
                     />
                 </MobileDrawer.Item>
@@ -145,7 +145,7 @@ class ToggleMenuDrawer extends React.Component {
                 key={idx}
                 has_subheader
                 submenu_icon={route_config.icon_component}
-                submenu_title={route_config.title}
+                submenu_title={route_config.getTitle()}
                 submenu_suffix_icon='IcChevronRight'
                 onToggle={this.onToggleSubmenu}
             >
@@ -163,7 +163,7 @@ class ToggleMenuDrawer extends React.Component {
                                     <MenuLink
                                         link_to={route.path}
                                         icon={route.icon_component}
-                                        text={route.title}
+                                        text={route.getTitle()}
                                         onClickLink={this.toggleDrawer}
                                     />
                                 </MobileDrawer.Item>
@@ -173,7 +173,11 @@ class ToggleMenuDrawer extends React.Component {
                     })}
                 {has_subroutes &&
                     route_config.routes.map((route, index) => (
-                        <MobileDrawer.SubMenuSection key={index} section_icon={route.icon} section_title={route.title}>
+                        <MobileDrawer.SubMenuSection
+                            key={index}
+                            section_icon={route.icon}
+                            section_title={route.getTitle()}
+                        >
                             {route.subroutes.map((subroute, subindex) => (
                                 <MenuLink
                                     key={subindex}
@@ -184,7 +188,7 @@ class ToggleMenuDrawer extends React.Component {
                                         subroute.is_disabled
                                     }
                                     link_to={subroute.path}
-                                    text={subroute.title}
+                                    text={subroute.getTitle()}
                                     onClickLink={this.toggleDrawer}
                                 />
                             ))}

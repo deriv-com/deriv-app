@@ -46,7 +46,7 @@ const Endpoint = ({ is_eu_enabled, toggleIsEuEnabled }) => {
 
                 if (!values.server) {
                     errors.server = 'Server is required.';
-                } else if (!/^[\w|.]+$/.test(values.server)) {
+                } else if (!/^[\w|\-|.]+$/.test(values.server)) {
                     errors.server = 'Please enter a valid server.';
                 }
                 return errors;
@@ -57,6 +57,7 @@ const Endpoint = ({ is_eu_enabled, toggleIsEuEnabled }) => {
                 localStorage.setItem('is_eu_enabled', values.is_eu_enabled);
                 localStorage.setItem(platform_store.DERIV_CRYPTO_KEY, values.is_deriv_crypto_enabled);
                 toggleIsEuEnabled(values.is_eu_enabled);
+                platform_store.setDerivCrypto(values.is_deriv_crypto_enabled);
                 location.reload();
             }}
         >

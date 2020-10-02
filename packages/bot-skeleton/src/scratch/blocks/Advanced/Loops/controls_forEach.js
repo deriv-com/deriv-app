@@ -6,7 +6,10 @@ Blockly.Blocks.controls_forEach = {
     },
     definition() {
         return {
-            message0: localize('for each item %1 in list %2'),
+            message0: localize('for each item {{ variable }} in list {{ input_list }}', {
+                variable: '%1',
+                input_list: '%2',
+            }),
             args0: [
                 {
                     type: 'field_variable',

@@ -3,7 +3,7 @@ import { localize } from '@deriv/translations';
 Blockly.Blocks.std_dev_multiplier_down = {
     init() {
         this.jsonInit({
-            message0: localize('Standard Deviation Down Multiplier %1'),
+            message0: localize('Standard Deviation Down Multiplier {{ input_number }}', { input_number: '%1' }),
             args0: [
                 {
                     type: 'input_value',

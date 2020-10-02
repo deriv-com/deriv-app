@@ -59,32 +59,34 @@ class NotificationsDialog extends React.Component {
                                 {item.header}
                             </h2>
                             <div className='notifications-item__message'>{item.message}</div>
-                            {!isEmptyObject(item.action) && (
-                                <>
-                                    {item.action.route ? (
-                                        <BinaryLink
-                                            onClick={this.props.toggleDialog}
-                                            className={classNames(
-                                                'dc-btn',
-                                                'dc-btn--secondary',
-                                                'notifications-item__cta-button'
-                                            )}
-                                            to={item.action.route}
-                                        >
-                                            <span className='dc-btn__text'>{item.action.text}</span>
-                                        </BinaryLink>
-                                    ) : (
-                                        <Button
-                                            className={classNames(
-                                                'dc-btn--secondary',
-                                                'notifications-item__cta-button'
-                                            )}
-                                            onClick={item.action.onClick}
-                                            text={item.action.text}
-                                        />
-                                    )}
-                                </>
-                            )}
+                            <div className='notifications-item__action'>
+                                {!isEmptyObject(item.action) && (
+                                    <>
+                                        {item.action.route ? (
+                                            <BinaryLink
+                                                onClick={this.props.toggleDialog}
+                                                className={classNames(
+                                                    'dc-btn',
+                                                    'dc-btn--secondary',
+                                                    'notifications-item__cta-button'
+                                                )}
+                                                to={item.action.route}
+                                            >
+                                                <span className='dc-btn__text'>{item.action.text}</span>
+                                            </BinaryLink>
+                                        ) : (
+                                            <Button
+                                                className={classNames(
+                                                    'dc-btn--secondary',
+                                                    'notifications-item__cta-button'
+                                                )}
+                                                onClick={item.action.onClick}
+                                                text={item.action.text}
+                                            />
+                                        )}
+                                    </>
+                                )}
+                            </div>
                         </div>
                     ))
                 ) : (

@@ -21,7 +21,6 @@
             .dc-button-menu__wrapper {
                 button.dc-btn {
                     height: 36px;
-                    width: 120px;
                 }
             }
         }
@@ -61,7 +60,6 @@
             &--attention {
                 background: var(--button-tertiary-hover);
             }
-
             &:not(.orders__table-row--header) {
                 cursor: pointer;
 
@@ -81,11 +79,11 @@
             letter-spacing: 1px;
         }
         &-grid {
-            grid-template-columns: 1fr 1fr 160px 1.2fr 1.2fr 2fr;
-            grid-column-gap: 12px;
+            // Sizes are different for inactive due to timeout being full time string.
+            grid-template-columns: 1fr 1fr 2fr 1.5fr 1.5fr 1.5fr 2fr;
 
             &--active {
-                grid-template-columns: 1fr 1fr 160px 1.2fr 1.2fr 1fr;
+                grid-template-columns: 1fr 1fr 2fr 2fr 1.5fr 1.5fr 1.5fr;
             }
         }
         &-status {
@@ -93,11 +91,11 @@
             border-radius: 16px;
             padding: 2px 16px;
 
-            &--primary {
+            &--danger {
                 color: var(--brand-red-coral);
                 background-color: rgba(236, 63, 63, 0.16);
             }
-            &--secondary {
+            &--alert {
                 color: var(--status-warning);
                 background-color: rgba(255, 173, 58, 0.16);
             }
@@ -115,7 +113,7 @@
             }
         }
         & .dc-table__head:first-child {
-            padding-left: 17px;
+            padding-left: 1.7rem;
         }
     }
 }

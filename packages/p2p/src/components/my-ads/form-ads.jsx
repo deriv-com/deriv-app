@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
 import { Dropdown, Loading, Icon, Input, Button, ThemedScrollbars } from '@deriv/components';
-import { getDecimalPlaces } from '@deriv/shared';
+import { getDecimalPlaces, useIsMounted } from '@deriv/shared';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { localize } from 'Components/i18next';
 import PageReturn from 'Components/page-return/page-return.jsx';
@@ -10,19 +10,18 @@ import { countDecimalPlaces } from 'Utils/string';
 import { textValidator, lengthValidator } from 'Utils/validations';
 import { requestWS } from 'Utils/websocket';
 import AdSummary from './my-ads-summary.jsx';
+import { buy_sell } from '../../constants/buy-sell';
 
 const FormAds = ({ handleShowForm }) => {
     const [advertiser_info, setAdvertiserInfo] = React.useState({});
     const { currency, local_currency_config } = React.useContext(Dp2pContext);
     const [error_message, setErrorMessage] = React.useState('');
     const [is_loading, setIsLoading] = React.useState(true);
-    const is_mounted = React.useRef(false);
+    const isMounted = useIsMounted();
     const { contact_info, default_advert_description, payment_info } = advertiser_info;
 
     React.useEffect(() => {
-        is_mounted.current = true;
         getAdvertiserInfo();
-        return () => (is_mounted.current = false);
     }, []);
 
     const getAdvertiserInfo = () => {
@@ -30,7 +29,7 @@ const FormAds = ({ handleShowForm }) => {
             requestWS({
                 p2p_advertiser_info: 1,
             }).then(response => {
-                if (is_mounted.current) {
+                if (isMounted()) {
                     if (!response.error) {
                         const { p2p_advertiser_info } = response;
                         setAdvertiserInfo(p2p_advertiser_info);
@@ -45,7 +44,7 @@ const FormAds = ({ handleShowForm }) => {
     };
 
     const handleSubmit = (values, { setSubmitting }) => {
-        const is_sell_ad = values.type === 'sell';
+        const is_sell_ad = values.type === buy_sell.SELL;
         setErrorMessage('');
 
         const create_advert = {
@@ -68,11 +67,13 @@ const FormAds = ({ handleShowForm }) => {
         }
         requestWS(create_advert).then(response => {
             // If we get an error we should let the user submit the form again else we just go back to the list of ads
-            if (response.error) {
-                setErrorMessage(response.error.message);
-                setSubmitting(false);
-            } else {
-                handleShowForm(false);
+            if (isMounted()) {
+                if (response.error) {
+                    setErrorMessage(response.error.message);
+                    setSubmitting(false);
+                } else {
+                    handleShowForm(false);
+                }
             }
         });
     };
@@ -124,7 +125,7 @@ const FormAds = ({ handleShowForm }) => {
             ],
         };
 
-        if (values.type === 'sell') {
+        if (values.type === buy_sell.SELL) {
             validations.contact_info = [v => !!v, v => textValidator(v), v => lengthValidator(v)];
             validations.payment_info = [v => !!v, v => textValidator(v), v => lengthValidator(v)];
         }

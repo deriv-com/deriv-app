@@ -21,7 +21,6 @@
             .dc-button-menu__wrapper {
                 button.dc-btn {
                     height: 36px;
-                    width: 120px;
                 }
             }
         }
@@ -61,7 +60,6 @@
             &--attention {
                 background: var(--button-tertiary-hover);
             }
-
             &:not(.orders__table-row--header) {
                 cursor: pointer;
 

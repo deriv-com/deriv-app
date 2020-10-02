@@ -1,6 +1,7 @@
 import React from 'react';
 import { Field, Form, Formik } from 'formik';
 import { Button, Icon, Input, Loading, Popover, Table, ThemedScrollbars } from '@deriv/components';
+import { useIsMounted } from '@deriv/shared';
 import classNames from 'classnames';
 import { requestWS } from 'Utils/websocket';
 import { localize } from 'Components/i18next';
@@ -11,9 +12,10 @@ import FormError from '../form/error.jsx';
 import './my-profile.scss';
 
 const MyProfile = () => {
+    const { currency } = React.useContext(Dp2pContext);
+
     const [advertiser_info, setAdvertiserInfo] = React.useState({});
     const [contact_info, setContactInfo] = React.useState('');
-    const { currency } = React.useContext(Dp2pContext);
     const [default_advert_description, setDefaultAdvertDescription] = React.useState('');
     const [error_message, setErrorMessage] = React.useState('');
     const [form_error, setFormError] = React.useState('');
@@ -21,22 +23,18 @@ const MyProfile = () => {
     const [has_poi, setHasPoi] = React.useState(false);
     const [is_button_loading, setIsButtonLoading] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(true);
-    const is_mounted = React.useRef(false);
     const [is_submit_success, setIsSubmitSuccess] = React.useState(false);
     const [nickname, setNickname] = React.useState(null);
     const [payment_info, setPaymentInfo] = React.useState('');
     const [stats, setStats] = React.useState({});
+    const isMounted = useIsMounted();
     const { daily_buy_limit, daily_sell_limit, id } = advertiser_info;
     const { buy_orders_count, sell_orders_count, total_orders_count } = stats;
 
     React.useEffect(() => {
-        is_mounted.current = true;
-
         getAdvertiserAccountStatus();
         getAdvertiserStats();
         getAdvertiserInfo();
-
-        return () => (is_mounted.current = false);
     }, []);
 
     const getAdvertiserAccountStatus = () => {
@@ -44,7 +42,7 @@ const MyProfile = () => {
             requestWS({
                 get_account_status: 1,
             }).then(response => {
-                if (is_mounted.current) {
+                if (isMounted()) {
                     if (!response.error) {
                         const { get_account_status } = response;
                         const { authentication } = get_account_status;
@@ -64,7 +62,7 @@ const MyProfile = () => {
             requestWS({
                 p2p_advertiser_info: 1,
             }).then(response => {
-                if (is_mounted.current) {
+                if (isMounted()) {
                     if (!response.error) {
                         const { p2p_advertiser_info } = response;
                         setAdvertiserInfo(p2p_advertiser_info);
@@ -88,7 +86,7 @@ const MyProfile = () => {
                 p2p_advertiser_stats: 1,
                 id,
             }).then(response => {
-                if (is_mounted.current) {
+                if (isMounted()) {
                     if (!response.error) {
                         const { p2p_advertiser_stats } = response;
                         setStats(p2p_advertiser_stats);
@@ -102,7 +100,7 @@ const MyProfile = () => {
     };
 
     const handleSubmit = values => {
-        if (is_mounted.current) {
+        if (isMounted()) {
             setIsButtonLoading(true);
         }
         return new Promise(resolve => {
@@ -112,7 +110,7 @@ const MyProfile = () => {
                 payment_info: values.payment_info,
                 default_advert_description: values.default_advert_description,
             }).then(response => {
-                if (is_mounted.current) {
+                if (isMounted()) {
                     if (!response.error) {
                         const { p2p_advertiser_update } = response;
                         setContactInfo(p2p_advertiser_update.contact_info);
@@ -124,7 +122,7 @@ const MyProfile = () => {
                     }
                     setIsButtonLoading(false);
                     setTimeout(() => {
-                        if (is_mounted.current) {
+                        if (isMounted()) {
                             setIsSubmitSuccess(false);
                         }
                     }, 3000);

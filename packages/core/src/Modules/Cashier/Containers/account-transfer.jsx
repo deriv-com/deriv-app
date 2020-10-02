@@ -14,7 +14,9 @@ import Loading from '../../../templates/_common/components/loading.jsx';
 class AccountTransfer extends React.Component {
     componentDidMount() {
         this.props.setActiveTab(this.props.container);
-        this.props.onMount();
+        if (!this.props.is_virtual) {
+            this.props.onMount();
+        }
     }
 
     render() {

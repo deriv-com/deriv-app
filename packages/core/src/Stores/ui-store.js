@@ -1,5 +1,5 @@
 import { action, autorun, computed, observable } from 'mobx';
-import { getPlatformHeader, isEmptyObject, LocalStore, unique } from '@deriv/shared';
+import { getPathname, getPlatformHeader, isEmptyObject, LocalStore, unique } from '@deriv/shared';
 import { sortNotifications } from 'App/Components/Elements/NotificationMessage';
 import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
 import BaseStore from './base-store';
@@ -39,6 +39,7 @@ export default class UIStore extends BaseStore {
     @observable is_account_signup_modal_visible = false;
     @observable is_set_residence_modal_visible = false;
     @observable is_reset_password_modal_visible = false;
+    @observable is_account_transfer_limit_modal_visible = false;
     // @observable is_purchase_lock_on       = false;
 
     // SmartCharts Controls
@@ -240,6 +241,21 @@ export default class UIStore extends BaseStore {
     @computed
     get is_account_switcher_disabled() {
         return !!this.account_switcher_disabled_message;
+    }
+
+    @action.bound
+    filterNotificationMessages() {
+        this.notifications = this.notification_messages.filter(notification => {
+            if (notification.platform === undefined || notification.platform.includes(getPathname())) {
+                return true;
+            } else if (!notification.platform.includes(getPathname())) {
+                if (notification.is_disposable) {
+                    this.removeNotificationMessage({ key: notification.key });
+                    this.removeNotificationByKey({ key: notification.key });
+                }
+            }
+            return false;
+        });
     }
 
     @action.bound
@@ -535,6 +551,11 @@ export default class UIStore extends BaseStore {
     @action.bound
     toggleUnsupportedContractModal(state_change = !this.is_unsupported_contract_modal_visible) {
         this.is_unsupported_contract_modal_visible = state_change;
+    }
+
+    @action.bound
+    toggleAccountTransferLimitModal(state_change = !this.is_account_transfer_limit_modal_visible) {
+        this.is_account_transfer_limit_modal_visible = state_change;
     }
 
     @action.bound

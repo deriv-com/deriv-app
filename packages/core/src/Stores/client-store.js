@@ -982,7 +982,10 @@ export default class ClientStore extends BaseStore {
         this.setLoginId(LocalStore.get('active_loginid'));
         this.setAccounts(LocalStore.getObject(storage_key));
         if (this.is_logged_in && !this.switched && !this.has_any_real_account) {
-            this.root_store.ui.toggleWelcomeModal(true);
+            if (!LocalStore.get('has_viewed_welcome_screen')) {
+                this.root_store.ui.toggleWelcomeModal(true);
+            }
+            LocalStore.set('has_viewed_welcome_screen', true);
         }
         this.setSwitched('');
         let client = this.accounts[this.loginid];

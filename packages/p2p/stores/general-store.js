@@ -32,7 +32,7 @@ export default class GeneralStore {
         buy_sell: 0,
         orders: 1,
         my_ads: 2,
-        // my_profile: 3,
+        my_profile: 3,
     };
     props = {};
     ws_subscriptions = {};

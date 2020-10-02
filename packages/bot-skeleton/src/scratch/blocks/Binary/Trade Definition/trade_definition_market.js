@@ -1,3 +1,4 @@
+import { localize } from '@deriv/translations';
 import { runIrreversibleEvents } from '../../../utils';
 import ApiHelpers from '../../../../services/api/api-helpers';
 
@@ -5,7 +6,11 @@ import ApiHelpers from '../../../../services/api/api-helpers';
 Blockly.Blocks.trade_definition_market = {
     init() {
         this.jsonInit({
-            message0: 'Market: %1 > %2 > %3',
+            message0: localize('Market: {{ input_market }} > {{ input_submarket }} > {{ input_symbol }}', {
+                input_market: '%1',
+                input_submarket: '%2',
+                input_symbol: '%3',
+            }),
             args0: [
                 {
                     type: 'field_dropdown',

@@ -8,11 +8,30 @@ import { NetworkStatus } from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
 import { BinaryLink } from 'App/Components/Routes';
 import getRoutesConfig from 'App/Constants/routes-config';
+import { getAllowedLanguages, currentLanguage, changeLanguage } from 'Utils/Language';
 import LiveChat from '../../Elements/live-chat.jsx';
 
-const MenuLink = ({ link_to, icon, is_disabled, suffix_icon, text, onClickLink }) => (
-    <React.Fragment>
-        {!link_to ? (
+const MenuLink = ({ link_to, icon, is_active, is_disabled, is_external, suffix_icon, text, onClickLink }) => {
+    if (is_external) {
+        return (
+            <span
+                className={classNames('header__menu-mobile-link', {
+                    'header__menu-mobile-link--disabled': is_disabled,
+                    'header__menu-mobile-link--active': is_active,
+                })}
+                active_class='header__menu-mobile-link--active'
+                onClick={() => {
+                    onClickLink();
+                    changeLanguage(link_to);
+                }}
+            >
+                <Icon className='header__menu-mobile-link-icon' icon={icon} />
+                <span className='header__menu-mobile-link-text'>{text}</span>
+                {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
+            </span>
+        );
+    } else if (!link_to) {
+        return (
             <div
                 className={classNames('header__menu-mobile-link', {
                     'header__menu-mobile-link--disabled': is_disabled,
@@ -22,22 +41,25 @@ const MenuLink = ({ link_to, icon, is_disabled, suffix_icon, text, onClickLink }
                 <span className='header__menu-mobile-link-text'>{text}</span>
                 {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
             </div>
-        ) : (
-            <BinaryLink
-                to={link_to}
-                className={classNames('header__menu-mobile-link', {
-                    'header__menu-mobile-link--disabled': is_disabled,
-                })}
-                active_class='header__menu-mobile-link--active'
-                onClick={onClickLink}
-            >
-                <Icon className='header__menu-mobile-link-icon' icon={icon} />
-                <span className='header__menu-mobile-link-text'>{text}</span>
-                {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
-            </BinaryLink>
-        )}
-    </React.Fragment>
-);
+        );
+    }
+
+    return (
+        <BinaryLink
+            to={link_to}
+            className={classNames('header__menu-mobile-link', {
+                'header__menu-mobile-link--disabled': is_disabled,
+                'header__menu-mobile-link--active': is_active,
+            })}
+            active_class='header__menu-mobile-link--active'
+            onClick={onClickLink}
+        >
+            <Icon className='header__menu-mobile-link-icon' icon={icon} />
+            <span className='header__menu-mobile-link-text'>{text}</span>
+            {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
+        </BinaryLink>
+    );
+};
 
 class ToggleMenuDrawer extends React.Component {
     static contextType = PlatformContext;
@@ -98,7 +120,7 @@ class ToggleMenuDrawer extends React.Component {
             .filter(route => route);
     };
 
-    getRoutesWithSubMenu = route_config => {
+    getRoutesWithSubMenu = (route_config, idx) => {
         const { allow_document_upload } = this.state;
         const { needs_financial_assessment } = this.props;
 
@@ -107,7 +129,7 @@ class ToggleMenuDrawer extends React.Component {
 
         if (!route_config.routes) {
             return (
-                <MobileDrawer.Item key={route_config.title}>
+                <MobileDrawer.Item key={idx}>
                     <MenuLink
                         link_to={route_config.path}
                         icon={route_config.icon_component}
@@ -120,7 +142,7 @@ class ToggleMenuDrawer extends React.Component {
         const has_subroutes = route_config.routes.some(route => route.subroutes);
         return (
             <MobileDrawer.SubMenu
-                key={route_config.title}
+                key={idx}
                 has_subheader
                 submenu_icon={route_config.icon_component}
                 submenu_title={route_config.title}
@@ -128,16 +150,16 @@ class ToggleMenuDrawer extends React.Component {
                 onToggle={this.onToggleSubmenu}
             >
                 {!has_subroutes &&
-                    route_config.routes.map(route => {
+                    route_config.routes.map((route, index) => {
                         if (
                             (route.path !== routes.cashier_pa || this.props.is_payment_agent_visible) &&
                             (route.path !== routes.cashier_pa_transfer ||
                                 this.props.is_payment_agent_transfer_visible) &&
-                            (route.path !== routes.cashier_p2p || this.props.is_p2p_visible) &&
+                            (route.path !== routes.cashier_p2p || this.props.is_p2p_enabled) &&
                             (route.path !== routes.cashier_onramp || this.props.is_onramp_tab_visible)
                         ) {
                             return (
-                                <MobileDrawer.Item key={route.title}>
+                                <MobileDrawer.Item key={index}>
                                     <MenuLink
                                         link_to={route.path}
                                         icon={route.icon_component}
@@ -150,15 +172,11 @@ class ToggleMenuDrawer extends React.Component {
                         return undefined;
                     })}
                 {has_subroutes &&
-                    route_config.routes.map(route => (
-                        <MobileDrawer.SubMenuSection
-                            key={route.title}
-                            section_icon={route.icon}
-                            section_title={route.title}
-                        >
-                            {route.subroutes.map(subroute => (
+                    route_config.routes.map((route, index) => (
+                        <MobileDrawer.SubMenuSection key={index} section_icon={route.icon} section_title={route.title}>
+                            {route.subroutes.map((subroute, subindex) => (
                                 <MenuLink
-                                    key={subroute.title}
+                                    key={subindex}
                                     is_disabled={
                                         (!allow_document_upload && /proof-of-address/.test(subroute.path)) ||
                                         (!allow_document_upload && /proof-of-identity/.test(subroute.path)) ||
@@ -172,6 +190,31 @@ class ToggleMenuDrawer extends React.Component {
                             ))}
                         </MobileDrawer.SubMenuSection>
                     ))}
+            </MobileDrawer.SubMenu>
+        );
+    };
+
+    getLanguageRoutes = () => {
+        return (
+            <MobileDrawer.SubMenu
+                has_subheader
+                submenu_icon='IcLanguage'
+                submenu_title={localize('Language')}
+                submenu_suffix_icon='IcChevronRight'
+                onToggle={this.onToggleSubmenu}
+            >
+                {Object.keys(getAllowedLanguages()).map((lang, idx) => (
+                    <MobileDrawer.Item key={idx}>
+                        <MenuLink
+                            is_external
+                            is_active={currentLanguage === lang}
+                            link_to={lang}
+                            icon={`IcFlag${lang.replace('_', '-')}`}
+                            text={getAllowedLanguages()[lang]}
+                            onClickLink={this.toggleDrawer}
+                        />
+                    </MobileDrawer.Item>
+                ))}
             </MobileDrawer.SubMenu>
         );
     };
@@ -228,7 +271,10 @@ class ToggleMenuDrawer extends React.Component {
                                         onClickLink={this.toggleDrawer}
                                     />
                                 </MobileDrawer.Item>
-                                {primary_routes_config.map(route_config => this.getRoutesWithSubMenu(route_config))}
+                                {primary_routes_config.map((route_config, idx) =>
+                                    this.getRoutesWithSubMenu(route_config, idx)
+                                )}
+                                {this.getLanguageRoutes()}
                                 {this.props.platform_header !== 'DBot' && (
                                     <MobileDrawer.Item
                                         className='header__menu-mobile-theme'
@@ -259,6 +305,7 @@ class ToggleMenuDrawer extends React.Component {
                                         </div>
                                     </MobileDrawer.Item>
                                 )}
+
                                 {secondary_routes_config.map(route_config => this.getRoutesWithSubMenu(route_config))}
                                 {this.props.is_logged_in && (
                                     <MobileDrawer.Item

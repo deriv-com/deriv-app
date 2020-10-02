@@ -1,7 +1,8 @@
 import React from 'react';
 import { Redirect as RouterRedirect } from 'react-router-dom';
 import { getUrlBase, routes } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+
+import { Localize } from '@deriv/translations';
 import { makeLazyLoader } from '_common/lazy-load';
 import { Redirect } from 'App/Containers/Redirect';
 import Endpoint from 'Modules/Endpoint';
@@ -41,29 +42,29 @@ const getModules = ({ is_deriv_crypto }) => {
         {
             path: routes.bot,
             component: Bot,
-            title: localize('Bot'),
+            title: <Localize i18n_default_text='Bot' />,
         },
         {
             path: routes.account_deactivated,
             component: Account,
-            title: localize('Account deactivated'),
+            title: <Localize i18n_default_text='Account deactivated' />,
         },
         {
             path: routes.account,
             component: Account,
-            title: localize('Accounts Settings'),
+            title: <Localize i18n_default_text='Accounts Settings' />,
             icon_component: 'IcUserOutline',
             is_authenticated: true,
             // TODO: Revisit this workaround for subroutes [app-routing]
             routes: [
                 {
-                    title: localize('Profile'),
+                    title: <Localize i18n_default_text='Profile' />,
                     icon: 'IcUserOutline',
                     subroutes: [
                         {
                             path: routes.personal_details,
                             component: Account,
-                            title: localize('Personal details'),
+                            title: <Localize i18n_default_text='Personal details' />,
                             default: true,
                         },
                         ...(is_deriv_crypto
@@ -72,7 +73,7 @@ const getModules = ({ is_deriv_crypto }) => {
                                   {
                                       path: routes.financial_assessment,
                                       component: Account,
-                                      title: localize('Financial assessment'),
+                                      title: <Localize i18n_default_text='Financial assessment' />,
                                   },
                               ]),
                     ],
@@ -81,65 +82,65 @@ const getModules = ({ is_deriv_crypto }) => {
                     ? []
                     : [
                           {
-                              title: localize('Verification'),
+                              title: <Localize i18n_default_text='Verification' />,
                               icon: 'IcVerification',
                               subroutes: [
                                   {
                                       path: routes.proof_of_identity,
                                       component: Account,
-                                      title: localize('Proof of identity'),
+                                      title: <Localize i18n_default_text='Proof of identity' />,
                                   },
                                   {
                                       path: routes.proof_of_address,
                                       component: Account,
-                                      title: localize('Proof of address'),
+                                      title: <Localize i18n_default_text='Proof of address' />,
                                   },
                               ],
                           },
                       ]),
                 {
-                    title: localize('Security and safety'),
+                    title: <Localize i18n_default_text='Security and safety' />,
                     icon: 'IcSecurity',
                     subroutes: [
                         {
                             path: routes.deriv_password,
                             component: Account,
-                            title: localize('Deriv password'),
+                            title: <Localize i18n_default_text='Deriv password' />,
                         },
                         {
                             path: routes.self_exclusion,
                             component: Account,
-                            title: localize('Self exclusion'),
+                            title: <Localize i18n_default_text='Self exclusion' />,
                         },
                         {
                             path: routes.account_limits,
                             component: Account,
-                            title: localize('Account limits'),
+                            title: <Localize i18n_default_text='Account limits' />,
                         },
                         {
                             path: routes.login_history,
                             component: Account,
-                            title: localize('Login history'),
+                            title: <Localize i18n_default_text='Login history' />,
                         },
                         {
                             path: routes.api_token,
                             component: Account,
-                            title: localize('API token'),
+                            title: <Localize i18n_default_text='API token' />,
                         },
                         {
                             path: routes.connected_apps,
                             component: Account,
-                            title: localize('Connected apps'),
+                            title: <Localize i18n_default_text='Connected apps' />,
                         },
                         {
                             path: routes.two_factor_authentication,
                             component: Account,
-                            title: localize('Two-factor authentication'),
+                            title: <Localize i18n_default_text='Two-factor authentication' />,
                         },
                         {
                             path: routes.deactivate_account,
                             component: Account,
-                            title: localize('Deactivate account'),
+                            title: <Localize i18n_default_text='Deactivate account' />,
                         },
                     ],
                 },
@@ -148,33 +149,38 @@ const getModules = ({ is_deriv_crypto }) => {
         {
             path: routes.root,
             component: Trader,
-            title: localize('Trader'),
+            title: <Localize i18n_default_text='Trader' />,
             routes: [
-                { path: routes.mt5, component: Trader, title: localize('MT5'), is_authenticated: false },
+                {
+                    path: routes.mt5,
+                    component: Trader,
+                    title: <Localize i18n_default_text='MT5' />,
+                    is_authenticated: false,
+                },
                 {
                     path: routes.reports,
                     component: Trader,
-                    title: localize('Reports'),
+                    title: <Localize i18n_default_text='Reports' />,
                     icon_component: 'IcReports',
                     is_authenticated: true,
                     routes: [
                         {
                             path: routes.positions,
                             component: Trader,
-                            title: localize('Open positions'),
+                            title: <Localize i18n_default_text='Open positions' />,
                             icon_component: 'IcOpenPositions',
                             default: true,
                         },
                         {
                             path: routes.profit,
                             component: Trader,
-                            title: localize('Profit table'),
+                            title: <Localize i18n_default_text='Profit table' />,
                             icon_component: 'IcProfitTable',
                         },
                         {
                             path: routes.statement,
                             component: Trader,
-                            title: localize('Statement'),
+                            title: <Localize i18n_default_text='Statement' />,
                             icon_component: 'IcStatement',
                         },
                     ],
@@ -182,10 +188,10 @@ const getModules = ({ is_deriv_crypto }) => {
                 {
                     path: routes.contract,
                     component: Trader,
-                    title: localize('Contract Details'),
+                    title: <Localize i18n_default_text='Contract Details' />,
                     is_authenticated: true,
                 },
-                { path: routes.error404, component: Trader, title: localize('Error 404') },
+                { path: routes.error404, component: Trader, title: <Localize i18n_default_text='Error 404' /> },
             ],
         },
     ];
@@ -204,26 +210,26 @@ const lazyLoadComplaintsPolicy = makeLazyLoader(() =>
 const initRoutesConfig = ({ is_deriv_crypto }) => [
     { path: routes.index, component: RouterRedirect, title: '', to: routes.root },
     { path: routes.endpoint, component: Endpoint, title: 'Endpoint' }, // doesn't need localization as it's for internal use
-    { path: routes.redirect, component: Redirect, title: localize('Redirect') },
+    { path: routes.redirect, component: Redirect, title: <Localize i18n_default_text='Redirect' /> },
     {
         path: routes.cashier,
         component: lazyLoadCashierComponent('Cashier'),
         is_modal: true,
         is_authenticated: true,
-        title: localize('Cashier'),
+        title: <Localize i18n_default_text='Cashier' />,
         icon_component: 'IcCashier',
         routes: [
             {
                 path: routes.cashier_deposit,
                 component: lazyLoadCashierComponent('Deposit'),
-                title: localize('Deposit'),
+                title: <Localize i18n_default_text='Deposit' />,
                 icon_component: 'IcWalletAdd',
                 default: true,
             },
             {
                 path: routes.cashier_withdrawal,
                 component: lazyLoadCashierComponent('Withdrawal'),
-                title: localize('Withdrawal'),
+                title: <Localize i18n_default_text='Withdrawal' />,
                 icon_component: 'IcWalletMinus',
             },
             ...(is_deriv_crypto
@@ -232,14 +238,14 @@ const initRoutesConfig = ({ is_deriv_crypto }) => [
                       {
                           path: routes.cashier_pa,
                           component: lazyLoadCashierComponent('PaymentAgent'),
-                          title: localize('Payment agents'),
+                          title: <Localize i18n_default_text='Payment agents' />,
                           icon_component: 'IcPaymentAgent',
                       },
                   ]),
             {
                 path: routes.cashier_acc_transfer,
                 component: lazyLoadCashierComponent('AccountTransfer'),
-                title: localize('Transfer'),
+                title: <Localize i18n_default_text='Transfer' />,
                 icon_component: 'IcAccountTransfer',
             },
             ...(is_deriv_crypto
@@ -248,13 +254,13 @@ const initRoutesConfig = ({ is_deriv_crypto }) => [
                       {
                           path: routes.cashier_pa_transfer,
                           component: lazyLoadCashierComponent('PaymentAgentTransfer'),
-                          title: localize('Transfer to client'),
+                          title: <Localize i18n_default_text='Transfer to client' />,
                           icon_component: 'IcAccountTransfer',
                       },
                       {
                           path: routes.cashier_p2p,
                           component: lazyLoadCashierComponent('P2PCashier'),
-                          title: localize('DP2P'),
+                          title: <Localize i18n_default_text='DP2P' />,
                           icon_component: 'IcDp2p',
                       },
                   ]),
@@ -262,7 +268,7 @@ const initRoutesConfig = ({ is_deriv_crypto }) => [
                 id: 'gtm-onramp-tab',
                 path: routes.cashier_onramp,
                 component: lazyLoadCashierComponent('OnRamp'),
-                title: localize('Fiat onramp'),
+                title: <Localize i18n_default_text='Fiat onramp' />,
                 icon_component: 'IcCashierOnRamp',
             },
         ],
@@ -270,7 +276,7 @@ const initRoutesConfig = ({ is_deriv_crypto }) => [
     {
         path: routes.complaints_policy,
         component: lazyLoadComplaintsPolicy(),
-        title: localize('Complaints policy'),
+        title: <Localize i18n_default_text='Complaints policy' />,
         icon_component: 'IcComplaintsPolicy',
         is_authenticated: true,
     },
@@ -280,7 +286,7 @@ const initRoutesConfig = ({ is_deriv_crypto }) => [
 let routesConfig;
 
 // For default page route if page/path is not found, must be kept at the end of routes_config array
-const route_default = { component: Page404, title: localize('Error 404') };
+const route_default = { component: Page404, title: <Localize i18n_default_text='Error 404' /> };
 
 // is_deriv_crypto = true as default to prevent route ui blinking
 const getRoutesConfig = ({ is_deriv_crypto = true }) => {

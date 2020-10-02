@@ -1,17 +1,13 @@
 import * as React from 'react';
 import { Loading } from '@deriv/components';
+import { useIsMounted } from '@deriv/shared';
 import { Channel, SendBirdProvider } from 'sendbird-uikit';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { getShortNickname, generateHexColourFromNickname } from 'Utils/string';
 import 'sendbird-uikit/dist/index.css';
 
 const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url, nickname }) => {
-    const is_mounted = React.useRef(false);
-
-    React.useEffect(() => {
-        is_mounted.current = true;
-        return () => (is_mounted.current = false);
-    });
+    const isMounted = useIsMounted();
 
     const [is_loading, setIsLoading] = React.useState(true);
     const { is_dark_mode_on } = React.useContext(Dp2pContext);
@@ -36,7 +32,7 @@ const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url, nickname }) 
 
                     el_sendbird_conversation.setAttribute('style', 'display: flex;');
 
-                    if (is_mounted.current) {
+                    if (isMounted()) {
                         setIsLoading(false);
                     }
 
@@ -87,7 +83,7 @@ const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url, nickname }) 
                 el_sendbird_conversation.setAttribute('style', 'display: flex;');
             }
 
-            if (is_mounted.current) {
+            if (isMounted()) {
                 setIsLoading(false);
             }
         }, 10000);

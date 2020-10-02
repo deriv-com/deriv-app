@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ThemedScrollbars } from '@deriv/components';
-import { getFormattedText } from '@deriv/shared';
+import { getFormattedText, useIsMounted } from '@deriv/shared';
 import { Localize, localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
 import OrderDetailsFooter from './order-details-footer.jsx';
@@ -37,10 +37,11 @@ const OrderDetails = ({ order_information, chat_info }) => {
         status_string,
     } = order_information;
 
-    const is_mounted = React.useRef(false);
     const [channel_url, setChannelUrl] = React.useState(chat_channel_url);
     const [should_show_popup, setShouldShowPopup] = React.useState(false);
     const [popup_options, setPopupOptions] = React.useState({});
+    const isMounted = useIsMounted();
+
     const onCancelClick = () => setShouldShowPopup(false);
     const handleShowPopup = options => {
         setPopupOptions(options);
@@ -48,24 +49,22 @@ const OrderDetails = ({ order_information, chat_info }) => {
     };
 
     React.useEffect(() => {
-        is_mounted.current = true;
+        if (isMounted()) {
+            if (!channel_url) {
+                // If order_information doesn't have channel_url this is a new order
+                // and we need to instruct BE to create a chat on Sendbird's side.
+                requestWS({ p2p_chat_create: 1, order_id: id }).then(response => {
+                    if (response.error) {
+                        // TODO: Handle error.
+                        return;
+                    }
 
-        if (!channel_url) {
-            // If order_information doesn't have channel_url this is a new order
-            // and we need to instruct BE to create a chat on Sendbird's side.
-            requestWS({ p2p_chat_create: 1, order_id: id }).then(response => {
-                if (response.error) {
-                    // TODO: Handle error.
-                    return;
-                }
-
-                if (is_mounted.current) {
-                    setChannelUrl(response.p2p_chat_create);
-                }
-            });
+                    if (isMounted()) {
+                        setChannelUrl(response.p2p_chat_create);
+                    }
+                });
+            }
         }
-
-        return () => (is_mounted.current = false);
     }, []);
 
     return (

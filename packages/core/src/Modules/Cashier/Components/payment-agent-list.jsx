@@ -26,6 +26,12 @@ class PaymentAgentList extends React.Component {
                 </div>
             );
         }
+
+        const list_with_default = [
+            { text: <Localize i18n_default_text='All payment agents' />, value: 0 },
+            ...this.props.supported_banks,
+        ];
+
         return (
             <div className='cashier__wrapper--align-left'>
                 <p className='cashier__paragraph'>
@@ -74,7 +80,7 @@ class PaymentAgentList extends React.Component {
                                         classNameDisplay='cashier__drop-down-display payment-agent__filter-display'
                                         classNameDisplaySpan='cashier__drop-down-display-span'
                                         classNameItems='cashier__drop-down-items'
-                                        list={this.props.supported_banks}
+                                        list={list_with_default}
                                         name='payment_methods'
                                         value={this.props.selected_bank}
                                         onChange={this.props.onChangePaymentMethod}

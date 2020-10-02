@@ -7,6 +7,7 @@ export default class ToolbarStore {
         this.root_store = root_store;
     }
 
+    @observable is_animation_info_modal_open = false;
     @observable is_dialog_open = false;
     @observable is_toolbox_open = false;
     @observable is_search_focus = false;
@@ -79,6 +80,11 @@ export default class ToolbarStore {
     };
 
     @action.bound
+    toggleAnimationInfoModal() {
+        this.is_animation_info_modal_open = !this.is_animation_info_modal_open;
+    }
+
+    @action.bound
     onResetClick() {
         this.is_dialog_open = true;
     }
@@ -103,8 +109,12 @@ export default class ToolbarStore {
             },
             'reset'
         );
+        this.is_dialog_open = false;
 
-        this.closeResetDialog();
+        const { run_panel } = this.root_store;
+        if (run_panel.is_running) {
+            this.root_store.run_panel.onStopButtonClick();
+        }
     }
 
     onSortClick = () => {

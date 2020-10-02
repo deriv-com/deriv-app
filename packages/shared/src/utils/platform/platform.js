@@ -55,8 +55,7 @@ export const getPlatformRedirect = routing_history => {
         return { name: platform_name.DMT5, route: routes.mt5 };
     if (isNavigationFromPlatform(routing_history, routes.smarttrader))
         return { name: platform_name.SmartTrader, route: routes.smarttrader };
-    if (isNavigationFromPlatform(routing_history, routes.cashier_p2p, true))
-        return { name: 'P2P', route: routes.cashier_p2p };
+    if (isNavegationFromP2P(routing_history, routes.cashier_p2p)) return { name: 'P2P', route: routes.cashier_p2p };
     return { name: platform_name.DTrader, route: routes.trade };
 };
 

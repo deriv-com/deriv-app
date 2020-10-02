@@ -5,21 +5,18 @@ import { Localize } from '@deriv/translations';
 import { Mt5AccountCopy } from './mt5-account-copy.jsx';
 import { getMT5WebTerminalLink } from '../Helpers/constants';
 
-const LoginBadge = ({ display_login }) => {
-    console.log(display_login);
-    return (
-        <div className='mt5-account-card__login'>
-            <Localize
-                i18n_default_text='<0>Account login no.</0><1>{{display_login}}</1>'
-                values={{
-                    display_login,
-                }}
-                components={[<span key={0} />, <strong key={1} />]}
-            />
-            <Mt5AccountCopy text={display_login} />
-        </div>
-    );
-};
+const LoginBadge = ({ display_login }) => (
+    <div className='mt5-account-card__login'>
+        <Localize
+            i18n_default_text='<0>Account login no.</0><1>{{display_login}}</1>'
+            values={{
+                display_login,
+            }}
+            components={[<span key={0} />, <strong key={1} />]}
+        />
+        <Mt5AccountCopy text={display_login} />
+    </div>
+);
 
 const MT5AccountCard = ({
     button_label,

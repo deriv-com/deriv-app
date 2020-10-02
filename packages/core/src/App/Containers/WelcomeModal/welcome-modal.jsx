@@ -71,7 +71,7 @@ const WelcomeModal = ({ toggleWelcomeModal, history }) => {
 
     const switchPlatform = React.useCallback(
         route => {
-            toggleWelcomeModal(false, true);
+            toggleWelcomeModal({ is_visible: false, should_persist: true });
             history.push(route);
         },
         [toggleWelcomeModal, history]

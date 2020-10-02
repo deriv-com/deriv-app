@@ -64,7 +64,7 @@ class Account extends React.Component {
 
         list_groups = list_groups.map((route_group) => ({
             icon: route_group.icon,
-            label: route_group.title,
+            label: route_group.getTitle(),
             subitems: route_group.subroutes.map((sub) => subroutes.indexOf(sub)),
         }));
         let selected_content = subroutes.filter((route) => route.path === this.props.location.pathname)[0];

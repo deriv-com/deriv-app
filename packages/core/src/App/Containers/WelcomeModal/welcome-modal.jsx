@@ -102,7 +102,7 @@ const WelcomeModal = ({ toggleWelcomeModal, history }) => {
                     })}
                 >
                     <Icon icon='IcArrowLeftCurly' size={43} />
-                    <p className='welcome__message__text'>{localize('Not sure? try this')}</p>
+                    <p className='welcome__message__text'>{localize('Not sure? Try this')}</p>
                 </div>
                 <div className='welcome__body'>
                     <WelcomeColumn

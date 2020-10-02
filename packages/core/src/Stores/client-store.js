@@ -982,10 +982,7 @@ export default class ClientStore extends BaseStore {
         this.setLoginId(LocalStore.get('active_loginid'));
         this.setAccounts(LocalStore.getObject(storage_key));
         if (this.is_logged_in && !this.switched && !this.has_any_real_account) {
-            if (!LocalStore.get('has_viewed_welcome_screen')) {
-                this.root_store.ui.toggleWelcomeModal(true);
-            }
-            LocalStore.set('has_viewed_welcome_screen', true);
+            this.root_store.ui.toggleWelcomeModal(true, false);
         }
         this.setSwitched('');
         let client = this.accounts[this.loginid];
@@ -1620,7 +1617,7 @@ export default class ClientStore extends BaseStore {
                     this.root_store.ui.showAccountTypesModalForEuropean();
                 }
 
-                this.root_store.ui.toggleWelcomeModal(true);
+                this.root_store.ui.toggleWelcomeModal(true, true);
             }
         });
     }

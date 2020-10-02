@@ -2021,7 +2021,7 @@
     "-206909651": "O ponto de entrada é o preço de mercado quando seu contrato é processado por nossos servidores.",
     "-149836494": "O número de referência da sua transação é {{transaction_id}}",
     "-1382749084": "Voltar as negociações",
-    "-1221707629": "<0>Account login no.</0><1>{{display_login}}</1>",
+    "-1221707629": "<0>Número de login da conta</0><1>{{display_login}}</1>",
     "-162753510": "Adicionar uma conta real",
     "-522767852": "DEMO",
     "-742647506": "Transf. de fundos",

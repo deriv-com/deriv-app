@@ -47,7 +47,6 @@ export const isCustomJournalMessage = (
             showErrorMessage,
             centerAndHighlightBlock
         );
-        // pushMessage(message.toString());
         return true;
     }
     // notify list block

@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Swipeable } from 'react-swipeable';
 import classNames from 'classnames';
 import Card from './carousel-card.jsx';
 import Nav from './carousel-nav.jsx';
@@ -39,58 +40,60 @@ const Carousel = ({
     };
 
     return (
-        <div className={classNames('carousel', className)}>
-            {list.length > 1 && (
-                <Nav
-                    active_index={active_index}
-                    className='carousel__nav--upper'
-                    handleNextClick={handleNextClick}
-                    handlePrevClick={handlePrevClick}
-                    handleNavigationClick={setActiveIndex}
-                    show_bullet={show_bullet && bullet_position === 'top'}
-                    show_nav={show_nav && nav_position === 'top'}
-                    list={list}
-                />
-            )}
-            <div className='carousel__container'>
-                {nav_position === 'middle' && (
-                    <span className='carousel__icon' onClick={handlePrevClick}>
-                        <Icon icon='IcChevronLeft' size='24' />
-                    </span>
+        <Swipeable onSwipedLeft={handleNextClick} onSwipedRight={handlePrevClick}>
+            <div className={classNames('carousel', className)}>
+                {list.length > 1 && (
+                    <Nav
+                        active_index={active_index}
+                        className='carousel__nav--upper'
+                        handleNextClick={handleNextClick}
+                        handlePrevClick={handlePrevClick}
+                        handleNavigationClick={setActiveIndex}
+                        show_bullet={show_bullet && bullet_position === 'top'}
+                        show_nav={show_nav && nav_position === 'top'}
+                        list={list}
+                    />
                 )}
+                <div className='carousel__container'>
+                    {nav_position === 'middle' && (
+                        <span className='carousel__icon' onClick={handlePrevClick}>
+                            <Icon icon='IcChevronLeft' size='24' />
+                        </span>
+                    )}
 
-                <div className='carousel__box'>
-                    <div
-                        className='carousel__wrapper'
-                        style={{ transform: `translate3d(-${350 * active_index}px, 0, 0)` }}
-                    >
-                        {list.map((type, idx) => (
-                            <Card key={idx} onClick={handleSelect}>
-                                {list[idx]}
-                            </Card>
-                        ))}
+                    <div className='carousel__box'>
+                        <div
+                            className='carousel__wrapper'
+                            style={{ transform: `translate3d(-${350 * active_index}px, 0, 0)` }}
+                        >
+                            {list.map((type, idx) => (
+                                <Card key={idx} onClick={handleSelect}>
+                                    {list[idx]}
+                                </Card>
+                            ))}
+                        </div>
                     </div>
-                </div>
 
-                {nav_position === 'middle' && (
-                    <span className='carousel__icon' onClick={handleNextClick}>
-                        <Icon icon='IcChevronRight' size='24' />
-                    </span>
+                    {nav_position === 'middle' && (
+                        <span className='carousel__icon' onClick={handleNextClick}>
+                            <Icon icon='IcChevronRight' size='24' />
+                        </span>
+                    )}
+                </div>
+                {list.length > 1 && (
+                    <Nav
+                        active_index={active_index}
+                        className='carousel__nav--lower'
+                        handleNextClick={handleNextClick}
+                        handlePrevClick={handlePrevClick}
+                        handleNavigationClick={setActiveIndex}
+                        show_bullet={show_bullet && bullet_position === 'bottom'}
+                        show_nav={show_nav && nav_position === 'bottom'}
+                        list={list}
+                    />
                 )}
             </div>
-            {list.length > 1 && (
-                <Nav
-                    active_index={active_index}
-                    className='carousel__nav--lower'
-                    handleNextClick={handleNextClick}
-                    handlePrevClick={handlePrevClick}
-                    handleNavigationClick={setActiveIndex}
-                    show_bullet={show_bullet && bullet_position === 'bottom'}
-                    show_nav={show_nav && nav_position === 'bottom'}
-                    list={list}
-                />
-            )}
-        </div>
+        </Swipeable>
     );
 };
 

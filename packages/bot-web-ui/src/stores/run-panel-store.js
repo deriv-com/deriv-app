@@ -533,10 +533,22 @@ export default class RunPanelStore {
 
         RunPanelStore.unregisterBotListeners();
         this.disposeIsSocketOpenedListener();
-        this.disposeStatisticsListener();
-        this.disposeSwitchAccountListener();
-        journal.disposeJournalListeners();
-        transactions.disposeTransactionListeners();
+
+        if (typeof this.disposeStatisticsListener === 'function') {
+            this.disposeStatisticsListener();
+        }
+
+        if (typeof this.disposeSwitchAccountListener === 'function') {
+            this.disposeSwitchAccountListener();
+        }
+
+        if (typeof journal.disposeJournalListeners === 'function') {
+            journal.disposeJournalListeners();
+        }
+
+        if (typeof transactions.disposeTransactionListeners === 'function') {
+            transactions.disposeTransactionListeners();
+        }
 
         observer.unregisterAll('ui.log.error');
         observer.unregisterAll('ui.log.notify');

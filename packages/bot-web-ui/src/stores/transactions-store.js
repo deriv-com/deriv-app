@@ -6,13 +6,12 @@ export default class TransactionsStore {
     constructor(root_store) {
         this.root_store = root_store;
         this.transaction_storage_key = 'transaction_cache';
-        this.get_transaction_elements = JSON.parse(sessionStorage.getItem(this.transaction_storage_key));
 
         this.disposeTransactionsListener = reaction(
             () => this.elements,
             elements => {
                 const { client } = this.root_store.core;
-                const stored_transactions = JSON.parse(sessionStorage.getItem(this.transaction_storage_key)) ?? {};
+                const stored_transactions = this.getTransactionSessionStorage();
 
                 const new_elements = { transaction_elements: elements };
                 stored_transactions[client.loginid] = new_elements;
@@ -23,9 +22,13 @@ export default class TransactionsStore {
     }
 
     @observable elements =
-        this.get_transaction_elements?.[this.root_store.core.client.loginid]?.transaction_elements ?? [];
+        this.getTransactionSessionStorage()?.[this.root_store.core.client.loginid]?.transaction_elements ?? [];
 
     @observable active_transaction_id = null;
+
+    getTransactionSessionStorage = () => {
+        return JSON.parse(sessionStorage.getItem(this.transaction_storage_key)) ?? {};
+    };
 
     @action.bound
     onBotContractEvent(data) {

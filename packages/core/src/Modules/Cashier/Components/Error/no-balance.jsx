@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { Button, Icon, Text } from '@deriv/components';
+import { Button, Icon } from '@deriv/components';
 import { routes, getCurrencyDisplayCode } from '@deriv/shared';
 
 import { localize, Localize } from '@deriv/translations';
@@ -24,19 +24,11 @@ class NoBalance extends React.Component {
                         values={{ currency: getCurrencyDisplayCode(this.props.currency) }}
                     />
                 </h2>
-                <Text
-                    font_size='1.4rem'
-                    line_height='1.43'
-                    max_width='70%'
-                    margin_left='auto'
-                    margin_right='auto'
-                    mobileL={{ margin: '0', padding: '0', max_width: '100%', text_align: 'left' }}
-                >
+
+                <p className='cashier__text'>
                     <Localize i18n_default_text='Please make a deposit to use this feature.' />
-                </Text>
-                {/* <p className='cashier__text'>
-                    <Localize i18n_default_text='Please make a deposit to use this feature.' />
-                </p> */}
+                </p>
+
                 <Button
                     className='cashier__no-balance-button'
                     has_effect

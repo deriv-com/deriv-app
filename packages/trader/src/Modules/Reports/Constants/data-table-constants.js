@@ -19,6 +19,7 @@ const getModeFromValue = key => {
         sell: 'danger',
         withdrawal: 'info',
         default: 'default',
+        adjustment: 'adjustment',
     };
 
     if (Object.keys(map).find(x => x === key)) {
@@ -147,7 +148,7 @@ export const getProfitTableColumnsTemplate = (currency, items_count) => [
 ];
 export const getOpenPositionsColumnsTemplate = currency => [
     {
-        title: 'Type',
+        title: localize('Type'),
         col_index: 'type',
         renderCellContent: ({ cell_value, row_obj, is_footer }) => {
             if (is_footer) return localize('Total');
@@ -218,7 +219,7 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
     server_time,
 }) => [
     {
-        title: 'Type',
+        title: localize('Type'),
         col_index: 'type',
         renderCellContent: ({ cell_value, row_obj, is_footer }) => {
             if (is_footer) return localize('Total');
@@ -281,10 +282,18 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
             return (
                 <React.Fragment>
                     <div>
-                        {take_profit ? <Money has_sign amount={take_profit.order_amount} currency={currency} /> : '-'}
+                        {take_profit?.order_amount ? (
+                            <Money has_sign amount={take_profit.order_amount} currency={currency} />
+                        ) : (
+                            '-'
+                        )}
                     </div>
                     <div>
-                        {stop_loss ? <Money has_sign amount={stop_loss.order_amount} currency={currency} /> : '-'}
+                        {stop_loss?.order_amount ? (
+                            <Money has_sign amount={stop_loss.order_amount} currency={currency} />
+                        ) : (
+                            '-'
+                        )}
                     </div>
                 </React.Fragment>
             );

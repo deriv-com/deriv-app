@@ -39,7 +39,7 @@ class Reports extends React.Component {
                 options.push({
                     default: route.default,
                     icon: route.icon_component,
-                    label: route.title,
+                    label: route.getTitle(),
                     value: route.component,
                     path: route.path,
                 });

@@ -2,7 +2,8 @@ import { observable, action, reaction, computed, runInAction } from 'mobx';
 import { localize } from '@deriv/translations';
 import { error_types, unrecoverable_errors, observer, message_types } from '@deriv/bot-skeleton';
 import { contract_stages } from '../constants/contract-stage';
-import { switch_account_notification } from '../utils/bot-notifications';
+import { journalError, switch_account_notification } from '../utils/bot-notifications';
+import { run_panel } from '../constants/run-panel';
 
 export default class RunPanelStore {
     constructor(root_store) {
@@ -74,6 +75,7 @@ export default class RunPanelStore {
     @observable dialog_options = {};
     @observable has_open_contract = false;
     @observable is_running = false;
+    @observable is_statistics_info_modal_open = false;
     @observable is_drawer_open = true;
     @observable is_dialog_open = false;
 
@@ -188,6 +190,11 @@ export default class RunPanelStore {
         this.setContractStage(contract_stages.NOT_RUNNING);
     }
     // #endregion
+
+    @action.bound
+    toggleStatisticsInfoModal() {
+        this.is_statistics_info_modal_open = !this.is_statistics_info_modal_open;
+    }
 
     // #region Drawer
     @action.bound
@@ -444,11 +451,25 @@ export default class RunPanelStore {
 
     @action.bound
     showErrorMessage(data) {
-        const { journal } = this.root_store;
+        const { journal, ui } = this.root_store;
         journal.onError(data);
         if (journal.journal_filters.some(filter => filter === message_types.ERROR)) {
-            this.setActiveTabIndex(2);
+            this.toggleDrawer(true);
+            this.setActiveTabIndex(run_panel.JOURNAL);
+        } else {
+            ui.addNotificationMessage(journalError(this.switchToJournal));
+            ui.removeNotificationMessage({ key: 'bot_error' });
         }
+    }
+
+    @action.bound
+    switchToJournal() {
+        const { journal, ui } = this.root_store;
+        journal.journal_filters.push(message_types.ERROR);
+        this.setActiveTabIndex(run_panel.JOURNAL);
+        this.toggleDrawer(true);
+        ui.toggleNotificationsModal();
+        ui.removeNotificationByKey({ key: 'bot_error' });
     }
 
     static unregisterBotListeners() {

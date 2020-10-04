@@ -88,7 +88,7 @@ class RealAccountSignup extends React.Component {
                     ),
                 },
                 {
-                    body: () => <StatusDialogContainer />,
+                    body: () => <StatusDialogContainer currency={this.props.state_value.currency} />,
                 },
                 {
                     body: () => (
@@ -122,9 +122,10 @@ class RealAccountSignup extends React.Component {
         return '740px'; // Account wizard modal
     }
 
-    showStatusDialog = () => {
+    showStatusDialog = currency => {
         this.props.setParams({
             active_modal_index: 3,
+            currency,
         });
     };
 

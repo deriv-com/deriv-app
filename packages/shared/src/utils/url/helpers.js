@@ -1,14 +1,16 @@
 export const getUrlSmartTrader = () => {
     const { is_staging_deriv_app, is_staging_deriv_crypto } = getPlatformFromUrl();
+    const i18n_language = window.localStorage.getItem('i18n_language') || 'en';
+    let base_link = '';
     if (is_staging_deriv_app) {
-        return 'https://staging-smarttrader.deriv.com';
+        base_link = 'https://staging-smarttrader.deriv.com';
+    } else if (is_staging_deriv_crypto) {
+        base_link = 'https://staging-smarttrader.derivcrypto.com';
+    } else {
+        base_link = 'https://smarttrader.deriv.com';
     }
 
-    if (is_staging_deriv_crypto) {
-        return 'https://staging-smarttrader.derivcrypto.com';
-    }
-
-    return 'https://smarttrader.deriv.com';
+    return `${base_link}/${i18n_language.toLowerCase()}/trading.html`;
 };
 
 export const getPlatformFromUrl = (domain = window.location.hostname) => {

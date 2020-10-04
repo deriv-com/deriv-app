@@ -13,7 +13,7 @@ jobs:
         id: vercel_preview_url
         uses: aaron-binary/vercel-preview-url-action@master
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Generate Deriv App ID for deployment Preview URL
         id: generate_app_id
         uses: aaron-binary/deriv-app-id-action@master

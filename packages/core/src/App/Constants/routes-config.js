@@ -41,29 +41,30 @@ const getModules = ({ is_deriv_crypto }) => {
         {
             path: routes.bot,
             component: Bot,
-            title: localize('Bot'),
+            // Don't use `Localize` component since native html tag like `option` cannot render them
+            getTitle: () => localize('Bot'),
         },
         {
             path: routes.account_deactivated,
             component: Account,
-            title: localize('Account deactivated'),
+            getTitle: () => localize('Account deactivated'),
         },
         {
             path: routes.account,
             component: Account,
-            title: localize('Accounts Settings'),
+            getTitle: () => localize('Accounts Settings'),
             icon_component: 'IcUserOutline',
             is_authenticated: true,
             // TODO: Revisit this workaround for subroutes [app-routing]
             routes: [
                 {
-                    title: localize('Profile'),
+                    getTitle: () => localize('Profile'),
                     icon: 'IcUserOutline',
                     subroutes: [
                         {
                             path: routes.personal_details,
                             component: Account,
-                            title: localize('Personal details'),
+                            getTitle: () => localize('Personal details'),
                             default: true,
                         },
                         ...(is_deriv_crypto
@@ -72,7 +73,7 @@ const getModules = ({ is_deriv_crypto }) => {
                                   {
                                       path: routes.financial_assessment,
                                       component: Account,
-                                      title: localize('Financial assessment'),
+                                      getTitle: () => localize('Financial assessment'),
                                   },
                               ]),
                     ],
@@ -81,65 +82,65 @@ const getModules = ({ is_deriv_crypto }) => {
                     ? []
                     : [
                           {
-                              title: localize('Verification'),
+                              getTitle: () => localize('Verification'),
                               icon: 'IcVerification',
                               subroutes: [
                                   {
                                       path: routes.proof_of_identity,
                                       component: Account,
-                                      title: localize('Proof of identity'),
+                                      getTitle: () => localize('Proof of identity'),
                                   },
                                   {
                                       path: routes.proof_of_address,
                                       component: Account,
-                                      title: localize('Proof of address'),
+                                      getTitle: () => localize('Proof of address'),
                                   },
                               ],
                           },
                       ]),
                 {
-                    title: localize('Security and safety'),
+                    getTitle: () => localize('Security and safety'),
                     icon: 'IcSecurity',
                     subroutes: [
                         {
                             path: routes.deriv_password,
                             component: Account,
-                            title: localize('Deriv password'),
+                            getTitle: () => localize('Deriv password'),
                         },
                         {
                             path: routes.self_exclusion,
                             component: Account,
-                            title: localize('Self exclusion'),
+                            getTitle: () => localize('Self exclusion'),
                         },
                         {
                             path: routes.account_limits,
                             component: Account,
-                            title: localize('Account limits'),
+                            getTitle: () => localize('Account limits'),
                         },
                         {
                             path: routes.login_history,
                             component: Account,
-                            title: localize('Login history'),
+                            getTitle: () => localize('Login history'),
                         },
                         {
                             path: routes.api_token,
                             component: Account,
-                            title: localize('API token'),
+                            getTitle: () => localize('API token'),
                         },
                         {
                             path: routes.connected_apps,
                             component: Account,
-                            title: localize('Connected apps'),
+                            getTitle: () => localize('Connected apps'),
                         },
                         {
                             path: routes.two_factor_authentication,
                             component: Account,
-                            title: localize('Two-factor authentication'),
+                            getTitle: () => localize('Two-factor authentication'),
                         },
                         {
                             path: routes.deactivate_account,
                             component: Account,
-                            title: localize('Deactivate account'),
+                            getTitle: () => localize('Deactivate account'),
                         },
                     ],
                 },
@@ -148,33 +149,33 @@ const getModules = ({ is_deriv_crypto }) => {
         {
             path: routes.root,
             component: Trader,
-            title: localize('Trader'),
+            getTitle: () => localize('Trader'),
             routes: [
-                { path: routes.mt5, component: Trader, title: localize('MT5'), is_authenticated: false },
+                { path: routes.mt5, component: Trader, getTitle: () => localize('MT5'), is_authenticated: false },
                 {
                     path: routes.reports,
                     component: Trader,
-                    title: localize('Reports'),
+                    getTitle: () => localize('Reports'),
                     icon_component: 'IcReports',
                     is_authenticated: true,
                     routes: [
                         {
                             path: routes.positions,
                             component: Trader,
-                            title: localize('Open positions'),
+                            getTitle: () => localize('Open positions'),
                             icon_component: 'IcOpenPositions',
                             default: true,
                         },
                         {
                             path: routes.profit,
                             component: Trader,
-                            title: localize('Profit table'),
+                            getTitle: () => localize('Profit table'),
                             icon_component: 'IcProfitTable',
                         },
                         {
                             path: routes.statement,
                             component: Trader,
-                            title: localize('Statement'),
+                            getTitle: () => localize('Statement'),
                             icon_component: 'IcStatement',
                         },
                     ],
@@ -182,10 +183,10 @@ const getModules = ({ is_deriv_crypto }) => {
                 {
                     path: routes.contract,
                     component: Trader,
-                    title: localize('Contract Details'),
+                    getTitle: () => localize('Contract Details'),
                     is_authenticated: true,
                 },
-                { path: routes.error404, component: Trader, title: localize('Error 404') },
+                { path: routes.error404, component: Trader, getTitle: () => localize('Error 404') },
             ],
         },
     ];
@@ -202,28 +203,28 @@ const lazyLoadComplaintsPolicy = makeLazyLoader(() =>
 // Order matters
 // TODO: search tag: test-route-parent-info -> Enable test for getting route parent info when there are nested routes
 const initRoutesConfig = ({ is_deriv_crypto }) => [
-    { path: routes.index, component: RouterRedirect, title: '', to: routes.root },
-    { path: routes.endpoint, component: Endpoint, title: 'Endpoint' }, // doesn't need localization as it's for internal use
-    { path: routes.redirect, component: Redirect, title: localize('Redirect') },
+    { path: routes.index, component: RouterRedirect, getTitle: () => '', to: routes.root },
+    { path: routes.endpoint, component: Endpoint, getTitle: () => 'Endpoint' }, // doesn't need localization as it's for internal use
+    { path: routes.redirect, component: Redirect, getTitle: () => localize('Redirect') },
     {
         path: routes.cashier,
         component: lazyLoadCashierComponent('Cashier'),
         is_modal: true,
         is_authenticated: true,
-        title: localize('Cashier'),
+        getTitle: () => localize('Cashier'),
         icon_component: 'IcCashier',
         routes: [
             {
                 path: routes.cashier_deposit,
                 component: lazyLoadCashierComponent('Deposit'),
-                title: localize('Deposit'),
+                getTitle: () => localize('Deposit'),
                 icon_component: 'IcWalletAdd',
                 default: true,
             },
             {
                 path: routes.cashier_withdrawal,
                 component: lazyLoadCashierComponent('Withdrawal'),
-                title: localize('Withdrawal'),
+                getTitle: () => localize('Withdrawal'),
                 icon_component: 'IcWalletMinus',
             },
             ...(is_deriv_crypto
@@ -232,14 +233,14 @@ const initRoutesConfig = ({ is_deriv_crypto }) => [
                       {
                           path: routes.cashier_pa,
                           component: lazyLoadCashierComponent('PaymentAgent'),
-                          title: localize('Payment agents'),
+                          getTitle: () => localize('Payment agents'),
                           icon_component: 'IcPaymentAgent',
                       },
                   ]),
             {
                 path: routes.cashier_acc_transfer,
                 component: lazyLoadCashierComponent('AccountTransfer'),
-                title: localize('Transfer'),
+                getTitle: () => localize('Transfer'),
                 icon_component: 'IcAccountTransfer',
             },
             ...(is_deriv_crypto
@@ -248,13 +249,13 @@ const initRoutesConfig = ({ is_deriv_crypto }) => [
                       {
                           path: routes.cashier_pa_transfer,
                           component: lazyLoadCashierComponent('PaymentAgentTransfer'),
-                          title: localize('Transfer to client'),
+                          getTitle: () => localize('Transfer to client'),
                           icon_component: 'IcAccountTransfer',
                       },
                       {
                           path: routes.cashier_p2p,
                           component: lazyLoadCashierComponent('P2PCashier'),
-                          title: localize('DP2P'),
+                          getTitle: () => localize('DP2P'),
                           icon_component: 'IcDp2p',
                       },
                   ]),
@@ -262,7 +263,7 @@ const initRoutesConfig = ({ is_deriv_crypto }) => [
                 id: 'gtm-onramp-tab',
                 path: routes.cashier_onramp,
                 component: lazyLoadCashierComponent('OnRamp'),
-                title: localize('Fiat onramp'),
+                getTitle: () => localize('Fiat onramp'),
                 icon_component: 'IcCashierOnRamp',
             },
         ],
@@ -270,7 +271,7 @@ const initRoutesConfig = ({ is_deriv_crypto }) => [
     {
         path: routes.complaints_policy,
         component: lazyLoadComplaintsPolicy(),
-        title: localize('Complaints policy'),
+        getTitle: () => localize('Complaints policy'),
         icon_component: 'IcComplaintsPolicy',
         is_authenticated: true,
     },
@@ -280,7 +281,7 @@ const initRoutesConfig = ({ is_deriv_crypto }) => [
 let routesConfig;
 
 // For default page route if page/path is not found, must be kept at the end of routes_config array
-const route_default = { component: Page404, title: localize('Error 404') };
+const route_default = { component: Page404, getTitle: () => localize('Error 404') };
 
 // is_deriv_crypto = true as default to prevent route ui blinking
 const getRoutesConfig = ({ is_deriv_crypto = true }) => {

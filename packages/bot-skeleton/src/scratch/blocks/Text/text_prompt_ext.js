@@ -18,7 +18,10 @@ Blockly.Blocks.text_prompt_ext = {
     },
     definition() {
         return {
-            message0: localize('prompt for %1 with message %2'),
+            message0: localize('prompt for {{ string_or_number }} with message {{ input_text }}', {
+                string_or_number: '%1',
+                input_text: '%2',
+            }),
             args0: [
                 {
                     type: 'field_dropdown',

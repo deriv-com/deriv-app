@@ -3,7 +3,7 @@ import { localize } from '@deriv/translations';
 Blockly.Blocks.period = {
     init() {
         this.jsonInit({
-            message0: localize('Period %1'),
+            message0: localize('Period {{ input_period }}', { input_period: '%1' }),
             args0: [
                 {
                     type: 'input_value',

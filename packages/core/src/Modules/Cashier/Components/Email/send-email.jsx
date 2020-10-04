@@ -22,7 +22,9 @@ class SendEmail extends React.Component {
                             <Localize i18n_default_text='To initiate a withdrawal, we need to authenticate you via email.' />
                         </p> */}
                         <Text size='paragraph' color='general'>
-                            <Localize i18n_default_text='To initiate a withdrawal, we need to authenticate you via email.' />
+                            {/* <Localize i18n_default_text='To initiate a withdrawal, we need to authenticate you via email.' /> */}
+                            {/* {localize('To initiate a withdrawal, we need to authenticate you via email.')} */}
+                            To initiate a withdrawal, we need to authenticate you via email.
                         </Text>
                         <p className='withdraw__text'>
                             <Localize i18n_default_text='This is a safeguard against unauthorised withdrawals from your account.' />

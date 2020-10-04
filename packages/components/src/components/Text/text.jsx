@@ -5,7 +5,7 @@ const Text = ({ children, size, color, align, weight, lineHeight, className }) =
     <>
         <p
             className={classNames('text', className, {
-                //font-weight
+                // font-weight
                 'text--bold': weight === 'bold',
                 'text--normal': weight === 'normal',
                 'text--semibold': weight === 'semibold',
@@ -20,7 +20,7 @@ const Text = ({ children, size, color, align, weight, lineHeight, className }) =
                 'text--xsmall': size === 'xsmall',
                 'text--xxsmall': size === 'xxsmall',
                 'text--xxxsmall': size === 'xxxsmall',
-                //font-color
+                // font-color
                 'text--grey': color === 'grey',
                 'text--prominent': color === 'prominent',
                 'text--red': color === 'red',
@@ -32,7 +32,7 @@ const Text = ({ children, size, color, align, weight, lineHeight, className }) =
                 'text--right': align === 'right',
                 'text--left': align === 'left',
                 'text--center': align === 'center',
-                //line-height
+                // line-height
                 'text__line-height--large': lineHeight === 'large',
                 'text__line-height--medium': lineHeight === 'medium',
                 'text__line-height--small': lineHeight === 'small',

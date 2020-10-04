@@ -16,11 +16,7 @@
         height: 100%;
     }
     &__card {
-        min-height: calc(100vh - 210px);
-        max-height: calc(100vh - 268px);
-        background: wheat;
         width: 350px;
-        // margin-right: 2.4rem;
         display: flex;
         flex-direction: column;
         padding-bottom: 0.8rem;

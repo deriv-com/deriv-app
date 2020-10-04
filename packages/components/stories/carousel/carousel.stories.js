@@ -3,6 +3,7 @@ import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { withInfo } from '@storybook/addon-info';
 import React from 'react';
 import Carousel from 'Components/carousel';
+import Button from 'Components/button';
 import Theme from '../shared/theme';
 
 const stories = storiesOf('Carousel', module);
@@ -20,32 +21,92 @@ const FlexWrapper = ({ children, justifyContent = 'center' }) => (
 );
 
 const demo_slides = [
-    <div className='slide1'>
-        <h1>Slide 1</h1>
+    <div
+        className='slide1'
+        style={{
+            border: '1px solid black',
+            borderRadius: '5px',
+            margin: '0.5rem',
+        }}
+    >
+        <p
+            style={{
+                fontSize: '1.8rem',
+                textAlign: 'center',
+                marginTop: '2rem',
+            }}
+        >
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum sed, et asperiores error sunt soluta autem
+            nobis sapiente corporis animi voluptate exercitationem repellendus quo quae accusantium nulla adipisci optio
+            quasi.
+        </p>
+        <Button
+            primary
+            style={{
+                margin: '2rem auto',
+                display: 'block',
+            }}
+        >
+            Button 1
+        </Button>
     </div>,
-    <div className='slide2'>
-        <h1>Slide 2</h1>
+    <div
+        className='slide2'
+        style={{
+            border: '1px solid black',
+            borderRadius: '5px',
+            margin: '0.5rem',
+        }}
+    >
+        <p
+            style={{
+                fontSize: '1.8rem',
+                textAlign: 'center',
+                marginTop: '2rem',
+            }}
+        >
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum sed, et asperiores error sunt soluta autem
+            nobis sapiente corporis animi voluptate exercitationem repellendus quo quae accusantium nulla adipisci optio
+            quasi.
+        </p>
+        <Button
+            primary
+            style={{
+                margin: '2rem auto',
+                display: 'block',
+            }}
+        >
+            Button 2
+        </Button>
     </div>,
-    <div className='slide3'>
-        <h1>Slide 3</h1>
-    </div>,
-    <div className='slide4'>
-        <h1>Slide 4</h1>
-    </div>,
-    <div className='slide5'>
-        <h1>Slide 5</h1>
-    </div>,
-    <div className='slide6'>
-        <h1>Slide 6</h1>
-    </div>,
-    <div className='slide7'>
-        <h1>Slide 7</h1>
-    </div>,
-    <div className='slide8'>
-        <h1>Slide 8</h1>
-    </div>,
-    <div className='slide9'>
-        <h1>Slide 9</h1>
+    <div
+        className='slide3'
+        style={{
+            border: '1px solid black',
+            borderRadius: '5px',
+            margin: '0.5rem',
+        }}
+    >
+        <p
+            style={{
+                fontSize: '1.8rem',
+                textAlign: 'center',
+                marginTop: '2rem',
+            }}
+        >
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum sed, et asperiores error sunt soluta autem
+            nobis sapiente corporis animi voluptate exercitationem repellendus quo quae accusantium nulla adipisci optio
+            quasi.
+        </p>
+        <Button
+            primary
+            style={{
+                margin: '2rem auto',
+                display: 'block',
+            }}
+        >
+            Button 3
+        </Button>
     </div>,
 ];
 

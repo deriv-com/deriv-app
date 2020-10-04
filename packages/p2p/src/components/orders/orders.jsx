@@ -120,7 +120,8 @@ const Orders = ({ params, navigate, chat_info }) => {
                 <PageReturn
                     onClick={() => hideDetails(true)}
                     page_title={
-                        order_information.is_buy_order
+                        (order_information.is_buy_order && !order_information.is_my_ad) ||
+                        (order_information.is_sell_order && order_information.is_my_ad)
                             ? localize('Buy {{offered_currency}} order', { offered_currency: account_currency })
                             : localize('Sell {{offered_currency}} order', { offered_currency: account_currency })
                     }

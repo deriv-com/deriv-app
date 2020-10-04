@@ -20,7 +20,13 @@ const makeTurnoverLimitRow = (currency, arr, title) => (
                         {title && `${title} - `}
                         {item.name}
                     </Td>
-                    <Td>{formatMoney(currency, item.turnover_limit, true)}</Td>
+                    <Td>
+                        {formatMoney({
+                            currency_value: currency,
+                            amount: item.turnover_limit,
+                            exclude_currency: true,
+                        })}
+                    </Td>
                 </Row>
             ))}
     </>
@@ -144,7 +150,13 @@ class AccountLimits extends React.Component {
                                                     />
                                                 </div>
                                             </Td>
-                                            <Td>{formatMoney(currency, account_balance, true)}</Td>
+                                            <Td>
+                                                {formatMoney({
+                                                    currency_value: currency,
+                                                    amount: account_balance,
+                                                    exclude_currency: true,
+                                                })}
+                                            </Td>
                                         </Row>
                                         <Row>
                                             <Td>
@@ -157,7 +169,13 @@ class AccountLimits extends React.Component {
                                                     />
                                                 </div>
                                             </Td>
-                                            <Td>{formatMoney(currency, payout, true)}</Td>
+                                            <Td>
+                                                {formatMoney({
+                                                    currency_value: currency,
+                                                    amount: payout,
+                                                    exclude_currency: true,
+                                                })}
+                                            </Td>
                                         </Row>
                                     </tbody>
                                 </table>
@@ -206,17 +224,33 @@ class AccountLimits extends React.Component {
                                         <tbody>
                                             <Row>
                                                 <Td>{localize('Total withdrawal allowed')}</Td>
-                                                <Td>{formatMoney(currency, num_of_days_limit, true)}</Td>
+                                                <Td>
+                                                    {formatMoney({
+                                                        currency_value: currency,
+                                                        amount: num_of_days_limit,
+                                                        exclude_currency: true,
+                                                    })}
+                                                </Td>
                                             </Row>
                                             <Row>
                                                 <Td>{localize('Total withdrawn')}</Td>
                                                 <Td>
-                                                    {formatMoney(currency, withdrawal_since_inception_monetary, true)}
+                                                    {formatMoney({
+                                                        currency_value: currency,
+                                                        amount: withdrawal_since_inception_monetary,
+                                                        exclude_currency: true,
+                                                    })}
                                                 </Td>
                                             </Row>
                                             <Row>
                                                 <Td>{localize('Maximum withdrawal remaining')}</Td>
-                                                <Td>{formatMoney(currency, remainder, true)}</Td>
+                                                <Td>
+                                                    {formatMoney({
+                                                        currency_value: currency,
+                                                        amount: remainder,
+                                                        exclude_currency: true,
+                                                    })}
+                                                </Td>
                                             </Row>
                                         </tbody>
                                     )}

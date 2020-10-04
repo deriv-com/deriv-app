@@ -851,7 +851,11 @@ export default class CashierStore extends BaseStore {
         if (+payment_agent_withdraw.paymentagent_withdraw === 1) {
             const selected_agent = this.config.payment_agent.agents.find(agent => agent.value === loginid);
             this.setReceipt({
-                amount_transferred: formatMoney(currency, amount, true),
+                amount_transferred: formatMoney({
+                    currency_value: currency,
+                    amount,
+                    exclude_currency: true,
+                }),
                 ...(selected_agent && {
                     payment_agent_email: selected_agent.email,
                     payment_agent_id: selected_agent.value,
@@ -1164,7 +1168,13 @@ export default class CashierStore extends BaseStore {
         if (transfer_between_accounts.error) {
             this.setErrorMessage(transfer_between_accounts.error);
         } else {
-            this.setReceiptTransfer({ amount: formatMoney(currency, amount, true) });
+            this.setReceiptTransfer({
+                amount: formatMoney({
+                    currency_value: currency,
+                    amount,
+                    exclude_currency: true,
+                }),
+            });
             transfer_between_accounts.accounts.forEach(account => {
                 this.config.account_transfer.setBalanceByLoginId(account.loginid, account.balance);
                 if (account.loginid === this.config.account_transfer.selected_from.value) {

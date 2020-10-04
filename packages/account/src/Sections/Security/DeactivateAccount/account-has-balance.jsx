@@ -100,7 +100,11 @@ const AccountHasBalanceOrOpenPositions = ({ details, mt5_login_list, client_acco
                             value={
                                 <Money
                                     currency={account.currency}
-                                    amount={formatMoney(account.currency, account.balance, true)}
+                                    amount={formatMoney({
+                                        currency_value: account.currency,
+                                        amount: account.balance,
+                                        exclude_currency: true,
+                                    })}
                                     should_format={false}
                                 />
                             }
@@ -137,7 +141,11 @@ const AccountHasBalanceOrOpenPositions = ({ details, mt5_login_list, client_acco
                             value={
                                 <Money
                                     currency={account.currency}
-                                    amount={formatMoney(account.currency, account.balance, true)}
+                                    amount={formatMoney({
+                                        currency_value: account.currency,
+                                        amount: account.balance,
+                                        exclude_currency: true,
+                                    })}
                                     should_format={false}
                                 />
                             }

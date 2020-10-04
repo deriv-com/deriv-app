@@ -436,11 +436,11 @@ class SelfExclusion extends React.Component {
                                                     if (need_date_format.includes(key)) {
                                                         value = toMoment(values[key]).format('DD/MM/YYYY');
                                                     } else if (need_money_format.includes(key)) {
-                                                        value = `${formatMoney(
-                                                            currency,
-                                                            +values[key],
-                                                            true
-                                                        )} ${currency}`;
+                                                        value = `${formatMoney({
+                                                            currency_value: currency,
+                                                            amount: +values[key],
+                                                            exclude_currency: true,
+                                                        })} ${currency}`;
                                                     } else if (need_minutes.includes(key)) {
                                                         value = localize('{{value}} mins', { value: values[key] });
                                                     } else if (need_amount.includes(key)) {

@@ -576,11 +576,13 @@ class AccountSwitcher extends React.Component {
                     <span className='acc-switcher__balance'>
                         <Money
                             currency={this.is_real_account_tab ? this.props.obj_total_balance.currency : 'USD'}
-                            amount={formatMoney(
-                                this.is_real_account_tab ? this.props.obj_total_balance.currency : 'USD',
-                                this.is_real_account_tab ? this.total_real_assets : this.total_demo_assets,
-                                true
-                            )}
+                            amount={formatMoney({
+                                currency_value: this.is_real_account_tab
+                                    ? this.props.obj_total_balance.currency
+                                    : 'USD',
+                                amount: this.is_real_account_tab ? this.total_real_assets : this.total_demo_assets,
+                                exclude_currency: true,
+                            })}
                             should_format={false}
                         />
                     </span>

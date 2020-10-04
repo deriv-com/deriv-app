@@ -3,7 +3,14 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { formatMoney } from '@deriv/shared';
 
-const Money = ({ amount, className, currency = 'USD', has_sign, should_format = true, should_format_crypto = 1 }) => {
+const Money = ({
+    amount,
+    className,
+    currency = 'USD',
+    has_sign,
+    should_format = true,
+    should_format_crypto = true,
+}) => {
     let sign = '';
     if (+amount && (amount < 0 || has_sign)) {
         sign = amount > 0 ? '+' : '-';
@@ -11,7 +18,14 @@ const Money = ({ amount, className, currency = 'USD', has_sign, should_format = 
 
     // if it's formatted already then don't make any changes unless we should remove extra -/+ signs
     const value = has_sign || should_format ? Math.abs(amount) : amount;
-    const final_amount = should_format ? formatMoney(currency, value, true, 0, 0, should_format_crypto) : value;
+    const final_amount = should_format
+        ? formatMoney({
+              currency_value: currency,
+              amount: value,
+              exclude_currency: true,
+              should_format_crypto,
+          })
+        : value;
 
     return (
         <React.Fragment>

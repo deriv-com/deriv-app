@@ -17,31 +17,74 @@ describe('CurrencyUtils', () => {
 
     describe('.formatMoney()', () => {
         it('works as expected', () => {
-            expect(CurrencyUtils.formatMoney('USD', '123.55')).to.eq(`${CurrencyUtils.formatCurrency('USD')}123.55`);
-            expect(CurrencyUtils.formatMoney('GBP', '123.55')).to.eq(`${CurrencyUtils.formatCurrency('GBP')}123.55`);
-            expect(CurrencyUtils.formatMoney('EUR', '123.55')).to.eq(`${CurrencyUtils.formatCurrency('EUR')}123.55`);
-            expect(CurrencyUtils.formatMoney('AUD', '123.55')).to.eq(`${CurrencyUtils.formatCurrency('AUD')}123.55`);
-            expect(CurrencyUtils.formatMoney('BTC', '0.00543211')).to.eq(
-                `${CurrencyUtils.formatCurrency('BTC')}0.00543211`
-            );
-            expect(CurrencyUtils.formatMoney('BTC', '0.00000001')).to.eq(
-                `${CurrencyUtils.formatCurrency('BTC')}0.00000001`
-            );
+            expect(
+                CurrencyUtils.formatMoney({
+                    currency_value: 'USD',
+                    amount: '123.55',
+                })
+            ).to.eq(`${CurrencyUtils.formatCurrency('USD')}123.55`);
+            expect(
+                CurrencyUtils.formatMoney({
+                    currency_value: 'GBP',
+                    amount: '123.55',
+                })
+            ).to.eq(`${CurrencyUtils.formatCurrency('GBP')}123.55`);
+            expect(
+                CurrencyUtils.formatMoney({
+                    currency_value: 'EUR',
+                    amount: '123.55',
+                })
+            ).to.eq(`${CurrencyUtils.formatCurrency('EUR')}123.55`);
+            expect(
+                CurrencyUtils.formatMoney({
+                    currency_value: 'AUD',
+                    amount: '123.55',
+                })
+            ).to.eq(`${CurrencyUtils.formatCurrency('AUD')}123.55`);
+            expect(
+                CurrencyUtils.formatMoney({
+                    currency_value: 'BTC',
+                    amount: '0.00543211',
+                })
+            ).to.eq(`${CurrencyUtils.formatCurrency('BTC')}0.00543211`);
+            expect(
+                CurrencyUtils.formatMoney({
+                    currency_value: 'BTC',
+                    amount: '0.00000001',
+                })
+            ).to.eq(`${CurrencyUtils.formatCurrency('BTC')}0.00000001`);
             // Remove trailing zeroes for cryptos
-            expect(CurrencyUtils.formatMoney('BTC', '0.00010000')).to.eq(
-                `${CurrencyUtils.formatCurrency('BTC')}0.0001`
-            );
-            expect(CurrencyUtils.formatMoney('BTC', '0.05432110')).to.eq(
-                `${CurrencyUtils.formatCurrency('BTC')}0.0543211`
-            );
+            expect(
+                CurrencyUtils.formatMoney({
+                    currency_value: 'BTC',
+                    amount: '0.00010000',
+                })
+            ).to.eq(`${CurrencyUtils.formatCurrency('BTC')}0.0001`);
+            expect(
+                CurrencyUtils.formatMoney({
+                    currency_value: 'BTC',
+                    amount: '0.05432110',
+                })
+            ).to.eq(`${CurrencyUtils.formatCurrency('BTC')}0.0543211`);
         });
 
         it('works with negative values', () => {
-            expect(CurrencyUtils.formatMoney('USD', '-123.55')).to.eq(`-${CurrencyUtils.formatCurrency('USD')}123.55`);
+            expect(
+                CurrencyUtils.formatMoney({
+                    currency_value: 'USD',
+                    amount: '-123.55',
+                })
+            ).to.eq(`-${CurrencyUtils.formatCurrency('USD')}123.55`);
         });
 
         it('works when exclude currency', () => {
-            expect(CurrencyUtils.formatMoney('USD', '123.55', 1)).to.eq('123.55');
+            expect(
+                CurrencyUtils.formatMoney({
+                    currency_value: 'USD',
+                    amount: '123.55',
+                    exclude_currency: true,
+                })
+            ).to.eq('123.55');
         });
     });
 

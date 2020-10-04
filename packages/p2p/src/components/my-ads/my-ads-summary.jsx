@@ -4,10 +4,28 @@ import { formatMoney } from '@deriv/shared';
 import { Localize } from 'Components/i18next';
 
 const AdSummary = ({ offer_amount, offer_currency, transaction_currency, price_rate, type }) => {
-    const display_offer_amount = offer_amount ? formatMoney(offer_currency, offer_amount, true) : '';
-    const display_price_rate = price_rate ? formatMoney(transaction_currency, price_rate, true) : '';
+    const display_offer_amount = offer_amount
+        ? formatMoney({
+              currency_value: offer_currency,
+              amount: offer_amount,
+              exclude_currency: true,
+          })
+        : '';
+    const display_price_rate = price_rate
+        ? formatMoney({
+              currency_value: transaction_currency,
+              amount: price_rate,
+              exclude_currency: true,
+          })
+        : '';
     const display_total =
-        offer_amount && price_rate ? formatMoney(transaction_currency, offer_amount * price_rate, true) : '';
+        offer_amount && price_rate
+            ? formatMoney({
+                  currency_value: transaction_currency,
+                  amount: offer_amount * price_rate,
+                  exclude_currency: true,
+              })
+            : '';
     return (
         // progressively build ad summary as form is filled in
         // e.g. "You're creating an ad to buy 100 USD for 1,400,000 IDR (14,000 IDR/USD)"

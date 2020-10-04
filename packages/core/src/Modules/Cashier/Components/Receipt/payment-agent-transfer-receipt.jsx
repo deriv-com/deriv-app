@@ -22,7 +22,11 @@ class PaymentAgentTransferReceipt extends React.Component {
                     </h2>
                     <div className='cashier__transferred-amount cashier__text--bold'>
                         <span className={classNames('symbols', `symbols--${this.props.currency.toLowerCase()}`)} />
-                        {formatMoney(this.props.currency, this.props.receipt.amount_transferred, true)}
+                        {formatMoney({
+                            currency_value: this.props.currency,
+                            amount: this.props.receipt.amount_transferred,
+                            exclude_currency: true,
+                        })}
                     </div>
                     <div className='cashier__transferred-details-wrapper'>
                         <span className='account-transfer__transfer-details-from'>

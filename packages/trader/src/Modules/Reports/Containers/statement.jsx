@@ -105,7 +105,7 @@ class Statement extends React.Component {
                                 <Money
                                     amount={account_statistics.total_withdrawals}
                                     currency={currency}
-                                    should_format_crypto={0}
+                                    should_format_crypto={false}
                                 />
                             </span>
                         </div>
@@ -119,7 +119,7 @@ class Statement extends React.Component {
                                 <Money
                                     amount={account_statistics.total_deposits - account_statistics.total_withdrawals}
                                     currency={currency}
-                                    should_format_crypto={0}
+                                    should_format_crypto={false}
                                 />
                             </span>
                         </div>

@@ -63,7 +63,11 @@ const AccountList = ({
                             {currency && (
                                 <Money
                                     currency={currency}
-                                    amount={formatMoney(currency, balance, true)}
+                                    amount={formatMoney({
+                                        currency_value: currency,
+                                        amount: balance,
+                                        exclude_currency: true,
+                                    })}
                                     should_format={false}
                                 />
                             )}

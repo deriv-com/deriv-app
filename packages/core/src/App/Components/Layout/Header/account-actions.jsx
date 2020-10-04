@@ -60,7 +60,13 @@ export class AccountActions extends React.Component {
                             <AccountInfo
                                 acc_switcher_disabled_message={acc_switcher_disabled_message}
                                 balance={
-                                    typeof balance === 'undefined' ? balance : formatMoney(currency, balance, true)
+                                    typeof balance === 'undefined'
+                                        ? balance
+                                        : formatMoney({
+                                              currency_value: currency,
+                                              amount: balance,
+                                              exclude_currency: true,
+                                          })
                                 }
                                 is_disabled={is_acc_switcher_disabled}
                                 disableApp={disableApp}
@@ -95,7 +101,13 @@ export class AccountActions extends React.Component {
                             <AccountInfo
                                 acc_switcher_disabled_message={acc_switcher_disabled_message}
                                 balance={
-                                    typeof balance === 'undefined' ? balance : formatMoney(currency, balance, true)
+                                    typeof balance === 'undefined'
+                                        ? balance
+                                        : formatMoney({
+                                              currency_value: currency,
+                                              amount: balance,
+                                              exclude_currency: true,
+                                          })
                                 }
                                 is_disabled={is_acc_switcher_disabled}
                                 is_virtual={is_virtual}

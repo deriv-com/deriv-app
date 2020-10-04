@@ -117,8 +117,16 @@ const BuySellForm = ({ advert, handleClose, handleConfirm, setErrorMessage, setI
             validations.payment_info = [v => !!v, v => textValidator(v), v => lengthValidator(v)];
         }
 
-        const display_min_amount = formatMoney(account_currency, min_order_amount_limit, true);
-        const display_max_amount = formatMoney(account_currency, max_order_amount_limit, true);
+        const display_min_amount = formatMoney({
+            currency_value: account_currency,
+            amount: min_order_amount_limit,
+            exclude_currency: true,
+        });
+        const display_max_amount = formatMoney({
+            currency_value: account_currency,
+            amount: max_order_amount_limit,
+            exclude_currency: true,
+        });
 
         const common_messages = [
             localize('Enter a valid amount'),

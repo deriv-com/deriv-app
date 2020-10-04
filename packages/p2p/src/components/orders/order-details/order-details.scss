@@ -396,6 +396,40 @@
     &__empty-space {
         height: 72px;
     }
+    &__contact-text {
+        background-color: var(--general-section-1);
+        border-radius: 8px;
+        font-size: var(--text-size-xxs);
+        height: 68px;
+        margin-top: 1.6rem;
+        padding: 1.6rem 2.4rem;
+    }
+}
+
+.dc-modal__container {
+    &_cancel-modal {
+        width: 440px !important;
+
+        .dc-modal-header {
+            border-bottom: none;
+        }
+        .dc-modal-footer {
+            border-top: solid 2px var(--general-section-1);
+        }
+    }
+    &_complain-modal {
+        height: calc(100vh - 500px) !important;
+        width: 440px !important;
+
+        .dc-modal-footer {
+            border-top: solid 2px var(--general-section-1);
+        }
+
+        .dc-checkbox {
+            border-bottom: 1px solid var(--general-section-1);
+            height: 52px;
+        }
+    }
 }
 
 .dc-modal__container_orders__popup {

@@ -76,6 +76,10 @@ export const getExtendedOrderDetails = (order_details, loginid) => {
     const is_pending_order = status === 'pending';
     const is_refunded_order = status === 'refunded';
 
+    const is_disputed_order = status === 'disputed';
+    // const is_dispute_refunded_order = status === 'dispute-refunded';
+    // const is_dispute_completed_order = status === 'dispute-completed';
+
     const is_my_ad = loginid === advertiser_details.loginid;
 
     const is_active_order = is_pending_order || is_buyer_confirmed_order || is_expired_order;
@@ -141,6 +145,8 @@ export const getExtendedOrderDetails = (order_details, loginid) => {
         status_string = localize('Expired');
     } else if (is_completed_order) {
         status_string = localize('Completed');
+    } else if (is_disputed_order) {
+        status_string = localize('Under dispute');
     } else {
         status_string = localize('Unknown');
     }

@@ -1,188 +1,332 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from '@deriv/components';
-import { localize, Localize } from 'Components/i18next';
+import { Button, Checkbox, Modal } from '@deriv/components';
+import { useIsMounted } from '@deriv/shared';
 import { requestWS } from 'Utils/websocket';
-import Dp2pContext from 'Components/context/dp2p-context';
+import { localize, Localize } from 'Components/i18next';
+import FormError from '../../form/error.jsx';
 
-const OrderDetailsFooter = ({ order_information, cancelPopup, showPopup }) => {
-    const { email_domain } = React.useContext(Dp2pContext);
+const OrderDetailsFooter = ({ order_information }) => {
+    const isMounted = useIsMounted();
     const {
+        account_currency,
+        amount_display,
         id,
+        is_buy_order,
+        is_my_ad,
+        is_sell_order,
         local_currency,
         other_user_details,
         price_display,
-        should_show_complain_and_received_button,
         should_show_cancel_and_paid_button,
+        should_show_complain_and_received_button,
         should_show_only_complain_button,
     } = order_information;
 
-    const showCancelOrderPopup = () => {
-        const sendOrderCancelRequest = async setFormStatus => {
-            setFormStatus({ error_message: '' });
+    const [should_show_cancel_modal, setShouldShowCancelModal] = React.useState(false);
+    const [should_show_complain_modal, setShouldShowComplainModal] = React.useState(false);
+    const [should_show_confirm_modal, setShouldShowConfirmModal] = React.useState(false);
 
-            const cancel_response = await requestWS({ p2p_order_cancel: 1, id });
+    const hideCancelOrderModal = () => setShouldShowCancelModal(false);
+    const showCancelOrderModal = () => setShouldShowCancelModal(true);
 
-            if (!cancel_response.error) {
-                cancelPopup();
-            } else {
-                setFormStatus({ error_message: cancel_response.error.message });
-            }
-        };
+    const hideComplainOrderModal = () => setShouldShowComplainModal(false);
+    const showComplainOrderModal = () => setShouldShowComplainModal(true);
 
-        const options = {
-            title: localize('Do you want to cancel this order?'),
-            className: 'order-details__popup-no-border',
-            message: localize('Do NOT cancel if you have made payment.'),
-            confirm_text: localize('Cancel this order'),
-            has_cancel: true,
-            cancel_text: localize('Do not cancel'),
-            min_height: 130,
-            onClickConfirm: sendOrderCancelRequest,
-        };
+    const hideConfirmOrderModal = () => setShouldShowConfirmModal(false);
+    const showConfirmOrderModal = () => setShouldShowConfirmModal(true);
 
-        showPopup(options);
-    };
+    const CancelOrderModal = () => {
+        const [error_message, setErrorMessage] = React.useState('');
 
-    const showComplainPopup = () => {
-        const options = {
-            title: localize('Did something go wrong?'),
-            className: 'order-details__popup-no-border',
-            message: (
-                <Localize
-                    i18n_default_text="If you have a problem in using the app or if you have a dispute with the other party that the two of you haven't been able to resolve, please email <0>{{support_email}}</0>. Describe your situation, and include your order <1>ID ({{id}})</1>."
-                    values={{ support_email: `p2p-support@${email_domain}`, id }}
-                    components={[
-                        <a
-                            key={0}
-                            className='link order-details__popup--danger'
-                            rel='noopener noreferrer'
-                            target='_blank'
-                            href={`mailto:p2p-support@${email_domain}`}
-                        />,
-                        <span key={1} className='order-details__popup--bold' />,
-                    ]}
-                />
-            ),
-            confirm_text: localize('Close'),
-            onClickConfirm: () => cancelPopup(),
-        };
-
-        showPopup(options);
-    };
-
-    const showPaidOrderPopup = () => {
-        const sendOrderConfirmRequest = async setFormStatus => {
-            setFormStatus({ error_message: '' });
-
-            const update_response = await requestWS({
-                p2p_order_confirm: 1,
-                id,
+        const cancelOrderRequest = () => {
+            return new Promise(resolve => {
+                requestWS({
+                    p2p_order_cancel: 1,
+                    id,
+                }).then(response => {
+                    if (isMounted()) {
+                        if (response.error) {
+                            setErrorMessage(response.error.message);
+                        }
+                    }
+                    resolve();
+                });
             });
-
-            if (!update_response.error) {
-                cancelPopup();
-            } else {
-                setFormStatus({ error_message: update_response.error.message });
-            }
         };
 
-        const options = {
-            title: localize('Confirm payment?'),
-            className: 'order-details__popup-no-border',
-            message: localize("Please make sure that you've paid {{amount}} {{currency}} to {{other_user_name}}.", {
-                amount: price_display,
-                currency: local_currency,
-                other_user_name: other_user_details.name,
-            }),
-            should_confirm_payment: true,
-            order_information,
-            has_cancel: true,
-            cancel_text: localize("I haven't paid yet"),
-            confirm_text: localize("I've paid"),
-            onClickConfirm: sendOrderConfirmRequest,
-        };
-
-        showPopup(options);
+        return (
+            <Modal
+                className='order-details__cancel-modal'
+                is_open={should_show_cancel_modal}
+                toggleModal={hideCancelOrderModal}
+                title={localize('Do you want to cancel this order?')}
+                has_close_icon
+            >
+                <Modal.Body>{localize('Do NOT cancel if you have made payment.')}</Modal.Body>
+                <Modal.Footer>
+                    {error_message && <FormError message={error_message} />}
+                    <Button.Group>
+                        <Button secondary type='button' onClick={hideCancelOrderModal} large>
+                            {localize('Do not cancel')}
+                        </Button>
+                        <Button primary large onClick={cancelOrderRequest}>
+                            {localize('Cancel this order')}
+                        </Button>
+                    </Button.Group>
+                </Modal.Footer>
+            </Modal>
+        );
     };
 
-    const showReceivedFundsPopup = () => {
-        const sendOrderConfirmRequest = async setFormStatus => {
-            setFormStatus({ error_message: '' });
+    const ComplainOrderModal = () => {
+        const [dispute_reason, setDisputeReason] = React.useState('');
+        const [checkbox, setCheckbox] = React.useState('');
+        const [error_message, setErrorMessage] = React.useState('');
 
-            const update_response = await requestWS({
-                p2p_order_confirm: 1,
-                id,
+        const disputeOrderRequest = () => {
+            return new Promise(resolve => {
+                requestWS({
+                    p2p_order_dispute: 1,
+                    id,
+                    dispute_reason,
+                }).then(response => {
+                    if (isMounted()) {
+                        if (response.error) {
+                            setErrorMessage(response.error.message);
+                        }
+                    }
+                    resolve();
+                });
             });
-
-            if (!update_response.error) {
-                cancelPopup();
-            } else {
-                setFormStatus({ error_message: update_response.error.message });
-            }
         };
 
-        const options = {
-            title: localize('Have you received payment?'),
-            className: 'order-details__popup-no-border',
-            message: localize(
-                'Please confirm only after checking your bank or e-wallet account to make sure you have received payment.'
-            ),
-            need_confirmation: true,
-            order_information,
-            onClickConfirm: sendOrderConfirmRequest,
-            has_cancel: true,
-            cancel_text: localize('Cancel'),
+        const onChange = reason => {
+            setDisputeReason(reason);
+            setCheckbox(reason);
         };
 
-        showPopup(options);
+        return (
+            <Modal
+                className='complain-modal'
+                is_open={should_show_complain_modal}
+                toggleModal={hideComplainOrderModal}
+                title={localize('What’s your complaint?')}
+                has_close_icon
+            >
+                <Modal.Body>
+                    <Checkbox
+                        name={
+                            (is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad)
+                                ? 'seller_not_released'
+                                : 'buyer_not_paid'
+                        }
+                        onChange={event => {
+                            onChange(event.target.name);
+                        }}
+                        value={checkbox === 'seller_not_released' || checkbox === 'buyer_not_paid'}
+                        label={
+                            (is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad)
+                                ? localize('I’ve made full payment, but the seller hasn’t released the funds.')
+                                : localize('I’ve not received any payment.')
+                        }
+                    />
+                    <Checkbox
+                        name='buyer_underpaid'
+                        onChange={event => {
+                            onChange(event.target.name);
+                        }}
+                        value={checkbox === 'buyer_underpaid'}
+                        label={
+                            (is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad)
+                                ? localize('I wasn’t able to make full payment.')
+                                : localize('I’ve received less than the agreed amount.')
+                        }
+                    />
+                    <Checkbox
+                        name='buyer_overpaid'
+                        onChange={event => {
+                            onChange(event.target.name);
+                        }}
+                        value={checkbox === 'buyer_overpaid'}
+                        label={
+                            (is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad)
+                                ? localize('I’ve paid more than the agreed amount.')
+                                : localize('I’ve received more than the agreed amount.')
+                        }
+                    />
+                    <div className='order-details__contact-text'>
+                        <Localize
+                            i18n_default_text="If your complaint isn't listed here, please contact our <0>{{customer_support}}<0/> team."
+                            values={{ customer_support: localize('Customer Support') }}
+                            components={[
+                                <a
+                                    key={0}
+                                    className='link order-details__popup--danger'
+                                    rel='noopener noreferrer'
+                                    target='_blank'
+                                    href={`mailto:p2p-support@deriv.com`}
+                                />,
+                            ]}
+                        />
+                    </div>
+                </Modal.Body>
+                <Modal.Footer>
+                    {error_message && <FormError message={error_message} />}
+                    <Button.Group>
+                        <Button secondary type='button' onClick={hideComplainOrderModal} large>
+                            {localize('Cancel')}
+                        </Button>
+                        <Button is_disabled={!checkbox} primary large onClick={disputeOrderRequest}>
+                            {localize('Submit')}
+                        </Button>
+                    </Button.Group>
+                </Modal.Footer>
+            </Modal>
+        );
+    };
+
+    const ConfirmOrderModal = () => {
+        const [error_message, setErrorMessage] = React.useState('');
+        const [is_checkbox_checked, setIsCheckboxChecked] = React.useState(false);
+
+        const confirmOrderRequest = () => {
+            return new Promise(resolve => {
+                requestWS({
+                    p2p_order_confirm: 1,
+                    id,
+                }).then(response => {
+                    if (isMounted()) {
+                        if (response.error) {
+                            setErrorMessage(response.error.message);
+                        }
+                    }
+                    resolve();
+                });
+            });
+        };
+
+        return (
+            <Modal
+                className='order-details__confirm-modal'
+                is_open={should_show_confirm_modal}
+                toggleModal={hideConfirmOrderModal}
+                title={
+                    is_buy_order && !is_my_ad ? localize('Confirm payment?') : localize('Have you received payment?')
+                }
+                has_close_icon
+            >
+                <Modal.Body>
+                    {is_buy_order && !is_my_ad
+                        ? localize(
+                              "Please make sure that you've paid {{amount}} {{currency}} to {{other_user_name}}.",
+                              {
+                                  amount: price_display,
+                                  currency: local_currency,
+                                  other_user_name: other_user_details.name,
+                              }
+                          )
+                        : localize(
+                              'Please confirm only after checking your bank or e-wallet account to make sure you have received payment.'
+                          )}
+
+                    <Checkbox
+                        onChange={() => setIsCheckboxChecked(!is_checkbox_checked)}
+                        defaultChecked={is_checkbox_checked}
+                        label={
+                            is_buy_order && !is_my_ad
+                                ? localize('I have paid {{amount}} {{currency}}.', {
+                                      amount: price_display,
+                                      currency: local_currency,
+                                  })
+                                : localize('I have received {{amount}} {{currency}}.', {
+                                      amount: price_display,
+                                      currency: local_currency,
+                                  })
+                        }
+                    />
+                </Modal.Body>
+                <Modal.Footer>
+                    {error_message && <FormError message={error_message} />}
+                    <Button.Group>
+                        <Button secondary type='button' onClick={hideConfirmOrderModal} large>
+                            {(is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad)
+                                ? localize("I haven't paid yet")
+                                : localize('Cancel')}
+                        </Button>
+                        <Button is_disabled={!is_checkbox_checked} primary large onClick={confirmOrderRequest}>
+                            {(is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad)
+                                ? localize("I've paid")
+                                : localize('Release {{amount}} {{currency}}', {
+                                      amount: amount_display,
+                                      currency: account_currency,
+                                  })}
+                        </Button>
+                    </Button.Group>
+                </Modal.Footer>
+            </Modal>
+        );
     };
 
     if (should_show_complain_and_received_button) {
         return (
-            <div className='order-details__footer'>
-                <React.Fragment>
+            <React.Fragment>
+                <div className='order-details__footer'>
                     <div className='order-details__footer--left'>
-                        <Button large tertiary onClick={showComplainPopup}>
+                        <Button large tertiary onClick={showComplainOrderModal}>
                             {localize('Complain')}
                         </Button>
                     </div>
                     <div className='order-details__footer--right'>
-                        <Button large primary onClick={showReceivedFundsPopup}>
+                        <Button large primary onClick={showConfirmOrderModal}>
                             {localize("I've received funds")}
                         </Button>
                     </div>
-                </React.Fragment>
-            </div>
+                </div>
+                <ComplainOrderModal />
+                <ConfirmOrderModal />
+            </React.Fragment>
         );
     }
 
     if (should_show_cancel_and_paid_button) {
         return (
-            <div className='order-details__footer'>
-                <div className='order-details__footer--right'>
-                    <Button.Group>
-                        <Button large secondary onClick={showCancelOrderPopup}>
-                            {localize('Cancel order')}
-                        </Button>
-                        <Button large primary onClick={showPaidOrderPopup}>
-                            {localize("I've paid")}
-                        </Button>
-                    </Button.Group>
+            <React.Fragment>
+                <div className='order-details__footer'>
+                    <div className='order-details__footer--right'>
+                        <Button.Group>
+                            <Button large secondary onClick={showCancelOrderModal}>
+                                {localize('Cancel order')}
+                            </Button>
+                            <Button large primary onClick={showConfirmOrderModal}>
+                                {localize("I've paid")}
+                            </Button>
+                        </Button.Group>
+                    </div>
                 </div>
-            </div>
+                <CancelOrderModal />
+                <ConfirmOrderModal />
+            </React.Fragment>
         );
     }
 
     if (should_show_only_complain_button) {
         return (
-            <div className='order-details__footer'>
-                <div className='order-details__footer--left'>
-                    <Button className='order-details__footer-button--left' large tertiary onClick={showComplainPopup}>
-                        {localize('Complain')}
-                    </Button>
+            <React.Fragment>
+                <div className='order-details__footer'>
+                    <div className='order-details__footer--left'>
+                        <Button
+                            className='order-details__footer-button--left'
+                            large
+                            tertiary
+                            onClick={showComplainOrderModal}
+                        >
+                            {localize('Complain')}
+                        </Button>
+                    </div>
                 </div>
-            </div>
+                <ComplainOrderModal />
+            </React.Fragment>
         );
     }
 

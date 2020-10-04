@@ -34,6 +34,22 @@ export const isCustomJournalMessage = (
         );
         return true;
     }
+    // notify null variable block
+    if (message === null) {
+        pushMessage('NULL');
+        return true;
+    }
+    // notify NaN variable block
+    if (Object.is(message, NaN)) {
+        showErrorMessageWithButton(
+            localize('Tried to perform an invalid operation.'),
+            block_id,
+            showErrorMessage,
+            centerAndHighlightBlock
+        );
+        // pushMessage(message.toString());
+        return true;
+    }
     // notify list block
     if (Array.isArray(message)) {
         const message_length = message.length;

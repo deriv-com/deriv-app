@@ -119,9 +119,7 @@ Carousel.defaultProps = {
 };
 Carousel.propTypes = {
     className: PropTypes.string,
-    handleNavigationClick: PropTypes.func,
     handleSelect: PropTypes.func,
-    item: PropTypes.object,
     list: PropTypes.array,
     nav_position: PropTypes.oneOf(['top', 'middle', 'bottom']),
     show_nav: PropTypes.bool,

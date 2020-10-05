@@ -1,11 +1,14 @@
 import * as React from 'react';
 import { Loading } from '@deriv/components';
+import { useIsMounted } from '@deriv/shared';
 import { Channel, SendBirdProvider } from 'sendbird-uikit';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { getShortNickname, generateHexColourFromNickname } from 'Utils/string';
 import 'sendbird-uikit/dist/index.css';
 
 const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url, nickname }) => {
+    const isMounted = useIsMounted();
+
     const [is_loading, setIsLoading] = React.useState(true);
     const { is_dark_mode_on } = React.useContext(Dp2pContext);
 
@@ -28,7 +31,11 @@ const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url, nickname }) 
                     el_chat_header_avatar.className = 'sendbird-avatar-text';
 
                     el_sendbird_conversation.setAttribute('style', 'display: flex;');
-                    setIsLoading(false);
+
+                    if (isMounted()) {
+                        setIsLoading(false);
+                    }
+
                     clearInterval(interval_header);
                 }
             }
@@ -72,8 +79,13 @@ const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url, nickname }) 
         // After 10 secs show container as it may show an error.
         setTimeout(() => {
             const el_sendbird_conversation = document.querySelector('.sendbird-conversation');
-            el_sendbird_conversation.setAttribute('style', 'display: flex;');
-            setIsLoading(false);
+            if (el_sendbird_conversation) {
+                el_sendbird_conversation.setAttribute('style', 'display: flex;');
+            }
+
+            if (isMounted()) {
+                setIsLoading(false);
+            }
         }, 10000);
 
         return () => clearInterval(interval_header);

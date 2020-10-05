@@ -97,7 +97,7 @@ export default connect(({ chart_store, common, ui }) => ({
         assetInformation: false, // ui.is_chart_asset_info_visible,
         countdown: true,
         isHighestLowestMarkerEnabled: false, // TODO: Pending UI,
-        lang: common.current_language,
+        language: common.current_language.toLowerCase(),
         position: ui.is_chart_layout_default ? 'bottom' : 'left',
         theme: 'light',
     },

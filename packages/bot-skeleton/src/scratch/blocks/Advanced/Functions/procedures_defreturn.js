@@ -21,7 +21,11 @@ Blockly.Blocks.procedures_defreturn = {
     },
     definition() {
         return {
-            message0: localize('function %1 %2 %3'),
+            message0: localize('function {{ function_name }} {{ function_params }} {{ dummy }}', {
+                function_name: '%1',
+                function_params: '%2',
+                dummy: '%3',
+            }),
             message1: 'return %1',
             args0: [
                 {

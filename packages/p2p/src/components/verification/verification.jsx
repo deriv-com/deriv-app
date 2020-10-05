@@ -16,17 +16,14 @@ const Verification = () => {
             case 'none':
             default:
                 return (
-                    <Localize
-                        i18n_default_text='We’ll need you to upload your documents to verify 
-    your identity.'
-                    />
+                    <Localize i18n_default_text='We’ll need you to upload your documents to verify your identity.' />
                 );
             case 'verified':
                 return <Localize i18n_default_text='Identity verification is complete.' />;
         }
     };
 
-    const items = [
+    const items = () => [
         {
             content: nickname ? <p>{nickname}</p> : <Localize i18n_default_text='Choose your nickname' />,
             status: nickname ? 'done' : 'action',
@@ -46,7 +43,7 @@ const Verification = () => {
     if (!is_advertiser && poi_status === 'verified' && nickname) {
         return (
             <div className='p2p-blocked-user'>
-                <Localize i18n_default_text='Your P2P cashier has been blocked. Please contact customer support.' />
+                <Localize i18n_default_text='Your DP2P cashier has been blocked. Please contact customer support.' />
             </div>
         );
     }
@@ -60,11 +57,11 @@ const Verification = () => {
                 </div>
                 <div className='p2p-verification__text-description'>
                     <p>
-                        <Localize i18n_default_text='To use P2P, you need to choose a display name (a nickname) and verify your identity.' />
+                        <Localize i18n_default_text='To use DP2P, you need to choose a display name (a nickname) and verify your identity.' />
                     </p>
                 </div>
             </div>
-            <Checklist className='p2p-verification__checklist' items={items} />
+            <Checklist className='p2p-verification__checklist' items={items()} />
         </div>
     );
 };

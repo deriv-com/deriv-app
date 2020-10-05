@@ -14,7 +14,7 @@ import FormError from '../form/error.jsx';
 import { localize } from '../i18next';
 import './advertiser-page.scss';
 
-const RowComponent = React.memo(({ advert, showAdPopup, style }) => {
+const RowComponent = React.memo(({ data: advert, showAdPopup, style }) => {
     const { advertiser_id } = React.useContext(Dp2pContext);
     const {
         account_currency,

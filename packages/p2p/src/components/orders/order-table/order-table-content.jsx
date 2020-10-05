@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Loading, Button } from '@deriv/components';
 import { useIsMounted } from '@deriv/shared';
+import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
 import { TableError } from 'Components/table/table-error.jsx';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
@@ -14,7 +15,7 @@ import { height_constants } from 'Utils/height_constants';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import { requestWS } from 'Utils/websocket';
 
-const OrderTableContent = ({ showDetails, is_active }) => {
+const OrderTableContent = observer(({ showDetails, is_active }) => {
     const { general_store } = useStores();
     const {
         changeTab,
@@ -116,7 +117,7 @@ const OrderTableContent = ({ showDetails, is_active }) => {
             )}
         </Empty>
     );
-};
+});
 
 OrderTableContent.propTypes = {
     is_active: PropTypes.bool,

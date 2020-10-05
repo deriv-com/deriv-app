@@ -404,6 +404,9 @@
         margin-top: 1.6rem;
         padding: 1.6rem 2.4rem;
     }
+    &__modal-checkbox {
+        margin: 2.4rem -0.7rem;
+    }
 }
 
 .dc-modal__container {
@@ -413,8 +416,13 @@
         .dc-modal-header {
             border-bottom: none;
         }
+
+        .dc-modal-body {
+            padding: 0.8rem 2.4rem;
+        }
+
         .dc-modal-footer {
-            border-top: solid 2px var(--general-section-1);
+            border-top: none;
         }
     }
     &_complain-modal {
@@ -428,6 +436,17 @@
         .dc-checkbox {
             border-bottom: 1px solid var(--general-section-1);
             height: 52px;
+        }
+    }
+    &_confirm-modal {
+        width: 440px !important;
+
+        .dc-modal-header {
+            border-bottom: none;
+        }
+
+        .dc-modal-body {
+            padding: 0.8rem 2.4rem;
         }
     }
 }

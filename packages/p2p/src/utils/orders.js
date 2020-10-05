@@ -1,5 +1,6 @@
 import { localize } from 'Components/i18next';
 import { convertToMillis, getFormattedDateString } from 'Utils/date-time';
+import { buy_sell } from '../constants/buy-sell';
 
 const getPaymentMethodsMap = () => ({
     bank_transfer: localize('Bank transfer'),
@@ -66,8 +67,8 @@ export const getExtendedOrderDetails = (order_details, loginid) => {
 
     const { advert_details, advertiser_details, client_details, status, type } = order_details;
 
-    const is_buy_order = type === 'buy';
-    const is_sell_order = type === 'sell';
+    const is_buy_order = type === buy_sell.BUY;
+    const is_sell_order = type === buy_sell.SELL;
 
     const is_buyer_cancelled_order = status === 'cancelled';
     const is_buyer_confirmed_order = status === 'buyer-confirmed';
@@ -77,17 +78,29 @@ export const getExtendedOrderDetails = (order_details, loginid) => {
     const is_refunded_order = status === 'refunded';
 
     const is_disputed_order = status === 'disputed';
-    // const is_dispute_refunded_order = status === 'dispute-refunded';
-    // const is_dispute_completed_order = status === 'dispute-completed';
+    const is_dispute_refunded_order = status === 'dispute-refunded';
+    const is_dispute_completed_order = status === 'dispute-completed';
 
     const is_my_ad = loginid === advertiser_details.loginid;
 
-    const is_active_order = is_pending_order || is_buyer_confirmed_order || is_expired_order;
-    const is_inactive_order = is_buyer_cancelled_order || is_refunded_order || is_completed_order;
+    const is_active_order = is_pending_order || is_buyer_confirmed_order || is_expired_order || is_disputed_order;
+    const is_inactive_order =
+        is_buyer_cancelled_order ||
+        is_refunded_order ||
+        is_completed_order ||
+        is_dispute_refunded_order ||
+        is_dispute_completed_order;
 
-    const should_highlight_disabled = is_buyer_cancelled_order || is_expired_order || is_refunded_order;
+    const should_highlight_disabled =
+        is_buyer_cancelled_order ||
+        is_expired_order ||
+        is_refunded_order ||
+        is_disputed_order ||
+        is_dispute_refunded_order;
 
-    // Status highlighting (alert = yellow, danger = red, disabled = grey)
+    const should_highlight_success = is_completed_order || is_dispute_completed_order;
+
+    // Status highlighting (alert = yellow, danger = red, disabled = grey, success = green)
     let should_highlight_alert,
         should_highlight_danger,
         should_show_cancel_and_paid_button,
@@ -141,12 +154,12 @@ export const getExtendedOrderDetails = (order_details, loginid) => {
         } else {
             status_string = is_buy_order ? localize('Wait for release') : localize('Confirm payment');
         }
-    } else if (is_expired_order || is_refunded_order) {
+    } else if (is_expired_order || is_refunded_order || is_dispute_refunded_order) {
         status_string = localize('Expired');
-    } else if (is_completed_order) {
-        status_string = localize('Completed');
     } else if (is_disputed_order) {
         status_string = localize('Under dispute');
+    } else if (is_completed_order || is_dispute_completed_order) {
+        status_string = localize('Completed');
     } else {
         status_string = localize('Unknown');
     }
@@ -174,6 +187,7 @@ export const getExtendedOrderDetails = (order_details, loginid) => {
         should_highlight_alert,
         should_highlight_danger,
         should_highlight_disabled,
+        should_highlight_success,
         should_show_cancel_and_paid_button,
         should_show_complain_and_received_button,
         should_show_only_complain_button,

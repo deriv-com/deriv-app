@@ -57,7 +57,7 @@ const OrderDetailsFooter = ({ order_information }) => {
 
         return (
             <Modal
-                className='order-details__cancel-modal'
+                className='cancel-modal'
                 is_open={should_show_cancel_modal}
                 toggleModal={hideCancelOrderModal}
                 title={localize('Do you want to cancel this order?')}
@@ -95,6 +95,7 @@ const OrderDetailsFooter = ({ order_information }) => {
                         if (response.error) {
                             setErrorMessage(response.error.message);
                         }
+                        hideComplainOrderModal();
                     }
                     resolve();
                 });
@@ -208,7 +209,7 @@ const OrderDetailsFooter = ({ order_information }) => {
 
         return (
             <Modal
-                className='order-details__confirm-modal'
+                className='confirm-modal'
                 is_open={should_show_confirm_modal}
                 toggleModal={hideConfirmOrderModal}
                 title={
@@ -231,6 +232,7 @@ const OrderDetailsFooter = ({ order_information }) => {
                           )}
 
                     <Checkbox
+                        className='order-details__modal-checkbox'
                         onChange={() => setIsCheckboxChecked(!is_checkbox_checked)}
                         defaultChecked={is_checkbox_checked}
                         label={

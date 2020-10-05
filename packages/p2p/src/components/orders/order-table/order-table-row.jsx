@@ -15,7 +15,6 @@ const OrderRowComponent = React.memo(({ advert, onOpenDetails, style, is_active 
         amount_display,
         id,
         is_buy_order,
-        is_completed_order,
         local_currency,
         order_expiry_milliseconds,
         order_purchase_datetime,
@@ -24,6 +23,7 @@ const OrderRowComponent = React.memo(({ advert, onOpenDetails, style, is_active 
         should_highlight_alert,
         should_highlight_danger,
         should_highlight_disabled,
+        should_highlight_success,
         status_string,
     } = advert;
     const [remaining_time, setRemainingTime] = React.useState();
@@ -73,7 +73,7 @@ const OrderRowComponent = React.memo(({ advert, onOpenDetails, style, is_active 
                         className={classNames('orders__table-status', {
                             'orders__table-status--danger': should_highlight_danger,
                             'orders__table-status--alert': should_highlight_alert,
-                            'orders__table-status--success': is_completed_order,
+                            'orders__table-status--success': should_highlight_success,
                             'orders__table-status--disabled': should_highlight_disabled,
                         })}
                     >

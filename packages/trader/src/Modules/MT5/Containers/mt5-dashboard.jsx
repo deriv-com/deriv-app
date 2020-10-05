@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router';
 import { DesktopWrapper, Icon, MobileWrapper, Tabs } from '@deriv/components';
-import { isEmptyObject, routes } from '@deriv/shared';
+import { getPlatformRedirect, isEmptyObject, routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import LoadingMT5RealAccountDisplay from './loading-mt5-real-account-display.jsx';
@@ -45,6 +45,9 @@ class MT5Dashboard extends React.Component {
     };
 
     componentDidMount() {
+        if (!this.props.is_mt5_allowed) {
+            this.props.history.push('/');
+        }
         this.updateActiveIndex(this.getIndexToSet());
         this.openResetPassword();
         this.props.onMount();

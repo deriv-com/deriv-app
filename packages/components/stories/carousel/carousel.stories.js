@@ -143,3 +143,11 @@ stories.add('Upper nav', () => (
         </FlexWrapper>
     </Theme>
 ));
+
+stories.add('Auto play', () => (
+    <Theme is_dark={boolean('Theme', false)}>
+        <FlexWrapper>
+            <Carousel list={demo_slides} active_index={0} autoplay_time={2000} />
+        </FlexWrapper>
+    </Theme>
+));

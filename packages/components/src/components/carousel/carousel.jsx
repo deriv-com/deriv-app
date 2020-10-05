@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import Card from './carousel-card.jsx';
 import Nav from './carousel-nav.jsx';
 import Icon from '../icon';
+import { useInterval } from '../../hooks';
 
 const Carousel = ({
     className,
@@ -15,6 +16,7 @@ const Carousel = ({
     nav_position,
     show_bullet,
     show_nav,
+    autoplay_time,
 }) => {
     const [active_index, setActiveIndex] = React.useState(initial_index);
 
@@ -38,6 +40,10 @@ const Carousel = ({
             setActiveIndex(list.length - 1);
         }
     };
+
+    if (autoplay_time) {
+        useInterval(handleNextClick, autoplay_time);
+    }
 
     return (
         <Swipeable onSwipedLeft={handleNextClick} onSwipedRight={handlePrevClick}>
@@ -110,10 +116,11 @@ Carousel.propTypes = {
     handleSelect: PropTypes.func,
     item: PropTypes.object,
     list: PropTypes.array,
-    nav_position: PropTypes.string,
+    nav_position: PropTypes.oneOf(['top', 'middle', 'bottom']),
     show_nav: PropTypes.bool,
-    bullet_position: PropTypes.string,
+    bullet_position: PropTypes.oneOf(['top', 'bottom']),
     show_bullet: PropTypes.bool,
+    autoplay_time: PropTypes.number,
 };
 
 export default Carousel;

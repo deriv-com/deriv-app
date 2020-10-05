@@ -181,7 +181,7 @@ class ProfitTable extends React.Component {
                                         onScroll={handleScroll}
                                         footer={totals}
                                         custom_width={'100%'}
-                                        getRowSize={() => 204}
+                                        getRowSize={() => 224}
                                     >
                                         <PlaceholderComponent is_loading={is_loading} />
                                     </DataList>

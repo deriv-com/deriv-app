@@ -1,4 +1,4 @@
-import { getRoundedNumber, formatTime } from '@deriv/shared';
+import { getRoundedNumber, formatTime, findValueByKeyRecursively } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { error as logError } from './broadcast';
 import { observer as globalObserver } from '../../../utils/observer';
@@ -112,22 +112,23 @@ export const recoverFromError = (promiseFn, recoverFn, errors_to_ignore, delay_i
                         new Promise(recoverResolve => {
                             const getGlobalTimeouts = () => globalObserver.getState('global_timeouts') ?? [];
 
-                            // Allow user to cancel "buy"-requests. See interpreter.
                             const timeout = setTimeout(() => {
-                                globalObserver.setState({
-                                    global_timeouts: getGlobalTimeouts().filter(
-                                        global_timeout => global_timeout !== timeout
-                                    ),
-                                });
+                                const global_timeouts = getGlobalTimeouts();
+                                delete global_timeouts[timeout];
+                                globalObserver.setState(global_timeouts);
                                 recoverResolve();
                             }, getBackoffDelayInMs(error, delay_index));
 
-                            if (error?.msg_type === 'buy') {
-                                const global_timeouts = getGlobalTimeouts();
+                            const global_timeouts = getGlobalTimeouts();
+                            const cancellable_timeouts = ['buy'];
+                            const msg_type = findValueByKeyRecursively(error, 'msg_type');
 
-                                global_timeouts.push(timeout);
-                                globalObserver.setState({ global_timeouts });
-                            }
+                            global_timeouts[timeout] = {
+                                is_cancellable: cancellable_timeouts.includes(msg_type),
+                                msg_type,
+                            };
+
+                            globalObserver.setState({ global_timeouts });
                         })
                 );
             });

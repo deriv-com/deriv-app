@@ -177,11 +177,14 @@ export default class Interpreter {
 
     stop() {
         const global_timeouts = globalObserver.getState('global_timeouts') ?? [];
+        const is_timeouts_cancellable = Object.keys(global_timeouts).every(
+            timeout => global_timeouts[timeout].is_cancellable
+        );
 
-        if (!this.bot.contractId && global_timeouts.length > 0) {
+        if (!this.bot.contractId && is_timeouts_cancellable) {
             // When user is rate limited, allow them to stop the bot immediately
             // granted there is no active contract.
-            global_timeouts.forEach(global_timeout => clearTimeout(global_timeout));
+            global_timeouts.forEach(timeout => clearTimeout(global_timeouts[timeout]));
             this.terminateSession();
         } else if (this.bot.tradeEngine.isSold === false && !this.is_error_triggered) {
             globalObserver.register('contract.status', contractStatus => {

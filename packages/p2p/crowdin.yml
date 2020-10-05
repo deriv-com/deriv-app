@@ -1,5 +1,5 @@
 project_id: '381909'
-api_token_env: 'CROWDIN_API_KEY'
+api_token_env: 'DERIV_COM_CROWDIN_API_KEY'
 
 files:
     - source: /crowdin/messages.json

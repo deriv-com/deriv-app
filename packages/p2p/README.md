@@ -70,12 +70,8 @@ Update translations in Crowdin and get new translations from Crowdin
 Requirements:
 
 -   Crowdin CLI: https://support.crowdin.com/cli-tool-v2/#installation
--   Crowdin API key (Create new token in personal access token tab on crowdin profile) to bash profile:
-
-```sh
-   $ echo "export CROWDIN_API_KEY='apikeyhere'" >> ~/.bash_profile
-   $ source ~/.bash_profile
-```
+-   **Important:** Please use version 2 of the crowdin cli-tool (version 3 is not supported by our translation scripts yet)
+-   P2P_CROWDIN_API_KEY
 
 1. Run the script below
 

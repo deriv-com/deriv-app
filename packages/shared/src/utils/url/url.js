@@ -13,8 +13,21 @@ const host_map = {
 };
 let location_url, static_host, default_language;
 
-export const urlForLanguage = (target_language, url = window.location.href) =>
+export const legacyUrlForLanguage = (target_language, url = window.location.href) =>
     url.replace(new RegExp(`/${default_language}/`, 'i'), `/${(target_language || 'EN').trim().toLowerCase()}/`);
+
+export const urlForLanguage = (lang, url = window.location.href) => {
+    if (/[&?]lang=(\w*)/i.test(url)) {
+        return url.replace(/lang=(\w*)/, `lang=${lang?.trim().toUpperCase() || 'EN'}`);
+    }
+
+    const current_url = new URL(url);
+    const params = new URLSearchParams(current_url.search.slice(1));
+
+    params.append('lang', lang);
+
+    return `${current_url.origin}${current_url.pathname}?${params.toString()}${current_url.hash}`;
+};
 
 export const reset = () => {
     location_url = window?.location ?? location_url;
@@ -76,8 +89,13 @@ export const urlFor = (
     }
     const new_url = `${domain}${normalizePath(path) || 'home'}.html${query_string ? `?${query_string}` : ''}`;
 
-    // replace old lang with new lang
-    return urlForLanguage(lang, new_url);
+    if (lang && !legacy) {
+        return urlForLanguage(lang, new_url);
+    } else if (legacy) {
+        return legacyUrlForLanguage(lang, new_url);
+    }
+
+    return new_url;
 };
 
 export const urlForCurrentDomain = href => {

@@ -7,6 +7,7 @@ const crc32 = require('crc-32').str;
 const fs = require('fs');
 const static_strings = require('./app-static-strings');
 const getStringsFromInput = require('./extract-string').getStringsFromInput;
+const getStringsFromXmlFile = require('./extract-string').getStringsFromXmlFile;
 const getTranslatableFiles = require('./extract-string').getTranslatableFiles;
 
 program
@@ -31,18 +32,19 @@ const getKeyHash = string => crc32(string);
 
         // Iterate over files and extract all strings from the i18n marker
         for (let i = 0; i < file_paths.length; i++) {
-            if (program.verbose) {
-                console.log(file_paths[i]);
-            }
+            const file_path = file_paths[i];
 
             try {
-                const file = fs.readFileSync(file_paths[i], 'utf8');
-                messages.push(...getStringsFromInput(file));
+                if (program.verbose) {
+                    console.log(file_path);
+                }
+
+                const file = fs.readFileSync(file_path, 'utf8');
+                messages.push(...(file_path.endsWith('xml') ? getStringsFromXmlFile(file) : getStringsFromInput(file)));
             } catch (e) {
                 console.log(e);
             }
         }
-
         // Push static strings to list of messages to be added to JSON
         messages.push(...static_strings);
 

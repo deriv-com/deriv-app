@@ -14,7 +14,7 @@ import AdvertiserPage from '../advertiser-page/advertiser-page.jsx';
 import { buy_sell } from '../../constants/buy-sell';
 import './buy-sell.scss';
 
-const buy_sell_filters = [
+const buy_sell_filters = () => [
     {
         text: localize('Buy'),
         value: buy_sell.BUY,
@@ -112,7 +112,7 @@ const BuySell = ({ navigate }) => {
         <div className='buy-sell'>
             <div className='buy-sell__header'>
                 <ButtonToggle
-                    buttons_arr={buy_sell_filters}
+                    buttons_arr={buy_sell_filters()}
                     className='buy-sell__header__filters'
                     is_animated
                     name='filter'

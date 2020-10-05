@@ -486,21 +486,26 @@
         flex-direction: column;
         margin-top: auto;
     }
-    &__specs-table {
-        width: 100%;
+    &__specs {
+        margin-top: 1.6rem;
 
-        &-attribute .mt5-account-card--paragraph {
-            color: var(--text-general);
-            margin-right: 2.4rem;
-        }
-        &-data {
-            .mt5-account-card--paragraph {
-                @include typeface(--paragraph-left-bold-black, none);
-                color: var(--text-prominent);
-                line-height: 1.45;
+        &-table {
+            width: 100%;
+
+            &-attribute .mt5-account-card--paragraph {
+                color: var(--text-general);
+                margin-right: 2.4rem;
+            }
+            &-data {
+                .mt5-account-card--paragraph {
+                    @include typeface(--paragraph-left-bold-black, none);
+                    color: var(--text-prominent);
+                    line-height: 1.45;
+                }
             }
         }
     }
+
     &__commission {
         text-align: center;
         margin-top: 1.6rem;
@@ -547,13 +552,16 @@
         border-radius: 4px;
         color: var(--text-general);
         display: flex;
-        height: 40px;
+        padding: 0.8rem;
         justify-content: center;
         margin: 2.4rem 0 1.6rem;
         width: 272px;
 
         strong {
             font-weight: bold;
+        }
+        span {
+            margin-right: 0.8rem;
         }
     }
     &__manage {
@@ -642,6 +650,7 @@
             width: 100%;
             margin-top: 0.8rem;
             max-width: 30rem;
+            white-space: normal;
         }
     }
     &__success {

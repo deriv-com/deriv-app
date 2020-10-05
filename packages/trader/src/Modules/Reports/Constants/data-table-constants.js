@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Icon, Label, Money, ContractCard } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { isMobile, getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import ProgressSliderStream from 'App/Containers/ProgressSliderStream';
 import { getCardLabels } from 'Constants/contract';
@@ -46,7 +46,7 @@ export const getStatementTableColumnsTemplate = currency => [
     {
         title: localize('Currency'),
         col_index: 'currency',
-        renderCellContent: () => currency,
+        renderCellContent: () => getCurrencyDisplayCode(currency),
     },
     {
         title: localize('Transaction time'),
@@ -101,7 +101,7 @@ export const getProfitTableColumnsTemplate = (currency, items_count) => [
     {
         title: localize('Currency'),
         col_index: 'currency',
-        renderCellContent: ({ is_footer }) => (is_footer ? '' : currency),
+        renderCellContent: ({ is_footer }) => (is_footer ? '' : getCurrencyDisplayCode(currency)),
     },
     {
         title: localize('Buy time'),
@@ -173,7 +173,7 @@ export const getOpenPositionsColumnsTemplate = currency => [
     {
         title: localize('Currency'),
         col_index: 'currency',
-        renderCellContent: ({ row_obj }) => row_obj.contract_info?.currency,
+        renderCellContent: ({ row_obj }) => getCurrencyDisplayCode(row_obj.contract_info?.currency),
     },
     {
         title: localize('Buy price'),
@@ -258,7 +258,7 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
     {
         title: localize('Currency'),
         col_index: 'currency',
-        renderCellContent: ({ row_obj }) => row_obj.contract_info?.currency,
+        renderCellContent: ({ row_obj }) => getCurrencyDisplayCode(row_obj.contract_info?.currency),
     },
     {
         title: localize('Stake'),

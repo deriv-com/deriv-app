@@ -288,7 +288,7 @@ class RealAccountSignup extends React.Component {
                         is_open={is_real_acc_signup_on}
                         has_close_icon={has_close_icon}
                         renderTitle={() => {
-                            if (Title) {
+                            if (Title && ![finished_set_currency, status_dialog].includes(this.active_modal_index)) {
                                 return <Title {...this.props} />;
                             }
                             return null;

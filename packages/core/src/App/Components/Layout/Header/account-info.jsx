@@ -4,6 +4,7 @@ import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { DesktopWrapper, Icon, MobileWrapper, Popover } from '@deriv/components';
 import { Localize } from '@deriv/translations';
+import { getCurrencyDisplayCode } from '@deriv/shared';
 import AccountSwitcherMobile from 'App/Containers/AccountSwitcher/account-switcher-mobile.jsx';
 import { AccountSwitcher } from 'App/Containers/AccountSwitcher';
 
@@ -65,7 +66,7 @@ const AccountInfo = ({
                             })}
                         >
                             {!currency && <Localize i18n_default_text='No currency assigned' />}
-                            {balance} {currency}
+                            {balance} {getCurrencyDisplayCode(currency)}
                         </p>
                     )}
                     {is_disabled ? (

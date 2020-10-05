@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { formatMoney } from '@deriv/shared';
+import { formatMoney, getCurrencyDisplayCode } from '@deriv/shared';
 
 const Money = ({ amount, className, currency = 'USD', has_sign, should_format = true, show_currency = false }) => {
     let sign = '';
@@ -16,7 +16,7 @@ const Money = ({ amount, className, currency = 'USD', has_sign, should_format = 
         <React.Fragment>
             {has_sign && sign}
             <span className={className}>
-                {final_amount} {show_currency && currency}
+                {final_amount} {show_currency && getCurrencyDisplayCode(currency)}
             </span>
         </React.Fragment>
     );

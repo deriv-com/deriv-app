@@ -16,7 +16,7 @@ const USDTSideNote = () => {
             </h2>
             <p>
                 <Localize
-                    i18n_default_text='Deriv currently supports withdrawals of Tether USDT to Omni wallet and Tether eUSDT to Ethereum wallet. To ensure a successful transaction, enter a wallet address compatible with the tokens you with to withdraw. <0>Learn more</0>'
+                    i18n_default_text='Deriv currently supports withdrawals of Tether USDT to Omni wallet and Tether eUSDT to Ethereum wallet. To ensure a successful transaction, enter a wallet address compatible with the tokens you wish to withdraw. <0>Learn more</0>'
                     components={[<a key={0} className='link link--orange' onClick={handleLearnMore} />]}
                 />
             </p>

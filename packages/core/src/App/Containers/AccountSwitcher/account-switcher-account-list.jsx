@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Icon, Money } from '@deriv/components';
-import { formatMoney, getCurrencyName, getMT5AccountDisplay } from '@deriv/shared';
+import { formatMoney, getCurrencyName, getMT5AccountDisplay, getCurrencyDisplayCode } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 
 const AccountList = ({
@@ -62,7 +62,7 @@ const AccountList = ({
                         <span className='acc-switcher__balance'>
                             {currency && (
                                 <Money
-                                    currency={currency}
+                                    currency={getCurrencyDisplayCode(currency)}
                                     amount={formatMoney(currency, balance, true)}
                                     should_format={false}
                                     show_currency

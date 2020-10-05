@@ -240,6 +240,7 @@
         position: relative;
 
         .acc-switcher__account {
+            margin-bottom: 2px;
             background: var(--general-main-2);
 
             &:hover:not(.acc-switcher__account--selected) {

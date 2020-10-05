@@ -1,5 +1,6 @@
-import classNames from 'classnames';
 import React from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 const Text = ({ children, size, color, align, weight, lineHeight, className }) => (
     <p
@@ -41,5 +42,10 @@ const Text = ({ children, size, color, align, weight, lineHeight, className }) =
         {children}
     </p>
 );
+
+Text.propTypes = {
+    children: PropTypes.node,
+    className: PropTypes.string,
+};
 
 export default Text;

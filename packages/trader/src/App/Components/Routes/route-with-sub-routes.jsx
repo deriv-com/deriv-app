@@ -41,7 +41,7 @@ const RouteWithSubRoutes = route => {
 
         // eslint-disable-next-line no-nested-ternary
         const title = route.getTitle?.() || '';
-        document.title = `${title}${default_title}`;
+        document.title = `${title} | ${default_title}`;
         return result;
     };
 

@@ -119,3 +119,27 @@ stories.add('basic', () => (
         </FlexWrapper>
     </Theme>
 ));
+
+stories.add('Middle nav', () => (
+    <Theme is_dark={boolean('Theme', false)}>
+        <FlexWrapper>
+            <Carousel list={demo_slides} active_index={0} nav_position='middle' />
+        </FlexWrapper>
+    </Theme>
+));
+
+stories.add('Middle nav (no bullets)', () => (
+    <Theme is_dark={boolean('Theme', false)}>
+        <FlexWrapper>
+            <Carousel list={demo_slides} active_index={0} nav_position='middle' show_bullet={false} />
+        </FlexWrapper>
+    </Theme>
+));
+
+stories.add('Upper nav', () => (
+    <Theme is_dark={boolean('Theme', false)}>
+        <FlexWrapper>
+            <Carousel list={demo_slides} active_index={0} nav_position='top' bullet_position='top' />
+        </FlexWrapper>
+    </Theme>
+));

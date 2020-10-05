@@ -1,0 +1,56 @@
+name: Deriv App ID Generator
+
+on:
+  issue_comment:
+    types: [edited]
+
+jobs:
+  generate_app_id:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    steps:
+      - name: Capture Vercel preview URL
+        id: vercel_preview_url
+        uses: aaron-binary/vercel-preview-url-action@master
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Generate Deriv App ID for deployment Preview URL
+        id: generate_app_id
+        uses: aaron-binary/deriv-app-id-action@master
+        with:
+          DERIV_API_TOKEN: ${{ secrets.DERIV_API_TOKEN }}
+          deriv_app_id: 1,
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          max_retries: 5
+          vercel_preview_url: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}
+      - name: Comment on pull request with App ID and URLs
+        id: comment_on_pr
+        if: steps.generate_app_id.outputs.should_post_comment
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const comment_lines = [
+                "A production App ID was automatically generated for this PR. ([log](https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}))",
+                "",
+                "- PR: [${{ steps.generate_app_id.outputs.pr_url }}](${{ steps.generate_app_id.outputs.pr_url }})",
+                "- URL: [${{ steps.vercel_preview_url.outputs.vercel_preview_url }}](${{ steps.vercel_preview_url.outputs.vercel_preview_url }})",
+                "- App ID: `${{ steps.generate_app_id.outputs.app_id }}`",
+                "",
+                "<details>",
+                "<summary>Copy/paste snippet</summary>",
+                "",
+                "```",
+                "- PR: [${{ steps.generate_app_id.outputs.pr_url }}](${{ steps.generate_app_id.outputs.pr_url }})",
+                "- URL: [${{ steps.vercel_preview_url.outputs.vercel_preview_url }}](${{ steps.vercel_preview_url.outputs.vercel_preview_url }})",
+                "- App ID: `${{ steps.generate_app_id.outputs.app_id }}`",
+                "```",
+                "",
+                "</details>"
+            ];
+            github.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: comment_lines.join('\n'),
+            });

@@ -12,7 +12,7 @@ import { useStores } from '../../../../stores';
 
 const OrderRowComponent = observer(({ data: order, onOpenDetails, style, is_active }) => {
     const { general_store } = useStores();
-    const [order_state, setOrderState] = React.useState(order);
+    const [order_state, setOrderState] = React.useState(order); // Use separate state to force refresh when (FE-)expired.
     const [remaining_time, setRemainingTime] = React.useState();
     const { getLocalStorageSettingsForLoginId } = React.useContext(Dp2pContext);
 

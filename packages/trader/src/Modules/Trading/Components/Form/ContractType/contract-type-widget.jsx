@@ -168,8 +168,9 @@ class ContractTypeWidget extends React.PureComponent {
                     is_info_dialog_open={is_info_dialog_open}
                     is_open={is_dialog_open}
                     item={item || { value }}
-                    category={this.list_with_category}
+                    categories={this.list_with_category}
                     list={list}
+                    selected={this.state.selected_category}
                     onBackButtonClick={this.onBackButtonClick}
                     onClose={this.handleVisibility}
                     onChangeInput={this.onChangeInput}

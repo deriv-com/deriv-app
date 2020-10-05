@@ -9,24 +9,11 @@ import { Header } from '../ContractTypeInfo';
 import { getContractCategoryLabel } from '../../../../Helpers/contract-type';
 
 class Dialog extends React.PureComponent {
-    dialog_ref = React.createRef();
     input_ref = React.createRef();
 
     state = {
-        is_filtered_list_empty: false,
-        selected: this.contract_category,
-        value: this.props.item.value,
         input_value: '',
     };
-
-    static getDerivedStateFromProps(props, state) {
-        if (!props.is_open && !props.is_info_dialog_open && state.selected !== null) {
-            return {
-                selected: null, // reset selected header when dialog is closed
-            };
-        }
-        return null;
-    }
 
     onChange = e => {
         if (this.props.is_info_dialog_open) {
@@ -38,10 +25,6 @@ class Dialog extends React.PureComponent {
         if (this.props.onCategoryClick) {
             this.props.onCategoryClick(e);
         }
-
-        this.setState({
-            selected: e,
-        });
     };
 
     onChangeInput = e => {
@@ -53,16 +36,13 @@ class Dialog extends React.PureComponent {
 
     onClickClearInput = () => {
         this.input_ref.current.focus();
-        this.setState({
-            input_value: '',
-            selected: null,
-        });
+        this.setState({ input_value: '' });
         this.props.onChangeInput('');
     };
 
     get contract_category() {
-        const { category, item } = this.props;
-        const label = getContractCategoryLabel(category, item);
+        const { categories, item } = this.props;
+        const label = getContractCategoryLabel(categories, item);
 
         return {
             label,
@@ -70,11 +50,17 @@ class Dialog extends React.PureComponent {
     }
 
     get selected() {
-        return this.state.selected || this.contract_category;
+        const { selected } = this.props;
+        return selected ? { label: selected } : this.contract_category;
+    }
+
+    get selected_category_contract() {
+        const { categories } = this.props;
+        return !categories.find(category => category.label === this.selected.label).contract_categories.length;
     }
 
     render() {
-        const { children, is_info_dialog_open, is_open, item, category, onBackButtonClick } = this.props;
+        const { children, is_info_dialog_open, is_open, item, categories, onBackButtonClick } = this.props;
 
         const action_bar_items = is_info_dialog_open ? (
             <Header title={item.text} onClickGoBack={onBackButtonClick} />
@@ -99,18 +85,18 @@ class Dialog extends React.PureComponent {
                 unmountOnExit
             >
                 <div className='contract-type-dialog'>
-                    <div ref={this.dialog_ref} className='contract-type-dialog__wrapper'>
+                    <div className='contract-type-dialog__wrapper'>
                         <VerticalTab.Layout>
                             <VerticalTab.Headers
                                 header_title={localize('Trade types')}
-                                items={category}
+                                items={categories}
                                 selected={this.selected}
                                 onChange={this.onChange}
                             />
                             <div className='dc-vertical-tab__content'>
                                 <div className='dc-vertical-tab__action-bar'>{action_bar_items}</div>
                                 <div className='dc-vertical-tab__content-container'>
-                                    {this.state.is_filtered_list_empty && (
+                                    {this.selected_category_contract && (
                                         <NoResultsMessage text={this.state.input_value} />
                                     )}
                                     {!is_info_dialog_open ? (

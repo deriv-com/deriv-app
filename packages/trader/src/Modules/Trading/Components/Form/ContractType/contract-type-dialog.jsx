@@ -11,7 +11,8 @@ const ContractTypeDialog = ({
     is_open,
     item,
     list,
-    category,
+    selected,
+    categories,
     onBackButtonClick,
     onChangeInput,
     onCategoryClick,
@@ -36,7 +37,8 @@ const ContractTypeDialog = ({
                 is_open={is_open}
                 item={item}
                 list={list}
-                category={category}
+                selected={selected}
+                categories={categories}
                 onBackButtonClick={onBackButtonClick}
                 onChangeInput={onChangeInput}
                 onCategoryClick={onCategoryClick}

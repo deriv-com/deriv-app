@@ -17,6 +17,7 @@ const Carousel = ({
     show_bullet,
     show_nav,
     autoplay_time,
+    width,
 }) => {
     const [active_index, setActiveIndex] = React.useState(initial_index);
 
@@ -67,13 +68,18 @@ const Carousel = ({
                         </span>
                     )}
 
-                    <div className='carousel__box'>
+                    <div
+                        className='carousel__box'
+                        style={{
+                            width: `${width}px`,
+                        }}
+                    >
                         <div
                             className='carousel__wrapper'
-                            style={{ transform: `translate3d(-${350 * active_index}px, 0, 0)` }}
+                            style={{ transform: `translate3d(-${width * active_index}px, 0, 0)` }}
                         >
                             {list.map((type, idx) => (
-                                <Card key={idx} onClick={handleSelect}>
+                                <Card key={idx} onClick={handleSelect} width={width}>
                                     {list[idx]}
                                 </Card>
                             ))}
@@ -109,6 +115,7 @@ Carousel.defaultProps = {
     bullet_position: 'bottom',
     show_bullet: true,
     show_nav: true,
+    width: 400,
 };
 Carousel.propTypes = {
     className: PropTypes.string,
@@ -121,6 +128,7 @@ Carousel.propTypes = {
     bullet_position: PropTypes.oneOf(['top', 'bottom']),
     show_bullet: PropTypes.bool,
     autoplay_time: PropTypes.number,
+    width: PropTypes.number,
 };
 
 export default Carousel;

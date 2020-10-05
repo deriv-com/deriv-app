@@ -12,7 +12,6 @@
     }
 
     &__box {
-        width: 350px;
         overflow: hidden;
     }
 
@@ -25,7 +24,6 @@
         height: 100%;
     }
     &__card {
-        width: 350px;
         display: flex;
         flex-direction: column;
         padding-bottom: 0.8rem;

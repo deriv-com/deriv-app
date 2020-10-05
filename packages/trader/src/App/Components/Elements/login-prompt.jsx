@@ -8,7 +8,7 @@ const LoginPrompt = ({ onLogin, onSignup, page_title }) => (
         header={
             <Localize
                 i18n_default_text='{{page_title}} page is only<0 />available for existing clients.'
-                values={{ page_title: page_title.props.i18n_default_text || 'This' }}
+                values={{ page_title: page_title || 'This' }}
                 components={[<br key={0} />]}
             />
         }

@@ -138,7 +138,7 @@ VerticalTab.propTypes = {
     list_groups: PropTypes.arrayOf(
         PropTypes.shape({
             icon: PropTypes.string,
-            label: PropTypes.string,
+            label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
             subitems: PropTypes.arrayOf(PropTypes.number),
         })
     ),

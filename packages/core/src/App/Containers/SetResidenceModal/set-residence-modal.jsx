@@ -5,7 +5,7 @@ import React from 'react';
 import { Button, Dialog } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { website_name } from 'App/Constants/app-config';
+import { website_name } from '@deriv/shared';
 import ResidenceForm from './set-residence-form.jsx';
 import 'Sass/app/modules/set-residence.scss';
 

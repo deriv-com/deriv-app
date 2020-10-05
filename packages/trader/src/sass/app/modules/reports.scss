@@ -10,32 +10,20 @@ $side-padding: 1.2em;
         width: 100%;
         display: flex;
         justify-content: space-between;
-        padding: 0 24px 16px;
+        padding: 0 2.4rem 1.6rem 0;
 
-        &-description {
-            &--heading {
-                @include typeface(--title-left-bold-black, none);
-                color: var(--text-prominent);
-                line-height: 1.55;
-            }
-            &--paragraph {
-                @include typeface(--paragraph-left-normal-black, none);
-                color: var(--text-general);
-
-                @include mobile {
-                    padding: 0.8rem 0 1.6rem;
-                }
-            }
-            @include mobile {
-                margin-top: 0.8rem;
-            }
+        @include mobile {
+            padding: 0 1.6rem 1.6rem;
         }
+
         &-filter {
             position: relative;
             display: flex;
-            justify-content: flex-end;
-            max-width: 36rem;
             width: 100%;
+            @include desktop {
+                max-width: 36rem;
+                margin-left: auto;
+            }
         }
 
         @include desktop {
@@ -55,6 +43,9 @@ $side-padding: 1.2em;
         display: flex;
         flex-direction: column;
         width: 100%;
+    }
+    &__route-selection {
+        padding: 1.6rem;
     }
     .unknown-icon {
         margin-left: 8px;
@@ -111,7 +102,7 @@ $side-padding: 1.2em;
 
         &__data-list-body,
         &__data-list-footer {
-            padding: 0 24px;
+            padding: 0 1.6rem;
         }
         &__data-list-body {
             height: 100%;
@@ -219,45 +210,73 @@ $side-padding: 1.2em;
     }
     &__account-statistics {
         @include desktop {
-            width: 43.2rem;
+            width: 52rem;
         }
         @include mobile {
-            margin: 0.8rem 0;
+            margin: 0.8rem 0 1.6rem;
+            order: 1;
+            height: 4rem;
         }
-        height: 6.4rem;
+        height: 4.8rem;
         display: flex;
         flex-direction: row;
         text-align: left;
 
-        :last-child {
-            border-right: unset;
+        &-item {
+            flex: 1;
+            border-right: 1px solid var(--border-normal);
+            display: flex;
+            max-width: 19rem;
+
+            &:last-child {
+                border-right: unset;
+            }
+            &:first-child {
+                .statement__account-statistics--is-rectangle {
+                    padding-left: 0;
+                }
+            }
+            &:not(:first-child) {
+                justify-content: center;
+            }
         }
-        :first-child {
-            padding-left: 0;
+        &-total-withdrawal {
+            @include desktop {
+                min-width: 19rem;
+            }
+            @include mobile {
+                min-width: 12.3rem;
+            }
         }
         &--is-rectangle {
-            text-align: left;
             height: 100%;
-            border-right: 1px solid $color-grey-2;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding: 8px 0 0 16px;
-            align-items: flex-start;
-            max-width: 14.4rem;
-            width: 100%;
+
+            @include desktop {
+                padding: 0.4rem 1.6rem;
+            }
         }
         &-title {
             text-align: left;
-            color: $color-grey-1;
-            font-size: 14px;
+            color: var(--text-less-prominent);
+            font-size: 1.4rem;
             margin-bottom: 9px;
+
+            @include mobile {
+                font-size: 1rem;
+            }
         }
         &-amount {
-            text-align: left;
+            text-align: center;
             font-weight: bold;
-            font-size: 16px;
+            font-size: 1.6rem;
             color: var(--text-prominent);
+
+            @include mobile {
+                font-size: 1.4rem;
+            }
         }
     }
 }
@@ -340,7 +359,7 @@ $side-padding: 1.2em;
 
         &__data-list-body,
         &__data-list-footer {
-            padding: 0 24px;
+            padding: 0 1.6rem;
         }
         &__data-list-body {
             height: calc(100% - 50px);
@@ -382,7 +401,7 @@ $side-padding: 1.2em;
     }
     &__row {
         /*                     icon   refId buy_time  buy_price sell_time  sell_price profit/loss */
-        grid-template-columns: 0.8fr 1.2fr 1fr 0.8fr 1fr 1fr 1fr;
+        grid-template-columns: 0.9fr 1.2fr 1fr 0.8fr 1fr 1fr 1fr;
     }
     .buy_price,
     .sell_price,
@@ -492,16 +511,21 @@ $side-padding: 1.2em;
                     padding: 0 1.6rem;
                 }
                 /* postcss-bem-linter: ignore */
-                & .progress-slider--completed {
+                & .dc-progress-slider--completed {
                     display: none;
                 }
                 /* postcss-bem-linter: ignore */
-                & .positions-drawer-card {
+                & .dc-contract-card {
+                    background-color: unset;
                     /* postcss-bem-linter: ignore */
                     &__wrapper {
                         background-color: var(--general-section-1);
                         max-width: unset;
                         margin: 0;
+                    }
+                    /* postcss-bem-linter: ignore */
+                    &-item__footer {
+                        background-color: var(--general-section-1);
                     }
                     /* postcss-bem-linter: ignore */
                     &__grid-underlying-trade {
@@ -514,7 +538,15 @@ $side-padding: 1.2em;
                         margin-bottom: 0.4rem;
                     }
                     /* postcss-bem-linter: ignore */
-                    &__item {
+                    &__sell-button {
+                        border-top: 1px solid var(--general-main-1);
+                    }
+                    /* postcss-bem-linter: ignore */
+                    &-item {
+                        /* postcss-bem-linter: ignore */
+                        &__total-profit-loss {
+                            border-color: var(--general-main-1);
+                        }
                         /* postcss-bem-linter: ignore */
                         &:nth-child(1) {
                             order: 0;
@@ -529,26 +561,14 @@ $side-padding: 1.2em;
                             order: 6;
                         }
                     }
-                    /* postcss-bem-linter: ignore */
-                    &__total-profit-loss {
-                        flex-direction: row;
-                        padding-top: 0.8rem;
-                        border-color: var(--general-main-1);
-
-                        /* postcss-bem-linter: ignore */
-                        &-label {
-                            margin-left: auto;
-                        }
-                        /* postcss-bem-linter: ignore */
-                        &-value {
-                            margin-right: auto;
-                            padding-left: 0.8rem;
-                        }
-                    }
                 }
                 /* postcss-bem-linter: ignore */
-                & .positions-drawer-dialog-toggle {
-                    top: 51px;
+                & .dc-contract-card-items-wrapper--mobile {
+                    margin-top: 0.8rem;
+                }
+                /* postcss-bem-linter: ignore */
+                & .dc-contract-card-dialog-toggle {
+                    top: 56px;
                     width: 124px;
                     right: 9px;
                     border-color: var(--border-hover);
@@ -559,7 +579,6 @@ $side-padding: 1.2em;
                         right: 10px;
                     }
                     @media only screen and (max-width: 320px) {
-                        top: 52px;
                         width: 91px;
                         height: 80px;
                     }
@@ -746,7 +765,7 @@ $side-padding: 1.2em;
     .type {
         padding-right: 0;
     }
-    .progress-slider {
+    .dc-progress-slider {
         border: none;
         margin: 0;
 
@@ -793,14 +812,14 @@ $side-padding: 1.2em;
     .open-positions {
         &__row {
             /*                     icon multiplier stake cancellation buy_price  limit_order current_stake total_profit_loss action */
-            grid-template-columns: 5.5rem 6rem 1fr 1fr 1fr 1fr 1fr 1.1fr 10rem;
+            grid-template-columns: 6.5rem 6rem 1fr 1fr 1fr 1fr 1fr 1.1fr 10rem;
 
             &-action {
                 display: flex;
                 flex-direction: column;
                 flex: 1;
 
-                .remaining-time {
+                .dc-remaining-time {
                     margin-left: 0.4rem;
                     font-size: inherit;
                 }

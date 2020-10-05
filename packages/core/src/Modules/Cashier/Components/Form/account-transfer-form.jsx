@@ -3,11 +3,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik, Form } from 'formik';
 import { Button, Dropdown, Icon, Input, Money, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
-import { getDecimalPlaces, getCurrencyDisplayCode } from '@deriv/shared';
+import { getDecimalPlaces, getCurrencyDisplayCode, validNumber, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { website_name } from 'App/Constants/app-config';
 import { connect } from 'Stores/connect';
-import { getPreBuildDVRs, validNumber } from 'Utils/Validator/declarative-validation-rules';
 import FormError from '../Error/form-error.jsx';
 import Loading from '../../../../templates/_common/components/loading.jsx';
 
@@ -15,11 +13,18 @@ const AccountOption = ({ account, idx }) => {
     return (
         <React.Fragment key={idx}>
             {(account.currency || account.mt_icon) && (
-                <Icon
-                    icon={account.mt_icon ? `IcMt5-${account.mt_icon}` : `IcCurrency-${account.currency.toLowerCase()}`}
-                    className='account-transfer__currency-icon'
-                />
+                <div>
+                    <Icon
+                        icon={
+                            account.mt_icon
+                                ? `IcMt5-${account.mt_icon}`
+                                : `IcCurrency-${account.currency.toLowerCase()}`
+                        }
+                        className='account-transfer__currency-icon'
+                    />
+                </div>
             )}
+
             <div className='account-transfer__currency-wrapper'>
                 <span className='account-transfer__currency'>{account.text}</span>
                 <span className='account-transfer__loginid'>{account.value}</span>
@@ -103,24 +108,19 @@ const AccountTransferForm = ({
     error,
 }) => {
     const validateAmount = amount => {
-        let error_message;
+        if (!amount) return localize('This field is required.');
 
-        if (!amount) {
-            error_message = localize('This field is required.');
-        } else if (
-            !validNumber(amount, {
-                type: 'float',
-                decimals: getDecimalPlaces(selected_from.currency),
-                min: transfer_limit.min,
-                max: transfer_limit.max,
-            })
-        ) {
-            error_message = getPreBuildDVRs().number.message;
-        } else if (+selected_from.balance < +amount) {
-            error_message = localize('Insufficient balance.');
-        }
+        const { is_ok, message } = validNumber(amount, {
+            type: 'float',
+            decimals: getDecimalPlaces(selected_from.currency),
+            min: transfer_limit.min,
+            max: transfer_limit.max,
+        });
+        if (!is_ok) return message;
 
-        return error_message;
+        if (+selected_from.balance < +amount) return localize('Insufficient balance.');
+
+        return undefined;
     };
 
     const onTransferPassthrough = async (values, actions) => {
@@ -203,6 +203,7 @@ const AccountTransferForm = ({
             );
         }
     }, [transfer_fee, selected_from, minimum_fee, mt5_total_transfers, internal_total_transfers, setSideNote]);
+
     return (
         <div className='cashier__wrapper account-transfer__wrapper'>
             <React.Fragment>
@@ -262,6 +263,7 @@ const AccountTransferForm = ({
                                                 placeholder={localize('Please select')}
                                                 className='account-transfer__transfer-from'
                                                 classNameDisplay='cashier__drop-down-display'
+                                                name='transfer_from'
                                                 label={localize('From')}
                                                 value={selected_from.value}
                                                 list_items={from_accounts}
@@ -300,6 +302,7 @@ const AccountTransferForm = ({
                                                 className='account-transfer__transfer-to'
                                                 classNameDisplay='cashier__drop-down-display'
                                                 label={localize('To')}
+                                                name='transfer_to'
                                                 value={selected_to.value}
                                                 list_items={to_accounts}
                                                 onChange={onChangeTransferTo}

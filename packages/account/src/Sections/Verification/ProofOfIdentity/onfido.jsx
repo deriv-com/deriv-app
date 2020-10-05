@@ -3,13 +3,13 @@ import React from 'react';
 import { ThemedScrollbars } from '@deriv/components';
 import { init } from 'onfido-sdk-ui';
 import { isMobile } from '@deriv/shared';
-// TODO: [onfido translation] language when translations are ready
-// import { getLanguage } from '@deriv/translations';
+import { getLanguage } from '@deriv/translations';
 import UploadComplete from 'Components/poi-upload-complete';
 import Unsupported from 'Components/poi-unsupported';
 import Expired from 'Components/poi-expired';
 import OnfidoFailed from 'Components/poi-onfido-failed';
 import Verified from 'Components/poi-verified';
+import onfido_phrases from 'Constants/onfido-phrases';
 import { onfido_status_codes } from './proof-of-identity';
 
 const onfido_container_id = 'onfido';
@@ -35,10 +35,10 @@ export default class Onfido extends React.Component {
             const { documents_supported } = this.props;
             const onfido = await init({
                 containerId: onfido_container_id,
-                // TODO: [onfido translation] language when translations are ready
-                // language: {
-                //     locale: getLanguage().toLowerCase() || 'en',
-                // },
+                language: {
+                    locale: getLanguage().toLowerCase() || 'en',
+                    phrases: onfido_phrases,
+                },
                 token: this.props.onfido_service_token,
                 useModal: false,
                 onComplete: this.handleComplete,
@@ -109,6 +109,6 @@ Onfido.propTypes = {
     documents_supported: PropTypes.array,
     handleComplete: PropTypes.func,
     has_poa: PropTypes.bool,
-    onfido_service_token: PropTypes.string,
+    onfido_service_token: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
     status: PropTypes.oneOf(Object.keys(onfido_status_codes)),
 };

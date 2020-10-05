@@ -37,13 +37,25 @@
                 max-width: 17.6rem;
             }
 
+            @include mobile {
+                .inline-icon {
+                    top: 1.2rem;
+                }
+            }
+
             @include colorIcon(var(--text-prominent));
 
             & .input {
-                height: 32px;
+                height: 3.2rem;
                 background-color: var(--fill-normal);
                 border: 1px solid var(--border-normal);
                 appearance: none;
+
+                @include mobile {
+                    height: 4rem;
+                    text-align: left;
+                    padding-left: 3rem;
+                }
 
                 &:hover {
                     border-color: var(--border-hover);

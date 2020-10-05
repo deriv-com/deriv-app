@@ -37,11 +37,21 @@ const DatePickerInput = ({
         setIsClearBtnVisible(false);
     };
 
+    const OpenIcon = (
+        <DatePickerIcon
+            onClick={onClick}
+            className={classNames({
+                'dc-datepicker__icon': typeof onClick === 'function',
+            })}
+            icon='IcCalendar'
+        />
+    );
+
     const trailing_icon =
         is_clearable && is_clear_btn_visible ? (
             <DatePickerIcon icon='IcCloseCircle' onClick={onClickClear} color='secondary' />
         ) : (
-            <DatePickerIcon icon='IcCalendar' />
+            OpenIcon
         );
 
     return (
@@ -62,7 +72,7 @@ const DatePickerInput = ({
             onClick={onClick}
             placeholder={placeholder}
             readOnly={readOnly}
-            leading_icon={show_leading_icon ? <DatePickerIcon icon='IcCalendar' /> : undefined}
+            leading_icon={show_leading_icon && OpenIcon}
             trailing_icon={show_leading_icon ? undefined : trailing_icon}
             type={readOnly ? 'text' : 'number'}
             value={is_placeholder_visible || !value ? '' : value}

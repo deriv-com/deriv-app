@@ -26,6 +26,7 @@ module.exports = {
             Components: path.resolve(__dirname, 'src/components'),
             Translations: path.resolve(__dirname, 'src/translations'),
             Utils: path.resolve(__dirname, 'src/utils'),
+            Stores: path.resolve(__dirname, 'stores'), // TODO: Move stores into ./src!
         },
         symlinks: false,
     },

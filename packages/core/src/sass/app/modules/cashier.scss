@@ -21,6 +21,7 @@
     }
     &__wrapper {
         text-align: center;
+        margin: 0 auto;
 
         @include desktop {
             max-width: 672px;
@@ -233,7 +234,7 @@
             }
             @include mobile {
                 min-height: auto;
-                min-width: auto;
+                min-width: calc(100% - 4rem);
                 display: flex;
                 align-items: center;
             }
@@ -425,6 +426,18 @@
                 max-width: 50%;
             }
         }
+        &-error {
+            max-width: 40rem;
+            margin: auto;
+
+            @include mobile {
+                margin-top: 1.6rem;
+            }
+
+            .cashier__form-error {
+                margin-right: 0;
+            }
+        }
         &-submit {
             margin: 2.4rem auto;
             width: 40rem;
@@ -564,12 +577,17 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-top: 4rem;
     max-width: 67.2rem;
+    margin: 4rem auto 0;
 
     /* stylelint-disable-next-line plugin/selector-bem-pattern */
     .dc-checklist {
         width: 100%;
+        max-width: 500px;
+    }
+    /* stylelint-disable-next-line plugin/selector-bem-pattern */
+    .dc-checklist__item-text {
+        max-width: 320px;
     }
     &__icon {
         width: 12.8rem;
@@ -1228,6 +1246,10 @@
                 display: flex;
                 flex-flow: row;
                 justify-content: center;
+
+                @include mobile {
+                    flex-direction: column;
+                }
 
                 .account-transfer__button {
                     margin: 1.6rem 0.4rem 0;

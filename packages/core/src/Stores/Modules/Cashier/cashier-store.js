@@ -9,16 +9,14 @@ import {
     getCurrencyDisplayCode,
     isEmptyObject,
     getPropertyValue,
+    getMT5AccountDisplay,
+    getMT5Account,
 } from '@deriv/shared';
-
 import BinarySocket from '_common/base/socket_base';
 import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services';
 import OnRampStore from './on-ramp-store';
 import BaseStore from '../../base-store';
-import { getMT5AccountDisplay } from '../../Helpers/client';
-
-const bank_default_option = [{ text: localize('All payment agents'), value: 0 }];
 
 const hasTransferNotAllowedLoginid = loginid => loginid.startsWith('MX');
 
@@ -79,8 +77,8 @@ class ConfigPaymentAgent {
     @observable is_withdraw_successful = false;
     @observable confirm = {};
     @observable receipt = {};
-    @observable selected_bank = bank_default_option[0].value;
-    @observable supported_banks = bank_default_option;
+    @observable selected_bank = 0;
+    @observable supported_banks = [];
     @observable verification = new ConfigVerification();
 }
 
@@ -179,6 +177,11 @@ export default class CashierStore extends BaseStore {
         return this.config.payment_agent_transfer.is_payment_agent;
     }
 
+    @computed
+    get is_p2p_enabled() {
+        return this.is_p2p_visible && !this.root_store.client.is_eu;
+    }
+
     @action.bound
     setAccountSwitchListener() {
         // cashier inits once and tries to stay active until switching account
@@ -225,10 +228,13 @@ export default class CashierStore extends BaseStore {
             if (!this.is_p2p_visible && !this.root_store.client.is_virtual) {
                 const advertiser_info = await WS.authorized.p2pAdvertiserInfo();
                 const advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
-                if (advertiser_error === 'PermissionDenied') this.setIsP2pVisible(true);
+                if (advertiser_error === 'RestrictedCountry') {
+                    this.setIsP2pVisible(false);
+                } else {
+                    this.setIsP2pVisible(true);
+                }
 
                 this.is_p2p_advertiser = !advertiser_error;
-                this.setIsP2pVisible(true);
             }
         }
     }
@@ -760,6 +766,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setIsTryWithdrawSuccessful(is_try_withdraw_successful) {
+        this.setErrorMessage('');
         this.config.payment_agent.is_try_withdraw_successful = is_try_withdraw_successful;
     }
 
@@ -970,16 +977,22 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setTransferLimit() {
+        const is_mt_transfer =
+            this.config.account_transfer.selected_from.is_mt || this.config.account_transfer.selected_to.is_mt;
         const transfer_limit = getPropertyValue(getCurrencies(), [
             this.config.account_transfer.selected_from.currency,
             'transfer_between_accounts',
-            'limits',
+            is_mt_transfer ? 'limits_mt5' : 'limits',
         ]);
+        const balance = this.config.account_transfer.selected_from.balance;
         const decimal_places = getDecimalPlaces(this.config.account_transfer.selected_from.currency);
         // we need .toFixed() so that it doesn't display in scientific notation, e.g. 1e-8 for currencies with 8 decimal places
         this.config.account_transfer.transfer_limit = {
-            max: transfer_limit.max ? transfer_limit.max.toFixed(decimal_places) : null,
-            min: transfer_limit.min ? transfer_limit.min.toFixed(decimal_places) : null,
+            max:
+                !transfer_limit?.max || (+balance >= (transfer_limit?.min || 0) && +balance <= transfer_limit?.max)
+                    ? balance
+                    : transfer_limit?.max.toFixed(decimal_places),
+            min: transfer_limit?.min ? (+transfer_limit?.min).toFixed(decimal_places) : null,
         };
     }
 
@@ -1032,7 +1045,7 @@ export default class CashierStore extends BaseStore {
                 currency: account.currency,
                 is_crypto: isCryptocurrency(account.currency),
                 is_mt: account.account_type === 'mt5',
-                ...(account.mt5_group && { mt_icon: getMT5AccountDisplay(account.mt5_group) }),
+                ...(account.mt5_group && { mt_icon: getMT5Account(account.mt5_group) }),
             };
             // set current logged in client as the default transfer from account
             if (account.loginid === this.root_store.client.loginid) {
@@ -1072,6 +1085,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setIsTryTransferSuccessful(is_try_transfer_successful) {
+        this.setErrorMessage('');
         this.config[this.active_container].is_try_transfer_successful = is_try_transfer_successful;
     }
 
@@ -1131,6 +1145,7 @@ export default class CashierStore extends BaseStore {
             );
         }
         this.setTransferFee();
+        this.setTransferLimit();
     }
 
     requestTransferBetweenAccounts = async ({ amount }) => {

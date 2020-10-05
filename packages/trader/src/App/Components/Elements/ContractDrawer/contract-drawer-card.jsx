@@ -1,17 +1,22 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { DesktopWrapper, MobileWrapper, Collapsible } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, Collapsible, ContractCard } from '@deriv/components';
+import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
 import { getEndTime } from 'Stores/Modules/Contract/Helpers/logic';
-import ContractCard from 'App/Components/Elements/ContractCard';
-import CardBody from './contract-drawer-card-body.jsx';
-import CardFooter from './contract-drawer-card-footer.jsx';
-import CardHeader from './contract-drawer-card-header.jsx';
+import { connect } from 'Stores/connect';
 import { SwipeableContractDrawer } from './swipeable-components.jsx';
+import MarketCountdownTimer from '../market-countdown-timer.jsx';
 
 const ContractDrawerCard = ({
+    addToast,
     contract_info,
     contract_update,
     currency,
+    getContractById,
+    is_dark_mode_on,
+    is_market_closed,
+    is_mobile,
     is_multiplier,
     is_sell_requested,
     is_collapsed,
@@ -19,19 +24,43 @@ const ContractDrawerCard = ({
     onClickSell,
     onSwipedUp,
     onSwipedDown,
+    removeToast,
+    result,
+    setCurrentFocus,
+    server_time,
+    should_show_cancellation_warning,
     status,
+    toggleCancellationWarning,
     toggleContractAuditDrawer,
 }) => {
     const { profit } = contract_info;
     const is_sold = !!getEndTime(contract_info);
 
+    const card_header = (
+        <ContractCard.Header
+            contract_info={contract_info}
+            getCardLabels={getCardLabels}
+            getContractTypeDisplay={getContractTypeDisplay}
+            has_progress_slider={!is_multiplier}
+            is_mobile={is_mobile}
+            is_sell_requested={is_sell_requested}
+            is_sold={is_sold}
+            onClickSell={onClickSell}
+            server_time={server_time}
+        />
+    );
+
     const card_body = (
-        <CardBody
+        <ContractCard.Body
             contract_info={contract_info}
             contract_update={contract_update}
             currency={currency}
+            getCardLabels={getCardLabels}
+            is_mobile={is_mobile}
             is_multiplier={is_multiplier}
+            is_sold={is_sold}
             status={status}
+            server_time={server_time}
         />
     );
 
@@ -39,27 +68,66 @@ const ContractDrawerCard = ({
         <React.Fragment>
             <DesktopWrapper>{card_body}</DesktopWrapper>
             <MobileWrapper>
-                <div className='contract-card__body-wrapper contract-card__separator'>{card_body}</div>
+                <div
+                    className={
+                        ('dc-contract-card__separatorclass',
+                        classNames({
+                            'dc-contract-card__body-wrapper': !is_multiplier,
+                        }))
+                    }
+                >
+                    {card_body}
+                </div>
             </MobileWrapper>
+        </React.Fragment>
+    );
+
+    const card_footer = (
+        <ContractCard.Footer
+            addToast={addToast}
+            contract_info={contract_info}
+            getCardLabels={getCardLabels}
+            getContractById={getContractById}
+            is_multiplier={is_multiplier}
+            is_sell_requested={is_sell_requested}
+            onClickCancel={onClickCancel}
+            onClickSell={onClickSell}
+            removeToast={removeToast}
+            setCurrentFocus={setCurrentFocus}
+            server_time={server_time}
+            should_show_cancellation_warning={should_show_cancellation_warning}
+            status={status}
+            toggleCancellationWarning={toggleCancellationWarning}
+        />
+    );
+
+    const contract_el = (
+        <React.Fragment>
+            {card_header}
+            {card_body_wrapper}
         </React.Fragment>
     );
 
     const contract_card = (
         <ContractCard
-            is_multiplier={is_multiplier}
             contract_info={contract_info}
+            getCardLabels={getCardLabels}
+            is_dark_mode_on={is_dark_mode_on}
+            is_multiplier={is_multiplier}
+            is_market_closed={is_market_closed}
+            market_countdown_timer={<MarketCountdownTimer />}
             profit_loss={profit}
-            is_sold={is_sold}
+            should_show_result_overlay={false}
         >
-            <CardHeader contract_info={contract_info} has_progress_slider={!is_multiplier} />
-            {card_body_wrapper}
-            <CardFooter
-                contract_info={contract_info}
-                is_multiplier={is_multiplier}
-                is_sell_requested={is_sell_requested}
-                onClickCancel={onClickCancel}
-                onClickSell={onClickSell}
-            />
+            <div
+                className={classNames('dc-contract-card', {
+                    'dc-contract-card--green': is_mobile && !is_multiplier && profit > 0 && !result,
+                    'dc-contract-card--red': is_mobile && !is_multiplier && profit < 0 && !result,
+                })}
+            >
+                {contract_el}
+                {card_footer}
+            </div>
         </ContractCard>
     );
 
@@ -91,4 +159,13 @@ ContractDrawerCard.propTypes = {
     status: PropTypes.string,
 };
 
-export default ContractDrawerCard;
+export default connect(({ modules, ui }) => ({
+    addToast: ui.addToast,
+    getContractById: modules.contract_trade.getContractById,
+    is_market_closed: modules.trade.is_market_closed,
+    is_dark_mode_on: ui.is_dark_mode_on,
+    removeToast: ui.removeToast,
+    should_show_cancellation_warning: ui.should_show_cancellation_warning,
+    setCurrentFocus: ui.setCurrentFocus,
+    toggleCancellationWarning: ui.toggleCancellationWarning,
+}))(ContractDrawerCard);

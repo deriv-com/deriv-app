@@ -17,7 +17,10 @@ Blockly.Blocks.math_change = {
      */
     definition() {
         return {
-            message0: localize('change %1 by %2'),
+            message0: localize('change {{ variable }} by {{ number }}', {
+                variable: '%1',
+                number: '%2',
+            }),
             args0: [
                 {
                     type: 'field_variable',

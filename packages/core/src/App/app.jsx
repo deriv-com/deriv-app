@@ -5,22 +5,31 @@ import { BrowserRouter as Router } from 'react-router-dom';
 // Initialize i18n by importing it here
 // eslint-disable-next-line no-unused-vars
 import { DesktopWrapper } from '@deriv/components';
-import { checkAndSetEndpointFromUrl, setUrlLanguage, isMobile } from '@deriv/shared';
+import {
+    checkAndSetEndpointFromUrl,
+    setUrlLanguage,
+    isMobile,
+    initFormErrorMessages,
+    setSharedMT5Text,
+} from '@deriv/shared';
 import { initializeTranslations, getLanguage } from '@deriv/translations';
-import Client from '_common/base/client_base';
 import WS from 'Services/ws-methods';
 import { MobxContentProvider } from 'Stores/connect';
 import SmartTraderIFrame from 'Modules/SmartTraderIFrame';
 import AppToastMessages from './Containers/app-toast-messages.jsx';
 import ErrorBoundary from './Components/Elements/Errors/error-boundary.jsx';
 import AppContents from './Containers/Layout/app-contents.jsx';
+import PlatformContainer from './Containers/PlatformContainer/PlatformContainer.jsx';
 import Footer from './Containers/Layout/footer.jsx';
 import Header from './Containers/Layout/header.jsx';
 import AppNotificationMessages from './Containers/app-notification-messages.jsx';
 import AppModals from './Containers/Modals';
 import Routes from './Containers/Routes/routes.jsx';
+import initStore from './app';
+import { FORM_ERROR_MESSAGES } from '../Constants/form-error-messages';
+import { MT5_TEXT } from '../Constants/mt5-text';
+
 // eslint-disable-next-line import/extensions
-import initStore from './app.js';
 // eslint-disable-next-line import/no-unresolved
 import 'Sass/app.scss';
 
@@ -32,7 +41,11 @@ const App = ({ root_store }) => {
     React.useEffect(() => {
         checkAndSetEndpointFromUrl();
         initializeTranslations();
+
+        // TODO: [translation-to-shared]: add translation implemnentation in shared
         setUrlLanguage(getLanguage());
+        initFormErrorMessages(FORM_ERROR_MESSAGES);
+        setSharedMT5Text(MT5_TEXT);
     }, []);
 
     React.useEffect(() => {
@@ -83,13 +96,12 @@ const App = ({ root_store }) => {
     const platform_passthrough = {
         root_store,
         WS,
-        client_base: Client,
     };
 
     return (
         <Router basename={has_base ? `/${base}` : null}>
             <MobxContentProvider store={root_store}>
-                <React.Fragment>
+                <PlatformContainer>
                     <Header />
                     <ErrorBoundary>
                         <AppContents>
@@ -103,7 +115,7 @@ const App = ({ root_store }) => {
                     <AppModals url_action_param={url_params.get('action')} />
                     <SmartTraderIFrame />
                     <AppToastMessages />
-                </React.Fragment>
+                </PlatformContainer>
             </MobxContentProvider>
         </Router>
     );

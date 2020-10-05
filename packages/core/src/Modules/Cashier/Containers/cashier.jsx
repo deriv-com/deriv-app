@@ -18,23 +18,23 @@ import 'Sass/app/modules/cashier.scss';
 const el_landscape_blocker = document.getElementById('landscape_blocker');
 
 class Cashier extends React.Component {
-    state = { device_height: window.innerHeight, is_p2p_restricted: true };
+    state = { device_height: window.innerHeight };
 
     async componentDidMount() {
         this.props.toggleCashier();
         // we still need to populate the tabs shown on cashier
         await WS.wait('authorize');
-        this.props.onMount();
-        this.props.setAccountSwitchListener();
+        if (!this.props.is_virtual) {
+            this.props.onMount();
+            this.props.setAccountSwitchListener();
 
-        // TODO: Remove L21, L31, and L38 code blocks once landscape design is ready
-        // doughflow iframe inconjunction with android's virtual keyboard causes issues with css screen height calculation (thus falsely triggering landscape blocker in Android)
-        // this is due to the onscreen virtual keyboard resizing the innerHeight of the window and ignoring the actual height of content within the iframe
-        if (isMobile() && isTouchDevice()) {
-            window.addEventListener('resize', this.handleOnScreenKeyboard);
+            // TODO: Remove L21, L31, and L38 code blocks once landscape design is ready
+            // doughflow iframe inconjunction with android's virtual keyboard causes issues with css screen height calculation (thus falsely triggering landscape blocker in Android)
+            // this is due to the onscreen virtual keyboard resizing the innerHeight of the window and ignoring the actual height of content within the iframe
+            if (isMobile() && isTouchDevice()) {
+                window.addEventListener('resize', this.handleOnScreenKeyboard);
+            }
         }
-
-        this.checkIsP2pRestricted();
     }
 
     componentWillUnmount() {
@@ -46,14 +46,6 @@ class Cashier extends React.Component {
             if (el_landscape_blocker) el_landscape_blocker.classList.remove('landscape-blocker--keyboard-visible');
         }
     }
-
-    checkIsP2pRestricted = async () => {
-        const response = await WS.send({ p2p_advertiser_info: 1 });
-
-        if (!response.error) this.setState({ is_p2p_restricted: false });
-        else if (response.error.code !== 'RestrictedCountry') this.setState({ is_p2p_restricted: false });
-        else if (response.error.code === 'RestrictedCountry') this.props.routeTo(routes.cashier_deposit);
-    };
 
     handleOnScreenKeyboard = () => {
         // We are listening to resize window resize events on mobile,
@@ -78,15 +70,14 @@ class Cashier extends React.Component {
                 if (
                     (route.path !== routes.cashier_pa || this.props.is_payment_agent_visible) &&
                     (route.path !== routes.cashier_pa_transfer || this.props.is_payment_agent_transfer_visible) &&
-                    (route.path !== routes.cashier_p2p ||
-                        (this.props.is_p2p_visible && !this.state.is_p2p_restricted)) &&
+                    (route.path !== routes.cashier_p2p || this.props.is_p2p_enabled) &&
                     (route.path !== routes.cashier_onramp || this.props.is_onramp_tab_visible)
                 ) {
                     options.push({
                         ...(route.path === routes.cashier_p2p && { count: this.props.p2p_notification_count }),
                         default: route.default,
                         icon: route.icon_component,
-                        label: route.title,
+                        label: route.getTitle(),
                         value: route.component,
                         path: route.path,
                         has_side_note: route.path !== routes.cashier_p2p, // Set to true to create the 3-column effect without passing any content. If there is content, the content should be passed in.
@@ -118,7 +109,7 @@ class Cashier extends React.Component {
             >
                 <div className='cashier'>
                     <PageOverlay
-                        header={isMobile() ? selected_route.title : localize('Cashier')}
+                        header={isMobile() ? selected_route.getTitle() : localize('Cashier')}
                         onClickClose={this.onClickClose}
                     >
                         <DesktopWrapper>
@@ -173,7 +164,7 @@ Cashier.propTypes = {
     history: PropTypes.object,
     is_onramp_tab_visible: PropTypes.bool,
     is_eu: PropTypes.bool,
-    is_p2p_visible: PropTypes.bool,
+    is_p2p_enabled: PropTypes.bool,
     is_payment_agent_transfer_visible: PropTypes.bool,
     is_payment_agent_visible: PropTypes.bool,
     is_visible: PropTypes.bool,
@@ -193,7 +184,7 @@ export default connect(({ client, common, modules, ui }) => ({
     loggedin_currency: client.currency,
     is_onramp_tab_visible: modules.cashier.onramp.is_onramp_tab_visible,
     is_eu: client.is_eu,
-    is_p2p_visible: modules.cashier.is_p2p_visible,
+    is_p2p_enabled: modules.cashier.is_p2p_enabled,
     is_virtual: client.is_virtual,
     is_visible: ui.is_cashier_visible,
     is_payment_agent_visible: modules.cashier.is_payment_agent_visible,

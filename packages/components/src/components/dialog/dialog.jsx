@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import Button from '../button/button.jsx';
+import Icon from '../icon/icon.jsx';
 
 class Dialog extends React.Component {
     componentDidMount() {
@@ -45,6 +46,7 @@ class Dialog extends React.Component {
             is_content_centered,
             portal_element_id,
             title,
+            has_close_icon,
         } = this.props;
 
         const content_classes = classNames('dc-dialog__content', {
@@ -64,13 +66,27 @@ class Dialog extends React.Component {
                 }}
                 unmountOnExit
             >
-                <div className={classNames('dc-dialog__wrapper', className)}>
+                <div
+                    className={classNames('dc-dialog__wrapper', className, {
+                        'dc-dialog__wrapper--has-portal': !!portal_element_id,
+                    })}
+                >
                     <div
                         className={classNames('dc-dialog__dialog', {
                             'dc-dialog__dialog--has-margin': !is_mobile_full_width,
                         })}
                     >
-                        {!!title && <h1 className='dc-dialog__header'>{title}</h1>}
+                        <div className='dc-dialog__header-wrapper'>
+                            {!!title && <h1 className='dc-dialog__header'>{title}</h1>}
+                            {has_close_icon && (
+                                <div
+                                    onClick={onCancel ? this.handleCancel : this.handleConfirm}
+                                    className='dc-dialog__header--close'
+                                >
+                                    <Icon icon='IcCross' />
+                                </div>
+                            )}
+                        </div>
                         {typeof children === 'string' ? (
                             <p className={content_classes}>{children}</p>
                         ) : (

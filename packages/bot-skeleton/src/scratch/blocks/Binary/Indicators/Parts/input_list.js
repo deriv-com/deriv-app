@@ -4,7 +4,7 @@ import { runIrreversibleEvents } from '../../../../utils';
 Blockly.Blocks.input_list = {
     init() {
         this.jsonInit({
-            message0: localize('Input List %1'),
+            message0: localize('Input List {{ input_list }}', { input_list: '%1' }),
             args0: [
                 {
                     type: 'input_value',

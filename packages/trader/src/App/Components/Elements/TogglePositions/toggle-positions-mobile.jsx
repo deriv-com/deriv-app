@@ -58,10 +58,10 @@ class TogglePositionsMobile extends React.Component {
                             in={true}
                             timeout={150}
                             classNames={{
-                                appear: 'positions-drawer-card__wrapper--enter',
-                                enter: 'positions-drawer-card__wrapper--enter',
-                                enterDone: 'positions-drawer-card__wrapper--enter-done',
-                                exit: 'positions-drawer-card__wrapper--exit',
+                                appear: 'dc-contract-card__wrapper--enter',
+                                enter: 'dc-contract-card__wrapper--enter',
+                                enterDone: 'dc-contract-card__wrapper--enter-done',
+                                exit: 'dc-contract-card__wrapper--exit',
                             }}
                             unmountOnExit
                         >
@@ -117,7 +117,7 @@ class TogglePositionsMobile extends React.Component {
                                 className='dc-btn dc-btn--secondary dc-btn__large positions-modal__footer-btn'
                                 to={routes.positions}
                             >
-                                <span className='dc-btn__text'>{localize('View more')}</span>
+                                <span className='dc-btn__text'>{localize('Go to Reports')}</span>
                             </BinaryLink>
                         </div>
                     </Div100vhContainer>

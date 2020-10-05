@@ -370,6 +370,9 @@
             align-self: flex-end;
         }
     }
+    &__deal-cancellation-popover {
+        width: 28rem;
+    }
     &__cancel-deal-info {
         display: flex;
         flex-direction: row;
@@ -381,7 +384,7 @@
             min-height: 1.4rem;
 
             .trade-container__price-info-basis {
-                color: var(--text-less-prominent);
+                color: var(--text-general);
             }
             .trade-container__price-info-value {
                 color: var(--text-prominent);

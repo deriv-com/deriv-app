@@ -486,21 +486,26 @@
         flex-direction: column;
         margin-top: auto;
     }
-    &__specs-table {
-        width: 100%;
+    &__specs {
+        margin-top: 1.6rem;
 
-        &-attribute .mt5-account-card--paragraph {
-            color: var(--text-general);
-            margin-right: 2.4rem;
-        }
-        &-data {
-            .mt5-account-card--paragraph {
-                @include typeface(--paragraph-left-bold-black, none);
-                color: var(--text-prominent);
-                line-height: 1.45;
+        &-table {
+            width: 100%;
+
+            &-attribute .mt5-account-card--paragraph {
+                color: var(--text-general);
+                margin-right: 2.4rem;
+            }
+            &-data {
+                .mt5-account-card--paragraph {
+                    @include typeface(--paragraph-left-bold-black, none);
+                    color: var(--text-prominent);
+                    line-height: 1.45;
+                }
             }
         }
     }
+
     &__commission {
         text-align: center;
         margin-top: 1.6rem;
@@ -547,13 +552,16 @@
         border-radius: 4px;
         color: var(--text-general);
         display: flex;
-        height: 40px;
+        padding: 0.8rem;
         justify-content: center;
         margin: 2.4rem 0 1.6rem;
         width: 272px;
 
         strong {
             font-weight: bold;
+        }
+        span {
+            margin-right: 0.8rem;
         }
     }
     &__manage {
@@ -626,6 +634,9 @@
     }
     &__new-password {
         margin-bottom: 8.6rem;
+        .dc-input__hint {
+            text-align: left;
+        }
     }
     &__actions {
         align-items: center;
@@ -639,6 +650,7 @@
             width: 100%;
             margin-top: 0.8rem;
             max-width: 30rem;
+            white-space: normal;
         }
     }
     &__success {
@@ -745,29 +757,28 @@
     .dc-autocomplete {
         margin-bottom: 2.4rem;
     }
-}
-
-.account-management {
-    &__message-icon {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    &__message-content {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-        align-items: center;
-        height: 24em;
-        padding: 0 3em;
-    }
-    &__message {
-        @include typeface(--title-center-bold-black);
-        color: var(--text-prominent);
-    }
-    &__text {
-        @include typeface(--paragraph-center-normal-black);
-        color: var(--text-prominent);
+    .account-management {
+        &__message-icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        &__message-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            height: 24rem;
+            padding: 0 3rem;
+        }
+        &__message {
+            @include typeface(--title-center-bold-black);
+            color: var(--text-prominent);
+        }
+        &__text {
+            @include typeface(--paragraph-center-normal-black);
+            color: var(--text-prominent);
+        }
     }
 }
 
@@ -928,6 +939,12 @@
     &__field-area {
         max-width: 556px;
         margin: 0 auto;
+
+        & .dc-dropdown__display-placeholder-text,
+        & .dc-input__label,
+        & .dc-dropdown__display {
+            background: var(--general-main-2);
+        }
         @include mobile {
             overflow: auto;
         }
@@ -1104,6 +1121,14 @@
         @include mobile {
             min-width: calc(100vw - 3.2rem);
         }
+    }
+}
+.mt5-personal-details-form-error {
+    @include typeface(--paragraph-left-normal-red);
+    @include desktop {
+        white-space: nowrap;
+        display: flex;
+        align-items: flex-end;
     }
 }
 

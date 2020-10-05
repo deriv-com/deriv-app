@@ -2,12 +2,19 @@ import throttle from 'lodash.throttle';
 import { action, computed, observable, reaction } from 'mobx';
 import { createTransformer } from 'mobx-utils';
 import { WS } from 'Services/ws-methods';
-import { isEmptyObject } from '@deriv/shared';
+import {
+    isEmptyObject,
+    isEnded,
+    isUserSold,
+    isValidToSell,
+    isMultiplierContract,
+    getCurrentTick,
+    getDisplayStatus,
+} from '@deriv/shared';
 import { formatPortfolioPosition } from './Helpers/format-response';
 import { contractCancelled, contractSold } from './Helpers/portfolio-notifications';
-import { getCurrentTick, getDurationPeriod, getDurationTime, getDurationUnitText } from './Helpers/details';
-import { getDisplayStatus, getEndTime, isEnded, isUserSold, isValidToSell } from '../Contract/Helpers/logic';
-import { isMultiplierContract } from '../Contract/Helpers/multiplier';
+import { getDurationPeriod, getDurationTime, getDurationUnitText } from './Helpers/details';
+import { getEndTime } from '../Contract/Helpers/logic';
 
 import BaseStore from '../../base-store';
 
@@ -25,11 +32,15 @@ export default class PortfolioStore extends BaseStore {
 
     @action.bound
     initializePortfolio = async () => {
+        if (this.is_subscribed_to_poc) {
+            this.clearTable();
+        }
         this.is_loading = true;
         await WS.wait('authorize');
         WS.portfolio().then(this.portfolioHandler);
         WS.subscribeProposalOpenContract(null, this.proposalOpenContractQueueHandler);
         WS.subscribeTransaction(this.transactionHandler);
+        this.is_subscribed_to_poc = true;
     };
 
     @action.bound
@@ -40,6 +51,7 @@ export default class PortfolioStore extends BaseStore {
         this.error = '';
         this.updatePositions();
         WS.forgetAll('proposal_open_contract', 'transaction');
+        this.is_subscribed_to_poc = false;
     }
 
     @action.bound
@@ -78,9 +90,15 @@ export default class PortfolioStore extends BaseStore {
             this.error = response.error.message;
         }
         if (!response.transaction) return;
-        const { contract_id, action: act } = response.transaction;
+        const { contract_id, action: act, longcode } = response.transaction;
 
-        if (act === 'sell') {
+        if (act === 'buy') {
+            this.onBuyResponse({
+                contract_id,
+                longcode,
+                contract_type: '', // TODO: figure out the icon not showing
+            });
+        } else if (act === 'sell') {
             const i = this.getPositionIndexById(contract_id);
 
             if (!this.positions[i]) {
@@ -89,6 +107,15 @@ export default class PortfolioStore extends BaseStore {
                 return;
             }
             this.positions[i].is_loading = true;
+
+            // Sometimes when we sell a contract, we don't get `proposal_open_contract` message with exit information and status as `sold`.
+            // This is to make sure that we get `proposal_open_contract` message with exit information and status as `sold`.
+            const subscriber = WS.subscribeProposalOpenContract(contract_id, poc => {
+                this.updateContractTradeStore(poc);
+                this.updateContractReplayStore(poc);
+                this.populateResultDetails(poc);
+                subscriber.unsubscribe();
+            });
         }
     }
 
@@ -106,7 +133,7 @@ export default class PortfolioStore extends BaseStore {
 
     updateContractReplayStore(response) {
         const contract_replay = this.root_store.modules.contract_replay;
-        if (contract_replay.contract_id === response.proposal_open_contract.contract_id) {
+        if (contract_replay.contract_id === response.proposal_open_contract?.contract_id) {
             contract_replay.populateConfig(response);
         }
     }
@@ -292,6 +319,8 @@ export default class PortfolioStore extends BaseStore {
     @action.bound
     pushNewPosition(new_pos) {
         const position = formatPortfolioPosition(new_pos, this.root_store.modules.trade.active_symbols);
+        if (this.positions_map[position.id]) return;
+
         this.positions.unshift(position);
         this.positions_map[position.id] = position;
         this.updatePositions();
@@ -307,11 +336,9 @@ export default class PortfolioStore extends BaseStore {
         this.root_store.modules.contract_trade.removeContract({ contract_id });
     }
 
-    @action.bound
-    accountSwitcherListener() {
-        return new Promise(async resolve => {
-            return resolve(this.initializePortfolio());
-        });
+    async accountSwitcherListener() {
+        await this.initializePortfolio();
+        return Promise.resolve();
     }
 
     @action.bound

@@ -12,12 +12,11 @@ import {
     Tabs,
     ThemedScrollbars,
 } from '@deriv/components';
-import { urlFor, routes, isCryptocurrency, formatMoney } from '@deriv/shared';
+import { urlFor, routes, isCryptocurrency, formatMoney, getMT5Account } from '@deriv/shared';
 
 import { localize, Localize } from '@deriv/translations';
 import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
 import { connect } from 'Stores/connect';
-import { getMT5AccountDisplay } from 'Stores/Helpers/client';
 import { AccountsItemLoader } from 'App/Components/Layout/Header/Components/Preloader';
 import AccountList from './account-switcher-account-list.jsx';
 import AccountWrapper from './account-switcher-account-wrapper.jsx';
@@ -369,7 +368,7 @@ class AccountSwitcher extends React.Component {
                                                     account_type={account.group}
                                                     balance={account.balance}
                                                     currency={account.currency}
-                                                    currency_icon={`IcMt5-${getMT5AccountDisplay(account.group)}`}
+                                                    currency_icon={`IcMt5-${getMT5Account(account.group)}`}
                                                     has_balance={'balance' in account}
                                                     is_virtual
                                                     loginid={account.display_login}
@@ -492,7 +491,7 @@ class AccountSwitcher extends React.Component {
                                                     account_type={account.group}
                                                     balance={account.balance}
                                                     currency={account.currency}
-                                                    currency_icon={`IcMt5-${getMT5AccountDisplay(account.group)}`}
+                                                    currency_icon={`IcMt5-${getMT5Account(account.group)}`}
                                                     has_balance={'balance' in account}
                                                     loginid={account.display_login}
                                                     onClickAccount={this.redirectToMt5Real}
@@ -501,7 +500,12 @@ class AccountSwitcher extends React.Component {
                                         </div>
                                     )}
                                     {this.remaining_real_mt5.map(account => (
-                                        <div key={account.title} className='acc-switcher__new-account'>
+                                        <div
+                                            key={account.title}
+                                            className={classNames('acc-switcher__new-account', {
+                                                'acc-switcher__new-account--disabled': this.props.mt5_login_list_error,
+                                            })}
+                                        >
                                             <Icon icon={`IcMt5-${account.icon}`} size={24} />
                                             <span className='acc-switcher__new-account-text'>{account.title}</span>
                                             <Button
@@ -513,7 +517,8 @@ class AccountSwitcher extends React.Component {
                                                     ((!this.props.is_eu_enabled || !this.props.is_eu) && // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
                                                         !this.props.has_any_real_account) ||
                                                     (account.type === 'financial_stp' &&
-                                                        this.props.is_pending_authentication)
+                                                        this.props.is_pending_authentication) ||
+                                                    !!this.props.mt5_login_list_error
                                                 }
                                             >
                                                 {localize('Add')}
@@ -661,6 +666,7 @@ const account_switcher = withRouter(
         has_fiat: client.has_fiat,
         has_any_real_account: client.has_any_real_account,
         mt5_login_list: client.mt5_login_list,
+        mt5_login_list_error: client.mt5_login_list_error,
         obj_total_balance: client.obj_total_balance,
         switchAccount: client.switchAccount,
         has_malta_account: client.has_malta_account,

@@ -2,7 +2,7 @@ import { Table } from '@deriv/components';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { localize } from 'Components/i18next';
+import { localize, Localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { secondsToTimer } from 'Utils/date-time';
 import ServerTime from 'Utils/server-time';
@@ -68,7 +68,11 @@ const OrderRowComponent = React.memo(({ advert, onOpenDetails, style, is_active 
                 })}
             >
                 <Table.Cell>
-                    {(is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad) ? localize('Buy') : localize('Sell')}
+                    {(is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad) ? (
+                        <Localize i18n_default_text='Buy' />
+                    ) : (
+                        <Localize i18n_default_text='Sell' />
+                    )}
                 </Table.Cell>
                 <Table.Cell>{id}</Table.Cell>
                 <Table.Cell>{other_user_details.name}</Table.Cell>

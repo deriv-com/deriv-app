@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router';
 import { DesktopWrapper, Icon, MobileWrapper, Tabs } from '@deriv/components';
-import { getPlatformRedirect, isEmptyObject, routes } from '@deriv/shared';
+import { isEmptyObject, routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import LoadingMT5RealAccountDisplay from './loading-mt5-real-account-display.jsx';

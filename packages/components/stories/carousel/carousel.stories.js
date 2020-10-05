@@ -1,7 +1,7 @@
+import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { withInfo } from '@storybook/addon-info';
-import React from 'react';
 import Carousel from 'Components/carousel';
 import Button from 'Components/button';
 import Theme from '../shared/theme';
@@ -24,9 +24,10 @@ const demo_slides = [
     <div
         className='slide1'
         style={{
-            border: '1px solid black',
+            border: '1px solid var(--text-prominent)',
             borderRadius: '5px',
             margin: '0.5rem',
+            color: 'var(--text-prominent)',
         }}
     >
         <p
@@ -53,9 +54,10 @@ const demo_slides = [
     <div
         className='slide2'
         style={{
-            border: '1px solid black',
+            border: '1px solid var(--text-prominent)',
             borderRadius: '5px',
             margin: '0.5rem',
+            color: 'var(--text-prominent)',
         }}
     >
         <p
@@ -82,9 +84,10 @@ const demo_slides = [
     <div
         className='slide3'
         style={{
-            border: '1px solid black',
+            border: '1px solid var(--text-prominent)',
             borderRadius: '5px',
             margin: '0.5rem',
+            color: 'var(--text-prominent)',
         }}
     >
         <p

@@ -19,7 +19,7 @@
         display: flex;
         flex-direction: row;
         transition: transform 0.3s linear;
-        padding: 2.4rem 0;
+        padding: 0.5rem 0;
         width: fit-content;
         height: 100%;
     }
@@ -54,7 +54,7 @@
             display: inline-block;
             margin: 0 0.8rem;
             cursor: pointer;
-            background-color: var(--text-disabled);
+            background-color: var(--text-less-prominent);
 
             &--active {
                 position: absolute;
@@ -62,7 +62,7 @@
                 left: 0;
                 cursor: initial;
                 transition: transform 0.3s linear;
-                background-color: var(--brand-red-coral);
+                background-color: var(--text-prominent);
             }
         }
     }

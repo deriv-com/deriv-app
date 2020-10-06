@@ -26,14 +26,17 @@ const MyProfile = () => {
     const [is_submit_success, setIsSubmitSuccess] = React.useState(false);
     const [nickname, setNickname] = React.useState(null);
     const [payment_info, setPaymentInfo] = React.useState('');
-    const [stats, setStats] = React.useState({});
     const isMounted = useIsMounted();
-    const { daily_buy_limit, daily_sell_limit, id } = advertiser_info;
-    const { buy_orders_count, sell_orders_count, total_orders_count } = stats;
+    const {
+        buy_orders_count,
+        daily_buy_limit,
+        daily_sell_limit,
+        sell_orders_count,
+        total_orders_count,
+    } = advertiser_info;
 
     React.useEffect(() => {
         getAdvertiserAccountStatus();
-        getAdvertiserStats();
         getAdvertiserInfo();
     }, []);
 
@@ -74,25 +77,6 @@ const MyProfile = () => {
                         setErrorMessage(response.error);
                     }
                     setIsLoading(false);
-                }
-                resolve();
-            });
-        });
-    };
-
-    const getAdvertiserStats = () => {
-        return new Promise(resolve => {
-            requestWS({
-                p2p_advertiser_stats: 1,
-                id,
-            }).then(response => {
-                if (isMounted()) {
-                    if (!response.error) {
-                        const { p2p_advertiser_stats } = response;
-                        setStats(p2p_advertiser_stats);
-                    } else {
-                        setErrorMessage(response.error);
-                    }
                 }
                 resolve();
             });

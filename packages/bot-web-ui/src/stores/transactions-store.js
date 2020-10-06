@@ -135,7 +135,7 @@ export default class TransactionsStore {
     }
 
     @action.bound
-    disposeTransactionListeners() {
+    disposeListeners() {
         this.disposeTransactionsListener();
     }
 }

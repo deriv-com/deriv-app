@@ -42,14 +42,14 @@ export default class RunPanelStore {
 
                 if (client.is_logged_in) {
                     this.statistics =
-                        this.getSessionStorage(this.statistics_storage_key)?.[client.loginid]?.statistics ??
+                        this.getAccountStatisticsInfo(this.statistics_storage_key, 'Statistics')?.statistics ??
                         this.empty_statistics;
 
                     journal.unfiltered_messages =
-                        this.getSessionStorage('journal_cache')?.[client.loginid]?.journal_messages ?? [];
+                        this.getAccountStatisticsInfo('journal_cache')?.journal_messages ?? [];
 
                     transactions.elements =
-                        this.getSessionStorage('transaction_cache')?.[client.loginid]?.transaction_elements ?? [];
+                        this.getAccountStatisticsInfo('transaction_cache')?.transaction_elements ?? [];
                 } else {
                     this.statistics = this.empty_statistics;
                     journal.unfiltered_messages = [];
@@ -67,8 +67,7 @@ export default class RunPanelStore {
     run_id = '';
 
     @observable statistics =
-        this.getSessionStorage(this.statistics_storage_key)?.[this.root_store.core.client.loginid]?.statistics ??
-        this.empty_statistics;
+        this.getAccountStatisticsInfo(this.statistics_storage_key, 'statistics')?.statistics ?? this.empty_statistics;
 
     @observable active_index = 0;
     @observable contract_stage = contract_stages.NOT_RUNNING;
@@ -86,6 +85,15 @@ export default class RunPanelStore {
 
     getSessionStorage = key => {
         return JSON.parse(sessionStorage.getItem(key)) ?? {};
+    };
+
+    getAccountStatisticsInfo = (key, type) => {
+        const { client } = this.root_store.core;
+
+        if (type === 'Statistics') {
+            return this.getSessionStorage(key)?.[client.loginid] ?? this.empty_statistics;
+        }
+        return this.getSessionStorage(key)?.[client.loginid] ?? [];
     };
 
     // #region button clicks
@@ -542,12 +550,12 @@ export default class RunPanelStore {
             this.disposeSwitchAccountListener();
         }
 
-        if (typeof journal.disposeJournalListeners === 'function') {
-            journal.disposeJournalListeners();
+        if (typeof journal.disposeListeners === 'function') {
+            journal.disposeListeners();
         }
 
-        if (typeof transactions.disposeTransactionListeners === 'function') {
-            transactions.disposeTransactionListeners();
+        if (typeof transactions.disposeListeners === 'function') {
+            transactions.disposeListeners();
         }
 
         observer.unregisterAll('ui.log.error');

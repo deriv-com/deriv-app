@@ -6,7 +6,6 @@ import ContractCardBody from './contract-card-items/contract-card-body.jsx';
 import ContractCardFooter from './contract-card-items/contract-card-footer.jsx';
 import ContractTypeCell from './contract-card-items/contract-type-cell.jsx';
 import MultiplierCloseActions from './contract-card-items/multiplier-close-actions.jsx';
-import MarketClosedCountdownTimer from './market-closed-countdown-timer';
 import ResultOverlay from './result-overlay';
 import DesktopWrapper from '../desktop-wrapper';
 
@@ -15,12 +14,9 @@ const ContractCard = ({
     contract_info,
     getCardLabels,
     getContractPath,
-    is_dark_mode_on,
-    is_market_closed,
     is_multiplier,
     is_positions,
     is_unsupported,
-    market_countdown_timer,
     onClickRemove,
     profit_loss,
     result,
@@ -48,12 +44,6 @@ const ContractCard = ({
                 </DesktopWrapper>
             )}
             {children}
-            {/*is_market_closed && !getEndTime(contract_info)*/ true && (
-                <MarketClosedCountdownTimer
-                    is_dark_mode_on={is_dark_mode_on}
-                    market_countdown_timer={market_countdown_timer}
-                />
-            )}
         </React.Fragment>
     );
 };
@@ -69,8 +59,6 @@ ContractCard.propTypes = {
     contract_info: PropTypes.object,
     getCardLabels: PropTypes.func,
     getContractPath: PropTypes.func,
-    is_dark_mode_on: PropTypes.bool,
-    is_market_closed: PropTypes.bool,
     is_multiplier: PropTypes.bool,
     is_positions: PropTypes.bool,
     is_unsupported: PropTypes.bool,

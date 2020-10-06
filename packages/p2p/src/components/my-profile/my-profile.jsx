@@ -13,52 +13,32 @@ import './my-profile.scss';
 
 const MyProfile = () => {
     const { currency } = React.useContext(Dp2pContext);
+    const isMounted = useIsMounted();
 
     const [advertiser_info, setAdvertiserInfo] = React.useState({});
     const [contact_info, setContactInfo] = React.useState('');
     const [default_advert_description, setDefaultAdvertDescription] = React.useState('');
     const [error_message, setErrorMessage] = React.useState('');
     const [form_error, setFormError] = React.useState('');
-    const [has_poa, setHasPoa] = React.useState(false);
-    const [has_poi, setHasPoi] = React.useState(false);
     const [is_button_loading, setIsButtonLoading] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(true);
     const [is_submit_success, setIsSubmitSuccess] = React.useState(false);
     const [nickname, setNickname] = React.useState(null);
     const [payment_info, setPaymentInfo] = React.useState('');
-    const isMounted = useIsMounted();
+
     const {
+        basic_verification,
         buy_orders_count,
         daily_buy_limit,
         daily_sell_limit,
+        full_verification,
         sell_orders_count,
         total_orders_count,
     } = advertiser_info;
 
     React.useEffect(() => {
-        getAdvertiserAccountStatus();
         getAdvertiserInfo();
     }, []);
-
-    const getAdvertiserAccountStatus = () => {
-        return new Promise(resolve => {
-            requestWS({
-                get_account_status: 1,
-            }).then(response => {
-                if (isMounted()) {
-                    if (!response.error) {
-                        const { get_account_status } = response;
-                        const { authentication } = get_account_status;
-                        setHasPoa(authentication.document && authentication.document.status === 'verified');
-                        setHasPoi(authentication.identity && authentication.identity.status === 'verified');
-                    } else {
-                        setErrorMessage(response.error);
-                    }
-                }
-                resolve();
-            });
-        });
-    };
 
     const getAdvertiserInfo = () => {
         return new Promise(resolve => {
@@ -181,7 +161,7 @@ const MyProfile = () => {
                         <div className='my-profile__header-name'>{nickname}</div>
                     </div>
                     <div className='my-profile__header-verification'>
-                        {has_poi && (
+                        {basic_verification && (
                             <div>
                                 {localize('ID verified')}
                                 <Icon
@@ -191,7 +171,7 @@ const MyProfile = () => {
                                 />
                             </div>
                         )}
-                        {has_poa && (
+                        {full_verification && (
                             <div className='my-profile__header-verification-status'>
                                 {localize('Address verified')}
                                 <Icon

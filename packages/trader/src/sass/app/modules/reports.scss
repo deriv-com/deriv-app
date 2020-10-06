@@ -657,7 +657,7 @@ $side-padding: 1.2em;
                 color: var(--text-prominent);
             }
         }
-        &__no-resale-msg {
+        .dc-contract-card__no-resale-msg {
             display: flex;
             font-size: 1.4rem;
             color: var(--text-general);
@@ -683,11 +683,6 @@ $side-padding: 1.2em;
             @include desktop {
                 line-height: 2;
             }
-        }
-        &-no-resale-msg {
-            clear: both;
-            text-align: right;
-            font-size: 1.2rem;
         }
         .dc-btn--sell {
             height: 2.4rem;

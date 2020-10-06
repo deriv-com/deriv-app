@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { Button, ContractCard, Icon, Money, ProgressSliderMobile } from '@deriv/components';
+import { ContractCard, Icon, Money, ProgressSliderMobile } from '@deriv/components';
 import {
     getContractPath,
     isMultiplierContract,
@@ -32,7 +32,6 @@ const PositionsModalCard = ({
     is_mobile,
     is_sell_requested,
     is_unsupported,
-    is_valid_to_sell,
     onClickRemove,
     onClickSell,
     profit_loss,
@@ -88,22 +87,12 @@ const PositionsModalCard = ({
                     unmountOnExit
                 >
                     <div className='positions-modal-card__sell-button'>
-                        {is_valid_to_sell ? (
-                            <Button
-                                id={`dt_drawer_card_${id}_button`}
-                                className={classNames('dc-btn--sell', {
-                                    'dc-btn--loading': is_sell_requested,
-                                })}
-                                is_disabled={!is_valid_to_sell || is_sell_requested}
-                                text={localize('Sell')}
-                                onClick={() => onClickSell(id)}
-                                secondary
-                            />
-                        ) : (
-                            <div className='positions-modal-card__no-resale-msg'>
-                                {getCardLabels().RESALE_NOT_OFFERED}
-                            </div>
-                        )}
+                        <ContractCard.Sell
+                            contract_info={contract_info}
+                            is_sell_requested={is_sell_requested}
+                            getCardLabels={getCardLabels}
+                            onClickSell={onClickSell}
+                        />
                     </div>
                 </CSSTransition>
             </div>

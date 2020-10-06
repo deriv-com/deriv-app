@@ -1,9 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import classNames from 'classnames';
-import { Icon, Money, DesktopWrapper, Button } from '@deriv/components';
-import { hasContractEntered, isOpen } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { Icon, Money, DesktopWrapper, ContractCard } from '@deriv/components';
 import { getCardLabels } from 'Constants/contract';
 import { connect } from 'Stores/connect';
 
@@ -24,17 +21,8 @@ class IndicativeCell extends React.PureComponent {
     }
 
     render() {
-        const {
-            amount,
-            currency,
-            contract_info,
-            is_valid_to_sell,
-            is_footer,
-            onClickSell,
-            is_sell_requested,
-        } = this.props;
+        const { amount, currency, contract_info, is_footer, onClickSell, is_sell_requested } = this.props;
         const { movement } = this.state;
-        const should_show_sell = contract_info && hasContractEntered(contract_info) && isOpen(contract_info);
 
         return (
             <div className='open-positions__indicative'>
@@ -47,29 +35,16 @@ class IndicativeCell extends React.PureComponent {
                         </React.Fragment>
                     )}
                 </div>
-                {!is_footer && should_show_sell && (
-                    <DesktopWrapper>
-                        {is_valid_to_sell ? (
-                            <Button
-                                className={classNames('dc-btn--sell', {
-                                    'dc-btn--loading': is_sell_requested,
-                                })}
-                                is_disabled={is_sell_requested}
-                                text={localize('Sell')}
-                                onClick={ev => {
-                                    onClickSell(contract_info.contract_id);
-                                    ev.stopPropagation();
-                                    ev.preventDefault();
-                                }}
-                                secondary
-                            />
-                        ) : (
-                            <div className='open-positions__indicative-no-resale-msg indicative__no-resale-msg'>
-                                {getCardLabels().RESALE_NOT_OFFERED}
-                            </div>
-                        )}
-                    </DesktopWrapper>
-                )}
+                <DesktopWrapper>
+                    {!is_footer && (
+                        <ContractCard.Sell
+                            contract_info={contract_info}
+                            is_sell_requested={is_sell_requested}
+                            getCardLabels={getCardLabels}
+                            onClickSell={onClickSell}
+                        />
+                    )}
+                </DesktopWrapper>
             </div>
         );
     }

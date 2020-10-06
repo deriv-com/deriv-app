@@ -76,14 +76,6 @@ $header-height: 3.6em;
         & .dc-themed-scrollbars {
             height: 100%;
         }
-        .dc-btn--sell,
-        .dc-btn--cancel {
-            height: 2.4rem;
-
-            @include mobile {
-                height: 3.2rem;
-            }
-        }
     }
     &__footer {
         position: relative;

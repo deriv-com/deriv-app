@@ -4,8 +4,8 @@ import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { isValidToCancel, isValidToSell, hasContractEntered, isOpen } from '@deriv/shared';
 import ToggleCardDialog from './toggle-card-dialog.jsx';
+import ContractCardSell from './contract-card-sell.jsx';
 import MultiplierCloseActions from './multiplier-close-actions.jsx';
-import Button from '../../button';
 
 const CardFooter = ({
     addToast,
@@ -78,20 +78,12 @@ const CardFooter = ({
                             'dc-contract-card__sell-button--positions': is_positions,
                         })}
                     >
-                        {is_valid_to_sell ? (
-                            <Button
-                                id={`dc_contract_card_${contract_info.contract_id}_button`}
-                                className={classNames('dc-btn--sell', {
-                                    'dc-btn--loading': is_sell_requested,
-                                })}
-                                is_disabled={!is_valid_to_sell || is_sell_requested}
-                                text={getCardLabels().SELL}
-                                onClick={() => onClickSell(contract_info.contract_id)}
-                                secondary
-                            />
-                        ) : (
-                            <div className='dc-contract-card__no-resale-msg'>{getCardLabels().RESALE_NOT_OFFERED}</div>
-                        )}
+                        <ContractCardSell
+                            contract_info={contract_info}
+                            is_sell_requested={is_sell_requested}
+                            getCardLabels={getCardLabels}
+                            onClickSell={onClickSell}
+                        />
                     </div>
                 )}
             </div>

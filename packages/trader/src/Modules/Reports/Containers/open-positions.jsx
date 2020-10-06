@@ -1,9 +1,8 @@
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
-import classNames from 'classnames';
 import { withRouter } from 'react-router-dom';
-import { DesktopWrapper, MobileWrapper, ProgressBar, Tabs, DataList, DataTable, Button } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, ProgressBar, Tabs, DataList, DataTable, ContractCard } from '@deriv/components';
 import { urlFor, isMobile, isMultiplierContract, getTimePercentage, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
@@ -171,12 +170,12 @@ class OpenPositions extends React.Component {
         }
 
         const { server_time, onClickCancel, onClickSell } = this.props;
-        const { contract_info, contract_update, type } = row;
-        const { currency, status, date_expiry, date_start, is_valid_to_sell, is_sell_requested } = contract_info;
+        const { contract_info, contract_update, type, is_sell_requested } = row;
+        const { currency, status, date_expiry, date_start } = contract_info;
         const duration_type = getContractDurationType(contract_info.longcode);
         const progress_value = getTimePercentage(server_time, date_start, date_expiry) / 100;
 
-        if (isMultiplierContract(type))
+        if (isMultiplierContract(type)) {
             return (
                 <PositionsCard
                     contract_info={contract_info}
@@ -190,6 +189,8 @@ class OpenPositions extends React.Component {
                     status={status}
                 />
             );
+        }
+
         return (
             <>
                 <div className='data-list__row'>
@@ -213,23 +214,12 @@ class OpenPositions extends React.Component {
                 </div>
                 <div className='data-list__row-divider' />
                 <div className='data-list__row'>
-                    {is_valid_to_sell ? (
-                        <Button
-                            className={classNames('dc-btn--sell', {
-                                'dc-btn--loading': is_sell_requested,
-                            })}
-                            is_disabled={is_sell_requested}
-                            text={localize('Sell')}
-                            onClick={ev => {
-                                onClickSell(contract_info.contract_id);
-                                ev.stopPropagation();
-                                ev.preventDefault();
-                            }}
-                            secondary
-                        />
-                    ) : (
-                        <div className='open-positions__no-resale-msg'>{getCardLabels().RESALE_NOT_OFFERED}</div>
-                    )}
+                    <ContractCard.Sell
+                        contract_info={contract_info}
+                        is_sell_requested={is_sell_requested}
+                        getCardLabels={getCardLabels}
+                        onClickSell={onClickSell}
+                    />
                 </div>
             </>
         );

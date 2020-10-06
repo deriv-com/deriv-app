@@ -57,13 +57,31 @@ RowComponent.displayName = 'RowComponent';
 const AdvertiserPage = ({ navigate, selected_advert, showVerification }) => {
     const { is_advertiser, nickname } = React.useContext(Dp2pContext);
     const { advertiser_details, account_currency } = selected_advert;
+    const isMounted = useIsMounted();
+
     const [active_index, setActiveIndex] = React.useState(0);
+    const [advertiser_info, setAdvertiserInfo] = React.useState({});
     const [ad, setAd] = React.useState(null);
     const [adverts, setAdverts] = React.useState([]);
     const [counterparty_type, setCounterpartyType] = React.useState(buy_sell.BUY);
     const [error_message, setErrorMessage] = React.useState('');
     const [form_error_message, setFormErrorMessage] = React.useState('');
+    const [is_loading, setIsLoading] = React.useState(true);
+    const [is_submit_disabled, setIsSubmitDisabled] = React.useState(true);
+    const short_name = getShortNickname(advertiser_details.name);
+    const [show_ad_popup, setShowAdPopup] = React.useState(false);
+    const submitForm = React.useRef(() => {});
+    const {
+        buy_completion_rate,
+        buy_orders_count,
+        release_time_avg,
+        sell_orders_count,
+        total_completion_rate,
+        total_orders_count,
+    } = advertiser_info;
 
+    const avg_release_time_in_minutes = release_time_avg > 60 ? Math.round(release_time_avg / 60) : '< 1';
+    const Form = nickname ? BuySellForm : NicknameForm;
     const height_values = [
         height_constants.screen,
         height_constants.advertiser_page_content,
@@ -76,24 +94,7 @@ const AdvertiserPage = ({ navigate, selected_advert, showVerification }) => {
         height_constants.table_header,
         height_constants.tabs,
     ];
-    const [is_loading, setIsLoading] = React.useState(true);
-    const [is_submit_disabled, setIsSubmitDisabled] = React.useState(true);
-    const isMounted = useIsMounted();
     const item_height = 56;
-    const short_name = getShortNickname(advertiser_details.name);
-    const [show_ad_popup, setShowAdPopup] = React.useState(false);
-    const [stats, setStats] = React.useState({});
-    const submitForm = React.useRef(() => {});
-    const {
-        buy_completion_rate,
-        buy_orders_count,
-        release_time_avg,
-        sell_orders_count,
-        total_completion_rate,
-        total_orders_count,
-    } = stats;
-    const avg_release_time_in_minutes = release_time_avg > 60 ? Math.round(release_time_avg / 60) : '< 1';
-    const Form = nickname ? BuySellForm : NicknameForm;
     const modal_title =
         counterparty_type === buy_sell.BUY
             ? localize('Buy {{ currency }}', { currency: account_currency })
@@ -101,7 +102,7 @@ const AdvertiserPage = ({ navigate, selected_advert, showVerification }) => {
 
     React.useEffect(() => {
         getAdvertiserAdverts();
-        getAdvertiserStats();
+        getAdvertiserInfo();
     }, []);
 
     React.useEffect(() => {
@@ -128,16 +129,16 @@ const AdvertiserPage = ({ navigate, selected_advert, showVerification }) => {
         });
     };
 
-    const getAdvertiserStats = () => {
+    const getAdvertiserInfo = () => {
         return new Promise(resolve => {
             requestWS({
-                p2p_advertiser_stats: 1,
+                p2p_advertiser_info: 1,
                 id: advertiser_details.id,
             }).then(response => {
                 if (isMounted()) {
                     if (!response.error) {
-                        const { p2p_advertiser_stats } = response;
-                        setStats(p2p_advertiser_stats);
+                        const { p2p_advertiser_info } = response;
+                        setAdvertiserInfo(p2p_advertiser_info);
                     } else {
                         setErrorMessage(response.error);
                     }

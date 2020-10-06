@@ -46,10 +46,10 @@ export default class RunPanelStore {
                         this.empty_statistics;
 
                     journal.unfiltered_messages =
-                        this.getAccountStatisticsInfo('journal_cache')?.journal_messages ?? [];
+                        this.getAccountStatisticsInfo('journal_cache', 'Journals')?.journal_messages ?? [];
 
                     transactions.elements =
-                        this.getAccountStatisticsInfo('transaction_cache')?.transaction_elements ?? [];
+                        this.getAccountStatisticsInfo('transaction_cache', 'Transactions')?.transaction_elements ?? [];
                 } else {
                     this.statistics = this.empty_statistics;
                     journal.unfiltered_messages = [];
@@ -537,10 +537,19 @@ export default class RunPanelStore {
 
     @action.bound
     onUnmount() {
+        RunPanelStore.unregisterBotListeners();
+        this.disposeListeners();
+        observer.unregisterAll('ui.log.error');
+        observer.unregisterAll('ui.log.notify');
+        observer.unregisterAll('ui.log.success');
+    }
+
+    disposeListeners() {
         const { journal, transactions } = this.root_store;
 
-        RunPanelStore.unregisterBotListeners();
-        this.disposeIsSocketOpenedListener();
+        if (typeof this.disposeIsSocketOpenedListener === 'function') {
+            this.disposeIsSocketOpenedListener();
+        }
 
         if (typeof this.disposeStatisticsListener === 'function') {
             this.disposeStatisticsListener();
@@ -550,16 +559,7 @@ export default class RunPanelStore {
             this.disposeSwitchAccountListener();
         }
 
-        if (typeof journal.disposeListeners === 'function') {
-            journal.disposeListeners();
-        }
-
-        if (typeof transactions.disposeListeners === 'function') {
-            transactions.disposeListeners();
-        }
-
-        observer.unregisterAll('ui.log.error');
-        observer.unregisterAll('ui.log.notify');
-        observer.unregisterAll('ui.log.success');
+        journal.disposeListeners();
+        transactions.disposeListeners();
     }
 }

@@ -136,6 +136,9 @@ export default class TransactionsStore {
 
     @action.bound
     disposeListeners() {
-        this.disposeTransactionsListener();
+        if (typeof this.disposeTransactionsListener === 'function') {
+            this.disposeTransactionsListener();
+        }
+        this.disposeTransactionsListener = null;
     }
 }

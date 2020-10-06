@@ -135,6 +135,9 @@ export default class JournalStore {
 
     @action.bound
     disposeListeners() {
-        this.disposeJournalMessageListener();
+        if (typeof this.disposeJournalMessageListener === 'function') {
+            this.disposeJournalMessageListener();
+        }
+        this.disposeJournalMessageListener = null;
     }
 }

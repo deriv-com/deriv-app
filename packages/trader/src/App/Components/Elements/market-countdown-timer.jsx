@@ -16,7 +16,7 @@ const getTradingTimes = async target_time => {
         });
     });
 };
-
+// eslint-disable-next-line consistent-return
 const getSymbol = (target_symbol, trading_times) => {
     let symbol;
     const { markets } = trading_times;
@@ -25,11 +25,9 @@ const getSymbol = (target_symbol, trading_times) => {
         for (let j = 0; j < submarkets.length; j++) {
             const { symbols } = submarkets[j];
             symbol = symbols.find(item => item.symbol === target_symbol);
-            if (symbol !== undefined) break;
+            if (symbol !== undefined) return symbol;
         }
-        if (symbol !== undefined) break;
     }
-    return symbol;
 };
 
 const whenMarketOpens = async (days_offset, target_symbol) => {
@@ -43,14 +41,14 @@ const whenMarketOpens = async (days_offset, target_symbol) => {
     if (!api_res.api_initial_load_error) {
         const { times } = getSymbol(target_symbol, api_res.trading_times);
         const { open, close } = times;
-        const is_closed_all_day = open.length === 1 && open[0] === '--' && close[0] === '--';
+        const is_closed_all_day = open?.length === 1 && open[0] === '--' && close[0] === '--';
         if (is_closed_all_day) {
             // check tomorrow trading times
             await whenMarketOpens(days_offset + 1, target_symbol);
         } else {
             const date_str = date_target.toISOString().substring(0, 11);
             const getUTCDate = hour => new Date(`${date_str}${hour}Z`);
-            for (let i = 0; i < open.length; i++) {
+            for (let i = 0; i < open?.length; i++) {
                 const diff = +getUTCDate(open[i]) - +date_target;
                 if (diff > 0) {
                     when_market_opens = +getUTCDate(open[i]);
@@ -90,18 +88,27 @@ const MarketCountdownTimer = ({ symbol }) => {
     const [time_left, setTimeLeft] = React.useState(calculateTimeLeft(when_market_opens));
 
     React.useEffect(() => {
+        let is_subscribed = true;
         async function fetchTradingTimes() {
             const response = await whenMarketOpens(0, symbol);
-            setWhenMarketOpens(response);
+            if (is_subscribed) setWhenMarketOpens(response);
         }
         fetchTradingTimes();
+
+        return () => (is_subscribed = false);
     }, []);
 
     React.useEffect(() => {
-        setTimeout(() => {
+        const timer = setTimeout(() => {
             setTimeLeft(calculateTimeLeft(when_market_opens));
         }, 1000);
-    });
+
+        return () => {
+            if (timer) {
+                clearTimeout(timer);
+            }
+        };
+    }, [time_left]);
 
     let timer_components = '';
 
@@ -117,7 +124,7 @@ const MarketCountdownTimer = ({ symbol }) => {
     });
 
     let view = null;
-    if (when_market_opens) {
+    if (when_market_opens && timer_components) {
         view = (
             <React.Fragment>
                 <p>

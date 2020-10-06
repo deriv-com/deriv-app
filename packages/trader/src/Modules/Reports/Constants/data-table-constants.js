@@ -80,7 +80,7 @@ export const getStatementTableColumnsTemplate = currency => [
 export const getProfitTableColumnsTemplate = (currency, items_count) => [
     {
         key: 'icon',
-        title: localize('Type'),
+        title: isMobile() ? '' : localize('Type'),
         col_index: 'action_type',
         renderCellContent: ({ cell_value, row_obj, is_footer }) => {
             if (is_footer) {

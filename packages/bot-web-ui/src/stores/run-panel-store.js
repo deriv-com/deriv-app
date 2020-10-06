@@ -223,6 +223,7 @@ export default class RunPanelStore {
         const { summary_card, transactions } = this.root_store;
 
         observer.register('bot.running', this.onBotRunningEvent);
+        observer.register('bot.sell', this.onBotSellEvent);
         observer.register('bot.stop', this.onBotStopEvent);
         observer.register('bot.click_stop', this.onStopButtonClick);
         observer.register('bot.trade_again', this.onBotTradeAgain);
@@ -249,6 +250,11 @@ export default class RunPanelStore {
                 this.onStopButtonClick();
             }
         }
+    }
+
+    @action.bound
+    onBotSellEvent() {
+        this.is_sell_requested = true;
     }
 
     @action.bound
@@ -368,7 +374,6 @@ export default class RunPanelStore {
 
     @action.bound
     onClickSell() {
-        this.is_sell_requested = true;
         this.dbot.interpreter.bot.getBotInterface().sellAtMarket();
     }
 

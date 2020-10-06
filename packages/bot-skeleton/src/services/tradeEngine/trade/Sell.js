@@ -3,6 +3,7 @@ import { contractStatus, log } from '../utils/broadcast';
 import { recoverFromError, doUntilDone } from '../utils/helpers';
 import { log_types } from '../../../constants/messages';
 import { createError } from '../../../utils/error';
+import { observer as globalObserver } from '../../../utils/observer';
 
 let delay_index = 0;
 
@@ -13,6 +14,8 @@ export default Engine =>
         }
 
         sellAtMarket() {
+            globalObserver.emit('bot.sell');
+
             // Prevent calling sell twice
             if (this.store.getState().scope !== DURING_PURCHASE) {
                 return Promise.resolve();

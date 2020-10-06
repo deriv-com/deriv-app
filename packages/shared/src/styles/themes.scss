@@ -86,6 +86,7 @@
         // Gradient
         --gradient-success: #{$gradient-color-green-1};
         --gradient-danger: #{$gradient-color-red-1};
+        --contract-gradient-danger: #{$contract-gradient-color-red-1};
     }
     .theme--dark {
         // General
@@ -154,5 +155,6 @@
         // Gradient
         --gradient-success: #{$gradient-color-green-2};
         --gradient-danger: #{$gradient-color-red-2};
+        --contract-gradient-danger: #{$contract-gradient-color-red-2};
     }
 }

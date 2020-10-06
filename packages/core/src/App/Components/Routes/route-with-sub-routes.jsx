@@ -25,7 +25,7 @@ const RouteWithSubRoutes = route => {
                 <LoginPrompt
                     onLogin={redirectToLogin}
                     onSignup={() => redirectToSignUp({ is_deriv_crypto })}
-                    page_title={route.title}
+                    page_title={route.getTitle()}
                 />
             );
         } else {
@@ -40,12 +40,8 @@ const RouteWithSubRoutes = route => {
             );
         }
 
-        const title = route.title
-            ? route.title.props
-                ? `${route.title.props.i18n_default_text} | `
-                : `${route.title} | `
-            : '';
-        document.title = `${title}${default_title}`;
+        const title = route.getTitle?.() || '';
+        document.title = `${title} | ${default_title}`;
         return result;
     };
 

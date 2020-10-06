@@ -282,7 +282,11 @@ const AdvertiserPage = ({ navigate, selected_advert, showVerification }) => {
                         <Table.Cell className='advertiser-page__stats-cell'>
                             <div className='advertiser-page__stats-cell-header'>{localize('Avg. release')}</div>
                             <div className='advertiser-page__stats-cell-info'>
-                                {release_time_avg ? localize('{{release_time_avg}} min', { release_time_avg }) : '-'}
+                                {release_time_avg
+                                    ? localize('{{release_time_avg}} min', {
+                                          release_time_avg: (release_time_avg / 60).toFixed(2),
+                                      })
+                                    : '-'}
                             </div>
                         </Table.Cell>
                         <Popover

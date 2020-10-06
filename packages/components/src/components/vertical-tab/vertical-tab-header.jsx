@@ -21,10 +21,10 @@ const Header = ({ text, path }) => (
 );
 
 const VerticalTabHeader = ({ children, className, is_floating, is_routed, item, onChange, selected }) => {
-    const label = item.label || item.title; // item.label.charAt(0).toUpperCase() + item.label.slice(1).toLowerCase();
+    const label = item.label || item.title || item.getTitle?.(); // item.label.charAt(0).toUpperCase() + item.label.slice(1).toLowerCase();
     const is_active = selected && selected.label === item.label;
     const handleClick = () => onChange(item);
-    const id = `dc_${getKebabCase(label?.props?.i18n_default_text)}_link`;
+    const id = `dc_${getKebabCase(label)}_link`;
     const is_disabled = !!item.is_disabled;
     const count = item.count || 0;
 

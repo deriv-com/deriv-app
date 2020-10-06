@@ -6,7 +6,7 @@ import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
 import { getEndTime } from 'Stores/Modules/Contract/Helpers/logic';
 import { connect } from 'Stores/connect';
 import { SwipeableContractDrawer } from './swipeable-components.jsx';
-import MarketCountdownTimer from '../market-countdown-timer.jsx';
+import MarketClosedContractOverlay from './market-closed-contract-overlay.jsx';
 
 const ContractDrawerCard = ({
     addToast,
@@ -14,7 +14,6 @@ const ContractDrawerCard = ({
     contract_update,
     currency,
     getContractById,
-    is_dark_mode_on,
     is_market_closed,
     is_mobile,
     is_multiplier,
@@ -33,6 +32,8 @@ const ContractDrawerCard = ({
     toggleCancellationWarning,
     toggleContractAuditDrawer,
 }) => {
+    const [should_show_closed_overlay, setShowClosedOverlay] = React.useState(true);
+
     const { profit } = contract_info;
     const is_sold = !!getEndTime(contract_info);
 
@@ -108,14 +109,14 @@ const ContractDrawerCard = ({
         </React.Fragment>
     );
 
+    const handleMouseEnter = () => setShowClosedOverlay(false);
+    const handleMouseLeave = () => setShowClosedOverlay(true);
+
     const contract_card = (
         <ContractCard
             contract_info={contract_info}
             getCardLabels={getCardLabels}
-            is_dark_mode_on={is_dark_mode_on}
             is_multiplier={is_multiplier}
-            is_market_closed={is_market_closed}
-            market_countdown_timer={<MarketCountdownTimer />}
             profit_loss={profit}
             should_show_result_overlay={false}
         >
@@ -124,7 +125,12 @@ const ContractDrawerCard = ({
                     'dc-contract-card--green': is_mobile && !is_multiplier && profit > 0 && !result,
                     'dc-contract-card--red': is_mobile && !is_multiplier && profit < 0 && !result,
                 })}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
             >
+                {should_show_closed_overlay && is_market_closed && !getEndTime(contract_info) && (
+                    <MarketClosedContractOverlay />
+                )}
                 {contract_el}
                 {card_footer}
             </div>
@@ -163,7 +169,6 @@ export default connect(({ modules, ui }) => ({
     addToast: ui.addToast,
     getContractById: modules.contract_trade.getContractById,
     is_market_closed: modules.trade.is_market_closed,
-    is_dark_mode_on: ui.is_dark_mode_on,
     removeToast: ui.removeToast,
     should_show_cancellation_warning: ui.should_show_cancellation_warning,
     setCurrentFocus: ui.setCurrentFocus,

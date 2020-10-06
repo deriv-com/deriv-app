@@ -139,6 +139,5 @@ export default class TransactionsStore {
         if (typeof this.disposeTransactionsListener === 'function') {
             this.disposeTransactionsListener();
         }
-        this.disposeTransactionsListener = null;
     }
 }

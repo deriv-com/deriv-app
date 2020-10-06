@@ -138,6 +138,5 @@ export default class JournalStore {
         if (typeof this.disposeJournalMessageListener === 'function') {
             this.disposeJournalMessageListener();
         }
-        this.disposeJournalMessageListener = null;
     }
 }

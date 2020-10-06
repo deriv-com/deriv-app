@@ -537,16 +537,19 @@ export default class RunPanelStore {
 
     @action.bound
     onUnmount() {
+        const { journal, transactions } = this.root_store;
+
         RunPanelStore.unregisterBotListeners();
         this.disposeListeners();
+        journal.disposeListeners();
+        transactions.disposeListeners();
+
         observer.unregisterAll('ui.log.error');
         observer.unregisterAll('ui.log.notify');
         observer.unregisterAll('ui.log.success');
     }
 
     disposeListeners() {
-        const { journal, transactions } = this.root_store;
-
         if (typeof this.disposeIsSocketOpenedListener === 'function') {
             this.disposeIsSocketOpenedListener();
         }
@@ -558,8 +561,5 @@ export default class RunPanelStore {
         if (typeof this.disposeSwitchAccountListener === 'function') {
             this.disposeSwitchAccountListener();
         }
-
-        journal.disposeListeners();
-        transactions.disposeListeners();
     }
 }

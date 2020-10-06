@@ -737,7 +737,7 @@ $side-padding: 1.2em;
     }
     &__row {
         /*                     icon   refId buy_price  potential_payout potential_profit  indicative_price rem_time */
-        grid-template-columns: 0.8fr 1.2fr 1fr 1fr 1fr 1fr 1fr;
+        grid-template-columns: 0.7fr 0.8fr 1.1fr 1.1fr 1.1fr 1.1fr 1.1fr;
         width: 100%;
         grid-auto-rows: auto;
 
@@ -758,7 +758,7 @@ $side-padding: 1.2em;
     .purchase,
     .profit {
         @include desktop {
-            justify-content: flex-end;
+            justify-content: center;
             text-align: right;
         }
     }

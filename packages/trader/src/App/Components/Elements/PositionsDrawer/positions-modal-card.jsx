@@ -10,7 +10,6 @@ import { connect } from 'Stores/connect';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import { getContractTypeDisplay, getCardLabels } from 'Constants/contract';
 import ResultMobile from './result-mobile.jsx';
-import MarketCountdownTimer from '../market-countdown-timer.jsx';
 
 const PositionsModalCard = ({
     addToast,
@@ -22,8 +21,6 @@ const PositionsModalCard = ({
     getContractById,
     id,
     indicative,
-    is_dark_mode_on,
-    is_market_closed,
     is_loading,
     is_mobile,
     is_sell_requested,
@@ -241,9 +238,6 @@ const PositionsModalCard = ({
                 is_multiplier={is_multiplier}
                 profit_loss={profit_loss}
                 should_show_result_overlay={false}
-                is_market_closed={is_market_closed}
-                is_dark_mode_on={is_dark_mode_on}
-                market_countdown_timer={<MarketCountdownTimer />}
             >
                 {card_multiplier_header}
                 {card_multiplier_body}
@@ -290,9 +284,7 @@ PositionsModalCard.propTypes = {
     exit_spot: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     id: PropTypes.number,
     indicative: PropTypes.number,
-    is_dark_mode_on: PropTypes.bool,
     is_loading: PropTypes.bool,
-    is_market_closed: PropTypes.bool,
     is_mobile: PropTypes.bool,
     is_sell_requested: PropTypes.bool,
     is_unsupported: PropTypes.bool,
@@ -314,8 +306,6 @@ PositionsModalCard.propTypes = {
 export default connect(({ common, ui, modules }) => ({
     addToast: ui.addToast,
     getContractById: modules.contract_trade.getContractById,
-    is_market_closed: modules.trade.is_market_closed,
-    is_dark_mode_on: ui.is_dark_mode_on,
     is_mobile: ui.is_mobile,
     removeToast: ui.removeToast,
     server_time: common.server_time,

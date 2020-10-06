@@ -46,43 +46,6 @@ $header-height: 3.6em;
     &--open {
         transform: translateX(#{$POSITIONS_DRAWER_MARGIN});
         opacity: 1;
-
-        .contract-card {
-            &--market-closed {
-                position: absolute;
-                top: 2px;
-                left: 0.8rem;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                flex-direction: column;
-                padding: 0;
-                background-image: linear-gradient(to top, rgba($color-white, 0.9) 90%, rgba($color-orange, 0.3));
-                z-index: 1000;
-
-                &--dark {
-                    background-image: linear-gradient(to top, rgba($color-black, 0.9) 50%, rgba($color-orange, 0.2));
-                }
-                p {
-                    @include typeface(--paragraph-center-normal-black);
-                    font-size: 12px;
-                    color: var(--text-prominent);
-                    text-transform: none;
-
-                    &.market-is-closed-overlay__timer {
-                        font-weight: bold;
-                        font-size: 1.4rem;
-                    }
-                }
-                p.contract-card--market-closed--heading {
-                    @include setTypeface(16px, center, bold, $color-orange, none);
-                    font-stretch: normal;
-                    line-height: 1.5;
-                    letter-spacing: normal;
-                    margin-bottom: 1rem;
-                }
-            }
-        }
     }
     &__header {
         height: $header-height;

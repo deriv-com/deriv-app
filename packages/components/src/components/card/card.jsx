@@ -14,9 +14,9 @@ const CardContent = ({ children }) => <div className='dc-card__content-wrapper'>
 
 const CardFooter = ({ children }) => <div className='dc-card__footer-wrapper'>{children}</div>;
 
-const Card = ({ className, header, content, footer, renderHeader, renderContent, renderFooter }) => {
+const Card = ({ className, header, content, footer, renderHeader, renderContent, renderFooter, ...props }) => {
     return (
-        <CardRoot className={classNames('dc-card', className)}>
+        <CardRoot className={classNames('dc-card', className)} {...props}>
             {renderHeader ? renderHeader() : header !== null && <CardHeader>{header}</CardHeader>}
             {renderContent ? renderContent() : content !== null && <CardContent>{content}</CardContent>}
             {renderFooter ? renderFooter() : footer !== null && <CardFooter>{footer}</CardFooter>}

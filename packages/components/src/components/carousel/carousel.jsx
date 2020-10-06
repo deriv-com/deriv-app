@@ -8,6 +8,7 @@ import Icon from '../icon';
 import { useInterval } from '../../hooks';
 
 const Carousel = ({
+    bullet_color,
     className,
     handleSelect,
     initial_index,
@@ -95,6 +96,7 @@ const Carousel = ({
                 {list.length > 1 && (
                     <Nav
                         active_index={active_index}
+                        bullet_color={bullet_color}
                         className='carousel__nav--lower'
                         handleNextClick={handleNextClick}
                         handlePrevClick={handlePrevClick}
@@ -111,6 +113,7 @@ const Carousel = ({
 
 Carousel.defaultProps = {
     initial_index: 0,
+    bullet_color: 'var(--text-prominent)',
     nav_position: 'bottom',
     bullet_position: 'bottom',
     show_bullet: true,
@@ -120,6 +123,7 @@ Carousel.defaultProps = {
 Carousel.propTypes = {
     className: PropTypes.string,
     handleSelect: PropTypes.func,
+    bullet_color: PropTypes.string,
     list: PropTypes.array,
     nav_position: PropTypes.oneOf(['top', 'middle', 'bottom']),
     show_nav: PropTypes.bool,

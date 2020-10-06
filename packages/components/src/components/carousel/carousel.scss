@@ -9,6 +9,7 @@
         display: flex;
         flex-direction: row;
         align-items: center;
+        justify-content: center;
     }
 
     &__box {
@@ -29,9 +30,10 @@
         padding-bottom: 0.8rem;
     }
     &__nav {
-        display: flex;
         align-items: center;
-        width: calc(100% - 4.8rem);
+        box-sizing: border-box;
+        display: flex;
+        width: 100%;
         padding: 0 2.4rem;
         overflow: hidden;
         margin-bottom: 2.4rem;
@@ -62,7 +64,6 @@
                 left: 0;
                 cursor: initial;
                 transition: transform 0.3s linear;
-                background-color: var(--text-prominent);
             }
         }
     }

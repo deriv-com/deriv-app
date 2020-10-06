@@ -5,6 +5,7 @@ import Icon from '../icon';
 
 const Nav = ({
     active_index,
+    bullet_color,
     className,
     handleNextClick,
     handlePrevClick,
@@ -24,7 +25,10 @@ const Nav = ({
                 <ul className='carousel__nav-list'>
                     <li
                         className={classNames('carousel__nav-item', 'carousel__nav-item--active')}
-                        style={{ transform: `translate3d(${24 * active_index}px, 0, 0)` }}
+                        style={{
+                            transform: `translate3d(${24 * active_index}px, 0, 0)`,
+                            backgroundColor: bullet_color,
+                        }}
                     />
                     {list.map((_, idx) => (
                         <li key={idx} className='carousel__nav-item' onClick={() => handleNavigationClick(idx)} />

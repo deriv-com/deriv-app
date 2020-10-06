@@ -72,8 +72,10 @@ const AdvertiserPage = ({ navigate, selected_advert, showVerification }) => {
     const [show_ad_popup, setShowAdPopup] = React.useState(false);
     const submitForm = React.useRef(() => {});
     const {
+        basic_verification,
         buy_completion_rate,
         buy_orders_count,
+        full_verification,
         release_time_avg,
         sell_orders_count,
         total_completion_rate,
@@ -238,17 +240,28 @@ const AdvertiserPage = ({ navigate, selected_advert, showVerification }) => {
                         </div>
                         <div className='advertiser-page__header-name'>{advertiser_details.name}</div>
                     </div>
-                    {/* TODO: add check for id and address verified */}
-                    {/* <div className='advertiser-page__header-verification'>
-                        <div className='advertiser-page__header-verification-id'>
-                            {localize('ID Verified')}
-                            <Icon icon='IcCashierVerificationBadge' size={14} />
-                        </div>
-                        <div className='advertiser-page__header-verification-address'>
-                            {localize('Address verified')}
-                            <Icon icon='IcCashierVerificationBadge' size={14} />
-                        </div>
-                    </div> */}
+                    <div className='advertiser-page__header-verification'>
+                        {basic_verification ? (
+                            <div>
+                                {localize('ID verified')}
+                                <Icon
+                                    className='advertiser-page__header-verification-icon'
+                                    icon='IcCashierVerificationBadge'
+                                    size={16}
+                                />
+                            </div>
+                        ) : null}
+                        {full_verification ? (
+                            <div className='advertiser-page__header-verification-status'>
+                                {localize('Address verified')}
+                                <Icon
+                                    className='advertiser-page__header-verification-icon'
+                                    icon='IcCashierVerificationBadge'
+                                    size={16}
+                                />
+                            </div>
+                        ) : null}
+                    </div>
                 </div>
                 <Table>
                     <Table.Row className='advertiser-page__stats'>

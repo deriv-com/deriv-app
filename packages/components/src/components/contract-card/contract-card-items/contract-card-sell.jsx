@@ -1,11 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { isOpen, hasContractEntered } from '@deriv/shared';
+import { isOpen, isValidToSell, hasContractEntered } from '@deriv/shared';
 import Button from '../../button';
 
 const ContractCardSell = ({ contract_info, is_sell_requested, onClickSell, getCardLabels }) => {
-    const { is_valid_to_sell } = contract_info;
+    const is_valid_to_sell = isValidToSell(contract_info);
     const should_show_sell = hasContractEntered(contract_info) && isOpen(contract_info);
 
     const onClick = ev => {

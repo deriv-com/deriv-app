@@ -201,7 +201,6 @@ export const getOpenPositionsColumnsTemplate = currency => [
                 amount={+cell_value}
                 currency={currency}
                 contract_info={row_obj.contract_info}
-                is_valid_to_sell={row_obj.is_valid_to_sell}
                 is_sell_requested={row_obj.is_sell_requested}
                 is_footer={is_footer}
             />

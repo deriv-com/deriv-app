@@ -23,8 +23,10 @@ const Deposit = ({
 }) => {
     React.useEffect(() => {
         setActiveTab(container);
-        onMount();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        if (!is_virtual) {
+            onMount();
+        }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     if (is_virtual) {
         return <Virtual />;

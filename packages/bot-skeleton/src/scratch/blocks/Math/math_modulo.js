@@ -6,7 +6,10 @@ Blockly.Blocks.math_modulo = {
     },
     definition() {
         return {
-            message0: localize('remainder of %1 ÷ %2'),
+            message0: localize('remainder of {{ number1 }} ÷ {{ number2 }}', {
+                number1: '%1',
+                number2: '%2',
+            }),
             args0: [
                 {
                     type: 'input_value',

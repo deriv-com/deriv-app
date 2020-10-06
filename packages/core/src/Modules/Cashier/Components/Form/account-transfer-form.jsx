@@ -13,11 +13,18 @@ const AccountOption = ({ account, idx }) => {
     return (
         <React.Fragment key={idx}>
             {(account.currency || account.mt_icon) && (
-                <Icon
-                    icon={account.mt_icon ? `IcMt5-${account.mt_icon}` : `IcCurrency-${account.currency.toLowerCase()}`}
-                    className='account-transfer__currency-icon'
-                />
+                <div>
+                    <Icon
+                        icon={
+                            account.mt_icon
+                                ? `IcMt5-${account.mt_icon}`
+                                : `IcCurrency-${account.currency.toLowerCase()}`
+                        }
+                        className='account-transfer__currency-icon'
+                    />
+                </div>
             )}
+
             <div className='account-transfer__currency-wrapper'>
                 <span className='account-transfer__currency'>{account.text}</span>
                 <span className='account-transfer__loginid'>{account.value}</span>
@@ -198,6 +205,7 @@ const AccountTransferForm = ({
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [transfer_fee, selected_from, minimum_fee, mt5_total_transfers, internal_total_transfers, setSideNote]);
+
     return (
         <div className='cashier__wrapper account-transfer__wrapper'>
             <React.Fragment>
@@ -257,6 +265,7 @@ const AccountTransferForm = ({
                                                 placeholder={localize('Please select')}
                                                 className='account-transfer__transfer-from'
                                                 classNameDisplay='cashier__drop-down-display'
+                                                name='transfer_from'
                                                 label={localize('From')}
                                                 value={selected_from.value}
                                                 list_items={from_accounts}
@@ -295,6 +304,7 @@ const AccountTransferForm = ({
                                                 className='account-transfer__transfer-to'
                                                 classNameDisplay='cashier__drop-down-display'
                                                 label={localize('To')}
+                                                name='transfer_to'
                                                 value={selected_to.value}
                                                 list_items={to_accounts}
                                                 onChange={onChangeTransferTo}

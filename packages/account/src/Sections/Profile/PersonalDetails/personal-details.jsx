@@ -6,6 +6,7 @@ import {
     Autocomplete,
     Checkbox,
     Button,
+    FormSubmitErrorMessage,
     Input,
     DesktopWrapper,
     Loading,
@@ -33,7 +34,6 @@ import LeaveConfirm from 'Components/leave-confirm';
 import FormFooter from 'Components/form-footer';
 import FormBody from 'Components/form-body';
 import FormSubHeader from 'Components/form-sub-header';
-import FormSubmitErrorMessage from 'Components/form-submit-error-message';
 import LoadErrorMessage from 'Components/load-error-message';
 
 const removeObjProperties = (property_arr, { ...obj }) => {
@@ -174,20 +174,25 @@ class PersonalDetailsForm extends React.Component {
         }
 
         if (values.phone) {
+            // minimum characters required is 9 including (+) sign
+            // phone_trim uses regex that trims (+) sign
+            // minimum characters required w/o (+) sign is 8 characters.
             const min_phone_number = 8;
             const max_phone_number = 35;
             const phone_trim = values.phone.replace(/\D/g, '');
+            const phone_error_message = localize(
+                'Please enter a valid phone number, including the country code (e.g +15417541234).'
+            );
 
-            if (!validPhone(values.phone)) {
-                errors.phone = localize(
-                    'Please enter a valid phone number, including the country code (e.g. +15417541234)'
-                );
+            if (!validLength(phone_trim, { min: min_phone_number, max: max_phone_number })) {
+                errors.phone = localize('You should enter {{min}}-{{max}} numbers.', {
+                    min: min_phone_number,
+                    max: max_phone_number,
+                });
             } else if (!validCountryCode(this.props.residence_list, values.phone)) {
-                errors.phone = localize(
-                    'Please enter a valid phone number, including the country code (e.g +15417541234).'
-                );
-            } else if (!validLength(phone_trim, { min: min_phone_number, max: max_phone_number })) {
-                errors.phone = localize('You should enter 8-35 characters.');
+                errors.phone = phone_error_message;
+            } else if (!validPhone(values.phone)) {
+                errors.phone = phone_error_message;
             }
         }
 

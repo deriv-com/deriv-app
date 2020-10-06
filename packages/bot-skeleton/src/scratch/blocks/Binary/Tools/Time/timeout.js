@@ -6,7 +6,11 @@ Blockly.Blocks.timeout = {
     },
     definition() {
         return {
-            message0: localize('%1 %2 Run after %3 second(s)'),
+            message0: localize('{{ dummy }} {{ stack_input }} Run after {{ number }} second(s)', {
+                dummy: '%1',
+                stack_input: '%2',
+                number: '%3',
+            }),
             args0: [
                 {
                     type: 'input_dummy',

@@ -18,8 +18,6 @@ import { WS } from 'Services';
 import OnRampStore from './on-ramp-store';
 import BaseStore from '../../base-store';
 
-const bank_default_option = [{ text: localize('All payment agents'), value: 0 }];
-
 const hasTransferNotAllowedLoginid = loginid => loginid.startsWith('MX');
 
 const getSelectedError = (selected_value, is_from_account) => {
@@ -79,8 +77,8 @@ class ConfigPaymentAgent {
     @observable is_withdraw_successful = false;
     @observable confirm = {};
     @observable receipt = {};
-    @observable selected_bank = bank_default_option[0].value;
-    @observable supported_banks = bank_default_option;
+    @observable selected_bank = 0;
+    @observable supported_banks = [];
     @observable verification = new ConfigVerification();
 }
 
@@ -179,6 +177,11 @@ export default class CashierStore extends BaseStore {
         return this.config.payment_agent_transfer.is_payment_agent;
     }
 
+    @computed
+    get is_p2p_enabled() {
+        return this.is_p2p_visible && !this.root_store.client.is_eu;
+    }
+
     @action.bound
     setAccountSwitchListener() {
         // cashier inits once and tries to stay active until switching account
@@ -225,10 +228,13 @@ export default class CashierStore extends BaseStore {
             if (!this.is_p2p_visible && !this.root_store.client.is_virtual) {
                 const advertiser_info = await WS.authorized.p2pAdvertiserInfo();
                 const advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
-                if (advertiser_error === 'PermissionDenied') this.setIsP2pVisible(true);
+                if (advertiser_error === 'RestrictedCountry') {
+                    this.setIsP2pVisible(false);
+                } else {
+                    this.setIsP2pVisible(true);
+                }
 
                 this.is_p2p_advertiser = !advertiser_error;
-                this.setIsP2pVisible(true);
             }
         }
     }
@@ -982,10 +988,11 @@ export default class CashierStore extends BaseStore {
         const decimal_places = getDecimalPlaces(this.config.account_transfer.selected_from.currency);
         // we need .toFixed() so that it doesn't display in scientific notation, e.g. 1e-8 for currencies with 8 decimal places
         this.config.account_transfer.transfer_limit = {
-            max: transfer_limit.max
-                ? Math.min(transfer_limit.max, +balance || transfer_limit.max).toFixed(decimal_places) // in case balance is 0, just use transfer_limit.max
-                : balance,
-            min: transfer_limit.min ? (+transfer_limit.min).toFixed(decimal_places) : null,
+            max:
+                !transfer_limit?.max || (+balance >= (transfer_limit?.min || 0) && +balance <= transfer_limit?.max)
+                    ? balance
+                    : transfer_limit?.max.toFixed(decimal_places),
+            min: transfer_limit?.min ? (+transfer_limit?.min).toFixed(decimal_places) : null,
         };
     }
 

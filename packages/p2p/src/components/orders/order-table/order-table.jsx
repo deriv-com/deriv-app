@@ -9,10 +9,11 @@ import { orderToggleIndex } from '../order-info';
 const OrderTable = ({ showDetails }) => {
     const {
         active_notification_count,
+        changeOrderToggle,
         inactive_notification_count,
         order_table_type,
-        changeOrderToggle,
     } = React.useContext(Dp2pContext);
+
     const orders_filters = [
         {
             text: localize('Active order'),
@@ -28,7 +29,7 @@ const OrderTable = ({ showDetails }) => {
 
     const is_active_tab = order_table_type === orderToggleIndex.ACTIVE;
     return (
-        <>
+        <React.Fragment>
             <div className='orders__header'>
                 <ButtonToggle
                     buttons_arr={orders_filters}
@@ -41,7 +42,7 @@ const OrderTable = ({ showDetails }) => {
                 />
             </div>
             <OrderTableContent showDetails={showDetails} is_active={is_active_tab} />
-        </>
+        </React.Fragment>
     );
 };
 

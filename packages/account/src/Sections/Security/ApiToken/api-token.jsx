@@ -16,11 +16,11 @@ import {
 } from '@deriv/components';
 import { getPropertyValue, formatDate } from '@deriv/shared';
 
-import { localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 import LoadErrorMessage from 'Components/load-error-message';
-import Article from 'Components/article';
+import Article from './article.jsx';
 import Card from './card.jsx';
 
 const MIN_TOKEN = 2;
@@ -215,6 +215,9 @@ class ApiToken extends React.Component {
                 </Modal>
                 <div className='api-token__wrapper'>
                     <ThemedScrollbars className='api-token__scrollbars'>
+                        <MobileWrapper>
+                            <Article />
+                        </MobileWrapper>
                         <Formik
                             initialValues={this.initial_form}
                             onSubmit={this.handleSubmit}
@@ -258,7 +261,7 @@ class ApiToken extends React.Component {
                                                     display_name={localize('Payments')}
                                                     setFieldValue={setFieldValue}
                                                     description={localize(
-                                                        'Withdraw to payment agents, transfer funds between accounts, and set/clear cashier passwords.'
+                                                        'Withdraw to payment agents, and transfer funds between accounts.'
                                                     )}
                                                 />
                                                 <Card
@@ -438,7 +441,15 @@ class ApiToken extends React.Component {
                         </Formik>
                     </ThemedScrollbars>
                     <DesktopWrapper>
-                        <Article />
+                        <Article
+                            title={localize('API token')}
+                            descriptions={[
+                                <Localize
+                                    key={0}
+                                    i18n_default_text="To access our mobile apps and other third-party apps, you'll first need to generate an API token."
+                                />,
+                            ]}
+                        />
                     </DesktopWrapper>
                 </div>
             </section>

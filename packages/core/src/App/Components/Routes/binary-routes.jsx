@@ -1,12 +1,14 @@
 import React from 'react';
 import { Switch, Prompt, useLocation } from 'react-router-dom';
 import { Loading } from '@deriv/components';
+import { PlatformContext } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import getRoutesConfig from 'App/Constants/routes-config';
 import RouteWithSubRoutes from './route-with-sub-routes.jsx';
 
 const BinaryRoutes = props => {
     const location = useLocation();
+    const { is_deriv_crypto } = React.useContext(PlatformContext);
 
     React.useEffect(() => {
         props.pushDataLayer({ event: 'page_load' });
@@ -17,7 +19,7 @@ const BinaryRoutes = props => {
         <React.Suspense fallback={<Loading />}>
             <Prompt when={props.prompt_when} message={props.promptFn} />
             <Switch>
-                {getRoutesConfig().map((route, idx) => (
+                {getRoutesConfig({ is_deriv_crypto }).map((route, idx) => (
                     <RouteWithSubRoutes key={idx} {...route} {...props} />
                 ))}
             </Switch>

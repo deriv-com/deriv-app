@@ -219,3 +219,5 @@ export default class Interpreter {
         return !this.stopped;
     }
 }
+
+export const createInterpreter = () => new Interpreter();

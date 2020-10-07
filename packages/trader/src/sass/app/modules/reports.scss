@@ -664,7 +664,7 @@ $side-padding: 1.2em;
     &__indicative {
         display: flex;
         justify-content: center;
-        align-items: flex-end;
+        align-items: center;
         flex-direction: column;
 
         &--amount {
@@ -674,7 +674,7 @@ $side-padding: 1.2em;
         }
         &-no-resale-msg {
             clear: both;
-            text-align: right;
+            text-align: center;
             font-size: smaller;
         }
     }

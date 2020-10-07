@@ -28,6 +28,7 @@ const AccountList = ({
     }, [loginid]);
 
     if (is_disabled && !currency) return null;
+    const currency_badge = currency ? currency_icon : 'IcCurrencyUnknown';
 
     return (
         <>
@@ -41,7 +42,7 @@ const AccountList = ({
             >
                 <span className='acc-switcher__id'>
                     <Icon
-                        icon={currency ? currency_icon : 'IcCurrencyUnknown'}
+                        icon={is_virtual ? 'IcCurrencyVirtual' : currency_badge}
                         className={'acc-switcher__id-icon'}
                         size={24}
                     />

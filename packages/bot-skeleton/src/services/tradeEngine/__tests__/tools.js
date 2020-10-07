@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { createInterpreter } from '../utils/interpreter';
 
-export const init = options => `
+export const init = (options) => `
   Bot.init('Xkq6oGFEHh6hJH8', {
     candleInterval: 60,
     contractTypes: ['CALL'],
@@ -11,7 +11,7 @@ export const init = options => `
   })
 `;
 
-export const start = options =>
+export const start = (options) =>
     `
         Bot.start({
           amount: 1,
@@ -47,10 +47,10 @@ export const parts = {
   `,
 };
 
-export const run = code => createInterpreter().run(code);
+export const run = (code) => createInterpreter().run(code);
 
 export const runAndGetResult = (initCode = '', code) =>
-    new Promise(r => {
+    new Promise((r) => {
         run(
             `
     ${parts.header}
@@ -59,15 +59,15 @@ export const runAndGetResult = (initCode = '', code) =>
     ${code}
     ${parts.footer}
   `
-        ).then(v => r(v.result));
+        ).then((v) => r(v.result));
     });
 
 export const expectReturnTrue = (msg, code) =>
     describe(msg, () => {
         let value;
 
-        beforeAll(done => {
-            run(code).then(v => {
+        beforeAll((done) => {
+            run(code).then((v) => {
                 value = v;
                 done();
             });
@@ -78,7 +78,7 @@ export const expectReturnTrue = (msg, code) =>
     });
 
 export const expectResultTypes = (result, types) => {
-    const resultTypes = Object.keys(result).map(k => typeof result[k]);
+    const resultTypes = Object.keys(result).map((k) => typeof result[k]);
 
     expect(resultTypes).deep.equal(types);
 };

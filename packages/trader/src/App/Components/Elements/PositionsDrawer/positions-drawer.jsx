@@ -155,11 +155,11 @@ class PositionsDrawer extends React.Component {
         const is_tick_contract = contract_info.tick_count > 0;
 
         if (contract_info.is_sold) {
-            return is_multiplier_contract ? 248 : 151;
+            return is_multiplier_contract ? 266 : 167;
         } else if (is_tick_contract) {
-            return 229;
+            return 245;
         }
-        return is_multiplier_contract ? 297 : 222;
+        return is_multiplier_contract ? 310 : 238;
     };
 
     render() {

@@ -91,7 +91,7 @@ const OpenPositionsTable = ({
                                 getRowAction={getRowAction}
                                 custom_width='100%'
                                 getRowSize={() => {
-                                    if (isMobile() && is_multiplier_tab) return 242;
+                                    if (isMobile() && is_multiplier_tab) return 253;
                                     if (isMobile()) return 245;
                                     return 194;
                                 }}
@@ -199,6 +199,11 @@ class OpenPositions extends React.Component {
                 </div>
                 <div className='data-list__row'>
                     <DataList.Cell row={row} column={this.columns_map.reference} />
+                    <DataList.Cell
+                        className='data-list__row-cell--amount'
+                        row={row}
+                        column={this.columns_map.currency}
+                    />
                 </div>
                 <div className='data-list__row'>
                     <DataList.Cell row={row} column={this.columns_map.purchase} />

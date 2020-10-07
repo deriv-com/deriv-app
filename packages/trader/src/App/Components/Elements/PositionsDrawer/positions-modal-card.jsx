@@ -13,6 +13,7 @@ import {
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
+import CurrencyBadge from 'App/Components/Elements/currency-badge.jsx';
 import { connect } from 'Stores/connect';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import { getContractTypeDisplay, getCardLabels } from 'Constants/contract';
@@ -96,6 +97,7 @@ const PositionsModalCard = ({
                     </div>
                 </CSSTransition>
             </div>
+            <CurrencyBadge currency={contract_info?.currency ?? ''} />
             <div className={classNames('positions-modal-card__grid', 'positions-modal-card__grid-body')}>
                 <div className={classNames('positions-modal-card__grid-profit-payout')}>
                     <div
@@ -244,6 +246,7 @@ const PositionsModalCard = ({
                 should_show_result_overlay={false}
             >
                 {card_multiplier_header}
+                <CurrencyBadge currency={contract_info?.currency ?? ''} />
                 {card_multiplier_body}
                 {card_multiplier_footer}
             </ContractCard>

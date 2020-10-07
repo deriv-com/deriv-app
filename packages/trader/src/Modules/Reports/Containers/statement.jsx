@@ -10,64 +10,39 @@ import CompositeCalendar from 'App/Components/Form/CompositeCalendar/composite-c
 import { getContractPath } from 'App/Components/Routes/helpers';
 import { getSupportedContracts } from 'Constants';
 import { connect } from 'Stores/connect';
-import { WS } from 'Services/ws-methods';
 import { getStatementTableColumnsTemplate } from '../Constants/data-table-constants';
 import PlaceholderComponent from '../Components/placeholder-component.jsx';
 import { ReportsMeta } from '../Components/reports-meta.jsx';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message.jsx';
 
 class Statement extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { total_deposits: 0, total_withdrawals: 0, is_account_statistics_loaded: false };
-    }
-
     componentDidMount() {
         this.props.onMount();
-    }
-
-    componentDidUpdate() {
-        const { is_mx_mlt } = this.props;
-        if (is_mx_mlt && !this.state.is_account_statistics_loaded)
-            WS.accountStatistics().then(response => {
-                if (response.error) {
-                    this.setState({ api_error: response.error.message, is_account_statistics_loaded: true });
-                    return;
-                }
-                this.setState({
-                    total_deposits: response.account_statistics.total_deposits,
-                    total_withdrawals: response.account_statistics.total_withdrawals,
-                    is_account_statistics_loaded: true,
-                });
-            });
     }
 
     componentWillUnmount() {
         this.props.onUnmount();
     }
 
-    mobileRowRenderer = ({ row }) => {
-        return (
-            <>
-                <div className='data-list__row'>
-                    <DataList.Cell row={row} column={this.columns_map.icon} />
-                    <DataList.Cell row={row} column={this.columns_map.action_type} />
-                </div>
-                <div className='data-list__row'>
-                    <DataList.Cell row={row} column={this.columns_map.refid} />
-                    <DataList.Cell
-                        className='data-list__row-cell--amount'
-                        row={row}
-                        column={this.columns_map.balance}
-                    />
-                </div>
-                <div className='data-list__row'>
-                    <DataList.Cell row={row} column={this.columns_map.date} />
-                    <DataList.Cell className='data-list__row-cell--amount' row={row} column={this.columns_map.amount} />
-                </div>
-            </>
-        );
-    };
+    mobileRowRenderer = ({ row }) => (
+        <>
+            <div className='data-list__row'>
+                <DataList.Cell row={row} column={this.columns_map.icon} />
+                <DataList.Cell row={row} column={this.columns_map.action_type} />
+            </div>
+            <div className='data-list__row'>
+                <DataList.Cell row={row} column={this.columns_map.refid} />
+                <DataList.Cell className='data-list__row-cell--amount' row={row} column={this.columns_map.currency} />
+            </div>
+            <div className='data-list__row'>
+                <DataList.Cell row={row} column={this.columns_map.date} />
+                <DataList.Cell className='data-list__row-cell--amount' row={row} column={this.columns_map.amount} />
+            </div>
+            <div className='data-list__row'>
+                <DataList.Cell row={row} column={this.columns_map.balance} />
+            </div>
+        </>
+    );
 
     getRowAction = row_obj => {
         let action;
@@ -104,30 +79,42 @@ class Statement extends React.Component {
     };
 
     getAccountStatistics() {
-        const { currency } = this.props;
+        const { account_statistics, currency } = this.props;
         return (
             <React.Fragment>
                 <div className='statement__account-statistics'>
-                    <div className='statement__account-statistics--is-rectangle'>
-                        <span className='statement__account-statistics-title'>{localize('Total deposits')}</span>
-                        <span className='statement__account-statistics-amount'>
-                            <Money amount={this.state.total_deposits} currency={currency} />
-                        </span>
+                    <div className='statement__account-statistics-item'>
+                        <div className='statement__account-statistics--is-rectangle'>
+                            <span className='statement__account-statistics-title'>
+                                {localize('Total deposits')} {`(${currency})`}
+                            </span>
+                            <span className='statement__account-statistics-amount'>
+                                <Money amount={account_statistics.total_deposits} currency={currency} />
+                            </span>
+                        </div>
                     </div>
-                    <div className='statement__account-statistics--is-rectangle'>
-                        <span className='statement__account-statistics-title'>{localize('Total withdrawals')}</span>
-                        <span className='statement__account-statistics-amount'>
-                            <Money amount={this.state.total_withdrawals} currency={currency} />
-                        </span>
+                    <div className='statement__account-statistics-item statement__account-statistics-total-withdrawal'>
+                        <div className='statement__account-statistics--is-rectangle'>
+                            <span className='statement__account-statistics-title'>
+                                {localize('Total withdrawals')} {`(${currency})`}
+                            </span>
+                            <span className='statement__account-statistics-amount'>
+                                <Money amount={account_statistics.total_withdrawals} currency={currency} />
+                            </span>
+                        </div>
                     </div>
-                    <div className='statement__account-statistics--is-rectangle'>
-                        <span className='statement__account-statistics-title'>{localize('Net deposits')}</span>
-                        <span className='statement__account-statistics-amount'>
-                            <Money
-                                amount={this.state.total_deposits - this.state.total_withdrawals}
-                                currency={currency}
-                            />
-                        </span>
+                    <div className='statement__account-statistics-item'>
+                        <div className='statement__account-statistics--is-rectangle'>
+                            <span className='statement__account-statistics-title'>
+                                {localize('Net deposits')} {`(${currency})`}
+                            </span>
+                            <span className='statement__account-statistics-amount'>
+                                <Money
+                                    amount={account_statistics.total_deposits - account_statistics.total_withdrawals}
+                                    currency={currency}
+                                />
+                            </span>
+                        </div>
                     </div>
                 </div>
             </React.Fragment>
@@ -144,6 +131,7 @@ class Statement extends React.Component {
             is_empty,
             is_loading,
             is_mx_mlt,
+            is_switching,
             error,
             filtered_date_range,
             handleScroll,
@@ -175,9 +163,9 @@ class Statement extends React.Component {
                 <ReportsMeta
                     className={is_mx_mlt ? undefined : 'reports__meta--statement'}
                     filter_component={filter_component}
-                    optional_component={is_mx_mlt && this.getAccountStatistics()}
+                    optional_component={!is_switching && is_mx_mlt && this.getAccountStatistics()}
                 />
-                {this.props.is_switching ? (
+                {is_switching ? (
                     <PlaceholderComponent is_loading={true} />
                 ) : (
                     <React.Fragment>
@@ -216,7 +204,7 @@ class Statement extends React.Component {
                                         getRowAction={this.getRowAction}
                                         onScroll={handleScroll}
                                         custom_width={'100%'}
-                                        getRowSize={() => 176}
+                                        getRowSize={() => 186}
                                     >
                                         <PlaceholderComponent is_loading={is_loading} />
                                     </DataList>
@@ -243,6 +231,7 @@ Statement.propTypes = {
     is_empty: PropTypes.bool,
     is_loading: PropTypes.bool,
     is_switching: PropTypes.bool,
+    is_mx_mlt: PropTypes.bool,
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
 };
@@ -250,6 +239,7 @@ Statement.propTypes = {
 export default connect(({ modules, client }) => ({
     currency: client.currency,
     is_mx_mlt: client.standpoint.iom || client.standpoint.malta,
+    account_statistics: modules.statement.account_statistics,
     date_from: modules.statement.date_from,
     date_to: modules.statement.date_to,
     data: modules.statement.data,

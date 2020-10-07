@@ -1,11 +1,11 @@
 import { expect } from 'chai';
 import { parts } from './tools';
-import { createInterpreter } from '../utils/cliTools';
+import { createInterpreter } from '../utils/interpreter';
 
 describe('Run Interpreter over bot', () => {
     let value;
 
-    beforeAll(done => {
+    beforeAll((done) => {
         let interpreter = createInterpreter();
         interpreter.run(
             `
@@ -30,7 +30,7 @@ describe('Run Interpreter over bot', () => {
         })();
       `
                 )
-                .then(v => {
+                .then((v) => {
                     value = v;
                     done();
                 });

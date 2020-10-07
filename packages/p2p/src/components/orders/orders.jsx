@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useIsMounted } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
 import PageReturn from 'Components/page-return/page-return.jsx';
@@ -12,6 +13,7 @@ import './orders.scss';
 
 const Orders = ({ params, navigate, chat_info }) => {
     const { general_store } = useStores();
+    const isMounted = useIsMounted();
     const {
         getLocalStorageSettingsForLoginId,
         order_id,
@@ -21,7 +23,6 @@ const Orders = ({ params, navigate, chat_info }) => {
     } = React.useContext(Dp2pContext);
     const [order_information, setOrderInformation] = React.useState(null);
     const [nav, setNav] = React.useState(params?.nav);
-    const is_mounted = React.useRef(false);
     const order_info_subscription = React.useRef(null);
 
     const hideDetails = should_navigate => {
@@ -78,12 +79,9 @@ const Orders = ({ params, navigate, chat_info }) => {
     };
 
     React.useEffect(() => {
-        is_mounted.current = true;
-
         return () => {
             unsubscribeFromCurrentOrder();
             hideDetails(false);
-            is_mounted.current = false;
         };
     }, []);
 
@@ -100,7 +98,7 @@ const Orders = ({ params, navigate, chat_info }) => {
     }, [params]);
 
     React.useEffect(() => {
-        if (is_mounted.current && order_id) {
+        if (isMounted() && order_id) {
             // If orders was updated, find current viewed order (if any)
             // and trigger a re-render (in case status was updated).
             const order = orders.find(o => o.id === order_id);
@@ -120,7 +118,8 @@ const Orders = ({ params, navigate, chat_info }) => {
                 <PageReturn
                     onClick={() => hideDetails(true)}
                     page_title={
-                        order_information.is_buy_order
+                        (order_information.is_buy_order && !order_information.is_my_ad) ||
+                        (order_information.is_sell_order && order_information.is_my_ad)
                             ? localize('Buy {{offered_currency}} order', { offered_currency: account_currency })
                             : localize('Sell {{offered_currency}} order', { offered_currency: account_currency })
                     }

@@ -2,7 +2,7 @@ import { localize } from '@deriv/translations';
 import CurrencySelector from './currency-selector.jsx';
 import { generateValidationFunction, getDefaultFields } from './form-validations';
 
-const currency_selector_config = {
+export const currency_selector_config = {
     currency: {
         supported_in: ['maltainvest', 'malta', 'svg', 'iom'],
         default_value: '',

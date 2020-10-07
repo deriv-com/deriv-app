@@ -7,7 +7,6 @@ import Loading from '../../../templates/_common/components/loading.jsx';
 
 const MT5DemoAccountDisplay = ({
     is_eu,
-    is_eu_enabled, // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
     is_eu_country,
     has_maltainvest_account,
     openAccountNeededModal,
@@ -22,8 +21,7 @@ const MT5DemoAccountDisplay = ({
     openPasswordManager,
 }) => {
     const openMt5Account = () => {
-        // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
-        if (is_eu_enabled && is_eu && !has_maltainvest_account && standpoint.iom) {
+        if (is_eu && !has_maltainvest_account && standpoint.iom) {
             openAccountNeededModal('maltainvest', localize('Deriv Financial'), localize('DMT5 Demo Financial'));
         } else {
             onSelectAccount({

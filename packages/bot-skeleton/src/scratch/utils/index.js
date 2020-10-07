@@ -23,10 +23,10 @@ export const updateWorkspaceName = () => {
     }
 };
 
-export const isMainBlock = block_type => config.mainBlocks.indexOf(block_type) >= 0;
+export const isMainBlock = (block_type) => config.mainBlocks.indexOf(block_type) >= 0;
 
-export const oppositesToDropdownOptions = opposite_name => {
-    return opposite_name.map(contract_type => {
+export const oppositesToDropdownOptions = (opposite_name) => {
+    return opposite_name.map((contract_type) => {
         // i.e. [['CALL', localize('Rise')]] becomes [[localize('Rise'), 'CALL']];
         return Object.entries(contract_type)[0].reverse();
     });
@@ -103,7 +103,7 @@ export const load = ({
         }
 
         // Check if all block types in XML are allowed.
-        const has_invalid_blocks = Array.from(blockly_xml).some(block => {
+        const has_invalid_blocks = Array.from(blockly_xml).some((block) => {
             const block_type = block.getAttribute('type');
             return !Object.keys(Blockly.Blocks).includes(block_type);
         });
@@ -119,7 +119,7 @@ export const load = ({
             Blockly.Events.setGroup(event_group);
             removeLimitedBlocks(
                 workspace,
-                Array.from(blockly_xml).map(xml_block => xml_block.getAttribute('type'))
+                Array.from(blockly_xml).map((xml_block) => xml_block.getAttribute('type'))
             );
 
             if (is_collection) {
@@ -140,7 +140,7 @@ export const load = ({
 
             // Set user disabled state on all disabled blocks. This ensures we don't change the disabled
             // state through code, which was implemented for user experience.
-            workspace.getAllBlocks().forEach(block => {
+            workspace.getAllBlocks().forEach((block) => {
                 if (block.disabled) {
                     block.is_user_disabled_state = true;
                 }
@@ -160,11 +160,11 @@ export const load = ({
     }, 500);
 };
 
-const loadBlocks = (xml, drop_event, event_group, workspace) => {
+export const loadBlocks = (xml, drop_event, event_group, workspace) => {
     Blockly.Events.setGroup(event_group);
 
     const block_ids = Blockly.Xml.domToWorkspace(xml, workspace);
-    const added_blocks = block_ids.map(block_id => workspace.getBlockById(block_id));
+    const added_blocks = block_ids.map((block_id) => workspace.getBlockById(block_id));
 
     if (drop_event && Object.keys(drop_event).length !== 0) {
         cleanUpOnLoad(added_blocks, drop_event, workspace);
@@ -173,7 +173,7 @@ const loadBlocks = (xml, drop_event, event_group, workspace) => {
     }
 };
 
-const loadWorkspace = async (xml, event_group, workspace) => {
+export const loadWorkspace = async (xml, event_group, workspace) => {
     Blockly.Events.setGroup(event_group);
     await workspace.asyncClear();
 
@@ -200,7 +200,7 @@ const loadBlocksFromHeader = (xml_string, block) => {
 
             addLoaderBlocksFirst(xml)
                 .then(() => {
-                    Array.from(xml.children).forEach(el_block => addDomAsBlock(el_block, block));
+                    Array.from(xml.children).forEach((el_block) => addDomAsBlock(el_block, block));
                     resolve();
                 })
                 .catch(() => {
@@ -212,7 +212,7 @@ const loadBlocksFromHeader = (xml_string, block) => {
     });
 };
 
-export const loadBlocksFromRemote = block => {
+export const loadBlocksFromRemote = (block) => {
     // eslint-disable-next-line consistent-return
     return new Promise((resolve, reject) => {
         let url = block.getFieldValue('URL');
@@ -240,9 +240,9 @@ export const loadBlocksFromRemote = block => {
         const onFetchError = () => reject(localize('An error occured while trying to load the URL'));
 
         fetch(url)
-            .then(response => {
+            .then((response) => {
                 if (response.ok) {
-                    response.text().then(xml_string => {
+                    response.text().then((xml_string) => {
                         loadBlocksFromHeader(xml_string, block)
                             .then(() => resolve(block))
                             .catch(onFetchError);
@@ -255,11 +255,11 @@ export const loadBlocksFromRemote = block => {
     });
 };
 
-export const addLoaderBlocksFirst = xml => {
+export const addLoaderBlocksFirst = (xml) => {
     return new Promise((resolve, reject) => {
         const promises = [];
 
-        Array.from(xml.children).forEach(el_block => {
+        Array.from(xml.children).forEach((el_block) => {
             const block_type = el_block.getAttribute('type');
 
             if (block_type === 'loader') {
@@ -287,7 +287,7 @@ export const addDomAsBlock = (el_block, parent_block = null) => {
     const block_xml = Blockly.Xml.blockToDom(block_conversion.convertBlockNode(el_block));
 
     // Fix legacy Blockly `varid` attribute.
-    Array.from(block_xml.getElementsByTagName('arg')).forEach(el => {
+    Array.from(block_xml.getElementsByTagName('arg')).forEach((el) => {
         if (el.hasAttribute('varid')) {
             el.setAttribute('varId', el.getAttribute('varid'));
         }
@@ -304,12 +304,12 @@ export const addDomAsBlock = (el_block, parent_block = null) => {
     return block;
 };
 
-export const hasAllRequiredBlocks = workspace => {
+export const hasAllRequiredBlocks = (workspace) => {
     const blocks_in_workspace = workspace.getAllBlocks();
     const { mandatoryMainBlocks } = config;
     const required_block_types = ['trade_definition_tradeoptions', ...mandatoryMainBlocks];
-    const all_block_types = blocks_in_workspace.map(block => block.type);
-    const has_all_required_blocks = required_block_types.every(block_type => all_block_types.includes(block_type));
+    const all_block_types = blocks_in_workspace.map((block) => block.type);
+    const has_all_required_blocks = required_block_types.every((block_type) => all_block_types.includes(block_type));
 
     return has_all_required_blocks;
 };
@@ -351,7 +351,7 @@ export const runGroupedEvents = (use_existing_group, callbackFn, opt_group_name)
  * happening as part of the callbackFn logic cannot be undone.
  * @param {*} callbackFn Logic to execute as part of this event group.
  */
-export const runIrreversibleEvents = callbackFn => {
+export const runIrreversibleEvents = (callbackFn) => {
     const { recordUndo } = Blockly.Events;
     Blockly.Events.recordUndo = false;
 
@@ -365,7 +365,7 @@ export const runIrreversibleEvents = callbackFn => {
  * (Preference should be given to runIrreversibleEvents).
  * @param {*} callbackFn Logic to completely hide from Blockly
  */
-export const runInvisibleEvents = callbackFn => {
+export const runInvisibleEvents = (callbackFn) => {
     Blockly.Events.disable();
     callbackFn();
     Blockly.Events.enable();
@@ -373,7 +373,7 @@ export const runInvisibleEvents = callbackFn => {
 
 export const updateDisabledBlocks = (workspace, event) => {
     if (event.type === Blockly.Events.END_DRAG) {
-        workspace.getAllBlocks().forEach(block => {
+        workspace.getAllBlocks().forEach((block) => {
             if (!block.getParent() || block.is_user_disabled_state) {
                 return;
             }
@@ -383,7 +383,7 @@ export const updateDisabledBlocks = (workspace, event) => {
                 return;
             }
 
-            const should_disable = !restricted_parents.some(restricted_parent =>
+            const should_disable = !restricted_parents.some((restricted_parent) =>
                 block.isDescendantOf(restricted_parent)
             );
 
@@ -400,12 +400,12 @@ export const updateDisabledBlocks = (workspace, event) => {
     }
 };
 
-export const emptyTextValidator = input => {
+export const emptyTextValidator = (input) => {
     return !input || input === "''";
 };
 
 /* eslint-disable no-bitwise */
-export const isDarkRgbColour = string_rgb => {
+export const isDarkRgbColour = (string_rgb) => {
     const values = string_rgb.substring(1);
     const rgb = parseInt(values, 16);
     const red = (rgb >> 16) & 0xff;

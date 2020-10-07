@@ -7,10 +7,10 @@ const Content = ({ is_routed, items, selected }) => {
     const selected_item = items.find(item => item.label === selected.label);
     const TabContent = selected_item.value;
 
-    const [side_note, setSideNote] = React.useState(null);
+    const [side_notes, setSideNotes] = React.useState(null);
 
     React.useEffect(() => {
-        setSideNote(null);
+        setSideNotes(null);
     }, [selected_item]);
 
     return (
@@ -23,19 +23,23 @@ const Content = ({ is_routed, items, selected }) => {
                             <Route
                                 key={idx}
                                 path={path}
-                                render={() => <Component component_icon={icon} setSideNote={setSideNote} />}
+                                render={() => <Component component_icon={icon} setSideNotes={setSideNotes} />}
                             />
                         );
                     })}
                 </Switch>
             ) : (
-                <TabContent key={selected_item.label} className='item-id' setSideNote={setSideNote} />
+                <TabContent key={selected_item.label} className='item-id' setSideNotes={setSideNotes} />
             )}
             {selected.has_side_note && (
                 // for components that have side note, even if no note is passed currently,
                 // we want to keep the column space for side note
                 <div className='dc-vertical-tab__content-side-note'>
-                    {side_note && <div className='dc-vertical-tab__content-side-note-wrapper'>{side_note}</div>}
+                    {side_notes?.map((note, i) => (
+                        <div className='dc-vertical-tab__content-side-note-wrapper' key={i}>
+                            {note}
+                        </div>
+                    ))}
                 </div>
             )}
         </React.Fragment>

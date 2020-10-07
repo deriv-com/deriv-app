@@ -255,7 +255,7 @@ Blockly.Toolbox.prototype.showSearch = function(search) {
     }
 
     // block_procedure_name matched
-    const searched_procedures = { '0': [], '1': [] };
+    const searched_procedures = { 0: [], 1: [] };
     const procedures_callnoreturn = all_procedures[0];
     const procedures_callreturn = all_procedures[1];
     Object.keys(procedures_callnoreturn).forEach(key => {

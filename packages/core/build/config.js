@@ -115,14 +115,6 @@ const htmlInjectConfig = () => ({
                 rel: 'icon',
             },
         },
-        {
-            path: 'public/fonts/binary_symbols.woff',
-            attributes: {
-                rel: 'preload',
-                as: 'font',
-                crossorigin: 'crossorigin',
-            },
-        },
     ],
     append: false,
 });

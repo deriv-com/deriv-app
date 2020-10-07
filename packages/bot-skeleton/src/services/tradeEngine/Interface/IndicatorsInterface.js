@@ -20,7 +20,7 @@ import {
     stochasticOscillatorArray as soa,
     williamRIndicator as wr,
     williamRIndicatorArray as wra,
-} from '@deriv/shared';
+} from '@deriv/indicators';
 
 export default Interface =>
     class extends Interface {

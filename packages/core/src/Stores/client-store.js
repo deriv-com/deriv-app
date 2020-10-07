@@ -953,8 +953,8 @@ export default class ClientStore extends BaseStore {
 
         this.setLoginId(LocalStore.get('active_loginid'));
         this.setAccounts(LocalStore.getObject(storage_key));
-        if (this.is_logged_in && !this.switched && !this.has_any_real_account) {
-            this.root_store.ui.toggleWelcomeModal(true);
+        if (this.is_logged_in && !this.switched && !this.has_any_real_account && this.is_mt5_allowed) {
+            this.root_store.ui.toggleWelcomeModal({ is_visible: true });
         }
         this.setSwitched('');
         let client = this.accounts[this.loginid];
@@ -1573,7 +1573,10 @@ export default class ClientStore extends BaseStore {
                 });
 
                 this.root_store.ui.showAccountTypesModalForEuropean();
-                this.root_store.ui.toggleWelcomeModal(true);
+
+                if (this.is_mt5_allowed) {
+                    this.root_store.ui.toggleWelcomeModal({ is_visible: true, should_persist: true });
+                }
             }
         });
     }

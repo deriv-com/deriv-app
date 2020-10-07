@@ -6,7 +6,15 @@ Blockly.Blocks.controls_for = {
     },
     definition() {
         return {
-            message0: localize('count with %1 from %2 to %3 by %4'),
+            message0: localize(
+                'count with {{ variable }} from {{ start_number }} to {{ end_number }} by {{ step_size }}',
+                {
+                    variable: '%1',
+                    start_number: '%2',
+                    end_number: '%3',
+                    step_size: '%4',
+                }
+            ),
             args0: [
                 {
                     type: 'field_variable',

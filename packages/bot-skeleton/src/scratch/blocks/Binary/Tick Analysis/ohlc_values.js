@@ -7,7 +7,13 @@ Blockly.Blocks.ohlc_values = {
     },
     definition() {
         return {
-            message0: localize('Make a List of %1 values in candles list with interval: %2'),
+            message0: localize(
+                'Make a List of {{ candle_property }} values in candles list with interval: {{ candle_interval_type }}',
+                {
+                    candle_property: '%1',
+                    candle_interval_type: '%2',
+                }
+            ),
             args0: [
                 {
                     type: 'field_dropdown',

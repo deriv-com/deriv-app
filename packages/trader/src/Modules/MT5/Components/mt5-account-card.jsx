@@ -5,6 +5,19 @@ import { Localize } from '@deriv/translations';
 import { Mt5AccountCopy } from './mt5-account-copy.jsx';
 import { getMT5WebTerminalLink } from '../Helpers/constants';
 
+const LoginBadge = ({ display_login }) => (
+    <div className='mt5-account-card__login'>
+        <Localize
+            i18n_default_text='<0>Account login no.</0><1>{{display_login}}</1>'
+            values={{
+                display_login,
+            }}
+            components={[<span key={0} />, <strong key={1} />]}
+        />
+        <Mt5AccountCopy text={display_login} />
+    </div>
+);
+
 const MT5AccountCard = ({
     button_label,
     commission_message,
@@ -81,18 +94,7 @@ const MT5AccountCard = ({
                         </tbody>
                     </table>
                 </div>
-                {existing_data?.login && is_logged_in && (
-                    <div className='mt5-account-card__login'>
-                        <Localize
-                            i18n_default_text='Account login no.&nbsp;<0>{{login}}</0>'
-                            values={{
-                                login: existing_data.display_login,
-                            }}
-                            components={[<strong key='0' />]}
-                        />
-                        <Mt5AccountCopy text={existing_data.display_login} />
-                    </div>
-                )}
+                {existing_data?.login && is_logged_in && <LoginBadge display_login={existing_data.display_login} />}
 
                 {((!existing_data && commission_message) || !is_logged_in) && (
                     <p className='mt5-account-card__commission mt5-account-card--paragraph'>{commission_message}</p>

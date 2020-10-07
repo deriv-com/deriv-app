@@ -1,5 +1,6 @@
+import React from 'react';
 import { action, observable, computed, reaction } from 'mobx';
-import { localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 import { getCurrencyDisplayCode, routes, websiteUrl } from '@deriv/shared';
 import { WS } from 'Services';
 import BaseStore from '../../base-store';
@@ -20,8 +21,8 @@ export default class OnRampStore extends BaseStore {
         this.onramp_providers = [
             {
                 default_from_currency: 'usd',
-                description: localize(
-                    'Your simple access to crypto. Fast and secure way to exchange and purchase 150+ cryptocurrencies. 24/7 live-chat support.'
+                description: (
+                    <Localize i18n_default_text='Your simple access to crypto. Fast and secure way to exchange and purchase 150+ cryptocurrencies. 24/7 live-chat support.' />
                 ),
                 from_currencies: ['usd', 'eur', 'gbp'],
                 widget_script_dependencies: { 'changelly-affiliate-js': 'https://widget.changelly.com/affiliate.js' },

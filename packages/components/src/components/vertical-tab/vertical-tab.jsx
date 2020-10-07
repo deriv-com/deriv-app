@@ -130,7 +130,7 @@ VerticalTab.propTypes = {
         PropTypes.shape({
             default: PropTypes.bool,
             icon: PropTypes.string,
-            label: PropTypes.string,
+            label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
             path: PropTypes.string,
             value: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
         })
@@ -138,7 +138,7 @@ VerticalTab.propTypes = {
     list_groups: PropTypes.arrayOf(
         PropTypes.shape({
             icon: PropTypes.string,
-            label: PropTypes.string,
+            label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
             subitems: PropTypes.arrayOf(PropTypes.number),
         })
     ),

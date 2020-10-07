@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Icon, Money } from '@deriv/components';
-import { formatMoney, getCurrencyDisplayCode, getMT5AccountDisplay } from '@deriv/shared';
+import { formatMoney, getCurrencyName, getMT5AccountDisplay, getCurrencyDisplayCode } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 
 const AccountList = ({
@@ -28,6 +28,7 @@ const AccountList = ({
     }, [loginid]);
 
     if (is_disabled && !currency) return null;
+    const currency_badge = currency ? currency_icon : 'IcCurrencyUnknown';
 
     return (
         <>
@@ -41,7 +42,7 @@ const AccountList = ({
             >
                 <span className='acc-switcher__id'>
                     <Icon
-                        icon={currency ? currency_icon : 'IcCurrencyUnknown'}
+                        icon={is_virtual ? 'IcCurrencyVirtual' : currency_badge}
                         className={'acc-switcher__id-icon'}
                         size={24}
                     />
@@ -62,9 +63,10 @@ const AccountList = ({
                         <span className='acc-switcher__balance'>
                             {currency && (
                                 <Money
-                                    currency={currency}
+                                    currency={getCurrencyDisplayCode(currency)}
                                     amount={formatMoney(currency, balance, true)}
                                     should_format={false}
+                                    show_currency
                                 />
                             )}
                         </span>
@@ -75,17 +77,14 @@ const AccountList = ({
     );
 };
 
-const CurrencyDisplay = ({ currency, is_eu, is_virtual, market_type }) => {
+const CurrencyDisplay = ({ currency, is_virtual }) => {
     if (is_virtual) {
         return <Localize i18n_default_text='Demo' />;
     }
     if (!currency) {
         return <Localize i18n_default_text='No currency assigned' />;
     }
-    if (is_eu) {
-        return `${getCurrencyDisplayCode(currency)} ${market_type}`;
-    }
-    return getCurrencyDisplayCode(currency);
+    return getCurrencyName(currency);
 };
 
 const AccountDisplay = ({ account_type }) => <div>{getMT5AccountDisplay(account_type)}</div>;

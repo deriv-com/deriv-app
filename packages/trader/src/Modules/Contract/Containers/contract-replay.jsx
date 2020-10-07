@@ -10,14 +10,12 @@ import {
     SwipeableWrapper,
     FadeWrapper,
 } from '@deriv/components';
-import { isDesktop, isMobile, isEmptyObject } from '@deriv/shared';
-
+import { isDesktop, isMobile, isMultiplierContract, isEmptyObject, getPlatformRedirect } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
 import ContractDrawer from 'App/Components/Elements/ContractDrawer';
 import { SmartChart } from 'Modules/SmartChart';
 import { connect } from 'Stores/connect';
-import { isMultiplierContract } from 'Stores/Modules/Contract/Helpers/multiplier';
 import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget, InfoBoxWidget } from './contract-replay-widget.jsx';
 import ChartMarker from '../../SmartChart/Components/Markers/marker.jsx';
 
@@ -200,7 +198,7 @@ class Chart extends React.Component {
         };
 
         if (isMobile()) {
-            margin.bottom = 16;
+            margin.bottom = 48;
         }
 
         return margin;
@@ -278,9 +276,18 @@ const ReplayChart = connect(({ modules, ui, common }) => {
     const contract_store = contract_replay.contract_store;
     const contract_config = contract_store.contract_config;
     const is_chart_ready = contract_replay.is_chart_ready;
+    /**
+     * TODO: remove forcing light theme once DBot supports dark theme
+     * DBot does not support for dark theme since till now,
+     * as a result, if any user come to report detail pages
+     * from DBot, we should force it to have light theme
+     */
+    const from_platform = getPlatformRedirect(common.app_routing_history);
+    const should_force_light_theme = from_platform.name === 'DBot';
+
     const settings = {
-        lang: common.current_language,
-        theme: ui.is_dark_mode_on ? 'dark' : 'light',
+        language: common.current_language.toLowerCase(),
+        theme: ui.is_dark_mode_on && !should_force_light_theme ? 'dark' : 'light',
         position: ui.is_chart_layout_default ? 'bottom' : 'left',
         countdown: ui.is_chart_countdown_visible,
         assetInformation: false, // ui.is_chart_asset_info_visible,

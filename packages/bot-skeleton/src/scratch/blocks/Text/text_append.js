@@ -7,7 +7,10 @@ Blockly.Blocks.text_append = {
     },
     definition() {
         return {
-            message0: localize('to %1 append text %2'),
+            message0: localize('to {{ variable }} append text {{ input_text }}', {
+                variable: '%1',
+                input_text: '%2',
+            }),
             args0: [
                 {
                     type: 'field_variable',

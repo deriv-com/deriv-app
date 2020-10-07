@@ -8,7 +8,7 @@ Blockly.Blocks.ohlc = {
     definition() {
         return {
             message0: localize('Candles List'),
-            message1: localize('with interval: %1'),
+            message1: localize('with interval: {{ candle_interval_type }}', { candle_interval_type: '%1' }),
             args1: [
                 {
                     type: 'field_dropdown',

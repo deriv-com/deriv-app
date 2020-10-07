@@ -69,11 +69,10 @@ Update translations in Crowdin and get new translations from Crowdin
 
 Requirements:
 
--   Crowdin CLI: https://support.crowdin.com/cli-tool-v2/#installation
--   **Important:** Please use version 2 of the crowdin cli-tool (version 3 is not supported by our translation scripts yet)
--   P2P_CROWDIN_API_KEY
+-   Crowdin CLI: https://support.crowdin.com/cli-tool/#installation
+-   `Crowdin_API_KEY` environment variables to your `~/.bash_profile`
 
-1. Run the script below
+1. Run the script belows
 
 ```sh
     sh scripts/update-translations.sh

@@ -71,7 +71,7 @@ export const pick = (source, fields) => {
 };
 
 export const findValueByKeyRecursively = (obj, key) => {
-    let return_value = undefined;
+    let return_value;
 
     Object.keys(obj).some(obj_key => {
         const value = obj[obj_key];
@@ -94,4 +94,15 @@ export const findValueByKeyRecursively = (obj, key) => {
     });
 
     return return_value;
+};
+
+// Recursively freeze an object (deep freeze)
+export const deepFreeze = obj => {
+    Object.getOwnPropertyNames(obj).forEach(key => {
+        const value = obj[key];
+        if (value && typeof value === 'object' && !Object.isFrozen(value)) {
+            deepFreeze(value);
+        }
+    });
+    return Object.freeze(obj);
 };

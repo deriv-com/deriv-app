@@ -40,7 +40,7 @@ const RouteWithSubRoutes = (route) => {
         }
 
         const title = route.getTitle?.() || '';
-        document.title = `${title}${default_title}`;
+        document.title = `${title} | ${default_title}`;
         return result;
     };
 

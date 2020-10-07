@@ -1,5 +1,5 @@
-import { exponentialMovingAverageArray } from './exponential-moving-average';
 import { sequence } from '@deriv/shared';
+import { exponentialMovingAverageArray } from './exponential-moving-average';
 
 /**
  * @param {Array} data

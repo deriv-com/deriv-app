@@ -1,5 +1,5 @@
-import { mean } from '../utils/math';
 import { sequence } from '@deriv/shared';
+import { mean } from '../utils/math';
 
 const calcStochasticOscillator = (
     low_list,

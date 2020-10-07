@@ -1,4 +1,4 @@
-import { relativeStrengthIndex, relativeStrengthIndexArray } from '../relative-strength-index';
+import { relativeStrengthIndex, relativeStrengthIndexArray } from '../indicators/relative-strength-index';
 
 describe('relativeStrengthIndex', () => {
     it('data length equal to periods is equal to 0', () => {

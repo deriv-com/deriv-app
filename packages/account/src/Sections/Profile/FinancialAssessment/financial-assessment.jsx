@@ -137,6 +137,7 @@ class FinancialAssessment extends React.Component {
     is_mounted = false;
     state = {
         is_loading: true,
+        has_completed_financial_assessment: false,
         is_confirmation_visible: false,
         has_trading_experience: false,
         show_form: true,
@@ -216,7 +217,14 @@ class FinancialAssessment extends React.Component {
                 setStatus({ msg: data.error.message });
             } else {
                 this.setState({ is_submit_success: true });
-                setTimeout(() => this.setState({ is_submit_success: false }), 3000);
+                setTimeout(
+                    () =>
+                        this.setState({
+                            is_submit_success: false,
+                            has_completed_financial_assessment: true,
+                        }),
+                    3000
+                );
 
                 this.props.removeNotificationMessage({ key: 'risk' });
                 this.props.removeNotificationByKey({ key: 'risk' });
@@ -271,6 +279,7 @@ class FinancialAssessment extends React.Component {
             is_loading,
             is_btn_loading,
             is_submit_success,
+            has_completed_financial_assessment,
             is_confirmation_visible,
             has_trading_experience,
         } = this.state;
@@ -847,6 +856,7 @@ class FinancialAssessment extends React.Component {
                                             onClick={() => this.toggleConfirmationModal(true)}
                                             is_disabled={
                                                 isSubmitting ||
+                                                has_completed_financial_assessment ||
                                                 !dirty ||
                                                 !!(
                                                     errors.income_source ||

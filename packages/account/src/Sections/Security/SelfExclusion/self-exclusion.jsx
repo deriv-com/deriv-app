@@ -618,7 +618,7 @@ class SelfExclusion extends React.Component {
                                                                 required
                                                                 error={
                                                                     touched.max_30day_turnover &&
-                                                                    errors.max_7day_turnover
+                                                                    errors.max_30day_turnover
                                                                 }
                                                             />
                                                         )}

@@ -1,10 +1,10 @@
 const { getLanguage } = require('@deriv/translations');
-const getDerivComLink = require('@deriv/shared').getDerivComLink;
+const getStaticUrl = require('@deriv/shared').getStaticUrl;
 const isStorageSupported = require('@deriv/shared').isStorageSupported;
 const loginUrl = require('@deriv/shared').loginUrl;
 
 const Login = (() => {
-    const redirectToLogin = (is_logged_in) => {
+    const redirectToLogin = is_logged_in => {
         // TODO: [add-client-action] - integrate this into Client store
         if (!is_logged_in && !isLoginPages() && isStorageSupported(sessionStorage)) {
             sessionStorage.setItem('redirect_url', window.location.href);
@@ -14,8 +14,8 @@ const Login = (() => {
         }
     };
 
-    const redirectToSignUp = () => {
-        window.open(getDerivComLink('/signup/'));
+    const redirectToSignUp = ({ is_deriv_crypto }) => {
+        window.open(getStaticUrl('/signup/', { is_deriv_crypto }));
     };
 
     // TODO: update this to handle logging into /app/ url

@@ -22,9 +22,9 @@ const initial_form = {
     doToImprove: '',
 };
 
-const preparingReason = (values) => {
+const preparingReason = values => {
     let selected_reasons = selectedReasons(values)
-        .map((val) => val[0])
+        .map(val => val[0])
         .toString();
     const is_other_trading_platform__has_value = !!values.otherTradingPlatforms.length;
     const is_to_do_improve_has_value = !!values.doToImprove.length;
@@ -37,13 +37,13 @@ const preparingReason = (values) => {
     return selected_reasons;
 };
 
-const selectedReasons = (values) => {
+const selectedReasons = values => {
     return Object.entries(values).filter(
         ([key, value]) => !['otherTradingPlatforms', 'doToImprove'].includes(key) && value
     );
 };
 
-const WarningModal = (props) => {
+const WarningModal = props => {
     return (
         <div className='account-closure-warning-modal'>
             <Icon icon='IcRedWarning' size={96} />
@@ -86,17 +86,17 @@ class DeactivateAccountReason extends React.Component {
         total_checkbox_checked: 0,
         remaining_characters: undefined,
     };
-    validateFields = (values) => {
+    validateFields = values => {
         const error = {};
         const selected_reason_count = selectedReasons(values).length;
         if (!selected_reason_count) {
-            error.empty_reason = 'please select at least one reason';
+            error.empty_reason = localize('please select at least one reason');
         }
         if ((values.otherTradingPlatforms + values.doToImprove).length > 0) {
             const max_characters = 250;
             const final_value = preparingReason(values);
             const selected_reasons = selectedReasons(values)
-                .map((val) => val[0])
+                .map(val => val[0])
                 .toString();
             const is_other_trading_platform__has_value = !!values.otherTradingPlatforms.length;
             const is_to_do_improve_has_value = !!values.doToImprove.length;
@@ -121,7 +121,7 @@ class DeactivateAccountReason extends React.Component {
         }
         return error;
     };
-    handleSubmitForm = (values) => {
+    handleSubmitForm = values => {
         const final_reason = preparingReason(values);
         this.setState({
             is_modal_open: true,
@@ -303,7 +303,9 @@ class DeactivateAccountReason extends React.Component {
                                         data-lpignore='true'
                                         autoComplete='off' // prevent chrome autocomplete
                                         type='textarea'
-                                        placeholder='If you don’t mind sharing, which other trading platforms do you use?'
+                                        placeholder={localize(
+                                            'If you don’t mind sharing, which other trading platforms do you use?'
+                                        )}
                                         name='otherTradingPlatforms'
                                         value={values.otherTradingPlatforms}
                                         onChange={handleChange}
@@ -318,7 +320,7 @@ class DeactivateAccountReason extends React.Component {
                                         data-lpignore='true'
                                         autoComplete='off' // prevent chrome autocomplete
                                         type='textarea'
-                                        placeholder='What could we do to improve?'
+                                        placeholder={localize('What could we do to improve?')}
                                         name='doToImprove'
                                         value={values.doToImprove}
                                         onChange={handleChange}
@@ -326,7 +328,11 @@ class DeactivateAccountReason extends React.Component {
                                 )}
                             </Field>
                             {this.state.remaining_characters >= 0 && (
-                                <p>{`Remaining characters: ${this.state.remaining_characters}`}</p>
+                                <p>
+                                    {localize('Remaining characters: {{remaining_characters}}', {
+                                        remaining_characters: this.state.remaining_characters,
+                                    })}
+                                </p>
                             )}
                             {Object.keys(errors).length > 0 &&
                                 Object.entries(errors).map(([key, value]) => (

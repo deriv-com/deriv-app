@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { isCryptocurrency } from '@deriv/shared';
+import { isCryptocurrency, getCurrencyDisplayCode } from '@deriv/shared';
 import Tooltip from 'App/Components/Elements/tooltip.jsx';
 import { connect } from 'Stores/connect';
 import IncrementButtons from './increment-buttons.jsx';
@@ -222,7 +222,7 @@ class InputField extends React.Component {
                 checked={checked}
                 current_focus={current_focus}
                 className={classNames(
-                    is_increment_input ? 'input-wrapper__input' : '',
+                    is_increment_input ? 'dc-input-wrapper__input' : '',
                     inline_prefix ? 'input--has-inline-prefix' : '',
                     'input',
                     { 'input--error': has_error },
@@ -299,13 +299,9 @@ class InputField extends React.Component {
             <React.Fragment>
                 {!!prefix && (
                     <div className={classNamePrefix}>
-                        <span
-                            className={classNames(
-                                `${classNamePrefix}--symbol`,
-                                'symbols',
-                                `symbols--${prefix.toLowerCase()}`
-                            )}
-                        />
+                        <span className={classNames(`${classNamePrefix}--symbol`, 'symbols')}>
+                            {getCurrencyDisplayCode(currency)}
+                        </span>
                     </div>
                 )}
                 <div className={classNames('input-field', className)} onClick={onClickInputWrapper}>

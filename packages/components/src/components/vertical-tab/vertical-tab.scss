@@ -139,7 +139,7 @@ $MIN_HEIGHT_FLOATING: calc(
     }
     &__header,
     &__header-group {
-        @include typeface(--paragraph-center-bold-black, none);
+        @include typeface(--paragraph-left-bold-black, none);
         line-height: 1.5;
         color: var(--text-general);
         padding: 1rem 1.2rem 1rem 1.6rem;
@@ -221,6 +221,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 color: var(--text-general);
                 font-size: var(--text-size-xxs);
                 line-height: 1.5;
+                margin-bottom: 1rem;
             }
         }
         &.dc-vertical-tab:not(.dc-vertical-tab--full-screen) {

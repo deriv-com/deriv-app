@@ -37,12 +37,12 @@ import FormSubHeader from 'Components/form-sub-header';
 import LoadErrorMessage from 'Components/load-error-message';
 
 const removeObjProperties = (property_arr, { ...obj }) => {
-    property_arr.forEach((property) => delete obj[property]);
+    property_arr.forEach(property => delete obj[property]);
     return obj;
 };
 
 const validate = (errors, values) => (fn, arr, err_msg) => {
-    arr.forEach((field) => {
+    arr.forEach(field => {
         const value = values[field];
         if (!fn(value) && !errors[field] && err_msg !== true) errors[field] = err_msg;
     });
@@ -63,7 +63,7 @@ class PersonalDetailsForm extends React.Component {
         const request = this.makeSettingsRequest(values);
 
         this.setState({ is_btn_loading: true });
-        WS.setSettings(request).then((data) => {
+        WS.setSettings(request).then(data => {
             this.setState({ is_btn_loading: false });
 
             setSubmitting(false);
@@ -72,7 +72,7 @@ class PersonalDetailsForm extends React.Component {
                 setStatus({ msg: data.error.message });
             } else {
                 // force request to update settings cache since settings have been updated
-                WS.authorized.storage.getSettings().then((response) => {
+                WS.authorized.storage.getSettings().then(response => {
                     if (response.error) {
                         this.setState({ api_error: response.error.message });
                         return;
@@ -86,7 +86,7 @@ class PersonalDetailsForm extends React.Component {
         });
     };
 
-    makeSettingsRequest = (settings) => {
+    makeSettingsRequest = settings => {
         if (this.props.is_virtual) return { email_consent: +settings.email_consent };
         const settings_to_be_removed_for_api = ['email', 'residence'];
         const request = removeObjProperties(settings_to_be_removed_for_api, settings);
@@ -118,7 +118,7 @@ class PersonalDetailsForm extends React.Component {
     };
 
     // TODO: standardize validations and refactor this
-    validateFields = (values) => {
+    validateFields = values => {
         this.setState({ is_submit_success: false });
         const errors = {};
         const validateValues = validate(errors, values);
@@ -138,13 +138,13 @@ class PersonalDetailsForm extends React.Component {
             required_fields.push(...required_tax_fields);
         }
 
-        validateValues((val) => val, required_fields, localize('This field is required'));
+        validateValues(val => val, required_fields, localize('This field is required'));
         const only_alphabet_fields = ['first_name', 'last_name'];
         validateValues(validLetterSymbol, only_alphabet_fields, localize('Only alphabet is allowed'));
 
         const { residence_list } = this.props;
         const residence_fields = ['citizen'];
-        const validateResidence = (val) => getLocation(residence_list, val, 'value');
+        const validateResidence = val => getLocation(residence_list, val, 'value');
         validateValues(validateResidence, residence_fields, true);
 
         const min_tax_identification_number = 0;
@@ -174,20 +174,25 @@ class PersonalDetailsForm extends React.Component {
         }
 
         if (values.phone) {
+            // minimum characters required is 9 including (+) sign
+            // phone_trim uses regex that trims (+) sign
+            // minimum characters required w/o (+) sign is 8 characters.
             const min_phone_number = 8;
             const max_phone_number = 35;
             const phone_trim = values.phone.replace(/\D/g, '');
+            const phone_error_message = localize(
+                'Please enter a valid phone number, including the country code (e.g +15417541234).'
+            );
 
-            if (!validPhone(values.phone)) {
-                errors.phone = localize(
-                    'Please enter a valid phone number, including the country code (e.g. +15417541234)'
-                );
+            if (!validLength(phone_trim, { min: min_phone_number, max: max_phone_number })) {
+                errors.phone = localize('You should enter {{min}}-{{max}} numbers.', {
+                    min: min_phone_number,
+                    max: max_phone_number,
+                });
             } else if (!validCountryCode(this.props.residence_list, values.phone)) {
-                errors.phone = localize(
-                    'Please enter a valid phone number, including the country code (e.g +15417541234).'
-                );
-            } else if (!validLength(phone_trim, { min: min_phone_number, max: max_phone_number })) {
-                errors.phone = localize('You should enter 8-35 characters.');
+                errors.phone = phone_error_message;
+            } else if (!validPhone(values.phone)) {
+                errors.phone = phone_error_message;
             }
         }
 
@@ -235,10 +240,10 @@ class PersonalDetailsForm extends React.Component {
         return errors;
     };
 
-    showForm = (show_form) => this.setState({ show_form });
+    showForm = show_form => this.setState({ show_form });
 
     isChangeableField(name) {
-        return !this.state.changeable_fields.some((field) => field === name);
+        return !this.state.changeable_fields.some(field => field === name);
     }
 
     render() {
@@ -411,7 +416,7 @@ class PersonalDetailsForm extends React.Component {
                                                         list_items={this.props.residence_list}
                                                         use_text={true}
                                                         error={touched.place_of_birth && errors.place_of_birth}
-                                                        onChange={(e) =>
+                                                        onChange={e =>
                                                             setFieldValue('place_of_birth', e.target.value, true)
                                                         }
                                                     />
@@ -480,7 +485,7 @@ class PersonalDetailsForm extends React.Component {
                                                             list_items={this.props.residence_list}
                                                             error={touched.citizen && errors.citizen}
                                                             use_text={true}
-                                                            onChange={(e) =>
+                                                            onChange={e =>
                                                                 setFieldValue('citizen', e.target.value, true)
                                                             }
                                                         />
@@ -604,7 +609,7 @@ class PersonalDetailsForm extends React.Component {
                                                                                 is_fully_authenticated
                                                                             }
                                                                             use_text={true}
-                                                                            onChange={(e) =>
+                                                                            onChange={e =>
                                                                                 setFieldValue(
                                                                                     'tax_residence',
                                                                                     e.target.value,
@@ -726,7 +731,7 @@ class PersonalDetailsForm extends React.Component {
                                                                         touched.address_state && errors.address_state
                                                                     }
                                                                     use_text={true}
-                                                                    onChange={(e) =>
+                                                                    onChange={e =>
                                                                         setFieldValue(
                                                                             'address_state',
                                                                             e.target.value,

@@ -7,7 +7,8 @@
     "scripts": {
         "start": "npm run test && npm run serve",
         "serve": "f() { echo \"Serving...\" && sudo ./node_modules/.bin/webpack-dev-server --config \"./build/webpack.config.js\" --env.open $1;}; f",
-        "build": "f () { webpack --config \"./build/webpack.config.js\" --env.base $1 --env.is_crypto_app=${IS_CRYPTO_APP:-false};}; f",
+        "serve:crypto": "f() { echo \"Serving...\" && sudo ./node_modules/.bin/webpack-dev-server --config \"./build/webpack.config.js\" --env.open $1 --env.IS_CRYPTO_APP=${IS_CRYPTO_APP:-false};}; f",
+        "build": "f () { webpack --config \"./build/webpack.config.js\" --env.base $1 --env.IS_CRYPTO_APP=${IS_CRYPTO_APP:-false};}; f",
         "build:travis": "echo \"No build:travis specified\"",
         "test": "echo \"Running mocha tests.\"",
         "test:mocha": "mochapack -r babel-polyfill -r jsdom-global/register -r mock-local-storage --webpack-config \"./build/webpack.config-test.js\" \"src/**/__tests__/*.js\" --webpack-env.mocha_only --require ignore-styles",
@@ -87,8 +88,8 @@
         "@deriv/account": "^1.0.0",
         "@deriv/bot-web-ui": "^1.0.0",
         "@deriv/components": "^1.0.0",
-        "@deriv/deriv-api": "^1.0.6",
-        "@deriv/deriv-charts": "^0.2.7",
+        "@deriv/deriv-api": "^1.0.7",
+        "@deriv/deriv-charts": "^0.3.4",
         "@deriv/p2p": "^0.6.0",
         "@deriv/shared": "^1.0.0",
         "@deriv/trader": "^3.8.0",
@@ -120,7 +121,6 @@
         "react-router-dom": "^5.0.1",
         "react-tiny-popover": "^4.0.0",
         "react-transition-group": "^2.5.0",
-        "react-window": "^1.8.4",
-        "web-push-notifications": "^3.2.15"
+        "react-window": "^1.8.4"
     }
 }

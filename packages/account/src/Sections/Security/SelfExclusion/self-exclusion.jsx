@@ -11,6 +11,7 @@ import {
     Icon,
     Button,
     DatePicker,
+    StaticUrl,
 } from '@deriv/components';
 import {
     getPropertyValue,
@@ -18,7 +19,6 @@ import {
     epochToMoment,
     isDesktop,
     isMobile,
-    getDerivComLink,
     formatMoney,
     hasCorrectDecimalPlaces,
     getDecimalPlaces,
@@ -85,7 +85,7 @@ class SelfExclusion extends React.Component {
         });
     };
 
-    validateFields = (values) => {
+    validateFields = values => {
         const { currency, is_eu } = this.props;
         const errors = {};
         // Regex
@@ -106,7 +106,7 @@ class SelfExclusion extends React.Component {
             />
         );
 
-        const getLimitNumberMessage = (current_value) => (
+        const getLimitNumberMessage = current_value => (
             <Localize
                 i18n_default_text='Please enter a number between 0 and {{current_value}}'
                 values={{ current_value }}
@@ -146,7 +146,12 @@ class SelfExclusion extends React.Component {
         if (values.timeout_until) {
             if (values.timeout_until <= toMoment().unix()) {
                 errors.timeout_until = localize('Timeout time must be greater than current time.');
-            } else if (values.timeout_until > toMoment().add(6, 'week').unix()) {
+            } else if (
+                values.timeout_until >
+                toMoment()
+                    .add(6, 'week')
+                    .unix()
+            ) {
                 errors.timeout_until = localize('Timeout time cannot be more than 6 weeks.');
             }
         }
@@ -154,14 +159,24 @@ class SelfExclusion extends React.Component {
         if (values.exclude_until) {
             if (toMoment(values.exclude_until).unix() < toMoment().unix()) {
                 errors.exclude_until = localize('Exclude time must be after today.');
-            } else if (toMoment(values.exclude_until).unix() < toMoment().add(6, 'month').unix()) {
+            } else if (
+                toMoment(values.exclude_until).unix() <
+                toMoment()
+                    .add(6, 'month')
+                    .unix()
+            ) {
                 errors.exclude_until = localize('Exclude time cannot be less than 6 months.');
-            } else if (toMoment(values.exclude_until).unix() > toMoment().add(5, 'year').unix()) {
+            } else if (
+                toMoment(values.exclude_until).unix() >
+                toMoment()
+                    .add(5, 'year')
+                    .unix()
+            ) {
                 errors.exclude_until = localize('Exclude time cannot be for more than five years.');
             }
         }
 
-        only_numbers.forEach((item) => {
+        only_numbers.forEach(item => {
             if (values[item]) {
                 if (!is_number.test(values[item])) {
                     errors[item] = valid_number_message;
@@ -184,7 +199,7 @@ class SelfExclusion extends React.Component {
             }
         });
 
-        only_integers.forEach((item) => {
+        only_integers.forEach(item => {
             if (values[item]) {
                 if (!is_integer.test(values[item])) {
                     errors[item] = valid_number_message;
@@ -192,7 +207,7 @@ class SelfExclusion extends React.Component {
             }
         });
 
-        only_currency.forEach((item) => {
+        only_currency.forEach(item => {
             if (values[item]) {
                 if (!hasCorrectDecimalPlaces(currency, values[item])) {
                     errors[item] = max_decimal_message;
@@ -206,19 +221,19 @@ class SelfExclusion extends React.Component {
     handleSubmit = async (values, { setSubmitting }) => {
         const need_logout_exclusions = ['exclude_until', 'timeout_until'];
         const string_exclusions = ['exclude_until'];
-        const has_need_logout = this.state.changed_attributes.some((attr) => need_logout_exclusions.includes(attr));
+        const has_need_logout = this.state.changed_attributes.some(attr => need_logout_exclusions.includes(attr));
 
         const makeRequest = () =>
-            new Promise((resolve) => {
+            new Promise(resolve => {
                 const request = {
                     set_self_exclusion: 1,
                 };
 
-                this.state.changed_attributes.forEach((attr) => {
+                this.state.changed_attributes.forEach(attr => {
                     request[attr] = string_exclusions.includes(attr) ? values[attr] : +values[attr];
                 });
 
-                WS.authorized.setSelfExclusion(request).then((response) => resolve(response));
+                WS.authorized.setSelfExclusion(request).then(response => resolve(response));
             });
 
         if (has_need_logout) {
@@ -249,8 +264,8 @@ class SelfExclusion extends React.Component {
         }
     };
 
-    goToConfirm = (values) => {
-        const changed_attributes = Object.keys(values).filter((key) => values[key] !== this.state.self_exclusions[key]);
+    goToConfirm = values => {
+        const changed_attributes = Object.keys(values).filter(key => values[key] !== this.state.self_exclusions[key]);
         this.setState({ changed_attributes, is_confirm_page: true });
     };
 
@@ -258,8 +273,8 @@ class SelfExclusion extends React.Component {
         this.setState({ show_confirm: false });
     };
 
-    objectValuesToString = (object) => {
-        Object.keys(object).forEach((item) => {
+    objectValuesToString = object => {
+        Object.keys(object).forEach(item => {
             object[item] = `${object[item]}`;
         });
 
@@ -274,7 +289,7 @@ class SelfExclusion extends React.Component {
         this.setState({ changed_attributes: [] });
     }
 
-    populateExclusionResponse = (response) => {
+    populateExclusionResponse = response => {
         if (response.error) {
             this.setState({
                 is_loading: false,
@@ -336,7 +351,7 @@ class SelfExclusion extends React.Component {
                 <Div100vhContainer className='self-exclusion__wrapper' is_disabled={isDesktop()} height_offset='80px'>
                     <ThemedScrollbars className='self-exclusion__scrollbars' is_bypassed={isMobile()}>
                         <MobileWrapper>
-                            <Article />
+                            <Article toggleArticle={this.toggleArticle} />
                         </MobileWrapper>
 
                         <Formik
@@ -362,7 +377,9 @@ class SelfExclusion extends React.Component {
                                         is_open={show_article}
                                         toggleModal={this.toggleArticle}
                                     >
-                                        <ArticleContent toggleModal={this.toggleArticle} />
+                                        <ThemedScrollbars>
+                                            <ArticleContent toggleModal={this.toggleArticle} />
+                                        </ThemedScrollbars>
                                     </Modal>
                                     {is_confirm_page ? (
                                         <>
@@ -432,7 +449,7 @@ class SelfExclusion extends React.Component {
                                                     let value = '';
 
                                                     if (need_date_format.includes(key)) {
-                                                        value = toMoment(values[key]).format('DD MMM YYYY');
+                                                        value = toMoment(values[key]).format('DD/MM/YYYY');
                                                     } else if (need_money_format.includes(key)) {
                                                         value = `${formatMoney(
                                                             currency,
@@ -440,7 +457,7 @@ class SelfExclusion extends React.Component {
                                                             true
                                                         )} ${currency}`;
                                                     } else if (need_minutes.includes(key)) {
-                                                        value = `${values[key]} Minutes`;
+                                                        value = localize('{{value}} mins', { value: values[key] });
                                                     } else if (need_amount.includes(key)) {
                                                         value = `${values[key]}`;
                                                     }
@@ -466,12 +483,10 @@ class SelfExclusion extends React.Component {
                                                                     key={0}
                                                                     className='self-exclusion__text-highlight'
                                                                 />,
-                                                                <a
+                                                                <StaticUrl
                                                                     key={1}
                                                                     className='link link--orange'
-                                                                    rel='noopener noreferrer'
-                                                                    target='_blank'
-                                                                    href={getDerivComLink('/contact-us')}
+                                                                    href='/contact-us'
                                                                 />,
                                                             ]}
                                                         />

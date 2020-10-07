@@ -27,23 +27,24 @@ const initRoutesConfig = ({ is_deriv_crypto }) => [
         path: routes.account_deactivated,
         component: AccountDeactivated,
         is_authenticated: false,
-        title: localize('Account deactivated'),
+        // Don't use `Localize` component since native html tag like `option` cannot render them
+        getTitle: () => localize('Account deactivated'),
     },
     {
         path: routes.account,
         component: Account,
         is_authenticated: true,
-        title: localize('Account Settings'),
+        getTitle: () => localize('Account Settings'),
         icon_component: 'IcUserOutline',
         routes: [
             {
-                title: localize('Profile'),
+                getTitle: () => localize('Profile'),
                 icon: 'IcUserOutline',
                 subroutes: [
                     {
                         path: routes.personal_details,
                         component: PersonalDetails,
-                        title: localize('Personal details'),
+                        getTitle: () => localize('Personal details'),
                         default: true,
                     },
                     ...(is_deriv_crypto
@@ -52,7 +53,7 @@ const initRoutesConfig = ({ is_deriv_crypto }) => [
                               {
                                   path: routes.financial_assessment,
                                   component: FinancialAssessment,
-                                  title: localize('Financial assessment'),
+                                  getTitle: () => localize('Financial assessment'),
                               },
                           ]),
                 ],
@@ -61,65 +62,65 @@ const initRoutesConfig = ({ is_deriv_crypto }) => [
                 ? []
                 : [
                       {
-                          title: localize('Verification'),
+                          getTitle: () => localize('Verification'),
                           icon: 'IcVerification',
                           subroutes: [
                               {
                                   path: routes.proof_of_identity,
                                   component: ProofOfIdentity,
-                                  title: localize('Proof of identity'),
+                                  getTitle: () => localize('Proof of identity'),
                               },
                               {
                                   path: routes.proof_of_address,
                                   component: ProofOfAddress,
-                                  title: localize('Proof of address'),
+                                  getTitle: () => localize('Proof of address'),
                               },
                           ],
                       },
                   ]),
             {
-                title: localize('Security and safety'),
+                getTitle: () => localize('Security and safety'),
                 icon: 'IcSecurity',
                 subroutes: [
                     {
                         path: routes.deriv_password,
                         component: DerivPassword,
-                        title: localize('Deriv password'),
+                        getTitle: () => localize('Deriv password'),
                     },
                     {
                         path: routes.self_exclusion,
                         component: SelfExclusion,
-                        title: localize('Self exclusion'),
+                        getTitle: () => localize('Self exclusion'),
                     },
                     {
                         path: routes.account_limits,
                         component: AccountLimits,
-                        title: localize('Account limits'),
+                        getTitle: () => localize('Account limits'),
                     },
                     {
                         path: routes.login_history,
                         component: LoginHistory,
-                        title: localize('Login history'),
+                        getTitle: () => localize('Login history'),
                     },
                     {
                         path: routes.api_token,
                         component: ApiToken,
-                        title: localize('API token'),
+                        getTitle: () => localize('API token'),
                     },
                     {
                         path: routes.connected_apps,
                         component: ConnectedApps,
-                        title: localize('Connected apps'),
+                        getTitle: () => localize('Connected apps'),
                     },
                     {
                         path: routes.two_factor_authentication,
                         component: TwoFactorAuthentication,
-                        title: localize('Two-factor authentication'),
+                        getTitle: () => localize('Two-factor authentication'),
                     },
                     {
                         path: routes.deactivate_account,
                         component: DeactivateAccount,
-                        title: localize('Deactivate account'),
+                        getTitle: () => localize('Deactivate account'),
                     },
                 ],
             },
@@ -130,7 +131,7 @@ const initRoutesConfig = ({ is_deriv_crypto }) => [
 let routesConfig;
 
 // For default page route if page/path is not found, must be kept at the end of routes_config array
-const route_default = { component: Page404, title: localize('Error 404') };
+const route_default = { component: Page404, getTitle: () => localize('Error 404') };
 
 const getRoutesConfig = ({ is_deriv_crypto }) => {
     if (!routesConfig) {

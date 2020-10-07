@@ -27,36 +27,50 @@ BuySellRowLoader.propTypes = {
     width: PropTypes.number,
 };
 
-export const RowComponent = React.memo(({ data, is_buy, setSelectedAd, style }) => {
+export const RowComponent = React.memo(({ advert, setSelectedAdvert, showAdvertiserPage, style }) => {
+    const {
+        account_currency,
+        counterparty_type,
+        local_currency,
+        max_order_amount_limit_display,
+        min_order_amount_limit_display,
+        price_display,
+    } = advert;
+
     const { advertiser_id } = React.useContext(Dp2pContext);
-    const is_own_ad = data.advertiser_id === advertiser_id;
-    const short_name = getShortNickname(data.advertiser_name);
+    const is_my_advert = advert.advertiser_details.id === advertiser_id;
+    const is_buy_advert = counterparty_type === 'buy';
+    const { name: advertiser_name } = advert.advertiser_details;
+    const advertiser_short_name = getShortNickname(advertiser_name);
 
     return (
         <div style={style}>
             <Table.Row className='buy-sell__table-row'>
                 <Table.Cell>
-                    <div
-                        className='buy-sell__icon'
-                        style={{ backgroundColor: generateHexColourFromNickname(data.advertiser_name) }}
-                    >
-                        {short_name}
+                    <div className='buy-sell__cell' onClick={() => showAdvertiserPage(advert)}>
+                        <div
+                            className='buy-sell__icon'
+                            style={{ backgroundColor: generateHexColourFromNickname(advertiser_name) }}
+                        >
+                            {advertiser_short_name}
+                        </div>
+                        {advertiser_name}
                     </div>
-                    {data.advertiser_name}
                 </Table.Cell>
                 <Table.Cell>
-                    {data.display_min_available}&ndash;{data.display_max_available} {data.offer_currency}
+                    {min_order_amount_limit_display}&ndash;{max_order_amount_limit_display} {account_currency}
                 </Table.Cell>
-                <Table.Cell className='buy-sell__price' flex='2fr'>
-                    {data.display_price_rate} {data.transaction_currency}
+                <Table.Cell className='buy-sell__price'>
+                    {price_display} {local_currency}
                 </Table.Cell>
-                <Table.Cell>{data.display_payment_method}</Table.Cell>
-                {is_own_ad ? (
+                {is_my_advert ? (
                     <Table.Cell />
                 ) : (
                     <Table.Cell className='buy-sell__button'>
-                        <Button primary small onClick={() => setSelectedAd(data)}>
-                            {is_buy ? localize('Buy') : localize('Sell')} {data.offer_currency}
+                        <Button primary small onClick={() => setSelectedAdvert(advert)}>
+                            {is_buy_advert
+                                ? localize('Buy {{account_currency}}', { account_currency })
+                                : localize('Sell {{account_currency}}', { account_currency })}
                         </Button>
                     </Table.Cell>
                 )}
@@ -66,9 +80,9 @@ export const RowComponent = React.memo(({ data, is_buy, setSelectedAd, style }) 
 });
 
 RowComponent.propTypes = {
-    data: PropTypes.object,
+    advert: PropTypes.object,
     is_buy: PropTypes.bool,
-    setSelectedAd: PropTypes.func,
+    setSelectedAdvert: PropTypes.func,
     style: PropTypes.object,
 };
 

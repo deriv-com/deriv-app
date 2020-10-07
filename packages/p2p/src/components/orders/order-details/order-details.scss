@@ -1,27 +1,24 @@
 /** @define order-details; weak */
 .order-details {
+    $card-height: 512px;
+    $card-width: 456px;
+
     &__container {
         display: flex;
-        height: calc(100vh - 47px - 53px - 60px - 52px - 36px - 2.4rem - 1.6rem);
-        min-height: 555px;
-        overflow-y: scroll;
+        max-height: calc(90vh - 47px - 53px - 60px - 52px - 36px - 2.4rem - 1.6rem);
+        min-height: $card-height;
 
         .sendbird {
             &-container {
-                position: absolute;
-                left: 484px;
-                border-radius: 4px;
-                height: inherit;
-                min-height: inherit;
-                max-height: 555px;
-                width: calc(50% - 32px);
-                max-width: calc(50% - 32px);
-                box-shadow: 0 8px 8px 0 var(--shadow-menu), 0 0 8px 0 var(--shadow-menu);
+                border-radius: $BORDER_RADIUS;
+                margin-left: 3.2rem;
+                width: 440px;
+                box-shadow: 0 0.8rem 0.8rem 0 var(--shadow-drop), 0 0 0.8rem 0 var(--shadow-drop);
             }
             &-conversation {
                 display: none;
                 width: 100%;
-                border-radius: 4px;
+                border-radius: $BORDER_RADIUS;
                 border: none;
                 background-color: var(--general-section-2);
 
@@ -29,9 +26,11 @@
                     background-color: var(--general-main-2);
                 }
                 &__footer {
-                    padding: 16px 24px 26px;
-                    border-top: 2px solid var(--general-section-2);
                     background-color: var(--general-main-2);
+                    border-top: 0.2rem solid var(--general-section-2);
+                    border-bottom-left-radius: $BORDER_RADIUS;
+                    border-bottom-right-radius: $BORDER_RADIUS;
+                    padding: 1.6rem 2.4rem 2.6rem;
 
                     .sendbird-message-input {
                         height: 40px;
@@ -107,7 +106,7 @@
                     }
                     &-thumbnail {
                         &--incoming {
-                            padding-left: 0px !important;
+                            padding-left: 0 !important;
                         }
                         &__img {
                             width: 100%;
@@ -147,45 +146,24 @@
                         &--incoming {
                             padding-left: 0px !important;
 
-                            .sendbird-user-message__tooltip {
-                                background-color: var(--general-active);
-                            }
-                            .sendbird-user-message__text-balloon {
-                                background-color: var(--general-section-1);
+                            .sendbird-user-message__text-balloon,
+                            .sendbird-user-message__text-balloon:hover {
+                                background-color: var(--general-active) !important;
+                                border-bottom-left-radius: $BORDER_RADIUS !important;
 
-                                .sendbird-label {
-                                    color: var(--text-prominent);
-                                }
-                            }
-                            .sendbird-label,
-                            .sendbird-user-message__text-balloon__inner__text-place__text,
-                            .sendbird-label--body-1,
-                            .sendbird-label--color-onbackground-1,
-                            .sendbird-user-message__tooltip,
-                            &:hover .sendbird-user-message__tooltip {
-                                background-color: var(--general-active);
-                                border-bottom-left-radius: $BORDER_RADIUS;
-
-                                &__text {
-                                    color: var(--text-prominent);
+                                .sendbird-label--color-onbackground-1 {
+                                    color: var(--text-general) !important;
                                 }
                             }
                         }
                         &--outgoing {
-                            .sendbird-user-message__tooltip,
-                            &:hover .sendbird-user-message__tooltip {
-                                background-color: var(--brand-secondary);
-                                border-bottom-right-radius: 4px;
+                            .sendbird-user-message__text-balloon,
+                            .sendbird-user-message__text-balloon:hover {
+                                background-color: var(--brand-secondary) !important;
+                                border-bottom-right-radius: $BORDER_RADIUS !important;
 
-                                &__text {
-                                    color: var(--text-colored-background);
-                                }
-                            }
-                            .sendbird-user-message__text-balloon {
-                                background-color: var(--brand-secondary);
-
-                                .sendbird-label {
-                                    color: var(--text-colored-background);
+                                .sendbird-label--color-onbackground-1 {
+                                    color: var(--text-colored-background) !important;
                                 }
                             }
                         }
@@ -259,45 +237,52 @@
         }
     }
     &__wrapper {
-        width: 456px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        background-color: var(--general-main-1);
+        border-radius: 4px;
+        border: 8px solid var(--general-section-1);
+        max-height: 100%;
+        min-height: $card-height;
+        width: $card-width;
 
         &-message {
-            font-size: 1.4rem;
-            line-height: 1.43;
+            font-size: var(--text-size-xs);
+            line-height: 2rem;
             color: var(--text-general);
         }
-        &--inner {
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            background-color: var(--general-main-1);
-            border-radius: 4px;
-            width: 100%;
-            border: 0.8rem solid var(--general-section-1);
-            min-height: 555px;
-
-            .footer-actions {
-                position: relative;
-                height: unset;
-                padding: 1.6rem;
-            }
-        }
     }
-    &__header,
     &__info {
-        //border-bottom: 1px solid var(--general-section-1);
-        padding: 1.6rem;
+        padding: 1.6rem 2.4rem;
     }
     &__header {
         display: flex;
         justify-content: space-between;
         color: var(--text-general);
         position: relative;
+        padding: 1.6rem 2.4rem;
+        border-bottom: 1px solid var(--general-section-1);
+
+        &--left {
+            align-self: flex-start;
+        }
+
+        &--right {
+            align-self: flex-end;
+        }
+
+        &-id {
+            color: var(--text-less-prominent);
+            font-size: var(--text-size-xxs);
+            line-height: 1.8rem;
+            margin-top: 0.4rem;
+        }
 
         &-status {
-            font-size: 1.6rem;
+            font-size: var(--text-size-s);
+            line-height: 2.4rem;
             font-weight: bold;
-            line-height: 1.5;
 
             &--info {
                 color: var(--text-less-prominent);
@@ -375,23 +360,20 @@
         }
     }
     &__footer {
+        border-top: 1px solid var(--general-section-1);
         margin-top: auto;
         font-size: 1.4rem;
         line-height: 1.43;
         color: var(--text-general);
-    }
-    &__actions-button {
-        margin-left: 0.8rem;
-    }
-    &__justify-start {
-        justify-content: flex-start;
-    }
-    &__justify-space {
-        justify-content: space-between;
-    }
-    &__separator {
-        width: 100%;
-        border-top: 2px solid var(--general-section-1);
+        padding: 1.6rem 2.4rem;
+        display: flex;
+
+        &--left {
+            margin-right: auto;
+        }
+        &--right {
+            margin-left: auto;
+        }
     }
     &__empty-space {
         height: 72px;

@@ -55,6 +55,7 @@ export default class GTMStore extends BaseStore {
                 currency: this.root_store.client.currency,
                 userId: this.root_store.client.user_id,
             }),
+            loggedIn: this.root_store.client.is_logged_in,
             theme: this.root_store.ui.is_dark_mode_on ? 'dark' : 'light',
             platform: platform(),
         };

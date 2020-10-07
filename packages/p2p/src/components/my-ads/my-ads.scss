@@ -19,7 +19,7 @@
         }
         &-scrollbar {
             position: absolute;
-            height: calc(100% - 2.4rem - 72px - 92px);
+            height: calc(100% - 2.4rem - 92px);
             width: calc(100% - 4.8rem);
         }
         &-container {
@@ -81,6 +81,13 @@
                 padding-left: 1.6rem;
             }
         }
+        &-footer {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            background-color: var(--general-main-1);
+        }
+
         .dc-input__hint {
             font-size: var(--text-size-xxs);
         }
@@ -108,7 +115,7 @@
             }
         }
         &-row {
-            grid-template-columns: 1fr 2fr 2fr 2fr 2fr 1fr;
+            grid-template-columns: 2fr 2fr 2fr 2fr 1fr;
         }
         &--disabled {
             .dc-table__cell {
@@ -188,6 +195,7 @@
             }
             &--textarea {
                 margin-top: 4.3rem;
+                margin-bottom: 4.3rem;
 
                 .dc-input__hint {
                     top: 9.7rem;

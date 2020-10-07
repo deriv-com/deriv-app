@@ -7,7 +7,10 @@ Blockly.Blocks.console = {
     },
     definition() {
         return {
-            message0: localize('Console %1 value: %2'),
+            message0: localize('Console {{ message_type }} value: {{ input_message }}', {
+                message_type: '%1',
+                input_message: '%2',
+            }),
             args0: [
                 {
                     type: 'field_dropdown',

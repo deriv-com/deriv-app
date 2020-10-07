@@ -4,57 +4,55 @@ import Flyout from './flyout.jsx';
 import Chart from './chart/chart.jsx';
 import { tabs_title } from '../constants/bot-contents';
 import { connect } from '../stores/connect';
-// import                '../assets/sass/main_content.scss';
 import '../assets/sass/workspace.scss';
 import '../assets/sass/toolbox.scss';
 
-class MainContent extends React.Component {
-    componentDidMount() {
-        this.props.onMount();
-    }
+const MainContent = ({ active_tab, onMount, onUnmount, setContainerSize }) => {
+    const current_active_tab = React.useRef(active_tab);
 
-    componentDidUpdate(prevProps) {
-        if (this.props.active_tab === tabs_title.WORKSPACE && this.props.active_tab !== prevProps.active_tab) {
-            this.props.setContainerSize();
+    React.useEffect(() => {
+        onMount();
+        return () => onUnmount();
+    }, [onMount, onUnmount]);
+
+    React.useEffect(() => {
+        if (active_tab !== current_active_tab) {
+            current_active_tab.current = active_tab;
+            setContainerSize();
         }
+    }, [active_tab, setContainerSize]);
+
+    if (active_tab === tabs_title.WORKSPACE) {
+        console.log('Returning Flyout!');
+        return (
+            <div
+                id='scratch_div'
+                style={{
+                    width: '100vw',
+                    height: 'var(--bot-content-height)',
+                }}
+            >
+                <Flyout />
+            </div>
+        );
     }
 
-    componentWillUnmount() {
-        this.props.onUnmount();
+    if (active_tab === tabs_title.CHART) {
+        return (
+            <div
+                className='bot__chart-container'
+                style={{
+                    width: 'var(--bot-content-width)',
+                    height: 'var(--bot-content-height)',
+                }}
+            >
+                <Chart />
+            </div>
+        );
     }
 
-    render() {
-        switch (this.props.active_tab) {
-            case tabs_title.WORKSPACE:
-            default:
-                return (
-                    <div
-                        id='scratch_div'
-                        className='test'
-                        style={{
-                            width: '100vw',
-                            height: 'var(--bot-content-height)',
-                        }}
-                    >
-                        <Flyout />
-                    </div>
-                );
-            case tabs_title.CHART: {
-                return (
-                    <div
-                        className='bot__chart-container'
-                        style={{
-                            width: 'var(--bot-content-width)',
-                            height: 'var(--bot-content-height)',
-                        }}
-                    >
-                        <Chart />
-                    </div>
-                );
-            }
-        }
-    }
-}
+    return null;
+};
 
 MainContent.propTypes = {
     active_tab: PropTypes.string,

@@ -267,7 +267,7 @@ class AccountSwitcher extends React.Component {
     get can_open_multi() {
         if (this.props.is_eu) return false;
         if (this.props.available_crypto_currencies.length < 1 && !this.props.has_fiat) return true;
-        return !!(!this.props.is_virtual && this.props.available_crypto_currencies.length > 0);
+        return !this.props.is_virtual;
     }
 
     get total_demo_assets() {
@@ -438,22 +438,21 @@ class AccountSwitcher extends React.Component {
                                 </Button>
                             </div>
                         ))}
-                        {!this.can_upgrade &&
-                            (this.can_open_multi || this.props.can_change_fiat_currency || !this.has_set_currency) && (
-                                <Button
-                                    className='acc-switcher__btn'
-                                    secondary
-                                    onClick={
-                                        this.has_set_currency
-                                            ? () => this.props.openRealAccountSignup('manage')
-                                            : this.setAccountCurrency
-                                    }
-                                >
-                                    {this.can_open_multi
-                                        ? localize('Add or manage account')
-                                        : localize('Manage account')}
-                                </Button>
-                            )}
+                        {!this.can_upgrade && this.can_open_multi && (
+                            <Button
+                                className='acc-switcher__btn'
+                                secondary
+                                onClick={
+                                    this.has_set_currency
+                                        ? () => this.props.openRealAccountSignup('manage')
+                                        : this.setAccountCurrency
+                                }
+                            >
+                                {this.props.has_fiat && this.props.available_crypto_currencies?.length === 0
+                                    ? localize('Manage account')
+                                    : localize('Add or manage account')}
+                            </Button>
+                        )}
                     </AccountWrapper>
                 </React.Fragment>
                 {this.props.is_mt5_allowed && (
@@ -569,6 +568,7 @@ class AccountSwitcher extends React.Component {
                                 this.is_real_account_tab ? this.total_real_assets : this.total_demo_assets,
                                 true
                             )}
+                            show_currency
                             should_format={false}
                         />
                     </span>

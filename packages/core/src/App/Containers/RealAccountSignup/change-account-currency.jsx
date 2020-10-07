@@ -2,9 +2,10 @@ import { Field, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { FormSubmitButton } from '@deriv/components';
+import { isMobile, reorderCurrencies } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { localize, Localize } from '@deriv/translations';
-import { RadioButtonGroup, RadioButton, reorderFiatCurrencies } from './currency-selector.jsx';
+import { RadioButtonGroup, RadioButton } from './currency-selector.jsx';
 
 class ChangeAccountCurrency extends React.Component {
     state = {
@@ -13,7 +14,7 @@ class ChangeAccountCurrency extends React.Component {
 
     static getDerivedStateFromProps(props) {
         return {
-            selectable_currencies: reorderFiatCurrencies(
+            selectable_currencies: reorderCurrencies(
                 props.legal_allowed_currencies.filter(currency => currency.type === 'fiat')
             ),
         };
@@ -73,8 +74,7 @@ class ChangeAccountCurrency extends React.Component {
                             className='change-currency__button'
                             is_disabled={isSubmitting || !values.fiat}
                             label={localize('Change currency')}
-                            is_absolute={false}
-                            is_center
+                            is_absolute={!isMobile()}
                             form_error={this.props.form_error}
                         />
                     </form>

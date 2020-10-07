@@ -23,7 +23,6 @@ const MainContent = ({ active_tab, onMount, onUnmount, setContainerSize }) => {
     }, [active_tab, setContainerSize]);
 
     if (active_tab === tabs_title.WORKSPACE) {
-        console.log('Returning Flyout!');
         return (
             <div
                 id='scratch_div'

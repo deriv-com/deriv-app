@@ -230,8 +230,10 @@ Blockly.BlockSvg.prototype.setCollapsed = function(collapsed) {
     this.inputList.forEach(input => render_list.push(...input.setVisible(!collapsed)));
 
     if (collapsed) {
-        const icons = this.getIcons();
-        icons.forEach(icon => icon.setVisible(false));
+        this.getIcons()
+            // Never hide ScratchBlockComments!
+            .filter(icon => !(icon instanceof Blockly.ScratchBlockComment))
+            .forEach(icon => icon.setVisible(false));
 
         const text = this.toString(Blockly.COLLAPSE_CHARS);
 

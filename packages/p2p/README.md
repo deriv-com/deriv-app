@@ -72,7 +72,7 @@ Requirements:
 -   Crowdin CLI: https://support.crowdin.com/cli-tool/#installation
 -   `Crowdin_API_KEY` environment variables to your `~/.bash_profile`
 
-1. Run the script belows
+1. Run the script below
 
 ```sh
     sh scripts/update-translations.sh

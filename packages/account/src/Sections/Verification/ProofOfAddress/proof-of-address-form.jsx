@@ -50,7 +50,19 @@ class ProofOfAddressForm extends React.Component {
                     address_city,
                     address_state,
                     address_postcode,
+                    citizen,
+                    tax_identification_number,
+                    tax_residence,
                 } = this.props.account_settings;
+
+                if (this.props.is_eu) {
+                    this.setState({
+                        citizen,
+                        tax_identification_number,
+                        tax_residence,
+                    });
+                }
+
                 this.setState({
                     address_line_1,
                     address_line_2,
@@ -125,8 +137,14 @@ class ProofOfAddressForm extends React.Component {
     onSubmit = (values, { setStatus, setSubmitting }) => {
         setStatus({ msg: '' });
         this.setState({ is_btn_loading: true });
+        let form_values = values;
 
-        WS.setSettings(values).then((data) => {
+        if (this.props.is_eu) {
+            const { citizen, tax_residence, tax_identification_number } = this.state;
+            form_values = { ...values, citizen, tax_identification_number, tax_residence };
+        }
+
+        WS.setSettings(form_values).then((data) => {
             if (data.error) {
                 setStatus({ msg: data.error.message });
                 this.setState({ is_btn_loading: false });
@@ -439,6 +457,7 @@ class ProofOfAddressForm extends React.Component {
 
 export default connect(({ client, ui }) => ({
     account_settings: client.account_settings,
+    is_eu: client.is_eu,
     addNotificationByKey: ui.addNotificationMessageByKey,
     removeNotificationMessage: ui.removeNotificationMessage,
     removeNotificationByKey: ui.removeNotificationByKey,

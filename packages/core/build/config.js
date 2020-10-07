@@ -67,7 +67,6 @@ const copyConfig = base => [
         to: 'public/images/sprite',
         toType: 'dir',
     },
-    // { from: path.resolve(__dirname, '../src/_common/lib/pushwooshSDK/**'), flatten: true },
     {
         from: path.resolve(__dirname, '../src/templates/app/manifest.json'),
         to: 'manifest.json',
@@ -116,30 +115,6 @@ const htmlInjectConfig = () => ({
                 rel: 'icon',
             },
         },
-        {
-            path: 'public/fonts/binary_symbols.woff',
-            attributes: {
-                rel: 'preload',
-                as: 'font',
-                crossorigin: 'crossorigin',
-            },
-        },
-        // {
-        //     path: 'pushwoosh-web-notifications.js',
-        //     attributes: {
-        //         rel: 'preload',
-        //         as: 'script'
-        //     }
-        // },
-    ],
-    scripts: [
-        // {
-        //     path: 'pushwoosh-web-notifications.js',
-        //     attributes: {
-        //         defer: '',
-        //         type: 'text/javascript'
-        //     }
-        // }
     ],
     append: false,
 });

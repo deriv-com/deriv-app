@@ -34,6 +34,8 @@ const TradeFooterExtensions = ({
                     Component: TogglePositionsIcon,
                 },
             ]);
+        } else {
+            populateFooterExtensions([]);
         }
     };
 

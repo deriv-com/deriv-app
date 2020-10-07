@@ -22,7 +22,6 @@ const getRealFinancialStpBtnLbl = (is_fully_authenticated, is_pending_authentica
 const MT5RealAccountDisplay = ({
     has_real_account,
     is_eu,
-    is_eu_enabled, // TODO [deriv-eu] remove is_eu_enabled once eu is released.
     is_eu_country,
     has_malta_account,
     has_maltainvest_account,
@@ -52,16 +51,14 @@ const MT5RealAccountDisplay = ({
     const is_real_financial_stp_disabled = !has_real_account || is_pending_authentication;
 
     const onSelectRealSynthetic = () => {
-        if (is_eu_enabled && is_eu && standpoint.malta && !has_malta_account) {
-            // TODO [deriv-eu] remove is_eu_enabled once eu is released.
+        if (is_eu && standpoint.malta && !has_malta_account) {
             openAccountNeededModal('malta', localize('Deriv Synthetic'), localize('DMT5 Synthetic'));
         } else {
             onSelectAccount({ type: 'synthetic', category: 'real' });
         }
     };
     const onSelectRealFinancial = () => {
-        if (is_eu_enabled && is_eu && !has_maltainvest_account) {
-            // TODO: [deriv-eu] remove is_eu_enabled when eu gets a release
+        if (is_eu && !has_maltainvest_account) {
             openAccountNeededModal('maltainvest', localize('Deriv Financial'), localize('DMT5 Real Financial'));
         } else {
             onSelectAccount({ type: 'financial', category: 'real' });
@@ -102,14 +99,14 @@ const MT5RealAccountDisplay = ({
                     has_mt5_account={has_mt5_account}
                     icon={() => <Icon icon='IcMt5SyntheticPlatform' size={64} />}
                     title={localize('Synthetic')}
-                    is_disabled={(!is_eu && !has_real_account) || (!is_eu_enabled && is_eu)} // TODO [deriv-eu] remove eu enabled check
+                    is_disabled={!is_eu && !has_real_account}
                     type={{
                         category: 'real',
                         type: 'synthetic',
                     }}
                     is_logged_in={is_logged_in}
                     existing_data={current_list['real.synthetic']}
-                    commission_message={<Localize i18n_default_text='No commission' />}
+                    commission_message={localize('No commission')}
                     onSelectAccount={onSelectRealSynthetic}
                     onPasswordManager={openPasswordManager}
                     onClickFund={onClickFundRealSynthetic}
@@ -123,7 +120,7 @@ const MT5RealAccountDisplay = ({
             {(landing_companies?.mt_financial_company?.financial || !is_logged_in) && (
                 <MT5AccountCard
                     has_mt5_account={has_mt5_account}
-                    is_disabled={(!is_eu && !has_real_account) || (!is_eu_enabled && is_eu)} // TODO [deriv-eu] remove eu enabled check
+                    is_disabled={!is_eu && !has_real_account}
                     icon={() => <Icon icon='IcMt5FinancialPlatform' size={64} />}
                     title={localize('Financial')}
                     type={{
@@ -131,12 +128,7 @@ const MT5RealAccountDisplay = ({
                         type: 'financial',
                     }}
                     existing_data={current_list['real.financial']}
-                    commission_message={
-                        <Localize
-                            i18n_default_text='No commission <0>(excluding cryptocurrencies)</0>'
-                            components={[<span key={0} className='mt5-dashboard--hint' />]}
-                        />
-                    }
+                    commission_message={localize('No commission')}
                     onSelectAccount={onSelectRealFinancial}
                     onPasswordManager={openPasswordManager}
                     onClickFund={onClickFundRealFinancial}
@@ -164,12 +156,7 @@ const MT5RealAccountDisplay = ({
                     }}
                     is_logged_in={is_logged_in}
                     existing_data={current_list['real.financial_stp']}
-                    commission_message={
-                        <Localize
-                            i18n_default_text='No commission <0>(excluding cryptocurrencies)</0>'
-                            components={[<span key={0} className='mt5-dashboard--hint' />]}
-                        />
-                    }
+                    commission_message={localize('No commission')}
                     onSelectAccount={onSelectRealFinancialStp}
                     button_label={button_label}
                     is_button_primary={is_pending_authentication}

@@ -66,7 +66,11 @@ class Dialog extends React.Component {
                 }}
                 unmountOnExit
             >
-                <div className={classNames('dc-dialog__wrapper', className)}>
+                <div
+                    className={classNames('dc-dialog__wrapper', className, {
+                        'dc-dialog__wrapper--has-portal': !!portal_element_id,
+                    })}
+                >
                     <div
                         className={classNames('dc-dialog__dialog', {
                             'dc-dialog__dialog--has-margin': !is_mobile_full_width,

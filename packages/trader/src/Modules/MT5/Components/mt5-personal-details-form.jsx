@@ -8,6 +8,7 @@ import {
     Div100vhContainer,
     Dropdown,
     FormSubmitButton,
+    FormSubmitErrorMessage,
     Input,
     Loading,
     MobileWrapper,
@@ -55,25 +56,20 @@ export const InputField = ({ maxLength, name, optional = false, ...props }) => (
     </Field>
 );
 
-const validatePersonalDetails = ({
-    values,
-    residence_list,
-    account_opening_reason,
-    landing_company,
-    is_tin_required,
-}) => {
-    const tin_regex = landing_company?.config?.tin_format?.[0] ?? true;
+const validatePersonalDetails = ({ values, residence_list, account_opening_reason, is_tin_required }) => {
+    const [tax_residence_obj] = residence_list.filter(res => res.text === values.tax_residence && res.tin_format);
+    const [tin_format] = tax_residence_obj?.tin_format ?? [];
+    const tin_regex = tin_format || '^[A-Za-z0-9./s-]{0,25}$'; // fallback to API's default rule check
 
     const validations = {
         citizen: [v => !!v, v => residence_list.map(i => i.text).includes(v)],
         tax_residence: [v => !!v, v => residence_list.map(i => i.text).includes(v)],
         tax_identification_number: [
-            v => (is_tin_required ? !!v : true),
-            v => (is_tin_required && tin_regex ? v.match(tin_regex) : true),
+            v => ((!values.tax_residence && is_tin_required) || tin_format ? !!v : true),
+            v => (tin_regex ? v.match(tin_regex) : true),
         ],
-        account_opening_reason: [v => !!v, v => account_opening_reason.map(i => i.text).includes(v)],
+        account_opening_reason: [v => !!v, v => account_opening_reason.map(i => i.value).includes(v)],
     };
-
     const mappedKey = {
         citizen: localize('Citizenship'),
         tax_residence: localize('Tax residence'),
@@ -130,12 +126,14 @@ const submitForm = (values, actions, idx, onSubmitFn, is_dirty, residence_list) 
 const MT5PersonalDetailsForm = ({
     onSave,
     is_fully_authenticated,
+    is_loading,
     landing_company,
     residence_list,
     onCancel,
     onSubmit,
     value,
     index,
+    form_error,
 }) => {
     const account_opening_reason = getAccountOpeningReasonList();
     const is_tin_required = landing_company?.config?.tax_details_required ?? false;
@@ -149,6 +147,7 @@ const MT5PersonalDetailsForm = ({
         submitForm(values, actions, index, onSubmit, !isDeepEqual(value, values), residence_list);
 
     if (residence_list.length === 0) return <Loading is_fullscreen={false} />;
+    if (is_loading) return <Loading is_fullscreen={false} />;
 
     return (
         <Formik
@@ -158,20 +157,30 @@ const MT5PersonalDetailsForm = ({
                 tax_identification_number: value.tax_identification_number,
                 account_opening_reason: value.account_opening_reason,
             }}
-            enableReinitialize
             validateOnMount
+            validateOnChange
+            validateOnBlur
             validate={values =>
                 validatePersonalDetails({
                     values,
                     residence_list,
                     account_opening_reason,
-                    landing_company,
                     is_tin_required,
                 })
             }
             onSubmit={onSubmitForm}
         >
-            {({ handleSubmit, isSubmitting, handleChange, handleBlur, errors, touched, values, setFieldValue }) => (
+            {({
+                handleSubmit,
+                isSubmitting,
+                handleChange,
+                handleBlur,
+                errors,
+                touched,
+                values,
+                setFieldValue,
+                isValid,
+            }) => (
                 <AutoHeightWrapper default_height={200} height_offset={isDesktop() ? 148 : null}>
                     {({ height, setRef }) => (
                         <form
@@ -278,7 +287,7 @@ const MT5PersonalDetailsForm = ({
                                                 placeholder={localize('Tax identification number')}
                                                 value={values.tax_identification_number}
                                                 onBlur={handleBlur}
-                                                optional={!is_tin_required}
+                                                optional
                                             />
                                         </fieldset>
                                         <FormSubHeader title={localize('Account opening reason')} />
@@ -300,7 +309,6 @@ const MT5PersonalDetailsForm = ({
                                                                 errors.account_opening_reason
                                                             }
                                                             {...field}
-                                                            required
                                                         />
                                                     </DesktopWrapper>
                                                     <MobileWrapper>
@@ -309,7 +317,6 @@ const MT5PersonalDetailsForm = ({
                                                             label={localize('Account opening reason')}
                                                             list_items={account_opening_reason}
                                                             value={values.account_opening_reason}
-                                                            use_text={true}
                                                             error={
                                                                 touched.account_opening_reason &&
                                                                 errors.account_opening_reason
@@ -323,7 +330,6 @@ const MT5PersonalDetailsForm = ({
                                                                 );
                                                             }}
                                                             {...field}
-                                                            required
                                                         />
                                                     </MobileWrapper>
                                                 </React.Fragment>
@@ -333,12 +339,10 @@ const MT5PersonalDetailsForm = ({
                                 </ThemedScrollbars>
                             </Div100vhContainer>
                             <Modal.Footer is_bypassed={isMobile()}>
+                                {form_error && <FormSubmitErrorMessage message={form_error} />}
                                 <FormSubmitButton
                                     cancel_label={localize('Previous')}
-                                    is_disabled={
-                                        isSubmitting ||
-                                        (Object.keys(touched).length > 0 && Object.keys(errors).length > 0)
-                                    }
+                                    is_disabled={isSubmitting || !isValid}
                                     is_absolute={isMobile()}
                                     label={localize('Next')}
                                     onCancel={() => handleCancel(values)}
@@ -354,6 +358,7 @@ const MT5PersonalDetailsForm = ({
 
 MT5PersonalDetailsForm.propTypes = {
     is_fully_authenticated: PropTypes.bool,
+    is_loading: PropTypes.bool,
     onCancel: PropTypes.func,
     onSave: PropTypes.func,
     onSubmit: PropTypes.func,

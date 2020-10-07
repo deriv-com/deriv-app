@@ -1,13 +1,12 @@
 import React from 'react';
 import { Icon } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { eu_real_financial_specs } from 'Modules/MT5/Constants/mt5-specifications';
 import { MT5AccountCard } from './mt5-account-card.jsx';
 import Loading from '../../../templates/_common/components/loading.jsx';
 
 const MT5DemoAccountDisplay = ({
     is_eu,
-    is_eu_enabled, // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
     is_eu_country,
     has_maltainvest_account,
     openAccountNeededModal,
@@ -22,8 +21,7 @@ const MT5DemoAccountDisplay = ({
     openPasswordManager,
 }) => {
     const openMt5Account = () => {
-        // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
-        if (is_eu_enabled && is_eu && !has_maltainvest_account && standpoint.iom) {
+        if (is_eu && !has_maltainvest_account && standpoint.iom) {
             openAccountNeededModal('maltainvest', localize('Deriv Financial'), localize('DMT5 Demo Financial'));
         } else {
             onSelectAccount({
@@ -50,7 +48,7 @@ const MT5DemoAccountDisplay = ({
                     }}
                     is_logged_in={is_logged_in}
                     existing_data={current_list['demo.synthetic']}
-                    commission_message={<Localize i18n_default_text='No commission' />}
+                    commission_message={localize('No commission')}
                     onSelectAccount={() =>
                         onSelectAccount({
                             category: 'demo',
@@ -87,12 +85,7 @@ const MT5DemoAccountDisplay = ({
                         type: 'financial',
                     }}
                     existing_data={current_list['demo.financial']}
-                    commission_message={
-                        <Localize
-                            i18n_default_text='No commission <0>(excluding cryptocurrencies)</0>'
-                            components={[<span key={0} className='mt5-dashboard--hint' />]}
-                        />
-                    }
+                    commission_message={localize('No commission')}
                     onSelectAccount={openMt5Account}
                     onPasswordManager={openPasswordManager}
                     onClickFund={() =>
@@ -133,12 +126,7 @@ const MT5DemoAccountDisplay = ({
                     }}
                     is_logged_in={is_logged_in}
                     existing_data={current_list['demo.financial_stp']}
-                    commission_message={
-                        <Localize
-                            i18n_default_text='No commission <0>(excluding cryptocurrencies)</0>'
-                            components={[<span key={0} className='mt5-dashboard--hint' />]}
-                        />
-                    }
+                    commission_message={localize('No commission')}
                     onSelectAccount={() =>
                         onSelectAccount({
                             category: 'demo',

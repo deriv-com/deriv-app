@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Money, IconTradeTypes } from '@deriv/components';
-import { localize } from '@deriv/translations';
 import { getContractTypeDisplay } from 'Constants/contract';
 import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
 
@@ -11,9 +10,7 @@ const ButtonTextWrapper = ({ should_fade, is_loading, type, is_high_low }) => {
     return (
         <div className='btn-purchase__text_wrapper'>
             <span className='btn-purchase__text'>
-                {!should_fade && is_loading
-                    ? ''
-                    : localize('{{value}}', { value: getContractTypeDisplay(type, is_high_low) })}
+                {!should_fade && is_loading ? '' : getContractTypeDisplay(type, is_high_low)}
             </span>
         </div>
     );
@@ -85,7 +82,7 @@ const PurchaseButton = ({
                     <div className='btn-purchase__text_wrapper'>
                         {is_multiplier ? (
                             <span className='btn-purchase__text'>
-                                <Money amount={info.stake} currency={currency} />
+                                <Money amount={info.stake} currency={currency} show_currency />
                             </span>
                         ) : (
                             <span className='btn-purchase__text'>

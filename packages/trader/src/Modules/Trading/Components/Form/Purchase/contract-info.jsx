@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon, DesktopWrapper, Money, MobileWrapper, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { getCurrencyDisplayCode } from '@deriv/shared';
 import { getLocalizedBasis } from 'Stores/Modules/Trading/Constants/contract';
 import CancelDealInfo from './cancel-deal-info.jsx';
 
@@ -14,6 +15,7 @@ const ValueMovement = ({ has_error_or_not_loaded, proposal_info, currency, has_i
                     amount={proposal_info.obj_contract_basis.value}
                     className='trade-container__price-info-currency'
                     currency={currency}
+                    show_currency
                 />
             )}
         </div>
@@ -77,7 +79,7 @@ const ContractInfo = ({
                             <div className='trade-container__price-info-wrapper'>
                                 <div className='btn-purchase__text_wrapper'>
                                     <span className='btn-purchase__text'>
-                                        <Money amount={stake} currency={currency} />
+                                        <Money amount={stake} currency={currency} show_currency />
                                     </span>
                                 </div>
                             </div>
@@ -92,7 +94,7 @@ const ContractInfo = ({
                                 <ValueMovement
                                     has_error_or_not_loaded={has_error_or_not_loaded}
                                     proposal_info={proposal_info}
-                                    currency={currency}
+                                    currency={getCurrencyDisplayCode(currency)}
                                     has_increased={has_increased}
                                 />
                             </DesktopWrapper>
@@ -101,7 +103,7 @@ const ContractInfo = ({
                                     <ValueMovement
                                         has_error_or_not_loaded={has_error_or_not_loaded}
                                         proposal_info={proposal_info}
-                                        currency={currency}
+                                        currency={getCurrencyDisplayCode(currency)}
                                         has_increased={has_increased}
                                     />
                                 </div>

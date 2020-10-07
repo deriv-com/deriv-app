@@ -82,8 +82,7 @@ class AccountSwitcher extends React.Component {
         const has_required_account =
             account_type === 'synthetic' ? this.props.has_malta_account : this.props.has_maltainvest_account;
 
-        if (this.props.is_eu_enabled && this.props.is_eu && !has_required_account) {
-            // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
+        if (this.props.is_eu && !has_required_account) {
             this.closeAccountsDialog();
             this.props.openAccountNeededModal(
                 account_type === 'synthetic'
@@ -127,16 +126,6 @@ class AccountSwitcher extends React.Component {
     showAccountTypesModal = () => {
         this.closeAccountsDialog();
         this.props.toggleAccountTypesModal(true);
-    };
-
-    onClickUpgrade = account => {
-        // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
-        const is_account_signup_supported = this.props.is_eu ? this.props.is_eu_enabled : !this.props.is_eu;
-        if (is_account_signup_supported) {
-            this.props.openRealAccountSignup(account);
-        } else {
-            window.open(urlFor('user/accounts', { legacy: true })); // TODO [deriv-eu] Remove this before launching eu production
-        }
     };
 
     isDemo = account => /^demo/.test(account.group);
@@ -278,7 +267,7 @@ class AccountSwitcher extends React.Component {
     get can_open_multi() {
         if (this.props.is_eu) return false;
         if (this.props.available_crypto_currencies.length < 1 && !this.props.has_fiat) return true;
-        return !!(!this.props.is_virtual && this.props.available_crypto_currencies.length > 0);
+        return !this.props.is_virtual;
     }
 
     get total_demo_assets() {
@@ -440,7 +429,7 @@ class AccountSwitcher extends React.Component {
                                 <Icon icon='IcDeriv' size={24} />
                                 <span className='acc-switcher__new-account-text'>{getAccountTitle(account)}</span>
                                 <Button
-                                    onClick={() => this.onClickUpgrade(account)}
+                                    onClick={() => this.props.openRealAccountSignup(account)}
                                     className='acc-switcher__new-account-btn'
                                     secondary
                                     small
@@ -449,22 +438,21 @@ class AccountSwitcher extends React.Component {
                                 </Button>
                             </div>
                         ))}
-                        {!this.can_upgrade &&
-                            (this.can_open_multi || this.props.can_change_fiat_currency || !this.has_set_currency) && (
-                                <Button
-                                    className='acc-switcher__btn'
-                                    secondary
-                                    onClick={
-                                        this.has_set_currency
-                                            ? () => this.props.openRealAccountSignup('manage')
-                                            : this.setAccountCurrency
-                                    }
-                                >
-                                    {this.can_open_multi
-                                        ? localize('Add or manage account')
-                                        : localize('Manage account')}
-                                </Button>
-                            )}
+                        {!this.can_upgrade && this.can_open_multi && (
+                            <Button
+                                className='acc-switcher__btn'
+                                secondary
+                                onClick={
+                                    this.has_set_currency
+                                        ? () => this.props.openRealAccountSignup('manage')
+                                        : this.setAccountCurrency
+                                }
+                            >
+                                {this.props.has_fiat && this.props.available_crypto_currencies?.length === 0
+                                    ? localize('Manage account')
+                                    : localize('Add or manage account')}
+                            </Button>
+                        )}
                     </AccountWrapper>
                 </React.Fragment>
                 {this.props.is_mt5_allowed && (
@@ -500,7 +488,12 @@ class AccountSwitcher extends React.Component {
                                         </div>
                                     )}
                                     {this.remaining_real_mt5.map(account => (
-                                        <div key={account.title} className='acc-switcher__new-account'>
+                                        <div
+                                            key={account.title}
+                                            className={classNames('acc-switcher__new-account', {
+                                                'acc-switcher__new-account--disabled': this.props.mt5_login_list_error,
+                                            })}
+                                        >
                                             <Icon icon={`IcMt5-${account.icon}`} size={24} />
                                             <span className='acc-switcher__new-account-text'>{account.title}</span>
                                             <Button
@@ -509,10 +502,10 @@ class AccountSwitcher extends React.Component {
                                                 secondary
                                                 small
                                                 is_disabled={
-                                                    ((!this.props.is_eu_enabled || !this.props.is_eu) && // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
-                                                        !this.props.has_any_real_account) ||
+                                                    (!this.props.is_eu && !this.props.has_any_real_account) ||
                                                     (account.type === 'financial_stp' &&
-                                                        this.props.is_pending_authentication)
+                                                        this.props.is_pending_authentication) ||
+                                                    !!this.props.mt5_login_list_error
                                                 }
                                             >
                                                 {localize('Add')}
@@ -575,6 +568,7 @@ class AccountSwitcher extends React.Component {
                                 this.is_real_account_tab ? this.total_real_assets : this.total_demo_assets,
                                 true
                             )}
+                            show_currency
                             should_format={false}
                         />
                     </span>
@@ -620,7 +614,6 @@ AccountSwitcher.propTypes = {
     has_fiat: PropTypes.bool,
     has_any_real_account: PropTypes.bool,
     is_eu: PropTypes.bool,
-    is_eu_enabled: PropTypes.bool, // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
     is_loading_mt5: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_mt5_allowed: PropTypes.bool,
@@ -650,7 +643,6 @@ const account_switcher = withRouter(
         account_list: client.account_list,
         can_upgrade_to: client.can_upgrade_to,
         is_eu: client.is_eu,
-        is_eu_enabled: ui.is_eu_enabled, // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
         is_loading_mt5: client.is_populating_mt5_account_list,
         is_logged_in: client.is_logged_in,
         is_mt5_allowed: client.is_mt5_allowed,
@@ -660,6 +652,7 @@ const account_switcher = withRouter(
         has_fiat: client.has_fiat,
         has_any_real_account: client.has_any_real_account,
         mt5_login_list: client.mt5_login_list,
+        mt5_login_list_error: client.mt5_login_list_error,
         obj_total_balance: client.obj_total_balance,
         switchAccount: client.switchAccount,
         has_malta_account: client.has_malta_account,

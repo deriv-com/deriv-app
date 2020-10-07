@@ -1,5 +1,14 @@
 import React from 'react';
-import { Autocomplete, Loading, Button, Input, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
+import {
+    Autocomplete,
+    Loading,
+    Button,
+    Input,
+    DesktopWrapper,
+    MobileWrapper,
+    SelectNative,
+    FormSubmitErrorMessage,
+} from '@deriv/components';
 import { Formik, Field } from 'formik';
 import { localize } from '@deriv/translations';
 import { isMobile, validAddress, validPostCode, validLetterSymbol, validLength, getLocation } from '@deriv/shared';
@@ -8,7 +17,6 @@ import { connect } from 'Stores/connect';
 import FormFooter from 'Components/form-footer';
 import FormBody from 'Components/form-body';
 import FormSubHeader from 'Components/form-sub-header';
-import FormSubmitErrorMessage from 'Components/form-submit-error-message';
 import LoadErrorMessage from 'Components/load-error-message';
 import LeaveConfirm from 'Components/leave-confirm';
 import FileUploaderContainer from 'Components/file-uploader-container';
@@ -42,7 +50,19 @@ class ProofOfAddressForm extends React.Component {
                     address_city,
                     address_state,
                     address_postcode,
+                    citizen,
+                    tax_identification_number,
+                    tax_residence,
                 } = this.props.account_settings;
+
+                if (this.props.is_eu) {
+                    this.setState({
+                        citizen,
+                        tax_identification_number,
+                        tax_residence,
+                    });
+                }
+
                 this.setState({
                     address_line_1,
                     address_line_2,
@@ -117,8 +137,14 @@ class ProofOfAddressForm extends React.Component {
     onSubmit = (values, { setStatus, setSubmitting }) => {
         setStatus({ msg: '' });
         this.setState({ is_btn_loading: true });
+        let form_values = values;
 
-        WS.setSettings(values).then((data) => {
+        if (this.props.is_eu) {
+            const { citizen, tax_residence, tax_identification_number } = this.state;
+            form_values = { ...values, citizen, tax_identification_number, tax_residence };
+        }
+
+        WS.setSettings(form_values).then((data) => {
             if (data.error) {
                 setStatus({ msg: data.error.message });
                 this.setState({ is_btn_loading: false });
@@ -431,6 +457,7 @@ class ProofOfAddressForm extends React.Component {
 
 export default connect(({ client, ui }) => ({
     account_settings: client.account_settings,
+    is_eu: client.is_eu,
     addNotificationByKey: ui.addNotificationMessageByKey,
     removeNotificationMessage: ui.removeNotificationMessage,
     removeNotificationByKey: ui.removeNotificationByKey,

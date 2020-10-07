@@ -5,12 +5,10 @@
         max-height: 555px;
         overflow-y: hidden;
     }
-
     &__error {
         color: $color-red-4;
         font-size: var(--text-size-xs);
     }
-
     &__header {
         display: flex;
         height: fit-content;
@@ -28,11 +26,9 @@
             margin-right: 0.8rem;
             width: 3.2rem;
         }
-
         &-details {
             display: flex;
         }
-
         &-name {
             align-self: center;
             color: var(--text-prominent);
@@ -41,7 +37,6 @@
             height: fit-content;
             width: fit-content;
         }
-
         &-verification {
             align-items: center;
             display: flex;
@@ -52,7 +47,6 @@
             }
         }
     }
-
     &__stats {
         border-bottom: none;
         display: flex;
@@ -73,11 +67,9 @@
                 font-size: var(--text-size-xs);
                 line-height: 20px;
             }
-
             &-completion {
                 display: flex;
             }
-
             &-info {
                 font-size: var(--text-size-s);
                 font-weight: bold;
@@ -94,13 +86,11 @@
             }
         }
     }
-
     &__popover {
         &-icon {
             margin: 1.6rem 0.8rem;
         }
     }
-
     &__adverts {
         &-button {
             align-items: center;

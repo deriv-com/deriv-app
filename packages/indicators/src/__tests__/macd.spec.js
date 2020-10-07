@@ -1,5 +1,5 @@
-import { macdArray } from '../macd';
-import { data, histogram, macd, signal } from '../../../test_utils/macd-data';
+import { macdArray } from '../indicators/macd';
+import { data, histogram, macd, signal } from '../test_utils/macd-data';
 
 describe('macd', () => {
     it('real world', () => {

@@ -1,5 +1,5 @@
-import { takeField } from './math';
-import { sequence } from '../object';
+import { sequence } from '@deriv/shared';
+import { takeField } from '../utils/math';
 
 const calcGain = (q1, q2) => (q2 > q1 ? q2 - q1 : 0);
 const calcLoss = (q1, q2) => (q2 < q1 ? q1 - q2 : 0);

@@ -1,4 +1,4 @@
-import { takeField, mean } from './math';
+import { takeField, mean } from '../utils/math';
 
 /**
  * @param {Array} data

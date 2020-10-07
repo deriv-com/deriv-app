@@ -184,9 +184,13 @@ export default class ClientStore extends BaseStore {
         return this.active_accounts.some(acc => acc.landing_company_shortcode === 'malta');
     }
 
+    hasAnyRealAccount = () => {
+        return this.account_list.some(acc => acc.is_virtual === 0);
+    };
+
     @computed
     get has_any_real_account() {
-        return this.account_list.some(acc => acc.is_virtual === 0);
+        return this.hasAnyRealAccount();
     }
 
     @computed
@@ -677,11 +681,7 @@ export default class ClientStore extends BaseStore {
         this.accounts[this.loginid].email = response.authorize.email;
         this.accounts[this.loginid].currency = response.authorize.currency;
         this.accounts[this.loginid].is_virtual = +response.authorize.is_virtual;
-        this.accounts[this.loginid].session_start = parseInt(
-            moment()
-                .utc()
-                .valueOf() / 1000
-        );
+        this.accounts[this.loginid].session_start = parseInt(moment().utc().valueOf() / 1000);
         this.accounts[this.loginid].landing_company_shortcode = response.authorize.landing_company_name;
         this.accounts[this.loginid].country = response.country;
         this.updateAccountList(response.authorize.account_list);
@@ -1368,8 +1368,8 @@ export default class ClientStore extends BaseStore {
         const client_object = {};
         let active_loginid;
 
-        account_list.forEach(function(account) {
-            Object.keys(account).forEach(function(param) {
+        account_list.forEach(function (account) {
+            Object.keys(account).forEach(function (param) {
                 if (param === 'loginid') {
                     if (!active_loginid && !account.is_disabled) {
                         if (!account.is_virtual) {

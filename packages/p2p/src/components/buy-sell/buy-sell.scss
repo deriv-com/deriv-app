@@ -33,6 +33,8 @@
     &__cell {
         cursor: pointer;
         display: flex;
+    }
+    &__name {
         &:hover {
             color: var(--brand-red-coral);
             text-decoration: underline;

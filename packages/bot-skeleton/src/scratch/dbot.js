@@ -56,8 +56,8 @@ class DBot {
                 }, 10000);
 
                 this.workspace.addChangeListener(this.valueInputLimitationsListener.bind(this));
-                this.workspace.addChangeListener((event) => updateDisabledBlocks(this.workspace, event));
-                this.workspace.addChangeListener((event) => this.workspace.dispatchBlockEventEffects(event));
+                this.workspace.addChangeListener(event => updateDisabledBlocks(this.workspace, event));
+                this.workspace.addChangeListener(event => this.workspace.dispatchBlockEventEffects(event));
 
                 Blockly.derivWorkspace = this.workspace;
 
@@ -89,7 +89,7 @@ class DBot {
 
                 window.dispatchEvent(new Event('resize'));
                 window.addEventListener('dragover', DBot.handleDragOver);
-                window.addEventListener('drop', (e) => DBot.handleDropOver(e, handleFileChange));
+                window.addEventListener('drop', e => DBot.handleDropOver(e, handleFileChange));
 
                 // disable overflow
                 el_scratch_div.parentNode.style.overflow = 'hidden';
@@ -112,7 +112,7 @@ class DBot {
     }
 
     shouldRunBot() {
-        return this.before_run_funcs.every((func) => !!func());
+        return this.before_run_funcs.every(func => !!func());
     }
 
     /**
@@ -128,7 +128,7 @@ class DBot {
             }
 
             this.interpreter = new Interpreter();
-            this.interpreter.run(code).catch((error) => {
+            this.interpreter.run(code).catch(error => {
                 globalObserver.emit('Error', error);
                 this.stopBot();
             });
@@ -154,6 +154,7 @@ class DBot {
             var BinaryBotPrivateAfterPurchase;
             var BinaryBotPrivateLastTickTime;
             var BinaryBotPrivateTickAnalysisList = [];
+            var BinaryBotPrivateHasCalledTradeOptions = false;
             function BinaryBotPrivateRun(f, arg) {
                 if (f) return f(arg);
                 return false;
@@ -172,13 +173,17 @@ class DBot {
                 for (var BinaryBotPrivateI = 0; BinaryBotPrivateI < BinaryBotPrivateTickAnalysisList.length; BinaryBotPrivateI++) {
                     BinaryBotPrivateRun(BinaryBotPrivateTickAnalysisList[BinaryBotPrivateI]);
                 }
-            }   
+            }
             var BinaryBotPrivateLimitations = ${JSON.stringify(limitations)};
             ${Blockly.JavaScript.workspaceToCode(this.workspace)}
             BinaryBotPrivateRun(BinaryBotPrivateInit);
             while (true) {
                 BinaryBotPrivateTickAnalysis();
                 BinaryBotPrivateRun(BinaryBotPrivateStart);
+                if (!BinaryBotPrivateHasCalledTradeOptions) {
+                    sleep(1);
+                    continue;
+                }
                 while (watch('before')) {
                     BinaryBotPrivateTickAnalysis();
                     BinaryBotPrivateRun(BinaryBotPrivateBeforePurchase);
@@ -231,7 +236,7 @@ class DBot {
     disableStrayBlocks() {
         const top_blocks = this.workspace.getTopBlocks();
 
-        top_blocks.forEach((block) => {
+        top_blocks.forEach(block => {
             if (!block.isMainBlock() && !block.isIndependentBlock()) {
                 block.setDisabled(true);
             }
@@ -249,16 +254,16 @@ class DBot {
 
         const all_blocks = this.workspace.getAllBlocks(true);
         const error_blocks = all_blocks
-            .filter((block) => block.is_error_highlighted && !block.disabled)
+            .filter(block => block.is_error_highlighted && !block.disabled)
             // filter out duplicated error message
-            .filter((block, index, self) => index === self.findIndex((b) => b.error_message === block.error_message));
+            .filter((block, index, self) => index === self.findIndex(b => b.error_message === block.error_message));
 
         if (!error_blocks.length) {
             return true;
         }
 
         this.workspace.centerOnBlock(error_blocks[0].id);
-        error_blocks.forEach((block) => {
+        error_blocks.forEach(block => {
             globalObserver.emit('ui.log.error', block.error_message);
         });
 
@@ -274,7 +279,7 @@ class DBot {
 
         const all_blocks = this.workspace.getAllBlocks();
 
-        all_blocks.forEach((block) => block.setErrorHighlighted(false));
+        all_blocks.forEach(block => block.setErrorHighlighted(false));
         if (should_animate) {
             block_to_highlight.blink();
         }
@@ -284,7 +289,7 @@ class DBot {
     }
 
     unHighlightAllBlocks() {
-        this.workspace.getAllBlocks().forEach((block) => block.setErrorHighlighted(false));
+        this.workspace.getAllBlocks().forEach(block => block.setErrorHighlighted(false));
     }
 
     /**
@@ -329,10 +334,10 @@ class DBot {
         const isGlobalCreateEvent = () => event.type === Blockly.Events.BLOCK_CREATE;
         const isClickEvent = () =>
             event.type === Blockly.Events.UI && (event.element === 'click' || event.element === 'selected');
-        const isChangeEvent = (b) => event.type === Blockly.Events.BLOCK_CHANGE && event.blockId === b.id;
-        const isChangeInMyInputs = (b) => {
+        const isChangeEvent = b => event.type === Blockly.Events.BLOCK_CHANGE && event.blockId === b.id;
+        const isChangeInMyInputs = b => {
             if (event.type === Blockly.Events.BLOCK_CHANGE) {
-                return b.inputList.some((input) => {
+                return b.inputList.some(input => {
                     if (input.connection) {
                         const target_block = input.connection.targetBlock();
                         return target_block && event.blockId === target_block.id;
@@ -342,7 +347,7 @@ class DBot {
             }
             return false;
         };
-        const isParentEnabledEvent = (b) => {
+        const isParentEnabledEvent = b => {
             if (event.type === Blockly.Events.BLOCK_CHANGE && event.element === 'disabled') {
                 let parent_block = b.getParent();
 
@@ -357,7 +362,7 @@ class DBot {
             return false;
         };
 
-        this.workspace.getAllBlocks(true).forEach((block) => {
+        this.workspace.getAllBlocks(true).forEach(block => {
             if (
                 force_check ||
                 isGlobalEndDragEvent() ||
@@ -370,8 +375,8 @@ class DBot {
             ) {
                 // Unhighlight disabled blocks and their optional children.
                 if (block.disabled) {
-                    const unhighlightRecursively = (child_blocks) => {
-                        child_blocks.forEach((child_block) => {
+                    const unhighlightRecursively = child_blocks => {
+                        child_blocks.forEach(child_block => {
                             child_block.setErrorHighlighted(false);
                             unhighlightRecursively(child_block.getChildren());
                         });
@@ -388,7 +393,7 @@ class DBot {
 
                 const required_inputs_object = block.getRequiredValueInputs();
                 const required_input_names = Object.keys(required_inputs_object);
-                const should_highlight = required_input_names.some((input_name) => {
+                const should_highlight = required_input_names.some(input_name => {
                     const is_selected = Blockly.selected === block; // Don't highlight selected blocks.
                     const is_disabled = block.disabled || block.getInheritedDisabled(); // Don't highlight disabled blocks.
 

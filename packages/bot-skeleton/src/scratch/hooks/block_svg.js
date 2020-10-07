@@ -5,7 +5,7 @@ import { save, isDarkRgbColour } from '../utils';
 /**
  * Select this block.  Highlight it visually.
  */
-Blockly.BlockSvg.prototype.addSelect = function () {
+Blockly.BlockSvg.prototype.addSelect = function() {
     if (!this.isInFlyout) {
         const { flyout } = DBotStore.instance;
         if (flyout) {
@@ -20,7 +20,7 @@ Blockly.BlockSvg.prototype.addSelect = function () {
  * @param {boolean} disabled True if disabled.
  * @deriv/bot: Call updateDisabled() when setDisabled is called.
  */
-Blockly.BlockSvg.prototype.setDisabled = function (disabled) {
+Blockly.BlockSvg.prototype.setDisabled = function(disabled) {
     if (this.disabled !== disabled) {
         Blockly.BlockSvg.superClass_.setDisabled.call(this, disabled);
 
@@ -34,7 +34,7 @@ Blockly.BlockSvg.prototype.setDisabled = function (disabled) {
  * Enable or disable a block.
  * @deriv/bot: Update fill path if it doesn't match the disabledPatternId.
  */
-Blockly.BlockSvg.prototype.updateDisabled = function () {
+Blockly.BlockSvg.prototype.updateDisabled = function() {
     if (this.disabled || this.getInheritedDisabled()) {
         Blockly.utils.addClass(this.svgGroup_, 'blocklyDisabled');
 
@@ -50,7 +50,7 @@ Blockly.BlockSvg.prototype.updateDisabled = function () {
     }
 
     const children = this.getChildren(false);
-    children.forEach((child) => child.updateDisabled());
+    children.forEach(child => child.updateDisabled());
 };
 
 /**
@@ -59,7 +59,7 @@ Blockly.BlockSvg.prototype.updateDisabled = function () {
  * @private
  * @deriv/bot: Restore contextMenu options from Blockly unavailable in Scratch
  */
-Blockly.BlockSvg.prototype.showContextMenu_ = function (e) {
+Blockly.BlockSvg.prototype.showContextMenu_ = function(e) {
     if (this.workspace.options.readOnly || !this.contextMenu) {
         return;
     }
@@ -104,7 +104,7 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function (e) {
             enabled:
                 !this.disabled ||
                 restricted_parents.length === 0 ||
-                restricted_parents.some((restricted_parent) => block.isDescendantOf(restricted_parent)),
+                restricted_parents.some(restricted_parent => block.isDescendantOf(restricted_parent)),
             callback: () => {
                 const group = Blockly.Events.getGroup();
                 if (!group) {
@@ -124,7 +124,7 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function (e) {
     // Option to download block.
     if (this.isMovable()) {
         const has_next_block = block.nextConnection && block.nextConnection.isConnected();
-        const downloadBlock = (should_delete_next) => {
+        const downloadBlock = should_delete_next => {
             const xml = Blockly.Xml.textToDom('<xml/>');
             const block_xml = Blockly.Xml.blockToDom(block);
             const file_name = should_delete_next ? block.type : `${block.type}_${localize('stack')}`;
@@ -164,7 +164,7 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function (e) {
  * Set whether the block is error highlighted or not.
  * @param {boolean} highlighted True if highlighted for error.
  */
-Blockly.BlockSvg.prototype.setErrorHighlighted = function (
+Blockly.BlockSvg.prototype.setErrorHighlighted = function(
     should_be_error_highlighted,
     error_message = localize(
         'The block(s) highlighted in red are missing input values. Please update them and click "Run bot".'
@@ -188,7 +188,7 @@ Blockly.BlockSvg.prototype.setErrorHighlighted = function (
 };
 
 // Highlight the block that is being executed
-Blockly.BlockSvg.prototype.highlightExecutedBlock = function () {
+Blockly.BlockSvg.prototype.highlightExecutedBlock = function() {
     const highlight_block_class = 'block--execution-highlighted';
 
     if (!Blockly.utils.hasClass(this.svgGroup_, highlight_block_class)) {
@@ -205,7 +205,7 @@ Blockly.BlockSvg.prototype.highlightExecutedBlock = function () {
  * Set block animation (Blink)
  */
 
-Blockly.BlockSvg.prototype.blink = function () {
+Blockly.BlockSvg.prototype.blink = function() {
     const blink_class = 'block--blink';
     Blockly.utils.addClass(this.svgGroup_, blink_class);
 
@@ -218,7 +218,7 @@ Blockly.BlockSvg.prototype.blink = function () {
  * Set whether the block is collapsed or not.
  * @param {boolean} collapsed True if collapsed.
  */
-Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
+Blockly.BlockSvg.prototype.setCollapsed = function(collapsed) {
     if (this.collapsed_ === collapsed) {
         return;
     }
@@ -227,13 +227,13 @@ Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
     const COLLAPSED_INPUT_NAME = '_TEMP_COLLAPSED_INPUT';
 
     // Show/hide the inputs.
-    this.inputList.forEach((input) => render_list.push(...input.setVisible(!collapsed)));
+    this.inputList.forEach(input => render_list.push(...input.setVisible(!collapsed)));
 
     if (collapsed) {
         this.getIcons()
             // Never hide ScratchBlockComments!
-            .filter((icon) => !(icon instanceof Blockly.ScratchBlockComment))
-            .forEach((icon) => icon.setVisible(false));
+            .filter(icon => !(icon instanceof Blockly.ScratchBlockComment))
+            .forEach(icon => icon.setVisible(false));
 
         const text = this.toString(Blockly.COLLAPSE_CHARS);
 
@@ -243,8 +243,8 @@ Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
         // don't have a situation like that, so it works. 👍
         let field_class = null;
 
-        this.inputList.some((input) =>
-            input.fieldRow.some((field) => {
+        this.inputList.some(input =>
+            input.fieldRow.some(field => {
                 if (field.class_) {
                     field_class = field.class_;
                     return true;
@@ -261,7 +261,10 @@ Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
             this.setCollapsed(false)
         );
 
-        this.appendDummyInput(COLLAPSED_INPUT_NAME).appendField(field_label).appendField(field_expand_icon).init();
+        this.appendDummyInput(COLLAPSED_INPUT_NAME)
+            .appendField(field_label)
+            .appendField(field_expand_icon)
+            .init();
     } else {
         this.removeInput(COLLAPSED_INPUT_NAME);
         this.setWarningText(null); // Clear any warnings inherited from enclosed blocks.
@@ -274,7 +277,7 @@ Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
     }
 
     if (this.rendered) {
-        render_list.forEach((block) => block.render());
+        render_list.forEach(block => block.render());
         // Don't bump neighbours.
         // Although bumping neighbours would make sense, users often collapse
         // all their functions and store them next to each other.  Expanding and

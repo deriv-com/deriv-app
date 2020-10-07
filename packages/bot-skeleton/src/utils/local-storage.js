@@ -15,7 +15,7 @@ export const saveWorkspaceToRecent = (xml, save_type = save_types.UNSAVED) => {
     const workspaces = JSON.parse(localStorage.getItem('saved_workspaces')) || [];
     const current_xml = Blockly.Xml.domToText(xml);
     const current_timestamp = Date.now();
-    const current_workspace_index = workspaces.findIndex((workspace) => workspace.id === workspace_id);
+    const current_workspace_index = workspaces.findIndex(workspace => workspace.id === workspace_id);
 
     if (current_workspace_index >= 0) {
         const current_workspace = workspaces[current_workspace_index];
@@ -50,9 +50,9 @@ export const getSavedWorkspaces = () => {
     return JSON.parse(localStorage.getItem('saved_workspaces'));
 };
 
-export const removeExistingWorkspace = (workspace_id) => {
+export const removeExistingWorkspace = workspace_id => {
     const workspaces = JSON.parse(localStorage.getItem('saved_workspaces')) || [];
-    const current_workspace_index = workspaces.findIndex((workspace) => workspace.id === workspace_id);
+    const current_workspace_index = workspaces.findIndex(workspace => workspace.id === workspace_id);
 
     if (current_workspace_index >= 0) {
         workspaces.splice(current_workspace_index, 1);

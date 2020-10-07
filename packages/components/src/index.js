@@ -86,4 +86,5 @@ export { default as Timeline } from './components/timeline';
 export { default as Tooltip } from './components/tooltip';
 export { default as UILoader } from './components/u-i-loader';
 export { default as VerticalTab } from './components/vertical-tab';
+export { default as Wizard } from './components/wizard';
 export * from './hooks';

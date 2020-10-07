@@ -332,9 +332,7 @@ const AccountTransferForm = ({
                                                                 `symbols--${selected_from.currency.toLowerCase()}`
                                                             )}
                                                         />
-                                                    ) : (
-                                                        undefined
-                                                    )
+                                                    ) : undefined
                                                 }
                                                 autoComplete='off'
                                                 maxLength='30'

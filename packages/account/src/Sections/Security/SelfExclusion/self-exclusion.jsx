@@ -146,12 +146,7 @@ class SelfExclusion extends React.Component {
         if (values.timeout_until) {
             if (values.timeout_until <= toMoment().unix()) {
                 errors.timeout_until = localize('Timeout time must be greater than current time.');
-            } else if (
-                values.timeout_until >
-                toMoment()
-                    .add(6, 'week')
-                    .unix()
-            ) {
+            } else if (values.timeout_until > toMoment().add(6, 'week').unix()) {
                 errors.timeout_until = localize('Timeout time cannot be more than 6 weeks.');
             }
         }
@@ -159,19 +154,9 @@ class SelfExclusion extends React.Component {
         if (values.exclude_until) {
             if (toMoment(values.exclude_until).unix() < toMoment().unix()) {
                 errors.exclude_until = localize('Exclude time must be after today.');
-            } else if (
-                toMoment(values.exclude_until).unix() <
-                toMoment()
-                    .add(6, 'month')
-                    .unix()
-            ) {
+            } else if (toMoment(values.exclude_until).unix() < toMoment().add(6, 'month').unix()) {
                 errors.exclude_until = localize('Exclude time cannot be less than 6 months.');
-            } else if (
-                toMoment(values.exclude_until).unix() >
-                toMoment()
-                    .add(5, 'year')
-                    .unix()
-            ) {
+            } else if (toMoment(values.exclude_until).unix() > toMoment().add(5, 'year').unix()) {
                 errors.exclude_until = localize('Exclude time cannot be for more than five years.');
             }
         }

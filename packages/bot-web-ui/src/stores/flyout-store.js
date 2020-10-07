@@ -55,7 +55,7 @@ export default class FlyoutStore {
         // using setTimeout is a workaround to solve this issue
         // TODO: Find a proper solution
         const self = this;
-        setTimeout(function() {
+        setTimeout(function () {
             self.setFlyoutWidth(processed_xml);
         }, 50);
     }

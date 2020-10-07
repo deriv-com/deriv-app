@@ -4,7 +4,7 @@ import { redirectToLogin } from '_common/base/login';
 import { LocalStore } from '@deriv/shared';
 import { WS } from 'Services/ws-methods';
 
-export const showUnavailableLocationError = flow(function*(showError, is_logged_in) {
+export const showUnavailableLocationError = flow(function* (showError, is_logged_in) {
     const website_status = yield WS.wait('website_status');
     const residence_list = yield WS.residenceList();
 

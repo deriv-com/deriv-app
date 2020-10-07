@@ -16,6 +16,7 @@
     "husky": "^4.2.5",
     "lerna": "^3.22.0",
     "lint-staged": "^10.4.0",
+    "stylelint-config-prettier": "^8.0.2",
     "stylelint-formatter-pretty": "^2.1.0",
     "stylelint-no-unsupported-browser-features": "^4.0.0",
     "stylelint-selector-bem-pattern": "^2.1.0",
@@ -42,7 +43,8 @@
     "test:mocha": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run test:mocha ;}; f",
     "test:stylelint": "stylelint \"./packages/{account/src/Styles,components/src/components,(trader|core)/src/sass,bot-web-ui/src/assets/sass,p2p/src/components,shared/src/styles}/**/*.s?(a|c)ss\"",
     "stylelint:fix": "stylelint \"./packages/{account/src/Styles,components/src/components,(trader|core)/src/sass,bot-web-ui/src/assets/sass,p2p/src/components,shared/src/styles}/**/*.s?(a|c)ss\" --fix",
-    "translate": "f () { lerna exec --scope @deriv/translations -- npm run translate ;}; f"
+    "translate": "f () { lerna exec --scope @deriv/translations -- npm run translate ;}; f",
+    "stylelint-check": "stylelint-config-prettier-check"
   },
   "husky": {
     "hooks": {

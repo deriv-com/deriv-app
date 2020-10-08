@@ -56,7 +56,7 @@ export const paramsHash = href => {
     return param_hash;
 };
 
-export const normalizePath = path => (path ? path.replace(/(^\/|\/$|[^a-zA-Z0-9-_./])/g, '') : '');
+export const normalizePath = path => (path ? path.replace(/(^\/|\/$|[^a-zA-Z0-9-_./()])/g, '') : '');
 
 export const urlFor = (
     path,

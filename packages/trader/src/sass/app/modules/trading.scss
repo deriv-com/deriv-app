@@ -158,10 +158,10 @@
     }
     &__currency {
         position: absolute;
-        float: left;
+        float: right;
         font-size: 10px;
         height: 32px;
-        left: 48px;
+        right: 50px;
         align-items: center;
         justify-content: center;
         width: 20px;
@@ -275,6 +275,11 @@
             }
         }
     }
+    &__price-info-currency {
+        @include mobile {
+            font-size: 0.9rem;
+        }
+    }
     &__barriers {
         display: flex;
         flex-direction: column;
@@ -320,7 +325,7 @@
         // fix for Safari:
         // display: inline-block causes input cursor to seemingly appears duplicated
         display: grid;
-        grid-template-columns: 1fr 3fr;
+        grid-template-columns: 3fr 1.5fr;
         grid-gap: 0.2em;
 
         .dc-dropdown-container {
@@ -374,6 +379,9 @@
         width: 28rem;
     }
     &__cancel-deal-info {
+        .trade-container__price-info-currency {
+            font-size: 1.1rem;
+        }
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -406,6 +414,15 @@
     /* postcss-bem-linter: ignore */
     .symbols.disabled {
         color: var(--text-disabled);
+    }
+    .dc-dropdown--left {
+        .dc-dropdown__display-text {
+            padding-left: 15px;
+            padding-right: unset;
+        }
+        .dc-dropdown__select-arrow {
+            left: 0.3rem;
+        }
     }
 }
 

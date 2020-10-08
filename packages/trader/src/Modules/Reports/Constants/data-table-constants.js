@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Icon, Label, Money, ContractCard } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { isMobile, getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import ProgressSliderStream from 'App/Containers/ProgressSliderStream';
 import { getCardLabels } from 'Constants/contract';
@@ -33,7 +33,7 @@ const getModeFromValue = key => {
 export const getStatementTableColumnsTemplate = currency => [
     {
         key: 'icon',
-        title: localize('Type'),
+        title: isMobile() ? '' : localize('Type'),
         col_index: 'icon',
         renderCellContent: ({ cell_value, row_obj }) => (
             <MarketSymbolIconRow action={cell_value} key={row_obj.transaction_id} payload={row_obj} />
@@ -42,6 +42,11 @@ export const getStatementTableColumnsTemplate = currency => [
     {
         title: localize('Ref. ID'),
         col_index: 'refid',
+    },
+    {
+        title: localize('Currency'),
+        col_index: 'currency',
+        renderCellContent: () => getCurrencyDisplayCode(currency),
     },
     {
         title: localize('Transaction time'),
@@ -80,7 +85,7 @@ export const getStatementTableColumnsTemplate = currency => [
 export const getProfitTableColumnsTemplate = (currency, items_count) => [
     {
         key: 'icon',
-        title: '',
+        title: isMobile() ? '' : localize('Type'),
         col_index: 'action_type',
         renderCellContent: ({ cell_value, row_obj, is_footer }) => {
             if (is_footer) {
@@ -92,6 +97,11 @@ export const getProfitTableColumnsTemplate = (currency, items_count) => [
     {
         title: localize('Ref. ID'),
         col_index: 'transaction_id',
+    },
+    {
+        title: localize('Currency'),
+        col_index: 'currency',
+        renderCellContent: ({ is_footer }) => (is_footer ? '' : getCurrencyDisplayCode(currency)),
     },
     {
         title: localize('Buy time'),
@@ -148,7 +158,7 @@ export const getProfitTableColumnsTemplate = (currency, items_count) => [
 ];
 export const getOpenPositionsColumnsTemplate = currency => [
     {
-        title: localize('Type'),
+        title: isMobile() ? '' : localize('Type'),
         col_index: 'type',
         renderCellContent: ({ cell_value, row_obj, is_footer }) => {
             if (is_footer) return localize('Total');
@@ -161,18 +171,23 @@ export const getOpenPositionsColumnsTemplate = currency => [
         col_index: 'reference',
     },
     {
+        title: localize('Currency'),
+        col_index: 'currency',
+        renderCellContent: ({ row_obj }) => getCurrencyDisplayCode(row_obj.contract_info?.currency),
+    },
+    {
         title: localize('Buy price'),
         col_index: 'purchase',
         renderCellContent: ({ cell_value }) => <Money amount={cell_value} currency={currency} />,
     },
     {
-        title: localize('Potential payout'),
+        title: localize('Payout limit'),
         col_index: 'payout',
         renderCellContent: ({ cell_value }) =>
             cell_value ? <Money amount={cell_value} currency={currency} /> : <span>-</span>,
     },
     {
-        title: localize('Potential profit/loss'),
+        title: localize('Indicative profit/loss'),
         col_index: 'profit',
         renderCellContent: ({ row_obj }) => {
             if (!row_obj.profit_loss && (!row_obj.contract_info || !row_obj.contract_info.profit)) return;
@@ -219,7 +234,7 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
     server_time,
 }) => [
     {
-        title: localize('Type'),
+        title: isMobile() ? '' : localize('Type'),
         col_index: 'type',
         renderCellContent: ({ cell_value, row_obj, is_footer }) => {
             if (is_footer) return localize('Total');
@@ -239,6 +254,11 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
         col_index: 'multiplier',
         renderCellContent: ({ row_obj }) =>
             row_obj.contract_info && row_obj.contract_info.multiplier ? `x${row_obj.contract_info.multiplier}` : '',
+    },
+    {
+        title: localize('Currency'),
+        col_index: 'currency',
+        renderCellContent: ({ row_obj }) => getCurrencyDisplayCode(row_obj.contract_info?.currency),
     },
     {
         title: localize('Stake'),

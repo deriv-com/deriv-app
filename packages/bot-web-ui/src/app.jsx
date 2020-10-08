@@ -1,6 +1,6 @@
 import './public-path'; // Leave this here (at the top)! OK boss!
-import React from 'react';
-import { DBot, ServerTime } from '@deriv/bot-skeleton';
+import React from 'react'; // eslint-disable-line import/first
+import { DBot, ServerTime } from '@deriv/bot-skeleton'; // eslint-disable-line import/first
 import Audio from './components/audio.jsx';
 import BotFooterExtensions from './components/bot-footer-extensions.jsx';
 import MainContent from './components/main-content.jsx';

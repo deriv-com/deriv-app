@@ -1,4 +1,4 @@
-import { action, observable, reaction } from 'mobx';
+import { action, reaction } from 'mobx';
 import { showDigitalOptionsUnavailableError } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { runIrreversibleEvents, ApiHelpers, DBot } from '@deriv/bot-skeleton';
@@ -69,15 +69,6 @@ export default class AppStore {
         }
     }
 
-    onClickOutsideBlockly(event) {
-        const path = event.path || (event.composedPath && event.composedPath());
-        const is_click_outside_blockly = !path.some(el => el.classList && el.classList.contains('injectionDiv'));
-
-        if (is_click_outside_blockly) {
-            Blockly.hideChaff(/* allowToolbox */ false);
-        }
-    }
-
     registerCurrencyReaction() {
         // Syncs all trade options blocks' currency with the client's active currency.
         this.disposeCurrencyReaction = reaction(
@@ -102,7 +93,7 @@ export default class AppStore {
             switch_broadcast => {
                 if (!switch_broadcast) return;
 
-                showDigitalOptionsMaltainvestError(client, common);
+                this.showDigitalOptionsMaltainvestError(client, common);
 
                 const { active_symbols, contracts_for } = ApiHelpers.instance;
 
@@ -125,8 +116,10 @@ export default class AppStore {
     }
 
     registerLandingCompanyChangeReaction() {
+        const { client, common } = this.root_store.core;
+
         this.disposeLandingCompanyChangeReaction = reaction(
-            () => this.root_store.core.client.landing_company_shortcode,
+            () => client.landing_company_shortcode,
             landing_company_shortcode => {
                 if (landing_company_shortcode === 'maltainvest') {
                     showDigitalOptionsUnavailableError(common.showError, {
@@ -173,6 +166,15 @@ export default class AppStore {
             ws: this.root_store.ws,
         };
     }
+
+    onClickOutsideBlockly = event => {
+        const path = event.path || (event.composedPath && event.composedPath());
+        const is_click_outside_blockly = !path.some(el => el.classList && el.classList.contains('injectionDiv'));
+
+        if (is_click_outside_blockly) {
+            Blockly.hideChaff(/* allowToolbox */ false);
+        }
+    };
 
     showDigitalOptionsMaltainvestError = (client, common) => {
         if (client.landing_company_shortcode === 'maltainvest') {

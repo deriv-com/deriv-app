@@ -59,16 +59,22 @@ class TermsOfUse extends React.Component {
                                             name='agreed_tnc'
                                             id='agreed_tnc'
                                             label={
-                                                <Localize
-                                                    i18n_default_text='I agree to the <0>terms and conditions</0>.'
-                                                    components={[
-                                                        <StaticUrl
-                                                            key={0}
-                                                            className='link'
-                                                            href='/terms-and-conditions'
-                                                        />,
-                                                    ]}
-                                                />
+                                                this.props.real_account_signup_target === 'samoa' ? (
+                                                    localize(
+                                                        'I have read and agree to the terms and conditions of the Deriv website.'
+                                                    )
+                                                ) : (
+                                                    <Localize
+                                                        i18n_default_text='I agree to the <0>terms and conditions</0>.'
+                                                        components={[
+                                                            <StaticUrl
+                                                                key={0}
+                                                                className='link'
+                                                                href='/terms-and-conditions'
+                                                            />,
+                                                        ]}
+                                                    />
+                                                )
                                             }
                                         />
                                     </Div100vhContainer>

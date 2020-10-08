@@ -42,6 +42,8 @@ const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_re
             return <Localize i18n_default_text='Add a Deriv Synthetic account' />;
         case 'maltainvest':
             return <Localize i18n_default_text='Add a Deriv Financial account' />;
+        case 'samoa':
+            return <Localize i18n_default_text='Add a real account' />;
         default:
             return <Localize i18n_default_text='Add a Deriv account' />;
     }

@@ -8,6 +8,7 @@ export const BrokerSpecificMessage = ({ target }) => (
         {target === 'iom' && <IOMDescription />}
         {target === 'malta' && <MaltaDescription />}
         {target === 'maltainvest' && <MaltaInvestDescription />}
+        {target === 'samoa' && <SamoaDescription />}
     </React.Fragment>
 );
 
@@ -92,6 +93,33 @@ export const MaltaInvestDescription = () => (
         </p>
     </React.Fragment>
 );
+
+export const SamoaDescription = () => (
+    <React.Fragment>
+        <h4>
+            <Localize i18n_default_text={'Jurisdiction and choice of law'} />
+        </h4>
+        <p>
+            <Localize
+                i18n_default_text={
+                    'Your account will be opened with Deriv (SVG) Ltd., and will be subject to the jurisdiction and laws of Saint Vincent and the Grenadines.'
+                }
+            />
+        </p>
+        <Hr />
+        <h4>
+            <Localize i18n_default_text={'Risk warning'} />
+        </h4>
+        <p>
+            <Localize
+                i18n_default_text={
+                    'The financial trading services offered on this site are only suitable for customers who accept the possibility of losing all the money they invest and who understand and have experience of the risk involved in the purchase of financial contracts. Transactions in financial contracts carry a high degree of risk. If the contracts you purchased expire as worthless, you will lose all your investment, which includes the contract premium.'
+                }
+            />
+        </p>
+    </React.Fragment>
+);
+
 export const SharedMessage = () => (
     <React.Fragment>
         <h4>

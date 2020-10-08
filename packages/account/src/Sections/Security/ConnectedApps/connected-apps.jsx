@@ -19,7 +19,7 @@ class ConnectedApps extends React.Component {
     }, {});
 
     componentDidMount() {
-        this.fetchConnectedApps();
+        // this.fetchConnectedApps();
     }
 
     handleRevokeAccess = () => {

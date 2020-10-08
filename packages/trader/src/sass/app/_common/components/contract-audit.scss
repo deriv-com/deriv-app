@@ -24,6 +24,9 @@ $HEIGHT: calc(100vh - 34em);
                 height: calc(100% - 4rem);
             }
         }
+        .dc-themed-scrollbars {
+            width: 100%;
+        }
     }
     &__grid {
         display: flex;

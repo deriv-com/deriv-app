@@ -1,4 +1,4 @@
-import { localize } from '@deriv/translations';
+import { getLanguageKey, localize } from '@deriv/translations';
 import './blockly';
 import { hasAllRequiredBlocks, updateDisabledBlocks } from './utils';
 import main_xml from './xml/main.xml';
@@ -90,6 +90,13 @@ class DBot {
                 window.dispatchEvent(new Event('resize'));
                 window.addEventListener('dragover', DBot.handleDragOver);
                 window.addEventListener('drop', e => DBot.handleDropOver(e, handleFileChange));
+
+                // Re-render all blocks when switching languages.
+                window.addEventListener('storage', event => {
+                    if (event.key === getLanguageKey()) {
+                        Blockly.derivWorkspace.getAllBlocks().forEach(block => block.render());
+                    }
+                });
 
                 // disable overflow
                 el_scratch_div.parentNode.style.overflow = 'hidden';

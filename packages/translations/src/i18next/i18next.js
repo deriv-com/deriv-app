@@ -104,7 +104,8 @@ export const getLanguage = () => {
     return i18n.language || initial_language;
 };
 
-// eslint-disable-next-line no-unused-vars
+export const getLanguageKey = () => LANGUAGE_KEY;
+
 export const changeLanguage = async (lang, cb) => {
     // TODO: uncomment this when translations are ready
     if (isLanguageAvailable(lang)) {
@@ -112,6 +113,11 @@ export const changeLanguage = async (lang, cb) => {
         i18n.changeLanguage(lang, () => {
             localStorage.setItem(LANGUAGE_KEY, lang);
             cb(lang);
+
+            if (document.hasFocus()) {
+                // Emit an event to active document so it can respond to language changes too.
+                window.dispatchEvent(new StorageEvent('storage', { key: LANGUAGE_KEY, newValue: lang }));
+            }
         });
     }
 };

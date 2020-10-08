@@ -4,6 +4,7 @@ import React from 'react';
 import { Tabs, ThemedScrollbars } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { getCurrencyDisplayCode, isDesktop, isMobile, website_name } from '@deriv/shared';
+import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 import AddCryptoCurrency from './add-crypto-currency.jsx';
 import ChangeAccountCurrency from './change-account-currency.jsx';
@@ -23,6 +24,12 @@ class AddOrManageAccounts extends React.Component {
                 fiat: '',
             },
         };
+    }
+
+    async componentDidMount() {
+        this.props.setLoading(true);
+        await WS.mt5LoginList();
+        this.props.setLoading(false);
     }
 
     setActiveTabIndex = index => {
@@ -80,7 +87,7 @@ class AddOrManageAccounts extends React.Component {
     }
 
     get should_hide_crypto() {
-        return this.props.is_eu_enabled && this.props.is_eu; // TODO [deriv-eu] remove is_eu_enabled once released
+        return this.props.is_eu;
     }
 
     render() {
@@ -184,13 +191,12 @@ AddOrManageAccounts.propTypes = {
     onSuccessSetAccountCurrency: PropTypes.func,
 };
 
-export default connect(({ client, ui }) => ({
+export default connect(({ client }) => ({
     available_crypto_currencies: client.available_crypto_currencies,
     can_change_fiat_currency: client.can_change_fiat_currency,
     currency: client.currency,
     current_currency_type: client.current_currency_type,
     current_fiat_currency: client.current_fiat_currency,
-    is_eu_enabled: ui.is_eu_enabled, // TODO [deriv-eu] remove is_eu_enabled once eu is released.
     is_eu: client.is_eu,
     has_fiat: client.has_fiat,
     setCurrency: client.setAccountCurrency,

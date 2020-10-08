@@ -1,6 +1,6 @@
-import { stddev, takeLast } from './math';
+import { sequence } from '@deriv/shared';
 import { simpleMovingAverage } from './simple-moving-average';
-import { sequence } from '../object';
+import { stddev, takeLast } from '../utils/math';
 
 /**
  * @param {Array} data

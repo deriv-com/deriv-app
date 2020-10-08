@@ -1,5 +1,5 @@
-import { takeField } from './math';
 import { exponentialMovingAverageArray } from './exponential-moving-average';
+import { takeField } from '../utils/math';
 
 const paddingLeft = (data, length) => {
     const arr = [];

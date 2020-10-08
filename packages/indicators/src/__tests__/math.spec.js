@@ -1,4 +1,4 @@
-import { mean, stddev, sum, takeLast } from '../math';
+import { mean, stddev, sum, takeLast } from '../utils/math';
 
 describe('math', () => {
     it('mean', () => {

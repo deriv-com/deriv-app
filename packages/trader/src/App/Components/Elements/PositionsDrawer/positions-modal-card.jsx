@@ -8,6 +8,7 @@ import { getContractPath, isMultiplierContract, isHighLow, isCryptocurrency } fr
 import { localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
 import { connect } from 'Stores/connect';
+import { connectWithContractUpdate } from 'Stores/Modules/Contract/Helpers/multiplier';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import { getContractTypeDisplay, getCardLabels } from 'Constants/contract';
 import ResultMobile from './result-mobile.jsx';
@@ -216,6 +217,7 @@ const PositionsModalCard = ({
     const card_multiplier_footer = (
         <ContractCard.Footer
             addToast={addToast}
+            connectWithContractUpdate={connectWithContractUpdate}
             contract_info={contract_info}
             getCardLabels={getCardLabels}
             getContractById={getContractById}

@@ -23,6 +23,7 @@ const CardFooter = ({
     should_show_cancellation_warning,
     status,
     toggleCancellationWarning,
+    connectWithContractUpdate,
 }) => {
     const is_valid_to_cancel = isValidToCancel(contract_info);
     const is_valid_to_sell = isValidToSell(contract_info);
@@ -70,6 +71,7 @@ const CardFooter = ({
                                 should_show_cancellation_warning={should_show_cancellation_warning}
                                 status={status}
                                 toggleCancellationWarning={toggleCancellationWarning}
+                                connectWithContractUpdate={connectWithContractUpdate}
                             />
                         )}
                     </div>
@@ -111,6 +113,7 @@ CardFooter.propTypes = {
     should_show_cancellation_warning: PropTypes.bool,
     status: PropTypes.string,
     toggleCancellationWarning: PropTypes.func,
+    connectWithContractUpdate: PropTypes.func,
 };
 
 export default CardFooter;

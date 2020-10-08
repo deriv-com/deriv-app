@@ -1,4 +1,4 @@
-import { isCryptocurrency } from '@deriv/shared';
+import { isCryptocurrency, getCurrencyDisplayCode } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 export const buildCurrenciesList = payout_currencies => {
@@ -7,7 +7,7 @@ export const buildCurrenciesList = payout_currencies => {
 
     payout_currencies.forEach(cur => {
         const isCrypto = isCryptocurrency(cur);
-        (isCrypto ? crypto : fiat).push({ text: cur, value: cur, has_tooltip: isCrypto });
+        (isCrypto ? crypto : fiat).push({ text: getCurrencyDisplayCode(cur), value: cur, has_tooltip: isCrypto });
     });
 
     return {

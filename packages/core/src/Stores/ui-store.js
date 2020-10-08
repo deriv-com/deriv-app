@@ -112,9 +112,6 @@ export default class UIStore extends BaseStore {
     // UI Focus retention
     @observable current_focus = null;
 
-    // Enabling EU users
-    @observable is_eu_enabled = false; // TODO: [deriv-eu] - Remove this constant when all EU sections are done.
-
     // Mobile
     mobile_toast_timeout = 3500;
     @observable.shallow toasts = [];
@@ -159,9 +156,6 @@ export default class UIStore extends BaseStore {
         ];
 
         super({ root_store, local_storage_properties, store_name });
-
-        // TODO: [deiv-eu] remove this manual enabler
-        this.toggleIsEuEnabled(localStorage.getItem('is_eu_enabled') === 'true');
 
         window.addEventListener('resize', this.handleResize);
         autorun(() => {
@@ -668,17 +662,14 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    toggleWelcomeModal(is_visible = !this.is_welcome_modal_visible) {
+    toggleWelcomeModal({ is_visible = !this.is_welcome_modal_visible, should_persist = false }) {
+        if (LocalStore.get('has_viewed_welcome_screen') && !should_persist) return;
         this.is_welcome_modal_visible = is_visible;
+        LocalStore.set('has_viewed_welcome_screen', true);
     }
 
     @action.bound
     showAccountTypesModalForEuropean() {
         this.toggleAccountTypesModal(this.root_store.client.is_uk);
-    }
-
-    @action.bound
-    toggleIsEuEnabled(status = !this.is_eu_enabled) {
-        this.is_eu_enabled = status;
     }
 }

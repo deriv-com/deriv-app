@@ -24,14 +24,16 @@ class Cashier extends React.Component {
         this.props.toggleCashier();
         // we still need to populate the tabs shown on cashier
         await WS.wait('authorize');
-        this.props.onMount();
-        this.props.setAccountSwitchListener();
+        if (!this.props.is_virtual) {
+            this.props.onMount();
+            this.props.setAccountSwitchListener();
 
-        // TODO: Remove L21, L31, and L38 code blocks once landscape design is ready
-        // doughflow iframe inconjunction with android's virtual keyboard causes issues with css screen height calculation (thus falsely triggering landscape blocker in Android)
-        // this is due to the onscreen virtual keyboard resizing the innerHeight of the window and ignoring the actual height of content within the iframe
-        if (isMobile() && isTouchDevice()) {
-            window.addEventListener('resize', this.handleOnScreenKeyboard);
+            // TODO: Remove L21, L31, and L38 code blocks once landscape design is ready
+            // doughflow iframe inconjunction with android's virtual keyboard causes issues with css screen height calculation (thus falsely triggering landscape blocker in Android)
+            // this is due to the onscreen virtual keyboard resizing the innerHeight of the window and ignoring the actual height of content within the iframe
+            if (isMobile() && isTouchDevice()) {
+                window.addEventListener('resize', this.handleOnScreenKeyboard);
+            }
         }
     }
 
@@ -75,7 +77,7 @@ class Cashier extends React.Component {
                         ...(route.path === routes.cashier_p2p && { count: this.props.p2p_notification_count }),
                         default: route.default,
                         icon: route.icon_component,
-                        label: route.title,
+                        label: route.getTitle(),
                         value: route.component,
                         path: route.path,
                         has_side_note: route.path !== routes.cashier_p2p, // Set to true to create the 3-column effect without passing any content. If there is content, the content should be passed in.
@@ -107,7 +109,7 @@ class Cashier extends React.Component {
             >
                 <div className='cashier'>
                     <PageOverlay
-                        header={isMobile() ? selected_route.title : localize('Cashier')}
+                        header={isMobile() ? selected_route.getTitle() : localize('Cashier')}
                         onClickClose={this.onClickClose}
                     >
                         <DesktopWrapper>

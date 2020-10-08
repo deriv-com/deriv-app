@@ -168,6 +168,7 @@ Blockly.JavaScript.trade_definition = block => {
         ${initialization.trim()}
     };
       BinaryBotPrivateStart = function BinaryBotPrivateStart() {
+        BinaryBotPrivateHasCalledTradeOptions = false;
         Bot.highlightBlock('${block.id}');
         ${trade_options_statement.trim()}
       };\n`;

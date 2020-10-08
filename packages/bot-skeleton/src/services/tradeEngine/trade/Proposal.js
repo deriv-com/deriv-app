@@ -133,20 +133,18 @@ export default Engine =>
             const { proposals } = this.data;
 
             if (proposals.length > 0) {
-                const has_equal_length = proposals.length === this.proposal_templates.length;
-                const hasEqualProposals = () =>
-                    this.proposal_templates.every(template => {
-                        return (
-                            proposals.findIndex(proposal => {
-                                return (
-                                    proposal.purchase_reference === template.passthrough.purchase_reference &&
-                                    proposal.contract_type === template.contract_type
-                                );
-                            }) !== -1
-                        );
-                    });
+                const has_equal_proposals = this.proposal_templates.every(template => {
+                    return (
+                        proposals.findIndex(proposal => {
+                            return (
+                                proposal.purchase_reference === template.passthrough.purchase_reference &&
+                                proposal.contract_type === template.contract_type
+                            );
+                        }) !== -1
+                    );
+                });
 
-                if (has_equal_length && hasEqualProposals()) {
+                if (has_equal_proposals) {
                     this.startPromise.then(() => this.store.dispatch(proposalsReady()));
                 }
             }

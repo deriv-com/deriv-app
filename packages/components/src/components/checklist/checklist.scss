@@ -6,12 +6,11 @@
         justify-content: space-between;
         align-items: center;
         border-bottom: solid 1px var(--border-normal);
-        padding: 12px 4px;
+        padding: 12px;
 
         &-text {
             max-width: 80%;
-            color: var(--text-general);
-            font-size: var(--text-size-xs);
+            @include typeface(--paragraph-left-normal-black);
         }
         &-status {
             display: flex;

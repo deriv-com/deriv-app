@@ -4,15 +4,13 @@ import { Button, Icon, Input, Loading, Popover, Table, ThemedScrollbars } from '
 import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 import { localize } from 'Components/i18next';
-import Dp2pContext from 'Components/context/dp2p-context';
 import { generateHexColourFromNickname, getShortNickname } from 'Utils/string';
 import { useStores } from 'Stores';
 import FormError from '../form/error.jsx';
 import './my-profile.scss';
 
 const MyProfile = observer(() => {
-    const { my_profile_store } = useStores();
-    const { currency } = React.useContext(Dp2pContext);
+    const { general_store, my_profile_store } = useStores();
 
     const {
         basic_verification,
@@ -42,11 +40,11 @@ const MyProfile = observer(() => {
                     <div className='my-profile__header-details'>
                         <div
                             className='my-profile__header-avatar'
-                            style={{ backgroundColor: generateHexColourFromNickname(my_profile_store.nickname) }}
+                            style={{ backgroundColor: generateHexColourFromNickname(general_store.nickname) }}
                         >
-                            {getShortNickname(my_profile_store.nickname)}
+                            {getShortNickname(general_store.nickname)}
                         </div>
-                        <div className='my-profile__header-name'>{my_profile_store.nickname}</div>
+                        <div className='my-profile__header-name'>{general_store.nickname}</div>
                     </div>
                     <div className='my-profile__header-verification'>
                         {basic_verification ? (
@@ -83,21 +81,23 @@ const MyProfile = observer(() => {
                             <div className='my-profile__stats-cell-separator' />
                             <Table.Cell className='my-profile__stats-cell'>
                                 <div className='my-profile__stats-cell-header'>
-                                    {localize('Buy ({{currency}})', { currency })}
+                                    {localize('Buy ({{currency}})', { currency: general_store.client.currency })}
                                 </div>
                                 <div className='my-profile__stats-cell-info'>{buy_orders_count || '-'}</div>
                             </Table.Cell>
                             <div className='my-profile__stats-cell-separator' />
                             <Table.Cell className='my-profile__stats-cell'>
                                 <div className='my-profile__stats-cell-header'>
-                                    {localize('Sell ({{currency}})', { currency })}
+                                    {localize('Sell ({{currency}})', { currency: general_store.client.currency })}
                                 </div>
                                 <div className='my-profile__stats-cell-info'>{sell_orders_count || '-'}</div>
                             </Table.Cell>
                             <div className='my-profile__stats-cell-separator' />
                             <Table.Cell className='my-profile__stats-cell'>
                                 <div className='my-profile__stats-cell-header'>
-                                    {localize('Buy / Sell limit ({{currency}})', { currency })}
+                                    {localize('Buy / Sell limit ({{currency}})', {
+                                        currency: general_store.client.currency,
+                                    })}
                                 </div>
                                 <div className='my-profile__stats-cell-info'>
                                     {daily_buy_limit && daily_sell_limit

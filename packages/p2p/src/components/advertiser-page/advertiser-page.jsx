@@ -1,8 +1,8 @@
 import React from 'react';
 import { Button, Icon, Loading, Modal, Popover, Table, Tabs, ThemedScrollbars } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
-import { generateHexColourFromNickname, getShortNickname } from 'Utils/string';
-import Dp2pContext from 'Components/context/dp2p-context';
+import PropTypes from 'prop-types';
+import { generateHexColourFromNickname } from 'Utils/string';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { useStores } from 'Stores';
 import Empty from 'Components/empty/empty.jsx';
@@ -14,25 +14,18 @@ import { localize } from '../i18next';
 import './advertiser-page.scss';
 
 const RowComponent = React.memo(({ advert, showAdPopup, style }) => {
-    const { advertiser_id } = React.useContext(Dp2pContext);
-    const {
-        account_currency,
-        advertiser_details,
-        counterparty_type,
-        local_currency,
-        max_order_amount_limit_display,
-        min_order_amount_limit_display,
-        price_display,
-    } = advert;
+    const { advertiser_page_store, general_store } = useStores();
+    const { local_currency, max_order_amount_limit_display, min_order_amount_limit_display, price_display } = advert;
 
-    const is_buy_advert = counterparty_type === buy_sell.BUY;
-    const is_my_advert = advertiser_details.id === advertiser_id;
+    const is_buy_advert = advertiser_page_store.counterparty_type === buy_sell.BUY;
+    const is_my_advert = advertiser_page_store.advertiser_details.id === general_store.advertiser_id;
 
     return (
         <div style={style}>
             <Table.Row className='advertiser-page__adverts-table_row'>
                 <Table.Cell>
-                    {min_order_amount_limit_display}&ndash;{max_order_amount_limit_display} {account_currency}
+                    {min_order_amount_limit_display}&ndash;{max_order_amount_limit_display}{' '}
+                    {general_store.client.currency}
                 </Table.Cell>
                 <Table.Cell className='advertiser-page__adverts-price'>
                     {price_display} {local_currency}
@@ -41,8 +34,8 @@ const RowComponent = React.memo(({ advert, showAdPopup, style }) => {
                     <Table.Cell />
                 ) : (
                     <Table.Cell className='advertiser-page__adverts-button'>
-                        <Button primary small onClick={() => showAdPopup(advert)}>
-                            {is_buy_advert ? localize('Buy') : localize('Sell')} {account_currency}
+                        <Button primary small onClick={() => showAdPopup(advert, general_store.is_advertiser)}>
+                            {is_buy_advert ? localize('Buy') : localize('Sell')} {general_store.client.currency}
                         </Button>
                     </Table.Cell>
                 )}
@@ -53,11 +46,9 @@ const RowComponent = React.memo(({ advert, showAdPopup, style }) => {
 
 RowComponent.displayName = 'RowComponent';
 
-const AdvertiserPage = observer(({ navigate, selected_advert, showVerification }) => {
-    const { is_advertiser, nickname } = React.useContext(Dp2pContext);
-    const { advertiser_details, account_currency } = selected_advert;
-    const Form = nickname ? BuySellForm : NicknameForm;
-    const { advertiser_page_store } = useStores();
+const AdvertiserPage = observer(props => {
+    const { advertiser_page_store, general_store } = useStores();
+    advertiser_page_store.setAdvertiserPageProps(props);
 
     const {
         basic_verification,
@@ -70,36 +61,17 @@ const AdvertiserPage = observer(({ navigate, selected_advert, showVerification }
         total_orders_count,
     } = advertiser_page_store.advertiser_info;
 
-    const modal_title =
-        advertiser_page_store.counterparty_type === buy_sell.BUY
-            ? localize('Buy {{ currency }}', { currency: account_currency })
-            : localize('Sell {{ currency }}', { currency: account_currency });
-
-    const onConfirmClick = order_info => {
-        const nav = { location: 'buy_sell' };
-        navigate('orders', { order_info, nav });
-    };
-    const short_name = getShortNickname(advertiser_details.name);
-    const showAdPopup = advert => {
-        if (!is_advertiser) {
-            showVerification();
-        } else {
-            advertiser_page_store.setAd(advert);
-            advertiser_page_store.setShowAdPopup(true);
-        }
-    };
-
     const avg_release_time_in_minutes = release_time_avg > 60 ? Math.round(release_time_avg / 60) : '< 1';
+    const Form = general_store.nickname ? BuySellForm : NicknameForm;
 
-    const Row = props => <RowComponent {...props} showAdPopup={showAdPopup} />;
+    const Row = row_props => <RowComponent {...row_props} showAdPopup={advertiser_page_store.showAdPopup} />;
 
     React.useEffect(() => {
-        advertiser_page_store.getAdvertiserAdverts(advertiser_details);
-        advertiser_page_store.getAdvertiserInfo(advertiser_details);
+        advertiser_page_store.onMount();
     }, []);
 
     React.useEffect(() => {
-        advertiser_page_store.getAdvertiserAdverts(advertiser_details);
+        advertiser_page_store.onTabChange();
     }, [advertiser_page_store.active_index]);
 
     if (advertiser_page_store.is_loading) {
@@ -119,7 +91,7 @@ const AdvertiserPage = observer(({ navigate, selected_advert, showVerification }
                         height={advertiser_page_store.counterparty_type === buy_sell.BUY ? '400px' : '649px'}
                         width='456px'
                         is_open={advertiser_page_store.show_ad_popup}
-                        title={modal_title}
+                        title={advertiser_page_store.modal_title}
                         toggleModal={advertiser_page_store.onCancelClick}
                     >
                         {/* Parent height - Modal.Header height - Modal.Footer height */}
@@ -128,7 +100,7 @@ const AdvertiserPage = observer(({ navigate, selected_advert, showVerification }
                                 <Form
                                     advert={advertiser_page_store.ad}
                                     handleClose={advertiser_page_store.onCancelClick}
-                                    handleConfirm={onConfirmClick}
+                                    handleConfirm={advertiser_page_store.onConfirmClick}
                                     setIsSubmitDisabled={advertiser_page_store.setIsSubmitDisabled}
                                     setErrorMessage={advertiser_page_store.setFormErrorMessage}
                                     setSubmitForm={advertiser_page_store.setSubmitForm}
@@ -157,11 +129,17 @@ const AdvertiserPage = observer(({ navigate, selected_advert, showVerification }
                     <div className='advertiser-page__header-details'>
                         <div
                             className='advertiser-page__header-avatar'
-                            style={{ backgroundColor: generateHexColourFromNickname(advertiser_details.name) }}
+                            style={{
+                                backgroundColor: generateHexColourFromNickname(
+                                    advertiser_page_store.advertiser_details.name
+                                ),
+                            }}
                         >
-                            {short_name}
+                            {advertiser_page_store.short_name}
                         </div>
-                        <div className='advertiser-page__header-name'>{advertiser_details.name}</div>
+                        <div className='advertiser-page__header-name'>
+                            {advertiser_page_store.advertiser_details.name}
+                        </div>
                     </div>
                     <div className='advertiser-page__header-verification'>
                         {basic_verification ? (
@@ -256,7 +234,9 @@ const AdvertiserPage = observer(({ navigate, selected_advert, showVerification }
                                     <Table.Row className='advertiser-page__adverts-table_row'>
                                         <Table.Head>{localize('Limits')}</Table.Head>
                                         <Table.Head>
-                                            {localize('Rate (1 {{account_currency}})', { account_currency })}
+                                            {localize('Rate (1 {{currency}})', {
+                                                currency: general_store.client.currency,
+                                            })}
                                         </Table.Head>
                                         <Table.Head>{''}</Table.Head>
                                     </Table.Row>
@@ -283,5 +263,9 @@ const AdvertiserPage = observer(({ navigate, selected_advert, showVerification }
         </div>
     );
 });
-
+AdvertiserPage.propTypes = {
+    navigate: PropTypes.func,
+    selected_advert: PropTypes.object,
+    showVerification: PropTypes.func,
+};
 export default AdvertiserPage;

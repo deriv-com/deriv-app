@@ -12,11 +12,11 @@ export default class MyProfileStore {
     @observable is_button_loading = false;
     @observable is_loading = true;
     @observable is_submit_success = false;
-    @observable nickname = '';
     @observable payment_info = '';
 
     @action.bound
     getAdvertiserInfo() {
+        this.setIsLoading(true);
         return new Promise(resolve => {
             requestWS({
                 p2p_advertiser_info: 1,
@@ -24,7 +24,6 @@ export default class MyProfileStore {
                 if (!response.error) {
                     const { p2p_advertiser_info } = response;
                     this.setAdvertiserInfo(p2p_advertiser_info);
-                    this.setNickname(p2p_advertiser_info.name);
                     this.setContactInfo(p2p_advertiser_info.contact_info);
                     this.setDefaultAdvertDescription(p2p_advertiser_info.default_advert_description);
                     this.setPaymentInfo(p2p_advertiser_info.payment_info);
@@ -106,11 +105,6 @@ export default class MyProfileStore {
     @action.bound
     setIsSubmitSuccess(is_submit_success) {
         this.is_submit_success = is_submit_success;
-    }
-
-    @action.bound
-    setNickname(nickname) {
-        this.nickname = nickname;
     }
 
     @action.bound

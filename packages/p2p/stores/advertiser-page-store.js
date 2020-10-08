@@ -1,9 +1,9 @@
 import { action, observable } from 'mobx';
 import { buy_sell } from '../src/constants/buy-sell';
+import { getShortNickname } from 'Utils/string';
 import { height_constants } from 'Utils/height_constants';
 import { localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
-import { useStores } from '.';
 
 export default class AdvertiserPageStore {
     @observable active_index = 0;
@@ -31,14 +31,35 @@ export default class AdvertiserPageStore {
         height_constants.tabs,
     ];
     item_height = 56;
+    props = {};
+
+    get advertiser_details() {
+        return this.props?.selected_advert.advertiser_details || {};
+    }
+
+    get account_currency() {
+        return this.props?.selected_advert.account_currency;
+    }
+
+    get modal_title() {
+        if (this.counterparty_type === buy_sell.BUY) {
+            return localize('Buy {{ currency }}', { currency: this.account_currency });
+        } else {
+            return localize('Sell {{ currency }}', { currency: this.account_currency });
+        }
+    }
+
+    get short_name() {
+        return getShortNickname(this.advertiser_details?.name);
+    }
 
     @action.bound
-    getAdvertiserAdverts(advertiser_details) {
+    getAdvertiserAdverts() {
         return new Promise(resolve => {
             requestWS({
                 p2p_advert_list: 1,
                 counterparty_type: this.counterparty_type,
-                advertiser_id: advertiser_details.id,
+                advertiser_id: this.advertiser_details.id,
             }).then(response => {
                 if (!response.error) {
                     const { list } = response.p2p_advert_list;
@@ -52,11 +73,12 @@ export default class AdvertiserPageStore {
     }
 
     @action.bound
-    getAdvertiserInfo(advertiser_details) {
+    getAdvertiserInfo() {
+        this.setIsLoading(true);
         return new Promise(resolve => {
             requestWS({
                 p2p_advertiser_info: 1,
-                id: advertiser_details.id,
+                id: this.advertiser_details.id,
             }).then(response => {
                 if (!response.error) {
                     const { p2p_advertiser_info } = response;
@@ -86,9 +108,20 @@ export default class AdvertiserPageStore {
     }
 
     @action.bound
-    onConfirmClick(navigate, order_info) {
+    onConfirmClick(order_info) {
         const nav = { location: 'buy_sell' };
-        navigate('orders', { order_info, nav });
+        this.props.navigate('orders', { order_info, nav });
+    }
+
+    @action.bound
+    onMount() {
+        this.getAdvertiserAdverts();
+        this.getAdvertiserInfo();
+    }
+
+    @action.bound
+    onTabChange() {
+        this.getAdvertiserAdverts();
     }
 
     @action.bound
@@ -104,6 +137,10 @@ export default class AdvertiserPageStore {
     @action.bound
     setAdvertiserInfo(advertiser_info) {
         this.advertiser_info = advertiser_info;
+    }
+
+    setAdvertiserPageProps(props) {
+        this.props = props;
     }
 
     @action.bound
@@ -152,9 +189,9 @@ export default class AdvertiserPageStore {
     }
 
     @action.bound
-    showAdPopup(is_advertiser, showVerification, advert) {
+    showAdPopup(advert, is_advertiser) {
         if (!is_advertiser) {
-            showVerification();
+            this.props.showVerification();
         } else {
             this.setAd(advert);
             this.setShowAdPopup(true);

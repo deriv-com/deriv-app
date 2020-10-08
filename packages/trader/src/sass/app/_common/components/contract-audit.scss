@@ -24,6 +24,7 @@ $HEIGHT: calc(100vh - 34em);
                 height: calc(100% - 4rem);
             }
         }
+        /* postcss-bem-linter: ignore */
         .dc-themed-scrollbars {
             width: 100%;
         }

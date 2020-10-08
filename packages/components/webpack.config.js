@@ -16,7 +16,6 @@ module.exports = {
     resolve: {
         alias: {
             Components: path.resolve(__dirname, 'src', 'components'),
-            Stores: path.resolve(__dirname, 'src', 'stores'),
         },
     },
     optimization: {
@@ -91,7 +90,6 @@ module.exports = {
             'react-swipeable': 'react-swipeable',
             'react-tiny-popover': 'react-tiny-popover',
             'react-window': 'react-window',
-            'mobx-react': 'mobx-react',
         },
         /^@deriv\/shared\/.+$/,
     ],

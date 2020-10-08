@@ -9,7 +9,6 @@ import {
     isDeepEqual,
     pick,
 } from '@deriv/shared';
-import { connect } from 'Stores/connect';
 import Button from '../../button';
 import Icon from '../../icon';
 import MobileWrapper from '../../mobile-wrapper';
@@ -217,13 +216,4 @@ ContractUpdateForm.propTypes = {
     toggleDialog: PropTypes.func,
 };
 
-// eslint-disable-next-line no-empty-pattern
-export default connect(({}, { contract }) => {
-    return {
-        validation_errors: contract.validation_errors,
-        contract_update_take_profit: contract.contract_update_take_profit,
-        contract_update_stop_loss: contract.contract_update_stop_loss,
-        has_contract_update_take_profit: contract.has_contract_update_take_profit,
-        has_contract_update_stop_loss: contract.has_contract_update_stop_loss,
-    };
-})(ContractUpdateForm);
+export default ContractUpdateForm;

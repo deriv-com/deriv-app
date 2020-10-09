@@ -19,7 +19,7 @@ class ConnectedApps extends React.Component {
     }, {});
 
     componentDidMount() {
-        // this.fetchConnectedApps();
+        this.fetchConnectedApps();
     }
 
     handleRevokeAccess = () => {
@@ -37,6 +37,7 @@ class ConnectedApps extends React.Component {
 
     fetchConnectedApps = async () => {
         const response_connected_apps = await WS.send({ oauth_apps: 1 });
+
         if (!response_connected_apps.error) {
             this.setState({
                 is_loading: false,

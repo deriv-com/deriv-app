@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Tabs, ThemedScrollbars } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { getCurrencyDisplayCode, isDesktop, isMobile, website_name } from '@deriv/shared';
+import { getCurrencyDisplayCode, isDesktop, isMobile, website_name, PlatformContext } from '@deriv/shared';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 import AddCryptoCurrency from './add-crypto-currency.jsx';
@@ -13,6 +13,7 @@ import 'Sass/add-or-manage.scss';
 import 'Sass/change-account.scss';
 
 class AddOrManageAccounts extends React.Component {
+    static contextType = PlatformContext;
     constructor(props) {
         super(props);
         this.state = {
@@ -45,7 +46,7 @@ class AddOrManageAccounts extends React.Component {
         });
     };
 
-    manageOrChangeAccount = (obj, setSubmitting) => {
+    manageOrChangeAccount = (obj, setSubmitting, is_deriv_crypto) => {
         this.props.setLoading(true);
         Object.entries(obj).map(([key, value]) => {
             if (key === 'fiat') {
@@ -65,7 +66,7 @@ class AddOrManageAccounts extends React.Component {
             } else {
                 // Add Crypto Account
                 this.props
-                    .createCryptoAccount(value)
+                    .createCryptoAccount(value, is_deriv_crypto)
                     .then(() => {
                         this.props.onSuccessSetAccountCurrency('', value);
                         setSubmitting(false);
@@ -79,7 +80,7 @@ class AddOrManageAccounts extends React.Component {
     };
 
     updateValue = (index, value, setSubmitting) => {
-        this.manageOrChangeAccount(value, setSubmitting);
+        this.manageOrChangeAccount(value, setSubmitting, this.context.is_deriv_crypto);
     };
 
     get no_crypto_available() {
@@ -130,54 +131,56 @@ class AddOrManageAccounts extends React.Component {
                             />
                         </div>
                     </div>
-                    <div label={localize('Fiat currencies')}>
-                        {this.props.has_fiat ? (
-                            <div
-                                className={classNames('change-currency', {
-                                    'account-wizard--disabled': !this.props.can_change_fiat_currency,
-                                })}
-                            >
-                                {!this.props.can_change_fiat_currency && (
-                                    <div className='account-wizard--disabled-message'>
-                                        <p>
-                                            {this.props.current_currency_type === 'fiat' ? (
-                                                <Localize
-                                                    i18n_default_text='Currency change is not available because either you have deposited money into your {{currency}} account or you have created a real MetaTrader 5 (MT5) account.'
-                                                    values={{
-                                                        currency: getCurrencyDisplayCode(this.props.currency),
-                                                    }}
-                                                />
-                                            ) : (
-                                                <Localize
-                                                    i18n_default_text='Please switch to your {{fiat_currency}} account to change currencies.'
-                                                    values={{
-                                                        // eslint-disable-next-line
-                                                        fiat_currency: this.props.current_fiat_currency.toUpperCase(),
-                                                    }}
-                                                />
-                                            )}
-                                        </p>
-                                    </div>
-                                )}
-                                <ChangeAccountCurrency
+                    {!this.context.is_deriv_crypto && (
+                        <div label={localize('Fiat currencies')}>
+                            {this.props.has_fiat ? (
+                                <div
+                                    className={classNames('change-currency', {
+                                        'account-wizard--disabled': !this.props.can_change_fiat_currency,
+                                    })}
+                                >
+                                    {!this.props.can_change_fiat_currency && (
+                                        <div className='account-wizard--disabled-message'>
+                                            <p>
+                                                {this.props.current_currency_type === 'fiat' ? (
+                                                    <Localize
+                                                        i18n_default_text='Currency change is not available because either you have deposited money into your {{currency}} account or you have created a real MetaTrader 5 (MT5) account.'
+                                                        values={{
+                                                            currency: getCurrencyDisplayCode(this.props.currency),
+                                                        }}
+                                                    />
+                                                ) : (
+                                                    <Localize
+                                                        i18n_default_text='Please switch to your {{fiat_currency}} account to change currencies.'
+                                                        values={{
+                                                            // eslint-disable-next-line
+                                                            fiat_currency: this.props.current_fiat_currency.toUpperCase(),
+                                                        }}
+                                                    />
+                                                )}
+                                            </p>
+                                        </div>
+                                    )}
+                                    <ChangeAccountCurrency
+                                        className='account-wizard__body'
+                                        onSubmit={this.updateValue}
+                                        value={this.state.form_value}
+                                        form_error={this.state.form_error}
+                                        {...this.props}
+                                    />
+                                </div>
+                            ) : (
+                                <AddCryptoCurrency
                                     className='account-wizard__body'
                                     onSubmit={this.updateValue}
                                     value={this.state.form_value}
                                     form_error={this.state.form_error}
+                                    should_show_fiat_only={true}
                                     {...this.props}
                                 />
-                            </div>
-                        ) : (
-                            <AddCryptoCurrency
-                                className='account-wizard__body'
-                                onSubmit={this.updateValue}
-                                value={this.state.form_value}
-                                form_error={this.state.form_error}
-                                should_show_fiat_only={true}
-                                {...this.props}
-                            />
-                        )}
-                    </div>
+                            )}
+                        </div>
+                    )}
                 </Tabs>
             </ThemedScrollbars>
         );

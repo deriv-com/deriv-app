@@ -813,18 +813,26 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    createCryptoAccount(crr) {
-        const { date_of_birth, first_name, last_name } = this.account_settings;
+    createCryptoAccount(crr, is_deriv_crypto) {
         const residence = this.residence;
+        let data = {
+            residence,
+            currency: crr,
+        };
 
-        return new Promise(async (resolve, reject) => {
-            const response = await WS.newAccountReal({
+        if (!is_deriv_crypto) {
+            const { date_of_birth, first_name, last_name } = this.account_settings;
+            data = {
                 first_name,
                 last_name,
                 residence,
                 currency: crr,
                 date_of_birth: toMoment(date_of_birth).format('YYYY-MM-DD'),
-            });
+            };
+        }
+
+        return new Promise(async (resolve, reject) => {
+            const response = await WS.newAccountReal(data);
             if (!response.error) {
                 this.accountRealReaction(response);
                 resolve(response);

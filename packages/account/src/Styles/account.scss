@@ -1084,7 +1084,7 @@ $MIN_HEIGHT_FLOATING: calc(
             }
             &__row {
                 /* Date-Action-Browser-IP-Status */
-                grid-template-columns: 184px 65px 248px minmax(133px, 308px) 80px;
+                grid-template-columns: 184px 65px 248px minmax(133px, 308px) 120px;
                 padding: 0px;
             }
             .table__cell {

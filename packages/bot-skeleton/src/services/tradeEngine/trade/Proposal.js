@@ -88,7 +88,6 @@ export default Engine =>
                                 has_informed_error = true;
                                 this.$scope.observer.emit('Error', error.error.error);
                             }
-
                             return null;
                         })
                     )

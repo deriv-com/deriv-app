@@ -25,7 +25,7 @@ export default class TableRowInfo extends React.Component {
                 className={classNames(this.props.className, { 'statement__row--detail': this.state.showDetails })}
             >
                 {this.state.showDetails ? (
-                    <ThemedScrollbars height='63px'>
+                    <ThemedScrollbars height='80px'>
                         <div>
                             {this.props.replace.component ? (
                                 this.props.replace.component

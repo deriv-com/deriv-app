@@ -11,7 +11,7 @@ import ThemedScrollbars from '../themed-scrollbars';
 */
 
 const ThemedScrollbarsWrapper = React.forwardRef((props, ref) => (
-    <ThemedScrollbars {...props} forwardedRef={ref}>
+    <ThemedScrollbars {...props} forwardedRef={ref} has_horizontal>
         {props.children}
     </ThemedScrollbars>
 ));

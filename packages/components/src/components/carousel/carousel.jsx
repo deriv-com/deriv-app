@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Swipeable } from 'react-swipeable';
-import classNames from 'classnames';
 import Card from './carousel-card.jsx';
 import Nav from './carousel-nav.jsx';
 import Icon from '../icon';
@@ -9,14 +8,15 @@ import { useInterval } from '../../hooks';
 
 const Carousel = ({
     bullet_color,
+    active_bullet_color,
     className,
-    handleSelect,
     initial_index,
     list,
     bullet_position,
     nav_position,
     show_bullet,
     show_nav,
+    onItemSelect,
     autoplay_time,
     width,
 }) => {
@@ -47,9 +47,13 @@ const Carousel = ({
         useInterval(handleNextClick, autoplay_time);
     }
 
+    React.useEffect(() => {
+        if (onItemSelect) onItemSelect(active_index, list);
+    }, [active_index, list, onItemSelect]);
+
     return (
-        <Swipeable onSwipedLeft={handleNextClick} onSwipedRight={handlePrevClick}>
-            <div className={classNames('carousel', className)}>
+        <Swipeable onSwipedLeft={handleNextClick} onSwipedRight={handlePrevClick} className={className}>
+            <div className='carousel'>
                 {list.length > 1 && (
                     <Nav
                         active_index={active_index}
@@ -80,7 +84,7 @@ const Carousel = ({
                             style={{ transform: `translate3d(-${width * active_index}px, 0, 0)` }}
                         >
                             {list.map((type, idx) => (
-                                <Card key={idx} onClick={handleSelect} width={width}>
+                                <Card key={idx} width={width}>
                                     {list[idx]}
                                 </Card>
                             ))}
@@ -97,6 +101,7 @@ const Carousel = ({
                     <Nav
                         active_index={active_index}
                         bullet_color={bullet_color}
+                        active_bullet_color={active_bullet_color}
                         className='carousel__nav--lower'
                         handleNextClick={handleNextClick}
                         handlePrevClick={handlePrevClick}
@@ -114,6 +119,7 @@ const Carousel = ({
 Carousel.defaultProps = {
     initial_index: 0,
     bullet_color: 'var(--text-prominent)',
+    active_bullet_color: 'var(--text-less-prominent)',
     nav_position: 'bottom',
     bullet_position: 'bottom',
     show_bullet: true,
@@ -122,8 +128,9 @@ Carousel.defaultProps = {
 };
 Carousel.propTypes = {
     className: PropTypes.string,
-    handleSelect: PropTypes.func,
+    onItemSelect: PropTypes.func,
     bullet_color: PropTypes.string,
+    active_bullet_color: PropTypes.string,
     list: PropTypes.array,
     nav_position: PropTypes.oneOf(['top', 'middle', 'bottom']),
     show_nav: PropTypes.bool,

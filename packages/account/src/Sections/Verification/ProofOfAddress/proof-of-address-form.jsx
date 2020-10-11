@@ -11,7 +11,15 @@ import {
 } from '@deriv/components';
 import { Formik, Field } from 'formik';
 import { localize } from '@deriv/translations';
-import { isMobile, validAddress, validPostCode, validLetterSymbol, validLength, getLocation } from '@deriv/shared';
+import {
+    isMobile,
+    removeEmptyPropertiesFromObject,
+    validAddress,
+    validPostCode,
+    validLetterSymbol,
+    validLength,
+    getLocation,
+} from '@deriv/shared';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 import FormFooter from 'Components/form-footer';
@@ -108,7 +116,8 @@ class ProofOfAddressForm extends React.Component {
             errors.address_city = validation_letter_symbol_message;
         }
 
-        if (values.address_state && !validLetterSymbol(values.address_state)) {
+        // only add state/province validation for countries that don't have states list fetched from API
+        if (values.address_state && !validLetterSymbol(values.address_state) && this.props.states_list?.length < 1) {
             errors.address_state = validation_letter_symbol_message;
         }
 
@@ -141,7 +150,12 @@ class ProofOfAddressForm extends React.Component {
 
         if (this.props.is_eu) {
             const { citizen, tax_residence, tax_identification_number } = this.state;
-            form_values = { ...values, citizen, tax_identification_number, tax_residence };
+            form_values = removeEmptyPropertiesFromObject({
+                ...values,
+                citizen,
+                tax_identification_number,
+                tax_residence,
+            });
         }
 
         WS.setSettings(form_values).then(data => {

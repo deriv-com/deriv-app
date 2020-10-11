@@ -1,8 +1,7 @@
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { ButtonToggle } from '@deriv/components';
-import InputField from 'App/Components/Form/InputField';
+import { ButtonToggle, InputField } from '@deriv/components';
 import RangeSlider from 'App/Components/Form/RangeSlider';
 import { connect } from 'Stores/connect';
 import TradingDatePicker from '../../DatePicker';

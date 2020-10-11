@@ -1,9 +1,8 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Icon, MobileDialog, Button, DatePicker } from '@deriv/components';
+import { Button, DatePicker, Icon, InputField, MobileDialog } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import InputField from 'App/Components/Form/InputField/input-field.jsx';
 import { toMoment } from '@deriv/shared';
 
 export const RadioButton = ({ id, className, selected_value, value, label, onChange }) => {

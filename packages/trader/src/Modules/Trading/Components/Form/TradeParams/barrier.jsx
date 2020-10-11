@@ -1,9 +1,8 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { DesktopWrapper, MobileWrapper, Icon } from '@deriv/components';
+import { DesktopWrapper, Icon, InputField, MobileWrapper } from '@deriv/components';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
-import InputField from 'App/Components/Form/InputField';
 import { connect } from 'Stores/connect';
 import { localize } from '@deriv/translations';
 

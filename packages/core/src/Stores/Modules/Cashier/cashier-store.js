@@ -1043,7 +1043,9 @@ export default class CashierStore extends BaseStore {
             const obj_values = {
                 text: account.mt5_group
                     ? `${localize('DMT5')} ${getMT5AccountDisplay(account.mt5_group)}`
-                    : getCurrencyDisplayCode(account.currency.toUpperCase()),
+                    : getCurrencyDisplayCode(
+                          account.currency !== 'eUSDT' ? account.currency.toUpperCase() : account.currency
+                      ),
                 value: account.loginid,
                 balance: account.balance,
                 currency: account.currency,

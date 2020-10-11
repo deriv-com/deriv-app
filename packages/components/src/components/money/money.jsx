@@ -1,7 +1,6 @@
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { formatMoney } from '@deriv/shared';
+import { formatMoney, getCurrencyDisplayCode } from '@deriv/shared';
 
 const Money = ({
     amount,
@@ -9,6 +8,7 @@ const Money = ({
     currency = 'USD',
     has_sign,
     should_format = true,
+    show_currency = false,
     should_format_crypto = true,
 }) => {
     let sign = '';
@@ -30,8 +30,9 @@ const Money = ({
     return (
         <React.Fragment>
             {has_sign && sign}
-            <span className={classNames(className, 'symbols', `symbols--${currency.toLowerCase()}`)} />
-            {final_amount}
+            <span className={className}>
+                {final_amount} {show_currency && getCurrencyDisplayCode(currency)}
+            </span>
         </React.Fragment>
     );
 };
@@ -42,6 +43,7 @@ Money.propTypes = {
     currency: PropTypes.string,
     has_sign: PropTypes.bool,
     should_format: PropTypes.bool,
+    show_currency: PropTypes.bool, // if true, append currency symbol
 };
 
 export default React.memo(Money);

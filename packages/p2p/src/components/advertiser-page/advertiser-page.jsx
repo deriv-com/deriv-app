@@ -92,6 +92,7 @@ const AdvertiserPage = ({ navigate, selected_advert, showVerification }) => {
         total_completion_rate,
         total_orders_count,
     } = stats;
+    const avg_release_time_in_minutes = release_time_avg > 60 ? Math.round(release_time_avg / 60) : '< 1';
     const Form = nickname ? BuySellForm : NicknameForm;
     const modal_title =
         counterparty_type === buy_sell.BUY
@@ -283,8 +284,8 @@ const AdvertiserPage = ({ navigate, selected_advert, showVerification }) => {
                             <div className='advertiser-page__stats-cell-header'>{localize('Avg. release')}</div>
                             <div className='advertiser-page__stats-cell-info'>
                                 {release_time_avg
-                                    ? localize('{{release_time_avg}} min', {
-                                          release_time_avg: (release_time_avg / 60).toFixed(2),
+                                    ? localize('{{- avg_release_time_in_minutes}} min', {
+                                          avg_release_time_in_minutes,
                                       })
                                     : '-'}
                             </div>

@@ -4,7 +4,6 @@ export * from './utils/currency';
 export * from './utils/date';
 export * from './utils/digital-options';
 export * from './utils/hooks';
-export * from './utils/indicators';
 export * from './utils/location';
 export * from './utils/login';
 export * from './utils/mt5';

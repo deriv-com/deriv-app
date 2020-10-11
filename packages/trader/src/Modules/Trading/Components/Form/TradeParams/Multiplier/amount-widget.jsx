@@ -18,7 +18,7 @@ const AmountWidget = ({ amount, currency }) => {
             <div className='mobile-widget mobile-widget__multiplier-amount' onClick={toggleModal}>
                 <div className='mobile-widget__item'>
                     <span className='mobile-widget__item-value'>
-                        <Money amount={amount} currency={currency} />
+                        <Money amount={amount} currency={currency} show_currency />
                     </span>
                 </div>
             </div>

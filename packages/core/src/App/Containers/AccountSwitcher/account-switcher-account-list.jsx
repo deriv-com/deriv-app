@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Icon, Money } from '@deriv/components';
-import { formatMoney, getCurrencyDisplayCode, getMT5AccountDisplay } from '@deriv/shared';
+import { formatMoney, getCurrencyName, getMT5AccountDisplay, getCurrencyDisplayCode } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 
 const AccountList = ({
@@ -63,13 +63,14 @@ const AccountList = ({
                         <span className='acc-switcher__balance'>
                             {currency && (
                                 <Money
-                                    currency={currency}
+                                    currency={getCurrencyDisplayCode(currency)}
                                     amount={formatMoney({
                                         currency_value: currency,
                                         amount: balance,
                                         exclude_currency: true,
                                     })}
                                     should_format={false}
+                                    show_currency
                                 />
                             )}
                         </span>
@@ -80,17 +81,14 @@ const AccountList = ({
     );
 };
 
-const CurrencyDisplay = ({ currency, is_eu, is_virtual, market_type }) => {
+const CurrencyDisplay = ({ currency, is_virtual }) => {
     if (is_virtual) {
         return <Localize i18n_default_text='Demo' />;
     }
     if (!currency) {
         return <Localize i18n_default_text='No currency assigned' />;
     }
-    if (is_eu) {
-        return `${getCurrencyDisplayCode(currency)} ${market_type}`;
-    }
-    return getCurrencyDisplayCode(currency);
+    return getCurrencyName(currency);
 };
 
 const AccountDisplay = ({ account_type }) => <div>{getMT5AccountDisplay(account_type)}</div>;

@@ -24,28 +24,25 @@ class Statement extends React.Component {
         this.props.onUnmount();
     }
 
-    mobileRowRenderer = ({ row }) => {
-        return (
-            <>
-                <div className='data-list__row'>
-                    <DataList.Cell row={row} column={this.columns_map.icon} />
-                    <DataList.Cell row={row} column={this.columns_map.action_type} />
-                </div>
-                <div className='data-list__row'>
-                    <DataList.Cell row={row} column={this.columns_map.refid} />
-                    <DataList.Cell
-                        className='data-list__row-cell--amount'
-                        row={row}
-                        column={this.columns_map.balance}
-                    />
-                </div>
-                <div className='data-list__row'>
-                    <DataList.Cell row={row} column={this.columns_map.date} />
-                    <DataList.Cell className='data-list__row-cell--amount' row={row} column={this.columns_map.amount} />
-                </div>
-            </>
-        );
-    };
+    mobileRowRenderer = ({ row }) => (
+        <>
+            <div className='data-list__row'>
+                <DataList.Cell row={row} column={this.columns_map.icon} />
+                <DataList.Cell row={row} column={this.columns_map.action_type} />
+            </div>
+            <div className='data-list__row'>
+                <DataList.Cell row={row} column={this.columns_map.refid} />
+                <DataList.Cell className='data-list__row-cell--amount' row={row} column={this.columns_map.currency} />
+            </div>
+            <div className='data-list__row'>
+                <DataList.Cell row={row} column={this.columns_map.date} />
+                <DataList.Cell className='data-list__row-cell--amount' row={row} column={this.columns_map.amount} />
+            </div>
+            <div className='data-list__row'>
+                <DataList.Cell row={row} column={this.columns_map.balance} />
+            </div>
+        </>
+    );
 
     getRowAction = row_obj => {
         let action;
@@ -212,7 +209,7 @@ class Statement extends React.Component {
                                         getRowAction={this.getRowAction}
                                         onScroll={handleScroll}
                                         custom_width={'100%'}
-                                        getRowSize={() => 176}
+                                        getRowSize={() => 186}
                                     >
                                         <PlaceholderComponent is_loading={is_loading} />
                                     </DataList>

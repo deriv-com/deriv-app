@@ -24,7 +24,7 @@ class SubMenuSection extends React.PureComponent {
 SubMenuSection.propTypes = {
     children: PropTypes.node,
     section_icon: PropTypes.string,
-    section_title: PropTypes.string,
+    section_title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 };
 
 export default SubMenuSection;

@@ -18,15 +18,6 @@ const copyConfig = base => [
     { from: path.resolve(__dirname, '../src/public/images/favicons/favicon.ico'), to: 'favicon.ico', toType: 'file' },
     { from: path.resolve(__dirname, '../src/public/images/favicons/**') },
     { from: path.resolve(__dirname, '../src/public/images/common/logos/platform_logos/**') },
-    // { from: path.resolve(__dirname, '../src/_common/lib/pushwooshSDK/**'), flatten: true },
-    // {
-    //     from: path.resolve(__dirname, '../src/templates/app/manifest.json'),
-    //     to: 'manifest.json',
-    //     toType: 'file',
-    //     transform(content, path) {
-    //         return transformContentUrlBase(content, path, base);
-    //     }
-    // },
 ];
 
 const generateSWConfig = () => ({
@@ -54,12 +45,6 @@ const htmlInjectConfig = () => ({
     links: [
         'css/smartcharts.css',
         {
-            path: 'manifest.json',
-            attributes: {
-                rel: 'manifest',
-            },
-        },
-        {
             path: 'public/images/favicons',
             glob: '*',
             globPath: path.resolve(__dirname, '../src/public/images/favicons'),
@@ -67,22 +52,6 @@ const htmlInjectConfig = () => ({
                 rel: 'icon',
             },
         },
-        // {
-        //     path: 'pushwoosh-web-notifications.js',
-        //     attributes: {
-        //         rel: 'preload',
-        //         as: 'script'
-        //     }
-        // },
-    ],
-    scripts: [
-        // {
-        //     path: 'pushwoosh-web-notifications.js',
-        //     attributes: {
-        //         defer: '',
-        //         type: 'text/javascript'
-        //     }
-        // }
     ],
     append: false,
 });

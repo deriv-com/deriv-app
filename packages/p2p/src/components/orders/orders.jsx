@@ -1,33 +1,39 @@
-import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useIsMounted } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
 import PageReturn from 'Components/page-return/page-return.jsx';
+import { useStores } from 'Stores';
+import { getExtendedOrderDetails } from 'Utils/orders';
 import { subscribeWS } from 'Utils/websocket';
-import OrderInfo from './order-info';
 import OrderDetails from './order-details/order-details.jsx';
 import OrderTable from './order-table/order-table.jsx';
 import './orders.scss';
 
-const Orders = ({ chat_info, navigate, params }) => {
-    const { getLocalStorageSettingsForLoginId, order_id, setOrderId, updateP2pNotifications } = React.useContext(
-        Dp2pContext
-    );
-    const [order_details, setDetails] = React.useState(null);
+const Orders = ({ params, navigate, chat_info }) => {
+    const { general_store } = useStores();
+    const isMounted = useIsMounted();
+    const {
+        getLocalStorageSettingsForLoginId,
+        order_id,
+        orders,
+        setOrderId,
+        updateP2pNotifications,
+    } = React.useContext(Dp2pContext);
+    const [order_information, setOrderInformation] = React.useState(null);
     const [nav, setNav] = React.useState(params?.nav);
-    const is_mounted = React.useRef(false);
     const order_info_subscription = React.useRef(null);
-    const hideDetails = () => {
-        if (nav) {
+
+    const hideDetails = should_navigate => {
+        if (should_navigate && nav) {
             navigate(nav.location);
         }
-
-        setDetails(null);
         setOrderId(null);
+        setOrderInformation(null);
     };
 
-    const getOrderDetails = () => {
+    const subscribeToCurrentOrder = () => {
         order_info_subscription.current = subscribeWS(
             {
                 p2p_order_info: 1,
@@ -38,21 +44,32 @@ const Orders = ({ chat_info, navigate, params }) => {
         );
     };
 
-    const setOrderDetails = response => {
-        if (!response.error) {
-            setDetails(new OrderInfo(response));
-        } else {
+    const unsubscribeFromCurrentOrder = () => {
+        if (order_info_subscription.current?.unsubscribe) {
             order_info_subscription.current.unsubscribe();
         }
     };
 
-    const setQueryDetails = input_order => {
-        setOrderId(input_order.id);
+    const setOrderDetails = response => {
+        if (!response.error) {
+            const { p2p_order_info } = response;
+            setQueryDetails(p2p_order_info);
+        } else {
+            unsubscribeFromCurrentOrder();
+        }
+    };
 
+    const setQueryDetails = input_order => {
+        const input_order_information = getExtendedOrderDetails(input_order, general_store.client.loginid);
+
+        setOrderId(input_order_information.id); // Sets the id in URL
+        setOrderInformation(input_order_information);
+
+        // When viewing specific order, update its read state in localStorage.
         const { notifications } = getLocalStorageSettingsForLoginId();
 
         if (notifications.length) {
-            const notification = notifications.find(n => n.order_id === input_order.id);
+            const notification = notifications.find(n => n.order_id === input_order_information.id);
 
             if (notification) {
                 notification.is_seen = true;
@@ -62,11 +79,17 @@ const Orders = ({ chat_info, navigate, params }) => {
     };
 
     React.useEffect(() => {
-        if (order_info_subscription.current) {
-            order_info_subscription.current.unsubscribe();
-        }
+        return () => {
+            unsubscribeFromCurrentOrder();
+            hideDetails(false);
+        };
+    }, []);
+
+    React.useEffect(() => {
+        unsubscribeFromCurrentOrder();
+
         if (order_id) {
-            getOrderDetails(order_id);
+            subscribeToCurrentOrder();
         }
     }, [order_id]);
 
@@ -75,35 +98,40 @@ const Orders = ({ chat_info, navigate, params }) => {
     }, [params]);
 
     React.useEffect(() => {
-        is_mounted.current = true;
+        if (isMounted() && order_id) {
+            // If orders was updated, find current viewed order (if any)
+            // and trigger a re-render (in case status was updated).
+            const order = orders.find(o => o.id === order_id);
 
-        // Clear details when unmounting
-        return () => {
-            is_mounted.current = false;
-            hideDetails();
-        };
-    }, []);
+            if (order) {
+                setQueryDetails(order);
+            } else {
+                navigate('orders');
+            }
+        }
+    }, [orders]);
+
+    if (order_information) {
+        const { account_currency } = order_information;
+        return (
+            <div className='orders orders--order-view'>
+                <PageReturn
+                    onClick={() => hideDetails(true)}
+                    page_title={
+                        (order_information.is_buy_order && !order_information.is_my_ad) ||
+                        (order_information.is_sell_order && order_information.is_my_ad)
+                            ? localize('Buy {{offered_currency}} order', { offered_currency: account_currency })
+                            : localize('Sell {{offered_currency}} order', { offered_currency: account_currency })
+                    }
+                />
+                <OrderDetails order_information={order_information} chat_info={chat_info} />
+            </div>
+        );
+    }
 
     return (
-        <div className={classNames('orders', { 'orders--order-view': !!order_details })}>
-            {order_details && (
-                <React.Fragment>
-                    <PageReturn
-                        onClick={hideDetails}
-                        page_title={
-                            order_details.is_buyer
-                                ? localize('Buy {{offered_currency}} order', {
-                                      offered_currency: order_details.offer_currency,
-                                  })
-                                : localize('Sell {{offered_currency}} order', {
-                                      offered_currency: order_details.offer_currency,
-                                  })
-                        }
-                    />
-                    <OrderDetails order_details={order_details} chat_info={chat_info} />
-                </React.Fragment>
-            )}
-            {!order_details && <OrderTable navigate={navigate} showDetails={setQueryDetails} />}
+        <div className='orders'>
+            <OrderTable navigate={navigate} showDetails={setQueryDetails} />
         </div>
     );
 };

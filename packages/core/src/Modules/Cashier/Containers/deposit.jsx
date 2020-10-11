@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'Stores/connect';
+import { Localize } from '@deriv/translations';
+import { isCryptocurrency } from '@deriv/shared';
 import CashierContainer from '../Components/cashier-container.jsx';
 import Error from '../Components/Error/error.jsx';
 import Virtual from '../Components/Error/virtual.jsx';
@@ -8,6 +10,31 @@ import CashierLocked from '../Components/Error/cashier-locked.jsx';
 import DepositsLocked from '../Components/Error/deposit-locked.jsx';
 import FundsProtection from '../Components/Error/funds-protection.jsx';
 import MaxTurnover from '../Components/Form/max-turnover-form.jsx';
+import SideNote from '../Components/side-note.jsx';
+import USDTSideNote from '../Components/usdt-side-note.jsx';
+
+const DepositeSideNote = () => {
+    const notes = [
+        <Localize i18n_default_text='This address can only be used once to make a deposit.' key={0} />,
+        /*
+        <Localize
+            i18n_default_text='For each deposit you will have to visit here again to generate a new address.'
+            key={1}
+        />,
+        <Localize
+            i18n_default_text='Each transaction will be confirmed once we receive three confirmations from the blockchain.'
+            key={3}
+        />,
+        <Localize
+            i18n_default_text='To view confirmed transactions, kindly visit the <0>statement page</0>'
+            key={4}
+            components={[<Link to='/reports/statement' key={0} className='link link--orange' />]}
+        />,
+        */
+    ];
+
+    return <SideNote notes={notes} />;
+};
 
 const Deposit = ({
     is_cashier_locked,
@@ -19,12 +46,29 @@ const Deposit = ({
     setActiveTab,
     onMount,
     container,
+    currency,
     is_loading,
+    setSideNotes,
 }) => {
     React.useEffect(() => {
         setActiveTab(container);
-        onMount();
+        if (!is_virtual) {
+            onMount();
+        }
     }, []);
+
+    React.useEffect(() => {
+        if (iframe_height) {
+            if (isCryptocurrency(currency)) {
+                if (/^(UST|eUSDT)$/i.test(currency) && typeof setSideNotes === 'function') {
+                    setSideNotes([<DepositeSideNote key={0} />, <USDTSideNote key={1} />]);
+                } else {
+                    setSideNotes([<DepositeSideNote key={0} />]);
+                }
+            }
+        }
+    }, [iframe_height]);
+
     if (is_virtual) {
         return <Virtual />;
     }
@@ -57,6 +101,7 @@ Deposit.propTypes = {
     is_virtual: PropTypes.bool,
     onMount: PropTypes.func,
     setActiveTab: PropTypes.func,
+    setSideNotes: PropTypes.func,
     standpoint: PropTypes.object,
 };
 
@@ -65,6 +110,7 @@ export default connect(({ client, modules }) => ({
     is_deposit_locked: modules.cashier.is_deposit_locked,
     is_virtual: client.is_virtual,
     container: modules.cashier.config.deposit.container,
+    currency: client.currency,
     error: modules.cashier.config.deposit.error,
     iframe_height: modules.cashier.config.deposit.iframe_height,
     iframe_url: modules.cashier.config.deposit.iframe_url,

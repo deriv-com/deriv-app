@@ -194,7 +194,9 @@ Blockly.BlockSvg.prototype.highlightExecutedBlock = function() {
     if (!Blockly.utils.hasClass(this.svgGroup_, highlight_block_class)) {
         Blockly.utils.addClass(this.svgGroup_, highlight_block_class);
         setTimeout(() => {
-            Blockly.utils.removeClass(this.svgGroup_, highlight_block_class);
+            if (this.svgGroup_) {
+                Blockly.utils.removeClass(this.svgGroup_, highlight_block_class);
+            }
         }, 1505);
     }
 };
@@ -228,8 +230,10 @@ Blockly.BlockSvg.prototype.setCollapsed = function(collapsed) {
     this.inputList.forEach(input => render_list.push(...input.setVisible(!collapsed)));
 
     if (collapsed) {
-        const icons = this.getIcons();
-        icons.forEach(icon => icon.setVisible(false));
+        this.getIcons()
+            // Never hide ScratchBlockComments!
+            .filter(icon => !(icon instanceof Blockly.ScratchBlockComment))
+            .forEach(icon => icon.setVisible(false));
 
         const text = this.toString(Blockly.COLLAPSE_CHARS);
 

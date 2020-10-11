@@ -1,7 +1,14 @@
 import { Field, Formik } from 'formik';
 import React from 'react';
-import { Div100vhContainer, Modal, ThemedScrollbars, FormSubmitButton, AutoHeightWrapper } from '@deriv/components';
-import { getDerivComLink, isDesktop, isMobile } from '@deriv/shared';
+import {
+    Div100vhContainer,
+    Modal,
+    ThemedScrollbars,
+    FormSubmitButton,
+    AutoHeightWrapper,
+    StaticUrl,
+} from '@deriv/components';
+import { isDesktop, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import CheckboxField from 'App/Containers/RealAccountSignup/checkbox-field.jsx';
 import { Hr } from './currency-selector.jsx';
@@ -55,12 +62,10 @@ class TermsOfUse extends React.Component {
                                                 <Localize
                                                     i18n_default_text='I agree to the <0>terms and conditions</0>.'
                                                     components={[
-                                                        <a
+                                                        <StaticUrl
                                                             key={0}
                                                             className='link'
-                                                            target='_blank'
-                                                            rel='noopener noreferrer'
-                                                            href={getDerivComLink('/terms-and-conditions')}
+                                                            href='/terms-and-conditions'
                                                         />,
                                                     ]}
                                                 />

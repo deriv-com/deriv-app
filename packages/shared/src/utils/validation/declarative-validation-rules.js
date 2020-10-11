@@ -13,7 +13,7 @@ const validRequired = (value /* , options, field */) => {
 export const validAddress = value => !/[`~!$%^&*_=+[}{\]\\"?><|]+/.test(value);
 export const validPostCode = value => value === '' || /^[A-Za-z0-9][A-Za-z0-9\s-]*$/.test(value);
 export const validTaxID = value => /^[a-zA-Z0-9]*[\w-]*$/.test(value);
-export const validPhone = value => /^\+(?:[0-9] ?){6,14}[0-9]$/.test(value);
+export const validPhone = value => /^\+((-|\s)*[0-9])*$/.test(value);
 export const validCountryCode = (list, value) => list.some(item => value.startsWith(`+${item.phone_idd}`));
 export const validLetterSymbol = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><,|\d]+/.test(value);
 export const validLength = (value, options) =>
@@ -24,6 +24,7 @@ const validEmail = value => /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$/.
 const validGeneral = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><|]+/.test(value);
 const validRegular = (value, options) => options.regex.test(value);
 const confirmRequired = value => value === true;
+const checkPOBox = value => !/p[.\s]+o[.\s]+box/i.test(value);
 const validEmailToken = value => value.trim().length === 8;
 
 let pre_build_dvrs, form_error_messages;
@@ -104,6 +105,7 @@ const initPreBuildDVRs = () => ({
         message: form_error_messages.password,
     },
     phone: { func: validPhone, message: form_error_messages.phone },
+    po_box: { func: checkPOBox, message: form_error_messages.po_box },
     postcode: { func: validPostCode, message: form_error_messages.postcode },
     regular: { func: validRegular, message: '' },
     req: { func: validRequired, message: '' },

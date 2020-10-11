@@ -13,6 +13,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const AssetsManifestPlugin = require('webpack-manifest-plugin');
 const { GenerateSW } = require('workbox-webpack-plugin');
+const DefinePlugin = require('webpack').DefinePlugin;
 
 const {
     copyConfig,
@@ -130,25 +131,36 @@ const MINIMIZERS = !IS_RELEASE
           new OptimizeCssAssetsPlugin(),
       ];
 
-const plugins = (base, is_test_env, is_mocha_only) => [
-    new CleanWebpackPlugin(),
-    new CopyPlugin(copyConfig(base)),
-    new HtmlWebPackPlugin(htmlOutputConfig()),
-    new HtmlWebpackTagsPlugin(htmlInjectConfig()),
-    new PreloadWebpackPlugin(htmlPreloadConfig()),
-    new IgnorePlugin(/^\.\/locale$/, /moment$/),
-    new MiniCssExtractPlugin(cssConfig()),
-    new CircularDependencyPlugin({ exclude: /node_modules/, failOnError: true }),
-    ...(IS_RELEASE
-        ? []
-        : [new AssetsManifestPlugin({ fileName: 'asset-manifest.json', filter: file => file.name !== 'CNAME' })]),
-    ...(is_test_env && !is_mocha_only
-        ? [new StylelintPlugin(stylelintConfig())]
-        : [
-              new GenerateSW(generateSWConfig()),
-              // ...(!IS_RELEASE ? [new BundleAnalyzerPlugin({ analyzerMode: 'static' })] : []),
-          ]),
-];
+const plugins = ({ base, is_test_env, env }) => {
+    let is_crypto_app;
+    try {
+        is_crypto_app = JSON.parse(env.IS_CRYPTO_APP);
+    } catch (e) {
+        is_crypto_app = false;
+    }
+    return [
+        new DefinePlugin({
+            'process.env.IS_CRYPTO_APP': is_crypto_app,
+        }),
+        new CleanWebpackPlugin(),
+        new CopyPlugin(copyConfig(base)),
+        new HtmlWebPackPlugin(htmlOutputConfig()),
+        new HtmlWebpackTagsPlugin(htmlInjectConfig()),
+        new PreloadWebpackPlugin(htmlPreloadConfig()),
+        new IgnorePlugin(/^\.\/locale$/, /moment$/),
+        new MiniCssExtractPlugin(cssConfig()),
+        new CircularDependencyPlugin({ exclude: /node_modules/, failOnError: true }),
+        ...(IS_RELEASE
+            ? []
+            : [new AssetsManifestPlugin({ fileName: 'asset-manifest.json', filter: file => file.name !== 'CNAME' })]),
+        ...(is_test_env && !env.mocha_only
+            ? [new StylelintPlugin(stylelintConfig())]
+            : [
+                  new GenerateSW(generateSWConfig()),
+                  // ...(!IS_RELEASE ? [new BundleAnalyzerPlugin({ analyzerMode: 'static' })] : []),
+              ]),
+    ];
+};
 
 module.exports = {
     IS_RELEASE,

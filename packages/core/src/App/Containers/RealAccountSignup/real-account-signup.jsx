@@ -8,11 +8,21 @@ import { connect } from 'Stores/connect';
 import ModalLoginPrompt from './modal-login-prompt.jsx';
 import AccountWizard from './account-wizard.jsx';
 import AddOrManageAccounts from './add-or-manage-accounts.jsx';
+import SetCurrency from './set-currency.jsx';
 import FinishedSetCurrency from './finished-set-currency.jsx';
 import SignupErrorContent from './signup-error-content.jsx';
 import StatusDialogContainer from './status-dialog-container.jsx';
 import 'Sass/account-wizard.scss';
 import 'Sass/real-account-signup.scss';
+
+const modal_pages_indices = {
+    account_wizard: 0,
+    add_or_manage_account: 1,
+    finished_set_currency: 2,
+    status_dialog: 3,
+    set_currency: 4,
+    signup_error: 5,
+};
 
 const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_residence, is_belgium_residence }) => {
     if (!currency && real_account_signup_target !== 'maltainvest') {
@@ -37,13 +47,20 @@ const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_re
     }
 };
 
+const map_error_to_step = {
+    CurrencyTypeNotAllowed: 0,
+    InvalidPhone: 1,
+};
+
 class RealAccountSignup extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            current_action: null,
             is_loading: false,
             modal_content: [
                 {
+                    action: 'signup',
                     body: () => (
                         <AccountWizard
                             onFinishSuccess={this.showStatusDialog}
@@ -52,11 +69,13 @@ class RealAccountSignup extends React.Component {
                             onError={this.showErrorModal}
                             onClose={this.closeModal}
                             onSuccessSetAccountCurrency={this.showSetCurrencySuccess}
+                            step={map_error_to_step[this.props.state_value.error_code] ?? 1}
                         />
                     ),
                     title: WizardHeading,
                 },
                 {
+                    action: 'multi',
                     body: () => (
                         <AddOrManageAccounts
                             onSuccessSetAccountCurrency={this.showSetCurrencySuccess}
@@ -77,16 +96,29 @@ class RealAccountSignup extends React.Component {
                             onSubmit={this.closeModalThenOpenCashier}
                         />
                     ),
+                    title: () => localize('Add or manage account'),
                 },
                 {
-                    body: () => <StatusDialogContainer />,
+                    body: () => <StatusDialogContainer currency={this.props.state_value.currency} />,
+                },
+                {
+                    body: () => (
+                        <SetCurrency
+                            setLoading={this.setLoading}
+                            is_loading={this.state.is_loading}
+                            onError={this.showErrorModal}
+                            onClose={this.closeModal}
+                            onSuccessSetAccountCurrency={this.showSetCurrencySuccess}
+                        />
+                    ),
+                    title: WizardHeading,
                 },
                 {
                     body: () => (
                         <SignupErrorContent
                             message={this.props.state_value.error_message}
                             code={this.props.state_value.error_code}
-                            onConfirm={this.openPersonalDetails}
+                            onConfirm={this.onErrorConfirm}
                         />
                     ),
                     title: () => localize('Add a real account'),
@@ -97,15 +129,15 @@ class RealAccountSignup extends React.Component {
 
     get modal_height() {
         const { currency, has_real_account, is_eu, is_eu_enabled } = this.props; // TODO [deriv-eu] remove is_eu_enabled once eu is released.
-        if (this.active_modal_index === 3) return 'auto'; // Status dialog
+        if (this.active_modal_index === modal_pages_indices.status_dialog) return 'auto';
         if (!currency) return '688px'; // Set currency modal
         if (has_real_account && currency) {
-            if (is_eu && is_eu_enabled && this.active_modal_index === 1) {
+            if (is_eu && is_eu_enabled && this.active_modal_index === modal_pages_indices.add_or_manage_account) {
                 // TODO [deriv-eu] remove is_eu_enabled once eu is released.
                 // Manage account
                 return '379px'; // Since crypto is disabled for EU clients, lower the height of modal
             }
-            if (this.active_modal_index === 2) {
+            if (this.active_modal_index === modal_pages_indices.finished_set_currency) {
                 return 'auto';
             }
             return '644px'; // Add or manage account modal
@@ -113,9 +145,10 @@ class RealAccountSignup extends React.Component {
         return '740px'; // Account wizard modal
     }
 
-    showStatusDialog = () => {
+    showStatusDialog = currency => {
         this.props.setParams({
-            active_modal_index: 3,
+            active_modal_index: modal_pages_indices.status_dialog,
+            currency,
         });
     };
 
@@ -128,7 +161,7 @@ class RealAccountSignup extends React.Component {
         this.props.setParams({
             previous_currency,
             current_currency,
-            active_modal_index: 2,
+            active_modal_index: modal_pages_indices.finished_set_currency,
         });
     };
 
@@ -155,10 +188,12 @@ class RealAccountSignup extends React.Component {
             this.cacheFormValues(payload);
         }
 
-        this.props.setParams({
-            active_modal_index: 4,
-            error_message: error.message,
-            error_code: error.code,
+        this.setState({ current_action: this.state.modal_content[this.active_modal_index]?.action }, () => {
+            this.props.setParams({
+                active_modal_index: modal_pages_indices.signup_error,
+                error_message: error.message,
+                error_code: error.code,
+            });
         });
     };
 
@@ -170,7 +205,7 @@ class RealAccountSignup extends React.Component {
         if (e?.target.closest('.redirect-notice')) {
             return;
         }
-        if (this.active_modal_index !== 3) {
+        if (this.active_modal_index !== modal_pages_indices.status_dialog) {
             sessionStorage.removeItem('post_real_account_signup');
             localStorage.removeItem('real_account_signup_wizard');
         }
@@ -181,9 +216,12 @@ class RealAccountSignup extends React.Component {
         }
     };
 
-    openPersonalDetails = () => {
+    onErrorConfirm = () => {
         this.props.setParams({
-            active_modal_index: 0,
+            active_modal_index:
+                this.state.current_action === 'multi'
+                    ? modal_pages_indices.add_or_manage_account
+                    : modal_pages_indices.account_wizard,
         });
     };
 
@@ -192,13 +230,12 @@ class RealAccountSignup extends React.Component {
     }
 
     get active_modal_index() {
-        const ACCOUNT_WIZARD = 0;
-        const ADD_OR_MANAGE_ACCOUNT = 1;
-
         if (this.props.state_value.active_modal_index === -1) {
             return this.props.has_real_account && this.props.currency && this.is_manage_target
-                ? ADD_OR_MANAGE_ACCOUNT
-                : ACCOUNT_WIZARD;
+                ? modal_pages_indices.add_or_manage_account
+                : !this.props.currency
+                ? modal_pages_indices.set_currency
+                : modal_pages_indices.account_wizard;
         }
 
         return this.props.state_value.active_modal_index;
@@ -222,21 +259,36 @@ class RealAccountSignup extends React.Component {
                       : null,
                   body: ModalLoginPrompt,
               };
-        const has_close_icon = this.active_modal_index < 2 || this.active_modal_index === 4;
+        const {
+            account_wizard,
+            add_or_manage_account,
+            finished_set_currency,
+            status_dialog,
+            set_currency,
+            signup_error,
+        } = modal_pages_indices;
+
+        const has_close_icon = [account_wizard, add_or_manage_account, set_currency, signup_error].includes(
+            this.active_modal_index
+        );
+
         return (
             <>
                 <DesktopWrapper>
                     <Modal
                         id='real_account_signup_modal'
                         className={classNames('real-account-signup-modal', {
-                            'dc-modal__container_real-account-signup-modal--error': this.active_modal_index === 4,
-                            'dc-modal__container_real-account-signup-modal--success':
-                                this.active_modal_index >= 2 && this.active_modal_index < 4,
+                            'dc-modal__container_real-account-signup-modal--error':
+                                this.active_modal_index === signup_error,
+                            'dc-modal__container_real-account-signup-modal--success': [
+                                finished_set_currency,
+                                status_dialog,
+                            ].includes(this.active_modal_index),
                         })}
                         is_open={is_real_acc_signup_on}
                         has_close_icon={has_close_icon}
                         renderTitle={() => {
-                            if (Title) {
+                            if (Title && ![finished_set_currency, status_dialog].includes(this.active_modal_index)) {
                                 return <Title {...this.props} />;
                             }
                             return null;

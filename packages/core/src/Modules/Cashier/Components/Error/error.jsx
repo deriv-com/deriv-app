@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Icon, ButtonLink } from '@deriv/components';
-import { getDerivComLink } from '@deriv/shared';
+import { Button, Icon, ButtonLink, StaticUrl } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
@@ -92,15 +91,7 @@ class Error extends React.Component {
                         footer={
                             <Localize
                                 i18n_default_text='Need help? <0>Contact us</0>.'
-                                components={[
-                                    <a
-                                        key={0}
-                                        className='link'
-                                        target='_blank'
-                                        rel='noopener noreferrer'
-                                        href={getDerivComLink('help-centre')}
-                                    />,
-                                ]}
+                                components={[<StaticUrl key={0} className='link' href='help-centre' />]}
                             />
                         }
                     />

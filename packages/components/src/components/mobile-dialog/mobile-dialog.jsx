@@ -7,7 +7,16 @@ import Icon from '../icon/icon.jsx';
 import Div100vhContainer from '../div100vh-container';
 
 const MobileDialog = props => {
-    const { title, visible, children, portal_element_id, renderTitle, wrapper_classname, footer } = props;
+    const {
+        title,
+        visible,
+        children,
+        has_full_height,
+        portal_element_id,
+        renderTitle,
+        wrapper_classname,
+        footer,
+    } = props;
 
     const footer_ref = React.useRef(false);
     const [footer_height, setHeight] = React.useState(0);
@@ -79,7 +88,9 @@ const MobileDialog = props => {
                         </div>
                     </div>
                     <div
-                        className='dc-mobile-dialog__content'
+                        className={classNames('dc-mobile-dialog__content', {
+                            'dc-mobile-dialog__content--is-full-height': has_full_height,
+                        })}
                         style={footer_height ? { height: `calc(100% - ${footer_height}px)` } : undefined}
                     >
                         <div

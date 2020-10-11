@@ -15,17 +15,9 @@ export default class LoadModalStore {
             () => this.is_load_modal_open,
             is_load_modal_open => {
                 if (is_load_modal_open) {
-                    this.setRecentFiles(getSavedWorkspaces() || []);
+                    this.setRecentStrategies(getSavedWorkspaces() || []);
                 } else {
                     this.onLoadModalClose();
-                }
-            }
-        );
-        reaction(
-            () => this.loaded_local_file,
-            loaded_local_file => {
-                if (!loaded_local_file && this.local_workspace) {
-                    this.local_workspace.dispose();
                 }
             }
         );
@@ -40,8 +32,8 @@ export default class LoadModalStore {
     @observable is_explanation_expand = false;
     @observable is_open_button_loading = false;
     @observable loaded_local_file = null;
-    @observable recent_workspaces = [];
-    @observable selected_workspace_id = undefined;
+    @observable recent_strategies = [];
+    @observable selected_strategy_id = undefined;
     @observable should_rerender_tabs = false;
 
     @computed
@@ -52,8 +44,12 @@ export default class LoadModalStore {
     }
 
     @computed
-    get selected_workspace() {
-        return this.recent_workspaces.find(ws => ws.id === this.selected_workspace_id) || this.recent_workspaces[0];
+    get selected_strategy() {
+        if (this.recent_strategies.length > 0) {
+            return this.recent_strategies.find(ws => ws.id === this.selected_strategy_id) || this.recent_strategies[0];
+        }
+
+        return null;
     }
 
     @computed
@@ -92,16 +88,16 @@ export default class LoadModalStore {
     loadFileFromRecent() {
         this.is_open_button_loading = true;
 
-        if (!this.selected_workspace) {
+        if (!this.selected_strategy) {
             this.is_open_button_loading = false;
             return;
         }
 
-        removeExistingWorkspace(this.selected_workspace.id);
+        removeExistingWorkspace(this.selected_strategy.id);
         load({
-            block_string: this.selected_workspace.xml,
-            strategy_id: this.selected_workspace.id,
-            file_name: this.selected_workspace.name,
+            block_string: this.selected_strategy.xml,
+            strategy_id: this.selected_strategy.id,
+            file_name: this.selected_strategy.name,
             workspace: Blockly.derivWorkspace,
         });
         this.is_open_button_loading = false;
@@ -119,31 +115,44 @@ export default class LoadModalStore {
     @action.bound
     onActiveIndexChange() {
         if (this.tab_name === tabs_title.TAB_RECENT) {
-            // preview workspace when switch to recent tab
-            if (this.selected_workspace) {
-                this.previewWorkspace(this.selected_workspace_id);
+            if (this.selected_strategy) {
+                this.previewRecentStrategy(this.selected_strategy_id);
             }
-        } else if (this.recent_workspace) {
-            // dispose workspace in recent tab when switch tab
-            this.recent_workspace.dispose(true);
+        } else {
+            // eslint-disable-next-line no-lonely-if
+            if (this.recent_workspace) {
+                setTimeout(() => {
+                    // Dispose of recent workspace when switching away from Recent tab.
+                    // Process in next cycle so user doesn't have to wait.
+                    this.recent_workspace.dispose();
+                    this.recent_workspace = null;
+                });
+            }
         }
 
         if (this.tab_name === tabs_title.TAB_LOCAL) {
-            // add drag and drop event listerner when switch to local tab
             if (!this.drop_zone) {
                 this.drop_zone = document.querySelector('load-strategy__local-dropzone-area');
 
                 if (this.drop_zone) {
-                    this.drop_zone.addEventListener('drop', e => this.handleFileChange(e, false));
+                    this.drop_zone.addEventListener('drop', event => this.handleFileChange(event, false));
                 }
             }
-
-            // dispose workspace in local tab when switch tab
-            if (this.loaded_local_file && this.local_workspace) {
-                this.setLoadedLocalFile(null);
+        } else {
+            // Dispose of local workspace when switching away from Local tab.
+            // eslint-disable-next-line no-lonely-if
+            if (this.local_workspace) {
+                setTimeout(() => {
+                    this.local_workspace.dispose();
+                    this.local_workspace = null;
+                    this.setLoadedLocalFile(null);
+                });
             }
-        } else if (this.drop_zone) {
-            this.drop_zone.removeEventListener('drop', e => this.handleFileChange(e, false));
+        }
+
+        // Forget about drop zone when not on Local tab.
+        if (this.tab_name !== tabs_title.TAB_LOCAL && this.drop_zone) {
+            this.drop_zone.removeEventListener('drop', event => this.handleFileChange(event, false));
         }
     }
 
@@ -168,8 +177,8 @@ export default class LoadModalStore {
 
     @action.bound
     onEntered() {
-        if (this.tab_name === tabs_title.TAB_RECENT && this.selected_workspace) {
-            this.previewWorkspace(this.selected_workspace.id);
+        if (this.tab_name === tabs_title.TAB_RECENT && this.selected_strategy) {
+            this.previewRecentStrategy(this.selected_strategy.id);
         }
 
         this.setShouldRerenderTabs(true);
@@ -177,8 +186,13 @@ export default class LoadModalStore {
 
     @action.bound
     onLoadModalClose() {
-        if (this.preview_workspace) {
-            this.preview_workspace.dispose(true);
+        if (this.recent_workspace) {
+            this.recent_workspace.dispose();
+            this.recent_workspace = null;
+        }
+        if (this.local_workspace) {
+            this.local_workspace.dispose();
+            this.local_workspace = null;
         }
 
         this.setActiveTabIndex(0); // Reset to first tab.
@@ -194,10 +208,10 @@ export default class LoadModalStore {
     }
 
     @action.bound
-    previewWorkspace(workspace_id) {
-        this.setSelectedWorkspaceId(workspace_id);
+    previewRecentStrategy(workspace_id) {
+        this.setSelectedStrategyId(workspace_id);
 
-        if (!this.selected_workspace) {
+        if (!this.selected_strategy) {
             return;
         }
 
@@ -213,7 +227,7 @@ export default class LoadModalStore {
             this.recent_workspace = Blockly.inject(ref, {
                 media: `${__webpack_public_path__}media/`,
                 zoom: {
-                    wheel: false,
+                    wheel: true,
                     startScale: config.workspaces.previewWorkspaceStartScale,
                 },
                 readOnly: true,
@@ -221,7 +235,7 @@ export default class LoadModalStore {
             });
         }
 
-        load({ block_string: this.selected_workspace.xml, drop_event: {}, workspace: this.recent_workspace });
+        load({ block_string: this.selected_strategy.xml, drop_event: {}, workspace: this.recent_workspace });
     }
 
     @action.bound
@@ -235,13 +249,13 @@ export default class LoadModalStore {
     }
 
     @action.bound
-    setRecentFiles(recent_workspaces) {
-        this.recent_workspaces = recent_workspaces;
+    setRecentStrategies(recent_strategies) {
+        this.recent_strategies = recent_strategies;
     }
 
     @action.bound
-    setSelectedWorkspaceId(selected_workspace_id) {
-        this.selected_workspace_id = selected_workspace_id;
+    setSelectedStrategyId(selected_strategy_id) {
+        this.selected_strategy_id = selected_strategy_id;
     }
 
     @action.bound
@@ -294,6 +308,7 @@ export default class LoadModalStore {
 
             if (is_preview) {
                 const ref = document.getElementById('load-strategy__blockly-container');
+
                 this.local_workspace = Blockly.inject(ref, {
                     media: `${__webpack_public_path__}media/`, // eslint-disable-line
                     zoom: {

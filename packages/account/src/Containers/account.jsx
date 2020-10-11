@@ -61,9 +61,10 @@ class Account extends React.Component {
 
         const subroutes = flatten(this.props.routes.map((i) => i.subroutes));
         let list_groups = [...this.props.routes];
+
         list_groups = list_groups.map((route_group) => ({
             icon: route_group.icon,
-            label: route_group.title,
+            label: route_group.getTitle(),
             subitems: route_group.subroutes.map((sub) => subroutes.indexOf(sub)),
         }));
         let selected_content = subroutes.filter((route) => route.path === this.props.location.pathname)[0];
@@ -118,7 +119,7 @@ class Account extends React.Component {
             >
                 <div className='account'>
                     <PageOverlay
-                        header={isMobile() ? selected_route.title : localize('Settings')}
+                        header={isMobile() ? selected_route.getTitle() : localize('Settings')}
                         onClickClose={this.onClickClose}
                     >
                         <DesktopWrapper>

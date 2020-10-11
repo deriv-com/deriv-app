@@ -17,7 +17,10 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         const is_stake = this.type === 'trade_definition_tradeoptions';
 
         return {
-            message0: localize('Duration: %1 %2'),
+            message0: localize('Duration: {{ duration_unit }} {{ duration_value }}', {
+                duration_unit: '%1',
+                duration_value: '%2',
+            }),
             message1: `${is_stake ? localize('Stake') : localize('Payout')}: %1 %2`,
             args0: [
                 {
@@ -454,6 +457,7 @@ Blockly.JavaScript.trade_definition_tradeoptions = block => {
             secondBarrierOffset: ${second_barrier_offset_value || 'undefined'},
             basis              : '${block.type === 'trade_definition_tradeoptions' ? 'stake' : 'payout'}',
         });
+        BinaryBotPrivateHasCalledTradeOptions = true;
     `;
 
     return code;

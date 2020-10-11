@@ -7,7 +7,7 @@
     "scripts": {
         "start": "npm run test && npm run serve",
         "build": "shx rm -rf ./dist/ && shx mkdir -p ./dist/media && npm run build:copy",
-        "build:copy": "shx cp -r ./node_modules/scratch-blocks/media/. ./dist/media/ &&  shx cp -r ./src/assets/images/. ./dist/media/ &&  shx cp -r ./src/scratch/sounds/. ./dist/media/",
+        "build:copy": "shx cp -r ../../node_modules/scratch-blocks/media/. ./dist/media/ &&  shx cp -r ./src/assets/images/. ./dist/media/ &&  shx cp -r ./src/scratch/sounds/. ./dist/media/",
         "build:travis": "echo \"No build:travis specified\"",
         "test": "npm run test:mocha",
         "test:mocha": "echo \"No test:mocha specified\"",
@@ -21,11 +21,11 @@
     "author": "Binary.com",
     "license": "MIT",
     "devDependencies": {
-        "babel-loader": "^8.0.6",
+        "babel-loader": "^8.1.0",
         "chai": "^4.2.0",
         "deep-diff": "^1.0.2",
         "js-interpreter": "^2.1.0",
-        "lint-staged": "^10.0.6",
+        "lint-staged": "^10.4.0",
         "node-sass": "^4.12.0"
     },
     "dependencies": {
@@ -40,7 +40,7 @@
         "core-js": "^2.6.5",
         "file-saver": "^2.0.2",
         "formik": "^2.1.4",
-        "gh-pages": "^2.0.1",
+        "gh-pages": "^2.1.1",
         "immutable": "^3.8.2",
         "redux": "^4.0.1",
         "redux-thunk": "^2.2.0",

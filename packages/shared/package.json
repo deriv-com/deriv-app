@@ -30,18 +30,16 @@
     "moment": "^2.24.0"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.5.5",
-    "babel-jest": "^24.9.0",
+    "babel-jest": "^26.5.2",
     "chai": "^4.2.0",
     "cross-env": "^5.2.0",
-    "jest": "^24.8.0",
+    "jest": "^26.4.2",
     "jsdom": "^16.2.1",
-    "lint-staged": "^10.0.6",
+    "lint-staged": "^10.4.0",
     "moment": "^2.24.0",
     "node-sass": "^4.12.0"
   },
   "dependencies": {
-    "js-cookie": "^2.2.1",
-    "react": "^16.13.1"
+    "js-cookie": "^2.2.1"
   }
 }

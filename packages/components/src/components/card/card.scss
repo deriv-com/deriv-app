@@ -1,0 +1,14 @@
+.dc-card {
+    @include typeface(--paragraph-left-normal-black, none);
+    border: 1px solid var(--border-normal);
+    padding: 1.6rem;
+    border-radius: $BORDER_RADIUS;
+
+    &__wrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: auto;
+        margin: 1.6rem;
+    }
+}

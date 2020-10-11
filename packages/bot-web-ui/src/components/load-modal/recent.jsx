@@ -8,8 +8,8 @@ import RecentWorkspace from './recent-workspace.jsx';
 import WorkspaceControl from './workspace-control.jsx';
 import { connect } from '../../stores/connect';
 
-const RecentComponent = ({ is_explanation_expand, recent_workspaces, toggleExplanationExpand }) => {
-    if (recent_workspaces.length) {
+const RecentComponent = ({ is_explanation_expand, recent_strategies, toggleExplanationExpand }) => {
+    if (recent_strategies.length) {
         return (
             <div className='load-strategy__container load-strategy__container--has-footer'>
                 <div className='load-strategy__recent'>
@@ -18,7 +18,7 @@ const RecentComponent = ({ is_explanation_expand, recent_workspaces, toggleExpla
                             <Localize i18n_default_text='Recent' />
                         </div>
                         <div className='load-strategy__recent-files-list'>
-                            {recent_workspaces.map(workspace => (
+                            {recent_strategies.map(workspace => (
                                 <RecentWorkspace key={workspace.id} workspace={workspace} />
                             ))}
                         </div>
@@ -78,13 +78,13 @@ const RecentComponent = ({ is_explanation_expand, recent_workspaces, toggleExpla
 
 RecentComponent.propTypes = {
     is_explanation_expand: PropTypes.bool,
-    recent_workspaces: PropTypes.array,
+    recent_strategies: PropTypes.array,
     toggleExplanationExpand: PropTypes.bool,
 };
 
 const Recent = connect(({ load_modal }) => ({
     is_explanation_expand: load_modal.is_explanation_expand,
-    recent_workspaces: load_modal.recent_workspaces,
+    recent_strategies: load_modal.recent_strategies,
     toggleExplanationExpand: load_modal.toggleExplanationExpand,
 }))(RecentComponent);
 

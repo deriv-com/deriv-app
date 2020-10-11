@@ -3,18 +3,18 @@ import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
 import { Dropdown, Loading, Icon, Input, Button, ThemedScrollbars } from '@deriv/components';
 import { getDecimalPlaces, useIsMounted } from '@deriv/shared';
-import Dp2pContext from 'Components/context/dp2p-context';
 import { localize } from 'Components/i18next';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import { countDecimalPlaces } from 'Utils/string';
 import { textValidator, lengthValidator } from 'Utils/validations';
 import { requestWS } from 'Utils/websocket';
+import { useStores } from 'Stores';
 import AdSummary from './my-ads-summary.jsx';
 import { buy_sell } from '../../constants/buy-sell';
 
 const FormAds = ({ handleShowForm }) => {
+    const { general_store } = useStores();
     const [advertiser_info, setAdvertiserInfo] = React.useState({});
-    const { currency, local_currency_config } = React.useContext(Dp2pContext);
     const [error_message, setErrorMessage] = React.useState('');
     const [is_loading, setIsLoading] = React.useState(true);
     const isMounted = useIsMounted();
@@ -97,14 +97,14 @@ const FormAds = ({ handleShowForm }) => {
             max_transaction: [
                 v => !!v,
                 v => !isNaN(v),
-                v => v > 0 && countDecimalPlaces(v) <= getDecimalPlaces(currency),
+                v => v > 0 && countDecimalPlaces(v) <= getDecimalPlaces(general_store.client.currency),
                 v => (values.offer_amount ? +v <= values.offer_amount : true),
                 v => (values.min_transaction ? +v >= values.min_transaction : true),
             ],
             min_transaction: [
                 v => !!v,
                 v => !isNaN(v),
-                v => v > 0 && countDecimalPlaces(v) <= getDecimalPlaces(currency),
+                v => v > 0 && countDecimalPlaces(v) <= getDecimalPlaces(general_store.client.currency),
                 v => (values.offer_amount ? +v <= values.offer_amount : true),
                 v => (values.max_transaction ? +v <= values.max_transaction : true),
             ],
@@ -114,14 +114,14 @@ const FormAds = ({ handleShowForm }) => {
                 // v => v > available_price,
                 // TODO: remove v > 0 check when we have available_price
                 v => !isNaN(v),
-                v => v > 0 && countDecimalPlaces(v) <= getDecimalPlaces(currency),
+                v => v > 0 && countDecimalPlaces(v) <= getDecimalPlaces(general_store.client.currency),
                 v => (values.min_transaction ? +v >= values.min_transaction : true),
                 v => (values.max_transaction ? +v >= values.max_transaction : true),
             ],
             price_rate: [
                 v => !!v,
                 v => !isNaN(v),
-                v => v > 0 && countDecimalPlaces(v) <= local_currency_config.decimal_places,
+                v => v > 0 && countDecimalPlaces(v) <= general_store.client.local_currency_config.decimal_places,
             ],
         };
 
@@ -268,8 +268,8 @@ const FormAds = ({ handleShowForm }) => {
                                     <div className='p2p-my-ads__form-summary'>
                                         <AdSummary
                                             offer_amount={errors.offer_amount ? '' : values.offer_amount}
-                                            offer_currency={currency}
-                                            transaction_currency={local_currency_config.currency}
+                                            offer_currency={general_store.client.currency}
+                                            transaction_currency={general_store.client.local_currency_config.currency}
                                             price_rate={errors.price_rate ? '' : values.price_rate}
                                             type={values.type}
                                         />
@@ -301,7 +301,7 @@ const FormAds = ({ handleShowForm }) => {
                                                     className='p2p-my-ads__form-field'
                                                     trailing_icon={
                                                         <span className='p2p-my-ads__form-field--trailing'>
-                                                            {currency}
+                                                            {general_store.client.currency}
                                                         </span>
                                                     }
                                                     onChange={e => {
@@ -320,14 +320,16 @@ const FormAds = ({ handleShowForm }) => {
                                                     data-lpignore='true'
                                                     type='text'
                                                     error={touched.price_rate && errors.price_rate}
-                                                    label={localize('Fixed rate (1 {{currency}})', { currency })}
+                                                    label={localize('Fixed rate (1 {{currency}})', {
+                                                        currency: general_store.client.currency,
+                                                    })}
                                                     hint={localize('Per 1 {{currency}}', {
-                                                        currency,
+                                                        currency: general_store.client.currency,
                                                     })}
                                                     className='p2p-my-ads__form-field'
                                                     trailing_icon={
                                                         <span className='p2p-my-ads__form-field--trailing'>
-                                                            {local_currency_config.currency}
+                                                            {general_store.client.local_currency_config.currency}
                                                         </span>
                                                     }
                                                     onChange={e => {
@@ -348,7 +350,7 @@ const FormAds = ({ handleShowForm }) => {
                                                     className='p2p-my-ads__form-field'
                                                     trailing_icon={
                                                         <span className='p2p-my-ads__form-field--trailing'>
-                                                            {currency}
+                                                            {general_store.client.currency}
                                                         </span>
                                                     }
                                                     onChange={e => {
@@ -369,7 +371,7 @@ const FormAds = ({ handleShowForm }) => {
                                                     className='p2p-my-ads__form-field'
                                                     trailing_icon={
                                                         <span className='p2p-my-ads__form-field--trailing'>
-                                                            {currency}
+                                                            {general_store.client.currency}
                                                         </span>
                                                     }
                                                     onChange={e => {

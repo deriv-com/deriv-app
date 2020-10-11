@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
 import { Checkbox, Button, Modal } from '@deriv/components';
-import Dp2pContext from 'Components/context/dp2p-context';
+import { useStores } from 'Stores';
 import { localize } from '../i18next';
 import FormError from '../form/error.jsx';
 
@@ -20,7 +20,7 @@ const FormWithConfirmation = ({
     title,
     width,
 }) => {
-    const { modal_root_id } = React.useContext(Dp2pContext);
+    const { general_store } = useStores();
     const handleSubmit = (values, { setStatus }) => onClickConfirm(setStatus);
 
     return (
@@ -31,7 +31,7 @@ const FormWithConfirmation = ({
                         className={className}
                         is_confirmation_modal
                         is_open={should_show_popup}
-                        portalId={modal_root_id}
+                        portalId={general_store.props.modal_root_id}
                         title={title}
                         toggleModal={() => setShouldShowPopup(false)}
                         width={width}
@@ -105,14 +105,14 @@ const FormWithoutConfirmation = ({
 }) => {
     const [should_disable_confirm, setShouldDisableConfirm] = React.useState(true);
     const [api_error_message, setApiErrorMessage] = React.useState(null);
-    const { modal_root_id } = React.useContext(Dp2pContext);
+    const { general_store } = useStores();
 
     return (
         <Modal
             className={className}
             is_confirmation_modal
             is_open={should_show_popup}
-            portalId={modal_root_id}
+            portalId={general_store.props.modal_root_id}
             title={title}
             toggleModal={() => setShouldShowPopup(false)}
             width={width}

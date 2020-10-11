@@ -2,7 +2,7 @@ import React from 'react';
 import { Loading } from '@deriv/components';
 import { useIsMounted } from '@deriv/shared';
 import { localize } from 'Components/i18next';
-import Dp2pContext from 'Components/context/dp2p-context';
+import { useStores } from 'Stores';
 import { TableError } from 'Components/table/table-error.jsx';
 import { requestWS } from 'Utils/websocket';
 import FormAds from './form-ads.jsx';
@@ -17,7 +17,7 @@ const MyAdsState = ({ message }) => (
 );
 
 const MyAds = () => {
-    const { is_advertiser, is_restricted, setPoiStatus } = React.useContext(Dp2pContext);
+    const { general_store } = useStores();
     const [error_message, setErrorMessage] = React.useState('');
     const [is_loading, setIsLoading] = React.useState(true);
     const [show_ad_form, setShowAdForm] = React.useState(false);
@@ -25,13 +25,13 @@ const MyAds = () => {
 
     React.useEffect(() => {
         if (isMounted()) {
-            if (!is_advertiser) {
+            if (!general_store.is_advertiser) {
                 requestWS({ get_account_status: 1 }).then(response => {
                     if (isMounted()) {
                         if (!response.error) {
                             const { get_account_status } = response;
                             const { status } = get_account_status.authentication.identity;
-                            setPoiStatus(status);
+                            general_store.setPoiStatus(status);
                         } else {
                             setErrorMessage(response.error);
                         }
@@ -56,7 +56,7 @@ const MyAds = () => {
         return <Loading is_fullscreen={false} />;
     }
 
-    if (is_restricted) {
+    if (general_store.is_restricted) {
         return <MyAdsState message={localize('DP2P cashier is unavailable in your country.')} />;
     }
 
@@ -64,7 +64,7 @@ const MyAds = () => {
         return <MyAdsState message={error_message} />;
     }
 
-    if (is_advertiser) {
+    if (general_store.is_advertiser) {
         return (
             <div className='p2p-my-ads'>
                 {show_ad_form ? (

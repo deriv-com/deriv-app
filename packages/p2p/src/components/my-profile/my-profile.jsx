@@ -6,13 +6,13 @@ import classNames from 'classnames';
 import { requestWS } from 'Utils/websocket';
 import { localize } from 'Components/i18next';
 import { textValidator } from 'Utils/validations';
-import Dp2pContext from 'Components/context/dp2p-context';
 import { generateHexColourFromNickname, getShortNickname } from 'Utils/string';
+import { useStores } from 'Stores';
 import FormError from '../form/error.jsx';
 import './my-profile.scss';
 
 const MyProfile = () => {
-    const { currency } = React.useContext(Dp2pContext);
+    const { general_store } = useStores();
 
     const [advertiser_info, setAdvertiserInfo] = React.useState({});
     const [contact_info, setContactInfo] = React.useState('');
@@ -231,21 +231,23 @@ const MyProfile = () => {
                             <div className='my-profile__stats-cell-separator' />
                             <Table.Cell className='my-profile__stats-cell'>
                                 <div className='my-profile__stats-cell-header'>
-                                    {localize('Buy ({{currency}})', { currency })}
+                                    {localize('Buy ({{currency}})', { currency: general_store.client.currency })}
                                 </div>
                                 <div className='my-profile__stats-cell-info'>{buy_orders_count || '-'}</div>
                             </Table.Cell>
                             <div className='my-profile__stats-cell-separator' />
                             <Table.Cell className='my-profile__stats-cell'>
                                 <div className='my-profile__stats-cell-header'>
-                                    {localize('Sell ({{currency}})', { currency })}
+                                    {localize('Sell ({{currency}})', { currency: general_store.client.currency })}
                                 </div>
                                 <div className='my-profile__stats-cell-info'>{sell_orders_count || '-'}</div>
                             </Table.Cell>
                             <div className='my-profile__stats-cell-separator' />
                             <Table.Cell className='my-profile__stats-cell'>
                                 <div className='my-profile__stats-cell-header'>
-                                    {localize('Buy / Sell limit ({{currency}})', { currency })}
+                                    {localize('Buy / Sell limit ({{currency}})', {
+                                        currency: general_store.client.currency,
+                                    })}
                                 </div>
                                 <div className='my-profile__stats-cell-info'>
                                     {daily_buy_limit && daily_sell_limit

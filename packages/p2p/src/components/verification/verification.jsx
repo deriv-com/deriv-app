@@ -1,12 +1,12 @@
 import React from 'react';
 import { Icon, Checklist } from '@deriv/components';
 import { routes } from '@deriv/shared';
-import Dp2pContext from 'Components/context/dp2p-context';
+import { useStores } from 'Stores';
 import { Localize } from 'Components/i18next';
 import './verification.scss';
 
 const Verification = () => {
-    const { nickname, toggleNicknamePopup, is_advertiser, poi_status, poi_url } = React.useContext(Dp2pContext);
+    const { general_store } = useStores();
 
     const poiStatusText = status => {
         switch (status) {
@@ -25,22 +25,27 @@ const Verification = () => {
 
     const items = () => [
         {
-            content: nickname ? <p>{nickname}</p> : <Localize i18n_default_text='Choose your nickname' />,
-            status: nickname ? 'done' : 'action',
-            onClick: nickname ? () => {} : toggleNicknamePopup,
+            content: general_store.nickname ? (
+                <p>{general_store.nickname}</p>
+            ) : (
+                <Localize i18n_default_text='Choose your nickname' />
+            ),
+            status: general_store.nickname ? 'done' : 'action',
+            onClick: general_store.nickname ? () => {} : general_store.toggleNicknamePopup,
         },
         {
-            content: poiStatusText(poi_status),
-            status: poi_status === 'verified' ? 'done' : 'action',
+            content: poiStatusText(general_store.poi_status),
+            status: general_store.poi_status === 'verified' ? 'done' : 'action',
             onClick:
-                poi_status === 'verified'
+                general_store.poi_status === 'verified'
                     ? () => {}
-                    : () => (window.location.href = `${poi_url}?ext_platform_url=${routes.cashier_p2p}`),
-            is_disabled: poi_status !== 'verified' && !nickname,
+                    : () =>
+                          (window.location.href = `${general_store.props.poi_url}?ext_platform_url=${routes.cashier_p2p}`),
+            is_disabled: general_store.poi_status !== 'verified' && !general_store.nickname,
         },
     ];
 
-    if (!is_advertiser && poi_status === 'verified' && nickname) {
+    if (!general_store.is_advertiser && general_store.poi_status === 'verified' && general_store.nickname) {
         return (
             <div className='p2p-blocked-user'>
                 <Localize i18n_default_text='Your DP2P cashier has been blocked. Please contact customer support.' />

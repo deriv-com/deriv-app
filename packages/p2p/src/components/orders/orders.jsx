@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useIsMounted } from '@deriv/shared';
 import { localize } from 'Components/i18next';
-import Dp2pContext from 'Components/context/dp2p-context';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import { useStores } from 'Stores';
 import { getExtendedOrderDetails } from 'Utils/orders';
@@ -14,13 +13,6 @@ import './orders.scss';
 const Orders = ({ params, navigate, chat_info }) => {
     const { general_store } = useStores();
     const isMounted = useIsMounted();
-    const {
-        getLocalStorageSettingsForLoginId,
-        order_id,
-        orders,
-        setOrderId,
-        updateP2pNotifications,
-    } = React.useContext(Dp2pContext);
     const [order_information, setOrderInformation] = React.useState(null);
     const [nav, setNav] = React.useState(params?.nav);
     const order_info_subscription = React.useRef(null);
@@ -29,7 +21,7 @@ const Orders = ({ params, navigate, chat_info }) => {
         if (should_navigate && nav) {
             navigate(nav.location);
         }
-        setOrderId(null);
+        general_store.props.setOrderId(null);
         setOrderInformation(null);
     };
 
@@ -37,7 +29,7 @@ const Orders = ({ params, navigate, chat_info }) => {
         order_info_subscription.current = subscribeWS(
             {
                 p2p_order_info: 1,
-                id: order_id,
+                id: general_store.props.order_id,
                 subscribe: 1,
             },
             [setOrderDetails]
@@ -62,18 +54,18 @@ const Orders = ({ params, navigate, chat_info }) => {
     const setQueryDetails = input_order => {
         const input_order_information = getExtendedOrderDetails(input_order, general_store.client.loginid);
 
-        setOrderId(input_order_information.id); // Sets the id in URL
+        general_store.props.setOrderId(input_order_information.id); // Sets the id in URL
         setOrderInformation(input_order_information);
 
         // When viewing specific order, update its read state in localStorage.
-        const { notifications } = getLocalStorageSettingsForLoginId();
+        const { notifications } = general_store.getLocalStorageSettingsForLoginId();
 
         if (notifications.length) {
             const notification = notifications.find(n => n.order_id === input_order_information.id);
 
             if (notification) {
                 notification.is_seen = true;
-                updateP2pNotifications(notifications);
+                general_store.updateP2pNotifications(notifications);
             }
         }
     };
@@ -88,20 +80,20 @@ const Orders = ({ params, navigate, chat_info }) => {
     React.useEffect(() => {
         unsubscribeFromCurrentOrder();
 
-        if (order_id) {
+        if (general_store.props.order_id) {
             subscribeToCurrentOrder();
         }
-    }, [order_id]);
+    }, [general_store.props.order_id]);
 
     React.useEffect(() => {
         setNav(params?.nav ?? nav);
     }, [params]);
 
     React.useEffect(() => {
-        if (isMounted() && order_id) {
+        if (isMounted() && general_store.props.order_id) {
             // If orders was updated, find current viewed order (if any)
             // and trigger a re-render (in case status was updated).
-            const order = orders.find(o => o.id === order_id);
+            const order = general_store.orders.find(o => o.id === general_store.props.order_id);
 
             if (order) {
                 setQueryDetails(order);
@@ -109,7 +101,7 @@ const Orders = ({ params, navigate, chat_info }) => {
                 navigate('orders');
             }
         }
-    }, [orders]);
+    }, [general_store.orders]);
 
     if (order_information) {
         const { account_currency } = order_information;

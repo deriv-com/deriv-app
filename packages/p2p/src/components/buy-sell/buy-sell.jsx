@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, ButtonToggle, Modal, ThemedScrollbars } from '@deriv/components';
 import { useIsMounted } from '@deriv/shared';
-import Dp2pContext from 'Components/context/dp2p-context';
+import { useStores } from 'Stores';
 import { localize } from 'Components/i18next';
 import BuySellForm from './buy-sell-form.jsx';
 import BuySellTableContent from './buy-sell-table-content.jsx';
@@ -26,7 +26,7 @@ const buy_sell_filters = () => [
 ];
 
 const BuySell = ({ navigate }) => {
-    const { is_advertiser, modal_root_id, nickname, setOrderId } = React.useContext(Dp2pContext);
+    const { general_store } = useStores();
 
     const submitForm = React.useRef(() => {});
     const [error_message, setErrorMessage] = React.useState(null);
@@ -50,12 +50,12 @@ const BuySell = ({ navigate }) => {
     const onCancelClick = () => setShouldShowPopup(false);
     const onChangeTableType = event => setTableType(event.target.value);
     const onConfirmClick = order_info => {
-        setOrderId(order_info.id);
+        general_store.props.setOrderId(order_info.id);
         navigate('orders', { nav: { location: 'buy_sell' } });
     };
 
     const setSelectedAdvert = selected_advert => {
-        if (!is_advertiser) {
+        if (!general_store.is_advertiser) {
             setShouldShowVerification(true);
         } else {
             setSelectedAdState(selected_advert);
@@ -102,7 +102,7 @@ const BuySell = ({ navigate }) => {
         );
     }
 
-    const Form = nickname ? BuySellForm : NicknameForm;
+    const Form = general_store.nickname ? BuySellForm : NicknameForm;
     const modal_title =
         table_type === buy_sell.BUY
             ? localize('Buy {{ currency }}', { currency: selected_ad_state.account_currency })
@@ -133,7 +133,7 @@ const BuySell = ({ navigate }) => {
                 width='456px'
                 is_open={should_show_popup}
                 title={modal_title}
-                portalId={modal_root_id}
+                portalId={general_store.props.modal_root_id}
                 toggleModal={onCancelClick}
             >
                 {/* Parent height - Modal.Header height - Modal.Footer height */}

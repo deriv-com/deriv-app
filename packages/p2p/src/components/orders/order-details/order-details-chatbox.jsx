@@ -2,15 +2,14 @@ import * as React from 'react';
 import { Loading } from '@deriv/components';
 import { useIsMounted } from '@deriv/shared';
 import { Channel, SendBirdProvider } from 'sendbird-uikit';
-import Dp2pContext from 'Components/context/dp2p-context';
 import { getShortNickname, generateHexColourFromNickname } from 'Utils/string';
 import 'sendbird-uikit/dist/index.css';
+import { useStores } from 'Stores';
 
 const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url, nickname }) => {
     const isMounted = useIsMounted();
-
+    const { general_store } = useStores();
     const [is_loading, setIsLoading] = React.useState(true);
-    const { is_dark_mode_on } = React.useContext(Dp2pContext);
 
     React.useEffect(() => {
         const interval_header = setInterval(() => {
@@ -98,7 +97,7 @@ const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url, nickname }) 
                 appId={app_id}
                 userId={user_id}
                 accessToken={token}
-                theme={is_dark_mode_on ? 'dark' : 'light'}
+                theme={general_store.props.is_dark_mode_on ? 'dark' : 'light'}
             >
                 <Channel channelUrl={channel_url} />
             </SendBirdProvider>

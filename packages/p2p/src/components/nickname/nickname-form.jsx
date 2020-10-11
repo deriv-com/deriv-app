@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
 import { Input, Button, ThemedScrollbars, Icon } from '@deriv/components';
-import Dp2pContext from 'Components/context/dp2p-context';
+import { useStores } from 'Stores';
 import { localize } from 'Components/i18next';
 import IconClose from 'Assets/icon-close.jsx';
 import './nickname-form.scss';
 
 const NicknameForm = ({ handleClose }) => {
-    const { createAdvertiser, is_mobile, nickname_error, resetNicknameErrorState } = React.useContext(Dp2pContext);
+    const { general_store } = useStores();
 
     const validatePopup = values => {
         const validations = {
@@ -57,7 +57,7 @@ const NicknameForm = ({ handleClose }) => {
 
     return (
         <>
-            {!is_mobile && (
+            {!general_store.props.is_mobile && (
                 <div className='nickname__form-header nickname__form-header--no-border'>
                     <div className='nickname__form-header_wrapper nickname__form-header_right'>
                         <IconClose className='nickname__form-close_icon' onClick={handleClose} />
@@ -68,7 +68,7 @@ const NicknameForm = ({ handleClose }) => {
                 validate={validatePopup}
                 initialValues={{ nickname: '' }}
                 onSubmit={async values => {
-                    await createAdvertiser(values.nickname);
+                    await general_store.createAdvertiser(values.nickname);
                 }}
             >
                 {({ errors, handleChange, isSubmitting, values }) => (
@@ -86,12 +86,12 @@ const NicknameForm = ({ handleClose }) => {
                                             <Input
                                                 {...field}
                                                 data-lpignore='true'
-                                                error={nickname_error || errors.nickname}
+                                                error={general_store.nickname_error || errors.nickname}
                                                 label={localize('Your nickname')}
                                                 className='nickname__form-field'
                                                 onChange={e => {
                                                     handleChange(e);
-                                                    resetNicknameErrorState();
+                                                    general_store.resetNicknameErrorState();
                                                 }}
                                                 required
                                             />
@@ -111,7 +111,10 @@ const NicknameForm = ({ handleClose }) => {
                                 <Button
                                     type='submit'
                                     is_disabled={
-                                        !!errors.nickname || values.nickname === '' || isSubmitting || nickname_error
+                                        !!errors.nickname ||
+                                        values.nickname === '' ||
+                                        isSubmitting ||
+                                        general_store.nickname_error
                                     }
                                     primary
                                     large

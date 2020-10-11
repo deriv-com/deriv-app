@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ContentLoader from 'react-content-loader';
 import { Table, Button } from '@deriv/components';
-import Dp2pContext from 'Components/context/dp2p-context';
+import { useStores } from 'Stores';
 import { localize } from 'Components/i18next';
 import { generateHexColourFromNickname, getShortNickname } from 'Utils/string';
 
@@ -37,8 +37,8 @@ export const RowComponent = React.memo(({ advert, setSelectedAdvert, showAdverti
         price_display,
     } = advert;
 
-    const { advertiser_id } = React.useContext(Dp2pContext);
-    const is_my_advert = advert.advertiser_details.id === advertiser_id;
+    const { general_store } = useStores();
+    const is_my_advert = advert.advertiser_details.id === general_store.advertiser_id;
     const is_buy_advert = counterparty_type === 'buy';
     const { name: advertiser_name } = advert.advertiser_details;
     const advertiser_short_name = getShortNickname(advertiser_name);

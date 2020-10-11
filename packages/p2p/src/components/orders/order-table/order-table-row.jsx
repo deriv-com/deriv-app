@@ -3,9 +3,9 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { localize, Localize } from 'Components/i18next';
-import Dp2pContext from 'Components/context/dp2p-context';
 import { secondsToTimer } from 'Utils/date-time';
 import ServerTime from 'Utils/server-time';
+import { useStores } from '../../../../stores';
 
 // TODO: Refactor "advert" as it can also be an "order", try to use two separate
 // "RowComponents" for orders and adverts.
@@ -29,12 +29,12 @@ const OrderRowComponent = React.memo(({ advert, onOpenDetails, style, is_active 
         status_string,
     } = advert;
     const [remaining_time, setRemainingTime] = React.useState();
-    const { getLocalStorageSettingsForLoginId } = React.useContext(Dp2pContext);
+    const { general_store } = useStores();
 
     let interval;
 
     const isOrderSeen = order_id => {
-        const { notifications } = getLocalStorageSettingsForLoginId();
+        const { notifications } = general_store.getLocalStorageSettingsForLoginId();
         return notifications.some(notification => notification.order_id === order_id && notification.is_seen === true);
     };
 

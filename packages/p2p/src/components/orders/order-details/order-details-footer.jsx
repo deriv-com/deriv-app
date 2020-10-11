@@ -3,10 +3,8 @@ import PropTypes from 'prop-types';
 import { Button } from '@deriv/components';
 import { localize, Localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
-import Dp2pContext from 'Components/context/dp2p-context';
 
 const OrderDetailsFooter = ({ order_information, cancelPopup, showPopup }) => {
-    const { email_domain } = React.useContext(Dp2pContext);
     const {
         id,
         local_currency,
@@ -51,14 +49,14 @@ const OrderDetailsFooter = ({ order_information, cancelPopup, showPopup }) => {
             message: (
                 <Localize
                     i18n_default_text="If you have a problem in using the app or if you have a dispute with the other party that the two of you haven't been able to resolve, please email <0>{{support_email}}</0>. Describe your situation, and include your order <1>ID ({{id}})</1>."
-                    values={{ support_email: `p2p-support@${email_domain}`, id }}
+                    values={{ support_email: `p2p-support@deriv.com`, id }}
                     components={[
                         <a
                             key={0}
                             className='link order-details__popup--danger'
                             rel='noopener noreferrer'
                             target='_blank'
-                            href={`mailto:p2p-support@${email_domain}`}
+                            href={`mailto:p2p-support@deriv.com`}
                         />,
                         <span key={1} className='order-details__popup--bold' />,
                     ]}

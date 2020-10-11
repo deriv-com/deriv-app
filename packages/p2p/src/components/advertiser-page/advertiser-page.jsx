@@ -3,9 +3,9 @@ import { Button, Icon, Loading, Modal, Popover, Table, Tabs, ThemedScrollbars } 
 import { useIsMounted } from '@deriv/shared';
 import { generateHexColourFromNickname, getShortNickname } from 'Utils/string';
 import { height_constants } from 'Utils/height_constants';
-import Dp2pContext from 'Components/context/dp2p-context';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { requestWS } from 'Utils/websocket';
+import { useStores } from 'Stores';
 import Empty from 'Components/empty/empty.jsx';
 import NicknameForm from '../nickname/nickname-form.jsx';
 import { buy_sell } from '../../constants/buy-sell';
@@ -15,7 +15,7 @@ import { localize } from '../i18next';
 import './advertiser-page.scss';
 
 const RowComponent = React.memo(({ advert, showAdPopup, style }) => {
-    const { advertiser_id } = React.useContext(Dp2pContext);
+    const { general_store } = useStores();
     const {
         account_currency,
         advertiser_details,
@@ -27,7 +27,7 @@ const RowComponent = React.memo(({ advert, showAdPopup, style }) => {
     } = advert;
 
     const is_buy_advert = counterparty_type === buy_sell.BUY;
-    const is_my_advert = advertiser_details.id === advertiser_id;
+    const is_my_advert = advertiser_details.id === general_store.advertiser_id;
 
     return (
         <div style={style}>
@@ -55,7 +55,7 @@ const RowComponent = React.memo(({ advert, showAdPopup, style }) => {
 RowComponent.displayName = 'RowComponent';
 
 const AdvertiserPage = ({ navigate, selected_advert, showVerification }) => {
-    const { is_advertiser, nickname } = React.useContext(Dp2pContext);
+    const { general_store } = useStores();
     const { advertiser_details, account_currency } = selected_advert;
     const [active_index, setActiveIndex] = React.useState(0);
     const [ad, setAd] = React.useState(null);
@@ -93,7 +93,7 @@ const AdvertiserPage = ({ navigate, selected_advert, showVerification }) => {
         total_orders_count,
     } = stats;
     const avg_release_time_in_minutes = release_time_avg > 60 ? Math.round(release_time_avg / 60) : '< 1';
-    const Form = nickname ? BuySellForm : NicknameForm;
+    const Form = general_store.nickname ? BuySellForm : NicknameForm;
     const modal_title =
         counterparty_type === buy_sell.BUY
             ? localize('Buy {{ currency }}', { currency: account_currency })
@@ -173,7 +173,7 @@ const AdvertiserPage = ({ navigate, selected_advert, showVerification }) => {
     const setSubmitForm = submitFormFn => (submitForm.current = submitFormFn);
 
     const showAdPopup = advert => {
-        if (!is_advertiser) {
+        if (!general_store.is_advertiser) {
             showVerification();
         } else {
             setAd(advert);

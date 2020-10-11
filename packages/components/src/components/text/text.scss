@@ -1,27 +1,15 @@
-.text {
-    @each $name, $size in $FONT_SIZES {
-        &--#{$name} {
-            font-size: $size;
-        }
+.dc-text {
+    font-size: var(--text-size);
+    color: var(--text-color);
+    line-height: var(--text-lh);
+
+    &--bold {
+        font-weight: bold;
     }
-    @each $name, $color in $FONT_COLORS {
-        &--#{$name} {
-            color: $color;
-        }
+    &--left {
+        text-align: left;
     }
-    @each $name, $weight in $FONT_WEIGHTS {
-        &--#{$name} {
-            font-weight: $weight;
-        }
-    }
-    @each $name, $align in $TEXT_ALIGN {
-        &--#{$name} {
-            text-align: $align;
-        }
-    }
-    @each $name, $lineHeight in $LINEHEIGHTS {
-        &__line-height--#{$name} {
-            line-height: $lineHeight;
-        }
+    &--right {
+        text-align: right;
     }
 }

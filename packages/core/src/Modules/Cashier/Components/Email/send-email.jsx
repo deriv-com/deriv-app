@@ -21,7 +21,7 @@ class SendEmail extends React.Component {
                         {/* <p className='withdraw__header'>
                             <Localize i18n_default_text='To initiate a withdrawal, we need to authenticate you via email.' />
                         </p> */}
-                        <Text size='paragraph' color='general'>
+                        <Text size='xs'>
                             <Localize i18n_default_text='To initiate a withdrawal, we need to authenticate you via email.' />
                         </Text>
                         <p className='withdraw__text'>

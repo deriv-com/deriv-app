@@ -2,6 +2,7 @@ import React from 'react';
 import { Field, Form, Formik } from 'formik';
 import { Button, Input, Checkbox } from '@deriv/components';
 import { getAppId, getSocketURL, PlatformContext } from '@deriv/shared';
+import { connect } from 'Stores/connect';
 // eslint-disable-next-line import/extensions
 
 const InputField = props => {
@@ -24,13 +25,14 @@ const InputField = props => {
 };
 
 // doesn't need localization as it's for internal use
-const Endpoint = () => {
+const Endpoint = ({ is_eu_enabled, toggleIsEuEnabled }) => {
     const platform_store = React.useContext(PlatformContext);
     return (
         <Formik
             initialValues={{
                 app_id: getAppId(),
                 server: getSocketURL(),
+                is_eu_enabled,
                 is_deriv_crypto_enabled: platform_store.is_deriv_crypto,
             }}
             validate={values => {
@@ -52,7 +54,9 @@ const Endpoint = () => {
             onSubmit={values => {
                 localStorage.setItem('config.app_id', values.app_id);
                 localStorage.setItem('config.server_url', values.server);
+                localStorage.setItem('is_eu_enabled', values.is_eu_enabled);
                 localStorage.setItem(platform_store.DERIV_CRYPTO_KEY, values.is_deriv_crypto_enabled);
+                toggleIsEuEnabled(values.is_eu_enabled);
                 platform_store.setDerivCrypto(values.is_deriv_crypto_enabled);
                 location.reload();
             }}
@@ -88,6 +92,21 @@ const Endpoint = () => {
                             </React.Fragment>
                         }
                     />
+                    <Field name='is_eu_enabled'>
+                        {({ field }) => (
+                            <div style={{ marginTop: '4.5rem', marginBottom: '1.6rem' }}>
+                                <Checkbox
+                                    {...field}
+                                    label='Enable EU'
+                                    value={values.is_eu_enabled}
+                                    onChange={e => {
+                                        handleChange(e);
+                                        setFieldTouched('is_eu_enabled', true);
+                                    }}
+                                />
+                            </div>
+                        )}
+                    </Field>
                     <Field name='is_deriv_crypto_enabled'>
                         {({ field }) => (
                             <div style={{ marginTop: '4.5rem', marginBottom: '1.6rem' }}>
@@ -107,7 +126,10 @@ const Endpoint = () => {
                         type='submit'
                         is_disabled={
                             !!(
-                                (!touched.server && !touched.app_id && !touched.is_deriv_crypto_enabled) ||
+                                (!touched.server &&
+                                    !touched.app_id &&
+                                    !touched.is_eu_enabled &&
+                                    !touched.is_deriv_crypto_enabled) ||
                                 !values.server ||
                                 !values.app_id ||
                                 errors.server ||
@@ -124,6 +146,7 @@ const Endpoint = () => {
                         onClick={() => {
                             localStorage.removeItem('config.app_id');
                             localStorage.removeItem('config.server_url');
+                            localStorage.removeItem('is_eu_enabled');
                             localStorage.removeItem(platform_store.DERIV_CRYPTO_KEY);
                             location.reload();
                         }}
@@ -136,4 +159,7 @@ const Endpoint = () => {
     );
 };
 
-export default Endpoint;
+export default connect(({ ui }) => ({
+    is_eu_enabled: ui.is_eu_enabled,
+    toggleIsEuEnabled: ui.toggleIsEuEnabled,
+}))(Endpoint);

@@ -4,24 +4,23 @@ import { ButtonToggle } from '@deriv/components';
 import { useStores } from 'Stores';
 import { localize } from 'Components/i18next';
 import OrderTableContent from './order-table-content.jsx';
-import { orderToggleIndex } from '../order-info';
+import { order_list } from '../../../constants/order-list';
 
 const OrderTable = ({ showDetails }) => {
     const { general_store } = useStores();
     const orders_filters = [
         {
             text: localize('Active order'),
-            value: orderToggleIndex.ACTIVE,
+            value: order_list.ACTIVE,
             count: general_store.active_notification_count,
         },
         {
             text: localize('Past order'),
-            value: orderToggleIndex.INACTIVE,
+            value: order_list.INACTIVE,
             count: general_store.inactive_notification_count,
         },
     ];
 
-    const is_active_tab = general_store.order_table_type === orderToggleIndex.ACTIVE;
     return (
         <React.Fragment>
             <div className='orders__header'>
@@ -35,7 +34,7 @@ const OrderTable = ({ showDetails }) => {
                     has_rounded_button
                 />
             </div>
-            <OrderTableContent showDetails={showDetails} is_active={is_active_tab} />
+            <OrderTableContent showDetails={showDetails} is_active={general_store.is_active_tab} />
         </React.Fragment>
     );
 };

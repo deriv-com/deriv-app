@@ -10,51 +10,6 @@ import './nickname-form.scss';
 const NicknameForm = ({ handleClose }) => {
     const { general_store } = useStores();
 
-    const validatePopup = values => {
-        const validations = {
-            nickname: [
-                v => !!v,
-                v => v.length >= 2,
-                v => v.length <= 24,
-                v => /^[a-zA-Z0-9\\.@_-]{2,24}$/.test(v),
-                v => /^(?!(.*(.)\\2{4,})|.*[\\.@_-]{2,}|^([\\.@_-])|.*([\\.@_-])$)[a-zA-Z0-9\\.@_-]{2,24}$/.test(v),
-                v =>
-                    Array.from(v).every(
-                        word => (v.match(new RegExp(word === '.' ? `\\${word}` : word, 'g')) || []).length <= 5
-                    ),
-            ],
-        };
-
-        const nickname_messages = [
-            localize('Nickname is required'),
-            localize('Nickname is too short'),
-            localize('Nickname is too long'),
-            localize('Can only contain letters, numbers, and special characters .- _ @.'),
-            localize('Cannot start, end with, or repeat special characters.'),
-            localize('Cannot repeat a character more than 5 times.'),
-        ];
-
-        const errors = {};
-
-        Object.entries(validations).forEach(([key, rules]) => {
-            const error_index = rules.findIndex(v => {
-                return !v(values[key]);
-            });
-
-            if (error_index !== -1) {
-                switch (key) {
-                    case 'nickname':
-                    default: {
-                        errors[key] = nickname_messages[error_index];
-                        break;
-                    }
-                }
-            }
-        });
-
-        return errors;
-    };
-
     return (
         <>
             {!general_store.props.is_mobile && (
@@ -65,7 +20,7 @@ const NicknameForm = ({ handleClose }) => {
                 </div>
             )}
             <Formik
-                validate={validatePopup}
+                validate={general_store.validatePopup}
                 initialValues={{ nickname: '' }}
                 onSubmit={async values => {
                     await general_store.createAdvertiser(values.nickname);

@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import CurrencyBadge from 'App/Components/Elements/currency-badge.jsx';
 import { ContractCard, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { getContractPath, isMultiplierContract } from '@deriv/shared';
 import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
@@ -110,6 +111,7 @@ const PositionsDrawerCard = ({
     const contract_el = (
         <React.Fragment>
             {card_header}
+            <CurrencyBadge currency={currency} />
             {card_body_wrapper}
         </React.Fragment>
     );

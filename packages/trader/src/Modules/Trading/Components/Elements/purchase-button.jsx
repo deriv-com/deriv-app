@@ -82,7 +82,7 @@ const PurchaseButton = ({
                     <div className='btn-purchase__text_wrapper'>
                         {is_multiplier ? (
                             <span className='btn-purchase__text'>
-                                <Money amount={info.stake} currency={currency} />
+                                <Money amount={info.stake} currency={currency} show_currency />
                             </span>
                         ) : (
                             <span className='btn-purchase__text'>

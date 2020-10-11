@@ -101,9 +101,10 @@
     }
     @include mobile {
         &__balance {
+            font-size: 1.4rem;
+
             &--no-currency {
                 white-space: nowrap;
-                font-size: 1.4rem;
             }
         }
     }
@@ -239,6 +240,7 @@
         position: relative;
 
         .acc-switcher__account {
+            margin-bottom: 2px;
             background: var(--general-main-2);
 
             &:hover:not(.acc-switcher__account--selected) {

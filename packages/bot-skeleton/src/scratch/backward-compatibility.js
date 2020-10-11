@@ -366,9 +366,10 @@ export default class BlockConversion {
         // Disable events (globally) to suppress block onchange listeners from firing.
         Blockly.Events.disable();
 
+        // We only want to update renamed fields for modern strategies.
         const xml = this.updateRenamedFields(strategy_node);
 
-        // We only want to update renamed fields for modern strategies.
+        // Don't convert already compatible strategies.
         if (strategy_node.hasAttribute('is_dbot') && strategy_node.getAttribute('is_dbot') === 'true') {
             Blockly.Events.enable();
             return xml;

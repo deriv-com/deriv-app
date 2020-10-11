@@ -4,60 +4,56 @@ import PropTypes from 'prop-types';
 import Field from '../field';
 import Loading from '../loading';
 
-class PasswordMeter extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            is_loading: true,
-            score: undefined,
-            feedback: undefined,
-        };
-    }
+const PasswordMeter = ({ children, has_error, input }) => {
+    const zxcvbn = React.useRef();
 
-    async componentDidMount() {
-        const lib = await import('@contentpass/zxcvbn');
-        this.zxcvbn = lib.default;
-        this.setState({ is_loading: false });
-    }
+    const [is_loading, setLoading] = React.useState(true);
+    const [score, setScore] = React.useState(undefined);
+    const [feedback, setFeedback] = React.useState(undefined);
 
-    componentDidUpdate(prev_props) {
-        if (this.props.input !== prev_props.input || this.props.has_error !== prev_props.has_error) {
-            if (typeof this.zxcvbn === 'function') {
-                // 0 - 4 Score for password strength
-                const { score, feedback } = this.zxcvbn(this.props.input);
-                this.setState({ score, feedback });
-            }
+    React.useEffect(() => {
+        async function loadLibrary() {
+            const lib = await import('@contentpass/zxcvbn');
+            zxcvbn.current = lib.default;
+            setLoading(false);
         }
-    }
 
-    render() {
-        const { is_loading, score, feedback } = this.state;
-        if (is_loading) return <Loading is_fullscreen={false} />;
+        loadLibrary();
+    }, []);
 
-        const { children, has_error, input } = this.props;
-        const width_scale = has_error && input.length ? 0.25 : 0.25 * (input.length && score < 1 ? 1 : score);
+    React.useEffect(() => {
+        if (typeof zxcvbn.current === 'function') {
+            // 0 - 4 Score for password strength
+            const { score: updated_score, feedback: updated_feedback } = zxcvbn.current(input);
+            setScore(updated_score);
+            setFeedback(updated_feedback);
+        }
+    }, [has_error, input]);
 
-        return (
-            <React.Fragment>
-                <div className='dc-password-meter__container'>
-                    {/* if child input field has hint, they should not show the hint while warning is shown */}
-                    {typeof children === 'function' ? children({ has_warning: !!feedback?.warning }) : children}
-                    <div className='dc-password-meter__bg' />
-                    <div
-                        className={classNames('dc-password-meter', {
-                            'dc-password-meter--weak': has_error || (input.length && score < 3),
-                            'dc-password-meter--strong': !has_error && input.length && score >= 3,
-                        })}
-                        style={{ transform: `scale(${width_scale}, 1)` }}
-                    />
-                    {feedback?.warning && !has_error && (
-                        <Field className='dc-password-meter__warning' message={`${feedback.warning}.`} type='error' />
-                    )}
-                </div>
-            </React.Fragment>
-        );
-    }
-}
+    if (is_loading) return <Loading is_fullscreen={false} />;
+
+    const width_scale = has_error && input.length ? 0.25 : 0.25 * (input.length && score < 1 ? 1 : score);
+
+    return (
+        <React.Fragment>
+            <div className='dc-password-meter__container'>
+                {/* if child input field has hint, they should not show the hint while warning is shown */}
+                {typeof children === 'function' ? children({ has_warning: !!feedback?.warning }) : children}
+                <div className='dc-password-meter__bg' />
+                <div
+                    className={classNames('dc-password-meter', {
+                        'dc-password-meter--weak': has_error || (input.length && score < 3),
+                        'dc-password-meter--strong': !has_error && input.length && score >= 3,
+                    })}
+                    style={{ transform: `scale(${width_scale}, 1)` }}
+                />
+                {feedback?.warning && !has_error && (
+                    <Field className='dc-password-meter__warning' message={`${feedback.warning}.`} type='error' />
+                )}
+            </div>
+        </React.Fragment>
+    );
+};
 
 PasswordMeter.propTypes = {
     children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node, PropTypes.func]),

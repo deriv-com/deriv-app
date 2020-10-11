@@ -103,6 +103,7 @@ class App extends React.Component {
 
     componentWillUnmount() {
         if (Blockly.derivWorkspace) {
+            clearInterval(Blockly.derivWorkspace.save_workspace_interval);
             Blockly.derivWorkspace.dispose();
         }
 

@@ -161,8 +161,8 @@ class PositionsDrawer extends React.Component {
             return 193;
         }
 
-        const classic_contract_height = is_valid_to_sell ? 232 : 183;
-        return is_multiplier_contract ? 297 : classic_contract_height;
+        const classic_contract_height = is_valid_to_sell ? 238 : 198;
+        return is_multiplier_contract ? 310 : classic_contract_height;
     };
 
     render() {

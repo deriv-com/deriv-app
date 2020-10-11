@@ -34,7 +34,7 @@ const RowComponent = React.memo(({ advert, showAdPopup, style }) => {
                     <Table.Cell />
                 ) : (
                     <Table.Cell className='advertiser-page__adverts-button'>
-                        <Button primary small onClick={() => showAdPopup(advert, general_store.is_advertiser)}>
+                        <Button primary small onClick={() => showAdPopup(advert)}>
                             {is_buy_advert ? localize('Buy') : localize('Sell')} {general_store.client.currency}
                         </Button>
                     </Table.Cell>

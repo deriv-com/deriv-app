@@ -6,6 +6,11 @@ import { localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
 
 export default class AdvertiserPageStore {
+    constructor(root_store) {
+        this.root_store = root_store;
+        this.general_store = this.root_store.general_store;
+    }
+
     @observable active_index = 0;
     @observable advertiser_info = {};
     @observable ad = null;
@@ -189,8 +194,8 @@ export default class AdvertiserPageStore {
     }
 
     @action.bound
-    showAdPopup(advert, is_advertiser) {
-        if (!is_advertiser) {
+    showAdPopup(advert) {
+        if (!this.general_store.is_advertiser) {
             this.props.showVerification();
         } else {
             this.setAd(advert);

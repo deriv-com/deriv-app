@@ -125,10 +125,10 @@ class ContractTypeWidget extends React.PureComponent {
                         />
                     ) : (
                         <ContractType.Info
-                            handleNavigationClick={this.handleNavigationClick}
                             handleSelect={this.handleSelect}
                             item={item || { value }}
                             list={list}
+                            handleNavigationClick={this.handleNavigationClick}
                         />
                     )}
                 </ContractType.Dialog>

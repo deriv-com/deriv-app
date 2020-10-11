@@ -22,7 +22,7 @@ import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
 import { isEuCountry } from '_common/utility';
 import BaseStore from './base-store';
-import { getClientAccountType, getAccountTitle, getLandingCompanyValue } from './Helpers/client';
+import { getClientAccountType, getAccountTitle } from './Helpers/client';
 import { createDeviceDataObject, setDeviceDataCookie } from './Helpers/device';
 import { handleClientNotifications } from './Helpers/client-notifications';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';

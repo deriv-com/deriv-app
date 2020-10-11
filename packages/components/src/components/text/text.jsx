@@ -4,15 +4,15 @@ import React from 'react';
 const Text = ({ children, size, color, align, weight, lineHeight, as }) => {
     function setStyle() {
         const style = {
-            '--text-size': 'var(--text-size-' + size + ')',
-            '--text-color': 'var(--text-' + color + ')',
-            '--text-lh': 'var(--text-lh-' + lineHeight + ')',
+            '--text-size': `var(--text-size-${size})`,
+            '--text-color': `var(--text-${color})`,
+            '--text-lh': `var(--text-lh-${lineHeight})`,
         };
         return style;
     }
     function setClassName() {
-        const classNames = ['dc-text', `dc-text--${weight} dc-text--${align}`];
-        return classNames;
+        const className = ['dc-text', `dc-text--${weight} dc-text--${align}`];
+        return className;
     }
     return (
         ({ as } === 'span' && (

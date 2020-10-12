@@ -2,9 +2,6 @@ import { DURING_PURCHASE } from './state/constants';
 import { contractStatus, log } from '../utils/broadcast';
 import { recoverFromError, doUntilDone } from '../utils/helpers';
 import { log_types } from '../../../constants/messages';
-import { createError } from '../../../utils/error';
-
-let delay_index = 0;
 
 export default Engine =>
     class Sell extends Engine {
@@ -23,44 +20,88 @@ export default Engine =>
                 return Promise.resolve();
             }
 
-            const onSuccess = sold_for => {
-                delay_index = 0;
-                contractStatus('purchase.sold');
-                log(log_types.SELL, { sold_for });
-                return this.waitForAfter();
-            };
+            let delay_index = 1;
 
-            const action = () =>
-                this.api
-                    .sellContract(this.contractId, 0)
-                    .then(response => {
-                        onSuccess(response.sell.sold_for);
-                    })
-                    .catch(response => {
-                        const {
-                            error: { error },
-                        } = response;
-                        if (error.code === 'InvalidOfferings') {
-                            // "InvalidOfferings" may occur when user tries to sell the contract too close
-                            // to the expiry time. We shouldn't interrupt the bot but instead let the contract
-                            // finish.
-                            log(error.message);
-                            return Promise.resolve();
-                        }
-                        // In all other cases, throw a custom error that will stop the bot (after the current contract has finished).
-                        // See interpreter for SellNotAvailableCustom.
-                        throw createError('SellNotAvailableCustom', error.message);
-                    });
+            return new Promise(resolve => {
+                const onContractSold = sell_response => {
+                    delay_index = 1;
 
-            if (!this.options.timeMachineEnabled) {
-                return doUntilDone(action);
-            }
+                    if (sell_response) {
+                        const { sold_for } = sell_response.sell;
+                        log(log_types.SELL, { sold_for });
+                    }
 
-            return recoverFromError(
-                action,
-                (error_code, makeDelay) => makeDelay().then(() => this.observer.emit('REVERT', 'during')),
-                ['NoOpenPosition', 'InvalidSellContractProposal', 'UnrecognisedRequest'],
-                delay_index++
-            ).then(onSuccess);
+                    contractStatus('purchase.sold');
+                    this.waitForAfter();
+                    resolve();
+                };
+
+                const contract_id = this.contractId;
+
+                const sellContractAndGetContractInfo = () => {
+                    return this.api
+                        .sellContract(contract_id, 0)
+                        .then(sell_response => this.api.getContractInfo(contract_id).then(() => sell_response))
+                        .catch(error => {
+                            if (error.name === 'InvalidOfferings') {
+                                // "InvalidOfferings" may occur when user tries to sell the contract too close
+                                // to the expiry time. We shouldn't interrupt the bot but instead let the contract
+                                // finish.
+                                log(error.message);
+                                return Promise.resolve();
+                            }
+
+                            const sell_error = {
+                                name: error.name,
+                                message: error.message,
+                                msg_type: error.msg_type || error.error?.msg_type,
+                                error: { ...error.error },
+                            };
+
+                            if (error.name === 'RateLimit') {
+                                return Promise.reject(sell_error);
+                            }
+
+                            // For every other error, check whether the contract is not actually already sold.
+                            return this.api.getContractInfo(contract_id).then(proposal_open_contract_response => {
+                                const { proposal_open_contract } = proposal_open_contract_response;
+
+                                if (proposal_open_contract.status !== 'sold') {
+                                    return Promise.reject(sell_error);
+                                }
+
+                                // If the contract is sold at this point it means there was a race condition.
+                                // Pretend this sell request was successful and mislead the trade engine into
+                                // moving onto the next scope.
+                                return Promise.resolve({
+                                    sell: {
+                                        sold_for: proposal_open_contract.sell_price,
+                                    },
+                                });
+                            });
+                        });
+                };
+
+                const errors_to_ignore = ['NoOpenPosition', 'InvalidSellContractProposal', 'UnrecognisedRequest'];
+
+                // Restart buy/sell on error is enabled, don't recover from sell error.
+                if (!this.options.timeMachineEnabled) {
+                    return doUntilDone(sellContractAndGetContractInfo, errors_to_ignore).then(sell_response =>
+                        onContractSold(sell_response)
+                    );
+                }
+
+                // If above checkbox not checked, try to recover from sell error.
+                const recoverFn = (error_code, makeDelay) => {
+                    return makeDelay().then(() => this.observer.emit('REVERT', 'during'));
+                };
+
+                return recoverFromError(
+                    sellContractAndGetContractInfo,
+                    recoverFn,
+                    errors_to_ignore,
+                    delay_index++
+                ).then(sell_response => onContractSold(sell_response));
+            });
         }
     };

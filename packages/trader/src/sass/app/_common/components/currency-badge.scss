@@ -1,0 +1,9 @@
+/** @define .currency-badge */
+.currency-badge {
+    align-self: flex-start;
+    padding: 0.3rem;
+    font-weight: bold;
+    color: $color-white;
+    background-color: $color-green;
+    border-radius: 4px;
+}

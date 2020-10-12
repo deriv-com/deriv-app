@@ -845,30 +845,7 @@ class FinancialAssessment extends React.Component {
                                                 'dc-btn--green': is_submit_success,
                                             })}
                                             onClick={() => this.toggleConfirmationModal(true)}
-                                            is_disabled={
-                                                isSubmitting ||
-                                                !dirty ||
-                                                !!(
-                                                    errors.income_source ||
-                                                    !values.income_source ||
-                                                    errors.employment_status ||
-                                                    !values.employment_status ||
-                                                    errors.employment_industry ||
-                                                    !values.employment_industry ||
-                                                    errors.occupation ||
-                                                    !values.occupation ||
-                                                    errors.source_of_wealth ||
-                                                    !values.source_of_wealth ||
-                                                    errors.education_level ||
-                                                    !values.education_level ||
-                                                    errors.net_income ||
-                                                    !values.net_income ||
-                                                    errors.estimated_worth ||
-                                                    !values.estimated_worth ||
-                                                    errors.account_turnover ||
-                                                    !values.account_turnover
-                                                )
-                                            }
+                                            is_disabled={isSubmitting || !dirty || Object.keys(errors).length > 0}
                                             has_effect
                                             is_loading={is_btn_loading}
                                             is_submit_success={is_submit_success}

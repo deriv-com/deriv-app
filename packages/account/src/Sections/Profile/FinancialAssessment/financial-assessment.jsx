@@ -309,7 +309,6 @@ class FinancialAssessment extends React.Component {
             is_loading,
             is_btn_loading,
             is_submit_success,
-            has_completed_financial_assessment,
             is_confirmation_visible,
             has_trading_experience,
         } = this.state;

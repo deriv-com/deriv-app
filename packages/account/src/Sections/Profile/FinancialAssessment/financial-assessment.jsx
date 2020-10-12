@@ -217,19 +217,49 @@ class FinancialAssessment extends React.Component {
                 setStatus({ msg: data.error.message });
             } else {
                 this.setState({ is_submit_success: true });
-                setTimeout(
-                    () =>
-                        this.setState({
-                            is_submit_success: false,
-                            has_completed_financial_assessment: true,
-                        }),
-                    3000
-                );
+                setTimeout(() => this.setState({ is_submit_success: false }), 3000);
 
                 this.props.removeNotificationMessage({ key: 'risk' });
                 this.props.removeNotificationByKey({ key: 'risk' });
             }
             setSubmitting(false);
+            const {
+                income_source,
+                employment_status,
+                employment_industry,
+                occupation,
+                source_of_wealth,
+                education_level,
+                net_income,
+                estimated_worth,
+                account_turnover,
+                binary_options_trading_frequency,
+                cfd_trading_experience,
+                cfd_trading_frequency,
+                forex_trading_experience,
+                forex_trading_frequency,
+                other_instruments_trading_experience,
+                other_instruments_trading_frequency,
+            } = values;
+
+            this.setState({
+                income_source,
+                employment_status,
+                employment_industry,
+                occupation,
+                source_of_wealth,
+                education_level,
+                net_income,
+                estimated_worth,
+                account_turnover,
+                binary_options_trading_frequency,
+                cfd_trading_experience,
+                cfd_trading_frequency,
+                forex_trading_experience,
+                forex_trading_frequency,
+                other_instruments_trading_experience,
+                other_instruments_trading_frequency,
+            });
         });
     };
 
@@ -313,6 +343,7 @@ class FinancialAssessment extends React.Component {
                             other_instruments_trading_frequency,
                         }),
                     }}
+                    enableReinitialize={true}
                     validate={this.validateFields}
                     onSubmit={this.onSubmit}
                 >
@@ -856,7 +887,6 @@ class FinancialAssessment extends React.Component {
                                             onClick={() => this.toggleConfirmationModal(true)}
                                             is_disabled={
                                                 isSubmitting ||
-                                                has_completed_financial_assessment ||
                                                 !dirty ||
                                                 !!(
                                                     errors.income_source ||

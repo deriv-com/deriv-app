@@ -5,7 +5,7 @@ const Card = ({ children, width }) => (
     <div
         className='dc-carousel__card'
         style={{
-            width,
+            width: `${width}px`,
         }}
     >
         {children}
@@ -13,7 +13,7 @@ const Card = ({ children, width }) => (
 );
 
 Card.propTypes = {
-    item: PropTypes.object,
+    width: PropTypes.number,
 };
 
 export default Card;

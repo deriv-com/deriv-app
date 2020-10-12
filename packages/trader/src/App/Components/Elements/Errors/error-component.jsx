@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { PageError, Dialog } from '@deriv/components';
 import { routes } from '@deriv/shared';
-import { Localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 
 const ErrorComponent = ({
     header,
@@ -20,9 +20,9 @@ const ErrorComponent = ({
 
     return is_dialog ? (
         <Dialog
-            title='There was an error'
+            title={localize('There was an error')}
             is_visible
-            confirm_button_text='Ok'
+            confirm_button_text={localize('Ok')}
             onConfirm={redirectOnClick || (() => location.reload())}
         >
             {message || <Localize key={0} i18n_default_text='Sorry, an error occured while processing your request.' />}

@@ -143,8 +143,7 @@
             top: 0.9rem;
 
             + .dc-input__field {
-                // for the default value put the largest padding
-                // in case any new currencies get added
+                // default padding for three letter currency symbols
                 padding-left: calc(1.6rem + 2.4rem);
             }
             &--usdc + .dc-input__field,

@@ -331,7 +331,9 @@ const AccountTransferForm = ({
                                                                 'symbols',
                                                                 `symbols--${selected_from.currency.toLowerCase()}`
                                                             )}
-                                                        />
+                                                        >
+                                                            {getCurrencyDisplayCode(selected_from.currency)}
+                                                        </span>
                                                     ) : (
                                                         undefined
                                                     )

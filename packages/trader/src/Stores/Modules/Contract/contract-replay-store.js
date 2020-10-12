@@ -13,6 +13,7 @@ export default class ContractReplayStore extends BaseStore {
     @observable is_sell_requested = false;
     @observable has_error = false;
     @observable error_message = '';
+    @observable error_code = '';
     @observable is_chart_loading = true;
     // ---- chart props
     @observable margin;
@@ -100,8 +101,11 @@ export default class ContractReplayStore extends BaseStore {
         if (!this.switch_account_listener) return;
 
         if ('error' in response) {
+            const { code, message } = response.error;
             this.has_error = true;
             this.is_chart_loading = false;
+            this.error_message = localize(message);
+            this.error_code = code;
             return;
         }
         if (isEmptyObject(response.proposal_open_contract)) {

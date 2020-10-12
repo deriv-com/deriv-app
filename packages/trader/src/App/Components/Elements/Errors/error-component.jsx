@@ -1,17 +1,33 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { PageError } from '@deriv/components';
+import { PageError, Dialog } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 
-const ErrorComponent = ({ header, message, redirect_label, redirectOnClick, should_show_refresh = true }) => {
+const ErrorComponent = ({
+    header,
+    message,
+    is_dialog,
+    redirect_label,
+    redirectOnClick,
+    should_show_refresh = true,
+}) => {
     const refresh_message = should_show_refresh ? (
         <Localize i18n_default_text='Please refresh this page to continue.' />
     ) : (
         ''
     );
 
-    return (
+    return is_dialog ? (
+        <Dialog
+            title='There was an error'
+            is_visible
+            confirm_button_text='Ok'
+            onConfirm={redirectOnClick || (() => location.reload())}
+        >
+            {message || <Localize key={0} i18n_default_text='Sorry, an error occured while processing your request.' />}
+        </Dialog>
+    ) : (
         <PageError
             header={header || <Localize i18n_default_text='Something’s not right' />}
             messages={

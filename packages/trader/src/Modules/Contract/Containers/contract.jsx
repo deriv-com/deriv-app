@@ -28,6 +28,7 @@ class Contract extends React.Component {
                 {this.props.has_error ? (
                     <ErrorComponent
                         message={this.props.error_message}
+                        is_dialog={this.props.error_code === 'ContractValidationError'}
                         redirect_label={<Localize i18n_default_text='Go back to trading' />}
                         redirectOnClick={() => this.props.history.push(routes.trade)}
                         should_show_refresh={false}
@@ -56,6 +57,7 @@ class Contract extends React.Component {
 
 Contract.propTypes = {
     error_message: PropTypes.string,
+    error_code: PropTypes.string,
     has_error: PropTypes.bool,
     history: PropTypes.object,
     is_mobile: PropTypes.bool,
@@ -69,6 +71,7 @@ Contract.propTypes = {
 export default withRouter(
     connect(({ modules, ui }) => ({
         error_message: modules.contract_replay.error_message,
+        error_code: modules.contract_replay.error_code,
         has_error: modules.contract_replay.has_error,
         onMount: modules.contract_replay.setAccountSwitcherListener,
         onUnmount: modules.contract_replay.removeAccountSwitcherListener,

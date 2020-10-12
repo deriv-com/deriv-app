@@ -4,6 +4,10 @@ import { localize } from 'Components/i18next';
 import { textValidator } from 'Utils/validations';
 
 export default class MyProfileStore {
+    constructor(root_store) {
+        this.root_store = root_store;
+    }
+
     @observable advertiser_info = {};
     @observable contact_info = '';
     @observable default_advert_description = '';
@@ -17,22 +21,20 @@ export default class MyProfileStore {
     @action.bound
     getAdvertiserInfo() {
         this.setIsLoading(true);
-        return new Promise(resolve => {
-            requestWS({
-                p2p_advertiser_info: 1,
-            }).then(response => {
-                if (!response.error) {
-                    const { p2p_advertiser_info } = response;
-                    this.setAdvertiserInfo(p2p_advertiser_info);
-                    this.setContactInfo(p2p_advertiser_info.contact_info);
-                    this.setDefaultAdvertDescription(p2p_advertiser_info.default_advert_description);
-                    this.setPaymentInfo(p2p_advertiser_info.payment_info);
-                } else {
-                    this.setErrorMessage(response.error);
-                }
-                this.setIsLoading(false);
-                resolve();
-            });
+
+        requestWS({
+            p2p_advertiser_info: 1,
+        }).then(response => {
+            if (!response.error) {
+                const { p2p_advertiser_info } = response;
+                this.setAdvertiserInfo(p2p_advertiser_info);
+                this.setContactInfo(p2p_advertiser_info.contact_info);
+                this.setDefaultAdvertDescription(p2p_advertiser_info.default_advert_description);
+                this.setPaymentInfo(p2p_advertiser_info.payment_info);
+            } else {
+                this.setErrorMessage(response.error);
+            }
+            this.setIsLoading(false);
         });
     }
 
@@ -40,30 +42,26 @@ export default class MyProfileStore {
     handleSubmit(values) {
         this.setIsButtonLoading(true);
 
-        return new Promise(resolve => {
-            requestWS({
-                p2p_advertiser_update: 1,
-                contact_info: values.contact_info,
-                payment_info: values.payment_info,
-                default_advert_description: values.default_advert_description,
-            }).then(response => {
-                if (!response.error) {
-                    const { p2p_advertiser_update } = response;
-                    this.setContactInfo(p2p_advertiser_update.contact_info);
-                    this.setDefaultAdvertDescription(p2p_advertiser_update.default_advert_description);
-                    this.setPaymentInfo(p2p_advertiser_update.payment_info);
-                    this.setIsSubmitSuccess(true);
-                } else {
-                    this.setFormError(response.error);
-                }
-                this.setIsButtonLoading(false);
+        requestWS({
+            p2p_advertiser_update: 1,
+            contact_info: values.contact_info,
+            payment_info: values.payment_info,
+            default_advert_description: values.default_advert_description,
+        }).then(response => {
+            if (!response.error) {
+                const { p2p_advertiser_update } = response;
+                this.setContactInfo(p2p_advertiser_update.contact_info);
+                this.setDefaultAdvertDescription(p2p_advertiser_update.default_advert_description);
+                this.setPaymentInfo(p2p_advertiser_update.payment_info);
+                this.setIsSubmitSuccess(true);
+            } else {
+                this.setFormError(response.error);
+            }
+            this.setIsButtonLoading(false);
 
-                setTimeout(() => {
-                    this.setIsSubmitSuccess(false);
-                }, 3000);
-
-                resolve();
-            });
+            setTimeout(() => {
+                this.setIsSubmitSuccess(false);
+            }, 3000);
         });
     }
 

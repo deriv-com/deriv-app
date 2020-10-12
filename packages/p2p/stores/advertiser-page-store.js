@@ -16,7 +16,7 @@ export default class AdvertiserPageStore {
     @observable ad = null;
     @observable adverts = [];
     @observable counterparty_type = buy_sell.BUY;
-    @observable error_message = '';
+    @observable api_error_message = '';
     @observable form_error_message = '';
     @observable is_loading = true;
     @observable is_submit_disabled = true;
@@ -38,12 +38,20 @@ export default class AdvertiserPageStore {
     item_height = 56;
     props = {};
 
+    get account_currency() {
+        return this.props?.selected_advert.account_currency;
+    }
+
     get advertiser_details() {
         return this.props?.selected_advert.advertiser_details || {};
     }
 
-    get account_currency() {
-        return this.props?.selected_advert.account_currency;
+    get advertiser_details_id() {
+        return this.props?.selected_advert.advertiser_details.id;
+    }
+
+    get advertiser_details_name() {
+        return this.props?.selected_advert.advertiser_details.name;
     }
 
     get modal_title() {
@@ -55,45 +63,40 @@ export default class AdvertiserPageStore {
     }
 
     get short_name() {
-        return getShortNickname(this.advertiser_details?.name);
+        return getShortNickname(this.advertiser_details_name);
     }
 
     @action.bound
     getAdvertiserAdverts() {
-        return new Promise(resolve => {
-            requestWS({
-                p2p_advert_list: 1,
-                counterparty_type: this.counterparty_type,
-                advertiser_id: this.advertiser_details.id,
-            }).then(response => {
-                if (!response.error) {
-                    const { list } = response.p2p_advert_list;
-                    this.setAdverts(list);
-                } else {
-                    this.setErrorMessage(response.error);
-                }
-                resolve();
-            });
+        requestWS({
+            p2p_advert_list: 1,
+            counterparty_type: this.counterparty_type,
+            advertiser_id: this.advertiser_details_id,
+        }).then(response => {
+            if (!response.error) {
+                const { list } = response.p2p_advert_list;
+                this.setAdverts(list);
+            } else {
+                this.setErrorMessage(response.error);
+            }
         });
     }
 
     @action.bound
     getAdvertiserInfo() {
         this.setIsLoading(true);
-        return new Promise(resolve => {
-            requestWS({
-                p2p_advertiser_info: 1,
-                id: this.advertiser_details.id,
-            }).then(response => {
-                if (!response.error) {
-                    const { p2p_advertiser_info } = response;
-                    this.setAdvertiserInfo(p2p_advertiser_info);
-                } else {
-                    this.setErrorMessage(response.error);
-                }
-                this.setIsLoading(false);
-                resolve();
-            });
+
+        requestWS({
+            p2p_advertiser_info: 1,
+            id: this.advertiser_details_id,
+        }).then(response => {
+            if (!response.error) {
+                const { p2p_advertiser_info } = response;
+                this.setAdvertiserInfo(p2p_advertiser_info);
+            } else {
+                this.setErrorMessage(response.error);
+            }
+            this.setIsLoading(false);
         });
     }
 
@@ -159,8 +162,8 @@ export default class AdvertiserPageStore {
     }
 
     @action.bound
-    setErrorMessage(error_message) {
-        this.error_message = error_message;
+    setErrorMessage(api_error_message) {
+        this.api_error_message = api_error_message;
     }
 
     @action.bound
@@ -185,12 +188,7 @@ export default class AdvertiserPageStore {
 
     @action.bound
     setSubmitForm(submitFormFn) {
-        this.setSubmitFormObservable(submitFormFn);
-    }
-
-    @action.bound
-    setSubmitFormObservable(submitForm) {
-        this.submitForm = submitForm;
+        this.submitForm = submitFormFn;
     }
 
     @action.bound

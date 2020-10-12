@@ -16,16 +16,15 @@ import './advertiser-page.scss';
 const RowComponent = React.memo(({ advert, showAdPopup, style }) => {
     const { advertiser_page_store, general_store } = useStores();
     const { local_currency, max_order_amount_limit_display, min_order_amount_limit_display, price_display } = advert;
-
+    const { currency } = general_store.client;
     const is_buy_advert = advertiser_page_store.counterparty_type === buy_sell.BUY;
-    const is_my_advert = advertiser_page_store.advertiser_details.id === general_store.advertiser_id;
+    const is_my_advert = advertiser_page_store.advertiser_details_id === general_store.advertiser_id;
 
     return (
         <div style={style}>
             <Table.Row className='advertiser-page__adverts-table_row'>
                 <Table.Cell>
-                    {min_order_amount_limit_display}&ndash;{max_order_amount_limit_display}{' '}
-                    {general_store.client.currency}
+                    {`${min_order_amount_limit_display}-${max_order_amount_limit_display} ${currency}`}
                 </Table.Cell>
                 <Table.Cell className='advertiser-page__adverts-price'>
                     {price_display} {local_currency}
@@ -35,7 +34,7 @@ const RowComponent = React.memo(({ advert, showAdPopup, style }) => {
                 ) : (
                     <Table.Cell className='advertiser-page__adverts-button'>
                         <Button primary small onClick={() => showAdPopup(advert)}>
-                            {is_buy_advert ? localize('Buy') : localize('Sell')} {general_store.client.currency}
+                            {is_buy_advert ? localize('Buy') : localize('Sell')} {currency}
                         </Button>
                     </Table.Cell>
                 )}
@@ -131,14 +130,14 @@ const AdvertiserPage = observer(props => {
                             className='advertiser-page__header-avatar'
                             style={{
                                 backgroundColor: generateHexColourFromNickname(
-                                    advertiser_page_store.advertiser_details.name
+                                    advertiser_page_store.advertiser_details_name
                                 ),
                             }}
                         >
                             {advertiser_page_store.short_name}
                         </div>
                         <div className='advertiser-page__header-name'>
-                            {advertiser_page_store.advertiser_details.name}
+                            {advertiser_page_store.advertiser_details_name}
                         </div>
                     </div>
                     <div className='advertiser-page__header-verification'>

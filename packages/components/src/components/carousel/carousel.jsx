@@ -118,8 +118,8 @@ const Carousel = ({
 
 Carousel.defaultProps = {
     initial_index: 0,
-    bullet_color: 'var(--text-prominent)',
-    active_bullet_color: 'var(--text-less-prominent)',
+    bullet_color: 'var(--text-less-prominent)',
+    active_bullet_color: 'var(--text-prominent)',
     nav_position: 'bottom',
     bullet_position: 'bottom',
     show_bullet: true,

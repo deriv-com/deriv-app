@@ -8,8 +8,8 @@ const PasswordMeter = ({ children, has_error, input }) => {
     const zxcvbn = React.useRef();
 
     const [is_loading, setLoading] = React.useState(true);
-    const [score, setScore] = React.useState(undefined);
-    const [feedback, setFeedback] = React.useState(undefined);
+    const [score, setScore] = React.useState();
+    const [feedback, setFeedback] = React.useState();
 
     React.useEffect(() => {
         async function loadLibrary() {
@@ -24,9 +24,11 @@ const PasswordMeter = ({ children, has_error, input }) => {
     React.useEffect(() => {
         if (typeof zxcvbn.current === 'function') {
             // 0 - 4 Score for password strength
-            const { score: updated_score, feedback: updated_feedback } = zxcvbn.current(input);
-            setScore(updated_score);
-            setFeedback(updated_feedback);
+            if (input?.length > 0) {
+                const { score: updated_score, feedback: updated_feedback } = zxcvbn.current(input);
+                setScore(updated_score);
+                setFeedback(updated_feedback);
+            }
         }
     }, [has_error, input]);
 
@@ -45,7 +47,7 @@ const PasswordMeter = ({ children, has_error, input }) => {
                         'dc-password-meter--weak': has_error || (input.length && score < 3),
                         'dc-password-meter--strong': !has_error && input.length && score >= 3,
                     })}
-                    style={{ transform: `scale(${width_scale}, 1)` }}
+                    style={{ transform: `scale(${width_scale || 0}, 1)` }}
                 />
                 {feedback?.warning && !has_error && (
                     <Field className='dc-password-meter__warning' message={`${feedback.warning}.`} type='error' />

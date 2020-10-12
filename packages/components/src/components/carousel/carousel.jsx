@@ -24,9 +24,9 @@ const Carousel = ({
 
     const handleNextClick = () => {
         const next_idx = active_index + 1;
-        const is_reached_end = next_idx === list.length;
+        const has_reached_end = next_idx === list.length;
 
-        if (!is_reached_end) {
+        if (!has_reached_end) {
             setActiveIndex(next_idx);
         } else {
             setActiveIndex(0);
@@ -48,7 +48,7 @@ const Carousel = ({
     }
 
     React.useEffect(() => {
-        if (onItemSelect) onItemSelect(active_index, list);
+        if (typeof onItemSelect === 'function') onItemSelect(active_index, list);
     }, [active_index, list, onItemSelect]);
 
     return (

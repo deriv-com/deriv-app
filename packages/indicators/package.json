@@ -29,10 +29,18 @@
     },
     "devDependencies": {
         "@babel/preset-env": "^7.11.5",
+        "babel-eslint": "^10.1.0",
         "babel-jest": "^26.5.2",
-        "jest": "^26.4.2"
+        "jest": "^26.4.2",
+        "eslint-plugin-prettier": "^3.1.4",
+        "eslint-config-prettier": "^6.11.0",
+        "eslint-config-airbnb-base": "^14.0.0",
+        "eslint-config-binary": "^1.0.2",
+        "eslint-plugin-import": "^2.22.0"
     },
     "dependencies": {
-        "@deriv/shared": "^1.0.0"
+        "@deriv/shared": "^1.0.0",
+        "react": "^16.13.1",
+        "react-dom": "^16.13.1"
     }
 }

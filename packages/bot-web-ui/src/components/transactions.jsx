@@ -12,12 +12,11 @@ import { contract_stages } from '../constants/contract-stage';
 import '../assets/sass/download.scss';
 import '../assets/sass/transactions.scss';
 
-const TransactionItem = ({ row, can_show_transition }) => {
-    const [in_prop, setInProp] = React.useState(false);
-
+const TransactionItem = ({ row, is_new_row }) => {
+    const [in_prop, setInProp] = React.useState(!is_new_row);
     React.useEffect(() => {
-        if (can_show_transition) setInProp(true);
-    }, [can_show_transition]);
+        if (is_new_row) setInProp(true);
+    }, [is_new_row]);
 
     switch (row.type) {
         case transaction_elements.CONTRACT: {

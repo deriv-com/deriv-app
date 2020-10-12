@@ -12,20 +12,18 @@ import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars.jsx';
 class DataList extends React.PureComponent {
     state = {
         scrollTop: 0,
+        isScrolling: false,
     };
-    transition_cache = {};
+    items_map = {};
     current_data_length = 0;
 
     constructor(props) {
         super(props);
         this.cache = new CellMeasurerCache({
             fixedWidth: true,
-            keyMapper: row_index => {
-                const row_key = this.props.keyMapper?.(this.props.data_source[row_index]) || row_index;
-                return row_key;
-            },
+            keyMapper: row_index => this.props.keyMapper?.(this.props.data_source[row_index]) || row_index,
         });
-        this.setTransitionCache();
+        this.trackItems();
     }
 
     footerRowRenderer = () => {
@@ -35,12 +33,14 @@ class DataList extends React.PureComponent {
 
     rowRenderer = ({ style, index, key, parent }) => {
         const { data_source, rowRenderer, getRowAction, keyMapper } = this.props;
+        const { isScrolling } = this.state;
         const row = data_source[index];
         const to = getRowAction && getRowAction(row);
         const row_key = keyMapper?.(row) || key;
-        const can_show_transition = !this.transition_cache[row_key];
+        const should_show_transition = !isScrolling;
+        const is_new_row = !this.items_map[row_key];
 
-        const content =
+        const getContent = ({ measure }) =>
             typeof to === 'string' ? (
                 <NavLink
                     id={`dt_reports_contract_${row_key}`}
@@ -51,22 +51,39 @@ class DataList extends React.PureComponent {
                         },
                     }}
                 >
-                    <div className='data-list__item'>{rowRenderer({ row, can_show_transition })}</div>
+                    <div className='data-list__item'>
+                        {rowRenderer({ row, measure, should_show_transition, is_new_row })}
+                    </div>
                 </NavLink>
             ) : (
-                <div className='data-list__item'>{rowRenderer({ row, can_show_transition })}</div>
+                <div className='data-list__item'>
+                    {rowRenderer({ row, measure, should_show_transition, is_new_row })}
+                </div>
             );
 
         return (
             <CellMeasurer cache={this.cache} columnIndex={0} key={row_key} rowIndex={index} parent={parent}>
-                <div className='data-list__item--wrapper' style={style}>
-                    {content}
-                </div>
+                {({ measure }) => (
+                    <div className='data-list__item--wrapper' style={style}>
+                        {getContent({ measure })}
+                    </div>
+                )}
             </CellMeasurer>
         );
     };
 
     handleScroll = ev => {
+        clearTimeout(this.timeout);
+
+        const { isScrolling } = this.state;
+        if (!isScrolling) {
+            this.setState({ isScrolling: true });
+        }
+
+        this.timeout = setTimeout(() => {
+            this.setState({ isScrolling: false });
+        }, 200);
+
         const { scrollTop } = ev.target;
         this.setState({ scrollTop });
         if (this.props.onScroll) {
@@ -74,18 +91,17 @@ class DataList extends React.PureComponent {
         }
     };
 
-    componentDidUpdate() {
-        if (this.props.data_source.length !== this.current_data_length) {
+    componentDidUpdate(prev_props) {
+        if (this.props.data_source !== prev_props.data_source) {
             this.list_ref.recomputeGridSize(0);
-            this.setTransitionCache();
-            this.current_data_length = this.props.data_source.length;
         }
+        this.trackItems();
     }
 
-    setTransitionCache() {
+    trackItems() {
         this.props.data_source.forEach((item, index) => {
             const row_key = this.props.keyMapper?.(item) || `${index}-0`;
-            this.transition_cache[row_key] = true;
+            this.items_map[row_key] = true;
         });
     }
 
@@ -97,15 +113,15 @@ class DataList extends React.PureComponent {
                 {({ width, height }) => (
                     <div className={classNames(className, 'data-list', { [`${className}__data-list`]: className })}>
                         <div className={classNames('data-list__body', { [`${className}__data-list-body`]: className })}>
-                            <ThemedScrollbars
-                                style={{
-                                    height,
-                                    width,
-                                }}
-                                onScroll={this.handleScroll}
-                                autoHide
-                            >
-                                <TransitionGroup>
+                            <TransitionGroup>
+                                <ThemedScrollbars
+                                    style={{
+                                        height,
+                                        width,
+                                    }}
+                                    onScroll={this.handleScroll}
+                                    autoHide
+                                >
                                     <List
                                         ref={ref => (this.list_ref = ref)}
                                         className={className}
@@ -120,8 +136,8 @@ class DataList extends React.PureComponent {
                                         scrollTop={this.state.scrollTop}
                                         autoHeight
                                     />
-                                </TransitionGroup>
-                            </ThemedScrollbars>
+                                </ThemedScrollbars>
+                            </TransitionGroup>
                             {children}
                         </div>
                         {footer && (

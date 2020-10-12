@@ -9,6 +9,7 @@ import Button from '../../button';
 
 const CardFooter = ({
     addToast,
+    should_show_transition,
     contract_info,
     getCardLabels,
     getContractById,
@@ -17,6 +18,7 @@ const CardFooter = ({
     is_sell_requested,
     onClickCancel,
     onClickSell,
+    onFooterEntered,
     removeToast,
     setCurrentFocus,
     server_time,
@@ -24,6 +26,11 @@ const CardFooter = ({
     status,
     toggleCancellationWarning,
 }) => {
+    const [in_prop, setInProp] = React.useState(!should_show_transition);
+    React.useEffect(() => {
+        if (should_show_transition) setInProp(true);
+    }, [should_show_transition]);
+
     const is_valid_to_cancel = isValidToCancel(contract_info);
     const is_valid_to_sell = isValidToSell(contract_info);
     const show_sell = !!(is_valid_to_sell || (is_multiplier && !contract_info.is_sold));
@@ -32,13 +39,14 @@ const CardFooter = ({
 
     return (
         <CSSTransition
-            in={show_sell}
+            in={in_prop}
             timeout={250}
             classNames={{
                 enter: 'dc-contract-card__sell-button--enter',
                 enterDone: 'dc-contract-card__sell-button--enter-done',
                 exit: 'dc-contract-card__sell-button--exit',
             }}
+            onEntered={onFooterEntered}
             unmountOnExit
         >
             <div className='dc-contract-card-item__footer'>
@@ -98,6 +106,7 @@ const CardFooter = ({
 
 CardFooter.propTypes = {
     addToast: PropTypes.func,
+    should_show_transition: PropTypes.bool,
     contract_info: PropTypes.object,
     getCardLabels: PropTypes.func,
     getContractById: PropTypes.func,
@@ -106,6 +115,7 @@ CardFooter.propTypes = {
     is_sell_requested: PropTypes.bool,
     onClickCancel: PropTypes.func,
     onClickSell: PropTypes.func,
+    onFooterEntered: PropTypes.func,
     removeToast: PropTypes.func,
     setCurrentFocus: PropTypes.func,
     should_show_cancellation_warning: PropTypes.bool,

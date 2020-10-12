@@ -191,14 +191,14 @@ const JournalLoader = ({ is_mobile }) => (
     </ContentLoader>
 );
 
-const JournalItem = ({ row, can_show_transition }) => {
+const JournalItem = ({ row, is_new_row }) => {
+    const [in_prop, setInProp] = React.useState(!is_new_row);
+    React.useEffect(() => {
+        if (is_new_row) setInProp(true);
+    }, [is_new_row]);
+
     const { date, time, message, message_type, className, extra } = row;
     const date_el = DateItem({ date, time });
-    const [in_prop, setInProp] = React.useState(false);
-
-    React.useEffect(() => {
-        if (can_show_transition) setInProp(true);
-    }, [can_show_transition]);
 
     return (
         <CSSTransition in={in_prop} timeout={500} classNames='list__animation'>

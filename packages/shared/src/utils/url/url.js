@@ -166,6 +166,7 @@ export const setUrlLanguage = lang => {
 
 export const getStaticUrl = (
     path = '',
+    is_document = false,
     options = {
         is_deriv_crypto: false,
     }
@@ -174,6 +175,8 @@ export const getStaticUrl = (
     let lang = default_language?.toLowerCase();
     if (lang && lang !== 'en') lang = `/${lang}`;
     else lang = '';
+
+    if (is_document) return `${host}/${normalizePath(path)}`;
 
     return `${host}${lang}/${normalizePath(path)}`;
 };

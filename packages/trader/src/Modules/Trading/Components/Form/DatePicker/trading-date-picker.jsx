@@ -151,8 +151,8 @@ class TradingDatePicker extends React.Component {
 
         return (
             <div
-                className={classNames('input-field', {
-                    'input-field--has-error': has_error,
+                className={classNames('dc-input-field', {
+                    'dc-input-field--has-error': has_error,
                 })}
             >
                 <Tooltip

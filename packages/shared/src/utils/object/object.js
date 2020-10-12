@@ -69,3 +69,40 @@ export const pick = (source, fields) => {
         return target;
     }, {});
 };
+
+export const findValueByKeyRecursively = (obj, key) => {
+    let return_value;
+
+    Object.keys(obj).some(obj_key => {
+        const value = obj[obj_key];
+
+        if (obj_key === key) {
+            return_value = obj[key];
+            return true;
+        }
+
+        if (typeof value === 'object') {
+            const nested_value = findValueByKeyRecursively(value, key);
+
+            if (nested_value) {
+                return_value = nested_value;
+                return true;
+            }
+        }
+
+        return false;
+    });
+
+    return return_value;
+};
+
+// Recursively freeze an object (deep freeze)
+export const deepFreeze = obj => {
+    Object.getOwnPropertyNames(obj).forEach(key => {
+        const value = obj[key];
+        if (value && typeof value === 'object' && !Object.isFrozen(value)) {
+            deepFreeze(value);
+        }
+    });
+    return Object.freeze(obj);
+};

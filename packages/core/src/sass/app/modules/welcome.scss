@@ -55,6 +55,7 @@
         @include mobile {
             width: 100%;
             box-shadow: none;
+
             &:not(:last-child) {
                 margin-bottom: 3rem;
             }
@@ -107,6 +108,7 @@
                 width: calc(100% - 6.4rem);
                 bottom: 0.6rem;
             }
+
             &__text {
                 @include typeface(--small-center-normal-grey);
                 padding-top: 0.8rem;

@@ -2,9 +2,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, ThemedScrollbars, Carousel } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { getContractTypes } from '../../../../Helpers/contract-type';
 import TradeCategories from 'Assets/Trading/Categories/trade-categories.jsx';
 import TradeCategoriesGIF from 'Assets/Trading/Categories/trade-categories-gif.jsx';
+import { getContractTypes } from '../../../../Helpers/contract-type';
 
 const Info = ({ handleNavigationClick, handleSelect, item, list }) => {
     const contract_types = getContractTypes(list, item).filter(i => i.value !== 'rise_fall_equal');

@@ -3,9 +3,9 @@ import React from 'react';
 
 const Card = ({ children, width }) => (
     <div
-        className='carousel__card'
+        className='dc-carousel__card'
         style={{
-            width: width,
+            width,
         }}
     >
         {children}

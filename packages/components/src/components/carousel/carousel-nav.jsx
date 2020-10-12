@@ -16,16 +16,16 @@ const Nav = ({
     show_nav,
 }) => {
     return (
-        <nav className={classNames('carousel__nav', className)}>
+        <nav className={classNames('dc-carousel__nav', className)}>
             {show_nav && (
-                <span id='dt_contract_info_left_nav' className='carousel__icon' onClick={handlePrevClick}>
+                <span id='dt_contract_info_left_nav' className='dc-carousel__icon' onClick={handlePrevClick}>
                     <Icon icon='IcChevronLeft' />
                 </span>
             )}
             {show_bullet && (
-                <ul className='carousel__nav-list'>
+                <ul className='dc-carousel__nav-list'>
                     <li
-                        className={classNames('carousel__nav-item', 'carousel__nav-item--active')}
+                        className={classNames('dc-carousel__nav-item', 'dc-carousel__nav-item--active')}
                         style={{
                             transform: `translate3d(${24 * active_index}px, 0, 0)`,
                             backgroundColor: active_bullet_color,
@@ -34,7 +34,7 @@ const Nav = ({
                     {list.map((_, idx) => (
                         <li
                             key={idx}
-                            className='carousel__nav-item'
+                            className='dc-carousel__nav-item'
                             style={{
                                 backgroundColor: bullet_color,
                             }}
@@ -44,7 +44,7 @@ const Nav = ({
                 </ul>
             )}
             {show_nav && (
-                <span id='dt_contract_info_right_nav' className='carousel__icon' onClick={handleNextClick}>
+                <span id='dt_contract_info_right_nav' className='dc-carousel__icon' onClick={handleNextClick}>
                     <Icon icon='IcChevronRight' />
                 </span>
             )}

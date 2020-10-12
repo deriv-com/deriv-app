@@ -53,11 +53,13 @@ const Carousel = ({
 
     return (
         <Swipeable onSwipedLeft={handleNextClick} onSwipedRight={handlePrevClick} className={className}>
-            <div className='carousel'>
+            <div className='dc-carousel'>
                 {list.length > 1 && (
                     <Nav
                         active_index={active_index}
-                        className='carousel__nav--upper'
+                        bullet_color={bullet_color}
+                        active_bullet_color={active_bullet_color}
+                        className='dc-carousel__nav--upper'
                         handleNextClick={handleNextClick}
                         handlePrevClick={handlePrevClick}
                         handleNavigationClick={setActiveIndex}
@@ -66,21 +68,21 @@ const Carousel = ({
                         list={list}
                     />
                 )}
-                <div className='carousel__container'>
+                <div className='dc-carousel__container'>
                     {nav_position === 'middle' && (
-                        <span className='carousel__icon' onClick={handlePrevClick}>
+                        <span className='dc-carousel__icon' onClick={handlePrevClick}>
                             <Icon icon='IcChevronLeft' size='24' />
                         </span>
                     )}
 
                     <div
-                        className='carousel__box'
+                        className='dc-carousel__box'
                         style={{
                             width: `${width}px`,
                         }}
                     >
                         <div
-                            className='carousel__wrapper'
+                            className='dc-carousel__wrapper'
                             style={{ transform: `translate3d(-${width * active_index}px, 0, 0)` }}
                         >
                             {list.map((type, idx) => (
@@ -92,7 +94,7 @@ const Carousel = ({
                     </div>
 
                     {nav_position === 'middle' && (
-                        <span className='carousel__icon' onClick={handleNextClick}>
+                        <span className='dc-carousel__icon' onClick={handleNextClick}>
                             <Icon icon='IcChevronRight' size='24' />
                         </span>
                     )}
@@ -102,7 +104,7 @@ const Carousel = ({
                         active_index={active_index}
                         bullet_color={bullet_color}
                         active_bullet_color={active_bullet_color}
-                        className='carousel__nav--lower'
+                        className='dc-carousel__nav--lower'
                         handleNextClick={handleNextClick}
                         handlePrevClick={handlePrevClick}
                         handleNavigationClick={setActiveIndex}

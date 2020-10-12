@@ -11,7 +11,11 @@ const Text = ({ children, size, color, align, weight, lineHeight, as, className 
         return style;
     }
     function setClassName() {
-        const classStyle = ['dc-text', `dc-text--${weight} dc-text--${align}`, className];
+        const classStyle = [
+            'dc-text',
+            `${weight ? `dc-text--${weight}` : ''} ${align ? `dc-text--${align}` : ''}`,
+            className,
+        ];
         return classStyle;
     }
     return (

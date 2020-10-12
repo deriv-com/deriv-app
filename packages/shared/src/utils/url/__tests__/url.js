@@ -64,7 +64,7 @@ describe('Url', () => {
                     expect(urlFor('home', { language: 'es' })).to.eq(`${website_url}home.html?lang=es`);
                 });
                 it('ignores invalid characters', () => {
-                    expect(urlFor('`~!@#$%^&*)(=+[}{]\\"\';:?><,|')).to.eq(home_url);
+                    expect(urlFor('`~!@#$%^&*=+[}{]\\"\';:?><,|')).to.eq(home_url);
                 });
                 it('handles all valid characters', () => {
                     expect(urlFor('metatrader/comparison-4_vs_5')).to.eq(

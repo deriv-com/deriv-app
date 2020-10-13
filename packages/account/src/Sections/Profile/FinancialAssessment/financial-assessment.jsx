@@ -215,9 +215,9 @@ class FinancialAssessment extends React.Component {
             if (data.error) {
                 setStatus({ msg: data.error.message });
             } else {
-                WS.authorized.storage.getFinancialAssessment().then((data) => {
+                WS.authorized.storage.getFinancialAssessment().then((res_data) => {
                     this.setState({
-                        ...data.get_financial_assessment,
+                        ...res_data.get_financial_assessment,
                         is_submit_success: true,
                     });
                     setTimeout(() => this.setState({ is_submit_success: false }), 3000);

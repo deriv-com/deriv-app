@@ -117,15 +117,15 @@ $FLOATING_HEADER_HEIGHT: 41px;
 
                 &__mobile-wrapper {
                     position: relative;
-                    max-height: 20.6rem;
+                    max-height: 22rem;
                     flex: 2;
 
                     &--is-multiplier {
-                        max-height: 26.9rem;
+                        max-height: 27.9rem;
                         top: -0.5rem;
 
                         @media (max-width: 320px) and (max-height: 480px) {
-                            max-height: 20.6rem;
+                            max-height: 26.6rem;
                             top: 0;
                         }
                     }
@@ -134,10 +134,10 @@ $FLOATING_HEADER_HEIGHT: 41px;
                     padding-top: 0;
 
                     &.contract-drawer--is-expanded {
-                        transform: translateY(calc(-100% + 242px));
+                        transform: translateY(calc(-100% + 270px));
                     }
                     & .dc-contract-card {
-                        min-height: 164px;
+                        min-height: 178px;
                     }
                 }
                 & .dc-contract-card {
@@ -150,7 +150,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 }
                 &--is-multiplier {
                     & .dc-contract-card-dialog-toggle {
-                        top: 81px;
+                        top: 77px;
                         width: 124px;
                         height: 82px;
                         right: 8px;
@@ -266,21 +266,21 @@ $FLOATING_HEADER_HEIGHT: 41px;
                         }
                     }
                     &.contract-drawer--is-expanded {
-                        transform: translateY(calc(-100% + 376px));
+                        transform: translateY(calc(-100% + 398px));
 
                         @media (max-width: 320px) and (max-height: 480px) {
-                            transform: translateY(calc(-100% + 238px));
+                            transform: translateY(calc(-100% + 362px));
                         }
                     }
                     &.contract-drawer--with-collapsible-btn {
                         & .dc-contract-card {
-                            min-height: 232px;
+                            min-height: 242px;
 
                             &__indicative--movement {
                                 margin-top: 2px;
                             }
                             @media (max-width: 320px) and (max-height: 480px) {
-                                min-height: 140px;
+                                min-height: 224px;
                             }
                         }
                     }
@@ -407,7 +407,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
                         height: calc(100% - 6.4rem);
 
                         @media (max-width: 320px) and (max-height: 480px) {
-                            height: calc(100% - 1.6rem);
+                            height: calc(100% - 5rem);
                         }
                     }
                 }

@@ -138,7 +138,7 @@ export default class CashierStore extends BaseStore {
     @observable p2p_notification_count = 0;
     @observable is_p2p_advertiser = false;
     @observable cashier_route_tab_index = 0;
-
+    @observable is_deriv_crypto = false;
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),
         deposit: {
@@ -883,8 +883,9 @@ export default class CashierStore extends BaseStore {
     // 2. fiat to mt & vice versa
     // 3. crypto to mt & vice versa
     @action.bound
-    async onMountAccountTransfer() {
+    async onMountAccountTransfer(is_deriv_crypto = false) {
         this.setLoading(true);
+        this.setDerivCryptoStatus(is_deriv_crypto);
         this.onRemount = this.onMountAccountTransfer;
         await this.onMountCommon();
         await BinarySocket.wait('website_status');
@@ -945,6 +946,11 @@ export default class CashierStore extends BaseStore {
             this.setLoading(false);
         }
         return can_transfer;
+    }
+
+    @action.bound
+    setDerivCryptoStatus(val) {
+        this.is_deriv_crypto = val;
     }
 
     @action.bound
@@ -1061,6 +1067,12 @@ export default class CashierStore extends BaseStore {
                 if (hasTransferNotAllowedLoginid(obj_values.value)) {
                     // check if selected to is not allowed account
                     obj_values.error = getSelectedError(obj_values.value);
+                }
+                if (
+                    this.is_deriv_crypto &&
+                    obj_values.currency === this.config.account_transfer.selected_from.currency
+                ) {
+                    this.setSelectedFrom(obj_values);
                 }
                 // set the first available account as the default transfer to account
                 this.setSelectedTo(obj_values);

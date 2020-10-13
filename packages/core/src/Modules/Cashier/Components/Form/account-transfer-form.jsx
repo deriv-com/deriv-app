@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik, Form } from 'formik';
 import { Button, Dropdown, Icon, Input, Money, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
-import { getDecimalPlaces, getCurrencyDisplayCode, validNumber, website_name } from '@deriv/shared';
+import { PlatformContext, getDecimalPlaces, getCurrencyDisplayCode, validNumber, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import FormError from '../Error/form-error.jsx';
@@ -107,6 +107,7 @@ const AccountTransferForm = ({
     setErrorMessage,
     error,
 }) => {
+    const { is_deriv_crypto } = React.useContext(PlatformContext);
     const validateAmount = amount => {
         if (!amount) return localize('This field is required.');
 
@@ -139,10 +140,11 @@ const AccountTransferForm = ({
 
     accounts_list.forEach((account, idx) => {
         const text = <AccountOption idx={idx} account={account} />;
-        const value = account.value;
+        const { value, currency } = account;
         (account.is_mt ? mt_accounts_from : accounts_from).push({
             text,
             value,
+            currency,
             nativepicker_text: `${account.text} (${account.currency} ${account.balance})`,
         });
         const is_selected_from = account.value === selected_from.value;
@@ -150,12 +152,21 @@ const AccountTransferForm = ({
         if (!is_selected_from) {
             const is_selected_from_mt = selected_from.is_mt && account.is_mt;
             const is_selected_from_crypto = selected_from.is_crypto && account.is_crypto;
-            // cannot transfer to MT account from MT
-            // cannot transfer to crypto account from crypto
-            const is_disabled = is_selected_from_mt || is_selected_from_crypto;
+
+            let is_disabled = false;
+            if (is_deriv_crypto) {
+                // can only transfer to same currency, regardless of mt or crypto account
+                is_disabled = selected_from.currency !== account.currency;
+            } else {
+                // cannot transfer to MT account from MT
+                // cannot transfer to crypto account from crypto
+                is_disabled = is_selected_from_mt || is_selected_from_crypto;
+            }
+
             (account.is_mt ? mt_accounts_to : accounts_to).push({
                 text,
                 value,
+                currency,
                 disabled: is_disabled,
                 nativepicker_text: `${account.text} (${account.currency} ${account.balance})`,
             });

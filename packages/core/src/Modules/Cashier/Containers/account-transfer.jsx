@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'Stores/connect';
+import { PlatformContext } from '@deriv/shared';
 import AccountTransferNoAccount from '../Components/Error/account-transfer-no-account.jsx';
 import Error from '../Components/Error/error.jsx';
 import NoBalance from '../Components/Error/no-balance.jsx';
@@ -12,10 +13,12 @@ import AccountTransferReceipt from '../Components/Receipt/account-transfer-recei
 import Loading from '../../../templates/_common/components/loading.jsx';
 
 class AccountTransfer extends React.Component {
+    static contextType = PlatformContext;
+
     componentDidMount() {
         this.props.setActiveTab(this.props.container);
         if (!this.props.is_virtual) {
-            this.props.onMount();
+            this.props.onMount(this.context.is_deriv_crypto);
         }
     }
 

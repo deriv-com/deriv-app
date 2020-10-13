@@ -10,7 +10,7 @@ class ContractTypeWidget extends React.PureComponent {
         is_dialog_open: false,
         is_info_dialog_open: false,
         list: this.props.list,
-        selected_category: localize('All'),
+        selected_category: null,
         search_query: '',
     };
 
@@ -170,7 +170,7 @@ class ContractTypeWidget extends React.PureComponent {
                     item={item || { value }}
                     categories={this.list_with_category}
                     list={list}
-                    selected={this.state.selected_category}
+                    selected={this.state.selected_category || this.list_with_category[0].label}
                     onBackButtonClick={this.onBackButtonClick}
                     onClose={this.handleVisibility}
                     onChangeInput={this.onChangeInput}

@@ -746,6 +746,8 @@ export default class ClientStore extends BaseStore {
     realAccountSignup(form_values) {
         return new Promise(async (resolve, reject) => {
             const is_maltainvest_account = this.root_store.ui.real_account_signup_target === 'maltainvest';
+            const is_samoa_account = this.root_store.ui.real_account_signup_target === 'samoa';
+
             let currency = '';
             form_values.residence = this.residence;
             if (is_maltainvest_account) {
@@ -763,6 +765,11 @@ export default class ClientStore extends BaseStore {
                 if (is_maltainvest_account) {
                     await this.setAccountCurrency(currency);
                 }
+
+                if (is_samoa_account) {
+                    await this.setAccountCurrency('BTC');
+                }
+
                 localStorage.removeItem('real_account_signup_wizard');
                 this.root_store.gtm.pushDataLayer({ event: 'real_signup' });
                 resolve({
@@ -771,6 +778,13 @@ export default class ClientStore extends BaseStore {
                         ? {
                               new_account_maltainvest: {
                                   ...response.new_account_maltainvest,
+                                  currency,
+                              },
+                          }
+                        : {}),
+                    ...(is_samoa_account
+                        ? {
+                              new_account_samoa: {
                                   currency,
                               },
                           }
@@ -813,20 +827,19 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    createCryptoAccount(crr, is_deriv_crypto) {
+    createCryptoAccount(currency, is_deriv_crypto) {
         const residence = this.residence;
         let data = {
             residence,
-            currency: crr,
+            currency,
         };
 
         if (!is_deriv_crypto) {
             const { date_of_birth, first_name, last_name } = this.account_settings;
             data = {
+                ...data,
                 first_name,
                 last_name,
-                residence,
-                currency: crr,
                 date_of_birth: toMoment(date_of_birth).format('YYYY-MM-DD'),
             };
         }
@@ -1560,7 +1573,8 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    onSignup({ password, residence }, cb) {
+    onSignup({ password, residence, is_deriv_crypto, is_account_signup_modal_visible }, cb) {
+        const is_first_time_signup = is_account_signup_modal_visible;
         if (!this.verification_code.signup || !password || !residence) return;
 
         // Currently the code doesn't reach here and the console log is needed for debugging.
@@ -1588,6 +1602,10 @@ export default class ClientStore extends BaseStore {
 
                 if (this.is_mt5_allowed) {
                     this.root_store.ui.toggleWelcomeModal({ is_visible: true, should_persist: true });
+                }
+
+                if (is_deriv_crypto && is_first_time_signup) {
+                    this.root_store.ui.openRealAccountSignup();
                 }
             }
         });

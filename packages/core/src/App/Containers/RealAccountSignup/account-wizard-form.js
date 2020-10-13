@@ -9,7 +9,7 @@ const shouldShowPersonalAndAddressDetails = ({ real_account_signup_target }) => 
 
 export const getItems = props => {
     return [
-        currencySelectorConfig(props),
+        ...(shouldShowPersonalAndAddressDetails(props) ? [currencySelectorConfig(props)] : []),
         ...(shouldShowPersonalAndAddressDetails(props) ? [personalDetailsConfig(props)] : []),
         ...(shouldShowPersonalAndAddressDetails(props) ? [addressDetailsConfig(props)] : []),
         ...(shouldShowFinancialDetails(props) ? [financialDetailsConfig(props)] : []),

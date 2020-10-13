@@ -108,6 +108,9 @@
     position: relative;
     width: 100%;
     @include desktop {
+        &--deriv-crypto {
+            grid-template-rows: 0 !important;
+        }
         .currency-list__items {
             &__is-fiat {
                 width: 100%;

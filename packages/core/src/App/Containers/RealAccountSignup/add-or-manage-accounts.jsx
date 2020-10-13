@@ -46,7 +46,7 @@ class AddOrManageAccounts extends React.Component {
         });
     };
 
-    manageOrChangeAccount = (obj, setSubmitting, is_deriv_crypto) => {
+    manageOrChangeAccount = (obj, setSubmitting) => {
         this.props.setLoading(true);
         Object.entries(obj).map(([key, value]) => {
             if (key === 'fiat') {
@@ -66,7 +66,7 @@ class AddOrManageAccounts extends React.Component {
             } else {
                 // Add Crypto Account
                 this.props
-                    .createCryptoAccount(value, is_deriv_crypto)
+                    .createCryptoAccount(value, this.context.is_deriv_crypto)
                     .then(() => {
                         this.props.onSuccessSetAccountCurrency('', value);
                         setSubmitting(false);
@@ -80,7 +80,7 @@ class AddOrManageAccounts extends React.Component {
     };
 
     updateValue = (index, value, setSubmitting) => {
-        this.manageOrChangeAccount(value, setSubmitting, this.context.is_deriv_crypto);
+        this.manageOrChangeAccount(value, setSubmitting);
     };
 
     get no_crypto_available() {

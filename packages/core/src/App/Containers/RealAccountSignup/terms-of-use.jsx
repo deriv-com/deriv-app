@@ -8,7 +8,7 @@ import {
     AutoHeightWrapper,
     StaticUrl,
 } from '@deriv/components';
-import { isDesktop, isMobile } from '@deriv/shared';
+import { isDesktop, isMobile, PlatformContext } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import CheckboxField from 'App/Containers/RealAccountSignup/checkbox-field.jsx';
 import { Hr } from './currency-selector.jsx';
@@ -16,6 +16,7 @@ import { SharedMessage, BrokerSpecificMessage } from './terms-of-use-messages.js
 import 'Sass/terms-of-use.scss';
 
 class TermsOfUse extends React.Component {
+    static contextType = PlatformContext;
     render() {
         return (
             <Formik
@@ -59,22 +60,16 @@ class TermsOfUse extends React.Component {
                                             name='agreed_tnc'
                                             id='agreed_tnc'
                                             label={
-                                                this.props.real_account_signup_target === 'samoa' ? (
-                                                    localize(
-                                                        'I have read and agree to the terms and conditions of the Deriv website.'
-                                                    )
-                                                ) : (
-                                                    <Localize
-                                                        i18n_default_text='I agree to the <0>terms and conditions</0>.'
-                                                        components={[
-                                                            <StaticUrl
-                                                                key={0}
-                                                                className='link'
-                                                                href='/terms-and-conditions'
-                                                            />,
-                                                        ]}
-                                                    />
-                                                )
+                                                <Localize
+                                                    i18n_default_text='I agree to the <0>terms and conditions</0>.'
+                                                    components={[
+                                                        <StaticUrl
+                                                            key={0}
+                                                            className='link'
+                                                            href='/terms-and-conditions'
+                                                        />,
+                                                    ]}
+                                                />
                                             }
                                         />
                                     </Div100vhContainer>
@@ -82,7 +77,9 @@ class TermsOfUse extends React.Component {
                                 <Modal.Footer has_separator is_bypassed={isMobile()}>
                                     <FormSubmitButton
                                         is_disabled={isSubmitting || !values.agreed_tos || !values.agreed_tnc}
-                                        label={localize('Add account')}
+                                        label={
+                                            this.context.is_deriv_crypto ? localize('Next') : localize('Add account')
+                                        }
                                         has_cancel={true}
                                         is_absolute={isMobile()}
                                         onCancel={this.props.onCancel}

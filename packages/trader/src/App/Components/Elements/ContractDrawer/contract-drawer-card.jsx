@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import CurrencyBadge from 'App/Components/Elements/currency-badge.jsx';
 import { DesktopWrapper, MobileWrapper, Collapsible, ContractCard } from '@deriv/components';
 import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
 import { getEndTime } from 'Stores/Modules/Contract/Helpers/logic';
@@ -62,24 +61,6 @@ const ContractDrawerCard = ({
         />
     );
 
-    const card_body_wrapper = (
-        <React.Fragment>
-            <DesktopWrapper>{card_body}</DesktopWrapper>
-            <MobileWrapper>
-                <div
-                    className={
-                        ('dc-contract-card__separatorclass',
-                        classNames({
-                            'dc-contract-card__body-wrapper': !is_multiplier,
-                        }))
-                    }
-                >
-                    {card_body}
-                </div>
-            </MobileWrapper>
-        </React.Fragment>
-    );
-
     const card_footer = (
         <ContractCard.Footer
             addToast={addToast}
@@ -102,8 +83,7 @@ const ContractDrawerCard = ({
     const contract_el = (
         <React.Fragment>
             {card_header}
-            <CurrencyBadge currency={contract_info?.currency ?? ''} />
-            {card_body_wrapper}
+            {card_body}
         </React.Fragment>
     );
 

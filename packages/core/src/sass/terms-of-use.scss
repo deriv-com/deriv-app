@@ -21,8 +21,7 @@
         @include mobile {
             border-top-width: 2px;
             border-color: var(--border-disabled);
-            margin-left: -2.4rem;
-            width: calc(100% + 2.4rem);
+            width: 100%;
         }
     }
     h4 {

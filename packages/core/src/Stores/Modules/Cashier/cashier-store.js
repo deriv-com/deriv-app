@@ -18,8 +18,6 @@ import { WS } from 'Services';
 import OnRampStore from './on-ramp-store';
 import BaseStore from '../../base-store';
 
-const bank_default_option = [{ text: localize('All payment agents'), value: 0 }];
-
 const hasTransferNotAllowedLoginid = loginid => loginid.startsWith('MX');
 
 const getSelectedError = (selected_value, is_from_account) => {
@@ -79,8 +77,8 @@ class ConfigPaymentAgent {
     @observable is_withdraw_successful = false;
     @observable confirm = {};
     @observable receipt = {};
-    @observable selected_bank = bank_default_option[0].value;
-    @observable supported_banks = bank_default_option;
+    @observable selected_bank = 0;
+    @observable supported_banks = [];
     @observable verification = new ConfigVerification();
 }
 
@@ -991,10 +989,10 @@ export default class CashierStore extends BaseStore {
         // we need .toFixed() so that it doesn't display in scientific notation, e.g. 1e-8 for currencies with 8 decimal places
         this.config.account_transfer.transfer_limit = {
             max:
-                !transfer_limit.max || (+balance >= (transfer_limit.min || 0) && +balance <= transfer_limit.max)
+                !transfer_limit?.max || (+balance >= (transfer_limit?.min || 0) && +balance <= transfer_limit?.max)
                     ? balance
-                    : transfer_limit.max.toFixed(decimal_places),
-            min: transfer_limit.min ? (+transfer_limit.min).toFixed(decimal_places) : null,
+                    : transfer_limit?.max.toFixed(decimal_places),
+            min: transfer_limit?.min ? (+transfer_limit?.min).toFixed(decimal_places) : null,
         };
     }
 
@@ -1041,7 +1039,9 @@ export default class CashierStore extends BaseStore {
             const obj_values = {
                 text: account.mt5_group
                     ? `${localize('DMT5')} ${getMT5AccountDisplay(account.mt5_group)}`
-                    : getCurrencyDisplayCode(account.currency.toUpperCase()),
+                    : getCurrencyDisplayCode(
+                          account.currency !== 'eUSDT' ? account.currency.toUpperCase() : account.currency
+                      ),
                 value: account.loginid,
                 balance: account.balance,
                 currency: account.currency,

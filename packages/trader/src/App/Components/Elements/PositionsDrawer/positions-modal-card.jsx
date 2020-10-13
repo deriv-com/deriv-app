@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
+import CurrencyBadge from 'App/Components/Elements/currency-badge.jsx';
 import { Button, ContractCard, Icon, Money, ProgressSliderMobile } from '@deriv/components';
 import { getContractPath, isMultiplierContract, isHighLow, isCryptocurrency } from '@deriv/shared';
 import { localize } from '@deriv/translations';
@@ -92,6 +93,7 @@ const PositionsModalCard = ({
                     </div>
                 </CSSTransition>
             </div>
+            <CurrencyBadge currency={contract_info?.currency ?? ''} />
             <div className={classNames('positions-modal-card__grid', 'positions-modal-card__grid-body')}>
                 <div className={classNames('positions-modal-card__grid-profit-payout')}>
                     <div
@@ -240,6 +242,7 @@ const PositionsModalCard = ({
                 should_show_result_overlay={false}
             >
                 {card_multiplier_header}
+                <CurrencyBadge currency={contract_info?.currency ?? ''} />
                 {card_multiplier_body}
                 {card_multiplier_footer}
             </ContractCard>

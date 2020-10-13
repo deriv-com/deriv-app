@@ -42,13 +42,31 @@
         }
     }
     &__stat {
-        display: grid;
-        grid-template: 64px 64px / 1fr 1fr 1fr;
-        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        width: 350px;
         background-color: var(--general-section-1);
         position: fixed;
         bottom: 5.7rem;
 
+        &--info {
+            display: flex;
+            justify-content: center;
+            width: 33%;
+            padding: 16px 0px 2px 0;
+            cursor: pointer;
+
+            &-item {
+                display: inline-block;
+                border-bottom: 1px dotted #4b4b4b;
+            }
+        }
+        &--tiles {
+            width: 100%;
+            display: grid;
+            grid-template: 64px 64px / 1fr 1fr 1fr;
+        }
         &-amount {
             @include typeface(--small-center-normal-black, none);
 
@@ -62,6 +80,7 @@
             }
         }
         &--mobile {
+            width: 100%;
             bottom: 0;
         }
     }
@@ -99,7 +118,7 @@
             &--mobile {
                 height: var(--drawer-content-height-mobile);
                 position: fixed;
-                bottom: 12.8rem;
+                bottom: 15.7rem;
                 width: 100vw;
             }
             &--journal-mobile {
@@ -267,4 +286,49 @@
     align-content: space-between;
     width: 440px !important;
     height: 374px !important;
+}
+
+.statistics {
+    &__modal {
+        height: 28.4rem !important;
+        width: 44rem !important;
+        font-size: 1.6rem;
+        padding: 2.4rem;
+
+        &--mobile {
+            font-size: 1.6rem !important;
+        }
+        &-body {
+            height: calc(100vh - 40.6rem);
+            min-height: 10rem;
+            max-height: 45rem;
+
+            &--mobile {
+                padding: 0.6rem 0 1.6rem !important;
+                height: 40.4rem;
+            }
+            &--content {
+                margin-top: 1rem;
+                font-weight: bold;
+
+                &-stake {
+                    margin-top: unset;
+                    font-weight: bold;
+                }
+            }
+        }
+        &-scrollbar {
+            padding-right: 1.2rem;
+        }
+    }
+}
+
+.dc-modal__container_statistics__modal {
+    @include mobile {
+        width: 31.2rem !important;
+    }
+
+    .dc-modal-body {
+        padding: 2.4rem 1.2rem 2.4rem 2.4rem;
+    }
 }

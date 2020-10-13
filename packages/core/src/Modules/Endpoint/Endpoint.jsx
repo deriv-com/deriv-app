@@ -57,6 +57,7 @@ const Endpoint = ({ is_eu_enabled, toggleIsEuEnabled }) => {
                 localStorage.setItem('is_eu_enabled', values.is_eu_enabled);
                 localStorage.setItem(platform_store.DERIV_CRYPTO_KEY, values.is_deriv_crypto_enabled);
                 toggleIsEuEnabled(values.is_eu_enabled);
+                platform_store.setDerivCrypto(values.is_deriv_crypto_enabled);
                 location.reload();
             }}
         >

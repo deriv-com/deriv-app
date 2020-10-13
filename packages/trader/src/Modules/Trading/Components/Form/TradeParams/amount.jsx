@@ -101,19 +101,19 @@ const Amount = ({
             )}
             {!is_single_currency ? (
                 <div className='trade-container__currency-options'>
+                    <Input />
                     <Dropdown
                         id='amount'
                         className={classNames({ 'dc-dropdown-container__currency': !is_single_currency })}
-                        has_symbol
                         is_alignment_left
                         is_nativepicker={false}
                         list={currencies_list}
                         name='currency'
+                        initial_offset={250}
                         no_border={true}
                         value={currency}
                         onChange={onChange}
                     />
-                    <Input />
                 </div>
             ) : (
                 <Input />

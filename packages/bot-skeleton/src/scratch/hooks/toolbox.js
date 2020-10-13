@@ -255,7 +255,7 @@ Blockly.Toolbox.prototype.showSearch = function(search) {
     }
 
     // block_procedure_name matched
-    const searched_procedures = { '0': [], '1': [] };
+    const searched_procedures = { 0: [], 1: [] };
     const procedures_callnoreturn = all_procedures[0];
     const procedures_callreturn = all_procedures[1];
     Object.keys(procedures_callnoreturn).forEach(key => {
@@ -468,6 +468,10 @@ Blockly.Toolbox.Category.prototype.createDom = function() {
     const toolbox = this.parent_.parent_;
     const el_item = goog.dom.createDom('div', this.getMenuItemClassName_());
 
+    // Rename localize function to avoid variables being pushed to Crowdin.
+    // The names + descriptions are extracted using a script in extract-translations.js
+    const toolboxLocalize = localize;
+
     this.item_ = el_item;
 
     if (this.is_category_return_) {
@@ -478,14 +482,14 @@ Blockly.Toolbox.Category.prototype.createDom = function() {
         el_item.appendChild(el_colour);
     }
 
-    const el_label = goog.dom.createDom('div', 'toolbox__label', this.name_);
+    const el_label = goog.dom.createDom('div', 'toolbox__label', toolboxLocalize(this.name_));
     const el_toolbox_text = goog.dom.createDom('div', 'toolbox__category-text');
 
     this.label_ = el_label;
     el_toolbox_text.appendChild(el_label);
 
     if (this.description_) {
-        const el_description = goog.dom.createDom('div', 'toolbox__description', this.description_);
+        const el_description = goog.dom.createDom('div', 'toolbox__description', toolboxLocalize(this.description_));
         el_toolbox_text.appendChild(el_description);
     }
 

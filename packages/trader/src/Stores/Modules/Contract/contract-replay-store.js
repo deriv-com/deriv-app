@@ -104,7 +104,7 @@ export default class ContractReplayStore extends BaseStore {
             const { code, message } = response.error;
             this.has_error = true;
             this.is_chart_loading = false;
-            this.error_message = localize(message);
+            this.error_message = message;
             this.error_code = code;
             return;
         }

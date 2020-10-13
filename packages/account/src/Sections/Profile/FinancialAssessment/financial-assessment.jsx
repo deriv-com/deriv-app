@@ -137,7 +137,6 @@ class FinancialAssessment extends React.Component {
     is_mounted = false;
     state = {
         is_loading: true,
-        has_completed_financial_assessment: false,
         is_confirmation_visible: false,
         has_trading_experience: false,
         show_form: true,
@@ -216,50 +215,18 @@ class FinancialAssessment extends React.Component {
             if (data.error) {
                 setStatus({ msg: data.error.message });
             } else {
-                this.setState({ is_submit_success: true });
-                setTimeout(() => this.setState({ is_submit_success: false }), 3000);
+                WS.authorized.storage.getFinancialAssessment().then((data) => {
+                    this.setState({
+                        ...data.get_financial_assessment,
+                        is_submit_success: true,
+                    });
+                    setTimeout(() => this.setState({ is_submit_success: false }), 3000);
 
-                this.props.removeNotificationMessage({ key: 'risk' });
-                this.props.removeNotificationByKey({ key: 'risk' });
+                    this.props.removeNotificationMessage({ key: 'risk' });
+                    this.props.removeNotificationByKey({ key: 'risk' });
+                });
             }
             setSubmitting(false);
-            const {
-                income_source,
-                employment_status,
-                employment_industry,
-                occupation,
-                source_of_wealth,
-                education_level,
-                net_income,
-                estimated_worth,
-                account_turnover,
-                binary_options_trading_frequency,
-                cfd_trading_experience,
-                cfd_trading_frequency,
-                forex_trading_experience,
-                forex_trading_frequency,
-                other_instruments_trading_experience,
-                other_instruments_trading_frequency,
-            } = values;
-
-            this.setState({
-                income_source,
-                employment_status,
-                employment_industry,
-                occupation,
-                source_of_wealth,
-                education_level,
-                net_income,
-                estimated_worth,
-                account_turnover,
-                binary_options_trading_frequency,
-                cfd_trading_experience,
-                cfd_trading_frequency,
-                forex_trading_experience,
-                forex_trading_frequency,
-                other_instruments_trading_experience,
-                other_instruments_trading_frequency,
-            });
         });
     };
 

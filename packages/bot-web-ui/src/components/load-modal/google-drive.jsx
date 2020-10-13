@@ -42,7 +42,12 @@ const GoogleDrive = ({ is_authorised, is_open_button_loading, onDriveConnect, on
                             <Localize
                                 i18n_default_text="Find out how this app handles your data by reviewing Deriv's <0>Privacy policy</0>, which is part of Deriv's <1>Terms and conditions</2>."
                                 components={[
-                                    <StaticUrl key={0} className='link' href='tnc/security-and-privacy.pdf' />,
+                                    <StaticUrl
+                                        key={0}
+                                        className='link'
+                                        href='tnc/security-and-privacy.pdf'
+                                        is_document
+                                    />,
                                     <StaticUrl key={1} className='link' href='terms-and-conditions' />,
                                 ]}
                             />

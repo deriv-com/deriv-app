@@ -5,6 +5,7 @@ import ContentLoader from 'react-content-loader';
 import { CSSTransition } from 'react-transition-group';
 import { Checkbox, Icon, useOnClickOutside, DesktopWrapper, DataList } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
+import { formatMoney, getCurrencyDisplayCode } from '@deriv/shared';
 import { message_types } from '@deriv/bot-skeleton';
 import { log_types } from '@deriv/bot-skeleton/src/constants/messages';
 import Download from './download.jsx';
@@ -51,21 +52,25 @@ const FormatMessage = ({ logType, className, extra }) => {
                 );
             }
             case log_types.PROFIT: {
-                const { profit } = extra;
+                const { currency, profit } = extra;
                 return (
                     <Localize
                         i18n_default_text='Profit amount: <0>{{profit}}</0>'
-                        values={{ profit }}
+                        values={{
+                            profit: `${formatMoney(currency, profit, true)} ${getCurrencyDisplayCode(currency)}`,
+                        }}
                         components={[<span key={0} className='journal__text--success' />]}
                     />
                 );
             }
             case log_types.LOST: {
-                const { profit } = extra;
+                const { currency, profit } = extra;
                 return (
                     <Localize
                         i18n_default_text='Loss amount: <0>{{profit}}</0>'
-                        values={{ profit }}
+                        values={{
+                            profit: `${formatMoney(currency, profit, true)} ${getCurrencyDisplayCode(currency)}`,
+                        }}
                         components={[<span key={0} className='journal__text--error' />]}
                     />
                 );

@@ -5,7 +5,7 @@ import ContractType from './contract-type';
 export const hasCallPutEqual = contract_type_list => {
     if (isEmptyObject(contract_type_list)) return false;
 
-    return getPropertyValue(contract_type_list, localize('Ups & Downs')).some(
+    return (getPropertyValue(contract_type_list, localize('Ups & Downs')) || []).some(
         contract => contract.value === 'rise_fall_equal'
     );
 };

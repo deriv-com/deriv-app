@@ -56,7 +56,7 @@ const OpenPositionsTable = ({
             />
         ) : (
             currency && (
-                <>
+                <React.Fragment>
                     <DesktopWrapper>
                         <EmptyPlaceholderWrapper
                             component_icon={component_icon}
@@ -88,16 +88,15 @@ const OpenPositionsTable = ({
                                 rowRenderer={mobileRowRenderer}
                                 getRowAction={getRowAction}
                                 getRowSize={() => {
-                                    if (isMobile() && is_multiplier_tab) return 253;
-                                    if (isMobile()) return 232;
-                                    return 194;
+                                    if (is_multiplier_tab) return 259;
+                                    return 198;
                                 }}
                             >
                                 <PlaceholderComponent is_loading={is_loading} />
                             </DataList>
                         </EmptyPlaceholderWrapper>
                     </MobileWrapper>
-                </>
+                </React.Fragment>
             )
         )}
     </React.Fragment>

@@ -158,7 +158,7 @@ class ProfitTable extends React.Component {
                                 localized_period_message={localize('You have no trading activity for this period.')}
                             />
                         ) : (
-                            <>
+                            <React.Fragment>
                                 <DesktopWrapper>
                                     <DataTable
                                         className='profit-table'
@@ -182,12 +182,12 @@ class ProfitTable extends React.Component {
                                         getRowAction={this.getRowAction}
                                         onScroll={handleScroll}
                                         footer={totals}
-                                        getRowSize={() => 234}
+                                        getRowSize={() => 226}
                                     >
                                         <PlaceholderComponent is_loading={is_loading} />
                                     </DataList>
                                 </MobileWrapper>
-                            </>
+                            </React.Fragment>
                         )}
                     </React.Fragment>
                 )}

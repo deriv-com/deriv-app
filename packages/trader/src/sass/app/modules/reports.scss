@@ -104,10 +104,6 @@ $side-padding: 1.2em;
     @include mobile {
         flex: 1;
 
-        &__data-list-body,
-        &__data-list-footer {
-            padding: 0 1.6rem;
-        }
         &__data-list-body {
             height: 100%;
 
@@ -366,10 +362,6 @@ $side-padding: 1.2em;
     @include mobile {
         flex: 1;
 
-        &__data-list-body,
-        &__data-list-footer {
-            padding: 0 1.6rem;
-        }
         &__data-list-body {
             height: calc(100% - 50px);
 
@@ -506,7 +498,7 @@ $side-padding: 1.2em;
 
     @include mobile {
         flex: 1;
-        margin-top: 0.8rem;
+        padding-top: 0.8rem;
 
         &-multiplier {
             /* postcss-bem-linter: ignore */
@@ -515,10 +507,6 @@ $side-padding: 1.2em;
                 border-radius: $BORDER_RADIUS;
                 padding: 0;
 
-                /* postcss-bem-linter: ignore */
-                &--wrapper {
-                    padding: 0 1.6rem;
-                }
                 /* postcss-bem-linter: ignore */
                 & .dc-progress-slider--completed {
                     display: none;
@@ -627,7 +615,6 @@ $side-padding: 1.2em;
         }
         &__data-list-body {
             height: calc(100% - 95px);
-            padding: 0 2.4rem;
 
             .dc-progress-bar__container {
                 max-width: 120px;
@@ -647,7 +634,7 @@ $side-padding: 1.2em;
             }
             &--content {
                 flex: 1;
-                padding-left: 32px;
+                padding: 0.8rem 1.6rem 0;
                 display: flex;
                 justify-content: space-between;
 
@@ -874,6 +861,19 @@ $side-padding: 1.2em;
                 color: var(--text-profit-success);
             }
         }
+    }
+}
+
+.open-positions,
+.statement,
+.profit-table {
+    .data-list__body,
+    .data-list__footer {
+        padding: 0 1.6rem;
+    }
+
+    .data-list__item {
+        background-color: var(--general-section-1);
     }
 }
 

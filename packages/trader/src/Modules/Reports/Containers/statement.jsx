@@ -201,7 +201,7 @@ class Statement extends React.Component {
                                         rowRenderer={this.mobileRowRenderer}
                                         getRowAction={this.getRowAction}
                                         onScroll={handleScroll}
-                                        getRowSize={() => 186}
+                                        getRowSize={() => 178}
                                     >
                                         <PlaceholderComponent is_loading={is_loading} />
                                     </DataList>

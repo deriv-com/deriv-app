@@ -14,13 +14,9 @@
         border-top: 2px solid var(--border-disabled);
         display: flex;
         align-items: center;
-        position: absolute;
-        bottom: 0px;
-        left: 0px;
+        position: relative;
     }
     &__item {
-        height: 100%;
-
         &--wrapper {
             text-decoration: none;
             -webkit-touch-callout: none;

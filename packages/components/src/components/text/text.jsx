@@ -4,9 +4,9 @@ import React from 'react';
 const Text = ({ children, size, color, align, weight, lineHeight, as, className }) => {
     function setStyle() {
         const style = {
-            '--text-size': size ? `var(--text-size-${size})` : '',
-            '--text-color': color ? `var(--text-${color})` : '',
-            '--text-lh': lineHeight ? `var(--text-lh-${lineHeight})` : '',
+            ...(size ? { '--text-size': `var(--text-size-${size})` } : {}),
+            ...(color ? { '--text-color': `var(--text-${color})` } : {}),
+            ...(lineHeight ? { '--text-lh': `var(--text-lh-${lineHeight})` } : {}),
         };
         return style;
     }
@@ -19,14 +19,14 @@ const Text = ({ children, size, color, align, weight, lineHeight, as, className 
         return classStyle;
     }
     return (
-        ({ as } === 'span' && (
-            <span className={classNames(setClassName())} style={setStyle()}>
-                {children}
-            </span>
-        )) || (
+        (as === 'p' && (
             <p className={classNames(setClassName())} style={setStyle()}>
                 {children}
             </p>
+        )) || (
+            <span className={classNames(setClassName())} style={setStyle()}>
+                {children}
+            </span>
         )
     );
 };

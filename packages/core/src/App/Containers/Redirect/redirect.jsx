@@ -3,11 +3,13 @@ import { withRouter } from 'react-router-dom';
 import { loginUrl, routes } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import { WS } from 'Services';
 
 const Redirect = ({
     history,
+    currency,
     setVerificationCode,
-    fetchResidenceList,
+    hasAnyRealAccount,
     openRealAccountSignup,
     toggleAccountSignupModal,
     toggleResetPasswordModal,
@@ -38,8 +40,11 @@ const Redirect = ({
             break;
         }
         case 'add_account': {
-            fetchResidenceList().then(openRealAccountSignup);
-
+            WS.wait('get_account_status').then(() => {
+                if (!currency) return openRealAccountSignup('set_currency');
+                if (hasAnyRealAccount()) return openRealAccountSignup('manage');
+                return openRealAccountSignup();
+            });
             const ext_platform_url = url_params.get('ext_platform_url');
             if (ext_platform_url) {
                 history.push(`${routes.root}?ext_platform_url=${ext_platform_url}`);
@@ -82,8 +87,10 @@ Redirect.propTypes = {
 
 export default withRouter(
     connect(({ client, ui }) => ({
+        currency: client.currency,
         setVerificationCode: client.setVerificationCode,
         fetchResidenceList: client.fetchResidenceList,
+        hasAnyRealAccount: client.hasAnyRealAccount,
         openRealAccountSignup: ui.openRealAccountSignup,
         toggleAccountSignupModal: ui.toggleAccountSignupModal,
         toggleResetPasswordModal: ui.toggleResetPasswordModal,

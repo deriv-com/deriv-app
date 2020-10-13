@@ -1,3 +1,16 @@
+.dc-modal__container_usdt-note-modal {
+    .title {
+        font-weight: bold;
+    }
+    p,
+    .description {
+        margin-bottom: 1rem;
+    }
+    .description {
+        margin-left: 2rem;
+        margin-top: 0.5rem;
+    }
+}
 /** @define cashier; weak */
 .cashier {
     &__counter {
@@ -255,6 +268,10 @@
             line-height: 1.25;
             margin-top: 2.4rem;
             margin-bottom: 2.8rem;
+
+            & .symbols {
+                padding-left: 0.8rem;
+            }
         }
         &-details {
             margin-left: 8px;
@@ -377,6 +394,14 @@
             width: 100%;
             margin: 2.4rem 0 0;
             height: 320px;
+        }
+    }
+    &__usdt-side-note {
+        &--header {
+            font-size: 1.6rem;
+            line-height: 1.5;
+            font-weight: bold;
+            color: var(--text-prominent);
         }
     }
     &__account-switch-text {
@@ -1068,6 +1093,24 @@
             .dc-select-native__placeholder {
                 background-color: var(--general-main-1);
             }
+        }
+    }
+}
+
+/** @define cashier-side-note; weak */
+.cashier-side-note {
+    &__bullet {
+        background-color: var(--text-general);
+        border-radius: 100%;
+        margin-right: 0.8rem;
+        width: 0.4rem;
+        height: 0.4rem;
+        flex: none;
+        margin-top: 0.8rem;
+
+        &-wrapper {
+            display: flex;
+            margin-bottom: 0.8rem;
         }
     }
 }

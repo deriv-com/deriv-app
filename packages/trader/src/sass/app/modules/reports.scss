@@ -688,7 +688,6 @@ $side-padding: 1.2em;
             text-align: center;
             font-size: smaller;
         }
-
     }
     &__profit-loss {
         display: flex;
@@ -758,7 +757,7 @@ $side-padding: 1.2em;
         }
     }
     &__row {
-        /* icon refId currency buy_price potential_payout potential_profit indicative_price rem_time */
+        /* type refId currency buy_price payout_limit indicative_profit/loss indicative_price rem_time */
         /* stylelint-disable-next-line declaration-colon-space-after */
         grid-template-columns:
             minmax(110px, 0.7fr) minmax(130px, 0.8fr) minmax(100px, 1.1fr) minmax(90px, 1.1fr) minmax(90px, 1.1fr)

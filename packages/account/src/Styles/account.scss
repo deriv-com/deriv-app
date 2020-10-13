@@ -1340,9 +1340,13 @@ $MIN_HEIGHT_FLOATING: calc(
 /** @define connected-apps; weak */
 .connected-apps {
     width: 100%;
-    max-width: 682px;
-    max-height: 560px;
     height: 100%;
+
+    &__wrapper {
+        max-width: 682px;
+        max-height: 560px;
+        height: 100%;
+    }
 
     .revoke_access {
         padding-left: 8px;

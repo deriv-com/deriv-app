@@ -70,7 +70,6 @@ const OpenPositionsTable = ({
                                 data_source={active_positions}
                                 getRowAction={getRowAction}
                                 getRowSize={() => row_size}
-                                custom_width={'100%'}
                                 content_loader={ReportsTableRowLoader}
                             >
                                 <PlaceholderComponent is_loading={is_loading} />
@@ -88,7 +87,6 @@ const OpenPositionsTable = ({
                                 footer={totals}
                                 rowRenderer={mobileRowRenderer}
                                 getRowAction={getRowAction}
-                                custom_width='100%'
                                 getRowSize={() => {
                                     if (isMobile() && is_multiplier_tab) return 253;
                                     if (isMobile()) return 232;

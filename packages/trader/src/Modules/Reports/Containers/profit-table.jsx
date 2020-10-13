@@ -168,7 +168,6 @@ class ProfitTable extends React.Component {
                                         footer={totals}
                                         is_empty={is_empty}
                                         getRowAction={this.getRowAction}
-                                        custom_width={'100%'}
                                         getRowSize={() => 63}
                                         content_loader={ReportsTableRowLoader}
                                     >
@@ -183,7 +182,6 @@ class ProfitTable extends React.Component {
                                         getRowAction={this.getRowAction}
                                         onScroll={handleScroll}
                                         footer={totals}
-                                        custom_width={'100%'}
                                         getRowSize={() => 234}
                                     >
                                         <PlaceholderComponent is_loading={is_loading} />

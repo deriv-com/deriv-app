@@ -5,13 +5,14 @@ import { termsOfUseConfig } from './terms-of-use-form';
 import { financialDetailsConfig } from './financial-details-form';
 
 const shouldShowFinancialDetails = ({ real_account_signup_target }) => real_account_signup_target === 'maltainvest';
-const shouldShowPersonalAndAddressDetails = ({ real_account_signup_target }) => real_account_signup_target !== 'samoa';
+const shouldShowPersonalAndAddressDetailsAndCurrency = ({ real_account_signup_target }) =>
+    real_account_signup_target !== 'samoa';
 
 export const getItems = props => {
     return [
-        ...(shouldShowPersonalAndAddressDetails(props) ? [currencySelectorConfig(props)] : []),
-        ...(shouldShowPersonalAndAddressDetails(props) ? [personalDetailsConfig(props)] : []),
-        ...(shouldShowPersonalAndAddressDetails(props) ? [addressDetailsConfig(props)] : []),
+        ...(shouldShowPersonalAndAddressDetailsAndCurrency(props) ? [currencySelectorConfig(props)] : []),
+        ...(shouldShowPersonalAndAddressDetailsAndCurrency(props) ? [personalDetailsConfig(props)] : []),
+        ...(shouldShowPersonalAndAddressDetailsAndCurrency(props) ? [addressDetailsConfig(props)] : []),
         ...(shouldShowFinancialDetails(props) ? [financialDetailsConfig(props)] : []),
         termsOfUseConfig(props),
     ];

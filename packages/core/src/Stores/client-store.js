@@ -744,6 +744,8 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     realAccountSignup(form_values) {
+        const DEFAULT_CRYPTO_ACCOUNT_CURRENCY = 'BTC';
+
         return new Promise(async (resolve, reject) => {
             const is_maltainvest_account = this.root_store.ui.real_account_signup_target === 'maltainvest';
             const is_samoa_account = this.root_store.ui.real_account_signup_target === 'samoa';
@@ -767,7 +769,7 @@ export default class ClientStore extends BaseStore {
                 }
 
                 if (is_samoa_account) {
-                    await this.setAccountCurrency('BTC');
+                    await this.setAccountCurrency(DEFAULT_CRYPTO_ACCOUNT_CURRENCY);
                 }
 
                 localStorage.removeItem('real_account_signup_wizard');

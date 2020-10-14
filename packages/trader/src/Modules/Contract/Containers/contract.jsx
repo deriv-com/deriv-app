@@ -4,7 +4,7 @@ import { Redirect, withRouter } from 'react-router';
 import { CSSTransition } from 'react-transition-group';
 import { routes } from '@deriv/shared';
 import ErrorComponent from 'App/Components/Elements/Errors';
-import { Localize, localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import ContractReplay from './contract-replay.jsx';
 

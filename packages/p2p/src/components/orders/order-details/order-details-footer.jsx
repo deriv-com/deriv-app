@@ -120,6 +120,7 @@ const OrderDetailsFooter = ({ order_information }) => {
                                 ? 'seller_not_released'
                                 : 'buyer_not_paid'
                         }
+                        className='order-details__complain-checkbox'
                         onChange={event => {
                             onChange(event.target.name);
                         }}
@@ -156,7 +157,7 @@ const OrderDetailsFooter = ({ order_information }) => {
                     />
                     <div className='order-details__contact-text'>
                         <Localize
-                            i18n_default_text="If your complaint isn't listed here, please contact our <0>Customer Support<0/> team."
+                            i18n_default_text="If your complaint isn't listed here, please contact our <0>Customer Support<0/>"
                             components={[
                                 <a
                                     key={0}
@@ -167,6 +168,7 @@ const OrderDetailsFooter = ({ order_information }) => {
                                 />,
                             ]}
                         />
+                        {localize(' team.')}
                     </div>
                 </Modal.Body>
                 <Modal.Footer>

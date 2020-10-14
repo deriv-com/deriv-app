@@ -407,6 +407,12 @@
     &__modal-checkbox {
         margin: 2.4rem -0.7rem;
     }
+    &__complain-checkbox {
+        align-items: flex-end;
+        display: flex;
+        height: 63px !important;
+        padding-bottom: 0.5rem;
+    }
 }
 
 .dc-modal__container {
@@ -430,6 +436,7 @@
 
         .dc-modal-body {
             padding-bottom: 11.2rem;
+            padding-top: 1.8rem;
         }
 
         .dc-modal-footer {

@@ -1131,10 +1131,22 @@ export default class CashierStore extends BaseStore {
             // not allowed to transfer from MT to MT
             const first_non_mt = this.config.account_transfer.accounts_list.find(account => !account.is_mt);
             this.onChangeTransferTo({ target: { value: first_non_mt.value } });
-        } else if (selected_from.is_crypto && this.config.account_transfer.selected_to.is_crypto) {
+        } else if (
+            selected_from.is_crypto &&
+            this.config.account_transfer.selected_to.is_crypto &&
+            !this.is_deriv_crypto
+        ) {
             // not allowed to transfer crypto to crypto
             const first_fiat = this.config.account_transfer.accounts_list.find(account => !account.is_crypto);
             this.onChangeTransferTo({ target: { value: first_fiat.value } });
+        } else if (this.is_deriv_crypto) {
+            // Account from and to should match in currency, set selected_to with the one that matches selected_from
+            const selected_to = this.config.account_transfer.accounts_list.find(
+                account => account.currency === selected_from.currency && account.value !== selected_from.value
+            );
+            if (selected_to) {
+                this.config.account_transfer.selected_to = selected_to;
+            }
         }
 
         if (hasTransferNotAllowedLoginid(selected_from.value)) {

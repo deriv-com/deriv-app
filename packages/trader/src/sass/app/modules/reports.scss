@@ -867,11 +867,13 @@ $side-padding: 1.2em;
 .open-positions,
 .statement,
 .profit-table {
+    /* postcss-bem-linter: ignore */
     .data-list__body,
     .data-list__footer {
         padding: 0 1.6rem;
     }
 
+    /* postcss-bem-linter: ignore */
     .data-list__item {
         background-color: var(--general-section-1);
     }

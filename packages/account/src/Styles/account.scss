@@ -1342,15 +1342,14 @@ $MIN_HEIGHT_FLOATING: calc(
     width: 100%;
     height: 100%;
 
+    .revoke_access {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
     &__wrapper {
         max-width: 682px;
         max-height: 560px;
         height: 100%;
-    }
-
-    .revoke_access {
-        padding-left: 8px;
-        padding-right: 8px;
     }
     &__loading {
         height: calc(100vh - 240px);

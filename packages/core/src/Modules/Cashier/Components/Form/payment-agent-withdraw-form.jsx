@@ -226,7 +226,7 @@ class PaymentAgentWithdrawForm extends React.Component {
                                             <span
                                                 className={classNames(
                                                     'symbols',
-                                                    `symbols--${(this.props.currency || '').toLowerCase()}`
+                                                    `symbols--${this.props.currency.toLowerCase()}`
                                                 )}
                                             >
                                                 {getCurrencyDisplayCode(this.props.currency)}

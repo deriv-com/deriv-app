@@ -4,18 +4,15 @@ import React from 'react';
 const Text = ({ children, size, color, align, weight, lineHeight, as, className }) => {
     function setStyle() {
         const style = {
-            ...(size ? { '--text-size': `var(--text-size-${size})` } : {}),
-            ...(color ? { '--text-color': `var(--text-${color})` } : {}),
-            ...(lineHeight ? { '--text-lh': `var(--text-lh-${lineHeight})` } : {}),
+            '--text-size': `var(--text-size-${size ? size : 's'})`,
+            '--text-color': `var(--text-${color ? color : 'general'})`,
+            '--text-lh': `var(--text-lh-${lineHeight ? lineHeight : as === 'p' ? 'm' : 'xs'})`,
+            '--text-weight': `var(--text-weight-${weight ? weight : 'n'})`,
         };
         return style;
     }
     function setClassName() {
-        const classStyle = [
-            'dc-text',
-            `${weight ? `dc-text--${weight}` : ''} ${align ? `dc-text--${align}` : ''}`,
-            className,
-        ];
+        const classStyle = ['dc-text', `${align ? `dc-text--${align}` : ''}`, className];
         return classStyle;
     }
     return (

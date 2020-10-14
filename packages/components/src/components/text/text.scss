@@ -2,10 +2,8 @@
     font-size: var(--text-size);
     color: var(--text-color);
     line-height: var(--text-lh);
+    font-weight: var(--text-weight);
 
-    &--bold {
-        font-weight: bold;
-    }
     &--left {
         text-align: left;
     }

@@ -50,7 +50,7 @@ const MultiplierWidget = ({ commission, currency, multiplier }) => {
                     <span className='mobile-widget__item-label'>
                         <Localize
                             i18n_default_text='Commission: <0/>'
-                            components={[<Money key={0} amount={commission} currency={currency} />]}
+                            components={[<Money key={0} amount={commission} currency={currency} show_currency />]}
                         />
                     </span>
                 </div>

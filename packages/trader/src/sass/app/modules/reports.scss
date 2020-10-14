@@ -578,7 +578,7 @@ $side-padding: 1.2em;
                 }
                 /* postcss-bem-linter: ignore */
                 & .dc-contract-card-dialog-toggle {
-                    top: 71px;
+                    top: 85px;
                     width: 124px;
                     right: 9px;
                     border-color: var(--border-hover);
@@ -589,12 +589,10 @@ $side-padding: 1.2em;
                         right: 10px;
                     }
                     @media only screen and (max-width: 320px) {
-                        top: 72px;
                         width: 91px;
                         height: 80px;
                     }
                     @media (max-width: 320px) and (max-height: 480px) {
-                        top: 70px;
                         height: 80px;
                     }
                 }

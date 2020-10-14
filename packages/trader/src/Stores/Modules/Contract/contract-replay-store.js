@@ -170,6 +170,9 @@ export default class ContractReplayStore extends BaseStore {
             }),
             200
         );
+        // As result of above issue in SmartChart, we try to keep the is_chart_loading
+        // for a while till chart has this chance to do scale 1:1 after the is_chart_ready
+        // get true.
         setTimeout(
             action(() => {
                 this.is_chart_loading = false;

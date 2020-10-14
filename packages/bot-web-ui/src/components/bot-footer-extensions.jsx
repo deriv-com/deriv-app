@@ -9,7 +9,7 @@ import '../assets/sass/bot-footer-extensions.scss';
 
 const SecurityAndPrivacy = () => (
     <Popover alignment='top' message={localize('Security and privacy')}>
-        <StaticUrl className='footer__link' href='tnc/security-and-privacy.pdf'>
+        <StaticUrl className='footer__link' href='tnc/security-and-privacy.pdf' is_document>
             <Icon icon='IcSecurityAndPrivacy' />
         </StaticUrl>
     </Popover>

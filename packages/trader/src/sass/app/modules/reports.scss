@@ -683,6 +683,9 @@ $side-padding: 1.2em;
             align-items: center;
             line-height: 16px;
         }
+        &-no-resale-msg {
+            min-width: 115px;
+        }
     }
     &__profit-loss {
         display: flex;
@@ -755,8 +758,8 @@ $side-padding: 1.2em;
         /* icon refId currency buy_price potential_payout potential_profit indicative_price rem_time */
         /* stylelint-disable-next-line declaration-colon-space-after */
         grid-template-columns:
-            minmax(110px, 0.8fr) minmax(130px, 1.2fr) minmax(100px, 1fr) minmax(90px, 1.4fr) minmax(90px, 1.4fr)
-            minmax(120px, 2fr) minmax(120px, 1.2fr) minmax(85px, 2fr);
+            minmax(110px, 0.8fr) minmax(120px, 1.1fr) minmax(100px, 1fr) minmax(90px, 1.4fr) minmax(90px, 1.4fr)
+            minmax(120px, 2fr) minmax(130px, 1.3fr) minmax(85px, 2fr);
         width: 100%;
         grid-auto-rows: auto;
 
@@ -835,6 +838,7 @@ $side-padding: 1.2em;
                 .dc-btn {
                     height: 2.4rem;
                     padding: 0 0.8rem;
+                    min-width: 93px;
 
                     .dc-btn__text {
                         font-size: 1.2rem;

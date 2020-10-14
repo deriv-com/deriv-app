@@ -20,12 +20,12 @@ const ErrorComponent = ({
 
     return is_dialog ? (
         <Dialog
-            title={localize('There was an error')}
+            title={header || localize('There was an error')}
             is_visible
-            confirm_button_text={localize('Ok')}
+            confirm_button_text={redirect_label || localize('Ok')}
             onConfirm={redirectOnClick || (() => location.reload())}
         >
-            {message || <Localize key={0} i18n_default_text='Sorry, an error occured while processing your request.' />}
+            {message || localize('Sorry, an error occured while processing your request.')}
         </Dialog>
     ) : (
         <PageError

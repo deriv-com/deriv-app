@@ -4,7 +4,7 @@ import { Redirect, withRouter } from 'react-router';
 import { CSSTransition } from 'react-transition-group';
 import { routes } from '@deriv/shared';
 import ErrorComponent from 'App/Components/Elements/Errors';
-import { Localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import ContractReplay from './contract-replay.jsx';
 
@@ -29,7 +29,7 @@ class Contract extends React.Component {
                     <ErrorComponent
                         message={this.props.error_message}
                         is_dialog={this.props.error_code === 'ContractValidationError'}
-                        redirect_label={<Localize i18n_default_text='Go back to trading' />}
+                        redirect_label={localize('Ok')}
                         redirectOnClick={() => this.props.history.push(routes.trade)}
                         should_show_refresh={false}
                     />

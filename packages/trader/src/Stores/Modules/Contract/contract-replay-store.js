@@ -151,8 +151,6 @@ export default class ContractReplayStore extends BaseStore {
         if (this.contract_info.is_sold) {
             this.contract_store.cacheProposalOpenContractResponse(response);
         }
-
-        this.is_chart_loading = false;
     }
 
     @action.bound
@@ -171,6 +169,12 @@ export default class ContractReplayStore extends BaseStore {
                 this.is_chart_ready = v;
             }),
             200
+        );
+        setTimeout(
+            action(() => {
+                this.is_chart_loading = false;
+            }),
+            500
         );
     }
 

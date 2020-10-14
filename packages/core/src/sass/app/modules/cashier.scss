@@ -1,4 +1,7 @@
 .dc-modal__container_usdt-note-modal {
+    .dc-modal-body {
+        padding-top: 0;
+    }
     .title {
         font-weight: bold;
     }
@@ -106,10 +109,6 @@
         font-weight: bold;
         color: var(--text-prominent);
 
-        &:not(.cashier__content-header) {
-            margin-bottom: 1.6rem;
-            margin-top: 1.6rem;
-        }
         @include mobile {
             font-size: 1.4rem;
         }
@@ -1110,7 +1109,6 @@
 
         &-wrapper {
             display: flex;
-            margin-bottom: 0.8rem;
         }
     }
 }

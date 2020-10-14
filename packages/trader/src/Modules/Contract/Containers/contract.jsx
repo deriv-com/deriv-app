@@ -29,7 +29,7 @@ class Contract extends React.Component {
                     <ErrorComponent
                         message={this.props.error_message}
                         is_dialog={this.props.error_code === 'ContractValidationError'}
-                        redirect_label={localize('Ok')}
+                        redirect_label={this.props.error_code === 'ContractValidationError' ? localize('Ok') : localize('Go back to trading')}
                         redirectOnClick={() => this.props.history.push(routes.trade)}
                         should_show_refresh={false}
                     />

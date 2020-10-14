@@ -426,8 +426,11 @@
         }
     }
     &_complain-modal {
-        height: calc(100vh - 500px) !important;
         width: 440px !important;
+
+        .dc-modal-body {
+            padding-bottom: 11.2rem;
+        }
 
         .dc-modal-footer {
             border-top: solid 2px var(--general-section-1);

@@ -9,7 +9,6 @@ import OrderDetailsFooter from './order-details-footer.jsx';
 import OrderDetailsChatbox from './order-details-chatbox.jsx';
 import OrderDetailsTimer from './order-details-timer.jsx';
 import OrderInfoBlock from './order-info-block.jsx';
-import Popup from '../popup.jsx';
 import './order-details.scss';
 
 const OrderDetails = ({ order_information, chat_info }) => {
@@ -37,15 +36,7 @@ const OrderDetails = ({ order_information, chat_info }) => {
     } = order_information;
 
     const [channel_url, setChannelUrl] = React.useState(chat_channel_url);
-    const [should_show_popup, setShouldShowPopup] = React.useState(false);
-    const [popup_options, setPopupOptions] = React.useState({});
     const isMounted = useIsMounted();
-
-    const onCancelClick = () => setShouldShowPopup(false);
-    const handleShowPopup = options => {
-        setPopupOptions(options);
-        setShouldShowPopup(true);
-    };
 
     React.useEffect(() => {
         if (isMounted()) {
@@ -135,13 +126,7 @@ const OrderDetails = ({ order_information, chat_info }) => {
                             <OrderInfoBlock label={labels.instructions} value={advert_details.description || '-'} />
                         </div>
                     </ThemedScrollbars>
-                    {should_show_order_footer && (
-                        <OrderDetailsFooter
-                            cancelPopup={onCancelClick}
-                            showPopup={handleShowPopup}
-                            order_information={order_information}
-                        />
-                    )}
+                    {should_show_order_footer && <OrderDetailsFooter order_information={order_information} />}
                 </div>
                 {channel_url && (
                     <OrderDetailsChatbox
@@ -150,12 +135,6 @@ const OrderDetails = ({ order_information, chat_info }) => {
                         nickname={other_user_details.name}
                     />
                 )}
-                <Popup
-                    {...popup_options}
-                    onCancel={onCancelClick}
-                    should_show_popup={should_show_popup}
-                    setShouldShowPopup={setShouldShowPopup}
-                />
             </div>
         </div>
     );

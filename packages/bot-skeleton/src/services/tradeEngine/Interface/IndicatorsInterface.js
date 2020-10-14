@@ -8,7 +8,7 @@ import {
     relativeStrengthIndex as rsi,
     relativeStrengthIndexArray as rsia,
     macdArray as macda,
-} from '@deriv/shared';
+} from '@deriv/indicators';
 
 export default Interface =>
     class extends Interface {

@@ -2,7 +2,7 @@ import { Table } from '@deriv/components';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { localize } from 'Components/i18next';
+import { localize, Localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { secondsToTimer } from 'Utils/date-time';
 import ServerTime from 'Utils/server-time';
@@ -15,6 +15,8 @@ const OrderRowComponent = React.memo(({ advert, onOpenDetails, style, is_active 
         amount_display,
         id,
         is_buy_order,
+        is_my_ad,
+        is_sell_order,
         local_currency,
         order_expiry_milliseconds,
         order_purchase_datetime,
@@ -65,7 +67,13 @@ const OrderRowComponent = React.memo(({ advert, onOpenDetails, style, is_active 
                     'orders__table-row--attention': !isOrderSeen(id),
                 })}
             >
-                <Table.Cell>{is_buy_order ? localize('Buy') : localize('Sell')}</Table.Cell>
+                <Table.Cell>
+                    {(is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad) ? (
+                        <Localize i18n_default_text='Buy' />
+                    ) : (
+                        <Localize i18n_default_text='Sell' />
+                    )}
+                </Table.Cell>
                 <Table.Cell>{id}</Table.Cell>
                 <Table.Cell>{other_user_details.name}</Table.Cell>
                 <Table.Cell>
@@ -80,8 +88,12 @@ const OrderRowComponent = React.memo(({ advert, onOpenDetails, style, is_active 
                         {status_string}
                     </div>
                 </Table.Cell>
-                <Table.Cell>{is_buy_order ? transaction_amount : offer_amount}</Table.Cell>
-                <Table.Cell>{is_buy_order ? offer_amount : transaction_amount}</Table.Cell>
+                <Table.Cell>
+                    {(is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad) ? transaction_amount : offer_amount}
+                </Table.Cell>
+                <Table.Cell>
+                    {(is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad) ? offer_amount : transaction_amount}
+                </Table.Cell>
                 <Table.Cell>
                     {is_active ? <div className='orders__table-time'>{remaining_time}</div> : order_purchase_datetime}
                 </Table.Cell>

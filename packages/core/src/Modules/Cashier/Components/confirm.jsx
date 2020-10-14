@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { localize } from '@deriv/translations';
@@ -16,7 +17,13 @@ const Row = ({ label, value }) => (
                 ))}
             </span>
         ) : (
-            <strong>{value}</strong>
+            <strong
+                className={classNames({
+                    desc: label === 'Description',
+                })}
+            >
+                {value}
+            </strong>
         )}
     </div>
 );

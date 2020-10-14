@@ -87,10 +87,8 @@ const OpenPositionsTable = ({
                                 footer={totals}
                                 rowRenderer={mobileRowRenderer}
                                 getRowAction={getRowAction}
-                                getRowSize={() => {
-                                    if (is_multiplier_tab) return 259;
-                                    return 198;
-                                }}
+                                row_gap={8}
+                                is_dynamic_height
                             >
                                 <PlaceholderComponent is_loading={is_loading} />
                             </DataList>

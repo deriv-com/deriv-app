@@ -141,15 +141,6 @@
             border-radius: $BORDER_RADIUS;
             pointer-events: none;
         }
-        &:first-child {
-            margin-top: 2px;
-        }
-        &:not(:last-child) {
-            margin-bottom: 16px;
-        }
-        &:last-child {
-            margin-bottom: 10px;
-        }
         &--enter-done {
             opacity: 1;
             transform: translateY(0);
@@ -378,7 +369,6 @@
         }
         &--enter-done {
             opacity: 1;
-            transform: translateY(0);
         }
         &--enter,
         &--exit {

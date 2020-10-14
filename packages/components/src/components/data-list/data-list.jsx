@@ -36,7 +36,7 @@ class DataList extends React.PureComponent {
     };
 
     rowRenderer = ({ style, index, key, parent }) => {
-        const { data_source, rowRenderer, getRowAction, keyMapper, is_dynamic_height } = this.props;
+        const { data_source, rowRenderer, getRowAction, keyMapper, is_dynamic_height, row_gap } = this.props;
         const { isScrolling } = this.state;
         const row = data_source[index];
         const to = getRowAction && getRowAction(row);
@@ -44,29 +44,32 @@ class DataList extends React.PureComponent {
         const should_show_transition = !isScrolling;
         const is_new_row = !this.items_map[row_key];
 
-        const getContent = ({ measure } = {}) =>
-            typeof to === 'string' ? (
-                <NavLink
-                    className='data-list__item--wrapper'
-                    id={`dt_reports_contract_${row_key}`}
-                    to={{
-                        pathname: to,
-                        state: {
-                            from_table_row: true,
-                        },
-                    }}
-                >
-                    <div className='data-list__item'>
-                        {rowRenderer({ row, measure, should_show_transition, is_new_row })}
+        const getContent = ({ measure } = {}) => (
+            <div style={{ paddingBottom: `${row_gap || 0}px` }}>
+                {typeof to === 'string' ? (
+                    <NavLink
+                        className='data-list__item--wrapper'
+                        id={`dt_reports_contract_${row_key}`}
+                        to={{
+                            pathname: to,
+                            state: {
+                                from_table_row: true,
+                            },
+                        }}
+                    >
+                        <div className='data-list__item'>
+                            {rowRenderer({ row, measure, should_show_transition, is_new_row })}
+                        </div>
+                    </NavLink>
+                ) : (
+                    <div className='data-list__item--wrapper'>
+                        <div className='data-list__item'>
+                            {rowRenderer({ row, measure, should_show_transition, is_new_row })}
+                        </div>
                     </div>
-                </NavLink>
-            ) : (
-                <div className='data-list__item--wrapper'>
-                    <div className='data-list__item'>
-                        {rowRenderer({ row, measure, should_show_transition, is_new_row })}
-                    </div>
-                </div>
-            );
+                )}
+            </div>
+        );
 
         return is_dynamic_height ? (
             <CellMeasurer cache={this.cache} columnIndex={0} key={row_key} rowIndex={index} parent={parent}>

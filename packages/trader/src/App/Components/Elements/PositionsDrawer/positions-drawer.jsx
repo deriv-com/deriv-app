@@ -112,6 +112,8 @@ class PositionsDrawer extends React.Component {
                 data_source={this.positions}
                 rowRenderer={args => <PositionsDrawerCardItem onHoverPosition={onHoverPosition} {...args} />}
                 keyMapper={row => row.id}
+                row_gap={8}
+                is_dynamic_height
             />
         );
 

@@ -40,12 +40,16 @@ const CardFooter = ({
     return (
         <CSSTransition
             in={in_prop}
-            timeout={250}
-            classNames={{
-                enter: 'dc-contract-card__sell-button--enter',
-                enterDone: 'dc-contract-card__sell-button--enter-done',
-                exit: 'dc-contract-card__sell-button--exit',
-            }}
+            timeout={should_show_transition ? 250 : 0}
+            classNames={
+                should_show_transition
+                    ? {
+                          enter: 'dc-contract-card__sell-button--enter',
+                          enterDone: 'dc-contract-card__sell-button--enter-done',
+                          exit: 'dc-contract-card__sell-button--exit',
+                      }
+                    : {}
+            }
             onEntered={onFooterEntered}
             unmountOnExit
         >

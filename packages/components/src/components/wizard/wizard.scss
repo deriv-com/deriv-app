@@ -1,0 +1,41 @@
+.wizard {
+    width: inherit;
+    height: inherit;
+
+    &__step {
+        width: 100%;
+        align-items: center;
+    }
+    &__header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    &__placeholder {
+        width: 6.3rem;
+    }
+    &__btn {
+        display: flex;
+        @include typeface(--small-left-bold-prominent);
+        cursor: pointer;
+        color: var(--text-general);
+
+        &-right {
+            margin: 2.4rem 1.6rem 2.4rem 0;
+        }
+        &-left {
+            margin: 2.4rem 0 2.4rem 1.6rem;
+        }
+        &-icon {
+            &-right {
+                margin-left: 8px;
+            }
+            &-left {
+                margin-right: 8px;
+            }
+            .color1-fill {
+                fill: var(--text-general);
+            }
+        }
+    }
+}

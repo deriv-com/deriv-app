@@ -22,7 +22,7 @@ import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
 import { isEuCountry } from '_common/utility';
 import BaseStore from './base-store';
-import { getClientAccountType, getAccountTitle, getLandingCompanyValue } from './Helpers/client';
+import { getClientAccountType, getAccountTitle } from './Helpers/client';
 import { createDeviceDataObject, setDeviceDataCookie } from './Helpers/device';
 import { handleClientNotifications } from './Helpers/client-notifications';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
@@ -202,9 +202,13 @@ export default class ClientStore extends BaseStore {
         return this.active_accounts.some(acc => acc.landing_company_shortcode === 'malta');
     }
 
+    hasAnyRealAccount = () => {
+        return this.account_list.some(acc => acc.is_virtual === 0);
+    };
+
     @computed
     get has_any_real_account() {
-        return this.account_list.some(acc => acc.is_virtual === 0);
+        return this.hasAnyRealAccount();
     }
 
     @computed
@@ -1731,22 +1735,13 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     getChangeableFields() {
-        const landing_company = State.getResponse('landing_company');
-        const { is_fully_authenticated, loginid, isAccountOfType, landing_company_shortcode } = this;
+        const get_settings =
+            Object.keys(this.account_settings).length === 0
+                ? WS.authorized.storage.getSettings()
+                : this.account_settings;
 
-        const has_changeable_field =
-            (this.root_store.ui.is_eu_enabled || landing_company_shortcode === 'svg') && !is_fully_authenticated;
-
-        if (has_changeable_field) {
-            let changeable_fields = [];
-            const changeable = getLandingCompanyValue({ loginid, landing_company, isAccountOfType });
-
-            if (changeable && changeable.only_before_auth) {
-                changeable_fields = [...changeable.only_before_auth];
-            }
-            return changeable_fields;
-        }
-        return [];
+        const readonly_fields = [...get_settings.immutable_fields, ...['immutable_fields', 'email', 'password']];
+        return Object.keys(get_settings).filter(field => !readonly_fields.includes(field));
     }
 
     @action.bound

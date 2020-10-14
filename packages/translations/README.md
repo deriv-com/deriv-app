@@ -14,8 +14,8 @@
 
 # Requirements:
 
--   Crowdin CLI: download here: https://support.crowdin.com/cli-tool-v2/#installation
--   **Important:** Please use version 2 of the crowdin cli-tool (version 3 is not supported by our translation scripts yet)
+-   Crowdin CLI: download here: https://support.crowdin.com/cli-tool/#installation
+-   `CROWDIN_API_KEY` environment variables to your `~/.bash_profile`
 -   remote `origin` should be your fork
 -   remote `upstream` should be the source repository (e.g. `git@github.com:binary-com/deriv-app.git`)
 

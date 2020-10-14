@@ -15,19 +15,20 @@ class DataList extends React.PureComponent {
         scrollTop: 0,
         isScrolling: false,
     };
-    items_map = {};
+    items_transition_map = {};
 
     constructor(props) {
         super(props);
-        const { is_dynamic_height } = props;
+        const { getRowSize } = props;
+        this.is_dynamic_height = !getRowSize;
 
-        if (is_dynamic_height) {
+        if (this.is_dynamic_height) {
             this.cache = new CellMeasurerCache({
                 fixedWidth: true,
                 keyMapper: row_index => this.props.keyMapper?.(this.props.data_source[row_index]) || row_index,
             });
-            this.trackItems();
         }
+        this.trackItemsForTransition();
     }
 
     footerRowRenderer = () => {
@@ -36,13 +37,13 @@ class DataList extends React.PureComponent {
     };
 
     rowRenderer = ({ style, index, key, parent }) => {
-        const { data_source, rowRenderer, getRowAction, keyMapper, is_dynamic_height, row_gap } = this.props;
+        const { data_source, rowRenderer, getRowAction, keyMapper, row_gap } = this.props;
         const { isScrolling } = this.state;
         const row = data_source[index];
         const to = getRowAction && getRowAction(row);
         const row_key = keyMapper?.(row) || key;
         const should_show_transition = !isScrolling;
-        const is_new_row = !this.items_map[row_key];
+        const is_new_row = !this.items_transition_map[row_key];
 
         const getContent = ({ measure } = {}) => (
             <div style={{ paddingBottom: `${row_gap || 0}px` }}>
@@ -71,7 +72,7 @@ class DataList extends React.PureComponent {
             </div>
         );
 
-        return is_dynamic_height ? (
+        return this.is_dynamic_height ? (
             <CellMeasurer cache={this.cache} columnIndex={0} key={row_key} rowIndex={index} parent={parent}>
                 {({ measure }) => <div style={style}>{getContent({ measure })}</div>}
             </CellMeasurer>
@@ -102,30 +103,28 @@ class DataList extends React.PureComponent {
     };
 
     componentDidUpdate(prev_props) {
-        const { is_dynamic_height } = this.props;
-        if (is_dynamic_height) {
+        if (this.is_dynamic_height) {
             if (this.props.data_source !== prev_props.data_source) {
                 this.list_ref.recomputeGridSize(0);
             }
-            this.trackItems();
         }
+        this.trackItemsForTransition();
     }
 
-    trackItems() {
+    trackItemsForTransition() {
         this.props.data_source.forEach((item, index) => {
             const row_key = this.props.keyMapper?.(item) || `${index}-0`;
-            this.items_map[row_key] = true;
+            this.items_transition_map[row_key] = true;
         });
     }
 
     render() {
-        const { className, children, data_source, footer, is_dynamic_height, getRowSize } = this.props;
+        const { className, children, data_source, footer, getRowSize } = this.props;
 
         return (
             <div
                 className={classNames(className, 'data-list', {
                     [`${className}__data-list`]: className,
-                    'data-list--dynamic-height': is_dynamic_height,
                 })}
             >
                 <div className={classNames('data-list__body', { [`${className}__data-list-body`]: className })}>
@@ -149,7 +148,7 @@ class DataList extends React.PureComponent {
                                         height={height}
                                         overscanRowCount={1}
                                         rowCount={data_source.length}
-                                        rowHeight={is_dynamic_height ? this.cache.rowHeight : getRowSize}
+                                        rowHeight={this.is_dynamic_height ? this.cache.rowHeight : getRowSize}
                                         rowRenderer={this.rowRenderer}
                                         scrollingResetTimeInterval={0}
                                         {...(isDesktop() ? { scrollTop: this.state.scrollTop, autoHeight: true } : {})}

@@ -183,7 +183,6 @@ class ProfitTable extends React.Component {
                                         onScroll={handleScroll}
                                         footer={totals}
                                         row_gap={8}
-                                        is_dynamic_height
                                     >
                                         <PlaceholderComponent is_loading={is_loading} />
                                     </DataList>

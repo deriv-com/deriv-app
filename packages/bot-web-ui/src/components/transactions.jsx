@@ -97,6 +97,7 @@ class Transactions extends React.PureComponent {
                                         }
                                     }
                                 }}
+                                getRowSize={() => 50}
                             />
                         ) : (
                             <>

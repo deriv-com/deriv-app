@@ -80,7 +80,7 @@ class TermsOfUse extends React.Component {
                                         label={
                                             this.context.is_deriv_crypto ? localize('Next') : localize('Add account')
                                         }
-                                        has_cancel={true}
+                                        has_cancel={!this.context.is_deriv_crypto}
                                         is_absolute={isMobile()}
                                         onCancel={this.props.onCancel}
                                         cancel_label={localize('Previous')}

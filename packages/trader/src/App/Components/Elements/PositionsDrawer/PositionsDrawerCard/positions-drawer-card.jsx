@@ -11,7 +11,7 @@ import { connect } from 'Stores/connect';
 const PositionsDrawerCard = ({
     addToast,
     className,
-    should_show_transition,
+    display_name,
     contract_info,
     contract_update,
     currency,
@@ -31,6 +31,7 @@ const PositionsDrawerCard = ({
     result,
     setCurrentFocus,
     server_time,
+    should_show_transition,
     should_show_cancellation_warning,
     status,
     toggleCancellationWarning,
@@ -47,6 +48,7 @@ const PositionsDrawerCard = ({
     const card_header = (
         <ContractCard.Header
             contract_info={contract_info}
+            display_name={display_name}
             getCardLabels={getCardLabels}
             getContractTypeDisplay={getContractTypeDisplay}
             has_progress_slider={!is_multiplier}

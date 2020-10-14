@@ -6,9 +6,12 @@ import { DesktopWrapper, MobileWrapper, Collapsible, ContractCard } from '@deriv
 import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
 import { getEndTime } from 'Stores/Modules/Contract/Helpers/logic';
 import { connect } from 'Stores/connect';
+import { getSymbolDisplayName } from 'Stores/Modules/Trading/Helpers/active-symbols';
+import { getMarketInformation } from 'Modules/Reports/Helpers/market-underlying';
 import { SwipeableContractDrawer } from './swipeable-components.jsx';
 
 const ContractDrawerCard = ({
+    active_symbols,
     addToast,
     contract_info,
     contract_update,
@@ -33,10 +36,12 @@ const ContractDrawerCard = ({
 }) => {
     const { profit } = contract_info;
     const is_sold = !!getEndTime(contract_info);
+    const display_name = getSymbolDisplayName(active_symbols, getMarketInformation(contract_info.shortcode).underlying);
 
     const card_header = (
         <ContractCard.Header
             contract_info={contract_info}
+            display_name={display_name}
             getCardLabels={getCardLabels}
             getContractTypeDisplay={getContractTypeDisplay}
             has_progress_slider={!is_multiplier}
@@ -156,6 +161,7 @@ ContractDrawerCard.propTypes = {
 };
 
 export default connect(({ modules, ui }) => ({
+    active_symbols: modules.trade.active_symbols,
     addToast: ui.addToast,
     getContractById: modules.contract_trade.getContractById,
     removeToast: ui.removeToast,

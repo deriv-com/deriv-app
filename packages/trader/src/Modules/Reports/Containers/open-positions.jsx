@@ -32,6 +32,75 @@ const EmptyPlaceholderWrapper = props => (
     </React.Fragment>
 );
 
+const MobileRowRenderer = ({ row, is_footer, columns_map, server_time, onClickCancel, onClickSell, measure }) => {
+    React.useEffect(() => {
+        if (!is_footer) {
+            measure();
+        }
+    }, [row.contract_info.underlying, measure, is_footer]);
+
+    if (is_footer) {
+        return (
+            <>
+                <div className='open-positions__data-list-footer--content'>
+                    <div>
+                        <DataList.Cell row={row} column={columns_map.purchase} />
+                        <DataList.Cell row={row} column={columns_map.payout} />
+                    </div>
+                    <div>
+                        <DataList.Cell
+                            className='data-list__row-cell--amount'
+                            row={row}
+                            column={columns_map.indicative}
+                        />
+                        <DataList.Cell className='data-list__row-cell--amount' row={row} column={columns_map.profit} />
+                    </div>
+                </div>
+            </>
+        );
+    }
+
+    const { contract_info, contract_update, type } = row;
+    const { currency, status, date_expiry, date_start } = contract_info;
+    const duration_type = getContractDurationType(contract_info.longcode);
+    const progress_value = getTimePercentage(server_time, date_start, date_expiry) / 100;
+
+    if (isMultiplierContract(type))
+        return (
+            <PositionsCard
+                contract_info={contract_info}
+                contract_update={contract_update}
+                currency={currency}
+                is_multiplier
+                is_link_disabled
+                onClickCancel={onClickCancel}
+                onClickSell={onClickSell}
+                server_time={server_time}
+                status={status}
+            />
+        );
+    return (
+        <>
+            <div className='data-list__row'>
+                <DataList.Cell row={row} column={columns_map.type} />
+                <ProgressBar label={duration_type} value={progress_value} />
+            </div>
+            <div className='data-list__row'>
+                <DataList.Cell row={row} column={columns_map.reference} />
+                <DataList.Cell className='data-list__row-cell--amount' row={row} column={columns_map.currency} />
+            </div>
+            <div className='data-list__row'>
+                <DataList.Cell row={row} column={columns_map.purchase} />
+                <DataList.Cell className='data-list__row-cell--amount' row={row} column={columns_map.indicative} />
+            </div>
+            <div className='data-list__row'>
+                <DataList.Cell row={row} column={columns_map.payout} />
+                <DataList.Cell className='data-list__row-cell--amount' row={row} column={columns_map.profit} />
+            </div>
+        </>
+    );
+};
+
 const OpenPositionsTable = ({
     className,
     columns,
@@ -39,7 +108,6 @@ const OpenPositionsTable = ({
     currency,
     active_positions,
     is_loading,
-    is_multiplier_tab,
     getRowAction,
     mobileRowRenderer,
     preloaderCheck,
@@ -129,82 +197,6 @@ class OpenPositions extends React.Component {
             this.props.onUnmount();
         }
     }
-
-    mobileRowRenderer = ({ row, is_footer }) => {
-        if (is_footer) {
-            return (
-                <>
-                    <div className='open-positions__data-list-footer--content'>
-                        <div>
-                            <DataList.Cell row={row} column={this.columns_map.purchase} />
-                            <DataList.Cell row={row} column={this.columns_map.payout} />
-                        </div>
-                        <div>
-                            <DataList.Cell
-                                className='data-list__row-cell--amount'
-                                row={row}
-                                column={this.columns_map.indicative}
-                            />
-                            <DataList.Cell
-                                className='data-list__row-cell--amount'
-                                row={row}
-                                column={this.columns_map.profit}
-                            />
-                        </div>
-                    </div>
-                </>
-            );
-        }
-
-        const { server_time, onClickCancel, onClickSell } = this.props;
-        const { contract_info, contract_update, type } = row;
-        const { currency, status, date_expiry, date_start } = contract_info;
-        const duration_type = getContractDurationType(contract_info.longcode);
-        const progress_value = getTimePercentage(server_time, date_start, date_expiry) / 100;
-
-        if (isMultiplierContract(type))
-            return (
-                <PositionsCard
-                    contract_info={contract_info}
-                    contract_update={contract_update}
-                    currency={currency}
-                    is_multiplier
-                    is_link_disabled
-                    onClickCancel={onClickCancel}
-                    onClickSell={onClickSell}
-                    server_time={server_time}
-                    status={status}
-                />
-            );
-        return (
-            <>
-                <div className='data-list__row'>
-                    <DataList.Cell row={row} column={this.columns_map.type} />
-                    <ProgressBar label={duration_type} value={progress_value} />
-                </div>
-                <div className='data-list__row'>
-                    <DataList.Cell row={row} column={this.columns_map.reference} />
-                    <DataList.Cell
-                        className='data-list__row-cell--amount'
-                        row={row}
-                        column={this.columns_map.currency}
-                    />
-                </div>
-                <div className='data-list__row'>
-                    <DataList.Cell row={row} column={this.columns_map.purchase} />
-                    <DataList.Cell
-                        className='data-list__row-cell--amount'
-                        row={row}
-                        column={this.columns_map.indicative}
-                    />
-                </div>
-                <div className='data-list__row'>
-                    <DataList.Cell row={row} column={this.columns_map.payout} />
-                    <DataList.Cell className='data-list__row-cell--amount' row={row} column={this.columns_map.profit} />
-                </div>
-            </>
-        );
-    };
 
     getRowAction = row_obj =>
         row_obj.is_unsupported
@@ -334,7 +326,15 @@ class OpenPositions extends React.Component {
             component_icon,
             currency,
             is_loading,
-            mobileRowRenderer: this.mobileRowRenderer,
+            mobileRowRenderer: props => (
+                <MobileRowRenderer
+                    {...props}
+                    columns_map={this.columns_map}
+                    server_time={server_time}
+                    onClickCancel={onClickCancel}
+                    onClickSell={onClickSell}
+                />
+            ),
             getRowAction: this.getRowAction,
             preloaderCheck: this.isPurchaseReceived,
             totals: active_positions_filtered_totals,

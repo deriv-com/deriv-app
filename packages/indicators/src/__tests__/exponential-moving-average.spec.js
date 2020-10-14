@@ -1,4 +1,4 @@
-import { exponentialMovingAverage, exponentialMovingAverageArray } from '../exponential-moving-average';
+import { exponentialMovingAverage, exponentialMovingAverageArray } from '../indicators/exponential-moving-average';
 
 describe('exponentialMovingAverage', () => {
     it('single value with periods of 1 equals the value', () => {
@@ -74,7 +74,7 @@ describe('exponentialMovingAverage', () => {
             22.91,
         ];
         const result = exponentialMovingAverageArray(data, { periods: 10 });
-        const rounded_result = result.map(x => Math.round(x * 100) / 100);
+        const rounded_result = result.map((x) => Math.round(x * 100) / 100);
         expect(rounded_result).toEqual(ema10days);
     });
 });

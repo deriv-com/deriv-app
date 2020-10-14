@@ -1,5 +1,17 @@
 const extend = require('extend');
 
+export const removeObjProperties = (property_arr, { ...obj }) => {
+    property_arr.forEach(property => delete obj[property]);
+    return obj;
+};
+
+export const filterObjProperties = ({ ...obj }, property_arr) =>
+    Object.fromEntries(
+        Object.entries(obj)
+            // eslint-disable-next-line no-unused-vars
+            .filter(([key, _]) => property_arr.includes(key))
+    );
+
 export const isEmptyObject = obj => {
     let is_empty = true;
     if (obj && obj instanceof Object) {
@@ -69,6 +81,33 @@ export const pick = (source, fields) => {
         return target;
     }, {});
 };
+
+export const findValueByKeyRecursively = (obj, key) => {
+    let return_value;
+
+    Object.keys(obj).some(obj_key => {
+        const value = obj[obj_key];
+
+        if (obj_key === key) {
+            return_value = obj[key];
+            return true;
+        }
+
+        if (typeof value === 'object') {
+            const nested_value = findValueByKeyRecursively(value, key);
+
+            if (nested_value) {
+                return_value = nested_value;
+                return true;
+            }
+        }
+
+        return false;
+    });
+
+    return return_value;
+};
+
 // Recursively freeze an object (deep freeze)
 export const deepFreeze = obj => {
     Object.getOwnPropertyNames(obj).forEach(key => {

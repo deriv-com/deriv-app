@@ -4,6 +4,7 @@ import React from 'react';
 import { Tabs, ThemedScrollbars } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { getCurrencyDisplayCode, isDesktop, isMobile, website_name } from '@deriv/shared';
+import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 import AddCryptoCurrency from './add-crypto-currency.jsx';
 import ChangeAccountCurrency from './change-account-currency.jsx';
@@ -23,6 +24,12 @@ class AddOrManageAccounts extends React.Component {
                 fiat: '',
             },
         };
+    }
+
+    async componentDidMount() {
+        this.props.setLoading(true);
+        await WS.mt5LoginList();
+        this.props.setLoading(false);
     }
 
     setActiveTabIndex = index => {

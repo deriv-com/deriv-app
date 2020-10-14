@@ -135,3 +135,45 @@ Blockly.ContextMenu.wsDeleteOption = function(ws, blocks) {
         },
     };
 };
+
+/**
+ * Make a context menu option for adding or removing comments on the current block.
+ * deriv-bot: Expand block before adding comment.
+ * Hacky way to get comments working on collapsed blocks.
+ * @param {!Blockly.BlockSvg} block The block where the right-click originated.
+ * @return {!Object} A menu option, containing text, enabled, and a callback.
+ * @package
+ */
+Blockly.ContextMenu.blockCommentOption = function(block) {
+    const comment_option = { enabled: !goog.userAgent.IE };
+
+    // If there's already a comment, add an option to delete it.
+    if (block.comment) {
+        comment_option.text = localize('Remove comment');
+        comment_option.callback = () => {
+            block.setCommentText(null);
+        };
+    } else {
+        // If there's no comment, add an option to create a comment.
+        comment_option.text = localize('Add comment');
+        comment_option.callback = () => {
+            // deriv-bot: Expand/uncollapse for bubble to position correctly.
+            const is_collapsed = block.collapsed_;
+
+            if (is_collapsed) {
+                block.setCollapsed(false);
+            }
+
+            block.setCommentText('');
+
+            if (block.collapsed_ !== is_collapsed) {
+                block.setCollapsed(is_collapsed);
+            }
+
+            // deriv-bot: Don't focus to prevent workspace glitching.
+            // block.comment.focus();
+        };
+    }
+
+    return comment_option;
+};

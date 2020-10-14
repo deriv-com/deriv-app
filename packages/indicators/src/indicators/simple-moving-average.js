@@ -1,5 +1,5 @@
-import { sum, takeLast } from './math';
-import { sequence } from '../object';
+import { sequence } from '@deriv/shared';
+import { sum, takeLast } from '../utils/math';
 
 /**
  * @param {Array} data

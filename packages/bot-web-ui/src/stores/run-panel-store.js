@@ -77,6 +77,7 @@ export default class RunPanelStore {
     @observable is_statistics_info_modal_open = false;
     @observable is_drawer_open = true;
     @observable is_dialog_open = false;
+    @observable is_sell_requested = false;
 
     // when error happens, if it is unrecoverable_errors we reset run-panel
     // we activate run-button and clear trade info and set the ContractStage to NOT_RUNNING
@@ -281,6 +282,7 @@ export default class RunPanelStore {
         const { summary_card, transactions } = this.root_store;
 
         observer.register('bot.running', this.onBotRunningEvent);
+        observer.register('bot.sell', this.onBotSellEvent);
         observer.register('bot.stop', this.onBotStopEvent);
         observer.register('bot.click_stop', this.onStopButtonClick);
         observer.register('bot.trade_again', this.onBotTradeAgain);
@@ -307,6 +309,11 @@ export default class RunPanelStore {
                 this.onStopButtonClick();
             }
         }
+    }
+
+    @action.bound
+    onBotSellEvent() {
+        this.is_sell_requested = true;
     }
 
     @action.bound
@@ -342,6 +349,7 @@ export default class RunPanelStore {
             // - When bot was running and an error happens
             this.error_type = undefined;
             this.is_running = false;
+            this.is_sell_requested = false;
             this.setContractStage(contract_stages.CONTRACT_CLOSED);
             ui.setAccountSwitcherDisabledMessage(false);
             RunPanelStore.unregisterBotListeners();
@@ -385,6 +393,7 @@ export default class RunPanelStore {
                 break;
             }
             case 'contract.sold': {
+                this.is_sell_requested = false;
                 this.setContractStage(contract_stages.CONTRACT_CLOSED);
 
                 const { contract } = contract_status;
@@ -432,6 +441,11 @@ export default class RunPanelStore {
     }
 
     @action.bound
+    onClickSell() {
+        this.dbot.interpreter.bot.getBotInterface().sellAtMarket();
+    }
+
+    @action.bound
     clear() {
         this.statistics = this.empty_statistics;
         observer.emit('statistics.clear');
@@ -440,6 +454,7 @@ export default class RunPanelStore {
     @action.bound
     onBotContractEvent(data) {
         if (data?.is_sold) {
+            this.is_sell_requested = false;
             this.setContractStage(contract_stages.CONTRACT_CLOSED);
         }
     }

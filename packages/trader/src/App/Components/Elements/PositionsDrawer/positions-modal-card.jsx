@@ -13,7 +13,6 @@ import {
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
-import CurrencyBadge from 'App/Components/Elements/currency-badge.jsx';
 import { connect } from 'Stores/connect';
 import { connectWithContractUpdate } from 'Stores/Modules/Contract/Helpers/multiplier';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';

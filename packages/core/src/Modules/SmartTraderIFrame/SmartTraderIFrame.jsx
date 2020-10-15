@@ -1,19 +1,20 @@
 import React from 'react';
-import { getPlatformFromUrl } from '@deriv/shared';
+import { getDerivUrls, getPlatformFromUrl } from '@deriv/shared';
 
 const SmartTraderIFrame = () => {
     const { is_deriv_crypto, is_staging_deriv_app, is_staging_deriv_crypto } = getPlatformFromUrl();
+    const deriv_urls = getDerivUrls();
 
     let base_link = '';
 
     if (is_staging_deriv_app) {
-        base_link = 'https://staging-smarttrader.deriv.com';
+        base_link = deriv_urls.SMARTTRADER_STAGING;
     } else if (is_staging_deriv_crypto) {
-        base_link = 'https://staging-smarttrader.derivcrypto.com';
+        base_link = deriv_urls.SMARTTRADER_CRYPTO_STAGING;
     } else if (is_deriv_crypto) {
-        base_link = 'https://smarttrader.derivcrypto.com';
+        base_link = deriv_urls.SMARTTRADER_CRYPTO_PRODUCTION;
     } else {
-        base_link = 'https://smarttrader.deriv.com';
+        base_link = deriv_urls.SMARTTRADER_PRODUCTION;
     }
 
     return (

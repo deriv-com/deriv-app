@@ -34,8 +34,11 @@
     }
     &__form {
         @include mobile {
-            padding: 0 1.6rem;
             height: 100%;
+
+            form {
+                height: inherit;
+            }
         }
 
         &-row {
@@ -66,14 +69,26 @@
                 }
             }
         }
+        &-content {
+            margin-bottom: 80px;
+            padding: 0 1.6rem;
+
+            &--active-keyboard {
+                margin-bottom: 0px;
+            }
+        }
         &-footer {
             border-top: 1px solid var(--general-section-1);
-            padding: 1.4rem 2.4rem 0;
-            margin: 0 -2.4rem;
+            padding: 1.6rem 2.4rem;
+            position: fixed;
+            bottom: 0px;
+            left: 0px;
+            background: var(--general-main-1);
+            width: 100%;
 
-            @include mobile {
-                padding: 1.6rem 0;
-                margin: unset;
+            &--active-keyboard {
+                position: unset;
+                display: block;
             }
         }
         .dc-autocomplete {
@@ -127,14 +142,11 @@
         }
     }
     &__wrapper {
-        @include mobile {
-            position: fixed;
-            z-index: 6;
-            width: 100%;
-            left: 0px;
-            top: 8rem;
-            background: var(--general-main-1);
+        position: absolute;
+        top: 40px;
+        height: 100%;
 
+        @include mobile {
             & .dc-dropdown-list {
                 &__group {
                     &-header {
@@ -178,6 +190,9 @@
                 &::-webkit-scrollbar-thumb {
                     display: unset;
                 }
+            }
+            .dc-themed-scrollbars {
+                height: 100%;
             }
         }
     }

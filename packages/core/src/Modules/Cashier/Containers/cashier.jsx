@@ -143,9 +143,7 @@ class Cashier extends React.Component {
                                                 ]}
                                             />
                                         </p>
-                                    ) : (
-                                        undefined
-                                    )
+                                    ) : undefined
                                 }
                             />
                         </DesktopWrapper>

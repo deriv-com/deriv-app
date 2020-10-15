@@ -22,9 +22,9 @@ const initial_form = {
     doToImprove: '',
 };
 
-const preparingReason = (values) => {
+const preparingReason = values => {
     let selected_reasons = selectedReasons(values)
-        .map((val) => val[0])
+        .map(val => val[0])
         .toString();
     const is_other_trading_platform__has_value = !!values.otherTradingPlatforms.length;
     const is_to_do_improve_has_value = !!values.doToImprove.length;
@@ -37,13 +37,13 @@ const preparingReason = (values) => {
     return selected_reasons;
 };
 
-const selectedReasons = (values) => {
+const selectedReasons = values => {
     return Object.entries(values).filter(
         ([key, value]) => !['otherTradingPlatforms', 'doToImprove'].includes(key) && value
     );
 };
 
-const WarningModal = (props) => {
+const WarningModal = props => {
     return (
         <div className='account-closure-warning-modal'>
             <Icon icon='IcRedWarning' size={96} />
@@ -86,7 +86,7 @@ class DeactivateAccountReason extends React.Component {
         total_checkbox_checked: 0,
         remaining_characters: undefined,
     };
-    validateFields = (values) => {
+    validateFields = values => {
         const error = {};
         const selected_reason_count = selectedReasons(values).length;
         if (!selected_reason_count) {
@@ -96,7 +96,7 @@ class DeactivateAccountReason extends React.Component {
             const max_characters = 250;
             const final_value = preparingReason(values);
             const selected_reasons = selectedReasons(values)
-                .map((val) => val[0])
+                .map(val => val[0])
                 .toString();
             const is_other_trading_platform__has_value = !!values.otherTradingPlatforms.length;
             const is_to_do_improve_has_value = !!values.doToImprove.length;
@@ -121,7 +121,7 @@ class DeactivateAccountReason extends React.Component {
         }
         return error;
     };
-    handleSubmitForm = (values) => {
+    handleSubmitForm = values => {
         const final_reason = preparingReason(values);
         this.setState({
             is_modal_open: true,

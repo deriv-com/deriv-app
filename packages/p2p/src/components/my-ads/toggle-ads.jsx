@@ -2,12 +2,13 @@ import React from 'react';
 import { ToggleSwitch } from '@deriv/components';
 import { useIsMounted } from '@deriv/shared';
 import classNames from 'classnames';
+import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
 import { useStores } from '../../../stores';
 import './my-ads.scss';
 
-const ToggleAds = () => {
+const ToggleAds = observer(() => {
     const { general_store } = useStores();
     const [api_error, setApiError] = React.useState(null);
     const isMounted = useIsMounted();
@@ -50,6 +51,6 @@ const ToggleAds = () => {
             />
         </div>
     );
-};
+});
 
 export default ToggleAds;

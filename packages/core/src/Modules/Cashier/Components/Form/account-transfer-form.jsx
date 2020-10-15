@@ -108,7 +108,7 @@ const AccountTransferForm = ({
     error,
 }) => {
     const { is_deriv_crypto } = React.useContext(PlatformContext);
-    const validateAmount = (amount) => {
+    const validateAmount = amount => {
         if (!amount) return localize('This field is required.');
 
         const { is_ok, message } = validNumber(amount, {
@@ -199,6 +199,7 @@ const AccountTransferForm = ({
 
     React.useEffect(() => {
         onMount();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {
@@ -214,6 +215,7 @@ const AccountTransferForm = ({
                 />,
             ]);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [transfer_fee, selected_from, minimum_fee, mt5_total_transfers, internal_total_transfers, setSideNotes]);
     return (
         <div className='cashier__wrapper account-transfer__wrapper'>
@@ -259,7 +261,7 @@ const AccountTransferForm = ({
                                                 list_height='404'
                                                 name='transfer_from'
                                                 value={selected_from.value}
-                                                onChange={(e) => {
+                                                onChange={e => {
                                                     onChangeTransferFrom(e);
                                                     handleChange(e);
                                                     validateField('amount');
@@ -278,7 +280,7 @@ const AccountTransferForm = ({
                                                 label={localize('From')}
                                                 value={selected_from.value}
                                                 list_items={from_accounts}
-                                                onChange={(e) => {
+                                                onChange={e => {
                                                     onChangeTransferFrom(e);
                                                     handleChange(e);
                                                     validateField('amount');
@@ -326,7 +328,7 @@ const AccountTransferForm = ({
                                         {({ field }) => (
                                             <Input
                                                 {...field}
-                                                onChange={(e) => {
+                                                onChange={e => {
                                                     setErrorMessage('');
                                                     handleChange(e);
                                                 }}

@@ -196,8 +196,9 @@ const TradeParamsMobile = ({
 }) => {
     const getDurationText = () => {
         const duration = duration_units_list.find(d => d.value === duration_unit);
-        return `${duration_value} ${duration &&
-            (duration_value > 1 ? localize(duration.text) : localize(duration.text.slice(0, -1)))}`;
+        return `${duration_value} ${
+            duration && (duration_value > 1 ? localize(duration.text) : localize(duration.text.slice(0, -1)))
+        }`;
     };
 
     const getAmountText = () => {

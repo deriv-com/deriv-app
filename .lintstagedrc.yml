@@ -1,0 +1,2 @@
+./packages/*/{stories,script,src,build}/**/*.{js,jsx,scss}:
+  - prettier --config ./.prettierrc --write

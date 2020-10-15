@@ -1,0 +1,68 @@
+.dc-carousel {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    &__container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
+    &__box {
+        overflow: hidden;
+    }
+    &__wrapper {
+        display: flex;
+        flex-direction: row;
+        transition: transform 0.3s linear;
+        padding: 0.5rem 0;
+        width: fit-content;
+        height: 100%;
+    }
+    &__card {
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 0.8rem;
+    }
+    &__nav {
+        align-items: center;
+        box-sizing: border-box;
+        display: flex;
+        width: 100%;
+        padding: 0 2.4rem;
+        overflow: hidden;
+        margin-bottom: 2.4rem;
+        justify-content: space-between;
+
+        &--upper {
+            margin-bottom: 0;
+        }
+        &-list {
+            display: inline-block;
+            text-align: center;
+            margin: 0 auto;
+            position: relative;
+        }
+        &-item {
+            width: 0.8rem;
+            height: 0.8rem;
+            border-radius: 50%;
+            display: inline-block;
+            margin: 0 0.8rem;
+            cursor: pointer;
+
+            &--active {
+                position: absolute;
+                top: 0;
+                left: 0;
+                cursor: initial;
+                transition: transform 0.3s linear;
+            }
+        }
+    }
+    &__icon {
+        cursor: pointer;
+    }
+}

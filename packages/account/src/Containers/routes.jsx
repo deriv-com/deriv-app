@@ -6,7 +6,7 @@ import BinaryRoutes from 'Components/Routes';
 import { connect } from 'Stores/connect';
 import ErrorComponent from 'Components/error-component';
 
-const Routes = (props) => {
+const Routes = props => {
     if (props.has_error) {
         return <ErrorComponent {...props.error} />;
     }

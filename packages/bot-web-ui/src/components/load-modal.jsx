@@ -15,7 +15,7 @@ const LoadModal = ({
     is_mobile,
     loaded_local_file,
     onEntered,
-    recent_workspaces,
+    recent_strategies,
     setActiveTabIndex,
     should_rerender_tabs,
     tab_name,
@@ -82,7 +82,7 @@ const LoadModal = ({
                     <Local.Footer />
                 </Modal.Footer>
             )}
-            {recent_workspaces.length > 0 && tab_name === tabs_title.TAB_RECENT && (
+            {recent_strategies.length > 0 && tab_name === tabs_title.TAB_RECENT && (
                 <Modal.Footer has_separator>
                     <Recent.Footer />
                 </Modal.Footer>
@@ -97,7 +97,7 @@ LoadModal.propTypes = {
     is_mobile: PropTypes.bool,
     loaded_local_file: PropTypes.string,
     onEntered: PropTypes.func,
-    recent_workspaces: PropTypes.array,
+    recent_strategies: PropTypes.array,
     setActiveTabIndex: PropTypes.func,
     should_rerender_tabs: PropTypes.bool,
     toggleLoadModal: PropTypes.func,
@@ -109,7 +109,7 @@ export default connect(({ load_modal, ui }) => ({
     is_mobile: ui.is_mobile,
     loaded_local_file: load_modal.loaded_local_file,
     onEntered: load_modal.onEntered,
-    recent_workspaces: load_modal.recent_workspaces,
+    recent_strategies: load_modal.recent_strategies,
     setActiveTabIndex: load_modal.setActiveTabIndex,
     should_rerender_tabs: load_modal.should_rerender_tabs,
     tab_name: load_modal.tab_name,

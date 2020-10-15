@@ -16,6 +16,7 @@ const MLTRegulatoryInformation = () => (
                         href='/regulatory/Deriv_(Europe)_Limited.pdf'
                         key={0}
                         className='footer-regulatory-information__link'
+                        is_document
                     />,
                     <a
                         href='https://secure.gamblingcommission.gov.uk/PublicRegister/Search/Detail/39495'

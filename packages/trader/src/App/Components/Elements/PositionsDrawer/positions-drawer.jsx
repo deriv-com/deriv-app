@@ -6,7 +6,7 @@ import { NavLink } from 'react-router-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { VariableSizeList as List } from 'react-window';
 import { Icon, ThemedScrollbars } from '@deriv/components';
-import { routes, isValidToSell, isMultiplierContract, isHighLow } from '@deriv/shared';
+import { routes, isMultiplierContract, isHighLow } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import EmptyPortfolioMessage from 'Modules/Reports/Components/empty-portfolio-message.jsx';
 import { connect } from 'Stores/connect';
@@ -151,18 +151,15 @@ class PositionsDrawer extends React.Component {
     getPositionHeight = position => {
         // React window doesn't work with dynamic height. This is a work around to get height of a position based on different combinations.
         const { contract_info } = position;
-        const is_valid_to_sell = isValidToSell(contract_info);
         const is_multiplier_contract = isMultiplierContract(contract_info.contract_type);
         const is_tick_contract = contract_info.tick_count > 0;
 
         if (contract_info.is_sold) {
-            return is_multiplier_contract ? 248 : 151;
+            return is_multiplier_contract ? 266 : 167;
         } else if (is_tick_contract) {
-            return 193;
+            return 245;
         }
-
-        const classic_contract_height = is_valid_to_sell ? 232 : 183;
-        return is_multiplier_contract ? 297 : classic_contract_height;
+        return is_multiplier_contract ? 310 : 238;
     };
 
     render() {

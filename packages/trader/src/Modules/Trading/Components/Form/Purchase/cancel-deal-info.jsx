@@ -20,6 +20,7 @@ const CancelDealInfo = ({ currency, has_cancellation, proposal_info }) => {
                                 amount={cancellation.ask_price}
                                 className='trade-container__price-info-currency'
                                 currency={currency}
+                                show_currency
                             />
                         )}
                     </div>

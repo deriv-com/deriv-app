@@ -8,11 +8,10 @@
  * @param {Function=} optOnClick Optional function to be called when the image
  *     is clicked.  If optOnClick is defined, optAlt must also be defined.
  * @param {boolean=} optFlipRtl Whether to flip the icon in RTL.
- * @param {boolean=} isInFlyout
  * @extends {Blockly.Field}
  * @constructor
  */
-Blockly.FieldImage = function(src, width, height, optAlt, optOnClick, optFlipRtl, isInFlyout = false) {
+Blockly.FieldImage = function(src, width, height, optAlt, optOnClick, optFlipRtl) {
     this.sourceBlock_ = null;
 
     // Ensure height and width are numbers.  Strings are bad at math.
@@ -23,7 +22,6 @@ Blockly.FieldImage = function(src, width, height, optAlt, optOnClick, optFlipRtl
     this.tooltip_ = '';
     this.setValue(src);
     this.setText(optAlt);
-    this.isInFlyout = isInFlyout;
 
     if (typeof optOnClick === 'function') {
         this.clickHandler_ = optOnClick;
@@ -107,7 +105,7 @@ Blockly.FieldImage.prototype.dispose = function() {
  * @private
  */
 Blockly.FieldImage.prototype.maybeAddClickHandler_ = function() {
-    if (this.clickHandler_ && !this.sourceBlock_.workspace.options.readOnly && !this.isInFlyout) {
+    if (this.clickHandler_ && !this.sourceBlock_.workspace.options.readOnly && !this.sourceBlock_.isInFlyout) {
         this.mouseDownWrapper_ = Blockly.bindEventWithChecks_(this.fieldGroup_, 'mousedown', this, this.clickHandler_);
         this.fieldGroup_.style.cursor = 'pointer';
     }

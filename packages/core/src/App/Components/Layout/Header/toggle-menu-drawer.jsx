@@ -11,8 +11,8 @@ import getRoutesConfig from 'App/Constants/routes-config';
 import { getAllowedLanguages, currentLanguage, changeLanguage } from 'Utils/Language';
 import LiveChat from '../../Elements/live-chat.jsx';
 
-const MenuLink = ({ link_to, icon, is_active, is_disabled, is_external, suffix_icon, text, onClickLink }) => {
-    if (is_external) {
+const MenuLink = ({ link_to, icon, is_active, is_disabled, is_language, suffix_icon, text, onClickLink }) => {
+    if (is_language) {
         return (
             <span
                 className={classNames('header__menu-mobile-link', {
@@ -25,7 +25,7 @@ const MenuLink = ({ link_to, icon, is_active, is_disabled, is_external, suffix_i
                     changeLanguage(link_to);
                 }}
             >
-                <Icon className='header__menu-mobile-link-icon' icon={icon} />
+                <Icon className='header__menu-mobile-link-flag-icon' size={32} icon={icon} />
                 <span className='header__menu-mobile-link-text'>{text}</span>
                 {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
             </span>
@@ -133,7 +133,7 @@ class ToggleMenuDrawer extends React.Component {
                     <MenuLink
                         link_to={route_config.path}
                         icon={route_config.icon_component}
-                        text={route_config.title}
+                        text={route_config.getTitle()}
                         onClickLink={this.toggleDrawer}
                     />
                 </MobileDrawer.Item>
@@ -145,7 +145,7 @@ class ToggleMenuDrawer extends React.Component {
                 key={idx}
                 has_subheader
                 submenu_icon={route_config.icon_component}
-                submenu_title={route_config.title}
+                submenu_title={route_config.getTitle()}
                 submenu_suffix_icon='IcChevronRight'
                 onToggle={this.onToggleSubmenu}
             >
@@ -163,7 +163,7 @@ class ToggleMenuDrawer extends React.Component {
                                     <MenuLink
                                         link_to={route.path}
                                         icon={route.icon_component}
-                                        text={route.title}
+                                        text={route.getTitle()}
                                         onClickLink={this.toggleDrawer}
                                     />
                                 </MobileDrawer.Item>
@@ -173,7 +173,11 @@ class ToggleMenuDrawer extends React.Component {
                     })}
                 {has_subroutes &&
                     route_config.routes.map((route, index) => (
-                        <MobileDrawer.SubMenuSection key={index} section_icon={route.icon} section_title={route.title}>
+                        <MobileDrawer.SubMenuSection
+                            key={index}
+                            section_icon={route.icon}
+                            section_title={route.getTitle()}
+                        >
                             {route.subroutes.map((subroute, subindex) => (
                                 <MenuLink
                                     key={subindex}
@@ -184,7 +188,7 @@ class ToggleMenuDrawer extends React.Component {
                                         subroute.is_disabled
                                     }
                                     link_to={subroute.path}
-                                    text={subroute.title}
+                                    text={subroute.getTitle()}
                                     onClickLink={this.toggleDrawer}
                                 />
                             ))}
@@ -206,7 +210,7 @@ class ToggleMenuDrawer extends React.Component {
                 {Object.keys(getAllowedLanguages()).map((lang, idx) => (
                     <MobileDrawer.Item key={idx}>
                         <MenuLink
-                            is_external
+                            is_language
                             is_active={currentLanguage === lang}
                             link_to={lang}
                             icon={`IcFlag${lang.replace('_', '-')}`}

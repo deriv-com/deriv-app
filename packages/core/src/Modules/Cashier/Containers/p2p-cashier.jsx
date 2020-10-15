@@ -32,30 +32,33 @@ const P2PCashier = ({
         }
 
         return () => setQueryOrder(null);
-    }, []);
+    }, [location.search, setQueryOrder]);
 
-    const setQueryOrder = input_order_id => {
-        const current_query_params = new URLSearchParams(location.search);
+    const setQueryOrder = React.useCallback(
+        input_order_id => {
+            const current_query_params = new URLSearchParams(location.search);
 
-        if (current_query_params.has('order')) {
-            current_query_params.delete('order');
-        }
+            if (current_query_params.has('order')) {
+                current_query_params.delete('order');
+            }
 
-        if (input_order_id) {
-            current_query_params.append('order', input_order_id);
-        }
+            if (input_order_id) {
+                current_query_params.append('order', input_order_id);
+            }
 
-        if (order_id !== input_order_id) {
-            // Changing query params
-            history.push({
-                pathname: routes.cashier_p2p,
-                search: current_query_params.toString(),
-                hash: location.hash,
-            });
+            if (order_id !== input_order_id) {
+                // Changing query params
+                history.push({
+                    pathname: routes.cashier_p2p,
+                    search: current_query_params.toString(),
+                    hash: location.hash,
+                });
 
-            setOrderId(input_order_id);
-        }
-    };
+                setOrderId(input_order_id);
+            }
+        },
+        [history, location.hash, location.search, order_id]
+    );
 
     return (
         <P2P

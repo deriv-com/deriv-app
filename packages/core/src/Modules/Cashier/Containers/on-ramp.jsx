@@ -20,6 +20,7 @@ const OnRamp = ({
     React.useEffect(() => {
         onMount();
         return () => onUnmount();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

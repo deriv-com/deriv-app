@@ -64,6 +64,8 @@ const Input = (
                     className={classNames('dc-input__field', {
                         'dc-input__field--placeholder-visible': !label && props.placeholder,
                     })}
+                    onFocus={props.onFocus}
+                    onBlur={props.onBlur}
                     disabled={disabled}
                     data-lpignore={props.type === 'password' ? undefined : true}
                 />

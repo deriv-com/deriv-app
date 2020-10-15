@@ -50,7 +50,7 @@ const ExtraInfo = ({ message, ...props }) => {
         <>
             <DesktopWrapper>
                 <Popover
-                    alignment='top'
+                    alignment='right'
                     classNameTargetIcon='account-limit-popover'
                     classNameTarget='account-limit-popover-target'
                     icon='info'

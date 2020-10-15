@@ -1,0 +1,46 @@
+.dc-mobile-full-page-modal {
+    height: calc(100% - #{$MOBILE_HEADER_HEIGHT} - #{$MOBILE_WRAPPER_HEADER_HEIGHT});
+    position: fixed;
+    z-index: 6;
+    width: 100%;
+    left: 0px;
+    top: calc(#{$MOBILE_HEADER_HEIGHT} + #{$MOBILE_WRAPPER_HEADER_HEIGHT});
+    background: var(--general-main-1);
+
+    form {
+        height: 100%;
+    }
+    & .dc {
+        &-page-overlay {
+            &__content {
+                position: fixed;
+                top: calc(#{$MOBILE_HEADER_HEIGHT} + #{$MOBILE_WRAPPER_HEADER_HEIGHT});
+                width: 100%;
+                height: 100%;
+            }
+            &__header {
+                position: fixed;
+                top: #{$MOBILE_HEADER_HEIGHT};
+                width: 100%;
+                height: #{$MOBILE_WRAPPER_HEADER_HEIGHT};
+            }
+        }
+        &-tabs {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+
+            &__list {
+                width: 100%;
+                height: 4rem;
+            }
+            &__item {
+                width: 50%;
+            }
+            &__content {
+                height: calc(100% - 40px);
+                z-index: 5;
+            }
+        }
+    }
+}

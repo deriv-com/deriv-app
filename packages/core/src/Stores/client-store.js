@@ -445,7 +445,7 @@ export default class ClientStore extends BaseStore {
     @computed
     get is_valid_login() {
         if (!this.is_logged_in) return true;
-        const valid_login_ids_regex = new RegExp('^(MX|MF|VRTC|MLT|CR|FOG)[0-9]+$', 'i');
+        const valid_login_ids_regex = new RegExp('^(MX|MF|VRTC|MLT|CR|FOG|DC|VRDC)[0-9]+$', 'i');
         return this.all_loginids.every(id => valid_login_ids_regex.test(id));
     }
 
@@ -969,6 +969,7 @@ export default class ClientStore extends BaseStore {
 
         // On case of invalid token, no need to continue with additional api calls.
         if (authorize_response?.error) {
+            debugger;
             await this.logout();
             this.root_store.common.setError(true, {
                 header: authorize_response.error.message,

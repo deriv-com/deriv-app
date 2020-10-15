@@ -179,7 +179,7 @@ export default class CashierStore extends BaseStore {
 
     @computed
     get is_p2p_enabled() {
-        return this.is_p2p_visible && !this.root_store.client.is_eu;
+        return this.is_p2p_visible && !this.root_store.client.is_eu && !this.is_deriv_crypto;
     }
 
     @action.bound
@@ -225,7 +225,8 @@ export default class CashierStore extends BaseStore {
             // show p2p if:
             // 1. we have not already checked this before, and
             // 2. client is not virtual
-            if (!this.is_p2p_visible && !this.root_store.client.is_virtual) {
+            // 3. is not deriv_crypto app
+            if (!this.is_p2p_visible && !this.root_store.client.is_virtual && !this.is_deriv_crypto) {
                 const advertiser_info = await WS.authorized.p2pAdvertiserInfo();
                 const advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
                 if (advertiser_error === 'RestrictedCountry') {
@@ -885,7 +886,7 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async onMountAccountTransfer(is_deriv_crypto = false) {
         this.setLoading(true);
-        this.setDerivCryptoStatus(is_deriv_crypto);
+        this.setDerivCrypto(is_deriv_crypto);
         this.onRemount = this.onMountAccountTransfer;
         await this.onMountCommon();
         await BinarySocket.wait('website_status');
@@ -949,7 +950,7 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    setDerivCryptoStatus(val) {
+    setDerivCrypto(val) {
         this.is_deriv_crypto = val;
     }
 

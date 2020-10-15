@@ -10,7 +10,7 @@ import {
     VerticalTab,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { getSelectedRoute, isCryptocurrency, isMobile, isTouchDevice, routes } from '@deriv/shared';
+import { PlatformContext, getSelectedRoute, isCryptocurrency, isMobile, isTouchDevice, routes } from '@deriv/shared';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 import 'Sass/app/modules/cashier.scss';
@@ -20,7 +20,10 @@ const el_landscape_blocker = document.getElementById('landscape_blocker');
 class Cashier extends React.Component {
     state = { device_height: window.innerHeight };
 
+    static contextType = PlatformContext;
+
     async componentDidMount() {
+        this.props.setDerivCrypto(this.context.is_deriv_crypto);
         this.props.toggleCashier();
         // we still need to populate the tabs shown on cashier
         await WS.wait('authorize');
@@ -190,6 +193,7 @@ export default connect(({ client, common, modules, ui }) => ({
     is_payment_agent_visible: modules.cashier.is_payment_agent_visible,
     is_payment_agent_transfer_visible: modules.cashier.is_payment_agent_transfer_visible,
     onMount: modules.cashier.onMountCommon,
+    setDerivCrypto: modules.cashier.setDerivCrypto,
     p2p_notification_count: modules.cashier.p2p_notification_count,
     routeTo: common.routeTo,
     setAccountSwitchListener: modules.cashier.setAccountSwitchListener,

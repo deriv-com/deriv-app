@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'Stores/connect';
 import { Localize } from '@deriv/translations';
-import { isCryptocurrency } from '@deriv/shared';
+import { isCryptocurrency, PlatformContext } from '@deriv/shared';
 import CashierContainer from '../Components/cashier-container.jsx';
 import Error from '../Components/Error/error.jsx';
 import Virtual from '../Components/Error/virtual.jsx';
@@ -44,15 +44,19 @@ const Deposit = ({
     iframe_height,
     iframe_url,
     setActiveTab,
+    setDerivCrypto,
     onMount,
     container,
     currency,
     is_loading,
     setSideNotes,
 }) => {
+    const { is_deriv_crypto } = React.useContext(PlatformContext);
+
     React.useEffect(() => {
         setActiveTab(container);
         if (!is_virtual) {
+            setDerivCrypto(is_deriv_crypto);
             onMount();
         }
     }, []);
@@ -117,5 +121,6 @@ export default connect(({ client, modules }) => ({
     is_loading: modules.cashier.is_loading,
     onMount: modules.cashier.onMount,
     setActiveTab: modules.cashier.setActiveTab,
+    setDerivCrypto: modules.cashier.setDerivCrypto,
     standpoint: client.standpoint,
 }))(Deposit);

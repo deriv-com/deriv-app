@@ -6,6 +6,7 @@ import { DesktopWrapper, MobileWrapper, Collapsible, ContractCard } from '@deriv
 import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
 import { getEndTime } from 'Stores/Modules/Contract/Helpers/logic';
 import { connect } from 'Stores/connect';
+import { connectWithContractUpdate } from 'Stores/Modules/Contract/Helpers/multiplier';
 import { SwipeableContractDrawer } from './swipeable-components.jsx';
 
 const ContractDrawerCard = ({
@@ -13,6 +14,7 @@ const ContractDrawerCard = ({
     contract_info,
     contract_update,
     currency,
+    current_focus,
     getContractById,
     is_mobile,
     is_multiplier,
@@ -83,7 +85,9 @@ const ContractDrawerCard = ({
     const card_footer = (
         <ContractCard.Footer
             addToast={addToast}
+            connectWithContractUpdate={connectWithContractUpdate}
             contract_info={contract_info}
+            current_focus={current_focus}
             getCardLabels={getCardLabels}
             getContractById={getContractById}
             is_multiplier={is_multiplier}
@@ -148,6 +152,7 @@ const ContractDrawerCard = ({
 ContractDrawerCard.propTypes = {
     contract_info: PropTypes.object,
     currency: PropTypes.string,
+    current_focus: PropTypes.string,
     is_multiplier: PropTypes.bool,
     is_sell_requested: PropTypes.bool,
     onClickCancel: PropTypes.func,
@@ -157,6 +162,7 @@ ContractDrawerCard.propTypes = {
 
 export default connect(({ modules, ui }) => ({
     addToast: ui.addToast,
+    current_focus: ui.current_focus,
     getContractById: modules.contract_trade.getContractById,
     removeToast: ui.removeToast,
     should_show_cancellation_warning: ui.should_show_cancellation_warning,

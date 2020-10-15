@@ -18,6 +18,7 @@ const Amount = ({
     contract_types_list,
     currencies_list,
     currency,
+    current_focus,
     duration_unit,
     expiry_type,
     is_equal,
@@ -26,6 +27,7 @@ const Amount = ({
     is_nativepicker,
     is_single_currency,
     onChange,
+    setCurrentFocus,
     validation_errors,
 }) => {
     if (is_minimized) {
@@ -55,6 +57,7 @@ const Amount = ({
             classNameInlinePrefix='trade-container__currency'
             classNameInput='trade-container__input'
             currency={currency}
+            current_focus={current_focus}
             error_messages={error_messages}
             fractional_digits={getDecimalPlaces(currency)}
             id='dt_amount_input'
@@ -71,6 +74,7 @@ const Amount = ({
             type='tel'
             value={amount}
             ariaLabel={localize('Amount')}
+            setCurrentFocus={setCurrentFocus}
         />
     );
 
@@ -139,6 +143,7 @@ Amount.propTypes = {
     contract_types_list: MobxPropTypes.observableObject,
     currencies_list: MobxPropTypes.observableObject,
     currency: PropTypes.string,
+    current_focus: PropTypes.string,
     duration_unit: PropTypes.string,
     expiry_type: PropTypes.string,
     is_equal: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
@@ -146,11 +151,12 @@ Amount.propTypes = {
     is_multiplier: PropTypes.bool,
     is_nativepicker: PropTypes.bool,
     is_single_currency: PropTypes.bool,
+    setCurrentFocus: PropTypes.func,
     onChange: PropTypes.func,
     validation_errors: PropTypes.object,
 };
 
-export default connect(({ modules, client }) => ({
+export default connect(({ modules, client, ui }) => ({
     amount: modules.trade.amount,
     basis: modules.trade.basis,
     basis_list: modules.trade.basis_list,
@@ -159,11 +165,13 @@ export default connect(({ modules, client }) => ({
     contract_types_list: modules.trade.contract_types_list,
     currencies_list: client.currencies_list,
     currency: modules.trade.currency,
+    current_focus: ui.current_focus,
     duration_unit: modules.trade.duration_unit,
     expiry_type: modules.trade.expiry_type,
     is_equal: modules.trade.is_equal,
     is_single_currency: client.is_single_currency,
     is_multiplier: modules.trade.is_multiplier,
     onChange: modules.trade.onChange,
+    setCurrentFocus: ui.setCurrentFocus,
     validation_errors: modules.trade.validation_errors,
 }))(Amount);

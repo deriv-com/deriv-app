@@ -69,3 +69,23 @@ $header-height: 4em;
         width: 108px;
     }
 }
+
+/** @define .contract-card; weak */
+.contract-card {
+    &__sell-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.25s ease, opacity 0.25s linear;
+        border-top: 1px solid var(--general-section-1);
+
+        .dc-btn--sell,
+        .dc-btn--cancel {
+            height: 2.4rem;
+
+            @include mobile {
+                height: 3.2rem;
+            }
+        }
+    }
+}

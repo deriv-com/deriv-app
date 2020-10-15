@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Modal } from '@deriv/components';
-import { localize } from '@deriv/translations';
-import { redirectToLogin, redirectToSignUp } from '_common/base/login';
+import { getLanguage, localize } from '@deriv/translations';
+import { redirectToLogin, redirectToSignUp } from '@deriv/shared';
 
 const AuthorizationRequiredModal = ({ is_visible, toggleModal, is_deriv_crypto, is_logged_in }) => (
     <Modal
@@ -14,7 +14,12 @@ const AuthorizationRequiredModal = ({ is_visible, toggleModal, is_deriv_crypto, 
     >
         <Modal.Body>{localize('Log in or create a free account to place a trade.')}</Modal.Body>
         <Modal.Footer>
-            <Button has_effect text={localize('Log in')} onClick={() => redirectToLogin(is_logged_in)} secondary />
+            <Button
+                has_effect
+                text={localize('Log in')}
+                onClick={() => redirectToLogin(is_logged_in, getLanguage())}
+                secondary
+            />
             <Button
                 has_effect
                 text={localize('Create free account')}

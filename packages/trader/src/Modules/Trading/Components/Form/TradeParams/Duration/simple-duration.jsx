@@ -9,6 +9,7 @@ import TradingDatePicker from '../../DatePicker';
 const SimpleDuration = ({
     contract_expiry_type,
     changeDurationUnit,
+    current_focus,
     duration_t,
     duration_units_list,
     getDurationFromUnit,
@@ -16,6 +17,7 @@ const SimpleDuration = ({
     shared_input_props,
     simple_duration_unit,
     validation_errors,
+    setCurrentFocus,
 }) => {
     const filterMinutesAndTicks = arr => {
         const filtered_arr = arr.filter(du => du.value === 't' || du.value === 'm');
@@ -47,9 +49,11 @@ const SimpleDuration = ({
                 <InputField
                     id='dt_simple_duration_input'
                     classNameInput='trade-container__input'
+                    current_focus={current_focus}
                     error_messages={validation_errors.duration}
                     name='duration'
                     label={has_label ? duration_units_list[0].text : null}
+                    setCurrentFocus={setCurrentFocus}
                     value={getDurationFromUnit(simple_duration_unit)}
                     {...number_input_props}
                     {...shared_input_props}
@@ -62,16 +66,20 @@ const SimpleDuration = ({
 SimpleDuration.propTypes = {
     changeDurationUnit: PropTypes.func,
     contract_expiry_type: PropTypes.string,
+    current_focus: PropTypes.string,
     duration_t: PropTypes.number,
     duration_units_list: MobxPropTypes.arrayOrObservableArray,
     getDurationFromUnit: PropTypes.func,
     number_input_props: PropTypes.object,
+    setCurrentFocus: PropTypes.func,
     shared_input_props: PropTypes.object,
     simple_duration_unit: PropTypes.string,
     validation_errors: PropTypes.object,
 };
 
-export default connect(({ modules }) => ({
+export default connect(({ modules, ui }) => ({
     contract_expiry_type: modules.trade.contract_expiry_type,
+    current_focus: ui.current_focus,
+    setCurrentFocus: ui.setCurrentFocus,
     validation_errors: modules.trade.validation_errors,
 }))(SimpleDuration);

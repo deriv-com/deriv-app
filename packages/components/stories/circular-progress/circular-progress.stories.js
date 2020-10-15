@@ -2,23 +2,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import CircularProgress from '../../src/components/circular-progress/index';
 import Theme from '../shared/theme';
-
-function useInterval(callback, delay) {
-    const savedCallback = React.useRef();
-    React.useEffect(() => {
-        savedCallback.current = callback;
-    }, [callback]);
-
-    React.useEffect(() => {
-        function tick() {
-            savedCallback.current();
-        }
-        if (delay !== null) {
-            let id = setInterval(tick, delay);
-            return () => clearInterval(id);
-        }
-    }, [delay]);
-}
+import { useInterval } from '../../src/hooks';
 
 function formatTime(seconds) {
     const hours = String(Math.floor(seconds / 3600)).padStart(2, '0');

@@ -17,6 +17,7 @@ const AdvancedDuration = ({
     duration_t,
     contract_expiry_type,
     changeDurationUnit,
+    current_focus,
     getDurationFromUnit,
     expiry_date,
     expiry_list,
@@ -25,6 +26,7 @@ const AdvancedDuration = ({
     onChange,
     onChangeUiStore,
     server_time,
+    setCurrentFocus,
     shared_input_props,
     start_date,
     validation_errors,
@@ -92,9 +94,11 @@ const AdvancedDuration = ({
                             <InputField
                                 id='dt_advanced_duration_input'
                                 classNameInput='trade-container__input'
+                                current_focus={current_focus}
                                 error_messages={validation_errors.duration}
                                 label={duration_units_list.length === 1 ? duration_units_list[0].text : null}
                                 name='duration'
+                                setCurrentFocus={setCurrentFocus}
                                 value={getDurationFromUnit(advanced_duration_unit)}
                                 {...number_input_props}
                                 {...shared_input_props}
@@ -126,6 +130,7 @@ AdvancedDuration.propTypes = {
     advanced_expiry_type: PropTypes.string,
     changeDurationUnit: PropTypes.func,
     contract_expiry_type: PropTypes.string,
+    current_focus: PropTypes.string,
     duration_t: PropTypes.number,
     duration_units_list: MobxPropTypes.arrayOrObservableArray,
     expiry_date: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -136,12 +141,15 @@ AdvancedDuration.propTypes = {
     onChange: PropTypes.func,
     onChangeUiStore: PropTypes.func,
     server_time: PropTypes.object,
+    setCurrentFocus: PropTypes.func,
     shared_input_props: PropTypes.object,
     start_date: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     validation_errors: PropTypes.object,
 };
 
-export default connect(({ modules }) => ({
+export default connect(({ modules, ui }) => ({
     contract_expiry_type: modules.trade.contract_expiry_type,
+    current_focus: ui.current_focus,
+    setCurrentFocus: ui.setCurrentFocus,
     validation_errors: modules.trade.validation_errors,
 }))(AdvancedDuration);

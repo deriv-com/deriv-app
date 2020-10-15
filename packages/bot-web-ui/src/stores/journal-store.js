@@ -1,4 +1,4 @@
-import { observable, action, computed } from 'mobx';
+import { observable, action, computed, reaction } from 'mobx';
 import { localize } from '@deriv/translations';
 import { formatDate } from '@deriv/shared';
 import { message_types } from '@deriv/bot-skeleton';
@@ -10,6 +10,20 @@ export default class JournalStore {
     constructor(root_store) {
         this.root_store = root_store;
         this.dbot = this.root_store.dbot;
+        this.journal_storage_key = 'journal_cache';
+
+        this.disposeJournalMessageListener = reaction(
+            () => this.unfiltered_messages,
+            messages => {
+                const { client } = this.root_store.core;
+                const stored_journals = this.getJournalSessionStorage();
+
+                const new_messages = { journal_messages: messages };
+                stored_journals[client.loginid] = new_messages;
+
+                sessionStorage.setItem(this.journal_storage_key, JSON.stringify(stored_journals));
+            }
+        );
     }
 
     getServerTime() {
@@ -30,8 +44,14 @@ export default class JournalStore {
     ];
 
     @observable is_filter_dialog_visible = false;
-    @observable unfiltered_messages = [];
+    @observable unfiltered_messages =
+        this.getJournalSessionStorage()?.[this.root_store.core.client.loginid]?.journal_messages ?? [];
+
     @observable journal_filters = getSetting('journal_filter') || this.filters.map(filter => filter.id);
+
+    getJournalSessionStorage = () => {
+        return JSON.parse(sessionStorage.getItem(this.journal_storage_key)) ?? {};
+    };
 
     @action.bound
     toggleFilterDialog() {
@@ -76,14 +96,19 @@ export default class JournalStore {
         const unique_id = Blockly.utils.genUid();
 
         this.unfiltered_messages.unshift({ date, time, message, message_type, className, unique_id, extra });
+        this.unfiltered_messages = this.unfiltered_messages.slice(); // force array update
     }
 
     @computed
     get filtered_messages() {
-        // filter messages based on filtered-checkbox
-        return this.unfiltered_messages.filter(
-            message =>
-                this.journal_filters.length && this.journal_filters.some(filter => message.message_type === filter)
+        return (
+            this.unfiltered_messages
+                // filter messages based on filtered-checkbox
+                .filter(
+                    message =>
+                        this.journal_filters.length &&
+                        this.journal_filters.some(filter => message.message_type === filter)
+                )
         );
     }
 
@@ -105,6 +130,13 @@ export default class JournalStore {
 
     @action.bound
     clear() {
-        this.unfiltered_messages.clear();
+        this.unfiltered_messages = this.unfiltered_messages.slice(0, 0); // force array update
+    }
+
+    @action.bound
+    disposeListeners() {
+        if (typeof this.disposeJournalMessageListener === 'function') {
+            this.disposeJournalMessageListener();
+        }
     }
 }

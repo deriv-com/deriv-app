@@ -63,19 +63,19 @@ const StatisticsSummary = ({
             <StatisticsTile
                 title={localize('Total stake')}
                 alignment='top'
-                content={<Money amount={total_stake} currency={currency} />}
+                content={<Money amount={total_stake} currency={currency} show_currency />}
             />
             <StatisticsTile
                 title={localize('Total payout')}
                 alignment='top'
-                content={<Money amount={total_payout} currency={currency} />}
+                content={<Money amount={total_payout} currency={currency} show_currency />}
             />
             <StatisticsTile title={localize('No. of runs')} alignment='top' content={number_of_runs} />
             <StatisticsTile title={localize('Contracts lost')} alignment='bottom' content={lost_contracts} />
             <StatisticsTile title={localize('Contracts won')} alignment='bottom' content={won_contracts} />
             <StatisticsTile
                 title={localize('Profit/loss')}
-                content={<Money amount={total_profit} currency={currency} has_sign />}
+                content={<Money amount={total_profit} currency={currency} has_sign show_currency />}
                 alignment='bottom'
                 contentClassName={classNames('run-panel__stat-amount', {
                     'run-panel__stat-amount--positive': total_profit > 0,

@@ -14,6 +14,7 @@ const TradeFooterExtensions = ({
     togglePositionsDrawer,
 }) => {
     React.useEffect(() => populateFooter());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     React.useEffect(() => () => populateFooterExtensions([]), []);
 
     const TogglePositionsIcon = () => (

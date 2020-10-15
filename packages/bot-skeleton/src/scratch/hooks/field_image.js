@@ -105,7 +105,7 @@ Blockly.FieldImage.prototype.dispose = function () {
  * @private
  */
 Blockly.FieldImage.prototype.maybeAddClickHandler_ = function () {
-    if (this.clickHandler_) {
+    if (this.clickHandler_ && !this.sourceBlock_.workspace.options.readOnly && !this.sourceBlock_.isInFlyout) {
         this.mouseDownWrapper_ = Blockly.bindEventWithChecks_(this.fieldGroup_, 'mousedown', this, this.clickHandler_);
         this.fieldGroup_.style.cursor = 'pointer';
     }

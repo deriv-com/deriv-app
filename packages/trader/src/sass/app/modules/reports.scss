@@ -506,7 +506,6 @@ $side-padding: 1.2em;
 
     @include mobile {
         flex: 1;
-        margin-top: 0.8rem;
 
         &-multiplier {
             /* postcss-bem-linter: ignore */
@@ -625,6 +624,9 @@ $side-padding: 1.2em;
                 }
             }
         }
+        &__data-list {
+            margin-top: 0.8rem;
+        }
         &__data-list-body {
             height: calc(100% - 95px);
             padding: 0 2.4rem;
@@ -666,6 +668,13 @@ $side-padding: 1.2em;
                 color: var(--text-prominent);
             }
         }
+        .dc-contract-card__no-resale-msg {
+            display: flex;
+            font-size: 1.4rem;
+            color: var(--text-general);
+            justify-content: center;
+            padding: 0.8rem 0rem;
+        }
     }
 
     &__content {
@@ -677,11 +686,17 @@ $side-padding: 1.2em;
         justify-content: center;
         align-items: flex-end;
         flex-direction: column;
+        width: 100%;
 
         &--amount {
             display: flex;
             align-items: center;
-            line-height: 16px;
+            @include desktop {
+                line-height: 2;
+            }
+        }
+        .dc-btn--sell {
+            height: 2.4rem;
         }
         &-no-resale-msg {
             min-width: 115px;
@@ -782,6 +797,12 @@ $side-padding: 1.2em;
         @include desktop {
             justify-content: flex-end;
             text-align: right;
+        }
+    }
+    .indicative {
+        @include desktop {
+            padding-top: 0;
+            padding-bottom: 0;
         }
     }
     .type {

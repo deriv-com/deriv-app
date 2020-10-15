@@ -23,9 +23,13 @@
         box-shadow: 0 2px 8px 0 var(--shadow-menu);
         min-width: 560px;
         height: 680px;
-        max-height: calc(100vh - 116px);
+        max-height: 680px;
         overflow: hidden;
 
+        /* postcss-bem-linter: ignore */
+        .dc-vertical-tab {
+            max-height: 680px;
+        }
         /* postcss-bem-linter: ignore */
         .dc-vertical-tab__action-bar {
             flex-flow: row;
@@ -60,6 +64,12 @@
         /* postcss-bem-linter: ignore */
         .dc-vertical-tab__content {
             padding: 0 !important;
+
+            /* postcss-bem-linter: ignore */
+            &-container {
+                max-height: calc(100% - 56px);
+                height: calc(100% - 56px);
+            }
         }
         /* postcss-bem-linter: ignore */
         .dc-vertical-tab__tab {
@@ -69,6 +79,10 @@
             .dc-vertical-tab__header-title {
                 height: 56px;
             }
+        }
+        /* postcss-bem-linter: ignore */
+        .contract-type-info__wrapper {
+            height: calc(100% - 2.4rem - 18px);
         }
     }
     &--enter,

@@ -117,10 +117,16 @@ $header-height: 4em;
             padding-top: 0.2rem;
         }
         .dc-btn--sell {
-            height: 32px;
-
             @include mobile {
                 width: 100%;
+            }
+        }
+        .dc-btn--sell,
+        .dc-btn--cancel {
+            height: 2.4rem;
+
+            @include mobile {
+                height: 3.2rem;
             }
         }
     }

@@ -2,6 +2,7 @@ import { DURING_PURCHASE } from './state/constants';
 import { contractStatus, log } from '../utils/broadcast';
 import { recoverFromError, doUntilDone } from '../utils/helpers';
 import { log_types } from '../../../constants/messages';
+import { observer as globalObserver } from '../../../utils/observer';
 
 export default Engine =>
     class Sell extends Engine {
@@ -10,6 +11,8 @@ export default Engine =>
         }
 
         sellAtMarket() {
+            globalObserver.emit('bot.sell');
+
             // Prevent calling sell twice
             if (this.store.getState().scope !== DURING_PURCHASE) {
                 return Promise.resolve();

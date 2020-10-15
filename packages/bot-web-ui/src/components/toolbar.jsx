@@ -135,7 +135,12 @@ const WorkspaceGroup = ({
     </div>
 );
 
-const Toolbar = props => {
+const Toolbar = ({ onMount, onUnmount, ...other_props }) => {
+    React.useEffect(() => {
+        onMount();
+        return () => onUnmount();
+    }, [onMount, onUnmount]);
+
     const {
         is_mobile,
         is_running,
@@ -147,7 +152,7 @@ const Toolbar = props => {
         toggleStrategyModal,
         toggleLoadModal,
         toggleSaveModal,
-    } = props;
+    } = other_props;
 
     return (
         <>
@@ -189,8 +194,8 @@ const Toolbar = props => {
                                 icon={<Icon icon='IcPuzzle' color='active' />}
                                 button_text={localize('Get started')}
                             />
-                            {active_tab === tabs_title.WORKSPACE && <SearchBox {...props} />}
-                            {active_tab === tabs_title.WORKSPACE && <WorkspaceGroup {...props} />}
+                            {active_tab === tabs_title.WORKSPACE && <SearchBox {...other_props} />}
+                            {active_tab === tabs_title.WORKSPACE && <WorkspaceGroup {...other_props} />}
                         </div>
                         <div className='toolbar__section'>
                             <TradeAnimation
@@ -241,6 +246,7 @@ Toolbar.propTypes = {
     is_stop_button_visible: PropTypes.bool,
     closeResetDialog: PropTypes.func,
     onGoogleDriveClick: PropTypes.func,
+    onMount: PropTypes.func,
     onOkButtonClick: PropTypes.func,
     onResetClick: PropTypes.func,
     onRunButtonClick: PropTypes.func,
@@ -252,6 +258,7 @@ Toolbar.propTypes = {
     onStopButtonClick: PropTypes.func,
     onToolboxToggle: PropTypes.func,
     onUndoClick: PropTypes.func,
+    onUnmount: PropTypes.func,
     onZoomInOutClick: PropTypes.func,
     toggleSaveLoadModal: PropTypes.func,
 };
@@ -270,6 +277,7 @@ export default connect(({ main_content, run_panel, save_modal, load_modal, toolb
     is_stop_button_visible: run_panel.is_stop_button_visible,
     closeResetDialog: toolbar.closeResetDialog,
     onGoogleDriveClick: toolbar.onGoogleDriveClick,
+    onMount: toolbar.onMount,
     onOkButtonClick: toolbar.onResetOkButtonClick,
     onResetClick: toolbar.onResetClick,
     onRunButtonClick: run_panel.onRunButtonClick,
@@ -281,6 +289,7 @@ export default connect(({ main_content, run_panel, save_modal, load_modal, toolb
     onStopButtonClick: run_panel.onStopButtonClick,
     onToolboxToggle: toolbar.onToolboxToggle,
     onUndoClick: toolbar.onUndoClick,
+    onUnmount: toolbar.onUnmount,
     onZoomInOutClick: toolbar.onZoomInOutClick,
     toggleLoadModal: load_modal.toggleLoadModal,
     toggleSaveModal: save_modal.toggleSaveModal,

@@ -195,7 +195,7 @@ const AdvertiserPage = observer(props => {
                         </Table.Cell>
                         <div className='advertiser-page__stats-cell-separator' />
                         <Table.Cell className='advertiser-page__stats-cell'>
-                            <div className='advertiser-page__stats-cell-header'>{localize('Avg. release')}</div>
+                            <div className='advertiser-page__stats-cell-header'>{localize('Avg. release time')}</div>
                             <div className='advertiser-page__stats-cell-info'>
                                 {release_time_avg
                                     ? localize('{{- avg_release_time_in_minutes}} min', {
@@ -208,7 +208,7 @@ const AdvertiserPage = observer(props => {
                             className='advertiser-page__popover-icon'
                             alignment='top'
                             message={localize(
-                                "These fields are based on the last 30 days' activity: Buy, Sell, Completion, and Avg. release."
+                                "These fields are based on the last 30 days' activity: Buy, Sell, Completion, and Avg. release time."
                             )}
                         >
                             <Icon icon='IcInfoOutline' size={16} />

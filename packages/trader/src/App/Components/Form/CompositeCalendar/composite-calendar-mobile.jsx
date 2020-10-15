@@ -46,17 +46,8 @@ class CompositeCalendarMobile extends React.PureComponent {
         const from = selected_date_range.duration;
         this.props.onChange(
             {
-                from:
-                    is_today || from
-                        ? toMoment()
-                              .startOf('day')
-                              .subtract(from, 'day')
-                              .add(1, 's')
-                              .unix()
-                        : null,
-                to: toMoment()
-                    .endOf('day')
-                    .unix(),
+                from: is_today || from ? toMoment().startOf('day').subtract(from, 'day').add(1, 's').unix() : null,
+                to: toMoment().endOf('day').unix(),
                 is_batch: true,
             },
             {
@@ -79,13 +70,8 @@ class CompositeCalendarMobile extends React.PureComponent {
 
         this.props.onChange(
             {
-                from: toMoment(from, 'DD MMM YYYY')
-                    .startOf('day')
-                    .add(1, 's')
-                    .unix(),
-                to: toMoment(to, 'DD MMM YYYY')
-                    .endOf('day')
-                    .unix(),
+                from: toMoment(from, 'DD MMM YYYY').startOf('day').add(1, 's').unix(),
+                to: toMoment(to, 'DD MMM YYYY').endOf('day').unix(),
                 is_batch: true,
             },
             {

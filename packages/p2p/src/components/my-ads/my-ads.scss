@@ -87,7 +87,6 @@
             justify-content: flex-end;
             background-color: var(--general-main-1);
         }
-
         .dc-input__hint {
             font-size: var(--text-size-xxs);
         }
@@ -117,7 +116,6 @@
         &-row {
             grid-template-columns: 2fr 2fr 2fr 2fr 1fr;
         }
-
         &--disabled {
             .dc-table__cell {
                 color: var(--text-disabled);

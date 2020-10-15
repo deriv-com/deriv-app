@@ -1,4 +1,4 @@
-module.exports = function(source, map) {
+module.exports = function (source, map) {
     if (/import\s*React,/.test(source)) {
         this.emitError(
             new Error(

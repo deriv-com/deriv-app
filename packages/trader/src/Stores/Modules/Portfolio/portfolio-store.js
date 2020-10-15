@@ -222,6 +222,8 @@ export default class PortfolioStore extends BaseStore {
     @action.bound
     onClickCancel(contract_id) {
         const i = this.getPositionIndexById(contract_id);
+        if (this.positions[i].is_sell_requested) return;
+
         this.positions[i].is_sell_requested = true;
         if (contract_id) {
             WS.cancelContract(contract_id).then(response => {
@@ -240,6 +242,8 @@ export default class PortfolioStore extends BaseStore {
     @action.bound
     onClickSell(contract_id) {
         const i = this.getPositionIndexById(contract_id);
+        if (this.positions[i].is_sell_requested) return;
+
         const { bid_price } = this.positions[i].contract_info;
         this.positions[i].is_sell_requested = true;
         if (contract_id && typeof bid_price === 'number') {
@@ -262,8 +266,6 @@ export default class PortfolioStore extends BaseStore {
                 });
             }
         } else if (!response.error && response.sell) {
-            const i = this.getPositionIndexById(response.sell.contract_id);
-            this.positions[i].is_sell_requested = false;
             // update contract store sell info after sell
             this.root_store.modules.contract_trade.sell_info = {
                 sell_price: response.sell.sold_for,

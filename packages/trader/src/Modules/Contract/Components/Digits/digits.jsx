@@ -22,6 +22,7 @@ const DigitsWrapper = ({
     onDigitChange,
     selected_digit,
     trade_type,
+    onChangeStatus,
     ...props
 }) => {
     const has_contract = contract_info.date_start;
@@ -49,10 +50,10 @@ const DigitsWrapper = ({
     }
 
     React.useEffect(() => {
-        if (props.onChangeStatus) {
-            props.onChangeStatus({ status, current_tick: tick ? tick.current_tick : null });
+        if (onChangeStatus) {
+            onChangeStatus({ status, current_tick: tick ? tick.current_tick : null });
         }
-    }, [tick, is_trade_page, display_status]);
+    }, [tick, is_trade_page, display_status, onChangeStatus, status]);
 
     return (
         <LastDigitPrediction

@@ -79,9 +79,7 @@ describe('Url', () => {
                         .and.to.deep.equal(params_obj);
                 });
                 it('returns empty object when there is no query string', () => {
-                    expect(paramsHash(url_no_qs))
-                        .to.be.an('Object')
-                        .and.to.deep.equal({});
+                    expect(paramsHash(url_no_qs)).to.be.an('Object').and.to.deep.equal({});
                     expect(paramsHash(`${url_no_qs}?`))
                         .to.be.an('Object')
                         .and.to.deep.equal({});
@@ -110,12 +108,8 @@ describe('Url', () => {
                     expect(param()).to.eq(undefined);
                 });
                 it('returns expected parameter', () => {
-                    expect(param('duration_amount'))
-                        .to.be.a('string')
-                        .and.eq('5');
-                    expect(param('no_value'))
-                        .to.be.a('string')
-                        .and.eq('');
+                    expect(param('duration_amount')).to.be.a('string').and.eq('5');
+                    expect(param('no_value')).to.be.a('string').and.eq('');
                 });
             });
 

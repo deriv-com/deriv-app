@@ -14,7 +14,7 @@ import Article from './article.jsx';
 const makeTurnoverLimitRow = (currency, arr, title) => (
     <>
         {arr &&
-            arr.map((item) => (
+            arr.map(item => (
                 <Row key={item.name}>
                     <Td>
                         {title && `${title} - `}
@@ -47,7 +47,7 @@ const ExtraInfo = ({ message, ...props }) => {
     const toolbar_height = 56;
 
     return (
-        <>
+        <React.Fragment>
             <DesktopWrapper>
                 <Popover
                     alignment='right'
@@ -62,7 +62,7 @@ const ExtraInfo = ({ message, ...props }) => {
             <MobileWrapper>
                 <div className='account-limit-container__extra-info'>{message}</div>
             </MobileWrapper>
-        </>
+        </React.Fragment>
     );
 };
 

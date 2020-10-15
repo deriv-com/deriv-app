@@ -72,7 +72,7 @@ class NotificationsDialog extends React.Component {
                                                 )}
                                                 to={item.action.route}
                                             >
-                                                <span className='dc-btn__text'>{item.action.text}</span>
+                                                <Text size='xxs'>{item.action.text}</Text>
                                             </BinaryLink>
                                         ) : (
                                             <Button

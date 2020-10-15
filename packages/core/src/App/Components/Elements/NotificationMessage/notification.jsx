@@ -55,7 +55,7 @@ const Notification = ({ data, removeNotificationMessage }) => {
                                     className={classNames('dc-btn', 'dc-btn--secondary', 'notification__cta-button')}
                                     to={data.action.route}
                                 >
-                                    <span className='dc-btn__text'>{data.action.text}</span>
+                                    <Text size='xxs'>{data.action.text}</Text>
                                 </BinaryLink>
                             ) : (
                                 <Button

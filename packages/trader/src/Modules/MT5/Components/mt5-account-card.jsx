@@ -1,30 +1,32 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Money, Button } from '@deriv/components';
+import { Money, Button, Card } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { Mt5AccountCopy } from './mt5-account-copy.jsx';
-import { getMT5WebTerminalLink } from '../Helpers/constants';
+// import { getMT5WebTerminalLink } from '../Helpers/constants';
 
 const LoginBadge = ({ display_login }) => (
-    <div className='mt5-account-card__login'>
+    <span className='mt5-account-card__login'>
         <Localize
-            i18n_default_text='<0>Account login no.</0><1>{{display_login}}</1>'
+            i18n_default_text='<0>Login ID</0><1>{{display_login}}</1>'
             values={{
                 display_login,
             }}
-            components={[<span key={0} />, <strong key={1} />]}
+            components={[<span key={0} />, <strong className='mt5-account-card__login-number' key={1} />]}
         />
-        <Mt5AccountCopy text={display_login} />
-    </div>
+        <div className='mt5-account-card__login-clipboard'>
+            <Mt5AccountCopy text={display_login} />
+        </div>
+    </span>
 );
 
 const MT5AccountCard = ({
     button_label,
-    commission_message,
     descriptor,
     existing_data,
     has_mt5_account,
     icon,
+    background_image,
     is_button_primary,
     is_disabled,
     is_logged_in,
@@ -36,51 +38,64 @@ const MT5AccountCard = ({
     onPasswordManager,
 }) => {
     const IconComponent = icon || (() => null);
-    const lbl_add_account =
-        type.category === 'real' ? (
-            <Localize i18n_default_text='Add real account' />
-        ) : (
-            <Localize i18n_default_text='Add demo account' />
-        );
+    const BackgroundComponent = background_image || (() => null);
+    const lbl_add_account = <Localize i18n_default_text='Add account' />;
     const cta_label = button_label || lbl_add_account;
-
-    const has_popular_banner = type.type === 'synthetic' && type.category === 'real';
     const has_demo_banner = type.category === 'demo';
 
-    return (
-        <div className={classNames('mt5-account-card', { 'mt5-account-card__logged-out': !is_logged_in })}>
-            {has_popular_banner && (
-                <div className='mt5-account-card__banner'>
-                    <Localize i18n_default_text='Most popular' />
+    const renderHeader = () => {
+        return (
+            <>
+                <div
+                    className={classNames('mt5-account-card__type', {
+                        'mt5-account-card__type': has_demo_banner,
+                    })}
+                    id={`mt5_${type.category}_${type.type}`}
+                >
+                    <div className='mt5-account-card__type--description'>
+                        <h1 className='mt5-account-card--paragraph mt5-account-card--paragraph-bold'>{title}</h1>
+                        {has_demo_banner && (
+                            <div className='mt5-account-card__banner mt5-account-card__banner--demo'>
+                                <Localize i18n_default_text='Demo' />
+                            </div>
+                        )}
+                        {existing_data && existing_data.display_balance && is_logged_in && (
+                            <p className='mt5-account-card--balance'>
+                                <Money
+                                    amount={existing_data.display_balance}
+                                    currency={existing_data.currency}
+                                    show_currency
+                                />
+                            </p>
+                        )}
+                        <p className='mt5-account-card--xsmall'>{descriptor}</p>
+                    </div>
+                    <div className='mt5-account-card__icon'>{icon && <IconComponent />}</div>
+                    <div className='mt5-account-card__background'>{background_image && <BackgroundComponent />}</div>
                 </div>
-            )}
-            {has_demo_banner && (
-                <div className='mt5-account-card__banner mt5-account-card__banner--demo'>
-                    <Localize i18n_default_text='DEMO' />
-                </div>
-            )}
-            <div
-                className={classNames('mt5-account-card__type', {
-                    'mt5-account-card__type--has-banner': has_popular_banner || has_demo_banner,
-                })}
-                id={`mt5_${type.category}_${type.type}`}
-            >
-                {icon && <IconComponent />}
-                <div className='mt5-account-card__type--description'>
-                    <h1 className='mt5-account-card--heading'>{title}</h1>
-                    {(!existing_data || !is_logged_in) && <p className='mt5-account-card--paragraph'>{descriptor}</p>}
-                    {existing_data && existing_data.display_balance && is_logged_in && (
-                        <p className='mt5-account-card--balance'>
-                            <Money
-                                amount={existing_data.display_balance}
-                                currency={existing_data.currency}
-                                show_currency
-                            />
-                        </p>
+                <div className='mt5-account-card__login-details'>
+                    {existing_data?.login && is_logged_in && <LoginBadge display_login={existing_data.display_login} />}
+                    {existing_data && is_logged_in && (
+                        <Button
+                            className='mt5-account-card__login-details-password'
+                            classNameSpan='mt5-account-card__login-details-password'
+                            onClick={() => {
+                                onPasswordManager(existing_data.login, title, type.category, type.type);
+                            }}
+                            type='button'
+                            tertiary
+                            small
+                        >
+                            <Localize i18n_default_text='Manage password' />
+                        </Button>
                     )}
                 </div>
-            </div>
+            </>
+        );
+    };
 
+    const renderContent = () => {
+        return (
             <div className='mt5-account-card__cta'>
                 <div className='mt5-account-card__specs'>
                     <table className='mt5-account-card__specs-table'>
@@ -91,51 +106,34 @@ const MT5AccountCard = ({
                                         <p className='mt5-account-card--paragraph'>{spec_attribute}</p>
                                     </td>
                                     <td className='mt5-account-card__specs-table-data'>
-                                        <p className='mt5-account-card--paragraph'>{specs[spec_attribute]}</p>
+                                        <p className='mt5-account-card--paragraph mt5-account-card--paragraph-right'>
+                                            {specs[spec_attribute]}
+                                        </p>
                                     </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 </div>
-                {existing_data?.login && is_logged_in && <LoginBadge display_login={existing_data.display_login} />}
+            </div>
+        );
+    };
 
-                {((!existing_data && commission_message) || !is_logged_in) && (
-                    <p className='mt5-account-card__commission mt5-account-card--paragraph'>{commission_message}</p>
-                )}
+    const renderFooter = () => {
+        return (
+            <>
                 {existing_data && is_logged_in && (
                     <div className='mt5-account-card__manage'>
                         <Button onClick={onClickFund} type='button' secondary>
                             {type.category === 'real' && <Localize i18n_default_text='Fund transfer' />}
                             {type.category === 'demo' && <Localize i18n_default_text='Fund top up' />}
                         </Button>
-                        <Button
-                            onClick={() => {
-                                onPasswordManager(existing_data.login, title, type.category, type.type);
-                            }}
-                            type='button'
-                            secondary
-                        >
-                            <Localize i18n_default_text='Password' />
-                        </Button>
                     </div>
                 )}
-
                 {!existing_data && has_mt5_account && (
                     <Button className='mt5-account-card__account-selection' onClick={onSelectAccount} type='button'>
                         <Localize i18n_default_text='Select' />
                     </Button>
-                )}
-                {existing_data && is_logged_in && (
-                    <a
-                        className='dc-btn mt5-account-card__account-selection mt5-account-card__account-selection--primary'
-                        type='button'
-                        href={getMT5WebTerminalLink({ category: type.category, loginid: existing_data.display_login })}
-                        target='_blank'
-                        rel='noopener noreferrer'
-                    >
-                        <Localize i18n_default_text='Trade on web terminal' />
-                    </a>
                 )}
                 {!existing_data && !has_mt5_account && is_logged_in && (
                     <Button
@@ -150,8 +148,23 @@ const MT5AccountCard = ({
                         {cta_label}
                     </Button>
                 )}
-            </div>
-        </div>
+            </>
+        );
+    };
+
+    return (
+        <Card
+            renderHeader={renderHeader}
+            renderContent={renderContent}
+            renderFooter={renderFooter}
+            className={classNames(
+                'mt5-account-card',
+                { 'mt5-account-card__logged-out': !is_logged_in },
+                { 'mt5-account-card__synthetic': type.type === 'synthetic' },
+                { 'mt5-account-card__financial': type.type === 'financial' },
+                { 'mt5-account-card__financial-stp': type.type === 'financial_stp' }
+            )}
+        />
     );
 };
 

@@ -12,7 +12,7 @@
     "build:travis": "rimraf lib && webpack --mode=production --optimize-minimize",
     "prettify": "prettier --write \"./{utils,src,stories}/**/*.{js,jsx,scss}\"",
     "precommit": "lint-staged",
-    "test": "npm run test:eslint && npm run test:stylelint",
+    "test": "node \"./src/components/icon/__tests__/icons.js\" && npm run test:eslint && npm run test:stylelint",
     "test:eslint": "eslint --fix \"./src/**/*.?(js|jsx)\"",
     "test:stylelint": "stylelint --fix \"./src/**/*.s?(a|c)ss\"",
     "deploy": "echo \"No deploy specified\"",

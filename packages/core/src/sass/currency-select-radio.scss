@@ -6,8 +6,12 @@
     }
     &__items {
         display: flex;
-        justify-content: space-between;
         flex-wrap: wrap;
+
+        @include desktop {
+            justify-content: center;
+        }
+
         @include mobile {
             display: grid;
             grid-template-columns: 1fr 1fr;

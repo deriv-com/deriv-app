@@ -364,6 +364,37 @@
     }
 }
 
+// TODO: [mt5-redesign] replace tabs with radiogroup once card component is ready
+//.mt5-dashboard__accounts-display {
+//    div.radio-group__save-type {
+//        .dc-radio-group__item {
+//            padding: 0.6rem 1.1rem 0.6rem 0.8rem;
+//            flex-direction: row;
+//            width: auto;
+//            min-width: 8.3rem;
+//
+//            &--selected {
+//                .dc-radio-group__label {
+//                    font-weight: bold;
+//                }
+//            }
+//            &:not(.dc-radio-group__item--selected) {
+//                border: solid 1px var(--border-normal);
+//            }
+//            &:not(:last-child) {
+//                margin-right: 0.8rem;
+//            }
+//        }
+//        .dc-radio-group__circle {
+//            display: flex;
+//
+//            &:not(.dc-radio-group__circle--selected) {
+//                border-color: var(--border-hover);
+//            }
+//        }
+//    }
+//}
+
 .mt5-real-accounts-display,
 .mt5-demo-accounts-display {
     display: flex;
@@ -486,21 +517,26 @@
         flex-direction: column;
         margin-top: auto;
     }
-    &__specs-table {
-        width: 100%;
+    &__specs {
+        margin-top: 1.6rem;
 
-        &-attribute .mt5-account-card--paragraph {
-            color: var(--text-general);
-            margin-right: 2.4rem;
-        }
-        &-data {
-            .mt5-account-card--paragraph {
-                @include typeface(--paragraph-left-bold-black, none);
-                color: var(--text-prominent);
-                line-height: 1.45;
+        &-table {
+            width: 100%;
+
+            &-attribute .mt5-account-card--paragraph {
+                color: var(--text-general);
+                margin-right: 2.4rem;
+            }
+            &-data {
+                .mt5-account-card--paragraph {
+                    @include typeface(--paragraph-left-bold-black, none);
+                    color: var(--text-prominent);
+                    line-height: 1.45;
+                }
             }
         }
     }
+
     &__commission {
         text-align: center;
         margin-top: 1.6rem;
@@ -547,13 +583,16 @@
         border-radius: 4px;
         color: var(--text-general);
         display: flex;
-        height: 40px;
+        padding: 0.8rem;
         justify-content: center;
         margin: 2.4rem 0 1.6rem;
         width: 272px;
 
         strong {
             font-weight: bold;
+        }
+        span {
+            margin-right: 0.8rem;
         }
     }
     &__manage {
@@ -642,6 +681,7 @@
             width: 100%;
             margin-top: 0.8rem;
             max-width: 30rem;
+            white-space: normal;
         }
     }
     &__success {

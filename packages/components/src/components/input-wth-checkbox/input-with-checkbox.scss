@@ -1,0 +1,10 @@
+/** @define dc-input-wrapper */
+.dc-input-wrapper {
+    position: relative;
+
+    &--inline {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+}

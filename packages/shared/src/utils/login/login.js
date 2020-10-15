@@ -1,8 +1,21 @@
 import { website_name } from '../config/app-config';
-import { LocalStore } from '../storage/storage';
+import { isStorageSupported, LocalStore } from '../storage/storage';
 import { isMobileOs } from '../os/os_detect';
 import { getAppId, domain_app_ids } from '../config/config';
-import { urlForCurrentDomain } from '../url';
+import { getStaticUrl, urlForCurrentDomain } from '../url';
+
+export const redirectToLogin = (is_logged_in, language) => {
+    if (!is_logged_in && isStorageSupported(sessionStorage)) {
+        sessionStorage.setItem('redirect_url', window.location.href);
+        window.location.href = loginUrl({
+            language,
+        });
+    }
+};
+
+export const redirectToSignUp = ({ is_deriv_crypto }) => {
+    window.open(getStaticUrl('/signup/', { is_deriv_crypto }));
+};
 
 export const loginUrl = ({ language }) => {
     const server_url = LocalStore.get('config.server_url');
@@ -19,18 +32,14 @@ export const loginUrl = ({ language }) => {
         return `https://${server_url}/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
     }
 
-    // TODO: [app-link-refactor] - Remove backwards compatibility for `deriv.app`
-    if (getAppId() === domain_app_ids['deriv.app'] && /^(www\.)?deriv\.app$/.test(window.location.hostname)) {
-        return getOAuthUrl('deriv.app');
-    }
     if (getAppId() === domain_app_ids['app.deriv.com'] && /^app\.deriv\.com$/.test(window.location.hostname)) {
-        return getOAuthUrl('app.deriv.com');
+        return getOAuthUrl('deriv.com');
     }
     if (
         getAppId() === domain_app_ids['derivcrypto.com'] &&
         /^(app\.)?derivcrypto\.com$/.test(window.location.hostname)
     ) {
-        return getOAuthUrl('app.derivcrypto.com');
+        return getOAuthUrl('derivcrypto.com');
     }
     return urlForCurrentDomain(getOAuthUrl('deriv.com'));
 };

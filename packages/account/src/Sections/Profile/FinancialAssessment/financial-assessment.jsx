@@ -215,11 +215,16 @@ class FinancialAssessment extends React.Component {
             if (data.error) {
                 setStatus({ msg: data.error.message });
             } else {
-                this.setState({ is_submit_success: true });
-                setTimeout(() => this.setState({ is_submit_success: false }), 3000);
+                WS.authorized.storage.getFinancialAssessment().then((res_data) => {
+                    this.setState({
+                        ...res_data.get_financial_assessment,
+                        is_submit_success: true,
+                    });
+                    setTimeout(() => this.setState({ is_submit_success: false }), 3000);
 
-                this.props.removeNotificationMessage({ key: 'risk' });
-                this.props.removeNotificationByKey({ key: 'risk' });
+                    this.props.removeNotificationMessage({ key: 'risk' });
+                    this.props.removeNotificationByKey({ key: 'risk' });
+                });
             }
             setSubmitting(false);
         });
@@ -304,6 +309,7 @@ class FinancialAssessment extends React.Component {
                             other_instruments_trading_frequency,
                         }),
                     }}
+                    enableReinitialize={true}
                     validate={this.validateFields}
                     onSubmit={this.onSubmit}
                 >
@@ -361,7 +367,6 @@ class FinancialAssessment extends React.Component {
                                                     label={localize('Source of income')}
                                                     list_items={getIncomeSourceList()}
                                                     value={values.income_source}
-                                                    use_text={true}
                                                     error={touched.income_source && errors.income_source}
                                                     onChange={handleChange}
                                                 />
@@ -387,7 +392,6 @@ class FinancialAssessment extends React.Component {
                                                     label={localize('Employment status')}
                                                     list_items={getEmploymentStatusList()}
                                                     value={values.employment_status}
-                                                    use_text={true}
                                                     error={touched.employment_status && errors.employment_status}
                                                     onChange={handleChange}
                                                 />
@@ -413,7 +417,6 @@ class FinancialAssessment extends React.Component {
                                                     label={localize('Industry of employment')}
                                                     list_items={getEmploymentIndustryList()}
                                                     value={values.employment_industry}
-                                                    use_text={true}
                                                     error={touched.employment_industry && errors.employment_industry}
                                                     onChange={handleChange}
                                                 />
@@ -440,7 +443,6 @@ class FinancialAssessment extends React.Component {
                                                     label={localize('Occupation')}
                                                     list_items={getOccupationList()}
                                                     value={values.occupation}
-                                                    use_text={true}
                                                     error={touched.occupation && errors.occupation}
                                                     onChange={handleChange}
                                                 />
@@ -466,7 +468,6 @@ class FinancialAssessment extends React.Component {
                                                     label={localize('Source of wealth')}
                                                     list_items={getSourceOfWealthList()}
                                                     value={values.source_of_wealth}
-                                                    use_text={true}
                                                     error={touched.source_of_wealth && errors.source_of_wealth}
                                                     onChange={handleChange}
                                                 />
@@ -492,7 +493,6 @@ class FinancialAssessment extends React.Component {
                                                     label={localize('Level of education')}
                                                     list_items={getEducationLevelList()}
                                                     value={values.education_level}
-                                                    use_text={true}
                                                     error={touched.education_level && errors.education_level}
                                                     onChange={handleChange}
                                                 />
@@ -518,7 +518,6 @@ class FinancialAssessment extends React.Component {
                                                     label={localize('Net annual income')}
                                                     list_items={getNetIncomeList()}
                                                     value={values.net_income}
-                                                    use_text={true}
                                                     error={touched.net_income && errors.net_income}
                                                     onChange={handleChange}
                                                 />
@@ -545,7 +544,6 @@ class FinancialAssessment extends React.Component {
                                                     label={localize('Estimated net worth')}
                                                     list_items={getEstimatedWorthList()}
                                                     value={values.estimated_worth}
-                                                    use_text={true}
                                                     error={touched.estimated_worth && errors.estimated_worth}
                                                     onChange={handleChange}
                                                 />
@@ -572,7 +570,6 @@ class FinancialAssessment extends React.Component {
                                                     label={localize('Anticipated account turnover')}
                                                     list_items={getAccountTurnoverList()}
                                                     value={values.account_turnover}
-                                                    use_text={true}
                                                     error={touched.account_turnover && errors.account_turnover}
                                                     onChange={handleChange}
                                                 />
@@ -608,7 +605,6 @@ class FinancialAssessment extends React.Component {
                                                             label={localize('Forex trading experience')}
                                                             list_items={getForexTradingExperienceList()}
                                                             value={values.forex_trading_experience}
-                                                            use_text={true}
                                                             error={
                                                                 touched.forex_trading_experience &&
                                                                 errors.forex_trading_experience
@@ -640,7 +636,6 @@ class FinancialAssessment extends React.Component {
                                                             label={localize('Forex trading frequency')}
                                                             list_items={getForexTradingFrequencyList()}
                                                             value={values.forex_trading_frequency}
-                                                            use_text={true}
                                                             error={
                                                                 touched.forex_trading_frequency &&
                                                                 errors.forex_trading_frequency
@@ -672,7 +667,6 @@ class FinancialAssessment extends React.Component {
                                                             label={localize('Binary options trading experience')}
                                                             list_items={getBinaryOptionsTradingExperienceList()}
                                                             value={values.binary_options_trading_experience}
-                                                            use_text={true}
                                                             error={
                                                                 touched.binary_options_trading_experience &&
                                                                 errors.binary_options_trading_experience
@@ -704,7 +698,6 @@ class FinancialAssessment extends React.Component {
                                                             label={localize('Binary options trading frequency')}
                                                             list_items={getBinaryOptionsTradingFrequencyList()}
                                                             value={values.binary_options_trading_frequency}
-                                                            use_text={true}
                                                             error={
                                                                 touched.binary_options_trading_frequency &&
                                                                 errors.binary_options_trading_frequency
@@ -736,7 +729,6 @@ class FinancialAssessment extends React.Component {
                                                             label={localize('CFD trading experience')}
                                                             list_items={getCfdTradingExperienceList()}
                                                             value={values.cfd_trading_experience}
-                                                            use_text={true}
                                                             error={
                                                                 touched.cfd_trading_experience &&
                                                                 errors.cfd_trading_experience
@@ -768,7 +760,6 @@ class FinancialAssessment extends React.Component {
                                                             label={localize('CFD trading frequency')}
                                                             list_items={getCfdTradingFrequencyList()}
                                                             value={values.cfd_trading_frequency}
-                                                            use_text={true}
                                                             error={
                                                                 touched.cfd_trading_frequency &&
                                                                 errors.cfd_trading_frequency
@@ -802,7 +793,6 @@ class FinancialAssessment extends React.Component {
                                                             label={localize('Other trading instruments experience')}
                                                             list_items={getOtherInstrumentsTradingExperienceList()}
                                                             value={values.other_instruments_trading_experience}
-                                                            use_text={true}
                                                             error={
                                                                 touched.other_instruments_trading_experience &&
                                                                 errors.other_instruments_trading_experience
@@ -837,7 +827,6 @@ class FinancialAssessment extends React.Component {
                                                             label={localize('Other trading instruments frequency')}
                                                             list_items={getOtherInstrumentsTradingFrequencyList()}
                                                             value={values.other_instruments_trading_frequency}
-                                                            use_text={true}
                                                             error={
                                                                 touched.other_instruments_trading_frequency &&
                                                                 errors.other_instruments_trading_frequency
@@ -862,30 +851,7 @@ class FinancialAssessment extends React.Component {
                                                 'dc-btn--green': is_submit_success,
                                             })}
                                             onClick={() => this.toggleConfirmationModal(true)}
-                                            is_disabled={
-                                                isSubmitting ||
-                                                !dirty ||
-                                                !!(
-                                                    errors.income_source ||
-                                                    !values.income_source ||
-                                                    errors.employment_status ||
-                                                    !values.employment_status ||
-                                                    errors.employment_industry ||
-                                                    !values.employment_industry ||
-                                                    errors.occupation ||
-                                                    !values.occupation ||
-                                                    errors.source_of_wealth ||
-                                                    !values.source_of_wealth ||
-                                                    errors.education_level ||
-                                                    !values.education_level ||
-                                                    errors.net_income ||
-                                                    !values.net_income ||
-                                                    errors.estimated_worth ||
-                                                    !values.estimated_worth ||
-                                                    errors.account_turnover ||
-                                                    !values.account_turnover
-                                                )
-                                            }
+                                            is_disabled={isSubmitting || !dirty || Object.keys(errors).length > 0}
                                             has_effect
                                             is_loading={is_btn_loading}
                                             is_submit_success={is_submit_success}

@@ -116,6 +116,10 @@
                 -webkit-box-shadow: 0 0 0 30px var(--fill-normal) inset !important;
             }
         }
+        // hide default eye icon in Edge browser
+        &::-ms-reveal {
+            display: none;
+        }
     }
     &__textarea {
         &:not(.dc-input--no-placeholder):not(:focus):empty {
@@ -139,31 +143,12 @@
             top: 0.9rem;
 
             + .dc-input__field {
-                // for the default value put the largest padding
-                // in case any new currencies get added
-                padding-left: calc(1.6rem + 15px);
+                // default padding for three letter currency symbols
+                padding-left: calc(1.6rem + 2.4rem);
             }
-            &--usd + .dc-input__field {
-                padding-left: calc(1.6rem + 3px);
-            }
-            &--eur + .dc-input__field,
-            &--gbp + .dc-input__field,
-            &--eth + .dc-input__field,
-            &--etc + .dc-input__field {
-                padding-left: calc(1.6rem + 4px);
-            }
-            &--btc + .dc-input__field,
-            &--ltc + .dc-input__field {
-                padding-left: calc(1.6rem + 5px);
-            }
+            &--usdc + .dc-input__field,
             &--ust + .dc-input__field {
-                padding-left: calc(1.6rem + 7px);
-            }
-            &--bch + .dc-input__field {
-                padding-left: calc(1.6rem + 10px);
-            }
-            &--aud + .dc-input__field {
-                padding-left: calc(1.6rem + 15px);
+                padding-left: calc(1.6rem + 3.2rem);
             }
         }
     }

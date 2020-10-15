@@ -42,17 +42,33 @@ const InputWithCheckbox = ({
 
     // eslint-disable-next-line consistent-return
     React.useEffect(() => {
+        const showErrorToast = () => {
+            if (typeof addToast === 'function') {
+                addToast({
+                    key: `${name}__error`,
+                    content: error_messages,
+                    type: 'error',
+                });
+            }
+        };
+
+        const removeErrorToast = () => {
+            if (typeof removeToast === 'function') {
+                removeToast(`${name}__error`);
+            }
+        };
+
         if (isMobile() && error_messages?.length > 0) {
             showErrorToast(error_messages[0]);
             return () => {
                 removeErrorToast();
             };
         }
-    }, [error_messages]);
+    }, [error_messages, addToast, removeToast, name]);
 
     const focusInput = () => {
         setTimeout(() => {
-            const el_input = input_wrapper_ref.current.nextSibling.querySelector('input.input-wrapper__input');
+            const el_input = input_wrapper_ref.current.nextSibling.querySelector('input.dc-input-wrapper__input');
             el_input.focus();
         });
     };
@@ -114,22 +130,6 @@ const InputWithCheckbox = ({
             disabled={is_disabled}
         />
     );
-
-    const showErrorToast = () => {
-        if (typeof addToast === 'function') {
-            addToast({
-                key: `${name}__error`,
-                content: error_messages,
-                type: 'error',
-            });
-        }
-    };
-
-    const removeErrorToast = () => {
-        if (typeof removeToast === 'function') {
-            removeToast(`${name}__error`);
-        }
-    };
 
     return (
         <React.Fragment>

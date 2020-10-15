@@ -5,6 +5,7 @@
     @include tablet {
         max-height: calc(100vh - 102px) !important; // Header and footer
     }
+    background-color: var(--general-main-1);
 
     &--success {
         border-radius: $BORDER_RADIUS;
@@ -106,7 +107,20 @@
     height: calc(100% - 57px);
     position: relative;
     width: 100%;
-
+    @include desktop {
+        .currency-list__items {
+            &__is-fiat {
+                width: 100%;
+            }
+            &__is-crypto {
+                margin-bottom: 9rem;
+            }
+        }
+        .dc-modal-footer {
+            background-color: var(--general-main-1);
+            z-index: 1;
+        }
+    }
     @include mobile {
         grid-template-rows: 7rem minmax(10rem, 1fr);
         overflow: hidden;
@@ -169,7 +183,7 @@
                     font-size: 1.6rem;
                     margin: 2rem 0 0;
                     font-weight: bold;
-                    color: var(--text-less-prominent);
+                    color: var(--text-prominent);
                 }
             }
             &__description {
@@ -192,6 +206,17 @@
             }
             &__button {
                 margin-top: 1.6rem;
+            }
+            @include mobile {
+                &--deriv-account {
+                    border-top: 2px solid var(--general-section-1);
+                    padding-top: 10px;
+
+                    .dc-btn:last-child {
+                        width: 90%;
+                        margin: 0 auto;
+                    }
+                }
             }
         }
     }
@@ -246,9 +271,7 @@
     &--disabled {
         position: relative;
 
-        h1,
         h2,
-        h3,
         p {
             color: var(--text-disabled);
         }
@@ -270,7 +293,6 @@
             height: 100%;
             z-index: 99;
             display: flex;
-            align-items: center;
             justify-content: center;
 
             p {

@@ -1,11 +1,20 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import { removeBranchName, routes, isEmptyObject, default_title } from '@deriv/shared';
-
-import { redirectToLogin, redirectToSignUp } from '_common/base/login';
+import {
+    redirectToLogin,
+    redirectToSignUp,
+    removeBranchName,
+    routes,
+    isEmptyObject,
+    default_title,
+    PlatformContext,
+} from '@deriv/shared';
+import { getLanguage } from '@deriv/translations';
 import LoginPrompt from 'App/Components/Elements/login-prompt.jsx';
 
 const RouteWithSubRoutes = route => {
+    const { is_deriv_crypto } = React.useContext(PlatformContext);
+
     const renderFactory = props => {
         let result = null;
         if (route.component === Redirect) {
@@ -20,9 +29,9 @@ const RouteWithSubRoutes = route => {
         } else if (route.is_authenticated && !route.is_logged_in) {
             result = (
                 <LoginPrompt
-                    onLogin={() => redirectToLogin(route.is_logged_in)}
-                    onSignup={redirectToSignUp}
-                    page_title={route.title}
+                    onLogin={() => redirectToLogin(route.is_logged_in, getLanguage())}
+                    onSignup={() => redirectToSignUp({ is_deriv_crypto })}
+                    page_title={route.getTitle()}
                 />
             );
         } else {
@@ -37,8 +46,9 @@ const RouteWithSubRoutes = route => {
             );
         }
 
-        const title = route.title ? `${route.title} | ` : '';
-        document.title = `${title}${default_title}`;
+        // eslint-disable-next-line no-nested-ternary
+        const title = route.getTitle?.() || '';
+        document.title = `${title} | ${default_title}`;
         return result;
     };
 

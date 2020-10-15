@@ -34,12 +34,18 @@ class Tabs extends React.Component {
         if (this.props.header_fit_content && this.active_tab_ref && this.tabs_wrapper_ref) {
             const tabs_wrapper_bounds = this.tabs_wrapper_ref.getBoundingClientRect();
             const active_tab_bounds = this.active_tab_ref.getBoundingClientRect();
-            this.setState({
-                active_line_style: {
-                    left: active_tab_bounds.left - tabs_wrapper_bounds.left,
-                    width: active_tab_bounds.width,
-                },
-            });
+            if (active_tab_bounds.width === 0) {
+                setTimeout(() => {
+                    this.setActiveLineStyle();
+                }, 500);
+            } else {
+                this.setState({
+                    active_line_style: {
+                        left: active_tab_bounds.left - tabs_wrapper_bounds.left,
+                        width: active_tab_bounds.width,
+                    },
+                });
+            }
         }
     };
 
@@ -84,6 +90,7 @@ class Tabs extends React.Component {
                     ref={this.setTabsWrapperRef}
                 >
                     {React.Children.map(children, (child, index) => {
+                        if (!child) return null;
                         const { count, header_content, label } = child.props;
 
                         return (

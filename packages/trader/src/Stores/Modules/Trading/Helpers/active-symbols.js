@@ -1,11 +1,9 @@
 import { flow } from 'mobx';
-import { localize } from '@deriv/translations';
-import { ClientBase } from '_common/base/client_base';
-import { redirectToLogin } from '_common/base/login';
-import { LocalStore } from '@deriv/shared';
+import { LocalStore, redirectToLogin } from '@deriv/shared';
+import { getLanguage, localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 
-export const showUnavailableLocationError = flow(function*(showError) {
+export const showUnavailableLocationError = flow(function*(showError, is_logged_in) {
     const website_status = yield WS.wait('website_status');
     const residence_list = yield WS.residenceList();
 
@@ -24,7 +22,7 @@ export const showUnavailableLocationError = flow(function*(showError) {
         message: localize('If you have an account, log in to continue.'),
         header,
         redirect_label: localize('Log in'),
-        redirectOnClick: () => redirectToLogin(ClientBase.isLoggedIn()),
+        redirectOnClick: () => redirectToLogin(is_logged_in, getLanguage()),
         should_show_refresh: false,
     });
 });

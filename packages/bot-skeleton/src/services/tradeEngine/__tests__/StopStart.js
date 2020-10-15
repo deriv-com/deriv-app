@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { parts } from './tools';
-import { createInterpreter } from '../utils/cliTools';
+import { createInterpreter } from '../utils/interpreter';
 
 describe('Run Interpreter over bot', () => {
     let value;

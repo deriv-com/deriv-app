@@ -2,6 +2,7 @@ import Cookies from 'js-cookie';
 import { action, computed, observable, reaction, runInAction, toJS, when } from 'mobx';
 import moment from 'moment';
 import {
+    redirectToLogin,
     getMT5AccountType,
     getPropertyValue,
     getUrlSmartTrader,
@@ -14,16 +15,15 @@ import {
     State,
     toMoment,
 } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { getLanguage, localize } from '@deriv/translations';
 import { requestLogout, WS } from 'Services';
 import BinarySocketGeneral from 'Services/socket-general';
-import ClientBase from '_common/base/client_base';
-import { redirectToLogin } from '_common/base/login';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
 import { isEuCountry } from '_common/utility';
 import BaseStore from './base-store';
-import { getClientAccountType } from './Helpers/client';
+import { getClientAccountType, getAccountTitle } from './Helpers/client';
+import { createDeviceDataObject, setDeviceDataCookie } from './Helpers/device';
 import { handleClientNotifications } from './Helpers/client-notifications';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
 
@@ -65,6 +65,7 @@ export default class ClientStore extends BaseStore {
 
     @observable upgradeable_landing_companies = [];
     @observable mt5_login_list = [];
+    @observable mt5_login_list_error = null;
     @observable statement = [];
     @observable obj_total_balance = {
         amount_real: undefined,
@@ -201,9 +202,13 @@ export default class ClientStore extends BaseStore {
         return this.active_accounts.some(acc => acc.landing_company_shortcode === 'malta');
     }
 
+    hasAnyRealAccount = () => {
+        return this.account_list.some(acc => acc.is_virtual === 0);
+    };
+
     @computed
     get has_any_real_account() {
-        return this.account_list.some(acc => acc.is_virtual === 0);
+        return this.hasAnyRealAccount();
     }
 
     @computed
@@ -338,7 +343,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get account_title() {
-        return ClientBase.getAccountTitle(this.loginid);
+        return getAccountTitle(this.loginid);
     }
 
     @computed
@@ -372,7 +377,12 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_tnc_needed() {
-        return ClientBase.shouldAcceptTnc(this.account_settings);
+        if (this.is_virtual) return false;
+
+        const { client_tnc_status } = this.account_settings;
+        const { terms_conditions_version } = this.website_status;
+
+        return typeof client_tnc_status !== 'undefined' && client_tnc_status !== terms_conditions_version;
     }
 
     @computed
@@ -717,8 +727,6 @@ export default class ClientStore extends BaseStore {
         this.local_currency_config.decimal_places = isEmptyObject(response.authorize.local_currencies)
             ? default_fractional_digits
             : +response.authorize.local_currencies[this.local_currency_config.currency].fractional_digits;
-
-        ClientBase.responseAuthorize(response);
     }
 
     @action.bound
@@ -760,6 +768,7 @@ export default class ClientStore extends BaseStore {
         this.is_populating_account_list = false;
         this.upgrade_info = this.getBasicUpgradeInfo();
         this.setSwitched(client_id);
+        this.syncWithSmartTrader(client_id, client_accounts);
     }
 
     @action.bound
@@ -856,8 +865,10 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get residence() {
-        // TODO Instead of return residence from each individual loginid, set in once in login, this is bound by user.
-        return this.accounts[this.loginid]?.residence ?? '';
+        if (this.is_logged_in) {
+            return this.account_settings.country_code ?? '';
+        }
+        return '';
     }
 
     @computed
@@ -873,6 +884,34 @@ export default class ClientStore extends BaseStore {
     get is_website_status_ready() {
         return this.website_status && this.website_status.site_status === 'up';
     }
+
+    isAccountOfType = type => {
+        const client_account_type = getClientAccountType(this.loginid);
+
+        return (
+            ((type === 'virtual' && client_account_type === 'virtual') ||
+                (type === 'real' && client_account_type !== 'virtual') ||
+                type === client_account_type) &&
+            !this.isDisabled()
+        );
+    };
+
+    getRiskAssessment = () => {
+        if (!this.account_status) return false;
+
+        const status = this.account_status.status;
+        const is_high_risk = /high/.test(this.account_status.risk_classification);
+
+        return this.isAccountOfType('financial')
+            ? /(financial_assessment|trading_experience)_not_complete/.test(status)
+            : is_high_risk && /financial_assessment_not_complete/.test(status);
+    };
+
+    shouldCompleteTax = () => {
+        if (!this.isAccountOfType('financial')) return false;
+
+        return !/crs_tin_information/.test((this.account_status || {}).status);
+    };
 
     @action.bound
     updateAccountList(account_list) {
@@ -915,20 +954,12 @@ export default class ClientStore extends BaseStore {
         this.root_store.ui.removeNotifications();
         this.root_store.ui.removeAllNotificationMessages();
         const client = this.accounts[this.loginid];
-        const { has_missing_required_field } = handleClientNotifications(
-            client,
-            this.account_settings,
-            this.account_status,
-            this.root_store.ui.addNotificationMessage,
-            this.loginid,
-            this.root_store.ui
-        );
+        const { has_missing_required_field } = handleClientNotifications(client, this, this.root_store.ui);
         this.setHasMissingRequiredField(has_missing_required_field);
     }
 
     /**
      * We initially fetch things from local storage, and then do everything inside the store.
-     * This will probably be the only place we are fetching data from Client_base.
      */
     @action.bound
     async init(login_new_user) {
@@ -945,7 +976,7 @@ export default class ClientStore extends BaseStore {
                 message: localize('Please Log in'),
                 should_show_refresh: false,
                 redirect_label: localize('Log in'),
-                redirectOnClick: redirectToLogin,
+                redirectOnClick: () => redirectToLogin(false, getLanguage()),
             });
             this.setIsLoggingIn(false);
             this.setInitialized(false);
@@ -955,6 +986,7 @@ export default class ClientStore extends BaseStore {
 
         this.setLoginId(LocalStore.get('active_loginid'));
         this.setAccounts(LocalStore.getObject(storage_key));
+
         this.setSwitched('');
         let client = this.accounts[this.loginid];
         // If there is an authorize_response, it means it was the first login
@@ -991,10 +1023,7 @@ export default class ClientStore extends BaseStore {
                     if (client && !client.is_virtual) {
                         const { has_missing_required_field } = handleClientNotifications(
                             client,
-                            this.account_settings,
-                            this.account_status,
-                            this.root_store.ui.addNotificationMessage,
-                            this.loginid,
+                            this,
                             this.root_store.ui
                         );
                         this.setHasMissingRequiredField(has_missing_required_field);
@@ -1018,8 +1047,12 @@ export default class ClientStore extends BaseStore {
                 await this.fetchResidenceList();
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
-            WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
-            this.getLimits();
+            await WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
+            if (!this.is_virtual) this.getLimits();
+
+            if (!this.switched && !this.has_any_real_account && this.is_mt5_allowed) {
+                this.root_store.ui.toggleWelcomeModal({ is_visible: true });
+            }
         } else {
             this.resetMt5AccountListPopulation();
         }
@@ -1135,7 +1168,7 @@ export default class ClientStore extends BaseStore {
         const currency = account.currency;
         const is_disabled = account.is_disabled;
         const is_virtual = account.is_virtual;
-        const account_type = !is_virtual && currency ? currency : ClientBase.getAccountTitle(loginid);
+        const account_type = !is_virtual && currency ? currency : this.account_title;
 
         return {
             loginid,
@@ -1212,7 +1245,7 @@ export default class ClientStore extends BaseStore {
         const should_switch_socket_connection = this.is_virtual || /VRTC/.test(from_login_id);
 
         if (should_switch_socket_connection) {
-            BinarySocket.closeAndOpenNewConnection(this.getToken());
+            BinarySocket.closeAndOpenNewConnection();
             await BinarySocket.wait('authorize');
         } else {
             await WS.forgetAll('balance');
@@ -1226,7 +1259,7 @@ export default class ClientStore extends BaseStore {
 
         await this.init();
         this.broadcastAccountChange();
-        this.getLimits();
+        if (!this.is_virtual) this.getLimits();
 
         runInAction(() => (this.is_switching = false));
     }
@@ -1330,6 +1363,9 @@ export default class ClientStore extends BaseStore {
         this.user_id = null;
         this.upgrade_info = undefined;
         this.accounts = {};
+        localStorage.setItem('active_loginid', this.loginid);
+        localStorage.setItem('client.accounts', JSON.stringify(this.accounts));
+
         runInAction(async () => {
             this.responsePayoutCurrencies(await WS.payoutCurrencies());
         });
@@ -1428,6 +1464,7 @@ export default class ClientStore extends BaseStore {
         if (active_loginid && Object.keys(client_object).length) {
             localStorage.setItem('active_loginid', active_loginid);
             localStorage.setItem('client.accounts', JSON.stringify(client_object));
+            this.syncWithSmartTrader(active_loginid, this.accounts);
         }
     }
 
@@ -1453,6 +1490,7 @@ export default class ClientStore extends BaseStore {
 
             // delete account query params - but keep other query params (e.g. utm)
             Object.keys(obj_params).forEach(key => search_params.delete(key));
+            search_params.delete('state'); // remove unused state= query string
             search_params = search_params?.toString();
             const search_param_without_account = search_params ? `?${search_params}` : '/';
             history.replaceState(null, null, `${search_param_without_account}${window.location.hash}`);
@@ -1522,27 +1560,13 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setDeviceData() {
         // Set client URL params on init
-        const url_params = new URLSearchParams(window.location.search);
-        const device_data = {
-            ...(url_params.get('affiliate_token') && { affiliate_token: url_params.get('affiliate_token') }),
-            ...(url_params.get('gclid_url') && { gclid_url: url_params.get('gclid_url') }),
+        const date_first_contact_cookie = setDeviceDataCookie(
+            'date_first_contact',
+            this.root_store.common.server_time.format('YYYY-MM-DD')
+        );
+        const signup_device_cookie = setDeviceDataCookie('signup_device', isDesktopOs() ? 'desktop' : 'mobile');
+        const device_data = createDeviceDataObject(date_first_contact_cookie, signup_device_cookie);
 
-            // date_first_contact should be preserved to the first client contact
-            ...(!this.device_data.date_first_contact && {
-                date_first_contact:
-                    url_params.get('date_first_contact') || this.root_store.common.server_time.format('YYYY-MM-DD'),
-            }),
-
-            // signup device can be set anytime even if there is no url parameter by using isDesktopOs function
-            signup_device: url_params.get('signup_device') || isDesktopOs() ? 'desktop' : 'mobile',
-
-            // url params can be stored only if utm_source is available
-            ...(url_params.get('utm_source') && {
-                utm_campaign: url_params.get('utm_campaign') || '',
-                utm_medium: url_params.get('utm_medium') || '',
-                utm_source: url_params.get('utm_source'), // since the check is done previously
-            }),
-        };
         this.device_data = { ...this.device_data, ...device_data };
     }
 
@@ -1599,6 +1623,10 @@ export default class ClientStore extends BaseStore {
 
                 if (this.root_store.ui.is_eu_enabled) {
                     this.root_store.ui.showAccountTypesModalForEuropean();
+                }
+
+                if (this.is_mt5_allowed) {
+                    this.root_store.ui.toggleWelcomeModal({ is_visible: true, should_persist: true });
                 }
             }
         });
@@ -1662,6 +1690,7 @@ export default class ClientStore extends BaseStore {
     resetMt5ListPopulatedState() {
         this.is_mt5_account_list_updated = false;
         this.is_populating_mt5_account_list = true;
+        this.mt5_login_list_error = null;
     }
 
     @action.bound
@@ -1676,6 +1705,7 @@ export default class ClientStore extends BaseStore {
     responseMt5LoginList(response) {
         this.is_populating_mt5_account_list = false;
         this.is_mt5_account_list_updated = true;
+        this.mt5_login_list_error = null;
         /** we need to update mt5_login_list on mount of account switcher
          *  to get the new MT5 balances (balance does not stream for MT5 accounts due to API restriction)
          *  but to avoid spamming this call since the rate limit is strict
@@ -1693,6 +1723,8 @@ export default class ClientStore extends BaseStore {
                     group: getMT5AccountType(account.group),
                     display_login: account.login.replace(/^(MT[DR]?)/i, ''),
                 }));
+        } else {
+            this.mt5_login_list_error = response.error;
         }
     }
 
@@ -1705,19 +1737,13 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     getChangeableFields() {
-        const landing_company = State.getResponse('landing_company');
-        const has_changeable_field =
-            (this.root_store.ui.is_eu_enabled || this.landing_company_shortcode === 'svg') &&
-            !this.is_fully_authenticated;
-        const changeable = ClientBase.getLandingCompanyValue(this.loginid, landing_company, 'changeable_fields');
-        if (has_changeable_field) {
-            let changeable_fields = [];
-            if (changeable && changeable.only_before_auth) {
-                changeable_fields = [...changeable.only_before_auth];
-            }
-            return changeable_fields;
-        }
-        return [];
+        const get_settings =
+            Object.keys(this.account_settings).length === 0
+                ? WS.authorized.storage.getSettings()
+                : this.account_settings;
+
+        const readonly_fields = [...get_settings.immutable_fields, ...['immutable_fields', 'email', 'password']];
+        return Object.keys(get_settings).filter(field => !readonly_fields.includes(field));
     }
 
     @action.bound

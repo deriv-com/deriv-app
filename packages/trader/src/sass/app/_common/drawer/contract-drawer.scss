@@ -63,173 +63,15 @@ $header-height: 4em;
         display: flex;
         flex-direction: column;
     }
+    .dc-contract-card-dialog-toggle {
+        top: 114px;
+        right: 8px;
+        width: 108px;
+    }
 }
 
 /** @define .contract-card; weak */
 .contract-card {
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    text-decoration: none;
-    position: relative;
-    border-radius: $BORDER_RADIUS;
-    padding: 4px;
-    background-color: var(--general-main-1);
-    color: var(--text-prominent);
-
-    .progress-slider,
-    .progress-slider--completed {
-        margin: 0.8rem 0 0;
-        border-bottom: 1px solid var(--general-section-1);
-    }
-    &:before {
-        content: '';
-        position: absolute;
-        height: 52px;
-        width: 100%;
-        left: 0;
-        top: 0;
-        border-radius: $BORDER_RADIUS;
-    }
-    &--green:before {
-        background-image: linear-gradient(to top, rgba(16, 19, 32, 0), rgba(0, 148, 117, 0.16));
-    }
-    &--red:before {
-        background-image: linear-gradient(to top, rgba(16, 19, 32, 0), rgba(227, 28, 75, 0.16));
-    }
-    &--loss {
-        color: var(--text-loss-danger);
-    }
-    &--profit {
-        color: var(--text-profit-success);
-    }
-    &__grid {
-        display: grid;
-        grid-template-rows: 1fr auto;
-        grid-gap: 4px;
-
-        &-underlying-trade {
-            grid-template-columns: 1.5fr 1fr;
-            width: 100%;
-        }
-        &-profit-payout {
-            grid-template-columns: 1fr 1fr;
-            padding: 8px 0;
-            border-radius: $BORDER_RADIUS;
-            margin-left: -4px;
-            margin-right: -4px;
-            background: var(--general-hover);
-        }
-        &-label {
-            font-size: 1rem;
-            align-self: flex-start;
-            text-transform: none;
-            line-height: 1.5;
-            color: var(--text-general);
-            white-space: nowrap;
-        }
-        &-value {
-            font-size: 1.2rem;
-            font-weight: bold;
-            align-self: flex-start;
-            line-height: 1.5;
-        }
-    }
-    .purchase-price,
-    .potential-payout {
-        &-container {
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
-        }
-        &__label {
-            font-size: 1rem;
-            align-self: flex-start;
-            text-transform: none;
-            margin-bottom: 4px;
-            color: var(--text-general);
-            white-space: nowrap;
-        }
-        &__value {
-            font-size: 1em;
-            font-weight: bold;
-            align-self: flex-start;
-        }
-    }
-    .potential-payout {
-        &-container {
-            padding-left: 4px;
-        }
-        &-price__value {
-            font-size: 1em;
-            font-weight: bold;
-            align-self: flex-start;
-        }
-    }
-    &__separator {
-        width: 100%;
-        border-top: 1px solid var(--general-section-1);
-    }
-    &__underlying-name {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        font-weight: bold;
-        font-size: 1.2em;
-        max-width: 120px;
-    }
-    &__type {
-        font-size: 1.2em;
-        display: flex;
-        justify-content: flex-start;
-        font-weight: bold;
-
-        /* postcss-bem-linter: ignore */
-        .category-type {
-            .color1-fill {
-                fill: var(--brand-red-coral) !important;
-            }
-            .color2-fill {
-                fill: var(--brand-secondary) !important;
-            }
-        }
-    }
-    &__symbol {
-        margin-left: 0.8rem;
-        font-size: 1.2rem;
-        line-height: normal;
-    }
-    &__header {
-        display: flex;
-        justify-content: space-evenly;
-        flex-direction: column;
-        margin: 0.5em 0.2em;
-
-        @include mobile {
-            margin: 0 8px;
-        }
-    }
-    &__body {
-        border-radius: $BORDER_RADIUS;
-        width: 100%;
-        padding: 0.8rem 0.4rem;
-        color: var(--text-prominent);
-        display: flex;
-
-        &-wrapper {
-            width: 100%;
-        }
-
-        @include mobile {
-            padding: 0 8px;
-
-            &-wrapper {
-                display: flex;
-                padding-top: 0.8rem;
-            }
-        }
-    }
     &__footer {
         margin-bottom: 0.5em;
         padding: 0 4px;
@@ -247,7 +89,6 @@ $header-height: 4em;
         align-items: center;
         justify-content: center;
         transition: transform 0.25s ease, opacity 0.25s linear;
-        padding-top: 8px;
         border-top: 1px solid var(--general-section-1);
 
         &--enter-done {
@@ -266,122 +107,24 @@ $header-height: 4em;
                 margin-left: 0.8rem;
             }
         }
-        .remaining-time {
+        .dc-remaining-time {
             border-radius: 0.4rem;
             font-size: 1.2rem;
             margin-left: 0.8rem;
             padding-top: 0.2rem;
         }
         .dc-btn--sell {
-            height: 32px;
-
             @include mobile {
                 width: 100%;
             }
         }
-        .positions-drawer-dialog-toggle {
-            top: 103px;
-            right: 6px;
-            width: 108px;
-        }
-    }
-    &-items-wrapper {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-gap: 0.8rem 0.4rem;
-        flex: 1;
-    }
-    &-item {
-        &__header {
-            line-height: 1.4;
-        }
-        &__body {
-            @include typeface(--small-left-bold-black);
-            display: flex;
-            align-self: flex-start;
-            color: var(--text-prominent);
-            line-height: 1.5;
+        .dc-btn--sell,
+        .dc-btn--cancel {
+            height: 2.4rem;
 
-            &--is-crypto {
-                margin-left: -6px;
+            @include mobile {
+                height: 3.2rem;
             }
         }
-        &__body--loss {
-            color: var(--text-loss-danger) !important;
-
-            &:before {
-                content: '-';
-            }
-        }
-        &__body--profit {
-            color: var(--text-profit-success) !important;
-
-            &:before {
-                content: '+';
-            }
-        }
-        &__total-profit-loss {
-            padding: 0.4rem 0.8rem 0;
-            border-top: 1px solid var(--general-section-1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 0.8rem;
-
-            .contract-card-item__header,
-            .contract-card-item__body {
-                font-size: 1.4rem;
-                line-height: 2rem;
-                align-self: center;
-            }
-        }
-    }
-    &__indicative--movement {
-        margin-left: 2px;
-        width: 16px;
-        height: 16px;
-
-        &-complete,
-        &-complete:after {
-            display: none;
-        }
-        &:after {
-            content: '';
-            width: 16px;
-        }
-    }
-    &__status {
-        min-width: 25%;
-        text-align: center;
-        margin-right: 0.4rem;
-
-        .result-icon {
-            margin-left: 0.4rem;
-        }
-    }
-    .contract-audit {
-        &__wrapper {
-            padding: 2px 0;
-            width: 100%;
-        }
-        &__wrapper--is-open {
-            margin-top: 0.5em;
-        }
-        &__toggle {
-            margin: 0 0 -0.5em;
-            width: 100%;
-        }
-        &__label {
-            font-size: 0.8em;
-            text-align: left;
-        }
-        &__value {
-            font-size: 1em;
-            text-align: left;
-        }
-    }
-    .contract-type__type-wrapper {
-        width: unset;
-        height: unset;
     }
 }

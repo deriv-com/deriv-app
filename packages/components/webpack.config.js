@@ -75,7 +75,6 @@ module.exports = {
         {
             formik: 'formik',
             classnames: 'classnames',
-            '@contentpass/zxcvbn': '@contentpass/zxcvbn',
             'react-div-100vh': 'react-div-100vh',
             'react-drag-drawer': 'react-drag-drawer',
             'react-pose': 'react-pose',
@@ -83,6 +82,7 @@ module.exports = {
             'prop-types': 'prop-types',
             'react-transition-group': 'react-transition-group',
             react: 'react',
+            'react-content-loader': 'react-content-loader',
             'react-dom': 'react-dom',
             '@deriv/shared': '@deriv/shared',
             'react-router-dom': 'react-router-dom',

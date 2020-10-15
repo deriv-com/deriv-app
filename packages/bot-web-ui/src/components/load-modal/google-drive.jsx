@@ -1,8 +1,7 @@
 import classnames from 'classnames';
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import { Button, Icon } from '@deriv/components';
-import { getDerivComLink } from '@deriv/shared';
+import { Button, Icon, StaticUrl } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from '../../stores/connect';
 
@@ -43,20 +42,13 @@ const GoogleDrive = ({ is_authorised, is_open_button_loading, onDriveConnect, on
                             <Localize
                                 i18n_default_text="Find out how this app handles your data by reviewing Deriv's <0>Privacy policy</0>, which is part of Deriv's <1>Terms and conditions</2>."
                                 components={[
-                                    <a
+                                    <StaticUrl
                                         key={0}
                                         className='link'
-                                        target='_blank'
-                                        rel='noopener noreferrer'
-                                        href={getDerivComLink('tnc/security-and-privacy.pdf')}
+                                        href='tnc/security-and-privacy.pdf'
+                                        is_document
                                     />,
-                                    <a
-                                        key={1}
-                                        className='link'
-                                        target='_blank'
-                                        rel='noopener noreferrer'
-                                        href={getDerivComLink('terms-and-conditions')}
-                                    />,
+                                    <StaticUrl key={1} className='link' href='terms-and-conditions' />,
                                 ]}
                             />
                         </div>

@@ -1,5 +1,5 @@
 import { Button, Icon, Input, ThemedScrollbars, Popover, Dialog } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { Field, Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -135,9 +135,15 @@ const WorkspaceGroup = ({
     </div>
 );
 
-const Toolbar = props => {
+const Toolbar = ({ onMount, onUnmount, ...other_props }) => {
+    React.useEffect(() => {
+        onMount();
+        return () => onUnmount();
+    }, [onMount, onUnmount]);
+
     const {
         is_mobile,
+        is_running,
         active_tab,
         is_dialog_open,
         onOkButtonClick,
@@ -146,7 +152,7 @@ const Toolbar = props => {
         toggleStrategyModal,
         toggleLoadModal,
         toggleSaveModal,
-    } = props;
+    } = other_props;
 
     return (
         <>
@@ -188,8 +194,8 @@ const Toolbar = props => {
                                 icon={<Icon icon='IcPuzzle' color='active' />}
                                 button_text={localize('Get started')}
                             />
-                            {active_tab === tabs_title.WORKSPACE && <SearchBox {...props} />}
-                            {active_tab === tabs_title.WORKSPACE && <WorkspaceGroup {...props} />}
+                            {active_tab === tabs_title.WORKSPACE && <SearchBox {...other_props} />}
+                            {active_tab === tabs_title.WORKSPACE && <WorkspaceGroup {...other_props} />}
                         </div>
                         <div className='toolbar__section'>
                             <TradeAnimation
@@ -206,15 +212,22 @@ const Toolbar = props => {
             <Dialog
                 title={localize('Are you sure?')}
                 is_visible={is_dialog_open}
-                confirm_button_text={localize('OK')}
+                confirm_button_text={is_running ? localize('Yes') : localize('OK')}
                 onConfirm={onOkButtonClick}
-                cancel_button_text={localize('Cancel')}
+                cancel_button_text={is_running ? localize('No') : localize('Cancel')}
                 onCancel={closeResetDialog}
                 is_mobile_full_width={false}
-                className={'dc-dialog__wrapper--fixed'}
+                className={'toolbar__dialog dc-dialog__wrapper--fixed'}
                 has_close_icon
             >
-                {localize('Any unsaved changes will be lost.')}
+                {is_running ? (
+                    <Localize
+                        i18n_default_text='DBot will not proceed with any new trades. Any ongoing trades will be completed by our system. Any unsaved changes will be lost.<0>Note: Please check your statement to view completed transactions.</0>'
+                        components={[<div key={0} className='toolbar__dialog-text--second' />]}
+                    />
+                ) : (
+                    localize('Any unsaved changes will be lost.')
+                )}
             </Dialog>
         </>
     );
@@ -227,11 +240,13 @@ Toolbar.propTypes = {
     has_undo_stack: PropTypes.bool,
     is_dialog_open: PropTypes.bool,
     is_drawer_open: PropTypes.bool,
+    is_running: PropTypes.bool,
     is_search_loading: PropTypes.bool,
     is_stop_button_disabled: PropTypes.bool,
     is_stop_button_visible: PropTypes.bool,
     closeResetDialog: PropTypes.func,
     onGoogleDriveClick: PropTypes.func,
+    onMount: PropTypes.func,
     onOkButtonClick: PropTypes.func,
     onResetClick: PropTypes.func,
     onRunButtonClick: PropTypes.func,
@@ -243,6 +258,7 @@ Toolbar.propTypes = {
     onStopButtonClick: PropTypes.func,
     onToolboxToggle: PropTypes.func,
     onUndoClick: PropTypes.func,
+    onUnmount: PropTypes.func,
     onZoomInOutClick: PropTypes.func,
     toggleSaveLoadModal: PropTypes.func,
 };
@@ -255,11 +271,13 @@ export default connect(({ main_content, run_panel, save_modal, load_modal, toolb
     has_undo_stack: toolbar.has_undo_stack,
     is_dialog_open: toolbar.is_dialog_open,
     is_drawer_open: run_panel.is_drawer_open,
+    is_running: run_panel.is_running,
     is_search_loading: toolbar.is_search_loading,
     is_stop_button_disabled: run_panel.is_stop_button_disabled,
     is_stop_button_visible: run_panel.is_stop_button_visible,
     closeResetDialog: toolbar.closeResetDialog,
     onGoogleDriveClick: toolbar.onGoogleDriveClick,
+    onMount: toolbar.onMount,
     onOkButtonClick: toolbar.onResetOkButtonClick,
     onResetClick: toolbar.onResetClick,
     onRunButtonClick: run_panel.onRunButtonClick,
@@ -271,6 +289,7 @@ export default connect(({ main_content, run_panel, save_modal, load_modal, toolb
     onStopButtonClick: run_panel.onStopButtonClick,
     onToolboxToggle: toolbar.onToolboxToggle,
     onUndoClick: toolbar.onUndoClick,
+    onUnmount: toolbar.onUnmount,
     onZoomInOutClick: toolbar.onZoomInOutClick,
     toggleLoadModal: load_modal.toggleLoadModal,
     toggleSaveModal: save_modal.toggleSaveModal,

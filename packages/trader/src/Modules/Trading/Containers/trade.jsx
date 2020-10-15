@@ -14,11 +14,13 @@ import AllMarkers from '../../SmartChart/Components/all-markers.jsx';
 const BottomWidgetsMobile = ({ tick, digits, setTick, setDigits }) => {
     React.useEffect(() => {
         setTick(tick);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [tick]);
 
     React.useEffect(() => {
         setDigits(digits);
-    }, digits);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [digits]);
 
     // render nothing for bottom widgets on chart in mobile
     return null;
@@ -28,6 +30,7 @@ class Trade extends React.Component {
     state = {
         digits: [],
         tick: {},
+        try_synthetic_indices: false,
     };
 
     componentDidMount() {
@@ -41,6 +44,9 @@ class Trade extends React.Component {
     componentDidUpdate(prevProps) {
         if (isMobile() && prevProps.symbol !== this.props.symbol) {
             this.setState({ digits: [] });
+        }
+        if (prevProps.symbol !== this.props.symbol) {
+            this.setState({ try_synthetic_indices: false });
         }
     }
 
@@ -64,6 +70,19 @@ class Trade extends React.Component {
         this.setState({
             is_digits_widget_active: index === 0,
         });
+    };
+
+    onTrySyntheticIndicesClick = () => {
+        this.setState(
+            {
+                try_synthetic_indices: true,
+            },
+            () => {
+                this.setState({
+                    try_synthetic_indices: false,
+                });
+            }
+        );
     };
 
     render() {
@@ -96,7 +115,7 @@ class Trade extends React.Component {
                         <DesktopWrapper>
                             <div className='chart-container__wrapper'>
                                 <ChartLoader is_visible={this.props.is_chart_loading} />
-                                <ChartTrade />
+                                <ChartTrade try_synthetic_indices={this.state.try_synthetic_indices} />
                             </div>
                         </DesktopWrapper>
                         <MobileWrapper>
@@ -120,6 +139,7 @@ class Trade extends React.Component {
                                     is_digits_widget_active={
                                         this.props.show_digits_stats ? this.state.is_digits_widget_active : undefined
                                     }
+                                    try_synthetic_indices={this.state.try_synthetic_indices}
                                 />
                             </SwipeableWrapper>
                         </MobileWrapper>
@@ -129,7 +149,7 @@ class Trade extends React.Component {
                     <Test />
                 </Div100vhContainer>
                 <div className={form_wrapper_class}>
-                    {this.props.is_market_closed && <MarketIsClosedOverlay />}
+                    {this.props.is_market_closed && <MarketIsClosedOverlay onClick={this.onTrySyntheticIndicesClick} />}
                     <FormLayout
                         is_market_closed={this.props.is_market_closed}
                         is_trade_enabled={is_trade_enabled && this.props.network_status.class === 'online'}
@@ -188,12 +208,15 @@ const ChartMarkers = connect(({ modules, ui, client }) => ({
 class ChartTradeClass extends React.Component {
     state = {
         active_markets: [],
+        active_category: null,
     };
     bottomWidgets = ({ digits, tick }) => <ChartBottomWidgets digits={digits} tick={tick} />;
     topWidgets = ({ ...props }) => {
-        const { is_digits_widget_active } = this.props;
+        const { is_digits_widget_active, try_synthetic_indices } = this.props;
         return (
             <ChartTopWidgets
+                active_category={try_synthetic_indices ? 'synthetic_index' : null}
+                open={!!try_synthetic_indices}
                 charts_ref={this.charts_ref}
                 is_digits_widget_active={is_digits_widget_active}
                 {...props}
@@ -239,7 +262,6 @@ class ChartTradeClass extends React.Component {
         const max_ticks = this.props.granularity === 0 ? 8 : 24;
 
         if (!symbol || active_markets.length === 0) return null;
-
         return (
             <SmartChart
                 ref={ref => (this.charts_ref = ref)}
@@ -292,7 +314,7 @@ const ChartTrade = connect(({ modules, ui, common }) => ({
         assetInformation: false, // ui.is_chart_asset_info_visible,
         countdown: ui.is_chart_countdown_visible,
         isHighestLowestMarkerEnabled: false, // TODO: Pending UI,
-        lang: common.current_language,
+        language: common.current_language.toLowerCase(),
         position: ui.is_chart_layout_default ? 'bottom' : 'left',
         theme: ui.is_dark_mode_on ? 'dark' : 'light',
     },

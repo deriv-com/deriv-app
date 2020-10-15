@@ -22,6 +22,10 @@ $HEIGHT: calc(100vh - 34em);
             &__content {
                 display: flex;
                 height: calc(100% - 4rem);
+                /* postcss-bem-linter: ignore */
+                .dc-themed-scrollbars {
+                    flex: 1;
+                }
             }
         }
         /* postcss-bem-linter: ignore */

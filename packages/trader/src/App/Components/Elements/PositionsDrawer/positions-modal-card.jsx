@@ -2,11 +2,18 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import CurrencyBadge from 'App/Components/Elements/currency-badge.jsx';
-import { Button, ContractCard, Icon, Money, ProgressSliderMobile } from '@deriv/components';
-import { getContractPath, isMultiplierContract, isHighLow, isCryptocurrency } from '@deriv/shared';
+import { ContractCard, Icon, Money, ProgressSliderMobile } from '@deriv/components';
+import {
+    getContractPath,
+    isMultiplierContract,
+    isHighLow,
+    isCryptocurrency,
+    hasContractEntered,
+    isOpen,
+} from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
+import CurrencyBadge from 'App/Components/Elements/currency-badge.jsx';
 import { connect } from 'Stores/connect';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import { getContractTypeDisplay, getCardLabels } from 'Constants/contract';
@@ -26,7 +33,6 @@ const PositionsModalCard = ({
     is_mobile,
     is_sell_requested,
     is_unsupported,
-    is_valid_to_sell,
     onClickRemove,
     onClickSell,
     profit_loss,
@@ -51,6 +57,8 @@ const PositionsModalCard = ({
     const is_multiplier = isMultiplierContract(contract_info.contract_type);
     const fallback_result = profit_loss >= 0 ? 'won' : 'lost';
 
+    const should_show_sell = hasContractEntered(contract_info) && isOpen(contract_info);
+
     const contract_options_el = (
         <React.Fragment>
             <div className={classNames('positions-modal-card__grid', 'positions-modal-card__grid-header')}>
@@ -70,7 +78,7 @@ const PositionsModalCard = ({
                     />
                 </div>
                 <CSSTransition
-                    in={!!is_valid_to_sell}
+                    in={should_show_sell}
                     timeout={250}
                     classNames={{
                         enter: 'positions-modal-card__sell-button--enter',
@@ -80,15 +88,11 @@ const PositionsModalCard = ({
                     unmountOnExit
                 >
                     <div className='positions-modal-card__sell-button'>
-                        <Button
-                            id={`dt_drawer_card_${id}_button`}
-                            className={classNames('dc-btn--sell', {
-                                'dc-btn--loading': is_sell_requested,
-                            })}
-                            is_disabled={!is_valid_to_sell || is_sell_requested}
-                            text={localize('Sell')}
-                            onClick={() => onClickSell(id)}
-                            secondary
+                        <ContractCard.Sell
+                            contract_info={contract_info}
+                            is_sell_requested={is_sell_requested}
+                            getCardLabels={getCardLabels}
+                            onClickSell={onClickSell}
                         />
                     </div>
                 </CSSTransition>

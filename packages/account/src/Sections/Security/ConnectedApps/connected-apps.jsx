@@ -19,7 +19,9 @@ class ConnectedApps extends React.Component {
     }, {});
 
     componentDidMount() {
-        this.fetchConnectedApps();
+        WS.wait('authorize').then(() => {
+            this.fetchConnectedApps();
+        });
     }
 
     handleRevokeAccess = () => {

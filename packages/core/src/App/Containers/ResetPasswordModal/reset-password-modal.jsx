@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Formik, Form } from 'formik';
 import { Button, Dialog, PasswordInput, PasswordMeter } from '@deriv/components';
-import { validPassword, validLength, getErrorMessages } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
+import { redirectToLogin, validPassword, validLength, getErrorMessages } from '@deriv/shared';
+import { getLanguage, localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { redirectToLogin } from '_common/base/login';
 import { WS } from 'Services/index';
 
 const resetInitialValues = { password: '' };
@@ -27,7 +26,7 @@ class ResetPassword extends React.Component {
         actions.setStatus({ reset_complete: true });
 
         this.props.logoutClient().then(() => {
-            redirectToLogin(this.props.is_logged_in);
+            redirectToLogin(this.props.is_logged_in, getLanguage());
         });
     };
 

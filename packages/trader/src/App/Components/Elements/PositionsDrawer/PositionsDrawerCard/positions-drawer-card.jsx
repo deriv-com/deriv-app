@@ -6,6 +6,7 @@ import { ContractCard } from '@deriv/components';
 import { getContractPath, isMultiplierContract } from '@deriv/shared';
 import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
 import { connect } from 'Stores/connect';
+import { connectWithContractUpdate } from 'Stores/Modules/Contract/Helpers/multiplier';
 
 const PositionsDrawerCard = ({
     addToast,
@@ -72,6 +73,7 @@ const PositionsDrawerCard = ({
     const card_footer = (
         <ContractCard.Footer
             addToast={addToast}
+            connectWithContractUpdate={connectWithContractUpdate}
             contract_info={contract_info}
             getCardLabels={getCardLabels}
             getContractById={getContractById}

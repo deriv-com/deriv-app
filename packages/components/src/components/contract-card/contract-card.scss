@@ -8,6 +8,7 @@
     padding: 0.8rem;
     background-color: var(--general-main-1);
     color: var(--text-prominent);
+    padding-bottom: 0.8rem;
 
     &:before {
         content: '';
@@ -79,7 +80,7 @@
         position: absolute;
         top: 0;
         width: 100%;
-        height: 100%;
+        height: calc(100% - 1rem);
         border-radius: $BORDER_RADIUS;
         z-index: 2;
         display: flex;
@@ -370,14 +371,11 @@
         padding-top: 0.4rem;
         margin-top: 0.8rem;
         border-top: 1px solid var(--general-section-1);
+        min-height: 4rem;
 
         &--positions {
             padding: 0.8rem 0;
             margin: 0 0.8rem;
-        }
-        &--enter-done {
-            opacity: 1;
-            transform: translateY(0);
         }
         &--enter,
         &--exit {
@@ -398,6 +396,14 @@
             font-size: 1.2rem;
             margin-left: 0.8rem;
             padding-top: 0.2rem;
+        }
+        .dc-btn--sell,
+        .dc-btn--cancel {
+            height: 2.4rem;
+
+            @include mobile {
+                height: 3.2rem;
+            }
         }
     }
     &__indicative--movement {
@@ -431,6 +437,9 @@
         .dc-btn--sell {
             height: 3.2rem !important;
         }
+    }
+    &__no-resale-msg {
+        font-size: 1.2rem;
     }
     .contract-audit {
         &__wrapper {

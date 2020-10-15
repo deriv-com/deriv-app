@@ -5,6 +5,7 @@ import { DesktopWrapper, MobileWrapper, Collapsible, ContractCard } from '@deriv
 import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
 import { getEndTime } from 'Stores/Modules/Contract/Helpers/logic';
 import { connect } from 'Stores/connect';
+import { connectWithContractUpdate } from 'Stores/Modules/Contract/Helpers/multiplier';
 import { SwipeableContractDrawer } from './swipeable-components.jsx';
 
 const ContractDrawerCard = ({
@@ -64,6 +65,7 @@ const ContractDrawerCard = ({
     const card_footer = (
         <ContractCard.Footer
             addToast={addToast}
+            connectWithContractUpdate={connectWithContractUpdate}
             contract_info={contract_info}
             getCardLabels={getCardLabels}
             getContractById={getContractById}

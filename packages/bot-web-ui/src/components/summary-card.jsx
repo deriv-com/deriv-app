@@ -14,6 +14,8 @@ const SummaryCard = ({
     is_contract_loading,
     is_contract_inactive,
     is_mobile,
+    onClickSell,
+    is_sell_requested,
     server_time,
 }) => {
     const card_header = (
@@ -39,10 +41,20 @@ const SummaryCard = ({
         />
     );
 
+    const card_footer = (
+        <ContractCard.Footer
+            contract_info={contract}
+            getCardLabels={getCardLabels}
+            is_sell_requested={is_sell_requested}
+            onClickSell={onClickSell}
+        />
+    );
+
     const contract_el = (
         <React.Fragment>
             {card_header}
             {card_body}
+            {card_footer}
         </React.Fragment>
     );
 
@@ -92,11 +104,13 @@ SummaryCard.propTypes = {
     server_time: PropTypes.object,
 };
 
-export default connect(({ summary_card, common, ui }) => ({
+export default connect(({ summary_card, common, run_panel, ui }) => ({
     contract: summary_card.contract,
     is_contract_completed: summary_card.is_contract_completed,
     is_contract_inactive: summary_card.is_contract_inactive,
     is_contract_loading: summary_card.is_contract_loading,
     is_mobile: ui.is_mobile,
+    onClickSell: run_panel.onClickSell,
+    is_sell_requested: run_panel.is_sell_requested,
     server_time: common.server_time,
 }))(SummaryCard);

@@ -1,5 +1,5 @@
 import { flow } from 'mobx';
-import {  redirectToLogin, State, getPropertyValue } from '@deriv/shared';
+import { redirectToLogin, State, getPropertyValue } from '@deriv/shared';
 import { getLanguage, localize } from '@deriv/translations';
 import ServerTime from '_common/base/server_time';
 import BinarySocket from '_common/base/socket_base';

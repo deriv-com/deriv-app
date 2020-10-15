@@ -13,10 +13,11 @@ import FormError from '../form/error.jsx';
 import { localize } from '../i18next';
 import './advertiser-page.scss';
 
-const RowComponent = React.memo(({ advert, showAdPopup, style }) => {
+const RowComponent = React.memo(({ data: advert, showAdPopup, style }) => {
     const { advertiser_page_store, general_store } = useStores();
-    const { local_currency, max_order_amount_limit_display, min_order_amount_limit_display, price_display } = advert;
     const { currency } = general_store.client;
+    const { local_currency, max_order_amount_limit_display, min_order_amount_limit_display, price_display } = advert;
+
     const is_buy_advert = advertiser_page_store.counterparty_type === buy_sell.BUY;
     const is_my_advert = advertiser_page_store.advertiser_details_id === general_store.advertiser_id;
 

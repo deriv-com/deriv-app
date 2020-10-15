@@ -1,7 +1,7 @@
 import { observable, action, runInAction } from 'mobx';
 import { isEmptyObject, epochToMoment, getSocketURL } from '@deriv/shared';
 import { orderToggleIndex } from 'Components/orders/order-info.js';
-import { getExtendedOrderDetails } from 'Utils/orders.js';
+import { createExtendedOrderDetails } from 'Utils/orders.js';
 import { init as WebsocketInit, requestWS, subscribeWS } from 'Utils/websocket.js';
 
 export default class GeneralStore {
@@ -32,7 +32,7 @@ export default class GeneralStore {
         buy_sell: 0,
         orders: 1,
         my_ads: 2,
-        // my_profile: 3,
+        my_profile: 3,
     };
     props = {};
     ws_subscriptions = {};
@@ -82,16 +82,17 @@ export default class GeneralStore {
 
     @action.bound
     handleNotifications(old_orders, new_orders) {
+        const { client, props } = this;
         const { is_cached, notifications } = this.getLocalStorageSettingsForLoginId();
         new_orders.forEach(new_order => {
-            const order_info = getExtendedOrderDetails(new_order, this.client.loginid);
+            const order_info = createExtendedOrderDetails(new_order, client.loginid, props.server_time);
             const notification = notifications.find(n => n.order_id === new_order.id);
             const old_order = old_orders.find(o => o.id === new_order.id);
             const is_current_order = new_order.id === this.props?.order_id;
             const notification_obj = {
                 order_id: new_order.id,
                 is_seen: is_current_order,
-                is_active: order_info.is_active,
+                is_active: order_info.is_active_order,
             };
 
             if (old_order) {
@@ -99,7 +100,7 @@ export default class GeneralStore {
                     if (notification) {
                         // If order status changed, notify the user.
                         notification.is_seen = is_current_order;
-                        notification.is_active = order_info.is_active;
+                        notification.is_active = order_info.is_active_order;
                     } else {
                         // If we have an old_order, but for some reason don't have a copy in local storage.
                         notifications.push(notification_obj);

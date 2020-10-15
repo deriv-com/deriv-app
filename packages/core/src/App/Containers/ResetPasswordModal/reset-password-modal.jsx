@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Formik, Form } from 'formik';
 import { Button, Dialog, PasswordInput, PasswordMeter } from '@deriv/components';
-import { validPassword, validLength, getErrorMessages } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
+import { redirectToLogin, validPassword, validLength, getErrorMessages } from '@deriv/shared';
+import { getLanguage, localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { redirectToLogin } from '_common/base/login';
 import { WS } from 'Services/index';
 
 const resetInitialValues = { password: '' };
@@ -27,7 +26,7 @@ class ResetPassword extends React.Component {
         actions.setStatus({ reset_complete: true });
 
         this.props.logoutClient().then(() => {
-            redirectToLogin();
+            redirectToLogin(this.props.is_logged_in, getLanguage());
         });
     };
 
@@ -156,6 +155,7 @@ const ResetPasswordModal = ({
     disableApp,
     is_loading,
     is_visible,
+    is_logged_in,
     logoutClient,
     verification_code,
     toggleResetPasswordModal,
@@ -163,6 +163,7 @@ const ResetPasswordModal = ({
     return (
         <Dialog is_visible={is_visible} disableApp={disableApp} enableApp={enableApp} is_loading={is_loading}>
             <ResetPassword
+                is_logged_in={is_logged_in}
                 verification_code={verification_code}
                 isModalVisible={toggleResetPasswordModal}
                 enableApp={enableApp}
@@ -187,6 +188,7 @@ export default connect(({ ui, client }) => ({
     enableApp: ui.enableApp,
     disableApp: ui.disableApp,
     is_loading: ui.is_loading,
+    is_logged_in: client.is_logged_in,
     logoutClient: client.logout,
     toggleResetPasswordModal: ui.toggleResetPasswordModal,
     verification_code: client.verification_code.reset_password,

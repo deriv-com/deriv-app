@@ -10,37 +10,19 @@ $side-padding: 1.2em;
         width: 100%;
         display: flex;
         justify-content: space-between;
-        padding: 0 2.4rem 1.6rem;
+        padding: 0 2.4rem 1.6rem 0;
 
         @include mobile {
             padding: 0 1.6rem 1.6rem;
         }
 
-        &-description {
-            &--heading {
-                @include typeface(--title-left-bold-black, none);
-                color: var(--text-prominent);
-                line-height: 1.55;
-            }
-            &--paragraph {
-                @include typeface(--paragraph-left-normal-black, none);
-                color: var(--text-general);
-
-                @include mobile {
-                    padding: 0.8rem 0 1.6rem;
-                }
-            }
-            @include mobile {
-                margin-top: 0.8rem;
-            }
-        }
         &-filter {
             position: relative;
             display: flex;
-            justify-content: flex-end;
             width: 100%;
             @include desktop {
                 max-width: 36rem;
+                margin-left: auto;
             }
         }
 
@@ -54,6 +36,10 @@ $side-padding: 1.2em;
 
             &-filter {
                 padding-bottom: 1.6rem;
+            }
+            #dt_calendar_input {
+                text-align: left;
+                padding-left: 3rem;
             }
         }
     }
@@ -134,6 +120,13 @@ $side-padding: 1.2em;
                     display: none;
                 }
             }
+            .balance {
+                display: flex;
+
+                &__row-title {
+                    flex: 50%;
+                }
+            }
         }
     }
 
@@ -149,8 +142,11 @@ $side-padding: 1.2em;
         flex: 1;
     }
     &__row {
-        /*                     icon   refId tr_time  transaction cred/debt  balance */
-        grid-template-columns: 0.8fr 1.2fr 1fr 0.8fr 1fr 1fr;
+        /* icon refId currency tr_time transaction cred/debt balance */
+        /* stylelint-disable-next-line declaration-colon-space-after */
+        grid-template-columns:
+            minmax(120px, 0.8fr) minmax(85px, 1.4fr) minmax(110px, 1.2fr) minmax(85px, 1.2fr) minmax(85px, 1fr)
+            minmax(85px, 1.2fr) minmax(85px, 1fr);
 
         .date {
             text-align: left;
@@ -171,16 +167,6 @@ $side-padding: 1.2em;
         }
         &--loss {
             color: var(--text-loss-danger);
-        }
-    }
-    .refid {
-        @include mobile {
-            display: flex;
-            flex-direction: row;
-
-            &__row-title {
-                margin-right: 4px;
-            }
         }
     }
     .market-symbol-icon {
@@ -228,45 +214,73 @@ $side-padding: 1.2em;
     }
     &__account-statistics {
         @include desktop {
-            width: 43.2rem;
+            width: 52rem;
         }
         @include mobile {
-            margin: 0.8rem 0;
+            margin: 0.8rem 0 1.6rem;
+            order: 1;
+            height: 4rem;
         }
-        height: 6.4rem;
+        height: 4.8rem;
         display: flex;
         flex-direction: row;
         text-align: left;
 
-        :last-child {
-            border-right: unset;
+        &-item {
+            flex: 1;
+            border-right: 1px solid var(--border-normal);
+            display: flex;
+            max-width: 19rem;
+
+            &:last-child {
+                border-right: unset;
+            }
+            &:first-child {
+                .statement__account-statistics--is-rectangle {
+                    padding-left: 0;
+                }
+            }
+            &:not(:first-child) {
+                justify-content: center;
+            }
         }
-        :first-child {
-            padding-left: 0;
+        &-total-withdrawal {
+            @include desktop {
+                min-width: 19rem;
+            }
+            @include mobile {
+                min-width: 12.3rem;
+            }
         }
         &--is-rectangle {
-            text-align: left;
             height: 100%;
-            border-right: 1px solid $color-grey-2;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding: 8px 0 0 16px;
-            align-items: flex-start;
-            max-width: 14.4rem;
-            width: 100%;
+
+            @include desktop {
+                padding: 0.4rem 1.6rem;
+            }
         }
         &-title {
             text-align: left;
-            color: $color-grey-1;
-            font-size: 14px;
+            color: var(--text-less-prominent);
+            font-size: 1.4rem;
             margin-bottom: 9px;
+
+            @include mobile {
+                font-size: 1rem;
+            }
         }
         &-amount {
-            text-align: left;
+            text-align: center;
             font-weight: bold;
-            font-size: 16px;
+            font-size: 1.6rem;
             color: var(--text-prominent);
+
+            @include mobile {
+                font-size: 1.4rem;
+            }
         }
     }
 }
@@ -340,6 +354,11 @@ $side-padding: 1.2em;
 
 /** @define profit-table; weak */
 .profit-table {
+    .table__head,
+    .table__foot {
+        font-weight: bold;
+    }
+
     @include desktop {
         height: 100%;
     }
@@ -390,8 +409,11 @@ $side-padding: 1.2em;
         flex: 1;
     }
     &__row {
-        /*                     icon   refId buy_time  buy_price sell_time  sell_price profit/loss */
-        grid-template-columns: 0.9fr 1.2fr 1fr 0.8fr 1fr 1fr 1fr;
+        /* icon refId currency buy_time buy_price sell_time sell_price profit/loss */
+        /* stylelint-disable-next-line declaration-colon-space-after */
+        grid-template-columns:
+            minmax(120px, 0.6fr) minmax(130px, 1fr) minmax(85px, 1fr) minmax(85px, 1.2fr) minmax(85px, 1fr)
+            minmax(85px, 1.2fr) minmax(85px, 1fr) minmax(85px, 1fr);
     }
     .buy_price,
     .sell_price,
@@ -409,14 +431,11 @@ $side-padding: 1.2em;
     }
     .profit_loss {
         font-weight: bold;
-    }
-    .transaction_id {
         @include mobile {
             display: flex;
-            flex-direction: row;
 
             &__row-title {
-                margin-right: 4px;
+                flex: 50%;
             }
         }
     }
@@ -487,7 +506,6 @@ $side-padding: 1.2em;
 
     @include mobile {
         flex: 1;
-        margin-top: 0.8rem;
 
         &-multiplier {
             /* postcss-bem-linter: ignore */
@@ -520,6 +538,7 @@ $side-padding: 1.2em;
                     /* postcss-bem-linter: ignore */
                     &__grid-underlying-trade {
                         border-bottom: 1px solid var(--general-main-1);
+                        margin-bottom: 5px;
                     }
                     /* postcss-bem-linter: ignore */
                     &__grid-items {
@@ -558,7 +577,7 @@ $side-padding: 1.2em;
                 }
                 /* postcss-bem-linter: ignore */
                 & .dc-contract-card-dialog-toggle {
-                    top: 56px;
+                    top: 71px;
                     width: 124px;
                     right: 9px;
                     border-color: var(--border-hover);
@@ -569,11 +588,12 @@ $side-padding: 1.2em;
                         right: 10px;
                     }
                     @media only screen and (max-width: 320px) {
+                        top: 72px;
                         width: 91px;
                         height: 80px;
                     }
                     @media (max-width: 320px) and (max-height: 480px) {
-                        top: 50px;
+                        top: 70px;
                         height: 80px;
                     }
                 }
@@ -603,6 +623,9 @@ $side-padding: 1.2em;
                     }
                 }
             }
+        }
+        &__data-list {
+            margin-top: 0.8rem;
         }
         &__data-list-body {
             height: calc(100% - 95px);
@@ -645,6 +668,13 @@ $side-padding: 1.2em;
                 color: var(--text-prominent);
             }
         }
+        .dc-contract-card__no-resale-msg {
+            display: flex;
+            font-size: 1.4rem;
+            color: var(--text-general);
+            justify-content: center;
+            padding: 0.8rem 0rem;
+        }
     }
 
     &__content {
@@ -656,16 +686,17 @@ $side-padding: 1.2em;
         justify-content: center;
         align-items: flex-end;
         flex-direction: column;
+        width: 100%;
 
         &--amount {
             display: flex;
             align-items: center;
-            line-height: 16px;
+            @include desktop {
+                line-height: 2;
+            }
         }
-        &-no-resale-msg {
-            clear: both;
-            text-align: right;
-            font-size: smaller;
+        .dc-btn--sell {
+            height: 2.4rem;
         }
     }
     &__profit-loss {
@@ -713,6 +744,13 @@ $side-padding: 1.2em;
         margin-top: 20px;
 
         .table__head {
+            @include desktop {
+                .profit,
+                .indicative {
+                    white-space: break-spaces;
+                }
+            }
+
             .table__cell {
                 padding-top: 0px;
                 padding-bottom: 0px;
@@ -724,10 +762,16 @@ $side-padding: 1.2em;
                 border-bottom: 1px solid var(--general-section-1);
             }
         }
+        .table__foot {
+            font-weight: bold;
+        }
     }
     &__row {
-        /*                     icon   refId buy_price  potential_payout potential_profit  indicative_price rem_time */
-        grid-template-columns: 0.8fr 1.2fr 1fr 1fr 1fr 1fr 1fr;
+        /* icon refId currency buy_price potential_payout potential_profit indicative_price rem_time */
+        /* stylelint-disable-next-line declaration-colon-space-after */
+        grid-template-columns:
+            minmax(110px, 0.8fr) minmax(130px, 1.2fr) minmax(100px, 1fr) minmax(90px, 1.4fr) minmax(90px, 1.4fr)
+            minmax(120px, 2fr) minmax(120px, 1.2fr) minmax(85px, 2fr);
         width: 100%;
         grid-auto-rows: auto;
 
@@ -750,6 +794,12 @@ $side-padding: 1.2em;
         @include desktop {
             justify-content: flex-end;
             text-align: right;
+        }
+    }
+    .indicative {
+        @include desktop {
+            padding-top: 0;
+            padding-bottom: 0;
         }
     }
     .type {
@@ -782,27 +832,17 @@ $side-padding: 1.2em;
             width: 80px;
         }
     }
-    .reference {
-        @include mobile {
-            display: flex;
-            flex-direction: row;
-
-            &__row-title {
-                margin-right: 4px;
-            }
-        }
-    }
-    .table__row {
-        padding: 0 0.8rem;
-    }
 }
 
 /** @define open-positions-multiplier; weak */
 .open-positions-multiplier {
     .open-positions {
         &__row {
-            /*                     icon multiplier stake cancellation buy_price  limit_order current_stake total_profit_loss action */
-            grid-template-columns: 6.5rem 6rem 1fr 1fr 1fr 1fr 1fr 1.1fr 10rem;
+            /* icon multiplier currency stake cancellation buy_price limit_order current_stake total_profit_loss action */
+            /* stylelint-disable-next-line declaration-colon-space-after */
+            grid-template-columns:
+                minmax(85px, 0.7fr) minmax(75px, 0.8fr) minmax(65px, 0.5fr) minmax(105px, 0.8fr) minmax(100px, 0.8fr)
+                minmax(105px, 1fr) minmax(105px, 1fr) minmax(105px, 1.2fr) minmax(115px, 1.1fr) minmax(90px, 1.2fr);
 
             &-action {
                 display: flex;
@@ -827,7 +867,6 @@ $side-padding: 1.2em;
             }
             .limit_order {
                 flex-direction: column;
-                line-height: 2rem;
                 align-items: flex-end;
                 text-align: right;
             }
@@ -837,6 +876,8 @@ $side-padding: 1.2em;
                 @include desktop {
                     justify-content: flex-end;
                     text-align: right;
+                    width: 100%;
+                    white-space: break-spaces;
                 }
             }
             .action {

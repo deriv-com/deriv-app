@@ -86,7 +86,7 @@ class SelfExclusion extends React.Component {
     };
 
     validateFields = (values) => {
-        const { currency, is_eu } = this.props;
+        const { currency, is_eu, is_cr } = this.props;
         const errors = {};
         // Regex
         const is_number = /^\d+(\.\d+)?$/;
@@ -179,7 +179,7 @@ class SelfExclusion extends React.Component {
                     errors[item] = max_number_message;
                 }
             }
-            if (+this.state.self_exclusions[item] && !values[item]) {
+            if (+this.state.self_exclusions[item] && !values[item] && !is_cr) {
                 errors[item] = more_than_zero_message;
             }
         });
@@ -336,7 +336,7 @@ class SelfExclusion extends React.Component {
                 <Div100vhContainer className='self-exclusion__wrapper' is_disabled={isDesktop()} height_offset='80px'>
                     <ThemedScrollbars className='self-exclusion__scrollbars' is_bypassed={isMobile()}>
                         <MobileWrapper>
-                            <Article />
+                            <Article toggleArticle={this.toggleArticle} />
                         </MobileWrapper>
 
                         <Formik
@@ -362,7 +362,9 @@ class SelfExclusion extends React.Component {
                                         is_open={show_article}
                                         toggleModal={this.toggleArticle}
                                     >
-                                        <ArticleContent toggleModal={this.toggleArticle} />
+                                        <ThemedScrollbars>
+                                            <ArticleContent toggleModal={this.toggleArticle} />
+                                        </ThemedScrollbars>
                                     </Modal>
                                     {is_confirm_page ? (
                                         <>
@@ -432,7 +434,7 @@ class SelfExclusion extends React.Component {
                                                     let value = '';
 
                                                     if (need_date_format.includes(key)) {
-                                                        value = toMoment(values[key]).format('DD MMM YYYY');
+                                                        value = toMoment(values[key]).format('DD/MM/YYYY');
                                                     } else if (need_money_format.includes(key)) {
                                                         value = `${formatMoney(
                                                             currency,
@@ -440,7 +442,7 @@ class SelfExclusion extends React.Component {
                                                             true
                                                         )} ${currency}`;
                                                     } else if (need_minutes.includes(key)) {
-                                                        value = `${values[key]} Minutes`;
+                                                        value = localize('{{value}} mins', { value: values[key] });
                                                     } else if (need_amount.includes(key)) {
                                                         value = `${values[key]}`;
                                                     }
@@ -616,7 +618,7 @@ class SelfExclusion extends React.Component {
                                                                 required
                                                                 error={
                                                                     touched.max_30day_turnover &&
-                                                                    errors.max_7day_turnover
+                                                                    errors.max_30day_turnover
                                                                 }
                                                             />
                                                         )}
@@ -872,6 +874,7 @@ export default connect(({ client }) => ({
     currency: client.currency,
     is_virtual: client.is_virtual,
     is_switching: client.is_switching,
+    is_cr: client.standpoint.svg,
     is_eu: client.is_eu,
     is_mlt: client.landing_company_shortcode === 'malta',
     is_mx: client.landing_company_shortcode === 'iom',

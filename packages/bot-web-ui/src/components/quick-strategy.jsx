@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
     Autocomplete,
+    SelectNative,
     Button,
     Icon,
     Input,
@@ -41,6 +42,7 @@ const QuickStrategyForm = ({
     is_mobile,
     selected_symbol,
     selected_trade_type,
+    selected_duration_unit,
     description,
     setCurrentFocus,
 }) => (
@@ -68,77 +70,137 @@ const QuickStrategyForm = ({
                             <div className='quick-strategy__form-row'>
                                 <Field name='quick-strategy__symbol'>
                                     {({ field }) => (
-                                        <Autocomplete
-                                            {...field}
-                                            autoComplete='off'
-                                            className='quick-strategy__dropdown quick-strategy__leading'
-                                            type='text'
-                                            label={localize('Asset')}
-                                            list_items={symbol_dropdown}
-                                            onHideDropdownList={() => {
-                                                onHideDropdownList('symbol', values[field.name], setFieldValue);
-                                            }}
-                                            onItemSelection={({ value }) => {
-                                                onChangeDropdownItem('symbol', value, setFieldValue);
-                                            }}
-                                            onScrollStop={() => onScrollStopDropdownList('symbol')}
-                                            leading_icon={
-                                                selected_symbol.value && (
-                                                    <Icon icon={`IcUnderlying${selected_symbol.value}`} size={24} />
-                                                )
-                                            }
-                                        />
+                                        <>
+                                            {is_mobile ? (
+                                                <SelectNative
+                                                    list_items={symbol_dropdown}
+                                                    value={selected_symbol.value}
+                                                    label={localize('Asset')}
+                                                    should_show_empty_option={false}
+                                                    onChange={e => {
+                                                        onChangeDropdownItem('symbol', e.target.value, setFieldValue);
+                                                    }}
+                                                />
+                                            ) : (
+                                                <Autocomplete
+                                                    {...field}
+                                                    autoComplete='off'
+                                                    className='quick-strategy__dropdown quick-strategy__leading'
+                                                    type='text'
+                                                    label={localize('Asset')}
+                                                    list_items={symbol_dropdown}
+                                                    onHideDropdownList={() => {
+                                                        onHideDropdownList('symbol', values[field.name], setFieldValue);
+                                                    }}
+                                                    onItemSelection={({ value }) => {
+                                                        onChangeDropdownItem('symbol', value, setFieldValue);
+                                                    }}
+                                                    onScrollStop={() => onScrollStopDropdownList('symbol')}
+                                                    leading_icon={
+                                                        selected_symbol.value && (
+                                                            <Icon
+                                                                icon={`IcUnderlying${selected_symbol.value}`}
+                                                                size={24}
+                                                            />
+                                                        )
+                                                    }
+                                                />
+                                            )}
+                                        </>
                                     )}
                                 </Field>
                             </div>
                             <div className='quick-strategy__form-row'>
                                 <Field name='quick-strategy__trade-type'>
                                     {({ field }) => (
-                                        <Autocomplete
-                                            {...field}
-                                            autoComplete='off'
-                                            className='quick-strategy__dropdown quick-strategy__leading'
-                                            type='text'
-                                            label={localize('Trade type')}
-                                            list_items={trade_type_dropdown}
-                                            onHideDropdownList={() => {
-                                                onHideDropdownList('trade-type', values[field.name], setFieldValue);
-                                            }}
-                                            onItemSelection={({ value }) => {
-                                                onChangeDropdownItem('trade-type', value, setFieldValue);
-                                            }}
-                                            onScrollStop={() => onScrollStopDropdownList('trade-type')}
-                                            leading_icon={
-                                                selected_trade_type.icon && (
-                                                    <span className='quick_strategy__trade-type--icon'>
-                                                        <IconTradeTypes type={selected_trade_type.icon[0]} />
-                                                        <IconTradeTypes type={selected_trade_type.icon[1]} />
-                                                    </span>
-                                                )
-                                            }
-                                        />
+                                        <>
+                                            {is_mobile ? (
+                                                <SelectNative
+                                                    list_items={trade_type_dropdown}
+                                                    value={selected_trade_type.value}
+                                                    label={localize('Trade type')}
+                                                    should_show_empty_option={false}
+                                                    onChange={e => {
+                                                        onChangeDropdownItem(
+                                                            'trade-type',
+                                                            e.target.value,
+                                                            setFieldValue
+                                                        );
+                                                    }}
+                                                />
+                                            ) : (
+                                                <Autocomplete
+                                                    {...field}
+                                                    autoComplete='off'
+                                                    className='quick-strategy__dropdown quick-strategy__leading'
+                                                    type='text'
+                                                    label={localize('Trade type')}
+                                                    list_items={trade_type_dropdown}
+                                                    onHideDropdownList={() => {
+                                                        onHideDropdownList(
+                                                            'trade-type',
+                                                            values[field.name],
+                                                            setFieldValue
+                                                        );
+                                                    }}
+                                                    onItemSelection={({ value }) => {
+                                                        onChangeDropdownItem('trade-type', value, setFieldValue);
+                                                    }}
+                                                    onScrollStop={() => onScrollStopDropdownList('trade-type')}
+                                                    leading_icon={
+                                                        selected_trade_type.icon && (
+                                                            <span className='quick_strategy__trade-type--icon'>
+                                                                <IconTradeTypes type={selected_trade_type.icon[0]} />
+                                                                <IconTradeTypes type={selected_trade_type.icon[1]} />
+                                                            </span>
+                                                        )
+                                                    }
+                                                />
+                                            )}
+                                        </>
                                     )}
                                 </Field>
                             </div>
                             <div className='quick-strategy__form-row quick-strategy__form-row--multiple'>
                                 <Field name='quick-strategy__duration-unit'>
                                     {({ field }) => (
-                                        <Autocomplete
-                                            {...field}
-                                            autoComplete='off'
-                                            className='quick-strategy__duration-dropdown'
-                                            type='text'
-                                            label={localize('Duration unit')}
-                                            list_items={duration_unit_dropdown}
-                                            disabled={duration_unit_dropdown.length === 1}
-                                            onHideDropdownList={() => {
-                                                onHideDropdownList('duration-unit', values[field.name], setFieldValue);
-                                            }}
-                                            onItemSelection={({ value }) => {
-                                                onChangeDropdownItem('duration-unit', value, setFieldValue);
-                                            }}
-                                            onScrollStop={() => onScrollStopDropdownList('duration-unit')}
-                                        />
+                                        <>
+                                            {is_mobile ? (
+                                                <SelectNative
+                                                    list_items={duration_unit_dropdown}
+                                                    value={selected_duration_unit.value}
+                                                    label={localize('Duration unit')}
+                                                    should_show_empty_option={false}
+                                                    onChange={e => {
+                                                        onChangeDropdownItem(
+                                                            'duration-unit',
+                                                            e.target.value,
+                                                            setFieldValue
+                                                        );
+                                                    }}
+                                                />
+                                            ) : (
+                                                <Autocomplete
+                                                    {...field}
+                                                    autoComplete='off'
+                                                    type='text'
+                                                    label={localize('Duration unit')}
+                                                    list_items={duration_unit_dropdown}
+                                                    disabled={duration_unit_dropdown.length === 1}
+                                                    onHideDropdownList={() => {
+                                                        onHideDropdownList(
+                                                            'duration-unit',
+                                                            values[field.name],
+                                                            setFieldValue
+                                                        );
+                                                    }}
+                                                    onItemSelection={({ value }) => {
+                                                        onChangeDropdownItem('duration-unit', value, setFieldValue);
+                                                    }}
+                                                    onScrollStop={() => onScrollStopDropdownList('duration-unit')}
+                                                />
+                                            )}
+                                        </>
                                     )}
                                 </Field>
                                 <Field name='quick-strategy__duration-value'>
@@ -380,6 +442,7 @@ const ContentRenderer = props => {
         selected_symbol,
         selected_trade_type,
         setCurrentFocus,
+        selected_duration_unit,
     } = props;
     const symbol_dropdown_options = symbol_dropdown.map(symbol => ({
         component: <MarketOption symbol={symbol} />,
@@ -415,6 +478,7 @@ const ContentRenderer = props => {
                             is_mobile={is_mobile}
                             selected_symbol={selected_symbol}
                             selected_trade_type={selected_trade_type}
+                            selected_duration_unit={selected_duration_unit}
                             description={description}
                             setCurrentFocus={setCurrentFocus}
                         />
@@ -478,6 +542,7 @@ QuickStrategy.propTypes = {
     setCurrentFocus: PropTypes.func,
     selected_symbol: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     selected_trade_type: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    selected_duration_unit: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     symbol_dropdown: PropTypes.array,
     toggleStrategyModal: PropTypes.func,
     trade_type_dropdown: PropTypes.array,
@@ -504,6 +569,7 @@ export default connect(({ run_panel, quick_strategy, ui }) => ({
     setActiveTabIndex: quick_strategy.setActiveTabIndex,
     selected_symbol: quick_strategy.selected_symbol,
     selected_trade_type: quick_strategy.selected_trade_type,
+    selected_duration_unit: quick_strategy.selected_duration_unit,
     symbol_dropdown: quick_strategy.symbol_dropdown,
     toggleStrategyModal: quick_strategy.toggleStrategyModal,
     trade_type_dropdown: quick_strategy.trade_type_dropdown,

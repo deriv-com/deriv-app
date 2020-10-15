@@ -6,12 +6,12 @@ import AmountMobile from 'Modules/Trading/Components/Form/TradeParams/amount-mob
 
 const MultiplierAmountModal = ({ is_open, enableApp, disableApp, toggleModal }) => {
     // Fix to prevent iOS from zooming in erratically on quick taps
-    const preventIOSZoom = event => {
+    const preventIOSZoom = React.useCallback(event => {
         if (event.touches.length > 1) {
             event.preventDefault();
             event.stopPropagation();
         }
-    };
+    }, []);
 
     React.useEffect(() => {
         document.addEventListener('touchstart', event => preventIOSZoom(event), { passive: false });

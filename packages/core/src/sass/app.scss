@@ -9,7 +9,6 @@
 @import '~@deriv/shared/src/styles/themes.scss';
 
 // General
-@import '~@deriv/shared/src/styles/symbols.scss';
 
 // Layout
 @import 'app/_common/layout/app-layouts';
@@ -51,3 +50,4 @@
 //@import 'app/modules/contract';
 //@import 'app/modules/contract/bottom-widgets';
 @import 'app/modules/external-link';
+@import 'app/modules/welcome';

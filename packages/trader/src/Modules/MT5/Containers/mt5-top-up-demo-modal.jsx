@@ -5,6 +5,12 @@ import { Icon, Modal, Button, Money } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
+const topup_config = {
+    currency: 'USD',
+    minimum_amount: 1000,
+    additional_amount: 10000,
+};
+
 class Mt5TopUpDemoModal extends React.Component {
     accountTitle = () => {
         if (!this.props.mt5_companies || !this.props.current_account) return '';
@@ -18,6 +24,9 @@ class Mt5TopUpDemoModal extends React.Component {
     render() {
         if (!this.props.mt5_companies || !this.props.current_account) return null;
         const title = this.accountTitle();
+
+        const { currency, minimum_amount, additional_amount } = topup_config;
+
         return (
             <React.Fragment>
                 <Modal
@@ -29,7 +38,13 @@ class Mt5TopUpDemoModal extends React.Component {
                 >
                     <div className='dc-modal__container_top-up-virtual__body'>
                         <p className='dc-modal__container_top-up-virtual__description'>
-                            <Localize i18n_default_text='You can top up your demo account with an additional $10,000.00 if your balance is $1,000.00 or less.' />
+                            <Localize
+                                i18n_default_text='You can top up your demo account with an additional <0></0> if your balance is <1></1> or less.'
+                                components={[
+                                    <Money key={0} amount={additional_amount} currency={currency} show_currency />,
+                                    <Money key={1} amount={minimum_amount} currency={currency} show_currency />,
+                                ]}
+                            />
                         </p>
                         <h4 className='dc-modal__container_top-up-virtual--h4'>
                             <Localize
@@ -56,7 +71,12 @@ class Mt5TopUpDemoModal extends React.Component {
                                 primary
                                 large
                             >
-                                <Localize i18n_default_text='Top up $10,000.00' />
+                                <Localize
+                                    i18n_default_text='Top up &nbsp;<0></0>'
+                                    components={[
+                                        <Money key={0} amount={additional_amount} currency={currency} show_currency />,
+                                    ]}
+                                />
                             </Button>
                         </div>
                     </div>
@@ -70,8 +90,11 @@ class Mt5TopUpDemoModal extends React.Component {
                     heading={
                         <h3 className='mt5-success-topup__heading'>
                             <Localize
-                                i18n_default_text='$10,000.00 has been credited into your DMT5 {{title}} account.'
+                                i18n_default_text='<0></0> has been credited into your DMT5 {{title}} account.'
                                 values={{ title }}
+                                components={[
+                                    <Money key={0} amount={additional_amount} currency={currency} show_currency />,
+                                ]}
                             />
                         </h3>
                     }

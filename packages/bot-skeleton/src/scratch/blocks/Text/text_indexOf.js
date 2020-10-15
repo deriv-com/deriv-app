@@ -7,7 +7,14 @@ Blockly.Blocks.text_indexOf = {
     },
     definition() {
         return {
-            message0: localize('in text %1 find %2 occurence of text %3'),
+            message0: localize(
+                'in text {{ input_text1 }} find {{ first_or_last }} occurence of text {{ input_text2 }}',
+                {
+                    input_text1: '%1',
+                    first_or_last: '%2',
+                    input_text2: '%3',
+                }
+            ),
             args0: [
                 {
                     type: 'input_value',

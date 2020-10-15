@@ -188,7 +188,7 @@ const SaveModal = ({
         </MobileFullPageModal>
     ) : (
         <Modal
-            title={localize('Save strategy')}
+            title={localize('Save Strategy')}
             className='modal--save'
             width='328px'
             height='500px'

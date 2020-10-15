@@ -150,22 +150,22 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 }
                 &--is-multiplier {
                     & .dc-contract-card-dialog-toggle {
-                        top: 60px;
+                        top: 81px;
                         width: 124px;
                         height: 82px;
                         right: 8px;
 
                         @media only screen and (max-width: 380px) {
-                            width: 115px;
-                            height: 73px;
+                            width: 109px;
+                            top: 77px;
                         }
                         @media only screen and (max-width: 320px) {
-                            top: 46px;
+                            top: 69px;
                             width: 98px;
                             height: 78px;
                         }
                         @media (max-width: 320px) and (max-height: 480px) {
-                            top: 43px;
+                            top: 66px;
                             height: 65px;
                         }
                     }
@@ -378,7 +378,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
                         z-index: 14;
 
                         .cq-inchart-holder {
-                            z-index: 109;
+                            z-index: 107;
                             position: relative;
                         }
                     }

@@ -13,11 +13,18 @@ const AccountOption = ({ account, idx }) => {
     return (
         <React.Fragment key={idx}>
             {(account.currency || account.mt_icon) && (
-                <Icon
-                    icon={account.mt_icon ? `IcMt5-${account.mt_icon}` : `IcCurrency-${account.currency.toLowerCase()}`}
-                    className='account-transfer__currency-icon'
-                />
+                <div>
+                    <Icon
+                        icon={
+                            account.mt_icon
+                                ? `IcMt5-${account.mt_icon}`
+                                : `IcCurrency-${account.currency.toLowerCase()}`
+                        }
+                        className='account-transfer__currency-icon'
+                    />
+                </div>
             )}
+
             <div className='account-transfer__currency-wrapper'>
                 <span className='account-transfer__currency'>{account.text}</span>
                 <span className='account-transfer__loginid'>{account.value}</span>
@@ -92,7 +99,7 @@ const AccountTransferForm = ({
     selected_to,
     requestTransferBetweenAccounts,
     accounts_list,
-    setSideNote,
+    setSideNotes,
     transfer_fee,
     minimum_fee,
     onChangeTransferFrom,
@@ -181,21 +188,24 @@ const AccountTransferForm = ({
 
     React.useEffect(() => {
         onMount();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {
-        if (Object.keys(from_accounts).length && typeof setSideNote === 'function') {
-            setSideNote(
+        if (Object.keys(from_accounts).length && typeof setSideNotes === 'function') {
+            setSideNotes([
                 <AccountTransferNote
                     mt5_total_transfers={mt5_total_transfers}
                     internal_total_transfers={internal_total_transfers}
                     transfer_fee={transfer_fee}
                     currency={selected_from.currency}
                     minimum_fee={minimum_fee}
-                />
-            );
+                    key={0}
+                />,
+            ]);
         }
-    }, [transfer_fee, selected_from, minimum_fee, mt5_total_transfers, internal_total_transfers, setSideNote]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [transfer_fee, selected_from, minimum_fee, mt5_total_transfers, internal_total_transfers, setSideNotes]);
     return (
         <div className='cashier__wrapper account-transfer__wrapper'>
             <React.Fragment>
@@ -323,7 +333,9 @@ const AccountTransferForm = ({
                                                                 'symbols',
                                                                 `symbols--${selected_from.currency.toLowerCase()}`
                                                             )}
-                                                        />
+                                                        >
+                                                            {getCurrencyDisplayCode(selected_from.currency)}
+                                                        </span>
                                                     ) : (
                                                         undefined
                                                     )
@@ -401,7 +413,7 @@ AccountTransferForm.propTypes = {
     selected_from: PropTypes.object,
     selected_to: PropTypes.object,
     setErrorMessage: PropTypes.func,
-    setSideNote: PropTypes.func,
+    setSideNotes: PropTypes.func,
     transfer_fee: PropTypes.number,
     transfer_limit: PropTypes.object,
 };

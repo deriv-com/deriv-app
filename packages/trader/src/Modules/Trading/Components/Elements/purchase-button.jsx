@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Money, IconTradeTypes } from '@deriv/components';
-import { localize } from '@deriv/translations';
 import { getContractTypeDisplay } from 'Constants/contract';
 import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
 
@@ -11,13 +10,17 @@ const ButtonTextWrapper = ({ should_fade, is_loading, type, is_high_low }) => {
     return (
         <div className='btn-purchase__text_wrapper'>
             <span className='btn-purchase__text'>
-                {!should_fade && is_loading
-                    ? ''
-                    : localize('{{value}}', { value: getContractTypeDisplay(type, is_high_low) })}
+                {!should_fade && is_loading ? '' : getContractTypeDisplay(type, is_high_low)}
             </span>
         </div>
     );
 };
+
+const IconComponentWrapper = ({ type }) => (
+    <div className='btn-purchase__icon_wrapper'>
+        <IconTradeTypes type={type} className='btn-purchase__icon' color='active' />
+    </div>
+);
 
 const PurchaseButton = ({
     buy_info,
@@ -43,12 +46,6 @@ const PurchaseButton = ({
     const { has_increased } = info;
     const is_button_disabled = (is_disabled && !is_loading) || is_proposal_empty;
 
-    const IconComponentWrapper = () => (
-        <div className='btn-purchase__icon_wrapper'>
-            <IconTradeTypes type={getIconType()} className='btn-purchase__icon' color='active' />
-        </div>
-    );
-
     return (
         <button
             disabled={is_disabled}
@@ -70,7 +67,7 @@ const PurchaseButton = ({
             <DesktopWrapper>
                 <div className='btn-purchase__info btn-purchase__info--left'>
                     <div className='btn-purchase__type-wrapper'>
-                        <IconComponentWrapper />
+                        <IconComponentWrapper type={getIconType()} />
                         <ButtonTextWrapper
                             should_fade={should_fade}
                             is_loading={is_loading}
@@ -85,7 +82,7 @@ const PurchaseButton = ({
                     <div className='btn-purchase__text_wrapper'>
                         {is_multiplier ? (
                             <span className='btn-purchase__text'>
-                                <Money amount={info.stake} currency={currency} />
+                                <Money amount={info.stake} currency={currency} show_currency />
                             </span>
                         ) : (
                             <span className='btn-purchase__text'>
@@ -97,7 +94,7 @@ const PurchaseButton = ({
             </DesktopWrapper>
             <MobileWrapper>
                 <div className='btn-purchase__top'>
-                    <IconComponentWrapper />
+                    <IconComponentWrapper type={getIconType()} />
                     <ButtonTextWrapper
                         should_fade={should_fade}
                         is_loading={is_loading}

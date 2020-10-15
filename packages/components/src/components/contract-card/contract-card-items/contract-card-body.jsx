@@ -8,8 +8,11 @@ import {
     getLimitOrderAmount,
     getCurrentTick,
     getDisplayStatus,
+    isValidToCancel,
+    isValidToSell,
 } from '@deriv/shared';
 import ContractCardItem from './contract-card-item.jsx';
+import ToggleCardDialog from './toggle-card-dialog.jsx';
 import Money from '../../money';
 import Icon from '../../icon';
 import MobileWrapper from '../../mobile-wrapper';
@@ -17,19 +20,27 @@ import { ResultStatusIcon } from '../result-overlay/result-overlay.jsx';
 import ProgressSliderMobile from '../../progress-slider-mobile';
 
 const MultiplierCardBody = ({
+    addToast,
     contract_info,
     contract_update,
     currency,
     getCardLabels,
+    getContractById,
     is_mobile,
     is_sold,
+    removeToast,
+    setCurrentFocus,
+    should_show_cancellation_warning,
     status,
+    toggleCancellationWarning,
 }) => {
     const { buy_price, bid_price, profit, limit_order } = contract_info;
 
     const total_profit = bid_price - buy_price;
     const { take_profit, stop_loss } = getLimitOrderAmount(contract_update || limit_order);
     const cancellation_price = getCancellationPrice(contract_info);
+    const is_valid_to_cancel = isValidToCancel(contract_info);
+    const is_valid_to_sell = isValidToSell(contract_info);
 
     return (
         <React.Fragment>
@@ -62,22 +73,38 @@ const MultiplierCardBody = ({
                         <strong>-</strong>
                     )}
                 </ContractCardItem>
-                <ContractCardItem header={getCardLabels().TAKE_PROFIT} className='dc-contract-card__take-profit'>
-                    {take_profit ? <Money amount={take_profit} currency={currency} /> : <strong>-</strong>}
-                </ContractCardItem>
                 <ContractCardItem header={getCardLabels().BUY_PRICE} className='dc-contract-card__buy-price'>
                     <Money amount={buy_price} currency={currency} />
                 </ContractCardItem>
-                <ContractCardItem header={getCardLabels().STOP_LOSS} className='dc-contract-card__stop-loss'>
-                    {stop_loss ? (
-                        <React.Fragment>
+                <div className='dc-contract-card__limit-order-info'>
+                    <ContractCardItem header={getCardLabels().TAKE_PROFIT} className='dc-contract-card__take-profit'>
+                        {take_profit ? <Money amount={take_profit} currency={currency} /> : <strong>-</strong>}
+                    </ContractCardItem>
+                    <ContractCardItem header={getCardLabels().STOP_LOSS} className='dc-contract-card__stop-loss'>
+                        {stop_loss ? (
+                            <React.Fragment>
+                                <strong>-</strong>
+                                <Money amount={stop_loss} currency={currency} />
+                            </React.Fragment>
+                        ) : (
                             <strong>-</strong>
-                            <Money amount={stop_loss} currency={currency} />
-                        </React.Fragment>
-                    ) : (
-                        <strong>-</strong>
+                        )}
+                    </ContractCardItem>
+                    {(is_valid_to_sell || is_valid_to_cancel) && (
+                        <ToggleCardDialog
+                            addToast={addToast}
+                            contract_id={contract_info.contract_id}
+                            getCardLabels={getCardLabels}
+                            getContractById={getContractById}
+                            is_valid_to_cancel={is_valid_to_cancel}
+                            removeToast={removeToast}
+                            setCurrentFocus={setCurrentFocus}
+                            should_show_cancellation_warning={should_show_cancellation_warning}
+                            status={status}
+                            toggleCancellationWarning={toggleCancellationWarning}
+                        />
                     )}
-                </ContractCardItem>
+                </div>
             </div>
             <ContractCardItem
                 className='dc-contract-card-item__total-profit-loss'
@@ -101,15 +128,21 @@ const MultiplierCardBody = ({
 };
 
 const ContractCardBody = ({
+    addToast,
     contract_info,
     contract_update,
     currency,
     getCardLabels,
+    getContractById,
     is_mobile,
     is_multiplier,
     is_sold,
     status,
     server_time,
+    removeToast,
+    setCurrentFocus,
+    should_show_cancellation_warning,
+    toggleCancellationWarning,
 }) => {
     const indicative = getIndicativePrice(contract_info);
     const { buy_price, sell_price, payout, profit, tick_count, date_expiry, purchase_time } = contract_info;
@@ -118,13 +151,19 @@ const ContractCardBody = ({
     if (is_multiplier) {
         return (
             <MultiplierCardBody
+                addToast={addToast}
                 contract_info={contract_info}
                 contract_update={contract_update}
                 currency={currency}
                 getCardLabels={getCardLabels}
+                getContractById={getContractById}
                 is_mobile={is_mobile}
                 is_sold={is_sold}
                 status={status}
+                removeToast={removeToast}
+                setCurrentFocus={setCurrentFocus}
+                should_show_cancellation_warning={should_show_cancellation_warning}
+                toggleCancellationWarning={toggleCancellationWarning}
             />
         );
     }
@@ -191,14 +230,19 @@ const ContractCardBody = ({
 };
 
 ContractCardBody.propTypes = {
+    addToast: PropTypes.func,
     contract_info: PropTypes.object,
     currency: PropTypes.string,
     getCardLabels: PropTypes.func,
+    getContractById: PropTypes.func,
     is_mobile: PropTypes.bool,
     is_multiplier: PropTypes.bool,
     is_sold: PropTypes.bool,
-    status: PropTypes.string,
+    removeToast: PropTypes.func,
     server_time: PropTypes.object,
+    setCurrentFocus: PropTypes.func,
+    status: PropTypes.string,
+    toggleCancellationWarning: PropTypes.func,
 };
 
 export default ContractCardBody;

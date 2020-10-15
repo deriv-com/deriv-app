@@ -199,36 +199,36 @@ const PositionsModalCard = ({
     );
 
     const card_multiplier_body = (
-        <div className={'dc-contract-card__separatorclass'}>
+        <div className='dc-contract-card__separatorclass'>
             <ContractCard.Body
+                addToast={addToast}
                 contract_info={contract_info}
                 contract_update={contract_update}
                 currency={currency}
                 getCardLabels={getCardLabels}
+                getContractById={getContractById}
                 is_mobile={is_mobile}
                 is_multiplier={is_multiplier}
-                status={status}
+                removeToast={removeToast}
                 server_time={server_time}
+                setCurrentFocus={setCurrentFocus}
+                should_show_cancellation_warning={should_show_cancellation_warning}
+                status={status}
+                toggleCancellationWarning={toggleCancellationWarning}
             />
         </div>
     );
 
     const card_multiplier_footer = (
         <ContractCard.Footer
-            addToast={addToast}
             contract_info={contract_info}
             getCardLabels={getCardLabels}
-            getContractById={getContractById}
             is_multiplier={is_multiplier}
             is_sell_requested={is_sell_requested}
             onClickCancel={onClickCancel}
             onClickSell={onClickSell}
-            removeToast={removeToast}
-            setCurrentFocus={setCurrentFocus}
             server_time={server_time}
-            should_show_cancellation_warning={should_show_cancellation_warning}
             status={status}
-            toggleCancellationWarning={toggleCancellationWarning}
         />
     );
 

@@ -3,28 +3,20 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { isValidToCancel, isValidToSell } from '@deriv/shared';
-import ToggleCardDialog from './toggle-card-dialog.jsx';
 import MultiplierCloseActions from './multiplier-close-actions.jsx';
 import Button from '../../button';
 
 const CardFooter = ({
-    addToast,
-    should_show_transition,
     contract_info,
     getCardLabels,
-    getContractById,
     is_multiplier,
     is_positions,
     is_sell_requested,
     onClickCancel,
     onClickSell,
     onFooterEntered,
-    removeToast,
-    setCurrentFocus,
     server_time,
-    should_show_cancellation_warning,
-    status,
-    toggleCancellationWarning,
+    should_show_transition,
 }) => {
     const [in_prop, setInProp] = React.useState(!should_show_transition);
     React.useEffect(() => {
@@ -70,20 +62,6 @@ const CardFooter = ({
                             onClickSell={onClickSell}
                             server_time={server_time}
                         />
-                        {(is_valid_to_sell || is_valid_to_cancel) && (
-                            <ToggleCardDialog
-                                addToast={addToast}
-                                contract_id={contract_info.contract_id}
-                                getCardLabels={getCardLabels}
-                                getContractById={getContractById}
-                                is_valid_to_cancel={is_valid_to_cancel}
-                                removeToast={removeToast}
-                                setCurrentFocus={setCurrentFocus}
-                                should_show_cancellation_warning={should_show_cancellation_warning}
-                                status={status}
-                                toggleCancellationWarning={toggleCancellationWarning}
-                            />
-                        )}
                     </div>
                 ) : (
                     <div
@@ -109,22 +87,15 @@ const CardFooter = ({
 };
 
 CardFooter.propTypes = {
-    addToast: PropTypes.func,
-    should_show_transition: PropTypes.bool,
     contract_info: PropTypes.object,
     getCardLabels: PropTypes.func,
-    getContractById: PropTypes.func,
     is_multiplier: PropTypes.bool,
     is_positions: PropTypes.bool,
     is_sell_requested: PropTypes.bool,
     onClickCancel: PropTypes.func,
     onClickSell: PropTypes.func,
     onFooterEntered: PropTypes.func,
-    removeToast: PropTypes.func,
-    setCurrentFocus: PropTypes.func,
-    should_show_cancellation_warning: PropTypes.bool,
-    status: PropTypes.string,
-    toggleCancellationWarning: PropTypes.func,
+    should_show_transition: PropTypes.bool,
 };
 
 export default CardFooter;

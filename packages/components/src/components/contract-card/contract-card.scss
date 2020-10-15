@@ -250,12 +250,19 @@
     &-items-wrapper {
         display: grid;
         grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+            'stake current-stake'
+            'deal-cancel-fee  limit-order-info'
+            'buy-price  limit-order-info';
         grid-gap: 0.8rem 0.4rem;
         flex: 1;
 
         &--mobile {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
+            grid-template-areas:
+                'stake current-stake limit-order-info'
+                'deal-cancel-fee buy-price limit-order-info';
             grid-gap: 0.8rem 0.4rem;
             flex: 1;
             padding: 0.4rem 0rem;
@@ -414,6 +421,24 @@
         .result-icon {
             margin-left: 0.4rem;
         }
+    }
+    &__limit-order-info {
+        grid-area: limit-order-info;
+        display: grid;
+        grid-gap: 0.4rem 0rem;
+        position: relative;
+    }
+    &__buy-price {
+        grid-area: buy-price;
+    }
+    &__deal-cancel-fee {
+        grid-area: deal-cancel-fee;
+    }
+    &__stake {
+        grid-area: stake;
+    }
+    &__current-stake {
+        grid-area: current-stake;
     }
     &__sell-button-mobile {
         justify-self: center;

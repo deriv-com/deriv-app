@@ -8,12 +8,14 @@
     }
     &__provider {
         box-shadow: 0 0.8rem 0.8rem 0 var(--shadow-drop), 0 0 0.8rem 0 var(--shadow-drop);
-        padding: 1.6rem 1.6rem 0.8rem 2.4rem;
+        padding: 1.6rem 1.6rem 0.8rem;
         border-radius: 0.8rem;
         display: grid;
-        grid-column-gap: 3.2rem;
-        grid-template-areas: ('logo name buy' 'logo description buy' 'logo website buy' 'logo payment-icons buy');
-        grid-template-columns: 1fr 4fr 1fr;
+        grid-column-gap: 2.4rem;
+        grid-template-areas: (
+            'logo name name' 'logo description buy' 'logo description buy' 'logo payment-icons payment-icons'
+        );
+        min-height: 156px;
 
         & + & {
             margin-top: 1.6rem;
@@ -21,7 +23,6 @@
         &-logo {
             align-self: center;
             grid-area: logo;
-            grid-row: 1 / 5;
         }
         &-name {
             grid-area: name;
@@ -43,12 +44,29 @@
             line-height: 2rem;
         }
         &-payment-icons {
+            position: relative;
+            white-space: nowrap;
             grid-area: payment-icons;
+            margin-top: auto;
+            overflow: hidden;
+
+            &-shadow {
+                right: 0;
+                top: 0;
+                height: 40px;
+                width: 40px;
+                z-index: 1;
+                position: absolute;
+                background-image: var(--gradient-right-edge);
+            }
+            & svg {
+                margin-top: auto;
+                margin-right: 1.6rem;
+            }
         }
         &-button {
             align-self: center;
             grid-area: buy;
-            grid-row: 1 / 5;
             justify-self: flex-end;
         }
     }
@@ -137,15 +155,18 @@
         &-container {
             padding: 0.8rem;
             overflow: visible;
+
+            &--error {
+                display: flex;
+                flex-flow: column;
+                align-items: center;
+            }
         }
     }
 }
 
 .dc-modal__container {
     &_on-ramp__modal {
-        > .dc-modal-body {
-            padding-top: 0.8rem;
-        }
         > .dc-modal-header {
             &__title {
                 padding-top: 2.4rem !important;

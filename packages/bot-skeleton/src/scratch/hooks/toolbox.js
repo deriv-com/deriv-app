@@ -652,19 +652,19 @@ Blockly.Toolbox.prototype.refreshCategory = function () {
     this.setSelectedItem(category, false);
 };
 
-Blockly.Toolbox.prototype.toggle = function () {
-    const { toolbar, flyout } = DBotStore.instance;
-    if (!toolbar.is_toolbox_open) {
-        this.addStyle('toolbox--hidden');
+Blockly.Toolbox.prototype.setVisibility = function (is_open) {
+    const { flyout } = DBotStore.instance;
 
-        flyout.setVisibility(false);
+    flyout.setVisibility(false);
+
+    if (is_open) {
+        this.removeStyle('toolbox--hidden');
+    } else {
+        this.addStyle('toolbox--hidden');
 
         if (this.selectedItem_) {
             this.selectedItem_.setSelected(false);
             this.selectedItem_ = null;
         }
-    } else {
-        flyout.setVisibility(false);
-        this.removeStyle('toolbox--hidden');
     }
 };

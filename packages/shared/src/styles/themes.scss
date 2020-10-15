@@ -11,6 +11,18 @@
     --text-size-xl: 4.8rem;
     --text-size-xxl: 6.4rem;
 
+    //Line Height
+    --text-lh-l: 1.75;
+    --text-lh-m: 1.5;
+    --text-lh-s: 1.25;
+    --text-lh-x: 1.4;
+
+    //Font Weight
+    --text-weight-l: 300;
+    --text-weight-n: 400;
+    --text-weight-s: 500;
+    --text-weight-b: 700;
+
     // Brand primary colors
     --brand-dark-grey: #{$color-black};
     --brand-red-coral: #{$color-red};

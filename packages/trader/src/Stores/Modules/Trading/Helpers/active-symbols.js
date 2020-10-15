@@ -1,7 +1,6 @@
 import { flow } from 'mobx';
-import { localize } from '@deriv/translations';
-import { redirectToLogin } from '_common/base/login';
-import { LocalStore } from '@deriv/shared';
+import { LocalStore, redirectToLogin } from '@deriv/shared';
+import { getLanguage, localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 
 export const showUnavailableLocationError = flow(function* (showError, is_logged_in) {
@@ -23,7 +22,7 @@ export const showUnavailableLocationError = flow(function* (showError, is_logged
         message: localize('If you have an account, log in to continue.'),
         header,
         redirect_label: localize('Log in'),
-        redirectOnClick: () => redirectToLogin(is_logged_in),
+        redirectOnClick: () => redirectToLogin(is_logged_in, getLanguage()),
         should_show_refresh: false,
     });
 });

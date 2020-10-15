@@ -183,7 +183,7 @@ const Transaction = ({ active_transaction_id, contract, setActiveTransactionId }
             </div>
             <div className='transactions__cell transactions__stake'>
                 {contract ? (
-                    <Money amount={contract.buy_price} currency={contract.currency} />
+                    <Money amount={contract.buy_price} currency={contract.currency} show_currency />
                 ) : (
                     <TransactionFieldLoader />
                 )}
@@ -196,7 +196,7 @@ const Transaction = ({ active_transaction_id, contract, setActiveTransactionId }
                             'transactions__profit--loss': contract.profit < 0,
                         })}
                     >
-                        <Money amount={Math.abs(contract.profit)} currency={contract.currency} />
+                        <Money amount={Math.abs(contract.profit)} currency={contract.currency} show_currency />
                     </div>
                 ) : (
                     <TransactionFieldLoader />

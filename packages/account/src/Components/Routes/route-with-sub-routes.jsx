@@ -1,8 +1,15 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import { isEmptyObject, routes, removeBranchName, default_title, PlatformContext } from '@deriv/shared';
-
-import { redirectToLogin, redirectToSignUp } from 'Duplicated/_common/base/login';
+import {
+    redirectToLogin,
+    redirectToSignUp,
+    isEmptyObject,
+    routes,
+    removeBranchName,
+    default_title,
+    PlatformContext,
+} from '@deriv/shared';
+import { getLanguage } from '@deriv/translations';
 import LoginPrompt from 'Duplicated/App/Components/Elements/login-prompt.jsx';
 
 const RouteWithSubRoutes = route => {
@@ -22,7 +29,7 @@ const RouteWithSubRoutes = route => {
         } else if (route.is_authenticated && !route.is_logged_in) {
             result = (
                 <LoginPrompt
-                    onLogin={() => redirectToLogin(route.is_logged_in)}
+                    onLogin={() => redirectToLogin(route.is_logged_in, getLanguage())}
                     onSignup={() => redirectToSignUp({ is_deriv_crypto })}
                     page_title={route.getTitle()}
                 />

@@ -1,20 +1,19 @@
-import { expect } from '../../../test_utils/common';
+import { deriv_urls } from '../constants';
 import {
     reset,
     urlFor,
     websiteUrl,
     paramsHash,
-    urlForCurrentDomain,
-    getHostMap,
     param,
     urlForStatic,
     resetStaticHost,
     getPath,
     getContractPath,
 } from '../url';
+import { expect } from '../../../test_utils/common';
 
 // Testable URLs
-const urls = ['https://app.deriv.com', 'https://app.derivcrypto.com'];
+const urls = [deriv_urls.DERIV_APP_PRODUCTION, deriv_urls.DERIV_APP_CRYPTO_PRODUCTION];
 
 function mockLocation(url) {
     // Mocking global location
@@ -64,7 +63,7 @@ describe('Url', () => {
                     expect(urlFor('home', { language: 'es' })).to.eq(`${website_url}home.html?lang=es`);
                 });
                 it('ignores invalid characters', () => {
-                    expect(urlFor('`~!@#$%^&*)(=+[}{]\\"\';:?><,|')).to.eq(home_url);
+                    expect(urlFor('`~!@#$%^&*=+[}{]\\"\';:?><,|')).to.eq(home_url);
                 });
                 it('handles all valid characters', () => {
                     expect(urlFor('metatrader/comparison-4_vs_5')).to.eq(

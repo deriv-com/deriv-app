@@ -215,11 +215,16 @@ class FinancialAssessment extends React.Component {
             if (data.error) {
                 setStatus({ msg: data.error.message });
             } else {
-                this.setState({ is_submit_success: true });
-                setTimeout(() => this.setState({ is_submit_success: false }), 3000);
+                WS.authorized.storage.getFinancialAssessment().then(res_data => {
+                    this.setState({
+                        ...res_data.get_financial_assessment,
+                        is_submit_success: true,
+                    });
+                    setTimeout(() => this.setState({ is_submit_success: false }), 3000);
 
-                this.props.removeNotificationMessage({ key: 'risk' });
-                this.props.removeNotificationByKey({ key: 'risk' });
+                    this.props.removeNotificationMessage({ key: 'risk' });
+                    this.props.removeNotificationByKey({ key: 'risk' });
+                });
             }
             setSubmitting(false);
         });
@@ -304,6 +309,7 @@ class FinancialAssessment extends React.Component {
                             other_instruments_trading_frequency,
                         }),
                     }}
+                    enableReinitialize={true}
                     validate={this.validateFields}
                     onSubmit={this.onSubmit}
                 >

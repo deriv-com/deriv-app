@@ -671,7 +671,10 @@ export default class UIStore extends BaseStore {
     toggleWelcomeModal({ is_visible = !this.is_welcome_modal_visible, should_persist = false }) {
         if (LocalStore.get('has_viewed_welcome_screen') && !should_persist) return;
         this.is_welcome_modal_visible = is_visible;
-        LocalStore.set('has_viewed_welcome_screen', true);
+
+        if (!is_visible) {
+            LocalStore.set('has_viewed_welcome_screen', true);
+        }
     }
 
     @action.bound

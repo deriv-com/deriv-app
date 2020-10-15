@@ -1,0 +1,13 @@
+.dc-text {
+    font-size: var(--text-size);
+    color: var(--text-color);
+    line-height: var(--text-lh);
+    font-weight: var(--text-weight);
+
+    &--left {
+        text-align: left;
+    }
+    &--right {
+        text-align: right;
+    }
+}

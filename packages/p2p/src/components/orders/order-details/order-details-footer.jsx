@@ -23,6 +23,8 @@ const OrderDetailsFooter = ({ order_information }) => {
         should_show_only_complain_button,
     } = order_information;
 
+    const is_buy_order_for_user = (is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad);
+
     const [should_show_cancel_modal, setShouldShowCancelModal] = React.useState(false);
     const [should_show_complain_modal, setShouldShowComplainModal] = React.useState(false);
     const [should_show_confirm_modal, setShouldShowConfirmModal] = React.useState(false);
@@ -115,18 +117,13 @@ const OrderDetailsFooter = ({ order_information }) => {
             >
                 <Modal.Body>
                     <Checkbox
-                        name={
-                            (is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad)
-                                ? 'seller_not_released'
-                                : 'buyer_not_paid'
-                        }
-                        className='order-details__complain-checkbox'
+                        name={is_buy_order_for_user ? 'seller_not_released' : 'buyer_not_paid'}
                         onChange={event => {
                             onChange(event.target.name);
                         }}
                         value={dispute_reason === 'seller_not_released' || dispute_reason === 'buyer_not_paid'}
                         label={
-                            (is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad)
+                            is_buy_order_for_user
                                 ? localize('I’ve made full payment, but the seller hasn’t released the funds.')
                                 : localize('I’ve not received any payment.')
                         }
@@ -138,7 +135,7 @@ const OrderDetailsFooter = ({ order_information }) => {
                         }}
                         value={dispute_reason === 'buyer_underpaid'}
                         label={
-                            (is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad)
+                            is_buy_order_for_user
                                 ? localize('I wasn’t able to make full payment.')
                                 : localize('I’ve received less than the agreed amount.')
                         }
@@ -150,14 +147,14 @@ const OrderDetailsFooter = ({ order_information }) => {
                         }}
                         value={dispute_reason === 'buyer_overpaid'}
                         label={
-                            (is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad)
+                            is_buy_order_for_user
                                 ? localize('I’ve paid more than the agreed amount.')
                                 : localize('I’ve received more than the agreed amount.')
                         }
                     />
                     <div className='order-details__contact-text'>
                         <Localize
-                            i18n_default_text="If your complaint isn't listed here, please contact our <0>Customer Support<0/>"
+                            i18n_default_text="If your complaint isn't listed here, please contact our <0>Customer Support</0> team."
                             components={[
                                 <a
                                     key={0}
@@ -168,7 +165,6 @@ const OrderDetailsFooter = ({ order_information }) => {
                                 />,
                             ]}
                         />
-                        {localize(' team.')}
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
@@ -211,15 +207,11 @@ const OrderDetailsFooter = ({ order_information }) => {
                 className='confirm-modal'
                 is_open={should_show_confirm_modal}
                 toggleModal={hideConfirmOrderModal}
-                title={
-                    (is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad)
-                        ? localize('Confirm payment?')
-                        : localize('Have you received payment?')
-                }
+                title={is_buy_order_for_user ? localize('Confirm payment?') : localize('Have you received payment?')}
                 has_close_icon
             >
                 <Modal.Body>
-                    {(is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad)
+                    {is_buy_order_for_user
                         ? localize(
                               "Please make sure that you've paid {{amount}} {{currency}} to {{other_user_name}}.",
                               {
@@ -237,7 +229,7 @@ const OrderDetailsFooter = ({ order_information }) => {
                         onChange={() => setIsCheckboxChecked(!is_checkbox_checked)}
                         defaultChecked={is_checkbox_checked}
                         label={
-                            (is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad)
+                            is_buy_order_for_user
                                 ? localize('I have paid {{amount}} {{currency}}.', {
                                       amount: price_display,
                                       currency: local_currency,
@@ -253,12 +245,10 @@ const OrderDetailsFooter = ({ order_information }) => {
                     {error_message && <FormError message={error_message} />}
                     <Button.Group>
                         <Button secondary type='button' onClick={hideConfirmOrderModal} large>
-                            {(is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad)
-                                ? localize("I haven't paid yet")
-                                : localize('Cancel')}
+                            {is_buy_order_for_user ? localize("I haven't paid yet") : localize('Cancel')}
                         </Button>
                         <Button is_disabled={!is_checkbox_checked} primary large onClick={confirmOrderRequest}>
-                            {(is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad)
+                            {is_buy_order_for_user
                                 ? localize("I've paid")
                                 : localize('Release {{amount}} {{currency}}', {
                                       amount: amount_display,

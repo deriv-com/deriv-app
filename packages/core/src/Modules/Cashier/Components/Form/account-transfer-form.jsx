@@ -108,7 +108,7 @@ const AccountTransferForm = ({
     error,
 }) => {
     const { is_deriv_crypto } = React.useContext(PlatformContext);
-    const validateAmount = amount => {
+    const validateAmount = (amount) => {
         if (!amount) return localize('This field is required.');
 
         const { is_ok, message } = validNumber(amount, {
@@ -156,7 +156,7 @@ const AccountTransferForm = ({
             let is_disabled = false;
             if (is_deriv_crypto) {
                 // can only transfer to same currency, regardless of mt or crypto account
-                is_disabled = selected_from.currency !== account.currency;
+                is_disabled = selected_from.currency !== account.currency || is_selected_from_mt;
             } else {
                 // cannot transfer to MT account from MT
                 // cannot transfer to crypto account from crypto
@@ -259,7 +259,7 @@ const AccountTransferForm = ({
                                                 list_height='404'
                                                 name='transfer_from'
                                                 value={selected_from.value}
-                                                onChange={e => {
+                                                onChange={(e) => {
                                                     onChangeTransferFrom(e);
                                                     handleChange(e);
                                                     validateField('amount');
@@ -278,7 +278,7 @@ const AccountTransferForm = ({
                                                 label={localize('From')}
                                                 value={selected_from.value}
                                                 list_items={from_accounts}
-                                                onChange={e => {
+                                                onChange={(e) => {
                                                     onChangeTransferFrom(e);
                                                     handleChange(e);
                                                     validateField('amount');
@@ -326,7 +326,7 @@ const AccountTransferForm = ({
                                         {({ field }) => (
                                             <Input
                                                 {...field}
-                                                onChange={e => {
+                                                onChange={(e) => {
                                                     setErrorMessage('');
                                                     handleChange(e);
                                                 }}
@@ -345,9 +345,7 @@ const AccountTransferForm = ({
                                                         >
                                                             {getCurrencyDisplayCode(selected_from.currency)}
                                                         </span>
-                                                    ) : (
-                                                        undefined
-                                                    )
+                                                    ) : undefined
                                                 }
                                                 autoComplete='off'
                                                 maxLength='30'

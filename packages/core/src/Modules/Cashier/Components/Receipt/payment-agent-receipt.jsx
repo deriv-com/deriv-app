@@ -31,8 +31,10 @@ class PaymentAgentReceipt extends React.Component {
                         <Localize i18n_default_text='Your funds have been transferred' />
                     </h2>
                     <div className='cashier__transferred-amount cashier__text--bold'>
-                        <span className={classNames('symbols', `symbols--${currency_lowercase}`)} />
                         {receipt.amount_transferred}
+                        <span className={classNames('symbols', `symbols--${currency_lowercase}`)}>
+                            {getCurrencyDisplayCode(currency)}
+                        </span>
                     </div>
                     <div className='cashier__transferred-details-wrapper'>
                         <Icon icon={`IcCurrency-${currency_lowercase}`} />

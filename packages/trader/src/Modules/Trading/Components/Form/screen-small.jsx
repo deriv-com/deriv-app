@@ -27,6 +27,7 @@ const CollapsibleTradeParams = ({
 }) => {
     React.useEffect(() => {
         if (previous_symbol && is_allow_equal && has_allow_equals) setIsTradeParamsExpanded(true);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [previous_symbol]);
 
     const is_collapsed = !is_trade_params_expanded;

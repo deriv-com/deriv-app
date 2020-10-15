@@ -215,11 +215,16 @@ class FinancialAssessment extends React.Component {
             if (data.error) {
                 setStatus({ msg: data.error.message });
             } else {
-                this.setState({ is_submit_success: true });
-                setTimeout(() => this.setState({ is_submit_success: false }), 3000);
+                WS.authorized.storage.getFinancialAssessment().then((res_data) => {
+                    this.setState({
+                        ...res_data.get_financial_assessment,
+                        is_submit_success: true,
+                    });
+                    setTimeout(() => this.setState({ is_submit_success: false }), 3000);
 
-                this.props.removeNotificationMessage({ key: 'risk' });
-                this.props.removeNotificationByKey({ key: 'risk' });
+                    this.props.removeNotificationMessage({ key: 'risk' });
+                    this.props.removeNotificationByKey({ key: 'risk' });
+                });
             }
             setSubmitting(false);
         });
@@ -304,6 +309,7 @@ class FinancialAssessment extends React.Component {
                             other_instruments_trading_frequency,
                         }),
                     }}
+                    enableReinitialize={true}
                     validate={this.validateFields}
                     onSubmit={this.onSubmit}
                 >
@@ -845,30 +851,7 @@ class FinancialAssessment extends React.Component {
                                                 'dc-btn--green': is_submit_success,
                                             })}
                                             onClick={() => this.toggleConfirmationModal(true)}
-                                            is_disabled={
-                                                isSubmitting ||
-                                                !dirty ||
-                                                !!(
-                                                    errors.income_source ||
-                                                    !values.income_source ||
-                                                    errors.employment_status ||
-                                                    !values.employment_status ||
-                                                    errors.employment_industry ||
-                                                    !values.employment_industry ||
-                                                    errors.occupation ||
-                                                    !values.occupation ||
-                                                    errors.source_of_wealth ||
-                                                    !values.source_of_wealth ||
-                                                    errors.education_level ||
-                                                    !values.education_level ||
-                                                    errors.net_income ||
-                                                    !values.net_income ||
-                                                    errors.estimated_worth ||
-                                                    !values.estimated_worth ||
-                                                    errors.account_turnover ||
-                                                    !values.account_turnover
-                                                )
-                                            }
+                                            is_disabled={isSubmitting || !dirty || Object.keys(errors).length > 0}
                                             has_effect
                                             is_loading={is_btn_loading}
                                             is_submit_success={is_submit_success}

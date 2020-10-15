@@ -2,10 +2,12 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import CurrencyBadge from 'App/Components/Elements/currency-badge.jsx';
 import { ContractCard, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { getContractPath, isMultiplierContract } from '@deriv/shared';
 import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
 import { connect } from 'Stores/connect';
+import { connectWithContractUpdate } from 'Stores/Modules/Contract/Helpers/multiplier';
 
 const PositionsDrawerCard = ({
     addToast,
@@ -90,6 +92,7 @@ const PositionsDrawerCard = ({
     const card_footer = (
         <ContractCard.Footer
             addToast={addToast}
+            connectWithContractUpdate={connectWithContractUpdate}
             contract_info={contract_info}
             getCardLabels={getCardLabels}
             getContractById={getContractById}
@@ -110,6 +113,7 @@ const PositionsDrawerCard = ({
     const contract_el = (
         <React.Fragment>
             {card_header}
+            <CurrencyBadge currency={currency} />
             {card_body_wrapper}
         </React.Fragment>
     );

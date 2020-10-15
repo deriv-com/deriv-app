@@ -1,9 +1,8 @@
 import React from 'react';
-import { getDerivUrls, getPlatformFromUrl } from '@deriv/shared';
+import { deriv_urls, getPlatformFromUrl } from '@deriv/shared';
 
 const SmartTraderIFrame = () => {
     const { is_deriv_crypto, is_staging_deriv_app, is_staging_deriv_crypto } = getPlatformFromUrl();
-    const deriv_urls = getDerivUrls();
 
     let base_link = '';
 

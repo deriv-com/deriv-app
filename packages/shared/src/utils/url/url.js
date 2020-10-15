@@ -1,3 +1,4 @@
+import { deriv_urls } from './constants';
 import { getPlatformFromUrl } from './helpers';
 import { getCurrentProductionDomain } from '../config/config';
 import { routes } from '../routes';
@@ -170,10 +171,14 @@ export const getStaticUrl = (
         is_deriv_crypto: false,
     }
 ) => {
-    const host = options.is_deriv_crypto ? 'https://derivcrypto.com' : 'https://deriv.com';
+    const host = options.is_deriv_crypto ? deriv_urls.DERIV_CRYPTO_COM_PRODUCTION : deriv_urls.DERIV_COM_PRODUCTION;
     let lang = default_language?.toLowerCase();
-    if (lang && lang !== 'en') lang = `/${lang}`;
-    else lang = '';
+
+    if (lang && lang !== 'en') {
+        lang = `/${lang}`;
+    } else {
+        lang = '';
+    }
 
     return `${host}${lang}/${normalizePath(path)}`;
 };

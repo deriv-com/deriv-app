@@ -17,7 +17,7 @@ const Carousel = ({
     show_bullet,
     show_nav,
     onItemSelect,
-    autoplay_time = null,
+    autoplay_time,
     width,
 }) => {
     const [active_index, setActiveIndex] = React.useState(initial_index);
@@ -124,6 +124,7 @@ Carousel.defaultProps = {
     bullet_position: 'bottom',
     show_bullet: true,
     show_nav: true,
+    autoplay_time: null,
     width: 400,
 };
 Carousel.propTypes = {

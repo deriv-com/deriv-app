@@ -17,7 +17,7 @@ const Carousel = ({
     show_bullet,
     show_nav,
     onItemSelect,
-    autoplay_time,
+    autoplay_time = null,
     width,
 }) => {
     const [active_index, setActiveIndex] = React.useState(initial_index);
@@ -43,9 +43,7 @@ const Carousel = ({
         }
     };
 
-    if (autoplay_time) {
-        useInterval(handleNextClick, autoplay_time);
-    }
+    useInterval(handleNextClick, autoplay_time);
 
     React.useEffect(() => {
         if (typeof onItemSelect === 'function') onItemSelect(active_index, list);

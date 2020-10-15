@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { action, observable, reaction } from 'mobx';
 import { scrollWorkspace, runGroupedEvents, load, config } from '@deriv/bot-skeleton';
 import { tabs_title } from '../constants/bot-contents';
 
@@ -20,26 +20,7 @@ export default class ToolbarStore {
 
     @action.bound
     onToolboxToggle() {
-        const workspace = Blockly.derivWorkspace;
-        const toolbox = workspace.getToolbox();
         this.is_toolbox_open = !this.is_toolbox_open;
-        const { main_content } = this.root_store;
-
-        if (main_content.active_tab !== tabs_title.WORKSPACE) {
-            main_content.setActiveTab(tabs_title.WORKSPACE);
-        }
-
-        toolbox.toggle();
-        if (this.is_toolbox_open) {
-            const toolbox_width = toolbox.HtmlDiv.clientWidth;
-            const block_canvas_rect = workspace.svgBlockCanvas_.getBoundingClientRect(); // eslint-disable-line
-
-            if (block_canvas_rect.left < toolbox_width) {
-                const scroll_distance = toolbox_width - block_canvas_rect.left + toolbox.width;
-                scrollWorkspace(workspace, scroll_distance, true, false);
-            }
-            this.root_store.core.gtm.pushDataLayer({ event: 'dbot_toolbox_visible', value: true });
-        }
     }
 
     @action.bound
@@ -95,6 +76,40 @@ export default class ToolbarStore {
     }
 
     @action.bound
+    onMount() {
+        this.disposeToolboxToggleReaction = reaction(
+            () => this.is_toolbox_open,
+            is_toolbox_open => {
+                // Switch to Workspace tab when clicking Get started.
+                const { core, main_content } = this.root_store;
+
+                if (main_content.active_tab !== tabs_title.WORKSPACE) {
+                    main_content.setActiveTab(tabs_title.WORKSPACE);
+                }
+
+                const workspace = Blockly.derivWorkspace;
+                const toolbox = workspace.getToolbox();
+
+                toolbox.setVisibility(is_toolbox_open);
+
+                if (is_toolbox_open) {
+                    const { clientWidth: toolbox_width } = toolbox.HtmlDiv;
+                    const block_canvas_rect = workspace.svgBlockCanvas_.getBoundingClientRect(); // eslint-disable-line
+
+                    if (block_canvas_rect.left < toolbox_width) {
+                        const scroll_distance = toolbox_width - block_canvas_rect.left + toolbox.width;
+                        scrollWorkspace(workspace, scroll_distance, true, false);
+                    }
+
+                    // Emit event to GTM.
+                    const { gtm } = core;
+                    gtm.pushDataLayer({ event: 'dbot_toolbox_visible', value: true });
+                }
+            }
+        );
+    }
+
+    @action.bound
     onResetOkButtonClick() {
         runGroupedEvents(
             false,
@@ -129,6 +144,13 @@ export default class ToolbarStore {
         this.setHasRedoStack();
         this.setHasUndoStack();
         Blockly.Events.setGroup(false);
+    }
+
+    @action.bound
+    onUnmount() {
+        if (typeof this.disposeToolboxToggleReaction === 'function') {
+            this.disposeToolboxToggleReaction();
+        }
     }
 
     onZoomInOutClick = is_zoom_in => {

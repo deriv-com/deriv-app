@@ -54,7 +54,7 @@ export const RowComponent = React.memo(({ advert, setSelectedAdvert, showAdverti
                         >
                             {advertiser_short_name}
                         </div>
-                        {advertiser_name}
+                        <div className='buy-sell__name'>{advertiser_name}</div>
                     </div>
                 </Table.Cell>
                 <Table.Cell>

@@ -2,6 +2,7 @@ import Cookies from 'js-cookie';
 import { action, computed, observable, reaction, runInAction, toJS, when } from 'mobx';
 import moment from 'moment';
 import {
+    redirectToLogin,
     getMT5AccountType,
     getPropertyValue,
     getUrlSmartTrader,
@@ -14,10 +15,9 @@ import {
     State,
     toMoment,
 } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { getLanguage, localize } from '@deriv/translations';
 import { requestLogout, WS } from 'Services';
 import BinarySocketGeneral from 'Services/socket-general';
-import { redirectToLogin } from '_common/base/login';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
 import { isEuCountry } from '_common/utility';
@@ -768,6 +768,7 @@ export default class ClientStore extends BaseStore {
         this.is_populating_account_list = false;
         this.upgrade_info = this.getBasicUpgradeInfo();
         this.setSwitched(client_id);
+        this.syncWithSmartTrader(client_id, client_accounts);
     }
 
     @action.bound
@@ -975,7 +976,7 @@ export default class ClientStore extends BaseStore {
                 message: localize('Please Log in'),
                 should_show_refresh: false,
                 redirect_label: localize('Log in'),
-                redirectOnClick: redirectToLogin,
+                redirectOnClick: () => redirectToLogin(false, getLanguage()),
             });
             this.setIsLoggingIn(false);
             this.setInitialized(false);
@@ -985,9 +986,7 @@ export default class ClientStore extends BaseStore {
 
         this.setLoginId(LocalStore.get('active_loginid'));
         this.setAccounts(LocalStore.getObject(storage_key));
-        if (this.is_logged_in && !this.switched && !this.has_any_real_account && this.is_mt5_allowed) {
-            this.root_store.ui.toggleWelcomeModal({ is_visible: true });
-        }
+
         this.setSwitched('');
         let client = this.accounts[this.loginid];
         // If there is an authorize_response, it means it was the first login
@@ -1048,8 +1047,12 @@ export default class ClientStore extends BaseStore {
                 await this.fetchResidenceList();
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
-            WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
+            await WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
             if (!this.is_virtual) this.getLimits();
+
+            if (!this.switched && !this.has_any_real_account && this.is_mt5_allowed) {
+                this.root_store.ui.toggleWelcomeModal({ is_visible: true });
+            }
         } else {
             this.resetMt5AccountListPopulation();
         }
@@ -1461,6 +1464,7 @@ export default class ClientStore extends BaseStore {
         if (active_loginid && Object.keys(client_object).length) {
             localStorage.setItem('active_loginid', active_loginid);
             localStorage.setItem('client.accounts', JSON.stringify(client_object));
+            this.syncWithSmartTrader(active_loginid, this.accounts);
         }
     }
 

@@ -86,7 +86,7 @@ class SelfExclusion extends React.Component {
     };
 
     validateFields = (values) => {
-        const { currency, is_eu } = this.props;
+        const { currency, is_eu, is_cr } = this.props;
         const errors = {};
         // Regex
         const is_number = /^\d+(\.\d+)?$/;
@@ -179,7 +179,7 @@ class SelfExclusion extends React.Component {
                     errors[item] = max_number_message;
                 }
             }
-            if (+this.state.self_exclusions[item] && !values[item]) {
+            if (+this.state.self_exclusions[item] && !values[item] && !is_cr) {
                 errors[item] = more_than_zero_message;
             }
         });
@@ -618,7 +618,7 @@ class SelfExclusion extends React.Component {
                                                                 required
                                                                 error={
                                                                     touched.max_30day_turnover &&
-                                                                    errors.max_7day_turnover
+                                                                    errors.max_30day_turnover
                                                                 }
                                                             />
                                                         )}
@@ -874,6 +874,7 @@ export default connect(({ client }) => ({
     currency: client.currency,
     is_virtual: client.is_virtual,
     is_switching: client.is_switching,
+    is_cr: client.standpoint.svg,
     is_eu: client.is_eu,
     is_mlt: client.landing_company_shortcode === 'malta',
     is_mx: client.landing_company_shortcode === 'iom',

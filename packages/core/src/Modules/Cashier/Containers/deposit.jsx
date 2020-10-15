@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'Stores/connect';
 import { Localize } from '@deriv/translations';
-import { isCryptocurrency } from '@deriv/shared';
+import { isCryptocurrency, isDesktop } from '@deriv/shared';
 import CashierContainer from '../Components/cashier-container.jsx';
 import Error from '../Components/Error/error.jsx';
 import Virtual from '../Components/Error/virtual.jsx';
@@ -55,10 +55,11 @@ const Deposit = ({
         if (!is_virtual) {
             onMount();
         }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {
-        if (iframe_height) {
+        if (iframe_height && isDesktop()) {
             if (isCryptocurrency(currency)) {
                 if (/^(UST|eUSDT)$/i.test(currency) && typeof setSideNotes === 'function') {
                     setSideNotes([<DepositeSideNote key={0} />, <USDTSideNote key={1} />]);
@@ -67,7 +68,7 @@ const Deposit = ({
                 }
             }
         }
-    }, [iframe_height]);
+    }, [currency, setSideNotes, iframe_height]);
 
     if (is_virtual) {
         return <Virtual />;

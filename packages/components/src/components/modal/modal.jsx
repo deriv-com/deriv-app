@@ -52,7 +52,11 @@ const ModalElement = ({
         );
     };
 
-    useOnClickOutside(wrapper_ref, toggleModal, validateClickOutside);
+    const closeModal = () => {
+        if (is_open) toggleModal();
+    };
+
+    useOnClickOutside(wrapper_ref, closeModal, validateClickOutside);
 
     React.useEffect(() => {
         el_ref.current.classList.add('dc-modal');

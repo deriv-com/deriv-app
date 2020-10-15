@@ -986,9 +986,7 @@ export default class ClientStore extends BaseStore {
 
         this.setLoginId(LocalStore.get('active_loginid'));
         this.setAccounts(LocalStore.getObject(storage_key));
-        if (this.is_logged_in && !this.switched && !this.has_any_real_account && this.is_mt5_allowed) {
-            this.root_store.ui.toggleWelcomeModal({ is_visible: true });
-        }
+
         this.setSwitched('');
         let client = this.accounts[this.loginid];
         // If there is an authorize_response, it means it was the first login
@@ -1049,8 +1047,12 @@ export default class ClientStore extends BaseStore {
                 await this.fetchResidenceList();
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
-            WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
+            await WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
             if (!this.is_virtual) this.getLimits();
+
+            if (!this.switched && !this.has_any_real_account && this.is_mt5_allowed) {
+                this.root_store.ui.toggleWelcomeModal({ is_visible: true });
+            }
         } else {
             this.resetMt5AccountListPopulation();
         }

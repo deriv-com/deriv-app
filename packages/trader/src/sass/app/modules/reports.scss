@@ -783,7 +783,6 @@ $side-padding: 1.2em;
     .profit {
         @include desktop {
             justify-content: center;
-            text-align: right;
         }
     }
     .type {

@@ -7,6 +7,9 @@ import { localize } from '@deriv/translations';
 const FieldCheckbox = () => {
     const getAltText = is_checked => (is_checked ? localize('Y') : localize('N'));
     const onCheckboxClick = function() {
+        if (this.sourceBlock_.workspace.options.readOnly || this.sourceBlock_.isInFlyout) {
+            return;
+        }
         this.is_checked = !this.is_checked;
         this.setValue(this.is_checked);
         this.setText(getAltText(this.is_checked));

@@ -10,18 +10,64 @@ export default class RunPanelStore {
         this.root_store = root_store;
         this.dbot = this.root_store.dbot;
         this.registerCoreReactions();
+
+        this.statistics_storage_key = 'statistics_cache';
+        this.empty_statistics = Object.freeze({
+            lost_contracts: 0,
+            number_of_runs: 0,
+            total_profit: 0,
+            total_payout: 0,
+            total_stake: 0,
+            won_contracts: 0,
+        });
+
+        this.disposeStatisticsListener = reaction(
+            () => this.statistics,
+            statistics => {
+                const { client } = this.root_store.core;
+                const stored_statistics = this.getSessionStorage(this.statistics_storage_key);
+
+                const new_statistics = { statistics };
+                stored_statistics[client.loginid] = new_statistics;
+
+                sessionStorage.setItem(this.statistics_storage_key, JSON.stringify(stored_statistics));
+            }
+        );
+
+        this.disposeSwitchAccountListener = reaction(
+            () => this.root_store.core.client.loginid,
+            () => {
+                const { core, transactions, journal, summary_card } = this.root_store;
+                const { client } = core;
+
+                if (client.is_logged_in) {
+                    this.statistics =
+                        this.getAccountStatisticsInfo(this.statistics_storage_key, 'Statistics')?.statistics ??
+                        this.empty_statistics;
+
+                    journal.unfiltered_messages =
+                        this.getAccountStatisticsInfo('journal_cache', 'Journals')?.journal_messages ?? [];
+
+                    transactions.elements =
+                        this.getAccountStatisticsInfo('transaction_cache', 'Transactions')?.transaction_elements ?? [];
+                } else {
+                    this.statistics = this.empty_statistics;
+                    journal.unfiltered_messages = [];
+                    transactions.elements = [];
+                }
+
+                this.is_running = false;
+                this.has_open_contract = false;
+                summary_card.clear();
+                this.setContractStage(contract_stages.NOT_RUNNING);
+            }
+        );
     }
 
     run_id = '';
 
-    @observable statistics = {
-        lost_contracts: 0,
-        number_of_runs: 0,
-        total_profit: 0,
-        total_payout: 0,
-        total_stake: 0,
-        won_contracts: 0,
-    };
+    @observable statistics =
+        this.getAccountStatisticsInfo(this.statistics_storage_key, 'statistics')?.statistics ?? this.empty_statistics;
 
     @observable active_index = 0;
     @observable contract_stage = contract_stages.NOT_RUNNING;
@@ -36,6 +82,19 @@ export default class RunPanelStore {
     // we activate run-button and clear trade info and set the ContractStage to NOT_RUNNING
     // otherwise we keep opening new contracts and set the ContractStage to PURCHASE_SENT
     error_type = undefined;
+
+    getSessionStorage = key => {
+        return JSON.parse(sessionStorage.getItem(key)) ?? {};
+    };
+
+    getAccountStatisticsInfo = (key, type) => {
+        const { client } = this.root_store.core;
+
+        if (type === 'Statistics') {
+            return this.getSessionStorage(key)?.[client.loginid] ?? this.empty_statistics;
+        }
+        return this.getSessionStorage(key)?.[client.loginid] ?? [];
+    };
 
     // #region button clicks
     @computed
@@ -361,18 +420,20 @@ export default class RunPanelStore {
                 break;
             }
         }
+
+        this.statistics = {
+            lost_contracts: this.statistics.lost_contracts,
+            number_of_runs: this.statistics.number_of_runs,
+            total_profit: this.statistics.total_profit,
+            total_payout: this.statistics.total_payout,
+            total_stake: this.statistics.total_stake,
+            won_contracts: this.statistics.won_contracts,
+        };
     }
 
     @action.bound
     clear() {
-        this.statistics = {
-            lost_contracts: 0,
-            number_of_runs: 0,
-            total_profit: 0,
-            total_payout: 0,
-            total_stake: 0,
-            won_contracts: 0,
-        };
+        this.statistics = this.empty_statistics;
         observer.emit('statistics.clear');
     }
 
@@ -444,16 +505,10 @@ export default class RunPanelStore {
                         }
                         this.dbot.terminateBot();
                         RunPanelStore.unregisterBotListeners();
-                        this.clearStat();
                     }
                 );
-            } else {
-                if (typeof this.disposeLogoutListener === 'function') {
-                    this.disposeLogoutListener();
-                }
-                if (typeof this.disposeSwitchAccountListener === 'function') {
-                    this.disposeSwitchAccountListener();
-                }
+            } else if (typeof this.disposeLogoutListener === 'function') {
+                this.disposeLogoutListener();
             }
         };
 
@@ -482,11 +537,29 @@ export default class RunPanelStore {
 
     @action.bound
     onUnmount() {
+        const { journal, transactions } = this.root_store;
+
         RunPanelStore.unregisterBotListeners();
-        this.disposeIsSocketOpenedListener();
+        this.disposeListeners();
+        journal.disposeListeners();
+        transactions.disposeListeners();
 
         observer.unregisterAll('ui.log.error');
         observer.unregisterAll('ui.log.notify');
         observer.unregisterAll('ui.log.success');
+    }
+
+    disposeListeners() {
+        if (typeof this.disposeIsSocketOpenedListener === 'function') {
+            this.disposeIsSocketOpenedListener();
+        }
+
+        if (typeof this.disposeStatisticsListener === 'function') {
+            this.disposeStatisticsListener();
+        }
+
+        if (typeof this.disposeSwitchAccountListener === 'function') {
+            this.disposeSwitchAccountListener();
+        }
     }
 }

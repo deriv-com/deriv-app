@@ -10,6 +10,7 @@ const ThemedScrollbars = ({
     autohide = true,
     is_bypassed,
     is_only_horizontal,
+    is_only_horizontal_overlay,
     has_horizontal,
     onScroll,
     refSetter,
@@ -24,6 +25,7 @@ const ThemedScrollbars = ({
                 'dc-themed-scrollbars__autohide--is-hovered': autohide && isHovered,
                 'dc-themed-scrollbars--has-horizontal': has_horizontal,
                 'dc-themed-scrollbars--only-horizontal': is_only_horizontal,
+                'dc-themed-scrollbars--only-horizontal-overlay': is_only_horizontal_overlay,
             })}
             style={{
                 maxHeight: height || '100%',

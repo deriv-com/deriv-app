@@ -255,7 +255,7 @@ Blockly.Toolbox.prototype.showSearch = function(search) {
     }
 
     // block_procedure_name matched
-    const searched_procedures = { '0': [], '1': [] };
+    const searched_procedures = { 0: [], 1: [] };
     const procedures_callnoreturn = all_procedures[0];
     const procedures_callreturn = all_procedures[1];
     Object.keys(procedures_callnoreturn).forEach(key => {
@@ -655,19 +655,19 @@ Blockly.Toolbox.prototype.refreshCategory = function() {
     this.setSelectedItem(category, false);
 };
 
-Blockly.Toolbox.prototype.toggle = function() {
-    const { toolbar, flyout } = DBotStore.instance;
-    if (!toolbar.is_toolbox_open) {
-        this.addStyle('toolbox--hidden');
+Blockly.Toolbox.prototype.setVisibility = function(is_open) {
+    const { flyout } = DBotStore.instance;
 
-        flyout.setVisibility(false);
+    flyout.setVisibility(false);
+
+    if (is_open) {
+        this.removeStyle('toolbox--hidden');
+    } else {
+        this.addStyle('toolbox--hidden');
 
         if (this.selectedItem_) {
             this.selectedItem_.setSelected(false);
             this.selectedItem_ = null;
         }
-    } else {
-        flyout.setVisibility(false);
-        this.removeStyle('toolbox--hidden');
     }
 };

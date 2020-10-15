@@ -58,7 +58,7 @@ class ProfitTable extends React.Component {
                     <DataList.Cell
                         className='data-list__row-cell--amount'
                         row={row}
-                        column={this.columns_map.buy_price}
+                        column={this.columns_map.currency}
                     />
                 </div>
                 <div className='data-list__row'>
@@ -66,7 +66,7 @@ class ProfitTable extends React.Component {
                     <DataList.Cell
                         className='data-list__row-cell--amount'
                         row={row}
-                        column={this.columns_map.sell_price}
+                        column={this.columns_map.buy_price}
                     />
                 </div>
                 <div className='data-list__row'>
@@ -74,8 +74,11 @@ class ProfitTable extends React.Component {
                     <DataList.Cell
                         className='data-list__row-cell--amount'
                         row={row}
-                        column={this.columns_map.profit_loss}
+                        column={this.columns_map.sell_price}
                     />
+                </div>
+                <div className='data-list__row'>
+                    <DataList.Cell row={row} column={this.columns_map.profit_loss} />
                 </div>
             </>
         );
@@ -181,7 +184,7 @@ class ProfitTable extends React.Component {
                                         onScroll={handleScroll}
                                         footer={totals}
                                         custom_width={'100%'}
-                                        getRowSize={() => 204}
+                                        getRowSize={() => 234}
                                     >
                                         <PlaceholderComponent is_loading={is_loading} />
                                     </DataList>

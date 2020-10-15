@@ -11,8 +11,7 @@ import {
 import { isDesktop, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import CheckboxField from 'App/Containers/RealAccountSignup/checkbox-field.jsx';
-import { Hr } from './currency-selector.jsx';
-import { SharedMessage, BrokerSpecificMessage } from './terms-of-use-messages.jsx';
+import { SharedMessage, BrokerSpecificMessage, Hr } from './terms-of-use-messages.jsx';
 import 'Sass/terms-of-use.scss';
 
 class TermsOfUse extends React.Component {

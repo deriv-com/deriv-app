@@ -6,14 +6,20 @@ import { timeSince } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
 import { connect } from '../../stores/connect';
 
-const RecentWorkspace = ({ getRecentFileIcon, getSaveType, previewWorkspace, selected_workspace_id, workspace }) => {
+const RecentWorkspace = ({
+    getRecentFileIcon,
+    getSaveType,
+    previewRecentStrategy,
+    selected_strategy_id,
+    workspace,
+}) => {
     return (
         <div
             className={classnames('load-strategy__recent-item', {
-                'load-strategy__recent-item--selected': selected_workspace_id === workspace.id,
+                'load-strategy__recent-item--selected': selected_strategy_id === workspace.id,
             })}
             key={workspace.id}
-            onClick={selected_workspace_id === workspace.id ? undefined : () => previewWorkspace(workspace.id)}
+            onClick={selected_strategy_id === workspace.id ? undefined : () => previewRecentStrategy(workspace.id)}
         >
             <div className='load-strategy__recent-item-text'>
                 <div className='load-strategy__recent-item-title'>{workspace.name}</div>
@@ -35,13 +41,13 @@ const RecentWorkspace = ({ getRecentFileIcon, getSaveType, previewWorkspace, sel
 RecentWorkspace.propTypes = {
     getRecentFileIcon: PropTypes.func,
     getSaveType: PropTypes.func,
-    previewWorkspace: PropTypes.func,
-    selected_workspace_id: PropTypes.string,
+    previewRecentStrategy: PropTypes.func,
+    selected_strategy_id: PropTypes.string,
 };
 
 export default connect(({ load_modal }) => ({
     getRecentFileIcon: load_modal.getRecentFileIcon,
     getSaveType: load_modal.getSaveType,
-    previewWorkspace: load_modal.previewWorkspace,
-    selected_workspace_id: load_modal.selected_workspace_id,
+    previewRecentStrategy: load_modal.previewRecentStrategy,
+    selected_strategy_id: load_modal.selected_strategy_id,
 }))(RecentWorkspace);

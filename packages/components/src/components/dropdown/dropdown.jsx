@@ -34,6 +34,7 @@ const Dropdown = ({
     placeholder,
     onChange,
     value,
+    initial_offset = 0,
 }) => {
     const dropdown_ref = React.useRef();
     const list_ref = React.useRef();
@@ -42,7 +43,7 @@ const Dropdown = ({
     const nodes = React.useRef(new Map());
 
     const [is_list_visible, setIsListVisible] = React.useState(!!is_nativepicker_visible);
-    const [list_dimensions, setListDimensions] = React.useState([0, 0]);
+    const [list_dimensions, setListDimensions] = React.useState([initial_offset, 0]);
     const initial_render = React.useRef(true);
 
     const onClickOutSide = () => {
@@ -224,7 +225,8 @@ const Dropdown = ({
     };
 
     // Upon render via css transition group, we use this as a callback to set the width/height of the dropdown list in the state
-    const setListDimension = () => setListDimensions([list_ref.current.offsetWidth, list_ref.current.offsetHeight]);
+    const setListDimension = () =>
+        setListDimensions([initial_offset || list_ref.current.offsetWidth, list_ref.current.offsetHeight]);
 
     const getDropDownAlignment = () => {
         if (is_alignment_left) return computed_offset_left();
@@ -362,6 +364,7 @@ Dropdown.propTypes = {
     classNameLabel: PropTypes.string,
     disabled: PropTypes.bool,
     has_symbol: PropTypes.bool,
+    initial_offset: PropTypes.number,
     is_alignment_left: PropTypes.bool,
     is_large: PropTypes.bool,
     is_nativepicker: PropTypes.bool,

@@ -960,7 +960,6 @@ export default class ClientStore extends BaseStore {
 
         // On case of invalid token, no need to continue with additional api calls.
         if (authorize_response?.error) {
-            debugger;
             await this.logout();
             this.root_store.common.setError(true, {
                 header: authorize_response.error.message,

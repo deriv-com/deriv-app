@@ -66,7 +66,7 @@ export default Engine =>
                 totalPayout: accountStat.totalPayout,
             });
 
-            log(win ? log_types.PROFIT : log_types.LOST, { profit });
+            log(win ? log_types.PROFIT : log_types.LOST, { currency, profit });
         }
 
         updateAndReturnTotalRuns() {

@@ -57,7 +57,7 @@ export const paramsHash = href => {
     return param_hash;
 };
 
-export const normalizePath = path => (path ? path.replace(/(^\/|\/$|[^a-zA-Z0-9-_./])/g, '') : '');
+export const normalizePath = path => (path ? path.replace(/(^\/|\/$|[^a-zA-Z0-9-_./()])/g, '') : '');
 
 export const urlFor = (
     path,
@@ -167,6 +167,7 @@ export const setUrlLanguage = lang => {
 
 export const getStaticUrl = (
     path = '',
+    is_document = false,
     options = {
         is_deriv_crypto: false,
     }
@@ -179,6 +180,8 @@ export const getStaticUrl = (
     } else {
         lang = '';
     }
+
+    if (is_document) return `${host}/${normalizePath(path)}`;
 
     return `${host}${lang}/${normalizePath(path)}`;
 };

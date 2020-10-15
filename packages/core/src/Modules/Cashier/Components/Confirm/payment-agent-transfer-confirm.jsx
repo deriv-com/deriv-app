@@ -18,10 +18,10 @@ const PaymentAgentTransferConfirm = ({
 }) => (
     <Confirm
         data={[
-            { label: localize('Transfer from'), value: loginid },
-            { label: localize('Transfer to'), value: [transfer_to, transfer_to_name] },
-            { label: localize('Amount'), value: <Money currency={currency} amount={amount} /> },
-            { label: localize('Description'), value: description },
+            { label: localize('Transfer from'), value: loginid, key: 'transfer_from' },
+            { label: localize('Transfer to'), value: [transfer_to, transfer_to_name], key: 'transfer_to' },
+            { label: localize('Amount'), value: <Money currency={currency} amount={amount} />, key: 'amount' },
+            { label: localize('Description'), value: description, key: 'description' },
         ]}
         error_message={error_message}
         header={localize('Please confirm the transaction details in order to complete the transfer:')}

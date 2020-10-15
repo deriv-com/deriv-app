@@ -44,11 +44,17 @@
 
         &-verification {
             align-items: center;
+            color: var(--text-less-prominent);
             display: flex;
             font-size: var(--text-size-xs);
 
-            &-address {
+            &-status {
                 margin-left: 1.6rem;
+            }
+
+            &-icon {
+                margin-left: 0.4rem;
+                vertical-align: bottom;
             }
         }
     }
@@ -61,7 +67,7 @@
         height: fit-content;
         justify-content: space-between;
         margin: 2.4rem 0 2.4rem 2.9rem;
-        width: 639px;
+        width: 636px;
 
         &-cell {
             display: block;

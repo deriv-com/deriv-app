@@ -55,6 +55,7 @@ const Deposit = ({
         if (!is_virtual) {
             onMount();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {

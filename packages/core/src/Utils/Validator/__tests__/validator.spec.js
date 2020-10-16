@@ -15,9 +15,7 @@ describe('Validator', () => {
     describe('.addFailure', () => {
         it('should add failure to the error list if addFailure is used', () => {
             validator.addFailure(input, Validator.getRuleObject('length'));
-            expect(validator.errors.errors)
-                .to.have.property(input)
-                .with.lengthOf(1);
+            expect(validator.errors.errors).to.have.property(input).with.lengthOf(1);
         });
         it('should update error count if addFailure is used', () => {
             validator.addFailure(input, Validator.getRuleObject('length'));

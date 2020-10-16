@@ -2,8 +2,8 @@ import React from 'react';
 
 export const useHover = refSetter => {
     const [value, setValue] = React.useState(false);
-
-    const ref = refSetter || React.useRef(null);
+    const default_ref = React.useRef(null);
+    const ref = refSetter || default_ref;
 
     const handleMouseOver = () => setValue(true);
     const handleMouseOut = () => setValue(false);
@@ -20,7 +20,7 @@ export const useHover = refSetter => {
             };
         }
         return null;
-    }, [ref.current]);
+    }, [ref]);
 
     return [ref, value];
 };

@@ -336,9 +336,7 @@ const AccountTransferForm = ({
                                                         >
                                                             {getCurrencyDisplayCode(selected_from.currency)}
                                                         </span>
-                                                    ) : (
-                                                        undefined
-                                                    )
+                                                    ) : undefined
                                                 }
                                                 autoComplete='off'
                                                 maxLength='30'

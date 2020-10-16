@@ -301,7 +301,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
             message: localize('This page will automatically refresh in 5 minutes to load the latest version.'),
             type: 'warning',
             should_hide_close_btn: true,
-            timeout: 9999900000,
+            timeout: 300000,
             timeoutMessage: remaining => localize('Auto update in {{ remaining }} seconds', { remaining }),
         },
     };

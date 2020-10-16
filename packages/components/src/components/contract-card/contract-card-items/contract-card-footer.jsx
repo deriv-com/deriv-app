@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { isValidToCancel, hasContractEntered, isOpen } from '@deriv/shared';
+import { isValidToCancel, isValidToSell, hasContractEntered, isOpen } from '@deriv/shared';
 import ContractCardSell from './contract-card-sell.jsx';
 import MultiplierCloseActions from './multiplier-close-actions.jsx';
 
@@ -27,9 +27,11 @@ const CardFooter = ({
 
     const should_show_sell = hasContractEntered(contract_info) && isOpen(contract_info);
 
+    if (!should_show_sell) return null;
+
     return (
         <CSSTransition
-            in={in_prop && should_show_sell}
+            in={in_prop}
             timeout={should_show_transition ? 250 : 0}
             classNames={
                 should_show_transition

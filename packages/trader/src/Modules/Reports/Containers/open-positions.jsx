@@ -38,7 +38,7 @@ const MobileRowRenderer = ({ row, is_footer, columns_map, server_time, onClickCa
         if (!is_footer) {
             measure();
         }
-    }, [row.contract_info.underlying, measure, is_footer]);
+    }, [row.contract_info?.underlying, measure, is_footer]);
 
     if (is_footer) {
         return (

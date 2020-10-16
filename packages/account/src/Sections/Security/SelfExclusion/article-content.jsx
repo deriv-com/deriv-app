@@ -40,7 +40,7 @@ const ArticleContent = ({ is_eu, toggleModal }) => {
         />,
         <Localize
             key={3}
-            i18n_default_text='You can also exclude yourself entirely for a specified duration. Once you have set your self-exclusion date, you won’t be able to remove it until the set period has expired. If you wish to continue trading once your self-exclusion period expires, you must contact <0>Customer Support</0> by phone on +447723580049 to uplift this self-exclusion.'
+            i18n_default_text='You can also exclude yourself entirely for a specified duration. Once you have set your self-exclusion date, you won’t be able to remove it until the set period has expired. If you wish to continue trading once your self-exclusion period expires, you must contact <0>Customer Support</0> by phone on <1>+447723580049</1> to uplift this self-exclusion.'
             components={[
                 <a
                     key={0}
@@ -48,6 +48,13 @@ const ArticleContent = ({ is_eu, toggleModal }) => {
                     rel='noopener noreferrer'
                     target='_blank'
                     href={getStaticUrl('/contact-us', { is_deriv_crypto })}
+                />,
+                <a
+                    key={1}
+                    className='link link--orange'
+                    rel='noopener noreferrer'
+                    target='_blank'
+                    href='tel:+447723580049'
                 />,
             ]}
         />,

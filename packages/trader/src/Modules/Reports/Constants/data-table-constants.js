@@ -211,11 +211,13 @@ export const getOpenPositionsColumnsTemplate = currency => [
     {
         title: localize('Indicative price'),
         col_index: 'indicative',
-        renderCellContent: ({ cell_value, row_obj }) => (
+        renderCellContent: ({ cell_value, row_obj, is_footer }) => (
             <IndicativeCell
                 amount={+cell_value}
                 currency={currency}
-                status={row_obj.contract_info && !row_obj.is_valid_to_sell ? 'no-resale' : ''}
+                contract_info={row_obj.contract_info}
+                is_sell_requested={row_obj.is_sell_requested}
+                is_footer={is_footer}
             />
         ),
     },

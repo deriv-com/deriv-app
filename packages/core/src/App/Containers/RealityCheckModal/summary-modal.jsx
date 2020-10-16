@@ -66,6 +66,7 @@ const SummaryModal = ({
                 ...reality_check,
             });
         });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const getSessionDuration = (start_time, current_time) => {

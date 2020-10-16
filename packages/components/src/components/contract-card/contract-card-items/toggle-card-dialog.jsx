@@ -24,6 +24,7 @@ class ToggleCardDialog extends React.Component {
         this.toggle_ref = React.createRef();
         this.dialog_ref = React.createRef();
         this.contract = props.getContractById(props.contract_id);
+        this.ContractUpdateFormWrapper = props.connectWithContractUpdate?.(ContractUpdateForm) || ContractUpdateForm;
     }
 
     onPopoverClose = () => {
@@ -131,6 +132,8 @@ class ToggleCardDialog extends React.Component {
                 <div className='dc-contract-card-dialog-toggle__wrapper'>{edit_icon}</div>
             );
 
+        const ContractUpdateFormWrapper = this.ContractUpdateFormWrapper;
+
         return (
             <React.Fragment>
                 <div ref={this.toggle_ref} className='dc-contract-card-dialog-toggle' onClick={this.toggleDialog}>
@@ -144,7 +147,7 @@ class ToggleCardDialog extends React.Component {
                         wrapper_classname='contract-update'
                     >
                         <Div100vhContainer className='contract-update__wrapper' height_offset='40px'>
-                            <ContractUpdateForm
+                            <ContractUpdateFormWrapper
                                 addToast={addToast}
                                 getCardLabels={getCardLabels}
                                 getContractById={getContractById}
@@ -166,7 +169,7 @@ class ToggleCardDialog extends React.Component {
                         toggle_ref={this.toggle_ref}
                         toggleDialog={this.toggleDialog}
                     >
-                        <ContractUpdateForm
+                        <ContractUpdateFormWrapper
                             addToast={addToast}
                             getCardLabels={getCardLabels}
                             getContractById={getContractById}
@@ -194,6 +197,7 @@ ToggleCardDialog.propTypes = {
     should_show_cancellation_warning: PropTypes.bool,
     status: PropTypes.string,
     toggleCancellationWarning: PropTypes.func,
+    connectWithContractUpdate: PropTypes.func,
 };
 
 export default ToggleCardDialog;

@@ -27,6 +27,10 @@ class ToggleCardDialog extends React.Component {
         this.ContractUpdateFormWrapper = props.connectWithContractUpdate?.(ContractUpdateForm) || ContractUpdateForm;
     }
 
+    handleClick = e => {
+        e.stopPropagation();
+    };
+
     onPopoverClose = () => {
         if (this.state.is_do_not_show_selected) {
             this.props.toggleCancellationWarning();
@@ -135,7 +139,7 @@ class ToggleCardDialog extends React.Component {
         const ContractUpdateFormWrapper = this.ContractUpdateFormWrapper;
 
         return (
-            <React.Fragment>
+            <div onClick={this.handleClick}>
                 <div ref={this.toggle_ref} className='dc-contract-card-dialog-toggle' onClick={this.toggleDialog}>
                     {is_valid_to_cancel ? toggle_wrapper : edit_icon}
                 </div>
@@ -181,7 +185,7 @@ class ToggleCardDialog extends React.Component {
                         />
                     </ContractCardDialog>
                 </DesktopWrapper>
-            </React.Fragment>
+            </div>
         );
     }
 }

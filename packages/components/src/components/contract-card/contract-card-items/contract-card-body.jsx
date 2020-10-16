@@ -131,6 +131,7 @@ const MultiplierCardBody = ({
 
 const ContractCardBody = ({
     addToast,
+    connectWithContractUpdate,
     contract_info,
     contract_update,
     currency,
@@ -154,6 +155,7 @@ const ContractCardBody = ({
         return (
             <MultiplierCardBody
                 addToast={addToast}
+                connectWithContractUpdate={connectWithContractUpdate}
                 contract_info={contract_info}
                 contract_update={contract_update}
                 currency={currency}

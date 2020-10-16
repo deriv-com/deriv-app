@@ -3,7 +3,6 @@ import React from 'react';
 import { Money, Button, Card } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { Mt5AccountCopy } from './mt5-account-copy.jsx';
-// import { getMT5WebTerminalLink } from '../Helpers/constants';
 
 const LoginBadge = ({ display_login }) => (
     <span className='mt5-account-card__login'>
@@ -37,15 +36,13 @@ const MT5AccountCard = ({
     onClickFund,
     onPasswordManager,
 }) => {
-    const IconComponent = icon || (() => null);
-    const BackgroundComponent = background_image || (() => null);
     const lbl_add_account = <Localize i18n_default_text='Add account' />;
     const cta_label = button_label || lbl_add_account;
     const has_demo_banner = type.category === 'demo';
 
     const renderHeader = () => {
         return (
-            <>
+            <React.Fragment>
                 <div
                     className={classNames('mt5-account-card__type', {
                         'mt5-account-card__type': has_demo_banner,
@@ -59,7 +56,7 @@ const MT5AccountCard = ({
                                 <Localize i18n_default_text='Demo' />
                             </div>
                         )}
-                        {existing_data && existing_data.display_balance && is_logged_in && (
+                        {existing_data?.display_balance && is_logged_in && (
                             <p className='mt5-account-card--balance'>
                                 <Money
                                     amount={existing_data.display_balance}
@@ -70,8 +67,8 @@ const MT5AccountCard = ({
                         )}
                         <p className='mt5-account-card--xsmall'>{descriptor}</p>
                     </div>
-                    <div className='mt5-account-card__icon'>{icon && <IconComponent />}</div>
-                    <div className='mt5-account-card__background'>{background_image && <BackgroundComponent />}</div>
+                    <div className='mt5-account-card__icon'>{icon}</div>
+                    <div className='mt5-account-card__background'>{background_image}</div>
                 </div>
                 <div className='mt5-account-card__login-details'>
                     {existing_data?.login && is_logged_in && <LoginBadge display_login={existing_data.display_login} />}
@@ -90,7 +87,7 @@ const MT5AccountCard = ({
                         </Button>
                     )}
                 </div>
-            </>
+            </React.Fragment>
         );
     };
 
@@ -121,7 +118,7 @@ const MT5AccountCard = ({
 
     const renderFooter = () => {
         return (
-            <>
+            <React.Fragment>
                 {existing_data && is_logged_in && (
                     <div className='mt5-account-card__manage'>
                         <Button onClick={onClickFund} type='button' secondary>
@@ -148,7 +145,7 @@ const MT5AccountCard = ({
                         {cta_label}
                     </Button>
                 )}
-            </>
+            </React.Fragment>
         );
     };
 

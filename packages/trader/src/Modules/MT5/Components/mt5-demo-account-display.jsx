@@ -42,8 +42,8 @@ const MT5DemoAccountDisplay = ({
             {(landing_companies?.mt_gaming_company?.financial || !is_logged_in) && (
                 <MT5AccountCard
                     has_mt5_account={has_mt5_account}
-                    icon={() => <Icon icon='IcMt5Synthetic' size={32} />}
-                    background_image={() => <Icon icon='IcMt5SyntheticBg' height={250} width={140} />}
+                    icon={<Icon icon='IcMt5Synthetic' size={32} />}
+                    background_image={<Icon icon='IcMt5SyntheticBg' height={250} width={140} />}
                     title={localize('Synthetic')}
                     is_button_primary
                     type={{
@@ -80,8 +80,8 @@ const MT5DemoAccountDisplay = ({
             {(landing_companies?.mt_financial_company?.financial || !is_logged_in) && (
                 <MT5AccountCard
                     has_mt5_account={has_mt5_account}
-                    icon={() => <Icon icon='IcMt5Financial' size={32} />}
-                    background_image={() => <Icon icon='IcMt5FinancialBg' height={250} width={150} />}
+                    icon={<Icon icon='IcMt5Financial' size={32} />}
+                    background_image={<Icon icon='IcMt5FinancialBg' height={250} width={150} />}
                     title={localize('Financial')}
                     is_button_primary
                     is_logged_in={is_logged_in}
@@ -122,8 +122,8 @@ const MT5DemoAccountDisplay = ({
             {(landing_companies?.mt_financial_company?.financial_stp || !is_logged_in) && (
                 <MT5AccountCard
                     has_mt5_account={has_mt5_account}
-                    icon={() => <Icon icon='IcMt5FinancialStp' size={32} />}
-                    background_image={() => <Icon icon='IcMt5FinancialStpBg' height={250} width={150} />}
+                    icon={<Icon icon='IcMt5FinancialStp' size={32} />}
+                    background_image={<Icon icon='IcMt5FinancialStpBg' height={250} width={150} />}
                     title={localize('Financial STP')}
                     is_button_primary
                     type={{

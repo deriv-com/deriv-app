@@ -33,6 +33,8 @@
         overflow: auto;
     }
     &__form {
+        position: relative; // Safari fix.
+
         @include mobile {
             height: 100%;
 

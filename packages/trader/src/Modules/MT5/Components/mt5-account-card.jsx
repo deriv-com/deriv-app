@@ -50,22 +50,26 @@ const MT5AccountCard = ({
                     id={`mt5_${type.category}_${type.type}`}
                 >
                     <div className='mt5-account-card__type--description'>
-                        <h1 className='mt5-account-card--paragraph mt5-account-card--paragraph-bold'>{title}</h1>
+                        <Text as='h1' className='mt5-account-card--paragraph mt5-account-card--paragraph-bold'>
+                            {title}
+                        </Text>
                         {has_demo_banner && (
                             <div className='mt5-account-card__banner mt5-account-card__banner--demo'>
                                 <Localize i18n_default_text='Demo' />
                             </div>
                         )}
                         {existing_data?.display_balance && is_logged_in && (
-                            <p className='mt5-account-card--balance'>
+                            <Text as='p' className='mt5-account-card--balance'>
                                 <Money
                                     amount={existing_data.display_balance}
                                     currency={existing_data.currency}
                                     show_currency
                                 />
-                            </p>
+                            </Text>
                         )}
-                        <p className='mt5-account-card--xsmall'>{descriptor}</p>
+                        <Text as='p' className='mt5-account-card--xsmall'>
+                            {descriptor}
+                        </Text>
                     </div>
                     <div className='mt5-account-card__icon'>{icon}</div>
                     <div className='mt5-account-card__background'>{background_image}</div>
@@ -100,12 +104,17 @@ const MT5AccountCard = ({
                             {Object.keys(specs).map((spec_attribute, idx) => (
                                 <tr key={idx} className='mt5-account-card__specs-table-row'>
                                     <td className='mt5-account-card__specs-table-attribute'>
-                                        <p className='mt5-account-card--paragraph'>{spec_attribute}</p>
+                                        <Text as='p' className='mt5-account-card--paragraph'>
+                                            {spec_attribute}
+                                        </Text>
                                     </td>
                                     <td className='mt5-account-card__specs-table-data'>
-                                        <p className='mt5-account-card--paragraph mt5-account-card--paragraph-right'>
+                                        <Text
+                                            as='p'
+                                            className='mt5-account-card--paragraph mt5-account-card--paragraph-right'
+                                        >
                                             {specs[spec_attribute]}
-                                        </p>
+                                        </Text>
                                     </td>
                                 </tr>
                             ))}

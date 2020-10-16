@@ -6,7 +6,7 @@ import { routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
-const AccountTransferLimit = ({ disableApp, enableApp, is_loading, is_visible, toggleModal }) => {
+const AccountTransferLimit = ({ disableApp, enableApp, is_loading, is_visible, message, toggleModal }) => {
     const history = useHistory();
     return (
         <Dialog
@@ -25,7 +25,7 @@ const AccountTransferLimit = ({ disableApp, enableApp, is_loading, is_visible, t
             is_visible={is_visible}
             portal_element_id='modal_root'
         >
-            <Localize i18n_default_text='You have exceeded 200.00 USD in cumulative transactions. To continue, you will need to verify your identity.' />
+            {message}
         </Dialog>
     );
 };
@@ -43,5 +43,6 @@ export default connect(({ ui }) => ({
     enableApp: ui.enableApp,
     is_loading: ui.is_loading,
     is_visible: ui.is_account_transfer_limit_modal_visible,
+    message: ui.message,
     toggleModal: ui.toggleAccountTransferLimitModal,
 }))(AccountTransferLimit);

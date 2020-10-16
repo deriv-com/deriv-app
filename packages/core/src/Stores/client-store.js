@@ -149,9 +149,11 @@ export default class ClientStore extends BaseStore {
      */
     @computed
     get is_client_allowed_to_visit() {
+        const is_deriv_crypto = window.localStorage.getItem('is_deriv_crypto_app');
         // TODO: [deriv-eu] Remove this after complete EU merge into production
         return !!(
             this.root_store.ui.is_eu_enabled || // TODO: [deriv-eu] Remove this after complete EU merge into production
+            is_deriv_crypto ||
             !this.is_logged_in ||
             this.is_virtual ||
             this.accounts[this.loginid].landing_company_shortcode === 'svg' ||

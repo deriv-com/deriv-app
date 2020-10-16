@@ -39,7 +39,7 @@ import FormSubHeader from 'Components/form-sub-header';
 import LoadErrorMessage from 'Components/load-error-message';
 
 const validate = (errors, values) => (fn, arr, err_msg) => {
-    arr.forEach((field) => {
+    arr.forEach(field => {
         const value = values[field];
         if (!fn(value) && !errors[field] && err_msg !== true) errors[field] = err_msg;
     });
@@ -79,7 +79,7 @@ class PersonalDetailsForm extends React.Component {
         }
     };
 
-    makeSettingsRequest = (settings) => {
+    makeSettingsRequest = settings => {
         if (this.props.is_virtual) return { email_consent: +settings.email_consent };
         const request = filterObjProperties(settings, [...this.state.changeable_fields]);
 
@@ -123,7 +123,7 @@ class PersonalDetailsForm extends React.Component {
     };
 
     // TODO: standardize validations and refactor this
-    validateFields = (values) => {
+    validateFields = values => {
         this.setState({ is_submit_success: false });
         const errors = {};
         const validateValues = validate(errors, values);
@@ -143,13 +143,13 @@ class PersonalDetailsForm extends React.Component {
             required_fields.push(...required_tax_fields);
         }
 
-        validateValues((val) => val, required_fields, localize('This field is required'));
+        validateValues(val => val, required_fields, localize('This field is required'));
         const only_alphabet_fields = ['first_name', 'last_name'];
         validateValues(validLetterSymbol, only_alphabet_fields, localize('Only alphabet is allowed'));
 
         const { residence_list } = this.props;
         const residence_fields = ['citizen'];
-        const validateResidence = (val) => getLocation(residence_list, val, 'value');
+        const validateResidence = val => getLocation(residence_list, val, 'value');
         validateValues(validateResidence, residence_fields, true);
 
         const min_tax_identification_number = 0;
@@ -245,10 +245,10 @@ class PersonalDetailsForm extends React.Component {
         return errors;
     };
 
-    showForm = (show_form) => this.setState({ show_form });
+    showForm = show_form => this.setState({ show_form });
 
     isChangeableField(name) {
-        return this.state.changeable_fields.some((field) => field === name);
+        return this.state.changeable_fields.some(field => field === name);
     }
 
     componentDidMount() {
@@ -470,7 +470,7 @@ class PersonalDetailsForm extends React.Component {
                                                         list_items={this.props.residence_list}
                                                         use_text={true}
                                                         error={touched.place_of_birth && errors.place_of_birth}
-                                                        onChange={(e) =>
+                                                        onChange={e =>
                                                             setFieldValue('place_of_birth', e.target.value, true)
                                                         }
                                                     />
@@ -535,7 +535,7 @@ class PersonalDetailsForm extends React.Component {
                                                             list_items={this.props.residence_list}
                                                             error={touched.citizen && errors.citizen}
                                                             use_text={true}
-                                                            onChange={(e) =>
+                                                            onChange={e =>
                                                                 setFieldValue('citizen', e.target.value, true)
                                                             }
                                                         />
@@ -663,7 +663,7 @@ class PersonalDetailsForm extends React.Component {
                                                                                     )
                                                                                 }
                                                                                 use_text={true}
-                                                                                onChange={(e) =>
+                                                                                onChange={e =>
                                                                                     setFieldValue(
                                                                                         'tax_residence',
                                                                                         e.target.value,
@@ -793,7 +793,7 @@ class PersonalDetailsForm extends React.Component {
                                                                         touched.address_state && errors.address_state
                                                                     }
                                                                     use_text={true}
-                                                                    onChange={(e) =>
+                                                                    onChange={e =>
                                                                         setFieldValue(
                                                                             'address_state',
                                                                             e.target.value,

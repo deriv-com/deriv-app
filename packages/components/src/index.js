@@ -23,6 +23,7 @@ export { default as Checkbox } from './components/checkbox';
 export { default as Checklist } from './components/checklist';
 export { default as CircularProgress } from './components/circular-progress';
 export { default as Collapsible } from './components/collapsible';
+export { default as ContentExpander } from './components/content-expander';
 export { default as Counter } from './components/counter';
 export { default as CompositeCheckbox } from './components/composite-checkbox';
 export { default as ContractCard } from './components/contract-card';

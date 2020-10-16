@@ -23,6 +23,7 @@ const MultiplierCardBody = ({
     addToast,
     contract_info,
     contract_update,
+    connectWithContractUpdate,
     currency,
     getCardLabels,
     getContractById,

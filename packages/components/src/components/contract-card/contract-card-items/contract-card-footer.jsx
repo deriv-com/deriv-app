@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { isValidToCancel, isValidToSell, hasContractEntered, isOpen } from '@deriv/shared';
+import { isValidToCancel, hasContractEntered, isOpen } from '@deriv/shared';
 import ContractCardSell from './contract-card-sell.jsx';
 import MultiplierCloseActions from './multiplier-close-actions.jsx';
 

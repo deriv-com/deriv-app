@@ -4,7 +4,7 @@ import { Localize, PlatformContext } from '@deriv/shared';
 import getRoutesConfig from 'Constants/routes-config';
 import RouteWithSubRoutes from './route-with-sub-routes.jsx';
 
-const BinaryRoutes = (props) => {
+const BinaryRoutes = props => {
     const { is_deriv_crypto } = React.useContext(PlatformContext);
 
     return (

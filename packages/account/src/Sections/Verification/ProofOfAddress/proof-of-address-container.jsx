@@ -22,7 +22,7 @@ class ProofOfAddressContainer extends React.Component {
     componentDidMount() {
         // TODO: Find a better solution for handling no-op instead of using is_mounted flags
         this.is_mounted = true;
-        WS.authorized.getAccountStatus().then((response) => {
+        WS.authorized.getAccountStatus().then(response => {
             const { get_account_status } = response;
             const { document, needs_verification } = get_account_status.authentication;
             const needs_poi = needs_verification.length && needs_verification.includes('identity');

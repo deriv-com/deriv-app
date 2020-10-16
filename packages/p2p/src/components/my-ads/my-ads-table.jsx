@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Icon, Loading, Table, ProgressIndicator } from '@deriv/components';
 import { useIsMounted } from '@deriv/shared';
+import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
 import Empty from 'Components/empty/empty.jsx';
 import ToggleAds from 'Components/my-ads/toggle-ads.jsx';
@@ -27,7 +28,7 @@ const type = {
     sell: <Localize i18n_default_text='Sell' />,
 };
 
-const RowComponent = React.memo(({ advert, row_actions, style }) => {
+const RowComponent = React.memo(({ data: advert, row_actions, style }) => {
     const {
         account_currency,
         amount,
@@ -76,7 +77,7 @@ RowComponent.propTypes = {
 };
 RowComponent.displayName = 'RowComponent';
 
-const MyAdsTable = ({ onClickCreate }) => {
+const MyAdsTable = observer(({ onClickCreate }) => {
     const { general_store } = useStores();
     const item_offset = React.useRef(0);
     const [adverts, setAdverts] = React.useState([]);
@@ -219,7 +220,7 @@ const MyAdsTable = ({ onClickCreate }) => {
             </Button>
         </Empty>
     );
-};
+});
 
 MyAdsTable.propTypes = {
     onClickCreate: PropTypes.func,

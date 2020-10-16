@@ -2,9 +2,11 @@ import Cookies from 'js-cookie';
 import { action, computed, observable, reaction, runInAction, toJS, when } from 'mobx';
 import moment from 'moment';
 import {
+    redirectToLogin,
     getMT5AccountType,
     getPropertyValue,
     getUrlSmartTrader,
+    isBot,
     isDesktopOs,
     isEmptyObject,
     LocalStore,
@@ -13,15 +15,14 @@ import {
     State,
     toMoment,
 } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { getLanguage, localize } from '@deriv/translations';
 import { requestLogout, WS } from 'Services';
 import BinarySocketGeneral from 'Services/socket-general';
-import { redirectToLogin } from '_common/base/login';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
 import { isEuCountry } from '_common/utility';
 import BaseStore from './base-store';
-import { getClientAccountType, getAccountTitle, getLandingCompanyValue } from './Helpers/client';
+import { getClientAccountType, getAccountTitle } from './Helpers/client';
 import { createDeviceDataObject, setDeviceDataCookie } from './Helpers/device';
 import { handleClientNotifications } from './Helpers/client-notifications';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
@@ -141,12 +142,29 @@ export default class ClientStore extends BaseStore {
             : undefined;
     }
 
+    /**
+     * Temporary property. should be removed once we are fully migrated from the old app.
+     *
+     * @returns {boolean}
+     */
+    @computed
+    get is_client_allowed_to_visit() {
+        // TODO: [deriv-eu] Remove this after complete EU merge into production
+        return !!(
+            this.root_store.ui.is_eu_enabled || // TODO: [deriv-eu] Remove this after complete EU merge into production
+            !this.is_logged_in ||
+            this.is_virtual ||
+            this.accounts[this.loginid].landing_company_shortcode === 'svg' ||
+            isBot()
+        );
+    }
+
     @computed
     get is_reality_check_visible() {
         if (!this.loginid || !this.landing_company) {
             return false;
         }
-        return !!(this.has_reality_check && !this.reality_check_dismissed);
+        return !!(this.has_reality_check && !this.reality_check_dismissed && this.root_store.ui.is_eu_enabled); // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
     }
 
     @computed
@@ -465,7 +483,14 @@ export default class ClientStore extends BaseStore {
     // this is true when a user needs to have a active real account for trading
     @computed
     get should_have_real_account() {
-        return this.standpoint.iom && this.is_uk && !this.has_any_real_account;
+        // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
+        return (
+            this.standpoint.iom &&
+            this.is_uk &&
+            !this.has_any_real_account &&
+            this.root_store.ui &&
+            this.root_store.ui.is_eu_enabled
+        );
     }
 
     // Shows all possible landing companies of user between all
@@ -532,7 +557,10 @@ export default class ClientStore extends BaseStore {
         const has_mt5 =
             'mt_financial_company' in this.landing_companies || 'mt_gaming_company' in this.landing_companies;
 
-        if (this.is_eu) {
+        // TODO: [deriv-eu] Remove the if statement once EU is enabled in dev
+        if (this.is_eu && !this.root_store.ui.is_eu_enabled) {
+            return false;
+        } else if (this.is_eu && this.root_store.ui.is_eu_enabled) {
             return has_mt5;
         }
 
@@ -681,11 +709,7 @@ export default class ClientStore extends BaseStore {
         this.accounts[this.loginid].email = response.authorize.email;
         this.accounts[this.loginid].currency = response.authorize.currency;
         this.accounts[this.loginid].is_virtual = +response.authorize.is_virtual;
-        this.accounts[this.loginid].session_start = parseInt(
-            moment()
-                .utc()
-                .valueOf() / 1000
-        );
+        this.accounts[this.loginid].session_start = parseInt(moment().utc().valueOf() / 1000);
         this.accounts[this.loginid].landing_company_shortcode = response.authorize.landing_company_name;
         this.accounts[this.loginid].country = response.country;
         this.updateAccountList(response.authorize.account_list);
@@ -708,27 +732,29 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    accountRealReaction(response) {
-        return new Promise(async resolve => {
+    async accountRealReaction(response) {
+        return new Promise(resolve => {
             runInAction(() => {
                 this.is_populating_account_list = true;
             });
             const client_accounts = JSON.parse(LocalStore.get(storage_key));
             const { oauth_token, client_id } = response.new_account_real ?? response.new_account_maltainvest;
-            const authorize_response = await BinarySocket.authorize(oauth_token);
+            BinarySocket.authorize(oauth_token).then(authorize_response => {
+                const new_data = {};
+                new_data.token = oauth_token;
+                new_data.residence = authorize_response.authorize.country;
+                new_data.currency = authorize_response.authorize.currency;
+                new_data.is_virtual = authorize_response.authorize.is_virtual;
+                new_data.landing_company_name = authorize_response.authorize.landing_company_fullname;
+                new_data.landing_company_shortcode = authorize_response.authorize.landing_company_name;
 
-            const new_data = {};
-            new_data.token = oauth_token;
-            new_data.residence = authorize_response.authorize.country;
-            new_data.currency = authorize_response.authorize.currency;
-            new_data.is_virtual = authorize_response.authorize.is_virtual;
-            new_data.landing_company_name = authorize_response.authorize.landing_company_fullname;
-            new_data.landing_company_shortcode = authorize_response.authorize.landing_company_name;
-
-            runInAction(() => (client_accounts[client_id] = new_data));
-            this.setLoginInformation(client_accounts, client_id);
-            this.setAccountSettings((await WS.authorized.storage.getSettings()).get_settings);
-            resolve();
+                runInAction(() => (client_accounts[client_id] = new_data));
+                this.setLoginInformation(client_accounts, client_id);
+                WS.authorized.storage.getSettings().then(get_settings_response => {
+                    this.setAccountSettings(get_settings_response.get_settings);
+                    resolve();
+                });
+            });
         });
     }
 
@@ -740,96 +766,88 @@ export default class ClientStore extends BaseStore {
         this.is_populating_account_list = false;
         this.upgrade_info = this.getBasicUpgradeInfo();
         this.setSwitched(client_id);
+        this.syncWithSmartTrader(client_id, client_accounts);
     }
 
     @action.bound
-    realAccountSignup(form_values) {
+    async realAccountSignup(form_values) {
         const DEFAULT_CRYPTO_ACCOUNT_CURRENCY = 'BTC';
-
-        return new Promise(async (resolve, reject) => {
-            const is_maltainvest_account = this.root_store.ui.real_account_signup_target === 'maltainvest';
-            const is_samoa_account = this.root_store.ui.real_account_signup_target === 'samoa';
-
-            let currency = '';
-            form_values.residence = this.residence;
+        const is_maltainvest_account = this.root_store.ui.real_account_signup_target === 'maltainvest';
+        const is_samoa_account = this.root_store.ui.real_account_signup_target === 'samoa';
+        let currency = '';
+        form_values.residence = this.residence;
+        if (is_maltainvest_account) {
+            currency = form_values.currency;
+            form_values.accept_risk = 1;
+            delete form_values.currency;
+        }
+        const response = is_maltainvest_account
+            ? await WS.newAccountRealMaltaInvest(form_values)
+            : await WS.newAccountReal(form_values);
+        if (!response.error) {
+            await this.accountRealReaction(response);
+            // Set currency after account is created
+            // Maltainvest only
             if (is_maltainvest_account) {
-                currency = form_values.currency;
-                form_values.accept_risk = 1;
-                delete form_values.currency;
+                await this.setAccountCurrency(currency);
             }
-            const response = is_maltainvest_account
-                ? await WS.newAccountRealMaltaInvest(form_values)
-                : await WS.newAccountReal(form_values);
-            if (!response.error) {
-                await this.accountRealReaction(response);
-                // Set currency after account is created
-                // Maltainvest only
-                if (is_maltainvest_account) {
-                    await this.setAccountCurrency(currency);
-                }
-
-                if (is_samoa_account) {
-                    await this.setAccountCurrency(DEFAULT_CRYPTO_ACCOUNT_CURRENCY);
-                }
-
-                localStorage.removeItem('real_account_signup_wizard');
-                this.root_store.gtm.pushDataLayer({ event: 'real_signup' });
-                resolve({
-                    ...response,
-                    ...(is_maltainvest_account
-                        ? {
-                              new_account_maltainvest: {
-                                  ...response.new_account_maltainvest,
-                                  currency,
-                              },
-                          }
-                        : {}),
-                    ...(is_samoa_account
-                        ? {
-                              new_account_samoa: {
-                                  currency,
-                              },
-                          }
-                        : {}),
-                });
-            } else {
-                reject(response.error);
+            if (is_samoa_account) {
+                await this.setAccountCurrency(DEFAULT_CRYPTO_ACCOUNT_CURRENCY);
             }
-        });
-    }
-
-    @action.bound
-    setAccountCurrency(currency) {
-        return new Promise(async (resolve, reject) => {
-            const response = await WS.setAccountCurrency(currency, {
-                previous_currency: this.currency,
+            localStorage.removeItem('real_account_signup_wizard');
+            await this.root_store.gtm.pushDataLayer({ event: 'real_signup' });
+            return Promise.resolve({
+                ...response,
+                ...(is_maltainvest_account
+                    ? {
+                          new_account_maltainvest: {
+                              ...response.new_account_maltainvest,
+                              currency,
+                          },
+                      }
+                    : {}),
+                ...(is_samoa_account
+                    ? {
+                          new_account_samoa: {
+                              currency,
+                          },
+                      }
+                    : {}),
             });
-            if (!response.error) {
-                runInAction(() => {
-                    const new_account = Object.assign({}, this.accounts[this.loginid]);
-                    new_account.currency = currency;
-                    if (!('balance' in new_account)) new_account.balance = 0;
-                    this.accounts[this.loginid] = new_account;
-                });
-                localStorage.setItem(storage_key, JSON.stringify(this.accounts));
-                LocalStore.setObject(storage_key, JSON.parse(JSON.stringify(this.accounts)));
-                this.selectCurrency(currency);
-                this.root_store.ui.removeNotificationMessage({
-                    key: 'currency',
-                });
-                this.root_store.ui.removeNotificationByKey({
-                    key: 'currency',
-                });
-                await this.init();
-                resolve(response);
-            } else {
-                reject(response.error);
-            }
-        });
+        }
+
+        return Promise.reject(response.error);
     }
 
     @action.bound
-    createCryptoAccount(currency, is_deriv_crypto) {
+    async setAccountCurrency(currency) {
+        const response = await WS.setAccountCurrency(currency, {
+            previous_currency: this.currency,
+        });
+        if (!response.error) {
+            runInAction(() => {
+                const new_account = { ...this.accounts[this.loginid] };
+                new_account.currency = currency;
+                if (!('balance' in new_account)) new_account.balance = 0;
+                this.accounts[this.loginid] = new_account;
+            });
+            localStorage.setItem(storage_key, JSON.stringify(this.accounts));
+            LocalStore.setObject(storage_key, JSON.parse(JSON.stringify(this.accounts)));
+            this.selectCurrency(currency);
+            this.root_store.ui.removeNotificationMessage({
+                key: 'currency',
+            });
+            this.root_store.ui.removeNotificationByKey({
+                key: 'currency',
+            });
+            await this.init();
+            return Promise.resolve(response);
+        }
+        return Promise.reject(response.error);
+    }
+
+    @action.bound
+    async createCryptoAccount(currency, is_deriv_crypto) {
         const residence = this.residence;
         let data = {
             residence,
@@ -846,15 +864,12 @@ export default class ClientStore extends BaseStore {
             };
         }
 
-        return new Promise(async (resolve, reject) => {
-            const response = await WS.newAccountReal(data);
-            if (!response.error) {
-                this.accountRealReaction(response);
-                resolve(response);
-            } else {
-                reject(response.error);
-            }
-        });
+        const response = await WS.newAccountReal(data);
+        if (!response.error) {
+            await this.accountRealReaction(response);
+            return Promise.resolve(response);
+        }
+        return Promise.reject(response.error);
     }
 
     @computed
@@ -970,7 +985,7 @@ export default class ClientStore extends BaseStore {
                 message: localize('Please Log in'),
                 should_show_refresh: false,
                 redirect_label: localize('Log in'),
-                redirectOnClick: redirectToLogin,
+                redirectOnClick: () => redirectToLogin(false, getLanguage()),
             });
             this.setIsLoggingIn(false);
             this.setInitialized(false);
@@ -980,9 +995,7 @@ export default class ClientStore extends BaseStore {
 
         this.setLoginId(LocalStore.get('active_loginid'));
         this.setAccounts(LocalStore.getObject(storage_key));
-        if (this.is_logged_in && !this.switched && !this.has_any_real_account && this.is_mt5_allowed) {
-            this.root_store.ui.toggleWelcomeModal({ is_visible: true });
-        }
+
         this.setSwitched('');
         let client = this.accounts[this.loginid];
         // If there is an authorize_response, it means it was the first login
@@ -994,7 +1007,7 @@ export default class ClientStore extends BaseStore {
                 // Client comes back from oauth and logs in
                 await this.root_store.segment.identifyEvent();
 
-                this.root_store.gtm.pushDataLayer({
+                await this.root_store.gtm.pushDataLayer({
                     event: 'login',
                 });
             } else {
@@ -1043,8 +1056,12 @@ export default class ClientStore extends BaseStore {
                 await this.fetchResidenceList();
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
-            WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
-            if (!this.is_virtual) this.getLimits();
+            await WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
+            if (!this.is_virtual) await this.getLimits();
+
+            if (!this.switched && !this.has_any_real_account && this.is_mt5_allowed) {
+                this.root_store.ui.toggleWelcomeModal({ is_visible: true });
+            }
         } else {
             this.resetMt5AccountListPopulation();
         }
@@ -1401,11 +1418,24 @@ export default class ClientStore extends BaseStore {
         const client_object = {};
         let active_loginid;
 
-        account_list.forEach(function(account) {
-            Object.keys(account).forEach(function(param) {
+        let is_allowed_real = true;
+        // Performs check to avoid login of landing companies that are currently not supported in app
+        // TODO: [deriv-eu] Remove this after full merging of EU. When EU is enabled all landing companies are allowed.
+        account_list.forEach(account => {
+            if (
+                !this.root_store.ui &&
+                this.root_store.ui.is_eu_enabled &&
+                !/^virtual|svg$/.test(account.landing_company_name)
+            ) {
+                is_allowed_real = false;
+            }
+        });
+
+        account_list.forEach(function (account) {
+            Object.keys(account).forEach(function (param) {
                 if (param === 'loginid') {
                     if (!active_loginid && !account.is_disabled) {
-                        if (!account.is_virtual) {
+                        if (is_allowed_real && !account.is_virtual) {
                             active_loginid = account[param];
                         } else if (account.is_virtual) {
                             // TODO: [only_virtual] remove this to stop logging non-SVG clients into virtual
@@ -1443,6 +1473,7 @@ export default class ClientStore extends BaseStore {
         if (active_loginid && Object.keys(client_object).length) {
             localStorage.setItem('active_loginid', active_loginid);
             localStorage.setItem('client.accounts', JSON.stringify(client_object));
+            this.syncWithSmartTrader(active_loginid, this.accounts);
         }
     }
 
@@ -1600,7 +1631,9 @@ export default class ClientStore extends BaseStore {
                     event: 'virtual_signup',
                 });
 
-                this.root_store.ui.showAccountTypesModalForEuropean();
+                if (this.root_store.ui.is_eu_enabled) {
+                    this.root_store.ui.showAccountTypesModalForEuropean();
+                }
 
                 if (this.is_mt5_allowed) {
                     this.root_store.ui.toggleWelcomeModal({ is_visible: true, should_persist: true });
@@ -1718,21 +1751,13 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     getChangeableFields() {
-        const landing_company = State.getResponse('landing_company');
-        const { is_fully_authenticated, loginid, isAccountOfType, landing_company_shortcode } = this;
+        const get_settings =
+            Object.keys(this.account_settings).length === 0
+                ? WS.authorized.storage.getSettings()
+                : this.account_settings;
 
-        const has_changeable_field = !is_fully_authenticated;
-
-        if (has_changeable_field) {
-            let changeable_fields = [];
-            const changeable = getLandingCompanyValue({ loginid, landing_company, isAccountOfType });
-
-            if (changeable && changeable.only_before_auth) {
-                changeable_fields = [...changeable.only_before_auth];
-            }
-            return changeable_fields;
-        }
-        return [];
+        const readonly_fields = [...get_settings.immutable_fields, ...['immutable_fields', 'email', 'password']];
+        return Object.keys(get_settings).filter(field => !readonly_fields.includes(field));
     }
 
     @action.bound

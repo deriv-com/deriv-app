@@ -88,7 +88,7 @@ class AddOrManageAccounts extends React.Component {
     }
 
     get should_hide_crypto() {
-        return this.props.is_eu;
+        return this.props.is_eu_enabled && this.props.is_eu; // TODO [deriv-eu] remove is_eu_enabled once released
     }
 
     render() {
@@ -194,12 +194,13 @@ AddOrManageAccounts.propTypes = {
     onSuccessSetAccountCurrency: PropTypes.func,
 };
 
-export default connect(({ client }) => ({
+export default connect(({ client, ui }) => ({
     available_crypto_currencies: client.available_crypto_currencies,
     can_change_fiat_currency: client.can_change_fiat_currency,
     currency: client.currency,
     current_currency_type: client.current_currency_type,
     current_fiat_currency: client.current_fiat_currency,
+    is_eu_enabled: ui.is_eu_enabled, // TODO [deriv-eu] remove is_eu_enabled once eu is released.
     is_eu: client.is_eu,
     has_fiat: client.has_fiat,
     setCurrency: client.setAccountCurrency,

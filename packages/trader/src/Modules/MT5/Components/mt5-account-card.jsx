@@ -71,7 +71,11 @@ const MT5AccountCard = ({
                     {(!existing_data || !is_logged_in) && <p className='mt5-account-card--paragraph'>{descriptor}</p>}
                     {existing_data && existing_data.display_balance && is_logged_in && (
                         <p className='mt5-account-card--balance'>
-                            <Money amount={existing_data.display_balance} currency={existing_data.currency} />
+                            <Money
+                                amount={existing_data.display_balance}
+                                currency={existing_data.currency}
+                                show_currency
+                            />
                         </p>
                     )}
                 </div>

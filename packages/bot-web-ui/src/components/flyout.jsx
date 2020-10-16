@@ -149,27 +149,28 @@ const FlyoutContent = props => {
 
 const Flyout = props => {
     const {
-        pushDataLayer,
-        is_help_content,
-        is_search_flyout,
         flyout_content,
         flyout_width,
+        is_help_content,
+        is_search_flyout,
         is_visible,
-        search_term,
         onMount,
         onUnmount,
+        pushDataLayer,
+        search_term,
     } = props;
+
     React.useEffect(() => {
         onMount();
-        return () => {
-            onUnmount();
-        };
-    }, []);
+        return () => onUnmount();
+    }, [onMount, onUnmount]);
+
+    if (is_visible && is_search_flyout) {
+        pushDataLayer({ event: 'dbot_search_results', value: true });
+    }
 
     const total_result = Object.keys(flyout_content).length;
     const is_empty = total_result === 0;
-
-    if (is_visible && is_search_flyout) pushDataLayer({ event: 'dbot_search_results', value: true });
 
     return (
         <div

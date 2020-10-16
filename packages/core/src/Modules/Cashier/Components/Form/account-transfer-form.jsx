@@ -188,6 +188,7 @@ const AccountTransferForm = ({
 
     React.useEffect(() => {
         onMount();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {
@@ -203,6 +204,7 @@ const AccountTransferForm = ({
                 />,
             ]);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [transfer_fee, selected_from, minimum_fee, mt5_total_transfers, internal_total_transfers, setSideNotes]);
     return (
         <div className='cashier__wrapper account-transfer__wrapper'>
@@ -331,10 +333,10 @@ const AccountTransferForm = ({
                                                                 'symbols',
                                                                 `symbols--${selected_from.currency.toLowerCase()}`
                                                             )}
-                                                        />
-                                                    ) : (
-                                                        undefined
-                                                    )
+                                                        >
+                                                            {getCurrencyDisplayCode(selected_from.currency)}
+                                                        </span>
+                                                    ) : undefined
                                                 }
                                                 autoComplete='off'
                                                 maxLength='30'

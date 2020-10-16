@@ -1,6 +1,7 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
-import { Hr } from 'App/Containers/RealAccountSignup/currency-selector.jsx';
+
+export const Hr = () => <div className='terms-of-use__hr' />;
 
 export const BrokerSpecificMessage = ({ target }) => (
     <React.Fragment>

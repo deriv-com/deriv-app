@@ -43,6 +43,6 @@ export default connect(({ ui }) => ({
     enableApp: ui.enableApp,
     is_loading: ui.is_loading,
     is_visible: ui.is_account_transfer_limit_modal_visible,
-    message: ui.message,
+    message: ui.account_transfer_limit_message,
     toggleModal: ui.toggleAccountTransferLimitModal,
 }))(AccountTransferLimit);

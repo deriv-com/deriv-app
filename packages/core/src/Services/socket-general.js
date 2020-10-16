@@ -98,7 +98,6 @@ const BinarySocketGeneral = (() => {
     const handleError = response => {
         const msg_type = response.msg_type;
         const error_code = getPropertyValue(response, ['error', 'code']);
-        const error_message = getPropertyValue(response, ['error', 'message']);
         switch (error_code) {
             case 'WrongResponse':
                 // TODO: Remove condition checks below for WrongResponse once mt5 is more reliable
@@ -142,8 +141,8 @@ const BinarySocketGeneral = (() => {
             case 'Fiat2CryptoTransferOverLimit':
                 // if there is fiat2crypto transfer limit error, we need to refresh the account_status for authentication
                 if (msg_type === 'transfer_between_accounts') {
-                    ui_store.toggleAccountTransferLimitModal(true, {
-                        message: error_message,
+                    ui_store.toggleAccountTransferLimitModal({ state_change: true, 
+                        message: response.error.message,
                     });
                     WS.authorized.getAccountStatus().then(account_status_response => {
                         if (!account_status_response.error) {

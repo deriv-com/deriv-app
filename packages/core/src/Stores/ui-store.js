@@ -550,9 +550,9 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    toggleAccountTransferLimitModal(state_change = !this.is_account_transfer_limit_modal_visible, response) {
+    toggleAccountTransferLimitModal({ state_change: !this.is_account_transfer_limit_modal_visible, message }) {
         this.is_account_transfer_limit_modal_visible = state_change;
-        this.message = response.message;
+        this.account_transfer_limit_message = message;
     }
 
     @action.bound

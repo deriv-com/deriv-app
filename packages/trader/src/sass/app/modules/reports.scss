@@ -847,8 +847,8 @@ $side-padding: 1.2em;
             /* icon multiplier currency stake cancellation buy_price limit_order current_stake total_profit_loss action */
             /* stylelint-disable-next-line declaration-colon-space-after */
             grid-template-columns:
-                minmax(85px, 0.7fr) minmax(75px, 0.8fr) minmax(65px, 0.5fr) minmax(105px, 0.8fr) minmax(100px, 0.8fr)
-                minmax(105px, 1fr) minmax(105px, 1fr) minmax(105px, 1.2fr) minmax(115px, 1.1fr) minmax(90px, 1.2fr);
+                minmax(85px, 0.7fr) minmax(95px, 0.8fr) minmax(95px, 0.5fr) minmax(95px, 0.8fr) minmax(100px, 0.8fr)
+                minmax(95px, 1fr) minmax(95px, 1fr) minmax(95px, 1.2fr) minmax(105px, 1.1fr) minmax(90px, 1.2fr);
 
             &-action {
                 display: flex;
@@ -887,7 +887,6 @@ $side-padding: 1.2em;
                 }
             }
             .action {
-                padding-top: 0.8rem;
                 padding-bottom: 0;
                 justify-content: center;
             }

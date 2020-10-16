@@ -2,9 +2,9 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { isValidToCancel, isValidToSell } from '@deriv/shared';
+import { isValidToCancel, isValidToSell, hasContractEntered, isOpen } from '@deriv/shared';
+import ContractCardSell from './contract-card-sell.jsx';
 import MultiplierCloseActions from './multiplier-close-actions.jsx';
-import Button from '../../button';
 
 const CardFooter = ({
     contract_info,
@@ -24,14 +24,12 @@ const CardFooter = ({
     }, [should_show_transition]);
 
     const is_valid_to_cancel = isValidToCancel(contract_info);
-    const is_valid_to_sell = isValidToSell(contract_info);
-    const show_sell = !!(is_valid_to_sell || (is_multiplier && !contract_info.is_sold));
 
-    if (!show_sell) return null;
+    const should_show_sell = hasContractEntered(contract_info) && isOpen(contract_info);
 
     return (
         <CSSTransition
-            in={in_prop}
+            in={in_prop && should_show_sell}
             timeout={should_show_transition ? 250 : 0}
             classNames={
                 should_show_transition
@@ -69,15 +67,11 @@ const CardFooter = ({
                             'dc-contract-card__sell-button--positions': is_positions,
                         })}
                     >
-                        <Button
-                            id={`dc_contract_card_${contract_info.contract_id}_button`}
-                            className={classNames('dc-btn--sell', {
-                                'dc-btn--loading': is_sell_requested,
-                            })}
-                            is_disabled={!is_valid_to_sell || is_sell_requested}
-                            text={getCardLabels().SELL_CONTRACT}
-                            onClick={() => onClickSell(contract_info.contract_id)}
-                            secondary
+                        <ContractCardSell
+                            contract_info={contract_info}
+                            is_sell_requested={is_sell_requested}
+                            getCardLabels={getCardLabels}
+                            onClickSell={onClickSell}
                         />
                     </div>
                 )}

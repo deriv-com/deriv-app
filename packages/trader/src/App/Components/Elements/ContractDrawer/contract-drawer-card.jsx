@@ -7,6 +7,7 @@ import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
 import { getEndTime } from 'Stores/Modules/Contract/Helpers/logic';
 import { connect } from 'Stores/connect';
 import { getSymbolDisplayName } from 'Stores/Modules/Trading/Helpers/active-symbols';
+import { connectWithContractUpdate } from 'Stores/Modules/Contract/Helpers/multiplier';
 import { getMarketInformation } from 'Modules/Reports/Helpers/market-underlying';
 import { SwipeableContractDrawer } from './swipeable-components.jsx';
 
@@ -56,6 +57,7 @@ const ContractDrawerCard = ({
     const card_body = (
         <ContractCard.Body
             addToast={addToast}
+            connectWithContractUpdate={connectWithContractUpdate}
             contract_info={contract_info}
             contract_update={contract_update}
             currency={currency}

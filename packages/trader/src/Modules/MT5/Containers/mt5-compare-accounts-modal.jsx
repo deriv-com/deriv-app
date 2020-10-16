@@ -172,7 +172,14 @@ const ModalContent = ({ is_eu, landing_companies, is_eu_country, is_logged_in })
                 } ${landing_companies?.mt_financial_company?.financial_stp ? ' 1fr ' : ''}`
             );
         }
-    }, [landing_companies.mt_financial_company, landing_companies.mt_gaming_company, is_eu, is_logged_in]);
+    }, [
+        landing_companies.mt_financial_company,
+        landing_companies.mt_gaming_company,
+        is_eu,
+        is_logged_in,
+        is_eu_country,
+        landing_companies,
+    ]);
 
     return (
         <div

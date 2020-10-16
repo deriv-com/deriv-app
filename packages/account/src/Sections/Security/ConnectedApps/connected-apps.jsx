@@ -13,7 +13,7 @@ class ConnectedApps extends React.Component {
         is_error: false,
         connected_apps: [],
     };
-    columns_map = GetConnectedAppsColumnsTemplate((app_id) => this.handleToggleModal(app_id)).reduce((map, item) => {
+    columns_map = GetConnectedAppsColumnsTemplate(app_id => this.handleToggleModal(app_id)).reduce((map, item) => {
         map[item.col_index] = item;
         return map;
     }, {});
@@ -47,7 +47,7 @@ class ConnectedApps extends React.Component {
         }
     };
 
-    revokeConnectedApp = async (app_id) => {
+    revokeConnectedApp = async app_id => {
         this.setState({ is_loading: true });
         const response = await WS.send({ revoke_oauth_app: app_id });
         if (!response.error) {

@@ -58,6 +58,15 @@
                 font-size: 1.2rem;
             }
         }
+        &-divider {
+            margin: 0 1.6rem;
+
+            &:after {
+                content: '';
+                display: block;
+                border-top: 1px solid var(--general-main-1);
+            }
+        }
     }
 }
 

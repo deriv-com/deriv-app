@@ -44,7 +44,7 @@ Blockly.Blocks.lists_create_with = {
         };
     },
     onIconClick() {
-        if (!this.workspace || this.isInFlyout) {
+        if (this.workspace.options.readOnly || this.isInFlyout) {
             return;
         }
 

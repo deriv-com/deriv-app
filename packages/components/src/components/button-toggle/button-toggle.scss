@@ -60,9 +60,9 @@
                 z-index: 1;
                 padding: 0.8rem 0.6rem;
                 white-space: normal;
-                /* postcss-bem-linter: ignore */
-                span {
-                    line-height: 1.15;
+
+                .dc-btn__text {
+                    line-height: normal;
                 }
             }
             &__button:nth-last-child(2) {

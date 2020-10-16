@@ -1,3 +1,4 @@
+/** @define order-details; weak */
 .order-details {
     $card-height: 512px;
     $card-width: 456px;
@@ -14,7 +15,6 @@
                 width: 440px;
                 box-shadow: 0 0.8rem 0.8rem 0 var(--shadow-drop), 0 0 0.8rem 0 var(--shadow-drop);
             }
-
             &-conversation {
                 display: none;
                 width: 100%;
@@ -25,7 +25,6 @@
                 &__messages {
                     background-color: var(--general-main-2);
                 }
-
                 &__footer {
                     background-color: var(--general-main-2);
                     border-top: 0.2rem solid var(--general-section-2);
@@ -65,7 +64,6 @@
                         fill: var(--text-general) !important;
                     }
                 }
-
                 .sendbird {
                     &-separator {
                         &__left,
@@ -78,7 +76,6 @@
                             text-align: center;
                         }
                     }
-
                     &-label {
                         &--caption-3 {
                             font-size: 10px;
@@ -88,12 +85,12 @@
                             color: var(--text-less-prominent);
                         }
                     }
-
                     &-avatar {
                         display: table;
                         width: 40px !important;
                         height: 40px !important;
                         color: var(--text-colored-background);
+
                         &-text {
                             display: table-cell;
                             position: relative;
@@ -107,12 +104,10 @@
                             display: none;
                         }
                     }
-
                     &-thumbnail {
                         &--incoming {
                             padding-left: 0 !important;
                         }
-
                         &__img {
                             width: 100%;
                             border-bottom-left-radius: 4px;
@@ -124,7 +119,6 @@
                             display: none;
                         }
                     }
-
                     &-file-message {
                         &__more {
                             display: none !important;
@@ -133,7 +127,6 @@
                             display: none;
                         }
                     }
-
                     &-user-message {
                         &__sender-name {
                             display: none;
@@ -178,7 +171,6 @@
                             display: none;
                         }
                     }
-
                     &-chat-header {
                         border-radius: $BORDER_RADIUS $BORDER_RADIUS 0 0;
                         border-bottom: none;
@@ -190,11 +182,9 @@
                             align-items: flex-start;
                             margin-right: 0;
                         }
-
                         &__right {
                             display: none;
                         }
-
                         &__title {
                             font-size: 16px;
                             padding-left: 16px;
@@ -204,7 +194,6 @@
                             margin-left: 0;
                             color: var(--text-prominent);
                         }
-
                         &__subtitle {
                             display: flex;
                             align-self: flex-end;
@@ -213,7 +202,6 @@
                             color: var(--text-less-prominent);
                         }
                     }
-
                     &-notification {
                         margin: 0 1.6rem 1.6rem;
                         background-color: var(--button-primary-default);
@@ -222,7 +210,6 @@
                             background-color: var(--button-primary-hover);
                         }
                     }
-
                     &-chat-footer {
                         &--textarea {
                             &__character-count {
@@ -234,16 +221,13 @@
                             }
                         }
                     }
-
                     &-iconbutton {
                         svg {
                             fill: var(--text-general) !important;
                         }
-
                         .icon-send_svg__fill {
                             fill: var(--text-general) !important;
                         }
-
                         &:hover {
                             background-color: var(--general-hover) !important;
                         }
@@ -252,7 +236,6 @@
             }
         }
     }
-
     &__wrapper {
         display: flex;
         flex-direction: column;
@@ -270,9 +253,6 @@
             color: var(--text-general);
         }
     }
-    &__info {
-        padding: 1.6rem 2.4rem;
-    }
     &__header {
         display: flex;
         justify-content: space-between;
@@ -284,18 +264,15 @@
         &--left {
             align-self: flex-start;
         }
-
         &--right {
             align-self: flex-end;
         }
-
         &-id {
             color: var(--text-less-prominent);
             font-size: var(--text-size-xxs);
             line-height: 1.8rem;
             margin-top: 0.4rem;
         }
-
         &-status {
             font-size: var(--text-size-s);
             line-height: 2.4rem;
@@ -350,6 +327,8 @@
         }
     }
     &__info {
+        padding: 1.6rem 2.4rem;
+
         &-block {
             margin-bottom: 1.6rem;
 
@@ -361,7 +340,6 @@
             &-value {
                 font-size: 1.4rem;
                 line-height: 1.43;
-                word-break: all;
                 color: var(--text-general);
                 word-break: break-word;
             }

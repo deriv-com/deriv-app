@@ -29,7 +29,7 @@ export const InfiniteLoaderList = ({
             );
         }
 
-        return <RenderComponent advert={items[index]} num={index} style={style} row_actions={row_actions} />;
+        return <RenderComponent data={items[index]} num={index} style={style} row_actions={row_actions} />;
     };
 
     RowRenderer.propTypes = {

@@ -2,7 +2,6 @@ import { action } from 'mobx';
 import { getAppId } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import BinarySocket from '_common/base/socket_base';
-import { isLoginPages } from '_common/base/login';
 import BaseStore from './base-store';
 
 export default class SegmentStore extends BaseStore {
@@ -24,7 +23,7 @@ export default class SegmentStore extends BaseStore {
     @action.bound
     identifyEvent = async data =>
         new Promise(resolve => {
-            if (this.is_applicable && !isLoginPages() && !this.has_identified) {
+            if (this.is_applicable && !this.has_identified) {
                 BinarySocket.wait('authorize').then(() => {
                     const user_id = this.root_store.client.user_id;
                     if (user_id) {
@@ -53,7 +52,6 @@ export default class SegmentStore extends BaseStore {
 
         if (
             this.is_applicable &&
-            !isLoginPages() &&
             this.root_store.client.is_logged_in &&
             this.has_identified &&
             current_page !== this.current_page

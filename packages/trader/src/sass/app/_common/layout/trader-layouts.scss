@@ -126,11 +126,11 @@ $FLOATING_HEADER_HEIGHT: 41px;
 
                         @media (max-width: 320px) and (max-height: 480px) {
                             max-height: 26.6rem;
-                            top: 0;
+                            top: -6px;
                         }
 
                         @media (max-width: 320px) and (max-height: 450px) {
-                            top: -10px;
+                            top: -12px;
                         }
                     }
                 }
@@ -236,7 +236,8 @@ $FLOATING_HEADER_HEIGHT: 41px;
                                 font-size: 1rem;
                             }
                             &__sell-button {
-                                padding-top: 0.4rem;
+                                padding-top: 0.6rem;
+                                min-height: unset;
 
                                 & .dc-btn {
                                     height: 2.6rem;
@@ -273,11 +274,11 @@ $FLOATING_HEADER_HEIGHT: 41px;
                         transform: translateY(calc(-100% + 398px));
 
                         @media (max-width: 320px) and (max-height: 480px) {
-                            transform: translateY(calc(-100% + 362px));
+                            transform: translateY(calc(-100% + 374px));
                         }
 
                         @media (max-width: 320px) and (max-height: 450px) {
-                            transform: translateY(calc(-100% + 356px));
+                            transform: translateY(calc(-100% + 360px));
                         }
                     }
                     &.contract-drawer--with-collapsible-btn {

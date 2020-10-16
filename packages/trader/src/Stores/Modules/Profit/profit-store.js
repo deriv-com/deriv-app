@@ -112,20 +112,22 @@ export default class ProfitTableStore extends BaseStore {
 
     @action.bound
     async onMount() {
-        this.assertHasValidCache(this.client_loginid, this.clearDateFilter, WS.forgetAll.bind(null, 'proposal'));
+        this.assertHasValidCache(
+            this.client_loginid,
+            this.clearDateFilter,
+            this.clearTable,
+            WS.forgetAll.bind(null, 'proposal')
+        );
         this.client_loginid = this.root_store.client.loginid;
         this.onSwitchAccount(this.accountSwitcherListener);
         this.onNetworkStatusChange(this.networkStatusChangeListener);
         await WS.wait('authorize');
-        this.clearTable();
         this.fetchNextBatch(true);
     }
 
     @action.bound
     onUnmount() {
-        this.clearTable();
         this.disposeSwitchAccount();
-        this.clearDateFilter();
         WS.forgetAll('proposal');
     }
 

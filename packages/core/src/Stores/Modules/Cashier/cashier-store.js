@@ -816,6 +816,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async requestTryPaymentAgentWithdraw({ loginid, currency, amount, verification_code }) {
+        this.setErrorMessage('');
         const payment_agent_withdraw = await WS.authorized.paymentAgentWithdraw({
             loginid,
             currency,
@@ -839,6 +840,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async requestPaymentAgentWithdraw({ loginid, currency, amount, verification_code }) {
+        this.setErrorMessage('');
         const payment_agent_withdraw = await WS.authorized.paymentAgentWithdraw({
             loginid,
             currency,
@@ -1246,6 +1248,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     requestTryPaymentAgentTransfer = async ({ amount, currency, description, transfer_to }) => {
+        this.setErrorMessage('');
         const payment_agent_transfer = await WS.authorized.paymentAgentTransfer({
             amount,
             currency,
@@ -1280,6 +1283,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     requestPaymentAgentTransfer = async ({ amount, currency, description, transfer_to }) => {
+        this.setErrorMessage('');
         const payment_agent_transfer = await WS.authorized.paymentAgentTransfer({
             amount,
             currency,

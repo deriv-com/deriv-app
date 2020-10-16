@@ -145,7 +145,6 @@ class PaymentAgentTransferForm extends React.Component {
                                 )}
                             </Field>
                             <div className='cashier__form-submit'>
-                                {this.props.error_message && <FormError error_message={this.props.error_message} />}
                                 <Button
                                     className='cashier__form-submit-button'
                                     type='submit'
@@ -156,6 +155,7 @@ class PaymentAgentTransferForm extends React.Component {
                                     <Localize i18n_default_text='Transfer' />
                                 </Button>
                             </div>
+                            <FormError error_message={this.props.error_message} />
                         </Form>
                     )}
                 </Formik>

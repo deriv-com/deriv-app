@@ -32,15 +32,11 @@ const Confirm = ({ data, error_message, header, onClickBack, onClickConfirm }) =
                 ))}
             </div>
         </div>
-        {error_message && (
-            <div className='cashier__confirm-error'>
-                <FormError error_message={error_message} />
-            </div>
-        )}
         <div className='cashier__confirm-submit'>
             <Button large text={localize('Back')} onClick={onClickBack} secondary />
             <Button large text={localize('Confirm')} onClick={onClickConfirm} primary />
         </div>
+        <FormError error_message={error_message} />
     </div>
 );
 

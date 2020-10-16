@@ -19,9 +19,7 @@ class ConnectedApps extends React.Component {
     }, {});
 
     componentDidMount() {
-        WS.wait('authorize').then(() => {
-            this.fetchConnectedApps();
-        });
+        this.fetchConnectedApps();
     }
 
     handleRevokeAccess = () => {
@@ -38,7 +36,7 @@ class ConnectedApps extends React.Component {
     };
 
     fetchConnectedApps = async () => {
-        const response_connected_apps = await WS.send({ oauth_apps: 1 });
+        const response_connected_apps = await WS.authorized.send({ oauth_apps: 1 });
 
         if (!response_connected_apps.error) {
             this.setState({
@@ -52,7 +50,7 @@ class ConnectedApps extends React.Component {
 
     revokeConnectedApp = async app_id => {
         this.setState({ is_loading: true });
-        const response = await WS.send({ revoke_oauth_app: app_id });
+        const response = await WS.authorized.send({ revoke_oauth_app: app_id });
         if (!response.error) {
             this.fetchConnectedApps();
         } else {

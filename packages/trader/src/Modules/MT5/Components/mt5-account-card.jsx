@@ -1,11 +1,11 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Money, Button, Card } from '@deriv/components';
+import { Money, Button, Card, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { Mt5AccountCopy } from './mt5-account-copy.jsx';
 
 const LoginBadge = ({ display_login }) => (
-    <span className='mt5-account-card__login'>
+    <Text className='mt5-account-card__login'>
         <Localize
             i18n_default_text='<0>Login ID</0><1>{{display_login}}</1>'
             values={{
@@ -16,7 +16,7 @@ const LoginBadge = ({ display_login }) => (
         <div className='mt5-account-card__login-clipboard'>
             <Mt5AccountCopy text={display_login} />
         </div>
-    </span>
+    </Text>
 );
 
 const MT5AccountCard = ({

@@ -98,7 +98,8 @@ Blockly.FieldDropdown.prototype.init = function () {
                 width: this.size_.width,
                 height: this.size_.height,
                 stroke: this.sourceBlock_.getColourTertiary(),
-                fill: this.sourceBlock_.getColourTertiary(),
+                'stroke-width': '0.3px',
+                fill: this.sourceBlock_.getColourSecondary(),
                 'fill-opacity': 1,
             },
             null

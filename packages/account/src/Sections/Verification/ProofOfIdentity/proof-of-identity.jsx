@@ -10,7 +10,7 @@ import MissingPersonalDetails from 'Components/poi-missing-personal-details';
 import ProofOfIdentityContainer from './proof-of-identity-container.jsx';
 
 class ProofOfIdentity extends React.Component {
-    routeBackTo = (redirect_route) => {
+    routeBackTo = redirect_route => {
         this.props.routeBackInApp(this.props.history, [redirect_route]);
     };
 

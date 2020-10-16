@@ -123,7 +123,9 @@ export default class ProfitTableStore extends BaseStore {
 
     @action.bound
     onUnmount() {
+        this.clearTable();
         this.disposeSwitchAccount();
+        this.clearDateFilter();
         WS.forgetAll('proposal');
     }
 

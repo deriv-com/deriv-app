@@ -43,7 +43,7 @@ const App = observer(props => {
         ServerTime.init(server_time);
 
         // force safari refresh on back/forward
-        window.onpageshow = function(event) {
+        window.onpageshow = function (event) {
             if (event.persisted) {
                 window.location.reload();
             }

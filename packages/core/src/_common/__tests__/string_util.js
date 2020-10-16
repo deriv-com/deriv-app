@@ -46,12 +46,8 @@ describe('StringUtil', () => {
 
     describe('.numberToString()', () => {
         it('changes int to string', () => {
-            expect(StringUtil.numberToString(0))
-                .to.be.a('string')
-                .and.to.eq('0');
-            expect(StringUtil.numberToString(2))
-                .to.be.a('string')
-                .and.to.eq('2');
+            expect(StringUtil.numberToString(0)).to.be.a('string').and.to.eq('0');
+            expect(StringUtil.numberToString(2)).to.be.a('string').and.to.eq('2');
         });
         it("doesn't change other things to string", () => {
             expect(StringUtil.numberToString(undefined)).to.eq(undefined);

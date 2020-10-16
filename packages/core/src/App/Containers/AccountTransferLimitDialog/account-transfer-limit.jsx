@@ -3,7 +3,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Dialog } from '@deriv/components';
 import { routes } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
 const AccountTransferLimit = ({ disableApp, enableApp, is_loading, is_visible, message, toggleModal }) => {

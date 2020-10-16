@@ -58,6 +58,12 @@
             &__button--active {
                 background-color: rgba(0, 0, 0, 0) !important;
                 z-index: 1;
+                padding: 0.8rem 0.6rem;
+                white-space: normal;
+                /* postcss-bem-linter: ignore */
+                span {
+                    line-height: 1.15;
+                }
             }
             &__button:nth-last-child(2) {
                 border-top-right-radius: 4px;

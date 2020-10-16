@@ -1127,6 +1127,7 @@ export default class CashierStore extends BaseStore {
         }
 
         this.config.account_transfer.selected_from = selected_from;
+        this.setTransferFee();
         this.setMinimumFee();
         this.setTransferLimit();
     }
@@ -1143,7 +1144,6 @@ export default class CashierStore extends BaseStore {
                 this.config.account_transfer.selected_to.value
             );
         }
-        this.setTransferFee();
         this.setTransferLimit();
     }
 

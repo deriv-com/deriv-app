@@ -93,6 +93,7 @@ const MultiplierCardBody = ({
                     {(is_valid_to_sell || is_valid_to_cancel) && (
                         <ToggleCardDialog
                             addToast={addToast}
+                            connectWithContractUpdate={connectWithContractUpdate}
                             contract_id={contract_info.contract_id}
                             getCardLabels={getCardLabels}
                             getContractById={getContractById}

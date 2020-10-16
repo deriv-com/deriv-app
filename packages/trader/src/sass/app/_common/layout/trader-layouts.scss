@@ -126,7 +126,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
 
                         @media (max-width: 320px) and (max-height: 480px) {
                             max-height: 26.6rem;
-                            top: -6px;
+                            top: -4px;
                         }
 
                         @media (max-width: 320px) and (max-height: 450px) {
@@ -157,20 +157,20 @@ $FLOATING_HEADER_HEIGHT: 41px;
                         top: 77px;
                         width: 124px;
                         height: 82px;
-                        right: 8px;
+                        right: 10px;
 
                         @media only screen and (max-width: 380px) {
                             width: 109px;
                             top: 77px;
                         }
                         @media only screen and (max-width: 320px) {
-                            top: 69px;
+                            top: 76px;
                             width: 98px;
                             height: 78px;
                         }
                         @media (max-width: 320px) and (max-height: 480px) {
-                            top: 66px;
-                            height: 65px;
+                            top: 78px;
+                            height: 70px;
                         }
                     }
                     & .dc-contract-card {
@@ -274,7 +274,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
                         transform: translateY(calc(-100% + 398px));
 
                         @media (max-width: 320px) and (max-height: 480px) {
-                            transform: translateY(calc(-100% + 374px));
+                            transform: translateY(calc(-100% + 370px));
                         }
 
                         @media (max-width: 320px) and (max-height: 450px) {

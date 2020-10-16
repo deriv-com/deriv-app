@@ -57,7 +57,7 @@ const QuickStrategyForm = ({
             const validation_errors = validateQuickStrategy(values);
             const is_valid = Object.keys(validation_errors).length === 0;
             const is_submit_enabled = !isSubmitting && is_valid;
-            const form_margin = is_mobile ? 'calc(100% - 72px)' : '430px';
+            const form_margin = is_mobile ? 'calc(100% - 72px - 1.6rem)' : '430px';
 
             return (
                 <Form className='quick-strategy__form'>

@@ -371,8 +371,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_authentication_needed() {
-        if (!this.account_status?.status) return false;
-        return this.account_status.authentication.needs_verification.length;
+        return this.account_status?.authentication.needs_verification?.length;
     }
 
     @computed
@@ -387,34 +386,29 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_financial_information_incomplete() {
-        if (!this.account_status?.status) return false;
-        return this.account_status.status.some(status => status === 'financial_information_not_complete');
+        return this.account_status?.status?.some(status => status === 'financial_information_not_complete');
     }
 
     @computed
     get is_withdrawal_lock() {
-        if (!this.account_status?.status) return false;
-        return this.account_status.status.some(status_name =>
+        return this.account_status?.status?.some(status_name =>
             /^(withdrawal_locked|no_withdrawal_or_trading)$/.test(status_name)
         );
     }
 
     @computed
     get is_trading_experience_incomplete() {
-        if (!this.account_status?.status) return false;
-        return this.account_status.status.some(status => status === 'trading_experience_not_complete');
+        return this.account_status?.status?.some(status => status === 'trading_experience_not_complete');
     }
 
     @computed
     get is_fully_authenticated() {
-        if (!this.account_status?.status) return false;
-        return this.account_status.status.some(status => status === 'authenticated');
+        return this.account_status?.status?.some(status => status === 'authenticated');
     }
 
     @computed
     get is_pending_authentication() {
-        if (!this.account_status?.status) return false;
-        return this.account_status.status.some(status => status === 'document_under_review');
+        return this.account_status?.status?.some(status => status === 'document_under_review');
     }
 
     @computed
@@ -425,8 +419,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_age_verified() {
-        if (!this.account_status?.status) return false;
-        return this.account_status.status.some(status => status === 'age_verification');
+        return this.account_status?.status?.some(status => status === 'age_verification');
     }
 
     @computed

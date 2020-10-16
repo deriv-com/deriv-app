@@ -19,7 +19,7 @@ export const useHover = refSetter => {
                 node.removeEventListener('mouseout', handleMouseOut);
             };
         }
-        return null;
+        return undefined;
     }, [ref]);
 
     return [ref, value];

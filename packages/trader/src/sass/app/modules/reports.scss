@@ -96,11 +96,13 @@ $side-padding: 1.2em;
 .statement {
     .table__head {
         font-weight: bold;
-        white-space: normal;
         align-items: flex-start;
 
         .table__cell {
             height: auto;
+        }
+        @include desktop {
+            white-space: normal;
         }
     }
 

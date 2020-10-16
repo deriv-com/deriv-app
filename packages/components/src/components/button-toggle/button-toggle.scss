@@ -62,7 +62,7 @@
                 white-space: normal;
                 /* postcss-bem-linter: ignore */
                .dc-btn__text {
-                    line-height: 1.15;
+                    line-height: normal;
                 }
             }
             &__button:nth-last-child(2) {

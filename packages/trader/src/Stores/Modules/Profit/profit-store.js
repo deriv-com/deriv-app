@@ -125,6 +125,8 @@ export default class ProfitTableStore extends BaseStore {
         this.fetchNextBatch(true);
     }
 
+    /* DO NOT call clearDateFilter() upon unmounting the component, date filters should stay 
+    as we change tab or click on any contract for later references as discussed with UI/UX and QA */
     @action.bound
     onUnmount() {
         this.disposeSwitchAccount();

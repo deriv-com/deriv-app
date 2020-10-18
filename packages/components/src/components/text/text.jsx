@@ -7,7 +7,7 @@ const Text = ({ children, size, color, align, weight, lineHeight, as, className 
             '--text-size': `var(--text-size-${size || 's'})`,
             '--text-color': `var(--text-${color || 'general'})`,
             '--text-lh': `var(--text-lh-${lineHeight || (as === 'p' ? 'm' : 'xs')})`,
-            '--text-weight': `var(--text-weight-${weight || 'n'})`,
+            '--text-weight': `var(--text-weight-${weight || 'normal'})`,
         };
         return style;
     }

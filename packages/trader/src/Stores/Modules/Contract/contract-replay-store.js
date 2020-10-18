@@ -7,7 +7,7 @@ import { contractCancelled, contractSold } from '../Portfolio/Helpers/portfolio-
 import BaseStore from '../../base-store';
 
 export default class ContractReplayStore extends BaseStore {
-    @observable is_chart_ready = false;
+    @observable chart_state = '';
     @observable contract_store = { contract_info: {} };
     // --- Observable properties ---
     @observable is_sell_requested = false;
@@ -88,9 +88,7 @@ export default class ContractReplayStore extends BaseStore {
         this.contract_info = {};
         this.indicative_status = null;
         this.prev_indicative = 0;
-        // @shayan: for forcing chart to call scale 1:1 each time,
-        // we should let SmartChart notify when its ready
-        this.is_chart_ready = false;
+        this.chart_state = '';
         this.root_store.ui.toggleHistoryTab(false);
         WS.removeOnReconnect();
     }
@@ -161,24 +159,13 @@ export default class ContractReplayStore extends BaseStore {
     }
 
     @action.bound
-    setIsChartReady(v) {
-        // SmartChart has a bug with scroll_to_epoch
-        // @morteza: It ignores the scroll_to_epoch if feed is not ready
-        setTimeout(
-            action(() => {
-                this.is_chart_ready = v;
-            }),
-            200
-        );
-        // As result of above issue in SmartChart, we try to keep the is_chart_loading
-        // for a while till chart has this chance to do scale 1:1 after the is_chart_ready
-        // get true.
-        setTimeout(
-            action(() => {
+    chartStateChange(state) {
+        this.chart_state = state;
+        switch (state) {
+            case 'SCROLL_TO_LEFT':
                 this.is_chart_loading = false;
-            }),
-            500
-        );
+                break;
+        }
     }
 
     @action.bound

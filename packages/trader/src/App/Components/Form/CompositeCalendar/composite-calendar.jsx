@@ -65,16 +65,8 @@ class CompositeCalendar extends React.PureComponent {
     selectDateRange(from) {
         this.hideCalendar();
         this.applyBatch({
-            from: from
-                ? toMoment()
-                      .startOf('day')
-                      .subtract(from, 'day')
-                      .add(1, 's')
-                      .unix()
-                : null,
-            to: toMoment()
-                .endOf('day')
-                .unix(),
+            from: from ? toMoment().startOf('day').subtract(from, 'day').add(1, 's').unix() : null,
+            to: toMoment().endOf('day').unix(),
             is_batch: true,
         });
     }
@@ -123,12 +115,7 @@ class CompositeCalendar extends React.PureComponent {
     }
 
     setToDate(date) {
-        this.updateState(
-            'to',
-            epochToMoment(date)
-                .endOf('day')
-                .unix()
-        );
+        this.updateState('to', epochToMoment(date).endOf('day').unix());
     }
 
     setFromDate(date) {
@@ -152,13 +139,7 @@ class CompositeCalendar extends React.PureComponent {
     }
 
     isPeriodDisabledTo(date) {
-        return (
-            date + 1 <= this.props.from ||
-            date >
-                toMoment()
-                    .endOf('day')
-                    .unix()
-        );
+        return date + 1 <= this.props.from || date > toMoment().endOf('day').unix();
     }
 
     isPeriodDisabledFrom(date) {

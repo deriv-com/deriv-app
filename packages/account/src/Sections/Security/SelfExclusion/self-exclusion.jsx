@@ -85,8 +85,8 @@ class SelfExclusion extends React.Component {
         });
     };
 
-    validateFields = (values) => {
-        const { currency, is_eu } = this.props;
+    validateFields = values => {
+        const { currency, is_eu, is_cr } = this.props;
         const errors = {};
         // Regex
         const is_number = /^\d+(\.\d+)?$/;
@@ -106,7 +106,7 @@ class SelfExclusion extends React.Component {
             />
         );
 
-        const getLimitNumberMessage = (current_value) => (
+        const getLimitNumberMessage = current_value => (
             <Localize
                 i18n_default_text='Please enter a number between 0 and {{current_value}}'
                 values={{ current_value }}
@@ -161,7 +161,7 @@ class SelfExclusion extends React.Component {
             }
         }
 
-        only_numbers.forEach((item) => {
+        only_numbers.forEach(item => {
             if (values[item]) {
                 if (!is_number.test(values[item])) {
                     errors[item] = valid_number_message;
@@ -179,12 +179,12 @@ class SelfExclusion extends React.Component {
                     errors[item] = max_number_message;
                 }
             }
-            if (+this.state.self_exclusions[item] && !values[item]) {
+            if (+this.state.self_exclusions[item] && !values[item] && !is_cr) {
                 errors[item] = more_than_zero_message;
             }
         });
 
-        only_integers.forEach((item) => {
+        only_integers.forEach(item => {
             if (values[item]) {
                 if (!is_integer.test(values[item])) {
                     errors[item] = valid_number_message;
@@ -192,7 +192,7 @@ class SelfExclusion extends React.Component {
             }
         });
 
-        only_currency.forEach((item) => {
+        only_currency.forEach(item => {
             if (values[item]) {
                 if (!hasCorrectDecimalPlaces(currency, values[item])) {
                     errors[item] = max_decimal_message;
@@ -206,19 +206,19 @@ class SelfExclusion extends React.Component {
     handleSubmit = async (values, { setSubmitting }) => {
         const need_logout_exclusions = ['exclude_until', 'timeout_until'];
         const string_exclusions = ['exclude_until'];
-        const has_need_logout = this.state.changed_attributes.some((attr) => need_logout_exclusions.includes(attr));
+        const has_need_logout = this.state.changed_attributes.some(attr => need_logout_exclusions.includes(attr));
 
         const makeRequest = () =>
-            new Promise((resolve) => {
+            new Promise(resolve => {
                 const request = {
                     set_self_exclusion: 1,
                 };
 
-                this.state.changed_attributes.forEach((attr) => {
+                this.state.changed_attributes.forEach(attr => {
                     request[attr] = string_exclusions.includes(attr) ? values[attr] : +values[attr];
                 });
 
-                WS.authorized.setSelfExclusion(request).then((response) => resolve(response));
+                WS.authorized.setSelfExclusion(request).then(response => resolve(response));
             });
 
         if (has_need_logout) {
@@ -249,8 +249,8 @@ class SelfExclusion extends React.Component {
         }
     };
 
-    goToConfirm = (values) => {
-        const changed_attributes = Object.keys(values).filter((key) => values[key] !== this.state.self_exclusions[key]);
+    goToConfirm = values => {
+        const changed_attributes = Object.keys(values).filter(key => values[key] !== this.state.self_exclusions[key]);
         this.setState({ changed_attributes, is_confirm_page: true });
     };
 
@@ -258,8 +258,8 @@ class SelfExclusion extends React.Component {
         this.setState({ show_confirm: false });
     };
 
-    objectValuesToString = (object) => {
-        Object.keys(object).forEach((item) => {
+    objectValuesToString = object => {
+        Object.keys(object).forEach(item => {
             object[item] = `${object[item]}`;
         });
 
@@ -274,7 +274,7 @@ class SelfExclusion extends React.Component {
         this.setState({ changed_attributes: [] });
     }
 
-    populateExclusionResponse = (response) => {
+    populateExclusionResponse = response => {
         if (response.error) {
             this.setState({
                 is_loading: false,
@@ -874,6 +874,7 @@ export default connect(({ client }) => ({
     currency: client.currency,
     is_virtual: client.is_virtual,
     is_switching: client.is_switching,
+    is_cr: client.standpoint.svg,
     is_eu: client.is_eu,
     is_mlt: client.landing_company_shortcode === 'malta',
     is_mx: client.landing_company_shortcode === 'iom',

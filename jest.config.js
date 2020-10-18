@@ -95,6 +95,7 @@ module.exports = {
     // Run tests from one or more projects
     projects: [
         '<rootDir>/packages/account/jest.config.js',
+        '<rootDir>/packages/shared/jest.config.js',
         '<rootDir>/packages/trader/jest.config.js',
     ],
 

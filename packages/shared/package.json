@@ -16,7 +16,6 @@
     "serve": "echo \"No serve specified\"",
     "build": "echo \"No build specified\"",
     "build:travis": "echo \"No build:travis specified\"",
-    "test": "jest --all",
     "deploy": "echo \"No deploy specified\"",
     "deploy:clean": "echo \"No deploy:clean specified\"",
     "deploy:folder": "echo \"No deploy:folder specified\"",

@@ -97,6 +97,7 @@ module.exports = {
         '<rootDir>/packages/account/jest.config.js',
         '<rootDir>/packages/shared/jest.config.js',
         '<rootDir>/packages/trader/jest.config.js',
+        '<rootDir>/packages/core/jest.config.js',
     ],
 
     // Use this configuration option to add custom reporters to Jest

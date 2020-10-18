@@ -1,6 +1,6 @@
 import { observable, action, runInAction } from 'mobx';
 import { epochToMoment, getSocketURL, isEmptyObject, mobileOSDetect, routes } from '@deriv/shared';
-import { getExtendedOrderDetails } from 'Utils/orders.js';
+import { localize, Localize } from 'Components/i18next';
 import { createExtendedOrderDetails } from 'Utils/orders.js';
 import { init as WebsocketInit, requestWS, subscribeWS } from 'Utils/websocket.js';
 import { order_list } from '../src/constants/order-list';
@@ -144,7 +144,7 @@ export default class GeneralStore {
     @action.bound
     items = () => [
         {
-            content: this.nickname ? <p>{this.nickname}</p> : <Localize i18n_default_text='Choose your nickname' />,
+            content: this.nickname ? this.nickname : <Localize i18n_default_text='Choose your nickname' />,
             status: this.nickname ? 'done' : 'action',
             onClick: this.nickname ? () => {} : this.toggleNicknamePopup,
         },

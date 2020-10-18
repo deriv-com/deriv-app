@@ -3,6 +3,7 @@ const path = require('path');
 // https://jestjs.io/docs/en/configuration.html
 
 module.exports = {
+
     // All imported modules in your tests should be mocked automatically
     // automock: false,
 
@@ -79,14 +80,6 @@ module.exports = {
     //   "node"
     // ],
 
-    // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
-    moduleNameMapper: {
-        "\\.s(c|a)ss$": "<rootDir>/__mocks__/styleMock.js",
-        '^Components\/(.*)$': "<rootDir>/packages/account/src/Components/$1",
-        '^Services\/(.*)$': "<rootDir>/packages/account/src/Services/$1",
-        '^Stores\/(.*)$': "<rootDir>/packages/account/src/Stores/$1",
-    },
-
     // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
     // modulePathIgnorePatterns: [],
 
@@ -100,7 +93,10 @@ module.exports = {
     // preset: undefined,
 
     // Run tests from one or more projects
-    // projects: undefined,
+    projects: [
+        '<rootDir>/packages/account/jest.config.js',
+        '<rootDir>/packages/trader/jest.config.js',
+    ],
 
     // Use this configuration option to add custom reporters to Jest
     // reporters: undefined,
@@ -163,7 +159,10 @@ module.exports = {
     // ],
 
     // The regexp pattern or array of patterns that Jest uses to detect test files
-    // testRegex: [],
+    testRegex: [
+        '__tests__',
+        '.*\.spec\.js',
+    ],
 
     // This option allows the use of a custom results processor
     // testResultsProcessor: undefined,

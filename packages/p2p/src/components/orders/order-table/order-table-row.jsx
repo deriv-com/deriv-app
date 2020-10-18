@@ -2,14 +2,18 @@ import { Table } from '@deriv/components';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
 import { secondsToTimer } from 'Utils/date-time';
 import ServerTime from 'Utils/server-time';
+import { createExtendedOrderDetails } from '../../../utils/orders';
 import { useStores } from '../../../../stores';
 
-// TODO: Refactor "advert" as it can also be an "order", try to use two separate
-// "RowComponents" for orders and adverts.
-const OrderRowComponent = React.memo(({ advert, onOpenDetails, style, is_active }) => {
+const OrderRowComponent = observer(({ data: order, onOpenDetails, style, is_active }) => {
+    const { general_store } = useStores();
+    const [order_state, setOrderState] = React.useState(order); // Use separate state to force refresh when (FE-)expired.
+    const [remaining_time, setRemainingTime] = React.useState();
+
     const {
         account_currency,
         amount_display,
@@ -27,9 +31,7 @@ const OrderRowComponent = React.memo(({ advert, onOpenDetails, style, is_active 
         should_highlight_danger,
         should_highlight_disabled,
         status_string,
-    } = advert;
-    const [remaining_time, setRemainingTime] = React.useState();
-    const { general_store } = useStores();
+    } = order_state;
 
     let interval;
 
@@ -42,8 +44,10 @@ const OrderRowComponent = React.memo(({ advert, onOpenDetails, style, is_active 
         const distance = ServerTime.getDistanceToServerTime(order_expiry_milliseconds);
         const timer = secondsToTimer(distance);
 
-        if (distance < 0) {
+        if (distance < 1) {
+            const { client, props } = general_store;
             setRemainingTime(localize('expired'));
+            setOrderState(createExtendedOrderDetails(order.order_details, client.loginid, props.server_time));
             clearInterval(interval);
         } else {
             setRemainingTime(timer);
@@ -60,7 +64,7 @@ const OrderRowComponent = React.memo(({ advert, onOpenDetails, style, is_active 
     const transaction_amount = `${price_display} ${local_currency}`;
 
     return (
-        <div onClick={() => onOpenDetails(advert)} style={style}>
+        <div onClick={() => onOpenDetails(order)} style={style}>
             <Table.Row
                 className={classNames('orders__table-row orders__table-grid', {
                     'orders__table-grid--active': is_active,

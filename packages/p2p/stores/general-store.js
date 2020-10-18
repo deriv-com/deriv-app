@@ -1,10 +1,15 @@
 import { observable, action, runInAction } from 'mobx';
 import { epochToMoment, getSocketURL, isEmptyObject, mobileOSDetect, routes } from '@deriv/shared';
 import { getExtendedOrderDetails } from 'Utils/orders.js';
+import { createExtendedOrderDetails } from 'Utils/orders.js';
 import { init as WebsocketInit, requestWS, subscribeWS } from 'Utils/websocket.js';
 import { order_list } from '../src/constants/order-list';
 
 export default class GeneralStore {
+    constructor(root_store) {
+        this.root_store = root_store;
+    }
+
     @observable active_index = 0;
     @observable active_notification_count = 0;
     @observable advertiser_id = null;
@@ -84,9 +89,10 @@ export default class GeneralStore {
 
     @action.bound
     handleNotifications(old_orders, new_orders) {
+        const { client, props } = this;
         const { is_cached, notifications } = this.getLocalStorageSettingsForLoginId();
         new_orders.forEach(new_order => {
-            const order_info = getExtendedOrderDetails(new_order, this.client.loginid);
+            const order_info = createExtendedOrderDetails(new_order, client.loginid, props.server_time);
             const notification = notifications.find(n => n.order_id === new_order.id);
             const old_order = old_orders.find(o => o.id === new_order.id);
             const is_current_order = new_order.id === this.props?.order_id;
@@ -276,12 +282,7 @@ export default class GeneralStore {
                 // Refresh chat token ±1 hour before it expires (BE will refresh the token
                 // when we request within 2 hours of the token expiring)
                 const expiry_moment = epochToMoment(service_token.sendbird.expiry_time);
-                const delay_ms = expiry_moment.diff(
-                    this.props.server_time
-                        .get()
-                        .clone()
-                        .subtract(1, 'hour')
-                );
+                const delay_ms = expiry_moment.diff(this.props.server_time.get().clone().subtract(1, 'hour'));
 
                 this.service_token_timeout = setTimeout(() => getSendbirdServiceToken(), delay_ms);
             });

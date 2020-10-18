@@ -147,7 +147,7 @@ const OrderDetailsFooter = ({ order_information, cancelPopup, showPopup }) => {
                     </div>
                     <div className='order-details__footer--right'>
                         <Button large primary onClick={showReceivedFundsPopup}>
-                            {localize("I've received funds")}
+                            {localize("I've received payment")}
                         </Button>
                     </div>
                 </React.Fragment>

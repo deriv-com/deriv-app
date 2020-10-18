@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Loading, Button } from '@deriv/components';
 import { useIsMounted } from '@deriv/shared';
+import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
 import { TableError } from 'Components/table/table-error.jsx';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
@@ -10,10 +11,10 @@ import OrderTableHeader from 'Components/orders/order-table/order-table-header.j
 import OrderRowComponent from 'Components/orders/order-table/order-table-row.jsx';
 import { useStores } from 'Stores';
 import { height_constants } from 'Utils/height_constants';
-import { getExtendedOrderDetails } from 'Utils/orders';
+import { createExtendedOrderDetails } from 'Utils/orders';
 import { requestWS } from 'Utils/websocket';
 
-const OrderTableContent = ({ showDetails, is_active }) => {
+const OrderTableContent = observer(({ showDetails, is_active }) => {
     const { general_store } = useStores();
 
     const [api_error_message, setApiErrorMessage] = React.useState('');
@@ -62,8 +63,9 @@ const OrderTableContent = ({ showDetails, is_active }) => {
     const Row = row_props => <OrderRowComponent {...row_props} onOpenDetails={showDetails} is_active={is_active} />;
 
     if (general_store.orders.length) {
+        const { client, props } = general_store;
         const modified_list = general_store.orders
-            .map(order => getExtendedOrderDetails(order, general_store.client.loginid))
+            .map(order => createExtendedOrderDetails(order, client.loginid, props.server_time))
             .filter(order => (is_active ? order.is_active_order : order.is_inactive_order));
 
         const item_height = 72;
@@ -104,7 +106,7 @@ const OrderTableContent = ({ showDetails, is_active }) => {
             )}
         </Empty>
     );
-};
+});
 
 OrderTableContent.propTypes = {
     is_active: PropTypes.bool,

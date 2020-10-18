@@ -17,7 +17,7 @@ const output = {
 };
 
 module.exports = function(env, argv) {
-    const base = env && env.base && env.base != true ? '/' + env.base + '/' : '/';
+    const base = env && env.base && !env.base ? `/${env.base}/` : '/';
 
     return {
         entry: [path.join(__dirname, 'src', 'app.js')],
@@ -72,15 +72,6 @@ module.exports = function(env, argv) {
                             },
                         },
                     ],
-                },
-                {
-                    enforce: 'pre',
-                    test: /\.(js|jsx)$/,
-                    exclude: [/node_modules/, /lib/, /utils/, /dist/, /webpack.config.js/],
-                    loader: 'eslint-loader',
-                    options: {
-                        fix: true,
-                    },
                 },
                 {
                     test: /\.(js|jsx)$/,

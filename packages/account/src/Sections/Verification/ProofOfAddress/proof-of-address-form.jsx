@@ -30,7 +30,7 @@ import LeaveConfirm from 'Components/leave-confirm';
 import FileUploaderContainer from 'Components/file-uploader-container';
 
 const validate = (errors, values) => (fn, arr, err_msg) => {
-    arr.forEach((field) => {
+    arr.forEach(field => {
         const value = values[field];
         if (!fn(value) && !errors[field] && err_msg !== true) errors[field] = err_msg;
     });
@@ -84,13 +84,13 @@ class ProofOfAddressForm extends React.Component {
     }
 
     // TODO: standardize validations and refactor this
-    validateFields = (values) => {
+    validateFields = values => {
         this.setState({ is_submit_success: false });
         const errors = {};
         const validateValues = validate(errors, values);
 
         const required_fields = ['address_line_1', 'address_city'];
-        validateValues((val) => val, required_fields, localize('This field is required'));
+        validateValues(val => val, required_fields, localize('This field is required'));
 
         const permitted_characters = "- . ' # ; : ( ) , @ /";
         const address_validation_message = localize(
@@ -136,7 +136,7 @@ class ProofOfAddressForm extends React.Component {
         return errors;
     };
 
-    showForm = (show_form) => this.setState({ show_form });
+    showForm = show_form => this.setState({ show_form });
 
     onFileDrop = ({ document_file, file_error_message }) => {
         this.setState({ document_file, file_error_message });
@@ -158,7 +158,7 @@ class ProofOfAddressForm extends React.Component {
             });
         }
 
-        WS.setSettings(form_values).then((data) => {
+        WS.setSettings(form_values).then(data => {
             if (data.error) {
                 setStatus({ msg: data.error.message });
                 this.setState({ is_btn_loading: false });
@@ -192,7 +192,7 @@ class ProofOfAddressForm extends React.Component {
                         // upload files
                         this.file_uploader_ref.current
                             .upload()
-                            .then((api_response) => {
+                            .then(api_response => {
                                 if (api_response.warning) {
                                     setStatus({ msg: api_response.message });
                                     this.setState({ is_btn_loading: false });
@@ -232,7 +232,7 @@ class ProofOfAddressForm extends React.Component {
                                     });
                                 }
                             })
-                            .catch((error) => {
+                            .catch(error => {
                                 setStatus({ msg: error.message });
                                 this.setState({ is_btn_loading: false });
                             })
@@ -390,7 +390,7 @@ class ProofOfAddressForm extends React.Component {
                                                                 list_items={this.props.states_list}
                                                                 error={touched.address_state && errors.address_state}
                                                                 use_text={true}
-                                                                onChange={(e) =>
+                                                                onChange={e =>
                                                                     setFieldValue('address_state', e.target.value, true)
                                                                 }
                                                             />
@@ -428,7 +428,7 @@ class ProofOfAddressForm extends React.Component {
                                     </div>
                                     <FormSubHeader title={localize('Please upload one of the following:')} />
                                     <FileUploaderContainer
-                                        onRef={(ref) => (this.file_uploader_ref = ref)}
+                                        onRef={ref => (this.file_uploader_ref = ref)}
                                         onFileDrop={this.onFileDrop}
                                         getSocket={WS.getSocket}
                                     />

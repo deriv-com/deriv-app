@@ -1,12 +1,14 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon } from '@deriv/components';
+import { Icon, Text } from '@deriv/components';
 
 const AccountWrapper = ({ children, header, is_visible, toggleVisibility }) => (
     <React.Fragment>
         <div className={classNames('acc-switcher', { 'acc-info--show': !is_visible })} onClick={toggleVisibility}>
-            <span className='acc-switcher__list-title'>{header}</span>
+            <Text size='s' weight='bold' align='left' color='prominent' lineHeight='l' flex>
+                {header}
+            </Text>
             <Icon icon='IcChevronDown' className='acc-info__select-arrow acc-info__select-arrow--invert' />
         </div>
         {is_visible && <React.Fragment>{children}</React.Fragment>}

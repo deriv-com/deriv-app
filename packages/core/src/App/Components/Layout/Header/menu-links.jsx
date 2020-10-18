@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { BinaryLink } from '../../Routes';
+import { Text } from '@deriv/components';
 
 const MenuLinks = ({ is_logged_in, items }) => (
     <React.Fragment>
@@ -19,11 +20,11 @@ const MenuLinks = ({ is_logged_in, items }) => (
                         >
                             <React.Fragment>
                                 {item.text && (
-                                    <span title={item.text()} className='header__menu-link-text'>
+                                    <Text title={item.text()} className='header__menu-link-text'>
                                         {item.icon}
                                         {item.text()}
                                         {item.logo}
-                                    </span>
+                                    </Text>
                                 )}
                                 {item.image && (
                                     <span className='header__menu-link-text'>

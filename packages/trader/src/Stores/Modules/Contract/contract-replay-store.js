@@ -161,10 +161,12 @@ export default class ContractReplayStore extends BaseStore {
     @action.bound
     chartStateChange(state) {
         this.chart_state = state;
+
         switch (state) {
             case 'SCROLL_TO_LEFT':
                 this.is_chart_loading = false;
                 break;
+            default:
         }
     }
 

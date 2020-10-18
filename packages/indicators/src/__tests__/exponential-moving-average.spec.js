@@ -74,7 +74,7 @@ describe('exponentialMovingAverage', () => {
             22.91,
         ];
         const result = exponentialMovingAverageArray(data, { periods: 10 });
-        const rounded_result = result.map((x) => Math.round(x * 100) / 100);
+        const rounded_result = result.map(x => Math.round(x * 100) / 100);
         expect(rounded_result).toEqual(ema10days);
     });
 });

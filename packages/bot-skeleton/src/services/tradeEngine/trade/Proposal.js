@@ -63,6 +63,10 @@ export default Engine =>
         }
 
         requestProposals() {
+            // Since there are two proposals (in most cases), an error may be logged twice, to avoid this
+            // flip this boolean on error.
+            let has_informed_error = false;
+
             Promise.all(
                 this.proposal_templates.map(proposal =>
                     doUntilDone(() =>
@@ -80,7 +84,11 @@ export default Engine =>
                                 return null;
                             }
 
-                            throw error;
+                            if (!has_informed_error) {
+                                has_informed_error = true;
+                                this.$scope.observer.emit('Error', error.error.error);
+                            }
+                            return null;
                         })
                     )
                 )

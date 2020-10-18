@@ -34,6 +34,13 @@
         cursor: pointer;
         display: flex;
     }
+    &__name {
+        &:hover {
+            color: var(--brand-red-coral);
+            text-decoration: underline;
+            text-decoration-color: var(--brand-red-coral);
+        }
+    }
     &__button {
         display: flex;
         justify-content: center;

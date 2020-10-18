@@ -46,7 +46,7 @@ export default class MT5Store extends BaseStore {
 
         this.root_store.client.mt5_login_list.forEach(login => {
             const { type, category } = getMt5GroupConfig(login.group);
-            list[`${category}.${type}`] = Object.assign({}, login);
+            list[`${category}.${type}`] = { ...login };
         });
 
         return list;

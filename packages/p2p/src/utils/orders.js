@@ -104,7 +104,7 @@ export const getExtendedOrderDetails = (order_details, loginid) => {
     let should_highlight_alert,
         should_highlight_danger,
         should_show_cancel_and_paid_button,
-        should_show_complain_and_received_button,
+        should_show_only_received_button,
         status_string;
 
     if (is_my_ad) {
@@ -128,17 +128,15 @@ export const getExtendedOrderDetails = (order_details, loginid) => {
 
     if (is_buy_order) {
         should_show_cancel_and_paid_button = !is_my_ad && is_pending_order;
-        should_show_complain_and_received_button = is_my_ad && (is_buyer_confirmed_order || is_expired_order);
+        should_show_only_received_button = is_my_ad && is_buyer_confirmed_order;
     } else {
         should_show_cancel_and_paid_button = is_my_ad && is_pending_order;
-        should_show_complain_and_received_button = !is_my_ad && (is_buyer_confirmed_order || is_expired_order);
+        should_show_only_received_button = !is_my_ad && is_buyer_confirmed_order;
     }
 
     const should_show_only_complain_button = is_expired_order;
     const should_show_order_footer =
-        should_show_cancel_and_paid_button ||
-        should_show_complain_and_received_button ||
-        should_show_only_complain_button;
+        should_show_cancel_and_paid_button || should_show_only_received_button || should_show_only_complain_button;
 
     if (is_pending_order) {
         if (is_my_ad) {
@@ -189,7 +187,7 @@ export const getExtendedOrderDetails = (order_details, loginid) => {
         should_highlight_disabled,
         should_highlight_success,
         should_show_cancel_and_paid_button,
-        should_show_complain_and_received_button,
+        should_show_only_received_button,
         should_show_only_complain_button,
         should_show_order_footer,
         status_string,

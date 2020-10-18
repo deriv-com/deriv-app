@@ -19,7 +19,7 @@ const OrderDetailsFooter = ({ order_information }) => {
         other_user_details,
         price_display,
         should_show_cancel_and_paid_button,
-        should_show_complain_and_received_button,
+        should_show_only_received_button,
         should_show_only_complain_button,
     } = order_information;
 
@@ -261,15 +261,10 @@ const OrderDetailsFooter = ({ order_information }) => {
         );
     };
 
-    if (should_show_complain_and_received_button) {
+    if (should_show_only_received_button) {
         return (
             <React.Fragment>
                 <div className='order-details__footer'>
-                    <div className='order-details__footer--left'>
-                        <Button large tertiary onClick={showComplainOrderModal}>
-                            {localize('Complain')}
-                        </Button>
-                    </div>
                     <div className='order-details__footer--right'>
                         <Button large primary onClick={showConfirmOrderModal}>
                             {localize("I've received funds")}

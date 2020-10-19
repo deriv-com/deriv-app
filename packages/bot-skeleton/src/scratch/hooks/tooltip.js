@@ -1,6 +1,7 @@
 import { blueInfo } from '../blocks/images';
 
 Blockly.Tooltip.HOVER_MS = 50;
+Blockly.Tooltip.LIMIT = 100;
 
 Blockly.Tooltip.show_ = function() {
     let param;

@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'Stores/connect';
 import { Localize } from '@deriv/translations';
+import { isDesktop } from '@deriv/shared';
 import Withdraw from '../Components/withdraw.jsx';
 import SendEmail from '../Components/Email/send-email.jsx';
 import Error from '../Components/Error/error.jsx';
@@ -53,17 +54,17 @@ const Withdrawal = ({
         return () => {
             setErrorMessage('');
         };
-    }, []);
+    }, [container, setActiveTab, setErrorMessage]);
 
     React.useEffect(() => {
-        if (iframe_url || verification_code) {
+        if ((iframe_url || verification_code) && isDesktop()) {
             if (/^(UST|eUSDT)$/i.test(currency) && typeof setSideNotes === 'function') {
                 setSideNotes([<WithdrawalSideNote key={0} />, <USDTSideNote key={1} />]);
             } else {
                 setSideNotes([<WithdrawalSideNote key={0} />]);
             }
         }
-    }, [iframe_url, verification_code]);
+    }, [currency, setSideNotes, iframe_url, verification_code]);
 
     if (verification_code || iframe_url) {
         return <Withdraw />;

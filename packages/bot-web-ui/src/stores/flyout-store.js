@@ -35,29 +35,26 @@ export default class FlyoutStore {
      * @param {Element[]} xml_list list of XML nodes
      * @memberof FlyoutStore
      */
-    @action.bound setContents(xml_list, search_term = '') {
+    @action.bound
+    setContents(xml_list, search_term = '') {
         const text_limit = 20;
         const processed_xml = xml_list;
+
         this.block_listeners.forEach(listener => Blockly.unbindEvent_(listener));
         this.block_workspaces.forEach(workspace => workspace.dispose());
         this.block_listeners = [];
         this.block_workspaces = [];
+
         this.is_help_content = false;
         this.search_term = search_term.length > text_limit ? `${search_term.substring(0, text_limit)}...` : search_term;
+        this.flyout_content = xml_list;
 
-        // const xml_list_group = this.groupBy(xml_list);
-
-        this.flyout_content = observable(xml_list);
         this.setFlyoutWidth(processed_xml);
         this.setVisibility(true);
 
         // apparently setFlyoutWidth doesn't calculate blocks dimentions until they're visible
         // using setTimeout is a workaround to solve this issue
-        // TODO: Find a proper solution
-        const self = this;
-        setTimeout(function() {
-            self.setFlyoutWidth(processed_xml);
-        }, 50);
+        setTimeout(() => this.setFlyoutWidth(processed_xml), 50);
     }
 
     /**
@@ -65,15 +62,12 @@ export default class FlyoutStore {
      * @param {boolean} is_visible
      * @memberof FlyoutStore
      */
-    @action.bound setVisibility(is_visible) {
-        if (this.is_visible === is_visible) {
-            return;
-        }
-
+    @action.bound
+    setVisibility(is_visible) {
         this.is_visible = is_visible;
 
         if (!is_visible) {
-            this.flyout_content = observable([]);
+            this.flyout_content = [];
         }
     }
 
@@ -82,7 +76,8 @@ export default class FlyoutStore {
      * @param {boolean} is_search
      * @memberof FlyoutStore
      */
-    @action.bound setIsSearchFlyout(is_search) {
+    @action.bound
+    setIsSearchFlyout(is_search) {
         this.selected_category = '';
         this.is_search_flyout = is_search;
     }
@@ -93,7 +88,8 @@ export default class FlyoutStore {
      * @param {Element} block_node DOM of a Blockly.Block
      * @memberof FlyoutStore
      */
-    @action.bound initBlockWorkspace(el_block_workspace, block_node) {
+    @action.bound
+    initBlockWorkspace(el_block_workspace, block_node) {
         const workspace = Blockly.inject(el_block_workspace, this.options);
 
         workspace.isFlyout = true;
@@ -137,7 +133,8 @@ export default class FlyoutStore {
      * @param {Element[]} xmlList
      * @memberof FlyoutStore
      */
-    @action.bound setFlyoutWidth(xmlList) {
+    @action.bound
+    setFlyoutWidth(xmlList) {
         let longest_block_width = 0;
 
         xmlList.forEach(node => {

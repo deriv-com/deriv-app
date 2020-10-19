@@ -2,7 +2,7 @@ const { ALIASES, IS_RELEASE, MINIMIZERS, plugins, rules } = require('./constants
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 
-module.exports = function(env, argv) {
+module.exports = function (env, argv) {
     const base = env && env.base && env.base != true ? '/' + env.base + '/' : '/';
 
     return {

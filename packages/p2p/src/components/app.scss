@@ -11,6 +11,7 @@
     }
     & .dc-tabs {
         position: static;
+
         &--p2p-cashier {
             & .dc-tabs__list {
                 &--header-fit-content {
@@ -88,7 +89,6 @@
 
 .dc-modal__container_p2p-nickname {
     &__dialog {
-        width: auto;
         height: auto;
         padding: 0;
         max-height: initial;

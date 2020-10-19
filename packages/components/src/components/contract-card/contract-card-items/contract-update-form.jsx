@@ -8,6 +8,7 @@ import {
     isCryptocurrency,
     isDeepEqual,
     pick,
+    getTotalProfit,
 } from '@deriv/shared';
 import Button from '../../button';
 import Icon from '../../icon';
@@ -115,7 +116,7 @@ class ContractUpdateForm extends React.Component {
             contract_update_stop_loss,
             has_contract_update_stop_loss,
         } = this.props.contract;
-        const { buy_price, currency, is_valid_to_cancel, bid_price, is_sold } = this.contract_info;
+        const { buy_price, currency, is_valid_to_cancel, is_sold } = this.contract_info;
         const cancellation_price = getCancellationPrice(this.contract_info);
         const take_profit_input = (
             <InputWithCheckbox
@@ -158,7 +159,7 @@ class ContractUpdateForm extends React.Component {
             />
         );
 
-        const total_profit = bid_price - buy_price;
+        const total_profit = getTotalProfit(this.contract_info);
 
         return (
             <React.Fragment>

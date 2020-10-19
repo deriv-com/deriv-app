@@ -1147,7 +1147,10 @@ export default class CashierStore extends BaseStore {
             const selected_to = this.config.account_transfer.accounts_list.find(
                 account => account.currency === selected_from.currency && account.value !== selected_from.value
             );
-            if ((selected_to.is_mt && !selected_from.is_mt) || (!selected_to.is_mt && selected_from.is_mt)) {
+            if (
+                selected_to &&
+                ((selected_to.is_mt && !selected_from.is_mt) || (!selected_to.is_mt && selected_from.is_mt))
+            ) {
                 this.config.account_transfer.selected_to = selected_to;
             }
         }

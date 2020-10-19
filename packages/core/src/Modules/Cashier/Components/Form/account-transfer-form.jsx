@@ -2,7 +2,17 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik, Form } from 'formik';
-import { Button, Dropdown, Icon, Input, Money, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
+import {
+    Button,
+    Dropdown,
+    Icon,
+    Input,
+    Money,
+    DesktopWrapper,
+    MobileWrapper,
+    SelectNative,
+    Text,
+} from '@deriv/components';
 import { PlatformContext, getDecimalPlaces, getCurrencyDisplayCode, validNumber, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -183,6 +193,12 @@ const AccountTransferForm = ({
         ...(accounts_to.length && { [localize('Deriv accounts')]: accounts_to }),
     };
 
+    const has_no_to =
+        [
+            ...mt_accounts_to.filter(acc => acc.currency === selected_from.currency),
+            ...accounts_to.filter(acc => acc.currency === selected_from.currency),
+        ].length === 0;
+
     const { daily_transfers } = account_limits;
     const mt5_remaining_transfers = daily_transfers?.mt5?.available;
     const internal_remaining_transfers = daily_transfers?.internal?.available;
@@ -307,6 +323,7 @@ const AccountTransferForm = ({
                                                 onChange={onChangeTransferTo}
                                                 hint={transfer_to_hint}
                                                 error={selected_to.error}
+                                                disabled={is_deriv_crypto && has_no_to}
                                             />
                                         </DesktopWrapper>
                                         <MobileWrapper>
@@ -337,6 +354,7 @@ const AccountTransferForm = ({
                                                 label={localize('Amount')}
                                                 error={touched.amount && errors.amount}
                                                 required
+                                                disabled={is_deriv_crypto && has_no_to}
                                                 leading_icon={
                                                     selected_from.currency ? (
                                                         <span

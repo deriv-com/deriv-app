@@ -188,8 +188,8 @@ const AdvertiserPage = observer(props => {
                                     {total_completion_rate ? `${total_completion_rate}%` : '-'}
                                 </div>
                                 <div className='advertiser-page__stats-cell-info_buy'>
-                                    {localize('(Buy {{ buy_completion_rate }}%)', {
-                                        buy_completion_rate: buy_completion_rate || 0,
+                                    {localize('(Buy {{ buy_completion_rate }})', {
+                                        buy_completion_rate: buy_completion_rate ? `${buy_completion_rate}%` : '-',
                                     })}
                                 </div>
                             </div>

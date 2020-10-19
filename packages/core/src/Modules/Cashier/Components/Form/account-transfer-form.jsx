@@ -2,17 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik, Form } from 'formik';
-import {
-    Button,
-    Dropdown,
-    Icon,
-    Input,
-    Money,
-    DesktopWrapper,
-    MobileWrapper,
-    SelectNative,
-    Text,
-} from '@deriv/components';
+import { Button, Dropdown, Icon, Input, Money, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
 import { PlatformContext, getDecimalPlaces, getCurrencyDisplayCode, validNumber, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';

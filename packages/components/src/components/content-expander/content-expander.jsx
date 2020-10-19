@@ -11,6 +11,7 @@ const ContentExpander = ({
     header_className,
     is_arrow_inverted,
     is_title_spaced,
+    title_color,
     is_expanded,
     onToggle,
 }) => {
@@ -43,7 +44,7 @@ const ContentExpander = ({
                     )}
                 >
                     {typeof header === 'string' ? (
-                        <Text size='s' color='prominent' weight='b'>
+                        <Text size='s' color={title_color || 'prominent'} weight='b'>
                             {header}
                         </Text>
                     ) : (
@@ -69,6 +70,7 @@ ContentExpander.propTypes = {
     header_className: PropTypes.string,
     is_visible: PropTypes.bool,
     is_title_spaced: PropTypes.bool,
+    title_color: PropTypes.string,
     onToggle: PropTypes.func,
     toggleVisibility: PropTypes.func,
 };

@@ -32,7 +32,7 @@ const DummyComponent = (props) => (
 ```jsx
 import { Icon, Text, ContentExpander } from '@deriv-components';
 
-const title_element = (username) => (
+const headerTitle = (username) => (
     <div>
         <Icon icon='IcUser' />
         <Text color='prominent'>
@@ -49,8 +49,9 @@ const onUserToggle = (bool) => {
 
 const UserSection = (props) => (
     <ContentExpander 
-        header={props.username} 
-        is_expanded 
+        is_expanded
+        is_title_spaced
+        header={headerTitle(props.username)} 
         onToggle={onUserToggle}
     >
         {props.user_content}

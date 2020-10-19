@@ -268,6 +268,8 @@ class ChartTradeClass extends React.Component {
                 refreshActiveSymbols={should_refresh}
                 hasAlternativeSource={this.props.has_alternative_source}
                 refToAddTick={this.props.refToAddTick}
+                //TODO: Remove hard coded order here and add a callback in smartcharts api to get order of the markets.
+                activeSymbols={['synthetic_index', 'forex', 'indices', 'stocks', 'commodities']}
                 yAxisMargin={{
                     top: isMobile() ? 76 : 106,
                 }}

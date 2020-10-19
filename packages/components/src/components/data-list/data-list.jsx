@@ -42,7 +42,6 @@ class DataList extends React.PureComponent {
         const row = data_source[index];
         const to = getRowAction && getRowAction(row);
         const row_key = keyMapper?.(row) || key;
-        const should_show_transition = !isScrolling;
         const is_new_row = !this.items_transition_map[row_key];
 
         const getContent = ({ measure } = {}) => (
@@ -58,15 +57,11 @@ class DataList extends React.PureComponent {
                             },
                         }}
                     >
-                        <div className='data-list__item'>
-                            {rowRenderer({ row, measure, should_show_transition, is_new_row })}
-                        </div>
+                        <div className='data-list__item'>{rowRenderer({ row, measure, isScrolling, is_new_row })}</div>
                     </NavLink>
                 ) : (
                     <div className='data-list__item--wrapper'>
-                        <div className='data-list__item'>
-                            {rowRenderer({ row, measure, should_show_transition, is_new_row })}
-                        </div>
+                        <div className='data-list__item'>{rowRenderer({ row, measure, isScrolling, is_new_row })}</div>
                     </div>
                 )}
             </div>

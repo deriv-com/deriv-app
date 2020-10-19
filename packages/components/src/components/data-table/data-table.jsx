@@ -56,26 +56,6 @@ class DataTable extends React.PureComponent {
         );
     };
 
-    handleScroll = ev => {
-        clearTimeout(this.timeout);
-
-        const { isScrolling } = this.state;
-        if (!isScrolling) {
-            this.setState({ isScrolling: true });
-        }
-
-        this.timeout = setTimeout(() => {
-            this.setState({ isScrolling: false });
-        }, 200);
-
-        const { scrollTop } = ev.target;
-        this.setState({ scrollTop });
-
-        if (this.props.onScroll) {
-            this.props.onScroll(ev);
-        }
-    };
-
     render() {
         const {
             children,
@@ -100,7 +80,7 @@ class DataTable extends React.PureComponent {
                                 width,
                             }}
                         >
-                            <ThemedScrollbars onScroll={this.handleScroll} autoHide>
+                            <ThemedScrollbars autoHide>
                                 <List
                                     ref={ref => (this.list_ref = ref)}
                                     className={className}

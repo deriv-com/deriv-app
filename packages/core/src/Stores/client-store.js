@@ -553,9 +553,12 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_mt5_allowed() {
-        if (!this.landing_companies || !Object.keys(this.landing_companies).length) return false;
-        const has_mt5 =
-            'mt_financial_company' in this.landing_companies || 'mt_gaming_company' in this.landing_companies;
+        return this.isMT5Allowed(this.landing_companies);
+    }
+
+    isMT5Allowed = landing_companies => {
+        if (!landing_companies || !Object.keys(landing_companies).length) return false;
+        const has_mt5 = 'mt_financial_company' in landing_companies || 'mt_gaming_company' in landing_companies;
 
         // TODO: [deriv-eu] Remove the if statement once EU is enabled in dev
         if (this.is_eu && !this.root_store.ui.is_eu_enabled) {
@@ -565,7 +568,7 @@ export default class ClientStore extends BaseStore {
         }
 
         if (has_mt5) {
-            const { gaming_company, financial_company } = this.landing_companies;
+            const { gaming_company, financial_company } = landing_companies;
             // eslint-disable-next-line no-nested-ternary
             return gaming_company
                 ? gaming_company.shortcode === 'svg'
@@ -575,7 +578,7 @@ export default class ClientStore extends BaseStore {
         }
 
         return false;
-    }
+    };
 
     @computed
     get is_eu_country() {

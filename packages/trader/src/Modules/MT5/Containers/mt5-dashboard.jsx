@@ -50,8 +50,12 @@ class MT5Dashboard extends React.Component {
 
     async componentDidMount() {
         if (this.props.is_logged_in) {
-            await WS.wait('landing_company', 'get_account_status');
-            if (!this.props.is_mt5_allowed) this.props.history.push(routes.trade);
+            await WS.wait('get_settings');
+            const res = await WS.authorized.cache.landingCompany(this.props.residence);
+
+            if (!this.props.isMT5Allowed(res.landing_company)) {
+                this.props.history.push(routes.trade);
+            }
         }
 
         this.updateActiveIndex(this.getIndexToSet());
@@ -403,7 +407,8 @@ export default withRouter(
         openPasswordModal: modules.mt5.enableMt5PasswordModal,
         openAccountNeededModal: ui.openAccountNeededModal,
         is_loading: client.is_populating_mt5_account_list,
-        is_mt5_allowed: client.is_mt5_allowed,
+        residence: client.residence,
+        isMT5Allowed: client.isMT5Allowed,
         has_mt5_account: modules.mt5.has_mt5_account,
         has_real_account: client.has_active_real_account,
         setAccountType: modules.mt5.setAccountType,

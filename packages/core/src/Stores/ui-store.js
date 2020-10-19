@@ -1,5 +1,5 @@
 import { action, autorun, computed, observable } from 'mobx';
-import { getPlatformInformation, isEmptyObject, LocalStore, unique } from '@deriv/shared';
+import { getPathname, getPlatformInformation, isEmptyObject, LocalStore, unique, isTouchDevice } from '@deriv/shared';
 import { sortNotifications } from 'App/Components/Elements/NotificationMessage';
 import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
 import BaseStore from './base-store';
@@ -39,6 +39,7 @@ export default class UIStore extends BaseStore {
     @observable is_account_signup_modal_visible = false;
     @observable is_set_residence_modal_visible = false;
     @observable is_reset_password_modal_visible = false;
+    @observable is_account_transfer_limit_modal_visible = false;
     // @observable is_purchase_lock_on       = false;
 
     // SmartCharts Controls
@@ -52,7 +53,7 @@ export default class UIStore extends BaseStore {
 
     @observable screen_width = window.innerWidth;
     @observable screen_height = window.innerHeight;
-    @observable is_keyboard_active = false;
+    @observable is_onscreen_keyboard_active = false;
 
     @observable notifications = [];
     @observable notification_messages = [];
@@ -83,6 +84,9 @@ export default class UIStore extends BaseStore {
 
     // account types modal
     @observable is_account_types_modal_visible = false;
+
+    // Welcome modal
+    @observable is_welcome_modal_visible = false;
 
     // set currency modal
     @observable is_set_currency_modal_visible = false;
@@ -214,10 +218,6 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     handleResize() {
-        if (this.is_mobile) {
-            this.is_keyboard_active =
-                window.innerWidth === this.screen_width && this.screen_height > window.innerHeight;
-        }
         this.screen_width = window.innerWidth;
         this.screen_height = window.innerHeight;
     }
@@ -241,6 +241,21 @@ export default class UIStore extends BaseStore {
     @computed
     get is_account_switcher_disabled() {
         return !!this.account_switcher_disabled_message;
+    }
+
+    @action.bound
+    filterNotificationMessages() {
+        this.notifications = this.notification_messages.filter(notification => {
+            if (notification.platform === undefined || notification.platform.includes(getPathname())) {
+                return true;
+            } else if (!notification.platform.includes(getPathname())) {
+                if (notification.is_disposable) {
+                    this.removeNotificationMessage({ key: notification.key });
+                    this.removeNotificationByKey({ key: notification.key });
+                }
+            }
+            return false;
+        });
     }
 
     @action.bound
@@ -539,6 +554,11 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
+    toggleAccountTransferLimitModal(state_change = !this.is_account_transfer_limit_modal_visible) {
+        this.is_account_transfer_limit_modal_visible = state_change;
+    }
+
+    @action.bound
     toggleAccountSignupModal(state_change = !this.is_account_signup_modal_visible) {
         this.is_account_signup_modal_visible = state_change;
     }
@@ -604,8 +624,14 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
+    toggleOnScreenKeyboard() {
+        this.is_onscreen_keyboard_active = this.current_focus !== null && this.is_mobile && isTouchDevice();
+    }
+
+    @action.bound
     setCurrentFocus(value) {
         this.current_focus = value;
+        this.toggleOnScreenKeyboard();
     }
 
     @action.bound
@@ -645,6 +671,16 @@ export default class UIStore extends BaseStore {
     @action.bound
     toggleAccountTypesModal(is_visible = !this.is_account_types_modal_visible) {
         this.is_account_types_modal_visible = is_visible;
+    }
+
+    @action.bound
+    toggleWelcomeModal({ is_visible = !this.is_welcome_modal_visible, should_persist = false }) {
+        if (LocalStore.get('has_viewed_welcome_screen') && !should_persist) return;
+        this.is_welcome_modal_visible = is_visible;
+
+        if (!is_visible) {
+            LocalStore.set('has_viewed_welcome_screen', true);
+        }
     }
 
     @action.bound

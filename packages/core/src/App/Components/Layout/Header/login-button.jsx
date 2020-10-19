@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button } from '@deriv/components';
-import { redirectToLogin } from '_common/base/login';
-import { localize } from '@deriv/translations';
+import { redirectToLogin } from '@deriv/shared';
+import { getLanguage, localize } from '@deriv/translations';
 
 const LoginButton = ({ className }) => (
     <Button
@@ -10,7 +10,7 @@ const LoginButton = ({ className }) => (
         className={className}
         has_effect
         text={localize('Log in')}
-        onClick={redirectToLogin}
+        onClick={() => redirectToLogin(false, getLanguage())}
         tertiary
     />
 );

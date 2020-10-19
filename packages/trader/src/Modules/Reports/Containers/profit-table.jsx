@@ -4,7 +4,7 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { DesktopWrapper, MobileWrapper, DataList, DataTable } from '@deriv/components';
-import { extractInfoFromShortcode, isDesktop, urlFor, website_name } from '@deriv/shared';
+import { extractInfoFromShortcode, urlFor, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
 import CompositeCalendar from 'App/Components/Form/CompositeCalendar';
@@ -58,7 +58,7 @@ class ProfitTable extends React.Component {
                     <DataList.Cell
                         className='data-list__row-cell--amount'
                         row={row}
-                        column={this.columns_map.buy_price}
+                        column={this.columns_map.currency}
                     />
                 </div>
                 <div className='data-list__row'>
@@ -66,7 +66,7 @@ class ProfitTable extends React.Component {
                     <DataList.Cell
                         className='data-list__row-cell--amount'
                         row={row}
-                        column={this.columns_map.sell_price}
+                        column={this.columns_map.buy_price}
                     />
                 </div>
                 <div className='data-list__row'>
@@ -74,8 +74,11 @@ class ProfitTable extends React.Component {
                     <DataList.Cell
                         className='data-list__row-cell--amount'
                         row={row}
-                        column={this.columns_map.profit_loss}
+                        column={this.columns_map.sell_price}
                     />
+                </div>
+                <div className='data-list__row'>
+                    <DataList.Cell row={row} column={this.columns_map.profit_loss} />
                 </div>
             </>
         );
@@ -139,18 +142,7 @@ class ProfitTable extends React.Component {
 
         return (
             <React.Fragment>
-                <ReportsMeta
-                    {...(isDesktop()
-                        ? {
-                              i18n_heading: localize('Profit table'),
-                              i18n_message: localize(
-                                  'View all trades purchased on your account, and a summary of your total profit/loss.'
-                              ),
-                          }
-                        : {})}
-                    filter_component={filter_component}
-                    className='profit-table__filter'
-                />
+                <ReportsMeta filter_component={filter_component} className='profit-table__filter' />
                 {this.props.is_switching ? (
                     <PlaceholderComponent is_loading={true} />
                 ) : (
@@ -192,7 +184,7 @@ class ProfitTable extends React.Component {
                                         onScroll={handleScroll}
                                         footer={totals}
                                         custom_width={'100%'}
-                                        getRowSize={() => 204}
+                                        getRowSize={() => 234}
                                     >
                                         <PlaceholderComponent is_loading={is_loading} />
                                     </DataList>

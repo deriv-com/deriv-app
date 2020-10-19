@@ -1,5 +1,5 @@
 import debounce from 'lodash.debounce';
-import { action, computed, observable } from 'mobx';
+import { action, computed, observable, runInAction } from 'mobx';
 import { toMoment } from '@deriv/shared';
 import { WS } from 'Services/ws-methods';
 
@@ -15,17 +15,15 @@ export default class StatementStore extends BaseStore {
     @observable is_loading = false;
     @observable has_loaded_all = false;
     @observable date_from = null;
-    @observable date_to = toMoment()
-        .startOf('day')
-        .add(1, 'd')
-        .subtract(1, 's')
-        .unix();
+    @observable date_to = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
     @observable error = '';
     @observable filtered_date_range;
 
     // `client_loginid` is only used to detect if this is in sync with the client-store, don't rely on
     // this for calculations. Use the client.currency instead.
     @observable client_loginid = '';
+
+    @observable account_statistics = {};
 
     @computed
     get is_empty() {
@@ -47,21 +45,13 @@ export default class StatementStore extends BaseStore {
     @action.bound
     clearDateFilter() {
         this.date_from = null;
-        this.date_to = toMoment()
-            .startOf('day')
-            .add(1, 'd')
-            .subtract(1, 's')
-            .unix();
+        this.date_to = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
         this.partial_fetch_time = 0;
     }
 
     shouldFetchNextBatch(should_load_partially) {
         if (!should_load_partially && (this.has_loaded_all || this.is_loading)) return false;
-        const today = toMoment()
-            .startOf('day')
-            .add(1, 'd')
-            .subtract(1, 's')
-            .unix();
+        const today = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
         if (this.date_to < today) return !should_load_partially && this.partial_fetch_time;
         return true;
     }
@@ -130,10 +120,29 @@ export default class StatementStore extends BaseStore {
     }
 
     @action.bound
+    async loadAccountStatistics() {
+        this.account_statistics = {};
+        const { client } = this.root_store;
+        const is_mx_mlt = client.standpoint.iom || client.standpoint.malta;
+        if (is_mx_mlt) {
+            const response_account_statistics = await WS.accountStatistics();
+            runInAction(() => {
+                if (response_account_statistics.error) {
+                    this.account_statistics = {};
+                    return;
+                }
+
+                this.account_statistics = response_account_statistics.account_statistics;
+            });
+        }
+    }
+
+    @action.bound
     accountSwitcherListener() {
         return new Promise(resolve => {
             this.clearTable();
             this.clearDateFilter();
+            this.loadAccountStatistics();
             return resolve(this.fetchNextBatch());
         });
     }
@@ -156,6 +165,7 @@ export default class StatementStore extends BaseStore {
         this.onNetworkStatusChange(this.networkStatusChangeListener);
         await WS.wait('authorize');
         this.fetchNextBatch(true);
+        this.loadAccountStatistics();
     }
 
     @action.bound

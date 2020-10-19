@@ -7,7 +7,7 @@ import { config } from '../../constants/config';
  *     went wrong with deserialization.
  * @package
  */
-Blockly.Flyout.prototype.createBlock = function(event, original_block) {
+Blockly.Flyout.prototype.createBlock = function (event, original_block) {
     Blockly.Events.disable();
 
     const main_workspace = this.targetWorkspace_;
@@ -65,7 +65,7 @@ Blockly.Flyout.prototype.createBlock = function(event, original_block) {
  * @return {!Blockly.Block} The new block in the main workspace.
  * @private
  */
-Blockly.Flyout.prototype.placeNewBlock_ = function(event, old_block) {
+Blockly.Flyout.prototype.placeNewBlock_ = function (event, old_block) {
     const main_workspace = this.targetWorkspace_;
     const svg_root_old = old_block.getSvgRoot();
 

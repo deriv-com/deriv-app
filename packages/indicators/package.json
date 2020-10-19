@@ -1,0 +1,39 @@
+{
+    "name": "@deriv/indicators",
+    "version": "1.0.0",
+    "description": "Deriv Indicators",
+    "author": "Deriv",
+    "homepage": "https://github.com/binary-com/deriv-app#readme",
+    "license": "Apache-2.0",
+    "main": "src/index.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/binary-com/deriv-app.git"
+    },
+    "scripts": {
+        "start": "echo \"No start specified\"",
+        "serve": "echo \"No serve specified\"",
+        "build": "echo \"No build specified\"",
+        "build:travis": "echo \"No build:travis specified\"",
+        "precommit": "lint-staged",
+        "test": "jest --all",
+        "test:stylelint": "echo \"No test:stylelint specified\"",
+        "deploy": "echo \"No deploy specified\"",
+        "deploy:clean": "echo \"No deploy:clean specified\"",
+        "deploy:folder": "echo \"No deploy:folder specified\"",
+        "deploy:staging": "echo \"No deploy:staging specified\"",
+        "deploy:production": "echo \"No deploy:production specified\""
+    },
+    "bugs": {
+        "url": "https://github.com/binary-com/deriv-app/issues"
+    },
+    "devDependencies": {
+        "@babel/preset-env": "^7.11.5",
+        "babel-jest": "^26.3.0",
+        "jest": "^26.4.2",
+        "lint-staged": "^10.3.0"
+    },
+    "dependencies": {
+        "@deriv/shared": "^1.0.0"
+    }
+}

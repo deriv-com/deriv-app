@@ -482,10 +482,7 @@ const ContractType = (() => {
                 }
                 // Set the expiry_time to 5 minute less than start_time for forwading contracts when the expiry_time is null and the expiry_date is tomorrow.
                 if (end_time === '00:00' && start_moment.isBefore(end_moment, 'day')) {
-                    end_time = start_moment
-                        .clone()
-                        .subtract(5, 'minute')
-                        .format('HH:mm');
+                    end_time = start_moment.clone().subtract(5, 'minute').format('HH:mm');
                 }
             }
         }

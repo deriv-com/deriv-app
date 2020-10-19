@@ -15,6 +15,7 @@ import Orders from './orders/orders.jsx';
 import NicknameForm from './nickname/nickname-form.jsx';
 import Download from './verification/download.jsx';
 import Verification from './verification/verification.jsx';
+import MyProfile from './my-profile/my-profile.jsx';
 import './app.scss';
 
 const allowed_currency = 'USD';
@@ -42,9 +43,9 @@ const App = observer(props => {
         ServerTime.init(server_time);
 
         // force safari refresh on back/forward
-        window.onpageshow = function(event) {
+        window.onpageshow = function (event) {
             if (event.persisted) {
-                window.location.reload(true);
+                window.location.reload();
             }
         };
 
@@ -115,6 +116,7 @@ const App = observer(props => {
                 setOrderOffset: order_offset => {
                     general_store.setOrderOffset(order_offset);
                 },
+                setPoiStatus: general_store.setPoiStatus,
                 toggleNicknamePopup: general_store.toggleNicknamePopup,
                 updateP2pNotifications: general_store.updateP2pNotifications,
             }}
@@ -172,10 +174,14 @@ const App = observer(props => {
                                 <div label={localize('My ads')}>
                                     <MyAds navigate={general_store.redirectTo} params={general_store.parameters} />
                                 </div>
-                                {/* TODO [p2p-uncomment] uncomment this when profile is ready */}
-                                {/* <div label={localize('My profile')}>
-                                    <MyProfile navigate={general_store.redirectTo} params={general_store.parameters} />
-                                </div> */}
+                                {general_store.is_advertiser && (
+                                    <div label={localize('My profile')}>
+                                        <MyProfile
+                                            navigate={general_store.redirectTo}
+                                            params={general_store.parameters}
+                                        />
+                                    </div>
+                                )}
                             </Tabs>
                         )}
                     </>

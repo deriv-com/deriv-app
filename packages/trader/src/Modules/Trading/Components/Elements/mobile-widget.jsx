@@ -89,7 +89,7 @@ class MobileWidget extends React.Component {
                     <div className='mobile-widget' onClick={this.toggleWidget}>
                         <div className='mobile-widget__duration'>{this.getHumanReadableDuration()}</div>
                         <div className='mobile-widget__amount'>
-                            <Money amount={amount} currency={currency} />
+                            <Money amount={amount} currency={currency} show_currency />
                         </div>
                         <div className='mobile-widget__type'>{stakeOrPayout()}</div>
                     </div>

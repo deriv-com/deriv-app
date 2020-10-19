@@ -42,7 +42,7 @@ const RiskManagementInfo = ({
                     <div className='mobile-widget__item'>
                         <div className='mobile-widget__item-label'>{localize('Take profit')}</div>
                         <div className='mobile-widget__item-value'>
-                            <Money amount={take_profit} currency={currency} />
+                            <Money amount={take_profit} currency={currency} show_currency />
                         </div>
                     </div>
                 )}
@@ -50,7 +50,7 @@ const RiskManagementInfo = ({
                     <div className='mobile-widget__item'>
                         <div className='mobile-widget__item-label'>{localize('Stop loss')}</div>
                         <div className='mobile-widget__item-value'>
-                            <Money amount={stop_loss} currency={currency} />
+                            <Money amount={stop_loss} currency={currency} show_currency />
                         </div>
                     </div>
                 )}

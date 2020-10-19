@@ -3,13 +3,13 @@ import React from 'react';
 import { ThemedScrollbars } from '@deriv/components';
 import { init } from 'onfido-sdk-ui';
 import { isMobile } from '@deriv/shared';
-// TODO: [onfido translation] language when translations are ready
-// import { getLanguage } from '@deriv/translations';
+import { getLanguage } from '@deriv/translations';
 import UploadComplete from 'Components/poi-upload-complete';
 import Unsupported from 'Components/poi-unsupported';
 import Expired from 'Components/poi-expired';
 import OnfidoFailed from 'Components/poi-onfido-failed';
 import Verified from 'Components/poi-verified';
+import onfido_phrases from 'Constants/onfido-phrases';
 import { onfido_status_codes } from './proof-of-identity';
 
 const onfido_container_id = 'onfido';
@@ -35,10 +35,10 @@ export default class Onfido extends React.Component {
             const { documents_supported } = this.props;
             const onfido = await init({
                 containerId: onfido_container_id,
-                // TODO: [onfido translation] language when translations are ready
-                // language: {
-                //     locale: getLanguage().toLowerCase() || 'en',
-                // },
+                language: {
+                    locale: getLanguage().toLowerCase() || 'en',
+                    phrases: onfido_phrases,
+                },
                 token: this.props.onfido_service_token,
                 useModal: false,
                 onComplete: this.handleComplete,
@@ -47,9 +47,9 @@ export default class Onfido extends React.Component {
                         type: 'document',
                         options: {
                             documentTypes: {
-                                passport: documents_supported.some((doc) => /Passport/g.test(doc)),
-                                driving_licence: documents_supported.some((doc) => /Driving Licence/g.test(doc)),
-                                national_identity_card: documents_supported.some((doc) =>
+                                passport: documents_supported.some(doc => /Passport/g.test(doc)),
+                                driving_licence: documents_supported.some(doc => /Driving Licence/g.test(doc)),
+                                national_identity_card: documents_supported.some(doc =>
                                     /National Identity Card/g.test(doc)
                                 ),
                             },

@@ -11,16 +11,11 @@
     }
     & .dc-tabs {
         position: static;
+
         &--p2p-cashier {
             & .dc-tabs__list {
                 &--header-fit-content {
-                    border-bottom: none;
                     margin-bottom: 2.4rem;
-                }
-            }
-            & .dc-tabs__item {
-                &--header-fit-content {
-                    border-bottom: 1px solid var(--general-section-1);
                 }
             }
         }
@@ -94,7 +89,6 @@
 
 .dc-modal__container_p2p-nickname {
     &__dialog {
-        width: auto;
         height: auto;
         padding: 0;
         max-height: initial;

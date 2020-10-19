@@ -18,8 +18,6 @@ import { WS } from 'Services';
 import OnRampStore from './on-ramp-store';
 import BaseStore from '../../base-store';
 
-const bank_default_option = [{ text: localize('All payment agents'), value: 0 }];
-
 const hasTransferNotAllowedLoginid = loginid => loginid.startsWith('MX');
 
 const getSelectedError = (selected_value, is_from_account) => {
@@ -79,8 +77,8 @@ class ConfigPaymentAgent {
     @observable is_withdraw_successful = false;
     @observable confirm = {};
     @observable receipt = {};
-    @observable selected_bank = bank_default_option[0].value;
-    @observable supported_banks = bank_default_option;
+    @observable selected_bank = 0;
+    @observable supported_banks = [];
     @observable verification = new ConfigVerification();
 }
 
@@ -179,6 +177,11 @@ export default class CashierStore extends BaseStore {
         return this.config.payment_agent_transfer.is_payment_agent;
     }
 
+    @computed
+    get is_p2p_enabled() {
+        return this.is_p2p_visible && !this.root_store.client.is_eu;
+    }
+
     @action.bound
     setAccountSwitchListener() {
         // cashier inits once and tries to stay active until switching account
@@ -225,10 +228,13 @@ export default class CashierStore extends BaseStore {
             if (!this.is_p2p_visible && !this.root_store.client.is_virtual) {
                 const advertiser_info = await WS.authorized.p2pAdvertiserInfo();
                 const advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
-                if (advertiser_error === 'PermissionDenied') this.setIsP2pVisible(true);
+                if (advertiser_error === 'RestrictedCountry') {
+                    this.setIsP2pVisible(false);
+                } else {
+                    this.setIsP2pVisible(true);
+                }
 
                 this.is_p2p_advertiser = !advertiser_error;
-                this.setIsP2pVisible(true);
             }
         }
     }
@@ -384,7 +390,7 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async checkIframeLoaded() {
         this.removeOnIframeLoaded();
-        this.config[this.active_container].onIframeLoaded = function(e) {
+        this.config[this.active_container].onIframeLoaded = function (e) {
             if (/cashier|doughflow/.test(e.origin)) {
                 this.setLoading(false);
                 // set the height of the container after content loads so that the
@@ -658,7 +664,7 @@ export default class CashierStore extends BaseStore {
     sortSupportedBanks() {
         // sort supported banks alphabetically by value, the option 'All payment agents' with value 0 should be on top
         this.config.payment_agent.supported_banks.replace(
-            this.config.payment_agent.supported_banks.slice().sort(function(a, b) {
+            this.config.payment_agent.supported_banks.slice().sort(function (a, b) {
                 if (a.value < b.value) {
                     return -1;
                 }
@@ -702,10 +708,7 @@ export default class CashierStore extends BaseStore {
             this.config.payment_agent.list.forEach(payment_agent => {
                 if (
                     payment_agent.supported_banks &&
-                    payment_agent.supported_banks
-                        .toLowerCase()
-                        .split(',')
-                        .indexOf(bank) !== -1
+                    payment_agent.supported_banks.toLowerCase().split(',').indexOf(bank) !== -1
                 ) {
                     this.config.payment_agent.filtered_list.push(payment_agent);
                 }
@@ -983,10 +986,10 @@ export default class CashierStore extends BaseStore {
         // we need .toFixed() so that it doesn't display in scientific notation, e.g. 1e-8 for currencies with 8 decimal places
         this.config.account_transfer.transfer_limit = {
             max:
-                !transfer_limit.max || (+balance >= (transfer_limit.min || 0) && +balance <= transfer_limit.max)
+                !transfer_limit?.max || (+balance >= (transfer_limit?.min || 0) && +balance <= transfer_limit?.max)
                     ? balance
-                    : transfer_limit.max.toFixed(decimal_places),
-            min: transfer_limit.min ? (+transfer_limit.min).toFixed(decimal_places) : null,
+                    : transfer_limit?.max.toFixed(decimal_places),
+            min: transfer_limit?.min ? (+transfer_limit?.min).toFixed(decimal_places) : null,
         };
     }
 
@@ -1033,7 +1036,9 @@ export default class CashierStore extends BaseStore {
             const obj_values = {
                 text: account.mt5_group
                     ? `${localize('DMT5')} ${getMT5AccountDisplay(account.mt5_group)}`
-                    : getCurrencyDisplayCode(account.currency.toUpperCase()),
+                    : getCurrencyDisplayCode(
+                          account.currency !== 'eUSDT' ? account.currency.toUpperCase() : account.currency
+                      ),
                 value: account.loginid,
                 balance: account.balance,
                 currency: account.currency,

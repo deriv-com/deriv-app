@@ -4,6 +4,8 @@ import { Button, Modal } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
+import 'Sass/set-currency-modal.scss';
+
 const SetAccountCurrencyModal = ({ is_visible, is_virtual, setCurrency, toggleModal }) => (
     <Modal
         id='dt_set_account_currency_modal'
@@ -26,7 +28,7 @@ const SetAccountCurrencyModal = ({ is_visible, is_virtual, setCurrency, toggleMo
                         onClick={() => {
                             toggleModal();
                             // timeout is to ensure no jumpy animation when modals are overlapping enter/exit transitions
-                            setTimeout(function() {
+                            setTimeout(function () {
                                 setCurrency();
                             }, 250);
                         }}

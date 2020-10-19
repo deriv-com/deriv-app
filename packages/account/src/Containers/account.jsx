@@ -59,15 +59,15 @@ class Account extends React.Component {
         const { is_loading, allow_document_upload } = this.state;
         const { needs_financial_assessment } = this.props;
 
-        const subroutes = flatten(this.props.routes.map((i) => i.subroutes));
+        const subroutes = flatten(this.props.routes.map(i => i.subroutes));
         let list_groups = [...this.props.routes];
 
-        list_groups = list_groups.map((route_group) => ({
+        list_groups = list_groups.map(route_group => ({
             icon: route_group.icon,
-            label: route_group.title,
-            subitems: route_group.subroutes.map((sub) => subroutes.indexOf(sub)),
+            label: route_group.getTitle(),
+            subitems: route_group.subroutes.map(sub => subroutes.indexOf(sub)),
         }));
-        let selected_content = subroutes.filter((route) => route.path === this.props.location.pathname)[0];
+        let selected_content = subroutes.filter(route => route.path === this.props.location.pathname)[0];
         if (!selected_content) {
             // fallback
             selected_content = subroutes[0];
@@ -81,8 +81,8 @@ class Account extends React.Component {
         )
             return <Redirect to='/' />;
         // TODO: modify account route to support disabled
-        this.props.routes.forEach((menu_item) => {
-            menu_item.subroutes.forEach((route) => {
+        this.props.routes.forEach(menu_item => {
+            menu_item.subroutes.forEach(route => {
                 if (route.path === routes.financial_assessment) {
                     route.is_disabled = !needs_financial_assessment;
                 }
@@ -119,7 +119,7 @@ class Account extends React.Component {
             >
                 <div className='account'>
                     <PageOverlay
-                        header={isMobile() ? selected_route.title : localize('Settings')}
+                        header={isMobile() ? selected_route.getTitle() : localize('Settings')}
                         onClickClose={this.onClickClose}
                     >
                         <DesktopWrapper>

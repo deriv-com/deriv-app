@@ -32,11 +32,15 @@ export default class PortfolioStore extends BaseStore {
 
     @action.bound
     initializePortfolio = async () => {
+        if (this.is_subscribed_to_poc) {
+            this.clearTable();
+        }
         this.is_loading = true;
         await WS.wait('authorize');
         WS.portfolio().then(this.portfolioHandler);
         WS.subscribeProposalOpenContract(null, this.proposalOpenContractQueueHandler);
         WS.subscribeTransaction(this.transactionHandler);
+        this.is_subscribed_to_poc = true;
     };
 
     @action.bound
@@ -47,6 +51,7 @@ export default class PortfolioStore extends BaseStore {
         this.error = '';
         this.updatePositions();
         WS.forgetAll('proposal_open_contract', 'transaction');
+        this.is_subscribed_to_poc = false;
     }
 
     @action.bound
@@ -102,6 +107,15 @@ export default class PortfolioStore extends BaseStore {
                 return;
             }
             this.positions[i].is_loading = true;
+
+            // Sometimes when we sell a contract, we don't get `proposal_open_contract` message with exit information and status as `sold`.
+            // This is to make sure that we get `proposal_open_contract` message with exit information and status as `sold`.
+            const subscriber = WS.subscribeProposalOpenContract(contract_id, poc => {
+                this.updateContractTradeStore(poc);
+                this.updateContractReplayStore(poc);
+                this.populateResultDetails(poc);
+                subscriber.unsubscribe();
+            });
         }
     }
 
@@ -208,6 +222,8 @@ export default class PortfolioStore extends BaseStore {
     @action.bound
     onClickCancel(contract_id) {
         const i = this.getPositionIndexById(contract_id);
+        if (this.positions[i].is_sell_requested) return;
+
         this.positions[i].is_sell_requested = true;
         if (contract_id) {
             WS.cancelContract(contract_id).then(response => {
@@ -226,6 +242,8 @@ export default class PortfolioStore extends BaseStore {
     @action.bound
     onClickSell(contract_id) {
         const i = this.getPositionIndexById(contract_id);
+        if (this.positions[i].is_sell_requested) return;
+
         const { bid_price } = this.positions[i].contract_info;
         this.positions[i].is_sell_requested = true;
         if (contract_id && typeof bid_price === 'number') {
@@ -248,8 +266,6 @@ export default class PortfolioStore extends BaseStore {
                 });
             }
         } else if (!response.error && response.sell) {
-            const i = this.getPositionIndexById(response.sell.contract_id);
-            this.positions[i].is_sell_requested = false;
             // update contract store sell info after sell
             this.root_store.modules.contract_trade.sell_info = {
                 sell_price: response.sell.sold_for,
@@ -322,11 +338,9 @@ export default class PortfolioStore extends BaseStore {
         this.root_store.modules.contract_trade.removeContract({ contract_id });
     }
 
-    @action.bound
-    accountSwitcherListener() {
-        return new Promise(async resolve => {
-            return resolve(this.initializePortfolio());
-        });
+    async accountSwitcherListener() {
+        await this.initializePortfolio();
+        return Promise.resolve();
     }
 
     @action.bound

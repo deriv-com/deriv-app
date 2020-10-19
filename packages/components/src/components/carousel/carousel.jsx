@@ -43,9 +43,7 @@ const Carousel = ({
         }
     };
 
-    if (autoplay_time) {
-        useInterval(handleNextClick, autoplay_time);
-    }
+    useInterval(handleNextClick, autoplay_time);
 
     React.useEffect(() => {
         if (typeof onItemSelect === 'function') onItemSelect(active_index, list);
@@ -126,6 +124,7 @@ Carousel.defaultProps = {
     bullet_position: 'bottom',
     show_bullet: true,
     show_nav: true,
+    autoplay_time: null,
     width: 400,
 };
 Carousel.propTypes = {

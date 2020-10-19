@@ -112,7 +112,7 @@ Blockly.FieldDropdown.prototype.init = function() {
 };
 
 /**
- * This one is hooked to prevent the dropddown field background color from changing on item select
+ * This one is hooked to prevent the dropdown field background color from changing on item select
  */
 Blockly.FieldDropdown.prototype.onHide = function() {
     this.dropDownOpen_ = false;

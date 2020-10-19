@@ -64,7 +64,6 @@ class ResultOverlay extends React.PureComponent {
                             'dc-result__positions-overlay': is_positions,
                             'dc-contract-card__result--won': is_contract_won,
                             'dc-contract-card__result--lost': !is_contract_won,
-                            'dc-contract-card__result--lg': is_multiplier,
                         })}
                     >
                         {is_positions && (

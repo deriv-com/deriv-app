@@ -12,7 +12,6 @@ export default class OnRampStore extends BaseStore {
     @observable is_deposit_address_popover_open = false;
     @observable is_onramp_modal_open = false;
     @observable is_requesting_widget_html = false;
-    @observable is_widget_html_loading = false;
     @observable onramp_providers = [];
     @observable selected_provider = null;
     @observable should_show_widget = false;
@@ -270,11 +269,6 @@ export default class OnRampStore extends BaseStore {
     @action.bound
     setIsRequestingWidgetHtml(is_requesting_widget_html) {
         this.is_requesting_widget_html = is_requesting_widget_html;
-    }
-
-    @action.bound
-    setIsWidgetHtmlLoading(is_widget_html_loading) {
-        this.is_widget_html_loading = is_widget_html_loading;
     }
 
     @action.bound

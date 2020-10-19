@@ -20,7 +20,7 @@ const PaymentAgentTransferConfirm = ({
         data={[
             { label: localize('Transfer from'), value: loginid },
             { label: localize('Transfer to'), value: [transfer_to, transfer_to_name] },
-            { label: localize('Amount'), value: <Money currency={currency} amount={amount} /> },
+            { label: localize('Amount'), value: <Money currency={currency} amount={amount} show_currency /> },
             { label: localize('Description'), value: description },
         ]}
         error_message={error_message}

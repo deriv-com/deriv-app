@@ -21,9 +21,7 @@ const ResetPasswordIntent = ({ current_list, children, ...props }) => {
         login = current_list[`${group}.${type}`].login;
         title = getMtCompanies()[group][type].title;
     } else if (current_list) {
-        [group, type] = Object.keys(current_list)
-            .pop()
-            .split('.');
+        [group, type] = Object.keys(current_list).pop().split('.');
         login = current_list[`${group}.${type}`].login;
         title = getMtCompanies()[group][type].title;
     } else {

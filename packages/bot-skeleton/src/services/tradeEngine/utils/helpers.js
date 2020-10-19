@@ -148,9 +148,7 @@ export const doUntilDone = (promiseFn, errors_to_ignore) => {
         };
 
         const repeatFn = () => {
-            recoverFromError(promiseFn, recoverFn, errors_to_ignore, delay_index)
-                .then(resolve)
-                .catch(reject);
+            recoverFromError(promiseFn, recoverFn, errors_to_ignore, delay_index).then(resolve).catch(reject);
         };
 
         repeatFn();

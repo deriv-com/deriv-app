@@ -16,6 +16,12 @@ const ButtonTextWrapper = ({ should_fade, is_loading, type, is_high_low }) => {
     );
 };
 
+const IconComponentWrapper = ({ type }) => (
+    <div className='btn-purchase__icon_wrapper'>
+        <IconTradeTypes type={type} className='btn-purchase__icon' color='active' />
+    </div>
+);
+
 const PurchaseButton = ({
     buy_info,
     basis, // mobile-only
@@ -40,12 +46,6 @@ const PurchaseButton = ({
     const { has_increased } = info;
     const is_button_disabled = (is_disabled && !is_loading) || is_proposal_empty;
 
-    const IconComponentWrapper = () => (
-        <div className='btn-purchase__icon_wrapper'>
-            <IconTradeTypes type={getIconType()} className='btn-purchase__icon' color='active' />
-        </div>
-    );
-
     return (
         <button
             disabled={is_disabled}
@@ -67,7 +67,7 @@ const PurchaseButton = ({
             <DesktopWrapper>
                 <div className='btn-purchase__info btn-purchase__info--left'>
                     <div className='btn-purchase__type-wrapper'>
-                        <IconComponentWrapper />
+                        <IconComponentWrapper type={getIconType()} />
                         <ButtonTextWrapper
                             should_fade={should_fade}
                             is_loading={is_loading}
@@ -94,7 +94,7 @@ const PurchaseButton = ({
             </DesktopWrapper>
             <MobileWrapper>
                 <div className='btn-purchase__top'>
-                    <IconComponentWrapper />
+                    <IconComponentWrapper type={getIconType()} />
                     <ButtonTextWrapper
                         should_fade={should_fade}
                         is_loading={is_loading}

@@ -11,8 +11,11 @@ const ContractTypeDialog = ({
     is_open,
     item,
     list,
+    selected,
+    categories,
     onBackButtonClick,
     onChangeInput,
+    onCategoryClick,
 }) => (
     <React.Fragment>
         <MobileWrapper>
@@ -34,8 +37,11 @@ const ContractTypeDialog = ({
                 is_open={is_open}
                 item={item}
                 list={list}
+                selected={selected}
+                categories={categories}
                 onBackButtonClick={onBackButtonClick}
                 onChangeInput={onChangeInput}
+                onCategoryClick={onCategoryClick}
             >
                 {children}
             </ContractTypeMenu>

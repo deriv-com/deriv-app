@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik, Form } from 'formik';
 import { Button, DesktopWrapper, Input } from '@deriv/components';
-import { getDecimalPlaces, validNumber } from '@deriv/shared';
+import { getDecimalPlaces, validNumber, getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import FormError from '../Error/form-error.jsx';
@@ -116,7 +116,9 @@ class PaymentAgentTransferForm extends React.Component {
                                                     'symbols',
                                                     `symbols--${(this.props.currency || '').toLowerCase()}`
                                                 )}
-                                            />
+                                            >
+                                                {getCurrencyDisplayCode(this.props.currency)}
+                                            </span>
                                         }
                                         autoComplete='off'
                                         maxLength='30'

@@ -25,11 +25,9 @@
             margin-right: 0.8rem;
             width: 3.2rem;
         }
-
         &-details {
             display: flex;
         }
-
         &-name {
             align-self: center;
             color: var(--text-prominent);
@@ -38,7 +36,6 @@
             height: fit-content;
             width: fit-content;
         }
-
         &-verification {
             align-items: center;
             color: var(--text-less-prominent);
@@ -48,7 +45,6 @@
             &-status {
                 margin-left: 1.6rem;
             }
-
             &-icon {
                 margin-left: 0.4rem;
                 vertical-align: bottom;
@@ -74,13 +70,11 @@
                 font-size: var(--text-size-xs);
                 line-height: 20px;
             }
-
             &-info {
                 font-size: var(--text-size-s);
                 font-weight: bold;
                 line-height: 24px;
             }
-
             &-separator {
                 border-right: 1px solid var(--general-section-1);
             }
@@ -118,7 +112,6 @@
             .dc-input__hint {
                 top: 9.7rem;
             }
-
             .dc-input__counter {
                 right: 0rem;
                 top: 9.6rem;
@@ -129,7 +122,6 @@
         border-top: 2px solid var(--general-section-1);
         bottom: 36px;
         left: unset;
-        padding-right: 2.4rem;
         position: fixed;
         width: 657px;
 

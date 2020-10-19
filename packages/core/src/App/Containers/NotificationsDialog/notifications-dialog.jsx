@@ -2,12 +2,11 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { Button, DesktopWrapper, Icon, MobileDialog, MobileWrapper, ThemedScrollbars } from '@deriv/components';
+import { Button, DesktopWrapper, Icon, MobileDialog, MobileWrapper, ThemedScrollbars, Text } from '@deriv/components';
 import { BinaryLink } from 'App/Components/Routes';
 import { connect } from 'Stores/connect';
 import { localize } from '@deriv/translations';
 import { toTitleCase, isEmptyObject } from '@deriv/shared';
-
 import { EmptyNotification } from 'App/Components/Elements/Notifications/empty-notification.jsx';
 
 class NotificationsDialog extends React.Component {

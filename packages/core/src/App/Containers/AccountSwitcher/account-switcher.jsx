@@ -11,6 +11,7 @@ import {
     Money,
     Tabs,
     ThemedScrollbars,
+    Text,
 } from '@deriv/components';
 import { urlFor, routes, isCryptocurrency, formatMoney, getMT5Account } from '@deriv/shared';
 
@@ -571,7 +572,7 @@ class AccountSwitcher extends React.Component {
                     <span>
                         <Localize i18n_default_text='Total assets' />
                     </span>
-                    <span className='acc-switcher__balance'>
+                    <Text size='xs' color='prominent'>
                         <Money
                             currency={this.is_real_account_tab ? this.props.obj_total_balance.currency : 'USD'}
                             amount={formatMoney(
@@ -582,7 +583,19 @@ class AccountSwitcher extends React.Component {
                             show_currency
                             should_format={false}
                         />
-                    </span>
+                    </Text>
+                    {/* <span className='acc-switcher__balance'>
+                        <Money
+                            currency={this.is_real_account_tab ? this.props.obj_total_balance.currency : 'USD'}
+                            amount={formatMoney(
+                                this.is_real_account_tab ? this.props.obj_total_balance.currency : 'USD',
+                                this.is_real_account_tab ? this.total_real_assets : this.total_demo_assets,
+                                true
+                            )}
+                            show_currency
+                            should_format={false}
+                        />
+                    </span> */}
                 </div>
                 <div className='acc-switcher__total-subtitle'>
                     <span>{total_assets_message}</span>

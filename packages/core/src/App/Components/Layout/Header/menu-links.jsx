@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { BinaryLink } from '../../Routes';
 import { Text } from '@deriv/components';
+import { BinaryLink } from '../../Routes';
 
 const MenuLinks = ({ is_logged_in, items }) => (
     <React.Fragment>

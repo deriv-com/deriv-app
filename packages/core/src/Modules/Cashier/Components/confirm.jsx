@@ -21,7 +21,7 @@ const Row = ({ label, value }) => (
     </div>
 );
 
-const Confirm = ({ data, error_message, header, onClickBack, onClickConfirm }) => (
+const Confirm = ({ data, error, header, onClickBack, onClickConfirm }) => (
     <div className='cashier__wrapper'>
         <Icon icon='IcConfirmDetails' width='128' height='128' />
         <h2 className='cashier__header cashier__confirm-header'>{header}</h2>
@@ -36,7 +36,7 @@ const Confirm = ({ data, error_message, header, onClickBack, onClickConfirm }) =
             <Button large text={localize('Back')} onClick={onClickBack} secondary />
             <Button large text={localize('Confirm')} onClick={onClickConfirm} primary />
         </div>
-        <FormError error_message={error_message} />
+        <FormError error={error} />
     </div>
 );
 
@@ -47,6 +47,7 @@ Confirm.propTypes = {
             value: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string), PropTypes.node]),
         })
     ),
+    error: PropTypes.object,
     header: PropTypes.string,
     onClickBack: PropTypes.func,
     onClickConfirm: PropTypes.func,

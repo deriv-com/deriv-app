@@ -388,10 +388,7 @@ const AccountTransferForm = ({
                                             minimum_fee={minimum_fee}
                                         />
                                     </MobileWrapper>
-                                    {/* Fiat2CryptoTransferOverLimit error code is handled by AccountTransferLimit component to show custom header & CTA */}
-                                    {error && error.code !== 'Fiat2CryptoTransferOverLimit' && (
-                                        <FormError error_message={error.message} />
-                                    )}
+                                    <FormError error={error} />
                                 </Form>
                             )}
                         </React.Fragment>

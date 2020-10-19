@@ -155,7 +155,7 @@ class PaymentAgentTransferForm extends React.Component {
                                     <Localize i18n_default_text='Transfer' />
                                 </Button>
                             </div>
-                            <FormError error_message={this.props.error_message} />
+                            <FormError error={this.props.error} />
                         </Form>
                     )}
                 </Formik>
@@ -181,7 +181,7 @@ export default connect(({ client, modules }) => ({
     currency: client.currency,
     amount: modules.cashier.config.payment_agent_transfer.confirm.amount,
     description: modules.cashier.config.payment_agent_transfer.confirm.description,
-    error_message: modules.cashier.config.payment_agent_transfer.error.message,
+    error: modules.cashier.config.payment_agent_transfer.error,
     requestTryPaymentAgentTransfer: modules.cashier.requestTryPaymentAgentTransfer,
     setErrorMessage: modules.cashier.setErrorMessage,
     transfer_limit: modules.cashier.config.payment_agent_transfer.transfer_limit,

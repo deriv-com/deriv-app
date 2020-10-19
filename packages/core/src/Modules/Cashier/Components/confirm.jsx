@@ -19,7 +19,7 @@ const Row = ({ key, label, value }) => (
         ) : (
             <strong
                 className={classNames({
-                    desc: key === 'description',
+                    description: key === 'description',
                 })}
             >
                 {value}

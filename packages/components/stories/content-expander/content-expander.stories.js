@@ -37,9 +37,9 @@ const dummy_text = (
 
 storiesOf('ContentExpander', module)
     .add(
-        'Header is string',
+        'Title is string',
         () => (
-            <ContentExpander is_visible={true} header={dummy_string_title}>
+            <ContentExpander is_visible={true} title={dummy_string_title}>
                 {dummy_text}
             </ContentExpander>
         ),
@@ -48,9 +48,9 @@ storiesOf('ContentExpander', module)
         }
     )
     .add(
-        'Header is string, title is spaced',
+        'Title is string, title is spaced',
         () => (
-            <ContentExpander is_visible={true} header={dummy_string_title} is_title_spaced>
+            <ContentExpander is_visible={true} title={dummy_string_title} is_title_spaced>
                 {dummy_text}
             </ContentExpander>
         ),
@@ -59,9 +59,9 @@ storiesOf('ContentExpander', module)
         }
     )
     .add(
-        'Header is string, title is red',
+        'Title is string, title is red',
         () => (
-            <ContentExpander is_visible={true} header={dummy_string_title} title_color='loss-danger'>
+            <ContentExpander is_visible={true} title={dummy_string_title} title_color='loss-danger'>
                 {dummy_text}
             </ContentExpander>
         ),
@@ -70,9 +70,9 @@ storiesOf('ContentExpander', module)
         }
     )
     .add(
-        'Header is string, arrow is inverted',
+        'Title is string, arrow is inverted',
         () => (
-            <ContentExpander is_visible={true} header={dummy_string_title} is_arrow_inverted>
+            <ContentExpander is_visible={true} title={dummy_string_title} is_arrow_inverted>
                 {dummy_text}
             </ContentExpander>
         ),
@@ -81,9 +81,9 @@ storiesOf('ContentExpander', module)
         }
     )
     .add(
-        'Header is element',
+        'Title is element',
         () => (
-            <ContentExpander is_visible={true} header={dummy_el_title}>
+            <ContentExpander is_visible={true} title={dummy_el_title}>
                 {dummy_text}
             </ContentExpander>
         ),
@@ -92,9 +92,9 @@ storiesOf('ContentExpander', module)
         }
     )
     .add(
-        'Header is element, arrow is inverted',
+        'Title is element, arrow is inverted',
         () => (
-            <ContentExpander is_visible={true} header={dummy_el_title} is_arrow_inverted>
+            <ContentExpander is_visible={true} title={dummy_el_title} is_arrow_inverted>
                 {dummy_text}
             </ContentExpander>
         ),

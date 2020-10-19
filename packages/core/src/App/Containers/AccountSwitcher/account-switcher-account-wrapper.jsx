@@ -5,7 +5,7 @@ import { ContentExpander } from '@deriv/components';
 const AccountWrapper = ({ children, header, is_visible, toggleVisibility }) => (
     <ContentExpander
         className='acc-switcher'
-        header={header}
+        title={header}
         is_expanded={is_visible}
         onToggle={toggleVisibility}
         is_title_spaced

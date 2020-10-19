@@ -79,17 +79,6 @@
         padding: 0.5em;
         pointer-events: none;
     }
-    &__select-arrow {
-        pointer-events: none;
-        transform: rotate(0);
-        transform-origin: 50% 45%;
-        transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
-        @extend %inline-icon;
-
-        &--invert {
-            transform: rotate(180deg);
-        }
-    }
     @include desktop {
         &:hover:not(.show):not(&--is-disabled) {
             background: var(--state-hover);
@@ -214,12 +203,6 @@
         height: 100%;
         background: var(--general-main-2);
 
-        &-title {
-            @include typeface(--title-left-bold-black);
-            display: block;
-            color: var(--text-prominent);
-            flex: 1;
-        }
         &-wrapper {
             padding: 0.4rem 0.8rem 0;
         }

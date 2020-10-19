@@ -2,12 +2,26 @@
     cursor: pointer;
     display: flex;
     align-items: center;
-    margin: 0 0.8rem;
+    padding: 0 0.8rem;
     height: 4rem;
     position: relative;
 
-    &__header {
+    &__content {
+        transition: opacity 0.25s linear;
+
+        &--enter {
+            opacity: 0;
+        }
+        &--enter-done {
+            opacity: 1;
+        }
+        &--exit {
+            opacity: 0;
+        }
+    }
+    &__title {
         display: block;
+        padding-right: 0.8rem;
 
         &--spaced {
             flex: 1;
@@ -32,5 +46,11 @@
         &--invert {
             transform: rotate(180deg);
         }
+    }
+    &__wrapper {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
     }
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import {
     Button,
+    ContentExpander,
     Popover,
     Modal,
     DesktopWrapper,
@@ -245,8 +246,6 @@ const ModalContent = ({ is_eu, landing_companies, is_eu_country, is_logged_in })
 };
 
 const CompareAccountsModal = ({
-    disableApp,
-    enableApp,
     is_compare_accounts_visible,
     landing_companies,
     is_loading,
@@ -255,37 +254,36 @@ const CompareAccountsModal = ({
     is_eu_country,
     toggleCompareAccounts,
 }) => (
-    <div className='mt5-compare-accounts-modal__wrapper'>
-        <Button
-            className='mt5-dashboard__welcome-message--button'
-            has_effect
-            text={localize('Compare accounts')}
-            onClick={toggleCompareAccounts}
-            secondary
-            disabled={is_loading}
-        />
-        <React.Suspense fallback={<UILoader />}>
-            <DesktopWrapper>
-                <Modal
-                    className='mt5-dashboard__compare-accounts'
-                    disableApp={disableApp}
-                    enableApp={enableApp}
-                    is_open={is_compare_accounts_visible}
-                    title={localize('Compare accounts')}
-                    toggleModal={toggleCompareAccounts}
-                    type='button'
-                    height='696px'
-                    width='903px'
-                >
+    <div className='mt5-compare-accounts-content__wrapper'>
+        <DesktopWrapper>
+            <ContentExpander
+                className='mt5-compare-accounts__expander'
+                title={localize('Account Comparison')}
+                title_style={{ color: 'loss-danger', weight: 'n' }}
+                arrow_style={{ color: 'red', size: '24' }}
+                wrapper_className='mt5-compare-accounts__expander-wrapper'
+                has_fade_in
+            >
+                <React.Suspense fallback={<UILoader />}>
                     <ModalContent
                         is_logged_in={is_logged_in}
                         is_eu={is_eu}
                         is_eu_country={is_eu_country}
                         landing_companies={landing_companies}
                     />
-                </Modal>
-            </DesktopWrapper>
-            <MobileWrapper>
+                </React.Suspense>
+            </ContentExpander>
+        </DesktopWrapper>
+        <MobileWrapper>
+            <Button
+                className='mt5-dashboard__welcome-message--button'
+                has_effect
+                text={localize('Compare accounts')}
+                onClick={toggleCompareAccounts}
+                secondary
+                disabled={is_loading}
+            />
+            <React.Suspense fallback={<UILoader />}>
                 <MobileDialog
                     portal_element_id='deriv_app'
                     title={localize('Compare accounts')}
@@ -301,14 +299,12 @@ const CompareAccountsModal = ({
                         landing_companies={landing_companies}
                     />
                 </MobileDialog>
-            </MobileWrapper>
-        </React.Suspense>
+            </React.Suspense>
+        </MobileWrapper>
     </div>
 );
 
-export default connect(({ modules, ui, client }) => ({
-    disableApp: ui.disableApp,
-    enableApp: ui.enableApp,
+export default connect(({ modules, client }) => ({
     is_compare_accounts_visible: modules.mt5.is_compare_accounts_visible,
     is_loading: client.is_populating_mt5_account_list,
     is_eu: client.is_eu,

@@ -1,18 +1,22 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { CSSTransition } from 'react-transition-group';
 import Icon from '../icon/icon.jsx';
 import Text from '../text/text.jsx';
 
 const ContentExpander = ({
+    arrow_style,
     children,
     className,
-    header,
-    header_className,
+    has_fade_in,
     is_arrow_inverted,
-    is_title_spaced,
-    title_color,
     is_expanded,
+    is_title_spaced,
+    title,
+    title_style,
+    title_className,
+    wrapper_className,
     onToggle,
 }) => {
     const [is_visible, toggleVisibility] = React.useState(is_expanded);
@@ -25,7 +29,7 @@ const ContentExpander = ({
     }, [is_visible, onToggle, toggleVisibility]);
 
     return (
-        <React.Fragment>
+        <div className={classNames('dc-content-expander__wrapper', wrapper_className)}>
             <div
                 className={classNames(
                     'dc-content-expander',
@@ -36,19 +40,24 @@ const ContentExpander = ({
             >
                 <div
                     className={classNames(
-                        'dc-content-expander__header',
+                        'dc-content-expander__title',
                         {
-                            'dc-content-expander__header--spaced': is_title_spaced,
+                            'dc-content-expander__title--spaced': is_title_spaced,
                         },
-                        header_className
+                        title_className
                     )}
                 >
-                    {typeof header === 'string' ? (
-                        <Text size='s' color={title_color || 'prominent'} weight='b'>
-                            {header}
+                    {typeof title === 'string' ? (
+                        <Text
+                            size={title_style?.size || 's'}
+                            weight={title_style?.weight || 'b'}
+                            color={title_style?.color || 'prominent'}
+                            {...title_style}
+                        >
+                            {title}
                         </Text>
                     ) : (
-                        header
+                        title
                     )}
                 </div>
                 <Icon
@@ -56,21 +65,40 @@ const ContentExpander = ({
                     className={classNames('dc-content-expander__select-arrow', {
                         'dc-content-expander__select-arrow--invert': is_arrow_inverted,
                     })}
+                    {...arrow_style}
                 />
             </div>
-            {is_visible && <React.Fragment>{children}</React.Fragment>}
-        </React.Fragment>
+            {has_fade_in ? (
+                <CSSTransition
+                    in={is_visible}
+                    timeout={250}
+                    classNames={{
+                        enter: 'dc-content-expander__content--enter',
+                        enterDone: 'dc-content-expander__content--enter-done',
+                        exit: 'dc-content-expander__content--exit',
+                    }}
+                    unmountOnExit
+                >
+                    <div className='dc-content-expander__content'>{children}</div>
+                </CSSTransition>
+            ) : (
+                is_visible && <div className='dc-content-expander__content'>{children}</div>
+            )}
+        </div>
     );
 };
 
 ContentExpander.propTypes = {
+    arrow_style: PropTypes.object,
     children: PropTypes.node,
     className: PropTypes.string,
-    header: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    header_className: PropTypes.string,
-    is_visible: PropTypes.bool,
+    has_fade_in: PropTypes.bool,
     is_title_spaced: PropTypes.bool,
-    title_color: PropTypes.string,
+    is_visible: PropTypes.bool,
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
+    title_style: PropTypes.object,
+    title_className: PropTypes.string,
+    wrapper_className: PropTypes.string,
     onToggle: PropTypes.func,
     toggleVisibility: PropTypes.func,
 };

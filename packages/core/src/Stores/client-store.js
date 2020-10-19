@@ -563,8 +563,6 @@ export default class ClientStore extends BaseStore {
         // TODO: [deriv-eu] Remove the if statement once EU is enabled in dev
         if (this.is_eu && !this.root_store.ui.is_eu_enabled) {
             return false;
-        } else if (this.is_eu && this.root_store.ui.is_eu_enabled) {
-            return has_mt5;
         }
 
         if (has_mt5) {

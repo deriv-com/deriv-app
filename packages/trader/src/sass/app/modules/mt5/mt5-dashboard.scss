@@ -419,7 +419,7 @@
         border: 2px solid var(--border-active);
     }
     &__financial {
-        border: 2px solid $color-orange;
+        border: 2px solid $color-orange-1;
     }
     &__financial-stp {
         border: 2px solid $color-red;
@@ -543,7 +543,7 @@
 
             &-row {
                 width: 27.2rem;
-                border-bottom: 1px solid $color-grey-2;
+                border-bottom: 1px solid var(--general-section-1);
             }
             &-attribute .mt5-account-card--paragraph {
                 @include typeface(--paragraph-left-normal-black, none);

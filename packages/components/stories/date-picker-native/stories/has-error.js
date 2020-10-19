@@ -4,7 +4,7 @@ import { toMoment } from '@deriv/shared';
 import DatePickerNative from 'Components/date-picker/date-picker-native';
 import Wrapper from '../wrapper';
 
-const Basic = () => {
+const HasError = () => {
     const [default_value, setDefaultValue] = React.useState(toMoment().format('YYYY-MM-DD'));
 
     return (
@@ -16,9 +16,10 @@ const Basic = () => {
                 onSelect={e => setDefaultValue(e)}
                 placeholder='Birthday'
                 value={default_value}
+                error='Date format is incorrect'
             />
         </Wrapper>
     );
 };
 
-export default Basic;
+export default HasError;

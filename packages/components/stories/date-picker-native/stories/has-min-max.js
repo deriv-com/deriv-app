@@ -4,7 +4,7 @@ import { toMoment } from '@deriv/shared';
 import DatePickerNative from 'Components/date-picker/date-picker-native';
 import Wrapper from '../wrapper';
 
-const Basic = () => {
+const HasMinMax = () => {
     const [default_value, setDefaultValue] = React.useState(toMoment().format('YYYY-MM-DD'));
 
     return (
@@ -13,6 +13,8 @@ const Basic = () => {
                 id='date-picker-native'
                 display_format='DD MMM YYYY'
                 label='Birthday'
+                min_date={toMoment().subtract(1, 'days').format('YYYY-MM-DD')}
+                max_date={toMoment().add(2, 'days').format('YYYY-MM-DD')}
                 onSelect={e => setDefaultValue(e)}
                 placeholder='Birthday'
                 value={default_value}
@@ -21,4 +23,4 @@ const Basic = () => {
     );
 };
 
-export default Basic;
+export default HasMinMax;

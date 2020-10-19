@@ -4,7 +4,7 @@ import SelectNative from 'Components/select-native';
 import items from '../items';
 import Wrapper from '../wrapper';
 
-const BasicDelect = () => {
+const HasError = () => {
     const [default_value, setDefaultValue] = React.useState('');
 
     return (
@@ -22,4 +22,4 @@ const BasicDelect = () => {
     );
 };
 
-export default BasicDelect;
+export default HasError;

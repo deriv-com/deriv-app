@@ -5,7 +5,7 @@ import { localize } from '@deriv/translations';
 import { Button, Icon } from '@deriv/components';
 import FormError from './Error/form-error.jsx';
 
-const Row = ({ key, label, value }) => (
+const Row = ({ item_key, label, value }) => (
     <div className='cashier__confirm-row'>
         <span>{label}</span>
         {Array.isArray(value) ? (
@@ -19,7 +19,7 @@ const Row = ({ key, label, value }) => (
         ) : (
             <strong
                 className={classNames({
-                    description: key === 'description',
+                    description: item_key === 'description',
                 })}
             >
                 {value}
@@ -35,7 +35,7 @@ const Confirm = ({ data, error_message, header, onClickBack, onClickConfirm }) =
         <div className='cashier__confirm-column-wrapper'>
             <div className='cashier__confirm-column'>
                 {data.map(d => (
-                    <Row key={d.key} label={d.label} value={d.value} />
+                    <Row item_key={d.key} label={d.label} value={d.value} key={d.key} />
                 ))}
             </div>
         </div>

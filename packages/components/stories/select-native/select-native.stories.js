@@ -6,18 +6,11 @@ import NoEmptySelect from './stories/no-empty';
 import WithHelperSelect from './stories/with-helper';
 import HasErrorSelect from './stories/has-error';
 import DisabledSelect from './stories/disabled';
+import notes from './README.md';
 
 const stories = storiesOf('SelectNative', module);
 
 stories.addDecorator(withKnobs).addDecorator(withInfo);
-
-export const notes = `
-    This is a basic example of the native dropdown component.
-
-    The native dropdown component is a fluid element, and it fills it's parent workspace.
-
-    We use this component on mobile to have a native select. 
-`;
 
 stories
     .add('Basic usage', BasicSelect, { notes })

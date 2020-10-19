@@ -1,36 +1,24 @@
 import React from 'react';
+import { boolean } from '@storybook/addon-knobs';
 import SelectNative from 'Components/select-native';
-import Wrapper from '../wrapper';
 import items from '../items';
+import Wrapper from '../wrapper';
 
 const BasicDelect = () => {
     const [default_value, setDefaultValue] = React.useState('');
 
     return (
-        <React.Fragment>
-            <Wrapper>
-                <SelectNative
-                    placeholder='Please select'
-                    name='dropdown'
-                    label='Dropdown Label'
-                    list_items={items}
-                    value={default_value}
-                    onChange={e => setDefaultValue(e.target.value)}
-                    hint='Helper message'
-                />
-            </Wrapper>
-            <Wrapper is_dark>
-                <SelectNative
-                    placeholder='Please select'
-                    name='dropdown'
-                    label='Dropdown Label'
-                    list_items={items}
-                    value={default_value}
-                    onChange={e => setDefaultValue(e.target.value)}
-                    hint='Helper message'
-                />
-            </Wrapper>
-        </React.Fragment>
+        <Wrapper is_dark={boolean('Dark Theme', false)}>
+            <SelectNative
+                placeholder='Please select'
+                name='dropdown'
+                label='Dropdown Label'
+                list_items={items}
+                value={default_value}
+                onChange={e => setDefaultValue(e.target.value)}
+                hint='Helper message'
+            />
+        </Wrapper>
     );
 };
 

@@ -565,17 +565,7 @@ export default class ClientStore extends BaseStore {
             return false;
         }
 
-        if (has_mt5) {
-            const { gaming_company, financial_company } = landing_companies;
-            // eslint-disable-next-line no-nested-ternary
-            return gaming_company
-                ? gaming_company.shortcode === 'svg'
-                : financial_company
-                ? financial_company.shortcode === 'svg'
-                : false;
-        }
-
-        return false;
+        return has_mt5;
     };
 
     @computed

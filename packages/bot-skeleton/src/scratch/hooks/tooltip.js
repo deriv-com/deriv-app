@@ -1,48 +1,54 @@
 import { blueInfo } from '../blocks/images';
 
 Blockly.Tooltip.HOVER_MS = 50;
-Blockly.Tooltip.LIMIT = 100;
 
-Blockly.Tooltip.show_ = function() {
-    let param;
+Blockly.Tooltip.show_ = () => {
+    let params;
     Blockly.Tooltip.DIV = ((Blockly.Tooltip.poisonedElement_ = Blockly.Tooltip.element_), Blockly.Tooltip.DIV);
     if (!Blockly.Tooltip.blocked_) {
         Blockly.Tooltip.DIV.innerHTML = '';
-        for (param = Blockly.Tooltip.element_.tooltip; typeof param === 'function'; ) param = param();
-        param = Blockly.utils.string.wrap(param, Blockly.Tooltip.LIMIT);
-        param = param.split('\n');
-        for (let counter = 0; counter < param.length; counter++) {
+        for (params = Blockly.Tooltip.element_.tooltip; typeof params === 'function'; ) params = params();
+        params = Blockly.utils.string.wrap(params, Blockly.Tooltip.LIMIT);
+        params = params.split('\n');
+
+        params.forEach((param, index) => {
             const div = document.createElement('div');
-            const img = document.createElement('img');
-            const img_span = document.createElement('span');
             const text_span = document.createElement('span');
 
-            text_span.appendChild(document.createTextNode(param[counter]));
-            img.src = blueInfo;
-            img.style.paddingRight = '8px';
+            text_span.appendChild(document.createTextNode(param));
             text_span.style.verticalAlign = 'middle';
-            img.style.verticalAlign = 'middle';
-
             Blockly.Tooltip.DIV.appendChild(div);
-            div.appendChild(img_span);
-            img_span.appendChild(img);
+
+            if (index === 0) {
+                const img = document.createElement('img');
+                const img_span = document.createElement('span');
+                img.src = blueInfo;
+                img.style.paddingRight = '8px';
+                img.style.verticalAlign = 'middle';
+                div.appendChild(img_span);
+                img_span.appendChild(img);
+            } else {
+                text_span.style.paddingLeft = '24px';
+            }
+
             div.appendChild(text_span);
-        }
-        param = Blockly.Tooltip.element_.RTL;
+        });
+
+        params = Blockly.Tooltip.element_.RTL;
         const client_width = document.documentElement.clientWidth;
         const client_height = document.documentElement.clientHeight;
-        Blockly.Tooltip.DIV.style.direction = param ? 'rtl' : 'ltr';
+        Blockly.Tooltip.DIV.style.direction = params ? 'rtl' : 'ltr';
         Blockly.Tooltip.DIV.style.display = 'block';
         Blockly.Tooltip.visible = !0;
         let last_x = Blockly.Tooltip.lastX_;
-        last_x = param
+        last_x = params
             ? last_x - (Blockly.Tooltip.OFFSET_X + Blockly.Tooltip.DIV.offsetWidth)
             : last_x + Blockly.Tooltip.OFFSET_X;
         let last_y = Blockly.Tooltip.lastY_ + Blockly.Tooltip.OFFSET_Y;
         if (last_y + Blockly.Tooltip.DIV.offsetHeight > client_height + window.scrollY) {
             last_y -= Blockly.Tooltip.DIV.offsetHeight + 2 * Blockly.Tooltip.OFFSET_Y;
         }
-        if (param) {
+        if (params) {
             last_x = Math.max(Blockly.Tooltip.MARGINS - window.scrollX, last_x);
         }
         if (last_x + Blockly.Tooltip.DIV.offsetWidth > client_width + window.scrollX - 2 * Blockly.Tooltip.MARGINS) {
@@ -53,9 +59,9 @@ Blockly.Tooltip.show_ = function() {
     }
 };
 
-Blockly.Tooltip.hide = function() {
+Blockly.Tooltip.hide = () => {
     if (Blockly.Tooltip.visible && Blockly.Tooltip.DIV) {
-        Blockly.Tooltip.visible = !1;
+        Blockly.Tooltip.visible = !Blockly.Tooltip.visible;
         setTimeout(() => (Blockly.Tooltip.DIV.style.display = 'none'), Blockly.Tooltip.HOVER_MS);
     }
     if (Blockly.Tooltip.showPid_) {

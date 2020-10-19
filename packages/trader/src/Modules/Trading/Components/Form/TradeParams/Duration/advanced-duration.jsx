@@ -112,8 +112,9 @@ const AdvancedDuration = ({
                             is_24_hours_contract={is_24_hours_contract}
                             value={expiry_date}
                         />
-                        {is_24_hours_contract && <TradingTimePicker />
-                        // validation_errors={validation_errors.end_time} TODO: add validation_errors for end time
+                        {
+                            is_24_hours_contract && <TradingTimePicker />
+                            // validation_errors={validation_errors.end_time} TODO: add validation_errors for end time
                         }
                     </div>
                 </>

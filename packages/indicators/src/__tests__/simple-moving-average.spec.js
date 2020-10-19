@@ -100,7 +100,7 @@ describe('simpleMovingAverage', () => {
             23.13,
         ];
         const result = simpleMovingAverageArray(data, { periods: 10 });
-        const rounded_result = result.map((x) => Math.round(x * 100) / 100);
+        const rounded_result = result.map(x => Math.round(x * 100) / 100);
         expect(rounded_result).toEqual(sma10days);
     });
 });

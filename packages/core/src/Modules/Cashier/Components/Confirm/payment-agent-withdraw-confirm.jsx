@@ -18,7 +18,11 @@ const PaymentAgentWithdrawConfirm = ({
     <Confirm
         data={[
             { label: localize('Payment agent'), value: payment_agent_name || loginid, key: 'pa' },
-            { label: localize('Amount'), value: <Money currency={currency} amount={amount} />, key: 'amount' },
+            {
+                label: localize('Amount'),
+                value: <Money currency={currency} amount={amount} show_currency />,
+                key: 'amount',
+            },
         ]}
         error_message={error_message}
         header={localize('Please confirm the transaction details in order to complete the withdrawal:')}

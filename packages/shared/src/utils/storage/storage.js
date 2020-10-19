@@ -1,11 +1,11 @@
 import Cookies from 'js-cookie';
 import { getPropertyValue, isEmptyObject } from '../object/object';
 
-const getObject = function(key) {
+const getObject = function (key) {
     return JSON.parse(this.getItem(key) || '{}');
 };
 
-const setObject = function(key, value) {
+const setObject = function (key, value) {
     if (value && value instanceof Object) {
         try {
             this.setItem(key, JSON.stringify(value));
@@ -35,7 +35,7 @@ export const isStorageSupported = storage => {
     }
 };
 
-const Store = function(storage) {
+const Store = function (storage) {
     this.storage = storage;
     this.storage.getObject = getObject;
     this.storage.setObject = setObject;
@@ -71,7 +71,7 @@ Store.prototype = {
     },
 };
 
-const InScriptStore = function(object) {
+const InScriptStore = function (object) {
     this.store = typeof object !== 'undefined' ? object : {};
 };
 
@@ -122,7 +122,7 @@ State.prototype = InScriptStore.prototype;
  * @param {String} pathname
  *     e.g. getResponse('authorize.currency') == get(['response', 'authorize', 'authorize', 'currency'])
  */
-State.prototype.getResponse = function(pathname) {
+State.prototype.getResponse = function (pathname) {
     let path = pathname;
     if (typeof path === 'string') {
         const keys = path.split('.');
@@ -133,7 +133,7 @@ State.prototype.getResponse = function(pathname) {
 State.prototype.getByMsgType = State.getResponse;
 State.set('response', {});
 
-export const CookieStorage = function(cookie_name, cookie_domain) {
+export const CookieStorage = function (cookie_name, cookie_domain) {
     const hostname = window.location.hostname;
 
     this.initialized = false;
@@ -191,13 +191,7 @@ CookieStorage.prototype = {
 };
 
 export const removeCookies = (...cookie_names) => {
-    const domains = [
-        `.${document.domain
-            .split('.')
-            .slice(-2)
-            .join('.')}`,
-        `.${document.domain}`,
-    ];
+    const domains = [`.${document.domain.split('.').slice(-2).join('.')}`, `.${document.domain}`];
 
     let parent_path = window.location.pathname.split('/', 2)[1];
     if (parent_path !== '') {

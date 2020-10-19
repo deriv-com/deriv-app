@@ -1,6 +1,7 @@
 import classnames from 'classnames';
 import { Icon, DesktopWrapper, DataList } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { useNewRowTransition } from '@deriv/shared';
 import { PropTypes } from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
@@ -13,10 +14,7 @@ import '../assets/sass/download.scss';
 import '../assets/sass/transactions.scss';
 
 const TransactionItem = ({ row, is_new_row }) => {
-    const [in_prop, setInProp] = React.useState(!is_new_row);
-    React.useEffect(() => {
-        if (is_new_row) setInProp(true);
-    }, [is_new_row]);
+    const { in_prop } = useNewRowTransition(is_new_row);
 
     switch (row.type) {
         case transaction_elements.CONTRACT: {

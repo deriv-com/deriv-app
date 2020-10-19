@@ -5,7 +5,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 import { Icon, DataList } from '@deriv/components';
-import { routes, isHighLow } from '@deriv/shared';
+import { routes, isHighLow, useNewRowTransition } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import EmptyPortfolioMessage from 'Modules/Reports/Components/empty-portfolio-message.jsx';
 import { connect } from 'Stores/connect';
@@ -15,10 +15,7 @@ import { filterByContractType } from './helpers';
 import PositionsDrawerCard from './PositionsDrawerCard';
 
 const PositionsDrawerCardItem = ({ row: portfolio_position, measure, onHoverPosition, is_new_row }) => {
-    const [in_prop, setInProp] = React.useState(!is_new_row);
-    React.useEffect(() => {
-        if (is_new_row) setInProp(true);
-    }, [is_new_row]);
+    const { in_prop } = useNewRowTransition(is_new_row);
 
     React.useEffect(() => {
         measure();

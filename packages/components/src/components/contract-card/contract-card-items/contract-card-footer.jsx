@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { isValidToCancel, hasContractEntered, isOpen } from '@deriv/shared';
+import { isValidToCancel, hasContractEntered, isOpen, useNewRowTransition } from '@deriv/shared';
 import ContractCardSell from './contract-card-sell.jsx';
 import MultiplierCloseActions from './multiplier-close-actions.jsx';
 
@@ -18,10 +18,7 @@ const CardFooter = ({
     server_time,
     should_show_transition,
 }) => {
-    const [in_prop, setInProp] = React.useState(!should_show_transition);
-    React.useEffect(() => {
-        if (should_show_transition) setInProp(true);
-    }, [should_show_transition]);
+    const { in_prop } = useNewRowTransition(should_show_transition);
 
     const is_valid_to_cancel = isValidToCancel(contract_info);
 

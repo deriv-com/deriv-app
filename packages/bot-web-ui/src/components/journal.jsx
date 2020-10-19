@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ContentLoader from 'react-content-loader';
 import { CSSTransition } from 'react-transition-group';
-import { Checkbox, Icon, useOnClickOutside, DesktopWrapper, DataList } from '@deriv/components';
+import { Checkbox, Icon, useOnClickOutside, DesktopWrapper, DataList, useNewRowTransition } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { formatMoney, getCurrencyDisplayCode } from '@deriv/shared';
 import { message_types } from '@deriv/bot-skeleton';
@@ -197,10 +197,7 @@ const JournalLoader = ({ is_mobile }) => (
 );
 
 const JournalItem = ({ row, is_new_row }) => {
-    const [in_prop, setInProp] = React.useState(!is_new_row);
-    React.useEffect(() => {
-        if (is_new_row) setInProp(true);
-    }, [is_new_row]);
+    const { in_prop } = useNewRowTransition(is_new_row);
 
     const { date, time, message, message_type, className, extra } = row;
     const date_el = DateItem({ date, time });

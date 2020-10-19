@@ -25,7 +25,6 @@ const runIconNamesTest = async () => {
         process.exit(1);
     } else {
         console.log('Success: Icon names look OK. ✓');
-        process.exit(0);
     }
 };
 

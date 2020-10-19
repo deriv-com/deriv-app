@@ -18,8 +18,8 @@ const FormError = ({ disableApp, enableApp, setErrorMessage, error = {} }) => {
     });
 
     React.useEffect(() => {
+        // avoid resetting the text when dismissing the pop up
         if (error.message) {
-            // avoid resetting the text when dismissing the pop up
             mapErrorToDetails(error.code, error.message);
         }
     }, [error.code]);

@@ -1144,6 +1144,7 @@ export default class CashierStore extends BaseStore {
                 this.config.account_transfer.selected_to.value
             );
         }
+        this.setTransferFee();
         this.setTransferLimit();
     }
 

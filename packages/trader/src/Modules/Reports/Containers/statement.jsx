@@ -2,8 +2,8 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { DesktopWrapper, MobileWrapper, DataList, DataTable, Money } from '@deriv/components';
-import { extractInfoFromShortcode, urlFor, website_name } from '@deriv/shared';
+import { DesktopWrapper, MobileWrapper, DataList, DataTable, Money, ThemedScrollbars } from '@deriv/components';
+import { extractInfoFromShortcode, urlFor, website_name, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
 import CompositeCalendar from 'App/Components/Form/CompositeCalendar/composite-calendar.jsx';
@@ -24,28 +24,25 @@ class Statement extends React.Component {
         this.props.onUnmount();
     }
 
-    mobileRowRenderer = ({ row }) => {
-        return (
-            <>
-                <div className='data-list__row'>
-                    <DataList.Cell row={row} column={this.columns_map.icon} />
-                    <DataList.Cell row={row} column={this.columns_map.action_type} />
-                </div>
-                <div className='data-list__row'>
-                    <DataList.Cell row={row} column={this.columns_map.refid} />
-                    <DataList.Cell
-                        className='data-list__row-cell--amount'
-                        row={row}
-                        column={this.columns_map.balance}
-                    />
-                </div>
-                <div className='data-list__row'>
-                    <DataList.Cell row={row} column={this.columns_map.date} />
-                    <DataList.Cell className='data-list__row-cell--amount' row={row} column={this.columns_map.amount} />
-                </div>
-            </>
-        );
-    };
+    mobileRowRenderer = ({ row }) => (
+        <>
+            <div className='data-list__row'>
+                <DataList.Cell row={row} column={this.columns_map.icon} />
+                <DataList.Cell row={row} column={this.columns_map.action_type} />
+            </div>
+            <div className='data-list__row'>
+                <DataList.Cell row={row} column={this.columns_map.refid} />
+                <DataList.Cell className='data-list__row-cell--amount' row={row} column={this.columns_map.currency} />
+            </div>
+            <div className='data-list__row'>
+                <DataList.Cell row={row} column={this.columns_map.date} />
+                <DataList.Cell className='data-list__row-cell--amount' row={row} column={this.columns_map.amount} />
+            </div>
+            <div className='data-list__row'>
+                <DataList.Cell row={row} column={this.columns_map.balance} />
+            </div>
+        </>
+    );
 
     getRowAction = row_obj => {
         let action;
@@ -183,7 +180,11 @@ class Statement extends React.Component {
                                 localized_period_message={localize('You have no transactions for this period.')}
                             />
                         ) : (
-                            <React.Fragment>
+                            <ThemedScrollbars
+                                className='reports__scrollbar'
+                                is_bypassed={isMobile()}
+                                is_only_horizontal
+                            >
                                 <DesktopWrapper>
                                     <DataTable
                                         className='statement'
@@ -207,12 +208,12 @@ class Statement extends React.Component {
                                         getRowAction={this.getRowAction}
                                         onScroll={handleScroll}
                                         custom_width={'100%'}
-                                        getRowSize={() => 176}
+                                        getRowSize={() => 186}
                                     >
                                         <PlaceholderComponent is_loading={is_loading} />
                                     </DataList>
                                 </MobileWrapper>
-                            </React.Fragment>
+                            </ThemedScrollbars>
                         )}
                     </React.Fragment>
                 )}

@@ -41,7 +41,7 @@ const NetworkMonitorBase = (() => {
         }
 
         if (isOnline()) {
-            const ws_config = Object.assign({ wsEvent, isOnline }, socket_general_functions);
+            const ws_config = { wsEvent, isOnline, ...socket_general_functions };
             BinarySocket.init({ options: ws_config, client: client_store });
             BinarySocket.openNewConnection();
         }

@@ -14,7 +14,7 @@ import Article from './article.jsx';
 const makeTurnoverLimitRow = (currency, arr, title) => (
     <>
         {arr &&
-            arr.map((item) => (
+            arr.map(item => (
                 <Row key={item.name}>
                     <Td>
                         {title && `${title} - `}

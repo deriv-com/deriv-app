@@ -67,7 +67,7 @@ $header-height: 4em;
         cursor: pointer;
     }
     .dc-contract-card-dialog-toggle {
-        top: 97px;
+        top: 114px;
         right: 8px;
         width: 108px;
     }
@@ -125,7 +125,6 @@ $header-height: 4em;
         align-items: center;
         justify-content: center;
         transition: transform 0.25s ease, opacity 0.25s linear;
-        padding-top: 8px;
         border-top: 1px solid var(--general-section-1);
 
         &--enter-done {
@@ -151,10 +150,16 @@ $header-height: 4em;
             padding-top: 0.2rem;
         }
         .dc-btn--sell {
-            height: 32px;
-
             @include mobile {
                 width: 100%;
+            }
+        }
+        .dc-btn--sell,
+        .dc-btn--cancel {
+            height: 2.4rem;
+
+            @include mobile {
+                height: 3.2rem;
             }
         }
     }

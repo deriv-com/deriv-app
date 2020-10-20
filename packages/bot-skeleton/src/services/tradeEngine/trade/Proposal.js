@@ -63,6 +63,10 @@ export default Engine =>
         }
 
         requestProposals() {
+            // Since there are two proposals (in most cases), an error may be logged twice, to avoid this
+            // flip this boolean on error.
+            let has_informed_error = false;
+
             Promise.all(
                 this.proposal_templates.map(proposal =>
                     doUntilDone(() =>
@@ -80,7 +84,11 @@ export default Engine =>
                                 return null;
                             }
 
-                            throw error;
+                            if (!has_informed_error) {
+                                has_informed_error = true;
+                                this.$scope.observer.emit('Error', error.error.error);
+                            }
+                            return null;
                         })
                     )
                 )
@@ -133,20 +141,18 @@ export default Engine =>
             const { proposals } = this.data;
 
             if (proposals.length > 0) {
-                const has_equal_length = proposals.length === this.proposal_templates.length;
-                const hasEqualProposals = () =>
-                    this.proposal_templates.every(template => {
-                        return (
-                            proposals.findIndex(proposal => {
-                                return (
-                                    proposal.purchase_reference === template.passthrough.purchase_reference &&
-                                    proposal.contract_type === template.contract_type
-                                );
-                            }) !== -1
-                        );
-                    });
+                const has_equal_proposals = this.proposal_templates.every(template => {
+                    return (
+                        proposals.findIndex(proposal => {
+                            return (
+                                proposal.purchase_reference === template.passthrough.purchase_reference &&
+                                proposal.contract_type === template.contract_type
+                            );
+                        }) !== -1
+                    );
+                });
 
-                if (has_equal_length && hasEqualProposals()) {
+                if (has_equal_proposals) {
                     this.startPromise.then(() => this.store.dispatch(proposalsReady()));
                 }
             }

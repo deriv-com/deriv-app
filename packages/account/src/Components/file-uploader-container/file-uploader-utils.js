@@ -1,13 +1,13 @@
 import { localize } from '@deriv/translations';
 import { compressImg, convertToBase64, isImageType, getFormatFromMIME } from 'Helpers/image_utility';
 
-export const compressImageFiles = (files) => {
+export const compressImageFiles = files => {
     const promises = [];
-    files.forEach((f) => {
-        const promise = new Promise((resolve) => {
+    files.forEach(f => {
+        const promise = new Promise(resolve => {
             if (isImageType(f.type)) {
-                convertToBase64(f).then((img) => {
-                    compressImg(img).then((compressed_img) => {
+                convertToBase64(f).then(img => {
+                    compressImg(img).then(compressed_img => {
                         const file_arr = f;
                         file_arr.file = compressed_img;
                         resolve(file_arr.file);
@@ -23,11 +23,11 @@ export const compressImageFiles = (files) => {
     return Promise.all(promises);
 };
 
-export const readFiles = (files) => {
+export const readFiles = files => {
     const promises = [];
-    files.forEach((f) => {
+    files.forEach(f => {
         const fr = new FileReader();
-        const promise = new Promise((resolve) => {
+        const promise = new Promise(resolve => {
             fr.onload = () => {
                 const file_obj = {
                     filename: f.name,
@@ -58,4 +58,4 @@ export const max_document_size = 8388608;
 
 export const supported_filetypes = 'image/png, image/jpeg, image/jpg, image/gif, application/pdf';
 
-export const getSupportedFiles = (filename) => /^.*\.(png|PNG|jpg|JPG|jpeg|JPEG|gif|GIF|pdf|PDF)$/.test(filename);
+export const getSupportedFiles = filename => /^.*\.(png|PNG|jpg|JPG|jpeg|JPEG|gif|GIF|pdf|PDF)$/.test(filename);

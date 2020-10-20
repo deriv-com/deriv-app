@@ -37,7 +37,7 @@ class TwoFactorAuthentication extends React.Component {
         this.setState({ secret_key, qr_secret_key, is_loading: false, is_qr_loading: false });
     };
 
-    setEnabled = (is_enabled) => {
+    setEnabled = is_enabled => {
         this.setState({ is_two_factor_enabled: is_enabled });
         if (!is_enabled) {
             this.generateQrCode();

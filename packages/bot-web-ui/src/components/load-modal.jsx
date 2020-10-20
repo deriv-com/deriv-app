@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Modal, Tabs, Div100vhContainer, FadeWrapper, PageOverlay } from '@deriv/components';
+import { Modal, Tabs, MobileFullPageModal } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import GoogleDrive from './load-modal/google-drive.jsx';
 import Local from './load-modal/local.jsx';
@@ -15,7 +15,7 @@ const LoadModal = ({
     is_mobile,
     loaded_local_file,
     onEntered,
-    recent_workspaces,
+    recent_strategies,
     setActiveTabIndex,
     should_rerender_tabs,
     tab_name,
@@ -25,25 +25,28 @@ const LoadModal = ({
 
     if (is_mobile) {
         return (
-            <FadeWrapper is_visible={is_load_modal_open} className='load-strategy__wrapper' keyname='save__wrapper'>
-                <PageOverlay header={localize('Load strategy')} onClickClose={toggleLoadModal}>
-                    <Div100vhContainer className='load-strategy--is-mobile' height_offset='80px'>
-                        <Tabs
-                            active_index={active_index}
-                            onTabItemClick={setActiveTabIndex}
-                            should_delay_render={should_rerender_tabs}
-                            top
-                        >
-                            <div label={localize('Local')}>
-                                <Local />
-                            </div>
-                            <div label='Google Drive'>
-                                <GoogleDrive />
-                            </div>
-                        </Tabs>
-                    </Div100vhContainer>
-                </PageOverlay>
-            </FadeWrapper>
+            <MobileFullPageModal
+                is_modal_open={is_load_modal_open}
+                className='load-strategy'
+                header={localize('Load strategy')}
+                onClickClose={toggleLoadModal}
+                height_offset='80px'
+                page_overlay
+            >
+                <Tabs
+                    active_index={active_index}
+                    onTabItemClick={setActiveTabIndex}
+                    should_delay_render={should_rerender_tabs}
+                    top
+                >
+                    <div label={localize('Local')}>
+                        <Local />
+                    </div>
+                    <div label='Google Drive'>
+                        <GoogleDrive />
+                    </div>
+                </Tabs>
+            </MobileFullPageModal>
         );
     }
 
@@ -82,7 +85,7 @@ const LoadModal = ({
                     <Local.Footer />
                 </Modal.Footer>
             )}
-            {recent_workspaces.length > 0 && tab_name === tabs_title.TAB_RECENT && (
+            {recent_strategies.length > 0 && tab_name === tabs_title.TAB_RECENT && (
                 <Modal.Footer has_separator>
                     <Recent.Footer />
                 </Modal.Footer>
@@ -97,7 +100,7 @@ LoadModal.propTypes = {
     is_mobile: PropTypes.bool,
     loaded_local_file: PropTypes.string,
     onEntered: PropTypes.func,
-    recent_workspaces: PropTypes.array,
+    recent_strategies: PropTypes.array,
     setActiveTabIndex: PropTypes.func,
     should_rerender_tabs: PropTypes.bool,
     toggleLoadModal: PropTypes.func,
@@ -109,7 +112,7 @@ export default connect(({ load_modal, ui }) => ({
     is_mobile: ui.is_mobile,
     loaded_local_file: load_modal.loaded_local_file,
     onEntered: load_modal.onEntered,
-    recent_workspaces: load_modal.recent_workspaces,
+    recent_strategies: load_modal.recent_strategies,
     setActiveTabIndex: load_modal.setActiveTabIndex,
     should_rerender_tabs: load_modal.should_rerender_tabs,
     tab_name: load_modal.tab_name,

@@ -390,7 +390,7 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async checkIframeLoaded() {
         this.removeOnIframeLoaded();
-        this.config[this.active_container].onIframeLoaded = function(e) {
+        this.config[this.active_container].onIframeLoaded = function (e) {
             if (/cashier|doughflow/.test(e.origin)) {
                 this.setLoading(false);
                 // set the height of the container after content loads so that the
@@ -664,7 +664,7 @@ export default class CashierStore extends BaseStore {
     sortSupportedBanks() {
         // sort supported banks alphabetically by value, the option 'All payment agents' with value 0 should be on top
         this.config.payment_agent.supported_banks.replace(
-            this.config.payment_agent.supported_banks.slice().sort(function(a, b) {
+            this.config.payment_agent.supported_banks.slice().sort(function (a, b) {
                 if (a.value < b.value) {
                     return -1;
                 }
@@ -708,10 +708,7 @@ export default class CashierStore extends BaseStore {
             this.config.payment_agent.list.forEach(payment_agent => {
                 if (
                     payment_agent.supported_banks &&
-                    payment_agent.supported_banks
-                        .toLowerCase()
-                        .split(',')
-                        .indexOf(bank) !== -1
+                    payment_agent.supported_banks.toLowerCase().split(',').indexOf(bank) !== -1
                 ) {
                     this.config.payment_agent.filtered_list.push(payment_agent);
                 }
@@ -1039,7 +1036,9 @@ export default class CashierStore extends BaseStore {
             const obj_values = {
                 text: account.mt5_group
                     ? `${localize('DMT5')} ${getMT5AccountDisplay(account.mt5_group)}`
-                    : getCurrencyDisplayCode(account.currency.toUpperCase()),
+                    : getCurrencyDisplayCode(
+                          account.currency !== 'eUSDT' ? account.currency.toUpperCase() : account.currency
+                      ),
                 value: account.loginid,
                 balance: account.balance,
                 currency: account.currency,

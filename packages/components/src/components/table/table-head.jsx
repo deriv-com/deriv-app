@@ -2,13 +2,14 @@ import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
-const Head = ({ children, align, className, fixed }) => (
+const Head = ({ children, align, className, fixed, ...props }) => (
     <div
         role='columnheader'
         className={classNames('dc-table__head', className, {
             'dc-table__cell--right': align === 'right',
             'dc-table__cell--fixed': fixed,
         })}
+        {...props}
     >
         {children}
     </div>

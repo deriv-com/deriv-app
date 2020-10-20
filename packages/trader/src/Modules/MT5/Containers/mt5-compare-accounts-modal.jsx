@@ -5,9 +5,11 @@ import {
     Popover,
     Modal,
     DesktopWrapper,
+    Icon,
     MobileDialog,
     MobileWrapper,
     Table,
+    Text,
     UILoader,
 } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
@@ -29,12 +31,14 @@ const MT5AttributeDescriber = ({ name, tooltip, counter }) => {
 
     return tooltip ? (
         <React.Fragment>
-            <p className='mt5-attribute-describer' onClick={toggleModal}>
-                {name}
-                <MobileWrapper>
-                    <span className='counter'>{counter}</span>
-                </MobileWrapper>
-            </p>
+            <div onClick={toggleModal}>
+                <Text color='general' as='p' className='mt5-attribute-describer' weight='n' size='xs'>
+                    {name}
+                    <MobileWrapper>
+                        <Text className='counter'>{counter}</Text>
+                    </MobileWrapper>
+                </Text>
+            </div>
             <DesktopWrapper>
                 <Popover alignment='right' icon='counter' counter={counter} message={tooltip} zIndex={9998} />
             </DesktopWrapper>
@@ -43,7 +47,9 @@ const MT5AttributeDescriber = ({ name, tooltip, counter }) => {
             </MobileWrapper>
         </React.Fragment>
     ) : (
-        <p className='mt5-attribute-describer'>{name}</p>
+        <Text color='general' as='p' className='mt5-attribute-describer' weight='n' size='xs'>
+            {name}
+        </Text>
     );
 };
 
@@ -71,6 +77,20 @@ const compareAccountsData = ({ landing_companies, is_eu, is_eu_country, is_logge
     return filterAvailableAccounts(
         landing_companies,
         [
+            {
+                attribute: <MT5AttributeDescriber name={localize('Description')} />,
+                synthetic: localize('Trade 24/7 synthetic indices that simulate real-world market movements.'),
+                financial: localize('Trade FX, commodities and cryptocurrencies.'),
+                financial_stp: localize('Trade FX with Straight-Through-Processing (STP).'),
+            },
+            {
+                attribute: <MT5AttributeDescriber name={localize('Trading instruments')} />,
+                synthetic: localize('Synthetics'),
+                financial: show_eu_related
+                    ? localize('FX-majors (standard), FX-minors, Commodities, Cryptocurrencies')
+                    : localize('FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies'),
+                financial_stp: localize('FX-majors, FX-minors, FX-exotics, Cryptocurrencies'),
+            },
             {
                 attribute: <MT5AttributeDescriber name={localize('Account currency')} />,
                 synthetic: show_eu_related ? localize('EUR') : localize('USD'),
@@ -131,14 +151,6 @@ const compareAccountsData = ({ landing_companies, is_eu, is_eu_country, is_logge
                 financial: localize('24/7'),
                 financial_stp: localize('24/7'),
             },
-            {
-                attribute: <MT5AttributeDescriber name={localize('Trading instruments')} />,
-                synthetic: localize('Synthetics'),
-                financial: show_eu_related
-                    ? localize('FX-majors (standard), FX-minors, Commodities, Cryptocurrencies')
-                    : localize('FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies'),
-                financial_stp: localize('FX-majors, FX-minors, FX-exotics, Cryptocurrencies'),
-            },
         ],
         is_logged_in
     );
@@ -167,11 +179,19 @@ const ModalContent = ({ is_eu, landing_companies, is_eu_country, is_logged_in })
         setCols(compareAccountsData({ landing_companies, is_eu, is_eu_country, is_logged_in }));
 
         if (is_logged_in) {
-            updateColumnsStyle(
-                `1.5fr ${landing_companies?.mt_gaming_company?.financial ? '1fr' : ''} ${
-                    landing_companies?.mt_financial_company?.financial ? '2fr' : ''
-                } ${landing_companies?.mt_financial_company?.financial_stp ? ' 1fr ' : ''}`
-            );
+            if (isMobile()) {
+                updateColumnsStyle(
+                    `1.5fr ${landing_companies?.mt_gaming_company?.financial ? '1fr' : ''} ${
+                        landing_companies?.mt_financial_company?.financial ? '2fr' : ''
+                    } ${landing_companies?.mt_financial_company?.financial_stp ? ' 1fr ' : ''}`
+                );
+            } else {
+                updateColumnsStyle(
+                    `1fr ${landing_companies?.mt_gaming_company?.financial ? '1fr' : ''} ${
+                        landing_companies?.mt_financial_company?.financial ? '1fr' : ''
+                    } ${landing_companies?.mt_financial_company?.financial_stp ? ' 1fr ' : ''}`
+                );
+            }
         }
     }, [
         landing_companies.mt_financial_company,
@@ -196,16 +216,21 @@ const ModalContent = ({ is_eu, landing_companies, is_eu_country, is_logged_in })
                         {is_logged_in ? (
                             <React.Fragment>
                                 {landing_companies?.mt_gaming_company?.financial && (
-                                    <Table.Head>{localize('Synthetic')}</Table.Head>
+                                    <Table.Head className='mt5-compare-accounts__table-head'>
+                                        <Icon icon='IcMt5Synthetic' size={24} />
+                                        {localize('Synthetic')}
+                                    </Table.Head>
                                 )}
                                 {landing_companies?.mt_financial_company?.financial && (
-                                    <Table.Head>
+                                    <Table.Head className='mt5-compare-accounts__table-head'>
+                                        <Icon icon='IcMt5Financial' size={24} />
                                         {localize('Financial')}
                                         <span className='mt5-compare-accounts__star'>*</span>
                                     </Table.Head>
                                 )}
                                 {landing_companies?.mt_financial_company?.financial_stp && (
-                                    <Table.Head>
+                                    <Table.Head className='mt5-compare-accounts__table-head'>
+                                        <Icon icon='IcMt5FinancialStp' size={24} />
                                         {localize('Financial STP')}
                                         <span className='mt5-compare-accounts__star'>*</span>
                                     </Table.Head>
@@ -213,12 +238,17 @@ const ModalContent = ({ is_eu, landing_companies, is_eu_country, is_logged_in })
                             </React.Fragment>
                         ) : (
                             <React.Fragment>
-                                <Table.Head>{localize('Synthetic')}</Table.Head>
-                                <Table.Head>
+                                <Table.Head className='mt5-compare-accounts__table-head'>
+                                    <Icon icon='IcMt5Synthetic' size={24} />
+                                    {localize('Synthetic')}
+                                </Table.Head>
+                                <Table.Head className='mt5-compare-accounts__table-head'>
+                                    <Icon icon='IcMt5Financial' size={24} />
                                     {localize('Financial')}
                                     <span className='mt5-compare-accounts__star'>*</span>
                                 </Table.Head>
-                                <Table.Head>
+                                <Table.Head className='mt5-compare-accounts__table-head'>
+                                    <Icon icon='IcMt5FinancialStp' size={24} />
                                     {localize('Financial STP')}
                                     <span className='mt5-compare-accounts__star'>*</span>
                                 </Table.Head>
@@ -256,23 +286,25 @@ const CompareAccountsModal = ({
 }) => (
     <div className='mt5-compare-accounts-content__wrapper'>
         <DesktopWrapper>
-            <ContentExpander
-                className='mt5-compare-accounts__expander'
-                title={localize('Account Comparison')}
-                title_style={{ color: 'loss-danger', weight: 'n' }}
-                arrow_style={{ color: 'red', size: '24' }}
-                wrapper_className='mt5-compare-accounts__expander-wrapper'
-                has_fade_in
-            >
+            {!is_loading && (
                 <React.Suspense fallback={<UILoader />}>
-                    <ModalContent
-                        is_logged_in={is_logged_in}
-                        is_eu={is_eu}
-                        is_eu_country={is_eu_country}
-                        landing_companies={landing_companies}
-                    />
+                    <ContentExpander
+                        className='mt5-compare-accounts__expander'
+                        title={localize('Account Comparison')}
+                        title_style={{ color: 'loss-danger', weight: 'n' }}
+                        arrow_style={{ color: 'red', size: '24' }}
+                        wrapper_className='mt5-compare-accounts__expander-wrapper'
+                        has_fade_in
+                    >
+                        <ModalContent
+                            is_logged_in={is_logged_in}
+                            is_eu={is_eu}
+                            is_eu_country={is_eu_country}
+                            landing_companies={landing_companies}
+                        />
+                    </ContentExpander>
                 </React.Suspense>
-            </ContentExpander>
+            )}
         </DesktopWrapper>
         <MobileWrapper>
             <Button
@@ -283,23 +315,21 @@ const CompareAccountsModal = ({
                 secondary
                 disabled={is_loading}
             />
-            <React.Suspense fallback={<UILoader />}>
-                <MobileDialog
-                    portal_element_id='deriv_app'
-                    title={localize('Compare accounts')}
-                    wrapper_classname='mt5-dashboard__compare-accounts'
-                    visible={is_compare_accounts_visible}
-                    onClose={toggleCompareAccounts}
-                    footer={<MT5CompareAccountHint />}
-                >
-                    <ModalContent
-                        is_logged_in={is_logged_in}
-                        is_eu={is_eu}
-                        is_eu_country={is_eu_country}
-                        landing_companies={landing_companies}
-                    />
-                </MobileDialog>
-            </React.Suspense>
+            <MobileDialog
+                portal_element_id='deriv_app'
+                title={localize('Compare accounts')}
+                wrapper_classname='mt5-dashboard__compare-accounts'
+                visible={is_compare_accounts_visible}
+                onClose={toggleCompareAccounts}
+                footer={<MT5CompareAccountHint />}
+            >
+                <ModalContent
+                    is_logged_in={is_logged_in}
+                    is_eu={is_eu}
+                    is_eu_country={is_eu_country}
+                    landing_companies={landing_companies}
+                />
+            </MobileDialog>
         </MobileWrapper>
     </div>
 );

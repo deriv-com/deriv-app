@@ -7,26 +7,26 @@ import Popover from '../popover';
 
 const InputWithCheckbox = ({
     addToast,
-    removeToast,
+    checkbox_tooltip_label,
     classNameInlinePrefix,
     classNameInput,
     className,
     currency,
     current_focus,
     defaultChecked,
+    error_message_alignment,
     error_messages,
     is_disabled,
     is_single_currency,
     is_negative_disabled,
     is_input_hidden,
     label,
-    name,
     max_value,
+    name,
     onChange,
-    checkbox_tooltip_label,
-    tooltip_alignment,
-    error_message_alignment,
+    removeToast,
     setCurrentFocus,
+    tooltip_alignment,
     tooltip_label,
     value,
 }) => {
@@ -43,27 +43,29 @@ const InputWithCheckbox = ({
 
     // eslint-disable-next-line consistent-return
     React.useEffect(() => {
-        const showErrorToast = () => {
-            if (typeof addToast === 'function') {
-                addToast({
-                    key: `${name}__error`,
-                    content: error_messages,
-                    type: 'error',
-                });
-            }
-        };
-
-        const removeErrorToast = () => {
-            if (typeof removeToast === 'function') {
-                removeToast(`${name}__error`);
-            }
-        };
-
-        if (isMobile() && error_messages?.length > 0) {
-            showErrorToast(error_messages[0]);
-            return () => {
-                removeErrorToast();
+        if (isMobile()) {
+            const showErrorToast = () => {
+                if (typeof addToast === 'function') {
+                    addToast({
+                        key: `${name}__error`,
+                        content: error_messages,
+                        type: 'error',
+                    });
+                }
             };
+
+            const removeErrorToast = () => {
+                if (typeof removeToast === 'function') {
+                    removeToast(`${name}__error`);
+                }
+            };
+
+            if (error_messages?.length > 0) {
+                showErrorToast(error_messages[0]);
+                return () => {
+                    removeErrorToast();
+                };
+            }
         }
     }, [error_messages, addToast, removeToast, name]);
 

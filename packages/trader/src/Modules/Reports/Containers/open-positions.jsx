@@ -2,7 +2,16 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { DesktopWrapper, MobileWrapper, ProgressBar, Tabs, DataList, DataTable, ContractCard } from '@deriv/components';
+import {
+    DesktopWrapper,
+    MobileWrapper,
+    ProgressBar,
+    Tabs,
+    DataList,
+    DataTable,
+    ContractCard,
+    ThemedScrollbars,
+} from '@deriv/components';
 import { urlFor, isMobile, isMultiplierContract, getTimePercentage, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
@@ -57,7 +66,7 @@ const OpenPositionsTable = ({
             />
         ) : (
             currency && (
-                <>
+                <ThemedScrollbars className='reports__scrollbar' is_bypassed={isMobile()} is_only_horizontal>
                     <DesktopWrapper>
                         <EmptyPlaceholderWrapper
                             component_icon={component_icon}
@@ -100,7 +109,7 @@ const OpenPositionsTable = ({
                             </DataList>
                         </EmptyPlaceholderWrapper>
                     </MobileWrapper>
-                </>
+                </ThemedScrollbars>
             )
         )}
     </React.Fragment>

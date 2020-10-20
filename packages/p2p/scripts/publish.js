@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const getParsedPackageJson = absolute_file_path => JSON.parse(fs.readFileSync(absolute_file_path).toString());
-const writeJson = data => fs.writeFileSync(package_json_path, JSON.stringify(data, null, 4));
+const writeJson = data => fs.writeFileSync(package_json_path, `${JSON.stringify(data, null, 4)}\n`);
 
 const node_modules_path = path.resolve(__dirname, '..', 'node_modules');
 const package_json_path = path.resolve(__dirname, '..', 'package.json');

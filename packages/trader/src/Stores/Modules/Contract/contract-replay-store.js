@@ -61,7 +61,6 @@ export default class ContractReplayStore extends BaseStore {
         // force to call the callback to ensure contract-replay-store callback called on the initial
         // process. This regards to when a feed stopped before buying a contract
         WS.storage.proposalOpenContract({ contract_id }).then(cb);
-        return;
     };
 
     subscribeProposalOpenContract = () => {

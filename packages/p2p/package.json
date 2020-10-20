@@ -1,6 +1,6 @@
 {
     "name": "@deriv/p2p",
-    "version": "0.6.0",
+    "version": "0.7.0",
     "description": "p2p cashier",
     "main": "lib/index.js",
     "private": false,
@@ -21,15 +21,12 @@
         "deploy:folder": "echo \"No deploy:folder specified\"",
         "deploy:staging": "echo \"No deploy:staging specified\"",
         "deploy:production": "echo \"No deploy:production specified\"",
-        "prepublishOnly": "export NODE_ENV=production && export NPM_PUBLISHING_MODE=1 && lerna exec --scope @deriv/shared --scope @deriv/components -- npm run build:travis && npm run build:travis",
-        "postpublish": "export NODE_ENV= && export NPM_PUBLISHING_MODE="
+        "prepublishOnly": "node ./scripts/publish.js prepublish && export NODE_ENV=production && export NPM_PUBLISHING_MODE=1 && lerna exec --scope=@deriv/shared --scope=@deriv/components -- npm run build:travis",
+        "postpublish": "node ./scripts/publish.js postpublish && export NODE_ENV= && export NPM_PUBLISHING_MODE="
     },
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "@babel/polyfill": "^7.4.4",
-        "@deriv/components": "^1.0.0",
-        "@deriv/shared": "^1.0.0",
         "classnames": "^2.2.6",
         "crc-32": "^1.2.0",
         "formik": "^2.1.4",

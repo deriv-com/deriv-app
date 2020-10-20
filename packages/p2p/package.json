@@ -1,6 +1,6 @@
 {
     "name": "@deriv/p2p",
-    "version": "0.7.2",
+    "version": "0.7.3",
     "description": "p2p cashier",
     "main": "lib/index.js",
     "private": false,
@@ -13,7 +13,6 @@
     "scripts": {
         "test": "mocha ./scripts/**/**.spec.js",
         "build": "rimraf lib && webpack --optimize-minimize --progress",
-        "build:package": "rimraf lib && cross-env NODE_ENV=production NPM_PUBLISHING_MODE=1 webpack --optimize-minimize --progress",
         "build:travis": "rimraf lib && webpack --optimize-minimize",
         "serve": "rimraf lib && cross-env BUILD_MODE='serve' webpack --progress --watch",
         "start": "rimraf lib && npm run test && npm run serve",
@@ -22,8 +21,7 @@
         "deploy:folder": "echo \"No deploy:folder specified\"",
         "deploy:staging": "echo \"No deploy:staging specified\"",
         "deploy:production": "echo \"No deploy:production specified\"",
-        "prepublishOnly": "node ./scripts/publish.js prepublish && lerna exec --scope=@deriv/shared --scope=@deriv/components -- npm run build:travis -- && npm run build:package",
-        "postpublish": "node ./scripts/publish.js postpublish && export NODE_ENV= && export NPM_PUBLISHING_MODE="
+        "publish_package": "node ./scripts/publish.js prepublish && lerna exec --scope=@deriv/shared --scope=@deriv/components -- npm run build:travis -- && rimraf lib && cross-env NODE_ENV=production NPM_PUBLISHING_MODE=1 webpack --optimize-minimize --progress && npm publish; node ./scripts/publish.js postpublish"
     },
     "author": "",
     "license": "ISC",

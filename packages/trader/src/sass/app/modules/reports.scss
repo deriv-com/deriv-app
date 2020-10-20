@@ -60,6 +60,7 @@ $side-padding: 1.2em;
     .dc-tabs--open-positions {
         flex: 1;
         grid-template-rows: 36px calc(100% - 36px);
+        grid-template-columns: 100%;
 
         .dc-tabs__content {
             display: flex;
@@ -678,8 +679,13 @@ $side-padding: 1.2em;
     }
 
     &__content {
-        width: 100%;
+        width: fit-content;
         max-height: 100%;
+    }
+    &__scrollbar {
+        @media only screen and (min-width: 1280px) {
+            overflow: visible;
+        }
     }
     &__indicative {
         display: flex;

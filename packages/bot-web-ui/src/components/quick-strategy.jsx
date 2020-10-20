@@ -57,7 +57,8 @@ const QuickStrategyForm = ({
             const validation_errors = validateQuickStrategy(values);
             const is_valid = Object.keys(validation_errors).length === 0;
             const is_submit_enabled = !isSubmitting && is_valid;
-            const form_margin = !is_mobile ? '430px' : `calc(100%)`;
+            const form_margin = is_mobile ? 'calc(100% - 72px)' : '430px';
+
             return (
                 <Form className='quick-strategy__form'>
                     <ThemedScrollbars height={form_margin} autohide>
@@ -363,41 +364,41 @@ const QuickStrategyForm = ({
                                 </Field>
                             </div>
                         </div>
-                        <div
-                            className={classNames('quick-strategy__form-footer', {
-                                'quick-strategy__form-footer--active-keyboard': is_onscreen_keyboard_active,
-                            })}
-                        >
-                            <Button.Group>
-                                {!is_mobile && (
-                                    <Button
-                                        type='button'
-                                        id='db-quick-strategy__button-edit'
-                                        text={localize('Create and edit')}
-                                        is_disabled={!is_submit_enabled}
-                                        secondary
-                                        large
-                                        onClick={() => {
-                                            setFieldValue('button', 'edit');
-                                            submitForm();
-                                        }}
-                                    />
-                                )}
+                    </ThemedScrollbars>
+                    <div
+                        className={classNames('quick-strategy__form-footer', {
+                            'quick-strategy__form-footer--active-keyboard': is_onscreen_keyboard_active,
+                        })}
+                    >
+                        <Button.Group>
+                            {!is_mobile && (
                                 <Button
                                     type='button'
-                                    id='db-quick-strategy__button-run'
-                                    text={localize('Run')}
-                                    is_disabled={!is_submit_enabled || is_stop_button_visible}
-                                    primary
+                                    id='db-quick-strategy__button-edit'
+                                    text={localize('Create and edit')}
+                                    is_disabled={!is_submit_enabled}
+                                    secondary
                                     large
                                     onClick={() => {
-                                        setFieldValue('button', 'run');
+                                        setFieldValue('button', 'edit');
                                         submitForm();
                                     }}
                                 />
-                            </Button.Group>
-                        </div>
-                    </ThemedScrollbars>
+                            )}
+                            <Button
+                                type='button'
+                                id='db-quick-strategy__button-run'
+                                text={localize('Run')}
+                                is_disabled={!is_submit_enabled || is_stop_button_visible}
+                                primary
+                                large
+                                onClick={() => {
+                                    setFieldValue('button', 'run');
+                                    submitForm();
+                                }}
+                            />
+                        </Button.Group>
+                    </div>
                 </Form>
             );
         }}

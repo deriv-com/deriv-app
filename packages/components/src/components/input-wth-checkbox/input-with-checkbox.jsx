@@ -12,7 +12,6 @@ const InputWithCheckbox = ({
     classNameInput,
     className,
     currency,
-    current_focus,
     defaultChecked,
     error_message_alignment,
     error_messages,
@@ -97,7 +96,6 @@ const InputWithCheckbox = ({
             classNameInlinePrefix={classNameInlinePrefix}
             classNameInput={classNameInput}
             currency={currency}
-            current_focus={current_focus}
             error_messages={error_messages}
             error_message_alignment={error_message_alignment}
             is_error_tooltip_hidden={isMobile()}
@@ -179,7 +177,6 @@ InputWithCheckbox.propTypes = {
     classNameInput: PropTypes.string,
     classNamePrefix: PropTypes.string,
     currency: PropTypes.string,
-    current_focus: PropTypes.string,
     defaultChecked: PropTypes.bool,
     error_messages: PropTypes.array,
     is_negative_disabled: PropTypes.bool,

@@ -9,7 +9,6 @@ const Input = ({
     checked,
     className,
     classNameInlinePrefix,
-    current_focus,
     data_value,
     data_tip,
     display_value,
@@ -33,10 +32,10 @@ const Input = ({
 }) => {
     const ref = React.createRef();
     React.useEffect(() => {
-        if (current_focus === name) {
+        if (document.activeElement.name === name) {
             ref.current.focus();
         }
-    }, [current_focus, name]);
+    }, [document.activeElement.name, name]);
 
     const onBlur = () => setCurrentFocus(null);
     const onFocus = () => setCurrentFocus(name);
@@ -109,7 +108,6 @@ Input.propTypes = {
     checked: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     className: PropTypes.string,
     classNameInlinePrefix: PropTypes.string,
-    current_focus: PropTypes.string,
     data_tip: PropTypes.string,
     data_value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     display_value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),

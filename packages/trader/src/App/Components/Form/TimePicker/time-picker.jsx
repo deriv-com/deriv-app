@@ -51,7 +51,6 @@ class TimePicker extends React.Component {
     render() {
         const prefix_class = 'time-picker';
         const {
-            current_focus,
             selected_time,
             name,
             is_nativepicker,
@@ -85,7 +84,6 @@ class TimePicker extends React.Component {
                             is_read_only
                             id={`dt_${name}_input`}
                             className={classNames(`${prefix_class}-input`)}
-                            current_focus={current_focus}
                             value={`${selected_time} GMT`}
                             onClick={this.toggleDropDown}
                             name={name}
@@ -128,12 +126,12 @@ TimePicker.propTypes = {
     padding: PropTypes.string,
     placeholder: PropTypes.string,
     selected_time: PropTypes.string,
+    setCurrentFocus: PropTypes.func,
     start_time: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.object]),
 };
 
 export default observer(
     connect(({ ui }) => ({
-        current_focus: ui.current_focus,
         setCurrentFocus: ui.setCurrentFocus,
     }))(TimePicker)
 );

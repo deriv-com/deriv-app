@@ -26,7 +26,6 @@ const PositionsModalCard = ({
     contract_info,
     contract_update,
     currency,
-    current_focus,
     current_tick,
     getContractById,
     id,
@@ -224,7 +223,6 @@ const PositionsModalCard = ({
             addToast={addToast}
             connectWithContractUpdate={connectWithContractUpdate}
             contract_info={contract_info}
-            current_focus={current_focus}
             getCardLabels={getCardLabels}
             getContractById={getContractById}
             is_multiplier={is_multiplier}
@@ -289,7 +287,6 @@ PositionsModalCard.propTypes = {
     className: PropTypes.string,
     contract_info: PropTypes.object,
     currency: PropTypes.string,
-    current_focus: PropTypes.string,
     current_tick: PropTypes.number,
     duration: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     duration_unit: PropTypes.string,
@@ -317,7 +314,6 @@ PositionsModalCard.propTypes = {
 
 export default connect(({ common, ui, modules }) => ({
     addToast: ui.addToast,
-    current_focus: ui.current_focus,
     getContractById: modules.contract_trade.getContractById,
     is_mobile: ui.is_mobile,
     removeToast: ui.removeToast,

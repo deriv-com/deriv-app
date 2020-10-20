@@ -10,7 +10,6 @@ const StopLoss = ({
     removeToast,
     amount,
     currency,
-    current_focus,
     has_stop_loss,
     is_single_currency,
     onChange,
@@ -39,7 +38,6 @@ const StopLoss = ({
                 classNameInlinePrefix='trade-container__currency'
                 classNameInput='trade-container__input'
                 currency={currency}
-                current_focus={current_focus}
                 defaultChecked={has_stop_loss}
                 error_messages={has_stop_loss ? validation_errors.stop_loss : undefined}
                 is_single_currency={is_single_currency}
@@ -64,7 +62,6 @@ const StopLoss = ({
 StopLoss.propTypes = {
     amount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     currency: PropTypes.string,
-    current_focus: PropTypes.string,
     has_stop_loss: PropTypes.bool,
     is_single_currency: PropTypes.bool,
     onChange: PropTypes.func,
@@ -78,7 +75,6 @@ export default connect(({ modules, client, ui }, props) => ({
     addToast: ui.addToast,
     amount: modules.trade.amount,
     currency: modules.trade.currency,
-    current_focus: ui.current_focus,
     has_cancellation: props.has_cancellation ?? modules.trade.has_cancellation,
     has_stop_loss: props.has_stop_loss ?? modules.trade.has_stop_loss,
     is_single_currency: client.is_single_currency,

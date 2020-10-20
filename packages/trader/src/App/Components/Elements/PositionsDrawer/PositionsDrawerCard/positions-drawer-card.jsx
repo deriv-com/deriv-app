@@ -15,7 +15,6 @@ const PositionsDrawerCard = ({
     contract_info,
     contract_update,
     currency,
-    current_focus,
     getContractById,
     is_mobile,
     is_sell_requested,
@@ -95,7 +94,6 @@ const PositionsDrawerCard = ({
             addToast={addToast}
             connectWithContractUpdate={connectWithContractUpdate}
             contract_info={contract_info}
-            current_focus={current_focus}
             getCardLabels={getCardLabels}
             getContractById={getContractById}
             is_multiplier={is_multiplier}
@@ -197,7 +195,6 @@ PositionsDrawerCard.propTypes = {
     className: PropTypes.string,
     contract_info: PropTypes.object,
     currency: PropTypes.string,
-    current_focus: PropTypes.string,
     current_tick: PropTypes.number,
     duration: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     duration_unit: PropTypes.string,
@@ -222,7 +219,6 @@ PositionsDrawerCard.propTypes = {
 
 export default connect(({ modules, ui }) => ({
     addToast: ui.addToast,
-    current_focus: ui.current_focus,
     getContractById: modules.contract_trade.getContractById,
     is_mobile: ui.is_mobile,
     removeToast: ui.removeToast,

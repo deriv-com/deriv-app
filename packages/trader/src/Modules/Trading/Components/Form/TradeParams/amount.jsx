@@ -18,7 +18,6 @@ const Amount = ({
     contract_types_list,
     currencies_list,
     currency,
-    current_focus,
     duration_unit,
     expiry_type,
     is_equal,
@@ -57,7 +56,6 @@ const Amount = ({
             classNameInlinePrefix='trade-container__currency'
             classNameInput='trade-container__input'
             currency={currency}
-            current_focus={current_focus}
             error_messages={error_messages}
             fractional_digits={getDecimalPlaces(currency)}
             id='dt_amount_input'
@@ -143,7 +141,6 @@ Amount.propTypes = {
     contract_types_list: MobxPropTypes.observableObject,
     currencies_list: MobxPropTypes.observableObject,
     currency: PropTypes.string,
-    current_focus: PropTypes.string,
     duration_unit: PropTypes.string,
     expiry_type: PropTypes.string,
     is_equal: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
@@ -165,7 +162,6 @@ export default connect(({ modules, client, ui }) => ({
     contract_types_list: modules.trade.contract_types_list,
     currencies_list: client.currencies_list,
     currency: modules.trade.currency,
-    current_focus: ui.current_focus,
     duration_unit: modules.trade.duration_unit,
     expiry_type: modules.trade.expiry_type,
     is_equal: modules.trade.is_equal,

@@ -7,8 +7,8 @@ import PageReturn from 'Components/page-return/page-return.jsx';
 import { useStores } from 'Stores';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import { subscribeWS } from 'Utils/websocket';
-import OrderDetails from './order-details/order-details.jsx';
-import OrderTable from './order-table/order-table.jsx';
+import OrderTable from './order-table.jsx';
+import OrderDetails from '../order-details/order-details.jsx';
 import './orders.scss';
 
 const Orders = observer(({ params, navigate, chat_info }) => {

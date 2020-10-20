@@ -4,7 +4,7 @@ import { ButtonToggle } from '@deriv/components';
 import { useStores } from 'Stores';
 import { localize } from 'Components/i18next';
 import OrderTableContent from './order-table-content.jsx';
-import { order_list } from '../../../constants/order-list';
+import { order_list } from '../../constants/order-list';
 
 const OrderTable = ({ showDetails }) => {
     const { general_store } = useStores();

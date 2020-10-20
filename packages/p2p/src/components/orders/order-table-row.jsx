@@ -6,8 +6,8 @@ import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
 import { secondsToTimer } from 'Utils/date-time';
 import ServerTime from 'Utils/server-time';
-import { createExtendedOrderDetails } from '../../../utils/orders';
-import { useStores } from '../../../../stores';
+import { createExtendedOrderDetails } from '../../utils/orders';
+import { useStores } from '../../../stores';
 
 const OrderRowComponent = observer(({ data: order, onOpenDetails, style, is_active }) => {
     const { general_store } = useStores();

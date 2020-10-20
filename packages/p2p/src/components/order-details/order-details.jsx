@@ -9,7 +9,7 @@ import OrderDetailsFooter from './order-details-footer.jsx';
 import OrderDetailsChatbox from './order-details-chatbox.jsx';
 import OrderDetailsTimer from './order-details-timer.jsx';
 import OrderInfoBlock from './order-info-block.jsx';
-import Popup from '../popup.jsx';
+import Popup from '../orders/popup.jsx';
 import './order-details.scss';
 
 const OrderDetails = ({ order_information, chat_info }) => {

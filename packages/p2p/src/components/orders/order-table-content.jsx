@@ -7,12 +7,12 @@ import { Localize, localize } from 'Components/i18next';
 import { TableError } from 'Components/table/table-error.jsx';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import Empty from 'Components/empty/empty.jsx';
-import OrderTableHeader from 'Components/orders/order-table/order-table-header.jsx';
-import OrderRowComponent from 'Components/orders/order-table/order-table-row.jsx';
 import { useStores } from 'Stores';
 import { height_constants } from 'Utils/height_constants';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import { requestWS } from 'Utils/websocket';
+import OrderTableHeader from './order-table-header.jsx';
+import OrderRowComponent from './order-table-row.jsx';
 
 const OrderTableContent = observer(({ showDetails, is_active }) => {
     const { general_store } = useStores();

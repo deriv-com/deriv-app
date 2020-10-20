@@ -1,7 +1,8 @@
-import React from 'react';
 import { storiesOf } from '@storybook/react';
 import Icon from 'Components/icon';
 import MobileDrawer from 'Components/mobile-drawer';
+import Div100vhContainer from 'Components/div100vh-container';
+import React from 'react';
 import notes from './README.md';
 import './mobile-deawer.stories.scss';
 
@@ -17,82 +18,77 @@ storiesOf('MobileDrawer', module).add(
         const toggleSubMenu = () => {
             set_is_submenu_expanded(!is_submenu_expanded);
         };
+
         return (
-            <>
+            <React.Fragment>
                 {!is_open && (
                     <a onClick={toggleDrawer}>
                         <Icon icon='IcHamburger' width='32px' height='32px' />
                     </a>
                 )}
-
                 <MobileDrawer
                     alignment='left'
                     is_open={is_open}
                     toggle={toggleDrawer}
                     id='dt_mobile_drawer'
-                    // enableApp={this.props.enableApp}
-                    // disableApp={this.props.disableApp}
-                    // livechat={<LiveChat is_mobile_drawer />}
                     title={'Menu'}
-                    height='100wh'
-                    width='300px'
+                    height='100vh'
+                    width='295px'
                 >
-                    <div style={{ borderWidth: 1, borderColor: 'black', borderStyle: 'solid' }}>
-                        <div style={{ visibility: is_submenu_expanded ? 'hidden' : 'visible' }}>
+                    <Div100vhContainer height_offset='40px'>
+                        <div className='header__menu-mobile-body-wrapper'>
                             <MobileDrawer.SubHeader>
-                                <p style={{ borderWidth: 1, borderColor: 'black', borderStyle: 'solid' }}>
-                                    This is SubHeader
-                                </p>
+                                <p>Sub Header</p>
                             </MobileDrawer.SubHeader>
-                        </div>
 
-                        <div style={{ borderWidth: 1, overflow: 'hidden', borderColor: 'black', borderStyle: 'solid' }}>
                             <MobileDrawer.Body>
-                                {Array.from(new Array(5)).map((item, index) => {
-                                    return (
-                                        <MobileDrawer.Item key={index}>
-                                            <p
-                                                onClick={() => {
-                                                    console.log(`item ${index} clicked`);
-                                                }}
-                                            >
-                                                Item {index}
-                                            </p>
-                                        </MobileDrawer.Item>
-                                    );
-                                })}
+                                {Array.from(new Array(3)).map((item, index) => (
+                                    <MobileDrawer.Item key={index}>
+                                        <p>{`Menu item ${index}`}</p>
+                                    </MobileDrawer.Item>
+                                ))}
+
                                 <MobileDrawer.SubMenu
                                     has_subheader
-                                    submenu_icon={'IcHamburger'}
-                                    submenu_title={'Submenu title'}
+                                    submenu_icon='IcStage1'
+                                    submenu_title={'SubMenu Title'}
                                     submenu_suffix_icon='IcChevronRight'
                                     onToggle={toggleSubMenu}
                                 >
-                                    {/* <MobileDrawer.Item>
-                                        <p onClick={() => { console.log(`item ${'mmm'} clicked`); }}>Itemmmm</p>
-                                    </MobileDrawer.Item> */}
+                                    {Array.from(new Array(2)).map((lang, idx) => (
+                                        <MobileDrawer.Item key={idx}>
+                                            <p>{`SubMenu item ${idx}`}</p>
+                                        </MobileDrawer.Item>
+                                    ))}
                                     <MobileDrawer.SubMenuSection
-                                        section_icon={'IcChevronDown'}
-                                        section_title={'SubmenuSection title'}
+                                        section_icon={'IcStage2'}
+                                        section_title={'SubMenu Section'}
                                     >
-                                        <p
-                                            onClick={() => {
-                                                console.log('sub section clicked');
-                                            }}
-                                        >
-                                            SubmenuSection Item
-                                        </p>
+                                        {Array.from(new Array(2)).map((lang, idx) => (
+                                            <MobileDrawer.Item key={idx}>
+                                                <p>{`Section Item ${idx}`}</p>
+                                            </MobileDrawer.Item>
+                                        ))}
                                     </MobileDrawer.SubMenuSection>
+
+                                    <MobileDrawer.Item>
+                                        <p>{`SubMenu item 2`}</p>
+                                    </MobileDrawer.Item>
                                 </MobileDrawer.SubMenu>
+
+                                {Array.from(new Array(2)).map((item, index) => (
+                                    <MobileDrawer.Item key={index}>
+                                        <p>{`Menu item ${index + 2}`}</p>
+                                    </MobileDrawer.Item>
+                                ))}
                             </MobileDrawer.Body>
                         </div>
-
                         <MobileDrawer.Footer>
-                            <p>this is footer</p>
+                            <p>Footer</p>
                         </MobileDrawer.Footer>
-                    </div>
+                    </Div100vhContainer>
                 </MobileDrawer>
-            </>
+            </React.Fragment>
         );
     },
     {

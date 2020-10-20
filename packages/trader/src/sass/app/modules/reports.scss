@@ -683,6 +683,7 @@ $side-padding: 1.2em;
         max-height: 100%;
     }
     &__scrollbar {
+        width: 100%;
         @media only screen and (min-width: 1280px) {
             overflow: visible;
         }

@@ -881,9 +881,8 @@ export default class CashierStore extends BaseStore {
     // 2. fiat to mt & vice versa
     // 3. crypto to mt & vice versa
     @action.bound
-    async onMountAccountTransfer(is_deriv_crypto = false) {
+    async onMountAccountTransfer() {
         this.setLoading(true);
-        this.setDerivCrypto(is_deriv_crypto);
         this.onRemount = this.onMountAccountTransfer;
         await this.onMountCommon();
         await BinarySocket.wait('website_status');
@@ -1066,14 +1065,15 @@ export default class CashierStore extends BaseStore {
                     // check if selected to is not allowed account
                     obj_values.error = getSelectedError(obj_values.value);
                 }
-                if (
-                    this.is_deriv_crypto &&
-                    obj_values.currency === this.config.account_transfer.selected_from.currency
-                ) {
-                    this.setSelectedFrom(obj_values);
+                if (this.is_deriv_crypto) {
+                    // set the first account with the same currency
+                    if (obj_values.currency === this.config.account_transfer.selected_from.currency) {
+                        this.setSelectedTo(obj_values);
+                    }
+                } else {
+                    // set the first available account as the default transfer to account
+                    this.setSelectedTo(obj_values);
                 }
-                // set the first available account as the default transfer to account
-                this.setSelectedTo(obj_values);
             }
             arr_accounts.push(obj_values);
         });
@@ -1139,7 +1139,7 @@ export default class CashierStore extends BaseStore {
             this.config.account_transfer.selected_to.is_crypto &&
             !this.is_deriv_crypto
         ) {
-            // not allowed to transfer crypto to crypto
+            // not allowed to transfer crypto to crypto - not-deriv-crypto
             const first_fiat = this.config.account_transfer.accounts_list.find(account => !account.is_crypto);
             this.onChangeTransferTo({ target: { value: first_fiat.value } });
         } else if (this.is_deriv_crypto) {

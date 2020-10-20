@@ -16,9 +16,10 @@ class AccountTransfer extends React.Component {
     static contextType = PlatformContext;
 
     componentDidMount() {
+        this.props.setDerivCrypto(this.context.is_deriv_crypto);
         this.props.setActiveTab(this.props.container);
         if (!this.props.is_virtual) {
-            this.props.onMount(this.context.is_deriv_crypto);
+            this.props.onMount();
         }
     }
 
@@ -69,6 +70,7 @@ AccountTransfer.propTypes = {
     onMount: PropTypes.func,
     setActiveTab: PropTypes.func,
     setSideNotes: PropTypes.func,
+    setDerivCrypto: PropTypes.func,
 };
 
 export default connect(({ client, modules }) => ({
@@ -84,4 +86,5 @@ export default connect(({ client, modules }) => ({
     is_transfer_lock: modules.cashier.is_transfer_lock,
     onMount: modules.cashier.onMountAccountTransfer,
     setActiveTab: modules.cashier.setActiveTab,
+    setDerivCrypto: modules.cashier.setDerivCrypto,
 }))(AccountTransfer);

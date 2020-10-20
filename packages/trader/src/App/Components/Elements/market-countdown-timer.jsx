@@ -29,7 +29,7 @@ const getSymbol = (target_symbol, trading_times) => {
         }
     }
 };
-
+// eslint-disable-next-line consistent-return
 const whenMarketOpens = async (days_offset, target_symbol) => {
     // days_offset is 0 for today, 1 for tomorrow, etc.
     if (days_offset > days_to_check_before_exit) return undefined;
@@ -44,20 +44,19 @@ const whenMarketOpens = async (days_offset, target_symbol) => {
         const is_closed_all_day = open?.length === 1 && open[0] === '--' && close[0] === '--';
         if (is_closed_all_day) {
             // check tomorrow trading times
-            await whenMarketOpens(days_offset + 1, target_symbol);
-        } else {
-            const date_str = date_target.toISOString().substring(0, 11);
-            const getUTCDate = hour => new Date(`${date_str}${hour}Z`);
-            for (let i = 0; i < open?.length; i++) {
-                const diff = +getUTCDate(open[i]) - +date_target;
-                if (diff > 0) {
-                    when_market_opens = +getUTCDate(open[i]);
-                    break;
-                }
+            when_market_opens = await whenMarketOpens(days_offset + 1, target_symbol);
+            return when_market_opens;
+        }
+        const date_str = date_target.toISOString().substring(0, 11);
+        const getUTCDate = hour => new Date(`${date_str}${hour}Z`);
+        for (let i = 0; i < open?.length; i++) {
+            const diff = +getUTCDate(open[i]) - +new Date();
+            if (diff > 0) {
+                when_market_opens = +getUTCDate(open[i]);
+                return when_market_opens;
             }
         }
     }
-    return when_market_opens;
 };
 
 const calculateTimeLeft = when_market_opens => {

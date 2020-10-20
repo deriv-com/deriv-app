@@ -5,6 +5,10 @@ import { createExtendedOrderDetails } from 'Utils/orders.js';
 import { init as WebsocketInit, requestWS, subscribeWS } from 'Utils/websocket.js';
 
 export default class GeneralStore {
+    constructor(root_store) {
+        this.root_store = root_store;
+    }
+
     @observable active_index = 0;
     @observable active_notification_count = 0;
     @observable advertiser_id = null;
@@ -229,12 +233,7 @@ export default class GeneralStore {
                 // Refresh chat token ±1 hour before it expires (BE will refresh the token
                 // when we request within 2 hours of the token expiring)
                 const expiry_moment = epochToMoment(service_token.sendbird.expiry_time);
-                const delay_ms = expiry_moment.diff(
-                    this.props.server_time
-                        .get()
-                        .clone()
-                        .subtract(1, 'hour')
-                );
+                const delay_ms = expiry_moment.diff(this.props.server_time.get().clone().subtract(1, 'hour'));
 
                 this.service_token_timeout = setTimeout(() => getSendbirdServiceToken(), delay_ms);
             });

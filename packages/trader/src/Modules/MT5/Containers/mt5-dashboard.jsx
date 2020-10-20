@@ -6,6 +6,7 @@ import { DesktopWrapper, Icon, MobileWrapper, Tabs } from '@deriv/components';
 import { isEmptyObject, routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import { WS } from 'Services/ws-methods';
 import LoadingMT5RealAccountDisplay from './loading-mt5-real-account-display.jsx';
 import MissingRealAccount from './missing-real-account.jsx';
 import MT5AccountOpeningRealFinancialStpModal from './mt5-account-opening-real-financial-stp-modal.jsx';
@@ -47,10 +48,16 @@ class MT5Dashboard extends React.Component {
         },
     };
 
-    componentDidMount() {
-        if (!this.props.is_mt5_allowed) {
-            this.props.history.push(routes.trade);
+    async componentDidMount() {
+        if (this.props.is_logged_in) {
+            await WS.wait('get_settings');
+            const res = await WS.authorized.cache.landingCompany(this.props.residence);
+
+            if (!this.props.isMT5Allowed(res.landing_company)) {
+                this.props.history.push(routes.trade);
+            }
         }
+
         this.updateActiveIndex(this.getIndexToSet());
         this.openResetPassword();
         this.props.onMount();
@@ -400,7 +407,8 @@ export default withRouter(
         openPasswordModal: modules.mt5.enableMt5PasswordModal,
         openAccountNeededModal: ui.openAccountNeededModal,
         is_loading: client.is_populating_mt5_account_list,
-        is_mt5_allowed: client.is_mt5_allowed,
+        residence: client.residence,
+        isMT5Allowed: client.isMT5Allowed,
         has_mt5_account: modules.mt5.has_mt5_account,
         has_real_account: client.has_active_real_account,
         setAccountType: modules.mt5.setAccountType,

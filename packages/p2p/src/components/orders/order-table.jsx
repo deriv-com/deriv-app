@@ -1,14 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { ButtonToggle } from '@deriv/components';
+import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import { localize } from 'Components/i18next';
 import OrderTableContent from './order-table-content.jsx';
 import { order_list } from '../../constants/order-list';
 
-const OrderTable = ({ showDetails }) => {
+const OrderTable = observer(() => {
     const { general_store } = useStores();
-    const orders_filters = [
+    const order_list_filters = [
         {
             text: localize('Active order'),
             value: order_list.ACTIVE,
@@ -20,12 +20,11 @@ const OrderTable = ({ showDetails }) => {
             count: general_store.inactive_notification_count,
         },
     ];
-
     return (
         <React.Fragment>
             <div className='orders__header'>
                 <ButtonToggle
-                    buttons_arr={orders_filters}
+                    buttons_arr={order_list_filters}
                     className='orders__header-filter'
                     is_animated
                     name='filter'
@@ -34,13 +33,9 @@ const OrderTable = ({ showDetails }) => {
                     has_rounded_button
                 />
             </div>
-            <OrderTableContent showDetails={showDetails} is_active={general_store.is_active_tab} />
+            <OrderTableContent />
         </React.Fragment>
     );
-};
-
-OrderTable.propTypes = {
-    showDetails: PropTypes.func,
-};
+});
 
 export default OrderTable;

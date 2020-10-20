@@ -3,19 +3,14 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { localize, Localize } from 'Components/i18next';
-import { secondsToTimer } from 'Utils/date-time';
-import ServerTime from 'Utils/server-time';
-import { createExtendedOrderDetails } from '../../utils/orders';
-import { useStores } from '../../../stores';
+import { Localize } from 'Components/i18next';
+import { useStores } from 'Stores';
 
-const OrderRowComponent = observer(({ data: order, onOpenDetails, style, is_active }) => {
-    const { general_store } = useStores();
-    const [order_state, setOrderState] = React.useState(order); // Use separate state to force refresh when (FE-)expired.
-    const [remaining_time, setRemainingTime] = React.useState();
+const OrderRowComponent = observer(props => {
+    const { general_store, order_store } = useStores();
+    order_store.setRowProps(props);
 
     const {
-        account_currency,
         amount_display,
         id,
         is_buy_order,
@@ -23,7 +18,6 @@ const OrderRowComponent = observer(({ data: order, onOpenDetails, style, is_acti
         is_my_ad,
         is_sell_order,
         local_currency,
-        order_expiry_milliseconds,
         order_purchase_datetime,
         other_user_details,
         price_display,
@@ -31,44 +25,22 @@ const OrderRowComponent = observer(({ data: order, onOpenDetails, style, is_acti
         should_highlight_danger,
         should_highlight_disabled,
         status_string,
-    } = order_state;
+    } = order_store.order;
 
-    let interval;
-
-    const isOrderSeen = order_id => {
-        const { notifications } = general_store.getLocalStorageSettingsForLoginId();
-        return notifications.some(notification => notification.order_id === order_id && notification.is_seen === true);
-    };
-
-    const countDownTimer = () => {
-        const distance = ServerTime.getDistanceToServerTime(order_expiry_milliseconds);
-        const timer = secondsToTimer(distance);
-
-        if (distance < 1) {
-            const { client, props } = general_store;
-            setRemainingTime(localize('expired'));
-            setOrderState(createExtendedOrderDetails(order.order_details, client.loginid, props.server_time));
-            clearInterval(interval);
-        } else {
-            setRemainingTime(timer);
-        }
-    };
-
-    React.useEffect(() => {
-        countDownTimer();
-        interval = setInterval(countDownTimer, 1000);
-        return () => clearInterval(interval);
-    }, []);
-
-    const offer_amount = `${amount_display} ${account_currency}`;
+    const offer_amount = `${amount_display} ${general_store.client.currency}`;
     const transaction_amount = `${price_display} ${local_currency}`;
 
+    React.useEffect(() => {
+        order_store.onRowMount();
+        return () => order_store.onRowUnmount();
+    }, []);
+
     return (
-        <div onClick={() => onOpenDetails(order)} style={style}>
+        <div onClick={() => order_store.setQueryDetails(order_store.order)} style={order_store.style}>
             <Table.Row
                 className={classNames('orders__table-row orders__table-grid', {
-                    'orders__table-grid--active': is_active,
-                    'orders__table-row--attention': !isOrderSeen(id),
+                    'orders__table-grid--active': general_store.is_active_tab,
+                    'orders__table-row--attention': !order_store.isOrderSeen(id),
                 })}
             >
                 <Table.Cell>
@@ -99,7 +71,11 @@ const OrderRowComponent = observer(({ data: order, onOpenDetails, style, is_acti
                     {(is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad) ? offer_amount : transaction_amount}
                 </Table.Cell>
                 <Table.Cell>
-                    {is_active ? <div className='orders__table-time'>{remaining_time}</div> : order_purchase_datetime}
+                    {general_store.is_active_tab ? (
+                        <div className='orders__table-time'>{order_store.remaining_time}</div>
+                    ) : (
+                        order_purchase_datetime
+                    )}
                 </Table.Cell>
             </Table.Row>
         </div>
@@ -107,17 +83,7 @@ const OrderRowComponent = observer(({ data: order, onOpenDetails, style, is_acti
 });
 
 OrderRowComponent.propTypes = {
-    data: PropTypes.shape({
-        account_currency: PropTypes.string,
-        amount_display: PropTypes.string,
-        display_status: PropTypes.string,
-        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-        is_buy_order: PropTypes.bool,
-        local_currency: PropTypes.string,
-        order_purchase_datetime: PropTypes.string,
-        price_display: PropTypes.string,
-    }),
-    onOpenDetails: PropTypes.func,
+    data: PropTypes.object,
     style: PropTypes.object,
 };
 

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik, Form } from 'formik';
 import { Button, Dropdown, Icon, Input, Money, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
-import { getDecimalPlaces, getCurrencyDisplayCode, validNumber, website_name } from '@deriv/shared';
+import { getDecimalPlaces, getCurrencyDisplayCode, getCurrencyName, validNumber, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import FormError from '../Error/form-error.jsx';
@@ -26,7 +26,7 @@ const AccountOption = ({ account, idx }) => {
             )}
 
             <div className='account-transfer__currency-wrapper'>
-                <span className='account-transfer__currency'>{account.text}</span>
+                <span className='account-transfer__currency'>{getCurrencyName(account.currency)}</span>
                 <span className='account-transfer__loginid'>{account.value}</span>
             </div>
 
@@ -143,7 +143,7 @@ const AccountTransferForm = ({
         (account.is_mt ? mt_accounts_from : accounts_from).push({
             text,
             value,
-            nativepicker_text: `${account.text} (${account.currency} ${account.balance})`,
+            nativepicker_text: `${getCurrencyName(account.currency)} (${account.currency} ${account.balance})`,
         });
         const is_selected_from = account.value === selected_from.value;
         // account from and to cannot be the same
@@ -157,7 +157,7 @@ const AccountTransferForm = ({
                 text,
                 value,
                 disabled: is_disabled,
-                nativepicker_text: `${account.text} (${account.currency} ${account.balance})`,
+                nativepicker_text: `${getCurrencyName(account.currency)} (${account.currency} ${account.balance})`,
             });
         }
     });

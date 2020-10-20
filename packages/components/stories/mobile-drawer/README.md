@@ -1,6 +1,6 @@
 # MobileDrawer Component
 
-Renders humberger menu in movile view.
+Renders humberger menu in mobile view.
 
 #### Supported Gestures:
 
@@ -163,9 +163,9 @@ Renders a submenu inside the maindrawer menu. The submenu will show over the mai
 | onToggle                         | {function}   | null    | Toggles Submenu visability                    |
 | has_subheader                    | {boolean}    | null    | Defines whether Submenu has SubHeader or not  | 
 | submenu_icon `*optional`         | {string}     | null    | Name of the Icon for Submenu                  |
-| submenu_suffix_icon `*optional`  | {string}     | null    | Name of the suffix Icon for Submenu           |
+| submenu\_suffix\_icon `*optional`| {string}     | null    | Name of the suffix Icon for Submenu           |
 | submenu_title                    | {string}     | null    | Title of the Submenu                          |
-| submenu_toggle_class `*optional` | {string}     | null    | ClassName for Submenu                         |
+| submenu\_toggle\_class `*optional`| {string}    | null    | ClassName for Submenu                         |
  
 
 ##### Usage
@@ -195,9 +195,8 @@ const DummyComponent = props => (
 Renders a SubMenuSection inside the Submenu.
 
 ##### Props
- children: PropTypes.node,
-    section_icon: PropTypes.string,
-    section_title: 
+
+
 | Name              | Type         | Default | Description                                   |
 | ----------------- | ------------ | ------- | --------------------------------------------- |
 | children          | {react node} | null    | Elements inside Submenu                       |

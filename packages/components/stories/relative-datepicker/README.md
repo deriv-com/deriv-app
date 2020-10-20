@@ -27,8 +27,8 @@ const DummyComponent = props => (
 | ----------------------------- | ------------------ | --------- | ------------------------------------------------------ |
 | onChange                      | {function}         | undefined | Function returns the selected date                     |
 | title                         | {string}           | null      | Title of the date picker                               |
-| min                           | {string or number} | 0         | Minumim selectable date offset                         |
-| max                           | {string or number} | 0         | Maximum selectable date offset                         |
+| min                           | {string \| number} | 0         | Minumim selectable date offset                         |
+| max                           | {string \| number} | 0         | Maximum selectable date offset                         |
 
 
 # Full example:

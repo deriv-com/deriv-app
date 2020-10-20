@@ -1,6 +1,6 @@
 # Mobile Dialog Component
 
-Renders a dialog bix with title, body and footer for mobile and desktop. This component uses an empty `div` with a spesific `id` as portal to render the dialog. So, add somtehing like `<div id='modal_root'/>` to your  `index.html` file.
+Renders a dialog box with title, body and footer for mobile and desktop. This component uses an empty `div` with a spesific `id` as portal to render the dialog. So, add somtehing like `<div id='modal_root'/>` to your  `index.html` file.
 
 #### Supported Gestures:
 
@@ -30,15 +30,15 @@ const DummyComponent = props => (
 
 | Name                          | Type         | Default   | Description                                            |
 | ----------------------------- | ------------ | --------- | ------------------------------------------------------ |
-| portal_element_id `*required` | {string}     | null      | Id of the portal element                               |
+| portal\_element\_id `*required` | {string}   | null      | Id of the portal element                               |
 | children                      | {react node} | null      | Dialog inner elements.                                 |
 | visible                       | {boolean}    | null      | controls visability of dialog                          |
 | title                         | {string}     | null      | Title of the dialog                                    |
 | renderTitle                   | {function}   | null      | A function returns a React Node for more complex title |
 | wrapper_classname             | {string}     | null      | ClassName for dialog inner elements (children)         |
 | onClose                       | {function}   | undefined | Function triggers when the user clicks on close button |
-| has_content_scroll            | {boolean}    | null      | Defines whether the dialog is scrollable or not        |
-| content_height_offset         | {string}     | 8px       | Dialog height offset                                   |
+| has\_content\_scroll          | {boolean}    | null      | Defines whether the dialog is scrollable or not        |
+| content\_height\_offset       | {string}     | 8px       | Dialog height offset                                   |
 
 
 # Full example:

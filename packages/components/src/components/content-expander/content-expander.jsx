@@ -100,7 +100,6 @@ ContentExpander.propTypes = {
     title_className: PropTypes.string,
     wrapper_className: PropTypes.string,
     onToggle: PropTypes.func,
-    toggleVisibility: PropTypes.func,
 };
 
 export default ContentExpander;

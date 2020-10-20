@@ -8,6 +8,8 @@ import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import ContractReplay from './contract-replay.jsx';
 
+const is_dialog_erros = ['GetProposalFailure', 'ContractValidationError'];
+
 class Contract extends React.Component {
     componentDidMount() {
         this.props.onMount(+this.props.match.params.contract_id, this.props.history);
@@ -28,8 +30,12 @@ class Contract extends React.Component {
                 {this.props.has_error ? (
                     <ErrorComponent
                         message={this.props.error_message}
-                        is_dialog={this.props.error_code === 'ContractValidationError'}
-                        redirect_label={this.props.error_code === 'ContractValidationError' ? localize('Ok') : localize('Go back to trading')}
+                        is_dialog={is_dialog_erros.includes(this.props.error_code)}
+                        redirect_label={
+                            is_dialog_erros.includes(this.props.error_code)
+                                ? localize('Ok')
+                                : localize('Go back to trading')
+                        }
                         redirectOnClick={() => this.props.history.push(routes.trade)}
                         should_show_refresh={false}
                     />

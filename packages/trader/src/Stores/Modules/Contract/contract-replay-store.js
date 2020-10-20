@@ -55,7 +55,13 @@ export default class ContractReplayStore extends BaseStore {
         // Subscription is created only when the contract replay page is opened directly
         if (!this.root_store.modules.contract_trade.contracts_map[contract_id]) {
             this.subscriber = WS.subscribeProposalOpenContract(contract_id, cb);
+            return;
         }
+
+        // force to call the callback to ensure contract-replay-store callback called on the initial
+        // process. This regards to when a feed stopped before buying a contract
+        WS.storage.proposalOpenContract({ contract_id }).then(cb);
+        return;
     };
 
     subscribeProposalOpenContract = () => {

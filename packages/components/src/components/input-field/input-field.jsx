@@ -295,7 +295,7 @@ class InputField extends React.Component {
             <React.Fragment>
                 {!!prefix && (
                     <div className={classNamePrefix}>
-                        <span className={classNames(`${classNamePrefix}--symbol`, 'symbols')}>
+                        <span className={classNames(`${classNamePrefix}--symbol`)}>
                             {getCurrencyDisplayCode(currency)}
                         </span>
                     </div>

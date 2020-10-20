@@ -42,7 +42,7 @@ module.exports = {
                 exclude: /node_modules/,
                 use: [
                     {
-                        loader: path.resolve(__dirname, '../shared/src/loaders/react-import-loader.js'),
+                        loader: '@deriv/shared/src/loaders/react-import-loader.js',
                     },
                     {
                         loader: 'babel-loader',
@@ -79,7 +79,7 @@ module.exports = {
                         options: {
                             // Provide path to the file with resources
                             // eslint-disable-next-line global-require, import/no-dynamic-require
-                            resources: require(path.resolve(__dirname, '../shared/src/styles/index.js')),
+                            resources: require('@deriv/shared/src/styles/index.js'),
                         },
                     },
                 ],

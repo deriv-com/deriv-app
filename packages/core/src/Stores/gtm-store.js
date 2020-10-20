@@ -62,7 +62,7 @@ export default class GTMStore extends BaseStore {
 
     @action.bound
     accountSwitcherListener() {
-        return new Promise(async resolve => resolve(this.pushDataLayer({ event: 'account switch' })));
+        return new Promise(resolve => resolve(this.pushDataLayer({ event: 'account switch' })));
     }
 
     /**

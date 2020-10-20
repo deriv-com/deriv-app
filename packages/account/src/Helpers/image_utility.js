@@ -1,7 +1,7 @@
 require('canvas-toBlob');
 
-const compressImg = (image) =>
-    new Promise((resolve) => {
+const compressImg = image =>
+    new Promise(resolve => {
         const img = new Image();
         img.src = image.src;
         img.onload = () => {
@@ -24,7 +24,7 @@ const compressImg = (image) =>
             context.drawImage(img, 0, 0, canvas.width, canvas.height);
 
             canvas.toBlob(
-                (blob) => {
+                blob => {
                     const filename = image.filename.replace(/\.[^/.]+$/, '.jpg');
                     const file = new Blob([blob], {
                         type: 'image/jpeg',
@@ -39,8 +39,8 @@ const compressImg = (image) =>
         };
     });
 
-const convertToBase64 = (file) =>
-    new Promise((resolve) => {
+const convertToBase64 = file =>
+    new Promise(resolve => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
@@ -49,9 +49,9 @@ const convertToBase64 = (file) =>
         };
     });
 
-const isImageType = (filename) => /(gif|jpg|jpeg|tiff|png)$/i.test(filename);
+const isImageType = filename => /(gif|jpg|jpeg|tiff|png)$/i.test(filename);
 
-const getFormatFromMIME = (file) =>
+const getFormatFromMIME = file =>
     (file.type.split('/')[1] || (file.name.match(/\.([\w\d]+)$/) || [])[1] || '').toUpperCase();
 
 module.exports = {

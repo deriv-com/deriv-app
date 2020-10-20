@@ -66,7 +66,7 @@ const OpenPositionsTable = ({
             />
         ) : (
             currency && (
-                <ThemedScrollbars className='open-positions__scrollbar' is_bypassed={isMobile()} is_only_horizontal>
+                <ThemedScrollbars className='reports__scrollbar' is_bypassed={isMobile()} is_only_horizontal>
                     <DesktopWrapper>
                         <EmptyPlaceholderWrapper
                             component_icon={component_icon}

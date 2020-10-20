@@ -27,6 +27,8 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "@deriv/components": "^1.0.0",
+        "@deriv/shared": "^1.0.0",
         "classnames": "^2.2.6",
         "crc-32": "^1.2.0",
         "formik": "^2.1.4",

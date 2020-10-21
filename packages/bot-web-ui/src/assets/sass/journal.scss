@@ -42,8 +42,8 @@
         }
     }
     &__data-list {
-        .data-list__item--wrapper {
-            &:nth-child(even) {
+        .ReactVirtualized__Grid__innerScrollContainer {
+            > div:nth-child(even) {
                 background: var(--status-default);
             }
         }

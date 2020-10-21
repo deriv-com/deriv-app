@@ -95,7 +95,20 @@ class Transactions extends React.PureComponent {
                                         }
                                     }
                                 }}
-                                getRowSize={() => 50}
+                                getRowSize={({ index }) => {
+                                    const row = elements[index];
+                                    switch (row.type) {
+                                        case transaction_elements.CONTRACT: {
+                                            return 50;
+                                        }
+                                        case transaction_elements.DIVIDER: {
+                                            return 21;
+                                        }
+                                        default: {
+                                            return 0;
+                                        }
+                                    }
+                                }}
                             />
                         ) : (
                             <>

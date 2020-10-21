@@ -9,6 +9,42 @@ import { connect } from 'Stores/connect';
 import { localize } from '@deriv/translations';
 import AllowEquals from './allow-equals.jsx';
 
+const Input = ({
+    amount,
+    currency,
+    current_focus,
+    error_messages,
+    is_nativepicker,
+    is_single_currency,
+    onChange,
+    setCurrentFocus,
+}) => (
+    <InputField
+        className='trade-container__amount'
+        classNameInlinePrefix='trade-container__currency'
+        classNameInput='trade-container__input'
+        currency={currency}
+        current_focus={current_focus}
+        error_messages={error_messages}
+        fractional_digits={getDecimalPlaces(currency)}
+        id='dt_amount_input'
+        inline_prefix={is_single_currency ? currency : null}
+        is_autocomplete_disabled
+        is_float
+        is_hj_whitelisted
+        is_incrementable
+        is_nativepicker={is_nativepicker}
+        is_negative_disabled
+        max_length={AMOUNT_MAX_LENGTH}
+        name='amount'
+        onChange={onChange}
+        type='tel'
+        value={amount}
+        ariaLabel={localize('Amount')}
+        setCurrentFocus={setCurrentFocus}
+    />
+);
+
 const Amount = ({
     amount,
     basis,
@@ -51,33 +87,6 @@ const Amount = ({
 
     const error_messages = validation_errors.amount;
 
-    const Input = () => (
-        <InputField
-            className='trade-container__amount'
-            classNameInlinePrefix='trade-container__currency'
-            classNameInput='trade-container__input'
-            currency={currency}
-            current_focus={current_focus}
-            error_messages={error_messages}
-            fractional_digits={getDecimalPlaces(currency)}
-            id='dt_amount_input'
-            inline_prefix={is_single_currency ? currency : null}
-            is_autocomplete_disabled
-            is_float
-            is_hj_whitelisted
-            is_incrementable
-            is_nativepicker={is_nativepicker}
-            is_negative_disabled
-            max_length={AMOUNT_MAX_LENGTH}
-            name='amount'
-            onChange={onChange}
-            type='tel'
-            value={amount}
-            ariaLabel={localize('Amount')}
-            setCurrentFocus={setCurrentFocus}
-        />
-    );
-
     return (
         <Fieldset
             className='trade-container__fieldset center-text'
@@ -104,7 +113,16 @@ const Amount = ({
             )}
             {!is_single_currency ? (
                 <div className='trade-container__currency-options'>
-                    <Input />
+                    <Input
+                        amount={amount}
+                        currency={currency}
+                        current_focus={current_focus}
+                        error_messages={error_messages}
+                        is_single_currency={is_single_currency}
+                        is_nativepicker={is_nativepicker}
+                        onChange={onChange}
+                        setCurrentFocus={setCurrentFocus}
+                    />
                     <Dropdown
                         id='amount'
                         className={classNames({ 'dc-dropdown-container__currency': !is_single_currency })}
@@ -119,7 +137,16 @@ const Amount = ({
                     />
                 </div>
             ) : (
-                <Input />
+                <Input
+                    amount={amount}
+                    currency={currency}
+                    current_focus={current_focus}
+                    error_messages={error_messages}
+                    is_single_currency={is_single_currency}
+                    is_nativepicker={is_nativepicker}
+                    onChange={onChange}
+                    setCurrentFocus={setCurrentFocus}
+                />
             )}
             <AllowEquals
                 contract_start_type={contract_start_type}

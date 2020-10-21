@@ -27,8 +27,7 @@ export default class OnRampStore extends BaseStore {
             const { client } = root_store;
             this.setOnrampProviders([
                 OnrampProviders.createChangellyProvider(client),
-                // TODO: Re-enable once Wyre prod keys are added to production.
-                // OnrampProviders.createWyreProvider(),
+                OnrampProviders.createWyreProvider(),
                 OnrampProviders.createBanxaProvider(),
             ]);
         });

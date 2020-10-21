@@ -27,7 +27,7 @@ const createBanxaProvider = () => ({
         { dark: 'IcCashierPostBillPayDark', light: 'IcCashierPostBillPayLight' },
         { dark: 'IcCashierSofort', light: 'IcCashierSofort' },
     ],
-    getScriptDependencies: () => [], // None.
+    getScriptDependencies: () => [],
     getDefaultFromCurrency: () => '',
     getFromCurrencies: () => ['*'],
     getToCurrencies: () => ['*'],
@@ -87,47 +87,46 @@ const createChangellyProvider = client => ({
     should_show_deposit_address: true,
 });
 
-// TODO: Re-enable once Wyre prod keys are added to production.
-// const createWyreProvider = () => ({
-//     icon: { dark: 'IcCashierWyre', light: 'IcCashierWyre' },
-//     name: 'Wyre',
-//     getDescription: () =>
-//         localize(
-//             'A secure and compliant bridge between fiat currencies and cryptocurrencies. Supports BTC, ETH, WETH, and DAI. Exchange crypto safely and securely with Wyre.'
-//         ),
-//     getAllowedResidencies: () => ['*'],
-//     getPaymentIcons: () => [
-//         { dark: 'IcCashierVisa', light: 'IcCashierVisa' },
-//         { dark: 'IcCashierMastercard', light: 'IcCashierMastercard' },
-//     ],
-//     getScriptDependencies: () => ['https://widget.changelly.com/affiliate.js'],
-//     getDefaultFromCurrency: () => 'usd',
-//     getFromCurrencies: () => ['usd', 'eur', 'gbp'],
-//     getToCurrencies: () => ['btc', 'eth', 'weth', 'dai'],
-//     getWidgetHtml: () => {
-//         return new Promise((resolve, reject) => {
-//             WS.serviceToken({ service_token: 1, service: 'wyre' }).then(response => {
-//                 if (response.error) {
-//                     reject(response.error.message);
-//                 } else {
-//                     const { url } = response.service_token.wyre;
+const createWyreProvider = () => ({
+    icon: { dark: 'IcCashierWyreDark', light: 'IcCashierWyreLight' },
+    name: 'Wyre',
+    getDescription: () =>
+        localize(
+            'A secure and compliant bridge between fiat currencies and cryptocurrencies. Supports BTC, ETH, WETH, and DAI. Exchange crypto safely and securely with Wyre.'
+        ),
+    getAllowedResidencies: () => ['*'],
+    getPaymentIcons: () => [
+        { dark: 'IcCashierVisaDark', light: 'IcCashierVisaLight' },
+        { dark: 'IcCashierMastercardDark', light: 'IcCashierMastercardLight' },
+    ],
+    getScriptDependencies: () => [],
+    getDefaultFromCurrency: () => '',
+    getFromCurrencies: () => ['*'],
+    getToCurrencies: () => ['*'],
+    getWidgetHtml: () => {
+        return new Promise((resolve, reject) => {
+            WS.serviceToken({ service_token: 1, service: 'wyre' }).then(response => {
+                if (response.error) {
+                    reject(response.error.message);
+                } else {
+                    const { url } = response.service_token.wyre;
 
-//                     if (url) {
-//                         window.open(url);
-//                     }
+                    if (url) {
+                        window.open(url);
+                    }
 
-//                     // Resolving empty will/should redirect user.
-//                     resolve();
-//                 }
-//             });
-//         });
-//     },
-//     onMountWidgetContainer: () => {},
-//     should_show_deposit_address: false,
-// });
+                    // Resolving empty will/should redirect user.
+                    resolve();
+                }
+            });
+        });
+    },
+    onMountWidgetContainer: () => {},
+    should_show_deposit_address: false,
+});
 
 export default {
     createBanxaProvider,
     createChangellyProvider,
-    // createWyreProvider, TODO: Re-enable once Wyre prod keys are added to production.
+    createWyreProvider,
 };

@@ -25,7 +25,7 @@ const AccountTransferLimit = ({ disableApp, enableApp, is_loading, is_visible, t
             is_visible={is_visible}
             portal_element_id='modal_root'
         >
-            <Localize i18n_default_text='You have exceeded 200.00 USD in cumulative transactions. To continue, you will need to verify your identity.' />
+            <Localize i18n_default_text='You are transferring more than 200.00 USD in cumulative transactions. To continue, you will need to verify your identity.' />
         </Dialog>
     );
 };

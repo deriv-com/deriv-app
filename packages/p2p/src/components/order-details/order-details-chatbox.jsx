@@ -2,16 +2,21 @@ import * as React from 'react';
 import { Loading } from '@deriv/components';
 import { useIsMounted } from '@deriv/shared';
 import { Channel, SendBirdProvider } from 'sendbird-uikit';
+import { observer } from 'mobx-react-lite';
 import { getShortNickname, generateHexColourFromNickname } from 'Utils/string';
-import 'sendbird-uikit/dist/index.css';
 import { useStores } from 'Stores';
+import 'sendbird-uikit/dist/index.css';
 
-const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url, nickname }) => {
+const OrderDetailsChatbox = observer(({ token, app_id, user_id }) => {
+    const { general_store, order_store, order_details_store } = useStores();
+
+    const { chat_channel_url, other_user_details } = order_store.order_information;
+
     const isMounted = useIsMounted();
-    const { general_store } = useStores();
-    const [is_loading, setIsLoading] = React.useState(true);
 
     React.useEffect(() => {
+        order_details_store.setIsChatLoading(true);
+
         const interval_header = setInterval(() => {
             const el_sendbird_conversation = document.querySelector('.sendbird-conversation');
             const el_chat_title = document.querySelector('.sendbird-chat-header__title');
@@ -19,20 +24,20 @@ const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url, nickname }) 
 
             if (el_chat_title) {
                 if (/^Chat about order [0-9]+$/.test(el_chat_title.innerText)) {
-                    const short_name = getShortNickname(nickname);
+                    const short_name = getShortNickname(other_user_details.name);
                     const el_chat_header_avatar = document.createElement('div');
 
-                    el_chat_title.innerText = nickname;
+                    el_chat_title.innerText = other_user_details.name;
 
                     el_chat_header_avatar.innerText = short_name;
                     el_chat_avatar.appendChild(el_chat_header_avatar);
-                    el_chat_avatar.style.backgroundColor = generateHexColourFromNickname(nickname);
+                    el_chat_avatar.style.backgroundColor = generateHexColourFromNickname(other_user_details.name);
                     el_chat_header_avatar.className = 'sendbird-avatar-text';
 
                     el_sendbird_conversation.setAttribute('style', 'display: flex;');
 
                     if (isMounted()) {
-                        setIsLoading(false);
+                        order_details_store.setIsChatLoading(false);
                     }
 
                     clearInterval(interval_header);
@@ -83,7 +88,7 @@ const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url, nickname }) 
             }
 
             if (isMounted()) {
-                setIsLoading(false);
+                order_details_store.setIsChatLoading(false);
             }
         }, 10000);
 
@@ -92,17 +97,17 @@ const OrderDetailsChatbox = ({ token, app_id, user_id, channel_url, nickname }) 
 
     return (
         <div className={'sendbird-container'}>
-            {is_loading && <Loading is_fullscreen={false} />}
+            {order_details_store.is_chat_loading && <Loading is_fullscreen={false} />}
             <SendBirdProvider
                 appId={app_id}
                 userId={user_id}
                 accessToken={token}
                 theme={general_store.props.is_dark_mode_on ? 'dark' : 'light'}
             >
-                <Channel channelUrl={channel_url} />
+                <Channel channelUrl={chat_channel_url} />
             </SendBirdProvider>
         </div>
     );
-};
+});
 
 export default OrderDetailsChatbox;

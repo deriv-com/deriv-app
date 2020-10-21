@@ -9,6 +9,7 @@ export default class AdvertiserPageStore {
     constructor(root_store) {
         this.root_store = root_store;
         this.general_store = this.root_store.general_store;
+        this.buy_sell_store = this.root_store.buy_sell_store;
     }
 
     @observable active_index = 0;
@@ -36,22 +37,21 @@ export default class AdvertiserPageStore {
         height_constants.tabs,
     ];
     item_height = 56;
-    props = {};
 
     get account_currency() {
-        return this.props?.selected_advert.account_currency;
+        return this.buy_sell_store.selected_ad_state.account_currency;
     }
 
     get advertiser_details() {
-        return this.props?.selected_advert.advertiser_details || {};
+        return this.buy_sell_store.selected_ad_state.advertiser_details || {};
     }
 
     get advertiser_details_id() {
-        return this.props?.selected_advert.advertiser_details.id;
+        return this.buy_sell_store.selected_ad_state.advertiser_details.id;
     }
 
     get advertiser_details_name() {
-        return this.props?.selected_advert.advertiser_details.name;
+        return this.buy_sell_store.selected_ad_state.advertiser_details.name;
     }
 
     get modal_title() {
@@ -118,7 +118,7 @@ export default class AdvertiserPageStore {
     @action.bound
     onConfirmClick(order_info) {
         const nav = { location: 'buy_sell' };
-        this.props.navigate('orders', { order_info, nav });
+        this.general_store.redirectTo('orders', { order_info, nav });
     }
 
     @action.bound
@@ -145,10 +145,6 @@ export default class AdvertiserPageStore {
     @action.bound
     setAdvertiserInfo(advertiser_info) {
         this.advertiser_info = advertiser_info;
-    }
-
-    setAdvertiserPageProps(props) {
-        this.props = props;
     }
 
     @action.bound
@@ -194,7 +190,7 @@ export default class AdvertiserPageStore {
     @action.bound
     showAdPopup(advert) {
         if (!this.general_store.is_advertiser) {
-            this.props.showVerification();
+            this.buy_sell_store.showVerification();
         } else {
             this.setAd(advert);
             this.setShowAdPopup(true);

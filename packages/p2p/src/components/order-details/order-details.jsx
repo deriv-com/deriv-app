@@ -1,10 +1,10 @@
 import classNames from 'classnames';
 import React from 'react';
-import PropTypes from 'prop-types';
 import { ThemedScrollbars } from '@deriv/components';
-import { getFormattedText, useIsMounted } from '@deriv/shared';
+import { getFormattedText } from '@deriv/shared';
+import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
-import { requestWS } from 'Utils/websocket';
+import { useStores } from 'Stores';
 import OrderDetailsFooter from './order-details-footer.jsx';
 import OrderDetailsChatbox from './order-details-chatbox.jsx';
 import OrderDetailsTimer from './order-details-timer.jsx';
@@ -12,12 +12,13 @@ import OrderInfoBlock from './order-info-block.jsx';
 import Popup from '../orders/popup.jsx';
 import './order-details.scss';
 
-const OrderDetails = ({ order_information, chat_info }) => {
+const OrderDetails = observer(() => {
+    const { general_store, order_store, order_details_store } = useStores();
+
     const {
         account_currency,
         advert_details,
         amount_display,
-        chat_channel_url,
         contact_info,
         has_timer_expired,
         id,
@@ -35,36 +36,10 @@ const OrderDetails = ({ order_information, chat_info }) => {
         should_highlight_success,
         should_show_order_footer,
         status_string,
-    } = order_information;
-
-    const [channel_url, setChannelUrl] = React.useState(chat_channel_url);
-    const [should_show_popup, setShouldShowPopup] = React.useState(false);
-    const [popup_options, setPopupOptions] = React.useState({});
-    const isMounted = useIsMounted();
-
-    const onCancelClick = () => setShouldShowPopup(false);
-    const handleShowPopup = options => {
-        setPopupOptions(options);
-        setShouldShowPopup(true);
-    };
+    } = order_store.order_information;
 
     React.useEffect(() => {
-        if (isMounted()) {
-            if (!channel_url) {
-                // If order_information doesn't have channel_url this is a new order
-                // and we need to instruct BE to create a chat on Sendbird's side.
-                requestWS({ p2p_chat_create: 1, order_id: id }).then(response => {
-                    if (response.error) {
-                        // TODO: Handle error.
-                        return;
-                    }
-
-                    if (isMounted()) {
-                        setChannelUrl(response.p2p_chat_create);
-                    }
-                });
-            }
-        }
+        order_details_store.createChatForNewOrder();
     }, []);
 
     return (
@@ -99,7 +74,7 @@ const OrderDetails = ({ order_information, chat_info }) => {
                             </div>
                         </div>
                         <div className='order-details__header--right'>
-                            <OrderDetailsTimer order_information={order_information} />
+                            <OrderDetailsTimer />
                         </div>
                     </div>
                     <ThemedScrollbars height='calc(100% - 11.2rem)'>
@@ -136,35 +111,18 @@ const OrderDetails = ({ order_information, chat_info }) => {
                             <OrderInfoBlock label={labels.instructions} value={advert_details.description || '-'} />
                         </div>
                     </ThemedScrollbars>
-                    {should_show_order_footer && (
-                        <OrderDetailsFooter
-                            cancelPopup={onCancelClick}
-                            showPopup={handleShowPopup}
-                            order_information={order_information}
-                        />
-                    )}
+                    {should_show_order_footer && <OrderDetailsFooter cancelPopup={order_details_store.onCancelClick} />}
                 </div>
-                {channel_url && (
-                    <OrderDetailsChatbox
-                        {...chat_info}
-                        channel_url={chat_channel_url}
-                        nickname={other_user_details.name}
-                    />
-                )}
+                {order_details_store.channel_url && <OrderDetailsChatbox {...general_store.chat_info} />}
                 <Popup
-                    {...popup_options}
-                    onCancel={onCancelClick}
-                    should_show_popup={should_show_popup}
-                    setShouldShowPopup={setShouldShowPopup}
+                    {...order_details_store.popup_options}
+                    onCancel={order_details_store.onCancelClick}
+                    should_show_popup={order_details_store.should_show_popup}
+                    setShouldShowPopup={order_details_store.setShouldShowPopup}
                 />
             </div>
         </div>
     );
-};
-
-OrderDetails.propTypes = {
-    chat_info: PropTypes.object,
-    order_information: PropTypes.object,
-};
+});
 
 export default OrderDetails;

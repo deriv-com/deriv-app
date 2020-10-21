@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button, Icon, Loading, Modal, Popover, Table, Tabs, ThemedScrollbars } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
-import PropTypes from 'prop-types';
 import { generateHexColourFromNickname } from 'Utils/string';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { useStores } from 'Stores';
@@ -46,9 +45,8 @@ const RowComponent = React.memo(({ data: advert, showAdPopup, style }) => {
 
 RowComponent.displayName = 'RowComponent';
 
-const AdvertiserPage = observer(props => {
+const AdvertiserPage = observer(() => {
     const { advertiser_page_store, general_store } = useStores();
-    advertiser_page_store.setAdvertiserPageProps(props);
 
     const {
         basic_verification,
@@ -265,9 +263,5 @@ const AdvertiserPage = observer(props => {
         </div>
     );
 });
-AdvertiserPage.propTypes = {
-    navigate: PropTypes.func,
-    selected_advert: PropTypes.object,
-    showVerification: PropTypes.func,
-};
+
 export default AdvertiserPage;

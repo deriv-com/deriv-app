@@ -43,7 +43,7 @@ const Orders = observer(() => {
                               })
                     }
                 />
-                <OrderDetails order_information={order_information} chat_info={general_store.chat_info} />
+                <OrderDetails />
             </div>
         );
     }

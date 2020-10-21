@@ -46,11 +46,7 @@ const BuySell = observer(() => {
         return (
             <>
                 <PageReturn onClick={buy_sell_store.hideAdvertiserPage} page_title={localize("Advertiser's page")} />
-                <AdvertiserPage
-                    navigate={general_store.redirectTo}
-                    selected_advert={buy_sell_store.selected_ad_state}
-                    showVerification={buy_sell_store.showVerification}
-                />
+                <AdvertiserPage />
             </>
         );
     }

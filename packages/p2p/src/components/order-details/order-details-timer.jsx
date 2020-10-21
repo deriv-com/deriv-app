@@ -1,47 +1,29 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
-import { secondsToTimer } from 'Utils/date-time';
-import ServerTime from 'Utils/server-time';
+import { useStores } from 'Stores';
 
-const OrderDetailsTimer = ({ order_information }) => {
-    const [remaining_time, setRemainingTime] = React.useState();
-    const { should_show_order_timer } = order_information;
-    const interval = React.useRef(null);
+const OrderDetailsTimer = observer(() => {
+    const { order_store, order_details_store } = useStores();
 
-    const countDownTimer = () => {
-        const distance = ServerTime.getDistanceToServerTime(order_information.order_expiry_milliseconds);
-        const timer = secondsToTimer(distance);
-
-        if (distance < 0) {
-            setRemainingTime(localize('expired'));
-            clearInterval(interval.current);
-        } else {
-            setRemainingTime(timer);
-        }
-    };
+    const { should_show_order_timer } = order_store.order_information;
 
     React.useEffect(() => {
-        countDownTimer();
-        interval.current = setInterval(countDownTimer, 1000);
-        return () => clearInterval(interval.current);
+        order_details_store.onMountTimer();
+        return () => order_details_store.clearIntervalState();
     }, []);
 
     if (should_show_order_timer) {
         return (
             <div className='order-details__header-timer'>
                 <div>{localize('Time left')}</div>
-                <div className='order-details__header-timer-counter'>{remaining_time}</div>
+                <div className='order-details__header-timer-counter'>{order_details_store.remaining_time}</div>
             </div>
         );
     }
 
-    clearInterval(interval.current);
+    order_details_store.clearIntervalState();
     return null;
-};
-
-OrderDetailsTimer.propTypes = {
-    order_information: PropTypes.object,
-};
+});
 
 export default OrderDetailsTimer;

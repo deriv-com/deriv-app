@@ -1,10 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Button } from '@deriv/components';
+import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
+import { useStores } from 'Stores';
 
-const OrderDetailsFooter = ({ order_information, cancelPopup, showPopup }) => {
+const OrderDetailsFooter = observer(() => {
+    const { order_store, order_details_store } = useStores();
     const {
         id,
         local_currency,
@@ -13,7 +15,7 @@ const OrderDetailsFooter = ({ order_information, cancelPopup, showPopup }) => {
         should_show_complain_and_received_button,
         should_show_cancel_and_paid_button,
         should_show_only_complain_button,
-    } = order_information;
+    } = order_store.order_information;
 
     const showCancelOrderPopup = () => {
         const sendOrderCancelRequest = async setFormStatus => {
@@ -22,7 +24,7 @@ const OrderDetailsFooter = ({ order_information, cancelPopup, showPopup }) => {
             const cancel_response = await requestWS({ p2p_order_cancel: 1, id });
 
             if (!cancel_response.error) {
-                cancelPopup();
+                order_details_store.onCancelClick();
             } else {
                 setFormStatus({ error_message: cancel_response.error.message });
             }
@@ -39,7 +41,7 @@ const OrderDetailsFooter = ({ order_information, cancelPopup, showPopup }) => {
             onClickConfirm: sendOrderCancelRequest,
         };
 
-        showPopup(options);
+        order_details_store.handleShowPopup(options);
     };
 
     const showComplainPopup = () => {
@@ -63,10 +65,10 @@ const OrderDetailsFooter = ({ order_information, cancelPopup, showPopup }) => {
                 />
             ),
             confirm_text: localize('Close'),
-            onClickConfirm: () => cancelPopup(),
+            onClickConfirm: () => order_details_store.onCancelClick(),
         };
 
-        showPopup(options);
+        order_details_store.handleShowPopup(options);
     };
 
     const showPaidOrderPopup = () => {
@@ -79,7 +81,7 @@ const OrderDetailsFooter = ({ order_information, cancelPopup, showPopup }) => {
             });
 
             if (!update_response.error) {
-                cancelPopup();
+                order_details_store.onCancelClick();
             } else {
                 setFormStatus({ error_message: update_response.error.message });
             }
@@ -94,14 +96,14 @@ const OrderDetailsFooter = ({ order_information, cancelPopup, showPopup }) => {
                 other_user_name: other_user_details.name,
             }),
             should_confirm_payment: true,
-            order_information,
+            order_information: order_store.order_information,
             has_cancel: true,
             cancel_text: localize("I haven't paid yet"),
             confirm_text: localize("I've paid"),
             onClickConfirm: sendOrderConfirmRequest,
         };
 
-        showPopup(options);
+        order_details_store.handleShowPopup(options);
     };
 
     const showReceivedFundsPopup = () => {
@@ -114,7 +116,7 @@ const OrderDetailsFooter = ({ order_information, cancelPopup, showPopup }) => {
             });
 
             if (!update_response.error) {
-                cancelPopup();
+                order_details_store.onCancelClick();
             } else {
                 setFormStatus({ error_message: update_response.error.message });
             }
@@ -127,13 +129,13 @@ const OrderDetailsFooter = ({ order_information, cancelPopup, showPopup }) => {
                 'Please confirm only after checking your bank or e-wallet account to make sure you have received payment.'
             ),
             need_confirmation: true,
-            order_information,
+            order_information: order_store.order_information,
             onClickConfirm: sendOrderConfirmRequest,
             has_cancel: true,
             cancel_text: localize('Cancel'),
         };
 
-        showPopup(options);
+        order_details_store.handleShowPopup(options);
     };
 
     if (should_show_complain_and_received_button) {
@@ -185,12 +187,6 @@ const OrderDetailsFooter = ({ order_information, cancelPopup, showPopup }) => {
     }
 
     return null;
-};
-
-OrderDetailsFooter.propTypes = {
-    cancelPopup: PropTypes.func,
-    order_details: PropTypes.object,
-    showPopup: PropTypes.func,
-};
+});
 
 export default OrderDetailsFooter;

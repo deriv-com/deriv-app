@@ -26,7 +26,9 @@ const AccountOption = ({ account, idx }) => {
             )}
 
             <div className='account-transfer__currency-wrapper'>
-                <span className='account-transfer__currency'>{getCurrencyName(account.currency)}</span>
+                <span className='account-transfer__currency'>
+                    {account.is_mt ? account.text : getCurrencyName(account.currency)}
+                </span>
                 <span className='account-transfer__loginid'>{account.value}</span>
             </div>
 
@@ -143,7 +145,9 @@ const AccountTransferForm = ({
         (account.is_mt ? mt_accounts_from : accounts_from).push({
             text,
             value,
-            nativepicker_text: `${getCurrencyName(account.currency)} (${account.currency} ${account.balance})`,
+            nativepicker_text: `${account.is_mt ? account.text : getCurrencyName(account.currency)} (${
+                account.balance
+            } ${account.currency})`,
         });
         const is_selected_from = account.value === selected_from.value;
         // account from and to cannot be the same
@@ -157,7 +161,9 @@ const AccountTransferForm = ({
                 text,
                 value,
                 disabled: is_disabled,
-                nativepicker_text: `${getCurrencyName(account.currency)} (${account.currency} ${account.balance})`,
+                nativepicker_text: `${account.is_mt ? account.text : getCurrencyName(account.currency)} (${
+                    account.balance
+                } ${account.currency})`,
             });
         }
     });

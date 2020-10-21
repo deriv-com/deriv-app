@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Checkbox, Modal } from '@deriv/components';
+import { Button, Checkbox, Modal, RadioGroup } from '@deriv/components';
 import { useIsMounted } from '@deriv/shared';
 import { requestWS } from 'Utils/websocket';
 import { localize, Localize } from 'Components/i18next';
@@ -42,11 +42,11 @@ const OrderDetailsFooter = ({ order_information }) => {
         const [error_message, setErrorMessage] = React.useState('');
 
         const cancelOrderRequest = () => {
-            return new Promise(resolve => {
+            return new Promise((resolve) => {
                 requestWS({
                     p2p_order_cancel: 1,
                     id,
-                }).then(response => {
+                }).then((response) => {
                     if (isMounted()) {
                         if (response.error) {
                             setErrorMessage(response.error.message);
@@ -86,12 +86,12 @@ const OrderDetailsFooter = ({ order_information }) => {
         const [error_message, setErrorMessage] = React.useState('');
 
         const disputeOrderRequest = () => {
-            return new Promise(resolve => {
+            return new Promise((resolve) => {
                 requestWS({
                     p2p_order_dispute: 1,
                     id,
                     dispute_reason,
-                }).then(response => {
+                }).then((response) => {
                     if (isMounted()) {
                         if (response.error) {
                             setErrorMessage(response.error.message);
@@ -103,7 +103,7 @@ const OrderDetailsFooter = ({ order_information }) => {
             });
         };
 
-        const onChange = reason => {
+        const onChange = (reason) => {
             setDisputeReason(reason);
         };
 
@@ -116,41 +116,33 @@ const OrderDetailsFooter = ({ order_information }) => {
                 has_close_icon
             >
                 <Modal.Body>
-                    <Checkbox
-                        name={is_buy_order_for_user ? 'seller_not_released' : 'buyer_not_paid'}
-                        onChange={event => {
-                            onChange(event.target.name);
+                    <RadioGroup
+                        name='reason'
+                        items={[
+                            {
+                                value: is_buy_order_for_user ? 'seller_not_released' : 'buyer_not_paid',
+                                label: is_buy_order_for_user
+                                    ? localize('I’ve made full payment, but the seller hasn’t released the funds.')
+                                    : localize('I’ve not received any payment.'),
+                            },
+                            {
+                                value: 'buyer_underpaid',
+                                label: is_buy_order_for_user
+                                    ? localize('I wasn’t able to make full payment.')
+                                    : localize('I’ve received less than the agreed amount.'),
+                            },
+                            {
+                                value: 'buyer_overpaid',
+                                label: is_buy_order_for_user
+                                    ? localize('I’ve paid more than the agreed amount.')
+                                    : localize('I’ve received more than the agreed amount.'),
+                            },
+                        ]}
+                        onToggle={(event) => {
+                            onChange(event.target.value);
                         }}
-                        value={dispute_reason === 'seller_not_released' || dispute_reason === 'buyer_not_paid'}
-                        label={
-                            is_buy_order_for_user
-                                ? localize('I’ve made full payment, but the seller hasn’t released the funds.')
-                                : localize('I’ve not received any payment.')
-                        }
-                    />
-                    <Checkbox
-                        name='buyer_underpaid'
-                        onChange={event => {
-                            onChange(event.target.name);
-                        }}
-                        value={dispute_reason === 'buyer_underpaid'}
-                        label={
-                            is_buy_order_for_user
-                                ? localize('I wasn’t able to make full payment.')
-                                : localize('I’ve received less than the agreed amount.')
-                        }
-                    />
-                    <Checkbox
-                        name='buyer_overpaid'
-                        onChange={event => {
-                            onChange(event.target.name);
-                        }}
-                        value={dispute_reason === 'buyer_overpaid'}
-                        label={
-                            is_buy_order_for_user
-                                ? localize('I’ve paid more than the agreed amount.')
-                                : localize('I’ve received more than the agreed amount.')
-                        }
+                        selected={dispute_reason}
+                        required
                     />
                     <div className='order-details__contact-text'>
                         <Localize
@@ -187,11 +179,11 @@ const OrderDetailsFooter = ({ order_information }) => {
         const [is_checkbox_checked, setIsCheckboxChecked] = React.useState(false);
 
         const confirmOrderRequest = () => {
-            return new Promise(resolve => {
+            return new Promise((resolve) => {
                 requestWS({
                     p2p_order_confirm: 1,
                     id,
-                }).then(response => {
+                }).then((response) => {
                     if (isMounted()) {
                         if (response.error) {
                             setErrorMessage(response.error.message);

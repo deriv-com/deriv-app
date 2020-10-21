@@ -2,6 +2,10 @@
 The native dropdown component is a fluid element, and it fills it's parent workspace.
 We use this component on mobile to have a native select.
 
+#### Supported events:
+- onChange
+- And all events that is supported on "select" tag
+
 ## Usage
  
 ```jsx
@@ -27,6 +31,7 @@ const DummyComponent = (props) => (
 | classNameDisplay            | {string}               | null    | Class name for selected value text                                                                                       |
 | list_items                  | {array}                | null    | Select options                                                                                                           |
 | value                       | {string}               | null    | Current value                                                                                                            |
+| use_text                    | {boolean}              | null    | If is true on selecting an option, it's text is set as input value otherwise option's value is set on input.              |
 | label                       | {string}               | null    | Label of the field                                                                                                       |
 | placeholder                 | {string}               | null    | If 'should\_show\_empty\_option' is true this prop will show as an empty option                                          |
 | onChange                    | {function}             | null    | This function will be executed when an option is selected                                                                |

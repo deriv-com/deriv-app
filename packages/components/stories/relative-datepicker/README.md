@@ -1,10 +1,16 @@
 # Relative DatePicker Component
 
-Renders a native date picker for mobile. When user clicks on title, the native date picker of mobile will show up. (View this page in mobile device for correct functionality)
+Renders a native date picker for mobile that returns value in days relative to current date. When user clicks on title, the native date picker of mobile will show up. (View this page in mobile device for correct functionality)
 
 #### Supported Gestures:
 
 -   Click
+
+
+#### Supported events:
+
+- onChange
+
 
 ## Usage
 
@@ -23,12 +29,12 @@ const DummyComponent = props => (
 
 ## Props
 
-| Name                          | Type               | Default   | Description                                            |
-| ----------------------------- | ------------------ | --------- | ------------------------------------------------------ |
-| onChange                      | {function}         | undefined | Function returns the selected date                     |
-| title                         | {string}           | null      | Title of the date picker                               |
-| min                           | {string \| number} | 0         | Minumim selectable date offset                         |
-| max                           | {string \| number} | 0         | Maximum selectable date offset                         |
+| Name                          | Type               | Default   | Description                                                                            |
+| ----------------------------- | ------------------ | --------- | -------------------------------------------------------------------------------------- |
+| onChange                      | {function}         | undefined | Function returns value in amount of days, relative to date selected and current date.  |
+| title                         | {string}           | null      | Title of the date picker                                                               |
+| min                           | {string \| number} | 0         | Minimum selectable date offset                                                         |
+| max                           | {string \| number} | 0         | Maximum selectable date offset                                                         |
 
 
 # Full example:

@@ -1,10 +1,11 @@
 # MobileDrawer Component
 
-Renders humberger menu in mobile view.
+Renders drawer menu in mobile view.
 
 #### Supported Gestures:
 
 -   Click
+-   Touch / Drag gestures
 
 ## Usage
 
@@ -45,7 +46,6 @@ const DummyComponent = props => (
 | title                 | {string or boolean} | null      | Title of the menu or `false` for no title           |
 | height                | {string}            | `'auto'`  | Height of the main menu                             |
 | width                 | {string}            | `'auto'`  | Width of the main menu                              |
-| livechat              | {react node}        | null      | LiveChat element will show in header of menu        |
 
 
 ---

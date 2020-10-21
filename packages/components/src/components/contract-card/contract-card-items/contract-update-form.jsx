@@ -121,6 +121,7 @@ class ContractUpdateForm extends React.Component {
             <InputWithCheckbox
                 addToast={addToast}
                 removeToast={removeToast}
+                current_focus={current_focus}
                 classNameInlinePrefix='trade-container__currency'
                 currency={currency}
                 error_messages={this.error_messages.take_profit}
@@ -141,6 +142,7 @@ class ContractUpdateForm extends React.Component {
             <InputWithCheckbox
                 addToast={addToast}
                 removeToast={removeToast}
+                current_focus={current_focus}
                 classNameInlinePrefix='trade-container__currency'
                 currency={currency}
                 defaultChecked={has_contract_update_stop_loss}
@@ -209,6 +211,7 @@ class ContractUpdateForm extends React.Component {
 ContractUpdateForm.propTypes = {
     addToast: PropTypes.func,
     contract: PropTypes.object,
+    current_focus: PropTypes.string,
     getCardLabels: PropTypes.func,
     removeToast: PropTypes.func,
     setCurrentFocus: PropTypes.func,

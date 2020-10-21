@@ -10,6 +10,7 @@ import MultiplierCloseActions from './multiplier-close-actions.jsx';
 const CardFooter = ({
     addToast,
     contract_info,
+    current_focus,
     getCardLabels,
     getContractById,
     is_multiplier,
@@ -62,6 +63,7 @@ const CardFooter = ({
                             <ToggleCardDialog
                                 addToast={addToast}
                                 contract_id={contract_info.contract_id}
+                                current_focus={current_focus}
                                 getCardLabels={getCardLabels}
                                 getContractById={getContractById}
                                 is_valid_to_cancel={is_valid_to_cancel}

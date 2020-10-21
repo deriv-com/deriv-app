@@ -18,6 +18,7 @@ class InputField extends React.Component {
             classNameInput,
             classNamePrefix,
             currency,
+            current_focus,
             data_tip,
             data_value,
             error_messages,
@@ -217,6 +218,7 @@ class InputField extends React.Component {
                 ariaLabel={ariaLabel}
                 changeValue={changeValue}
                 checked={checked}
+                current_focus={current_focus}
                 className={classNames(
                     is_increment_input ? 'dc-input-wrapper__input' : '',
                     inline_prefix ? 'input--has-inline-prefix' : '',
@@ -320,6 +322,7 @@ InputField.propTypes = {
     classNameInput: PropTypes.string,
     classNamePrefix: PropTypes.string,
     currency: PropTypes.string,
+    current_focus: PropTypes.string,
     error_messages: PropTypes.array,
     error_message_alignment: PropTypes.string,
     fractional_digits: PropTypes.number,

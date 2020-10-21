@@ -11,6 +11,7 @@ const Barrier = ({
     barrier_2,
     barrier_count,
     barrier_pipsize,
+    current_focus,
     duration_unit,
     is_minimized,
     is_absolute_only,
@@ -67,6 +68,7 @@ const Barrier = ({
                                 'trade-container__barriers-input',
                                 `trade-container__barriers-${input_class}-input`
                             )}
+                            current_focus={current_focus}
                             onChange={onChange}
                             error_messages={validation_errors.barrier_1 || []}
                             is_float
@@ -83,6 +85,7 @@ const Barrier = ({
                                     value={barrier_2}
                                     className='multiple'
                                     classNameInput='trade-container__input'
+                                    current_focus={current_focus}
                                     onChange={onChange}
                                     error_messages={validation_errors.barrier_2}
                                     is_float
@@ -116,6 +119,7 @@ const Barrier = ({
                                     'barrier__fields-input--is-offset': !is_absolute_barrier,
                                 }
                             )}
+                            current_focus={current_focus}
                             format={format}
                             onChange={onChange}
                             is_float
@@ -147,6 +151,7 @@ const Barrier = ({
                                         'barrier__fields-input--is-offset': !is_absolute_barrier,
                                     }
                                 )}
+                                current_focus={current_focus}
                                 format={format}
                                 onChange={onChange}
                                 is_float
@@ -167,6 +172,7 @@ Barrier.propTypes = {
     barrier_2: PropTypes.string,
     barrier_count: PropTypes.number,
     barrier_pipsize: PropTypes.number,
+    current_focus: PropTypes.string,
     duration_unit: PropTypes.string,
     is_absolute_only: PropTypes.bool,
     is_minimized: PropTypes.bool,
@@ -180,6 +186,7 @@ export default connect(({ modules, ui }) => ({
     barrier_2: modules.trade.barrier_2,
     barrier_pipsize: modules.trade.barrier_pipsize,
     barrier_count: modules.trade.barrier_count,
+    current_focus: ui.current_focus,
     duration_unit: modules.trade.duration_unit,
     onChange: modules.trade.onChange,
     setCurrentFocus: ui.setCurrentFocus,

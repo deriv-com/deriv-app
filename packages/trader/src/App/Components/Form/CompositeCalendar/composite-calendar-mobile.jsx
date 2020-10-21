@@ -4,7 +4,6 @@ import React from 'react';
 import { Button, DatePicker, Icon, InputField, MobileDialog } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { toMoment } from '@deriv/shared';
-import { connect } from 'Stores/connect';
 
 export const RadioButton = ({ id, className, selected_value, value, label, onChange }) => {
     return (
@@ -152,7 +151,7 @@ class CompositeCalendarMobile extends React.PureComponent {
 
     render() {
         const { open, applied_date_range, selected_date_range } = this.state;
-        const { duration_list, setCurrentFocus } = this.props;
+        const { duration_list } = this.props;
 
         const today = toMoment().format('YYYY-MM-DD');
         const max_date = this.state.to ? toMoment(this.state.to, 'DD MMM YYYY').format('YYYY-MM-DD') : today;
@@ -167,7 +166,6 @@ class CompositeCalendarMobile extends React.PureComponent {
                         icon={() => <Icon icon='IcCalendarDatefrom' className='inline-icon' />}
                         onClick={this.openDialog}
                         value={applied_date_range.label}
-                        setCurrentFocus={setCurrentFocus}
                     />
                 </div>
                 <MobileDialog
@@ -240,8 +238,6 @@ CompositeCalendarMobile.propTypes = {
     duration_list: PropTypes.array,
     from: PropTypes.number,
     onChange: PropTypes.func,
-    setCurrentFocus: PropTypes.func,
     to: PropTypes.number,
 };
-
 export default CompositeCalendarMobile;

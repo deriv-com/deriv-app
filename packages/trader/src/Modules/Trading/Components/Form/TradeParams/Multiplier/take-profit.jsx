@@ -9,6 +9,7 @@ const TakeProfit = ({
     addToast,
     removeToast,
     currency,
+    current_focus,
     has_take_profit,
     is_single_currency,
     onChange,
@@ -37,6 +38,7 @@ const TakeProfit = ({
                 classNameInlinePrefix='trade-container__currency'
                 classNameInput='trade-container__input'
                 currency={currency}
+                current_focus={current_focus}
                 defaultChecked={has_take_profit}
                 error_messages={has_take_profit ? validation_errors.take_profit : undefined}
                 is_single_currency={is_single_currency}
@@ -59,6 +61,7 @@ const TakeProfit = ({
 
 TakeProfit.propTypes = {
     currency: PropTypes.string,
+    current_focus: PropTypes.string,
     has_take_profit: PropTypes.bool,
     is_single_currency: PropTypes.bool,
     onChange: PropTypes.func,
@@ -71,6 +74,7 @@ TakeProfit.propTypes = {
 export default connect(({ modules, client, ui }, props) => ({
     addToast: ui.addToast,
     currency: modules.trade.currency,
+    current_focus: ui.current_focus,
     has_take_profit: props.has_take_profit ?? modules.trade.has_take_profit,
     is_single_currency: client.is_single_currency,
     onChange: props.onChange ?? modules.trade.onChange,

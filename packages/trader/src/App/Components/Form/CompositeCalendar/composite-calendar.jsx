@@ -4,7 +4,6 @@ import Loadable from 'react-loadable';
 import { DesktopWrapper, InputField, MobileWrapper } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { daysFromTodayTo, epochToMoment, toMoment } from '@deriv/shared';
-import { connect } from 'Stores/connect';
 import CompositeCalendarMobile from './composite-calendar-mobile.jsx';
 import SideList from './side-list.jsx';
 import CalendarIcon from './calendar-icon.jsx';
@@ -148,7 +147,7 @@ class CompositeCalendar extends React.PureComponent {
 
     render() {
         const { show_from, show_to, list } = this.state;
-        const { to, from, setCurrentFocus } = this.props;
+        const { to, from } = this.props;
 
         return (
             // eslint-disable-next-line react/no-children-prop
@@ -161,7 +160,6 @@ class CompositeCalendar extends React.PureComponent {
                             placeholder={localize('Date from')}
                             icon={CalendarIcon}
                             onClick={this.showCalendar.bind(this, 'from')}
-                            setCurrentFocus={setCurrentFocus}
                             value={this.from_date_label}
                         />
                         <InputField
@@ -170,7 +168,6 @@ class CompositeCalendar extends React.PureComponent {
                             placeholder={localize('Date to')}
                             icon={CalendarIcon}
                             onClick={this.showCalendar.bind(this, 'to')}
-                            setCurrentFocus={setCurrentFocus}
                             value={this.to_date_label}
                         />
                     </div>
@@ -206,10 +203,6 @@ class CompositeCalendar extends React.PureComponent {
 CompositeCalendar.propTypes = {
     from: PropTypes.number,
     onChange: PropTypes.func,
-    setCurrentFocus: PropTypes.func,
     to: PropTypes.number,
 };
-
-export default connect(({ ui }) => ({
-    setCurrentFocus: ui.setCurrentFocus,
-}))(CompositeCalendar);
+export default CompositeCalendar;

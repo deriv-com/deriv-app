@@ -103,7 +103,7 @@ const WelcomeModal = ({ toggleWelcomeModal, history }) => {
                 {
                     icon: 'IcBrandDmt5',
                     title: localize('Deriv MetaTrader 5 (DMT5)'),
-                    description: localize('The platform of choice for professionals.'),
+                    description: localize('All-in-one multi-asset trading platform for CFD margin trading.'),
                 },
             ]}
             title={localize('Margin (MetaTrader 5)')}
@@ -157,7 +157,7 @@ const WelcomeModal = ({ toggleWelcomeModal, history }) => {
                         'welcome__message--visible': hovered === 'left',
                     })}
                 >
-                    <p className='welcome__message__text'>{localize('The choice of professionals')}</p>
+                    <p className='welcome__message__text'>{localize("If you're looking for CFDs")}</p>
                     <Icon icon='IcArrowRightCurly' size={43} />
                 </div>
                 <div

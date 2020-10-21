@@ -14,7 +14,6 @@ const OrderRowComponent = observer(props => {
         amount_display,
         id,
         is_buy_order,
-        is_completed_order,
         is_my_ad,
         is_sell_order,
         local_currency,
@@ -24,6 +23,7 @@ const OrderRowComponent = observer(props => {
         should_highlight_alert,
         should_highlight_danger,
         should_highlight_disabled,
+        should_highlight_success,
         status_string,
     } = order_store.order;
 
@@ -57,7 +57,7 @@ const OrderRowComponent = observer(props => {
                         className={classNames('orders__table-status', {
                             'orders__table-status--danger': should_highlight_danger,
                             'orders__table-status--alert': should_highlight_alert,
-                            'orders__table-status--success': is_completed_order,
+                            'orders__table-status--success': should_highlight_success,
                             'orders__table-status--disabled': should_highlight_disabled,
                         })}
                     >

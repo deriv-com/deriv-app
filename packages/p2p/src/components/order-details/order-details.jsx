@@ -22,7 +22,6 @@ const OrderDetails = ({ order_information, chat_info }) => {
         has_timer_expired,
         id,
         is_buyer_confirmed_order,
-        is_completed_order,
         is_pending_order,
         labels,
         local_currency,
@@ -33,6 +32,7 @@ const OrderDetails = ({ order_information, chat_info }) => {
         rate,
         should_highlight_alert,
         should_highlight_danger,
+        should_highlight_success,
         should_show_order_footer,
         status_string,
     } = order_information;
@@ -80,13 +80,13 @@ const OrderDetails = ({ order_information, chat_info }) => {
                                     {
                                         'order-details__header-status--alert': should_highlight_alert,
                                         'order-details__header-status--danger': should_highlight_danger,
-                                        'order-details__header-status--success': is_completed_order,
+                                        'order-details__header-status--success': should_highlight_success,
                                     }
                                 )}
                             >
                                 {status_string}
                             </div>
-                            {is_completed_order && (
+                            {should_highlight_success && (
                                 <div className='order-details__wrapper-message'>{labels.result_string}</div>
                             )}
                             {!has_timer_expired && (is_pending_order || is_buyer_confirmed_order) && (

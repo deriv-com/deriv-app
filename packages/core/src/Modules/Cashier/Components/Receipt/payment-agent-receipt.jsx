@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { Button, Icon } from '@deriv/components';
-import { routes, getCurrencyDisplayCode } from '@deriv/shared';
+import { routes, getCurrencyDisplayCode, formatMoney } from '@deriv/shared';
 
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -31,7 +31,7 @@ class PaymentAgentReceipt extends React.Component {
                         <Localize i18n_default_text='Your funds have been transferred' />
                     </h2>
                     <div className='cashier__transferred-amount cashier__text--bold'>
-                        {receipt.amount_transferred}
+                        {formatMoney(currency, receipt.amount_transferred, true)}
                         <span className={classNames('symbols', `symbols--${currency_lowercase}`)}>
                             {getCurrencyDisplayCode(currency)}
                         </span>

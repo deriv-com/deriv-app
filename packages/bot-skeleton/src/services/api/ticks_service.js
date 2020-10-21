@@ -219,13 +219,31 @@ export default class TicksService {
 
     requestStream(options) {
         const { style } = options;
+        const stringified_options = JSON.stringify(options);
 
-        if (!this.ticks_history_promise && style === 'ticks') {
-            this.ticks_history_promise = this.requestPipSizes().then(() => this.requestTicks(options));
-        } else if (!this.candles_promise && style === 'candles') {
-            this.candles_promise = this.requestPipSizes().then(() => this.requestTicks(options));
+        if (style === 'ticks') {
+            if (!this.ticks_history_promise || this.ticks_history_promise.stringified_options !== stringified_options) {
+                this.ticks_history_promise = {
+                    promise: this.requestPipSizes().then(() => this.requestTicks(options)),
+                    stringified_options,
+                };
+            }
+
+            return this.ticks_history_promise.promise;
         }
-        return style === 'ticks' ? this.ticks_history_promise : this.candles_promise;
+
+        if (style === 'candles') {
+            if (!this.candles_promise || this.candles_promise.stringified_options !== stringified_options) {
+                this.candles_promise = {
+                    promise: this.requestPipSizes().then(() => this.requestTicks(options)),
+                    stringified_options,
+                };
+            }
+
+            return this.candles_promise.promise;
+        }
+
+        return [];
     }
 
     requestTicks(options) {

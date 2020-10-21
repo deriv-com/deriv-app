@@ -47,7 +47,7 @@ class ApiToken extends React.Component {
         trading_information: false,
     };
 
-    validateFields = (values) => {
+    validateFields = values => {
         const errors = {};
 
         const token_name = values.token_name && values.token_name.trim();
@@ -71,7 +71,7 @@ class ApiToken extends React.Component {
         return errors;
     };
 
-    formatTokenScopes = (str) => {
+    formatTokenScopes = str => {
         const string = str || '';
         const replace_filter = string.replace(/-|_/g, ' ');
         const sentenced_case = replace_filter[0].toUpperCase() + replace_filter.slice(1).toLowerCase();
@@ -79,8 +79,8 @@ class ApiToken extends React.Component {
         return sentenced_case;
     };
 
-    getScopeValue = (token) => {
-        const titled_scopes = token.scopes.map((scope) => this.formatTokenScopes(scope));
+    getScopeValue = token => {
+        const titled_scopes = token.scopes.map(scope => this.formatTokenScopes(scope));
         const mapped_scopes = titled_scopes.length === 5 ? localize('All') : titled_scopes.join(', ');
         const date_format = token.last_used ? formatDate(token.last_used, 'DD/MM/YYYY') : localize('Never');
 
@@ -93,7 +93,7 @@ class ApiToken extends React.Component {
     };
 
     handleSubmit = async (values, { setSubmitting, setFieldError, resetForm }) => {
-        const new_token_scopes = Object.keys(values).filter((item) => item !== 'token_name' && values[item]);
+        const new_token_scopes = Object.keys(values).filter(item => item !== 'token_name' && values[item]);
         if (new_token_scopes.length) {
             const request = {
                 api_token: 1,
@@ -121,7 +121,7 @@ class ApiToken extends React.Component {
         setSubmitting(false);
     };
 
-    populateTokenResponse = (response) => {
+    populateTokenResponse = response => {
         if (response.error) {
             this.setState({
                 is_loading: false,
@@ -141,7 +141,7 @@ class ApiToken extends React.Component {
         this.populateTokenResponse(token_response);
     };
 
-    deleteToken = async (token) => {
+    deleteToken = async token => {
         this.setState({ is_delete_loading: true });
         const token_response = await WS.authorized.apiToken({ api_token: 1, delete_token: token });
         this.populateTokenResponse(token_response);
@@ -152,7 +152,7 @@ class ApiToken extends React.Component {
         }, 500);
     };
 
-    showDialog = (token) => {
+    showDialog = token => {
         this.setState({ dispose_token: token, show_delete: true });
     };
 

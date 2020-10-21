@@ -13,11 +13,7 @@ const delay_on_scroll_time = 150;
 export default class ProfitTableStore extends BaseStore {
     @observable data = [];
     @observable date_from = null;
-    @observable date_to = toMoment()
-        .startOf('day')
-        .add(1, 'd')
-        .subtract(1, 's')
-        .unix();
+    @observable date_to = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
     @observable error = '';
     @observable has_loaded_all = false;
     @observable is_loading = false;
@@ -49,11 +45,7 @@ export default class ProfitTableStore extends BaseStore {
 
     shouldFetchNextBatch(should_load_partially) {
         if (!should_load_partially && (this.has_loaded_all || this.is_loading)) return false;
-        const today = toMoment()
-            .startOf('day')
-            .add(1, 'd')
-            .subtract(1, 's')
-            .unix();
+        const today = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
         if (this.date_to < today) return !should_load_partially;
         return true;
     }
@@ -120,15 +112,21 @@ export default class ProfitTableStore extends BaseStore {
 
     @action.bound
     async onMount() {
-        this.assertHasValidCache(this.client_loginid, this.clearDateFilter, WS.forgetAll.bind(null, 'proposal'));
+        this.assertHasValidCache(
+            this.client_loginid,
+            this.clearDateFilter,
+            this.clearTable,
+            WS.forgetAll.bind(null, 'proposal')
+        );
         this.client_loginid = this.root_store.client.loginid;
         this.onSwitchAccount(this.accountSwitcherListener);
         this.onNetworkStatusChange(this.networkStatusChangeListener);
         await WS.wait('authorize');
-        this.clearTable();
         this.fetchNextBatch(true);
     }
 
+    /* DO NOT call clearDateFilter() upon unmounting the component, date filters should stay 
+    as we change tab or click on any contract for later references as discussed with UI/UX and QA */
     @action.bound
     onUnmount() {
         this.disposeSwitchAccount();
@@ -166,11 +164,7 @@ export default class ProfitTableStore extends BaseStore {
     @action.bound
     clearDateFilter() {
         this.date_from = null;
-        this.date_to = toMoment()
-            .startOf('day')
-            .add(1, 'd')
-            .subtract(1, 's')
-            .unix();
+        this.date_to = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
     }
 
     @action.bound

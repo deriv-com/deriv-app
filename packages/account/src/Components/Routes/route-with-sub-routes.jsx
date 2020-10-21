@@ -12,10 +12,10 @@ import {
 import { getLanguage } from '@deriv/translations';
 import LoginPrompt from 'Duplicated/App/Components/Elements/login-prompt.jsx';
 
-const RouteWithSubRoutes = (route) => {
+const RouteWithSubRoutes = route => {
     const { is_deriv_crypto } = React.useContext(PlatformContext);
 
-    const renderFactory = (props) => {
+    const renderFactory = props => {
         let result = null;
         if (route.component === Redirect) {
             let to = route.to;
@@ -35,7 +35,7 @@ const RouteWithSubRoutes = (route) => {
                 />
             );
         } else {
-            const default_subroute = route.routes ? route.routes.find((r) => r.default) : {};
+            const default_subroute = route.routes ? route.routes.find(r => r.default) : {};
             const has_default_subroute = !isEmptyObject(default_subroute);
             const pathname = removeBranchName(location.pathname);
             result = (

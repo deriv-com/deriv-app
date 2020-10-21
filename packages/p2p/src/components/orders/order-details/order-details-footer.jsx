@@ -42,11 +42,11 @@ const OrderDetailsFooter = ({ order_information }) => {
         const [error_message, setErrorMessage] = React.useState('');
 
         const cancelOrderRequest = () => {
-            return new Promise((resolve) => {
+            return new Promise(resolve => {
                 requestWS({
                     p2p_order_cancel: 1,
                     id,
-                }).then((response) => {
+                }).then(response => {
                     if (isMounted()) {
                         if (response.error) {
                             setErrorMessage(response.error.message);
@@ -86,12 +86,12 @@ const OrderDetailsFooter = ({ order_information }) => {
         const [error_message, setErrorMessage] = React.useState('');
 
         const disputeOrderRequest = () => {
-            return new Promise((resolve) => {
+            return new Promise(resolve => {
                 requestWS({
                     p2p_order_dispute: 1,
                     id,
                     dispute_reason,
-                }).then((response) => {
+                }).then(response => {
                     if (isMounted()) {
                         if (response.error) {
                             setErrorMessage(response.error.message);
@@ -103,7 +103,7 @@ const OrderDetailsFooter = ({ order_information }) => {
             });
         };
 
-        const onChange = (reason) => {
+        const onChange = reason => {
             setDisputeReason(reason);
         };
 
@@ -138,7 +138,7 @@ const OrderDetailsFooter = ({ order_information }) => {
                                     : localize('I’ve received more than the agreed amount.'),
                             },
                         ]}
-                        onToggle={(event) => {
+                        onToggle={event => {
                             onChange(event.target.value);
                         }}
                         selected={dispute_reason}
@@ -179,11 +179,11 @@ const OrderDetailsFooter = ({ order_information }) => {
         const [is_checkbox_checked, setIsCheckboxChecked] = React.useState(false);
 
         const confirmOrderRequest = () => {
-            return new Promise((resolve) => {
+            return new Promise(resolve => {
                 requestWS({
                     p2p_order_confirm: 1,
                     id,
-                }).then((response) => {
+                }).then(response => {
                     if (isMounted()) {
                         if (response.error) {
                             setErrorMessage(response.error.message);
@@ -259,7 +259,7 @@ const OrderDetailsFooter = ({ order_information }) => {
                 <div className='order-details__footer'>
                     <div className='order-details__footer--right'>
                         <Button large primary onClick={showConfirmOrderModal}>
-                            {localize("I've received funds")}
+                            {localize("I've received payment")}
                         </Button>
                     </div>
                 </div>

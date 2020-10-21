@@ -8,28 +8,27 @@ import OnRampProviderPopup from '../Components/on-ramp-provider-popup.jsx';
 import 'Sass/app/modules/on-ramp.scss';
 
 const OnRamp = ({
-    is_onramp_modal_open,
     filtered_onramp_providers,
+    is_onramp_modal_open,
+    onMountOnramp,
+    onUnmountOnramp,
     onramp_popup_modal_title,
+    resetPopup,
     setIsOnRampModalOpen,
     should_show_dialog,
-    resetPopup,
-    onMount,
-    onUnmount,
 }) => {
     React.useEffect(() => {
-        onMount();
-        return () => onUnmount();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+        onMountOnramp();
+        return () => onUnmountOnramp();
+    }, [onMountOnramp, onUnmountOnramp]);
 
     return (
         <div className='cashier__wrapper cashier__wrapper--align-left on-ramp'>
             <h2 className='on-ramp__page-header'>
                 <Localize i18n_default_text='Select payment channel' />
             </h2>
-            {filtered_onramp_providers.map((provider, idx) => (
-                <OnRampProviderCard key={idx} provider={provider} />
+            {filtered_onramp_providers.map(provider => (
+                <OnRampProviderCard key={provider.name} provider={provider} />
             ))}
             <Modal
                 className='on-ramp__modal'
@@ -52,21 +51,21 @@ const OnRamp = ({
 OnRamp.propTypes = {
     filtered_onramp_providers: PropTypes.array,
     is_onramp_modal_open: PropTypes.bool,
-    resetPopup: PropTypes.func,
-    should_show_dialog: PropTypes.bool,
-    setIsOnRampModalOpen: PropTypes.func,
-    onMount: PropTypes.func,
+    onMountOnramp: PropTypes.func,
+    onUnmountOnramp: PropTypes.func,
     onramp_popup_modal_title: PropTypes.string,
-    onUnmount: PropTypes.func,
+    resetPopup: PropTypes.func,
+    setIsOnRampModalOpen: PropTypes.func,
+    should_show_dialog: PropTypes.bool,
 };
 
 export default connect(({ modules }) => ({
     filtered_onramp_providers: modules.cashier.onramp.filtered_onramp_providers,
     is_onramp_modal_open: modules.cashier.onramp.is_onramp_modal_open,
-    resetPopup: modules.cashier.onramp.resetPopup,
-    should_show_dialog: modules.cashier.onramp.should_show_dialog,
-    setIsOnRampModalOpen: modules.cashier.onramp.setIsOnRampModalOpen,
-    onMount: modules.cashier.onramp.onMount,
+    onMountOnramp: modules.cashier.onramp.onMountOnramp,
+    onUnmountOnramp: modules.cashier.onramp.onUnmountOnramp,
     onramp_popup_modal_title: modules.cashier.onramp.onramp_popup_modal_title,
-    onUnmount: modules.cashier.onramp.onUnmount,
+    resetPopup: modules.cashier.onramp.resetPopup,
+    setIsOnRampModalOpen: modules.cashier.onramp.setIsOnRampModalOpen,
+    should_show_dialog: modules.cashier.onramp.should_show_dialog,
 }))(OnRamp);

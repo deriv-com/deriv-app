@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik, Form } from 'formik';
 import { Button, Dropdown, Icon, Input, Money, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
-import { getDecimalPlaces, getCurrencyDisplayCode, validNumber, website_name } from '@deriv/shared';
+import { getDecimalPlaces, getCurrencyDisplayCode, getCurrencyName, validNumber, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import FormError from '../Error/form-error.jsx';
@@ -26,12 +26,14 @@ const AccountOption = ({ account, idx }) => {
             )}
 
             <div className='account-transfer__currency-wrapper'>
-                <span className='account-transfer__currency'>{account.text}</span>
+                <span className='account-transfer__currency'>
+                    {account.is_mt ? account.mt_icon : getCurrencyName(account.text)}
+                </span>
                 <span className='account-transfer__loginid'>{account.value}</span>
             </div>
 
-            <span className='account-transfer__balance cashier__drop-down-display-brackets'>
-                <Money amount={account.balance} currency={account.currency} />
+            <span className='account-transfer__balance'>
+                <Money amount={account.balance} currency={account.currency} show_currency />
             </span>
         </React.Fragment>
     );
@@ -92,19 +94,21 @@ const AccountTransferNote = ({
 );
 
 const AccountTransferForm = ({
+    account_transfer_amount,
     onMount,
     transfer_limit,
     account_limits,
     selected_from,
     selected_to,
-    requestTransferBetweenAccounts,
     accounts_list,
+    setAccountTransferAmount,
     setSideNotes,
     transfer_fee,
     minimum_fee,
     onChangeTransferFrom,
     onChangeTransferTo,
     setErrorMessage,
+    setIsTransferConfirm,
     error,
 }) => {
     const validateAmount = amount => {
@@ -121,15 +125,6 @@ const AccountTransferForm = ({
         if (+selected_from.balance < +amount) return localize('Insufficient balance.');
 
         return undefined;
-    };
-
-    const onTransferPassthrough = async (values, actions) => {
-        const transfer_between_accounts = await requestTransferBetweenAccounts({
-            amount: +values.amount,
-        });
-        if (transfer_between_accounts?.error) {
-            actions.setSubmitting(false);
-        }
     };
 
     const accounts_from = [];
@@ -214,9 +209,11 @@ const AccountTransferForm = ({
                 </h2>
                 <Formik
                     initialValues={{
-                        amount: '',
+                        amount: account_transfer_amount,
                     }}
-                    onSubmit={onTransferPassthrough}
+                    onSubmit={() => {
+                        setIsTransferConfirm(true);
+                    }}
                 >
                     {({
                         errors,
@@ -320,13 +317,14 @@ const AccountTransferForm = ({
                                                 onChange={e => {
                                                     setErrorMessage('');
                                                     handleChange(e);
+                                                    setAccountTransferAmount(e.target.value);
                                                 }}
                                                 className='cashier__input dc-input--no-placeholder account-transfer__input'
                                                 type='text'
                                                 label={localize('Amount')}
                                                 error={touched.amount && errors.amount}
                                                 required
-                                                leading_icon={
+                                                trailing_icon={
                                                     selected_from.currency ? (
                                                         <span
                                                             className={classNames(
@@ -349,11 +347,13 @@ const AccountTransferForm = ({
                                                                     key={0}
                                                                     amount={transfer_limit.min}
                                                                     currency={selected_from.currency}
+                                                                    show_currency
                                                                 />,
                                                                 <Money
                                                                     key={1}
                                                                     amount={transfer_limit.max}
                                                                     currency={selected_from.currency}
+                                                                    show_currency
                                                                 />,
                                                             ]}
                                                         />
@@ -419,6 +419,7 @@ AccountTransferForm.propTypes = {
 export default connect(({ client, modules }) => ({
     account_limits: client.account_limits,
     onMount: client.getLimits,
+    account_transfer_amount: modules.cashier.config.account_transfer.account_transfer_amount,
     accounts_list: modules.cashier.config.account_transfer.accounts_list,
     minimum_fee: modules.cashier.config.account_transfer.minimum_fee,
     onChangeTransferFrom: modules.cashier.onChangeTransferFrom,
@@ -427,6 +428,8 @@ export default connect(({ client, modules }) => ({
     selected_from: modules.cashier.config.account_transfer.selected_from,
     selected_to: modules.cashier.config.account_transfer.selected_to,
     setErrorMessage: modules.cashier.setErrorMessage,
+    setIsTransferConfirm: modules.cashier.setIsTransferConfirm,
+    setAccountTransferAmount: modules.cashier.setAccountTransferAmount,
     transfer_fee: modules.cashier.config.account_transfer.transfer_fee,
     transfer_limit: modules.cashier.config.account_transfer.transfer_limit,
 }))(AccountTransferForm);

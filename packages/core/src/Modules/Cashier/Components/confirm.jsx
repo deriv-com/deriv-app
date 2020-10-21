@@ -22,7 +22,7 @@ const Row = ({ label, value }) => (
 );
 
 const Confirm = ({ data, error_message, header, onClickBack, onClickConfirm }) => (
-    <div className='cashier__wrapper'>
+    <div className='cashier__wrapper cashier__wrapper--confirm'>
         <Icon icon='IcConfirmDetails' width='128' height='128' />
         <h2 className='cashier__header cashier__confirm-header'>{header}</h2>
         <div className='cashier__confirm-column-wrapper'>

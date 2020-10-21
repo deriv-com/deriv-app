@@ -41,6 +41,13 @@
 
         @include desktop {
             max-width: 672px;
+
+            &--confirm,
+            &.account-transfer__receipt,
+            &.payment-agent-transfer__container,
+            &.payment-agent-transfer__wrapper {
+                margin-left: 0;
+            }
         }
 
         &,
@@ -236,14 +243,6 @@
                 display: flex;
                 align-items: center;
             }
-            .cashier__drop-down-display-brackets {
-                &:before {
-                    content: '(';
-                }
-                &:after {
-                    content: ')';
-                }
-            }
             @include mobile {
                 min-height: auto;
                 min-width: calc(100% - 4rem);
@@ -254,6 +253,12 @@
         &-items,
         &-label {
             justify-content: left;
+        }
+        &-items {
+            svg {
+                width: 24px;
+                height: 24px;
+            }
         }
         &-label {
             margin: 0 1.6rem;

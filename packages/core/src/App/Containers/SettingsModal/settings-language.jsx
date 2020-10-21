@@ -38,7 +38,7 @@ const LanguageLink = ({ lang }) => (
 const LanguageSettings = () => (
     <div className='settings-language'>
         <div className='settings-language__language-header'>
-            <Text size='xs' color='prominent' weight='b'>
+            <Text size='xs' color='prominent' weight='bold'>
                 <Localize i18n_default_text='Select language' />
             </Text>
         </div>

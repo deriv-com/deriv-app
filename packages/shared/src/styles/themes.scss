@@ -18,10 +18,10 @@
     --text-lh-x: 1.4;
 
     //Font Weight
-    --text-weight-l: 300;
-    --text-weight-n: 400;
-    --text-weight-s: 500;
-    --text-weight-b: 700;
+    --text-weight-lighter: lighter;
+    --text-weight-normal: normal;
+    --text-weight-bold: bold;
+    --text-weight-bolder: bolder;
 
     // Brand primary colors
     --brand-dark-grey: #{$color-black};

@@ -2,7 +2,17 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik, Form } from 'formik';
-import { Button, Dropdown, Icon, Input, Money, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
+import {
+    Button,
+    Dropdown,
+    Icon,
+    Input,
+    Money,
+    DesktopWrapper,
+    MobileWrapper,
+    SelectNative,
+    Text,
+} from '@deriv/components';
 import { getDecimalPlaces, getCurrencyDisplayCode, validNumber, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -26,7 +36,9 @@ const AccountOption = ({ account, idx }) => {
             )}
 
             <div className='account-transfer__currency-wrapper'>
-                <span className='account-transfer__currency'>{account.text}</span>
+                <Text size='xxs' lineHeight='x'>
+                    {account.text}
+                </Text>
                 <span className='account-transfer__loginid'>{account.value}</span>
             </div>
 

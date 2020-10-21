@@ -1,7 +1,7 @@
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Accordion, Button, DesktopWrapper, Dropdown, MobileWrapper, SelectNative } from '@deriv/components';
+import { Accordion, Button, DesktopWrapper, Dropdown, MobileWrapper, SelectNative, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { website_name } from '@deriv/shared';
@@ -126,9 +126,9 @@ class PaymentAgentList extends React.Component {
                     </React.Fragment>
                 )}
                 <div className='payment-agent__disclaimer'>
-                    <span className='cashier__text--bold'>
+                    <Text size='xs' lineHeight='x' weight='bold' className='cashier__text--bold'>
                         <Localize i18n_default_text='DISCLAIMER' />
-                    </span>
+                    </Text>
                     :&nbsp;
                     <Localize
                         i18n_default_text='{{website_name}} is not affiliated with any Payment Agent. Customers deal with Payment Agents at their sole risk. Customers are advised to check the credentials of Payment Agents, and check the accuracy of any information about Payments Agents (on Deriv or elsewhere) before transferring funds.'

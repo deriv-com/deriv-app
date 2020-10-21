@@ -108,7 +108,7 @@ class ContractUpdateForm extends React.Component {
     };
 
     render() {
-        const { addToast, getCardLabels, removeToast, setCurrentFocus, status } = this.props;
+        const { addToast, current_focus, getCardLabels, removeToast, setCurrentFocus, status } = this.props;
         const {
             contract_update_take_profit,
             has_contract_update_take_profit,

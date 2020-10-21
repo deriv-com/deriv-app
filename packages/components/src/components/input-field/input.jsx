@@ -63,11 +63,9 @@ const Input = ({
             {!!inline_prefix && (
                 <div className={classNameInlinePrefix}>
                     <span
-                        className={classNames(
-                            classNameInlinePrefix ? `${classNameInlinePrefix}--symbol` : '',
-                            'symbols',
-                            { disabled: !!is_disabled }
-                        )}
+                        className={classNames(classNameInlinePrefix ? `${classNameInlinePrefix}--symbol` : '', {
+                            disabled: !!is_disabled,
+                        })}
                     >
                         {inline_prefix === 'UST' ? getCurrencyDisplayCode(inline_prefix) : inline_prefix}
                     </span>

@@ -13,9 +13,9 @@ import {
     isValidToSell,
 } from '@deriv/shared';
 import ContractCardItem from './contract-card-item.jsx';
+import ToggleCardDialog from './toggle-card-dialog.jsx';
 import CurrencyBadge from '../../currency-badge';
 import DesktopWrapper from '../../desktop-wrapper';
-import ToggleCardDialog from './toggle-card-dialog.jsx';
 import Icon from '../../icon';
 import MobileWrapper from '../../mobile-wrapper';
 import Money from '../../money';

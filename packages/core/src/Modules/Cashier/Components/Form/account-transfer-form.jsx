@@ -225,6 +225,7 @@ const AccountTransferForm = ({
                         touched,
                         validateField,
                         setFieldValue,
+                        setFieldTouched,
                         setFieldError,
                         handleChange,
                     }) => (
@@ -256,6 +257,7 @@ const AccountTransferForm = ({
                                                     validateField('amount');
                                                     setFieldValue('amount', '');
                                                     setFieldError('amount', '');
+                                                    setFieldTouched('amount', false);
                                                 }}
                                                 error={selected_from.error}
                                             />
@@ -275,6 +277,7 @@ const AccountTransferForm = ({
                                                     validateField('amount');
                                                     setFieldValue('amount', '');
                                                     setFieldError('amount', '');
+                                                    setFieldTouched('amount', false);
                                                 }}
                                                 error={selected_from.error}
                                             />
@@ -319,6 +322,7 @@ const AccountTransferForm = ({
                                                 {...field}
                                                 onChange={e => {
                                                     setErrorMessage('');
+                                                    setFieldTouched('amount', true);
                                                     handleChange(e);
                                                 }}
                                                 className='cashier__input dc-input--no-placeholder account-transfer__input'

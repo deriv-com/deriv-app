@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { localize } from '@deriv/translations';
-import { ContractCard, DesktopWrapper, MobileWrapper } from '@deriv/components';
+import { ContractCard } from '@deriv/components';
 import ContractCardLoader from './contract-card-loading.jsx';
 import { connect } from '../stores/connect';
 import '../assets/sass/summary-card.scss';
@@ -41,24 +41,6 @@ const SummaryCard = ({
         />
     );
 
-    const card_body_wrapper = (
-        <React.Fragment>
-            <DesktopWrapper>{card_body}</DesktopWrapper>
-            <MobileWrapper>
-                <div
-                    className={
-                        ('dc-contract-card__separatorclass',
-                        classNames({
-                            'dc-contract-card__body-wrapper': true, // !is_multiplier,
-                        }))
-                    }
-                >
-                    {card_body}
-                </div>
-            </MobileWrapper>
-        </React.Fragment>
-    );
-
     const card_footer = (
         <ContractCard.Footer
             contract_info={contract}
@@ -71,7 +53,7 @@ const SummaryCard = ({
     const contract_el = (
         <React.Fragment>
             {card_header}
-            {card_body_wrapper}
+            {card_body}
             {card_footer}
         </React.Fragment>
     );

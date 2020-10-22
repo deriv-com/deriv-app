@@ -2,8 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import CurrencyBadge from 'App/Components/Elements/currency-badge.jsx';
-import { ContractCard, DesktopWrapper, MobileWrapper } from '@deriv/components';
+import { ContractCard } from '@deriv/components';
 import { getContractPath, isMultiplierContract } from '@deriv/shared';
 import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
 import { connect } from 'Stores/connect';
@@ -81,24 +80,6 @@ const PositionsDrawerCard = ({
         />
     );
 
-    const card_body_wrapper = (
-        <React.Fragment>
-            <DesktopWrapper>{card_body}</DesktopWrapper>
-            <MobileWrapper>
-                <div
-                    className={
-                        ('dc-contract-card__separatorclass',
-                        classNames({
-                            'dc-contract-card__body-wrapper': !is_multiplier,
-                        }))
-                    }
-                >
-                    {card_body}
-                </div>
-            </MobileWrapper>
-        </React.Fragment>
-    );
-
     const card_footer = (
         <ContractCard.Footer
             contract_info={contract_info}
@@ -117,8 +98,7 @@ const PositionsDrawerCard = ({
     const contract_el = (
         <React.Fragment>
             {card_header}
-            <CurrencyBadge currency={currency} />
-            {card_body_wrapper}
+            {card_body}
         </React.Fragment>
     );
 

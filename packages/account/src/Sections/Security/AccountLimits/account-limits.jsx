@@ -42,23 +42,29 @@ const Td = ({ children, is_flex }) => (
     </td>
 );
 
-const ExtraInfo = ({ message, ...props }) => (
-    <>
-        <DesktopWrapper>
-            <Popover
-                alignment='top'
-                classNameTargetIcon='account-limit-popover'
-                classNameTarget='account-limit-popover-target'
-                icon='info'
-                message={message}
-                {...props}
-            />
-        </DesktopWrapper>
-        <MobileWrapper>
-            <div className='account-limit-container__extra-info'>{message}</div>
-        </MobileWrapper>
-    </>
-);
+const ExtraInfo = ({ message, ...props }) => {
+    const header_height = 48;
+    const toolbar_height = 56;
+
+    return (
+        <React.Fragment>
+            <DesktopWrapper>
+                <Popover
+                    alignment='right'
+                    classNameTargetIcon='account-limit-popover'
+                    classNameTarget='account-limit-popover-target'
+                    icon='info'
+                    message={message}
+                    window_border={header_height + toolbar_height}
+                    {...props}
+                />
+            </DesktopWrapper>
+            <MobileWrapper>
+                <div className='account-limit-container__extra-info'>{message}</div>
+            </MobileWrapper>
+        </React.Fragment>
+    );
+};
 
 class AccountLimits extends React.Component {
     state = { is_loading: true };

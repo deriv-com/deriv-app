@@ -123,7 +123,6 @@
         }
     }
     &__wrapper {
-        // padding: 0.8em;
         margin: 0 1em;
         max-width: 218px;
         border-radius: $BORDER_RADIUS;
@@ -257,6 +256,7 @@
             'buy-price  limit-order-info';
         grid-gap: 0.8rem 0.4rem;
         flex: 1;
+        margin-top: 0.5rem;
 
         &--mobile {
             display: grid;

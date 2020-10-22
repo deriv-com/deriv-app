@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Icon, Loading, Modal, Popover, Table, Tabs, ThemedScrollbars } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { generateHexColourFromNickname } from 'Utils/string';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { useStores } from 'Stores';
@@ -10,7 +11,7 @@ import NicknameForm from '../nickname/nickname-form.jsx';
 import { buy_sell } from '../../constants/buy-sell';
 import BuySellForm from '../buy-sell/buy-sell-form.jsx';
 import FormError from '../form/error.jsx';
-import { localize } from '../i18next';
+import { localize, Localize } from '../i18next';
 import './advertiser-page.scss';
 
 const RowComponent = React.memo(({ data: advert, showAdPopup, style }) => {
@@ -23,13 +24,47 @@ const RowComponent = React.memo(({ data: advert, showAdPopup, style }) => {
 
     return (
         <div style={style}>
-            <Table.Row className='advertiser-page__adverts-table_row'>
-                <Table.Cell>
-                    {`${min_order_amount_limit_display}-${max_order_amount_limit_display} ${currency}`}
-                </Table.Cell>
-                <Table.Cell className='advertiser-page__adverts-price'>
-                    {price_display} {local_currency}
-                </Table.Cell>
+            <Table.Row
+                className={classNames('advertiser-page__adverts-table_row', {
+                    'advertiser-page__adverts-table_row--mobile': general_store.props.is_mobile,
+                })}
+            >
+                {general_store.props.is_mobile ? (
+                    <React.Fragment>
+                        <Table.Cell className='advertiser-page__cell--mobile'>
+                            <Localize
+                                i18n_default_text='Rate 1 {{currency}}'
+                                values={{
+                                    currency,
+                                }}
+                            />
+                            <div
+                                className={classNames('advertiser-page__adverts-price', {
+                                    'advertiser-page__adverts-price--mobile': general_store.props.is_mobile,
+                                })}
+                            >
+                                {price_display} {local_currency}
+                            </div>
+                            <Localize
+                                i18n_default_text='Limit {{min_order_amount_limit_display}}-{{max_order_amount_limit_display}} {{currency}}'
+                                values={{
+                                    min_order_amount_limit_display,
+                                    max_order_amount_limit_display,
+                                    currency,
+                                }}
+                            />
+                        </Table.Cell>
+                    </React.Fragment>
+                ) : (
+                    <React.Fragment>
+                        <Table.Cell>
+                            {`${min_order_amount_limit_display}-${max_order_amount_limit_display} ${currency}`}
+                        </Table.Cell>
+                        <Table.Cell className='advertiser-page__adverts-price'>
+                            {price_display} {local_currency}
+                        </Table.Cell>
+                    </React.Fragment>
+                )}
                 {is_my_advert ? (
                     <Table.Cell />
                 ) : (
@@ -164,65 +199,98 @@ const AdvertiserPage = observer(props => {
                         ) : null}
                     </div>
                 </div>
-                <Table>
-                    <Table.Row className='advertiser-page__stats'>
-                        <Table.Cell className='advertiser-page__stats-cell'>
-                            <div className='advertiser-page__stats-cell-header'>{localize('Total orders')}</div>
-                            <div className='advertiser-page__stats-cell-info'>{total_orders_count || '-'}</div>
-                        </Table.Cell>
-                        <div className='advertiser-page__stats-cell-separator' />
-                        <Table.Cell className='advertiser-page__stats-cell'>
-                            <div className='advertiser-page__stats-cell-header'>{localize('Buy')}</div>
-                            <div className='advertiser-page__stats-cell-info'>{buy_orders_count || '-'}</div>
-                        </Table.Cell>
-                        <div className='advertiser-page__stats-cell-separator' />
-                        <Table.Cell className='advertiser-page__stats-cell'>
-                            <div className='advertiser-page__stats-cell-header'>{localize('Sell')}</div>
-                            <div className='advertiser-page__stats-cell-info'>{sell_orders_count || '-'}</div>
-                        </Table.Cell>
-                        <div className='advertiser-page__stats-cell-separator' />
-                        <Table.Cell className='advertiser-page__stats-cell'>
-                            <div className='advertiser-page__stats-cell-header'>{localize('Completion')}</div>
-                            <div className='advertiser-page__stats-cell-completion'>
-                                <div className='advertiser-page__stats-cell-info'>
-                                    {total_completion_rate ? `${total_completion_rate}%` : '-'}
-                                </div>
-                                <div className='advertiser-page__stats-cell-info_buy'>
-                                    {localize('(Buy {{- buy_completion_rate }})', {
-                                        buy_completion_rate: buy_completion_rate
-                                            ? `${buy_completion_rate}%`
-                                            : localize('N/A'),
-                                    })}
-                                </div>
-                            </div>
-                        </Table.Cell>
-                        <div className='advertiser-page__stats-cell-separator' />
-                        <Table.Cell className='advertiser-page__stats-cell'>
-                            <div className='advertiser-page__stats-cell-header'>{localize('Avg. release time')}</div>
-                            <div className='advertiser-page__stats-cell-info'>
-                                {release_time_avg
-                                    ? localize('{{- avg_release_time_in_minutes}} min', {
-                                          avg_release_time_in_minutes,
-                                      })
-                                    : '-'}
-                            </div>
-                        </Table.Cell>
-                        <Popover
-                            className='advertiser-page__popover-icon'
-                            alignment='top'
-                            message={localize(
-                                "These fields are based on the last 30 days' activity: Buy, Sell, Completion, and Avg. release time."
-                            )}
+                <div className='advertiser-page__stats--wrapper'>
+                    <Table>
+                        <ThemedScrollbars
+                            className='advertiser-page__horizontal-scroll'
+                            is_bypassed={!general_store.props.is_mobile}
+                            is_only_horizontal
+                            width='calc(100vw - 32px)'
                         >
-                            <Icon icon='IcInfoOutline' size={16} />
-                        </Popover>
-                    </Table.Row>
-                </Table>
+                            <Table.Row
+                                className={classNames('advertiser-page__stats', {
+                                    'advertiser-page__stats--mobile': general_store.props.is_mobile,
+                                })}
+                            >
+                                <Table.Cell className='advertiser-page__stats-cell'>
+                                    <div className='advertiser-page__stats-cell-header'>{localize('Total orders')}</div>
+                                    <div className='advertiser-page__stats-cell-info'>{total_orders_count || '-'}</div>
+                                </Table.Cell>
+                                <div className='advertiser-page__stats-cell-separator' />
+                                {general_store.props.is_mobile ? (
+                                    <Table.Cell className='advertiser-page__stats-cell'>
+                                        <div className='advertiser-page__stats-cell-header'>{localize('Buy/Sell')}</div>
+                                        <div className='advertiser-page__stats-cell-info'>{`${
+                                            buy_orders_count || '-'
+                                        }/${sell_orders_count || '-'}`}</div>
+                                    </Table.Cell>
+                                ) : (
+                                    <React.Fragment>
+                                        <Table.Cell className='advertiser-page__stats-cell'>
+                                            <div className='advertiser-page__stats-cell-header'>{localize('Buy')}</div>
+                                            <div className='advertiser-page__stats-cell-info'>
+                                                {buy_orders_count || '-'}
+                                            </div>
+                                        </Table.Cell>
+                                        <div className='advertiser-page__stats-cell-separator' />
+                                        <Table.Cell className='advertiser-page__stats-cell'>
+                                            <div className='advertiser-page__stats-cell-header'>{localize('Sell')}</div>
+                                            <div className='advertiser-page__stats-cell-info'>
+                                                {sell_orders_count || '-'}
+                                            </div>
+                                        </Table.Cell>
+                                    </React.Fragment>
+                                )}
+                                <div className='advertiser-page__stats-cell-separator' />
+                                <Table.Cell className='advertiser-page__stats-cell'>
+                                    <div className='advertiser-page__stats-cell-header'>{localize('Completion')}</div>
+                                    <div className='advertiser-page__stats-cell-completion'>
+                                        <div className='advertiser-page__stats-cell-info'>
+                                            {total_completion_rate ? `${total_completion_rate}%` : '-'}
+                                        </div>
+                                        <div className='advertiser-page__stats-cell-info_buy'>
+                                            {localize('(Buy {{- buy_completion_rate }})', {
+                                                buy_completion_rate: buy_completion_rate
+                                                    ? `${buy_completion_rate}%`
+                                                    : localize('N/A'),
+                                            })}
+                                        </div>
+                                    </div>
+                                </Table.Cell>
+                                <div className='advertiser-page__stats-cell-separator' />
+                                <Table.Cell className='advertiser-page__stats-cell'>
+                                    <div className='advertiser-page__stats-cell-header'>
+                                        {localize('Avg. release time')}
+                                    </div>
+                                    <div className='advertiser-page__stats-cell-info'>
+                                        {release_time_avg
+                                            ? localize('{{- avg_release_time_in_minutes}} min', {
+                                                  avg_release_time_in_minutes,
+                                              })
+                                            : '-'}
+                                    </div>
+                                </Table.Cell>
+                            </Table.Row>
+                        </ThemedScrollbars>
+                    </Table>
+
+                    <Popover
+                        className='advertiser-page__popover-icon'
+                        alignment='top'
+                        message={localize(
+                            "These fields are based on the last 30 days' activity: Buy, Sell, Completion, and Avg. release time."
+                        )}
+                    >
+                        <Icon icon='IcInfoOutline' size={16} />
+                    </Popover>
+                </div>
                 <div className='advertiser-page__adverts'>
                     <Tabs
                         onTabItemClick={advertiser_page_store.handleTabItemClick}
                         active_index={advertiser_page_store.active_index}
-                        className='advertiser-page__adverts-tabs'
+                        className={classNames('advertiser-page__adverts-tabs', {
+                            'advertiser-page__adverts-tabs--mobile': general_store.props.is_mobile,
+                        })}
                         top
                         header_fit_content
                     >
@@ -232,17 +300,19 @@ const AdvertiserPage = observer(props => {
                     <div className='advertiser-page__adverts-table'>
                         {advertiser_page_store.adverts.length ? (
                             <Table>
-                                <Table.Header>
-                                    <Table.Row className='advertiser-page__adverts-table_row'>
-                                        <Table.Head>{localize('Limits')}</Table.Head>
-                                        <Table.Head>
-                                            {localize('Rate (1 {{currency}})', {
-                                                currency: general_store.client.currency,
-                                            })}
-                                        </Table.Head>
-                                        <Table.Head>{''}</Table.Head>
-                                    </Table.Row>
-                                </Table.Header>
+                                {!general_store.props.is_mobile && (
+                                    <Table.Header>
+                                        <Table.Row className='advertiser-page__adverts-table_row'>
+                                            <Table.Head>{localize('Limits')}</Table.Head>
+                                            <Table.Head>
+                                                {localize('Rate (1 {{currency}})', {
+                                                    currency: general_store.client.currency,
+                                                })}
+                                            </Table.Head>
+                                            <Table.Head>{''}</Table.Head>
+                                        </Table.Row>
+                                    </Table.Header>
+                                )}
                                 <ThemedScrollbars className='advertiser-page__adverts-scrollbar'>
                                     <Table.Body>
                                         <InfiniteLoaderList

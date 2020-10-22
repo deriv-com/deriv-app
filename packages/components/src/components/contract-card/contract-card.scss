@@ -397,11 +397,14 @@
             border-radius: 0.4rem;
             font-size: 1.2rem;
             margin-left: 0.8rem;
-            padding-top: 0.2rem;
         }
         .dc-btn--sell,
         .dc-btn--cancel {
             height: 2.4rem;
+
+            .dc-btn__text {
+                font-size: 1.2rem;
+            }
 
             @include mobile {
                 height: 3.2rem;

@@ -1176,7 +1176,7 @@
     "1908239019": "Pastikan semua dokumen terdapat pada foto",
     "1909769048": "median",
     "1914014145": "Hari ini",
-    "1914270645": "Interval Candle Default: {{ candle_interval_type }}",
+    "1914270645": "Interval Candle Standar: {{ candle_interval_type }}",
     "1917523456": "Blok ini mengirim pesan ke saluran Telegram. Anda perlu membuat bot Telegram Anda sendiri untuk menggunakan blok ini.",
     "1918633767": "Baris kedua alamat tidak dalam format yang benar.",
     "1918796823": "Masukkan jumlah batas kerugian.",

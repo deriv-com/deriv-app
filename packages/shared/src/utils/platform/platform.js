@@ -48,6 +48,13 @@ export const getPlatformIcon = routing_history => {
     return 'IcBrandDtrader';
 };
 
+export const getActivePlatform = routing_history => {
+    if (isBot() || isNavigationFromPlatform(routing_history, routes.bot)) return 'DBot';
+    if (isMT5() || isNavigationFromPlatform(routing_history, routes.mt5)) return 'DMT5';
+    if (isNavigationFromPlatform(routing_history, routes.smarttrader)) return 'SmartTrader';
+    return 'DTrader';
+};
+
 export const getPlatformRedirect = routing_history => {
     if (isBot() || isNavigationFromPlatform(routing_history, routes.bot))
         return { name: platform_name.DBot, route: routes.bot };

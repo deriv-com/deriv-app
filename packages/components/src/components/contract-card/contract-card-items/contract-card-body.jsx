@@ -28,6 +28,7 @@ const MultiplierCardBody = ({
     contract_update,
     connectWithContractUpdate,
     currency,
+    current_focus,
     getCardLabels,
     getContractById,
     is_mobile,
@@ -99,6 +100,7 @@ const MultiplierCardBody = ({
                             addToast={addToast}
                             connectWithContractUpdate={connectWithContractUpdate}
                             contract_id={contract_info.contract_id}
+                            current_focus={current_focus}
                             getCardLabels={getCardLabels}
                             getContractById={getContractById}
                             is_valid_to_cancel={is_valid_to_cancel}
@@ -138,6 +140,7 @@ const ContractCardBody = ({
     contract_info,
     contract_update,
     currency,
+    current_focus,
     getCardLabels,
     getContractById,
     is_mobile,
@@ -161,6 +164,7 @@ const ContractCardBody = ({
             contract_info={contract_info}
             contract_update={contract_update}
             currency={currency}
+            current_focus={current_focus}
             getCardLabels={getCardLabels}
             getContractById={getContractById}
             is_mobile={is_mobile}

@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { getCurrencyDisplayCode } from '@deriv/shared';
 
 const Input = ({
     ariaLabel,
@@ -62,13 +63,12 @@ const Input = ({
             {!!inline_prefix && (
                 <div className={classNameInlinePrefix}>
                     <span
-                        className={classNames(
-                            classNameInlinePrefix ? `${classNameInlinePrefix}--symbol` : '',
-                            'symbols',
-                            `symbols--${inline_prefix.toLowerCase()}`,
-                            { disabled: !!is_disabled }
-                        )}
-                    />
+                        className={classNames(classNameInlinePrefix ? `${classNameInlinePrefix}--symbol` : '', {
+                            disabled: !!is_disabled,
+                        })}
+                    >
+                        {inline_prefix === 'UST' ? getCurrencyDisplayCode(inline_prefix) : inline_prefix}
+                    </span>
                 </div>
             )}
             <input

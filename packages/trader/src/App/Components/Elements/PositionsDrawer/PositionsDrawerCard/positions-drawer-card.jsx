@@ -15,6 +15,7 @@ const PositionsDrawerCard = ({
     contract_info,
     contract_update,
     currency,
+    current_focus,
     getContractById,
     is_mobile,
     is_sell_requested,
@@ -67,6 +68,7 @@ const PositionsDrawerCard = ({
             contract_info={contract_info}
             contract_update={contract_update}
             currency={currency}
+            current_focus={current_focus}
             getCardLabels={getCardLabels}
             getContractById={getContractById}
             is_mobile={is_mobile}
@@ -83,7 +85,6 @@ const PositionsDrawerCard = ({
     const card_footer = (
         <ContractCard.Footer
             contract_info={contract_info}
-            should_show_transition={should_show_transition}
             getCardLabels={getCardLabels}
             is_multiplier={is_multiplier}
             is_positions={true}
@@ -92,6 +93,7 @@ const PositionsDrawerCard = ({
             onClickSell={onClickSell}
             onFooterEntered={onFooterEntered}
             server_time={server_time}
+            should_show_transition={should_show_transition}
         />
     );
 
@@ -175,6 +177,7 @@ PositionsDrawerCard.propTypes = {
     className: PropTypes.string,
     contract_info: PropTypes.object,
     currency: PropTypes.string,
+    current_focus: PropTypes.string,
     current_tick: PropTypes.number,
     duration: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     duration_unit: PropTypes.string,
@@ -202,6 +205,7 @@ export default connect(({ modules, ui, client, common }) => ({
     currency: client.currency,
     server_time: common.server_time,
     addToast: ui.addToast,
+    current_focus: ui.current_focus,
     onClickCancel: modules.portfolio.onClickCancel,
     onClickSell: modules.portfolio.onClickSell,
     onClickRemove: modules.portfolio.removePositionById,

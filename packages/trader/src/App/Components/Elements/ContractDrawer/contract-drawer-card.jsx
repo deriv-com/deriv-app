@@ -16,6 +16,7 @@ const ContractDrawerCard = ({
     contract_info,
     contract_update,
     currency,
+    current_focus,
     getContractById,
     is_mobile,
     is_multiplier,
@@ -60,6 +61,7 @@ const ContractDrawerCard = ({
             contract_info={contract_info}
             contract_update={contract_update}
             currency={currency}
+            current_focus={current_focus}
             getCardLabels={getCardLabels}
             getContractById={getContractById}
             is_mobile={is_mobile}
@@ -135,6 +137,7 @@ const ContractDrawerCard = ({
 ContractDrawerCard.propTypes = {
     contract_info: PropTypes.object,
     currency: PropTypes.string,
+    current_focus: PropTypes.string,
     is_multiplier: PropTypes.bool,
     is_sell_requested: PropTypes.bool,
     onClickCancel: PropTypes.func,
@@ -145,6 +148,7 @@ ContractDrawerCard.propTypes = {
 export default connect(({ modules, ui }) => ({
     active_symbols: modules.trade.active_symbols,
     addToast: ui.addToast,
+    current_focus: ui.current_focus,
     getContractById: modules.contract_trade.getContractById,
     removeToast: ui.removeToast,
     should_show_cancellation_warning: ui.should_show_cancellation_warning,

@@ -67,6 +67,8 @@ $gradient-color-red-1: linear-gradient(to top, $color-white, transparentize($col
 $gradient-color-red-2: linear-gradient(to top, $color-black, transparentize($color-red, 0.84));
 $contract-gradient-color-red-1: linear-gradient(to top, $color-white 50%, transparentize($color-red, 0.84));
 $contract-gradient-color-red-2: linear-gradient(to top, $color-black 50%, transparentize($color-red, 0.84));
+$gradient-color-white: linear-gradient(to right, transparentize($color-white, 1) -5%, $color-white 71%);
+$gradient-color-black: linear-gradient(to right, transparentize($color-black, 1) -5%, $color-black 71%);
 
 /* Preserve legacy variables */
 /* Primary */

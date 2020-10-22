@@ -154,6 +154,7 @@ export default class ClientStore extends BaseStore {
             this.root_store.ui.is_eu_enabled || // TODO: [deriv-eu] Remove this after complete EU merge into production
             !this.is_logged_in ||
             this.is_virtual ||
+            this.accounts[this.loginid].landing_company_shortcode === 'samoa' ||
             this.accounts[this.loginid].landing_company_shortcode === 'svg' ||
             isBot()
         );

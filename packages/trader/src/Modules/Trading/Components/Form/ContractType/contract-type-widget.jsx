@@ -146,6 +146,13 @@ class ContractTypeWidget extends React.PureComponent {
         return (selected_list_category || this.list_with_category[0]).contract_categories;
     }
 
+    get selected_contract_index() {
+        const contract_types_arr = this.list_with_category?.flatMap(category => category.contract_types);
+        return contract_types_arr
+            .filter(type => type.value !== 'rise_fall_equal')
+            .findIndex(type => type.value === this.state.item?.value);
+    }
+
     render() {
         const { is_equal, name, value } = this.props;
         const { is_dialog_open, is_info_dialog_open, item, list } = this.state;
@@ -188,6 +195,7 @@ class ContractTypeWidget extends React.PureComponent {
                     ) : (
                         <ContractType.Info
                             handleNavigationClick={this.handleNavigationClick}
+                            initial_index={this.selected_contract_index}
                             handleSelect={this.handleSelect}
                             item={item || { value }}
                             list={this.list_with_category}

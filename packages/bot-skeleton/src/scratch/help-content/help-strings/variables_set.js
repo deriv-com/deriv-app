@@ -8,9 +8,6 @@ export default {
         ),
         localize('Creating a variable'),
         localize('1. From the block library, click Variable, and then click Create a variable.'),
-        localize('2. The following pop-up message will appear:'),
-        localize(
-            'Enter the desired name for the variable and click OK. The newly created variable will appear as a block in the Variable library.'
-        ),
+        localize('2. The new variable will appear as a block under Set variable.'),
     ],
 };

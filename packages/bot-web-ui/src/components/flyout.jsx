@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { localize } from '@deriv/translations';
-import { Icon, ThemedScrollbars } from '@deriv/components';
+import { Icon, ThemedScrollbars, Input } from '@deriv/components';
 import { help_content_config } from '@deriv/bot-skeleton';
 import FlyoutBlockGroup from './flyout-block-group.jsx';
 import HelpBase from './help-contents/flyout-help-base.jsx';
@@ -25,6 +25,7 @@ const SearchResult = ({ search_term, total_result }) => (
 
 const FlyoutContent = props => {
     const flyout_ref = React.createRef();
+    const variable_name = React.createRef();
     const {
         flyout_content,
         active_helper,
@@ -111,30 +112,32 @@ const FlyoutContent = props => {
                                 const callback = button_cb || (() => {});
 
                                 return (
-                                    <button
-                                        key={`${cb_key}${index}`}
-                                        className={classNames(
-                                            'dc-btn',
-                                            'dc-btn-effect',
-                                            'dc-btn--primary',
-                                            'flyout__button-new'
-                                        )}
-                                        onClick={button => {
-                                            const flyout_button = button;
-
-                                            // Workaround for not having a flyout workspace.
-                                            // eslint-disable-next-line no-underscore-dangle
-                                            flyout_button.targetWorkspace_ = Blockly.derivWorkspace;
-                                            flyout_button.getTargetWorkspace = () => {
-                                                // eslint-disable-next-line no-underscore-dangle
-                                                return flyout_button.targetWorkspace_;
-                                            };
-
-                                            callback(flyout_button);
-                                        }}
-                                    >
-                                        {node.getAttribute('text')}
-                                    </button>
+                                    <div key={index} className='flyout__new-variable-container'>
+                                        <Input
+                                            id='variable_name'
+                                            className='flyout__input'
+                                            data-lpignore='true'
+                                            type='text'
+                                            name='variable'
+                                            placeholder={localize('New variable name')}
+                                            ref={variable_name}
+                                        />
+                                        <button
+                                            key={`${cb_key}${index}`}
+                                            className={classNames(
+                                                'dc-btn',
+                                                'dc-btn-effect',
+                                                'dc-btn--primary',
+                                                'flyout__button-new'
+                                            )}
+                                            onClick={() => {
+                                                callback(variable_name.current.value);
+                                                variable_name.current.value = '';
+                                            }}
+                                        >
+                                            {node.getAttribute('text')}
+                                        </button>
+                                    </div>
                                 );
                             }
                             default:

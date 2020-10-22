@@ -133,10 +133,7 @@ export default class PortfolioStore extends BaseStore {
 
     updateContractReplayStore(response) {
         const contract_replay = this.root_store.modules.contract_replay;
-        if (
-            contract_replay.contract_id === response.proposal_open_contract?.contract_id ||
-            contract_replay.contract_id
-        ) {
+        if (contract_replay.contract_id === response.proposal_open_contract?.contract_id) {
             contract_replay.populateConfig(response);
         }
     }

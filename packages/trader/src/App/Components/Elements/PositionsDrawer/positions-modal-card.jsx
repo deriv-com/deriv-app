@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { ContractCard, Icon, Money, ProgressSliderMobile } from '@deriv/components';
+import { ContractCard, CurrencyBadge, Icon, Money, ProgressSliderMobile } from '@deriv/components';
 import {
     getContractPath,
     isMultiplierContract,
@@ -13,7 +13,6 @@ import {
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
-import CurrencyBadge from 'App/Components/Elements/currency-badge.jsx';
 import { connect } from 'Stores/connect';
 import { connectWithContractUpdate } from 'Stores/Modules/Contract/Helpers/multiplier';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
@@ -26,6 +25,7 @@ const PositionsModalCard = ({
     contract_info,
     contract_update,
     currency,
+    current_focus,
     current_tick,
     getContractById,
     id,
@@ -204,18 +204,16 @@ const PositionsModalCard = ({
     );
 
     const card_multiplier_body = (
-        <div className={'dc-contract-card__separatorclass'}>
-            <ContractCard.Body
-                contract_info={contract_info}
-                contract_update={contract_update}
-                currency={currency}
-                getCardLabels={getCardLabels}
-                is_mobile={is_mobile}
-                is_multiplier={is_multiplier}
-                status={status}
-                server_time={server_time}
-            />
-        </div>
+        <ContractCard.Body
+            contract_info={contract_info}
+            contract_update={contract_update}
+            currency={currency}
+            getCardLabels={getCardLabels}
+            is_mobile={is_mobile}
+            is_multiplier={is_multiplier}
+            status={status}
+            server_time={server_time}
+        />
     );
 
     const card_multiplier_footer = (
@@ -223,6 +221,7 @@ const PositionsModalCard = ({
             addToast={addToast}
             connectWithContractUpdate={connectWithContractUpdate}
             contract_info={contract_info}
+            current_focus={current_focus}
             getCardLabels={getCardLabels}
             getContractById={getContractById}
             is_multiplier={is_multiplier}
@@ -248,7 +247,6 @@ const PositionsModalCard = ({
                 should_show_result_overlay={false}
             >
                 {card_multiplier_header}
-                <CurrencyBadge currency={contract_info?.currency ?? ''} />
                 {card_multiplier_body}
                 {card_multiplier_footer}
             </ContractCard>
@@ -287,6 +285,7 @@ PositionsModalCard.propTypes = {
     className: PropTypes.string,
     contract_info: PropTypes.object,
     currency: PropTypes.string,
+    current_focus: PropTypes.string,
     current_tick: PropTypes.number,
     duration: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     duration_unit: PropTypes.string,
@@ -314,6 +313,7 @@ PositionsModalCard.propTypes = {
 
 export default connect(({ common, ui, modules }) => ({
     addToast: ui.addToast,
+    current_focus: ui.current_focus,
     getContractById: modules.contract_trade.getContractById,
     is_mobile: ui.is_mobile,
     removeToast: ui.removeToast,

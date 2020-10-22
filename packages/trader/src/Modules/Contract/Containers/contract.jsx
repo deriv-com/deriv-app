@@ -30,9 +30,9 @@ class Contract extends React.Component {
                 {this.props.has_error ? (
                     <ErrorComponent
                         message={this.props.error_message}
-                        is_dialog={dialog_erros.includes(this.props.error_code)}
+                        is_dialog={dialog_errors.includes(this.props.error_code)}
                         redirect_label={
-                            dialog_erros.includes(this.props.error_code)
+                            dialog_errors.includes(this.props.error_code)
                                 ? localize('Ok')
                                 : localize('Go back to trading')
                         }

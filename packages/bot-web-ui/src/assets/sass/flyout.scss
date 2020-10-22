@@ -64,12 +64,11 @@
     }
     &__button {
         &-new {
-            width: 25%;
-            height: 4rem !important;
+            width: 100%;
             font-size: 100%;
-            font-weight: bold;
-            border-top-left-radius: 0rem !important;
-            border-bottom-left-radius: 0rem !important;
+            box-shadow: 0 2px 8px 0 $COLOR_LIGHT_BLACK_2;
+            margin: $default-margin 0;
+            background-color: var(--general-main-1);
         }
         &-add {
             color: var(--general-main-1);
@@ -215,16 +214,5 @@
         &-content {
             height: 100%;
         }
-    }
-    &__new-variable-container {
-        display: flex;
-        padding-top: 3.3rem;
-    }
-    &__input {
-        width: 75%;
-        height: 4rem;
-        border-top-right-radius: 0rem !important;
-        border-bottom-right-radius: 0rem !important;
-        border: solid 1px #d6dadb;
     }
 }

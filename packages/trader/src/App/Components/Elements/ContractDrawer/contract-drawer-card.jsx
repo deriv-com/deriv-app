@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import CurrencyBadge from 'App/Components/Elements/currency-badge.jsx';
 import { DesktopWrapper, MobileWrapper, Collapsible, ContractCard } from '@deriv/components';
 import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
 import { getEndTime } from 'Stores/Modules/Contract/Helpers/logic';
@@ -14,6 +13,7 @@ const ContractDrawerCard = ({
     contract_info,
     contract_update,
     currency,
+    current_focus,
     getContractById,
     is_mobile,
     is_multiplier,
@@ -63,29 +63,12 @@ const ContractDrawerCard = ({
         />
     );
 
-    const card_body_wrapper = (
-        <React.Fragment>
-            <DesktopWrapper>{card_body}</DesktopWrapper>
-            <MobileWrapper>
-                <div
-                    className={
-                        ('dc-contract-card__separatorclass',
-                        classNames({
-                            'dc-contract-card__body-wrapper': !is_multiplier,
-                        }))
-                    }
-                >
-                    {card_body}
-                </div>
-            </MobileWrapper>
-        </React.Fragment>
-    );
-
     const card_footer = (
         <ContractCard.Footer
             addToast={addToast}
             connectWithContractUpdate={connectWithContractUpdate}
             contract_info={contract_info}
+            current_focus={current_focus}
             getCardLabels={getCardLabels}
             getContractById={getContractById}
             is_multiplier={is_multiplier}
@@ -104,8 +87,7 @@ const ContractDrawerCard = ({
     const contract_el = (
         <React.Fragment>
             {card_header}
-            <CurrencyBadge currency={contract_info?.currency ?? ''} />
-            {card_body_wrapper}
+            {card_body}
         </React.Fragment>
     );
 
@@ -150,6 +132,7 @@ const ContractDrawerCard = ({
 ContractDrawerCard.propTypes = {
     contract_info: PropTypes.object,
     currency: PropTypes.string,
+    current_focus: PropTypes.string,
     is_multiplier: PropTypes.bool,
     is_sell_requested: PropTypes.bool,
     onClickCancel: PropTypes.func,
@@ -159,6 +142,7 @@ ContractDrawerCard.propTypes = {
 
 export default connect(({ modules, ui }) => ({
     addToast: ui.addToast,
+    current_focus: ui.current_focus,
     getContractById: modules.contract_trade.getContractById,
     removeToast: ui.removeToast,
     should_show_cancellation_warning: ui.should_show_cancellation_warning,

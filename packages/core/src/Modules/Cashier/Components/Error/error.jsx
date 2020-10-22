@@ -106,6 +106,15 @@ class Error extends React.Component {
                     />
                 );
                 break;
+            case 'PaymentAgentWithdrawError':
+                AccountError = (
+                    <ErrorComponent
+                        header={this.props.error.message}
+                        onClickButton={this.onClickButton}
+                        button_text={localize('Back to payment agents')}
+                    />
+                );
+                break;
             default:
                 AccountError = <ErrorComponent header={this.props.error.message} />;
                 break;

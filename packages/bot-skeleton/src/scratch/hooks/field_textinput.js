@@ -26,6 +26,7 @@ Blockly.FieldTextInput.prototype.init = function () {
             height: this.size_.height,
             fill: this.sourceBlock_.getColourSecondary(),
             stroke: this.sourceBlock_.getColourTertiary(),
+            'stroke-width': '0.3px',
         });
         this.fieldGroup_.insertBefore(this.box_, this.textElement_);
     }

@@ -84,6 +84,8 @@ Blockly.FieldDropdown.prototype.init = function () {
         `${Blockly.mainWorkspace.options.pathToMedia}dropdown-arrow-dark.svg`
     );
     this.className_ += ' blocklyDropdownText';
+    // @deriv/bot: stop the drop-down from changing its fill colour to colourTertiary on click
+    this.disableColourChange_ = true;
 
     Blockly.FieldDropdown.superClass_.init.call(this);
     // If not in a shadow block, draw a box.
@@ -110,19 +112,6 @@ Blockly.FieldDropdown.prototype.init = function () {
     const text = this.text_;
     this.text_ = null;
     this.setText(text);
-};
-
-/**
- * This one is hooked to prevent the dropddown field background color from changing on item select
- */
-Blockly.FieldDropdown.prototype.onHide = function () {
-    this.dropDownOpen_ = false;
-    // Update colour to look selected.
-    if (!this.disableColourChange_ && this.sourceBlock_) {
-        if (this.sourceBlock_.isShadow()) {
-            this.sourceBlock_.clearShadowColour();
-        }
-    }
 };
 
 /**

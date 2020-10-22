@@ -1051,7 +1051,12 @@ export default class ClientStore extends BaseStore {
             await WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
             if (!this.is_virtual) await this.getLimits();
 
-            if (!this.switched && !this.has_any_real_account && this.is_mt5_allowed) {
+            if (
+                !this.switched &&
+                !this.has_any_real_account &&
+                this.is_mt5_allowed &&
+                !this.root_store.ui.is_real_acc_signup_on
+            ) {
                 this.root_store.ui.toggleWelcomeModal({ is_visible: true });
             }
         } else {

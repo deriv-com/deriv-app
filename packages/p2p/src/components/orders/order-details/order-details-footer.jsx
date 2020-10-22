@@ -35,15 +35,17 @@ const CancelOrderModal = ({ id, hideCancelOrderModal, should_show_cancel_modal }
             title={localize('Do you want to cancel this order?')}
             has_close_icon
         >
-            <Modal.Body>{localize('Do NOT cancel if you have made payment.')}</Modal.Body>
+            <Modal.Body>
+                <Localize i18n_default_text='Do NOT cancel if you have made payment.' />
+            </Modal.Body>
             <Modal.Footer>
                 {error_message && <FormError message={error_message} />}
                 <Button.Group>
                     <Button secondary type='button' onClick={hideCancelOrderModal} large>
-                        {localize('Do not cancel')}
+                        <Localize i18n_default_text='Do not cancel' />
                     </Button>
                     <Button primary large onClick={cancelOrderRequest}>
-                        {localize('Cancel this order')}
+                        <Localize i18n_default_text='Cancel this order' />
                     </Button>
                 </Button.Group>
             </Modal.Footer>
@@ -134,10 +136,10 @@ const ComplainOrderModal = ({ id, is_buy_order_for_user, hideComplainOrderModal,
                 {error_message && <FormError message={error_message} />}
                 <Button.Group>
                     <Button secondary type='button' onClick={hideComplainOrderModal} large>
-                        {localize('Cancel')}
+                        <Localize i18n_default_text='Cancel' />
                     </Button>
                     <Button is_disabled={!dispute_reason} primary large onClick={disputeOrderRequest}>
-                        {localize('Submit')}
+                        <Localize i18n_default_text='Submit' />
                     </Button>
                 </Button.Group>
             </Modal.Footer>
@@ -189,30 +191,41 @@ const ConfirmOrderModal = ({
             has_close_icon
         >
             <Modal.Body>
-                {is_buy_order_for_user
-                    ? localize("Please make sure that you've paid {{amount}} {{currency}} to {{other_user_name}}.", {
-                          amount: price_display,
-                          currency: local_currency,
-                          other_user_name: other_user_details.name,
-                      })
-                    : localize(
-                          'Please confirm only after checking your bank or e-wallet account to make sure you have received payment.'
-                      )}
+                {is_buy_order_for_user ? (
+                    <Localize
+                        i18n_default_text="Please make sure that you've paid {{amount}} {{currency}} to {{other_user_name}}."
+                        values={{
+                            amount: price_display,
+                            currency: local_currency,
+                            other_user_name: other_user_details.name,
+                        }}
+                    />
+                ) : (
+                    <Localize i18n_default_text='Please confirm only after checking your bank or e-wallet account to make sure you have received payment.' />
+                )}
 
                 <Checkbox
                     className='order-details__modal-checkbox'
                     onChange={() => setIsCheckboxChecked(!is_checkbox_checked)}
                     defaultChecked={is_checkbox_checked}
                     label={
-                        is_buy_order_for_user
-                            ? localize('I have paid {{amount}} {{currency}}.', {
-                                  amount: price_display,
-                                  currency: local_currency,
-                              })
-                            : localize('I have received {{amount}} {{currency}}.', {
-                                  amount: price_display,
-                                  currency: local_currency,
-                              })
+                        is_buy_order_for_user ? (
+                            <Localize
+                                i18n_default_text='I have paid {{amount}} {{currency}}'
+                                values={{
+                                    amount: price_display,
+                                    currency: local_currency,
+                                }}
+                            />
+                        ) : (
+                            <Localize
+                                i18n_default_text='I have received {{amount}} {{currency}}'
+                                values={{
+                                    amount: price_display,
+                                    currency: local_currency,
+                                }}
+                            />
+                        )
                     }
                 />
             </Modal.Body>
@@ -220,15 +233,24 @@ const ConfirmOrderModal = ({
                 {error_message && <FormError message={error_message} />}
                 <Button.Group>
                     <Button secondary type='button' onClick={hideConfirmOrderModal} large>
-                        {is_buy_order_for_user ? localize("I haven't paid yet") : localize('Cancel')}
+                        {is_buy_order_for_user ? (
+                            <Localize i18n_default_text="I haven't paid yet" />
+                        ) : (
+                            <Localize i18n_default_text='Cancel' />
+                        )}
                     </Button>
                     <Button is_disabled={!is_checkbox_checked} primary large onClick={confirmOrderRequest}>
-                        {is_buy_order_for_user
-                            ? localize("I've paid")
-                            : localize('Release {{amount}} {{currency}}', {
-                                  amount: amount_display,
-                                  currency: account_currency,
-                              })}
+                        {is_buy_order_for_user ? (
+                            <Localize i18n_default_text="I've paid" />
+                        ) : (
+                            <Localize
+                                i18n_default_text='Release {{amount}} {{currency}}'
+                                values={{
+                                    amount: amount_display,
+                                    currency: account_currency,
+                                }}
+                            />
+                        )}
                     </Button>
                 </Button.Group>
             </Modal.Footer>
@@ -267,7 +289,7 @@ const OrderDetailsFooter = ({ order_information }) => {
                 <div className='order-details__footer'>
                     <div className='order-details__footer--right'>
                         <Button large primary onClick={showConfirmOrderModal}>
-                            {localize("I've received payment")}
+                            <Localize i18n_default_text="I've received payment" />
                         </Button>
                     </div>
                 </div>
@@ -288,10 +310,10 @@ const OrderDetailsFooter = ({ order_information }) => {
                     <div className='order-details__footer--right'>
                         <Button.Group>
                             <Button large secondary onClick={showCancelOrderModal}>
-                                {localize('Cancel order')}
+                                <Localize i18n_default_text='Cancel order' />
                             </Button>
                             <Button large primary onClick={showConfirmOrderModal}>
-                                {localize("I've paid")}
+                                <Localize i18n_default_text="I've paid" />
                             </Button>
                         </Button.Group>
                     </div>
@@ -322,7 +344,7 @@ const OrderDetailsFooter = ({ order_information }) => {
                             tertiary
                             onClick={showComplainOrderModal}
                         >
-                            {localize('Complain')}
+                            <Localize i18n_default_text='Complain' />
                         </Button>
                     </div>
                 </div>

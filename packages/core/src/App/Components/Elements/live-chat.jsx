@@ -16,7 +16,7 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
     }, []);
 
     React.useEffect(() => {
-        let session_variables = { loginid: '', landing_company_shortcode: '', currency: '', residence: '' };
+        let session_variables = { loginid: '', landing_company_shortcode: '', currency: '', residence: '', email: '' };
 
         if (has_cookie_account) {
             const domain = window.location.hostname.includes('deriv.com') ? 'deriv.com' : 'binary.sx';
@@ -38,6 +38,7 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
                     ...(landing_company_shortcode && { landing_company_shortcode }),
                     ...(currency && { currency }),
                     ...(residence && { residence }),
+                    ...(email && { email }),
                 };
 
                 window.LiveChatWidget.call('set_session_variables', session_variables);
@@ -46,8 +47,6 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
                 window.LiveChatWidget.call('set_customer_name', `${first_name} ${last_name}`);
             }
         } else {
-            window.LiveChatWidget.call('set_customer_email', ' ');
-            window.LiveChatWidget.call('set_customer_name', ' ');
             window.LiveChatWidget.call('set_session_variables', session_variables);
         }
     }, [has_cookie_account]);

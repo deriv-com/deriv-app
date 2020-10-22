@@ -8,11 +8,14 @@ import {
     getLimitOrderAmount,
     getCurrentTick,
     getDisplayStatus,
+    getTotalProfit,
 } from '@deriv/shared';
 import ContractCardItem from './contract-card-item.jsx';
-import Money from '../../money';
+import CurrencyBadge from '../../currency-badge';
+import DesktopWrapper from '../../desktop-wrapper';
 import Icon from '../../icon';
 import MobileWrapper from '../../mobile-wrapper';
+import Money from '../../money';
 import { ResultStatusIcon } from '../result-overlay/result-overlay.jsx';
 import ProgressSliderMobile from '../../progress-slider-mobile';
 
@@ -27,7 +30,7 @@ const MultiplierCardBody = ({
 }) => {
     const { buy_price, bid_price, profit, limit_order } = contract_info;
 
-    const total_profit = bid_price - buy_price;
+    const total_profit = getTotalProfit(contract_info);
     const { take_profit, stop_loss } = getLimitOrderAmount(contract_update || limit_order);
     const cancellation_price = getCancellationPrice(contract_info);
 
@@ -115,22 +118,18 @@ const ContractCardBody = ({
     const { buy_price, sell_price, payout, profit, tick_count, date_expiry, purchase_time } = contract_info;
     const current_tick = tick_count ? getCurrentTick(contract_info) : null;
 
-    if (is_multiplier) {
-        return (
-            <MultiplierCardBody
-                contract_info={contract_info}
-                contract_update={contract_update}
-                currency={currency}
-                getCardLabels={getCardLabels}
-                is_mobile={is_mobile}
-                is_sold={is_sold}
-                status={status}
-            />
-        );
-    }
-
-    return (
-        <>
+    const card_body = is_multiplier ? (
+        <MultiplierCardBody
+            contract_info={contract_info}
+            contract_update={contract_update}
+            currency={currency}
+            getCardLabels={getCardLabels}
+            is_mobile={is_mobile}
+            is_sold={is_sold}
+            status={status}
+        />
+    ) : (
+        <React.Fragment>
             <div className='dc-contract-card-items-wrapper'>
                 <ContractCardItem
                     header={is_sold ? getCardLabels().PROFIT_LOSS : getCardLabels().POTENTIAL_PROFIT_LOSS}
@@ -186,7 +185,26 @@ const ContractCardBody = ({
                     )}
                 </div>
             </MobileWrapper>
-        </>
+        </React.Fragment>
+    );
+
+    return (
+        <React.Fragment>
+            <CurrencyBadge currency={currency} />
+            <DesktopWrapper>{card_body}</DesktopWrapper>
+            <MobileWrapper>
+                <div
+                    className={
+                        ('dc-contract-card__separatorclass',
+                        classNames({
+                            'dc-contract-card__body-wrapper': !is_multiplier,
+                        }))
+                    }
+                >
+                    {card_body}
+                </div>
+            </MobileWrapper>
+        </React.Fragment>
     );
 };
 

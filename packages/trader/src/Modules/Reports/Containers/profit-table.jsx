@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import React from 'react';
 import { withRouter } from 'react-router';
-import { DesktopWrapper, MobileWrapper, DataList, DataTable } from '@deriv/components';
-import { extractInfoFromShortcode, urlFor, website_name } from '@deriv/shared';
+import { DesktopWrapper, MobileWrapper, DataList, DataTable, ThemedScrollbars } from '@deriv/components';
+import { extractInfoFromShortcode, urlFor, website_name, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
 import CompositeCalendar from 'App/Components/Form/CompositeCalendar';
@@ -158,7 +158,11 @@ class ProfitTable extends React.Component {
                                 localized_period_message={localize('You have no trading activity for this period.')}
                             />
                         ) : (
-                            <>
+                            <ThemedScrollbars
+                                className='reports__scrollbar'
+                                is_bypassed={isMobile()}
+                                is_only_horizontal
+                            >
                                 <DesktopWrapper>
                                     <DataTable
                                         className='profit-table'
@@ -189,7 +193,7 @@ class ProfitTable extends React.Component {
                                         <PlaceholderComponent is_loading={is_loading} />
                                     </DataList>
                                 </MobileWrapper>
-                            </>
+                            </ThemedScrollbars>
                         )}
                     </React.Fragment>
                 )}

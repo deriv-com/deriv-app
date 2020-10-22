@@ -51,6 +51,15 @@ $side-padding: 1.2em;
     &__route-selection {
         padding: 1.6rem;
     }
+    &__scrollbar {
+        width: 100%;
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        @media only screen and (min-width: 1280px) {
+            overflow: visible;
+        }
+    }
     .unknown-icon {
         margin-left: 8px;
         fill: var(--text-general);
@@ -60,6 +69,7 @@ $side-padding: 1.2em;
     .dc-tabs--open-positions {
         flex: 1;
         grid-template-rows: 36px calc(100% - 36px);
+        grid-template-columns: 100%;
 
         .dc-tabs__content {
             display: flex;
@@ -148,6 +158,7 @@ $side-padding: 1.2em;
     &__table {
         height: calc(100% - 42px);
         flex: 1;
+        min-width: 85rem;
     }
     &__row {
         /* icon refId currency tr_time transaction cred/debt balance */
@@ -421,6 +432,7 @@ $side-padding: 1.2em;
     &__table {
         height: calc(100% - 42px);
         flex: 1;
+        min-width: 90rem;
     }
     &__row {
         /* icon refId currency buy_time buy_price sell_time sell_price profit/loss */
@@ -587,12 +599,8 @@ $side-padding: 1.2em;
                     }
                 }
                 /* postcss-bem-linter: ignore */
-                & .dc-contract-card-items-wrapper--mobile {
-                    margin-top: 0.8rem;
-                }
-                /* postcss-bem-linter: ignore */
                 & .dc-contract-card-dialog-toggle {
-                    top: 71px;
+                    top: 69px;
                     width: 124px;
                     right: 9px;
                     border-color: var(--border-hover);
@@ -693,13 +701,13 @@ $side-padding: 1.2em;
     }
 
     &__content {
-        width: 100%;
+        width: fit-content;
         max-height: 100%;
     }
     &__indicative {
         display: flex;
         justify-content: center;
-        align-items: flex-end;
+        align-items: center;
         flex-direction: column;
         width: 100%;
 
@@ -712,6 +720,11 @@ $side-padding: 1.2em;
         }
         .dc-btn--sell {
             height: 2.4rem;
+        }
+        &-no-resale-msg {
+            clear: both;
+            text-align: center;
+            font-size: smaller;
         }
     }
     &__profit-loss {
@@ -761,7 +774,7 @@ $side-padding: 1.2em;
         .table__head {
             height: auto;
             white-space: normal;
-            @include desktop {
+            @include tablet-up {
                 .profit,
                 .indicative {
                     white-space: break-spaces;
@@ -791,13 +804,13 @@ $side-padding: 1.2em;
         }
     }
     &__row {
-        /* icon refId currency buy_price potential_payout potential_profit indicative_price rem_time */
+        /* type refId currency buy_price payout_limit indicative_profit/loss indicative_price rem_time */
         /* stylelint-disable-next-line declaration-colon-space-after */
         grid-template-columns:
-            minmax(110px, 0.8fr) minmax(130px, 1.2fr) minmax(100px, 1fr) minmax(90px, 1.4fr) minmax(90px, 1.4fr)
-            minmax(120px, 2fr) minmax(120px, 1.2fr) minmax(85px, 2fr);
+            minmax(110px, 0.7fr) minmax(130px, 0.8fr) minmax(100px, 1.1fr) minmax(90px, 1.1fr) minmax(90px, 1.1fr)
+            minmax(120px, 1.1fr) minmax(120px, 1.1fr) minmax(85px, 1.1fr);
         width: 100%;
-        grid-auto-rows: auto;
+        grid-auto-rows: 100%;
 
         &_wrapper {
             display: flex;
@@ -814,10 +827,11 @@ $side-padding: 1.2em;
     .payout,
     .indicative,
     .purchase,
+    .multiplier,
+    .currency,
     .profit {
         @include desktop {
-            justify-content: flex-end;
-            text-align: right;
+            justify-content: center;
         }
     }
     .indicative {
@@ -889,12 +903,17 @@ $side-padding: 1.2em;
                     }
                 }
             }
-            .limit_order,
+            <<<<<<< HEAD ======= .limit_order {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            >>>>>>>80bac53df68e185c0859cee07b2a661c6728884b .limit_order,
             .cancellation,
             .bid_price {
                 @include desktop {
-                    justify-content: flex-end;
-                    text-align: right;
+                    justify-content: center;
+                    text-align: center;
                     width: 100%;
                     white-space: break-spaces;
                 }
@@ -906,8 +925,8 @@ $side-padding: 1.2em;
                 justify-content: flex-start;
             }
             .action {
-                padding-top: 0.8rem;
                 padding-bottom: 0;
+                justify-content: center;
             }
         }
         &__bid_price {

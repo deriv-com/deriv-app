@@ -78,11 +78,10 @@ Blockly.DataCategory.search = function (variableModelList) {
 Blockly.DataCategory.addCreateButton = function (xmlList, workspace) {
     const buttonXml = goog.dom.createDom('button');
     // Set default msg, callbackKey, and callback values for type 'VARIABLE'
-    const msg = localize('Create variable');
+    const msg = localize('Create');
     const callbackKey = 'CREATE_VARIABLE';
-    const callback = function (button) {
-        const buttonWorkspace = button.getTargetWorkspace();
-        Blockly.Variables.createVariable(buttonWorkspace, null, '');
+    const callback = function (variableName) {
+        Blockly.derivWorkspace.createVariable(variableName, '');
 
         const toolbox = Blockly.derivWorkspace.toolbox_;
         const category = Blockly.derivWorkspace.toolbox_.getSelectedItem();

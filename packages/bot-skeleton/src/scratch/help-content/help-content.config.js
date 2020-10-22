@@ -155,9 +155,7 @@ export const help_content_config = public_path => {
             { type: TEXT },
             { type: TEXT },
             { type: TEXT },
-            { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/create_variable.png` },
-            { type: TEXT },
-            { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/create_variable_popup.png` },
+            { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/create_variable.jpg` },
             { type: TEXT },
         ],
         // =============== Time blocks ============

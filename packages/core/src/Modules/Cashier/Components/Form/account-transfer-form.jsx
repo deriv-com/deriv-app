@@ -39,7 +39,9 @@ const AccountOption = ({ account, idx }) => {
                 <Text size='xxs' lineHeight='x'>
                     {account.text}
                 </Text>
-                <span className='account-transfer__loginid'>{account.value}</span>
+                <Text size='xxxs' align='left' color='less-prominent'>
+                    {account.value}
+                </Text>
             </div>
 
             <span className='account-transfer__balance cashier__drop-down-display-brackets'>

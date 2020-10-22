@@ -26,3 +26,4 @@ import './workspace_svg';
 import './xml';
 import './field_textinput';
 import './scratch_block_comment';
+import './tooltip';

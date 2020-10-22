@@ -13,7 +13,6 @@ export default class OrderDetailsStore {
 
     @observable channel_url = this.order_store.order_information.chat_channel_url;
     @observable interval = null;
-    @observable is_chat_loading = false;
     @observable popup_options = {};
     @observable remaining_time;
     @observable should_show_popup = false;
@@ -79,11 +78,6 @@ export default class OrderDetailsStore {
     @action.bound
     setIntervalState(interval) {
         this.interval = interval;
-    }
-
-    @action.bound
-    setIsChatLoading(is_chat_loading) {
-        this.is_chat_loading = is_chat_loading;
     }
 
     @action.bound

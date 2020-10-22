@@ -2,9 +2,6 @@ import { action, observable } from 'mobx';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import { requestWS, subscribeWS } from 'Utils/websocket';
 import { height_constants } from 'Utils/height_constants';
-import { localize } from 'Components/i18next';
-import { secondsToTimer } from 'Utils/date-time';
-import ServerTime from 'Utils/server-time';
 
 export default class OrderStore {
     constructor(root_store) {
@@ -18,8 +15,6 @@ export default class OrderStore {
     @observable nav = this.general_store.parameters?.nav;
     @observable order_information = null;
     @observable order_rerender_timeout = null;
-    @observable order_state = this.order;
-    @observable remaining_time = null;
 
     height_values = [
         height_constants.screen,
@@ -35,34 +30,6 @@ export default class OrderStore {
     interval;
     item_height = 72;
     order_info_subscription = {};
-    row_props = {};
-
-    get order_expiry_milliseconds() {
-        return this.order?.order_expiry_milliseconds;
-    }
-
-    get order() {
-        return this.row_props?.data;
-    }
-
-    get style() {
-        return this.row_props?.style;
-    }
-
-    @action.bound
-    countDownTimer = () => {
-        const distance = ServerTime.getDistanceToServerTime(this.order_expiry_milliseconds);
-        const timer = secondsToTimer(distance);
-
-        if (distance < 1) {
-            const { client, props } = this.general_store;
-            this.setRemainingTime(localize('expired'));
-            this.setOrderState(createExtendedOrderDetails(this.order.order_details, client.loginid, props.server_time));
-            clearInterval(this.interval);
-        } else {
-            this.setRemainingTime(timer);
-        }
-    };
 
     @action.bound
     hideDetails(should_navigate) {
@@ -72,12 +39,6 @@ export default class OrderStore {
         this.general_store.props.setOrderId(null);
         this.setOrderInformation(null);
     }
-
-    @action.bound
-    isOrderSeen = order_id => {
-        const { notifications } = this.general_store.getLocalStorageSettingsForLoginId();
-        return notifications.some(notification => notification.order_id === order_id && notification.is_seen === true);
-    };
 
     @action.bound
     loadMoreOrders() {
@@ -129,17 +90,6 @@ export default class OrderStore {
     }
 
     @action.bound
-    onRowMount() {
-        this.countDownTimer();
-        this.interval = setInterval(this.countDownTimer, 1000);
-    }
-
-    @action.bound
-    onRowUnmount() {
-        clearInterval(this.interval);
-    }
-
-    @action.bound
     onUnmount() {
         clearTimeout(this.order_rerender_timeout);
         this.unsubscribeFromCurrentOrder();
@@ -187,11 +137,6 @@ export default class OrderStore {
     }
 
     @action.bound
-    setOrderState(order_state) {
-        this.order_state = order_state;
-    }
-
-    @action.bound
     setQueryDetails = input_order => {
         const { client, props } = this.general_store;
         const input_order_information = createExtendedOrderDetails(input_order, client.loginid, props.server_time);
@@ -228,13 +173,8 @@ export default class OrderStore {
     };
 
     @action.bound
-    setRemainingTime(remaining_time) {
-        this.remaining_time = remaining_time;
-    }
-
-    @action.bound
-    setRowProps(row_props) {
-        this.row_props = row_props;
+    setData(data) {
+        this.data = data;
     }
     @action.bound
     subscribeToCurrentOrder() {

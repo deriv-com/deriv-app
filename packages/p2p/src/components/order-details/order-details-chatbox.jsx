@@ -8,15 +8,13 @@ import { useStores } from 'Stores';
 import 'sendbird-uikit/dist/index.css';
 
 const OrderDetailsChatbox = observer(({ token, app_id, user_id }) => {
-    const { general_store, order_store, order_details_store } = useStores();
-
+    const { general_store, order_store } = useStores();
     const { chat_channel_url, other_user_details } = order_store.order_information;
 
+    const [is_loading, setIsLoading] = React.useState(true);
     const isMounted = useIsMounted();
 
     React.useEffect(() => {
-        order_details_store.setIsChatLoading(true);
-
         const interval_header = setInterval(() => {
             const el_sendbird_conversation = document.querySelector('.sendbird-conversation');
             const el_chat_title = document.querySelector('.sendbird-chat-header__title');
@@ -37,7 +35,7 @@ const OrderDetailsChatbox = observer(({ token, app_id, user_id }) => {
                     el_sendbird_conversation.setAttribute('style', 'display: flex;');
 
                     if (isMounted()) {
-                        order_details_store.setIsChatLoading(false);
+                        setIsLoading(false);
                     }
 
                     clearInterval(interval_header);
@@ -88,7 +86,7 @@ const OrderDetailsChatbox = observer(({ token, app_id, user_id }) => {
             }
 
             if (isMounted()) {
-                order_details_store.setIsChatLoading(false);
+                setIsLoading(false);
             }
         }, 10000);
 
@@ -97,7 +95,7 @@ const OrderDetailsChatbox = observer(({ token, app_id, user_id }) => {
 
     return (
         <div className={'sendbird-container'}>
-            {order_details_store.is_chat_loading && <Loading is_fullscreen={false} />}
+            {is_loading && <Loading is_fullscreen={false} />}
             <SendBirdProvider
                 appId={app_id}
                 userId={user_id}

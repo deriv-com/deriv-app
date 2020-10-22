@@ -8,7 +8,7 @@ import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import ContractReplay from './contract-replay.jsx';
 
-const dialog_erros = ['GetProposalFailure', 'ContractValidationError'];
+const dialog_errors = ['GetProposalFailure', 'ContractValidationError'];
 
 class Contract extends React.Component {
     componentDidMount() {

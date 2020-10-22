@@ -252,7 +252,7 @@ class FinancialAssessment extends React.Component {
         this.setState(new_state);
     };
 
-    onClickSubmit = (handleSubmit) => {
+    onClickSubmit = handleSubmit => {
         const is_confirmation_needed = this.state.has_trading_experience && this.props.is_trading_experience_incomplete;
 
         if (is_confirmation_needed) {

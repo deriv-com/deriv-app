@@ -8,6 +8,7 @@ import {
     getLimitOrderAmount,
     getCurrentTick,
     getDisplayStatus,
+    getTotalProfit,
 } from '@deriv/shared';
 import ContractCardItem from './contract-card-item.jsx';
 import CurrencyBadge from '../../currency-badge';
@@ -29,7 +30,7 @@ const MultiplierCardBody = ({
 }) => {
     const { buy_price, bid_price, profit, limit_order } = contract_info;
 
-    const total_profit = bid_price - buy_price;
+    const total_profit = getTotalProfit(contract_info);
     const { take_profit, stop_loss } = getLimitOrderAmount(contract_update || limit_order);
     const cancellation_price = getCancellationPrice(contract_info);
 

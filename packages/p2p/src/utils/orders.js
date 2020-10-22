@@ -83,7 +83,10 @@ class ExtendedOrderDetails {
 
     get should_highlight_disabled() {
         return (
-            this.is_buyer_cancelled_order || this.is_expired_order || this.is_refunded_order || this.has_timer_expired
+            this.is_buyer_cancelled_order ||
+            this.is_expired_order ||
+            this.is_refunded_order ||
+            (this.has_timer_expired && !this.is_completed_order)
         );
     }
 
@@ -105,6 +108,10 @@ class ExtendedOrderDetails {
         }
 
         return this.is_buy_order ? this.is_pending_order : this.is_buyer_confirmed_order;
+    }
+
+    get should_highlight_success() {
+        return this.is_completed_order;
     }
 
     get should_show_cancel_and_paid_button() {

@@ -2,8 +2,17 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { DesktopWrapper, MobileWrapper, ProgressBar, Tabs, DataList, DataTable, ContractCard } from '@deriv/components';
-import { urlFor, isMobile, isMultiplierContract, getTimePercentage, website_name } from '@deriv/shared';
+import {
+    DesktopWrapper,
+    MobileWrapper,
+    ProgressBar,
+    Tabs,
+    DataList,
+    DataTable,
+    ContractCard,
+    ThemedScrollbars,
+} from '@deriv/components';
+import { urlFor, isMobile, isMultiplierContract, getTimePercentage, website_name, getTotalProfit } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
 import { getContractPath } from 'App/Components/Routes/helpers';
@@ -57,7 +66,7 @@ const OpenPositionsTable = ({
             />
         ) : (
             currency && (
-                <>
+                <ThemedScrollbars className='reports__scrollbar' is_bypassed={isMobile()} is_only_horizontal>
                     <DesktopWrapper>
                         <EmptyPlaceholderWrapper
                             component_icon={component_icon}
@@ -100,7 +109,7 @@ const OpenPositionsTable = ({
                             </DataList>
                         </EmptyPlaceholderWrapper>
                     </MobileWrapper>
-                </>
+                </ThemedScrollbars>
             )
         )}
     </React.Fragment>
@@ -273,7 +282,7 @@ class OpenPositions extends React.Component {
                 bid_price += +portfolio_pos.contract_info.bid_price;
                 purchase += +portfolio_pos.purchase;
                 if (portfolio_pos.contract_info) {
-                    profit += portfolio_pos.contract_info.bid_price - portfolio_pos.contract_info.buy_price;
+                    profit += getTotalProfit(portfolio_pos.contract_info);
 
                     if (portfolio_pos.contract_info.cancellation) {
                         ask_price += portfolio_pos.contract_info.cancellation.ask_price || 0;

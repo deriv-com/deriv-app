@@ -140,7 +140,9 @@
             position: relative;
 
             .dc-modal-header__title {
-                position: absolute;
+                @include mobile {
+                    position: absolute;
+                }
                 justify-content: center;
                 width: 100%;
             }

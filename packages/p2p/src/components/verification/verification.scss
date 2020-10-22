@@ -40,6 +40,8 @@
         }
     }
     &__checklist {
+        width: 400px;
+
         & .dc-checklist__item {
             min-width: 40rem;
 
@@ -47,10 +49,6 @@
                 min-width: 100%;
             }
         }
-    }
-    &__checklist {
-        width: 400px;
-
         @include mobile {
             width: 100%;
         }

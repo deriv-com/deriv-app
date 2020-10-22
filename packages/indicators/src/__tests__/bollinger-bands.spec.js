@@ -1,6 +1,6 @@
 import { bollingerBands, bollingerBandsArray } from '../indicators/bollinger-bands';
 
-const roundResult = (result) => [
+const roundResult = result => [
     Math.round(result[0] * 100) / 100,
     Math.round(result[1] * 100) / 100,
     Math.round(result[2] * 100) / 100,
@@ -44,7 +44,7 @@ describe('bollingerBands', () => {
             [7.67, 11.78, 3.56],
         ];
         const result = bollingerBandsArray(data, { periods: 3 });
-        const rounded_result = result.map((x) => roundResult(x));
+        const rounded_result = result.map(x => roundResult(x));
         expect(rounded_result).toEqual(expected);
     });
 
@@ -175,7 +175,7 @@ describe('bollingerBands', () => {
         const whole_band = middle_band.map((x, i) => [middle_band[i], upper_band[i], lower_band[i]]);
 
         const result = bollingerBandsArray(data, { periods: 20 });
-        const rounded_result = result.map((x) => roundResult(x));
+        const rounded_result = result.map(x => roundResult(x));
 
         expect(rounded_result).toEqual(whole_band);
     });

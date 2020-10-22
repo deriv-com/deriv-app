@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik, Form } from 'formik';
 import { Button, DesktopWrapper, Dropdown, Input, MobileWrapper, Money, SelectNative } from '@deriv/components';
-import { getDecimalPlaces, validNumber } from '@deriv/shared';
+import { getDecimalPlaces, getCurrencyDisplayCode, validNumber } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import Error from '../Error/error.jsx';
 import PaymentAgentWithdrawConfirm from '../Confirm/payment-agent-withdraw-confirm.jsx';
+import FormError from '../Error/form-error.jsx';
 import PaymentAgentReceipt from '../Receipt/payment-agent-receipt.jsx';
 import Loading from '../../../../templates/_common/components/loading.jsx';
 
@@ -149,21 +149,21 @@ class PaymentAgentWithdrawForm extends React.Component {
                     : this.props.payment_agent_list.find(pa => pa.value === values.payment_agents),
         });
 
-    onWithdrawalPassthrough = values => {
-        this.props.requestTryPaymentAgentWithdraw({
+    onWithdrawalPassthrough = async (values, actions) => {
+        const payment_agent_withdraw = await this.props.requestTryPaymentAgentWithdraw({
             loginid: values[values.payment_method],
             currency: this.props.currency,
             amount: values.amount,
             verification_code: this.props.verification_code,
         });
+        if (payment_agent_withdraw.error) {
+            actions.setSubmitting(false);
+        }
     };
 
     render() {
         if (this.props.is_loading || !this.props.payment_agent_list.length) {
             return <Loading className='cashier__loader' />;
-        }
-        if (this.props.error.message) {
-            return <Error error={this.props.error} />;
         }
         if (this.props.is_try_withdraw_successful) {
             return <PaymentAgentWithdrawConfirm verification_code={this.props.verification_code} />;
@@ -228,7 +228,9 @@ class PaymentAgentWithdrawForm extends React.Component {
                                                     'symbols',
                                                     `symbols--${this.props.currency.toLowerCase()}`
                                                 )}
-                                            />
+                                            >
+                                                {getCurrencyDisplayCode(this.props.currency)}
+                                            </span>
                                         }
                                         autoComplete='off'
                                         maxLength='30'
@@ -276,6 +278,7 @@ class PaymentAgentWithdrawForm extends React.Component {
                                     <Localize i18n_default_text='Withdraw' />
                                 </Button>
                             </div>
+                            <FormError error={this.props.error} />
                         </Form>
                     )}
                 </Formik>

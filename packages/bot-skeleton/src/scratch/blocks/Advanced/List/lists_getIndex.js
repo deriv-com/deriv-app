@@ -19,9 +19,7 @@ Blockly.Blocks.lists_getIndex = {
             this.updateStatement(isStatement);
         });
 
-        this.appendValueInput('VALUE')
-            .setCheck('Array')
-            .appendField(localize('in list'));
+        this.appendValueInput('VALUE').setCheck('Array').appendField(localize('in list'));
         this.appendDummyInput().appendField(modeMenu, 'MODE');
         this.appendDummyInput('AT');
         // eslint-disable-next-line no-underscore-dangle

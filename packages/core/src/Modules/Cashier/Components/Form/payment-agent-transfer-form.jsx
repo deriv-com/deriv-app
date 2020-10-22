@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik, Form } from 'formik';
 import { Button, DesktopWrapper, Input } from '@deriv/components';
-import { getDecimalPlaces, validNumber } from '@deriv/shared';
+import { getDecimalPlaces, validNumber, getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import FormError from '../Error/form-error.jsx';
@@ -116,7 +116,9 @@ class PaymentAgentTransferForm extends React.Component {
                                                     'symbols',
                                                     `symbols--${(this.props.currency || '').toLowerCase()}`
                                                 )}
-                                            />
+                                            >
+                                                {getCurrencyDisplayCode(this.props.currency)}
+                                            </span>
                                         }
                                         autoComplete='off'
                                         maxLength='30'
@@ -143,7 +145,6 @@ class PaymentAgentTransferForm extends React.Component {
                                 )}
                             </Field>
                             <div className='cashier__form-submit'>
-                                {this.props.error_message && <FormError error_message={this.props.error_message} />}
                                 <Button
                                     className='cashier__form-submit-button'
                                     type='submit'
@@ -154,6 +155,7 @@ class PaymentAgentTransferForm extends React.Component {
                                     <Localize i18n_default_text='Transfer' />
                                 </Button>
                             </div>
+                            <FormError error={this.props.error} />
                         </Form>
                     )}
                 </Formik>
@@ -179,7 +181,7 @@ export default connect(({ client, modules }) => ({
     currency: client.currency,
     amount: modules.cashier.config.payment_agent_transfer.confirm.amount,
     description: modules.cashier.config.payment_agent_transfer.confirm.description,
-    error_message: modules.cashier.config.payment_agent_transfer.error.message,
+    error: modules.cashier.config.payment_agent_transfer.error,
     requestTryPaymentAgentTransfer: modules.cashier.requestTryPaymentAgentTransfer,
     setErrorMessage: modules.cashier.setErrorMessage,
     transfer_limit: modules.cashier.config.payment_agent_transfer.transfer_limit,

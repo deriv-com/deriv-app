@@ -54,14 +54,9 @@ class TwoMonthPicker extends React.PureComponent {
     }
 
     jumpToCurrentMonth() {
-        const current_month = toMoment()
-            .endOf('month')
-            .unix();
+        const current_month = toMoment().endOf('month').unix();
         this.setState({
-            left_pane_date: epochToMoment(current_month)
-                .endOf('month')
-                .subtract(1, 'month')
-                .unix(),
+            left_pane_date: epochToMoment(current_month).endOf('month').subtract(1, 'month').unix(),
             right_pane_date: current_month,
         });
     }

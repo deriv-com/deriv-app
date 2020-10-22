@@ -2,7 +2,16 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { DesktopWrapper, MobileWrapper, ProgressBar, Tabs, DataList, DataTable } from '@deriv/components';
+import {
+    DesktopWrapper,
+    MobileWrapper,
+    ProgressBar,
+    Tabs,
+    DataList,
+    DataTable,
+    ContractCard,
+    ThemedScrollbars,
+} from '@deriv/components';
 import { urlFor, isMobile, isMultiplierContract, getTimePercentage, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
@@ -15,6 +24,7 @@ import {
 } from 'Modules/Reports/Constants/data-table-constants';
 import PositionsCard from 'App/Components/Elements/PositionsDrawer/PositionsDrawerCard/positions-drawer-card.jsx';
 import PlaceholderComponent from 'Modules/Reports/Components/placeholder-component.jsx';
+import { getCardLabels } from 'Constants/contract';
 import { connect } from 'Stores/connect';
 
 const EmptyPlaceholderWrapper = props => (
@@ -56,7 +66,7 @@ const OpenPositionsTable = ({
             />
         ) : (
             currency && (
-                <>
+                <ThemedScrollbars className='reports__scrollbar' is_bypassed={isMobile()} is_only_horizontal>
                     <DesktopWrapper>
                         <EmptyPlaceholderWrapper
                             component_icon={component_icon}
@@ -91,7 +101,7 @@ const OpenPositionsTable = ({
                                 custom_width='100%'
                                 getRowSize={() => {
                                     if (isMobile() && is_multiplier_tab) return 253;
-                                    if (isMobile()) return 232;
+                                    if (isMobile()) return 245;
                                     return 194;
                                 }}
                             >
@@ -99,7 +109,7 @@ const OpenPositionsTable = ({
                             </DataList>
                         </EmptyPlaceholderWrapper>
                     </MobileWrapper>
-                </>
+                </ThemedScrollbars>
             )
         )}
     </React.Fragment>
@@ -108,6 +118,7 @@ const OpenPositionsTable = ({
 class OpenPositions extends React.Component {
     state = {
         active_index: this.props.is_multiplier ? 1 : 0,
+        // Tabs should be visible only when there is atleast one active multiplier contract
         has_multiplier_contract: false,
     };
 
@@ -117,22 +128,27 @@ class OpenPositions extends React.Component {
         if (!isMobile()) {
             this.props.onMount();
         }
+        this.checkForMultiplierContract();
     }
 
     componentDidUpdate(prev_props) {
-        if (this.props.active_positions !== prev_props.active_positions && !this.state.has_multiplier_contract) {
+        this.checkForMultiplierContract(prev_props.active_positions);
+    }
+
+    componentWillUnmount() {
+        if (!isMobile()) {
+            this.props.onUnmount();
+        }
+    }
+
+    checkForMultiplierContract(prev_active_positions = []) {
+        if (!this.state.has_multiplier_contract && this.props.active_positions !== prev_active_positions) {
             const has_multiplier_contract = this.props.active_positions.some(p =>
                 isMultiplierContract(p.contract_info?.contract_type)
             );
             this.setState({
                 has_multiplier_contract,
             });
-        }
-    }
-
-    componentWillUnmount() {
-        if (!isMobile()) {
-            this.props.onUnmount();
         }
     }
 
@@ -163,12 +179,12 @@ class OpenPositions extends React.Component {
         }
 
         const { server_time, onClickCancel, onClickSell } = this.props;
-        const { contract_info, contract_update, type } = row;
+        const { contract_info, contract_update, type, is_sell_requested } = row;
         const { currency, status, date_expiry, date_start } = contract_info;
         const duration_type = getContractDurationType(contract_info.longcode);
         const progress_value = getTimePercentage(server_time, date_start, date_expiry) / 100;
 
-        if (isMultiplierContract(type))
+        if (isMultiplierContract(type)) {
             return (
                 <PositionsCard
                     contract_info={contract_info}
@@ -182,6 +198,8 @@ class OpenPositions extends React.Component {
                     status={status}
                 />
             );
+        }
+
         return (
             <>
                 <div className='data-list__row'>
@@ -207,6 +225,15 @@ class OpenPositions extends React.Component {
                 <div className='data-list__row'>
                     <DataList.Cell row={row} column={this.columns_map.payout} />
                     <DataList.Cell className='data-list__row-cell--amount' row={row} column={this.columns_map.profit} />
+                </div>
+                <div className='data-list__row-divider' />
+                <div className='data-list__row'>
+                    <ContractCard.Sell
+                        contract_info={contract_info}
+                        is_sell_requested={is_sell_requested}
+                        getCardLabels={getCardLabels}
+                        onClickSell={onClickSell}
+                    />
                 </div>
             </>
         );

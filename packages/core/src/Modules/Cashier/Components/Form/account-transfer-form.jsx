@@ -367,7 +367,6 @@ const AccountTransferForm = ({
                                         )}
                                     </Field>
                                     <div className='cashier__form-submit cashier__form-submit--align-end account-transfer__form-submit'>
-                                        {error.message && <FormError error_message={error.message} />}
                                         <Button
                                             className='cashier__form-submit-button'
                                             type='submit'
@@ -393,6 +392,7 @@ const AccountTransferForm = ({
                                             minimum_fee={minimum_fee}
                                         />
                                     </MobileWrapper>
+                                    <FormError error={error} />
                                 </Form>
                             )}
                         </React.Fragment>

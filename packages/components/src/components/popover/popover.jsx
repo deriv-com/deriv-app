@@ -79,6 +79,7 @@ const Popover = ({ ...props }) => {
         zIndex,
         relative_render,
         should_disable_pointer_events,
+        window_border,
     } = props;
 
     const icon_class_name = classNames(classNameTargetIcon, icon);
@@ -100,6 +101,7 @@ const Popover = ({ ...props }) => {
                     containerClassName={classNames({
                         'react-tiny-popover-container--disabled-pointer-event': should_disable_pointer_events,
                     })}
+                    windowBorderPadding={window_border}
                     {...(relative_render
                         ? {
                               contentLocation: ({ targetRect, popoverRect, nudgedLeft }) => {

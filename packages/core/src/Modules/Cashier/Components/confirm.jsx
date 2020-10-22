@@ -1,10 +1,11 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { localize } from '@deriv/translations';
 import { Button, Icon } from '@deriv/components';
 import FormError from './Error/form-error.jsx';
 
-const Row = ({ label, value }) => (
+const Row = ({ item_key, label, value }) => (
     <div className='cashier__confirm-row'>
         <span>{label}</span>
         {Array.isArray(value) ? (
@@ -16,7 +17,13 @@ const Row = ({ label, value }) => (
                 ))}
             </span>
         ) : (
-            <strong>{value}</strong>
+            <strong
+                className={classNames({
+                    description: item_key === 'description',
+                })}
+            >
+                {value}
+            </strong>
         )}
     </div>
 );
@@ -27,8 +34,8 @@ const Confirm = ({ data, error, header, onClickBack, onClickConfirm }) => (
         <h2 className='cashier__header cashier__confirm-header'>{header}</h2>
         <div className='cashier__confirm-column-wrapper'>
             <div className='cashier__confirm-column'>
-                {data.map((d, idx) => (
-                    <Row key={idx} label={d.label} value={d.value} />
+                {data.map(d => (
+                    <Row item_key={d.key} label={d.label} value={d.value} key={d.key} />
                 ))}
             </div>
         </div>

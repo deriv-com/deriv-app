@@ -401,6 +401,10 @@
             > :last-child {
                 text-align: right;
                 max-width: 50%;
+
+                &.description {
+                    word-wrap: break-word;
+                }
             }
         }
         &-submit {

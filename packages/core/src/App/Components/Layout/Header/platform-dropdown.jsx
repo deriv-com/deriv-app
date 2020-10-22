@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Div100vhContainer, Icon } from '@deriv/components';
-import { routes, isDesktop, isMobile } from '@deriv/shared';
+import { routes, isDesktop, isMobile, getActivePlatform } from '@deriv/shared';
 
 import { BinaryLink } from 'App/Components/Routes';
 import 'Sass/app/_common/components/platform-dropdown.scss';
@@ -36,7 +36,7 @@ class PlatformDropdown extends React.PureComponent {
     }
 
     render() {
-        const { platform_config, closeDrawer } = this.props;
+        const { platform_config, closeDrawer, app_routing_history } = this.props;
 
         const platform_dropdown = (
             <div className='platform-dropdown'>
@@ -49,6 +49,7 @@ class PlatformDropdown extends React.PureComponent {
                                     // This is here because in routes-config it needs to have children, but not in menu
                                     exact={platform.link_to === routes.trade}
                                     className='platform-dropdown__list-platform'
+                                    isActive={() => getActivePlatform(app_routing_history) === platform.name}
                                 >
                                     <PlatformBox platform={platform} />
                                 </BinaryLink>

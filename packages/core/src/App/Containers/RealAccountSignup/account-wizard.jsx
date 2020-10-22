@@ -19,6 +19,9 @@ const SetCurrencyHeader = ({ has_target, has_real_account, has_currency, items, 
                 </DesktopWrapper>
                 <MobileWrapper>
                     <div className='account-wizard__header-steps'>
+                        {items[step].header.active_title && (
+                            <h4 className='account-wizard__header-steps-subtitle'>{items[step].header.active_title}</h4>
+                        )}
                         <h4 className='account-wizard__header-steps-title'>
                             <Localize
                                 i18n_default_text='Step {{step}}: {{step_title}} ({{step}} of {{steps}})'
@@ -29,9 +32,6 @@ const SetCurrencyHeader = ({ has_target, has_real_account, has_currency, items, 
                                 }}
                             />
                         </h4>
-                        {items[step].header.active_title && (
-                            <h4 className='account-wizard__header-steps-subtitle'>{items[step].header.active_title}</h4>
-                        )}
                     </div>
                 </MobileWrapper>
             </React.Fragment>

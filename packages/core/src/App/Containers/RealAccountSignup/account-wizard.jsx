@@ -264,6 +264,8 @@ class AccountWizard extends React.Component {
                 .then(response => {
                     if (this.props.real_account_signup_target === 'maltainvest') {
                         this.props.onFinishSuccess(response.new_account_maltainvest.currency.toLowerCase());
+                    } else if (this.props.real_account_signup_target === 'samoa') {
+                        this.props.onOpenWelcomeModal(response.new_account_samoa.currency.toLowerCase());
                     } else {
                         this.props.onFinishSuccess(response.new_account_real.currency.toLowerCase());
                     }
@@ -299,15 +301,20 @@ class AccountWizard extends React.Component {
                 <div
                     className={classNames('account-wizard', {
                         'account-wizard--set-currency': !this.props.has_currency,
+                        'account-wizard--deriv-crypto': this.props.real_account_signup_target === 'samoa',
                     })}
                 >
-                    <SetCurrencyHeader
-                        has_real_account={this.props.has_real_account}
-                        step={this.state.step}
-                        items={this.state.items}
-                        has_currency={this.props.has_currency}
-                        has_target={this.has_target}
-                    />
+                    {this.props.real_account_signup_target !== 'samoa' ? (
+                        <SetCurrencyHeader
+                            has_real_account={this.props.has_real_account}
+                            step={this.state.step}
+                            items={this.state.items}
+                            has_currency={this.props.has_currency}
+                            has_target={this.has_target}
+                        />
+                    ) : (
+                        <div />
+                    )}
                     <Div100vhContainer className='account-wizard__body' is_disabled={isDesktop()} height_offset='110px'>
                         <BodyComponent
                             value={this.getCurrent('form_value')}
@@ -336,6 +343,7 @@ AccountWizard.propTypes = {
     onError: PropTypes.func,
     onLoading: PropTypes.func,
     onFinishSuccess: PropTypes.func,
+    onOpenWelcomeModal: PropTypes.func,
     realAccountSignup: PropTypes.func,
     residence: PropTypes.string,
     residence_list: PropTypes.array,

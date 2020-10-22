@@ -194,7 +194,7 @@ const Popover = ({ ...props }) => {
                     <div
                         className={classNames('dc-popover', className)}
                         id={id}
-                        onMouseEnter={toggleOpen}
+                        onMouseOver={toggleOpen}
                         onMouseLeave={toggleClose}
                     >
                         <div className={classNames(classNameTarget, 'dc-popover__target')}>

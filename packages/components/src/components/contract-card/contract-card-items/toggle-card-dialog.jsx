@@ -89,6 +89,7 @@ class ToggleCardDialog extends React.Component {
     render() {
         const {
             addToast,
+            current_focus,
             getCardLabels,
             getContractById,
             is_valid_to_cancel,
@@ -149,6 +150,7 @@ class ToggleCardDialog extends React.Component {
                         <Div100vhContainer className='contract-update__wrapper' height_offset='40px'>
                             <ContractUpdateFormWrapper
                                 addToast={addToast}
+                                current_focus={current_focus}
                                 getCardLabels={getCardLabels}
                                 getContractById={getContractById}
                                 removeToast={removeToast}
@@ -171,6 +173,7 @@ class ToggleCardDialog extends React.Component {
                     >
                         <ContractUpdateFormWrapper
                             addToast={addToast}
+                            current_focus={current_focus}
                             getCardLabels={getCardLabels}
                             getContractById={getContractById}
                             removeToast={removeToast}
@@ -189,6 +192,7 @@ class ToggleCardDialog extends React.Component {
 ToggleCardDialog.propTypes = {
     addToast: PropTypes.func,
     contract_id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    current_focus: PropTypes.string,
     getCardLabels: PropTypes.func,
     getContractById: PropTypes.func,
     is_valid_to_cancel: PropTypes.bool,

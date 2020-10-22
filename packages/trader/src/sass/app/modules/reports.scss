@@ -903,12 +903,7 @@ $side-padding: 1.2em;
                     }
                 }
             }
-            <<<<<<< HEAD ======= .limit_order {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
-            >>>>>>>80bac53df68e185c0859cee07b2a661c6728884b .limit_order,
+            .limit_order,
             .cancellation,
             .bid_price {
                 @include desktop {

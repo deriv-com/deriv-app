@@ -8,7 +8,7 @@ import Confirm from '../confirm.jsx';
 const PaymentAgentWithdrawConfirm = ({
     amount,
     currency,
-    error_message,
+    error,
     loginid,
     payment_agent_name,
     requestPaymentAgentWithdraw,
@@ -18,9 +18,9 @@ const PaymentAgentWithdrawConfirm = ({
     <Confirm
         data={[
             { label: localize('Payment agent'), value: payment_agent_name || loginid },
-            { label: localize('Amount'), value: <Money currency={currency} amount={amount} /> },
+            { label: localize('Amount'), value: <Money currency={currency} amount={amount} show_currency /> },
         ]}
-        error_message={error_message}
+        error={error}
         header={localize('Please confirm the transaction details in order to complete the withdrawal:')}
         onClickBack={() => {
             setIsTryWithdrawSuccessful(false);
@@ -34,6 +34,7 @@ const PaymentAgentWithdrawConfirm = ({
 PaymentAgentWithdrawConfirm.propTypes = {
     amount: PropTypes.number,
     currency: PropTypes.string,
+    error: PropTypes.object,
     loginid: PropTypes.string,
     payment_agent_name: PropTypes.string,
     requestPaymentAgentWithdraw: PropTypes.func,
@@ -44,7 +45,7 @@ PaymentAgentWithdrawConfirm.propTypes = {
 export default connect(({ modules }) => ({
     amount: modules.cashier.config.payment_agent.confirm.amount,
     currency: modules.cashier.config.payment_agent.confirm.currency,
-    error_message: modules.cashier.config.payment_agent.error.message,
+    error: modules.cashier.config.payment_agent.error,
     loginid: modules.cashier.config.payment_agent.confirm.loginid,
     payment_agent_name: modules.cashier.config.payment_agent.confirm.payment_agent_name,
     requestPaymentAgentWithdraw: modules.cashier.requestPaymentAgentWithdraw,

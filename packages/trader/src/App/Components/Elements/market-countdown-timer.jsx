@@ -56,6 +56,8 @@ const whenMarketOpens = async (days_offset, target_symbol) => {
                 return when_market_opens;
             }
         }
+        when_market_opens = await whenMarketOpens(days_offset + 1, target_symbol);
+        return when_market_opens;
     }
 };
 

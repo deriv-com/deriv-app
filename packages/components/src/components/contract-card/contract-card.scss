@@ -79,7 +79,6 @@
     &__result {
         position: absolute;
         top: 0;
-        left: -1px;
         width: 100%;
         height: calc(100% - 1rem);
         border-radius: $BORDER_RADIUS;
@@ -124,7 +123,6 @@
         }
     }
     &__wrapper {
-        // padding: 0.8em;
         margin: 0 1em;
         max-width: 218px;
         border-radius: $BORDER_RADIUS;

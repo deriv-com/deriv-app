@@ -212,6 +212,12 @@
 }
 
 .mt5-attribute-describer {
+    @include typeface(--paragraph-left-bold-black, none);
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1.43;
+    color: var(--text-general);
+
     .counter {
         color: var(--brand-red-coral);
         font-size: 1rem;
@@ -232,45 +238,14 @@
     height: 100%;
     position: relative;
 
-    &__expander {
-        &-wrapper {
-            align-items: center;
-        }
-    }
-    &__table-head {
-        .dc-icon {
-            padding-right: 0.8rem;
-        }
-    }
     &__table-row {
         grid-template-columns: var(--mt5-compare-accounts-template-columns);
-
-        @include desktop {
-            border: 1px solid var(--general-section-1);
-            border-bottom: none;
-
-            .dc-table__cell {
-                border-right: 1px solid var(--general-section-1);
-
-                &:first-child {
-                    font-weight: normal;
-                    background-color: var(--general-section-1);
-                }
-                &:last-child {
-                    border-right: none;
-                }
-            }
-            &:first-child {
-                border-top: none;
-            }
-            &:last-child {
-                box-shadow: inset 0 -1px 0 0 var(--general-section-1);
-            }
-        }
+        box-shadow: inset 0 -1px 0 0 var(--general-section-1);
     }
 
     &__table-row-eu {
         grid-template-columns: 1.5fr 2fr 2fr;
+        box-shadow: inset 0 -1px 0 0 var(--general-section-1);
     }
 
     &__star {
@@ -304,17 +279,13 @@
     .dc-table {
         padding: 0 30px;
         @include desktop {
+            position: absolute;
             height: 100%;
         }
 
         &__header {
             border-bottom: none;
             height: 50px;
-
-            .mt5-compare-accounts__table-row {
-                border-right: none;
-                border-left: none;
-            }
         }
         &__cell,
         &__head {
@@ -339,7 +310,7 @@
             }
         }
     }
-    &-content {
+    &-modal {
         &__wrapper {
             display: flex;
             justify-content: center;
@@ -386,6 +357,10 @@
     @include mobile {
         padding: 1.6rem;
         border-top: 2px solid var(--border-disabled);
+    }
+    @include desktop {
+        position: absolute;
+        bottom: 0;
     }
 }
 

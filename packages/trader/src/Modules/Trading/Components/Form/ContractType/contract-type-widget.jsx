@@ -98,32 +98,33 @@ class ContractTypeWidget extends React.PureComponent {
         const multipliers_category = list.filter(
             contract_category => contract_category.label === localize('Multipliers')
         );
+        const options_category = list.filter(contract_category => contract_category.label !== localize('Multipliers'));
 
-        return (multipliers_category && multipliers_category.length
-            ? [
-                  {
-                      label: localize('All'),
-                      contract_categories: [...list],
-                  },
-                  {
-                      label: localize('Multipliers'),
-                      contract_categories: multipliers_category,
-                      component: <span className='dc-vertical-tab__header--new'>{localize('NEW')}!</span>,
-                  },
-                  {
-                      label: localize('Options'),
-                      contract_categories: list.filter(
-                          contract_category => contract_category.label !== localize('Multipliers')
-                      ),
-                  },
-              ]
-            : [
-                  {
-                      label: localize('Options'),
-                      contract_categories: [...list],
-                  },
-              ]
-        ).map(contract_category => {
+        const categories = [];
+
+        if (multipliers_category.length > 0 && options_category.length > 0) {
+            categories.push({
+                label: localize('All'),
+                contract_categories: [...list],
+            });
+        }
+
+        if (multipliers_category.length > 0) {
+            categories.push({
+                label: localize('Multipliers'),
+                contract_categories: multipliers_category,
+                component: <span className='dc-vertical-tab__header--new'>{localize('NEW')}!</span>,
+            });
+        }
+
+        if (options_category.length > 0) {
+            categories.push({
+                label: localize('Options'),
+                contract_categories: options_category,
+            });
+        }
+
+        return categories.map(contract_category => {
             contract_category.contract_types = contract_category.contract_categories.reduce(
                 (aray, x) => [...aray, ...x.contract_types],
                 []
@@ -144,6 +145,13 @@ class ContractTypeWidget extends React.PureComponent {
         const { selected_category } = this.state;
         const selected_list_category = this.list_with_category.find(item => item.label === selected_category);
         return (selected_list_category || this.list_with_category[0]).contract_categories;
+    }
+
+    get selected_contract_index() {
+        const contract_types_arr = this.list_with_category?.flatMap(category => category.contract_types);
+        return contract_types_arr
+            .filter(type => type.value !== 'rise_fall_equal')
+            .findIndex(type => type.value === this.state.item?.value);
     }
 
     render() {
@@ -188,6 +196,7 @@ class ContractTypeWidget extends React.PureComponent {
                     ) : (
                         <ContractType.Info
                             handleNavigationClick={this.handleNavigationClick}
+                            initial_index={this.selected_contract_index}
                             handleSelect={this.handleSelect}
                             item={item || { value }}
                             list={this.list_with_category}

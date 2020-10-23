@@ -16,6 +16,14 @@ class DataTable extends React.PureComponent {
         scrollTop: 0,
     };
 
+    handleScroll = ev => {
+        const { scrollTop } = ev.target;
+        this.setState({ scrollTop });
+        if (this.props.onScroll) {
+            this.props.onScroll(ev);
+        }
+    };
+
     rowRenderer = ({ style, index, key }) => {
         const {
             className,
@@ -80,7 +88,7 @@ class DataTable extends React.PureComponent {
                                 width,
                             }}
                         >
-                            <ThemedScrollbars autoHide>
+                            <ThemedScrollbars autoHide onScroll={this.handleScroll}>
                                 <List
                                     ref={ref => (this.list_ref = ref)}
                                     className={className}

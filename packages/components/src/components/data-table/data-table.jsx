@@ -19,7 +19,7 @@ class DataTable extends React.PureComponent {
     handleScroll = ev => {
         const { scrollTop } = ev.target;
         this.setState({ scrollTop });
-        if (this.props.onScroll) {
+        if (typeof this.props.onScroll === 'function') {
             this.props.onScroll(ev);
         }
     };

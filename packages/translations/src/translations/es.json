@@ -1611,7 +1611,7 @@
     "-882381096": "letra #",
     "-1027605069": "letra # desde el final",
     "-2066990284": "letra aleatoria",
-    "-337089610": "en el texto {{ input_text1 }} buscar {{ first_or_last }} aparición de texto {{{ input_text2 }}",
+    "-337089610": "en el texto {{ input_text1 }} buscar {{ first_or_last }} aparición de texto {{ input_text2 }}",
     "-1966694141": "Busca en una cadena de texto una aparición específica de un determinado carácter o palabra, y devuelve la posición.",
     "-697543841": "Conectar texto",
     "-141160667": "longitud de {{ input_text }}",

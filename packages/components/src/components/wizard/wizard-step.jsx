@@ -9,7 +9,7 @@ Step.defaultProps = {
 };
 
 Step.propTypes = {
-    children: PropTypes.node,
+    children: PropTypes.oneOfType([PropTypes.node, PropTypes.arrayOf(PropTypes.node)]),
     className: PropTypes.string,
 };
 

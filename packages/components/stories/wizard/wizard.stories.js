@@ -4,35 +4,44 @@ import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { withInfo } from '@storybook/addon-info';
 import Wizard from 'Components/wizard';
 import Button from 'Components/button';
-import { FlexWrapper, GroupWrapper, ButtonWrapper, Text } from '../button/shared-style';
+import { FlexWrapper, ButtonWrapper, Text } from '../button/shared-style';
 import Theme from '../shared/theme';
 
 const stories = storiesOf('Wizard', module);
 
 stories.addDecorator(withKnobs).addDecorator(withInfo);
 
-const Controller = ({ currentStep, firstStep, goToStep, lastStep, nextStep, previousStep, totalSteps, step }) => (
+const Controller = ({
+    getCurrentStep,
+    getTotalSteps,
+    goToFirstStep,
+    goToStep,
+    goToLastStep,
+    goToNextStep,
+    goToPreviousStep,
+    step,
+}) => (
     <React.Fragment>
         <ButtonWrapper>
             {step > 1 && (
-                <Button has_effect secondary small onClick={() => previousStep()}>
+                <Button has_effect secondary small onClick={() => goToPreviousStep()}>
                     Go Back
                 </Button>
             )}
-            <Button has_effect primary small onClick={() => nextStep()}>
-                {step < totalSteps() ? 'Continue' : 'Finish'}
+            <Button has_effect primary small onClick={() => goToNextStep()}>
+                {step < getTotalSteps() ? 'Continue' : 'Finish'}
             </Button>
         </ButtonWrapper>
         <hr />
         <div>
             <Text size='1.4rem'>Other Functions</Text>
-            <Text size='1.2rem'>Current Step: {currentStep()}</Text>
-            <Text size='1.2rem'>Total Steps: {totalSteps()}</Text>
+            <Text size='1.2rem'>Current Step: {getCurrentStep()}</Text>
+            <Text size='1.2rem'>Total Steps: {getTotalSteps()}</Text>
             <div>
-                <Button has_effect secondary small onClick={() => firstStep()}>
+                <Button has_effect secondary small onClick={() => goToFirstStep()}>
                     First Step
                 </Button>
-                <Button has_effect secondary small onClick={() => lastStep()}>
+                <Button has_effect secondary small onClick={() => goToLastStep()}>
                     Last Step
                 </Button>
                 {step !== 2 && (
@@ -48,7 +57,7 @@ const Controller = ({ currentStep, firstStep, goToStep, lastStep, nextStep, prev
 const StepOne = props => {
     return (
         <div>
-            <Text size='1.6rem'>Customized Contents {props.currentStep()}</Text>
+            <Text size='1.6rem'>Customized Contents {props.getCurrentStep()}</Text>
             <Controller step={1} {...props} />
         </div>
     );
@@ -57,7 +66,7 @@ const StepOne = props => {
 const StepTwo = props => {
     return (
         <div>
-            <Text size='1.6rem'>Customized Contents {props.currentStep()}</Text>
+            <Text size='1.6rem'>Customized Contents {props.getCurrentStep()}</Text>
             <Controller step={2} {...props} />
         </div>
     );
@@ -66,7 +75,7 @@ const StepTwo = props => {
 const StepThree = props => {
     return (
         <div>
-            <Text size='1.6rem'>Customized Contents {props.currentStep()}</Text>
+            <Text size='1.6rem'>Customized Contents {props.getCurrentStep()}</Text>
             <Controller step={3} {...props} />
         </div>
     );

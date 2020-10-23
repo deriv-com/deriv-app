@@ -20,12 +20,10 @@ const Wizard = ({ children, className, initial_step, onStepChange, nav }) => {
         onStepChange(stats);
     };
 
-    const isInvalidStep = next => next < 0 || next >= totalSteps();
+    const isInvalidStep = next => next < 0 || next >= getTotalSteps();
 
     const onSetActiveStep = next => {
-        if (active_step === next) return;
-        if (isInvalidStep(next)) return;
-
+        if (active_step === next || isInvalidStep(next)) return;
         setActiveStep(next);
         onChangeStep({
             active_step: next + 1,
@@ -34,31 +32,31 @@ const Wizard = ({ children, className, initial_step, onStepChange, nav }) => {
 
     const getSteps = React.useCallback(() => React.Children.toArray(children), [children]);
 
-    const currentStep = () => active_step + 1;
+    const getCurrentStep = () => active_step + 1;
 
-    const totalSteps = () => getSteps().length;
+    const getTotalSteps = () => getSteps().length;
 
     const goToStep = step => onSetActiveStep(step - 1);
 
-    const firstStep = () => goToStep(1);
+    const goToFirstStep = () => goToStep(1);
 
-    const lastStep = () => goToStep(totalSteps());
+    const goToLastStep = () => goToStep(getTotalSteps());
 
-    const nextStep = () => onSetActiveStep(active_step + 1);
+    const goToNextStep = () => onSetActiveStep(active_step + 1);
 
-    const previousStep = () => onSetActiveStep(active_step - 1);
+    const goToPreviousStep = () => onSetActiveStep(active_step - 1);
 
     // Allows for using HTML elements as a step
     const isReactComponent = ({ type }) => typeof type === 'function' || typeof type === 'object';
 
     const properties = {
-        currentStep,
-        totalSteps,
-        nextStep,
-        previousStep,
+        getCurrentStep,
+        getTotalSteps,
+        goToNextStep,
+        goToPreviousStep,
         goToStep,
-        firstStep,
-        lastStep,
+        goToFirstStep,
+        goToLastStep,
     };
 
     const childrenWithProps = React.Children.map(getSteps(), (child, i) => {

@@ -266,7 +266,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
                         }
                     }
                     &.contract-drawer--is-expanded {
-                        transform: translateY(calc(-100% + 376px));
+                        transform: translateY(calc(-100% + 410px));
 
                         @media (max-width: 320px) and (max-height: 480px) {
                             transform: translateY(calc(-100% + 238px));

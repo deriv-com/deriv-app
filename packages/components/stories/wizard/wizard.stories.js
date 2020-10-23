@@ -19,17 +19,16 @@ const Controller = ({
     goToLastStep,
     goToNextStep,
     goToPreviousStep,
-    step,
 }) => (
     <React.Fragment>
         <ButtonWrapper>
-            {step > 1 && (
+            {getCurrentStep() > 1 && (
                 <Button has_effect secondary small onClick={() => goToPreviousStep()}>
                     Go Back
                 </Button>
             )}
             <Button has_effect primary small onClick={() => goToNextStep()}>
-                {step < getTotalSteps() ? 'Continue' : 'Finish'}
+                {getCurrentStep() < getTotalSteps() ? 'Continue' : 'Finish'}
             </Button>
         </ButtonWrapper>
         <hr />
@@ -44,7 +43,7 @@ const Controller = ({
                 <Button has_effect secondary small onClick={() => goToLastStep()}>
                     Last Step
                 </Button>
-                {step !== 2 && (
+                {getCurrentStep() !== 2 && (
                     <Button has_effect secondary small onClick={() => goToStep(2)}>
                         Go to Step 2
                     </Button>
@@ -58,7 +57,7 @@ const StepOne = props => {
     return (
         <div>
             <Text size='1.6rem'>Customized Contents {props.getCurrentStep()}</Text>
-            <Controller step={1} {...props} />
+            <Controller {...props} />
         </div>
     );
 };
@@ -67,7 +66,7 @@ const StepTwo = props => {
     return (
         <div>
             <Text size='1.6rem'>Customized Contents {props.getCurrentStep()}</Text>
-            <Controller step={2} {...props} />
+            <Controller {...props} />
         </div>
     );
 };
@@ -76,7 +75,7 @@ const StepThree = props => {
     return (
         <div>
             <Text size='1.6rem'>Customized Contents {props.getCurrentStep()}</Text>
-            <Controller step={3} {...props} />
+            <Controller {...props} />
         </div>
     );
 };

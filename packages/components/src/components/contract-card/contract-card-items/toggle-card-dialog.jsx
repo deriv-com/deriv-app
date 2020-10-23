@@ -179,7 +179,6 @@ class ToggleCardDialog extends React.Component {
                             removeToast={removeToast}
                             contract={this.contract}
                             setCurrentFocus={setCurrentFocus}
-                            status={status}
                             toggleDialog={this.toggleDialog}
                         />
                     </ContractCardDialog>

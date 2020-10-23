@@ -122,10 +122,6 @@ $side-padding: 1.2em;
     @include mobile {
         flex: 1;
 
-        &__data-list-body,
-        &__data-list-footer {
-            padding: 0 1.6rem;
-        }
         &__data-list-body {
             height: 100%;
 
@@ -391,10 +387,6 @@ $side-padding: 1.2em;
     @include mobile {
         flex: 1;
 
-        &__data-list-body,
-        &__data-list-footer {
-            padding: 0 1.6rem;
-        }
         &__data-list-body {
             height: calc(100% - 50px);
 
@@ -533,6 +525,7 @@ $side-padding: 1.2em;
 
     @include mobile {
         flex: 1;
+        padding-top: 0.8rem;
 
         &-multiplier {
             /* postcss-bem-linter: ignore */
@@ -541,10 +534,6 @@ $side-padding: 1.2em;
                 border-radius: $BORDER_RADIUS;
                 padding: 0;
 
-                /* postcss-bem-linter: ignore */
-                &--wrapper {
-                    padding: 0 1.6rem;
-                }
                 /* postcss-bem-linter: ignore */
                 & .dc-progress-slider--completed {
                     display: none;
@@ -600,25 +589,7 @@ $side-padding: 1.2em;
                 }
                 /* postcss-bem-linter: ignore */
                 & .dc-contract-card-dialog-toggle {
-                    top: 69px;
-                    width: 124px;
-                    right: 9px;
                     border-color: var(--border-hover);
-
-                    @media only screen and (max-width: 380px) {
-                        width: 110px;
-                        height: 79px;
-                        right: 10px;
-                    }
-                    @media only screen and (max-width: 320px) {
-                        top: 72px;
-                        width: 91px;
-                        height: 80px;
-                    }
-                    @media (max-width: 320px) and (max-height: 480px) {
-                        top: 70px;
-                        height: 80px;
-                    }
                 }
             }
             /* postcss-bem-linter: ignore */
@@ -652,7 +623,6 @@ $side-padding: 1.2em;
         }
         &__data-list-body {
             height: calc(100% - 95px);
-            padding: 0 2.4rem;
 
             .dc-progress-bar__container {
                 max-width: 120px;
@@ -672,7 +642,7 @@ $side-padding: 1.2em;
             }
             &--content {
                 flex: 1;
-                padding-left: 32px;
+                padding: 0.8rem 1.6rem 0;
                 display: flex;
                 justify-content: space-between;
 
@@ -934,6 +904,21 @@ $side-padding: 1.2em;
                 color: var(--text-profit-success);
             }
         }
+    }
+}
+
+.open-positions,
+.statement,
+.profit-table {
+    /* postcss-bem-linter: ignore */
+    .data-list__body,
+    .data-list__footer {
+        padding: 0 1.6rem;
+    }
+
+    /* postcss-bem-linter: ignore */
+    .data-list__item {
+        background-color: var(--general-section-1);
     }
 }
 

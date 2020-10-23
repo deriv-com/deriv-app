@@ -131,7 +131,6 @@ class LoginHistory extends React.Component {
                                 className='login-history-table'
                                 data_source={this.state.data}
                                 columns={columns}
-                                custom_width={'100%'}
                                 getRowSize={row_size}
                             />
                         </DesktopWrapper>

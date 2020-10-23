@@ -12,7 +12,7 @@ export const getMarketInformation = shortcode => {
         underlying: '',
     };
 
-    const pattern = new RegExp('^([A-Z]+)_((OTC_[A-Z0-9]+)|R_[\\d]{2,3}|[A-Z]+)_'); // Used to get market name from shortcode
+    const pattern = new RegExp('^([A-Z]+)_((OTC_[A-Z0-9]+)|R_[\\d]{2,3}||[A-Z\\d]+)_'); // Used to get market name from shortcode
     const extracted = pattern.exec(shortcode);
     if (extracted !== null) {
         market_info.category = extracted[1].toLowerCase();

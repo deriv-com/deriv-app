@@ -4,11 +4,12 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 // Initialize i18n by importing it here
 // eslint-disable-next-line no-unused-vars
+import debounce from 'lodash.debounce';
 import { DesktopWrapper } from '@deriv/components';
 import {
     checkAndSetEndpointFromUrl,
     setUrlLanguage,
-    isMobile,
+    isTouchDevice,
     initFormErrorMessages,
     setSharedMT5Text,
 } from '@deriv/shared';
@@ -38,6 +39,7 @@ const App = ({ root_store }) => {
     const base = l.pathname.split('/')[1];
     const has_base = /^\/(br_)/.test(l.pathname);
     const url_params = new URLSearchParams(l.search);
+
     React.useEffect(() => {
         checkAndSetEndpointFromUrl();
         initializeTranslations();
@@ -49,7 +51,7 @@ const App = ({ root_store }) => {
     }, []);
 
     React.useEffect(() => {
-        if (isMobile()) {
+        if (isTouchDevice()) {
             const el_landscape_blocker = document.getElementById('landscape_blocker');
 
             const onFocus = () => {
@@ -71,6 +73,18 @@ const App = ({ root_store }) => {
                     el_landscape_blocker.classList.remove('landscape-blocker--keyboard-visible');
                 }
             };
+
+            const handleResize = () => {
+                if (window.innerWidth <= window.innerHeight) {
+                    root_store.ui.onOrientationChange(false);
+                } else {
+                    root_store.ui.onOrientationChange(true);
+                }
+            };
+
+            handleResize();
+            window.addEventListener('resize', debounce(handleResize, 400));
+
             /**
              * Adding `focus` and `focusout` event listeners to document here to detect for on-screen keyboard on mobile browsers
              * and storing this value in UI-store to be used across the app stores.
@@ -88,6 +102,7 @@ const App = ({ root_store }) => {
                 document.removeEventListener('focus', onFocus);
                 document.removeEventListener('focusout', onFocusOut);
                 document.removeEventListener('touchstart', onTouchStart);
+                window.removeEventListener('resize', debounce(handleResize, 400));
             };
         }
         return () => {};

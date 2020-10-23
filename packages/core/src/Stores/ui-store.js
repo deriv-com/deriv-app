@@ -120,6 +120,7 @@ export default class UIStore extends BaseStore {
 
     @observable is_mt5_page = false;
     @observable is_nativepicker_visible = false;
+    @observable is_landscape = false;
 
     @observable prompt_when = false;
     @observable promptFn = () => {};
@@ -611,6 +612,11 @@ export default class UIStore extends BaseStore {
             error_message: '',
         };
         this.real_account_signup_target = '';
+    }
+
+    @action.bound
+    onOrientationChange(orientation) {
+        this.is_landscape = orientation;
     }
 
     @action.bound

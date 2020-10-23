@@ -92,7 +92,7 @@ class DataList extends React.PureComponent {
 
         const { scrollTop } = ev.target;
         this.setState({ scrollTop });
-        if (this.props.onScroll) {
+        if (typeof this.props.onScroll === 'function') {
             this.props.onScroll(ev);
         }
     };

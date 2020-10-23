@@ -41,7 +41,7 @@ class TransitionBlocker extends React.Component {
     state = { show: false };
 
     componentDidMount() {
-        this.unblock = this.props.history.block((next_location) => {
+        this.unblock = this.props.history.block(next_location => {
             if (this.props.dirty) {
                 if (this.props.onDirty) this.props.onDirty(false);
                 this.setState({
@@ -90,6 +90,6 @@ const TransitionBlockerWithRouter = withRouter(TransitionBlocker);
 
 export const LeaveConfirm = ({ onDirty }) => (
     <FormikConsumer>
-        {(formik) => <TransitionBlockerWithRouter onDirty={onDirty} dirty={formik.dirty && formik.submitCount === 0} />}
+        {formik => <TransitionBlockerWithRouter onDirty={onDirty} dirty={formik.dirty && formik.submitCount === 0} />}
     </FormikConsumer>
 );

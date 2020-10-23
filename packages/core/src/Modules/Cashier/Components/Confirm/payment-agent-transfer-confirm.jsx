@@ -9,7 +9,7 @@ const PaymentAgentTransferConfirm = ({
     amount,
     currency,
     description,
-    error_message,
+    error,
     loginid,
     requestPaymentAgentTransfer,
     setIsTryTransferSuccessful,
@@ -18,12 +18,16 @@ const PaymentAgentTransferConfirm = ({
 }) => (
     <Confirm
         data={[
-            { label: localize('Transfer from'), value: loginid },
-            { label: localize('Transfer to'), value: [transfer_to, transfer_to_name] },
-            { label: localize('Amount'), value: <Money currency={currency} amount={amount} /> },
-            { label: localize('Description'), value: description },
+            { label: localize('Transfer from'), value: loginid, key: 'transfer_from' },
+            { label: localize('Transfer to'), value: [transfer_to, transfer_to_name], key: 'transfer_to' },
+            {
+                label: localize('Amount'),
+                value: <Money currency={currency} amount={amount} show_currency />,
+                key: 'amount',
+            },
+            { label: localize('Description'), value: description, key: 'description' },
         ]}
-        error_message={error_message}
+        error={error}
         header={localize('Please confirm the transaction details in order to complete the transfer:')}
         onClickBack={() => {
             setIsTryTransferSuccessful(false);
@@ -38,6 +42,7 @@ PaymentAgentTransferConfirm.propTypes = {
     amount: PropTypes.number,
     currency: PropTypes.string,
     description: PropTypes.string,
+    error: PropTypes.object,
     loginid: PropTypes.string,
     requestPaymentAgentTransfer: PropTypes.func,
     setIsTryTransferSuccessful: PropTypes.func,
@@ -50,7 +55,7 @@ export default connect(({ client, modules }) => ({
     loginid: client.loginid,
     amount: modules.cashier.config.payment_agent_transfer.confirm.amount,
     description: modules.cashier.config.payment_agent_transfer.confirm.description,
-    error_message: modules.cashier.config.payment_agent_transfer.error.message,
+    error: modules.cashier.config.payment_agent_transfer.error,
     requestPaymentAgentTransfer: modules.cashier.requestPaymentAgentTransfer,
     setIsTryTransferSuccessful: modules.cashier.setIsTryTransferSuccessful,
     transfer_to: modules.cashier.config.payment_agent_transfer.confirm.client_id,

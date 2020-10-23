@@ -15,10 +15,8 @@
         "serve": "echo \"No serve specified\"",
         "build": "echo \"No build specified\"",
         "build:travis": "echo \"No build:travis specified\"",
-        "prettify": "prettier --write \"./src/**/*.{js,jsx,scss}\"",
         "precommit": "lint-staged",
-        "test": "jest --all && npm run test:eslint",
-        "test:eslint": "eslint --fix \"./src/**/*.?(js|jsx)\"",
+        "test": "jest --all",
         "test:stylelint": "echo \"No test:stylelint specified\"",
         "deploy": "echo \"No deploy specified\"",
         "deploy:clean": "echo \"No deploy:clean specified\"",
@@ -31,17 +29,9 @@
     },
     "devDependencies": {
         "@babel/preset-env": "^7.11.5",
-        "babel-eslint": "^10.1.0",
         "babel-jest": "^26.3.0",
-        "eslint": "^7.9.0",
-        "eslint-config-airbnb-base": "^14.2.0",
-        "eslint-config-binary": "^1.0.2",
-        "eslint-config-prettier": "^6.11.0",
-        "eslint-plugin-import": "^2.22.0",
-        "eslint-plugin-prettier": "^3.1.4",
         "jest": "^26.4.2",
-        "lint-staged": "^10.3.0",
-        "prettier": "^2.1.1"
+        "lint-staged": "^10.3.0"
     },
     "dependencies": {
         "@deriv/shared": "^1.0.0"

@@ -5,7 +5,7 @@ import { save, isDarkRgbColour } from '../utils';
 /**
  * Select this block.  Highlight it visually.
  */
-Blockly.BlockSvg.prototype.addSelect = function() {
+Blockly.BlockSvg.prototype.addSelect = function () {
     if (!this.isInFlyout) {
         const { flyout } = DBotStore.instance;
         if (flyout) {
@@ -20,7 +20,7 @@ Blockly.BlockSvg.prototype.addSelect = function() {
  * @param {boolean} disabled True if disabled.
  * @deriv/bot: Call updateDisabled() when setDisabled is called.
  */
-Blockly.BlockSvg.prototype.setDisabled = function(disabled) {
+Blockly.BlockSvg.prototype.setDisabled = function (disabled) {
     if (this.disabled !== disabled) {
         Blockly.BlockSvg.superClass_.setDisabled.call(this, disabled);
 
@@ -34,7 +34,7 @@ Blockly.BlockSvg.prototype.setDisabled = function(disabled) {
  * Enable or disable a block.
  * @deriv/bot: Update fill path if it doesn't match the disabledPatternId.
  */
-Blockly.BlockSvg.prototype.updateDisabled = function() {
+Blockly.BlockSvg.prototype.updateDisabled = function () {
     if (this.disabled || this.getInheritedDisabled()) {
         Blockly.utils.addClass(this.svgGroup_, 'blocklyDisabled');
 
@@ -59,7 +59,7 @@ Blockly.BlockSvg.prototype.updateDisabled = function() {
  * @private
  * @deriv/bot: Restore contextMenu options from Blockly unavailable in Scratch
  */
-Blockly.BlockSvg.prototype.showContextMenu_ = function(e) {
+Blockly.BlockSvg.prototype.showContextMenu_ = function (e) {
     if (this.workspace.options.readOnly || !this.contextMenu) {
         return;
     }
@@ -164,7 +164,7 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function(e) {
  * Set whether the block is error highlighted or not.
  * @param {boolean} highlighted True if highlighted for error.
  */
-Blockly.BlockSvg.prototype.setErrorHighlighted = function(
+Blockly.BlockSvg.prototype.setErrorHighlighted = function (
     should_be_error_highlighted,
     error_message = localize(
         'The block(s) highlighted in red are missing input values. Please update them and click "Run bot".'
@@ -188,7 +188,7 @@ Blockly.BlockSvg.prototype.setErrorHighlighted = function(
 };
 
 // Highlight the block that is being executed
-Blockly.BlockSvg.prototype.highlightExecutedBlock = function() {
+Blockly.BlockSvg.prototype.highlightExecutedBlock = function () {
     const highlight_block_class = 'block--execution-highlighted';
 
     if (!Blockly.utils.hasClass(this.svgGroup_, highlight_block_class)) {
@@ -205,7 +205,7 @@ Blockly.BlockSvg.prototype.highlightExecutedBlock = function() {
  * Set block animation (Blink)
  */
 
-Blockly.BlockSvg.prototype.blink = function() {
+Blockly.BlockSvg.prototype.blink = function () {
     const blink_class = 'block--blink';
     Blockly.utils.addClass(this.svgGroup_, blink_class);
 
@@ -218,7 +218,7 @@ Blockly.BlockSvg.prototype.blink = function() {
  * Set whether the block is collapsed or not.
  * @param {boolean} collapsed True if collapsed.
  */
-Blockly.BlockSvg.prototype.setCollapsed = function(collapsed) {
+Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
     if (this.collapsed_ === collapsed) {
         return;
     }
@@ -261,10 +261,7 @@ Blockly.BlockSvg.prototype.setCollapsed = function(collapsed) {
             this.setCollapsed(false)
         );
 
-        this.appendDummyInput(COLLAPSED_INPUT_NAME)
-            .appendField(field_label)
-            .appendField(field_expand_icon)
-            .init();
+        this.appendDummyInput(COLLAPSED_INPUT_NAME).appendField(field_label).appendField(field_expand_icon).init();
     } else {
         this.removeInput(COLLAPSED_INPUT_NAME);
         this.setWarningText(null); // Clear any warnings inherited from enclosed blocks.

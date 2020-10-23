@@ -8,7 +8,7 @@ import { config } from '../../constants/config';
  * @return {!Object} A menu option, containing text, enabled, and a callback.
  * @package
  */
-Blockly.ContextMenu.blockDuplicateOption = function(block) {
+Blockly.ContextMenu.blockDuplicateOption = function (block) {
     const enabled = !config.single_instance_blocks.includes(block.type);
     const duplicate_option = {
         callback() {
@@ -28,7 +28,7 @@ Blockly.ContextMenu.blockDuplicateOption = function(block) {
  * @return {!Object} A menu option, containing text, enabled, and a callback.
  * @package
  */
-Blockly.ContextMenu.wsCleanupOption = function(ws, numTopBlocks) {
+Blockly.ContextMenu.wsCleanupOption = function (ws, numTopBlocks) {
     return {
         text: localize('Rearrange Vertically'),
         enabled: numTopBlocks > 1,
@@ -45,7 +45,7 @@ Blockly.ContextMenu.wsCleanupOption = function(ws, numTopBlocks) {
  * @return {!Object} A menu option, containing text, enabled, and a callback.
  * @package
  */
-Blockly.ContextMenu.wsCollapseOption = function(hasExpandedBlocks, topBlocks) {
+Blockly.ContextMenu.wsCollapseOption = function (hasExpandedBlocks, topBlocks) {
     return {
         enabled: hasExpandedBlocks,
         text: localize('Collapse All Blocks'),
@@ -64,7 +64,7 @@ Blockly.ContextMenu.wsCollapseOption = function(hasExpandedBlocks, topBlocks) {
  * @return {!Object} A menu option, containing text, enabled, and a callback.
  * @package
  */
-Blockly.ContextMenu.wsExpandOption = function(hasCollapsedBlocks, topBlocks) {
+Blockly.ContextMenu.wsExpandOption = function (hasCollapsedBlocks, topBlocks) {
     return {
         enabled: hasCollapsedBlocks,
         text: localize('Expand All Blocks'),
@@ -82,11 +82,11 @@ Blockly.ContextMenu.wsExpandOption = function(hasCollapsedBlocks, topBlocks) {
  * @param {boolean} shouldCollapse True if the blocks should be collapsed, false if they should be expanded.
  * @private
  */
-Blockly.ContextMenu.toggleCollapseFn_ = function(blocks, shouldCollapse) {
+Blockly.ContextMenu.toggleCollapseFn_ = function (blocks, shouldCollapse) {
     blocks.forEach(block => block.setCollapsed(shouldCollapse));
 };
 
-Blockly.ContextMenu.wsDeleteOption = function(ws, blocks) {
+Blockly.ContextMenu.wsDeleteOption = function (ws, blocks) {
     // Option to delete all blocks.
     // Count the number of blocks that are deletable.
     const delete_list = Blockly.WorkspaceSvg.buildDeleteList_(blocks);
@@ -126,7 +126,7 @@ Blockly.ContextMenu.wsDeleteOption = function(ws, blocks) {
                 deleteNext();
             } else {
                 const msg = localize('Delete all {{ delete_count }} blocks?', { delete_count });
-                Blockly.confirm(msg, function(ok) {
+                Blockly.confirm(msg, function (ok) {
                     if (ok) {
                         deleteNext();
                     }
@@ -144,7 +144,7 @@ Blockly.ContextMenu.wsDeleteOption = function(ws, blocks) {
  * @return {!Object} A menu option, containing text, enabled, and a callback.
  * @package
  */
-Blockly.ContextMenu.blockCommentOption = function(block) {
+Blockly.ContextMenu.blockCommentOption = function (block) {
     const comment_option = { enabled: !goog.userAgent.IE };
 
     // If there's already a comment, add an option to delete it.

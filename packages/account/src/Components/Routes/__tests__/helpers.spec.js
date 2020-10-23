@@ -2,7 +2,7 @@ import React from 'react';
 import { expect } from 'chai';
 import * as Helpers from '../helpers';
 import { routes } from '@deriv/shared';
-import getRoutesConfig from 'Constants/routes-config';
+import getRoutesConfig from '../../../Constants/routes-config';
 import Trade from 'Modules/Trading';
 
 describe('Helpers', () => {
@@ -31,7 +31,7 @@ describe('Helpers', () => {
             });
         });
         it('should return route_info of parent route when path is in routes_config child level and is nested', () => {
-            const reports_routes_length = getRoutesConfig().find((r) => r.path === routes.reports).routes.length;
+            const reports_routes_length = getRoutesConfig().find(r => r.path === routes.reports).routes.length;
             expect(Helpers.findRouteByPath(routes.profit, getRoutesConfig())).to.have.all.keys(
                 'path',
                 'component',

@@ -33,34 +33,20 @@ describe('Utility', () => {
         };
 
         it('returns correct values with correct type', () => {
-            expect(Utility.getPropertyValue(obj, 'str'))
-                .to.be.a('string')
-                .and.to.eq('abc');
-            expect(Utility.getPropertyValue(obj, 'num'))
-                .to.be.a('number')
-                .and.to.eq(123);
-            expect(Utility.getPropertyValue(obj, 'empty'))
-                .to.be.a('string')
-                .and.to.eq('');
-            expect(Utility.getPropertyValue(obj, 'nul'))
-                .to.be.a('null')
-                .and.to.eq(null);
-            expect(Utility.getPropertyValue(obj, 'undef'))
-                .to.be.an('undefined')
-                .and.to.eq(undefined);
+            expect(Utility.getPropertyValue(obj, 'str')).to.be.a('string').and.to.eq('abc');
+            expect(Utility.getPropertyValue(obj, 'num')).to.be.a('number').and.to.eq(123);
+            expect(Utility.getPropertyValue(obj, 'empty')).to.be.a('string').and.to.eq('');
+            expect(Utility.getPropertyValue(obj, 'nul')).to.be.a('null').and.to.eq(null);
+            expect(Utility.getPropertyValue(obj, 'undef')).to.be.an('undefined').and.to.eq(undefined);
             expect(Utility.getPropertyValue(obj, 'promise')).to.be.a('promise');
         });
 
         it('handles arrays correctly', () => {
-            expect(Utility.getPropertyValue(obj, 'array'))
-                .to.be.an('array')
-                .and.to.deep.eq(obj.array);
+            expect(Utility.getPropertyValue(obj, 'array')).to.be.an('array').and.to.deep.eq(obj.array);
         });
 
         it('handles nested objects correctly', () => {
-            expect(Utility.getPropertyValue(obj, 'nested'))
-                .to.be.an('object')
-                .and.to.deep.eq(obj.nested);
+            expect(Utility.getPropertyValue(obj, 'nested')).to.be.an('object').and.to.deep.eq(obj.nested);
             expect(Utility.getPropertyValue(obj, ['nested', 'level_2', 'level_3']))
                 .to.be.a('string')
                 .and.to.deep.eq(obj.nested.level_2.level_3);

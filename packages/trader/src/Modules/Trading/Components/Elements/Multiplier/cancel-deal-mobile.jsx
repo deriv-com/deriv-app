@@ -73,7 +73,7 @@ const CancelDeal = ({
                 }}
             />
             <Fieldset className='trade-container__fieldset'>
-                <div className='input-wrapper--inline'>
+                <div className='dc-input-wrapper--inline'>
                     <Checkbox
                         id='dt_cancellation-checkbox_input'
                         onChange={() => {

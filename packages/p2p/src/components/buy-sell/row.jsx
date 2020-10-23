@@ -27,7 +27,7 @@ BuySellRowLoader.propTypes = {
     width: PropTypes.number,
 };
 
-export const RowComponent = React.memo(({ advert, setSelectedAdvert, showAdvertiserPage, style }) => {
+export const RowComponent = React.memo(({ data: advert, setSelectedAdvert, showAdvertiserPage, style }) => {
     const {
         account_currency,
         counterparty_type,

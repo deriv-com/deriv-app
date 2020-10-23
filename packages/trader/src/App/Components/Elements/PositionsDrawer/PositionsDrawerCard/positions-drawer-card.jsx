@@ -2,8 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import CurrencyBadge from 'App/Components/Elements/currency-badge.jsx';
-import { ContractCard, DesktopWrapper, MobileWrapper } from '@deriv/components';
+import { ContractCard } from '@deriv/components';
 import { getContractPath, isMultiplierContract } from '@deriv/shared';
 import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
 import { connect } from 'Stores/connect';
@@ -15,6 +14,7 @@ const PositionsDrawerCard = ({
     contract_info,
     contract_update,
     currency,
+    current_focus,
     getContractById,
     is_mobile,
     is_sell_requested,
@@ -71,29 +71,12 @@ const PositionsDrawerCard = ({
         />
     );
 
-    const card_body_wrapper = (
-        <React.Fragment>
-            <DesktopWrapper>{card_body}</DesktopWrapper>
-            <MobileWrapper>
-                <div
-                    className={
-                        ('dc-contract-card__separatorclass',
-                        classNames({
-                            'dc-contract-card__body-wrapper': !is_multiplier,
-                        }))
-                    }
-                >
-                    {card_body}
-                </div>
-            </MobileWrapper>
-        </React.Fragment>
-    );
-
     const card_footer = (
         <ContractCard.Footer
             addToast={addToast}
             connectWithContractUpdate={connectWithContractUpdate}
             contract_info={contract_info}
+            current_focus={current_focus}
             getCardLabels={getCardLabels}
             getContractById={getContractById}
             is_multiplier={is_multiplier}
@@ -113,8 +96,7 @@ const PositionsDrawerCard = ({
     const contract_el = (
         <React.Fragment>
             {card_header}
-            <CurrencyBadge currency={currency} />
-            {card_body_wrapper}
+            {card_body}
         </React.Fragment>
     );
 
@@ -195,6 +177,7 @@ PositionsDrawerCard.propTypes = {
     className: PropTypes.string,
     contract_info: PropTypes.object,
     currency: PropTypes.string,
+    current_focus: PropTypes.string,
     current_tick: PropTypes.number,
     duration: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     duration_unit: PropTypes.string,
@@ -219,6 +202,7 @@ PositionsDrawerCard.propTypes = {
 
 export default connect(({ modules, ui }) => ({
     addToast: ui.addToast,
+    current_focus: ui.current_focus,
     getContractById: modules.contract_trade.getContractById,
     is_mobile: ui.is_mobile,
     removeToast: ui.removeToast,

@@ -132,27 +132,6 @@ export const clientNotifications = (ui = {}, client = {}) => {
             ),
             type: 'danger',
         },
-        mf_retail: {
-            ...(isMobile() && {
-                action: {
-                    text: localize('Contact us'),
-                    onClick: ({ is_deriv_crypto }) => {
-                        window.open(getStaticUrl('contact-us', { is_deriv_crypto }));
-                    },
-                },
-            }),
-            key: 'mf_retail',
-            header: localize('Digital options trading disabled'),
-            message: isMobile() ? (
-                <Localize i18n_default_text='Digital Options Trading has been disabled on your account. Kindly contact customer support for assistance.' />
-            ) : (
-                <Localize
-                    i18n_default_text='Digital Options Trading has been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
-                    components={[<StaticUrl key={0} className='link' href='contact-us' />]}
-                />
-            ),
-            type: 'danger',
-        },
         risk: {
             action: {
                 text: localize('Complete form'),
@@ -392,14 +371,12 @@ const checkAccountStatus = (
         mt5_withdrawal_locked,
         document_needs_action,
         unwelcome,
-        professional,
         max_turnover_limit_not_set,
         allow_document_upload,
     } = getStatusValidations(status);
 
     addVerificationNotifications(identity, document, addNotificationMessage);
 
-    const is_mf_retail = client.landing_company_shortcode === 'maltainvest' && !professional;
     const should_show_max_turnover = client.landing_company_shortcode === 'iom' && max_turnover_limit_not_set;
 
     const needs_authentication = needs_verification.length || allow_document_upload;
@@ -432,7 +409,6 @@ const checkAccountStatus = (
     if (mt5_withdrawal_locked) addNotificationMessage(clientNotifications().mt5_withdrawal_locked);
     if (document_needs_action) addNotificationMessage(clientNotifications().document_needs_action);
     if (unwelcome && !should_show_max_turnover) addNotificationMessage(clientNotifications().unwelcome);
-    else if (is_mf_retail) addNotificationMessage(clientNotifications().mf_retail);
 
     if (has_risk_assessment) addNotificationMessage(clientNotifications().risk);
     if (shouldCompleteTax(account_status)) addNotificationMessage(clientNotifications().tax);

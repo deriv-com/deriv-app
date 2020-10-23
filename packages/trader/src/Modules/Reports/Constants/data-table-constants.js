@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Icon, Label, Money, ContractCard } from '@deriv/components';
-import { isMobile, getCurrencyDisplayCode } from '@deriv/shared';
+import { isMobile, getCurrencyDisplayCode, getTotalProfit } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import ProgressSliderStream from 'App/Containers/ProgressSliderStream';
 import { getCardLabels } from 'Constants/contract';
@@ -331,7 +331,7 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
 
             if (!row_obj.contract_info || !row_obj.contract_info.bid_price) return '-';
 
-            const total_profit = row_obj.contract_info.bid_price - row_obj.contract_info.buy_price;
+            const total_profit = getTotalProfit(row_obj.contract_info);
             return (
                 <div
                     className={classNames('open-positions__bid_price', {
@@ -353,7 +353,7 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
         col_index: 'profit',
         renderCellContent: ({ row_obj }) => {
             if (!row_obj.contract_info || !row_obj.contract_info.profit) return null;
-            const total_profit = row_obj.contract_info.bid_price - row_obj.contract_info.buy_price;
+            const total_profit = getTotalProfit(row_obj.contract_info);
             // eslint-disable-next-line consistent-return
             return (
                 <div

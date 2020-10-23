@@ -16,7 +16,7 @@ class ProofOfIdentityContainer extends React.Component {
     };
 
     getOnfidoServiceToken = () =>
-        new Promise((resolve) => {
+        new Promise(resolve => {
             const onfido_cookie_name = 'onfido_token';
             const onfido_cookie = Cookies.get(onfido_cookie_name);
 
@@ -26,7 +26,7 @@ class ProofOfIdentityContainer extends React.Component {
                         service_token: 1,
                         service: 'onfido',
                     })
-                    .then((response) => {
+                    .then(response => {
                         if (response.error) {
                             resolve({ error: response.error });
                             return;
@@ -53,7 +53,7 @@ class ProofOfIdentityContainer extends React.Component {
                 category: 'authentication',
                 event: 'poi_documents_uploaded',
             })
-            .then((response) => {
+            .then(response => {
                 if (response.error) {
                     this.setState({ api_error: true });
                     return;
@@ -74,9 +74,9 @@ class ProofOfIdentityContainer extends React.Component {
     componentDidMount() {
         // TODO: Find a better solution for handling no-op instead of using is_mounted flags
         this.is_mounted = true;
-        this.props.getAccountStatus().then((response) => {
+        this.props.getAccountStatus().then(response => {
             const { get_account_status } = response;
-            this.getOnfidoServiceToken().then((onfido_service_token) => {
+            this.getOnfidoServiceToken().then(onfido_service_token => {
                 // TODO: handle error for onfido_service_token.error.code === 'MissingPersonalDetails'
 
                 const { document, identity, needs_verification } = get_account_status.authentication;
@@ -84,9 +84,9 @@ class ProofOfIdentityContainer extends React.Component {
                 const needs_poa = needs_verification.length && needs_verification.includes('document');
                 const onfido_unsupported = !identity.services.onfido.is_country_supported;
                 const status = getIdentityStatus(identity, needs_verification, onfido_unsupported);
-                const unwelcome = get_account_status.status.some((account_status) => account_status === 'unwelcome');
+                const unwelcome = get_account_status.status.some(account_status => account_status === 'unwelcome');
                 const allow_document_upload = get_account_status.status.some(
-                    (account_status) => account_status === 'allow_document_upload'
+                    account_status => account_status === 'allow_document_upload'
                 );
                 const documents_supported = identity.services.onfido.documents_supported;
                 if (this.is_mounted) {

@@ -95,6 +95,13 @@ $side-padding: 1.2em;
     .dc-vertical-tab__content--floating {
         margin-right: 0;
     }
+    .table__head {
+        .table__cell {
+            @include tablet-up {
+                white-space: break-spaces;
+            }
+        }
+    }
 }
 
 /** @define reports-page-wrapper; weak */
@@ -727,13 +734,7 @@ $side-padding: 1.2em;
         margin-top: 20px;
 
         .table__head {
-            @include tablet-up {
-                .profit,
-                .indicative {
-                    white-space: break-spaces;
-                }
-            }
-
+            height: 8.2rem;
             .table__cell {
                 padding-top: 0px;
                 padding-bottom: 0px;

@@ -1,7 +1,6 @@
 /** @define dc-themed-scrollbars */
 .dc-themed-scrollbars {
     overflow-y: auto;
-    overflow-x: hidden;
     position: relative;
     /* Firefox only */
     scrollbar-color: var(--state-active) var(--general-main-1);

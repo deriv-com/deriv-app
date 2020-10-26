@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -84,7 +85,7 @@ const padWithZero = number => {
     return number;
 };
 
-const MarketCountdownTimer = ({ symbol }) => {
+const MarketCountdownTimer = ({ is_main_page, symbol }) => {
     const [when_market_opens, setWhenMarketOpens] = React.useState('');
     const [time_left, setTimeLeft] = React.useState(calculateTimeLeft(when_market_opens));
 
@@ -131,7 +132,14 @@ const MarketCountdownTimer = ({ symbol }) => {
                 <p>
                     <Localize i18n_default_text='Reopens:' />
                 </p>
-                <p className='market-is-closed-overlay__timer'>{timer_components} GMT</p>
+                <p
+                    className={classNames('market-is-closed-overlay__timer', {
+                        'market-is-closed-overlay__timer--main-page': is_main_page,
+                    })}
+                >
+                    {timer_components} GMT
+                </p>
+                <div className='market-is-closed-overlay__separator' />
             </React.Fragment>
         );
     }
@@ -140,6 +148,7 @@ const MarketCountdownTimer = ({ symbol }) => {
 };
 
 MarketCountdownTimer.propTypes = {
+    is_main_page: PropTypes.bool,
     symbol: PropTypes.string.isRequired,
 };
 

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 
-const Text = ({ children, size, color, align, weight, lineHeight, flex, as, className }) => {
+const Text = ({ children, size, color, align, weight, lineHeight, as, className }) => {
     function setStyle() {
         const style = {
             '--text-size': `var(--text-size-${size || 's'})`,
@@ -12,7 +12,7 @@ const Text = ({ children, size, color, align, weight, lineHeight, flex, as, clas
         return style;
     }
     function setClassName() {
-        const classStyle = ['dc-text', `${align ? `dc-text--${align}` : ''} ${flex ? `dc-text--flex` : ''}`, className];
+        const classStyle = ['dc-text', `${align ? `dc-text--${align}` : ''}`, className];
         return classStyle;
     }
     return (

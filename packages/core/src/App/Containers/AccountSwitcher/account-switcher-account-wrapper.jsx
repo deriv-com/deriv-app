@@ -6,7 +6,14 @@ import { Icon, Text } from '@deriv/components';
 const AccountWrapper = ({ children, header, is_visible, toggleVisibility }) => (
     <React.Fragment>
         <div className={classNames('acc-switcher', { 'acc-info--show': !is_visible })} onClick={toggleVisibility}>
-            <Text size='s' weight='bold' align='left' color='prominent' lineHeight='l' flex>
+            <Text
+                size='s'
+                weight='bold'
+                align='left'
+                color='prominent'
+                lineHeight='l'
+                className='acc-switcher__list-title'
+            >
                 {header}
             </Text>
             <Icon icon='IcChevronDown' className='acc-info__select-arrow acc-info__select-arrow--invert' />

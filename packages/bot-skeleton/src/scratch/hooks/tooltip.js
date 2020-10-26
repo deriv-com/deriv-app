@@ -67,4 +67,10 @@ Blockly.Tooltip.hide = () => {
     if (Blockly.Tooltip.showPid_) {
         clearTimeout(Blockly.Tooltip.showPid_);
     }
+
+    /// For hiding tooltip next to the platform name.
+    if (!Blockly.Tooltip.DIV.style.direction) {
+        Blockly.Tooltip.visible = false;
+        setTimeout(() => (Blockly.Tooltip.DIV.style.display = 'none'), 0);
+    }
 };

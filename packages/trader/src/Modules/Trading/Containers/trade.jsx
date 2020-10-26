@@ -228,12 +228,14 @@ class ChartTradeClass extends React.Component {
     }
 
     render() {
-        const { show_digits_stats, main_barrier, should_refresh, extra_barriers = [] } = this.props;
+        const { show_digits_stats, main_barrier, should_refresh, extra_barriers = [], active_symbols } = this.props;
 
         const barriers = main_barrier ? [main_barrier, ...extra_barriers] : extra_barriers;
 
         // max ticks to display for mobile view for tick chart
         const max_ticks = this.props.granularity === 0 ? 8 : 24;
+
+        if (active_symbols.length === 0) return null;
 
         return (
             <SmartChart

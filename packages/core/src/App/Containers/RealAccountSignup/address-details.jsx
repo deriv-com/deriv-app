@@ -63,8 +63,9 @@ class AddressDetails extends React.Component {
     }
 
     handleCancel = values => {
-        this.props.onSave(this.props.index, values);
-        this.props.onCancel();
+        const current_step = this.props.getCurrentStep() - 1;
+        this.props.onSave(current_step, values);
+        this.props.onCancel(current_step, this.props.goToNextStep);
     };
 
     get should_render_address_state() {
@@ -88,11 +89,16 @@ class AddressDetails extends React.Component {
                             ? getLocation(this.props.states_list, this.state.address_state_to_display, 'value')
                             : getLocation(this.props.states_list, values.address_state, 'value');
                     }
-                    this.props.onSubmit(this.props.index, values, actions.setSubmitting);
+                    this.props.onSubmit(
+                        this.props.getCurrentStep() - 1,
+                        values,
+                        actions.setSubmitting,
+                        this.props.goToNextStep
+                    );
                 }}
             >
                 {({ handleSubmit, isSubmitting, errors, values, setFieldValue }) => (
-                    <AutoHeightWrapper default_height={200} height_offset={isDesktop() ? 192 : null}>
+                    <AutoHeightWrapper default_height={350} height_offset={isDesktop() ? 80 : null}>
                         {({ setRef, height }) => (
                             <form ref={setRef} onSubmit={handleSubmit}>
                                 <Div100vhContainer

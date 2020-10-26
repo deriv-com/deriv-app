@@ -21,16 +21,15 @@ class TermsOfUse extends React.Component {
             <Formik
                 initialValues={this.props.value}
                 onSubmit={(values, actions) => {
-                    this.props.onSubmit(this.props.index, values.agreed_tos, actions.setSubmitting);
+                    this.props.onSubmit(
+                        this.props.getCurrentStep() - 1,
+                        values.agreed_tos,
+                        actions.setSubmitting,
+                        this.goToNextStep
+                    );
                 }}
             >
-                {({
-                    handleSubmit,
-                    // setFieldValue,
-                    // setFieldTouched,
-                    values,
-                    isSubmitting,
-                }) => (
+                {({ handleSubmit, values, isSubmitting }) => (
                     <AutoHeightWrapper default_height={200}>
                         {({ setRef, height }) => (
                             <form ref={setRef} onSubmit={handleSubmit}>

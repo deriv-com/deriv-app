@@ -6,7 +6,7 @@ import { Money } from '@deriv/components';
 import Confirm from '../confirm.jsx';
 
 const AccountTransferConfirm = ({
-    error_message,
+    error,
     account_transfer_amount,
     requestTransferBetweenAccounts,
     selected_from,
@@ -22,7 +22,7 @@ const AccountTransferConfirm = ({
                 value: <Money currency={selected_from.currency} amount={account_transfer_amount} show_currency />,
             },
         ]}
-        error_message={error_message}
+        error={error}
         header={localize('Please confirm the transaction details in order to complete the transfer:')}
         onClickBack={() => {
             setIsTransferConfirm(false);
@@ -39,7 +39,7 @@ AccountTransferConfirm.propTypes = {
 };
 
 export default connect(({ modules }) => ({
-    error_message: modules.cashier.config.account_transfer.error.message,
+    error: modules.cashier.config.account_transfer.error,
     selected_from: modules.cashier.config.account_transfer.selected_from,
     selected_to: modules.cashier.config.account_transfer.selected_to,
     account_transfer_amount: modules.cashier.config.account_transfer.account_transfer_amount,

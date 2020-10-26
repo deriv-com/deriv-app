@@ -426,9 +426,9 @@
     }
 }
 
-/** @define input-field; weak */
-.input-field {
-    .input-wrapper__icon {
+/** @define dc-input-field; weak */
+.dc-input-field {
+    .dc-input-wrapper__icon {
         top: 6px;
     }
     &--has-error {

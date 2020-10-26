@@ -86,11 +86,6 @@ export const getEndTime = contract_info => {
     return date_expiry > exit_tick_time && !+is_path_dependent ? date_expiry : exit_tick_time;
 };
 
-export const getProfit = contract_store => {
-    const contract_info = contract_store.contract_info;
-    return contract_info.bid_price - contract_info.buy_price;
-};
-
 export const getBuyPrice = contract_store => {
     return contract_store.contract_info.buy_price;
 };

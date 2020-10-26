@@ -56,7 +56,7 @@
     "publish:p2p": "f () { lerna publish from-package ;}; f",
     "serve": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run serve $npm_config_open;}; f",
     "start": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run start ;}; f",
-    "test": "f () { bash ./scripts/circleci-config.test.sh && npm run test:stylelint  && npm run test:eslint && lerna exec --scope=@deriv/${1:-'*'} --parallel -- npm run test ;}; f",
+    "test": "f () { bash ./scripts/circleci-config.test.sh && npm run test:stylelint  && npm run test:eslint && npm run test:jest ;}; f",
     "test:eslint": "./node_modules/.bin/eslint \"./packages/*/src/**/*.?(js|jsx)\"",
     "test:mocha": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run test:mocha ;}; f",
     "test:stylelint": "stylelint \"./packages/*/src/**/*.s(a|c)ss\"",

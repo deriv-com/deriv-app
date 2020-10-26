@@ -154,6 +154,7 @@ export default class ClientStore extends BaseStore {
             this.root_store.ui.is_eu_enabled || // TODO: [deriv-eu] Remove this after complete EU merge into production
             !this.is_logged_in ||
             this.is_virtual ||
+            this.accounts[this.loginid].landing_company_shortcode === 'samoa' ||
             this.accounts[this.loginid].landing_company_shortcode === 'svg' ||
             isBot()
         );
@@ -553,29 +554,20 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_mt5_allowed() {
-        if (!this.landing_companies || !Object.keys(this.landing_companies).length) return false;
-        const has_mt5 =
-            'mt_financial_company' in this.landing_companies || 'mt_gaming_company' in this.landing_companies;
+        return this.isMT5Allowed(this.landing_companies);
+    }
+
+    isMT5Allowed = landing_companies => {
+        if (!landing_companies || !Object.keys(landing_companies).length) return false;
+        const has_mt5 = 'mt_financial_company' in landing_companies || 'mt_gaming_company' in landing_companies;
 
         // TODO: [deriv-eu] Remove the if statement once EU is enabled in dev
         if (this.is_eu && !this.root_store.ui.is_eu_enabled) {
             return false;
-        } else if (this.is_eu && this.root_store.ui.is_eu_enabled) {
-            return has_mt5;
         }
 
-        if (has_mt5) {
-            const { gaming_company, financial_company } = this.landing_companies;
-            // eslint-disable-next-line no-nested-ternary
-            return gaming_company
-                ? gaming_company.shortcode === 'svg'
-                : financial_company
-                ? financial_company.shortcode === 'svg'
-                : false;
-        }
-
-        return false;
-    }
+        return has_mt5;
+    };
 
     @computed
     get is_eu_country() {
@@ -771,7 +763,9 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     async realAccountSignup(form_values) {
+        const DEFAULT_CRYPTO_ACCOUNT_CURRENCY = 'BTC';
         const is_maltainvest_account = this.root_store.ui.real_account_signup_target === 'maltainvest';
+        const is_samoa_account = this.root_store.ui.real_account_signup_target === 'samoa';
         let currency = '';
         form_values.residence = this.residence;
         if (is_maltainvest_account) {
@@ -789,6 +783,9 @@ export default class ClientStore extends BaseStore {
             if (is_maltainvest_account) {
                 await this.setAccountCurrency(currency);
             }
+            if (is_samoa_account) {
+                await this.setAccountCurrency(DEFAULT_CRYPTO_ACCOUNT_CURRENCY);
+            }
             localStorage.removeItem('real_account_signup_wizard');
             await this.root_store.gtm.pushDataLayer({ event: 'real_signup' });
             return Promise.resolve({
@@ -797,6 +794,13 @@ export default class ClientStore extends BaseStore {
                     ? {
                           new_account_maltainvest: {
                               ...response.new_account_maltainvest,
+                              currency,
+                          },
+                      }
+                    : {}),
+                ...(is_samoa_account
+                    ? {
+                          new_account_samoa: {
                               currency,
                           },
                       }
@@ -835,17 +839,24 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    async createCryptoAccount(crr) {
-        const { date_of_birth, first_name, last_name } = this.account_settings;
+    async createCryptoAccount(currency, is_deriv_crypto) {
         const residence = this.residence;
-
-        const response = await WS.newAccountReal({
-            first_name,
-            last_name,
+        let data = {
             residence,
-            currency: crr,
-            date_of_birth: toMoment(date_of_birth).format('YYYY-MM-DD'),
-        });
+            currency,
+        };
+
+        if (!is_deriv_crypto) {
+            const { date_of_birth, first_name, last_name } = this.account_settings;
+            data = {
+                ...data,
+                first_name,
+                last_name,
+                date_of_birth: toMoment(date_of_birth).format('YYYY-MM-DD'),
+            };
+        }
+
+        const response = await WS.newAccountReal(data);
         if (!response.error) {
             await this.accountRealReaction(response);
             return Promise.resolve(response);
@@ -1040,7 +1051,12 @@ export default class ClientStore extends BaseStore {
             await WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
             if (!this.is_virtual) await this.getLimits();
 
-            if (!this.switched && !this.has_any_real_account && this.is_mt5_allowed) {
+            if (
+                !this.switched &&
+                !this.has_any_real_account &&
+                this.is_mt5_allowed &&
+                !this.root_store.ui.is_real_acc_signup_on
+            ) {
                 this.root_store.ui.toggleWelcomeModal({ is_visible: true });
             }
         } else {
@@ -1587,7 +1603,8 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    onSignup({ password, residence }, cb) {
+    onSignup({ password, residence, is_deriv_crypto, is_account_signup_modal_visible }, cb) {
+        const is_first_time_signup = is_account_signup_modal_visible;
         if (!this.verification_code.signup || !password || !residence) return;
 
         // Currently the code doesn't reach here and the console log is needed for debugging.
@@ -1617,6 +1634,10 @@ export default class ClientStore extends BaseStore {
 
                 if (this.is_mt5_allowed) {
                     this.root_store.ui.toggleWelcomeModal({ is_visible: true, should_persist: true });
+                }
+
+                if (is_deriv_crypto && is_first_time_signup) {
+                    this.root_store.ui.openRealAccountSignup();
                 }
             }
         });

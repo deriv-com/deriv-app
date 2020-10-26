@@ -10,7 +10,7 @@
     "build": "rimraf lib && npm run build:icons && webpack --mode=production --optimize-minimize --progress",
     "build:icons": "node -e 'require(\"./utils/build-icons\").buildIcons()'",
     "build:travis": "rimraf lib && webpack --mode=production --optimize-minimize",
-    "test": "echo \"No test specified\"",
+    "test": "node \"./src/components/icon/__tests__/icons.js\"",
     "deploy": "echo \"No deploy specified\"",
     "deploy:clean": "echo \"No deploy:clean specified\"",
     "deploy:folder": "echo \"No deploy:folder specified\"",
@@ -75,6 +75,6 @@
     "react-swipeable": "^5.5.1",
     "react-tiny-popover": "^5.1.0",
     "react-transition-group": "^4.3.0",
-    "react-window": "^1.8.5"
+    "react-virtualized": "^9.22.2"
   }
 }

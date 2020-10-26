@@ -39,7 +39,6 @@ class ResultOverlay extends React.PureComponent {
             contract_id,
             getCardLabels,
             getContractPath,
-            is_multiplier,
             is_positions,
             is_visible,
             onClickRemove,
@@ -64,7 +63,6 @@ class ResultOverlay extends React.PureComponent {
                             'dc-result__positions-overlay': is_positions,
                             'dc-contract-card__result--won': is_contract_won,
                             'dc-contract-card__result--lost': !is_contract_won,
-                            'dc-contract-card__result--lg': is_multiplier,
                         })}
                     >
                         {is_positions && (
@@ -93,7 +91,6 @@ ResultOverlay.propTypes = {
     contract_id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     getCardLabels: PropTypes.func,
     getContractPath: PropTypes.func,
-    is_multiplier: PropTypes.bool,
     is_positions: PropTypes.bool,
     is_unsupported: PropTypes.bool,
     is_visible: PropTypes.bool,

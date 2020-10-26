@@ -19,7 +19,12 @@ import ServerTime from '_common/base/server_time';
 import { processPurchase } from './Actions/purchase';
 import * as Symbol from './Actions/symbol';
 import getValidationRules, { getMultiplierValidationRules } from './Constants/validation-rules';
-import { pickDefaultSymbol, showUnavailableLocationError, isMarketClosed } from './Helpers/active-symbols';
+import {
+    pickDefaultSymbol,
+    showUnavailableLocationError,
+    isMarketClosed,
+    findFistOpenMarket,
+} from './Helpers/active-symbols';
 import ContractType from './Helpers/contract-type';
 import { convertDurationLimit, resetEndTimeOnVolatilityIndices } from './Helpers/duration';
 import { processTradeParams } from './Helpers/process';
@@ -1131,5 +1136,21 @@ export default class TradeStore extends BaseStore {
     @computed
     get is_multiplier() {
         return this.contract_type === 'multiplier';
+    }
+
+    async getFirstOpenMarket(markets_to_search) {
+        if (this.active_symbols?.length) {
+            return findFistOpenMarket(this.active_symbols, markets_to_search);
+        }
+        const { active_symbols, error } = this.should_refresh_active_symbols
+            ? // if SmartCharts has requested active_symbols, we wait for the response
+              await WS.wait('active_symbols')
+            : // else requests new active_symbols
+              await WS.authorized.activeSymbols();
+        if (error) {
+            this.root_store.common.showError({ message: localize('Trading is unavailable at this time.') });
+            return undefined;
+        }
+        return findFistOpenMarket(active_symbols, markets_to_search);
     }
 }

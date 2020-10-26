@@ -75,6 +75,8 @@ Blockly.BlockSvg.prototype.updateColour = function () {
     this.inputList.forEach(input => {
         if (input.outlinePath) {
             input.outlinePath.setAttribute('fill', '#fff');
+            input.outlinePath.setAttribute('stroke', '#6d7278');
+            input.outlinePath.setAttribute('stroke-width', '0.3px');
         }
     });
 };

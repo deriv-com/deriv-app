@@ -28,7 +28,7 @@ const RouteWithSubRoutes = route => {
             }
             result = <Redirect to={to} />;
         } else if (route.is_authenticated && !route.is_logged_in) {
-            result = (
+            result = !route.should_skip_raise_error && (
                 <LoginPrompt
                     onLogin={() => redirectToLogin(route.is_logged_in, getLanguage())}
                     onSignup={() => redirectToSignUp({ is_deriv_crypto })}
@@ -57,6 +57,7 @@ const RouteWithSubRoutes = route => {
 
 export { RouteWithSubRoutes as RouteWithSubRoutesRender }; // For tests
 
-export default connect(({ gtm }) => ({
+export default connect(({ common, gtm }) => ({
     pushDataLayer: gtm.pushDataLayer,
+    should_skip_raise_error: common.should_skip_raise_error,
 }))(RouteWithSubRoutes);

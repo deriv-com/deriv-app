@@ -131,7 +131,6 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
             }
         }
         @include mobile {
-            background: var(--general-main-2);
             padding: 0.8rem;
             margin-left: 0.8rem;
         }

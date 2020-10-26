@@ -14,4 +14,8 @@ module.exports = {
     setupFiles: [
         "<rootDir>/../../jest.setup.js",
     ],
+    // This is needed to transform es modules imported from node_modules of the target component.
+    transformIgnorePatterns: [
+        "/node_modules/(?!react-virtualized).+\\.js$",
+    ],
 };

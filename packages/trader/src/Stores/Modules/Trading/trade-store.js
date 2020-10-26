@@ -308,6 +308,8 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     async prepareTradeStore() {
+        // show errors if any
+        this.root_store.common.setShouldSkipRaiseError(false);
         // fallback to default currency if current logged-in client hasn't selected a currency yet
         this.currency = this.root_store.client.currency || this.root_store.client.default_currency;
         this.initial_barriers = { barrier_1: this.barrier_1, barrier_2: this.barrier_2 };

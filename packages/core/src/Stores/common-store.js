@@ -40,6 +40,8 @@ export default class CommonStore extends BaseStore {
     @observable app_routing_history = [];
     @observable app_router = { history: null };
 
+    @observable should_skip_raise_error = false;
+
     setInitialRouteHistoryItem(location) {
         if (window.location.href.indexOf('?ext_platform_url=') !== -1) {
             const ext_url = decodeURI(new URL(window.location.href).searchParams.get('ext_platform_url'));
@@ -97,6 +99,7 @@ export default class CommonStore extends BaseStore {
 
     @action.bound
     setError(has_error, error) {
+        if (this.should_skip_raise_error) return;
         this.has_error = has_error;
         this.error = {
             type: error ? error.type : 'info',
@@ -219,5 +222,10 @@ export default class CommonStore extends BaseStore {
         }
 
         history.push(routes.trade);
+    }
+
+    @action.bound
+    setShouldSkipRaiseError(should_skip_raise_error) {
+        this.should_skip_raise_error = should_skip_raise_error;
     }
 }

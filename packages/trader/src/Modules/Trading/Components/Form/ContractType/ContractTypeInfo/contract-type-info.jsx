@@ -6,7 +6,7 @@ import TradeCategories from 'Assets/Trading/Categories/trade-categories.jsx';
 import TradeCategoriesGIF from 'Assets/Trading/Categories/trade-categories-gif.jsx';
 import { getContractTypes } from '../../../../Helpers/contract-type';
 
-const Info = ({ handleNavigationClick, handleSelect, item, list }) => {
+const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }) => {
     const contract_types = getContractTypes(list, item).filter(i => i.value !== 'rise_fall_equal');
     const cards = contract_types.map((type, idx) => {
         return (
@@ -14,7 +14,7 @@ const Info = ({ handleNavigationClick, handleSelect, item, list }) => {
                 <div className='contract-type-info__gif'>
                     <TradeCategoriesGIF category={type.value} />
                 </div>
-                <ThemedScrollbars className='contract-type-info__scrollbars' height='340px' autohide={false}>
+                <ThemedScrollbars className='contract-type-info__scrollbars' height='300px' autohide={false}>
                     <div className='contract-type-info__content'>
                         <TradeCategories category={type.value} />
                     </div>
@@ -38,6 +38,7 @@ const Info = ({ handleNavigationClick, handleSelect, item, list }) => {
             className='contract-type-info'
             bullet_color='var(--text-disabled)'
             active_bullet_color='var(--brand-red-coral)'
+            initial_index={initial_index}
             onItemSelect={active_index => {
                 handleNavigationClick(contract_types[active_index]);
             }}

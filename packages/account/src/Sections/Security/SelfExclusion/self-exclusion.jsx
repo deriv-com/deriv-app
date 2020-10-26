@@ -34,10 +34,13 @@ import ArticleContent from './article-content.jsx';
 
 class SelfExclusion extends React.Component {
     exclusion_data = {
+        max_deposit: '',
         max_turnover: '',
         max_losses: '',
+        max_7day_deposit: '',
         max_7day_turnover: '',
         max_7day_losses: '',
+        max_30day_deposit: '',
         max_30day_turnover: '',
         max_30day_losses: '',
         session_duration_limit: '',
@@ -48,10 +51,13 @@ class SelfExclusion extends React.Component {
     };
 
     exclusion_texts = {
+        max_deposit: localize('Max. deposit limit per day'),
         max_turnover: localize('Max. total stake per day'),
         max_losses: localize('Max. total loss per day'),
+        max_7day_deposit: localize('Max. deposit limit over 7 days'),
         max_7day_turnover: localize('Max. total stake over 7 days'),
         max_7day_losses: localize('Max. total loss over 7 days'),
+        max_30day_deposit: localize('Max. deposit limit over 30 days'),
         max_30day_turnover: localize('Max. total stake over 30 days'),
         max_30day_losses: localize('Max. total loss over 30 days'),
         session_duration_limit: localize('Time limit per session'),
@@ -115,6 +121,9 @@ class SelfExclusion extends React.Component {
         );
 
         const only_numbers = [
+            'max_deposit',
+            'max_7day_deposit',
+            'max_30day_deposit',
             'max_turnover',
             'max_losses',
             'max_7day_turnover',
@@ -126,6 +135,9 @@ class SelfExclusion extends React.Component {
             'session_duration_limit',
         ];
         const only_currency = [
+            'max_deposit',
+            'max_7day_deposit',
+            'max_30day_deposit',
             'max_turnover',
             'max_losses',
             'max_7day_turnover',
@@ -423,6 +435,9 @@ class SelfExclusion extends React.Component {
                                                 {changed_attributes.map((key, idx) => {
                                                     const need_date_format = ['exclude_until', 'timeout_until'];
                                                     const need_money_format = [
+                                                        'max_deposit',
+                                                        'max_7day_deposit',
+                                                        'max_30day_deposit',
                                                         'max_total_stake',
                                                         'max_turnover',
                                                         'max_losses',
@@ -519,7 +534,9 @@ class SelfExclusion extends React.Component {
                                             </h2>
                                             <div className='self-exclusion__item-wrapper'>
                                                 <div className='self-exclusion__item'>
-                                                    <h3 className='self-exclusion__item-title'>{localize('Daily')}</h3>
+                                                    <h3 className='self-exclusion__item-title'>
+                                                        {localize('24 hours')}
+                                                    </h3>
                                                     <p className='self-exclusion__item-field'>
                                                         {localize('Max. total stake')}
                                                     </p>
@@ -799,6 +816,92 @@ class SelfExclusion extends React.Component {
                                                     </div>
                                                 </div>
                                             )}
+                                            {(this.props.is_mlt || this.props.is_mf || this.props.is_mx) && (
+                                                <React.Fragment>
+                                                    <h2 className='self-exclusion__header'>
+                                                        {localize('Your maximum deposit limit')}
+                                                    </h2>
+                                                    <div className='self-exclusion__item-wrapper'>
+                                                        <div className='self-exclusion__item'>
+                                                            <h3 className='self-exclusion__item-title'>
+                                                                {localize('24 hours')}
+                                                            </h3>
+                                                            <p className='self-exclusion__item-field'>
+                                                                {localize('Max. deposit limit')}
+                                                            </p>
+                                                            <Field name='max_deposit'>
+                                                                {({ field }) => (
+                                                                    <Input
+                                                                        {...field}
+                                                                        data-lpignore='true'
+                                                                        className='self-exclusion__input'
+                                                                        label={currency}
+                                                                        value={values.max_deposit}
+                                                                        onChange={handleChange}
+                                                                        onBlur={handleBlur}
+                                                                        required
+                                                                        error={
+                                                                            touched.max_deposit && errors.max_deposit
+                                                                        }
+                                                                    />
+                                                                )}
+                                                            </Field>
+                                                        </div>
+                                                        <div className='self-exclusion__item'>
+                                                            <h3 className='self-exclusion__item-title'>
+                                                                {localize('7 days')}
+                                                            </h3>
+                                                            <p className='self-exclusion__item-field'>
+                                                                {localize('Max. deposit limit')}
+                                                            </p>
+                                                            <Field name='max_7day_deposit'>
+                                                                {({ field }) => (
+                                                                    <Input
+                                                                        {...field}
+                                                                        data-lpignore='true'
+                                                                        className='self-exclusion__input'
+                                                                        label={currency}
+                                                                        value={values.max_7day_deposit}
+                                                                        onChange={handleChange}
+                                                                        onBlur={handleBlur}
+                                                                        required
+                                                                        error={
+                                                                            touched.max_7day_deposit &&
+                                                                            errors.max_7day_deposit
+                                                                        }
+                                                                    />
+                                                                )}
+                                                            </Field>
+                                                        </div>
+                                                        <div className='self-exclusion__item'>
+                                                            <h3 className='self-exclusion__item-title'>
+                                                                {localize('30 days')}
+                                                            </h3>
+                                                            <p className='self-exclusion__item-field'>
+                                                                {localize('Max. deposit limit')}
+                                                            </p>
+                                                            <Field name='max_30day_deposit'>
+                                                                {({ field }) => (
+                                                                    <Input
+                                                                        {...field}
+                                                                        data-lpignore='true'
+                                                                        className='self-exclusion__input'
+                                                                        label={currency}
+                                                                        value={values.max_30day_deposit}
+                                                                        onChange={handleChange}
+                                                                        onBlur={handleBlur}
+                                                                        required
+                                                                        error={
+                                                                            touched.max_30day_deposit &&
+                                                                            errors.max_30day_deposit
+                                                                        }
+                                                                    />
+                                                                )}
+                                                            </Field>
+                                                        </div>
+                                                    </div>
+                                                </React.Fragment>
+                                            )}
                                             <h2 className='self-exclusion__header'>
                                                 {localize('Your maximum account balance and open positions')}
                                             </h2>
@@ -880,6 +983,7 @@ export default connect(({ client }) => ({
     is_cr: client.standpoint.svg,
     is_eu: client.is_eu,
     is_mlt: client.landing_company_shortcode === 'malta',
+    is_mf: client.landing_company_shortcode === 'maltainvest',
     is_mx: client.landing_company_shortcode === 'iom',
     logout: client.logout,
 }))(SelfExclusion);

@@ -22,10 +22,19 @@
             font-weight: bold;
             font-size: 1.6rem;
             margin-bottom: 4rem;
+
+            &--main-page {
+                margin-bottom: 2rem;
+            }
         }
     }
+    &__separator {
+        border: 2px solid var(--general-section-1);
+        width: 192px;
+        margin-bottom: 2rem;
+    }
     &__button {
-        @include toEm('height', 40px);
+        height: 40px;
         margin-top: 1rem;
     }
 }

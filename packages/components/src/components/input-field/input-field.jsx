@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { isCryptocurrency } from '@deriv/shared';
+import { isCryptocurrency, getCurrencyDisplayCode } from '@deriv/shared';
 import IncrementButtons from './increment-buttons.jsx';
 import Input from './input.jsx';
 import Tooltip from '../tooltip';
@@ -297,13 +297,9 @@ class InputField extends React.Component {
             <React.Fragment>
                 {!!prefix && (
                     <div className={classNamePrefix}>
-                        <span
-                            className={classNames(
-                                `${classNamePrefix}--symbol`,
-                                'symbols',
-                                `symbols--${prefix.toLowerCase()}`
-                            )}
-                        />
+                        <span className={classNames(`${classNamePrefix}--symbol`, 'symbols')}>
+                            {getCurrencyDisplayCode(currency)}
+                        </span>
                     </div>
                 )}
                 <div className={classNames('dc-input-field', className)} onClick={onClickInputWrapper}>

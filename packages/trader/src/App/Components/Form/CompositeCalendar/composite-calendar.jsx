@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import Loadable from 'react-loadable';
-import { DesktopWrapper, MobileWrapper } from '@deriv/components';
+import { DesktopWrapper, InputField, MobileWrapper } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { daysFromTodayTo, epochToMoment, toMoment } from '@deriv/shared';
-import InputField from 'App/Components/Form/InputField/input-field.jsx';
+import { connect } from 'Stores/connect';
 import CompositeCalendarMobile from './composite-calendar-mobile.jsx';
 import SideList from './side-list.jsx';
 import CalendarIcon from './calendar-icon.jsx';
@@ -65,16 +65,8 @@ class CompositeCalendar extends React.PureComponent {
     selectDateRange(from) {
         this.hideCalendar();
         this.applyBatch({
-            from: from
-                ? toMoment()
-                      .startOf('day')
-                      .subtract(from, 'day')
-                      .add(1, 's')
-                      .unix()
-                : null,
-            to: toMoment()
-                .endOf('day')
-                .unix(),
+            from: from ? toMoment().startOf('day').subtract(from, 'day').add(1, 's').unix() : null,
+            to: toMoment().endOf('day').unix(),
             is_batch: true,
         });
     }
@@ -123,12 +115,7 @@ class CompositeCalendar extends React.PureComponent {
     }
 
     setToDate(date) {
-        this.updateState(
-            'to',
-            epochToMoment(date)
-                .endOf('day')
-                .unix()
-        );
+        this.updateState('to', epochToMoment(date).endOf('day').unix());
     }
 
     setFromDate(date) {
@@ -152,13 +139,7 @@ class CompositeCalendar extends React.PureComponent {
     }
 
     isPeriodDisabledTo(date) {
-        return (
-            date + 1 <= this.props.from ||
-            date >
-                toMoment()
-                    .endOf('day')
-                    .unix()
-        );
+        return date + 1 <= this.props.from || date > toMoment().endOf('day').unix();
     }
 
     isPeriodDisabledFrom(date) {
@@ -167,7 +148,7 @@ class CompositeCalendar extends React.PureComponent {
 
     render() {
         const { show_from, show_to, list } = this.state;
-        const { to, from } = this.props;
+        const { current_focus, setCurrentFocus, to, from } = this.props;
 
         return (
             // eslint-disable-next-line react/no-children-prop
@@ -176,18 +157,22 @@ class CompositeCalendar extends React.PureComponent {
                     <div id='dt_composite_calendar_inputs' className='composite-calendar__input-fields'>
                         <InputField
                             id='dt_calendar_input_from'
+                            current_focus={current_focus}
                             is_read_only={true}
                             placeholder={localize('Date from')}
                             icon={CalendarIcon}
                             onClick={this.showCalendar.bind(this, 'from')}
+                            setCurrentFocus={setCurrentFocus}
                             value={this.from_date_label}
                         />
                         <InputField
                             id='dt_calendar_input_to'
+                            current_focus={current_focus}
                             is_read_only={true}
                             placeholder={localize('Date to')}
                             icon={CalendarIcon}
                             onClick={this.showCalendar.bind(this, 'to')}
+                            setCurrentFocus={setCurrentFocus}
                             value={this.to_date_label}
                         />
                     </div>
@@ -221,8 +206,13 @@ class CompositeCalendar extends React.PureComponent {
 }
 
 CompositeCalendar.propTypes = {
+    current_focus: PropTypes.string,
     from: PropTypes.number,
     onChange: PropTypes.func,
+    setCurrentFocus: PropTypes.func,
     to: PropTypes.number,
 };
-export default CompositeCalendar;
+export default connect(({ ui }) => ({
+    current_focus: ui.current_focus,
+    setCurrentFocus: ui.setCurrentFocus,
+}))(CompositeCalendar);

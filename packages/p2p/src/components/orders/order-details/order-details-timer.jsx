@@ -6,9 +6,8 @@ import ServerTime from 'Utils/server-time';
 
 const OrderDetailsTimer = ({ order_information }) => {
     const [remaining_time, setRemainingTime] = React.useState();
-    const { is_pending_order, is_buyer_confirmed_order } = order_information;
-
-    let interval;
+    const { should_show_order_timer } = order_information;
+    const interval = React.useRef(null);
 
     const countDownTimer = () => {
         const distance = ServerTime.getDistanceToServerTime(order_information.order_expiry_milliseconds);
@@ -16,7 +15,7 @@ const OrderDetailsTimer = ({ order_information }) => {
 
         if (distance < 0) {
             setRemainingTime(localize('expired'));
-            clearInterval(interval);
+            clearInterval(interval.current);
         } else {
             setRemainingTime(timer);
         }
@@ -24,11 +23,11 @@ const OrderDetailsTimer = ({ order_information }) => {
 
     React.useEffect(() => {
         countDownTimer();
-        interval = setInterval(countDownTimer, 1000);
-        return () => clearInterval(interval);
+        interval.current = setInterval(countDownTimer, 1000);
+        return () => clearInterval(interval.current);
     }, []);
 
-    if (is_pending_order || is_buyer_confirmed_order) {
+    if (should_show_order_timer) {
         return (
             <div className='order-details__header-timer'>
                 <div>{localize('Time left')}</div>
@@ -37,6 +36,7 @@ const OrderDetailsTimer = ({ order_information }) => {
         );
     }
 
+    clearInterval(interval.current);
     return null;
 };
 

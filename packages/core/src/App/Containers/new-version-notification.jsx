@@ -27,6 +27,7 @@ const NewVersionNotification = ({ onUpdate }) => {
             document.removeEventListener('ListenPWAUpdate', addUpdateListener);
             document.removeEventListener('UpdateAvailable', onUpdate);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return null;

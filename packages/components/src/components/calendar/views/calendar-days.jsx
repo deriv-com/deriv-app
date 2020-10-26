@@ -48,9 +48,7 @@ const getDays = ({
             : toMoment(selected_date).startOf('day');
 
     // populate previous months' dates
-    const end_of_prev_month = subMonths(moment_cur_date, 1)
-        .endOf('month')
-        .day();
+    const end_of_prev_month = subMonths(moment_cur_date, 1).endOf('month').day();
     for (let i = end_of_prev_month; i > 0; i--) {
         dates.push(subDays(moment_month_start, i).format(date_format));
     }
@@ -59,9 +57,7 @@ const getDays = ({
         dates.push(moment_cur_date.clone().format(date_format.replace('DD', padLeft(idx, 2, '0'))));
     }
     // populate next months' dates
-    const start_of_next_month = addMonths(moment_cur_date, 1)
-        .startOf('month')
-        .day();
+    const start_of_next_month = addMonths(moment_cur_date, 1).startOf('month').day();
     if (start_of_next_month - day_offset > 0 || dates.length <= 28) {
         // if start_of_next_month doesn't falls on Monday, append rest of the week
         for (let i = 1; i <= 7 - start_of_next_month + day_offset; i++) {

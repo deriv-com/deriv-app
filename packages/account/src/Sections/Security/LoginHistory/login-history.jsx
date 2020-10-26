@@ -63,7 +63,7 @@ class LoginHistory extends React.Component {
 
     getLoginHistoryColumnsTemplate = () => {
         const fields = this.getFields();
-        return Object.keys(fields).map((key) => ({ title: fields[key], col_index: key }));
+        return Object.keys(fields).map(key => ({ title: fields[key], col_index: key }));
     };
 
     static getFormattedData(login_history) {
@@ -89,8 +89,8 @@ class LoginHistory extends React.Component {
     }
 
     static getLoginHistory(limit) {
-        return new Promise((resolve) => {
-            WS.authorized.loginHistory(limit).then((data) => {
+        return new Promise(resolve => {
+            WS.authorized.loginHistory(limit).then(data => {
                 if (data.error) resolve({ api_initial_load_error: data.error.message });
                 resolve(data);
             });
@@ -131,12 +131,11 @@ class LoginHistory extends React.Component {
                                 className='login-history-table'
                                 data_source={this.state.data}
                                 columns={columns}
-                                custom_width={'100%'}
                                 getRowSize={row_size}
                             />
                         </DesktopWrapper>
                         <MobileWrapper>
-                            {this.state.data.map((item) => (
+                            {this.state.data.map(item => (
                                 <LoginHistoryListView key={item.id} fields={this.getFields()} login_history={item} />
                             ))}
                         </MobileWrapper>

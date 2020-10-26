@@ -359,7 +359,6 @@ class AccountSwitcher extends React.Component {
                                                     currency={account.currency}
                                                     currency_icon={`IcMt5-${getMT5Account(account.group)}`}
                                                     has_balance={'balance' in account}
-                                                    is_virtual
                                                     loginid={account.display_login}
                                                     onClickAccount={this.redirectToMt5Demo}
                                                 />

@@ -100,6 +100,12 @@ export default class Observer {
             this.eam.get(event).forEach(action => action.action(data));
         }
     }
+    setState(state = {}) {
+        this.state = { ...this.state, ...state };
+    }
+    getState(key) {
+        return this.state?.[key];
+    }
 }
 
 export const observer = new Observer();

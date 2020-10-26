@@ -7,7 +7,7 @@
  * @return {boolean} True if a block is being dragged from the flyout.
  * @private
  */
-Blockly.Gesture.prototype.updateIsDraggingFromFlyout_ = function() {
+Blockly.Gesture.prototype.updateIsDraggingFromFlyout_ = function () {
     // Disabled blocks may not be dragged from the flyout.
     if (this.targetBlock_.disabled) {
         return false;

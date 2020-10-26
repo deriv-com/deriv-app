@@ -100,21 +100,22 @@ const PopoverContent = ({ contract }) => (
                 </div>
             </PopoverItem>
         )}
-        {contract.entry_tick && (
-            <PopoverItem title={localize('Entry spot')}>
-                <div className='transactions__popover-value'>{contract.entry_tick}</div>
-                {contract.entry_tick_time && (
-                    <div className='transactions__popover-value'>
-                        {convertDateFormat(
-                            contract.entry_tick_time,
-                            'YYYY-M-D HH:mm:ss [GMT]',
-                            'YYYY-MM-DD HH:mm:ss [GMT]'
-                        )}
-                    </div>
-                )}
-            </PopoverItem>
-        )
-        // TODO: Durations for non-tick contracts, requires helpers from Trader.
+        {
+            contract.entry_tick && (
+                <PopoverItem title={localize('Entry spot')}>
+                    <div className='transactions__popover-value'>{contract.entry_tick}</div>
+                    {contract.entry_tick_time && (
+                        <div className='transactions__popover-value'>
+                            {convertDateFormat(
+                                contract.entry_tick_time,
+                                'YYYY-M-D HH:mm:ss [GMT]',
+                                'YYYY-MM-DD HH:mm:ss [GMT]'
+                            )}
+                        </div>
+                    )}
+                </PopoverItem>
+            )
+            // TODO: Durations for non-tick contracts, requires helpers from Trader.
         }
         {(contract.exit_tick && contract.exit_tick_time && (
             <PopoverItem title={localize('Exit spot')}>
@@ -182,7 +183,7 @@ const Transaction = ({ active_transaction_id, contract, setActiveTransactionId }
             </div>
             <div className='transactions__cell transactions__stake'>
                 {contract ? (
-                    <Money amount={contract.buy_price} currency={contract.currency} />
+                    <Money amount={contract.buy_price} currency={contract.currency} show_currency />
                 ) : (
                     <TransactionFieldLoader />
                 )}
@@ -195,7 +196,7 @@ const Transaction = ({ active_transaction_id, contract, setActiveTransactionId }
                             'transactions__profit--loss': contract.profit < 0,
                         })}
                     >
-                        <Money amount={Math.abs(contract.profit)} currency={contract.currency} />
+                        <Money amount={Math.abs(contract.profit)} currency={contract.currency} show_currency />
                     </div>
                 ) : (
                     <TransactionFieldLoader />

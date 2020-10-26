@@ -8,6 +8,7 @@
     padding: 0.8rem;
     background-color: var(--general-main-1);
     color: var(--text-prominent);
+    padding-bottom: 0.8rem;
 
     &:before {
         content: '';
@@ -78,9 +79,8 @@
     &__result {
         position: absolute;
         top: 0;
-        left: -1px;
         width: 100%;
-        height: 100%;
+        height: calc(100% - 1rem);
         border-radius: $BORDER_RADIUS;
         z-index: 2;
         display: flex;
@@ -123,7 +123,6 @@
         }
     }
     &__wrapper {
-        // padding: 0.8em;
         margin: 0 1em;
         max-width: 218px;
         border-radius: $BORDER_RADIUS;
@@ -141,15 +140,6 @@
             box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.24);
             border-radius: $BORDER_RADIUS;
             pointer-events: none;
-        }
-        &:first-child {
-            margin-top: 2px;
-        }
-        &:not(:last-child) {
-            margin-bottom: 16px;
-        }
-        &:last-child {
-            margin-bottom: 10px;
         }
         &--enter-done {
             opacity: 1;
@@ -260,12 +250,20 @@
     &-items-wrapper {
         display: grid;
         grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+            'stake current-stake'
+            'deal-cancel-fee  limit-order-info'
+            'buy-price  limit-order-info';
         grid-gap: 0.8rem 0.4rem;
         flex: 1;
+        margin-top: 0.5rem;
 
         &--mobile {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
+            grid-template-areas:
+                'stake current-stake limit-order-info'
+                'deal-cancel-fee buy-price limit-order-info';
             grid-gap: 0.8rem 0.4rem;
             flex: 1;
             padding: 0.4rem 0rem;
@@ -372,6 +370,7 @@
         padding-top: 0.4rem;
         margin-top: 0.8rem;
         border-top: 1px solid var(--general-section-1);
+        min-height: 4rem;
 
         &--positions {
             padding: 0.8rem 0;
@@ -379,7 +378,6 @@
         }
         &--enter-done {
             opacity: 1;
-            transform: translateY(0);
         }
         &--enter,
         &--exit {
@@ -399,7 +397,18 @@
             border-radius: 0.4rem;
             font-size: 1.2rem;
             margin-left: 0.8rem;
-            padding-top: 0.2rem;
+        }
+        .dc-btn--sell,
+        .dc-btn--cancel {
+            height: 2.4rem;
+
+            .dc-btn__text {
+                font-size: 1.2rem;
+            }
+
+            @include mobile {
+                height: 3.2rem;
+            }
         }
     }
     &__indicative--movement {
@@ -426,6 +435,24 @@
             margin-left: 0.4rem;
         }
     }
+    &__limit-order-info {
+        grid-area: limit-order-info;
+        display: grid;
+        grid-gap: 0.4rem 0rem;
+        position: relative;
+    }
+    &__buy-price {
+        grid-area: buy-price;
+    }
+    &__deal-cancel-fee {
+        grid-area: deal-cancel-fee;
+    }
+    &__stake {
+        grid-area: stake;
+    }
+    &__current-stake {
+        grid-area: current-stake;
+    }
     &__sell-button-mobile {
         justify-self: center;
         align-self: center;
@@ -433,6 +460,9 @@
         .dc-btn--sell {
             height: 3.2rem !important;
         }
+    }
+    &__no-resale-msg {
+        font-size: 1.2rem;
     }
     .contract-audit {
         &__wrapper {

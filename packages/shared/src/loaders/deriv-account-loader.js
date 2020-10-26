@@ -20,7 +20,7 @@ function checkExists(component) {
     return existsSync(resolve(__dirname, '../../../account/src/Components/', component, `${component}.scss`));
 }
 
-module.exports = function(source, map) {
+module.exports = function (source, map) {
     const lines = source.split(/\n/);
     const mapped_lines = lines.map(line => {
         const matches = /\s*import\s+\{(.*)\}\s*from\s+\'@deriv\/account/.exec(line); // eslint-disable-line no-useless-escape

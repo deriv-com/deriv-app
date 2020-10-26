@@ -188,6 +188,7 @@ const AccountTransferForm = ({
 
     React.useEffect(() => {
         onMount();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {
@@ -203,6 +204,7 @@ const AccountTransferForm = ({
                 />,
             ]);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [transfer_fee, selected_from, minimum_fee, mt5_total_transfers, internal_total_transfers, setSideNotes]);
     return (
         <div className='cashier__wrapper account-transfer__wrapper'>
@@ -223,6 +225,7 @@ const AccountTransferForm = ({
                         touched,
                         validateField,
                         setFieldValue,
+                        setFieldTouched,
                         setFieldError,
                         handleChange,
                     }) => (
@@ -254,6 +257,7 @@ const AccountTransferForm = ({
                                                     validateField('amount');
                                                     setFieldValue('amount', '');
                                                     setFieldError('amount', '');
+                                                    setFieldTouched('amount', false);
                                                 }}
                                                 error={selected_from.error}
                                             />
@@ -273,6 +277,7 @@ const AccountTransferForm = ({
                                                     validateField('amount');
                                                     setFieldValue('amount', '');
                                                     setFieldError('amount', '');
+                                                    setFieldTouched('amount', false);
                                                 }}
                                                 error={selected_from.error}
                                             />
@@ -317,6 +322,7 @@ const AccountTransferForm = ({
                                                 {...field}
                                                 onChange={e => {
                                                     setErrorMessage('');
+                                                    setFieldTouched('amount', true);
                                                     handleChange(e);
                                                 }}
                                                 className='cashier__input dc-input--no-placeholder account-transfer__input'
@@ -331,10 +337,10 @@ const AccountTransferForm = ({
                                                                 'symbols',
                                                                 `symbols--${selected_from.currency.toLowerCase()}`
                                                             )}
-                                                        />
-                                                    ) : (
-                                                        undefined
-                                                    )
+                                                        >
+                                                            {getCurrencyDisplayCode(selected_from.currency)}
+                                                        </span>
+                                                    ) : undefined
                                                 }
                                                 autoComplete='off'
                                                 maxLength='30'
@@ -361,7 +367,6 @@ const AccountTransferForm = ({
                                         )}
                                     </Field>
                                     <div className='cashier__form-submit cashier__form-submit--align-end account-transfer__form-submit'>
-                                        {error.message && <FormError error_message={error.message} />}
                                         <Button
                                             className='cashier__form-submit-button'
                                             type='submit'
@@ -387,6 +392,7 @@ const AccountTransferForm = ({
                                             minimum_fee={minimum_fee}
                                         />
                                     </MobileWrapper>
+                                    <FormError error={error} />
                                 </Form>
                             )}
                         </React.Fragment>

@@ -8,14 +8,14 @@ import {
     AutoHeightWrapper,
     StaticUrl,
 } from '@deriv/components';
-import { isDesktop, isMobile } from '@deriv/shared';
+import { isDesktop, isMobile, PlatformContext } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import CheckboxField from 'App/Containers/RealAccountSignup/checkbox-field.jsx';
-import { Hr } from './currency-selector.jsx';
-import { SharedMessage, BrokerSpecificMessage } from './terms-of-use-messages.jsx';
+import { SharedMessage, BrokerSpecificMessage, Hr } from './terms-of-use-messages.jsx';
 import 'Sass/terms-of-use.scss';
 
 class TermsOfUse extends React.Component {
+    static contextType = PlatformContext;
     render() {
         return (
             <Formik
@@ -76,8 +76,10 @@ class TermsOfUse extends React.Component {
                                 <Modal.Footer has_separator is_bypassed={isMobile()}>
                                     <FormSubmitButton
                                         is_disabled={isSubmitting || !values.agreed_tos || !values.agreed_tnc}
-                                        label={localize('Add account')}
-                                        has_cancel={true}
+                                        label={
+                                            this.context.is_deriv_crypto ? localize('Next') : localize('Add account')
+                                        }
+                                        has_cancel={!this.context.is_deriv_crypto}
                                         is_absolute={isMobile()}
                                         onCancel={this.props.onCancel}
                                         cancel_label={localize('Previous')}

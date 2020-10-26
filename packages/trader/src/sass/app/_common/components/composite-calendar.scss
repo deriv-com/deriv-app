@@ -25,11 +25,11 @@
         &--fill {
             width: 100%;
 
-            & > .input-field {
+            & > .dc-input-field {
                 width: 100%;
             }
         }
-        & > .input-field {
+        & > .dc-input-field {
             margin: 0;
             width: 100%;
 
@@ -69,7 +69,7 @@
                 }
             }
         }
-        & > .input-field:not(:first-child) {
+        & > .dc-input-field:not(:first-child) {
             margin-left: 8px;
         }
     }

@@ -1,7 +1,7 @@
 /**
  * Install this text field on a block.
  */
-Blockly.FieldTextInput.prototype.init = function() {
+Blockly.FieldTextInput.prototype.init = function () {
     if (this.fieldGroup_) {
         // Field has already been initialized once.
         return;

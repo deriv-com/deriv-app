@@ -19,13 +19,8 @@ const AccountTypesModal = React.lazy(() =>
 );
 const WelcomeModal = React.lazy(() => import(/* webpackChunkName: "welcome-modal"  */ '../WelcomeModal'));
 
-const AccountTransferLimit = React.lazy(() =>
-    import(/* webpackChunkName: "account-transfer-limit-dialog"  */ '../AccountTransferLimitDialog')
-);
-
 const AppModals = ({
     is_account_needed_modal_on,
-    is_account_transfer_limit_modal_visible,
     is_account_types_modal_visible,
     is_welcome_modal_visible,
     is_reality_check_visible,
@@ -51,10 +46,6 @@ const AppModals = ({
         ComponentToLoad = <AccountTypesModal />;
     }
 
-    if (is_account_transfer_limit_modal_visible) {
-        ComponentToLoad = <AccountTransferLimit />;
-    }
-
     if (is_welcome_modal_visible) {
         ComponentToLoad = <WelcomeModal />;
     }
@@ -74,7 +65,6 @@ export default connect(({ client, ui }) => ({
     is_account_types_modal_visible: ui.is_account_types_modal_visible,
     is_welcome_modal_visible: ui.is_welcome_modal_visible,
     is_account_needed_modal_on: ui.is_account_needed_modal_on,
-    is_account_transfer_limit_modal_visible: ui.is_account_transfer_limit_modal_visible,
     is_set_residence_modal_visible: ui.is_set_residence_modal_visible,
     is_real_acc_signup_on: ui.is_real_acc_signup_on,
     is_reality_check_visible: client.is_reality_check_visible,

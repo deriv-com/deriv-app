@@ -89,7 +89,7 @@
         "@deriv/bot-web-ui": "^1.0.0",
         "@deriv/components": "^1.0.0",
         "@deriv/deriv-api": "^1.0.7",
-        "@deriv/deriv-charts": "^0.3.4",
+        "@deriv/deriv-charts": "^0.3.6",
         "@deriv/p2p": "^0.6.0",
         "@deriv/shared": "^1.0.0",
         "@deriv/trader": "^3.8.0",
@@ -103,6 +103,7 @@
         "formik": "^2.1.4",
         "i18next": "^17.0.3",
         "js-cookie": "^2.2.0",
+        "loadjs": "^4.2.0",
         "lodash.debounce": "^4.0.8",
         "mobx": "^5.15.4",
         "mobx-react": "^6.2.2",
@@ -121,7 +122,6 @@
         "react-router": "^5.2.0",
         "react-router-dom": "^5.0.1",
         "react-tiny-popover": "^4.0.0",
-        "react-transition-group": "^2.5.0",
-        "react-window": "^1.8.4"
+        "react-transition-group": "^2.5.0"
     }
 }

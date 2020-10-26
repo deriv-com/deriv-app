@@ -170,7 +170,7 @@
         border-color: var(--text-less-prominent);
 
         &:after {
-            background: linear-gradient(to bottom, $color-white 3%, transparent 10%);
+            background: linear-gradient(to bottom, var(--general-main-1) 3%, transparent 10%);
             position: absolute;
             content: ' ';
             top: 0px;

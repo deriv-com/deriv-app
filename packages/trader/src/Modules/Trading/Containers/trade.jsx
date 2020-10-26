@@ -31,10 +31,23 @@ class Trade extends React.Component {
         digits: [],
         tick: {},
         try_synthetic_indices: false,
+        try_open_markets: false,
+        category: null,
+        subcategory: null,
     };
 
-    componentDidMount() {
+    async componentDidMount() {
         this.props.onMount();
+        if (this.props.is_eu) {
+            const markets_to_search = ['forex', 'indices', 'commodities']; // none-synthetic
+            const { category, subcategory } = await this.props.getFirstOpenMarket(markets_to_search);
+            if (category) {
+                this.setState({
+                    category,
+                    subcategory,
+                });
+            }
+        }
     }
 
     componentWillUnmount() {
@@ -46,7 +59,7 @@ class Trade extends React.Component {
             this.setState({ digits: [] });
         }
         if (prevProps.symbol !== this.props.symbol) {
-            this.setState({ try_synthetic_indices: false });
+            this.setState({ try_synthetic_indices: false, try_open_markets: false });
         }
     }
 
@@ -72,17 +85,20 @@ class Trade extends React.Component {
         });
     };
 
-    onTrySyntheticIndicesClick = () => {
-        this.setState(
-            {
-                try_synthetic_indices: true,
-            },
-            () => {
+    onTryOtherMarkets = async () => {
+        if (this.props.is_eu) {
+            this.setState({ try_open_markets: true }, () => {
+                this.setState({
+                    try_open_markets: false,
+                });
+            });
+        } else {
+            this.setState({ try_synthetic_indices: true }, () => {
                 this.setState({
                     try_synthetic_indices: false,
                 });
-            }
-        );
+            });
+        }
     };
 
     render() {
@@ -115,7 +131,12 @@ class Trade extends React.Component {
                         <DesktopWrapper>
                             <div className='chart-container__wrapper'>
                                 <ChartLoader is_visible={this.props.is_chart_loading} />
-                                <ChartTrade try_synthetic_indices={this.state.try_synthetic_indices} />
+                                <ChartTrade
+                                    try_synthetic_indices={this.state.try_synthetic_indices}
+                                    try_open_markets={this.state.try_open_markets}
+                                    category={this.state.category}
+                                    subcategory={this.state.subcategory}
+                                />
                             </div>
                         </DesktopWrapper>
                         <MobileWrapper>
@@ -140,6 +161,9 @@ class Trade extends React.Component {
                                         this.props.show_digits_stats ? this.state.is_digits_widget_active : undefined
                                     }
                                     try_synthetic_indices={this.state.try_synthetic_indices}
+                                    try_open_markets={this.state.try_open_markets}
+                                    category={this.state.category}
+                                    subcategory={this.state.subcategory}
                                 />
                             </SwipeableWrapper>
                         </MobileWrapper>
@@ -149,7 +173,13 @@ class Trade extends React.Component {
                     <Test />
                 </Div100vhContainer>
                 <div className={form_wrapper_class}>
-                    {this.props.is_market_closed && <MarketIsClosedOverlay onClick={this.onTrySyntheticIndicesClick} />}
+                    {this.props.is_market_closed && (
+                        <MarketIsClosedOverlay
+                            is_eu={this.props.is_eu}
+                            {...(this.props.is_eu && this.state.category && { is_market_available: true })}
+                            onClick={this.onTryOtherMarkets}
+                        />
+                    )}
                     <FormLayout
                         is_market_closed={this.props.is_market_closed}
                         is_trade_enabled={is_trade_enabled && this.props.network_status.class === 'online'}
@@ -160,7 +190,9 @@ class Trade extends React.Component {
     }
 }
 
-export default connect(({ common, modules, ui }) => ({
+export default connect(({ client, common, modules, ui }) => ({
+    getFirstOpenMarket: modules.trade.getFirstOpenMarket,
+    is_eu: client.is_eu,
     network_status: common.network_status,
     contract_type: modules.trade.contract_type,
     form_components: modules.trade.form_components,
@@ -207,15 +239,30 @@ const ChartMarkers = connect(({ modules, ui, client }) => ({
 
 class ChartTradeClass extends React.Component {
     state = {
-        active_category: null,
+        active_market: null,
     };
     bottomWidgets = ({ digits, tick }) => <ChartBottomWidgets digits={digits} tick={tick} />;
     topWidgets = ({ ...props }) => {
-        const { is_digits_widget_active, try_synthetic_indices } = this.props;
+        const { is_digits_widget_active, try_synthetic_indices, try_open_markets } = this.props;
+        if (try_synthetic_indices) {
+            this.setState({
+                active_market: {
+                    category: 'synthetic_index',
+                },
+            });
+        } else if (try_open_markets) {
+            const { category, subcategory } = this.props;
+            if (category) {
+                this.setState({
+                    active_market: { category, subcategory },
+                });
+            }
+        }
+
         return (
             <ChartTopWidgets
-                active_category={try_synthetic_indices ? 'synthetic_index' : null}
-                open={!!try_synthetic_indices}
+                active_market={this.state.active_market}
+                open={try_synthetic_indices || try_open_markets}
                 charts_ref={this.charts_ref}
                 is_digits_widget_active={is_digits_widget_active}
                 {...props}

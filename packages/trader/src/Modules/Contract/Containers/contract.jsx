@@ -4,9 +4,11 @@ import { Redirect, withRouter } from 'react-router';
 import { CSSTransition } from 'react-transition-group';
 import { routes } from '@deriv/shared';
 import ErrorComponent from 'App/Components/Elements/Errors';
-import { Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import ContractReplay from './contract-replay.jsx';
+
+const dialog_errors = ['GetProposalFailure', 'ContractValidationError'];
 
 class Contract extends React.Component {
     componentDidMount() {
@@ -28,7 +30,12 @@ class Contract extends React.Component {
                 {this.props.has_error ? (
                     <ErrorComponent
                         message={this.props.error_message}
-                        redirect_label={<Localize i18n_default_text='Go back to trading' />}
+                        is_dialog={dialog_errors.includes(this.props.error_code)}
+                        redirect_label={
+                            dialog_errors.includes(this.props.error_code)
+                                ? localize('Ok')
+                                : localize('Go back to trading')
+                        }
                         redirectOnClick={() => this.props.history.push(routes.trade)}
                         should_show_refresh={false}
                     />
@@ -56,6 +63,7 @@ class Contract extends React.Component {
 
 Contract.propTypes = {
     error_message: PropTypes.string,
+    error_code: PropTypes.string,
     has_error: PropTypes.bool,
     history: PropTypes.object,
     is_mobile: PropTypes.bool,
@@ -69,6 +77,7 @@ Contract.propTypes = {
 export default withRouter(
     connect(({ modules, ui }) => ({
         error_message: modules.contract_replay.error_message,
+        error_code: modules.contract_replay.error_code,
         has_error: modules.contract_replay.has_error,
         onMount: modules.contract_replay.setAccountSwitcherListener,
         onUnmount: modules.contract_replay.removeAccountSwitcherListener,

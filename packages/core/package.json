@@ -122,7 +122,6 @@
         "react-router": "^5.2.0",
         "react-router-dom": "^5.0.1",
         "react-tiny-popover": "^4.0.0",
-        "react-transition-group": "^2.5.0",
-        "react-window": "^1.8.4"
+        "react-transition-group": "^2.5.0"
     }
 }

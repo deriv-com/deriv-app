@@ -1,5 +1,13 @@
 import { action, autorun, computed, observable } from 'mobx';
-import { getPathname, getPlatformInformation, isEmptyObject, LocalStore, unique, isTouchDevice } from '@deriv/shared';
+import {
+    getPathname,
+    getPlatformInformation,
+    isEmptyObject,
+    LocalStore,
+    unique,
+    isTouchDevice,
+    platform_name,
+} from '@deriv/shared';
 import { sortNotifications } from 'App/Components/Elements/NotificationMessage';
 import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
 import BaseStore from './base-store';
@@ -172,7 +180,7 @@ export default class UIStore extends BaseStore {
         // TODO: [disable-dark-bot] Delete this condition when Bot is ready
         const new_app_routing_history = this.root_store.common.app_routing_history.slice();
         const platform = getPlatformInformation(new_app_routing_history).header;
-        if (platform === 'DBot') {
+        if (platform === platform_name.DBot) {
             document.body.classList.remove('theme--dark');
             document.body.classList.add('theme--light');
             return;

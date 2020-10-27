@@ -96,9 +96,11 @@ $side-padding: 1.2em;
         margin-right: 0;
     }
     .table__head {
+        height: auto;
         .table__cell {
             @include tablet-up {
                 white-space: break-spaces;
+                word-break: break-word;
             }
         }
     }
@@ -113,6 +115,7 @@ $side-padding: 1.2em;
 .statement {
     .table__head {
         font-weight: bold;
+        height: auto;
     }
 
     @include desktop {
@@ -164,9 +167,6 @@ $side-padding: 1.2em;
 
         .date {
             text-align: left;
-        }
-        .table__cell {
-            height: 63px;
         }
     }
     .amount,
@@ -734,10 +734,7 @@ $side-padding: 1.2em;
         margin-top: 20px;
 
         .table__head {
-            height: 8.2rem;
             .table__cell {
-                padding-top: 0px;
-                padding-bottom: 0px;
                 font-weight: bold;
             }
         }

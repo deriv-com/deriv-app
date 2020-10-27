@@ -53,14 +53,14 @@ export const DigitsWidget = connect(({ modules }) => ({
 export const ChartTopWidgets = connect(({ modules, ui }) => ({
     onSymbolChange: modules.trade.onChange,
     theme: ui.is_dark_mode_on ? 'dark' : 'light',
-}))(({ onSymbolChange, charts_ref, theme, is_digits_widget_active, active_category, open }) => {
+}))(({ onSymbolChange, charts_ref, theme, is_digits_widget_active, open_market, open }) => {
     let yAxiswidth;
     if (charts_ref && charts_ref.chart) {
         yAxiswidth = charts_ref.chart.yAxiswidth;
     }
     return (
         <TopWidgets
-            active_category={active_category}
+            open_market={open_market}
             open={open}
             is_mobile={isMobile()}
             is_digits_widget_active={is_digits_widget_active}

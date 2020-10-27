@@ -17,6 +17,8 @@ import './advertiser-page.scss';
 const RowComponent = React.memo(({ data: advert, showAdPopup, style }) => {
     const { advertiser_page_store, general_store } = useStores();
     const { currency } = general_store.client;
+    const { is_mobile } = general_store.props;
+
     const { local_currency, max_order_amount_limit_display, min_order_amount_limit_display, price_display } = advert;
 
     const is_buy_advert = advertiser_page_store.counterparty_type === buy_sell.BUY;
@@ -26,33 +28,33 @@ const RowComponent = React.memo(({ data: advert, showAdPopup, style }) => {
         <div style={style}>
             <Table.Row
                 className={classNames('advertiser-page__adverts-table_row', {
-                    'advertiser-page__adverts-table_row--mobile': general_store.props.is_mobile,
+                    'advertiser-page__adverts-table_row--mobile': is_mobile,
                 })}
             >
-                {general_store.props.is_mobile ? (
+                {is_mobile ? (
                     <React.Fragment>
                         <Table.Cell className='advertiser-page__cell--mobile'>
-                            <Localize
-                                i18n_default_text='Rate 1 {{currency}}'
-                                values={{
-                                    currency,
-                                }}
-                            />
-                            <div
-                                className={classNames('advertiser-page__adverts-price', {
-                                    'advertiser-page__adverts-price--mobile': general_store.props.is_mobile,
-                                })}
-                            >
+                            <div className='advertiser-page__cell-rate'>
+                                <Localize
+                                    i18n_default_text='Rate (1 {{currency}})'
+                                    values={{
+                                        currency,
+                                    }}
+                                />
+                            </div>
+                            <div className='advertiser-page__adverts-price--mobile'>
                                 {price_display} {local_currency}
                             </div>
-                            <Localize
-                                i18n_default_text='Limit {{min_order_amount_limit_display}}-{{max_order_amount_limit_display}} {{currency}}'
-                                values={{
-                                    min_order_amount_limit_display,
-                                    max_order_amount_limit_display,
-                                    currency,
-                                }}
-                            />
+                            <div className='advertiser-page__cell-limit'>
+                                <Localize
+                                    i18n_default_text='Limit {{min_order_amount_limit_display}}-{{max_order_amount_limit_display}} {{currency}}'
+                                    values={{
+                                        min_order_amount_limit_display,
+                                        max_order_amount_limit_display,
+                                        currency,
+                                    }}
+                                />
+                            </div>
                         </Table.Cell>
                     </React.Fragment>
                 ) : (
@@ -68,7 +70,11 @@ const RowComponent = React.memo(({ data: advert, showAdPopup, style }) => {
                 {is_my_advert ? (
                     <Table.Cell />
                 ) : (
-                    <Table.Cell className='advertiser-page__adverts-button'>
+                    <Table.Cell
+                        className={classNames('advertiser-page__adverts-button', {
+                            'advertiser-page__adverts-button--mobile': is_mobile,
+                        })}
+                    >
                         <Button primary small onClick={() => showAdPopup(advert)}>
                             {is_buy_advert ? localize('Buy') : localize('Sell')} {currency}
                         </Button>
@@ -83,6 +89,8 @@ RowComponent.displayName = 'RowComponent';
 
 const AdvertiserPage = observer(props => {
     const { advertiser_page_store, general_store } = useStores();
+    const { is_mobile } = general_store.props;
+
     advertiser_page_store.setAdvertiserPageProps(props);
 
     const {
@@ -161,7 +169,11 @@ const AdvertiserPage = observer(props => {
                     </Modal>
                 )}
                 <div className='advertiser-page__header'>
-                    <div className='advertiser-page__header-details'>
+                    <div
+                        className={classNames('advertiser-page__header-details', {
+                            'advertiser-page__header-details--mobile': is_mobile,
+                        })}
+                    >
                         <div
                             className='advertiser-page__header-avatar'
                             style={{
@@ -176,14 +188,22 @@ const AdvertiserPage = observer(props => {
                             {advertiser_page_store.advertiser_details_name}
                         </div>
                     </div>
-                    <div className='advertiser-page__header-verification'>
+                    <div
+                        className={classNames('advertiser-page__header-verification', {
+                            'advertiser-page__header-verification--mobile': is_mobile,
+                        })}
+                    >
                         {basic_verification ? (
-                            <div>
+                            <div
+                                className={classNames('', {
+                                    'advertiser-page__header-verification-id': is_mobile,
+                                })}
+                            >
                                 {localize('ID verified')}
                                 <Icon
                                     className='advertiser-page__header-verification-icon'
                                     icon='IcCashierVerificationBadge'
-                                    size={16}
+                                    size={is_mobile ? 12 : 16}
                                 />
                             </div>
                         ) : null}
@@ -193,7 +213,7 @@ const AdvertiserPage = observer(props => {
                                 <Icon
                                     className='advertiser-page__header-verification-icon'
                                     icon='IcCashierVerificationBadge'
-                                    size={16}
+                                    size={is_mobile ? 12 : 16}
                                 />
                             </div>
                         ) : null}
@@ -203,13 +223,13 @@ const AdvertiserPage = observer(props => {
                     <Table>
                         <ThemedScrollbars
                             className='advertiser-page__horizontal-scroll'
-                            is_bypassed={!general_store.props.is_mobile}
+                            is_bypassed={!is_mobile}
                             is_only_horizontal
                             width='calc(100vw - 32px)'
                         >
                             <Table.Row
                                 className={classNames('advertiser-page__stats', {
-                                    'advertiser-page__stats--mobile': general_store.props.is_mobile,
+                                    'advertiser-page__stats--mobile': is_mobile,
                                 })}
                             >
                                 <Table.Cell className='advertiser-page__stats-cell'>
@@ -217,7 +237,7 @@ const AdvertiserPage = observer(props => {
                                     <div className='advertiser-page__stats-cell-info'>{total_orders_count || '-'}</div>
                                 </Table.Cell>
                                 <div className='advertiser-page__stats-cell-separator' />
-                                {general_store.props.is_mobile ? (
+                                {is_mobile ? (
                                     <Table.Cell className='advertiser-page__stats-cell'>
                                         <div className='advertiser-page__stats-cell-header'>{localize('Buy/Sell')}</div>
                                         <div className='advertiser-page__stats-cell-info'>{`${
@@ -275,11 +295,14 @@ const AdvertiserPage = observer(props => {
                     </Table>
 
                     <Popover
-                        className='advertiser-page__popover-icon'
+                        className={classNames('advertiser-page__popover-icon', {
+                            'advertiser-page__popover-icon--mobile': is_mobile,
+                        })}
                         alignment='top'
                         message={localize(
                             "These fields are based on the last 30 days' activity: Buy, Sell, Completion, and Avg. release time."
                         )}
+                        zIndex={2}
                     >
                         <Icon icon='IcInfoOutline' size={16} />
                     </Popover>
@@ -289,7 +312,7 @@ const AdvertiserPage = observer(props => {
                         onTabItemClick={advertiser_page_store.handleTabItemClick}
                         active_index={advertiser_page_store.active_index}
                         className={classNames('advertiser-page__adverts-tabs', {
-                            'advertiser-page__adverts-tabs--mobile': general_store.props.is_mobile,
+                            'advertiser-page__adverts-tabs--mobile': is_mobile,
                         })}
                         top
                         header_fit_content
@@ -300,7 +323,7 @@ const AdvertiserPage = observer(props => {
                     <div className='advertiser-page__adverts-table'>
                         {advertiser_page_store.adverts.length ? (
                             <Table>
-                                {!general_store.props.is_mobile && (
+                                {!is_mobile && (
                                     <Table.Header>
                                         <Table.Row className='advertiser-page__adverts-table_row'>
                                             <Table.Head>{localize('Limits')}</Table.Head>
@@ -320,7 +343,7 @@ const AdvertiserPage = observer(props => {
                                                 ' - '
                                             )})`}
                                             items={advertiser_page_store.adverts}
-                                            item_size={advertiser_page_store.item_height}
+                                            item_size={is_mobile ? 98 : 56}
                                             RenderComponent={Row}
                                         />
                                     </Table.Body>

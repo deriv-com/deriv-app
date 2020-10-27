@@ -28,6 +28,10 @@
         }
         &-details {
             display: flex;
+
+            &--mobile {
+                margin: 0 1.6rem;
+            }
         }
         &-name {
             align-self: center;
@@ -43,6 +47,10 @@
             display: flex;
             font-size: var(--text-size-xs);
 
+            &-id {
+                justify-self: flex-end;
+            }
+
             &-status {
                 margin-left: 1.6rem;
             }
@@ -51,6 +59,13 @@
                 margin-left: 0.4rem;
                 vertical-align: bottom;
             }
+
+            &--mobile {
+                display: grid;
+                font-size: var(--text-size-xxs);
+                position: fixed;
+                right: 1.6rem;
+            }
         }
     }
     &__stats {
@@ -58,10 +73,10 @@
         display: flex;
         grid-template-columns: repeat(3, 1fr) 2fr 1fr;
         grid-template-rows: 46px;
-        height: fit-content;
+        height: 50px;
         justify-content: space-between;
         margin: 2.4rem 0 2.4rem 2.9rem;
-        width: 596px;
+        width: 588px;
 
         &-cell {
             display: block;
@@ -93,7 +108,7 @@
         }
 
         &--mobile {
-            width: 140vw;
+            width: 110vw;
         }
 
         &--wrapper {
@@ -109,10 +124,22 @@
         &--mobile {
             display: block;
         }
+
+        &-rate {
+            font-size: var(--text-size-xxs);
+        }
+        &-limit {
+            font-size: var(--text-size-xxs);
+            padding-top: 0.8rem;
+        }
     }
     &__popover {
         &-icon {
-            margin: 1.6rem 0.8rem;
+            margin: 1.6rem 0.8rem 1.6rem 2.4rem;
+
+            &--mobile {
+                margin: 1.6rem 1rem;
+            }
         }
     }
     &__adverts {
@@ -120,19 +147,32 @@
             align-items: center;
             display: flex;
             justify-content: center;
+
+            &--mobile {
+                justify-content: flex-end;
+
+                .dc-btn__small {
+                    height: 4rem;
+                }
+            }
         }
+
         &-price {
             color: var(--text-profit-success);
             font-weight: bold;
 
             &--mobile {
-                font-size: 16px;
+                color: var(--text-profit-success);
+                font-size: var(--text-size-s);
+                font-weight: bold;
                 margin: 0.2rem 0;
             }
         }
+
         &-table {
             width: 657px;
         }
+
         &-table_row {
             grid-template-columns: 3fr 2fr 1fr;
 
@@ -143,6 +183,7 @@
                 width: 100vw;
             }
         }
+
         &-tabs {
             width: 228px;
 
@@ -153,6 +194,7 @@
                     width: 100vw;
                     display: flex;
                     justify-content: space-evenly;
+                    margin-bottom: 0 !important;
                 }
 
                 .dc-tabs__item {
@@ -160,9 +202,11 @@
                 }
             }
         }
+
         &-list {
             height: calc(100% - 200px);
         }
+
         &-scrollbar {
             height: calc(100vh - 527px);
             position: absolute;

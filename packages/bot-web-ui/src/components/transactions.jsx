@@ -1,9 +1,10 @@
 import classnames from 'classnames';
-import { ThemedScrollbars, Icon, DesktopWrapper } from '@deriv/components';
+import { Icon, DesktopWrapper, DataList } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { useNewRowTransition } from '@deriv/shared';
 import { PropTypes } from 'prop-types';
 import React from 'react';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { CSSTransition } from 'react-transition-group';
 import Transaction from './transaction.jsx';
 import Download from './download.jsx';
 import { transaction_elements } from '../constants/transactions';
@@ -11,6 +12,31 @@ import { connect } from '../stores/connect';
 import { contract_stages } from '../constants/contract-stage';
 import '../assets/sass/download.scss';
 import '../assets/sass/transactions.scss';
+
+const TransactionItem = ({ row, is_new_row }) => {
+    const { in_prop } = useNewRowTransition(is_new_row);
+
+    switch (row.type) {
+        case transaction_elements.CONTRACT: {
+            const { data: contract } = row;
+            return (
+                <CSSTransition in={in_prop} timeout={500} classNames='list__animation'>
+                    <Transaction contract={contract} />
+                </CSSTransition>
+            );
+        }
+        case transaction_elements.DIVIDER: {
+            return (
+                <div className='transactions__divider'>
+                    <div className='transactions__divider-line' />
+                </div>
+            );
+        }
+        default: {
+            return null;
+        }
+    }
+};
 
 class Transactions extends React.PureComponent {
     componentDidMount() {
@@ -50,36 +76,40 @@ class Transactions extends React.PureComponent {
                         'transactions__content--mobile': is_mobile,
                     })}
                 >
-                    <ThemedScrollbars autoHide hideHorizontal className='transactions__scrollbar'>
+                    <div className='transactions__scrollbar'>
                         {elements.length ? (
-                            <TransitionGroup>
-                                {elements.map(element => {
-                                    switch (element.type) {
+                            <DataList
+                                className='transactions'
+                                data_source={elements}
+                                rowRenderer={props => <TransactionItem {...props} />}
+                                keyMapper={row => {
+                                    switch (row.type) {
                                         case transaction_elements.CONTRACT: {
-                                            const { data: contract } = element;
-                                            const { buy } = contract.transaction_ids;
-                                            return (
-                                                <CSSTransition key={buy} timeout={500} classNames='list__animation'>
-                                                    <Transaction contract={contract} />
-                                                </CSSTransition>
-                                            );
+                                            return row.data.transaction_ids.buy;
                                         }
                                         case transaction_elements.DIVIDER: {
-                                            const { data: run_id } = element;
-                                            return (
-                                                <CSSTransition key={run_id} timeout={500}>
-                                                    <div key={run_id} className='transactions__divider'>
-                                                        <div className='transactions__divider-line' />
-                                                    </div>
-                                                </CSSTransition>
-                                            );
+                                            return row.data;
                                         }
                                         default: {
                                             return null;
                                         }
                                     }
-                                })}
-                            </TransitionGroup>
+                                }}
+                                getRowSize={({ index }) => {
+                                    const row = elements[index];
+                                    switch (row.type) {
+                                        case transaction_elements.CONTRACT: {
+                                            return 50;
+                                        }
+                                        case transaction_elements.DIVIDER: {
+                                            return 21;
+                                        }
+                                        default: {
+                                            return 0;
+                                        }
+                                    }
+                                }}
+                            />
                         ) : (
                             <>
                                 {contract_stage >= contract_stages.STARTING ? (
@@ -106,7 +136,7 @@ class Transactions extends React.PureComponent {
                                 )}
                             </>
                         )}
-                    </ThemedScrollbars>
+                    </div>
                 </div>
             </div>
         );

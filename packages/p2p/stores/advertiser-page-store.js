@@ -35,7 +35,6 @@ export default class AdvertiserPageStore {
         height_constants.table_header,
         height_constants.tabs,
     ];
-    item_height = 56;
     props = {};
 
     get account_currency() {

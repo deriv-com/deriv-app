@@ -123,12 +123,4 @@ $header-height: 3.6em;
             width: 1.6em;
         }
     }
-    // TODO: Remove below once react-virtualized is used for positions drawer for auto height calculation
-    .dc-contract-card__result {
-        max-height: 157px;
-
-        &--lg {
-            max-height: 254px;
-        }
-    }
 }

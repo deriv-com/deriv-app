@@ -27,6 +27,10 @@ class ToggleCardDialog extends React.Component {
         this.ContractUpdateFormWrapper = props.connectWithContractUpdate?.(ContractUpdateForm) || ContractUpdateForm;
     }
 
+    handleClick = e => {
+        e.stopPropagation();
+    };
+
     onPopoverClose = () => {
         if (this.state.is_do_not_show_selected) {
             this.props.toggleCancellationWarning();
@@ -89,6 +93,7 @@ class ToggleCardDialog extends React.Component {
     render() {
         const {
             addToast,
+            current_focus,
             getCardLabels,
             getContractById,
             is_valid_to_cancel,
@@ -135,7 +140,7 @@ class ToggleCardDialog extends React.Component {
         const ContractUpdateFormWrapper = this.ContractUpdateFormWrapper;
 
         return (
-            <React.Fragment>
+            <div onClick={this.handleClick}>
                 <div ref={this.toggle_ref} className='dc-contract-card-dialog-toggle' onClick={this.toggleDialog}>
                     {is_valid_to_cancel ? toggle_wrapper : edit_icon}
                 </div>
@@ -149,6 +154,7 @@ class ToggleCardDialog extends React.Component {
                         <Div100vhContainer className='contract-update__wrapper' height_offset='40px'>
                             <ContractUpdateFormWrapper
                                 addToast={addToast}
+                                current_focus={current_focus}
                                 getCardLabels={getCardLabels}
                                 getContractById={getContractById}
                                 removeToast={removeToast}
@@ -171,6 +177,7 @@ class ToggleCardDialog extends React.Component {
                     >
                         <ContractUpdateFormWrapper
                             addToast={addToast}
+                            current_focus={current_focus}
                             getCardLabels={getCardLabels}
                             getContractById={getContractById}
                             removeToast={removeToast}
@@ -181,7 +188,7 @@ class ToggleCardDialog extends React.Component {
                         />
                     </ContractCardDialog>
                 </DesktopWrapper>
-            </React.Fragment>
+            </div>
         );
     }
 }
@@ -189,6 +196,7 @@ class ToggleCardDialog extends React.Component {
 ToggleCardDialog.propTypes = {
     addToast: PropTypes.func,
     contract_id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    current_focus: PropTypes.string,
     getCardLabels: PropTypes.func,
     getContractById: PropTypes.func,
     is_valid_to_cancel: PropTypes.bool,

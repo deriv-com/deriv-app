@@ -79,7 +79,9 @@
             min-width: unset;
 
             @media only screen and (max-width: 340px) {
-                width: 120px;
+                margin: 1.6rem 1rem 0.8rem;
+                width: 136px;
+                height: 136px;
             }
         }
     }

@@ -22,7 +22,7 @@ const getIntroductionText = (landing_company_shortcode, mt5_login_list) => {
         case 'malta':
             return (
                 <Localize
-                    i18n_default_text='This complaints policy, which may change from time to time, applies to your account(s) registered with Deriv (Europe) Limited, having its registered office address at W Business Centre, Level 3, Triq Dun Karm, Birkirkara, BKR 9033, Malta, licensed and regulated by the Malta Gaming Authority in Malta for gambling products only, <0>licence no. MGA/B2C/102/2000</0>, and for clients residing in the UK by the UK Gambling Commission.'
+                    i18n_default_text='This complaints policy, which may change from time to time, applies to your account(s) registered with Deriv (Europe) Limited, having its registered office address at W Business Centre, Level 3, Triq Dun Karm, Birkirkara, BKR 9033, Malta, licensed and regulated by the Malta Gaming Authority in Malta for gambling products only, <0>licence no. MGA/B2C/102/2000</0>, and for clients residing in the UK by the UK Gambling Commission (account number 39495).'
                     components={[<strong key={0} />]}
                 />
             );
@@ -197,7 +197,7 @@ const Content = ({ landing_company_shortcode, mt5_login_list }) => {
                         title: localize('3.1. Submission of a complaint'),
                         text: (
                             <Localize
-                                i18n_default_text='To file a complaint about our service, send an email to <0>complaints@deriv.com</0> and state your complaint in detail. Please submit any relevant screenshots of your trading or system for our better understanding.'
+                                i18n_default_text='To file a complaint about our service, send an email to <0>complaints@deriv.com</0> and state your complaint in detail. Please submit any relevant screenshots of your trading or system for our better understanding. You may also call <1>+447723580049</1> to place your complaint.'
                                 components={[
                                     <a
                                         key={0}
@@ -205,6 +205,13 @@ const Content = ({ landing_company_shortcode, mt5_login_list }) => {
                                         rel='noopener noreferrer'
                                         target='_blank'
                                         href='mailto:complaints@deriv.com'
+                                    />,
+                                    <a
+                                        key={1}
+                                        className='link link--orange'
+                                        rel='noopener noreferrer'
+                                        target='_blank'
+                                        href='tel:+447723580049'
                                     />,
                                 ]}
                             />

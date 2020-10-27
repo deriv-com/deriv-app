@@ -180,11 +180,7 @@ class Statement extends React.Component {
                                 localized_period_message={localize('You have no transactions for this period.')}
                             />
                         ) : (
-                            <ThemedScrollbars
-                                className='reports__scrollbar'
-                                is_bypassed={isMobile()}
-                                is_only_horizontal
-                            >
+                            <div className='reports__content'>
                                 <DesktopWrapper>
                                     <DataTable
                                         className='statement'
@@ -210,7 +206,7 @@ class Statement extends React.Component {
                                         <PlaceholderComponent is_loading={is_loading} />
                                     </DataList>
                                 </MobileWrapper>
-                            </ThemedScrollbars>
+                            </div>
                         )}
                     </React.Fragment>
                 )}

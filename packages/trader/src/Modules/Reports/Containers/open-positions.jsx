@@ -145,7 +145,7 @@ const OpenPositionsTable = ({
             />
         ) : (
             currency && (
-                <ThemedScrollbars className='reports__scrollbar' is_bypassed={isMobile()} is_only_horizontal>
+                <div className='reports__content'>
                     <DesktopWrapper>
                         <EmptyPlaceholderWrapper
                             component_icon={component_icon}
@@ -182,7 +182,7 @@ const OpenPositionsTable = ({
                             </DataList>
                         </EmptyPlaceholderWrapper>
                     </MobileWrapper>
-                </ThemedScrollbars>
+                </div>
             )
         )}
     </React.Fragment>

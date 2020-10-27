@@ -100,7 +100,6 @@ $side-padding: 1.2em;
         .table__cell {
             @include tablet-up {
                 white-space: break-spaces;
-                word-break: break-word;
             }
         }
     }
@@ -442,6 +441,9 @@ $side-padding: 1.2em;
     }
     .profit_loss {
         font-weight: bold;
+        @include tablet-up {
+            word-break: break-word;
+        }
         @include mobile {
             display: flex;
 

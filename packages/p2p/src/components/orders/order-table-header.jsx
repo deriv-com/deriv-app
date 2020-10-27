@@ -33,6 +33,7 @@ const OrderTableHeader = observer(({ children }) => {
 
 OrderTableHeader.propTypes = {
     children: PropTypes.any,
+    is_active_tab: PropTypes.bool,
 };
 
 export default OrderTableHeader;

@@ -84,10 +84,10 @@ const BuySell = observer(() => {
                     <Modal.Body>
                         <Form
                             advert={buy_sell_store.selected_ad_state}
-                            handleClose={buy_sell_store.stateUpdateWrapper(buy_sell_store.onCancelClick)}
+                            handleClose={buy_sell_store.onCancelClick}
                             handleConfirm={buy_sell_store.onConfirmClick}
-                            setIsSubmitDisabled={buy_sell_store.stateUpdateWrapper(buy_sell_store.setIsSubmitDisabled)}
-                            setErrorMessage={buy_sell_store.stateUpdateWrapper(buy_sell_store.setErrorMessage)}
+                            setIsSubmitDisabled={buy_sell_store.setIsSubmitDisabled}
+                            setErrorMessage={buy_sell_store.setErrorMessage}
                             setSubmitForm={buy_sell_store.setSubmitForm}
                         />
                     </Modal.Body>
@@ -114,8 +114,25 @@ const BuySell = observer(() => {
 });
 
 BuySell.propTypes = {
+    error_message: PropTypes.string,
+    hideAdvertiserPage: PropTypes.func,
+    hideVerification: PropTypes.func,
+    is_submit_disabled: PropTypes.bool,
     navigate: PropTypes.func,
+    onCancelClick: PropTypes.func,
+    onChangeTableType: PropTypes.func,
+    onConfirmClick: PropTypes.func,
     params: PropTypes.object,
+    selected_ad_state: PropTypes.object,
+    setErrorMessage: PropTypes.func,
+    setIsSubmitDisabled: PropTypes.func,
+    setSelectedAdvert: PropTypes.func,
+    should_show_popup: PropTypes.bool,
+    should_show_verification: PropTypes.bool,
+    show_advertiser_page: PropTypes.bool,
+    showAdvertiserPage: PropTypes.func,
+    submitForm: PropTypes.func,
+    table_type: PropTypes.string,
 };
 
 export default BuySell;

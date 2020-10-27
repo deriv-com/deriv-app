@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Loading, Button } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
@@ -10,10 +11,10 @@ import { createExtendedOrderDetails } from 'Utils/orders';
 import OrderTableHeader from './order-table-header.jsx';
 import OrderRowComponent from './order-table-row.jsx';
 
+const Row = row_props => <OrderRowComponent {...row_props} />;
+
 const OrderTableContent = observer(() => {
     const { general_store, order_store } = useStores();
-
-    const Row = row_props => <OrderRowComponent {...row_props} />;
 
     React.useEffect(() => {
         order_store.setIsLoading(true);
@@ -59,5 +60,18 @@ const OrderTableContent = observer(() => {
         </Empty>
     );
 });
+
+OrderTableContent.propTypes = {
+    api_error_message: PropTypes.string,
+    handleTabClick: PropTypes.func,
+    height_values: PropTypes.array,
+    is_active_tab: PropTypes.bool,
+    is_loading: PropTypes.bool,
+    item_height: PropTypes.number,
+    loadMoreOrders: PropTypes.func,
+    order_table_type: PropTypes.bool,
+    orders: PropTypes.array,
+    setIsLoading: PropTypes.func,
+};
 
 export default OrderTableContent;

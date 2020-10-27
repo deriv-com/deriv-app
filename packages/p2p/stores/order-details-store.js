@@ -8,10 +8,9 @@ export default class OrderDetailsStore {
     constructor(root_store) {
         this.root_store = root_store;
         this.general_store = this.root_store.general_store;
-        this.order_store = this.root_store.order_store;
     }
 
-    @observable channel_url = this.order_store.order_information.chat_channel_url;
+    @observable channel_url = this.root_store.order_store.order_information?.chat_channel_url;
     @observable interval = null;
     @observable popup_options = {};
     @observable remaining_time;
@@ -25,7 +24,7 @@ export default class OrderDetailsStore {
     @action.bound
     countDownTimer() {
         const distance = ServerTime.getDistanceToServerTime(
-            this.order_store.order_information.order_expiry_milliseconds
+            this.root_store.order_store.order_information.order_expiry_milliseconds
         );
         const timer = secondsToTimer(distance);
 
@@ -38,7 +37,7 @@ export default class OrderDetailsStore {
     }
 
     @action.bound
-    createChatForNewOrder() {
+    createChatForNewOrder(id) {
         if (!this.channel_url) {
             // If order_information doesn't have channel_url this is a new order
             // and we need to instruct BE to create a chat on Sendbird's side.

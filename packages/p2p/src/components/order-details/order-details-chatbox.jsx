@@ -1,4 +1,5 @@
 import * as React from 'react';
+import PropTypes from 'prop-types';
 import { Loading } from '@deriv/components';
 import { useIsMounted } from '@deriv/shared';
 import { Channel, SendBirdProvider } from 'sendbird-uikit';
@@ -107,5 +108,10 @@ const OrderDetailsChatbox = observer(({ token, app_id, user_id }) => {
         </div>
     );
 });
+
+OrderDetailsChatbox.propTypes = {
+    props: PropTypes.object,
+    order_information: PropTypes.object,
+};
 
 export default OrderDetailsChatbox;

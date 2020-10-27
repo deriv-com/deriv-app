@@ -12,7 +12,6 @@ export default class OrderStore {
     @observable api_error_message = '';
     @observable has_more_items_to_load = false;
     @observable is_loading = false;
-    @observable nav = this.general_store.parameters?.nav;
     @observable order_information = null;
     @observable order_rerender_timeout = null;
 
@@ -30,6 +29,10 @@ export default class OrderStore {
     interval;
     item_height = 72;
     order_info_subscription = {};
+
+    get nav() {
+        return this.general_store.parameters?.nav;
+    }
 
     @action.bound
     hideDetails(should_navigate) {
@@ -85,11 +88,6 @@ export default class OrderStore {
     }
 
     @action.bound
-    onParametersUpdate() {
-        this.setNav(this.general_store.parameters?.nav ?? this.nav);
-    }
-
-    @action.bound
     onUnmount() {
         clearTimeout(this.order_rerender_timeout);
         this.unsubscribeFromCurrentOrder();
@@ -109,11 +107,6 @@ export default class OrderStore {
     @action.bound
     setIsLoading(is_loading) {
         this.is_loading = is_loading;
-    }
-
-    @action.bound
-    setNav(nav) {
-        this.nav = nav;
     }
 
     @action.bound

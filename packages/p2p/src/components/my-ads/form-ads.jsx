@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
 import { Dropdown, Loading, Icon, Input, Button, ThemedScrollbars } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
@@ -10,6 +11,7 @@ import { buy_sell } from '../../constants/buy-sell';
 
 const FormAds = observer(() => {
     const { general_store, my_ads_store } = useStores();
+    const { currency, local_currency_config } = general_store.client;
 
     React.useEffect(() => {
         my_ads_store.getAdvertiserInfo();
@@ -89,7 +91,7 @@ const FormAds = observer(() => {
                                                     className='p2p-my-ads__form-field'
                                                     trailing_icon={
                                                         <span className='p2p-my-ads__form-field--trailing'>
-                                                            {general_store.client.currency}
+                                                            {currency}
                                                         </span>
                                                     }
                                                     onChange={e => {
@@ -109,15 +111,15 @@ const FormAds = observer(() => {
                                                     type='text'
                                                     error={touched.price_rate && errors.price_rate}
                                                     label={localize('Fixed rate (1 {{currency}})', {
-                                                        currency: general_store.client.currency,
+                                                        currency,
                                                     })}
                                                     hint={localize('Per 1 {{currency}}', {
-                                                        currency: general_store.client.currency,
+                                                        currency,
                                                     })}
                                                     className='p2p-my-ads__form-field'
                                                     trailing_icon={
                                                         <span className='p2p-my-ads__form-field--trailing'>
-                                                            {general_store.client.local_currency_config.currency}
+                                                            {local_currency_config.currency}
                                                         </span>
                                                     }
                                                     onChange={e => {
@@ -138,7 +140,7 @@ const FormAds = observer(() => {
                                                     className='p2p-my-ads__form-field'
                                                     trailing_icon={
                                                         <span className='p2p-my-ads__form-field--trailing'>
-                                                            {general_store.client.currency}
+                                                            {currency}
                                                         </span>
                                                     }
                                                     onChange={e => {
@@ -159,7 +161,7 @@ const FormAds = observer(() => {
                                                     className='p2p-my-ads__form-field'
                                                     trailing_icon={
                                                         <span className='p2p-my-ads__form-field--trailing'>
-                                                            {general_store.client.currency}
+                                                            {currency}
                                                         </span>
                                                     }
                                                     onChange={e => {
@@ -260,5 +262,19 @@ const FormAds = observer(() => {
         </React.Fragment>
     );
 });
+
+FormAds.propTypes = {
+    api_error_message: PropTypes.string,
+    client: PropTypes.object,
+    contact_info: PropTypes.string,
+    default_advert_description: PropTypes.string,
+    getAdvertiserInfo: PropTypes.func,
+    handleSubmit: PropTypes.func,
+    is_form_loading: PropTypes.bool,
+    payment_info: PropTypes.string,
+    restrictLength: PropTypes.func,
+    setShowAdForm: PropTypes.func,
+    validateFormAds: PropTypes.func,
+};
 
 export default FormAds;

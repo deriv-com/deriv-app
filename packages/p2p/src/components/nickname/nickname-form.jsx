@@ -2,12 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
 import { Input, Button, ThemedScrollbars, Icon } from '@deriv/components';
+import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import { localize } from 'Components/i18next';
 import IconClose from 'Assets/icon-close.jsx';
 import './nickname-form.scss';
 
-const NicknameForm = ({ handleClose }) => {
+const NicknameForm = observer(({ handleClose }) => {
     const { general_store } = useStores();
 
     return (
@@ -83,11 +84,13 @@ const NicknameForm = ({ handleClose }) => {
             </Formik>
         </>
     );
-};
+});
 
 NicknameForm.propTypes = {
     handleClose: PropTypes.func,
+    nickname_error: PropTypes.string,
     setNicknameTrue: PropTypes.func,
+    validatePopup: PropTypes.func,
 };
 
 export default NicknameForm;

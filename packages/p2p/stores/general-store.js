@@ -23,7 +23,7 @@ export default class GeneralStore {
     @observable is_listed = false;
     @observable is_restricted = false;
     @observable nickname = null;
-    @observable nickname_error = null;
+    @observable nickname_error = '';
     @observable notification_count = 0;
     @observable order_offset = 0;
     @observable order_table_type = order_list.ACTIVE;
@@ -53,23 +53,20 @@ export default class GeneralStore {
 
     @action.bound
     createAdvertiser(name) {
-        return new Promise(resolve => {
-            requestWS({ p2p_advertiser_create: 1, name }).then(response => {
-                const { p2p_advertiser_create } = response;
-                if (response) {
-                    if (response.error) {
-                        this.setNicknameError(response.error.message);
-                    } else {
-                        this.setAdvertiserId(p2p_advertiser_create.id);
-                        this.setIsAdvertiser(!!p2p_advertiser_create.is_approved);
-                        this.setNickname(p2p_advertiser_create.name);
-                        this.setNicknameError(undefined);
-                        this.setChatInfo(response);
-                        this.toggleNicknamePopup();
-                    }
-                    resolve();
+        requestWS({ p2p_advertiser_create: 1, name }).then(response => {
+            const { p2p_advertiser_create } = response;
+            if (response) {
+                if (response.error) {
+                    this.setNicknameError(response.error.message);
+                } else {
+                    this.setAdvertiserId(p2p_advertiser_create.id);
+                    this.setIsAdvertiser(!!p2p_advertiser_create.is_approved);
+                    this.setNickname(p2p_advertiser_create.name);
+                    this.setNicknameError(undefined);
+                    this.setChatInfo(response);
+                    this.toggleNicknamePopup();
                 }
-            });
+            }
         });
     }
 
@@ -142,9 +139,9 @@ export default class GeneralStore {
     }
 
     @action.bound
-    items = () => [
+    verification_checklist = () => [
         {
-            content: this.nickname ? this.nickname : <Localize i18n_default_text='Choose your nickname' />,
+            content: this.nickname || <Localize i18n_default_text='Choose your nickname' />,
             status: this.nickname ? 'done' : 'action',
             onClick: this.nickname ? () => {} : this.toggleNicknamePopup,
         },

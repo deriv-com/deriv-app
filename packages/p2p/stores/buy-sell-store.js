@@ -15,7 +15,7 @@ export default class BuySellStore {
 
     @observable api_error_message = '';
     @observable contact_info = '';
-    @observable error_message = null;
+    @observable error_message = '';
     @observable has_more_items_to_load = false;
     @observable is_loading = true;
     @observable is_submit_disabled = true;
@@ -287,15 +287,8 @@ export default class BuySellStore {
         this.setShouldShowVerification(true);
     }
 
-    // Some state is managed externally, ensure our host component is mounted
-    // when those external components try to update it.
     @action.bound
-    stateUpdateWrapper = updateFn => (...args) => {
-        updateFn(...args);
-    };
-
-    @action.bound
-    validatePopup = values => {
+    validatePopup(values) {
         const validations = {
             amount: [
                 v => !!v,
@@ -363,5 +356,5 @@ export default class BuySellStore {
         });
 
         return errors;
-    };
+    }
 }

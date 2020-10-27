@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Field, Form, Formik } from 'formik';
 import { Button, Icon, Input, Loading, Popover, Table, ThemedScrollbars } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
@@ -11,6 +12,7 @@ import './my-profile.scss';
 
 const MyProfile = observer(() => {
     const { general_store, my_profile_store } = useStores();
+    const { currency } = general_store.client;
 
     const {
         basic_verification,
@@ -81,14 +83,14 @@ const MyProfile = observer(() => {
                             <div className='my-profile__stats-cell-separator' />
                             <Table.Cell className='my-profile__stats-cell'>
                                 <div className='my-profile__stats-cell-header'>
-                                    {localize('Buy ({{currency}})', { currency: general_store.client.currency })}
+                                    {localize('Buy ({{currency}})', { currency })}
                                 </div>
                                 <div className='my-profile__stats-cell-info'>{buy_orders_count || '-'}</div>
                             </Table.Cell>
                             <div className='my-profile__stats-cell-separator' />
                             <Table.Cell className='my-profile__stats-cell'>
                                 <div className='my-profile__stats-cell-header'>
-                                    {localize('Sell ({{currency}})', { currency: general_store.client.currency })}
+                                    {localize('Sell ({{currency}})', { currency })}
                                 </div>
                                 <div className='my-profile__stats-cell-info'>{sell_orders_count || '-'}</div>
                             </Table.Cell>
@@ -96,7 +98,7 @@ const MyProfile = observer(() => {
                             <Table.Cell className='my-profile__stats-cell'>
                                 <div className='my-profile__stats-cell-header'>
                                     {localize('Buy / Sell limit ({{currency}})', {
-                                        currency: general_store.client.currency,
+                                        currency,
                                     })}
                                 </div>
                                 <div className='my-profile__stats-cell-info'>
@@ -209,5 +211,20 @@ const MyProfile = observer(() => {
         </div>
     );
 });
+
+MyProfile.propTypes = {
+    advertiser_info: PropTypes.object,
+    contact_info: PropTypes.string,
+    default_advert_description: PropTypes.string,
+    error_message: PropTypes.string,
+    form_error: PropTypes.string,
+    getAdvertiserInfo: PropTypes.func,
+    handleSubmit: PropTypes.func,
+    is_button_loading: PropTypes.bool,
+    is_loading: PropTypes.bool,
+    is_submit_success: PropTypes.bool,
+    payment_info: PropTypes.string,
+    validateForm: PropTypes.func,
+};
 
 export default MyProfile;

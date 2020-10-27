@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Table } from '@deriv/components';
+import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import { localize } from 'Components/i18next';
 
-export const BuySellTable = ({ children }) => {
+export const BuySellTable = observer(({ children }) => {
     const { general_store } = useStores();
+
     return (
         <Table>
             <Table.Header>
@@ -21,7 +23,7 @@ export const BuySellTable = ({ children }) => {
             <Table.Body>{children}</Table.Body>
         </Table>
     );
-};
+});
 
 BuySellTable.propTypes = {
     children: PropTypes.node,

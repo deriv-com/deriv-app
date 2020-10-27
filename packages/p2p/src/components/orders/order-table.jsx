@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { ButtonToggle } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
@@ -37,5 +38,12 @@ const OrderTable = observer(() => {
         </React.Fragment>
     );
 });
+
+OrderTable.propTypes = {
+    active_notification_count: PropTypes.number,
+    inactive_notification_count: PropTypes.number,
+    order_table_type: PropTypes.string,
+    setOrderTableType: PropTypes.func,
+};
 
 export default OrderTable;

@@ -25,7 +25,7 @@ const type = {
     sell: <Localize i18n_default_text='Sell' />,
 };
 
-const RowComponent = React.memo(({ data: advert, style }) => {
+const RowComponent = observer(({ data: advert, style }) => {
     const { my_ads_store } = useStores();
     const {
         account_currency,
@@ -71,8 +71,10 @@ const RowComponent = React.memo(({ data: advert, style }) => {
 
 RowComponent.propTypes = {
     advert: PropTypes.object,
+    onClickDelete: PropTypes.func,
     style: PropTypes.object,
 };
+
 RowComponent.displayName = 'RowComponent';
 
 const MyAdsTable = observer(() => {
@@ -147,5 +149,25 @@ const MyAdsTable = observer(() => {
         </Empty>
     );
 });
+
+MyAdsTable.propTypes = {
+    adverts: PropTypes.array,
+    api_table_error_message: PropTypes.string,
+    client: PropTypes.object,
+    has_more_items_to_load: PropTypes.bool,
+    height_values: PropTypes.array,
+    is_listed: PropTypes.bool,
+    is_table_loading: PropTypes.bool,
+    item_height: PropTypes.number,
+    item_offset: PropTypes.number,
+    loadMoreAds: PropTypes.func,
+    onClickCancel: PropTypes.func,
+    onClickConfirm: PropTypes.func,
+    onClickCreate: PropTypes.func,
+    onClickDelete: PropTypes.func,
+    setIsTableLoading: PropTypes.func,
+    setShouldShowPopup: PropTypes.func,
+    should_show_popup: PropTypes.bool,
+};
 
 export default MyAdsTable;

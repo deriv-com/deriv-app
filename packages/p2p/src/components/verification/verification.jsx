@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Icon, Checklist } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
@@ -29,9 +30,13 @@ const Verification = observer(() => {
                     </p>
                 </div>
             </div>
-            <Checklist className='p2p-verification__checklist' items={general_store.items()} />
+            <Checklist className='p2p-verification__checklist' items={general_store.verification_checklist()} />
         </div>
     );
 });
+
+Verification.propTypes = {
+    is_advertiser: PropTypes.bool,
+};
 
 export default Verification;

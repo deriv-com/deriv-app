@@ -9,12 +9,10 @@ export default class AdvertiserPageStore {
     constructor(root_store) {
         this.root_store = root_store;
         this.general_store = this.root_store.general_store;
-        this.buy_sell_store = this.root_store.buy_sell_store;
     }
 
     @observable active_index = 0;
     @observable advertiser_info = {};
-    @observable ad = null;
     @observable adverts = [];
     @observable counterparty_type = buy_sell.BUY;
     @observable api_error_message = '';
@@ -38,20 +36,24 @@ export default class AdvertiserPageStore {
     ];
     item_height = 56;
 
+    get advert() {
+        return this.root_store.buy_sell_store?.selected_ad_state;
+    }
+
     get account_currency() {
-        return this.buy_sell_store.selected_ad_state.account_currency;
+        return this.advert?.account_currency;
     }
 
     get advertiser_details() {
-        return this.buy_sell_store.selected_ad_state.advertiser_details || {};
+        return this.advert?.advertiser_details || {};
     }
 
     get advertiser_details_id() {
-        return this.buy_sell_store.selected_ad_state.advertiser_details.id;
+        return this.advert?.advertiser_details?.id;
     }
 
     get advertiser_details_name() {
-        return this.buy_sell_store.selected_ad_state.advertiser_details.name;
+        return this.advert?.advertiser_details?.name;
     }
 
     get modal_title() {
@@ -138,11 +140,6 @@ export default class AdvertiserPageStore {
     }
 
     @action.bound
-    setAd(ad) {
-        this.ad = ad;
-    }
-
-    @action.bound
     setAdvertiserInfo(advertiser_info) {
         this.advertiser_info = advertiser_info;
     }
@@ -190,7 +187,7 @@ export default class AdvertiserPageStore {
     @action.bound
     showAdPopup(advert) {
         if (!this.general_store.is_advertiser) {
-            this.buy_sell_store.showVerification();
+            this.root_store.buy_sell_store.showVerification();
         } else {
             this.setAd(advert);
             this.setShowAdPopup(true);

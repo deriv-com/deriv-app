@@ -189,8 +189,19 @@ const BuySellForm = observer(props => {
 
 BuySellForm.propTypes = {
     advert: PropTypes.object,
+    contact_info: PropTypes.string,
+    form_props: PropTypes.object,
+    getAdvertiserInfo: PropTypes.func,
     handleClose: PropTypes.func,
     handleConfirm: PropTypes.func,
+    is_buy_advert: PropTypes.bool,
+    is_sell_advert: PropTypes.bool,
+    payment_info: PropTypes.string,
+    receive_amount: PropTypes.number,
+    setFormProps: PropTypes.func,
+    setInitialReceiveAmount: PropTypes.func,
+    setReceiveAmount: PropTypes.func,
+    validatePopup: PropTypes.func,
 };
 
 export default BuySellForm;

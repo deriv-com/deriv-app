@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { ThemedScrollbars } from '@deriv/components';
 import { getFormattedText } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
@@ -39,7 +40,7 @@ const OrderDetails = observer(() => {
     } = order_store.order_information;
 
     React.useEffect(() => {
-        order_details_store.createChatForNewOrder();
+        order_details_store.createChatForNewOrder(id);
     }, []);
 
     return (
@@ -124,5 +125,15 @@ const OrderDetails = observer(() => {
         </div>
     );
 });
+
+OrderDetails.propTypes = {
+    chat_info: PropTypes.object,
+    createChatForNewOrder: PropTypes.func,
+    order_information: PropTypes.object,
+    onCancelClick: PropTypes.func,
+    popup_options: PropTypes.object,
+    setShouldShowPopup: PropTypes.func,
+    should_show_popup: PropTypes.bool,
+};
 
 export default OrderDetails;

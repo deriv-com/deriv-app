@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
 import PageReturn from 'Components/page-return/page-return.jsx';
@@ -17,10 +18,6 @@ const Orders = observer(() => {
     React.useEffect(() => {
         order_store.onOrderIdUpdate();
     }, [general_store.props.order_id]);
-
-    React.useEffect(() => {
-        order_store.onParametersUpdate();
-    }, [general_store.parameters]);
 
     React.useEffect(() => {
         order_store.onOrdersUpdate();
@@ -54,5 +51,12 @@ const Orders = observer(() => {
         </div>
     );
 });
+
+Orders.propTypes = {
+    hideDetails: PropTypes.func,
+    order_information: PropTypes.object,
+    onOrderIdUpdate: PropTypes.func,
+    onUnmount: PropTypes.func,
+};
 
 export default Orders;

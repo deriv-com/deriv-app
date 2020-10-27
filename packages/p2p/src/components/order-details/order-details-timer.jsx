@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
@@ -25,5 +26,11 @@ const OrderDetailsTimer = observer(() => {
     order_details_store.clearIntervalState();
     return null;
 });
+
+OrderDetailsTimer.propTypes = {
+    clearIntervalState: PropTypes.func,
+    onMountTimer: PropTypes.func,
+    order_information: PropTypes.object,
+};
 
 export default OrderDetailsTimer;

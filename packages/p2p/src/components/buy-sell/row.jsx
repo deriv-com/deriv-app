@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ContentLoader from 'react-content-loader';
 import { Table, Button } from '@deriv/components';
+import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import { localize } from 'Components/i18next';
 import { generateHexColourFromNickname, getShortNickname } from 'Utils/string';
@@ -28,7 +29,7 @@ BuySellRowLoader.propTypes = {
     width: PropTypes.number,
 };
 
-export const RowComponent = React.memo(({ data: advert, style }) => {
+export const RowComponent = observer(({ data: advert, style }) => {
     const {
         account_currency,
         counterparty_type,
@@ -84,6 +85,7 @@ RowComponent.propTypes = {
     advert: PropTypes.object,
     is_buy: PropTypes.bool,
     setSelectedAdvert: PropTypes.func,
+    showAdvertiserPage: PropTypes.func,
     style: PropTypes.object,
 };
 

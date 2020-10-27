@@ -54,7 +54,15 @@ const BuySellTableContent = observer(() => {
 });
 
 BuySellTableContent.propTypes = {
+    api_error_message: PropTypes.string,
+    has_more_items_to_load: PropTypes.bool,
+    height_values: PropTypes.array,
     is_buy: PropTypes.bool,
+    is_loading: PropTypes.bool,
+    item_height: PropTypes.number,
+    items: PropTypes.array,
+    loadMoreItems: PropTypes.func,
+    setIsLoading: PropTypes.func,
     setSelectedAdvert: PropTypes.func,
     showAdvertiserPage: PropTypes.func,
 };

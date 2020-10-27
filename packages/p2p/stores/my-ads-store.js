@@ -14,7 +14,7 @@ export default class MyAdsStore {
     }
 
     @observable adverts = [];
-    @observable api_error = null;
+    @observable api_error = '';
     @observable api_error_message = '';
     @observable api_table_error_message = '';
     @observable contact_info = '';

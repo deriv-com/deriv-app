@@ -121,7 +121,10 @@ OrderRowComponent.propTypes = {
         order_purchase_datetime: PropTypes.string,
         price_display: PropTypes.string,
     }),
+    getLocalStorageSettingsForLoginId: PropTypes.func,
+    is_active_tab: PropTypes.bool,
     onOpenDetails: PropTypes.func,
+    setQueryDetails: PropTypes.func,
     style: PropTypes.object,
 };
 

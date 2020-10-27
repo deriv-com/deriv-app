@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Loading } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
@@ -41,5 +42,15 @@ const MyAds = observer(() => {
 
     return <Verification />;
 });
+
+MyAds.propTypes = {
+    error_message: PropTypes.string,
+    getAccountStatus: PropTypes.func,
+    is_advertiser: PropTypes.bool,
+    is_loading: PropTypes.bool,
+    is_restricted: PropTypes.bool,
+    setIsLoading: PropTypes.func,
+    show_ad_form: PropTypes.bool,
+};
 
 export default MyAds;

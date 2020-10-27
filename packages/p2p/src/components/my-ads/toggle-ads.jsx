@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { ToggleSwitch } from '@deriv/components';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
@@ -32,5 +33,11 @@ const ToggleAds = observer(() => {
         </div>
     );
 });
+
+ToggleAds.propTypes = {
+    api_error: PropTypes.string,
+    handleToggle: PropTypes.func,
+    is_listed: PropTypes.bool,
+};
 
 export default ToggleAds;

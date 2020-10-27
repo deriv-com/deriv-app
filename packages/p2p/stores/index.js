@@ -4,14 +4,14 @@ import AdvertiserPageStore from './advertiser-page-store.js';
 import BuySellStore from './buy-sell-store.js';
 import MyAdsStore from './my-ads-store.js';
 import MyProfileStore from './my-profile-store.js';
-import OrderStore from '../src/utils/order-store.js';
+import OrderStore from './order-store.js';
 import OrderDetailsStore from './order-details-store.js';
 class RootStore {
     constructor() {
         this.general_store = new GeneralStore(this); //Leave at the top!
 
-        this.buy_sell_store = new BuySellStore(this);
         this.advertiser_page_store = new AdvertiserPageStore(this);
+        this.buy_sell_store = new BuySellStore(this);
         this.my_ads_store = new MyAdsStore(this);
         this.my_profile_store = new MyProfileStore(this);
         this.order_store = new OrderStore(this);
@@ -27,8 +27,8 @@ export const useStores = () => {
         stores_context = React.createContext({
             general_store: root_store.general_store,
 
-            buy_sell_store: root_store.buy_sell_store,
             advertiser_page_store: root_store.advertiser_page_store,
+            buy_sell_store: root_store.buy_sell_store,
             my_ads_store: root_store.my_ads_store,
             my_profile_store: root_store.my_profile_store,
             order_store: root_store.order_store,

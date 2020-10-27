@@ -12,18 +12,15 @@ const CancelOrderModal = ({ id, hideCancelOrderModal, should_show_cancel_modal }
     const [error_message, setErrorMessage] = React.useState('');
 
     const cancelOrderRequest = () => {
-        return new Promise(resolve => {
-            requestWS({
-                p2p_order_cancel: 1,
-                id,
-            }).then(response => {
-                if (isMounted()) {
-                    if (response.error) {
-                        setErrorMessage(response.error.message);
-                    }
+        requestWS({
+            p2p_order_cancel: 1,
+            id,
+        }).then(response => {
+            if (isMounted()) {
+                if (response.error) {
+                    setErrorMessage(response.error.message);
                 }
-                resolve();
-            });
+            }
         });
     };
 
@@ -59,20 +56,17 @@ const ComplainOrderModal = ({ id, is_buy_order_for_user, hideComplainOrderModal,
     const [error_message, setErrorMessage] = React.useState('');
 
     const disputeOrderRequest = () => {
-        return new Promise(resolve => {
-            requestWS({
-                p2p_order_dispute: 1,
-                id,
-                dispute_reason,
-            }).then(response => {
-                if (isMounted()) {
-                    if (response.error) {
-                        setErrorMessage(response.error.message);
-                    }
-                    hideComplainOrderModal();
+        requestWS({
+            p2p_order_dispute: 1,
+            id,
+            dispute_reason,
+        }).then(response => {
+            if (isMounted()) {
+                if (response.error) {
+                    setErrorMessage(response.error.message);
                 }
-                resolve();
-            });
+                hideComplainOrderModal();
+            }
         });
     };
 
@@ -167,18 +161,15 @@ const ConfirmOrderModal = ({
     const [is_checkbox_checked, setIsCheckboxChecked] = React.useState(false);
 
     const confirmOrderRequest = () => {
-        return new Promise(resolve => {
-            requestWS({
-                p2p_order_confirm: 1,
-                id,
-            }).then(response => {
-                if (isMounted()) {
-                    if (response.error) {
-                        setErrorMessage(response.error.message);
-                    }
+        requestWS({
+            p2p_order_confirm: 1,
+            id,
+        }).then(response => {
+            if (isMounted()) {
+                if (response.error) {
+                    setErrorMessage(response.error.message);
                 }
-                resolve();
-            });
+            }
         });
     };
 

@@ -145,14 +145,6 @@ class ExtendedOrderDetails {
         return this.is_my_ad && this.is_pending_order && this.is_active_order;
     }
 
-    get should_show_complain_and_received_button() {
-        if (this.is_buy_order) {
-            return this.is_my_ad && (this.is_buyer_confirmed_order || this.is_expired_order);
-        }
-
-        return !this.is_my_ad && (this.is_buyer_confirmed_order || this.is_expired_order);
-    }
-
     // Only show the complain button for expired orders (determined by backend), or for orders
     // that are expired (determined by FE). This logic exists because BE only expires orders
     // once a minute rather than on expiry time. FE should expire orders so users cannot
@@ -162,11 +154,19 @@ class ExtendedOrderDetails {
         return (this.is_expired_order || (this.is_ongoing_order && this.has_timer_expired)) && !this.is_my_ad;
     }
 
+    get should_show_only_received_button() {
+        if (this.is_buy_order) {
+            return this.is_my_ad && this.is_buyer_confirmed_order;
+        }
+
+        return !this.is_my_ad && this.is_buyer_confirmed_order;
+    }
+
     get should_show_order_footer() {
         return (
             this.should_show_cancel_and_paid_button ||
-            this.should_show_complain_and_received_button ||
-            this.should_show_only_complain_button
+            this.should_show_only_complain_button ||
+            this.should_show_only_received_button
         );
     }
 

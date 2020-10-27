@@ -84,6 +84,13 @@ $header-height: 3.6em;
                     }
                 }
             }
+            &__stop-loss {
+                & .dc-contract-card-item {
+                    &__header {
+                        padding-top: 0.8rem;
+                    }
+                }
+            }
         }
     }
     &__footer {

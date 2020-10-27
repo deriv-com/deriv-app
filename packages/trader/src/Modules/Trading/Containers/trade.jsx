@@ -239,14 +239,14 @@ const ChartMarkers = connect(({ modules, ui, client }) => ({
 
 class ChartTradeClass extends React.Component {
     state = {
-        active_market: null,
+        open_market: null,
     };
     bottomWidgets = ({ digits, tick }) => <ChartBottomWidgets digits={digits} tick={tick} />;
     topWidgets = ({ ...props }) => {
         const { is_digits_widget_active, try_synthetic_indices, try_open_markets } = this.props;
         if (try_synthetic_indices) {
             this.setState({
-                active_market: {
+                open_market: {
                     category: 'synthetic_index',
                 },
             });
@@ -254,14 +254,14 @@ class ChartTradeClass extends React.Component {
             const { category, subcategory } = this.props;
             if (category) {
                 this.setState({
-                    active_market: { category, subcategory },
+                    open_market: { category, subcategory },
                 });
             }
         }
 
         return (
             <ChartTopWidgets
-                active_market={this.state.active_market}
+                open_market={this.state.open_market}
                 open={try_synthetic_indices || try_open_markets}
                 charts_ref={this.charts_ref}
                 is_digits_widget_active={is_digits_widget_active}

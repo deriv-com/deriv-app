@@ -334,6 +334,7 @@ const ChartTrade = connect(({ modules, ui, common }) => ({
     wsForgetStream: modules.trade.wsForgetStream,
     wsSendRequest: modules.trade.wsSendRequest,
     wsSubscribe: modules.trade.wsSubscribe,
+    active_symbols: modules.trade.active_symbols,
     should_refresh: modules.trade.should_refresh_active_symbols,
     resetRefresh: modules.trade.resetRefresh,
     has_alternative_source: modules.trade.has_alternative_source,

@@ -1,27 +1,27 @@
 import classNames from 'classnames';
 import React from 'react';
 
-const Text = ({ children, size, color, align, weight, lineHeight, as, className }) => {
+const Text = ({ children, ...props }) => {
     function setStyle() {
         const style = {
-            '--text-size': `var(--text-size-${size || 's'})`,
-            '--text-color': `var(--text-${color || 'general'})`,
-            '--text-lh': `var(--text-lh-${lineHeight || 'm'})`,
-            '--text-weight': `var(--text-weight-${weight || 'normal'})`,
+            '--text-size': `var(--text-size-${props.size || 's'})`,
+            '--text-color': `var(--text-${props.color || 'general'})`,
+            '--text-lh': `var(--text-lh-${props.lineHeight || 'm'})`,
+            '--text-weight': `var(--text-weight-${props.weight || 'normal'})`,
         };
         return style;
     }
     function setClassName() {
-        const classStyle = ['dc-text', `${align ? `dc-text--${align}` : ''}`, className];
+        const classStyle = ['dc-text', `${props.align ? `dc-text--${props.align}` : ''}`, props.className];
         return classStyle;
     }
     return (
-        (as === 'p' && (
+        (props.as === 'p' && (
             <p className={classNames(setClassName())} style={setStyle()}>
                 {children}
             </p>
         )) || (
-            <span className={classNames(setClassName())} style={setStyle()}>
+            <span title={props.title} className={classNames(setClassName())} style={setStyle()}>
                 {children}
             </span>
         )

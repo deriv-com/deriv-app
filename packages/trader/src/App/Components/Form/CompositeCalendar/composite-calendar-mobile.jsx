@@ -1,9 +1,8 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Icon, MobileDialog, Button, DatePicker } from '@deriv/components';
+import { Button, DatePicker, Icon, InputField, MobileDialog } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import InputField from 'App/Components/Form/InputField/input-field.jsx';
 import { toMoment } from '@deriv/shared';
 
 export const RadioButton = ({ id, className, selected_value, value, label, onChange }) => {
@@ -152,7 +151,7 @@ class CompositeCalendarMobile extends React.PureComponent {
 
     render() {
         const { open, applied_date_range, selected_date_range } = this.state;
-        const { duration_list } = this.props;
+        const { current_focus, duration_list, setCurrentFocus } = this.props;
 
         const today = toMoment().format('YYYY-MM-DD');
         const max_date = this.state.to ? toMoment(this.state.to, 'DD MMM YYYY').format('YYYY-MM-DD') : today;
@@ -163,9 +162,11 @@ class CompositeCalendarMobile extends React.PureComponent {
                 <div className='composite-calendar__input-fields composite-calendar__input-fields--fill'>
                     <InputField
                         id='dt_calendar_input'
+                        current_focus={current_focus}
                         is_read_only={true}
                         icon={() => <Icon icon='IcCalendarDatefrom' className='inline-icon' />}
                         onClick={this.openDialog}
+                        setCurrentFocus={setCurrentFocus}
                         value={applied_date_range.label}
                     />
                 </div>
@@ -236,9 +237,11 @@ class CompositeCalendarMobile extends React.PureComponent {
 }
 
 CompositeCalendarMobile.propTypes = {
+    current_focus: PropTypes.string,
     duration_list: PropTypes.array,
     from: PropTypes.number,
     onChange: PropTypes.func,
+    setCurrentFocus: PropTypes.func,
     to: PropTypes.number,
 };
 export default CompositeCalendarMobile;

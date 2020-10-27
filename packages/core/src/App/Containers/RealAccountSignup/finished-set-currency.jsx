@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Button, Icon, Div100vhContainer } from '@deriv/components';
-import { isDesktop, isMobile } from '@deriv/shared';
+import { getCurrencyDisplayCode, isDesktop, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 
 const SuccessMessage = ({ prev, current }) =>
@@ -11,7 +11,7 @@ const SuccessMessage = ({ prev, current }) =>
                 '<0>You have successfully changed your currency to {{currency}}.</0><0>Make a deposit now to start trading.</0>'
             }
             values={{
-                currency: current,
+                currency: getCurrencyDisplayCode(current),
             }}
             components={[<p key={current} />]}
         />
@@ -21,7 +21,7 @@ const SuccessMessage = ({ prev, current }) =>
                 '<0>You have added a {{currency}} account.</0><0> Make a deposit now to start trading.</0>'
             }
             values={{
-                currency: current,
+                currency: getCurrencyDisplayCode(current),
             }}
             components={[<p key={current} />]}
         />

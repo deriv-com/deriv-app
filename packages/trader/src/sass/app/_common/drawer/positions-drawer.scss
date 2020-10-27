@@ -76,6 +76,15 @@ $header-height: 3.6em;
         & .dc-themed-scrollbars {
             height: 100%;
         }
+        & .dc-contract-card {
+            &-items-wrapper {
+                & .dc-contract-card-item {
+                    &__header {
+                        max-width: 8.3rem;
+                    }
+                }
+            }
+        }
     }
     &__footer {
         position: relative;

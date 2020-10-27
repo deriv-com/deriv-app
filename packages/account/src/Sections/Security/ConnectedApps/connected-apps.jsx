@@ -50,6 +50,8 @@ class ConnectedApps extends React.Component {
         const response = await WS.send({ revoke_oauth_app: app_id });
         if (!response.error) {
             this.fetchConnectedApps();
+        } else {
+            this.setState({ is_error: true });
         }
     };
 

@@ -9,8 +9,8 @@ Blockly.DataCategory = function (workspace) {
     const variableModelList = workspace.getVariablesOfType('');
     let xmlList = [];
 
-    // `Create Variable`-button
-    Blockly.DataCategory.addCreateButton(xmlList, workspace);
+    // `Create Variable`-Section
+    Blockly.DataCategory.addCreateVariable(xmlList, workspace);
 
     const block_types = ['variables_set', 'variables_get', 'math_change'];
     xmlList = xmlList.concat(Blockly.DataCategory.search(variableModelList, block_types));
@@ -70,26 +70,44 @@ Blockly.DataCategory.search = function (variableModelList) {
 };
 
 /**
- * Construct a create variable button and push it to the xmlList.
+ * Construct a create variable section and push it to the xmlList.
  * @param {!Array.<!Element>} xmlList Array of XML block elements.
  * @param {Blockly.Workspace} workspace Workspace to register callback to.
  * @deriv/bot: We only use a single type of variable, so `type` arg was removed.
  */
-Blockly.DataCategory.addCreateButton = function (xmlList, workspace) {
+Blockly.DataCategory.addCreateVariable = function (xmlList, workspace) {
     const buttonXml = goog.dom.createDom('button');
+    const inputXml = goog.dom.createDom('input');
+
     // Set default msg, callbackKey, and callback values for type 'VARIABLE'
-    const msg = localize('Create');
+    const btnMsg = localize('Create');
     const callbackKey = 'CREATE_VARIABLE';
-    const callback = function (variableName) {
-        Blockly.derivWorkspace.createVariable(variableName, '');
+    const inputMsg = localize('New variable name');
+
+    const callback = function (button) {
+        const el_input_container = document.querySelector('.flyout__input');
+        const el_input = el_input_container.firstChild;
+
+        const buttonWorkspace = button.getTargetWorkspace();
+        buttonWorkspace.createVariable(el_input.value, '');
+        el_input.value = '';
 
         const toolbox = Blockly.derivWorkspace.toolbox_;
         const category = Blockly.derivWorkspace.toolbox_.getSelectedItem();
         toolbox.setSelectedItem(category, false);
     };
 
-    buttonXml.setAttribute('text', msg);
+    buttonXml.setAttribute('text', btnMsg);
+    buttonXml.setAttribute('className', 'flyout__button-new');
     buttonXml.setAttribute('callbackKey', callbackKey);
+
+    inputXml.setAttribute('className', 'flyout__input');
+    inputXml.setAttribute('name', 'variable');
+    inputXml.setAttribute('type', 'text');
+    inputXml.setAttribute('placeholder', inputMsg);
+
     workspace.registerButtonCallback(callbackKey, callback);
+
+    xmlList.push(inputXml);
     xmlList.push(buttonXml);
 };

@@ -216,15 +216,13 @@
             height: 100%;
         }
     }
-    &__new-variable-container {
-        display: flex;
-        padding-top: 3.3rem;
-    }
     &__input {
-        width: 75%;
+        width: 75% !important;
         height: 4rem;
         border-top-right-radius: 0rem !important;
         border-bottom-right-radius: 0rem !important;
-        border: solid 1px #d6dadb;
+        border: solid 1px #d6dadb !important;
+        display: inline-block !important;
+        margin-top: 3.3rem;
     }
 }

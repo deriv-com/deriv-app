@@ -25,7 +25,6 @@ const SearchResult = ({ search_term, total_result }) => (
 
 const FlyoutContent = props => {
     const flyout_ref = React.createRef();
-    const variable_name = React.createRef();
     const {
         flyout_content,
         active_helper,
@@ -106,38 +105,48 @@ const FlyoutContent = props => {
                                     </div>
                                 );
                             }
+                            case Blockly.Xml.NODE_INPUT: {
+                                return (
+                                    <Input
+                                        key={`${node.getAttribute('name')}${index}`}
+                                        className={`${node.getAttribute('className')}`}
+                                        type={`${node.getAttribute('type')}`}
+                                        name={`${node.getAttribute('name')}`}
+                                        placeholder={`${node.getAttribute('placeholder')}`}
+                                        autoComplete='off'
+                                    />
+                                );
+                            }
                             case Blockly.Xml.NODE_BUTTON: {
                                 const cb_key = node.getAttribute('callbackKey');
                                 const button_cb = Blockly.derivWorkspace.getButtonCallback(cb_key);
                                 const callback = button_cb || (() => {});
 
                                 return (
-                                    <div key={index} className='flyout__new-variable-container'>
-                                        <Input
-                                            id='variable_name'
-                                            className='flyout__input'
-                                            data-lpignore='true'
-                                            type='text'
-                                            name='variable'
-                                            placeholder={localize('New variable name')}
-                                            ref={variable_name}
-                                        />
-                                        <button
-                                            key={`${cb_key}${index}`}
-                                            className={classNames(
-                                                'dc-btn',
-                                                'dc-btn-effect',
-                                                'dc-btn--primary',
-                                                'flyout__button-new'
-                                            )}
-                                            onClick={() => {
-                                                callback(variable_name.current.value);
-                                                variable_name.current.value = '';
-                                            }}
-                                        >
-                                            {node.getAttribute('text')}
-                                        </button>
-                                    </div>
+                                    <button
+                                        key={`${cb_key}${index}`}
+                                        className={classNames(
+                                            'dc-btn',
+                                            'dc-btn-effect',
+                                            'dc-btn--primary',
+                                            `${node.getAttribute('className')}`
+                                        )}
+                                        onClick={button => {
+                                            const flyout_button = button;
+
+                                            // Workaround for not having a flyout workspace.
+                                            // eslint-disable-next-line no-underscore-dangle
+                                            flyout_button.targetWorkspace_ = Blockly.derivWorkspace;
+                                            flyout_button.getTargetWorkspace = () => {
+                                                // eslint-disable-next-line no-underscore-dangle
+                                                return flyout_button.targetWorkspace_;
+                                            };
+
+                                            callback(flyout_button);
+                                        }}
+                                    >
+                                        {node.getAttribute('text')}
+                                    </button>
                                 );
                             }
                             default:

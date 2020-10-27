@@ -816,6 +816,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async requestTryPaymentAgentWithdraw({ loginid, currency, amount, verification_code }) {
+        this.setErrorMessage('');
         const payment_agent_withdraw = await WS.authorized.paymentAgentWithdraw({
             loginid,
             currency,
@@ -839,6 +840,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async requestPaymentAgentWithdraw({ loginid, currency, amount, verification_code }) {
+        this.setErrorMessage('');
         const payment_agent_withdraw = await WS.authorized.paymentAgentWithdraw({
             loginid,
             currency,
@@ -1162,6 +1164,13 @@ export default class CashierStore extends BaseStore {
             amount
         );
         if (transfer_between_accounts.error) {
+            // if there is fiat2crypto transfer limit error, we need to refresh the account_status for authentication
+            if (transfer_between_accounts.error.code === 'Fiat2CryptoTransferOverLimit') {
+                const account_status_response = await WS.authorized.getAccountStatus();
+                if (!account_status_response.error) {
+                    this.root_store.client.setAccountStatus(account_status_response.get_account_status);
+                }
+            }
             this.setErrorMessage(transfer_between_accounts.error);
         } else {
             this.setReceiptTransfer({ amount: formatMoney(currency, amount, true) });
@@ -1247,6 +1256,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     requestTryPaymentAgentTransfer = async ({ amount, currency, description, transfer_to }) => {
+        this.setErrorMessage('');
         const payment_agent_transfer = await WS.authorized.paymentAgentTransfer({
             amount,
             currency,
@@ -1281,6 +1291,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     requestPaymentAgentTransfer = async ({ amount, currency, description, transfer_to }) => {
+        this.setErrorMessage('');
         const payment_agent_transfer = await WS.authorized.paymentAgentTransfer({
             amount,
             currency,

@@ -17,3 +17,4 @@ packages/shared/utils
 packages/account/lib/
 packages/components/.out
 packages/p2p/lib/
+.env

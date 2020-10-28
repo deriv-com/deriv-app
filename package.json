@@ -14,9 +14,11 @@
     "eslint-plugin-react": "^7.20.6",
     "eslint-plugin-react-hooks": "^4.1.2",
     "husky": "^4.2.5",
+    "jest": "^26.4.2",
     "lerna": "^3.22.0",
     "lint-staged": "^10.4.0",
     "prettier": "^2.1.2",
+    "qawolf": "1.4.0",
     "stylelint-config-prettier": "^8.0.2",
     "stylelint-formatter-pretty": "^2.1.0",
     "stylelint-no-unsupported-browser-features": "^4.0.0",
@@ -38,11 +40,13 @@
     "precommit": "lint-staged --allow-empty",
     "publish:p2p": "f () { lerna publish from-package ;}; f",
     "serve": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run serve $npm_config_open;}; f",
+    "serve:qa": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run serve:qa $npm_config_open;}; f",
     "start": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run start ;}; f",
     "test": "f () { bash ./scripts/circleci-config.test.sh && npm run test:stylelint  && npm run test:eslint && lerna exec --scope=@deriv/${1:-'*'} --parallel -- npm run test ;}; f",
     "test:eslint": "./node_modules/.bin/eslint \"./packages/*/src/**/*.?(js|jsx)\"",
     "test:mocha": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run test:mocha ;}; f",
     "test:stylelint": "stylelint \"./packages/*/src/**/*.s(a|c)ss\"",
+    "test:qa": "DEBUG=pw:api node -r dotenv/config ./node_modules/.bin/qawolf test --detectOpenHandles --runInBand --all-browsers --headless",
     "stylelint:fix": "stylelint \"./packages/*/src/**/*.s(a|c)ss\" --fix",
     "translate": "f () { lerna exec --scope @deriv/translations -- npm run translate ;}; f",
     "stylelint-check": "stylelint-config-prettier-check"
@@ -52,5 +56,8 @@
       "post-merge": "bash ./hooks/post-merge.sh",
       "pre-commit": "npm run precommit"
     }
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0"
   }
 }

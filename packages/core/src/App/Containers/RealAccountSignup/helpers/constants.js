@@ -38,8 +38,8 @@ export const getAccountTitle = (
 
     switch (short_code) {
         case 'svg':
-            return localize('Deriv account');
         case 'iom':
+            return localize('Deriv account');
         case 'malta':
             return localize('Deriv Synthetic');
         case 'maltainvest':

@@ -576,13 +576,10 @@
         font-size: 1.6rem;
         line-height: 1.5;
     }
-    &__header,
-    &__text {
+    &__header {
         color: var(--text-general);
     }
-    &__text {
-        font-size: 1.4rem;
-    }
+
     &__verify-button {
         margin: 3.2rem auto;
 

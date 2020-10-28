@@ -73,7 +73,6 @@ class DataTable extends React.PureComponent {
             footer,
             getActionColumns,
             getRowSize,
-            onScroll,
             content_loader,
         } = this.props;
 

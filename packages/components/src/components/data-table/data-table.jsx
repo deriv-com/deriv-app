@@ -137,7 +137,6 @@ class DataTable extends React.PureComponent {
                     ref={el => {
                         this.el_table_body = el;
                     }}
-                    onScroll={onScroll}
                 >
                     {TableData}
                 </div>

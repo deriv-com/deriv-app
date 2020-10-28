@@ -76,13 +76,13 @@ Blockly.DataCategory.search = function (variableModelList) {
  * @deriv/bot: We only use a single type of variable, so `type` arg was removed.
  */
 Blockly.DataCategory.addCreateVariable = function (xmlList, workspace) {
-    const buttonXml = goog.dom.createDom('button');
-    const inputXml = goog.dom.createDom('input');
+    const el_button_xml = goog.dom.createDom('button');
+    const el_input_xml = goog.dom.createDom('input');
 
     // Set default msg, callbackKey, and callback values for type 'VARIABLE'
-    const btnMsg = localize('Create');
-    const callbackKey = 'CREATE_VARIABLE';
-    const inputMsg = localize('New variable name');
+    const button_text = localize('Create');
+    const callback_key = 'CREATE_VARIABLE';
+    const input_placeholder = localize('New variable name');
 
     const callback = function (button) {
         const el_input_container = document.querySelector('.flyout__input');
@@ -97,17 +97,17 @@ Blockly.DataCategory.addCreateVariable = function (xmlList, workspace) {
         toolbox.setSelectedItem(category, false);
     };
 
-    buttonXml.setAttribute('text', btnMsg);
-    buttonXml.setAttribute('className', 'flyout__button-new');
-    buttonXml.setAttribute('callbackKey', callbackKey);
+    el_button_xml.setAttribute('text', button_text);
+    el_button_xml.setAttribute('className', 'flyout__button-new');
+    el_button_xml.setAttribute('callbackKey', callback_key);
 
-    inputXml.setAttribute('className', 'flyout__input');
-    inputXml.setAttribute('name', 'variable');
-    inputXml.setAttribute('type', 'text');
-    inputXml.setAttribute('placeholder', inputMsg);
+    el_input_xml.setAttribute('className', 'flyout__input');
+    el_input_xml.setAttribute('name', 'variable');
+    el_input_xml.setAttribute('type', 'text');
+    el_input_xml.setAttribute('placeholder', input_placeholder);
 
-    workspace.registerButtonCallback(callbackKey, callback);
+    workspace.registerButtonCallback(callback_key, callback);
 
-    xmlList.push(inputXml);
-    xmlList.push(buttonXml);
+    xmlList.push(el_input_xml);
+    xmlList.push(el_button_xml);
 };

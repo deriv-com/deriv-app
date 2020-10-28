@@ -95,6 +95,14 @@ $side-padding: 1.2em;
     .dc-vertical-tab__content--floating {
         margin-right: 0;
     }
+    .table__head {
+        height: auto;
+        .table__cell {
+            @include tablet-up {
+                white-space: break-spaces;
+            }
+        }
+    }
 }
 
 /** @define reports-page-wrapper; weak */
@@ -106,6 +114,7 @@ $side-padding: 1.2em;
 .statement {
     .table__head {
         font-weight: bold;
+        height: auto;
     }
 
     @include desktop {
@@ -157,9 +166,6 @@ $side-padding: 1.2em;
 
         .date {
             text-align: left;
-        }
-        .table__cell {
-            height: 63px;
         }
     }
     .amount,
@@ -435,6 +441,9 @@ $side-padding: 1.2em;
     }
     .profit_loss {
         font-weight: bold;
+        @include tablet-up {
+            word-break: break-word;
+        }
         @include mobile {
             display: flex;
 
@@ -727,16 +736,7 @@ $side-padding: 1.2em;
         margin-top: 20px;
 
         .table__head {
-            @include tablet-up {
-                .profit,
-                .indicative {
-                    white-space: break-spaces;
-                }
-            }
-
             .table__cell {
-                padding-top: 0px;
-                padding-bottom: 0px;
                 font-weight: bold;
             }
         }

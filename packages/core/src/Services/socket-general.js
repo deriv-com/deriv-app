@@ -160,15 +160,6 @@ const BinarySocketGeneral = (() => {
                 }
                 client_store.logout().then(() => {
                     common_store.routeTo(routes.trade);
-                    /* keep this for future reference
-                    common_store.setError(true, {
-                        header: response.error.message,
-                        message: localize('Please Log in'),
-                        should_show_refresh: false,
-                        redirect_label: localize('Log in'),
-                        redirectOnClick: () => redirectToLogin(false, getLanguage()),
-                    });
-                    */
                 });
                 break;
             case 'AuthorizationRequired':

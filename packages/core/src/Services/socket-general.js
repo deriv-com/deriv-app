@@ -1,5 +1,5 @@
 import { flow } from 'mobx';
-import { State, getPropertyValue } from '@deriv/shared';
+import { State, getPropertyValue, routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ServerTime from '_common/base/server_time';
 import BinarySocket from '_common/base/socket_base';
@@ -158,10 +158,9 @@ const BinarySocketGeneral = (() => {
                 if (!['reset_password', 'new_account_virtual'].includes(msg_type)) {
                     if (window.TrackJS) window.TrackJS.track('Custom InvalidToken error');
                 }
-                common_store.setShouldSkipRaiseError(true);
                 client_store.logout().then(() => {
-                    window.location.href = '/';
-                    /* keep this for future refrence
+                    common_store.routeTo(routes.trade);
+                    /* keep this for future reference
                     common_store.setError(true, {
                         header: response.error.message,
                         message: localize('Please Log in'),

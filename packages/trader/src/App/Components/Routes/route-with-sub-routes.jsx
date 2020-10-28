@@ -11,7 +11,6 @@ import {
 } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import LoginPrompt from 'App/Components/Elements/login-prompt.jsx';
-import { connect } from 'Stores/connect';
 
 const RouteWithSubRoutes = route => {
     const { is_deriv_crypto } = React.useContext(PlatformContext);
@@ -28,7 +27,7 @@ const RouteWithSubRoutes = route => {
             }
             result = <Redirect to={to} />;
         } else if (route.is_authenticated && !route.is_logged_in) {
-            result = !route.should_skip_invalid_token_error && (
+            result = (
                 <LoginPrompt
                     onLogin={() => redirectToLogin(route.is_logged_in, getLanguage())}
                     onSignup={() => redirectToSignUp({ is_deriv_crypto })}
@@ -58,6 +57,4 @@ const RouteWithSubRoutes = route => {
 
 export { RouteWithSubRoutes as RouteWithSubRoutesRender }; // For tests
 
-export default connect(({ common }) => ({
-    should_skip_invalid_token_error: common.should_skip_invalid_token_error,
-}))(RouteWithSubRoutes);
+export default RouteWithSubRoutes;

@@ -102,7 +102,9 @@ class RealAccountSignup extends React.Component {
                     title: () => localize('Add or manage account'),
                 },
                 {
-                    body: () => <StatusDialogContainer currency={this.props.state_value.currency} />,
+                    body: () => (
+                        <StatusDialogContainer currency={this.props.state_value.currency} onCancel={this.closeModal} />
+                    ),
                 },
                 {
                     body: () => (

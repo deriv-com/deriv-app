@@ -66,6 +66,7 @@ class StatusDialogContainer extends React.Component {
             landing_company_shortcode,
             currency,
             closeModal,
+            onCancel,
             icon_size,
             switchToVirtual,
             is_isle_of_man_residence,
@@ -98,7 +99,7 @@ class StatusDialogContainer extends React.Component {
                 <DialogButtons
                     landing_company_shortcode={landing_company_shortcode}
                     status={this.status}
-                    closeModal={closeModal}
+                    closeModal={onCancel || closeModal}
                     closeModalAndOpenPOI={this.closeModalAndOpenPOI}
                     closeModalAndOpenPOA={this.closeModalAndOpenPOA}
                     closeModalAndOpenCashier={this.closeModalAndOpenCashier}

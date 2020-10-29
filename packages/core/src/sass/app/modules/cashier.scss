@@ -605,19 +605,9 @@
             margin: auto;
 
             &-title {
-                color: var(--text-general);
-                font-size: 1.6rem;
-                font-weight: bold;
                 margin-bottom: 0.8rem;
-                line-height: 1.5;
+            }
 
-                &-sub {
-                    font-size: 1.4rem;
-                }
-            }
-            &-text {
-                color: var(--text-general);
-            }
             @include mobile {
                 width: 100%;
                 padding: 1.6rem;

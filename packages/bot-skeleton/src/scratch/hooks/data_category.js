@@ -54,7 +54,11 @@ Blockly.DataCategory.search = function (variableModelList) {
 
         // Create `variable_get` block for each variable
         if (Blockly.Blocks.variables_get) {
-            variableModelList.sort(Blockly.VariableModel.compareByName);
+            // For adding sort base on the creation date
+            variableModelList.sort(
+                (first_variable, second_variable) =>
+                    variableModelList.indexOf(second_variable) - variableModelList.indexOf(first_variable)
+            );
 
             variableModelList.forEach(variable => {
                 const getBlockText = `<xml><block type="variables_get">${generateVariableFieldXmlString(

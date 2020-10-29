@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { Modal, Carousel, Icon, Button, ThemedScrollbars } from '@deriv/components';
+import { Modal, Carousel, Icon, Button, ThemedScrollbars, Text } from '@deriv/components';
 import { routes, isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -34,13 +34,23 @@ const WelcomeColumn = ({
             <div className='welcome-column__title'>{title}</div>
             <div className='welcome-column__description'>{description}</div>
             <div className='welcome-column__platforms'>
-                <p className='welcome-column__platforms__title'>{localize('Platforms')}</p>
+                <Text as='p' color='prominent' weight='bold' size='xs' className='welcome-column__platforms__title'>
+                    {localize('Platforms')}
+                </Text>
                 <div className='welcome-column__platforms__container'>
                     {platforms.map((platform, index) => (
                         <div className='welcome-column__platform' key={index}>
                             <Icon className='welcome-column__platform__icon' icon={platform.icon} size={32} />
                             <h3 className='welcome-column__platform__title'>{platform.title}</h3>
-                            <p className='welcome-column__platform__description'>{platform.description}</p>
+                            <Text
+                                as='p'
+                                color='less-prominent'
+                                size='xxs'
+                                align='left'
+                                className='welcome-column__platform__description'
+                            >
+                                {platform.description}
+                            </Text>
                         </div>
                     ))}
                 </div>
@@ -55,7 +65,11 @@ const WelcomeColumn = ({
                 >
                     {button_text}
                 </Button>
-                {footer_text && <p className='welcome-column__footer__text'>{footer_text}</p>}
+                {footer_text && (
+                    <Text as='p' size='xxs' color='less-prominent' className='welcome-column__footer__text'>
+                        {footer_text}
+                    </Text>
+                )}
             </div>
         </div>
     );
@@ -157,7 +171,15 @@ const WelcomeModal = ({ toggleWelcomeModal, history }) => {
                         'welcome__message--visible': hovered === 'left',
                     })}
                 >
-                    <p className='welcome__message__text'>{localize("If you're looking for CFDs")}</p>
+                    <Text
+                        as='p'
+                        color='colored-background'
+                        weight='bold'
+                        align='left'
+                        className='welcome__message__text'
+                    >
+                        {localize("If you're looking for CFDs")}
+                    </Text>
                     <Icon icon='IcArrowRightCurly' size={43} />
                 </div>
                 <div
@@ -166,7 +188,15 @@ const WelcomeModal = ({ toggleWelcomeModal, history }) => {
                     })}
                 >
                     <Icon icon='IcArrowLeftCurly' size={43} />
-                    <p className='welcome__message__text'>{localize('Not sure? Try this')}</p>
+                    <Text
+                        as='p'
+                        color='colored-background'
+                        weight='bold'
+                        align='left'
+                        className='welcome__message__text'
+                    >
+                        {localize('Not sure? Try this')}
+                    </Text>
                 </div>
                 <div className='welcome__body' ref={carouselRef}>
                     {isMobile() ? (
@@ -175,7 +205,9 @@ const WelcomeModal = ({ toggleWelcomeModal, history }) => {
                         Cards
                     )}
                 </div>
-                <p className='welcome__footer'>{footer_text}</p>
+                <Text as='p' size='xxs' color='less-prominent' className='welcome__footer'>
+                    {footer_text}
+                </Text>
             </ThemedScrollbars>
         </Modal>
     );

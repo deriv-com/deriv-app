@@ -306,6 +306,7 @@
     }
     &-item {
         &__header {
+            max-width: calc(100% - 2.4rem);
             line-height: 1.4;
         }
         &__body {
@@ -438,8 +439,12 @@
     &__limit-order-info {
         grid-area: limit-order-info;
         display: grid;
-        grid-gap: 0.4rem 0rem;
+        grid-gap: 0.4rem 0;
         position: relative;
+
+        & .dc-contract-card__stop-loss {
+            padding-bottom: 0.4rem;
+        }
     }
     &__buy-price {
         grid-area: buy-price;

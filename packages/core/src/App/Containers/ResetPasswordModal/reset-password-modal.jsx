@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Formik, Form } from 'formik';
-import { Button, Dialog, PasswordInput, PasswordMeter } from '@deriv/components';
+import { Button, Dialog, PasswordInput, PasswordMeter, Text } from '@deriv/components';
 import { redirectToLogin, validPassword, validLength, getErrorMessages } from '@deriv/shared';
 import { getLanguage, localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -81,18 +81,18 @@ class ResetPassword extends React.Component {
                             <React.Fragment>
                                 {status.reset_complete ? (
                                     <div className='reset-password__password-selection'>
-                                        <p className='reset-password__heading'>
+                                        <Text as='p' weight='bold' className='reset-password__heading'>
                                             <Localize i18n_default_text='Your password has been changed' />
-                                        </p>
-                                        <p className='reset-password__subtext'>
+                                        </Text>
+                                        <Text as='p' size='xxs' className='reset-password__subtext'>
                                             <Localize i18n_default_text='We will now redirect you to the login page.' />
-                                        </p>
+                                        </Text>
                                     </div>
                                 ) : (
                                     <div className='reset-password__password-selection'>
-                                        <p className='reset-password__heading'>
+                                        <Text as='p' weight='bold' className='reset-password__heading'>
                                             <Localize i18n_default_text='Choose a new password' />
-                                        </p>
+                                        </Text>
                                         <fieldset className='reset-password__fieldset'>
                                             <PasswordMeter
                                                 input={values.password}
@@ -111,7 +111,7 @@ class ResetPassword extends React.Component {
                                                 />
                                             </PasswordMeter>
                                         </fieldset>
-                                        <p className='reset-password__subtext'>
+                                        <Text as='p' size='xxs' className='reset-password__subtext'>
                                             {status.error_msg ? (
                                                 <Localize
                                                     i18n_default_text='{{error_msg}}'
@@ -120,7 +120,7 @@ class ResetPassword extends React.Component {
                                             ) : (
                                                 <Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters, numbers, and symbols.' />
                                             )}
-                                        </p>
+                                        </Text>
 
                                         <Button
                                             className={classNames('reset-password__btn', {

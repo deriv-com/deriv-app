@@ -43,33 +43,27 @@ export default class ProfitTableStore extends BaseStore {
         return !!(this.date_from || this.date_to);
     }
 
-    shouldFetchNextBatch(should_load_partially) {
-        if (!should_load_partially && (this.has_loaded_all || this.is_loading)) return false;
-        const today = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
-        if (this.date_to < today) return !should_load_partially;
+    shouldFetchNextBatch() {
+        if (this.has_loaded_all || this.is_loading) return false;
         return true;
     }
 
     @action.bound
-    async fetchNextBatch(should_load_partially = false) {
-        if (!this.shouldFetchNextBatch(should_load_partially)) return;
+    async fetchNextBatch() {
+        if (!this.shouldFetchNextBatch()) return;
         this.is_loading = true;
 
         const response = await WS.profitTable(
             batch_size,
-            !should_load_partially ? this.data.length : undefined,
-            /* Last fetch time (`partial_fetch_time`) should not be set to `date_from` 
-            while fetching latest profit table records because date filtering happens based on `buy_time` of a contract. 
-            If we visit profit table and then sell a contract which was purchased earlier, 
-            that particular contract won't be visible in profit table when visited again. */
-            getDateBoundaries(this.date_from, this.date_to, 0, should_load_partially)
+            this.data.length,
+            getDateBoundaries(this.date_from, this.date_to, 0, false)
         );
 
-        this.profitTableResponseHandler(response, should_load_partially);
+        this.profitTableResponseHandler(response);
     }
 
     @action.bound
-    profitTableResponseHandler(response, should_load_partially = false) {
+    profitTableResponseHandler(response) {
         if ('error' in response) {
             this.error = response.error.message;
             return;
@@ -83,12 +77,8 @@ export default class ProfitTableStore extends BaseStore {
             )
         );
 
-        if (should_load_partially) {
-            this.data = [...formatted_transactions, ...this.data];
-        } else {
-            this.data = [...this.data, ...formatted_transactions];
-        }
-        this.has_loaded_all = !should_load_partially && formatted_transactions.length < batch_size;
+        this.data = [...this.data, ...formatted_transactions];
+        this.has_loaded_all = formatted_transactions.length < batch_size;
         this.is_loading = false;
     }
 
@@ -112,17 +102,18 @@ export default class ProfitTableStore extends BaseStore {
 
     @action.bound
     async onMount() {
-        this.assertHasValidCache(
-            this.client_loginid,
-            this.clearDateFilter,
-            this.clearTable,
-            WS.forgetAll.bind(null, 'proposal')
-        );
+        this.assertHasValidCache(this.client_loginid, this.clearDateFilter, WS.forgetAll.bind(null, 'proposal'));
         this.client_loginid = this.root_store.client.loginid;
         this.onSwitchAccount(this.accountSwitcherListener);
         this.onNetworkStatusChange(this.networkStatusChangeListener);
         await WS.wait('authorize');
-        this.fetchNextBatch(true);
+
+        /* Caching won't work for profit_table because date filtering happens based on `buy_time` of a contract. 
+        If we already have a cache for a period and if we sell a contract that was purchased in that period 
+        then the sold contract won't be there in profit_table when visited again unless we fetch it again.
+        Caching will only work if the date filtering happens based on `sell_time` of a contract in BE. */
+        this.clearTable();
+        this.fetchNextBatch();
     }
 
     /* DO NOT call clearDateFilter() upon unmounting the component, date filters should stay 

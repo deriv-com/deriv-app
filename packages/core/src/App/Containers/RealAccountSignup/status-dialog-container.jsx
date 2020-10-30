@@ -65,7 +65,6 @@ class StatusDialogContainer extends React.Component {
         const {
             landing_company_shortcode,
             currency,
-            closeModal,
             onCancel,
             icon_size,
             switchToVirtual,
@@ -99,7 +98,7 @@ class StatusDialogContainer extends React.Component {
                 <DialogButtons
                     landing_company_shortcode={landing_company_shortcode}
                     status={this.status}
-                    closeModal={onCancel || closeModal}
+                    closeModal={onCancel}
                     closeModalAndOpenPOI={this.closeModalAndOpenPOI}
                     closeModalAndOpenPOA={this.closeModalAndOpenPOA}
                     closeModalAndOpenCashier={this.closeModalAndOpenCashier}
@@ -133,6 +132,5 @@ export default connect(({ client, ui }) => ({
     is_age_verified: client.is_age_verified,
     is_isle_of_man_residence: client.residence === 'im', // TODO: [deriv-eu] refactor this once more residence checks are required
     is_belgium_residence: client.residence === 'be', // TODO: [deriv-eu] refactor this once more residence checks are required
-    closeModal: ui.closeRealAccountSignup,
     switchToVirtual: () => client.switchAccount(client.virtual_account_loginid),
 }))(withRouter(StatusDialogContainer));

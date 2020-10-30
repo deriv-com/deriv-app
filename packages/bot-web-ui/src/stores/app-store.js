@@ -61,13 +61,13 @@ export default class AppStore {
         ui.setPromptHandler(false);
     }
 
-    onBeforeUnload(event) {
+    onBeforeUnload = event => {
         const { is_stop_button_visible } = this.root_store.run_panel;
 
         if (is_stop_button_visible) {
             event.returnValue = true;
         }
-    }
+    };
 
     registerCurrencyReaction() {
         // Syncs all trade options blocks' currency with the client's active currency.

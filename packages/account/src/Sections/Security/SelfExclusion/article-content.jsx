@@ -5,8 +5,9 @@ import { localize, Localize } from '@deriv/translations';
 import { Icon } from '@deriv/components';
 import { connect } from 'Stores/connect';
 
-const ArticleContent = ({ is_eu, toggleModal }) => {
+const ArticleContent = ({ is_eu, is_uk, toggleModal }) => {
     const { is_deriv_crypto } = React.useContext(PlatformContext);
+
     const eu_items = [
         <Localize
             key={0}
@@ -21,50 +22,65 @@ const ArticleContent = ({ is_eu, toggleModal }) => {
                 />,
             ]}
         />,
-        <Localize
-            key={1}
-            i18n_default_text='These trading limits are optional, and you can strengthen them at any time. If you wish to reduce or remove them, contact our <0>Customer Support</0>. If you don’t wish to set a specific limit, leave the field blank.'
-            components={[
-                <a
-                    key={0}
-                    className='link link--orange'
-                    rel='noopener noreferrer'
-                    target='_blank'
-                    href={getStaticUrl('/contact-us', { is_deriv_crypto })}
-                />,
-            ]}
-        />,
+    ];
+    if (is_uk) {
+        eu_items.push(
+            <Localize
+                key={1}
+                i18n_default_text='These trading limits are optional, and you can strengthen them at any time. If you don’t wish to set a specific limit, leave the field blank. If you live in the United Kingdom, Customer Support can only remove or weaken your trading limits after 24 hours of receiving the request. If you live in the Isle of Man, Customer Support can only remove or weaken your trading limits after your trading limit period has expired.'
+            />
+        );
+    } else {
+        eu_items.push(
+            <Localize
+                key={1}
+                i18n_default_text='These trading limits are optional, and you can strengthen them at any time. If you don’t wish to set a specific limit, leave the field blank. Customer Support can only remove or weaken your trading limits after 24 hours of receiving the request.'
+            />
+        );
+    }
+    eu_items.push(
         <Localize
             key={2}
             i18n_default_text='When you set your limits or self-exclusion, they will be aggregated across all your account types in DTrader and DBot. For example, the losses made on both platforms will add up and be counted towards the loss limit you set.'
-        />,
-        <Localize
-            key={3}
-            i18n_default_text='You can also exclude yourself entirely for a specified duration. If, at any time, you decide to trade again, you must then contact our <0>Customer Support</0> to remove this self-exclusion. There will be a 24-hour cooling-off period before you can resume trading.'
-            components={[
-                <a
-                    key={0}
-                    className='link link--orange'
-                    rel='noopener noreferrer'
-                    target='_blank'
-                    href={getStaticUrl('/contact-us', { is_deriv_crypto })}
-                />,
-            ]}
-        />,
-        <Localize
-            key={3}
-            i18n_default_text='UK clients won’t be able to remove their self-exclusion until the set period has expired. If you wish to continue trading once your self-exclusion period expires, you must contact <0>Customer Support</0> by phone to uplift this self-exclusion.'
-            components={[
-                <a
-                    key={0}
-                    className='link link--orange'
-                    rel='noopener noreferrer'
-                    target='_blank'
-                    href={getStaticUrl('/contact-us', { is_deriv_crypto })}
-                />,
-            ]}
-        />,
-    ];
+        />
+    );
+    if (is_uk) {
+        eu_items.push(
+            <Localize
+                key={3}
+                i18n_default_text='You can also exclude yourself entirely for a specified duration. This can only be removed once your self-exclusion has expired. If you wish to continue trading once your self-exclusion period expires, you must contact Customer Support by calling <0>+447723580049</0> to lift this self-exclusion. Requests by chat or email shall not be entertained. There will be a 24-hour cooling-off period before you can resume trading.'
+                components={[
+                    <a
+                        key={0}
+                        className='link link--orange'
+                        rel='noopener noreferrer'
+                        target='_blank'
+                        href='tel:+447723580049'
+                    />,
+                ]}
+            />
+        );
+    } else {
+        eu_items.push(
+            <Localize
+                key={3}
+                i18n_default_text='You can also exclude yourself entirely for a specified duration. If, at any time, you decide to trade again, you must then contact our Customer Support to remove this self-exclusion. There will be a 24-hour-cooling-off period before you can resume trading. '
+            />,
+            <Localize
+                key={4}
+                i18n_default_text='UK clients won’t be able to remove their self-exclusion until the set period has expired. If you wish to continue trading once your self-exclusion period expires, you must contact Customer Support by calling <0>+447723580049</0> to lift this self-exclusion. Requests by chat or email shall not be entertained. There will be a 24-hour cooling-off period before you can resume trading. '
+                components={[
+                    <a
+                        key={0}
+                        className='link link--orange'
+                        rel='noopener noreferrer'
+                        target='_blank'
+                        href='tel:+447723580049'
+                    />,
+                ]}
+            />
+        );
+    }
 
     const non_eu_items = [
         <Localize
@@ -126,4 +142,5 @@ const ArticleContent = ({ is_eu, toggleModal }) => {
 
 export default connect(({ client }) => ({
     is_eu: client.is_eu,
+    is_uk: client.is_uk,
 }))(ArticleContent);

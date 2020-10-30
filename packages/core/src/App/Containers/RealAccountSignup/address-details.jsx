@@ -65,7 +65,7 @@ class AddressDetails extends React.Component {
     handleCancel = values => {
         const current_step = this.props.getCurrentStep() - 1;
         this.props.onSave(current_step, values);
-        this.props.onCancel(current_step, this.props.goToNextStep);
+        this.props.onCancel(current_step, this.props.goToPreviousStep);
     };
 
     get should_render_address_state() {

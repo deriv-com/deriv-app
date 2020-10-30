@@ -16,6 +16,12 @@ import 'Sass/terms-of-use.scss';
 
 class TermsOfUse extends React.Component {
     static contextType = PlatformContext;
+
+    handleCancel = () => {
+        const current_step = this.props.getCurrentStep() - 1;
+        this.props.onCancel(current_step, this.props.goToPreviousStep);
+    };
+
     render() {
         return (
             <Formik
@@ -80,7 +86,7 @@ class TermsOfUse extends React.Component {
                                         }
                                         has_cancel={!this.context.is_deriv_crypto}
                                         is_absolute={isMobile()}
-                                        onCancel={this.props.onCancel}
+                                        onCancel={this.handleCancel.bind(this)}
                                         cancel_label={localize('Previous')}
                                         form_error={this.props.form_error}
                                     />

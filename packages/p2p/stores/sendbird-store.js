@@ -236,7 +236,7 @@ export default class SendbirdStore extends BaseStore {
                             convertFromChannelMessage(chat_message)
                         );
 
-                        this.replaceChannelMessage(0, 0, previous_messages);
+                        this.replaceChannelMessage(0, 0, ...previous_messages);
                     }
                 }, oldest_message_timestamp);
             } else {

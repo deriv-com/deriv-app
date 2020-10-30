@@ -126,7 +126,7 @@ StatusDialogContainer.propTypes = {
     text_submit: PropTypes.string,
 };
 
-export default connect(({ client, ui }) => ({
+export default connect(({ client }) => ({
     landing_company_shortcode: client.landing_company_shortcode,
     is_fully_authenticated: client.is_fully_authenticated,
     is_age_verified: client.is_age_verified,

@@ -1,4 +1,5 @@
 &__messages {
+    background-color: var(--general-main-2);
     margin-top: auto;
     margin-right: 0.8rem;
     flex: 1 1 0;
@@ -51,7 +52,7 @@
 
             .order-chat__messages-item-message {
                 background-color: var(--general-active);
-                border-bottom-right-radius: $BORDER_RADIUS;
+                border-bottom-left-radius: $BORDER_RADIUS;
             }
         }
         &--outgoing {

@@ -8,6 +8,7 @@ import {
     isCryptocurrency,
     isDeepEqual,
     pick,
+    getTotalProfit,
 } from '@deriv/shared';
 import Button from '../../button';
 import Icon from '../../icon';
@@ -108,19 +109,20 @@ class ContractUpdateForm extends React.Component {
     };
 
     render() {
-        const { addToast, getCardLabels, removeToast, setCurrentFocus, status } = this.props;
+        const { addToast, current_focus, getCardLabels, removeToast, setCurrentFocus, status } = this.props;
         const {
             contract_update_take_profit,
             has_contract_update_take_profit,
             contract_update_stop_loss,
             has_contract_update_stop_loss,
         } = this.props.contract;
-        const { buy_price, currency, is_valid_to_cancel, bid_price, is_sold } = this.contract_info;
+        const { buy_price, currency, is_valid_to_cancel, is_sold } = this.contract_info;
         const cancellation_price = getCancellationPrice(this.contract_info);
         const take_profit_input = (
             <InputWithCheckbox
                 addToast={addToast}
                 removeToast={removeToast}
+                current_focus={current_focus}
                 classNameInlinePrefix='trade-container__currency'
                 currency={currency}
                 error_messages={this.error_messages.take_profit}
@@ -141,6 +143,7 @@ class ContractUpdateForm extends React.Component {
             <InputWithCheckbox
                 addToast={addToast}
                 removeToast={removeToast}
+                current_focus={current_focus}
                 classNameInlinePrefix='trade-container__currency'
                 currency={currency}
                 defaultChecked={has_contract_update_stop_loss}
@@ -158,7 +161,7 @@ class ContractUpdateForm extends React.Component {
             />
         );
 
-        const total_profit = bid_price - buy_price;
+        const total_profit = getTotalProfit(this.contract_info);
 
         return (
             <React.Fragment>
@@ -209,6 +212,7 @@ class ContractUpdateForm extends React.Component {
 ContractUpdateForm.propTypes = {
     addToast: PropTypes.func,
     contract: PropTypes.object,
+    current_focus: PropTypes.string,
     getCardLabels: PropTypes.func,
     removeToast: PropTypes.func,
     setCurrentFocus: PropTypes.func,

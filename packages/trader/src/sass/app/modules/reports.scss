@@ -95,6 +95,14 @@ $side-padding: 1.2em;
     .dc-vertical-tab__content--floating {
         margin-right: 0;
     }
+    .table__head {
+        height: auto;
+        .table__cell {
+            @include tablet-up {
+                white-space: break-spaces;
+            }
+        }
+    }
 }
 
 /** @define reports-page-wrapper; weak */
@@ -106,6 +114,7 @@ $side-padding: 1.2em;
 .statement {
     .table__head {
         font-weight: bold;
+        height: auto;
     }
 
     @include desktop {
@@ -114,10 +123,6 @@ $side-padding: 1.2em;
     @include mobile {
         flex: 1;
 
-        &__data-list-body,
-        &__data-list-footer {
-            padding: 0 1.6rem;
-        }
         &__data-list-body {
             height: 100%;
 
@@ -161,9 +166,6 @@ $side-padding: 1.2em;
 
         .date {
             text-align: left;
-        }
-        .table__cell {
-            height: 63px;
         }
     }
     .amount,
@@ -377,10 +379,6 @@ $side-padding: 1.2em;
     @include mobile {
         flex: 1;
 
-        &__data-list-body,
-        &__data-list-footer {
-            padding: 0 1.6rem;
-        }
         &__data-list-body {
             height: calc(100% - 50px);
 
@@ -443,6 +441,9 @@ $side-padding: 1.2em;
     }
     .profit_loss {
         font-weight: bold;
+        @include tablet-up {
+            word-break: break-word;
+        }
         @include mobile {
             display: flex;
 
@@ -518,6 +519,7 @@ $side-padding: 1.2em;
 
     @include mobile {
         flex: 1;
+        padding-top: 0.8rem;
 
         &-multiplier {
             /* postcss-bem-linter: ignore */
@@ -526,10 +528,6 @@ $side-padding: 1.2em;
                 border-radius: $BORDER_RADIUS;
                 padding: 0;
 
-                /* postcss-bem-linter: ignore */
-                &--wrapper {
-                    padding: 0 1.6rem;
-                }
                 /* postcss-bem-linter: ignore */
                 & .dc-progress-slider--completed {
                     display: none;
@@ -584,30 +582,8 @@ $side-padding: 1.2em;
                     }
                 }
                 /* postcss-bem-linter: ignore */
-                & .dc-contract-card-items-wrapper--mobile {
-                    margin-top: 0.8rem;
-                }
-                /* postcss-bem-linter: ignore */
                 & .dc-contract-card-dialog-toggle {
-                    top: 71px;
-                    width: 124px;
-                    right: 9px;
                     border-color: var(--border-hover);
-
-                    @media only screen and (max-width: 380px) {
-                        width: 110px;
-                        height: 79px;
-                        right: 10px;
-                    }
-                    @media only screen and (max-width: 320px) {
-                        top: 72px;
-                        width: 91px;
-                        height: 80px;
-                    }
-                    @media (max-width: 320px) and (max-height: 480px) {
-                        top: 70px;
-                        height: 80px;
-                    }
                 }
             }
             /* postcss-bem-linter: ignore */
@@ -641,7 +617,6 @@ $side-padding: 1.2em;
         }
         &__data-list-body {
             height: calc(100% - 95px);
-            padding: 0 2.4rem;
 
             .dc-progress-bar__container {
                 max-width: 120px;
@@ -661,7 +636,7 @@ $side-padding: 1.2em;
             }
             &--content {
                 flex: 1;
-                padding-left: 32px;
+                padding: 0.8rem 1.6rem 0;
                 display: flex;
                 justify-content: space-between;
 
@@ -696,7 +671,7 @@ $side-padding: 1.2em;
     &__indicative {
         display: flex;
         justify-content: center;
-        align-items: flex-end;
+        align-items: center;
         flex-direction: column;
         width: 100%;
 
@@ -709,6 +684,11 @@ $side-padding: 1.2em;
         }
         .dc-btn--sell {
             height: 2.4rem;
+        }
+        &-no-resale-msg {
+            clear: both;
+            text-align: center;
+            font-size: smaller;
         }
     }
     &__profit-loss {
@@ -756,16 +736,7 @@ $side-padding: 1.2em;
         margin-top: 20px;
 
         .table__head {
-            @include tablet-up {
-                .profit,
-                .indicative {
-                    white-space: break-spaces;
-                }
-            }
-
             .table__cell {
-                padding-top: 0px;
-                padding-bottom: 0px;
                 font-weight: bold;
             }
         }
@@ -779,11 +750,11 @@ $side-padding: 1.2em;
         }
     }
     &__row {
-        /* icon refId currency buy_price potential_payout potential_profit indicative_price rem_time */
+        /* type refId currency buy_price payout_limit indicative_profit/loss indicative_price rem_time */
         /* stylelint-disable-next-line declaration-colon-space-after */
         grid-template-columns:
-            minmax(110px, 0.8fr) minmax(130px, 1.2fr) minmax(100px, 1fr) minmax(90px, 1.4fr) minmax(90px, 1.4fr)
-            minmax(120px, 2fr) minmax(120px, 1.2fr) minmax(85px, 2fr);
+            minmax(110px, 0.7fr) minmax(130px, 0.8fr) minmax(100px, 1.1fr) minmax(90px, 1.1fr) minmax(90px, 1.1fr)
+            minmax(120px, 1.1fr) minmax(120px, 1.1fr) minmax(85px, 1.1fr);
         width: 100%;
         grid-auto-rows: 100%;
 
@@ -802,10 +773,11 @@ $side-padding: 1.2em;
     .payout,
     .indicative,
     .purchase,
+    .multiplier,
+    .currency,
     .profit {
         @include desktop {
-            justify-content: flex-end;
-            text-align: right;
+            justify-content: center;
         }
     }
     .indicative {
@@ -853,8 +825,8 @@ $side-padding: 1.2em;
             /* icon multiplier currency stake cancellation buy_price limit_order current_stake total_profit_loss action */
             /* stylelint-disable-next-line declaration-colon-space-after */
             grid-template-columns:
-                minmax(85px, 0.7fr) minmax(75px, 0.8fr) minmax(65px, 0.5fr) minmax(105px, 0.8fr) minmax(100px, 0.8fr)
-                minmax(105px, 1fr) minmax(105px, 1fr) minmax(105px, 1.2fr) minmax(115px, 1.1fr) minmax(90px, 1.2fr);
+                minmax(85px, 0.7fr) minmax(95px, 0.8fr) minmax(95px, 0.5fr) minmax(95px, 0.8fr) minmax(100px, 0.8fr)
+                minmax(95px, 1fr) minmax(95px, 1fr) minmax(95px, 1.2fr) minmax(105px, 1.1fr) minmax(90px, 1.2fr);
 
             &-action {
                 display: flex;
@@ -879,22 +851,22 @@ $side-padding: 1.2em;
             }
             .limit_order {
                 flex-direction: column;
-                align-items: flex-end;
-                text-align: right;
+                align-items: center;
+                text-align: center;
             }
             .limit_order,
             .cancellation,
             .bid_price {
-                @include tablet-up {
-                    justify-content: flex-end;
-                    text-align: right;
+                @include desktop {
+                    justify-content: center;
+                    text-align: center;
                     width: 100%;
                     white-space: break-spaces;
                 }
             }
             .action {
-                padding-top: 0.8rem;
                 padding-bottom: 0;
+                justify-content: center;
             }
         }
         &__bid_price {
@@ -907,6 +879,21 @@ $side-padding: 1.2em;
                 color: var(--text-profit-success);
             }
         }
+    }
+}
+
+.open-positions,
+.statement,
+.profit-table {
+    /* postcss-bem-linter: ignore */
+    .data-list__body,
+    .data-list__footer {
+        padding: 0 1.6rem;
+    }
+
+    /* postcss-bem-linter: ignore */
+    .data-list__item {
+        background-color: var(--general-section-1);
     }
 }
 

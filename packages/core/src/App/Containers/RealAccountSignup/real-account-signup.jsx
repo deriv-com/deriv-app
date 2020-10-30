@@ -42,6 +42,8 @@ const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_re
             return <Localize i18n_default_text='Add a Deriv Synthetic account' />;
         case 'maltainvest':
             return <Localize i18n_default_text='Add a Deriv Financial account' />;
+        case 'samoa':
+            return <Localize i18n_default_text='Terms of use' />;
         default:
             return <Localize i18n_default_text='Add a Deriv account' />;
     }
@@ -64,6 +66,7 @@ class RealAccountSignup extends React.Component {
                     body: () => (
                         <AccountWizard
                             onFinishSuccess={this.showStatusDialog}
+                            onOpenWelcomeModal={this.closeModalthenOpenWelcomeModal}
                             is_loading={this.state.is_loading}
                             setLoading={this.setLoading}
                             onError={this.showErrorModal}
@@ -128,12 +131,11 @@ class RealAccountSignup extends React.Component {
     }
 
     get modal_height() {
-        const { currency, has_real_account, is_eu, is_eu_enabled } = this.props; // TODO [deriv-eu] remove is_eu_enabled once eu is released.
+        const { currency, has_real_account, is_eu } = this.props;
         if (this.active_modal_index === modal_pages_indices.status_dialog) return 'auto';
         if (!currency) return '688px'; // Set currency modal
         if (has_real_account && currency) {
-            if (is_eu && is_eu_enabled && this.active_modal_index === modal_pages_indices.add_or_manage_account) {
-                // TODO [deriv-eu] remove is_eu_enabled once eu is released.
+            if (is_eu && this.active_modal_index === modal_pages_indices.add_or_manage_account) {
                 // Manage account
                 return '379px'; // Since crypto is disabled for EU clients, lower the height of modal
             }
@@ -148,6 +150,16 @@ class RealAccountSignup extends React.Component {
     showStatusDialog = currency => {
         this.props.setParams({
             active_modal_index: modal_pages_indices.status_dialog,
+            currency,
+        });
+    };
+
+    closeModalthenOpenWelcomeModal = currency => {
+        this.props.closeRealAccountSignup();
+        setTimeout(() => {
+            this.props.toggleWelcomeModal({ is_visible: true, should_persist: true });
+        }, 300);
+        this.props.setParams({
             currency,
         });
     };
@@ -230,15 +242,19 @@ class RealAccountSignup extends React.Component {
     }
 
     get active_modal_index() {
+        let active_modal_index_no;
         if (this.props.state_value.active_modal_index === -1) {
-            return this.props.has_real_account && this.props.currency && this.is_manage_target
-                ? modal_pages_indices.add_or_manage_account
-                : !this.props.currency
-                ? modal_pages_indices.set_currency
-                : modal_pages_indices.account_wizard;
+            if (this.props.has_real_account && this.props.currency && this.is_manage_target) {
+                active_modal_index_no = modal_pages_indices.add_or_manage_account;
+            } else {
+                active_modal_index_no = !this.props.currency
+                    ? modal_pages_indices.set_currency
+                    : modal_pages_indices.account_wizard;
+            }
+        } else {
+            active_modal_index_no = this.props.state_value.active_modal_index;
         }
-
-        return this.props.state_value.active_modal_index;
+        return active_modal_index_no;
     }
 
     static text_cancel = () => {
@@ -286,7 +302,8 @@ class RealAccountSignup extends React.Component {
                             ].includes(this.active_modal_index),
                         })}
                         is_open={is_real_acc_signup_on}
-                        has_close_icon={has_close_icon}
+                        has_close_icon={this.props.real_account_signup_target !== 'samoa'}
+                        is_title_centered={this.props.real_account_signup_target === 'samoa'}
                         renderTitle={() => {
                             if (Title && ![finished_set_currency, status_dialog].includes(this.active_modal_index)) {
                                 return <Title {...this.props} />;
@@ -327,11 +344,11 @@ export default connect(({ ui, client, common }) => ({
     has_real_account: client.has_active_real_account,
     currency: client.currency,
     is_eu: client.is_eu,
-    is_eu_enabled: ui.is_eu_enabled, // TODO [deriv-eu] remove is_eu_enabled once eu is released.
     is_real_acc_signup_on: ui.is_real_acc_signup_on,
     real_account_signup_target: ui.real_account_signup_target,
     is_logged_in: client.is_logged_in,
     closeRealAccountSignup: ui.closeRealAccountSignup,
+    toggleWelcomeModal: ui.toggleWelcomeModal,
     closeSignupAndOpenCashier: ui.closeSignupAndOpenCashier,
     setParams: ui.setRealAccountSignupParams,
     residence: client.residence,

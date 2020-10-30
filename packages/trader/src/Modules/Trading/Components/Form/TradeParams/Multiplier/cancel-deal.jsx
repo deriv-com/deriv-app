@@ -41,7 +41,7 @@ const CancelDeal = ({
 
     return (
         <Fieldset className='trade-container__fieldset'>
-            <div className='input-wrapper--inline'>
+            <div className='dc-input-wrapper--inline'>
                 {should_show_popover ? (
                     <Popover
                         alignment='left'

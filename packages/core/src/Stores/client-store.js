@@ -6,7 +6,6 @@ import {
     getMT5AccountType,
     getPropertyValue,
     getUrlSmartTrader,
-    isBot,
     isDesktopOs,
     isEmptyObject,
     LocalStore,
@@ -142,29 +141,12 @@ export default class ClientStore extends BaseStore {
             : undefined;
     }
 
-    /**
-     * Temporary property. should be removed once we are fully migrated from the old app.
-     *
-     * @returns {boolean}
-     */
-    @computed
-    get is_client_allowed_to_visit() {
-        // TODO: [deriv-eu] Remove this after complete EU merge into production
-        return !!(
-            this.root_store.ui.is_eu_enabled || // TODO: [deriv-eu] Remove this after complete EU merge into production
-            !this.is_logged_in ||
-            this.is_virtual ||
-            this.accounts[this.loginid].landing_company_shortcode === 'svg' ||
-            isBot()
-        );
-    }
-
     @computed
     get is_reality_check_visible() {
         if (!this.loginid || !this.landing_company) {
             return false;
         }
-        return !!(this.has_reality_check && !this.reality_check_dismissed && this.root_store.ui.is_eu_enabled); // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
+        return !!(this.has_reality_check && !this.reality_check_dismissed);
     }
 
     @computed
@@ -370,9 +352,13 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get allow_authentication() {
+        return this.account_status?.status?.some(status => status === 'allow_document_upload');
+    }
+
+    @computed
     get is_authentication_needed() {
-        if (!this.account_status.status) return false;
-        return this.account_status.authentication.needs_verification.length;
+        return this.account_status?.authentication?.needs_verification?.length;
     }
 
     @computed
@@ -483,14 +469,7 @@ export default class ClientStore extends BaseStore {
     // this is true when a user needs to have a active real account for trading
     @computed
     get should_have_real_account() {
-        // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
-        return (
-            this.standpoint.iom &&
-            this.is_uk &&
-            !this.has_any_real_account &&
-            this.root_store.ui &&
-            this.root_store.ui.is_eu_enabled
-        );
+        return this.standpoint.iom && this.is_uk && !this.has_any_real_account;
     }
 
     // Shows all possible landing companies of user between all
@@ -558,14 +537,8 @@ export default class ClientStore extends BaseStore {
 
     isMT5Allowed = landing_companies => {
         if (!landing_companies || !Object.keys(landing_companies).length) return false;
-        const has_mt5 = 'mt_financial_company' in landing_companies || 'mt_gaming_company' in landing_companies;
 
-        // TODO: [deriv-eu] Remove the if statement once EU is enabled in dev
-        if (this.is_eu && !this.root_store.ui.is_eu_enabled) {
-            return false;
-        }
-
-        return has_mt5;
+        return 'mt_financial_company' in landing_companies || 'mt_gaming_company' in landing_companies;
     };
 
     @computed
@@ -762,7 +735,9 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     async realAccountSignup(form_values) {
+        const DEFAULT_CRYPTO_ACCOUNT_CURRENCY = 'BTC';
         const is_maltainvest_account = this.root_store.ui.real_account_signup_target === 'maltainvest';
+        const is_samoa_account = this.root_store.ui.real_account_signup_target === 'samoa';
         let currency = '';
         form_values.residence = this.residence;
         if (is_maltainvest_account) {
@@ -780,6 +755,9 @@ export default class ClientStore extends BaseStore {
             if (is_maltainvest_account) {
                 await this.setAccountCurrency(currency);
             }
+            if (is_samoa_account) {
+                await this.setAccountCurrency(DEFAULT_CRYPTO_ACCOUNT_CURRENCY);
+            }
             localStorage.removeItem('real_account_signup_wizard');
             await this.root_store.gtm.pushDataLayer({ event: 'real_signup' });
             return Promise.resolve({
@@ -788,6 +766,13 @@ export default class ClientStore extends BaseStore {
                     ? {
                           new_account_maltainvest: {
                               ...response.new_account_maltainvest,
+                              currency,
+                          },
+                      }
+                    : {}),
+                ...(is_samoa_account
+                    ? {
+                          new_account_samoa: {
                               currency,
                           },
                       }
@@ -826,17 +811,24 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    async createCryptoAccount(crr) {
-        const { date_of_birth, first_name, last_name } = this.account_settings;
+    async createCryptoAccount(currency, is_deriv_crypto) {
         const residence = this.residence;
-
-        const response = await WS.newAccountReal({
-            first_name,
-            last_name,
+        let data = {
             residence,
-            currency: crr,
-            date_of_birth: toMoment(date_of_birth).format('YYYY-MM-DD'),
-        });
+            currency,
+        };
+
+        if (!is_deriv_crypto) {
+            const { date_of_birth, first_name, last_name } = this.account_settings;
+            data = {
+                ...data,
+                first_name,
+                last_name,
+                date_of_birth: toMoment(date_of_birth).format('YYYY-MM-DD'),
+            };
+        }
+
+        const response = await WS.newAccountReal(data);
         if (!response.error) {
             await this.accountRealReaction(response);
             return Promise.resolve(response);
@@ -1031,7 +1023,12 @@ export default class ClientStore extends BaseStore {
             await WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
             if (!this.is_virtual) await this.getLimits();
 
-            if (!this.switched && !this.has_any_real_account && this.is_mt5_allowed) {
+            if (
+                !this.switched &&
+                !this.has_any_real_account &&
+                this.is_mt5_allowed &&
+                !this.root_store.ui.is_real_acc_signup_on
+            ) {
                 this.root_store.ui.toggleWelcomeModal({ is_visible: true });
             }
         } else {
@@ -1390,24 +1387,11 @@ export default class ClientStore extends BaseStore {
         const client_object = {};
         let active_loginid;
 
-        let is_allowed_real = true;
-        // Performs check to avoid login of landing companies that are currently not supported in app
-        // TODO: [deriv-eu] Remove this after full merging of EU. When EU is enabled all landing companies are allowed.
-        account_list.forEach(account => {
-            if (
-                !this.root_store.ui &&
-                this.root_store.ui.is_eu_enabled &&
-                !/^virtual|svg$/.test(account.landing_company_name)
-            ) {
-                is_allowed_real = false;
-            }
-        });
-
         account_list.forEach(function (account) {
             Object.keys(account).forEach(function (param) {
                 if (param === 'loginid') {
                     if (!active_loginid && !account.is_disabled) {
-                        if (is_allowed_real && !account.is_virtual) {
+                        if (!account.is_virtual) {
                             active_loginid = account[param];
                         } else if (account.is_virtual) {
                             // TODO: [only_virtual] remove this to stop logging non-SVG clients into virtual
@@ -1578,7 +1562,8 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    onSignup({ password, residence }, cb) {
+    onSignup({ password, residence, is_deriv_crypto, is_account_signup_modal_visible }, cb) {
+        const is_first_time_signup = is_account_signup_modal_visible;
         if (!this.verification_code.signup || !password || !residence) return;
 
         // Currently the code doesn't reach here and the console log is needed for debugging.
@@ -1602,12 +1587,14 @@ export default class ClientStore extends BaseStore {
                     event: 'virtual_signup',
                 });
 
-                if (this.root_store.ui.is_eu_enabled) {
-                    this.root_store.ui.showAccountTypesModalForEuropean();
-                }
+                this.root_store.ui.showAccountTypesModalForEuropean();
 
                 if (this.is_mt5_allowed) {
                     this.root_store.ui.toggleWelcomeModal({ is_visible: true, should_persist: true });
+                }
+
+                if (is_deriv_crypto && is_first_time_signup) {
+                    this.root_store.ui.openRealAccountSignup();
                 }
             }
         });

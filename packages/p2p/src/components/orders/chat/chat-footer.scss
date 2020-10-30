@@ -19,8 +19,10 @@
         right: 0;
         width: 32px;
 
-        &:hover {
-            background-color: var(--general-hover);
+        @media (hover: hover) {
+            &:hover {
+                background-color: var(--general-hover);
+            }
         }
     }
 

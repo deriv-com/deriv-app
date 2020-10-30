@@ -31,7 +31,7 @@ const ChatFooter = observer(() => {
     };
 
     const handleKeyPress = event => {
-        if (event.key === 'Enter' && event.target.value) {
+        if (event.key === 'Enter') {
             sendMessage();
         }
     };
@@ -39,9 +39,10 @@ const ChatFooter = observer(() => {
     const sendMessage = () => {
         const el_target = text_input_ref.current;
 
-        if (el_target) {
+        if (el_target && el_target.value) {
             sendbird_store.sendMessage(el_target.value);
             el_target.value = '';
+            handleChange({ target: el_target });
             el_target.focus();
         }
     };

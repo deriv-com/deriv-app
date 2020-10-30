@@ -7,6 +7,11 @@
     top: calc(#{$MOBILE_HEADER_HEIGHT} + #{$MOBILE_WRAPPER_HEADER_HEIGHT});
     background: var(--general-main-1);
 
+    &--flex {
+        display: flex;
+        flex-direction: column;
+    }
+
     form {
         height: 100%;
     }

@@ -12,7 +12,6 @@ const OrderDetailsTimer = ({ order_information }) => {
     const countDownTimer = () => {
         const distance = ServerTime.getDistanceToServerTime(order_information.order_expiry_milliseconds);
         const timer = secondsToTimer(distance);
-
         if (distance < 0) {
             setRemainingTime(localize('expired'));
             clearInterval(interval.current);
@@ -29,9 +28,9 @@ const OrderDetailsTimer = ({ order_information }) => {
 
     if (should_show_order_timer) {
         return (
-            <div className='order-details__header-timer'>
+            <div className='order-details-card__header-timer'>
                 <div>{localize('Time left')}</div>
-                <div className='order-details__header-timer-counter'>{remaining_time}</div>
+                <div className='order-details-card__header-timer-counter'>{remaining_time}</div>
             </div>
         );
     }

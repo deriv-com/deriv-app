@@ -1,0 +1,33 @@
+.order-chat {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+
+    @include tablet-up {
+        border-radius: $BORDER_RADIUS;
+        box-shadow: 0 0.8rem 0.8rem 0 var(--shadow-drop), 0 0 0.8rem 0 var(--shadow-drop);
+        margin-left: 3.2rem;
+        width: 440px;
+    }
+
+    @include mobile {
+        height: 100%;
+        width: 100vw;
+    }
+
+    &__error {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        &-retry {
+            margin-top: 1.6rem;
+        }
+    }
+
+    @import './chat-header.scss';
+    @import './chat-messages.scss';
+    @import './chat-footer.scss';
+}

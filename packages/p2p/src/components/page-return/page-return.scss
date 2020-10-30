@@ -6,12 +6,32 @@
     font-weight: bold;
     line-height: 1.75;
     color: var(--text-general);
-    margin-bottom: 2.4rem;
+
+    @include tablet-up {
+        margin-bottom: 2.4rem;
+    }
+    @include mobile {
+        border-bottom: 2px solid var(--general-section-1);
+        height: 56px;
+        padding: 1.6rem;
+        margin-bottom: 0;
+    }
 
     &__button {
         display: flex;
-        padding-right: 2.4rem;
         cursor: pointer;
-        border-radius: 4px;
+        border-radius: $BORDER_RADIUS;
+
+        @include tablet-up {
+            padding-right: 0.8rem;
+        }
+        @include mobile {
+            padding-right: 1.6rem;
+        }
+    }
+
+    &__trailing-icon {
+        margin-left: auto;
+        display: flex;
     }
 }

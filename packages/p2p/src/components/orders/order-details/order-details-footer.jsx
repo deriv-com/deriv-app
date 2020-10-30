@@ -32,7 +32,7 @@ const OrderDetailsFooter = ({ order_information, cancelPopup, showPopup }) => {
 
         const options = {
             title: localize('Do you want to cancel this order?'),
-            className: 'order-details__popup-no-border',
+            className: 'order-details-card__popup-no-border',
             message: localize('Do NOT cancel if you have made payment.'),
             confirm_text: localize('Cancel this order'),
             has_cancel: true,
@@ -47,7 +47,7 @@ const OrderDetailsFooter = ({ order_information, cancelPopup, showPopup }) => {
     const showComplainPopup = () => {
         const options = {
             title: localize('Did something go wrong?'),
-            className: 'order-details__popup-no-border',
+            className: 'order-details-card__popup-no-border',
             message: (
                 <Localize
                     i18n_default_text="If you have a problem in using the app or if you have a dispute with the other party that the two of you haven't been able to resolve, please email <0>{{support_email}}</0>. Describe your situation, and include your order <1>ID ({{id}})</1>."
@@ -55,12 +55,12 @@ const OrderDetailsFooter = ({ order_information, cancelPopup, showPopup }) => {
                     components={[
                         <a
                             key={0}
-                            className='link order-details__popup--danger'
+                            className='link order-details-card__popup--danger'
                             rel='noopener noreferrer'
                             target='_blank'
                             href={`mailto:p2p-support@${email_domain}`}
                         />,
-                        <span key={1} className='order-details__popup--bold' />,
+                        <span key={1} className='order-details-card__popup--bold' />,
                     ]}
                 />
             ),
@@ -89,7 +89,7 @@ const OrderDetailsFooter = ({ order_information, cancelPopup, showPopup }) => {
 
         const options = {
             title: localize('Confirm payment?'),
-            className: 'order-details__popup-no-border',
+            className: 'order-details-card__popup-no-border',
             message: localize("Please make sure that you've paid {{amount}} {{currency}} to {{other_user_name}}.", {
                 amount: price_display,
                 currency: local_currency,
@@ -124,7 +124,7 @@ const OrderDetailsFooter = ({ order_information, cancelPopup, showPopup }) => {
 
         const options = {
             title: localize('Have you received payment?'),
-            className: 'order-details__popup-no-border',
+            className: 'order-details-card__popup-no-border',
             message: localize(
                 'Please confirm only after checking your bank or e-wallet account to make sure you have received payment.'
             ),
@@ -140,14 +140,14 @@ const OrderDetailsFooter = ({ order_information, cancelPopup, showPopup }) => {
 
     if (should_show_complain_and_received_button) {
         return (
-            <div className='order-details__footer'>
+            <div className='order-details-card__footer'>
                 <React.Fragment>
-                    <div className='order-details__footer--left'>
+                    <div className='order-details-card__footer--left'>
                         <Button large tertiary onClick={showComplainPopup}>
                             {localize('Complain')}
                         </Button>
                     </div>
-                    <div className='order-details__footer--right'>
+                    <div className='order-details-card__footer--right'>
                         <Button large primary onClick={showReceivedFundsPopup}>
                             {localize("I've received payment")}
                         </Button>
@@ -159,8 +159,8 @@ const OrderDetailsFooter = ({ order_information, cancelPopup, showPopup }) => {
 
     if (should_show_cancel_and_paid_button) {
         return (
-            <div className='order-details__footer'>
-                <div className='order-details__footer--right'>
+            <div className='order-details-card__footer'>
+                <div className='order-details-card__footer--right'>
                     <Button.Group>
                         <Button large secondary onClick={showCancelOrderPopup}>
                             {localize('Cancel order')}
@@ -176,9 +176,14 @@ const OrderDetailsFooter = ({ order_information, cancelPopup, showPopup }) => {
 
     if (should_show_only_complain_button) {
         return (
-            <div className='order-details__footer'>
-                <div className='order-details__footer--left'>
-                    <Button className='order-details__footer-button--left' large tertiary onClick={showComplainPopup}>
+            <div className='order-details-card__footer'>
+                <div className='order-details-card__footer--left'>
+                    <Button
+                        className='order-details-card__footer-button--left'
+                        large
+                        tertiary
+                        onClick={showComplainPopup}
+                    >
                         {localize('Complain')}
                     </Button>
                 </div>

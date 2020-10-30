@@ -24,7 +24,9 @@ const Input = (
     const [counter, setCounter] = React.useState(0);
 
     React.useEffect(() => {
-        if (initial_character_count) setCounter(initial_character_count);
+        if (typeof initial_character_count === 'number') {
+            setCounter(initial_character_count);
+        }
     }, [initial_character_count]);
 
     const changeHandler = e => {
@@ -36,6 +38,7 @@ const Input = (
         e.target.value = input_value;
         props.onChange(e);
     };
+
     return (
         <div
             className={classNames('dc-input', className, {
@@ -83,10 +86,10 @@ const Input = (
             {warn && <Field className={classNameWarn} message={warn} type='warn' />}
             {!error && hint && <p className='dc-input__hint'>{hint}</p>}
             {has_character_counter && (
-                <p className='dc-input__counter'>
+                <div className='dc-input__counter'>
                     {counter}
                     {max_characters ? `/${max_characters}` : ''}
-                </p>
+                </div>
             )}
         </div>
     );

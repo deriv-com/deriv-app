@@ -252,6 +252,16 @@ class FinancialAssessment extends React.Component {
         this.setState(new_state);
     };
 
+    onClickSubmit = handleSubmit => {
+        const is_confirmation_needed = this.state.has_trading_experience && this.props.is_trading_experience_incomplete;
+
+        if (is_confirmation_needed) {
+            this.toggleConfirmationModal(true);
+        } else {
+            handleSubmit();
+        }
+    };
+
     render() {
         const {
             api_initial_load_error,
@@ -850,7 +860,7 @@ class FinancialAssessment extends React.Component {
                                             className={classNames('account-form__footer-btn', {
                                                 'dc-btn--green': is_submit_success,
                                             })}
-                                            onClick={() => this.toggleConfirmationModal(true)}
+                                            onClick={() => this.onClickSubmit(handleSubmit)}
                                             is_disabled={isSubmitting || !dirty || Object.keys(errors).length > 0}
                                             has_effect
                                             is_loading={is_btn_loading}

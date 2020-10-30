@@ -381,11 +381,17 @@ const checkAccountStatus = (
 
     const needs_authentication = needs_verification.length || allow_document_upload;
     const has_risk_assessment = getRiskAssessment(account_status);
-    const needs_poa = needs_authentication && needs_verification.includes('document') && document.status !== 'expired';
-    const needs_poi = needs_authentication && needs_verification.includes('identity') && identity.status !== 'expired';
+    const needs_poa =
+        needs_authentication &&
+        needs_verification.includes('document') &&
+        (document?.status !== 'expired' || document?.status !== 'pending');
+    const needs_poi =
+        needs_authentication &&
+        needs_verification.includes('identity') &&
+        (identity?.status !== 'expired' || identity?.status !== 'pending');
 
-    if (needs_poa) addNotificationMessage(clientNotifications().needs_poa);
-    if (needs_poi) addNotificationMessage(clientNotifications().needs_poi);
+    if (needs_poa && !(document.status === 'expired')) addNotificationMessage(clientNotifications().needs_poa);
+    if (needs_poi && !(identity.status === 'expired')) addNotificationMessage(clientNotifications().needs_poi);
     if (cashier_locked) addNotificationMessage(clientNotifications().cashier_locked);
     if (withdrawal_locked) {
         // if client is withdrawal locked but it's because they need to authenticate

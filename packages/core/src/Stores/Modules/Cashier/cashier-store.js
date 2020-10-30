@@ -158,11 +158,7 @@ export default class CashierStore extends BaseStore {
     onRemount = () => {};
     is_populating_values = false;
 
-    containers = [
-        this.config.deposit.container,
-        this.config.withdraw.container,
-        this.config.account_transfer.container,
-    ];
+    containers = [this.config.deposit.container, this.config.withdraw.container];
 
     map_action = {
         [this.config.withdraw.container]: 'payment_withdraw',
@@ -273,7 +269,7 @@ export default class CashierStore extends BaseStore {
             }
         );
 
-        if (this.containers.indexOf(this.active_container) === -1) {
+        if (this.containers.indexOf(this.active_container) === -1 && !this.root_store.client.is_switching) {
             throw new Error('Cashier Store onMount requires a valid container name.');
         }
         this.setErrorMessage('');

@@ -193,7 +193,7 @@ export default class SendbirdStore extends BaseStore {
         if (!this.active_chat_channel) return;
 
         if (document.hasFocus()) {
-            if (should_check_scroll && this.messages_ref.current) {
+            if (should_check_scroll && this.messages_ref?.current) {
                 const { scrollHeight, scrollTop, clientHeight } = this.messages_ref.current;
                 const is_at_bottom = scrollHeight - scrollTop === clientHeight;
 

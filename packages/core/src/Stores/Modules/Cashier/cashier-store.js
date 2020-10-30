@@ -158,7 +158,11 @@ export default class CashierStore extends BaseStore {
     onRemount = () => {};
     is_populating_values = false;
 
-    containers = [this.config.deposit.container, this.config.withdraw.container];
+    containers = [
+        this.config.deposit.container,
+        this.config.withdraw.container,
+        this.config.account_transfer.container,
+    ];
 
     map_action = {
         [this.config.withdraw.container]: 'payment_withdraw',

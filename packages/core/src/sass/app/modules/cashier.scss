@@ -1155,9 +1155,21 @@
         &-from {
             margin-bottom: 3.5rem;
             margin-top: 2.5rem;
+
+            @include mobile {
+                margin-bottom: 4rem;
+            }
         }
         &-to {
             margin-bottom: 1.7rem;
+
+            @include mobile {
+                margin-bottom: 5rem;
+
+                &:not(.dc-select-native--error) {
+                    margin-bottom: 3.2rem;
+                }
+            }
         }
     }
     &__button {

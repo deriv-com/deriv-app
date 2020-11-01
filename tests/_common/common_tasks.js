@@ -4,7 +4,9 @@
  * @returns {Promise<void>}
  */
 async function switchVirtualAccount(page) {
-    await page.waitForSelector('.acc-info');
+    await page.waitForSelector('.acc-info', {
+        timeout: 120000,
+    });
     await page.click('.acc-info');
     const account_switcher_virtual = "div.acc-switcher__wrapper.acc-switcher__wrapper--enter-done > div > div.dc-tabs.dc-tabs.dc-tabs--acc-switcher__list-tabs > ul > li:nth-child(2)";
     await page.click(account_switcher_virtual);

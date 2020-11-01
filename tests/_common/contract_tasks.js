@@ -11,28 +11,34 @@ async function chooseUnderlying(page) {
     await page.click('.market_dropdown-subcategory-item-1HZ10V');
     await qawolf.assertElementText(page, ".cq-symbol", 'Volatility 10 (1s) Index');
 }
+
 async function chooseContractType(page, trade_types, contract) {
     await page.click(".trade-container__fieldset.trade-types");
     await page.waitForSelector('.contract-type-dialog.contract-type-dialog--enterDone .contract-type-dialog__wrapper');
     await chooseContract(page, contract);
 }
+
 async function chooseContract(page, contract) {
     await page.click(`#dt_contract_${contract}_item`);
     await page.waitForSelector(`span[name=contract_type][value=${contract}]`);
 }
+
 async function waitForPurchaseBtnEnabled(page) {
     await page.waitForSelector('#dt_purchase_call_button:enabled');
     await page.waitForSelector('#dt_purchase_put_button:enabled');
 }
+
 async function waitForChart(page) {
-    await page.waitForSelector('.chart-container__loader', { state: 'hidden'});
-    await page.waitForSelector('.ciq-menu.ciq-enabled');
+    await page.waitForSelector('.chart-container__loader', {state: 'hidden', timeout: 120000});
+    await page.waitForSelector('.ciq-menu.ciq-enabled', {timeout: 120000});
 }
+
 async function openRecentPositionsDrawer(page) {
     await page.waitForSelector(RECENT_POSITION_DRAWER_SELECTOR);
     await page.click(RECENT_POSITION_DRAWER_SELECTOR);
     await page.waitForSelector('positions-toggle--has-count', {state: 'hidden'});
 }
+
 async function setDuration(page, duration_unit, duration_amount) {
     await page.waitForSelector(SIMPLE_DURATION_TOGGLE_SELECTOR);
     if (duration_amount !== 5) {
@@ -46,6 +52,7 @@ async function setDuration(page, duration_unit, duration_amount) {
 
     await qawolf.assertElementText(page, '#dt_range_slider_label', `${duration_amount} ${duration_unit}`);
 }
+
 async function buyRiseContract(page, tradeTypes, contract, duration_unit, duration_amount) {
     await chooseContractType(page, tradeTypes, contract);
     await setDuration(page, duration_unit, duration_amount);
@@ -60,6 +67,7 @@ async function verifyContractResult(page) {
     await page.waitForSelector('.dc-result__close-btn');
     await page.waitForSelector('.dc-contract-card__wrapper');
 }
+
 module.exports = {
     buyRiseContract,
     waitForChart,

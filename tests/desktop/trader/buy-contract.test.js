@@ -5,7 +5,7 @@ const {
   openRecentPositionsDrawer,
 } = require("../../_common/contract_tasks");
 const {switchVirtualAccount} = require('../../_common/common_tasks');
-const {login} = require("../../_utils/page");
+const {loadOrLogin} = require("../../_utils/page");
 const {setUp, tearDown, desktop_viewport} = require('../../bootstrap');
 
 let browser, context
@@ -25,7 +25,7 @@ test("[desktop] trader/buy-contract", async () => {
     const page = await context.newPage();
     await page.goto(process.env.HOME_URL, {waitUntil: "domcontentloaded"});
     await waitForChart(page);
-    await login(page, process.env.VALID_USER, process.env.VALID_PASSWORD);
+    await loadOrLogin(page, process.env.VALID_USER, process.env.VALID_PASSWORD);
     await switchVirtualAccount(page);
     await chooseUnderlying(page);
     await openRecentPositionsDrawer(page);

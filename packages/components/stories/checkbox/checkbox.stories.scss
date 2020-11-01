@@ -1,0 +1,11 @@
+.checkbox__wrapper {
+    margin: 30px;
+    width: 30%;
+}
+.dc-checkbox__box {
+    border: 2px solid #999;
+
+    &--active {
+        border: none;
+    }
+}

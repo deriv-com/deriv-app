@@ -24,8 +24,8 @@ async function chooseContract(page, contract) {
 }
 
 async function waitForPurchaseBtnEnabled(page) {
-    await page.waitForSelector('#dt_purchase_call_button:enabled');
-    await page.waitForSelector('#dt_purchase_put_button:enabled');
+    await page.waitForSelector('#dt_purchase_call_button:enabled', { timeout: 120000 });
+    await page.waitForSelector('#dt_purchase_put_button:enabled', { timeout: 120000 });
 }
 
 async function waitForChart(page) {

@@ -141,15 +141,6 @@
             border-radius: $BORDER_RADIUS;
             pointer-events: none;
         }
-        &:first-child {
-            margin-top: 2px;
-        }
-        &:not(:last-child) {
-            margin-bottom: 16px;
-        }
-        &:last-child {
-            margin-bottom: 10px;
-        }
         &--enter-done {
             opacity: 1;
             transform: translateY(0);
@@ -259,6 +250,10 @@
     &-items-wrapper {
         display: grid;
         grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+            'stake current-stake'
+            'deal-cancel-fee  limit-order-info'
+            'buy-price  limit-order-info';
         grid-gap: 0.8rem 0.4rem;
         flex: 1;
         margin-top: 0.5rem;
@@ -266,6 +261,9 @@
         &--mobile {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
+            grid-template-areas:
+                'stake current-stake limit-order-info'
+                'deal-cancel-fee buy-price limit-order-info';
             grid-gap: 0.8rem 0.4rem;
             flex: 1;
             padding: 0.4rem 0rem;
@@ -308,6 +306,7 @@
     }
     &-item {
         &__header {
+            max-width: calc(100% - 2.4rem);
             line-height: 1.4;
         }
         &__body {
@@ -378,6 +377,9 @@
             padding: 0.8rem 0;
             margin: 0 0.8rem;
         }
+        &--enter-done {
+            opacity: 1;
+        }
         &--enter,
         &--exit {
             opacity: 0;
@@ -396,11 +398,14 @@
             border-radius: 0.4rem;
             font-size: 1.2rem;
             margin-left: 0.8rem;
-            padding-top: 0.2rem;
         }
         .dc-btn--sell,
         .dc-btn--cancel {
             height: 2.4rem;
+
+            .dc-btn__text {
+                font-size: 1.2rem;
+            }
 
             @include mobile {
                 height: 3.2rem;
@@ -430,6 +435,28 @@
         .result-icon {
             margin-left: 0.4rem;
         }
+    }
+    &__limit-order-info {
+        grid-area: limit-order-info;
+        display: grid;
+        grid-gap: 0.4rem 0;
+        position: relative;
+
+        & .dc-contract-card__stop-loss {
+            padding-bottom: 0.4rem;
+        }
+    }
+    &__buy-price {
+        grid-area: buy-price;
+    }
+    &__deal-cancel-fee {
+        grid-area: deal-cancel-fee;
+    }
+    &__stake {
+        grid-area: stake;
+    }
+    &__current-stake {
+        grid-area: current-stake;
     }
     &__sell-button-mobile {
         justify-self: center;

@@ -31,10 +31,10 @@ afterAll(async () => {
 test("[mobile] trader/buy-contract", async () => {
     const page = await context.newPage();
     await page.goto(process.env.HOME_URL, {waitUntil: "domcontentloaded"});
-    await page.waitForNavigation();
+    await page.waitForNavigation({timeout: 120000});
     await waitForChart(page);
     await login(page, process.env.VALID_USER, process.env.VALID_PASSWORD);
-    await page.waitForNavigation();
+    await page.waitForNavigation({timeout: 120000});
     await waitForChart(page);
     await page.click('.acc-info__wrapper .acc-info');
     await page.click('.dc-tabs__item:nth-child(2)');

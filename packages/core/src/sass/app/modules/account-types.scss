@@ -161,14 +161,9 @@
         }
         &__platforms {
             &-title {
-                color: var(--text-less-prominent);
-                font-size: var(--text-size-xxs);
-                line-height: 1.5;
                 margin-bottom: 0.8rem;
             }
             &-name {
-                font-size: var(--text-size-xxxs);
-                color: var(--text-general);
                 padding-top: 0.2rem;
             }
             &-icons {

@@ -47,7 +47,6 @@
 
             @include mobile {
                 flex-direction: column;
-                padding: 0.8rem 2.4rem;
 
                 @media only screen and (max-width: 340px) {
                     padding: 0.8rem 1.6rem;
@@ -97,13 +96,18 @@
                 margin-left: auto;
             }
         }
+        @include mobile {
+            padding: 0 1.6rem;
+            width: 100%;
+            color: var(--text-general);
+        }
     }
     &__button {
         &--full-width {
             width: 100%;
 
             @include mobile {
-                width: 25.1rem;
+                margin-top: 1.5rem;
                 display: flex;
                 margin-left: auto;
                 margin-right: auto;
@@ -119,10 +123,55 @@
         }
     }
     @include mobile {
+        position: fixed;
+        top: 40px;
+        z-index: 9999;
+
+        .dc-page-overlay__header {
+            padding: 10px 0;
+            height: unset;
+            &-title {
+                font-size: 1.4rem;
+            }
+            &-close {
+                display: none;
+            }
+        }
         &__wrapper {
+            height: 100vh;
             overflow-y: auto;
             overflow-x: hidden;
-            padding: 2.4rem;
+
+            .dc-page-overlay__content {
+                padding: 2rem;
+                overflow-y: auto;
+            }
+        }
+        &__column--settings {
+            min-height: 450px;
+        }
+        &__text {
+            &--center {
+                padding: 0 2rem;
+                margin-bottom: 2.5rem !important;
+            }
+        }
+        &__fieldset {
+            padding: 0 2rem;
+        }
+        &__submit.dc-form-submit-button {
+            width: 90%;
+            padding: 20px 0;
+            display: block;
+            background-color: var(--general-main-1);
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            border-top: 2px solid var(--general-section-1);
+
+            button {
+                width: 124px;
+            }
         }
     }
 }

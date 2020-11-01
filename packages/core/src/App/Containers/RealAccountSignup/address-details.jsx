@@ -12,6 +12,7 @@ import {
     MobileWrapper,
     ThemedScrollbars,
     SelectNative,
+    Text,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { isDesktop, isMobile, getLocation } from '@deriv/shared';
@@ -100,12 +101,18 @@ class AddressDetails extends React.Component {
                                     height_offset='179px'
                                     is_disabled={isDesktop()}
                                 >
-                                    <p className='details-form__description'>
+                                    <Text
+                                        as='p'
+                                        align='left'
+                                        size='xxs'
+                                        lineHeight='l'
+                                        className='details-form__description'
+                                    >
                                         <strong>
                                             <Localize i18n_default_text='Only use an address for which you have proof of residence - ' />
                                         </strong>
                                         <Localize i18n_default_text='a recent utility bill (e.g. electricity, water, gas, landline, or internet), bank statement, or government-issued letter with your name and this address.' />
-                                    </p>
+                                    </Text>
                                     <ThemedScrollbars
                                         is_bypassed={isMobile()}
                                         height={height}

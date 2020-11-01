@@ -31,10 +31,8 @@ afterAll(async () => {
 test("[mobile] trader/buy-contract", async () => {
     const page = await context.newPage();
     await page.goto(process.env.HOME_URL, {waitUntil: "domcontentloaded"});
-    await page.waitForNavigation({timeout: 120000});
     await waitForChart(page);
     await login(page, process.env.VALID_USER, process.env.VALID_PASSWORD);
-    await page.waitForNavigation({timeout: 120000});
     await waitForChart(page);
     await page.click('.acc-info__wrapper .acc-info');
     await page.click('.dc-tabs__item:nth-child(2)');
@@ -44,7 +42,11 @@ test("[mobile] trader/buy-contract", async () => {
     await page.fill(".data-hj-whitelist", "Volatility");
     await page.click('text="Volatility 10 (1s) Index"');
     await page.click(".contract-type-widget__display");
+    await waitForChart(page);
     await page.click("#dt_contract_rise_fall_item");
+    await waitForChart(page);
     await waitForPurchaseBtnEnabled(page);
+    await page.waitForTimeout(5000);
     await page.click("#dt_purchase_call_price");
+    await page.waitForTimeout(5000);
 });

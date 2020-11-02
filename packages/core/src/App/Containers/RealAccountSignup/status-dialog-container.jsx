@@ -65,7 +65,7 @@ class StatusDialogContainer extends React.Component {
         const {
             landing_company_shortcode,
             currency,
-            onCancel,
+            closeModal,
             icon_size,
             switchToVirtual,
             is_isle_of_man_residence,
@@ -98,7 +98,7 @@ class StatusDialogContainer extends React.Component {
                 <DialogButtons
                     landing_company_shortcode={landing_company_shortcode}
                     status={this.status}
-                    closeModal={onCancel}
+                    closeModal={closeModal}
                     closeModalAndOpenPOI={this.closeModalAndOpenPOI}
                     closeModalAndOpenPOA={this.closeModalAndOpenPOA}
                     closeModalAndOpenCashier={this.closeModalAndOpenCashier}
@@ -111,6 +111,7 @@ class StatusDialogContainer extends React.Component {
 
 StatusDialogContainer.propTypes = {
     currency: PropTypes.string,
+    closeModal: PropTypes.func,
     has_cancel: PropTypes.bool,
     has_submit: PropTypes.bool,
     heading: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
@@ -121,7 +122,6 @@ StatusDialogContainer.propTypes = {
     is_belgium_residence: PropTypes.bool,
     is_real: PropTypes.bool,
     message: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    onCancel: PropTypes.func,
     onSubmit: PropTypes.func,
     text_submit: PropTypes.string,
 };

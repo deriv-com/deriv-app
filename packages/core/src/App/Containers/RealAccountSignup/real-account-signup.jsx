@@ -103,7 +103,10 @@ class RealAccountSignup extends React.Component {
                 },
                 {
                     body: () => (
-                        <StatusDialogContainer currency={this.props.state_value.currency} onCancel={this.closeModal} />
+                        <StatusDialogContainer
+                            currency={this.props.state_value.currency}
+                            closeModal={this.closeModal}
+                        />
                     ),
                 },
                 {

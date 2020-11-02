@@ -76,6 +76,15 @@ $header-height: 3.6em;
         & .dc-themed-scrollbars {
             height: 100%;
         }
+        & .dc-contract-card {
+            &__stop-loss {
+                & .dc-contract-card-item {
+                    &__header {
+                        padding-top: 0.8rem;
+                    }
+                }
+            }
+        }
     }
     &__footer {
         position: relative;

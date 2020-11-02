@@ -144,7 +144,6 @@ class MT5Dashboard extends React.Component {
             current_list,
             is_eu,
             is_eu_country,
-            is_eu_enabled,
             is_fully_authenticated,
             is_loading,
             is_logged_in,
@@ -196,7 +195,6 @@ class MT5Dashboard extends React.Component {
                                 <div label={localize('Demo account')}>
                                     <MT5DemoAccountDisplay
                                         is_eu={is_eu}
-                                        is_eu_enabled={is_eu_enabled} // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
                                         is_logged_in={is_logged_in}
                                         has_maltainvest_account={has_maltainvest_account}
                                         openAccountNeededModal={openAccountNeededModal}
@@ -217,7 +215,6 @@ class MT5Dashboard extends React.Component {
                                         )}
                                         <MT5RealAccountDisplay
                                             is_eu={is_eu}
-                                            is_eu_enabled={is_eu_enabled} // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
                                             is_eu_country={is_eu_country}
                                             is_logged_in={is_logged_in}
                                             has_maltainvest_account={has_maltainvest_account}
@@ -266,7 +263,6 @@ class MT5Dashboard extends React.Component {
                             {/*        is_eu={is_eu} */}
                             {/* TODO: remove eslint disable once this is uncommented */}
                             {/* eslint-disable-next-line max-len */}
-                            {/*        is_eu_enabled={is_eu_enabled} // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production */}
                             {/*        is_logged_in={is_logged_in} */}
                             {/*        has_maltainvest_account={has_maltainvest_account} */}
                             {/*        openAccountNeededModal={openAccountNeededModal} */}
@@ -288,7 +284,6 @@ class MT5Dashboard extends React.Component {
                             {/*            is_eu={is_eu} */}
                             {/* TODO: remove eslint disable once this is uncommented */}
                             {/* eslint-disable-next-line max-len */}
-                            {/*            is_eu_enabled={is_eu_enabled} // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production */}
                             {/*            is_eu_country={is_eu_country} */}
                             {/*            is_logged_in={is_logged_in} */}
                             {/*            has_maltainvest_account={has_maltainvest_account} */}
@@ -393,7 +388,6 @@ export default withRouter(
         current_list: modules.mt5.current_list,
         landing_companies: client.landing_companies,
         is_logged_in: client.is_logged_in,
-        is_eu_enabled: ui.is_eu_enabled, // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
         is_eu: client.is_eu,
         is_eu_country: client.is_eu_country,
         has_maltainvest_account: client.has_maltainvest_account,

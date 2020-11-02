@@ -11,7 +11,7 @@ import {
     extractInfoFromShortcode,
     showDigitalOptionsUnavailableError,
 } from '@deriv/shared';
-
+import throttle from 'lodash.throttle';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { isDigitContractType, isDigitTradeType } from 'Modules/Trading/Helpers/digits';
@@ -38,6 +38,7 @@ export default class TradeStore extends BaseStore {
     // Control values
     @observable is_trade_component_mounted = false;
     @observable is_purchase_enabled = false;
+    @observable is_purchasing_contract = false;
     @observable is_trade_enabled = false;
     @observable is_equal = 0;
 
@@ -517,6 +518,7 @@ export default class TradeStore extends BaseStore {
         if (!this.is_purchase_enabled) return;
         if (proposal_id) {
             this.is_purchase_enabled = false;
+            this.is_purchasing_contract = true;
             const is_tick_contract = this.duration_unit === 't';
             processPurchase(proposal_id, price).then(
                 action(response => {
@@ -572,6 +574,7 @@ export default class TradeStore extends BaseStore {
                             this.debouncedProposal();
                             this.clearLimitOrderBarriers();
                             this.pushPurchaseDataToGtm(contract_data);
+                            this.throttleDisableIsPurchasingContract();
                             return;
                         }
                     } else if (response.error) {
@@ -588,9 +591,17 @@ export default class TradeStore extends BaseStore {
                     this.forgetAllProposal();
                     this.purchase_info = response;
                     this.enablePurchase();
+                    this.throttleDisableIsPurchasingContract();
                 })
             );
         }
+    }
+
+    throttleDisableIsPurchasingContract = throttle(this.disableIsPurchasingContract, 100);
+
+    @action.bound
+    disableIsPurchasingContract() {
+        this.is_purchasing_contract = false;
     }
 
     @action.bound
@@ -879,7 +890,9 @@ export default class TradeStore extends BaseStore {
             this.validateAllProperties();
         }
 
-        this.enablePurchase();
+        if (!this.is_purchasing_contract) {
+            this.enablePurchase();
+        }
     }
 
     @action.bound

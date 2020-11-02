@@ -191,7 +191,9 @@ const OrderDetails = observer(({ onPageReturn }) => {
 });
 
 OrderDetails.propTypes = {
+    chat_channel_url: PropTypes.string,
     order_information: PropTypes.object,
+    setChatChannelUrl: PropTypes.func,
 };
 
 export default OrderDetails;

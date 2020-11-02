@@ -56,7 +56,6 @@ const Chat = observer(() => {
 
 Chat.displayName = 'Chat';
 Chat.propTypes = {
-    active_chat_channel: PropTypes.object,
     has_chat_error: PropTypes.bool,
     is_chat_loading: PropTypes.bool,
     initialiseChatWsConnection: PropTypes.func,

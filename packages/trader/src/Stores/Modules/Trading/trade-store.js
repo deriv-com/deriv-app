@@ -1,4 +1,5 @@
 import debounce from 'lodash.debounce';
+import throttle from 'lodash.throttle';
 import { action, computed, observable, reaction, runInAction, toJS, when } from 'mobx';
 import {
     isDesktop,
@@ -11,7 +12,6 @@ import {
     extractInfoFromShortcode,
     showDigitalOptionsUnavailableError,
 } from '@deriv/shared';
-import throttle from 'lodash.throttle';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { isDigitContractType, isDigitTradeType } from 'Modules/Trading/Helpers/digits';

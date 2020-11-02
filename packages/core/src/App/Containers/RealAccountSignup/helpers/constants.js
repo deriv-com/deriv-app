@@ -23,23 +23,25 @@ export const EXPERIAN = {
  * - Example:
  * getAccountTitle('malta') => 'Real Synthetic'
  *
- * @param {string} short_code - Landing company shortcode
+ * @param {string} landing_company_shortcode
  * @param {object} options
  * @return {string} localized title
  */
 export const getAccountTitle = (
-    short_code,
+    landing_company_shortcode,
     { is_isle_of_man_residence = false, is_belgium_residence = false } = {}
 ) => {
     // TODO: [deriv-eu] merge if statement and switch together once more residence cases are found.
-    if (is_isle_of_man_residence || is_belgium_residence) {
+    if (is_belgium_residence) {
         return localize('Real Synthetic');
+    } else if (is_isle_of_man_residence) {
+        return localize('Deriv account');
     }
 
-    switch (short_code) {
+    switch (landing_company_shortcode) {
         case 'svg':
-        case 'iom':
             return localize('Deriv account');
+        case 'iom':
         case 'malta':
             return localize('Deriv Synthetic');
         case 'maltainvest':

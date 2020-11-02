@@ -4,7 +4,7 @@ import { ToggleSwitch } from '@deriv/components';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
-import { useStores } from '../../../stores';
+import { useStores } from 'Stores';
 import './my-ads.scss';
 
 const ToggleAds = observer(() => {

@@ -10,7 +10,6 @@ import { height_constants } from 'Utils/height_constants';
 export default class MyAdsStore {
     constructor(root_store) {
         this.root_store = root_store;
-        this.general_store = this.root_store.general_store;
     }
 
     @observable adverts = [];
@@ -47,12 +46,12 @@ export default class MyAdsStore {
     getAccountStatus() {
         this.setIsLoading(true);
 
-        if (!this.general_store.is_advertiser) {
+        if (!this.root_store.general_store.is_advertiser) {
             requestWS({ get_account_status: 1 }).then(response => {
                 if (!response.error) {
                     const { get_account_status } = response;
                     const { status } = get_account_status.authentication.identity;
-                    this.general_store.setPoiStatus(status);
+                    this.root_store.general_store.setPoiStatus(status);
                 } else {
                     this.setErrorMessage(response.error);
                 }
@@ -122,13 +121,13 @@ export default class MyAdsStore {
     handleToggle() {
         requestWS({
             p2p_advertiser_update: 1,
-            is_listed: this.general_store.is_listed ? 0 : 1,
+            is_listed: this.root_store.general_store.is_listed ? 0 : 1,
         }).then(response => {
             if (response.error) {
                 this.setApiError(response.error.message);
             } else {
                 const { is_listed } = response.p2p_advertiser_update;
-                this.general_store.setIsListed(is_listed === 1);
+                this.root_store.general_store.setIsListed(is_listed === 1);
             }
         });
     }
@@ -146,7 +145,7 @@ export default class MyAdsStore {
                 showError({ error_message: response.error.message });
             } else {
                 // remove the deleted ad from the list of items
-                const updated_items = adverts.filter(ad => ad.id !== response.p2p_advert_update.id);
+                const updated_items = this.adverts.filter(ad => ad.id !== response.p2p_advert_update.id);
                 this.setAdverts(updated_items);
                 this.setShouldShowPopup(false);
             }
@@ -169,11 +168,11 @@ export default class MyAdsStore {
         requestWS({
             p2p_advertiser_adverts: 1,
             offset: start_idx,
-            limit: this.general_store.list_item_limit,
+            limit: this.root_store.general_store.list_item_limit,
         }).then(response => {
             if (!response.error) {
                 const { list } = response.p2p_advertiser_adverts;
-                this.setHasMoreItemsToLoad(list.length >= this.general_store.list_item_limit);
+                this.setHasMoreItemsToLoad(list.length >= this.root_store.general_store.list_item_limit);
                 this.setAdverts(this.adverts.concat(list));
                 this.setItemOffset((this.item_offset += list.length));
             } else {
@@ -287,7 +286,7 @@ export default class MyAdsStore {
                 v =>
                     v > 0 &&
                     decimalValidator(v) &&
-                    countDecimalPlaces(v) <= getDecimalPlaces(this.general_store.client.currency),
+                    countDecimalPlaces(v) <= getDecimalPlaces(this.root_store.general_store.client.currency),
                 v => (values.offer_amount ? +v <= values.offer_amount : true),
                 v => (values.min_transaction ? +v >= values.min_transaction : true),
             ],
@@ -297,7 +296,7 @@ export default class MyAdsStore {
                 v =>
                     v > 0 &&
                     decimalValidator(v) &&
-                    countDecimalPlaces(v) <= getDecimalPlaces(this.general_store.client.currency),
+                    countDecimalPlaces(v) <= getDecimalPlaces(this.root_store.general_store.client.currency),
                 v => (values.offer_amount ? +v <= values.offer_amount : true),
                 v => (values.max_transaction ? +v <= values.max_transaction : true),
             ],
@@ -310,7 +309,7 @@ export default class MyAdsStore {
                 v =>
                     v > 0 &&
                     decimalValidator(v) &&
-                    countDecimalPlaces(v) <= getDecimalPlaces(this.general_store.client.currency),
+                    countDecimalPlaces(v) <= getDecimalPlaces(this.root_store.general_store.client.currency),
                 v => (values.min_transaction ? +v >= values.min_transaction : true),
                 v => (values.max_transaction ? +v >= values.max_transaction : true),
             ],
@@ -320,7 +319,7 @@ export default class MyAdsStore {
                 v =>
                     v > 0 &&
                     decimalValidator(v) &&
-                    countDecimalPlaces(v) <= this.general_store.client.local_currency_config.decimal_places,
+                    countDecimalPlaces(v) <= this.root_store.general_store.client.local_currency_config.decimal_places,
             ],
         };
 

@@ -7,19 +7,13 @@ import { localize } from 'Components/i18next';
 export default class OrderDetailsStore {
     constructor(root_store) {
         this.root_store = root_store;
-        this.general_store = this.root_store.general_store;
     }
 
-    @observable channel_url = this.root_store.order_store.order_information?.chat_channel_url;
+    @observable chat_channel_url = '';
     @observable interval = null;
     @observable popup_options = {};
     @observable remaining_time;
     @observable should_show_popup = false;
-
-    @action.bound
-    clearIntervalState() {
-        clearInterval(this.interval);
-    }
 
     @action.bound
     countDownTimer() {
@@ -38,8 +32,8 @@ export default class OrderDetailsStore {
 
     @action.bound
     createChatForNewOrder(id) {
-        if (!this.channel_url) {
-            // If order_information doesn't have channel_url this is a new order
+        if (!this.chat_channel_url) {
+            // If order_information doesn't have chat_channel_url this is a new order
             // and we need to instruct BE to create a chat on Sendbird's side.
             requestWS({ p2p_chat_create: 1, order_id: id }).then(response => {
                 if (response.error) {
@@ -47,7 +41,7 @@ export default class OrderDetailsStore {
                     return;
                 }
 
-                this.setChannelUrl(response.p2p_chat_create);
+                this.setChatChannelUrl(response.p2p_chat_create);
             });
         }
     }
@@ -64,14 +58,8 @@ export default class OrderDetailsStore {
     }
 
     @action.bound
-    onMountTimer() {
-        this.countDownTimer();
-        this.setIntervalState(setInterval(this.countDownTimer, 1000));
-    }
-
-    @action.bound
-    setChannelUrl(channel_url) {
-        this.channel_url = channel_url;
+    setChatChannelUrl(chat_channel_url) {
+        this.chat_channel_url = chat_channel_url;
     }
 
     @action.bound

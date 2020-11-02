@@ -88,7 +88,7 @@ const BuySell = observer(() => {
                             handleConfirm={buy_sell_store.onConfirmClick}
                             setIsSubmitDisabled={buy_sell_store.setIsSubmitDisabled}
                             setErrorMessage={buy_sell_store.setErrorMessage}
-                            setSubmitForm={buy_sell_store.setSubmitForm}
+                            setSubmitForm={buy_sell_store.setSubmitFormFn}
                         />
                     </Modal.Body>
                 </ThemedScrollbars>

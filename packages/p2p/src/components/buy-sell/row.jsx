@@ -83,6 +83,7 @@ export const RowComponent = observer(({ data: advert, style }) => {
 
 RowComponent.propTypes = {
     advert: PropTypes.object,
+    advertiser_id: PropTypes.string,
     is_buy: PropTypes.bool,
     setSelectedAdvert: PropTypes.func,
     showAdvertiserPage: PropTypes.func,

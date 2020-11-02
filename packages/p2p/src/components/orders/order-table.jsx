@@ -13,12 +13,12 @@ const OrderTable = observer(() => {
         {
             text: localize('Active order'),
             value: order_list.ACTIVE,
-            count: general_store.active_notification_count,
+            count: general_store?.active_notification_count,
         },
         {
             text: localize('Past order'),
             value: order_list.INACTIVE,
-            count: general_store.inactive_notification_count,
+            count: general_store?.inactive_notification_count,
         },
     ];
     return (

@@ -20,6 +20,7 @@ const OrderDetails = observer(() => {
         account_currency,
         advert_details,
         amount_display,
+        chat_channel_url: order_channel_url,
         contact_info,
         has_timer_expired,
         id,
@@ -40,6 +41,9 @@ const OrderDetails = observer(() => {
     } = order_store.order_information;
 
     React.useEffect(() => {
+        if (order_channel_url) {
+            order_details_store.setChatChannelUrl(order_channel_url);
+        }
         order_details_store.createChatForNewOrder(id);
     }, []);
 
@@ -114,7 +118,7 @@ const OrderDetails = observer(() => {
                     </ThemedScrollbars>
                     {should_show_order_footer && <OrderDetailsFooter cancelPopup={order_details_store.onCancelClick} />}
                 </div>
-                {order_details_store.channel_url && <OrderDetailsChatbox {...general_store.chat_info} />}
+                {order_details_store.chat_channel_url && <OrderDetailsChatbox {...general_store.chat_info} />}
                 <Popup
                     {...order_details_store.popup_options}
                     onCancel={order_details_store.onCancelClick}
@@ -127,11 +131,13 @@ const OrderDetails = observer(() => {
 });
 
 OrderDetails.propTypes = {
+    chat_channel_url: PropTypes.string,
     chat_info: PropTypes.object,
     createChatForNewOrder: PropTypes.func,
     order_information: PropTypes.object,
     onCancelClick: PropTypes.func,
     popup_options: PropTypes.object,
+    setChatChannelUrl: PropTypes.func,
     setShouldShowPopup: PropTypes.func,
     should_show_popup: PropTypes.bool,
 };

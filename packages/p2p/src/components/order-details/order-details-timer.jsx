@@ -10,8 +10,9 @@ const OrderDetailsTimer = observer(() => {
     const { should_show_order_timer } = order_store.order_information;
 
     React.useEffect(() => {
-        order_details_store.onMountTimer();
-        return () => order_details_store.clearIntervalState();
+        order_details_store.countDownTimer();
+        order_details_store.setIntervalState(setInterval(order_details_store.countDownTimer, 1000));
+        return () => clearInterval(order_details_store.interval);
     }, []);
 
     if (should_show_order_timer) {
@@ -23,14 +24,14 @@ const OrderDetailsTimer = observer(() => {
         );
     }
 
-    order_details_store.clearIntervalState();
+    clearInterval(order_details_store.interval);
     return null;
 });
 
 OrderDetailsTimer.propTypes = {
-    clearIntervalState: PropTypes.func,
-    onMountTimer: PropTypes.func,
+    countDownTimer: PropTypes.func,
     order_information: PropTypes.object,
+    setIntervalState: PropTypes.func,
 };
 
 export default OrderDetailsTimer;

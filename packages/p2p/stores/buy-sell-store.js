@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { action, computed, observable } from 'mobx';
 import { localize } from 'Components/i18next';
 import { height_constants } from 'Utils/height_constants';
 import { requestWS } from 'Utils/websocket';
@@ -10,7 +10,6 @@ import { countDecimalPlaces } from 'Utils/string';
 export default class BuySellStore {
     constructor(root_store) {
         this.root_store = root_store;
-        this.general_store = this.root_store.general_store;
     }
 
     @observable api_error_message = '';
@@ -30,7 +29,7 @@ export default class BuySellStore {
     @observable submitForm = () => {};
     @observable table_type = buy_sell.BUY;
 
-    form_props = {};
+    @observable form_props = {};
     height_values = [
         height_constants.screen,
         height_constants.core_header,
@@ -50,22 +49,27 @@ export default class BuySellStore {
     is_buy = this.table_type === buy_sell.BUY;
     item_height = 56;
 
+    @computed
     get account_currency() {
         return this.advert?.account_currency;
     }
 
+    @computed
     get advert() {
         return this.form_props?.advert;
     }
 
+    @computed
     get is_buy_advert() {
         return this.advert?.counterparty_type === buy_sell.BUY;
     }
 
+    @computed
     get is_sell_advert() {
         return this.advert?.counterparty_type === buy_sell.SELL;
     }
 
+    @computed
     get modal_title() {
         if (this.is_buy_advert) {
             return localize('Buy {{ account_currency }}', { account_currency: this.account_currency });
@@ -138,11 +142,11 @@ export default class BuySellStore {
             p2p_advert_list: 1,
             counterparty_type: this.table_type,
             offset: this.item_offset,
-            limit: this.general_store.list_item_limit,
+            limit: this.root_store.general_store.list_item_limit,
         }).then(response => {
             if (!response.error) {
                 const { list } = response.p2p_advert_list;
-                this.setHasMoreItemsToLoad(list.length >= this.general_store.list_item_limit);
+                this.setHasMoreItemsToLoad(list.length >= this.root_store.general_store.list_item_limit);
                 this.setItems(list);
                 this.setItemOffset((this.item_offset += list.length));
             } else {
@@ -164,8 +168,8 @@ export default class BuySellStore {
 
     @action.bound
     onConfirmClick(order_info) {
-        this.general_store.props.setOrderId(order_info.id);
-        this.general_store.redirectTo('orders', { nav: { location: 'buy_sell' } });
+        this.root_store.general_store.props.setOrderId(order_info.id);
+        this.root_store.general_store.redirectTo('orders', { nav: { location: 'buy_sell' } });
     }
 
     @action.bound
@@ -252,18 +256,13 @@ export default class BuySellStore {
     }
 
     @action.bound
-    setSubmitFormState(submitForm) {
-        this.submitForm = submitForm;
-    }
-
-    @action.bound
     setTableType(table_type) {
         this.table_type = table_type;
     }
 
     @action.bound
     setSelectedAdvert(selected_advert) {
-        if (!this.general_store.is_advertiser) {
+        if (!this.root_store.general_store.is_advertiser) {
             this.setShouldShowVerification(true);
         } else {
             this.setSelectedAdState(selected_advert);
@@ -272,8 +271,8 @@ export default class BuySellStore {
     }
 
     @action.bound
-    setSubmitForm(submitFormFn) {
-        this.setSubmitFormState(submitFormFn);
+    setSubmitFormFn(submitFormFn) {
+        this.submitForm = submitFormFn;
     }
 
     @action.bound

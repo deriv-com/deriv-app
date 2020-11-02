@@ -19,7 +19,7 @@ const BuySellForm = observer(props => {
         min_order_amount_limit,
         min_order_amount_limit_display,
         price,
-    } = buy_sell_store.advert;
+    } = buy_sell_store?.advert;
 
     React.useEffect(() => {
         buy_sell_store.setInitialReceiveAmount();

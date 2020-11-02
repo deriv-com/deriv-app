@@ -1,4 +1,4 @@
-import { observable, action, runInAction } from 'mobx';
+import { action, computed, observable, runInAction } from 'mobx';
 import { epochToMoment, getSocketURL, isEmptyObject, mobileOSDetect, routes } from '@deriv/shared';
 import { localize, Localize } from 'Components/i18next';
 import { createExtendedOrderDetails } from 'Utils/orders.js';
@@ -43,10 +43,12 @@ export default class GeneralStore {
     ws_subscriptions = {};
     service_token_timeout;
 
+    @computed
     get client() {
         return this.props?.client || {};
     }
 
+    @computed
     get is_active_tab() {
         return this.order_table_type === order_list.ACTIVE;
     }
@@ -139,7 +141,7 @@ export default class GeneralStore {
     }
 
     @action.bound
-    verification_checklist = () => [
+    getVerificationChecklist = () => [
         {
             content: this.nickname || <Localize i18n_default_text='Choose your nickname' />,
             status: this.nickname ? 'done' : 'action',

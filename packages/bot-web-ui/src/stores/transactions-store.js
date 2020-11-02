@@ -1,4 +1,5 @@
 import { action, observable, reaction } from 'mobx';
+import LZString from 'lz-string';
 import { formatDate, isEnded } from '@deriv/shared';
 import { transaction_elements } from '../constants/transactions';
 
@@ -16,7 +17,10 @@ export default class TransactionsStore {
                 const new_elements = { transaction_elements: elements };
                 stored_transactions[client.loginid] = new_elements;
 
-                sessionStorage.setItem(this.transaction_storage_key, JSON.stringify(stored_transactions));
+                sessionStorage.setItem(
+                    this.transaction_storage_key,
+                    LZString.compress(JSON.stringify(stored_transactions))
+                );
             }
         );
     }
@@ -27,7 +31,7 @@ export default class TransactionsStore {
     @observable active_transaction_id = null;
 
     getTransactionSessionStorage = () => {
-        return JSON.parse(sessionStorage.getItem(this.transaction_storage_key)) ?? {};
+        return JSON.parse(LZString.decompress(sessionStorage.getItem(this.transaction_storage_key))) ?? {};
     };
 
     @action.bound

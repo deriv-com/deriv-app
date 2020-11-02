@@ -1,4 +1,5 @@
 import { observable, action, computed, reaction } from 'mobx';
+import LZString from 'lz-string';
 import { localize } from '@deriv/translations';
 import { formatDate } from '@deriv/shared';
 import { message_types } from '@deriv/bot-skeleton';
@@ -21,7 +22,7 @@ export default class JournalStore {
                 const new_messages = { journal_messages: messages };
                 stored_journals[client.loginid] = new_messages;
 
-                sessionStorage.setItem(this.journal_storage_key, JSON.stringify(stored_journals));
+                sessionStorage.setItem(this.journal_storage_key, LZString.compress(JSON.stringify(stored_journals)));
             }
         );
     }
@@ -50,7 +51,7 @@ export default class JournalStore {
     @observable journal_filters = getSetting('journal_filter') || this.filters.map(filter => filter.id);
 
     getJournalSessionStorage = () => {
-        return JSON.parse(sessionStorage.getItem(this.journal_storage_key)) ?? {};
+        return JSON.parse(LZString.decompress(sessionStorage.getItem(this.journal_storage_key))) ?? {};
     };
 
     @action.bound

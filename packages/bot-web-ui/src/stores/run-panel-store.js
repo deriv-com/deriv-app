@@ -1,4 +1,5 @@
 import { observable, action, reaction, computed, runInAction } from 'mobx';
+import LZString from 'lz-string';
 import { localize } from '@deriv/translations';
 import { error_types, unrecoverable_errors, observer, message_types } from '@deriv/bot-skeleton';
 import { contract_stages } from '../constants/contract-stage';
@@ -30,7 +31,10 @@ export default class RunPanelStore {
                 const new_statistics = { statistics };
                 stored_statistics[client.loginid] = new_statistics;
 
-                sessionStorage.setItem(this.statistics_storage_key, JSON.stringify(stored_statistics));
+                sessionStorage.setItem(
+                    this.statistics_storage_key,
+                    LZString.compress(JSON.stringify(stored_statistics))
+                );
             }
         );
 
@@ -85,7 +89,7 @@ export default class RunPanelStore {
     error_type = undefined;
 
     getSessionStorage = key => {
-        return JSON.parse(sessionStorage.getItem(key)) ?? {};
+        return JSON.parse(LZString.decompress(sessionStorage.getItem(key))) ?? {};
     };
 
     getAccountStatisticsInfo = (key, type) => {

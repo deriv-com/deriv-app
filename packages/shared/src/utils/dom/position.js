@@ -1,7 +1,7 @@
 const getMaxHeightByAligningBottom = ({ parent_rect, child_height }) =>
     parent_rect.top + parent_rect.height + child_height;
 
-const getMinHeightByAligningTop = ({ alignment_ref_rect, child_height }) => alignment_ref_rect.top - child_height;
+const getMinHeightByAligningTop = ({ parent_rect, child_height }) => parent_rect.top - child_height;
 
 export const getPosition = ({ preferred_alignment = 'bottom', child_el, parent_el }) => {
     const parent_rect = parent_el.getBoundingClientRect();

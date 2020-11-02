@@ -258,6 +258,7 @@ const OrderDetailsFooter = ({ order_information }) => {
         is_my_ad,
         is_sell_order,
         should_show_cancel_and_paid_button,
+        should_show_complain_and_received_button,
         should_show_only_received_button,
         should_show_only_complain_button,
     } = order_information;
@@ -276,26 +277,6 @@ const OrderDetailsFooter = ({ order_information }) => {
 
     const hideConfirmOrderModal = () => setShouldShowConfirmModal(false);
     const showConfirmOrderModal = () => setShouldShowConfirmModal(true);
-
-    if (should_show_only_received_button) {
-        return (
-            <React.Fragment>
-                <div className='order-details__footer'>
-                    <div className='order-details__footer--right'>
-                        <Button large primary onClick={showConfirmOrderModal}>
-                            <Localize i18n_default_text="I've received payment" />
-                        </Button>
-                    </div>
-                </div>
-                <ConfirmOrderModal
-                    order_information={order_information}
-                    is_buy_order_for_user={is_buy_order_for_user}
-                    hideConfirmOrderModal={hideConfirmOrderModal}
-                    should_show_confirm_modal={should_show_confirm_modal}
-                />
-            </React.Fragment>
-        );
-    }
 
     if (should_show_cancel_and_paid_button) {
         return (
@@ -327,6 +308,37 @@ const OrderDetailsFooter = ({ order_information }) => {
         );
     }
 
+    if (should_show_complain_and_received_button) {
+        return (
+            <React.Fragment>
+                <div className='order-details__footer'>
+                    <div className='order-details__footer--left'>
+                        <Button large tertiary onClick={showComplainOrderModal}>
+                            <Localize i18n_default_text='Complain' />
+                        </Button>
+                    </div>
+                    <div className='order-details__footer--right'>
+                        <Button large primary onClick={showConfirmOrderModal}>
+                            <Localize i18n_default_text="I've received payment" />
+                        </Button>
+                    </div>
+                </div>
+                <ComplainOrderModal
+                    id={order_information.id}
+                    is_buy_order_for_user={is_buy_order_for_user}
+                    hideComplainOrderModal={hideComplainOrderModal}
+                    should_show_complain_modal={should_show_complain_modal}
+                />
+                <ConfirmOrderModal
+                    order_information={order_information}
+                    is_buy_order_for_user={is_buy_order_for_user}
+                    hideConfirmOrderModal={hideConfirmOrderModal}
+                    should_show_confirm_modal={should_show_confirm_modal}
+                />
+            </React.Fragment>
+        );
+    }
+
     if (should_show_only_complain_button) {
         return (
             <React.Fragment>
@@ -347,6 +359,26 @@ const OrderDetailsFooter = ({ order_information }) => {
                     is_buy_order_for_user={is_buy_order_for_user}
                     hideComplainOrderModal={hideComplainOrderModal}
                     should_show_complain_modal={should_show_complain_modal}
+                />
+            </React.Fragment>
+        );
+    }
+
+    if (should_show_only_received_button) {
+        return (
+            <React.Fragment>
+                <div className='order-details__footer'>
+                    <div className='order-details__footer--right'>
+                        <Button large primary onClick={showConfirmOrderModal}>
+                            <Localize i18n_default_text="I've received payment" />
+                        </Button>
+                    </div>
+                </div>
+                <ConfirmOrderModal
+                    order_information={order_information}
+                    is_buy_order_for_user={is_buy_order_for_user}
+                    hideConfirmOrderModal={hideConfirmOrderModal}
+                    should_show_confirm_modal={should_show_confirm_modal}
                 />
             </React.Fragment>
         );

@@ -185,14 +185,18 @@ class ExtendedOrderDetails {
 
     get status_string() {
         // Finalised orders, should take precedence over is_expired_order/has_timer_expired.
-        if (this.is_completed_order) {
+        if (this.is_completed_order || this.is_dispute_completed_order) {
             return localize('Completed');
         }
         if (this.is_buyer_cancelled_order) {
             return localize('Cancelled');
         }
-        if (this.is_refunded_order) {
+        if (this.is_refunded_order || this.is_dispute_refunded_order) {
             return localize('Expired');
+        }
+
+        if (this.is_disputed_order) {
+            return localize('Under dispute');
         }
 
         // Keep this here, has_timer_expired should take priority over statuses below.

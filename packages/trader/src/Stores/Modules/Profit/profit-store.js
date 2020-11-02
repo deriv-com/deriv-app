@@ -83,7 +83,7 @@ export default class ProfitTableStore extends BaseStore {
     }
 
     fetchOnScroll = debounce(left => {
-        if (left < 2000) {
+        if (left < 1500) {
             this.fetchNextBatch();
         }
     }, delay_on_scroll_time);

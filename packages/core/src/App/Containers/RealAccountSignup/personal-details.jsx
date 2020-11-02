@@ -226,6 +226,7 @@ class PersonalDetails extends React.Component {
                                                                             true
                                                                         )
                                                                     }
+                                                                    list_portal_id='modal_root'
                                                                     required
                                                                 />
                                                             </DesktopWrapper>
@@ -284,6 +285,7 @@ class PersonalDetails extends React.Component {
                                                                             true
                                                                         )
                                                                     }
+                                                                    list_portal_id='modal_root'
                                                                     required
                                                                 />
                                                             </DesktopWrapper>
@@ -356,6 +358,7 @@ class PersonalDetails extends React.Component {
                                                                                     true
                                                                                 )
                                                                             }
+                                                                            list_portal_id='modal_root'
                                                                         />
                                                                     </DesktopWrapper>
                                                                     <MobileWrapper>

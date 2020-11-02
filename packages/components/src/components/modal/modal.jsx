@@ -38,6 +38,8 @@ const ModalElement = ({
 
     const is_datepicker_visible = () => modal_root_ref.current.querySelectorAll('.dc-datepicker__picker').length;
     const is_dialog_visible = () => modal_root_ref.current.querySelectorAll('.dc-mobile-dialog').length;
+    const is_dropdown_visible = () => modal_root_ref.current.querySelectorAll('.dc-dropdown-list').length;
+    const is_dropdown_list_visible = () => modal_root_ref.current.querySelectorAll('.dc-dropdown__list').length;
 
     const validateClickOutside = e => {
         const is_absolute_modal_visible = document.getElementById('modal_root_absolute')?.hasChildNodes();
@@ -46,6 +48,8 @@ const ModalElement = ({
             has_close_icon &&
             !is_datepicker_visible() &&
             !is_dialog_visible() &&
+            !is_dropdown_visible() &&
+            !is_dropdown_list_visible() &&
             is_open &&
             !is_absolute_modal_visible &&
             !(elements_to_ignore && path?.find(el => elements_to_ignore.includes(el)))

@@ -1,10 +1,7 @@
 &__footer {
     background-color: var(--general-main-1);
+    border-top: 2px solid var(--general-section-1);
     max-height: 33.333%;
-
-    @include mobile {
-        border-top: 2px solid var(--general-section-1);
-    }
 
     &--empty {
         margin-top: auto;

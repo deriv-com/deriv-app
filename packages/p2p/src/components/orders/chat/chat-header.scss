@@ -1,11 +1,11 @@
 &__header {
-    height: 76px;
     display: flex;
+    height: 76px;
 
     @include tablet-up {
         border-top-left-radius: $BORDER_RADIUS;
         border-top-right-radius: $BORDER_RADIUS;
-        background-color: var(--general-section-1);
+        background-color: var(--general-section-2);
     }
 
     @include mobile {

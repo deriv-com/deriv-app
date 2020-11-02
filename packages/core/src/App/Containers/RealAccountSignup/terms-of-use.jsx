@@ -42,7 +42,7 @@ class TermsOfUse extends React.Component {
                                 <ThemedScrollbars is_bypassed={isMobile()} height={height - 72}>
                                     <Div100vhContainer
                                         className='terms-of-use'
-                                        height_offset='169px'
+                                        height_offset='110px'
                                         is_disabled={isDesktop()}
                                     >
                                         <BrokerSpecificMessage target={this.props.real_account_signup_target} />

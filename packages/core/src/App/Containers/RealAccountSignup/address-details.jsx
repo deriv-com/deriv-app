@@ -103,7 +103,7 @@ class AddressDetails extends React.Component {
                             <form ref={setRef} onSubmit={handleSubmit}>
                                 <Div100vhContainer
                                     className='details-form'
-                                    height_offset='179px'
+                                    height_offset='110px'
                                     is_disabled={isDesktop()}
                                 >
                                     <p className='details-form__description'>

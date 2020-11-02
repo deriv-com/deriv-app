@@ -1,10 +1,15 @@
 .my-profile {
+    &__content {
+        @include mobile {
+            margin-bottom: 10rem;
+        }
+    }
     &__error {
         color: var(--text-loss-danger);
         font-size: var(--text-size-xs);
     }
     &__scrollbar {
-        height: calc(100% - 150px);
+        height: calc(100% - 15rem);
         position: absolute;
         width: calc(100% - 4.8rem);
     }
@@ -13,6 +18,9 @@
         height: fit-content;
         justify-content: space-between;
         width: 657px;
+        @include mobile {
+            margin: 1.6rem;
+        }
 
         &-avatar {
             align-items: center;
@@ -60,17 +68,31 @@
         margin: 2.4rem 0;
         width: 657px;
 
+        @include mobile {
+            width: 100vw;
+            grid-template-columns: unset;
+            justify-content: space-between;
+        }
+
         &-cell {
             display: block;
             text-align: center;
             width: 158px;
+            @include mobile {
+                width: unset;
+                margin: 0 1.6rem;
+            }
 
             &-header {
                 color: var(--text-less-prominent);
                 font-size: var(--text-size-xs);
                 line-height: 20px;
+                @include mobile {
+                    font-size: var(--text-size-xxxs);
+                }
             }
             &-info {
+                color: var(--text-prominent);
                 font-size: var(--text-size-s);
                 font-weight: bold;
                 line-height: 24px;
@@ -81,6 +103,11 @@
         }
     }
     &__popover {
+        &-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
         &-icon {
             margin: 0 0.8rem;
         }
@@ -96,6 +123,10 @@
             display: flex;
             font-size: var(--text-size-xs);
             font-weight: bold;
+            @include mobile {
+                margin-left: 1.6rem;
+                width: max-content;
+            }
         }
         &-horizontal_line {
             align-self: center;
@@ -104,10 +135,41 @@
             width: 564px;
         }
     }
+    &__privacy-setting {
+        & > .dc-toggle-switch:checked + .dc-toggle-switch__label .dc-toggle-switch__button {
+            left: calc(100% - 0.2rem);
+        }
+        @include mobile {
+            display: flex;
+            justify-content: flex-start;
+            width: 100vw;
+            margin: 1.6rem;
+            &-text {
+                color: var(--text-prominent);
+                align-self: center;
+                margin-left: 1.6rem;
+                font-size: var(--text-size-xs);
+            }
+            &-switch {
+                width: 3.2rem;
+                height: 1.7rem;
+                &-button {
+                    width: 1.3rem;
+                    top: 0.2rem;
+                    left: 0.1rem;
+                }
+            }
+        }
+    }
     &__form {
         &-textarea {
             margin-top: 2.5rem;
             width: 657px;
+            @include mobile {
+                width: calc(100vw - 3.2rem);
+                margin-left: 1.6rem;
+                margin-right: 1.6rem;
+            }
 
             .dc-input__hint {
                 top: 9.7rem;
@@ -124,10 +186,38 @@
         left: unset;
         position: fixed;
         width: 657px;
+        @include mobile {
+            background-color: var(--general-main-1);
+            width: 100vw;
+            bottom: 0px;
+        }
+        &--inherit {
+            position: inherit;
+            bottom: unset;
+        }
 
         &-button {
             float: right;
             margin: 1.6rem 2.4rem;
+        }
+    }
+}
+.p2p-cashier__advertiser-tab {
+    @include mobile {
+        .dc-tabs {
+            &__item {
+                padding: 0px 1.6rem;
+            }
+            &__list {
+                position: fixed;
+                margin-bottom: unset !important;
+                background-color: var(--general-main-1);
+                z-index: 2;
+                width: 100%;
+            }
+            &__content {
+                margin-top: 4rem;
+            }
         }
     }
 }

@@ -67,8 +67,8 @@ const Autocomplete = React.memo(props => {
         if (list_wrapper_ref.current && list_portal_id && should_show_list) {
             const position_style = getPosition({
                 preferred_alignment: is_alignment_top ? 'top' : 'bottom',
-                ref_el: input_wrapper_ref.current,
-                target_el: list_wrapper_ref.current,
+                parent_el: input_wrapper_ref.current,
+                child_el: list_wrapper_ref.current,
             });
 
             setStyle(position_style);

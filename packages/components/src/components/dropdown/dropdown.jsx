@@ -29,7 +29,7 @@ const DropdownList = React.forwardRef((props, list_ref) => {
         onKeyPressed,
         portal_id,
         value,
-        target_ref,
+        dropdown_ref,
     } = props;
 
     const [list_dimensions, setListDimensions] = React.useState([initial_offset, 0]);
@@ -37,15 +37,15 @@ const DropdownList = React.forwardRef((props, list_ref) => {
     const is_portal = !!portal_id;
 
     React.useEffect(() => {
-        if (target_ref.current && portal_id && is_list_visible) {
+        if (dropdown_ref.current && portal_id && is_list_visible) {
             const position_style = getPosition({
                 preferred_alignment: is_alignment_top ? 'top' : 'bottom',
-                ref_el: target_ref.current,
-                target_el: list_ref.current,
+                parent_el: dropdown_ref.current,
+                child_el: list_ref.current,
             });
             setStyle(position_style);
         }
-    }, [is_list_visible, portal_id, list.length, target_ref, list_dimensions]);
+    }, [is_list_visible, portal_id, list.length, dropdown_ref, list_dimensions]);
 
     /**
      * Calculate the offset for the dropdown list based on its width
@@ -416,7 +416,7 @@ const Dropdown = ({
                             nodes={nodes}
                             onKeyPressed={onKeyPressed}
                             value={value}
-                            target_ref={dropdown_ref}
+                            dropdown_ref={dropdown_ref}
                         />
                     )}
                 </div>

@@ -51,7 +51,11 @@ export default class JournalStore {
     @observable journal_filters = getSetting('journal_filter') || this.filters.map(filter => filter.id);
 
     getJournalSessionStorage = () => {
-        return JSON.parse(LZString.decompress(sessionStorage.getItem(this.journal_storage_key))) ?? {};
+        try {
+            return JSON.parse(LZString.decompress(sessionStorage.getItem(this.journal_storage_key)));
+        } catch (e) {
+            return {};
+        }
     };
 
     @action.bound

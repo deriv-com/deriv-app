@@ -31,7 +31,11 @@ export default class TransactionsStore {
     @observable active_transaction_id = null;
 
     getTransactionSessionStorage = () => {
-        return JSON.parse(LZString.decompress(sessionStorage.getItem(this.transaction_storage_key))) ?? {};
+        try {
+            return JSON.parse(LZString.decompress(sessionStorage.getItem(this.transaction_storage_key)));
+        } catch (e) {
+            return {};
+        }
     };
 
     @action.bound

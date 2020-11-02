@@ -89,7 +89,11 @@ export default class RunPanelStore {
     error_type = undefined;
 
     getSessionStorage = key => {
-        return JSON.parse(LZString.decompress(sessionStorage.getItem(key))) ?? {};
+        try {
+            return JSON.parse(LZString.decompress(sessionStorage.getItem(key)));
+        } catch (e) {
+            return {};
+        }
     };
 
     getAccountStatisticsInfo = (key, type) => {

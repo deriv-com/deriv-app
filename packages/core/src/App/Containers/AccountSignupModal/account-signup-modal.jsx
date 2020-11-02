@@ -131,7 +131,7 @@ class AccountSignup extends React.Component {
                                     </ResidenceForm>
                                 ) : (
                                     <div className='account-signup__password-selection'>
-                                        <Text as='p' weigh='bold' className='account-signup__heading'>
+                                        <Text as='p' weight='bold' className='account-signup__heading'>
                                             <Localize i18n_default_text='Keep your account secure with a password' />
                                         </Text>
                                         <Field name='password'>

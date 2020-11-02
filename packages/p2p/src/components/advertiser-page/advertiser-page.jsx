@@ -3,6 +3,7 @@ import { Button, Icon, Loading, Modal, Popover, Table, Tabs, ThemedScrollbars } 
 import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { isMobile } from '@deriv/shared';
 import { generateHexColourFromNickname } from 'Utils/string';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { useStores } from 'Stores';
@@ -17,7 +18,6 @@ import './advertiser-page.scss';
 const RowComponent = React.memo(({ data: advert, showAdPopup, style }) => {
     const { advertiser_page_store, general_store } = useStores();
     const { currency } = general_store.client;
-    const { is_mobile } = general_store.props;
 
     const { local_currency, max_order_amount_limit_display, min_order_amount_limit_display, price_display } = advert;
 
@@ -28,10 +28,10 @@ const RowComponent = React.memo(({ data: advert, showAdPopup, style }) => {
         <div style={style}>
             <Table.Row
                 className={classNames('advertiser-page__adverts-table_row', {
-                    'advertiser-page__adverts-table_row--mobile': is_mobile,
+                    'advertiser-page__adverts-table_row--mobile': isMobile(),
                 })}
             >
-                {is_mobile ? (
+                {isMobile() ? (
                     <React.Fragment>
                         <Table.Cell className='advertiser-page__cell--mobile'>
                             <div className='advertiser-page__cell-rate'>
@@ -72,7 +72,7 @@ const RowComponent = React.memo(({ data: advert, showAdPopup, style }) => {
                 ) : (
                     <Table.Cell
                         className={classNames('advertiser-page__adverts-button', {
-                            'advertiser-page__adverts-button--mobile': is_mobile,
+                            'advertiser-page__adverts-button--mobile': isMobile(),
                         })}
                     >
                         <Button primary small onClick={() => showAdPopup(advert)}>
@@ -89,7 +89,6 @@ RowComponent.displayName = 'RowComponent';
 
 const AdvertiserPage = observer(props => {
     const { advertiser_page_store, general_store } = useStores();
-    const { is_mobile } = general_store.props;
 
     advertiser_page_store.setAdvertiserPageProps(props);
 
@@ -171,7 +170,7 @@ const AdvertiserPage = observer(props => {
                 <div className='advertiser-page__header'>
                     <div
                         className={classNames('advertiser-page__header-details', {
-                            'advertiser-page__header-details--mobile': is_mobile,
+                            'advertiser-page__header-details--mobile': isMobile(),
                         })}
                     >
                         <div
@@ -190,20 +189,20 @@ const AdvertiserPage = observer(props => {
                     </div>
                     <div
                         className={classNames('advertiser-page__header-verification', {
-                            'advertiser-page__header-verification--mobile': is_mobile,
+                            'advertiser-page__header-verification--mobile': isMobile(),
                         })}
                     >
                         {basic_verification ? (
                             <div
                                 className={classNames('', {
-                                    'advertiser-page__header-verification-id': is_mobile,
+                                    'advertiser-page__header-verification-id': isMobile(),
                                 })}
                             >
                                 {localize('ID verified')}
                                 <Icon
                                     className='advertiser-page__header-verification-icon'
                                     icon='IcCashierVerificationBadge'
-                                    size={is_mobile ? 12 : 16}
+                                    size={isMobile() ? 12 : 16}
                                 />
                             </div>
                         ) : null}
@@ -213,7 +212,7 @@ const AdvertiserPage = observer(props => {
                                 <Icon
                                     className='advertiser-page__header-verification-icon'
                                     icon='IcCashierVerificationBadge'
-                                    size={is_mobile ? 12 : 16}
+                                    size={isMobile() ? 12 : 16}
                                 />
                             </div>
                         ) : null}
@@ -223,13 +222,13 @@ const AdvertiserPage = observer(props => {
                     <Table>
                         <ThemedScrollbars
                             className='advertiser-page__horizontal-scroll'
-                            is_bypassed={!is_mobile}
+                            is_bypassed={!isMobile()}
                             is_only_horizontal
                             width='calc(100vw - 32px)'
                         >
                             <Table.Row
                                 className={classNames('advertiser-page__stats', {
-                                    'advertiser-page__stats--mobile': is_mobile,
+                                    'advertiser-page__stats--mobile': isMobile(),
                                 })}
                             >
                                 <Table.Cell className='advertiser-page__stats-cell'>
@@ -237,7 +236,7 @@ const AdvertiserPage = observer(props => {
                                     <div className='advertiser-page__stats-cell-info'>{total_orders_count || '-'}</div>
                                 </Table.Cell>
                                 <div className='advertiser-page__stats-cell-separator' />
-                                {is_mobile ? (
+                                {isMobile() ? (
                                     <Table.Cell className='advertiser-page__stats-cell'>
                                         <div className='advertiser-page__stats-cell-header'>{localize('Buy/Sell')}</div>
                                         <div className='advertiser-page__stats-cell-info'>{`${
@@ -296,7 +295,7 @@ const AdvertiserPage = observer(props => {
 
                     <Popover
                         className={classNames('advertiser-page__popover-icon', {
-                            'advertiser-page__popover-icon--mobile': is_mobile,
+                            'advertiser-page__popover-icon--mobile': isMobile(),
                         })}
                         alignment='top'
                         message={localize(
@@ -312,7 +311,7 @@ const AdvertiserPage = observer(props => {
                         onTabItemClick={advertiser_page_store.handleTabItemClick}
                         active_index={advertiser_page_store.active_index}
                         className={classNames('advertiser-page__adverts-tabs', {
-                            'advertiser-page__adverts-tabs--mobile': is_mobile,
+                            'advertiser-page__adverts-tabs--mobile': isMobile(),
                         })}
                         top
                         header_fit_content
@@ -323,7 +322,7 @@ const AdvertiserPage = observer(props => {
                     <div className='advertiser-page__adverts-table'>
                         {advertiser_page_store.adverts.length ? (
                             <Table>
-                                {!is_mobile && (
+                                {!isMobile() && (
                                     <Table.Header>
                                         <Table.Row className='advertiser-page__adverts-table_row'>
                                             <Table.Head>{localize('Limits')}</Table.Head>
@@ -336,14 +335,20 @@ const AdvertiserPage = observer(props => {
                                         </Table.Row>
                                     </Table.Header>
                                 )}
-                                <ThemedScrollbars className='advertiser-page__adverts-scrollbar'>
+                                <ThemedScrollbars
+                                    className={classNames('advertiser-page__adverts-scrollbar', {
+                                        'advertiser-page__adverts-scrollbar--mobile': isMobile(),
+                                    })}
+                                >
                                     <Table.Body>
                                         <InfiniteLoaderList
-                                            autosizer_height={`calc(${advertiser_page_store.height_values.join(
-                                                ' - '
-                                            )})`}
+                                            autosizer_height={
+                                                isMobile()
+                                                    ? `calc(${advertiser_page_store.height_values_mobile.join(' - ')})`
+                                                    : `calc(${advertiser_page_store.height_values.join(' - ')})`
+                                            }
                                             items={advertiser_page_store.adverts}
-                                            item_size={is_mobile ? 98 : 56}
+                                            item_size={isMobile() ? 98 : 56}
                                             RenderComponent={Row}
                                         />
                                     </Table.Body>

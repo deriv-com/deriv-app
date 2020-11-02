@@ -6,19 +6,24 @@
     margin-top: 4rem;
     max-width: 628px;
 
-    &--no-tabs {
-        margin-top: calc(4rem + 4.4rem);
+    &__button {
+        text-decoration: none;
+        margin-top: 1.6rem;
     }
+
     &-icon {
         margin-bottom: 2.4rem;
     }
-    &-title {
-        color: var(--text-general);
-        font-size: var(--text-size-s);
-        font-weight: bold;
-        line-height: 1.5;
-        margin: 0.8rem;
+
+    &--mobile {
+        height: calc(100vh - 373px);
+        width: 100vw;
     }
+
+    &--no-tabs {
+        margin-top: calc(4rem + 4.4rem);
+    }
+
     &-text {
         font-size: var(--text-size-xs);
         margin: 1.2rem 0;
@@ -27,8 +32,12 @@
             line-height: 1.43;
         }
     }
-    &__button {
-        text-decoration: none;
-        margin-top: 1.6rem;
+
+    &-title {
+        color: var(--text-general);
+        font-size: var(--text-size-s);
+        font-weight: bold;
+        line-height: 1.5;
+        margin: 0.8rem;
     }
 }

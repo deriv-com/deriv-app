@@ -1,26 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
 import IconBack from 'Assets/icon-back.jsx';
 import './page-return.scss';
 
 const PageReturn = observer(({ onClick, page_title }) => {
-    const { general_store } = useStores();
-    const { is_mobile } = general_store.props;
-
     return (
-        <div className={classNames('page-return', { 'page-return--mobile': is_mobile })}>
+        <div className={classNames('page-return', { 'page-return--mobile': isMobile() })}>
             <div
-                className={classNames('', {
-                    'page-return__container': is_mobile,
+                className={classNames('page-return__container', {
+                    'page-return__container--mobile': isMobile(),
                 })}
             >
                 <div onClick={onClick} className='page-return__button'>
                     <IconBack />
                 </div>
-                <span>{page_title}</span>
+                <div>{page_title}</div>
             </div>
         </div>
     );

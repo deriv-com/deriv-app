@@ -35,6 +35,7 @@ export default class AdvertiserPageStore {
         height_constants.table_header,
         height_constants.tabs,
     ];
+    height_values_mobile = [height_constants.screen, height_constants.mobile_content];
     props = {};
 
     get account_currency() {

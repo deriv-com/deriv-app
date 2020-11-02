@@ -211,6 +211,10 @@
             height: calc(100vh - 527px);
             position: absolute;
             width: 657px;
+
+            &--mobile {
+                height: unset;
+            }
         }
     }
 }

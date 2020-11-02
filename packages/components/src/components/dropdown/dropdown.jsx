@@ -45,7 +45,7 @@ const DropdownList = React.forwardRef((props, list_ref) => {
             });
             setStyle(position_style);
         }
-    }, [is_list_visible, portal_id, list.length, dropdown_ref, list_dimensions]);
+    }, [is_list_visible, is_alignment_top, portal_id, list.length, dropdown_ref, list_ref]);
 
     /**
      * Calculate the offset for the dropdown list based on its width

@@ -73,7 +73,7 @@ const Autocomplete = React.memo(props => {
 
             setStyle(position_style);
         }
-    }, [should_show_list, list_portal_id, filtered_items.length]);
+    }, [should_show_list, is_alignment_top, list_portal_id, filtered_items.length]);
 
     const handleScrollStop = e => {
         // pass onScrollStop func callback when scrolling stops

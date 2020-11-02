@@ -28,7 +28,7 @@ async function login(page, email, password) {
     await page.fill('[name="password"]', password);
     await page.click(".button");
     await waitForChart(page);
-    // await qawolf.saveState(page, LOGIN_STATE_PATH);
+    await qawolf.saveState(page, LOGIN_STATE_PATH);
 }
 
 async function loadOrLogin(page, email, password) {
@@ -36,8 +36,6 @@ async function loadOrLogin(page, email, password) {
     if (!is_login_done) {
         await login(page, email, password);
     } else {
-        console.log('Reloading the page', is_login_done);
-
         await qawolf.setState(page, LOGIN_STATE_PATH);
         await page.reload();
     }
@@ -45,7 +43,7 @@ async function loadOrLogin(page, email, password) {
 
 async function checkIfStateExists() {
     try {
-        return fs.existsSync(path.resolve(__dirname, LOGIN_STATE_PATH));
+        return fs.existsSync(path.resolve(LOGIN_STATE_PATH));
     } catch (e) {
         return false;
     }

@@ -6,7 +6,7 @@ const Text = ({ children, ...props }) => {
         const style = {
             '--text-size': `var(--text-size-${props.size || 's'})`,
             '--text-color': `var(--text-${props.color || 'general'})`,
-            '--text-lh': `var(--text-lh-${props.lineHeight || 'm'})`,
+            '--text-lh': `var(--text-lh-${props.line_height || 'm'})`,
             '--text-weight': `var(--text-weight-${props.weight || 'normal'})`,
         };
         return style;

@@ -11,7 +11,7 @@ const AccountWrapper = ({ children, header, is_visible, toggleVisibility }) => (
                 weight='bold'
                 align='left'
                 color='prominent'
-                lineHeight='l'
+                line_height='l'
                 className='acc-switcher__list-title'
             >
                 {header}

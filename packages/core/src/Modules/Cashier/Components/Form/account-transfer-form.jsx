@@ -36,7 +36,7 @@ const AccountOption = ({ account, idx }) => {
             )}
 
             <div className='account-transfer__currency-wrapper'>
-                <Text size='xxs' lineHeight='x'>
+                <Text size='xxs' line_height='x'>
                     {account.text}
                 </Text>
                 <Text size='xxxs' align='left' color='less-prominent'>

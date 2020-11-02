@@ -29,7 +29,7 @@ afterAll(async () => {
 
 beforeEach(async () => {
     page = await context.newPage();
-    await preBuy(page);
+    await preBuy();
 });
 
 
@@ -114,7 +114,7 @@ test('[mobile] trader/buy-fall-contract-max-duration', async () => {
     await page.waitForSelector('#dt_purchase_put_price')
 });
 
-async function preBuy(page) {
+async function preBuy() {
     await page.goto(process.env.HOME_URL, {waitUntil: "domcontentloaded"});
     await loadOrLogin(page, process.env.VALID_USER, process.env.VALID_PASSWORD);
     await waitForChart(page);

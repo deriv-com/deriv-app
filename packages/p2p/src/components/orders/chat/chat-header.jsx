@@ -58,7 +58,7 @@ const ChatHeader = observer(() => {
 
 ChatHeader.displayName = 'ChatHeader';
 ChatHeader.propTypes = {
-    active_order_information: PropTypes.instanceOf(ExtendedOrderDetails),
+    order_information: PropTypes.instanceOf(ExtendedOrderDetails),
     last_other_user_activity: PropTypes.string,
     setShouldShowChatModal: PropTypes.func,
 };

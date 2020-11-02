@@ -26,13 +26,9 @@ const ChatMessageReceipt = ({ chat_channel, message, sendbird_user_id }) => {
 };
 
 ChatMessageReceipt.propTypes = {
-    active_chat_channel: PropTypes.object,
-    chat_info: PropTypes.shape({
-        app_id: PropTypes.string,
-        user_id: PropTypes.string,
-        token: PropTypes.string,
-    }),
+    chat_channel: PropTypes.object,
     message: PropTypes.instanceOf(ChatMessage),
+    sendbird_user_id: PropTypes.string,
 };
 
 export default ChatMessageReceipt;

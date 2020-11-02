@@ -380,14 +380,14 @@ class MT5POA extends React.Component {
                                                     <FileUploaderContainer
                                                         onRef={ref => this.setFileUploadRef(ref)}
                                                         getSocket={WS.getSocket}
-                                                        onFileDrop={({ document_file: df, file_error_message }) => {
+                                                        onFileDrop={({ document_file: df, file_error_message }) =>
                                                             this.onFileDrop(
                                                                 df,
                                                                 file_error_message,
                                                                 setFieldTouched,
                                                                 setFieldValue
-                                                            );
-                                                        }}
+                                                            )
+                                                        }
                                                     />
                                                 </div>
                                             </div>

@@ -1,4 +1,3 @@
-const qawolf = require('qawolf');
 const {waitForPurchaseBtnEnabled} = require("../../_common/contract_tasks");
 const {
     waitForChart,
@@ -36,23 +35,15 @@ test("[mobile] trader/buy-contract", async () => {
     await page.click('.acc-info__wrapper .acc-info');
     await page.click('.dc-tabs__item:nth-child(2)');
     await page.click(".acc-switcher__accounts >> text=Demo");
-    await page.waitForTimeout(1000);
     await page.click('.top-widgets-portal .cq-menu-btn');
-    await page.waitForTimeout(1000);
     await page.click(".data-hj-whitelist");
-    await page.waitForTimeout(1000);
     await page.fill(".data-hj-whitelist", "Volatility");
-    await page.waitForTimeout(1000);
     await page.click('text="Volatility 10 (1s) Index"');
-    await page.waitForTimeout(1000);
     await page.click(".contract-type-widget__display");
-    await page.waitForTimeout(1000);
     await waitForChart(page);
-    await page.waitForTimeout(1000);
     await page.click("#dt_contract_rise_fall_item");
     await waitForChart(page);
     await waitForPurchaseBtnEnabled(page);
-    await page.waitForTimeout(5000);
     await page.click("#dt_purchase_call_price");
     await page.waitForTimeout(5000);
 });

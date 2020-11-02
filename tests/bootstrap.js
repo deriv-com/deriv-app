@@ -1,11 +1,8 @@
 const qawolf = require('qawolf');
-
 const default_options = require('./_config/context');
 
 async function setUp(options) {
-    const browser = await qawolf.launch(
-
-    );
+    const browser = await qawolf.launch();
     const context = await browser.newContext({
         ...default_options,
         ...options,

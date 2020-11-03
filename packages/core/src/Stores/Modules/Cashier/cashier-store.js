@@ -178,6 +178,13 @@ export default class CashierStore extends BaseStore {
     }
 
     @computed
+    get is_account_transfer_visible() {
+        // cashier Transfer account tab is hidden for iom clients
+        // check for residence to hide the tab before creating a real money account
+        return this.root_store.client.residence !== 'im';
+    }
+
+    @computed
     get is_p2p_enabled() {
         return this.is_p2p_visible && !this.root_store.client.is_eu;
     }

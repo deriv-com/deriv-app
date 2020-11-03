@@ -11,6 +11,13 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
         if (window.LiveChatWidget) {
             window.LiveChatWidget.on('ready', () => {
                 setLiveChatInteractive(true);
+            });
+        }
+    }, []);
+
+    React.useEffect(() => {
+        if (window.LiveChatWidget) {
+            window.LiveChatWidget.on('ready', () => {
                 let session_variables = {
                     loginid: '',
                     landing_company_shortcode: '',

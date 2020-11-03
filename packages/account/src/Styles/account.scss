@@ -1350,6 +1350,7 @@ $MIN_HEIGHT_FLOATING: calc(
         max-width: 682px;
         max-height: 560px;
         height: 100%;
+        width: 100%;
     }
     &__loading {
         height: calc(100vh - 240px);
@@ -1396,7 +1397,12 @@ $MIN_HEIGHT_FLOATING: calc(
     }
     @include mobile {
         overflow: hidden;
-        padding: 2.4rem 1.6rem 0;
+        padding: 0 1.6rem;
+
+        &__title {
+            margin: 2.4rem 0;
+            padding: 0 1.6rem;
+        }
 
         &__data-list {
             padding: 0;
@@ -1409,11 +1415,16 @@ $MIN_HEIGHT_FLOATING: calc(
             }
             .data-list__item {
                 padding: 8px;
+                background: var(--general-section-1);
             }
             .data-list__row {
                 display: flex;
                 justify-content: space-between;
                 padding: 0;
+
+                &-content {
+                    word-break: break-word;
+                }
 
                 .data-list__col {
                     width: 100%;

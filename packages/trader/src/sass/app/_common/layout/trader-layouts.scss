@@ -784,6 +784,10 @@ $FLOATING_HEADER_HEIGHT: 41px;
                     }
                 }
             }
+            /** @define cq-top-ui-widgets; weak */
+            .cq-top-ui-widgets {
+                z-index: 15 !important;
+            }
         }
     }
     /* TODO: Remove this override once the issue is fixed in smartcharts */

@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { DesktopWrapper } from '@deriv/components';
-import { Localize } from '@deriv/translations';
+import { DesktopWrapper, Text } from '@deriv/components';
 
 const SideNoteBullet = ({ children }) => (
     <div className='cashier-side-note__bullet-wrapper'>
@@ -10,21 +9,29 @@ const SideNoteBullet = ({ children }) => (
     </div>
 );
 
-const SideNote = ({ notes }) => (
+const SideNote = ({ notes, title, has_bullets = true }) => (
     <div className='cashier-side-note'>
         <DesktopWrapper>
-            <div className='cashier__header'>
-                <Localize i18n_default_text='Notes' />
-            </div>
+            <Text className='cashier-side-note__text' weight='bold' as='p'>
+                {title}
+            </Text>
         </DesktopWrapper>
-        {notes.map((note, i) => (
-            <SideNoteBullet key={i}>{note}</SideNoteBullet>
-        ))}
+        {notes.map((note, i) =>
+            has_bullets ? (
+                <SideNoteBullet key={i}>{note}</SideNoteBullet>
+            ) : (
+                <Text key={i} className='cashier-side-note__text' size='1.2rem' as='p'>
+                    {note}
+                </Text>
+            )
+        )}
     </div>
 );
 
 SideNote.propTypes = {
     notes: PropTypes.array.isRequired,
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
+    has_bullets: PropTypes.bool,
 };
 
 export default SideNote;

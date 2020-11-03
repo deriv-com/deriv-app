@@ -11,11 +11,14 @@ const SideNoteBullet = ({ children }) => (
 
 const SideNote = ({ notes, title, has_bullets = true }) => (
     <div className='cashier-side-note'>
-        <DesktopWrapper>
-            <Text className='cashier-side-note__text' weight='bold' as='p'>
-                {title}
-            </Text>
-        </DesktopWrapper>
+        {title && (
+            <DesktopWrapper>
+                <Text className='cashier-side-note__text' weight='bold' as='p'>
+                    {title}
+                </Text>
+            </DesktopWrapper>
+        )}
+
         {notes.map((note, i) =>
             has_bullets ? (
                 <SideNoteBullet key={i}>{note}</SideNoteBullet>
@@ -30,7 +33,7 @@ const SideNote = ({ notes, title, has_bullets = true }) => (
 
 SideNote.propTypes = {
     notes: PropTypes.array.isRequired,
-    title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     has_bullets: PropTypes.bool,
 };
 

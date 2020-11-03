@@ -172,7 +172,7 @@
         color: inherit;
 
         &--symbol {
-            font-size: 1.4em;
+            font-size: 1.3em;
             line-height: 1.5;
         }
         &:before {
@@ -350,9 +350,16 @@
             }
         }
     }
-    &__amount .trade-container__input {
-        padding: 0 30px;
-        border-radius: 0 $BORDER_RADIUS $BORDER_RADIUS 0;
+    &__amount {
+        #dt_amount_input {
+            text-align: left !important;
+            font-size: 1.3rem;
+            padding-left: 45px;
+        }
+        .trade-container__input {
+            padding: 0 30px;
+            border-radius: 0 $BORDER_RADIUS $BORDER_RADIUS 0;
+        }
     }
     &__multiplier {
         display: flex;

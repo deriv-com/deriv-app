@@ -99,11 +99,13 @@ class ConfigAccountTransfer {
     @observable error = new ConfigError();
     @observable has_no_account = false;
     @observable has_no_accounts_balance = false;
+    @observable is_transfer_confirm = false;
     @observable is_transfer_successful = false;
     @observable minimum_fee = null;
     @observable receipt = {};
     @observable selected_from = {};
     @observable selected_to = {};
+    @observable account_transfer_amount = null;
     @observable transfer_fee = null;
     @observable transfer_limit = {};
 
@@ -1098,6 +1100,16 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
+    setIsTransferConfirm(is_transfer_confirm) {
+        this.config[this.active_container].is_transfer_confirm = is_transfer_confirm;
+    }
+
+    @action.bound
+    setAccountTransferAmount(amount) {
+        this.config[this.active_container].account_transfer_amount = amount;
+    }
+
+    @action.bound
     setIsTransferSuccessful(is_transfer_successful) {
         this.config[this.active_container].is_transfer_successful = is_transfer_successful;
     }
@@ -1198,6 +1210,8 @@ export default class CashierStore extends BaseStore {
                     });
                 }
             });
+            this.setAccountTransferAmount(null);
+            this.setIsTransferConfirm(false);
             this.setIsTransferSuccessful(true);
         }
         return transfer_between_accounts;

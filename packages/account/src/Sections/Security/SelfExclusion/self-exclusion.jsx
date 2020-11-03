@@ -22,6 +22,7 @@ import {
     formatMoney,
     hasCorrectDecimalPlaces,
     getDecimalPlaces,
+    getCurrencyDisplayCode,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -343,6 +344,8 @@ class SelfExclusion extends React.Component {
 
         if (error_message) return <LoadErrorMessage error_message={error_message} />;
 
+        const currency_display = getCurrencyDisplayCode(currency);
+
         return (
             <section className='self-exclusion'>
                 <Div100vhContainer className='self-exclusion__wrapper' is_disabled={isDesktop()} height_offset='80px'>
@@ -455,7 +458,7 @@ class SelfExclusion extends React.Component {
                                                             currency,
                                                             +values[key],
                                                             true
-                                                        )} ${currency}`;
+                                                        )} ${currency_display}`;
                                                     } else if (need_minutes.includes(key)) {
                                                         value = localize('{{value}} mins', { value: values[key] });
                                                     } else if (need_amount.includes(key)) {
@@ -543,7 +546,7 @@ class SelfExclusion extends React.Component {
                                                                 {...field}
                                                                 data-lpignore='true'
                                                                 className='self-exclusion__input'
-                                                                label={currency}
+                                                                label={currency_display}
                                                                 value={values.max_turnover}
                                                                 onChange={handleChange}
                                                                 onBlur={handleBlur}
@@ -561,7 +564,7 @@ class SelfExclusion extends React.Component {
                                                                 {...field}
                                                                 data-lpignore='true'
                                                                 className='self-exclusion__input'
-                                                                label={currency}
+                                                                label={currency_display}
                                                                 value={values.max_losses}
                                                                 onChange={handleChange}
                                                                 onBlur={handleBlur}
@@ -582,7 +585,7 @@ class SelfExclusion extends React.Component {
                                                                 {...field}
                                                                 data-lpignore='true'
                                                                 className='self-exclusion__input'
-                                                                label={currency}
+                                                                label={currency_display}
                                                                 value={values.max_7day_turnover}
                                                                 onChange={handleChange}
                                                                 onBlur={handleBlur}
@@ -603,7 +606,7 @@ class SelfExclusion extends React.Component {
                                                                 {...field}
                                                                 data-lpignore='true'
                                                                 className='self-exclusion__input'
-                                                                label={currency}
+                                                                label={currency_display}
                                                                 value={values.max_7day_losses}
                                                                 onChange={handleChange}
                                                                 onBlur={handleBlur}
@@ -628,7 +631,7 @@ class SelfExclusion extends React.Component {
                                                                 {...field}
                                                                 data-lpignore='true'
                                                                 className='self-exclusion__input'
-                                                                label={currency}
+                                                                label={currency_display}
                                                                 value={values.max_30day_turnover}
                                                                 onChange={handleChange}
                                                                 onBlur={handleBlur}
@@ -649,7 +652,7 @@ class SelfExclusion extends React.Component {
                                                                 {...field}
                                                                 data-lpignore='true'
                                                                 className='self-exclusion__input'
-                                                                label={currency}
+                                                                label={currency_display}
                                                                 value={values.max_30day_losses}
                                                                 onChange={handleChange}
                                                                 onBlur={handleBlur}
@@ -915,7 +918,7 @@ class SelfExclusion extends React.Component {
                                                                 {...field}
                                                                 data-lpignore='true'
                                                                 className='self-exclusion__input'
-                                                                label={currency}
+                                                                label={currency_display}
                                                                 value={values.max_balance}
                                                                 onChange={handleChange}
                                                                 onBlur={handleBlur}

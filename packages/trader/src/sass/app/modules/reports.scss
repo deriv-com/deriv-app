@@ -79,8 +79,8 @@ $side-padding: 1.2em;
     /* postcss-bem-linter: ignore */
     .statement__row--detail {
         overflow: hidden;
-        max-height: 63px;
-        height: 63px;
+        max-height: 95px;
+        height: 95;
         display: flex;
         align-items: center;
         padding: 0;
@@ -114,7 +114,15 @@ $side-padding: 1.2em;
 .statement {
     .table__head {
         font-weight: bold;
+        align-items: flex-start;
         height: auto;
+
+        .table__cell {
+            height: auto;
+        }
+        @include desktop {
+            white-space: normal;
+        }
     }
 
     @include desktop {
@@ -166,6 +174,9 @@ $side-padding: 1.2em;
 
         .date {
             text-align: left;
+        }
+        .table__cell {
+            height: 95px;
         }
     }
     .amount,
@@ -370,6 +381,12 @@ $side-padding: 1.2em;
     .table__head,
     .table__foot {
         font-weight: bold;
+        white-space: normal;
+    }
+    .table__head {
+        .table__cell {
+            align-items: flex-start;
+        }
     }
 
     @include desktop {
@@ -423,13 +440,14 @@ $side-padding: 1.2em;
         /* stylelint-disable-next-line declaration-colon-space-after */
         grid-template-columns:
             minmax(120px, 0.6fr) minmax(130px, 1fr) minmax(85px, 1fr) minmax(85px, 1.2fr) minmax(85px, 1fr)
-            minmax(85px, 1.2fr) minmax(85px, 1fr) minmax(85px, 1fr);
+            minmax(85px, 1.2fr) minmax(95px, 1fr) minmax(130px, 1fr);
     }
     .buy_price,
     .sell_price,
     .profit_loss {
         @include desktop {
             justify-content: flex-end;
+            text-align: right;
         }
         @include mobile {
             justify-content: center;
@@ -736,8 +754,18 @@ $side-padding: 1.2em;
         margin-top: 20px;
 
         .table__head {
+            height: auto;
+            white-space: normal;
+            @include tablet-up {
+                .profit,
+                .indicative {
+                    white-space: break-spaces;
+                }
+            }
+
             .table__cell {
                 font-weight: bold;
+                align-items: flex-start;
             }
         }
         .table__body {
@@ -746,6 +774,12 @@ $side-padding: 1.2em;
             }
         }
         .table__foot {
+            font-weight: bold;
+            white-space: normal;
+        }
+        .table__cell {
+            padding-top: 0px;
+            padding-bottom: 0px;
             font-weight: bold;
         }
     }
@@ -825,8 +859,8 @@ $side-padding: 1.2em;
             /* icon multiplier currency stake cancellation buy_price limit_order current_stake total_profit_loss action */
             /* stylelint-disable-next-line declaration-colon-space-after */
             grid-template-columns:
-                minmax(85px, 0.7fr) minmax(95px, 0.8fr) minmax(95px, 0.5fr) minmax(95px, 0.8fr) minmax(100px, 0.8fr)
-                minmax(95px, 1fr) minmax(95px, 1fr) minmax(95px, 1.2fr) minmax(105px, 1.1fr) minmax(90px, 1.2fr);
+                minmax(85px, 1fr) minmax(125px, 1fr) minmax(65px, 1fr) minmax(105px, 1fr) minmax(100px, 1fr)
+                minmax(105px, 1fr) minmax(105px, 1fr) minmax(105px, 1fr) minmax(125px, 1fr) minmax(90px, 1fr);
 
             &-action {
                 display: flex;
@@ -849,11 +883,6 @@ $side-padding: 1.2em;
                     }
                 }
             }
-            .limit_order {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
             .limit_order,
             .cancellation,
             .bid_price {
@@ -863,6 +892,12 @@ $side-padding: 1.2em;
                     width: 100%;
                     white-space: break-spaces;
                 }
+            }
+            .limit_order {
+                flex-direction: column;
+                align-items: flex-end;
+                text-align: right;
+                justify-content: flex-start;
             }
             .action {
                 padding-bottom: 0;

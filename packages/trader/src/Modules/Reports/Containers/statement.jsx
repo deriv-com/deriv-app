@@ -192,7 +192,7 @@ class Statement extends React.Component {
                                         columns={this.columns}
                                         onScroll={handleScroll}
                                         getRowAction={row => this.getRowAction(row)}
-                                        getRowSize={() => 63}
+                                        getRowSize={() => 95}
                                         content_loader={ReportsTableRowLoader}
                                     >
                                         <PlaceholderComponent is_loading={is_loading} />

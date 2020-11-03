@@ -269,7 +269,7 @@ export default class CashierStore extends BaseStore {
             }
         );
 
-        if (this.containers.indexOf(this.active_container) === -1) {
+        if (this.containers.indexOf(this.active_container) === -1 && !this.root_store.client.is_switching) {
             throw new Error('Cashier Store onMount requires a valid container name.');
         }
         this.setErrorMessage('');

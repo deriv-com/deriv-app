@@ -16,8 +16,7 @@ const MaxTurnoverForm = ({ onMount, setErrorConfig, currency }) => {
     const validateFields = values => {
         // TODO: [self-exclusion] handle shared self exclusion validation
         const errors = {};
-        const min_number = 0;
-        const max_number = 9999999999999;
+        const min_number = 1;
 
         if (!values.max_30day_turnover) {
             errors.max_30day_turnover = localize('This field is required.');
@@ -26,7 +25,6 @@ const MaxTurnoverForm = ({ onMount, setErrorConfig, currency }) => {
                 type: 'float',
                 decimals: getDecimalPlaces(currency),
                 min: min_number,
-                max: max_number,
             });
             if (!is_ok) errors.max_30day_turnover = message;
         }
@@ -71,6 +69,7 @@ const MaxTurnoverForm = ({ onMount, setErrorConfig, currency }) => {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     hint={localize('Limits your total stake for 30 days across all Deriv platforms.')}
+                                    maxLength='13'
                                     required
                                     error={touched.max_30day_turnover && errors.max_30day_turnover}
                                 />

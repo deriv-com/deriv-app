@@ -316,9 +316,6 @@ class MT5POA extends React.Component {
                                                                     <Field name='address_state'>
                                                                         {({ field }) => (
                                                                             <Dropdown
-                                                                                is_alignment_top={
-                                                                                    window.innerHeight < 930
-                                                                                }
                                                                                 id='address_state'
                                                                                 required
                                                                                 className='address_state-dropdown'
@@ -334,6 +331,7 @@ class MT5POA extends React.Component {
                                                                                 placeholder={localize(
                                                                                     'State/Province*'
                                                                                 )}
+                                                                                list_portal_id='modal_root'
                                                                             />
                                                                         )}
                                                                     </Field>

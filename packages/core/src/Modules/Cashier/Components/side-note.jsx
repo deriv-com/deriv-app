@@ -20,7 +20,7 @@ const SideNote = ({ notes, title, has_bullets = true }) => (
             has_bullets ? (
                 <SideNoteBullet key={i}>{note}</SideNoteBullet>
             ) : (
-                <Text key={i} className='cashier-side-note__text' size='1.2rem' as='p'>
+                <Text key={i} className='cashier-side-note__text' size='xxs' as='p'>
                     {note}
                 </Text>
             )

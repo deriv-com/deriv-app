@@ -13,38 +13,40 @@ const DummyComponent = (props) => (
     <ThemedScrollbars 
         height={300}
     >
-        <div>A long content</div>
+        <div>A long content ...</div>
     </ThemedScrollbars>
 )
 ```
 
 ## Props
 
-| Name             | Type                   | Default            | Description                                                                                                              |
-|------------------|------------------------|--------------------|--------------------------------------------------------------------------------------------------------------------------|
-| className        | {string}               | null               | Tooltip's wrapper class                                                                                                  |
-| classNameIcon    | {string}               | null               | Tooltip's icon class                                                                                                     |
-| alignment        | {string}               | null               | Use this to choose placement of the tooltip. It can be top, right, bottom or left.                                       |
-| message          | {string}               | null               | It's the info you want to show on tooltip.                                                                               |
-| icon             | {string}               | null               | If want to have an icon for your text you can set one of 'info' or 'question' in this prop.                              |
-| has_error        | {boolean}              | null               | If is true, tooltip is visible and has error text styles.                                                                |
+| Name                           | Type                   | Default            | Description                                                                                                              |
+|--------------------------------|------------------------|--------------------|--------------------------------------------------------------------------------------------------------------------------|
+| height                         | {string}               | 100%               | Scroll Component height                                                                                                  |
+| width                          | {string}               | none               | Scroll Component width                                                                                                   |
+| autohide                       | {boolean}              | true               | Hide scrollbar if component is not hovered                                                                               |
+| is\_bypassed                   | {boolean}              | null               | Set it to 'true' if you want to disable the custom scrollbar component                                                   |
+| is\_only\_horizontal           | {boolean}              | null               | Set it to 'true' if you want to disable the vertical scrollbar                                                           |
+| is\_only\_horizontal\_overlay  | {boolean}              | null               | It's same as 'is\_only\_horizontal' but it use 'overflow-x: overlay' style.                                              |
+| has\_horizontal                | {boolean}              | null               | If you want to have vertical and horizontal scrollbar set it to 'true'.                                                  |
+| onScroll                       | {function}             | null               | Call back function for scrolling event.                                                                                  |
+| refSetter                      | {object} React ref     | null               | Ref object that component uses it to handle the hover event.                                                             |
 
 
 ## Full example:
 
 ```jsx
-import { SelectNative } from 'deriv-components';
+import { ThemedScrollbars } from 'deriv-components';
 
 const DummyComponent = (props) => (
-    <Tooltip 
-        className='tooltip-storybook-wrapper'
-        classNameIcon='tooltip-storybook-icon'
-        alignment='right'
-        message='Information about item.'
-        icon='question'
-        has_error={props.has_error}
+    <ThemedScrollbars 
+        height={300}
+        width={300}
+        is_bypassed={props.is_bypassed}
+        has_horizontal={true}
+        onScroll={props.onScroll}
     >
-        <span>Hover me to see tooltip.</span>
-    </Tooltip>
+        <div>A long content ...</div>
+    </ThemedScrollbars>
 )
 ```

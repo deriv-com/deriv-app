@@ -3,7 +3,7 @@ import { boolean } from '@storybook/addon-knobs';
 import Tooltip from 'Components/tooltip';
 import Wrapper from '../../shared/wrapper';
 
-const Basic = () => (
+const HasIcon = () => (
     <React.Fragment>
         <Wrapper is_dark={boolean('Dark Theme', false)}>
             <Tooltip
@@ -30,4 +30,4 @@ const Basic = () => (
     </React.Fragment>
 );
 
-export default Basic;
+export default HasIcon;

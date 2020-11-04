@@ -2,15 +2,13 @@ import { storiesOf } from '@storybook/react';
 import { withKnobs } from '@storybook/addon-knobs';
 import { withInfo } from '@storybook/addon-info';
 import Basic from './stories/basic';
-import HasError from './stories/has-error';
-import HasIcon from './stories/has-icon';
+import FixedSize from './stories/fixed-size';
 import notes from './README.md';
 import './styles.scss';
 
-const stories = storiesOf('Tooltip', module);
+const stories = storiesOf('Table', module);
 
 stories.addDecorator(withKnobs).addDecorator(withInfo);
 
 stories.add('Basic usage', Basic, { notes });
-stories.add('Has icon', HasIcon, { notes });
-stories.add('Has error', HasError, { notes });
+stories.add('Fixed size', FixedSize, { notes });

@@ -64,9 +64,9 @@
     }
     &__button {
         &-new {
-            width: 25%;
+            width: 20%;
             height: 4rem !important;
-            font-size: var(--text-size-s);
+            font-size: var(--text-size-xs);
             font-weight: bold;
             border-top-left-radius: 0rem !important;
             border-bottom-left-radius: 0rem !important;
@@ -217,7 +217,7 @@
         }
     }
     &__input {
-        width: 75% !important;
+        width: 80% !important;
         height: 4rem;
         border-top-right-radius: 0rem !important;
         border-bottom-right-radius: 0rem !important;

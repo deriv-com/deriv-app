@@ -14,7 +14,7 @@ export default class TransactionsStore {
                 const { client } = this.root_store.core;
                 const stored_transactions = this.getTransactionSessionStorage();
 
-                const new_elements = { transaction_elements: elements };
+                const new_elements = { transaction_elements: elements.slice(0, 5000) };
                 stored_transactions[client.loginid] = new_elements;
 
                 sessionStorage.setItem(
@@ -32,7 +32,7 @@ export default class TransactionsStore {
 
     getTransactionSessionStorage = () => {
         try {
-            return JSON.parse(LZString.decompress(sessionStorage.getItem(this.transaction_storage_key)));
+            return JSON.parse(LZString.decompress(sessionStorage.getItem(this.transaction_storage_key))) ?? {};
         } catch (e) {
             return {};
         }

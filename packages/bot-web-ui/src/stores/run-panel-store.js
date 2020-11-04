@@ -90,7 +90,7 @@ export default class RunPanelStore {
 
     getSessionStorage = key => {
         try {
-            return JSON.parse(LZString.decompress(sessionStorage.getItem(key)));
+            return JSON.parse(LZString.decompress(sessionStorage.getItem(key))) ?? {};
         } catch (e) {
             return {};
         }

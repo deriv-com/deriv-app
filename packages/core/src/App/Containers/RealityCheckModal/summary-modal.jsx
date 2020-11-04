@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Formik, Form } from 'formik';
@@ -5,7 +6,6 @@ import {
     Modal,
     DesktopWrapper,
     MobileWrapper,
-    Div100vhContainer,
     Loading,
     ThemedScrollbars,
     Money,
@@ -36,7 +36,9 @@ const RowInfo = ({ label, value }) => (
 const SummaryModal = ({
     disableApp,
     enableApp,
+    handleIntervalInputMobileFocus,
     IntervalField,
+    is_onscreen_keyboard_active,
     is_visible,
     logout,
     onSubmit,
@@ -44,8 +46,11 @@ const SummaryModal = ({
     openStatement,
     reality_check_duration,
     server_time,
+    setCurrentFocus,
     validateForm,
 }) => {
+    const interval_input_ref = React.useRef();
+
     const [computed_values, setComputedValues] = React.useState({});
 
     React.useEffect(() => {
@@ -84,6 +89,7 @@ const SummaryModal = ({
     if (isEmptyObject(computed_values)) {
         return <Loading />;
     }
+
     const title = isDesktop() ? (
         <Localize
             i18n_default_text='Your trading statistics since: {{date_time}}'
@@ -94,6 +100,59 @@ const SummaryModal = ({
             <Localize i18n_default_text='Your trading statistics since:' />
             <br />
             {computed_values.start_date_time_gmt}
+        </React.Fragment>
+    );
+
+    const TradeSummary = () => (
+        <div className='reality-check__column'>
+            <div className='reality-check__column-content'>
+                <Row label={localize('Login ID')} value={computed_values.loginid} />
+                <Row label={localize('Currency')} value={computed_values.currency} />
+                <Row
+                    label={localize('Turnover')}
+                    value={<Money amount={computed_values.turnover} currency={computed_values.currency} />}
+                />
+                <Row
+                    label={localize('Profit/loss')}
+                    value={
+                        <React.Fragment>
+                            {!!computed_values.profit && (computed_values.profit < 0 ? '-' : '+')}
+                            <Money amount={computed_values.profit} currency={computed_values.currency} />
+                        </React.Fragment>
+                    }
+                />
+                <Row label={localize('Contract bought')} value={computed_values.buy_count} />
+                <Row label={localize('Contract sold')} value={computed_values.sell_count} />
+                <Row
+                    label={localize('Potential profit')}
+                    value={<Money amount={computed_values.potential_profit} currency={computed_values.currency} />}
+                />
+            </div>
+            <Button
+                type='button'
+                secondary
+                large
+                onClick={computed_values.open_contract_count ? openPositions : openStatement}
+                className='reality-check__button reality-check__button--full-width'
+            >
+                {localize('Go to Reports')}
+            </Button>
+        </div>
+    );
+
+    const SessionSummary = () => (
+        <React.Fragment>
+            <RowInfo label={localize('Session duration:')} value={computed_values.duration_string} />
+            <RowInfo label={localize('Login time:')} value={computed_values.start_date_time_gmt} />
+            <RowInfo label={localize('Current time:')} value={computed_values.current_date_time_gmt} />
+            {isDesktop() && <div className='reality-check__separator' />}
+            <p
+                className={classNames('reality-check__text', 'reality-check__text--center', {
+                    'reality-check__text__summary': !isDesktop(),
+                })}
+            >
+                <Localize i18n_default_text='Your preferred time interval between each report:' />
+            </p>
         </React.Fragment>
     );
 
@@ -122,88 +181,9 @@ const SummaryModal = ({
                                 <Modal.Body>
                                     <ThemedScrollbars height='75vh' autoHide={false}>
                                         <div className='reality-check__column-wrapper'>
+                                            <TradeSummary />
                                             <div className='reality-check__column'>
-                                                <div className='reality-check__column-content'>
-                                                    <Row label={localize('Login ID')} value={computed_values.loginid} />
-                                                    <Row
-                                                        label={localize('Currency')}
-                                                        value={computed_values.currency}
-                                                    />
-                                                    <Row
-                                                        label={localize('Turnover')}
-                                                        value={
-                                                            <Money
-                                                                amount={computed_values.turnover}
-                                                                currency={computed_values.currency}
-                                                            />
-                                                        }
-                                                    />
-                                                    <Row
-                                                        label={localize('Profit/loss')}
-                                                        value={
-                                                            <React.Fragment>
-                                                                {!!computed_values.profit &&
-                                                                    (computed_values.profit < 0 ? '-' : '+')}
-                                                                <Money
-                                                                    amount={computed_values.profit}
-                                                                    currency={computed_values.currency}
-                                                                />
-                                                            </React.Fragment>
-                                                        }
-                                                    />
-                                                    <Row
-                                                        label={localize('Contract bought')}
-                                                        value={computed_values.buy_count}
-                                                    />
-                                                    <Row
-                                                        label={localize('Contract sold')}
-                                                        value={computed_values.sell_count}
-                                                    />
-                                                    <Row
-                                                        label={localize('Potential profit')}
-                                                        value={
-                                                            <Money
-                                                                amount={computed_values.potential_profit}
-                                                                currency={computed_values.currency}
-                                                            />
-                                                        }
-                                                    />
-                                                </div>
-                                                <Button
-                                                    type='button'
-                                                    secondary
-                                                    large
-                                                    onClick={
-                                                        computed_values.open_contract_count
-                                                            ? openPositions
-                                                            : openStatement
-                                                    }
-                                                    className='reality-check__button reality-check__button--full-width'
-                                                >
-                                                    {localize('Go to Reports')}
-                                                </Button>
-                                            </div>
-
-                                            <div className='reality-check__column'>
-                                                <RowInfo
-                                                    label={localize('Session duration:')}
-                                                    value={computed_values.duration_string}
-                                                />
-                                                <RowInfo
-                                                    label={localize('Login time:')}
-                                                    value={computed_values.start_date_time_gmt}
-                                                />
-                                                <RowInfo
-                                                    label={localize('Current time:')}
-                                                    value={computed_values.current_date_time_gmt}
-                                                />
-
-                                                <div className='reality-check__separator' />
-
-                                                <p className='reality-check__text reality-check__text--center'>
-                                                    <Localize i18n_default_text='Your preferred time interval between each report:' />
-                                                </p>
-
+                                                <SessionSummary />
                                                 <IntervalField
                                                     values={values}
                                                     touched={touched}
@@ -231,7 +211,11 @@ const SummaryModal = ({
                 </Modal>
             </DesktopWrapper>
             <MobileWrapper>
-                <FadeWrapper is_visible={is_visible} className='reality-check' keyname='reality-check'>
+                <FadeWrapper
+                    is_visible={is_visible}
+                    className='reality-check reality-check__summary'
+                    keyname='reality-check'
+                >
                     <div className='reality-check__wrapper'>
                         <PageOverlay header={title} is_open={is_visible}>
                             <Formik
@@ -243,111 +227,50 @@ const SummaryModal = ({
                             >
                                 {({ errors, isSubmitting, isValid, values, touched, handleChange, handleBlur }) => (
                                     <Form noValidate>
-                                        <Div100vhContainer max_autoheight_offset='204px'>
+                                        <ThemedScrollbars style={{ minHeight: '900px' }}>
                                             <div className='reality-check__column-wrapper'>
-                                                <div className='reality-check__column'>
-                                                    <div className='reality-check__column-content'>
-                                                        <Row
-                                                            label={localize('Login ID')}
-                                                            value={computed_values.loginid}
-                                                        />
-                                                        <Row
-                                                            label={localize('Currency')}
-                                                            value={computed_values.currency}
-                                                        />
-                                                        <Row
-                                                            label={localize('Turnover')}
-                                                            value={
-                                                                <Money
-                                                                    amount={computed_values.turnover}
-                                                                    currency={computed_values.currency}
-                                                                />
-                                                            }
-                                                        />
-                                                        <Row
-                                                            label={localize('Profit/loss')}
-                                                            value={
-                                                                <React.Fragment>
-                                                                    {!!computed_values.profit &&
-                                                                        (computed_values.profit < 0 ? '-' : '+')}
-                                                                    <Money
-                                                                        amount={computed_values.profit}
-                                                                        currency={computed_values.currency}
-                                                                    />
-                                                                </React.Fragment>
-                                                            }
-                                                        />
-                                                        <Row
-                                                            label={localize('Contract bought')}
-                                                            value={computed_values.buy_count}
-                                                        />
-                                                        <Row
-                                                            label={localize('Contract sold')}
-                                                            value={computed_values.sell_count}
-                                                        />
-                                                        <Row
-                                                            label={localize('Potential profit')}
-                                                            value={
-                                                                <Money
-                                                                    amount={computed_values.potential_profit}
-                                                                    currency={computed_values.currency}
-                                                                />
-                                                            }
-                                                        />
-                                                    </div>
-                                                    <Button
-                                                        type='button'
-                                                        secondary
-                                                        large
-                                                        onClick={
-                                                            computed_values.open_contract_count
-                                                                ? openPositions
-                                                                : openStatement
-                                                        }
-                                                        className='reality-check__button reality-check__button--full-width'
-                                                    >
-                                                        {localize('Go to Reports')}
-                                                    </Button>
-                                                </div>
-
+                                                <TradeSummary />
                                                 <div className='reality-check__separator' />
-
                                                 <div className='reality-check__column reality-check__column--settings'>
-                                                    <RowInfo
-                                                        label={localize('Session duration:')}
-                                                        value={computed_values.duration_string}
-                                                    />
-                                                    <RowInfo
-                                                        label={localize('Login time:')}
-                                                        value={computed_values.start_date_time_gmt}
-                                                    />
-                                                    <RowInfo
-                                                        label={localize('Current time:')}
-                                                        value={computed_values.current_date_time_gmt}
-                                                    />
-
-                                                    <p className='reality-check__text reality-check__text--center'>
-                                                        <Localize i18n_default_text='Your preferred time interval between each report:' />
-                                                    </p>
-
+                                                    <SessionSummary />
                                                     <IntervalField
+                                                        ref={interval_input_ref}
+                                                        is_summary={true}
                                                         values={values}
                                                         touched={touched}
                                                         errors={errors}
                                                         handleChange={handleChange}
-                                                        handleBlur={handleBlur}
+                                                        handleBlur={e => {
+                                                            setCurrentFocus(null);
+                                                            handleBlur(e);
+                                                        }}
+                                                        onFocus={e => {
+                                                            setCurrentFocus(e.target.name);
+                                                            handleIntervalInputMobileFocus(interval_input_ref.current);
+                                                        }}
                                                     />
                                                 </div>
                                             </div>
-                                        </Div100vhContainer>
-                                        <FormSubmitButton
-                                            className='reality-check__submit'
-                                            has_cancel
-                                            cancel_label={localize('Log out')}
-                                            is_disabled={!values.interval || !isValid || isSubmitting}
-                                            label={localize('Continue trading')}
-                                            onCancel={logout}
-                                        />
+                                            <hr
+                                                className={classNames('reality-check__summary__separator', {
+                                                    'reality-check__summary__separator--with-mobile-keyboard': is_onscreen_keyboard_active,
+                                                })}
+                                            />
+                                            <FormSubmitButton
+                                                className={classNames(
+                                                    'reality-check__submit',
+                                                    'reality-check__submit__summary',
+                                                    {
+                                                        'reality-check__submit__summary--with-mobile-keyboard': is_onscreen_keyboard_active,
+                                                    }
+                                                )}
+                                                has_cancel
+                                                cancel_label={localize('Log out')}
+                                                is_disabled={!values.interval || !isValid || isSubmitting}
+                                                label={localize('Continue trading')}
+                                                onCancel={logout}
+                                            />
+                                        </ThemedScrollbars>
                                     </Form>
                                 )}
                             </Formik>
@@ -362,7 +285,9 @@ const SummaryModal = ({
 SummaryModal.propTypes = {
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
-    IntervalField: PropTypes.func,
+    handleIntervalInputMobileFocus: PropTypes.func,
+    IntervalField: PropTypes.object,
+    is_onscreen_keyboard_active: PropTypes.bool,
     is_visible: PropTypes.bool,
     logout: PropTypes.func,
     onSubmit: PropTypes.func,
@@ -370,6 +295,7 @@ SummaryModal.propTypes = {
     openStatement: PropTypes.func,
     reality_check_duration: PropTypes.number,
     server_time: PropTypes.object,
+    setCurrentFocus: PropTypes.func,
     validateForm: PropTypes.func,
 };
 

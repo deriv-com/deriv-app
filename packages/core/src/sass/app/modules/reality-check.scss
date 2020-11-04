@@ -8,6 +8,9 @@
         &:not(:last-child) {
             margin-bottom: 1.2rem;
         }
+        &__summary {
+            padding: 0 !important;
+        }
         &--center {
             text-align: center;
 
@@ -49,7 +52,7 @@
                 flex-direction: column;
 
                 @media only screen and (max-width: 340px) {
-                    padding: 0.8rem 1.6rem;
+                    padding: 0.8rem 1.2rem;
                 }
             }
         }
@@ -122,6 +125,11 @@
             padding: 0 0.8rem;
         }
     }
+    &__summary {
+        &__separator {
+            display: none;
+        }
+    }
     @include mobile {
         position: fixed;
         top: 40px;
@@ -130,6 +138,7 @@
         .dc-page-overlay__header {
             padding: 10px 0;
             height: unset;
+
             &-title {
                 font-size: 1.4rem;
             }
@@ -143,12 +152,9 @@
             overflow-x: hidden;
 
             .dc-page-overlay__content {
-                padding: 2rem;
+                padding: 1rem 1.5rem 0;
                 overflow-y: auto;
             }
-        }
-        &__column--settings {
-            min-height: 450px;
         }
         &__text {
             &--center {
@@ -158,19 +164,75 @@
         }
         &__fieldset {
             padding: 0 2rem;
-        }
-        &__submit.dc-form-submit-button {
-            width: 90%;
-            padding: 20px 0;
-            display: block;
-            background-color: var(--general-main-1);
-            text-align: center;
-            position: fixed;
-            bottom: 0;
-            border-top: 2px solid var(--general-section-1);
 
+            &__summary {
+                padding: 0;
+            }
+        }
+        &__submit {
             button {
                 width: 124px;
+            }
+            &.dc-form-submit-button {
+                width: 90%;
+                padding: 20px 0;
+                display: block;
+                background-color: var(--general-main-1);
+                text-align: center;
+                position: fixed;
+                bottom: 0;
+                border-top: 2px solid var(--general-section-1);
+            }
+
+            &--with-mobile-keyboard {
+                &.dc-form-submit-button {
+                    width: 95%;
+                    display: inline-flex;
+                    position: unset;
+                    margin-top: 2rem;
+                    margin-left: auto;
+                    margin-right: auto;
+                }
+                button {
+                    margin-left: 0.8rem !important;
+                    margin-right: 0.8rem !important;
+                }
+            }
+            &__summary {
+                &.dc-form-submit-button {
+                    width: 100%;
+                    border: none;
+                }
+                &--with-mobile-keyboard {
+                    &.dc-form-submit-button {
+                        width: 90%;
+                        left: 1.5rem;
+                        border-top: 2px solid var(--general-section-1);
+                        margin-top: 0;
+                        position: relative;
+                    }
+                }
+            }
+        }
+        &__summary {
+            .dc-page-overlay__content {
+                padding: 0;
+            }
+            &__separator {
+                display: unset;
+                border: none;
+                border-top: 2px solid var(--general-section-1);
+                margin: 0;
+                width: 90%;
+                height: 0;
+                left: 1.5rem;
+                position: fixed;
+                bottom: 78px;
+                z-index: 9999;
+
+                &--with-mobile-keyboard {
+                    display: none;
+                }
             }
         }
     }

@@ -132,11 +132,11 @@
     }
     @include mobile {
         position: fixed;
-        top: 40px;
+        top: 4rem;
         z-index: 9999;
 
         .dc-page-overlay__header {
-            padding: 10px 0;
+            padding: 1rem 0;
             height: unset;
 
             &-title {
@@ -171,11 +171,11 @@
         }
         &__submit {
             button {
-                width: 124px;
+                width: 12.4rem;
             }
             &.dc-form-submit-button {
                 width: 90%;
-                padding: 20px 0;
+                padding: 2rem 0;
                 display: block;
                 background-color: var(--general-main-1);
                 text-align: center;
@@ -227,7 +227,7 @@
                 height: 0;
                 left: 1.5rem;
                 position: fixed;
-                bottom: 78px;
+                bottom: 7.8rem;
                 z-index: 9999;
 
                 &--with-mobile-keyboard {

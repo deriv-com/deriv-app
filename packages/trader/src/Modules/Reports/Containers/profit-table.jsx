@@ -158,7 +158,7 @@ class ProfitTable extends React.Component {
                                 localized_period_message={localize('You have no trading activity for this period.')}
                             />
                         ) : (
-                            <>
+                            <div className='reports__content'>
                                 <DesktopWrapper>
                                     <DataTable
                                         className='profit-table'
@@ -168,8 +168,7 @@ class ProfitTable extends React.Component {
                                         footer={totals}
                                         is_empty={is_empty}
                                         getRowAction={this.getRowAction}
-                                        custom_width={'100%'}
-                                        getRowSize={() => 63}
+                                        getRowSize={() => 95}
                                         content_loader={ReportsTableRowLoader}
                                     >
                                         <PlaceholderComponent is_loading={is_loading} />
@@ -183,13 +182,12 @@ class ProfitTable extends React.Component {
                                         getRowAction={this.getRowAction}
                                         onScroll={handleScroll}
                                         footer={totals}
-                                        custom_width={'100%'}
-                                        getRowSize={() => 234}
+                                        row_gap={8}
                                     >
                                         <PlaceholderComponent is_loading={is_loading} />
                                     </DataList>
                                 </MobileWrapper>
-                            </>
+                            </div>
                         )}
                     </React.Fragment>
                 )}

@@ -193,7 +193,7 @@ class Chart extends React.Component {
 
     get chart_yAxis_margin() {
         const margin = {
-            top: isMobile() ? 96 : 136,
+            top: isMobile() ? 96 : 148,
             bottom: this.is_bottom_widget_visible ? 128 : 112,
         };
 

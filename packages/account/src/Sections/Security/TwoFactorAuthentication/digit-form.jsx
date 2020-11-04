@@ -14,7 +14,7 @@ const DigitForm = ({ is_enabled, setEnabled }) => {
         digit_code: '',
     };
 
-    const validateFields = (values) => {
+    const validateFields = values => {
         const errors = {};
 
         const digit_code = values.digit_code;

@@ -20,21 +20,18 @@ class Account extends React.Component {
     };
 
     componentDidMount() {
+        const { account_status, allow_authentication, toggleAccount } = this.props;
         this.is_mounted = true;
         WS.wait('authorize', 'get_account_status').then(() => {
-            if (this.props.account_status) {
-                const { status } = this.props.account_status;
-
-                const allow_document_upload = status?.includes('allow_document_upload');
-
+            if (account_status) {
                 if (this.is_mounted)
                     this.setState({
                         is_loading: false,
-                        allow_document_upload,
+                        allow_document_upload: allow_authentication,
                     });
             }
         });
-        this.props.toggleAccount(true);
+        toggleAccount(true);
     }
 
     componentDidUpdate(prevProps) {
@@ -42,9 +39,9 @@ class Account extends React.Component {
         // we need to add this update once account_status changes
         // TODO: Refactor account.jsx into functional component with hooks to eliminate need for componentDidUpdate
         if (this.props.account_status !== prevProps.account_status) {
-            const allow_document_upload = this.props.account_status.status?.includes('allow_document_upload');
-
-            if (this.is_mounted) this.setState({ allow_document_upload });
+            if (this.is_mounted) {
+                this.setState({ allow_document_upload: this.props.allow_authentication });
+            }
         }
     }
 
@@ -59,15 +56,15 @@ class Account extends React.Component {
         const { is_loading, allow_document_upload } = this.state;
         const { needs_financial_assessment } = this.props;
 
-        const subroutes = flatten(this.props.routes.map((i) => i.subroutes));
+        const subroutes = flatten(this.props.routes.map(i => i.subroutes));
         let list_groups = [...this.props.routes];
 
-        list_groups = list_groups.map((route_group) => ({
+        list_groups = list_groups.map(route_group => ({
             icon: route_group.icon,
             label: route_group.getTitle(),
-            subitems: route_group.subroutes.map((sub) => subroutes.indexOf(sub)),
+            subitems: route_group.subroutes.map(sub => subroutes.indexOf(sub)),
         }));
-        let selected_content = subroutes.filter((route) => route.path === this.props.location.pathname)[0];
+        let selected_content = subroutes.filter(route => route.path === this.props.location.pathname)[0];
         if (!selected_content) {
             // fallback
             selected_content = subroutes[0];
@@ -81,8 +78,8 @@ class Account extends React.Component {
         )
             return <Redirect to='/' />;
         // TODO: modify account route to support disabled
-        this.props.routes.forEach((menu_item) => {
-            menu_item.subroutes.forEach((route) => {
+        this.props.routes.forEach(menu_item => {
+            menu_item.subroutes.forEach(route => {
                 if (route.path === routes.financial_assessment) {
                     route.is_disabled = !needs_financial_assessment;
                 }
@@ -148,6 +145,7 @@ class Account extends React.Component {
 
 Account.propTypes = {
     account_status: PropTypes.object,
+    allow_authentication: PropTypes.bool,
     currency: PropTypes.string,
     history: PropTypes.object,
     is_virtual: PropTypes.bool,
@@ -163,6 +161,7 @@ export default connect(({ client, common, ui }) => ({
     currency: client.currency,
     is_virtual: client.is_virtual,
     is_visible: ui.is_account_settings_visible,
+    allow_authentication: client.allow_authentication,
     needs_financial_assessment: client.needs_financial_assessment,
     toggleAccount: ui.toggleAccountSettings,
 }))(withRouter(Account));

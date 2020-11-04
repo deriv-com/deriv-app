@@ -1084,7 +1084,7 @@ $MIN_HEIGHT_FLOATING: calc(
             }
             &__row {
                 /* Date-Action-Browser-IP-Status */
-                grid-template-columns: 184px 65px 248px minmax(133px, 308px) 80px;
+                grid-template-columns: 184px 65px 248px minmax(133px, 308px) 120px;
                 padding: 0px;
             }
             .table__cell {
@@ -1340,13 +1340,16 @@ $MIN_HEIGHT_FLOATING: calc(
 /** @define connected-apps; weak */
 .connected-apps {
     width: 100%;
-    max-width: 682px;
-    max-height: 560px;
     height: 100%;
 
     .revoke_access {
         padding-left: 8px;
         padding-right: 8px;
+    }
+    &__wrapper {
+        max-width: 682px;
+        max-height: 560px;
+        height: 100%;
     }
     &__loading {
         height: calc(100vh - 240px);
@@ -1365,7 +1368,7 @@ $MIN_HEIGHT_FLOATING: calc(
         max-height: 502px;
     }
     &__row {
-        grid-template-columns: 169px 198px 80px 99px;
+        grid-template-columns: 169px 198px 80px 109px;
         padding: 0;
         column-gap: 42px;
         text-align: left;

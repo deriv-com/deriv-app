@@ -8,36 +8,41 @@ import {
     AutoHeightWrapper,
     StaticUrl,
 } from '@deriv/components';
-import { isDesktop, isMobile } from '@deriv/shared';
+import { isDesktop, isMobile, PlatformContext } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import CheckboxField from 'App/Containers/RealAccountSignup/checkbox-field.jsx';
-import { Hr } from './currency-selector.jsx';
-import { SharedMessage, BrokerSpecificMessage } from './terms-of-use-messages.jsx';
+import { SharedMessage, BrokerSpecificMessage, Hr } from './terms-of-use-messages.jsx';
 import 'Sass/terms-of-use.scss';
 
 class TermsOfUse extends React.Component {
+    static contextType = PlatformContext;
+
+    handleCancel = () => {
+        const current_step = this.props.getCurrentStep() - 1;
+        this.props.onCancel(current_step, this.props.goToPreviousStep);
+    };
+
     render() {
         return (
             <Formik
                 initialValues={this.props.value}
                 onSubmit={(values, actions) => {
-                    this.props.onSubmit(this.props.index, values.agreed_tos, actions.setSubmitting);
+                    this.props.onSubmit(
+                        this.props.getCurrentStep() - 1,
+                        values.agreed_tos,
+                        actions.setSubmitting,
+                        this.goToNextStep
+                    );
                 }}
             >
-                {({
-                    handleSubmit,
-                    // setFieldValue,
-                    // setFieldTouched,
-                    values,
-                    isSubmitting,
-                }) => (
+                {({ handleSubmit, values, isSubmitting }) => (
                     <AutoHeightWrapper default_height={200}>
                         {({ setRef, height }) => (
                             <form ref={setRef} onSubmit={handleSubmit}>
                                 <ThemedScrollbars is_bypassed={isMobile()} height={height - 72}>
                                     <Div100vhContainer
                                         className='terms-of-use'
-                                        height_offset='169px'
+                                        height_offset='110px'
                                         is_disabled={isDesktop()}
                                     >
                                         <BrokerSpecificMessage target={this.props.real_account_signup_target} />
@@ -76,10 +81,12 @@ class TermsOfUse extends React.Component {
                                 <Modal.Footer has_separator is_bypassed={isMobile()}>
                                     <FormSubmitButton
                                         is_disabled={isSubmitting || !values.agreed_tos || !values.agreed_tnc}
-                                        label={localize('Add account')}
-                                        has_cancel={true}
+                                        label={
+                                            this.context.is_deriv_crypto ? localize('Next') : localize('Add account')
+                                        }
+                                        has_cancel={!this.context.is_deriv_crypto}
                                         is_absolute={isMobile()}
-                                        onCancel={this.props.onCancel}
+                                        onCancel={this.handleCancel.bind(this)}
                                         cancel_label={localize('Previous')}
                                         form_error={this.props.form_error}
                                     />

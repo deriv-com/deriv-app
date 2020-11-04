@@ -2,7 +2,7 @@ const path = require('path');
 const { ALIASES, IS_RELEASE, MINIMIZERS, plugins, rules } = require('./constants');
 const { openChromeBasedOnPlatform } = require('./helpers');
 
-module.exports = function(env, argv) {
+module.exports = function (env, argv) {
     console.log(`Building application for ${env.IS_CRYPTO_APP === 'true' ? 'Deriv Crypto' : 'Deriv App'}...`);
     const base = env && env.base && env.base !== true ? '/' + env.base + '/' : '/';
     const sub_path = env && env.open && env.open !== true ? env.open : '';

@@ -63,8 +63,9 @@ class AddressDetails extends React.Component {
     }
 
     handleCancel = values => {
-        this.props.onSave(this.props.index, values);
-        this.props.onCancel();
+        const current_step = this.props.getCurrentStep() - 1;
+        this.props.onSave(current_step, values);
+        this.props.onCancel(current_step, this.props.goToPreviousStep);
     };
 
     get should_render_address_state() {
@@ -83,23 +84,26 @@ class AddressDetails extends React.Component {
                 validate={this.handleValidate}
                 validateOnMount
                 onSubmit={(values, actions) => {
-                    if (values.address_state) {
-                        values.address_state = this.props.states_list.length
-                            ? this.state.address_state_to_display
-                                ? getLocation(this.props.states_list, this.state.address_state_to_display, 'value')
-                                : getLocation(this.props.states_list, values.address_state, 'value')
-                            : values.address_state;
+                    if (values.address_state && this.props.states_list.length) {
+                        values.address_state = this.state.address_state_to_display
+                            ? getLocation(this.props.states_list, this.state.address_state_to_display, 'value')
+                            : getLocation(this.props.states_list, values.address_state, 'value');
                     }
-                    this.props.onSubmit(this.props.index, values, actions.setSubmitting);
+                    this.props.onSubmit(
+                        this.props.getCurrentStep() - 1,
+                        values,
+                        actions.setSubmitting,
+                        this.props.goToNextStep
+                    );
                 }}
             >
                 {({ handleSubmit, isSubmitting, errors, values, setFieldValue }) => (
-                    <AutoHeightWrapper default_height={200} height_offset={isDesktop() ? 192 : null}>
+                    <AutoHeightWrapper default_height={350} height_offset={isDesktop() ? 80 : null}>
                         {({ setRef, height }) => (
                             <form ref={setRef} onSubmit={handleSubmit}>
                                 <Div100vhContainer
                                     className='details-form'
-                                    height_offset='179px'
+                                    height_offset='110px'
                                     is_disabled={isDesktop()}
                                 >
                                     <p className='details-form__description'>

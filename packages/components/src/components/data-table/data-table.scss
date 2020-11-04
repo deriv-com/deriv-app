@@ -1,5 +1,11 @@
 $header-height: 52px;
 
+/** @define dc-data-table */
+.dc-data-table {
+    display: flex;
+    flex-direction: column;
+}
+
 /** @define table */
 .table {
     display: flex;

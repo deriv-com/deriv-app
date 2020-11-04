@@ -1,7 +1,6 @@
 /** @define contract-type-list; */
 .contract-type-list {
     padding: 1.6rem;
-    border-bottom: 4px solid var(--general-section-1);
 
     &__label {
         @include typeface(--paragraph-left-bold-black);

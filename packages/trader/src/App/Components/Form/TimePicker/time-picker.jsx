@@ -3,9 +3,9 @@ import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { Icon } from '@deriv/components';
+import { Icon, InputField } from '@deriv/components';
+import { connect } from 'Stores/connect';
 import Dialog from './dialog.jsx';
-import InputField from '../InputField';
 
 class TimePicker extends React.Component {
     state = { is_open: false };
@@ -51,11 +51,13 @@ class TimePicker extends React.Component {
     render() {
         const prefix_class = 'time-picker';
         const {
+            current_focus,
             selected_time,
             name,
             is_nativepicker,
             placeholder,
             end_time,
+            setCurrentFocus,
             start_time,
             validation_errors,
         } = this.props;
@@ -83,10 +85,12 @@ class TimePicker extends React.Component {
                             is_read_only
                             id={`dt_${name}_input`}
                             className={classNames(`${prefix_class}-input`)}
+                            current_focus={current_focus}
                             value={`${selected_time} GMT`}
                             onClick={this.toggleDropDown}
                             name={name}
                             placeholder={placeholder}
+                            setCurrentFocus={setCurrentFocus}
                         />
                         <Icon icon='IcClockOutline' className={`${prefix_class}__icon`} />
                         <CSSTransition
@@ -127,4 +131,9 @@ TimePicker.propTypes = {
     start_time: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.object]),
 };
 
-export default observer(TimePicker);
+export default observer(
+    connect(({ ui }) => ({
+        current_focus: ui.current_focus,
+        setCurrentFocus: ui.setCurrentFocus,
+    }))(TimePicker)
+);

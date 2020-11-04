@@ -10,7 +10,7 @@ const SelfExclusionForm = props => {
     const [max_losses_error, setMaxLossesError] = React.useState('');
     const {
         is_mobile,
-        is_keyboard_active,
+        is_onscreen_keyboard_active,
         is_logged_in,
         initial_values,
         api_max_losses,
@@ -152,7 +152,7 @@ const SelfExclusionForm = props => {
                                 </div>
                                 <div
                                     className={classNames('self-exclusion__footer', {
-                                        'self-exclusion__footer--relative': is_mobile && is_keyboard_active,
+                                        'self-exclusion__footer--relative': is_mobile && is_onscreen_keyboard_active,
                                     })}
                                 >
                                     <div className='self-exclusion__footer-btn-group'>
@@ -217,7 +217,7 @@ const SelfExclusion = props => {
 };
 
 SelfExclusion.propTypes = {
-    is_keyboard_active: PropTypes.bool,
+    is_onscreen_keyboard_active: PropTypes.bool,
     is_mobile: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_restricted: PropTypes.bool,
@@ -233,7 +233,7 @@ SelfExclusion.propTypes = {
 
 export default connect(({ client, self_exclusion, ui }) => ({
     initial_values: self_exclusion.initial_values,
-    is_keyboard_active: ui.is_keyboard_active,
+    is_onscreen_keyboard_active: ui.is_onscreen_keyboard_active,
     is_mobile: ui.is_mobile,
     is_logged_in: client.is_logged_in,
     is_restricted: self_exclusion.is_restricted,

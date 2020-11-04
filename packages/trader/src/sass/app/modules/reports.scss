@@ -51,6 +51,15 @@ $side-padding: 1.2em;
     &__route-selection {
         padding: 1.6rem;
     }
+    &__content {
+        width: 100%;
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        @media only screen and (min-width: 1280px) {
+            overflow: visible;
+        }
+    }
     .unknown-icon {
         margin-left: 8px;
         fill: var(--text-general);
@@ -60,6 +69,7 @@ $side-padding: 1.2em;
     .dc-tabs--open-positions {
         flex: 1;
         grid-template-rows: 36px calc(100% - 36px);
+        grid-template-columns: 100%;
 
         .dc-tabs__content {
             display: flex;
@@ -69,8 +79,8 @@ $side-padding: 1.2em;
     /* postcss-bem-linter: ignore */
     .statement__row--detail {
         overflow: hidden;
-        max-height: 63px;
-        height: 63px;
+        max-height: 95px;
+        height: 95;
         display: flex;
         align-items: center;
         padding: 0;
@@ -85,6 +95,14 @@ $side-padding: 1.2em;
     .dc-vertical-tab__content--floating {
         margin-right: 0;
     }
+    .table__head {
+        height: auto;
+        .table__cell {
+            @include tablet-up {
+                white-space: break-spaces;
+            }
+        }
+    }
 }
 
 /** @define reports-page-wrapper; weak */
@@ -96,6 +114,15 @@ $side-padding: 1.2em;
 .statement {
     .table__head {
         font-weight: bold;
+        align-items: flex-start;
+        height: auto;
+
+        .table__cell {
+            height: auto;
+        }
+        @include desktop {
+            white-space: normal;
+        }
     }
 
     @include desktop {
@@ -104,10 +131,6 @@ $side-padding: 1.2em;
     @include mobile {
         flex: 1;
 
-        &__data-list-body,
-        &__data-list-footer {
-            padding: 0 1.6rem;
-        }
         &__data-list-body {
             height: 100%;
 
@@ -140,6 +163,7 @@ $side-padding: 1.2em;
     &__table {
         height: calc(100% - 42px);
         flex: 1;
+        min-width: 85rem;
     }
     &__row {
         /* icon refId currency tr_time transaction cred/debt balance */
@@ -152,7 +176,7 @@ $side-padding: 1.2em;
             text-align: left;
         }
         .table__cell {
-            height: 63px;
+            height: 95px;
         }
     }
     .amount,
@@ -357,6 +381,12 @@ $side-padding: 1.2em;
     .table__head,
     .table__foot {
         font-weight: bold;
+        white-space: normal;
+    }
+    .table__head {
+        .table__cell {
+            align-items: flex-start;
+        }
     }
 
     @include desktop {
@@ -366,10 +396,6 @@ $side-padding: 1.2em;
     @include mobile {
         flex: 1;
 
-        &__data-list-body,
-        &__data-list-footer {
-            padding: 0 1.6rem;
-        }
         &__data-list-body {
             height: calc(100% - 50px);
 
@@ -407,19 +433,21 @@ $side-padding: 1.2em;
     &__table {
         height: calc(100% - 42px);
         flex: 1;
+        min-width: 90rem;
     }
     &__row {
         /* icon refId currency buy_time buy_price sell_time sell_price profit/loss */
         /* stylelint-disable-next-line declaration-colon-space-after */
         grid-template-columns:
             minmax(120px, 0.6fr) minmax(130px, 1fr) minmax(85px, 1fr) minmax(85px, 1.2fr) minmax(85px, 1fr)
-            minmax(85px, 1.2fr) minmax(85px, 1fr) minmax(85px, 1fr);
+            minmax(85px, 1.2fr) minmax(95px, 1fr) minmax(130px, 1fr);
     }
     .buy_price,
     .sell_price,
     .profit_loss {
         @include desktop {
             justify-content: flex-end;
+            text-align: right;
         }
         @include mobile {
             justify-content: center;
@@ -431,6 +459,9 @@ $side-padding: 1.2em;
     }
     .profit_loss {
         font-weight: bold;
+        @include tablet-up {
+            word-break: break-word;
+        }
         @include mobile {
             display: flex;
 
@@ -506,7 +537,7 @@ $side-padding: 1.2em;
 
     @include mobile {
         flex: 1;
-        margin-top: 0.8rem;
+        padding-top: 0.8rem;
 
         &-multiplier {
             /* postcss-bem-linter: ignore */
@@ -515,10 +546,6 @@ $side-padding: 1.2em;
                 border-radius: $BORDER_RADIUS;
                 padding: 0;
 
-                /* postcss-bem-linter: ignore */
-                &--wrapper {
-                    padding: 0 1.6rem;
-                }
                 /* postcss-bem-linter: ignore */
                 & .dc-progress-slider--completed {
                     display: none;
@@ -573,30 +600,8 @@ $side-padding: 1.2em;
                     }
                 }
                 /* postcss-bem-linter: ignore */
-                & .dc-contract-card-items-wrapper--mobile {
-                    margin-top: 0.8rem;
-                }
-                /* postcss-bem-linter: ignore */
                 & .dc-contract-card-dialog-toggle {
-                    top: 71px;
-                    width: 124px;
-                    right: 9px;
                     border-color: var(--border-hover);
-
-                    @media only screen and (max-width: 380px) {
-                        width: 110px;
-                        height: 79px;
-                        right: 10px;
-                    }
-                    @media only screen and (max-width: 320px) {
-                        top: 72px;
-                        width: 91px;
-                        height: 80px;
-                    }
-                    @media (max-width: 320px) and (max-height: 480px) {
-                        top: 70px;
-                        height: 80px;
-                    }
                 }
             }
             /* postcss-bem-linter: ignore */
@@ -625,9 +630,11 @@ $side-padding: 1.2em;
                 }
             }
         }
+        &__data-list {
+            margin-top: 0.8rem;
+        }
         &__data-list-body {
             height: calc(100% - 95px);
-            padding: 0 2.4rem;
 
             .dc-progress-bar__container {
                 max-width: 120px;
@@ -647,7 +654,7 @@ $side-padding: 1.2em;
             }
             &--content {
                 flex: 1;
-                padding-left: 32px;
+                padding: 0.8rem 1.6rem 0;
                 display: flex;
                 justify-content: space-between;
 
@@ -666,22 +673,40 @@ $side-padding: 1.2em;
                 color: var(--text-prominent);
             }
         }
+        .dc-contract-card__no-resale-msg {
+            display: flex;
+            font-size: 1.4rem;
+            color: var(--text-general);
+            justify-content: center;
+            padding: 0.8rem 0rem;
+        }
     }
 
     &__content {
-        width: 100%;
+        width: fit-content;
         max-height: 100%;
     }
     &__indicative {
         display: flex;
         justify-content: center;
-        align-items: flex-end;
+        align-items: center;
         flex-direction: column;
+        width: 100%;
 
         &--amount {
             display: flex;
             align-items: center;
-            line-height: 16px;
+            @include desktop {
+                line-height: 2;
+            }
+        }
+        .dc-btn--sell {
+            height: 2.4rem;
+        }
+        &-no-resale-msg {
+            clear: both;
+            text-align: center;
+            font-size: smaller;
         }
     }
     &__profit-loss {
@@ -729,7 +754,9 @@ $side-padding: 1.2em;
         margin-top: 20px;
 
         .table__head {
-            @include desktop {
+            height: auto;
+            white-space: normal;
+            @include tablet-up {
                 .profit,
                 .indicative {
                     white-space: break-spaces;
@@ -737,9 +764,8 @@ $side-padding: 1.2em;
             }
 
             .table__cell {
-                padding-top: 0px;
-                padding-bottom: 0px;
                 font-weight: bold;
+                align-items: flex-start;
             }
         }
         .table__body {
@@ -749,16 +775,22 @@ $side-padding: 1.2em;
         }
         .table__foot {
             font-weight: bold;
+            white-space: normal;
+        }
+        .table__cell {
+            padding-top: 0px;
+            padding-bottom: 0px;
+            font-weight: bold;
         }
     }
     &__row {
-        /* icon refId currency buy_price potential_payout potential_profit indicative_price rem_time */
+        /* type refId currency buy_price payout_limit indicative_profit/loss indicative_price rem_time */
         /* stylelint-disable-next-line declaration-colon-space-after */
         grid-template-columns:
-            minmax(110px, 0.8fr) minmax(130px, 1.2fr) minmax(100px, 1fr) minmax(90px, 1.4fr) minmax(90px, 1.4fr)
-            minmax(120px, 2fr) minmax(120px, 1.2fr) minmax(85px, 2fr);
+            minmax(110px, 0.7fr) minmax(130px, 0.8fr) minmax(100px, 1.1fr) minmax(90px, 1.1fr) minmax(90px, 1.1fr)
+            minmax(120px, 1.1fr) minmax(120px, 1.1fr) minmax(85px, 1.1fr);
         width: 100%;
-        grid-auto-rows: auto;
+        grid-auto-rows: 100%;
 
         &_wrapper {
             display: flex;
@@ -775,10 +807,17 @@ $side-padding: 1.2em;
     .payout,
     .indicative,
     .purchase,
+    .multiplier,
+    .currency,
     .profit {
         @include desktop {
-            justify-content: flex-end;
-            text-align: right;
+            justify-content: center;
+        }
+    }
+    .indicative {
+        @include desktop {
+            padding-top: 0;
+            padding-bottom: 0;
         }
     }
     .type {
@@ -820,8 +859,8 @@ $side-padding: 1.2em;
             /* icon multiplier currency stake cancellation buy_price limit_order current_stake total_profit_loss action */
             /* stylelint-disable-next-line declaration-colon-space-after */
             grid-template-columns:
-                minmax(85px, 0.7fr) minmax(75px, 0.8fr) minmax(65px, 0.5fr) minmax(105px, 0.8fr) minmax(100px, 0.8fr)
-                minmax(105px, 1fr) minmax(105px, 1fr) minmax(105px, 1.2fr) minmax(115px, 1.1fr) minmax(90px, 1.2fr);
+                minmax(85px, 1fr) minmax(125px, 1fr) minmax(65px, 1fr) minmax(105px, 1fr) minmax(100px, 1fr)
+                minmax(105px, 1fr) minmax(105px, 1fr) minmax(105px, 1fr) minmax(125px, 1fr) minmax(90px, 1fr);
 
             &-action {
                 display: flex;
@@ -835,6 +874,7 @@ $side-padding: 1.2em;
                 .dc-btn {
                     height: 2.4rem;
                     padding: 0 0.8rem;
+                    min-width: 93px;
 
                     .dc-btn__text {
                         font-size: 1.2rem;
@@ -844,24 +884,25 @@ $side-padding: 1.2em;
                     }
                 }
             }
-            .limit_order {
-                flex-direction: column;
-                align-items: flex-end;
-                text-align: right;
-            }
             .limit_order,
             .cancellation,
             .bid_price {
                 @include desktop {
-                    justify-content: flex-end;
-                    text-align: right;
+                    justify-content: center;
+                    text-align: center;
                     width: 100%;
                     white-space: break-spaces;
                 }
             }
+            .limit_order {
+                flex-direction: column;
+                align-items: flex-end;
+                text-align: right;
+                justify-content: flex-start;
+            }
             .action {
-                padding-top: 0.8rem;
                 padding-bottom: 0;
+                justify-content: center;
             }
         }
         &__bid_price {
@@ -874,6 +915,21 @@ $side-padding: 1.2em;
                 color: var(--text-profit-success);
             }
         }
+    }
+}
+
+.open-positions,
+.statement,
+.profit-table {
+    /* postcss-bem-linter: ignore */
+    .data-list__body,
+    .data-list__footer {
+        padding: 0 1.6rem;
+    }
+
+    /* postcss-bem-linter: ignore */
+    .data-list__item {
+        background-color: var(--general-section-1);
     }
 }
 

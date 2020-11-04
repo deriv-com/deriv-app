@@ -1,5 +1,13 @@
 import { action, autorun, computed, observable } from 'mobx';
-import { getPathname, getPlatformHeader, isEmptyObject, LocalStore, unique } from '@deriv/shared';
+import {
+    getPathname,
+    getPlatformInformation,
+    isEmptyObject,
+    LocalStore,
+    unique,
+    isTouchDevice,
+    platform_name,
+} from '@deriv/shared';
 import { sortNotifications } from 'App/Components/Elements/NotificationMessage';
 import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
 import BaseStore from './base-store';
@@ -39,7 +47,6 @@ export default class UIStore extends BaseStore {
     @observable is_account_signup_modal_visible = false;
     @observable is_set_residence_modal_visible = false;
     @observable is_reset_password_modal_visible = false;
-    @observable is_account_transfer_limit_modal_visible = false;
     // @observable is_purchase_lock_on       = false;
 
     // SmartCharts Controls
@@ -53,7 +60,7 @@ export default class UIStore extends BaseStore {
 
     @observable screen_width = window.innerWidth;
     @observable screen_height = window.innerHeight;
-    @observable is_keyboard_active = false;
+    @observable is_onscreen_keyboard_active = false;
 
     @observable notifications = [];
     @observable notification_messages = [];
@@ -112,9 +119,6 @@ export default class UIStore extends BaseStore {
     // UI Focus retention
     @observable current_focus = null;
 
-    // Enabling EU users
-    @observable is_eu_enabled = false; // TODO: [deriv-eu] - Remove this constant when all EU sections are done.
-
     // Mobile
     mobile_toast_timeout = 3500;
     @observable.shallow toasts = [];
@@ -160,29 +164,30 @@ export default class UIStore extends BaseStore {
 
         super({ root_store, local_storage_properties, store_name });
 
-        // TODO: [deiv-eu] remove this manual enabler
-        this.toggleIsEuEnabled(localStorage.getItem('is_eu_enabled') === 'true');
-
         window.addEventListener('resize', this.handleResize);
         autorun(() => {
-            // TODO: [disable-dark-bot] Delete this condition when Bot is ready
-            const new_app_routing_history = this.root_store.common.app_routing_history.slice();
-            const platform = getPlatformHeader(new_app_routing_history);
-            if (platform === 'DBot') {
-                document.body.classList.remove('theme--dark');
-                document.body.classList.add('theme--light');
-                return;
-            }
-
-            if (this.is_dark_mode_on) {
-                document.body.classList.remove('theme--light');
-                document.body.classList.add('theme--dark');
-            } else {
-                document.body.classList.remove('theme--dark');
-                document.body.classList.add('theme--light');
-            }
+            this.changeTheme();
         });
     }
+
+    changeTheme = () => {
+        // TODO: [disable-dark-bot] Delete this condition when Bot is ready
+        const new_app_routing_history = this.root_store.common.app_routing_history.slice();
+        const platform = getPlatformInformation(new_app_routing_history).header;
+        if (platform === platform_name.DBot) {
+            document.body.classList.remove('theme--dark');
+            document.body.classList.add('theme--light');
+            return;
+        }
+
+        if (this.is_dark_mode_on) {
+            document.body.classList.remove('theme--light');
+            document.body.classList.add('theme--dark');
+        } else {
+            document.body.classList.remove('theme--dark');
+            document.body.classList.add('theme--light');
+        }
+    };
 
     @action.bound
     init(notification_messages) {
@@ -214,10 +219,6 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     handleResize() {
-        if (this.is_mobile) {
-            this.is_keyboard_active =
-                window.innerWidth === this.screen_width && this.screen_height > window.innerHeight;
-        }
         this.screen_width = window.innerWidth;
         this.screen_height = window.innerHeight;
     }
@@ -554,11 +555,6 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    toggleAccountTransferLimitModal(state_change = !this.is_account_transfer_limit_modal_visible) {
-        this.is_account_transfer_limit_modal_visible = state_change;
-    }
-
-    @action.bound
     toggleAccountSignupModal(state_change = !this.is_account_signup_modal_visible) {
         this.is_account_signup_modal_visible = state_change;
     }
@@ -624,8 +620,14 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
+    toggleOnScreenKeyboard() {
+        this.is_onscreen_keyboard_active = this.current_focus !== null && this.is_mobile && isTouchDevice();
+    }
+
+    @action.bound
     setCurrentFocus(value) {
         this.current_focus = value;
+        this.toggleOnScreenKeyboard();
     }
 
     @action.bound
@@ -671,16 +673,14 @@ export default class UIStore extends BaseStore {
     toggleWelcomeModal({ is_visible = !this.is_welcome_modal_visible, should_persist = false }) {
         if (LocalStore.get('has_viewed_welcome_screen') && !should_persist) return;
         this.is_welcome_modal_visible = is_visible;
-        LocalStore.set('has_viewed_welcome_screen', true);
+
+        if (!is_visible) {
+            LocalStore.set('has_viewed_welcome_screen', true);
+        }
     }
 
     @action.bound
     showAccountTypesModalForEuropean() {
         this.toggleAccountTypesModal(this.root_store.client.is_uk);
-    }
-
-    @action.bound
-    toggleIsEuEnabled(status = !this.is_eu_enabled) {
-        this.is_eu_enabled = status;
     }
 }

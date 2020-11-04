@@ -11,8 +11,8 @@ import getRoutesConfig from 'App/Constants/routes-config';
 import { getAllowedLanguages, currentLanguage, changeLanguage } from 'Utils/Language';
 import LiveChat from '../../Elements/live-chat.jsx';
 
-const MenuLink = ({ link_to, icon, is_active, is_disabled, is_external, suffix_icon, text, onClickLink }) => {
-    if (is_external) {
+const MenuLink = ({ link_to, icon, is_active, is_disabled, is_language, suffix_icon, text, onClickLink }) => {
+    if (is_language) {
         return (
             <span
                 className={classNames('header__menu-mobile-link', {
@@ -25,7 +25,7 @@ const MenuLink = ({ link_to, icon, is_active, is_disabled, is_external, suffix_i
                     changeLanguage(link_to);
                 }}
             >
-                <Icon className='header__menu-mobile-link-icon' icon={icon} />
+                <Icon className='header__menu-mobile-link-flag-icon' size={32} icon={icon} />
                 <span className='header__menu-mobile-link-text'>{text}</span>
                 {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
             </span>
@@ -81,10 +81,9 @@ class ToggleMenuDrawer extends React.Component {
         this.is_mounted = true;
         WS.wait('authorize', 'get_account_status').then(() => {
             if (this.props.account_status) {
-                const { status } = this.props.account_status;
-
-                const allow_document_upload = status?.includes('allow_document_upload');
-                if (this.is_mounted) this.setState({ allow_document_upload });
+                if (this.is_mounted) {
+                    this.setState({ allow_document_upload: this.props.allow_authentication });
+                }
             }
         });
         this.processRoutes();
@@ -99,7 +98,7 @@ class ToggleMenuDrawer extends React.Component {
         // we need to add this update once account_status changes
         // TODO: Refactor ToggleMenuDrawer into functional component with hooks to eliminate need for componentDidUpdate
         if (this.props.account_status !== prevProps.account_status) {
-            const allow_document_upload = this.props.account_status?.status?.includes('allow_document_upload');
+            const allow_document_upload = this.props.allow_authentication;
             if (this.is_mounted) this.setState({ allow_document_upload });
         }
     }
@@ -210,7 +209,7 @@ class ToggleMenuDrawer extends React.Component {
                 {Object.keys(getAllowedLanguages()).map((lang, idx) => (
                     <MobileDrawer.Item key={idx}>
                         <MenuLink
-                            is_external
+                            is_language
                             is_active={currentLanguage === lang}
                             link_to={lang}
                             icon={`IcFlag${lang.replace('_', '-')}`}

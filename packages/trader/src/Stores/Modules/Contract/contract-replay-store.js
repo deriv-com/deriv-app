@@ -13,6 +13,7 @@ export default class ContractReplayStore extends BaseStore {
     @observable is_sell_requested = false;
     @observable has_error = false;
     @observable error_message = '';
+    @observable error_code = '';
     @observable is_chart_loading = true;
     // ---- chart props
     @observable margin;
@@ -50,11 +51,7 @@ export default class ContractReplayStore extends BaseStore {
             this.should_forget_first = false;
         }
 
-        // If the contract replay is opened from trade page, it should already have an ongoing subscription
-        // Subscription is created only when the contract replay page is opened directly
-        if (!this.root_store.modules.contract_trade.contracts_map[contract_id]) {
-            this.subscriber = WS.subscribeProposalOpenContract(contract_id, cb);
-        }
+        this.subscriber = WS.subscribeProposalOpenContract(contract_id, cb);
     };
 
     subscribeProposalOpenContract = () => {
@@ -98,8 +95,11 @@ export default class ContractReplayStore extends BaseStore {
         if (!this.switch_account_listener) return;
 
         if ('error' in response) {
+            const { code, message } = response.error;
             this.has_error = true;
             this.is_chart_loading = false;
+            this.error_message = message;
+            this.error_code = code;
             return;
         }
         if (isEmptyObject(response.proposal_open_contract)) {

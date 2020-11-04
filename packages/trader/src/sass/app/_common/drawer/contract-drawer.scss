@@ -22,6 +22,9 @@ $header-height: 4em;
         text-transform: none;
         color: var(--text-prominent);
     }
+    .currency-badge {
+        margin-bottom: 5px;
+    }
     &--contract-mode {
         &:before {
             background: var(--general-section-1);
@@ -63,27 +66,10 @@ $header-height: 4em;
         display: flex;
         flex-direction: column;
     }
-    .dc-contract-card-dialog-toggle {
-        top: 114px;
-        right: 8px;
-        width: 108px;
-    }
 }
 
 /** @define .contract-card; weak */
 .contract-card {
-    &__footer {
-        margin-bottom: 0.5em;
-        padding: 0 4px;
-
-        &-wrapper {
-            @include typeface(--small-center-normal-black);
-            color: var(--text-prominent);
-            padding: 8px 8px 0;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-        }
-    }
     &__sell-button {
         display: flex;
         align-items: center;
@@ -91,33 +77,12 @@ $header-height: 4em;
         transition: transform 0.25s ease, opacity 0.25s linear;
         border-top: 1px solid var(--general-section-1);
 
-        &--enter-done {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        &--enter,
-        &--exit {
-            opacity: 0;
-            transform: translateY(-8px);
-        }
-        &--has-cancel-btn {
-            justify-content: space-between;
-
-            .dc-btn--cancel {
-                margin-left: 0.8rem;
-            }
-        }
-        .dc-remaining-time {
-            border-radius: 0.4rem;
-            font-size: 1.2rem;
-            margin-left: 0.8rem;
-            padding-top: 0.2rem;
-        }
-        .dc-btn--sell {
-            height: 32px;
+        .dc-btn--sell,
+        .dc-btn--cancel {
+            height: 2.4rem;
 
             @include mobile {
-                width: 100%;
+                height: 3.2rem;
             }
         }
     }

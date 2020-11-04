@@ -5,12 +5,12 @@ import Interface from '../Interface';
 import { unrecoverable_errors } from '../../../constants/messages';
 import { observer as globalObserver } from '../../../utils/observer';
 
-JSInterpreter.prototype.takeStateSnapshot = function() {
+JSInterpreter.prototype.takeStateSnapshot = function () {
     const newStateStack = cloneThorough(this.stateStack, undefined, undefined, undefined, true);
     return newStateStack;
 };
 
-JSInterpreter.prototype.restoreStateSnapshot = function(snapshot) {
+JSInterpreter.prototype.restoreStateSnapshot = function (snapshot) {
     this.stateStack = cloneThorough(snapshot, undefined, undefined, undefined, true);
     this.global = this.stateStack[0].scope.object || this.stateStack[0].scope;
     this.initFunc_(this, this.global);

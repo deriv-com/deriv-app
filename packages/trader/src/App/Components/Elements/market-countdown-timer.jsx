@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
@@ -125,26 +126,24 @@ const MarketCountdownTimer = ({ is_main_page, symbol }) => {
         }
     });
 
-    let view = null;
-    if (when_market_opens && timer_components) {
-        view = (
-            <React.Fragment>
-                <p>
-                    <Localize i18n_default_text='Reopens:' />
-                </p>
-                <p
-                    className={classNames('market-is-closed-overlay__timer', {
-                        'market-is-closed-overlay__timer--main-page': is_main_page,
-                    })}
-                >
-                    {timer_components} GMT
-                </p>
-                <div className='market-is-closed-overlay__separator' />
-            </React.Fragment>
-        );
-    }
+    if (!(when_market_opens && timer_components)) return null;
 
-    return view;
+    return (
+        <React.Fragment>
+            <Text as='p'>
+                <Localize i18n_default_text='Reopens:' />
+            </Text>
+            <Text
+                as='p'
+                className={classNames('market-is-closed-overlay__timer', {
+                    'market-is-closed-overlay__timer--main-page': is_main_page,
+                })}
+            >
+                {timer_components} GMT
+            </Text>
+            <div className='market-is-closed-overlay__separator' />
+        </React.Fragment>
+    );
 };
 
 MarketCountdownTimer.propTypes = {

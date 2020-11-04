@@ -4,6 +4,8 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import Loadable from 'react-loadable';
 import { UILoader } from '@deriv/components';
+import { urlForLanguage } from '@deriv/shared';
+import { getLanguage } from '@deriv/translations';
 import BinaryRoutes from 'App/Components/Routes';
 import { connect } from 'Stores/connect';
 
@@ -44,9 +46,14 @@ class Routes extends React.Component {
 
     render() {
         const { error, has_error, is_logged_in, passthrough } = this.props;
+        const lang = getLanguage();
 
         if (has_error) {
             return <Error {...error} />;
+        }
+
+        if (!/[?&]lang=/.test(location.search) && lang !== 'EN') {
+            window.history.replaceState({}, document.title, urlForLanguage(lang));
         }
 
         return <BinaryRoutes is_logged_in={is_logged_in} passthrough={passthrough} />;

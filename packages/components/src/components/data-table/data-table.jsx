@@ -73,7 +73,6 @@ class DataTable extends React.PureComponent {
             footer,
             getActionColumns,
             getRowSize,
-            onScroll,
             content_loader,
         } = this.props;
 
@@ -137,7 +136,6 @@ class DataTable extends React.PureComponent {
                     ref={el => {
                         this.el_table_body = el;
                     }}
-                    onScroll={onScroll}
                 >
                     {TableData}
                 </div>

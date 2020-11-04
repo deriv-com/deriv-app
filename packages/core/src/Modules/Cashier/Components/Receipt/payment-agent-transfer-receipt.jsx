@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { Button, Icon, Text } from '@deriv/components';
-import { routes, formatMoney, getCurrencyDisplayCode } from '@deriv/shared';
+import { routes, formatMoney, getCurrencyDisplayCode, getCurrencyName } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
@@ -31,7 +31,7 @@ class PaymentAgentTransferReceipt extends React.Component {
                             <Icon icon={`IcCurrency-${this.props.currency.toLowerCase()}`} />
                             <span className='cashier__transferred-details'>
                                 <Text size='xs' line_height='x' weight='bold' className='cashier__text--bold'>
-                                    {getCurrencyDisplayCode(this.props.currency)}
+                                    {getCurrencyName(this.props.currency)}
                                 </Text>
                                 <Text size='xs' line_height='x' color='prominent' className='cashier__text--faint'>
                                     {this.props.loginid}

@@ -12,7 +12,7 @@ import {
     initFormErrorMessages,
     setSharedMT5Text,
 } from '@deriv/shared';
-import { initializeTranslations, getLanguage } from '@deriv/translations';
+import { initializeTranslations, getLanguage, useOnLoadTranslation } from '@deriv/translations';
 import WS from 'Services/ws-methods';
 import { MobxContentProvider } from 'Stores/connect';
 import SmartTraderIFrame from 'Modules/SmartTraderIFrame';
@@ -38,6 +38,7 @@ const App = ({ root_store }) => {
     const base = l.pathname.split('/')[1];
     const has_base = /^\/(br_)/.test(l.pathname);
     const url_params = new URLSearchParams(l.search);
+    const [is_translation_loaded] = useOnLoadTranslation();
     React.useEffect(() => {
         checkAndSetEndpointFromUrl();
         initializeTranslations();
@@ -99,25 +100,31 @@ const App = ({ root_store }) => {
     };
 
     return (
-        <Router basename={has_base ? `/${base}` : null}>
-            <MobxContentProvider store={root_store}>
-                <PlatformContainer>
-                    <Header />
-                    <ErrorBoundary>
-                        <AppContents>
-                            {/* TODO: [trader-remove-client-base] */}
-                            <Routes passthrough={platform_passthrough} />
-                        </AppContents>
-                    </ErrorBoundary>
-                    <DesktopWrapper>
-                        <Footer />
-                    </DesktopWrapper>
-                    <AppModals url_action_param={url_params.get('action')} />
-                    <SmartTraderIFrame />
-                    <AppToastMessages />
-                </PlatformContainer>
-            </MobxContentProvider>
-        </Router>
+        <>
+            {is_translation_loaded ? (
+                <Router basename={has_base ? `/${base}` : null}>
+                    <MobxContentProvider store={root_store}>
+                        <PlatformContainer>
+                            <Header />
+                            <ErrorBoundary>
+                                <AppContents>
+                                    {/* TODO: [trader-remove-client-base] */}
+                                    <Routes passthrough={platform_passthrough} />
+                                </AppContents>
+                            </ErrorBoundary>
+                            <DesktopWrapper>
+                                <Footer />
+                            </DesktopWrapper>
+                            <AppModals url_action_param={url_params.get('action')} />
+                            <SmartTraderIFrame />
+                            <AppToastMessages />
+                        </PlatformContainer>
+                    </MobxContentProvider>
+                </Router>
+            ) : (
+                <></>
+            )}
+        </>
     );
 };
 

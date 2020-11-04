@@ -235,7 +235,9 @@ class ApiToken extends React.Component {
                             }) => (
                                 <Form noValidate>
                                     <Timeline className='api-token__timeline'>
-                                        <Timeline.Item title={localize('Select scopes based on the access you need.')}>
+                                        <Timeline.Item
+                                            item_title={localize('Select scopes based on the access you need.')}
+                                        >
                                             <div className='api-token__checkbox-wrapper'>
                                                 <Card
                                                     name='read'
@@ -283,7 +285,7 @@ class ApiToken extends React.Component {
                                             </div>
                                         </Timeline.Item>
                                         <Timeline.Item
-                                            title={localize(
+                                            item_title={localize(
                                                 "Name your token and click on 'Create' to generate your token."
                                             )}
                                         >
@@ -322,8 +324,7 @@ class ApiToken extends React.Component {
                                                 />
                                             </div>
                                         </Timeline.Item>
-
-                                        <Timeline.Item title={localize('Copy and paste the token into the app.')}>
+                                        <Timeline.Item item_title={localize('Copy and paste the token into the app.')}>
                                             <DesktopWrapper>
                                                 <Table>
                                                     <Table.Header>

@@ -20,7 +20,7 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
         position: relative;
         border-radius: $BORDER_RADIUS;
         padding: $CONTRACT_INFO_BOX_PADDING;
-        background: transparentize($color-black-1, 0.9);
+        background: var(--general-section-1);
         font-weight: 300;
 
         &-longcode {
@@ -50,17 +50,6 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
                         font-size: 0.8rem;
                     }
                 }
-            }
-            &:before {
-                position: absolute;
-                content: '';
-                background: transparentize($color-black-1, 0.94);
-                filter: blur(2px);
-                z-index: 0;
-                top: -2px;
-                left: -2px;
-                width: calc(100% + 4px);
-                height: calc(100% + 4px);
             }
         }
         .expired {
@@ -142,7 +131,6 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
             }
         }
         @include mobile {
-            background: var(--general-main-2);
             padding: 0.8rem;
             margin-left: 0.8rem;
         }

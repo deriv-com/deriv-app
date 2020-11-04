@@ -6,7 +6,8 @@ import { Button, DesktopWrapper, Icon, MobileDialog, MobileWrapper, ThemedScroll
 import { BinaryLink } from 'App/Components/Routes';
 import { connect } from 'Stores/connect';
 import { localize } from '@deriv/translations';
-import { toTitleCase, isEmptyObject } from '@deriv/shared';
+import { toTitleCase, isEmptyObject, isMobile } from '@deriv/shared';
+
 import { EmptyNotification } from 'App/Components/Elements/Notifications/empty-notification.jsx';
 
 class NotificationsDialog extends React.Component {
@@ -64,6 +65,7 @@ class NotificationsDialog extends React.Component {
                                         {item.action.route ? (
                                             <BinaryLink
                                                 onClick={this.props.toggleDialog}
+                                                active_class='notifications-item'
                                                 className={classNames(
                                                     'dc-btn',
                                                     'dc-btn--secondary',
@@ -105,14 +107,7 @@ class NotificationsDialog extends React.Component {
                         'notifications-dialog__content--empty': is_empty,
                     })}
                 >
-                    <DesktopWrapper>
-                        {is_empty ? (
-                            notifications_list_el
-                        ) : (
-                            <ThemedScrollbars>{notifications_list_el}</ThemedScrollbars>
-                        )}
-                    </DesktopWrapper>
-                    <MobileWrapper>{notifications_list_el}</MobileWrapper>
+                    <ThemedScrollbars is_bypassed={isMobile() || is_empty}>{notifications_list_el}</ThemedScrollbars>
                 </div>
             </div>
         );

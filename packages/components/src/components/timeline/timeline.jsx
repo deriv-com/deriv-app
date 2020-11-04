@@ -21,7 +21,7 @@ const Timeline = ({ children, ...props }) => {
                 >
                     <Oval>{idx + 1}</Oval>
                     <div className='dc-timeline__container'>
-                        <h2 className='dc-timeline__title'>{child.props.title}</h2>
+                        <h2 className='dc-timeline__title'>{child.props.item_title}</h2>
                         <div className='dc-timeline__content'>{child}</div>
                     </div>
                 </div>
@@ -29,6 +29,9 @@ const Timeline = ({ children, ...props }) => {
         </div>
     );
 };
+
 const Item = ({ children, ...props }) => <div {...props}>{children}</div>;
+
 Timeline.Item = Item;
+
 export default Timeline;

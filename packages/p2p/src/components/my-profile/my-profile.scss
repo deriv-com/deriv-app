@@ -12,6 +12,10 @@
         height: calc(100% - 15rem);
         position: absolute;
         width: calc(100% - 4.8rem);
+        @include mobile {
+            width: 100%;
+            height: unset;
+        }
     }
     &__header {
         display: flex;
@@ -71,7 +75,7 @@
         @include mobile {
             width: 100vw;
             grid-template-columns: unset;
-            justify-content: space-between;
+            justify-content: center;
         }
 
         &-cell {
@@ -80,7 +84,7 @@
             width: 158px;
             @include mobile {
                 width: unset;
-                margin: 0 1.6rem;
+                margin: auto;
             }
 
             &-header {
@@ -103,16 +107,14 @@
         }
     }
     &__popover {
-        &-container {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
         &-icon {
             margin: 0 0.8rem;
         }
         &-text {
             margin-right: 2rem;
+            @include mobile {
+                margin-right: 0;
+            }
         }
     }
     &__separator {
@@ -125,7 +127,7 @@
             font-weight: bold;
             @include mobile {
                 margin-left: 1.6rem;
-                width: max-content;
+                width: 10rem;
             }
         }
         &-horizontal_line {
@@ -133,35 +135,18 @@
             border-bottom: 1px solid var(--general-section-1);
             margin-left: 1.6rem;
             width: 564px;
-        }
-    }
-    &__privacy-setting {
-        & > .dc-toggle-switch:checked + .dc-toggle-switch__label .dc-toggle-switch__button {
-            left: calc(100% - 0.2rem);
-        }
-        @include mobile {
-            display: flex;
-            justify-content: flex-start;
-            width: 100vw;
-            margin: 1.6rem;
-            &-text {
-                color: var(--text-prominent);
-                align-self: center;
-                margin-left: 1.6rem;
-                font-size: var(--text-size-xs);
-            }
-            &-switch {
-                width: 3.2rem;
-                height: 1.7rem;
-                &-button {
-                    width: 1.3rem;
-                    top: 0.2rem;
-                    left: 0.1rem;
-                }
+            @include mobile {
+                width: calc(100vw - 9rem);
             }
         }
     }
     &__form {
+        @include mobile {
+            margin-bottom: 18rem;
+            &--actvie-keyboard {
+                margin-bottom: 0;
+            }
+        }
         &-textarea {
             margin-top: 2.5rem;
             width: 657px;
@@ -199,25 +184,6 @@
         &-button {
             float: right;
             margin: 1.6rem 2.4rem;
-        }
-    }
-}
-.p2p-cashier__advertiser-tab {
-    @include mobile {
-        .dc-tabs {
-            &__item {
-                padding: 0px 1.6rem;
-            }
-            &__list {
-                position: fixed;
-                margin-bottom: unset !important;
-                background-color: var(--general-main-1);
-                z-index: 2;
-                width: 100%;
-            }
-            &__content {
-                margin-top: 4rem;
-            }
         }
     }
 }

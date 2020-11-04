@@ -19,15 +19,15 @@ class SendEmail extends React.Component {
                     <React.Fragment>
                         <Icon icon='IcCashierAuthenticate' className='withdraw__icon' size={128} />
                         <p className='withdraw__header'>
-                            <Localize i18n_default_text='To initiate a withdrawal, we need to authenticate you via email.' />
+                            <Localize i18n_default_text='We will send you an email to confirm your withdrawal request.' />
                         </p>
                         <p className='withdraw__text'>
-                            <Localize i18n_default_text='This is a safeguard against unauthorised withdrawals from your account.' />
+                            <Localize i18n_default_text='This is to protect your account from unauthorised withdrawals.' />
                         </p>
                         <Button
                             className='withdraw__verify-button'
                             has_effect
-                            text={localize('Request authentication email')}
+                            text={localize('Verify my request')}
                             onClick={this.props.sendVerificationEmail}
                             primary
                             large

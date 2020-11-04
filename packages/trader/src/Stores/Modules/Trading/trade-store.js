@@ -37,7 +37,6 @@ export default class TradeStore extends BaseStore {
     // Control values
     @observable is_trade_component_mounted = false;
     @observable is_purchase_enabled = false;
-    @observable is_purchasing_contract = false;
     @observable is_trade_enabled = false;
     @observable is_equal = 0;
 
@@ -126,6 +125,7 @@ export default class TradeStore extends BaseStore {
     addTickByProposal = () => null;
     debouncedProposal = debounce(this.requestProposal, 500);
     proposal_requests = {};
+    is_purchasing_contract = false;
 
     initial_barriers;
     is_initial_barrier_applied = false;

@@ -352,6 +352,10 @@
         & .dc-tooltip--error {
             & .dc-input-wrapper {
                 border: 1px solid var(--status-danger);
+
+                &:hover {
+                    border-color: var(--status-danger);
+                }
             }
         }
         & .dc-input-wrapper {

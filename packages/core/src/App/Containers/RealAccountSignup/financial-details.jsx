@@ -100,8 +100,9 @@ const FinancialDetails = props => {
     const padding_bottom = window.innerHeight < screen_height_sm_threshold ? '10rem' : '12rem';
 
     const handleCancel = values => {
-        props.onSave(props.index, values);
-        props.onCancel();
+        const current_step = props.getCurrentStep() - 1;
+        props.onSave(current_step, values);
+        props.onCancel(current_step, props.goToPreviousStep);
     };
 
     const handleValidate = values => {
@@ -114,7 +115,7 @@ const FinancialDetails = props => {
             initialValues={{ ...props.value }}
             validate={handleValidate}
             onSubmit={(values, actions) => {
-                props.onSubmit(props.index, values, actions.setSubmitting);
+                props.onSubmit(props.getCurrentStep() - 1, values, actions.setSubmitting, props.goToNextStep);
             }}
             validateOnMount
         >

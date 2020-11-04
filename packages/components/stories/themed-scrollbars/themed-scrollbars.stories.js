@@ -4,11 +4,10 @@ import { withInfo } from '@storybook/addon-info';
 import Basic from './stories/basic';
 import DisabledAutoHide from './stories/disabled-auto-hide';
 import DisabledCustomScrollbar from './stories/disabled-custom-scrollbar';
+import HasHorizontal from './stories/has-horizontal';
 import OnlyHorizontal from './stories/only-horizontal';
 import OnlyHorizontalOverlay from './stories/only-horizontal-overlay';
-import HasHorizontal from './stories/has-horizontal';
 import notes from './README.md';
-import './styles.scss';
 
 const stories = storiesOf('ThemedScrollbars', module);
 

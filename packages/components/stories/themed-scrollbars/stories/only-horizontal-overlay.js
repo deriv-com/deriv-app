@@ -4,7 +4,7 @@ import ThemedScrollbars from 'Components/themed-scrollbars';
 import Wrapper from '../../shared/wrapper';
 import text from '../text';
 
-const Basic = () => (
+const OnlyHorizontalOverlay = () => (
     <Wrapper is_dark={boolean('Dark Theme', false)}>
         <ThemedScrollbars width={300} is_only_horizontal_overlay={true}>
             <p style={{ width: '800px' }}>{text.repeat(30)}</p>
@@ -12,4 +12,4 @@ const Basic = () => (
     </Wrapper>
 );
 
-export default Basic;
+export default OnlyHorizontalOverlay;

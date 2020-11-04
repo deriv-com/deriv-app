@@ -1,24 +1,29 @@
 import { Formik, Field } from 'formik';
 import { storiesOf } from '@storybook/react';
+import { withKnobs } from '@storybook/addon-knobs';
+import { withInfo } from '@storybook/addon-info';
+import { boolean } from '@storybook/addon-knobs';
+import Wrapper from '../shared/wrapper';
 import Autocomplete from 'Components/autocomplete';
 import React from 'react';
 import notes from './README.md';
-import './autocomplete.stories.scss';
 
-storiesOf('AutoComplete', module).add(
-    'Main function',
-    () => {
-        const data = [
-            { text: 'Malaysia', value: 'ML' },
-            { text: 'China', value: 'CH' },
-            { text: 'USA', value: 'US' },
-            { text: 'Canada', value: 'CA' },
-            { text: 'Sweden', value: 'SE' },
-            { text: 'Norway', value: 'NO' },
-        ];
-        return (
-            <React.Fragment>
-                <div className={'autocomplete__wrapper'}>
+storiesOf('AutoComplete', module)
+    .addDecorator(withKnobs)
+    .addDecorator(withInfo)
+    .add(
+        'Main function',
+        () => {
+            const data = [
+                { text: 'Malaysia', value: 'ML' },
+                { text: 'China', value: 'CH' },
+                { text: 'USA', value: 'US' },
+                { text: 'Canada', value: 'CA' },
+                { text: 'Sweden', value: 'SE' },
+                { text: 'Norway', value: 'NO' },
+            ];
+            return (
+                <Wrapper is_dark={boolean('Dark Theme', false)}>
                     <Formik initialValues={{ citizen: '' }}>
                         {({ setFieldValue }) => (
                             <Field name='citizen'>
@@ -37,11 +42,10 @@ storiesOf('AutoComplete', module).add(
                             </Field>
                         )}
                     </Formik>
-                </div>
-            </React.Fragment>
-        );
-    },
-    {
-        notes,
-    }
-);
+                </Wrapper>
+            );
+        },
+        {
+            notes,
+        }
+    );

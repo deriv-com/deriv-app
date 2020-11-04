@@ -60,8 +60,8 @@
 
     &__fieldset {
         border-radius: $BORDER_RADIUS;
-        padding: 0.8em;
-        margin-bottom: 0.4em;
+        padding: 0.8rem;
+        margin-bottom: 0.4rem;
         background-color: var(--general-section-1);
         border-color: var(--general-section-1);
         color: var(--text-general);
@@ -349,6 +349,11 @@
         }
     }
     &__amount {
+        &--multipliers {
+            & .trade-container__input {
+                left: 3.6rem;
+            }
+        }
         & .dc-tooltip--error {
             & .dc-input-wrapper {
                 border: 1px solid var(--status-danger);
@@ -363,6 +368,7 @@
             background: var(--fill-normal);
             border: 1px solid var(--fill-normal);
             height: 3.2rem;
+            box-sizing: border-box;
 
             &__button {
                 top: 1px;
@@ -429,7 +435,7 @@
         align-items: center;
 
         @include mobile {
-            padding: 0rem 0.4rem;
+            padding: 0 0.4rem;
             min-height: 1.4rem;
 
             .trade-container__price-info-basis {

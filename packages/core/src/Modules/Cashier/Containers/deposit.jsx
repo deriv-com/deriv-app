@@ -68,6 +68,8 @@ const Deposit = ({
                 }
             }
         }
+
+        return () => setSideNotes(null);
     }, [currency, setSideNotes, iframe_height]);
 
     if (is_virtual) {

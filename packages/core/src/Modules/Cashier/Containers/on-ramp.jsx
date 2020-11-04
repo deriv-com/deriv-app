@@ -33,11 +33,16 @@ const OnRamp = ({
     React.useEffect(() => {
         onMountOnramp();
 
+        return () => onUnmountOnramp();
+    }, [onMountOnramp, onUnmountOnramp]);
+
+    React.useEffect(() => {
         if (typeof setSideNotes === 'function') {
             setSideNotes([<OnRampSideNote key={0} />]);
         }
-        return () => onUnmountOnramp();
-    }, [onMountOnramp, onUnmountOnramp, setSideNotes]);
+
+        return () => setSideNotes(null);
+    }, [setSideNotes]);
 
     return (
         <div className='cashier__wrapper cashier__wrapper--align-left on-ramp'>

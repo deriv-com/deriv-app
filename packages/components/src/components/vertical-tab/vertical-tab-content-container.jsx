@@ -9,10 +9,6 @@ const Content = ({ is_routed, items, selected }) => {
 
     const [side_notes, setSideNotes] = React.useState(null);
 
-    React.useEffect(() => {
-        setSideNotes(null);
-    }, [selected_item]);
-
     return (
         <React.Fragment>
             {is_routed ? (

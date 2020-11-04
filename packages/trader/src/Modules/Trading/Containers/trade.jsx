@@ -105,6 +105,13 @@ class Trade extends React.Component {
         const { NotificationMessages } = this.props;
         const form_wrapper_class = isMobile() ? 'mobile-wrapper' : 'sidebar__container desktop-only';
         const is_trade_enabled = this.props.form_components.length > 0 && this.props.is_trade_enabled;
+        let open_market = null;
+        if (this.state.try_synthetic_indices) {
+            open_market = { category: 'synthetic_index' };
+        } else if (this.state.try_open_markets && this.state.category) {
+            open_market = { category: this.state.category, subcategory: this.state.subcategory };
+        }
+
         return (
             <div id='trade_container' className='trade-container'>
                 <DesktopWrapper>
@@ -134,8 +141,7 @@ class Trade extends React.Component {
                                 <ChartTrade
                                     try_synthetic_indices={this.state.try_synthetic_indices}
                                     try_open_markets={this.state.try_open_markets}
-                                    category={this.state.category}
-                                    subcategory={this.state.subcategory}
+                                    open_market={open_market}
                                 />
                             </div>
                         </DesktopWrapper>
@@ -162,8 +168,7 @@ class Trade extends React.Component {
                                     }
                                     try_synthetic_indices={this.state.try_synthetic_indices}
                                     try_open_markets={this.state.try_open_markets}
-                                    category={this.state.category}
-                                    subcategory={this.state.subcategory}
+                                    open_market={open_market}
                                 />
                             </SwipeableWrapper>
                         </MobileWrapper>
@@ -238,30 +243,13 @@ const ChartMarkers = connect(({ modules, ui, client }) => ({
 }))(Markers);
 
 class ChartTradeClass extends React.Component {
-    state = {
-        open_market: null,
-    };
     bottomWidgets = ({ digits, tick }) => <ChartBottomWidgets digits={digits} tick={tick} />;
     topWidgets = ({ ...props }) => {
-        const { is_digits_widget_active, try_synthetic_indices, try_open_markets } = this.props;
-        if (try_synthetic_indices) {
-            this.setState({
-                open_market: {
-                    category: 'synthetic_index',
-                },
-            });
-        } else if (try_open_markets) {
-            const { category, subcategory } = this.props;
-            if (category) {
-                this.setState({
-                    open_market: { category, subcategory },
-                });
-            }
-        }
+        const { is_digits_widget_active, try_synthetic_indices, try_open_markets, open_market } = this.props;
 
         return (
             <ChartTopWidgets
-                open_market={this.state.open_market}
+                open_market={open_market}
                 open={try_synthetic_indices || try_open_markets}
                 charts_ref={this.charts_ref}
                 is_digits_widget_active={is_digits_widget_active}

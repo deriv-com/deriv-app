@@ -1,5 +1,4 @@
 import debounce from 'lodash.debounce';
-import throttle from 'lodash.throttle';
 import { action, computed, observable, reaction, runInAction, toJS, when } from 'mobx';
 import {
     isDesktop,
@@ -574,7 +573,7 @@ export default class TradeStore extends BaseStore {
                             this.debouncedProposal();
                             this.clearLimitOrderBarriers();
                             this.pushPurchaseDataToGtm(contract_data);
-                            this.throttleDisableIsPurchasingContract();
+                            this.is_purchasing_contract = false;
                             return;
                         }
                     } else if (response.error) {
@@ -591,17 +590,10 @@ export default class TradeStore extends BaseStore {
                     this.forgetAllProposal();
                     this.purchase_info = response;
                     this.enablePurchase();
-                    this.throttleDisableIsPurchasingContract();
+                    this.is_purchasing_contract = false;
                 })
             );
         }
-    }
-
-    throttleDisableIsPurchasingContract = throttle(this.disableIsPurchasingContract, 100);
-
-    @action.bound
-    disableIsPurchasingContract() {
-        this.is_purchasing_contract = false;
     }
 
     @action.bound

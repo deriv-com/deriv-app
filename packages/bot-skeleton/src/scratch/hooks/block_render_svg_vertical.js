@@ -11,6 +11,77 @@ Blockly.BlockSvg.EXTRA_STATEMENT_ROW_Y = 10 * Blockly.BlockSvg.GRID_UNIT;
 Blockly.BlockSvg.EDITABLE_FIELD_PADDING = 16;
 
 /**
+ * Change the colour of a block.
+ */
+Blockly.BlockSvg.prototype.updateColour = function () {
+    let strokeColour = this.getColourTertiary();
+    const renderShadowed = this.isShadow() && !Blockly.scratchBlocksUtils.isShadowArgumentReporter(this);
+
+    if (renderShadowed && this.parentBlock_) {
+        // Pull shadow block stroke colour from parent block's tertiary if possible.
+        strokeColour = this.parentBlock_.getColourTertiary();
+        // Special case: if we contain a colour field, set to a special stroke colour.
+        if (
+            this.inputList[0] &&
+            this.inputList[0].fieldRow[0] &&
+            (this.inputList[0].fieldRow[0] instanceof Blockly.FieldColour ||
+                this.inputList[0].fieldRow[0] instanceof Blockly.FieldColourSlider)
+        ) {
+            strokeColour = Blockly.Colours.colourPickerStroke;
+        }
+    }
+
+    // Render block stroke
+    this.svgPath_.setAttribute('stroke', strokeColour);
+    let fillColour = this.getColour();
+
+    // Render block fill
+    if (this.isGlowingBlock_ || renderShadowed) {
+        // Use the block's shadow colour if possible.
+        if (this.getShadowColour()) {
+            fillColour = this.getShadowColour();
+        } else {
+            fillColour = this.getColourSecondary();
+        }
+    }
+    this.svgPath_.setAttribute('fill', fillColour);
+
+    // Render opacity
+    this.svgPath_.setAttribute('fill-opacity', this.getOpacity());
+
+    // Update colours of input shapes.
+    // eslint-disable-next-line no-cond-assign
+    for (let i = 0, input; (input = this.inputList[i]); i++) {
+        if (input.outlinePath) {
+            input.outlinePath.setAttribute('fill', this.getColourTertiary());
+        }
+    }
+
+    // Render icon(s) if applicable
+    const icons = this.getIcons();
+    for (let i = 0; i < icons.length; i++) {
+        icons[i].updateColour();
+    }
+
+    // Bump every dropdown to change its colour.
+    // eslint-disable-next-line no-cond-assign
+    for (let x = 0, input; (input = this.inputList[x]); x++) {
+        // eslint-disable-next-line no-cond-assign
+        for (let y = 0, field; (field = input.fieldRow[y]); y++) {
+            field.setText(null);
+        }
+    }
+    // deriv-bot: Update colours of input shapes to a fixed value of #FFF.
+    this.inputList.forEach(input => {
+        if (input.outlinePath) {
+            input.outlinePath.setAttribute('fill', '#fff');
+            input.outlinePath.setAttribute('stroke', '#6d7278');
+            input.outlinePath.setAttribute('stroke-width', '0.3px');
+        }
+    });
+};
+
+/**
  * For a block with output,
  * determine start and end padding, based on connected inputs.
  * Padding will depend on the shape of the output, the shape of the input,

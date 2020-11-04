@@ -55,7 +55,7 @@ const Header = ({
     React.useEffect(() => {
         document.addEventListener('IgnorePWAUpdate', removeUpdateNotification);
         return () => document.removeEventListener('IgnorePWAUpdate', removeUpdateNotification);
-    }, []);
+    });
 
     const addUpdateNotification = () => addNotificationMessage(clientNotifications().new_version_available);
     const removeUpdateNotification = () => removeNotificationMessage({ key: 'new_version_available' });

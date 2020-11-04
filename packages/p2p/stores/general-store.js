@@ -2,7 +2,7 @@ import { action, computed, observable, runInAction } from 'mobx';
 import { epochToMoment, getSocketURL, isEmptyObject, mobileOSDetect, routes } from '@deriv/shared';
 import { localize, Localize } from 'Components/i18next';
 import { createExtendedOrderDetails } from 'Utils/orders.js';
-import { init as WebsocketInit, requestWS, subscribeWS } from 'Utils/websocket.js';
+import { init as WebsocketInit, requestWS, subscribeWS } from 'Utils/websocket';
 import { order_list } from '../src/constants/order-list';
 
 export default class GeneralStore {

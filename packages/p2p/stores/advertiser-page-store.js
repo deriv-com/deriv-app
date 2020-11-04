@@ -37,7 +37,7 @@ export default class AdvertiserPageStore {
 
     @computed
     get advert() {
-        return this.root_store.buy_sell_store?.selected_ad_state;
+        return this.root_store.buy_sell_store.selected_ad_state;
     }
 
     @computed

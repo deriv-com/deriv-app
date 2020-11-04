@@ -9,8 +9,9 @@ export const onfido_status_codes = {
     suspected: 'suspected',
 };
 
-export const getIdentityStatus = (identity, onfido_unsupported) => {
-    const { further_resubmissions_allowed, status } = identity;
+export const getIdentityStatus = (identity, needs_verification, onfido_unsupported) => {
+    const { status } = identity;
+    const further_resubmissions_allowed = needs_verification?.includes('identity');
 
     if (onfido_unsupported) return onfido_status_codes.unsupported;
     if (!further_resubmissions_allowed) {

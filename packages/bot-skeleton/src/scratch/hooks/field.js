@@ -42,7 +42,7 @@ const FieldCheckbox = () => {
                     height: this.height_, // eslint-disable-line
                     width: this.width_, // eslint-disable-line
                     rx: 2,
-                    stroke: '#FFF',
+                    stroke: this.sourceBlock_.getColourTertiary(),
                 },
                 el_field_group
             );

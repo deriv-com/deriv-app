@@ -203,6 +203,7 @@ const SaveModal = ({
                 onDriveConnect={onDriveConnect}
                 validateBotName={validateBotName}
                 toggleSaveModal={toggleSaveModal}
+                setCurrentFocus={setCurrentFocus}
             />
         </Modal>
     );
@@ -250,7 +251,7 @@ SaveModal.propTypes = {
     onDriveConnect: PropTypes.func,
     toggleSaveModal: PropTypes.func,
     bot_name: PropTypes.string,
-    setCurrentFocus: PropTypes.bool,
+    setCurrentFocus: PropTypes.func,
 };
 
 export default connect(({ save_modal, google_drive, ui }) => ({

@@ -60,8 +60,8 @@
 
     &__fieldset {
         border-radius: $BORDER_RADIUS;
-        padding: 0.8em;
-        margin-bottom: 0.4em;
+        padding: 0.8rem;
+        margin-bottom: 0.4rem;
         background-color: var(--general-section-1);
         border-color: var(--general-section-1);
         color: var(--text-general);
@@ -158,13 +158,10 @@
     }
     &__currency {
         position: absolute;
-        float: right;
-        font-size: 10px;
-        height: 32px;
-        right: 50px;
+        height: 3.2rem;
+        right: 4rem;
         align-items: center;
         justify-content: center;
-        width: 20px;
         display: flex;
         background: transparent;
         border-color: transparent;
@@ -172,8 +169,9 @@
         color: inherit;
 
         &--symbol {
-            font-size: 1.4em;
+            font-size: 1.4rem;
             line-height: 1.5;
+            padding-bottom: 0.2rem;
         }
         &:before {
             @include typeface(--paragraph-center-normal-black);
@@ -326,7 +324,7 @@
         // display: inline-block causes input cursor to seemingly appears duplicated
         display: grid;
         grid-template-columns: 3fr 1.5fr;
-        grid-gap: 0.2em;
+        grid-gap: 0.4rem;
 
         .dc-dropdown-container {
             /* postcss-bem-linter: ignore */
@@ -340,7 +338,7 @@
                 }
                 /* postcss-bem-linter: ignore */
                 .dc-dropdown__display {
-                    border-radius: $BORDER_RADIUS 0 0 $BORDER_RADIUS;
+                    border-radius: $BORDER_RADIUS;
 
                     /* postcss-bem-linter: ignore */
                     .symbols {
@@ -350,9 +348,58 @@
             }
         }
     }
-    &__amount .trade-container__input {
-        padding: 0 30px;
-        border-radius: 0 $BORDER_RADIUS $BORDER_RADIUS 0;
+    &__amount {
+        &--multipliers {
+            & .trade-container__input {
+                left: 3.6rem;
+            }
+        }
+        & .dc-tooltip--error {
+            & .dc-input-wrapper {
+                border: 1px solid var(--status-danger);
+
+                &:hover {
+                    border-color: var(--status-danger);
+                }
+            }
+        }
+        & .dc-input-wrapper {
+            border-radius: $BORDER_RADIUS;
+            background: var(--fill-normal);
+            border: 1px solid var(--fill-normal);
+            height: 3.2rem;
+            box-sizing: border-box;
+
+            &__button {
+                top: 1px;
+
+                &--increment {
+                    right: 1px;
+                }
+                &--decrement {
+                    left: 1px;
+                }
+            }
+            &:hover {
+                border-color: var(--border-hover);
+            }
+            &:active,
+            &:focus {
+                border-color: var(--border-active);
+            }
+        }
+        & .trade-container__input {
+            font-size: 1.4rem;
+            max-width: calc(100% - 7.2rem);
+            border-radius: 0 $BORDER_RADIUS $BORDER_RADIUS 0;
+            background: none;
+            border: none;
+            padding: 0 0 0.2rem;
+
+            &.input--error {
+                border: none !important;
+            }
+        }
     }
     &__multiplier {
         display: flex;
@@ -388,7 +435,7 @@
         align-items: center;
 
         @include mobile {
-            padding: 0rem 0.4rem;
+            padding: 0 0.4rem;
             min-height: 1.4rem;
 
             .trade-container__price-info-basis {
@@ -426,9 +473,9 @@
     }
 }
 
-/** @define input-field; weak */
-.input-field {
-    .input-wrapper__icon {
+/** @define dc-input-field; weak */
+.dc-input-field {
+    .dc-input-wrapper__icon {
         top: 6px;
     }
     &--has-error {

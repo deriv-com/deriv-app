@@ -106,7 +106,7 @@ export default class StatementStore extends BaseStore {
     }
 
     fetchOnScroll = debounce(left => {
-        if (left < 2000) {
+        if (left < 1500) {
             this.fetchNextBatch();
         }
     }, delay_on_scroll_time);
@@ -168,10 +168,10 @@ export default class StatementStore extends BaseStore {
         this.loadAccountStatistics();
     }
 
+    /* DO NOT call clearDateFilter() upon unmounting the component, date filters should stay 
+    as we change tab or click on any contract for later references as discussed with UI/UX and QA */
     @action.bound
     onUnmount() {
-        this.clearTable();
-        this.clearDateFilter();
         this.disposeSwitchAccount();
         WS.forgetAll('proposal');
     }

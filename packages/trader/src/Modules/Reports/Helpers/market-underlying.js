@@ -1,4 +1,5 @@
 import { getMarketNamesMap, getContractConfig } from 'Constants';
+import { localize } from '@deriv/translations';
 
 /**
  * Fetch market information from shortcode
@@ -11,7 +12,7 @@ export const getMarketInformation = shortcode => {
         underlying: '',
     };
 
-    const pattern = new RegExp('^([A-Z]+)_((OTC_[A-Z0-9]+)|R_[\\d]{2,3}|[A-Z]+)_'); // Used to get market name from shortcode
+    const pattern = new RegExp('^([A-Z]+)_((OTC_[A-Z0-9]+)|R_[\\d]{2,3}||[A-Z\\d]+)_'); // Used to get market name from shortcode
     const extracted = pattern.exec(shortcode);
     if (extracted !== null) {
         market_info.category = extracted[1].toLowerCase();
@@ -35,5 +36,5 @@ export const getContractDurationType = (longcode, shortcode) => {
         const duration_text = duration_type[0].toUpperCase() + duration_type.slice(1);
         return duration_text.endsWith('s') ? duration_text : `${duration_text}s`;
     }
-    return 'Days';
+    return localize('Days');
 };

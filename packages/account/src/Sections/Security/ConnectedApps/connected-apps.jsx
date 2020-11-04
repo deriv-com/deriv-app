@@ -36,7 +36,8 @@ class ConnectedApps extends React.Component {
     };
 
     fetchConnectedApps = async () => {
-        const response_connected_apps = await WS.send({ oauth_apps: 1 });
+        const response_connected_apps = await WS.authorized.send({ oauth_apps: 1 });
+
         if (!response_connected_apps.error) {
             this.setState({
                 is_loading: false,
@@ -49,7 +50,7 @@ class ConnectedApps extends React.Component {
 
     revokeConnectedApp = async app_id => {
         this.setState({ is_loading: true });
-        const response = await WS.send({ revoke_oauth_app: app_id });
+        const response = await WS.authorized.send({ revoke_oauth_app: app_id });
         if (!response.error) {
             this.fetchConnectedApps();
         } else {
@@ -73,7 +74,7 @@ class ConnectedApps extends React.Component {
     };
     render() {
         return (
-            <section className='connected-apps'>
+            <section className='connected-apps__wrapper'>
                 <p className='connected-apps__title'>{localize('Authorised applications')}</p>
                 {this.state.is_error && <ErrorComponent />}
                 {this.state.is_loading ? (
@@ -85,18 +86,14 @@ class ConnectedApps extends React.Component {
                                 className='connected-apps'
                                 data_source={this.state.connected_apps}
                                 columns={GetConnectedAppsColumnsTemplate(this.handleToggleModal)}
-                                custom_width='100%'
                                 getRowSize={() => 56}
-                                is_empty={false}
                             />
                         </DesktopWrapper>
                         <MobileWrapper>
                             <DataList
                                 className='connected-apps'
                                 data_source={this.state.connected_apps}
-                                custom_width='100%'
                                 getRowSize={() => 128}
-                                is_empty={false}
                                 rowRenderer={this.mobileRowRenderer}
                             />
                         </MobileWrapper>

@@ -933,16 +933,15 @@ export default class TradeStore extends BaseStore {
     @action.bound
     async accountSwitcherListener() {
         if (this.root_store.client.standpoint.maltainvest) {
-            const { active_symbols } = await WS.authorized.activeSymbols();
-            if (!active_symbols || !active_symbols.length) {
-                showDigitalOptionsUnavailableError(this.root_store.common.showError, {
-                    text: localize(
-                        'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a DMT5 Financial.'
-                    ),
-                    title: localize('DTrader is not available for this account'),
-                    link: localize('Go to DMT5 dashboard'),
-                });
-            }
+            // TODO: optimize this code block once the below mentioned issue is fixed in `deriv-api`
+            // Two `active_symbols` are requested here.
+            // We can call `setActiveSymbols` after setting `should_refresh_active_symbols` to true so that it utilizes `WS.wait('active_symbols')`
+            // But `WS.wait` only works for the first time, when called subsequently it won't wait and will just return the first response.
+            await this.setActiveSymbols();
+            runInAction(() => {
+                this.should_refresh_active_symbols = true;
+            });
+            await this.setDefaultSymbol();
         }
         this.resetErrorServices();
         await this.setContractTypes();
@@ -1049,7 +1048,7 @@ export default class TradeStore extends BaseStore {
             this.root_store.ui.toggleNotificationsModal();
         }
         // clear url query string
-        window.history.pushState(null, null, window.location.pathname);
+        window.history.replaceState(null, null, window.location.pathname);
         if (this.prev_chart_layout) {
             this.prev_chart_layout.is_used = false;
         }

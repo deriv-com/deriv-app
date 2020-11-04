@@ -11,7 +11,7 @@ import {
     Icon,
     ThemedScrollbars,
 } from '@deriv/components';
-import { getCurrencyDisplayCode, isMobile, isDesktop, reorderCurrencies } from '@deriv/shared';
+import { getCurrencyDisplayCode, isMobile, isDesktop, reorderCurrencies, PlatformContext } from '@deriv/shared';
 
 import { connect } from 'Stores/connect';
 import { Localize, localize } from '@deriv/translations';
@@ -132,6 +132,7 @@ class CurrencySelector extends React.Component {
         };
     }
 
+    static contextType = PlatformContext;
     static getDerivedStateFromProps(next_props, next_state) {
         if (next_props.legal_allowed_currencies.length === 0) {
             return next_state;
@@ -151,26 +152,27 @@ class CurrencySelector extends React.Component {
     };
 
     render() {
-        const { has_currency, has_real_account } = this.props;
+        const { has_currency, has_real_account, bypass_to_personal } = this.props;
+        const { is_deriv_crypto } = this.context;
+
+        // In case of form error bypass to update personal data
+        if (bypass_to_personal) this.props.goToNextStep();
 
         return (
             <Formik
                 initialValues={this.props.value}
                 onSubmit={(values, actions) => {
-                    this.props.onSubmit(this.props.index, values, actions.setSubmitting);
+                    this.props.onSubmit(
+                        this.props.getCurrentStep() - 1,
+                        values,
+                        actions.setSubmitting,
+                        this.props.goToNextStep
+                    );
                 }}
                 validate={this.handleValidate}
             >
-                {({
-                    handleSubmit,
-                    // setFieldValue,
-                    // setFieldTouched,
-                    values,
-                    errors,
-                    touched,
-                    isSubmitting,
-                }) => (
-                    <AutoHeightWrapper default_height={200}>
+                {({ handleSubmit, values, errors, touched, isSubmitting }) => (
+                    <AutoHeightWrapper default_height={310}>
                         {({ setRef, height }) => (
                             <form ref={setRef} onSubmit={handleSubmit} className='currency-selector'>
                                 <Div100vhContainer
@@ -182,32 +184,36 @@ class CurrencySelector extends React.Component {
                                     is_disabled={isDesktop()}
                                 >
                                     <ThemedScrollbars is_bypassed={isMobile()} height={height}>
-                                        <RadioButtonGroup
-                                            id='currency'
-                                            className='currency-selector__radio-group'
-                                            label={localize('Fiat currencies')}
-                                            is_fiat
-                                            value={values.currency}
-                                            error={errors.currency}
-                                            touched={touched.currency}
-                                        >
-                                            {this.state.fiat_currencies.map(currency => (
-                                                <Field
-                                                    key={currency.value}
-                                                    component={RadioButton}
-                                                    name='currency'
-                                                    id={currency.value}
-                                                    label={currency.name}
-                                                />
-                                            ))}
-                                        </RadioButtonGroup>
-                                        <Hr />
+                                        {this.state.fiat_currencies.length > 0 && (
+                                            <React.Fragment>
+                                                <RadioButtonGroup
+                                                    id='currency'
+                                                    className='currency-selector__radio-group'
+                                                    label={localize('Fiat currencies')}
+                                                    is_fiat
+                                                    value={values.currency}
+                                                    error={errors.currency}
+                                                    touched={touched.currency}
+                                                >
+                                                    {this.state.fiat_currencies.map(currency => (
+                                                        <Field
+                                                            key={currency.value}
+                                                            component={RadioButton}
+                                                            name='currency'
+                                                            id={currency.value}
+                                                            label={currency.name}
+                                                        />
+                                                    ))}
+                                                </RadioButtonGroup>
+                                                <Hr />
+                                            </React.Fragment>
+                                        )}
                                         {this.state.crypto_currencies.length > 0 && (
                                             <React.Fragment>
                                                 <RadioButtonGroup
                                                     id='currency'
                                                     className='currency-selector__radio-group'
-                                                    label={localize('Cryptocurrencies')}
+                                                    label={is_deriv_crypto ? '' : localize('Cryptocurrencies')}
                                                     value={values.currency}
                                                     error={errors.currency}
                                                     touched={touched.currency}
@@ -252,7 +258,6 @@ CurrencySelector.propTypes = {
     controls: PropTypes.object,
     has_currency: PropTypes.bool,
     has_real_account: PropTypes.bool,
-    index: PropTypes.number,
     onSubmit: PropTypes.func,
     value: PropTypes.any,
 };

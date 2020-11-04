@@ -82,7 +82,7 @@
             & .dc-tooltip {
                 width: 100%;
             }
-            & .input-wrapper {
+            & .dc-input-wrapper {
                 &__input {
                     outline: 0;
                     border: none;
@@ -339,7 +339,7 @@
                     border-bottom: 1px solid var(--general-main-1);
                     border-radius: 0;
 
-                    .input-field {
+                    .dc-input-field {
                         z-index: 0;
                     }
                     .dc-popover {

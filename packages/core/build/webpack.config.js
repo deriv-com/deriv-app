@@ -12,9 +12,9 @@ module.exports = function (env, argv) {
         devServer: {
             open: openChromeBasedOnPlatform(process.platform),
             openPage: sub_path,
-            host: 'localhost.binary.sx',
-            https: true,
-            port: 443,
+            host: 'localhost',
+            https: false,
+            port: 5000,
             historyApiFallback: true,
             stats: {
                 colors: true,

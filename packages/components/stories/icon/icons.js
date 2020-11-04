@@ -64,6 +64,7 @@ export const icons = {
         'IcAlertInfo',
         'IcAlertSuccess',
         'IcAlertWarning',
+        'IcAnnounce',
         'IcArrowDown',
         'IcArrowLeftBold',
         'IcArrowLeftCurly',

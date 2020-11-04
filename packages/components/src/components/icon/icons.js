@@ -64,6 +64,7 @@ import './common/ic-alert-danger.svg';
 import './common/ic-alert-info.svg';
 import './common/ic-alert-success.svg';
 import './common/ic-alert-warning.svg';
+import './common/ic-announce.svg';
 import './common/ic-arrow-down.svg';
 import './common/ic-arrow-left-bold.svg';
 import './common/ic-arrow-left-curly.svg';

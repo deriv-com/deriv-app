@@ -25,6 +25,8 @@ export const getURL = lang => urlForLanguage(lang);
 export const changeLanguage = key => {
     SocketCache.clear();
 
-    window.localStorage.setItem('i18n_language', key);
+    if (key === 'EN') {
+        window.localStorage.setItem('i18n_language', key);
+    }
     window.location.replace(getURL(key));
 };

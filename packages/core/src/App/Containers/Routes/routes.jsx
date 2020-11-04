@@ -47,12 +47,15 @@ class Routes extends React.Component {
     render() {
         const { error, has_error, is_logged_in, passthrough } = this.props;
         const lang = getLanguage();
+        const has_lang = /[?&]lang=/;
 
         if (has_error) {
             return <Error {...error} />;
         }
 
-        if (!/[?&]lang=/.test(location.search) && lang !== 'EN') {
+        // we need to replace state of history object on every route
+        // to prevent language query parameter from disappering for non-english languages
+        if (!has_lang.test(location.search) && lang !== 'EN') {
             window.history.replaceState({}, document.title, urlForLanguage(lang));
         }
 

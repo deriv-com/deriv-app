@@ -46,7 +46,7 @@ const Multiplier = ({ amount, commission, currency, multiplier, multiplier_range
                 <p className='trade-container__fieldset-tooltip-text'>
                     <Localize
                         i18n_default_text='Commission: <0/>'
-                        components={[<Money key={0} amount={commission} currency={currency} />]}
+                        components={[<Money key={0} amount={commission} currency={currency} show_currency />]}
                     />
                 </p>
             </Popover>

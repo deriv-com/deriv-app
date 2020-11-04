@@ -1376,6 +1376,12 @@ $MIN_HEIGHT_FLOATING: calc(
 
         .table__cell {
             height: 56px;
+
+            .name_content {
+                text-overflow: ellipsis;
+                width: 100%;
+                overflow: hidden;
+            }
         }
     }
     @include desktop {
@@ -1427,7 +1433,8 @@ $MIN_HEIGHT_FLOATING: calc(
                 }
 
                 .data-list__col {
-                    width: 100%;
+                    width: 50%;
+                    margin-right: 1.8rem;
 
                     > :first-child {
                         margin-bottom: 8px;
@@ -1443,6 +1450,15 @@ $MIN_HEIGHT_FLOATING: calc(
                         line-height: 1.5;
                     }
                 }
+            }
+        }
+        .name {
+            .name_content {
+                text-overflow: ellipsis;
+                width: 100%;
+                white-space: nowrap;
+                display: inline-block;
+                overflow: hidden;
             }
         }
         .last_used {

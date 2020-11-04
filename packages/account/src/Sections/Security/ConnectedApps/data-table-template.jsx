@@ -1,10 +1,17 @@
+/* eslint-disable react/display-name */
 import React from 'react';
 import { toMoment } from '@deriv/shared';
 import { Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
 const GetConnectedAppsColumnsTemplate = handleToggleModal => [
-    { title: localize('Name'), col_index: 'name' },
+    {
+        title: localize('Name'),
+        col_index: 'name',
+        renderCellContent: ({ cell_value }) => {
+            return <span className='name_content'>{cell_value}</span>;
+        },
+    },
     {
         title: localize('Permission'),
         col_index: 'scopes',

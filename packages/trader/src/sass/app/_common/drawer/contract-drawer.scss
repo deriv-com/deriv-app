@@ -22,6 +22,9 @@ $header-height: 4em;
         text-transform: none;
         color: var(--text-prominent);
     }
+    .currency-badge {
+        margin-bottom: 5px;
+    }
     &--contract-mode {
         &:before {
             background: var(--general-section-1);

@@ -32,4 +32,37 @@ export const FORM_ERROR_MESSAGES = {
         localize('Should be less than {{max_value}}', {
             max_value,
         }),
+    // all existing warning phrases from zxcvbn
+    password_warnings: {
+        use_a_few_words: () => localize('Use a few words, avoid common phrases'),
+        no_need_for_mixed_chars: () => localize('No need for symbols, digits, or uppercase letters'),
+        uncommon_words_are_better: () => localize('Add another word or two. Uncommon words are better.'),
+        straight_rows_of_keys_are_easy: () => localize('Straight rows of keys are easy to guess'),
+        short_keyboard_patterns_are_easy: () => localize('Short keyboard patterns are easy to guess'),
+        use_longer_keyboard_patterns: () => localize('Use a longer keyboard pattern with more turns'),
+        repeated_chars_are_easy: () => localize('Repeats like "aaa" are easy to guess'),
+        repeated_patterns_are_easy: () =>
+            localize('Repeats like "abcabcabc" are only slightly harder to guess than "abc"'),
+        avoid_repeated_chars: () => localize('Avoid repeated words and characters'),
+        sequences_are_easy: () => localize('Sequences like abc or 6543 are easy to guess'),
+        avoid_sequences: () => localize('Avoid sequences'),
+        recent_years_are_easy: () => localize('Recent years are easy to guess'),
+        avoid_recent_years: () => localize('Avoid recent years'),
+        avoid_associated_years: () => localize('Avoid years that are associated with you'),
+        dates_are_easy: () => localize('Dates are often easy to guess'),
+        avoid_associated_dates_and_years: () => localize('Avoid dates and years that are associated with you'),
+        top10_common_password: () => localize('This is a top-10 common password'),
+        top100_common_password: () => localize('This is a top-100 common password'),
+        very_common_password: () => localize('This is a very common password'),
+        similar_to_common_password: () => localize('This is similar to a commonly used password'),
+        a_word_is_easy: () => localize('A word by itself is easy to guess'),
+        names_are_easy: () => localize('Names and surnames by themselves are easy to guess'),
+        common_names_are_easy: () => localize('Common names and surnames are easy to guess'),
+        capitalization_doesnt_help: () => localize("Capitalization doesn't help very much"),
+        all_uppercase_doesnt_help: () => localize('All-uppercase is almost as easy to guess as all-lowercase'),
+        reverse_doesnt_help: () => localize("Reversed words aren't much harder to guess"),
+        substitution_doesnt_help: () =>
+            localize("Predictable substitutions like '@' instead of 'a' don't help very much"),
+        user_dictionary: () => localize('This password is on the blacklist'),
+    },
 };

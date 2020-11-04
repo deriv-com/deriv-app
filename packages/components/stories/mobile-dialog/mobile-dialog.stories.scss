@@ -1,0 +1,24 @@
+.dc-mobile-dialog {
+    background-color: #f2f3f4;
+}
+.dc-mobile-dialog__title {
+    color: #333333;
+}
+.dc-mobile-dialog__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.dc-mobile-dialog__header > h2 {
+    width: 100vw;
+    text-align: center;
+    margin-left: 4rem;
+}
+.dc-mobile-dialog__footer {
+    align-items: center;
+    justify-content: center;
+
+    p {
+        text-align: center;
+    }
+}

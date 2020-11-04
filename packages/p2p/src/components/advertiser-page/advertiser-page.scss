@@ -5,10 +5,6 @@
         max-height: 555px;
         overflow-y: hidden;
     }
-    &__error {
-        color: $color-red-4;
-        font-size: var(--text-size-xs);
-    }
     &__header {
         display: flex;
         height: fit-content;
@@ -18,9 +14,7 @@
         &-avatar {
             align-items: center;
             border-radius: 50%;
-            color: var(--text-colored-background);
             display: flex;
-            font-size: var(--text-size-xs);
             height: 3.2rem;
             justify-content: center;
             margin-right: 0.8rem;
@@ -29,23 +23,18 @@
         &-details {
             display: flex;
 
-            &--mobile {
+            @include mobile {
                 margin: 0 1.6rem;
             }
         }
         &-name {
             align-self: center;
-            color: var(--text-prominent);
-            font-size: var(--text-size-s);
-            font-weight: bold;
             height: fit-content;
             width: fit-content;
         }
         &-verification {
             align-items: center;
-            color: var(--text-less-prominent);
             display: flex;
-            font-size: var(--text-size-xs);
 
             &-id {
                 justify-self: flex-end;
@@ -60,10 +49,9 @@
                 vertical-align: bottom;
             }
 
-            &--mobile {
+            @include mobile {
                 display: grid;
-                font-size: var(--text-size-xxs);
-                position: fixed;
+                position: absolute;
                 right: 1.6rem;
             }
         }
@@ -81,10 +69,10 @@
         &-cell {
             display: block;
             min-width: 65px;
-            text-align-last: center;
+            text-align: center;
 
             &-header {
-                color: $color-grey-1;
+                color: var(--text-less-prominent);
                 font-size: var(--text-size-xs);
                 line-height: 20px;
             }
@@ -107,7 +95,7 @@
             }
         }
 
-        &--mobile {
+        @include mobile {
             width: 110vw;
         }
 
@@ -121,15 +109,10 @@
         }
     }
     &__cell {
-        &--mobile {
+        @include mobile {
             display: block;
         }
-
-        &-rate {
-            font-size: var(--text-size-xxs);
-        }
         &-limit {
-            font-size: var(--text-size-xxs);
             padding-top: 0.8rem;
         }
     }
@@ -137,7 +120,7 @@
         &-icon {
             margin: 1.6rem 0.8rem 1.6rem 2.4rem;
 
-            &--mobile {
+            @include mobile {
                 margin: 1.6rem 1rem;
             }
         }
@@ -148,7 +131,7 @@
             display: flex;
             justify-content: center;
 
-            &--mobile {
+            @include mobile {
                 justify-content: flex-end;
 
                 .dc-btn__small {
@@ -158,13 +141,7 @@
         }
 
         &-price {
-            color: var(--text-profit-success);
-            font-weight: bold;
-
-            &--mobile {
-                color: var(--text-profit-success);
-                font-size: var(--text-size-s);
-                font-weight: bold;
+            @include mobile {
                 margin: 0.2rem 0;
             }
         }
@@ -176,7 +153,7 @@
         &-table_row {
             grid-template-columns: 3fr 2fr 1fr;
 
-            &--mobile {
+            @include mobile {
                 grid-template-columns: repeat(2, 1fr);
                 height: 100px;
                 padding: 1.6rem;
@@ -186,20 +163,20 @@
 
         &-tabs {
             width: 228px;
+        }
 
-            &--mobile {
-                width: 100%;
+        .dc-tabs__list--header-fit-content {
+            @include mobile {
+                width: 100vw !important;
+                display: flex;
+                justify-content: space-evenly;
+                margin-bottom: 0 !important;
+            }
+        }
 
-                .dc-tabs__list--header-fit-content {
-                    width: 100vw;
-                    display: flex;
-                    justify-content: space-evenly;
-                    margin-bottom: 0 !important;
-                }
-
-                .dc-tabs__item {
-                    width: 50%;
-                }
+        .dc-tabs__item {
+            @include mobile {
+                width: 50%;
             }
         }
 
@@ -212,9 +189,25 @@
             position: absolute;
             width: 657px;
 
-            &--mobile {
+            @include mobile {
+                bottom: 0;
                 height: unset;
+                max-height: calc(100vh - 440px);
+                position: fixed;
             }
+        }
+    }
+
+    .dc-tabs__list--header-fit-content {
+        @include mobile {
+            position: fixed;
+        }
+    }
+
+    .dc-tabs__content {
+        @include mobile {
+            position: fixed;
+            top: 140px;
         }
     }
 }

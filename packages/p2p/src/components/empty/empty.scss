@@ -16,8 +16,9 @@
     }
 
     &--mobile {
-        height: calc(100vh - 373px);
-        width: 100vw;
+        height: unset;
+        margin-top: 6rem !important;
+        max-width: 100vw;
     }
 
     &--no-tabs {

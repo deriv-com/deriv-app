@@ -152,27 +152,27 @@ class CurrencySelector extends React.Component {
     };
 
     render() {
-        const { has_currency, has_real_account } = this.props;
+        const { has_currency, has_real_account, bypass_to_personal } = this.props;
         const { is_deriv_crypto } = this.context;
+
+        // In case of form error bypass to update personal data
+        if (bypass_to_personal) this.props.goToNextStep();
 
         return (
             <Formik
                 initialValues={this.props.value}
                 onSubmit={(values, actions) => {
-                    this.props.onSubmit(this.props.index, values, actions.setSubmitting);
+                    this.props.onSubmit(
+                        this.props.getCurrentStep() - 1,
+                        values,
+                        actions.setSubmitting,
+                        this.props.goToNextStep
+                    );
                 }}
                 validate={this.handleValidate}
             >
-                {({
-                    handleSubmit,
-                    // setFieldValue,
-                    // setFieldTouched,
-                    values,
-                    errors,
-                    touched,
-                    isSubmitting,
-                }) => (
-                    <AutoHeightWrapper default_height={200}>
+                {({ handleSubmit, values, errors, touched, isSubmitting }) => (
+                    <AutoHeightWrapper default_height={310}>
                         {({ setRef, height }) => (
                             <form ref={setRef} onSubmit={handleSubmit} className='currency-selector'>
                                 <Div100vhContainer
@@ -258,7 +258,6 @@ CurrencySelector.propTypes = {
     controls: PropTypes.object,
     has_currency: PropTypes.bool,
     has_real_account: PropTypes.bool,
-    index: PropTypes.number,
     onSubmit: PropTypes.func,
     value: PropTypes.any,
 };

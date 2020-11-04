@@ -67,6 +67,36 @@
     color: var(--text-general);
 }
 
+.p2p-barred-user {
+    background: #ffe6cc;
+    border-radius: 4px;
+    height: 32px;
+    margin-bottom: 1.6rem;
+    width: 620px;
+
+    .dc-toast__message {
+        background: unset;
+        width: 100%;
+
+        &-content {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+    }
+
+    .dc-text {
+        max-width: 92%;
+    }
+
+    @include mobile {
+        height: 58px;
+        margin-left: 5vw;
+        margin-right: 5vw;
+        width: 89vw;
+    }
+}
+
 .p2p-blocked-user {
     display: flex;
     align-content: center;

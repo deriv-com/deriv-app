@@ -19,6 +19,7 @@ export default class GeneralStore {
     };
     @observable inactive_notification_count = 0;
     @observable is_advertiser = false;
+    @observable is_barred = false;
     @observable is_listed = false;
     @observable is_restricted = false;
     @observable nickname = null;
@@ -30,6 +31,7 @@ export default class GeneralStore {
     @observable parameters = null;
     @observable poi_status = null;
     @observable show_popup = false;
+    @observable user_blocked_until = null;
 
     list_item_limit = 20;
     path = {
@@ -253,6 +255,11 @@ export default class GeneralStore {
     }
 
     @action.bound
+    setIsBarred(is_barred) {
+        this.is_barred = is_barred;
+    }
+
+    @action.bound
     setIsListed(is_listed) {
         this.is_listed = is_listed;
     }
@@ -340,6 +347,11 @@ export default class GeneralStore {
     }
 
     @action.bound
+    setUserBlockedUntil(user_blocked_until) {
+        this.user_blocked_until = user_blocked_until;
+    }
+
+    @action.bound
     setWebsocketInit = (websocket, local_currency_decimal_places) => {
         WebsocketInit(websocket, local_currency_decimal_places);
     };
@@ -357,8 +369,13 @@ export default class GeneralStore {
         if (!response.error) {
             this.setAdvertiserId(p2p_advertiser_info.id);
             this.setIsAdvertiser(!!p2p_advertiser_info.is_approved);
+            this.setIsBarred(!!p2p_advertiser_info.blocked_until);
             this.setIsListed(!!p2p_advertiser_info.is_listed);
             this.setNickname(p2p_advertiser_info.name);
+
+            if (this.is_barred) {
+                this.setUserBlockedUntil(p2p_advertiser_info.blocked_until);
+            }
         } else {
             this.ws_subscriptions.advertiser_subscription.unsubscribe();
 

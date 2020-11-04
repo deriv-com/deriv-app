@@ -3,12 +3,13 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
 import { getPropertyValue } from '@deriv/shared';
-import { Tabs, Modal } from '@deriv/components';
+import { Modal, Tabs, Toast, Icon, Text } from '@deriv/components';
 import { Dp2pProvider } from 'Components/context/dp2p-context';
 import ServerTime from 'Utils/server-time';
 import { waitWS } from 'Utils/websocket';
+import { convertToMillis, getFormattedDateString } from 'Utils/date-time';
 import { useStores } from 'Stores';
-import { localize, setLanguage } from './i18next';
+import { localize, setLanguage, Localize } from './i18next';
 import BuySell from './buy-sell/buy-sell.jsx';
 import MyAds from './my-ads/my-ads.jsx';
 import Orders from './orders/orders.jsx';
@@ -19,6 +20,25 @@ import MyProfile from './my-profile/my-profile.jsx';
 import './app.scss';
 
 const allowed_currency = 'USD';
+
+const TemporaryBarredMessage = () => {
+    const { general_store } = useStores();
+
+    const formatted_date = getFormattedDateString(new Date(convertToMillis(general_store?.user_blocked_until)));
+
+    return (
+        <Toast className='p2p-barred-user' is_open={general_store.is_barred}>
+            <Icon icon='IcAlertWarning' size={16} />
+            <Text size='xxxs' color='general'>
+                <Localize
+                    i18n_default_text="You've been temporarily barred from using our services due to multiple cancellation attempts. Try again after {{date_time}}."
+                    values={{ date_time: formatted_date }}
+                />
+            </Text>
+        </Toast>
+    );
+};
+
 const App = observer(props => {
     const { general_store } = useStores();
     const {
@@ -154,35 +174,42 @@ const App = observer(props => {
                         )}
                         {should_show_verification && general_store.is_advertiser && <Download />}
                         {!should_show_verification && (
-                            <Tabs
-                                onTabItemClick={general_store.handleTabClick}
-                                active_index={general_store.active_index}
-                                className='p2p-cashier'
-                                top
-                                header_fit_content
-                            >
-                                <div label={localize('Buy / Sell')}>
-                                    <BuySell navigate={general_store.redirectTo} params={general_store.parameters} />
-                                </div>
-                                <div count={general_store.notification_count} label={localize('Orders')}>
-                                    <Orders
-                                        navigate={general_store.redirectTo}
-                                        params={general_store.parameters}
-                                        chat_info={general_store.chat_info}
-                                    />
-                                </div>
-                                <div label={localize('My ads')}>
-                                    <MyAds navigate={general_store.redirectTo} params={general_store.parameters} />
-                                </div>
-                                {general_store.is_advertiser && (
-                                    <div label={localize('My profile')}>
-                                        <MyProfile
+                            <React.Fragment>
+                                <Tabs
+                                    onTabItemClick={general_store.handleTabClick}
+                                    active_index={general_store.active_index}
+                                    className='p2p-cashier'
+                                    top
+                                    header_fit_content
+                                >
+                                    <div label={localize('Buy / Sell')}>
+                                        <TemporaryBarredMessage />
+                                        <BuySell
                                             navigate={general_store.redirectTo}
                                             params={general_store.parameters}
                                         />
                                     </div>
-                                )}
-                            </Tabs>
+                                    <div count={general_store.notification_count} label={localize('Orders')}>
+                                        <Orders
+                                            navigate={general_store.redirectTo}
+                                            params={general_store.parameters}
+                                            chat_info={general_store.chat_info}
+                                        />
+                                    </div>
+                                    <div label={localize('My ads')}>
+                                        <TemporaryBarredMessage />
+                                        <MyAds navigate={general_store.redirectTo} params={general_store.parameters} />
+                                    </div>
+                                    {general_store.is_advertiser && (
+                                        <div label={localize('My profile')}>
+                                            <MyProfile
+                                                navigate={general_store.redirectTo}
+                                                params={general_store.parameters}
+                                            />
+                                        </div>
+                                    )}
+                                </Tabs>
+                            </React.Fragment>
                         )}
                     </>
                 )}

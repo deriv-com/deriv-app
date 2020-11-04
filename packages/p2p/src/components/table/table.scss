@@ -7,4 +7,8 @@
     justify-content: center;
     // TODO: [p2p-fix-layout-size] remove this margin when container layout is ok
     margin-top: 5rem;
+
+    @include mobile {
+        text-align: center;
+    }
 }

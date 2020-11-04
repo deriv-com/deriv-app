@@ -1377,10 +1377,12 @@ $MIN_HEIGHT_FLOATING: calc(
         .table__cell {
             height: 56px;
 
-            .name_content {
-                text-overflow: ellipsis;
-                width: 100%;
-                overflow: hidden;
+            .name {
+                &__content {
+                    text-overflow: ellipsis;
+                    width: 100%;
+                    overflow: hidden;
+                }
             }
         }
     }
@@ -1453,7 +1455,7 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         .name {
-            .name_content {
+            &__content {
                 text-overflow: ellipsis;
                 width: 100%;
                 white-space: nowrap;

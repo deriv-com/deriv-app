@@ -1,7 +1,8 @@
-import { observable, action, runInAction } from 'mobx';
+import { observable, action, runInAction, computed } from 'mobx';
 import { isEmptyObject, epochToMoment, getSocketURL } from '@deriv/shared';
 import { orderToggleIndex } from 'Components/orders/order-info.js';
 import { createExtendedOrderDetails } from 'Utils/orders.js';
+import { convertToMillis, getFormattedDateString } from 'Utils/date-time';
 import { init as WebsocketInit, requestWS, subscribeWS } from 'Utils/websocket.js';
 
 export default class GeneralStore {
@@ -46,6 +47,11 @@ export default class GeneralStore {
 
     get client() {
         return this.props?.client || {};
+    }
+
+    @computed
+    get blocked_until_date_time() {
+        return getFormattedDateString(new Date(convertToMillis(this.user_blocked_until)), true, true);
     }
 
     get is_active_tab() {

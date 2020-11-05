@@ -1,17 +1,20 @@
-export const getFormattedDateString = (date_obj, is_local = false) => {
+export const getFormattedDateString = (date_obj, is_local = false, has_seconds = false) => {
     if (!(date_obj instanceof Date)) {
         throw Error('getFormattedDateString argument needs an instance of Date');
     }
 
-    const date_string = is_local ? date_obj.toString().split(' ') : date_obj.toUTCString().split(' ');
+    const date_string = !is_local ? date_obj.toString().split(' ') : date_obj.toUTCString().split(' ');
     const [, day, month, year, time] = date_string;
     const times = time.split(':');
 
-    times.pop();
+    // Return time in the format "HH:mm:ss". e.g.: "01 Jan 1970 21:01:11"
+    if (!has_seconds) {
+        times.pop();
+    }
 
     const time_without_sec = times.join(':');
 
-    // Return in the format "DD MMM YYYY HH:mm:ss". e.g.: "01 Jan 1970 21:01:02"
+    // Return in the format "DD MMM YYYY HH:mm". e.g.: "01 Jan 1970 21:01"
     return `${day} ${month} ${year}, ${time_without_sec}`;
 };
 

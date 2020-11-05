@@ -3,11 +3,10 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
 import { getPropertyValue } from '@deriv/shared';
-import { Modal, Tabs, Toast, Icon, Text } from '@deriv/components';
+import { HintBox, Modal, Tabs, Text } from '@deriv/components';
 import { Dp2pProvider } from 'Components/context/dp2p-context';
 import ServerTime from 'Utils/server-time';
 import { waitWS } from 'Utils/websocket';
-import { convertToMillis, getFormattedDateString } from 'Utils/date-time';
 import { useStores } from 'Stores';
 import { localize, setLanguage, Localize } from './i18next';
 import BuySell from './buy-sell/buy-sell.jsx';
@@ -24,18 +23,20 @@ const allowed_currency = 'USD';
 const TemporaryBarredMessage = () => {
     const { general_store } = useStores();
 
-    const formatted_date = getFormattedDateString(new Date(convertToMillis(general_store?.user_blocked_until)));
-
     return (
-        <Toast className='p2p-barred-user' is_open={general_store.is_barred}>
-            <Icon icon='IcAlertWarning' size={16} />
-            <Text size='xxxs' color='general'>
-                <Localize
-                    i18n_default_text="You've been temporarily barred from using our services due to multiple cancellation attempts. Try again after {{date_time}}."
-                    values={{ date_time: formatted_date }}
-                />
-            </Text>
-        </Toast>
+        <HintBox
+            className='p2p-barred-user'
+            icon='IcAlertWarning'
+            message={
+                <Text size='xxxs' color='general' lineHeight='xs'>
+                    <Localize
+                        i18n_default_text="You've been temporarily barred from using our services due to multiple cancellation attempts. Try again after {{date_time}}."
+                        values={{ date_time: general_store?.blocked_until_date_time }}
+                    />
+                </Text>
+            }
+            is_info
+        />
     );
 };
 
@@ -183,7 +184,7 @@ const App = observer(props => {
                                     header_fit_content
                                 >
                                     <div label={localize('Buy / Sell')}>
-                                        <TemporaryBarredMessage />
+                                        {general_store?.is_barred && <TemporaryBarredMessage />}
                                         <BuySell
                                             navigate={general_store.redirectTo}
                                             params={general_store.parameters}
@@ -197,7 +198,7 @@ const App = observer(props => {
                                         />
                                     </div>
                                     <div label={localize('My ads')}>
-                                        <TemporaryBarredMessage />
+                                        {general_store?.is_barred && <TemporaryBarredMessage />}
                                         <MyAds navigate={general_store.redirectTo} params={general_store.parameters} />
                                     </div>
                                     {general_store.is_advertiser && (

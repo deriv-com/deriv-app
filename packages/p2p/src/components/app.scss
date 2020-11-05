@@ -56,6 +56,28 @@
             padding: 3.5rem 2.5rem 0;
         }
     }
+
+    .dc-hint-box {
+        margin-bottom: 1rem;
+
+        &__icon {
+            @include mobile {
+                align-self: flex-start;
+                min-width: 16px;
+                min-height: 16px;
+            }
+        }
+
+        &--info {
+            background-color: #ffe6cc;
+        }
+
+        @include mobile {
+            margin-left: 5vw;
+            margin-right: 5vw;
+            width: 90vw;
+        }
+    }
 }
 
 .p2p-not-allowed {
@@ -65,36 +87,6 @@
     align-items: center;
     font-size: 1.4rem;
     color: var(--text-general);
-}
-
-.p2p-barred-user {
-    background: #ffe6cc;
-    border-radius: 4px;
-    height: 32px;
-    margin-bottom: 1.6rem;
-    width: 620px;
-
-    .dc-toast__message {
-        background: unset;
-        width: 100%;
-
-        &-content {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-        }
-    }
-
-    .dc-text {
-        max-width: 92%;
-    }
-
-    @include mobile {
-        height: 58px;
-        margin-left: 5vw;
-        margin-right: 5vw;
-        width: 89vw;
-    }
 }
 
 .p2p-blocked-user {

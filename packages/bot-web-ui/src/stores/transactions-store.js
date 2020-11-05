@@ -1,5 +1,5 @@
-import { action, observable, reaction } from 'mobx';
-import { formatDate, isEnded } from '@deriv/shared';
+import { action, observable, reaction, when } from 'mobx';
+import { formatDate, isEnded, isNavigationFromPlatform, routes } from '@deriv/shared';
 import { transaction_elements } from '../constants/transactions';
 
 export default class TransactionsStore {
@@ -18,6 +18,11 @@ export default class TransactionsStore {
 
                 sessionStorage.setItem(this.transaction_storage_key, JSON.stringify(stored_transactions));
             }
+        );
+
+        when(
+            () => !isNavigationFromPlatform(this.root_store.common.app_routing_history, routes.bot),
+            () => this.removeIncompleteTransaction()
         );
     }
 
@@ -139,5 +144,12 @@ export default class TransactionsStore {
         if (typeof this.disposeTransactionsListener === 'function') {
             this.disposeTransactionsListener();
         }
+    }
+
+    @action.bound
+    removeIncompleteTransaction() {
+        this.elements = this.elements.filter(
+            element => element.data.is_completed || element.type === transaction_elements.DIVIDER
+        );
     }
 }

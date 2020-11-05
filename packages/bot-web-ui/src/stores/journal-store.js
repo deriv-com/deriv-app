@@ -1,10 +1,11 @@
-import { observable, action, computed, reaction } from 'mobx';
+import { observable, action, computed, reaction, when } from 'mobx';
+import { formatDate, isNavigationFromPlatform, routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { formatDate } from '@deriv/shared';
 import { message_types } from '@deriv/bot-skeleton';
 import { config } from '@deriv/bot-skeleton/src/constants/config';
-import { storeSetting, getSetting } from '../utils/settings';
+import { log_types } from '@deriv/bot-skeleton/src/constants/messages';
 import { isCustomJournalMessage } from '../utils/journal-notifications';
+import { storeSetting, getSetting } from '../utils/settings';
 
 export default class JournalStore {
     constructor(root_store) {
@@ -23,6 +24,11 @@ export default class JournalStore {
 
                 sessionStorage.setItem(this.journal_storage_key, JSON.stringify(stored_journals));
             }
+        );
+
+        when(
+            () => !isNavigationFromPlatform(this.root_store.common.app_routing_history, routes.bot),
+            () => this.addServerMessage(log_types.WELCOME)
         );
     }
 
@@ -56,6 +62,13 @@ export default class JournalStore {
     @action.bound
     toggleFilterDialog() {
         this.is_filter_dialog_visible = !this.is_filter_dialog_visible;
+    }
+
+    @action.bound
+    addServerMessage(log_type) {
+        if (this.unfiltered_messages.length !== 0 && this.unfiltered_messages?.[0]?.message !== log_type) {
+            this.pushMessage(log_type, message_types.SUCCESS);
+        }
     }
 
     @action.bound

@@ -4,10 +4,6 @@
             margin-bottom: 10rem;
         }
     }
-    &__error {
-        color: var(--text-loss-danger);
-        font-size: var(--text-size-xs);
-    }
     &__scrollbar {
         height: calc(100% - 15rem);
         position: absolute;
@@ -29,9 +25,7 @@
         &-avatar {
             align-items: center;
             border-radius: 50%;
-            color: var(--text-colored-background);
             display: flex;
-            font-size: var(--text-size-xs);
             height: 3.2rem;
             justify-content: center;
             margin-right: 0.8rem;
@@ -42,17 +36,12 @@
         }
         &-name {
             align-self: center;
-            color: var(--text-prominent);
-            font-size: var(--text-size-s);
-            font-weight: bold;
             height: fit-content;
             width: fit-content;
         }
         &-verification {
             align-items: center;
-            color: var(--text-less-prominent);
             display: flex;
-            font-size: var(--text-size-xs);
 
             &-status {
                 margin-left: 1.6rem;
@@ -86,17 +75,6 @@
                 width: unset;
                 margin: auto;
             }
-
-            &-header {
-                color: var(--text-less-prominent);
-                line-height: 20px;
-            }
-            &-info {
-                color: var(--text-prominent);
-                font-size: var(--text-size-s);
-                font-weight: bold;
-                line-height: 24px;
-            }
             &-separator {
                 border-right: 1px solid var(--general-section-1);
             }
@@ -117,10 +95,7 @@
         display: flex;
 
         &-text {
-            color: var(--text-prominent);
             display: flex;
-            font-size: var(--text-size-xs);
-            font-weight: bold;
             @include mobile {
                 margin-left: 1.6rem;
                 width: 10rem;
@@ -148,8 +123,7 @@
             width: 657px;
             @include mobile {
                 width: calc(100vw - 3.2rem);
-                margin-left: 1.6rem;
-                margin-right: 1.6rem;
+                margin: 2.5rem 1.6rem 0;
             }
 
             .dc-input__hint {
@@ -173,8 +147,9 @@
             bottom: 0px;
         }
         &--active-keyboard {
-            position: inherit;
+            position: absolute;
             bottom: unset;
+            margin-top: 2.4rem;
         }
 
         &-button {

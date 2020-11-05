@@ -106,18 +106,9 @@ $header-height: 3.6em;
             width: 100%;
             margin: 8px;
             height: 40px;
-
-            .dc-btn__text {
-                font-size: 1.4em;
-                font-weight: bold;
-            }
         }
     }
-    &__title {
-        font-size: 1.4em;
-        font-weight: bold;
-        color: var(--text-prominent);
-    }
+
     &__icon-main {
         margin-right: 0.8em;
     }

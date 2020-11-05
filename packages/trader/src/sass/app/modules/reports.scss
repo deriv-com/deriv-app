@@ -79,8 +79,8 @@ $side-padding: 1.2em;
     /* postcss-bem-linter: ignore */
     .statement__row--detail {
         overflow: hidden;
-        max-height: 95px;
-        height: 95;
+        max-height: 63px;
+        height: 63px;
         display: flex;
         align-items: center;
         padding: 0;
@@ -174,9 +174,6 @@ $side-padding: 1.2em;
 
         .date {
             text-align: left;
-        }
-        .table__cell {
-            height: 95px;
         }
     }
     .amount,
@@ -381,9 +378,9 @@ $side-padding: 1.2em;
     .table__head,
     .table__foot {
         font-weight: bold;
-        white-space: normal;
     }
     .table__head {
+        white-space: normal;
         .table__cell {
             align-items: flex-start;
         }
@@ -776,11 +773,6 @@ $side-padding: 1.2em;
         .table__foot {
             font-weight: bold;
             white-space: normal;
-        }
-        .table__cell {
-            padding-top: 0px;
-            padding-bottom: 0px;
-            font-weight: bold;
         }
     }
     &__row {

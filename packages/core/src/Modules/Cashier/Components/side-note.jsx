@@ -9,7 +9,7 @@ const SideNoteBullet = ({ children }) => (
     </div>
 );
 
-const SideNote = ({ notes, title, has_bullets = true }) => (
+const SideNote = ({ notes, title, has_bullets }) => (
     <div className='cashier-side-note'>
         {title && (
             <DesktopWrapper>

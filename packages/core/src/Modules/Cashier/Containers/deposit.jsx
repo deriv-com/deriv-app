@@ -33,7 +33,7 @@ const DepositeSideNote = () => {
         */
     ];
 
-    return <SideNote notes={notes} title={<Localize i18n_default_text='Notes' />} />;
+    return <SideNote has_bullets notes={notes} title={<Localize i18n_default_text='Notes' />} />;
 };
 
 const Deposit = ({

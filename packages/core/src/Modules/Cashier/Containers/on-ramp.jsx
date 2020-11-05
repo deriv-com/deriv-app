@@ -16,7 +16,7 @@ const OnRampSideNote = () => {
         />,
     ];
 
-    return <SideNote notes={notes} has_bullets={false} title={<Localize i18n_default_text='What is Fiat onramp?' />} />;
+    return <SideNote notes={notes} title={<Localize i18n_default_text='What is Fiat onramp?' />} />;
 };
 
 const OnRamp = ({

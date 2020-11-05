@@ -148,6 +148,7 @@ class MT5Dashboard extends React.Component {
             is_loading,
             is_logged_in,
             is_pending_authentication,
+            is_virtual,
             landing_companies,
             has_malta_account,
             has_maltainvest_account,
@@ -156,6 +157,8 @@ class MT5Dashboard extends React.Component {
             NotificationMessages,
             openAccountNeededModal,
             standpoint,
+            toggleAccountsDialog,
+            toggleShouldShowRealAccountsList,
         } = this.props;
 
         const should_show_missing_real_account = !is_eu && is_logged_in && !has_real_account;
@@ -228,11 +231,14 @@ class MT5Dashboard extends React.Component {
                                             landing_companies={landing_companies}
                                             is_pending_authentication={is_pending_authentication}
                                             is_fully_authenticated={is_fully_authenticated}
+                                            is_virtual={is_virtual}
                                             openAccountTransfer={this.openAccountTransfer}
                                             openPasswordManager={this.togglePasswordManagerModal}
                                             openPasswordModal={this.openRealPasswordModal}
                                             has_real_account={has_real_account}
                                             standpoint={standpoint}
+                                            toggleAccountsDialog={toggleAccountsDialog}
+                                            toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
                                         />
                                     </React.Fragment>
                                 </div>
@@ -390,6 +396,7 @@ export default withRouter(
         is_logged_in: client.is_logged_in,
         is_eu: client.is_eu,
         is_eu_country: client.is_eu_country,
+        is_virtual: client.is_virtual,
         has_maltainvest_account: client.has_maltainvest_account,
         has_malta_account: client.has_malta_account,
         can_upgrade_to: client.can_upgrade_to,
@@ -414,5 +421,7 @@ export default withRouter(
         NotificationMessages: ui.notification_messages_ui,
         onMount: modules.mt5.onMount,
         onUnmount: modules.mt5.onUnmount,
+        toggleAccountsDialog: ui.toggleAccountsDialog,
+        toggleShouldShowRealAccountsList: ui.toggleShouldShowRealAccountsList,
     }))(MT5Dashboard)
 );

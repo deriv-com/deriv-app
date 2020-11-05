@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Money, Button } from '@deriv/components';
+import { Money, Button, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { Mt5AccountCopy } from './mt5-account-copy.jsx';
 import { getMT5WebTerminalLink } from '../Helpers/constants';
@@ -18,24 +18,36 @@ const LoginBadge = ({ display_login }) => (
     </div>
 );
 
-const MT5AccountCard = ({
+const MT5AccountCardAction = ({
     button_label,
-    commission_message,
-    descriptor,
-    existing_data,
-    has_mt5_account,
-    icon,
+    handleClickSwitchAccount,
+    has_real_account,
+    onSelectAccount,
     is_button_primary,
     is_disabled,
-    is_logged_in,
-    specs,
-    title,
+    is_virtual,
+    toggleAccountsDialog,
     type,
-    onSelectAccount,
-    onClickFund,
-    onPasswordManager,
 }) => {
-    const IconComponent = icon || (() => null);
+    if (
+        is_virtual &&
+        has_real_account &&
+        type.category === 'real' &&
+        type.type === 'financial_stp' &&
+        typeof toggleAccountsDialog === 'function'
+    ) {
+        return (
+            <div className='mt5-account-card__action-wrapper'>
+                <Localize
+                    i18n_default_text='<0>Switch to your real account</0><1> to create a DMT5 Financial STP account.</1>'
+                    components={[
+                        <a className='link link--orange' key={0} onClick={handleClickSwitchAccount} />,
+                        <Text key={1} lineHeight='xs' size='xxs' />,
+                    ]}
+                />
+            </div>
+        );
+    }
     const lbl_add_account =
         type.category === 'real' ? (
             <Localize i18n_default_text='Add real account' />
@@ -43,9 +55,53 @@ const MT5AccountCard = ({
             <Localize i18n_default_text='Add demo account' />
         );
     const cta_label = button_label || lbl_add_account;
+    return (
+        <Button
+            className='mt5-account-card__account-selection'
+            onClick={onSelectAccount}
+            type='button'
+            is_disabled={is_disabled}
+            primary={is_button_primary}
+            secondary={!is_button_primary}
+            large
+        >
+            {cta_label}
+        </Button>
+    );
+};
 
+const MT5AccountCard = ({
+    button_label,
+    commission_message,
+    descriptor,
+    existing_data,
+    has_mt5_account,
+    has_real_account,
+    icon,
+    is_button_primary,
+    is_disabled,
+    is_logged_in,
+    is_virtual,
+    specs,
+    title,
+    type,
+    onSelectAccount,
+    onClickFund,
+    onPasswordManager,
+    toggleAccountsDialog,
+    toggleShouldShowRealAccountsList,
+}) => {
+    const [is_account_switcher_open, setAccountSwitcherOpen] = React.useState(false);
+
+    const IconComponent = icon || (() => null);
     const has_popular_banner = type.type === 'synthetic' && type.category === 'real';
     const has_demo_banner = type.category === 'demo';
+
+    const handleClickSwitchAccount = () => {
+        toggleShouldShowRealAccountsList(!is_account_switcher_open);
+        toggleAccountsDialog(!is_account_switcher_open);
+        setAccountSwitcherOpen(!is_account_switcher_open);
+    };
 
     return (
         <div className={classNames('mt5-account-card', { 'mt5-account-card__logged-out': !is_logged_in })}>
@@ -138,17 +194,18 @@ const MT5AccountCard = ({
                     </a>
                 )}
                 {!existing_data && !has_mt5_account && is_logged_in && (
-                    <Button
-                        className='mt5-account-card__account-selection'
-                        onClick={onSelectAccount}
-                        type='button'
+                    <MT5AccountCardAction
+                        button_label={button_label}
+                        handleClickSwitchAccount={handleClickSwitchAccount}
+                        has_real_account={has_real_account}
+                        is_button_primary={is_button_primary}
                         is_disabled={is_disabled}
-                        primary={is_button_primary}
-                        secondary={!is_button_primary}
-                        large
-                    >
-                        {cta_label}
-                    </Button>
+                        is_virtual={is_virtual}
+                        onSelectAccount={onSelectAccount}
+                        toggleAccountsDialog={toggleAccountsDialog}
+                        toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
+                        type={type}
+                    />
                 )}
             </div>
         </div>

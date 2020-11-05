@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { Icon, DesktopWrapper, DataList } from '@deriv/components';
+import { Icon, DesktopWrapper, DataList, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { useNewRowTransition } from '@deriv/shared';
 import { PropTypes } from 'prop-types';
@@ -115,24 +115,31 @@ class Transactions extends React.PureComponent {
                                 {contract_stage >= contract_stages.STARTING ? (
                                     <Transaction contract={null} />
                                 ) : (
-                                    <div className='transactions-empty'>
-                                        <Icon
-                                            icon='IcBox'
-                                            className='transactions-empty__icon'
-                                            size={64}
-                                            color='secondary'
-                                        />
-                                        <h4 className='transactions-empty__header'>
-                                            {localize('There are no transactions to display')}
-                                        </h4>
-                                        <div className='transactions-empty__message'>
-                                            <span>{localize('Here are the possible reasons:')}</span>
-                                            <ul className='transactions-empty__list'>
-                                                <li>{localize('The bot is not running')}</li>
-                                                <li>{localize('The stats are cleared')}</li>
-                                            </ul>
+                                    <ThemedScrollbars>
+                                        <div className='transactions-empty-box'>
+                                            <div className='transactions-empty'>
+                                                <div className='transactions-empty__icon-box'>
+                                                    <Icon
+                                                        icon='IcBox'
+                                                        className='transactions-empty__icon'
+                                                        size={64}
+                                                        color='secondary'
+                                                    />
+                                                </div>
+
+                                                <h4 className='transactions-empty__header'>
+                                                    {localize('There are no transactions to display')}
+                                                </h4>
+                                                <div className='transactions-empty__message'>
+                                                    <span>{localize('Here are the possible reasons:')}</span>
+                                                    <ul className='transactions-empty__list'>
+                                                        <li>{localize('The bot is not running')}</li>
+                                                        <li>{localize('The stats are cleared')}</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
+                                    </ThemedScrollbars>
                                 )}
                             </>
                         )}

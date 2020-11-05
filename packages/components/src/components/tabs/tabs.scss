@@ -43,6 +43,12 @@
         }
         &--header-fit-content {
             width: fit-content;
+
+            @include mobile {
+                display: flex;
+                justify-content: space-evenly;
+                width: 100vw !important;
+            }
         }
         &:not(&--header-fit-content) {
             justify-content: center;

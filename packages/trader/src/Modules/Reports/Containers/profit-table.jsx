@@ -168,7 +168,7 @@ class ProfitTable extends React.Component {
                                         footer={totals}
                                         is_empty={is_empty}
                                         getRowAction={this.getRowAction}
-                                        getRowSize={() => 95}
+                                        getRowSize={() => 63}
                                         content_loader={ReportsTableRowLoader}
                                     >
                                         <PlaceholderComponent is_loading={is_loading} />

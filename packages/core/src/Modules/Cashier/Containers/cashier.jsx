@@ -71,7 +71,8 @@ class Cashier extends React.Component {
                     (route.path !== routes.cashier_pa || this.props.is_payment_agent_visible) &&
                     (route.path !== routes.cashier_pa_transfer || this.props.is_payment_agent_transfer_visible) &&
                     (route.path !== routes.cashier_p2p || this.props.is_p2p_enabled) &&
-                    (route.path !== routes.cashier_onramp || this.props.is_onramp_tab_visible)
+                    (route.path !== routes.cashier_onramp || this.props.is_onramp_tab_visible) &&
+                    (route.path !== routes.cashier_acc_transfer || this.props.is_account_transfer_visible)
                 ) {
                     options.push({
                         ...(route.path === routes.cashier_p2p && { count: this.props.p2p_notification_count }),
@@ -163,6 +164,7 @@ Cashier.propTypes = {
     is_onramp_tab_visible: PropTypes.bool,
     is_eu: PropTypes.bool,
     is_p2p_enabled: PropTypes.bool,
+    is_account_transfer_visible: PropTypes.bool,
     is_payment_agent_transfer_visible: PropTypes.bool,
     is_payment_agent_visible: PropTypes.bool,
     is_visible: PropTypes.bool,
@@ -185,6 +187,7 @@ export default connect(({ client, common, modules, ui }) => ({
     is_p2p_enabled: modules.cashier.is_p2p_enabled,
     is_virtual: client.is_virtual,
     is_visible: ui.is_cashier_visible,
+    is_account_transfer_visible: modules.cashier.is_account_transfer_visible,
     is_payment_agent_visible: modules.cashier.is_payment_agent_visible,
     is_payment_agent_transfer_visible: modules.cashier.is_payment_agent_transfer_visible,
     onMount: modules.cashier.onMountCommon,

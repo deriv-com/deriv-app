@@ -49,11 +49,6 @@ const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_re
     }
 };
 
-const map_error_to_step = {
-    CurrencyTypeNotAllowed: 0,
-    InvalidPhone: 1,
-};
-
 class RealAccountSignup extends React.Component {
     constructor(props) {
         super(props);
@@ -72,7 +67,6 @@ class RealAccountSignup extends React.Component {
                             onError={this.showErrorModal}
                             onClose={this.closeModal}
                             onSuccessSetAccountCurrency={this.showSetCurrencySuccess}
-                            step={map_error_to_step[this.props.state_value.error_code] ?? 1}
                         />
                     ),
                     title: WizardHeading,
@@ -131,12 +125,11 @@ class RealAccountSignup extends React.Component {
     }
 
     get modal_height() {
-        const { currency, has_real_account, is_eu, is_eu_enabled } = this.props; // TODO [deriv-eu] remove is_eu_enabled once eu is released.
+        const { currency, has_real_account, is_eu } = this.props;
         if (this.active_modal_index === modal_pages_indices.status_dialog) return 'auto';
         if (!currency) return '688px'; // Set currency modal
         if (has_real_account && currency) {
-            if (is_eu && is_eu_enabled && this.active_modal_index === modal_pages_indices.add_or_manage_account) {
-                // TODO [deriv-eu] remove is_eu_enabled once eu is released.
+            if (is_eu && this.active_modal_index === modal_pages_indices.add_or_manage_account) {
                 // Manage account
                 return '379px'; // Since crypto is disabled for EU clients, lower the height of modal
             }
@@ -345,7 +338,6 @@ export default connect(({ ui, client, common }) => ({
     has_real_account: client.has_active_real_account,
     currency: client.currency,
     is_eu: client.is_eu,
-    is_eu_enabled: ui.is_eu_enabled, // TODO [deriv-eu] remove is_eu_enabled once eu is released.
     is_real_acc_signup_on: ui.is_real_acc_signup_on,
     real_account_signup_target: ui.real_account_signup_target,
     is_logged_in: client.is_logged_in,

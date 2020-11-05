@@ -50,7 +50,7 @@ const MaxTurnoverForm = ({ onMount, setErrorConfig, currency }) => {
             <h2 className='max-turnover__title'>{localize('30 days max total stake')}</h2>
 
             <Formik initialValues={initial_values} onSubmit={handleSubmit} validate={validateFields}>
-                {({ values, errors, isValid, touched, handleChange, handleBlur, isSubmitting, dirty, status }) => (
+                {({ values, errors, isValid, handleChange, handleBlur, isSubmitting, dirty, status }) => (
                     <Form className='max-turnover__form'>
                         <Field name='max_30day_turnover'>
                             {({ field }) => (

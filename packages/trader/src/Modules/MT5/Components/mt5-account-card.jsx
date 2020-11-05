@@ -22,11 +22,11 @@ const MT5AccountCardAction = ({
     button_label,
     handleClickSwitchAccount,
     has_real_account,
-    onSelectAccount,
+    is_accounts_switcher_on,
     is_button_primary,
     is_disabled,
     is_virtual,
-    toggleAccountsDialog,
+    onSelectAccount,
     type,
 }) => {
     if (
@@ -34,14 +34,20 @@ const MT5AccountCardAction = ({
         has_real_account &&
         type.category === 'real' &&
         type.type === 'financial_stp' &&
-        typeof toggleAccountsDialog === 'function'
+        typeof handleClickSwitchAccount === 'function'
     ) {
         return (
             <div className='mt5-account-card__action-wrapper'>
                 <Localize
                     i18n_default_text='<0>Switch to your real account</0><1> to create a DMT5 Financial STP account.</1>'
                     components={[
-                        <a className='link link--orange' key={0} onClick={handleClickSwitchAccount} />,
+                        <a
+                            className={classNames('link link--orange', {
+                                'mt5-account-card__action-wrapper--link-disabled': is_accounts_switcher_on,
+                            })}
+                            key={0}
+                            onClick={handleClickSwitchAccount}
+                        />,
                         <Text key={1} lineHeight='xs' size='xxs' />,
                     ]}
                 />
@@ -78,6 +84,7 @@ const MT5AccountCard = ({
     has_mt5_account,
     has_real_account,
     icon,
+    is_accounts_switcher_on,
     is_button_primary,
     is_disabled,
     is_logged_in,
@@ -91,16 +98,13 @@ const MT5AccountCard = ({
     toggleAccountsDialog,
     toggleShouldShowRealAccountsList,
 }) => {
-    const [is_account_switcher_open, setAccountSwitcherOpen] = React.useState(false);
-
     const IconComponent = icon || (() => null);
     const has_popular_banner = type.type === 'synthetic' && type.category === 'real';
     const has_demo_banner = type.category === 'demo';
 
     const handleClickSwitchAccount = () => {
-        toggleShouldShowRealAccountsList(!is_account_switcher_open);
-        toggleAccountsDialog(!is_account_switcher_open);
-        setAccountSwitcherOpen(!is_account_switcher_open);
+        toggleShouldShowRealAccountsList(true);
+        toggleAccountsDialog(true);
     };
 
     return (
@@ -198,12 +202,11 @@ const MT5AccountCard = ({
                         button_label={button_label}
                         handleClickSwitchAccount={handleClickSwitchAccount}
                         has_real_account={has_real_account}
+                        is_accounts_switcher_on={is_accounts_switcher_on}
                         is_button_primary={is_button_primary}
                         is_disabled={is_disabled}
                         is_virtual={is_virtual}
                         onSelectAccount={onSelectAccount}
-                        toggleAccountsDialog={toggleAccountsDialog}
-                        toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
                         type={type}
                     />
                 )}

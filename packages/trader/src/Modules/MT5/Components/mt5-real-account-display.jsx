@@ -21,6 +21,7 @@ const getRealFinancialStpBtnLbl = (is_fully_authenticated, is_pending_authentica
 
 const MT5RealAccountDisplay = ({
     has_real_account,
+    is_accounts_switcher_on,
     is_eu,
     is_eu_country,
     has_malta_account,
@@ -174,6 +175,7 @@ const MT5RealAccountDisplay = ({
                     has_real_account={has_real_account}
                     toggleAccountsDialog={toggleAccountsDialog}
                     toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
+                    is_accounts_switcher_on={is_accounts_switcher_on}
                 />
             )}
         </div>

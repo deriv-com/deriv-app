@@ -142,6 +142,7 @@ class MT5Dashboard extends React.Component {
             beginRealSignupForMt5,
             createMT5Account,
             current_list,
+            is_accounts_switcher_on,
             is_eu,
             is_eu_country,
             is_fully_authenticated,
@@ -217,6 +218,7 @@ class MT5Dashboard extends React.Component {
                                             <MissingRealAccount onClickSignup={beginRealSignupForMt5} />
                                         )}
                                         <MT5RealAccountDisplay
+                                            is_accounts_switcher_on={is_accounts_switcher_on}
                                             is_eu={is_eu}
                                             is_eu_country={is_eu_country}
                                             is_logged_in={is_logged_in}
@@ -417,6 +419,7 @@ export default withRouter(
         setCurrentAccount: modules.mt5.setCurrentAccount,
         standpoint: client.standpoint,
         toggleCompareAccounts: modules.mt5.toggleCompareAccountsModal,
+        is_accounts_switcher_on: ui.is_accounts_switcher_on,
         openTopUpModal: ui.openTopUpModal,
         NotificationMessages: ui.notification_messages_ui,
         onMount: modules.mt5.onMount,

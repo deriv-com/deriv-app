@@ -173,12 +173,12 @@ class AccountSwitcher extends React.Component {
     };
 
     componentDidMount() {
-        this.props.toggleShouldShowRealAccountsList(false);
         document.addEventListener('mousedown', this.handleClickOutside);
         this.props.updateMt5LoginList();
     }
 
     componentWillUnmount() {
+        this.props.toggleShouldShowRealAccountsList(false);
         document.removeEventListener('mousedown', this.handleClickOutside);
     }
 

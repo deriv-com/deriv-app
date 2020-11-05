@@ -612,6 +612,10 @@
         padding-top: 1rem;
         width: 75%;
         text-align: center;
+
+        &--link-disabled {
+            pointer-events: none;
+        }
     }
     @include mobile {
         width: calc(100vw - 3.2rem);

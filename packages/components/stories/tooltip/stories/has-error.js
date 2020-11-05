@@ -3,7 +3,7 @@ import { boolean } from '@storybook/addon-knobs';
 import Tooltip from 'Components/tooltip';
 import Wrapper from '../../shared/wrapper';
 
-const Basic = () => (
+const HasError = () => (
     <Wrapper is_dark={boolean('Dark Theme', false)}>
         <Tooltip
             className='tooltip-storybook-wrapper'
@@ -17,4 +17,4 @@ const Basic = () => (
     </Wrapper>
 );
 
-export default Basic;
+export default HasError;

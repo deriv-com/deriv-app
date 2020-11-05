@@ -27,15 +27,15 @@ const DummyComponent = (props) => (
 | alignment        | {string}               | null               | Use this to choose placement of the tooltip. It can be top, right, bottom or left.                                       |
 | message          | {string}               | null               | It's the info you want to show on tooltip.                                                                               |
 | icon             | {string}               | null               | If want to have an icon for your text you can set one of 'info' or 'question' in this prop.                              |
-| has_error        | {boolean}              | null               | If is true, tooltip is visible and has error text styles.                                                                |
+| has\_error       | {boolean}              | null               | If is true, tooltip is visible and has error text styles.                                                                |
 
 
 ## Full example:
 
 ```jsx
-import { SelectNative } from 'deriv-components';
+import { Tooltip } from 'deriv-components';
 
-const Tooltip = (props) => (
+const DummyComponent = (props) => (
     <Tooltip 
         className='tooltip-storybook-wrapper'
         classNameIcon='tooltip-storybook-icon'

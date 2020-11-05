@@ -4,7 +4,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 import { Icon } from '@deriv/components';
-import { getPlatformHeader, getPlatformIcon, isMobile } from '@deriv/shared';
+import { getPlatformInformation, isMobile } from '@deriv/shared';
 
 import { PlatformSwitcherLoader } from './Components/Preloader/platform-switcher.jsx';
 import { PlatformDropdown } from './platform-dropdown.jsx';
@@ -47,10 +47,12 @@ class PlatformSwitcher extends React.PureComponent {
                 >
                     <Icon
                         className='platform-switcher__icon'
-                        icon={getPlatformIcon(this.props.app_routing_history)}
+                        icon={getPlatformInformation(this.props.app_routing_history).icon}
                         size={32}
                     />
-                    <h1 className='platform-switcher__header'>{getPlatformHeader(this.props.app_routing_history)}</h1>
+                    <h1 className='platform-switcher__header'>
+                        {getPlatformInformation(this.props.app_routing_history).header}
+                    </h1>
                     <Icon className='platform-switcher__arrow' icon='IcChevronDownBold' />
                 </div>
                 <CSSTransition
@@ -63,7 +65,11 @@ class PlatformSwitcher extends React.PureComponent {
                     timeout={!isMobile() && this.state.is_open ? 0 : 250}
                     unmountOnExit
                 >
-                    <PlatformDropdown platform_config={this.props.platform_config} closeDrawer={this.closeDrawer} />
+                    <PlatformDropdown
+                        platform_config={this.props.platform_config}
+                        closeDrawer={this.closeDrawer}
+                        app_routing_history={this.props.app_routing_history}
+                    />
                 </CSSTransition>
             </React.Fragment>
         );

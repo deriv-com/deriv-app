@@ -35,8 +35,8 @@ class MT5POA extends React.Component {
     is_mounted = false;
     file_uploader_ref = undefined;
     state = {
-        document_file: undefined,
-        file_error_message: undefined,
+        document_file: [],
+        file_error_message: null,
         form_error: '',
         poa_status: 'none',
         is_loading: true,
@@ -56,7 +56,6 @@ class MT5POA extends React.Component {
             address_city: [v => !!v, v => validLength(v, { min: 1, max: 35 }), v => validLetterSymbol(v)],
             address_state: [v => !!v, v => !v || validLength(v, { min: 1, max: 35 })],
             address_postcode: [v => validLength(v, { min: 1, max: 20 }), v => validPostCode(v)],
-            document_file: [v => !!v, ([file]) => !!file?.name],
         };
 
         const validation_errors = {
@@ -86,7 +85,6 @@ class MT5POA extends React.Component {
                 }),
                 localize('Only letters, numbers, space, and hyphen are allowed.'),
             ],
-            document_file: [localize('Document file is not in a proper format.')],
         };
 
         const errors = {};
@@ -206,11 +204,7 @@ class MT5POA extends React.Component {
         if (this.state.poa_status && this.state.poa_status === PoaStatusCodes.verified) {
             return false;
         }
-        if (Object.keys(errors).length !== 0) {
-            return true;
-        }
-
-        return false;
+        return Object.keys(errors).length !== 0;
     }
 
     componentWillUnmount() {
@@ -256,7 +250,6 @@ class MT5POA extends React.Component {
                     handleSubmit,
                     isSubmitting,
                     handleBlur,
-                    handleChange,
                     setFieldTouched,
                     setFieldValue,
                     values,
@@ -330,7 +323,13 @@ class MT5POA extends React.Component {
                                                                                 }
                                                                                 name='address_state'
                                                                                 value={values.address_state}
-                                                                                onChange={handleChange}
+                                                                                onChange={e =>
+                                                                                    setFieldValue(
+                                                                                        'address_state',
+                                                                                        e.target.value,
+                                                                                        true
+                                                                                    )
+                                                                                }
                                                                                 placeholder={localize(
                                                                                     'State/Province*'
                                                                                 )}
@@ -364,6 +363,7 @@ class MT5POA extends React.Component {
                                                                 name='address_state'
                                                                 label={localize('State/Province*')}
                                                                 placeholder={localize('State/Province*')}
+                                                                required
                                                                 onBlur={handleBlur}
                                                             />
                                                         )}
@@ -389,9 +389,6 @@ class MT5POA extends React.Component {
                                                             )
                                                         }
                                                     />
-                                                    {errors.document_file && touched.document_file && (
-                                                        <p className='dc-field--error'>{errors.document_file}</p>
-                                                    )}
                                                 </div>
                                             </div>
                                         </ThemedScrollbars>
@@ -427,7 +424,11 @@ class MT5POA extends React.Component {
                                             <FormSubmitButton
                                                 has_cancel
                                                 cancel_label={localize('Previous')}
-                                                is_disabled={this.isFormDisabled(dirty, errors)}
+                                                is_disabled={
+                                                    this.isFormDisabled(dirty, errors) ||
+                                                    (this.state.document_file && this.state.document_file.length < 1) ||
+                                                    !!this.state.file_error_message
+                                                }
                                                 label={localize('Next')}
                                                 is_absolute={isMobile()}
                                                 is_loading={isSubmitting}

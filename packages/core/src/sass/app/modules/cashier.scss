@@ -1,4 +1,7 @@
 .dc-modal__container_usdt-note-modal {
+    .dc-modal-body {
+        padding-top: 0;
+    }
     .title {
         font-weight: bold;
     }
@@ -38,6 +41,13 @@
 
         @include desktop {
             max-width: 672px;
+
+            &--confirm,
+            &.account-transfer__receipt,
+            &.payment-agent-transfer__container,
+            &.payment-agent-transfer__wrapper {
+                margin-left: 0;
+            }
         }
 
         &,
@@ -106,10 +116,6 @@
         font-weight: bold;
         color: var(--text-prominent);
 
-        &:not(.cashier__content-header) {
-            margin-bottom: 1.6rem;
-            margin-top: 1.6rem;
-        }
         @include mobile {
             font-size: 1.4rem;
         }
@@ -119,41 +125,6 @@
             display: flex;
             justify-content: flex-end;
             width: 100%;
-        }
-        &-error {
-            flex: 1;
-            margin: 2rem 5.6rem 4.4rem 0;
-            font-size: 1.2rem;
-            font-weight: 500;
-            line-height: 1.33;
-
-            &-icon {
-                position: absolute;
-                left: -10px;
-                bottom: -15px;
-                pointer-events: none;
-                opacity: 0.07;
-                z-index: 0;
-            }
-            &-small-icon {
-                margin: 2rem 1.6rem 4.4rem 2.4rem;
-            }
-            &-wrapper {
-                display: flex;
-                margin-right: auto;
-
-                .cashier__form-error,
-                .cashier__form-error-small-icon {
-                    margin-top: 5.8rem;
-                    margin-bottom: 0;
-                }
-                .cashier__form-error-small-icon {
-                    margin-left: 0.8rem;
-                }
-                .cashier__form-error-icon {
-                    bottom: 21rem;
-                }
-            }
         }
         &-submit-button {
             margin: 3.2rem 0 2.4rem 2.4rem;
@@ -176,19 +147,6 @@
             &-submit-button {
                 margin: 0;
                 width: 100%;
-            }
-            &-error-container {
-                display: flex;
-                align-items: center;
-                margin-bottom: 0.8rem;
-            }
-            &-error {
-                margin: 0;
-
-                &-small-icon {
-                    margin: 0;
-                    margin-right: 0.8rem;
-                }
             }
         }
     }
@@ -237,14 +195,6 @@
                 display: flex;
                 align-items: center;
             }
-            .cashier__drop-down-display-brackets {
-                &:before {
-                    content: '(';
-                }
-                &:after {
-                    content: ')';
-                }
-            }
             @include mobile {
                 min-height: auto;
                 min-width: calc(100% - 4rem);
@@ -255,6 +205,12 @@
         &-items,
         &-label {
             justify-content: left;
+        }
+        &-items {
+            svg {
+                width: 24px;
+                height: 24px;
+            }
         }
         &-label {
             margin: 0 1.6rem;
@@ -353,6 +309,7 @@
     &__done-button {
         width: 15.6rem;
         margin-left: 0.8rem;
+        white-space: normal;
     }
     &__no-balance {
         &-icon {
@@ -393,7 +350,6 @@
         @include mobile {
             width: 100%;
             margin: 2.4rem 0 0;
-            height: 320px;
         }
     }
     &__usdt-side-note {
@@ -449,18 +405,10 @@
             > :last-child {
                 text-align: right;
                 max-width: 50%;
-            }
-        }
-        &-error {
-            max-width: 40rem;
-            margin: auto;
 
-            @include mobile {
-                margin-top: 1.6rem;
-            }
-
-            .cashier__form-error {
-                margin-right: 0;
+                &.description {
+                    word-wrap: break-word;
+                }
             }
         }
         &-submit {
@@ -1110,7 +1058,6 @@
 
         &-wrapper {
             display: flex;
-            margin-bottom: 0.8rem;
         }
     }
 }
@@ -1211,9 +1158,21 @@
         &-from {
             margin-bottom: 3.5rem;
             margin-top: 2.5rem;
+
+            @include mobile {
+                margin-bottom: 4rem;
+            }
         }
         &-to {
             margin-bottom: 1.7rem;
+
+            @include mobile {
+                margin-bottom: 5rem;
+
+                &:not(.dc-select-native--error) {
+                    margin-bottom: 3.2rem;
+                }
+            }
         }
     }
     &__button {

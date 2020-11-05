@@ -180,7 +180,7 @@ class Statement extends React.Component {
                                 localized_period_message={localize('You have no transactions for this period.')}
                             />
                         ) : (
-                            <React.Fragment>
+                            <div className='reports__content'>
                                 <DesktopWrapper>
                                     <DataTable
                                         className='statement'
@@ -188,8 +188,6 @@ class Statement extends React.Component {
                                         columns={this.columns}
                                         onScroll={handleScroll}
                                         getRowAction={row => this.getRowAction(row)}
-                                        is_empty={is_empty}
-                                        custom_width={'100%'}
                                         getRowSize={() => 63}
                                         content_loader={ReportsTableRowLoader}
                                     >
@@ -203,13 +201,12 @@ class Statement extends React.Component {
                                         rowRenderer={this.mobileRowRenderer}
                                         getRowAction={this.getRowAction}
                                         onScroll={handleScroll}
-                                        custom_width={'100%'}
-                                        getRowSize={() => 186}
+                                        row_gap={8}
                                     >
                                         <PlaceholderComponent is_loading={is_loading} />
                                     </DataList>
                                 </MobileWrapper>
-                            </React.Fragment>
+                            </div>
                         )}
                     </React.Fragment>
                 )}

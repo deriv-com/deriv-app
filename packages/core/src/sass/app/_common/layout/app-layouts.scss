@@ -160,11 +160,11 @@
 
             .contract-audit__wrapper {
                 height: 100%;
-                max-height: calc(100% - 48px);
+                // max-height: calc(100% - 48px);
 
-                @media (max-width: 320px) and (max-height: 480px) {
-                    max-height: calc(100% - 50px);
-                }
+                // @media (max-width: 320px) and (max-height: 480px) {
+                //     max-height: calc(100% - 50px);
+                // }
             }
         }
     }

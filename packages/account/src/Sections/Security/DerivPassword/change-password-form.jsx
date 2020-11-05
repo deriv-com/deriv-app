@@ -112,6 +112,7 @@ class ChangePasswordForm extends React.Component {
                                         <PasswordMeter
                                             input={this.state.new_pw_input}
                                             has_error={!!(touched.new_password && errors.new_password)}
+                                            custom_feedback_messages={getErrorMessages().password_warnings}
                                         >
                                             <PasswordInput
                                                 autoComplete='new-password'

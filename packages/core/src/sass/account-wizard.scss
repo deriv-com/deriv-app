@@ -108,10 +108,10 @@
     position: relative;
     width: 100%;
     @include desktop {
+        &--deriv-crypto {
+            grid-template-rows: 0 !important;
+        }
         .currency-list__items {
-            &__is-fiat {
-                width: 100%;
-            }
             &__is-crypto {
                 margin-bottom: 9rem;
             }
@@ -165,6 +165,7 @@
     }
     form {
         width: 100%;
+        height: 100%;
 
         @include tablet-up {
             display: grid;
@@ -345,14 +346,14 @@
                     font-size: 1.4rem;
                     font-weight: bold;
                     line-height: 20px;
-                    padding: 1.6rem 2.4rem 0.8rem;
+                    padding: 0 1.6rem 0.8rem;
                 }
                 &-subtitle {
                     color: var(--text-prominent);
                     line-height: 18px;
                     font-size: 1.2rem;
                     font-weight: bold;
-                    padding: 0 2.4rem;
+                    padding: 1.6rem 1.6rem 0;
                 }
             }
         }

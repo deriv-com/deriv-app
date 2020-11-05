@@ -64,7 +64,7 @@ const AppContents = ({
         window.addEventListener('beforeinstallprompt', handleInstallPrompt);
 
         return () => window.removeEventListener('beforeinstallprompt', handleInstallPrompt);
-    });
+    }, [notifyAppInstall]);
 
     // handle accept/decline cookies
     const onAccept = () => {

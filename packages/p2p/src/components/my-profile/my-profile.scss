@@ -89,11 +89,7 @@
 
             &-header {
                 color: var(--text-less-prominent);
-                font-size: var(--text-size-xs);
                 line-height: 20px;
-                @include mobile {
-                    font-size: var(--text-size-xxxs);
-                }
             }
             &-info {
                 color: var(--text-prominent);
@@ -143,7 +139,7 @@
     &__form {
         @include mobile {
             margin-bottom: 18rem;
-            &--actvie-keyboard {
+            &--active-keyboard {
                 margin-bottom: 0;
             }
         }
@@ -176,7 +172,7 @@
             width: 100vw;
             bottom: 0px;
         }
-        &--inherit {
+        &--active-keyboard {
             position: inherit;
             bottom: unset;
         }

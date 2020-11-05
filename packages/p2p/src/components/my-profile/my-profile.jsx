@@ -1,6 +1,7 @@
 import React from 'react';
 import { Field, Form, Formik } from 'formik';
-import { Button, Icon, Input, Loading, Popover, Table, ThemedScrollbars } from '@deriv/components';
+import { Button, Icon, Input, Loading, Popover, Table, ThemedScrollbars, Text } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 import { localize } from 'Components/i18next';
@@ -28,7 +29,7 @@ const MyProfile = observer(() => {
     }, []);
 
     const setCurrentFocus = target => {
-        setHasOnScreenKeyboard(general_store.props.is_mobile && target);
+        setHasOnScreenKeyboard(isMobile() && target);
     };
 
     if (my_profile_store.is_loading) {
@@ -80,16 +81,22 @@ const MyProfile = observer(() => {
                         <Table.Row className='my-profile__stats'>
                             <div className='my-profile__stats-cell-separator' />
                             <Table.Cell className='my-profile__stats-cell'>
-                                <div className='my-profile__stats-cell-header'>{localize('Total orders')}</div>
+                                <div className='my-profile__stats-cell-header'>
+                                    <Text size={isMobile() ? 'xxxs' : 's'} color='gray'>
+                                        {localize('Total orders')}
+                                    </Text>
+                                </div>
                                 <div className='my-profile__stats-cell-info'>{total_orders_count || '-'}</div>
                             </Table.Cell>
                             <div className='my-profile__stats-cell-separator' />
-                            {general_store.props.is_mobile ? (
+                            {isMobile() ? (
                                 <Table.Cell className='my-profile__stats-cell'>
                                     <div className='my-profile__stats-cell-header'>
-                                        {localize('Buy / Sell ({{currency}})', {
-                                            currency: general_store.client.currency,
-                                        })}
+                                        <Text size={isMobile() ? 'xxxs' : 's'} color='gray'>
+                                            {localize('Buy / Sell ({{currency}})', {
+                                                currency: general_store.client.currency,
+                                            })}
+                                        </Text>
                                     </div>
                                     <div className='my-profile__stats-cell-info'>
                                         {buy_orders_count || '-'}/{sell_orders_count || '-'}
@@ -99,18 +106,22 @@ const MyProfile = observer(() => {
                                 <>
                                     <Table.Cell className='my-profile__stats-cell'>
                                         <div className='my-profile__stats-cell-header'>
-                                            {localize('Buy ({{currency}})', {
-                                                currency: general_store.client.currency,
-                                            })}
+                                            <Text size={isMobile() ? 'xxxs' : 's'} color='gray'>
+                                                {localize('Buy ({{currency}})', {
+                                                    currency: general_store.client.currency,
+                                                })}
+                                            </Text>
                                         </div>
                                         <div className='my-profile__stats-cell-info'>{buy_orders_count || '-'}</div>
                                     </Table.Cell>
                                     <div className='my-profile__stats-cell-separator' />
                                     <Table.Cell className='my-profile__stats-cell'>
                                         <div className='my-profile__stats-cell-header'>
-                                            {localize('Sell ({{currency}})', {
-                                                currency: general_store.client.currency,
-                                            })}
+                                            <Text size={isMobile() ? 'xxxs' : 's'} color='gray'>
+                                                {localize('Sell ({{currency}})', {
+                                                    currency: general_store.client.currency,
+                                                })}
+                                            </Text>
                                         </div>
                                         <div className='my-profile__stats-cell-info'>{sell_orders_count || '-'}</div>
                                     </Table.Cell>
@@ -119,9 +130,11 @@ const MyProfile = observer(() => {
                             <div className='my-profile__stats-cell-separator' />
                             <Table.Cell className='my-profile__stats-cell'>
                                 <div className='my-profile__stats-cell-header'>
-                                    {localize('Buy / Sell limit ({{currency}})', {
-                                        currency: general_store.client.currency,
-                                    })}
+                                    <Text size={isMobile() ? 'xxxs' : 's'} color='gray'>
+                                        {localize('Buy / Sell limit ({{currency}})', {
+                                            currency: general_store.client.currency,
+                                        })}
+                                    </Text>
                                 </div>
                                 <div className='my-profile__stats-cell-info'>
                                     {daily_buy_limit && daily_sell_limit
@@ -129,7 +142,7 @@ const MyProfile = observer(() => {
                                         : '-'}
                                 </div>
                             </Table.Cell>
-                            {!general_store.props.is_mobile && <div className='my-profile__stats-cell-separator' />}
+                            {!isMobile() && <div className='my-profile__stats-cell-separator' />}
                             <Table.Cell>
                                 <Popover
                                     classNameBubble='my-profile__popover-text'
@@ -162,7 +175,7 @@ const MyProfile = observer(() => {
                             return (
                                 <Form
                                     className={classNames('my-profile__form', {
-                                        'my-profile__form--actvie-keyboard': has_on_screen_keyboard,
+                                        'my-profile__form--active-keyboard': has_on_screen_keyboard,
                                     })}
                                 >
                                     <React.Fragment>
@@ -220,7 +233,7 @@ const MyProfile = observer(() => {
                                         </Field>
                                         <div
                                             className={classNames('my-profile__footer', {
-                                                'my-profile__footer--inherit': has_on_screen_keyboard,
+                                                'my-profile__footer--active-keyboard': has_on_screen_keyboard,
                                             })}
                                         >
                                             <FormError message={my_profile_store.form_error} />

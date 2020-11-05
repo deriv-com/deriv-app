@@ -428,8 +428,7 @@ class AccountSwitcher extends React.Component {
                                 <Icon icon='IcDeriv' size={24} />
                                 <span className='acc-switcher__new-account-text'>
                                     {getAccountTitle(account, {
-                                        is_isle_of_man_residence: this.props.is_im,
-                                        is_belgium_residence: this.props.is_be,
+                                        account_residence: this.props.landing_companies.id,
                                     })}
                                 </span>
                                 <Button
@@ -624,8 +623,6 @@ AccountSwitcher.propTypes = {
     is_pending_authentication: PropTypes.bool,
     is_positions_drawer_on: PropTypes.bool,
     is_uk: PropTypes.bool,
-    is_im: PropTypes.bool,
-    is_be: PropTypes.bool,
     is_virtual: PropTypes.bool,
     is_visible: PropTypes.bool,
     logoutClient: PropTypes.func,
@@ -654,8 +651,6 @@ const account_switcher = withRouter(
         is_mt5_allowed: client.is_mt5_allowed,
         is_pending_authentication: client.is_pending_authentication,
         is_uk: client.is_uk,
-        is_im: client.is_im,
-        is_be: client.is_be,
         is_virtual: client.is_virtual,
         has_fiat: client.has_fiat,
         has_any_real_account: client.has_any_real_account,

@@ -462,16 +462,6 @@ export default class ClientStore extends BaseStore {
         return this.residence === 'gb';
     }
 
-    @computed
-    get is_im() {
-        return this.residence === 'im';
-    }
-
-    @computed
-    get is_be() {
-        return this.residence === 'be';
-    }
-
     // this is true when a user needs to have a active real account for trading
     @computed
     get should_have_real_account() {

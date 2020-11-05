@@ -22,17 +22,17 @@ const Content = ({ is_routed, items, selected }) => {
     const TabContent = selected_item.value;
     const [side_notes, setSideNotes] = React.useState(null);
 
-    const note_array = [];
+    const notes_array = [];
 
     const addToNotesQueue = notes => {
-        note_array.unshift(notes);
+        notes_array.unshift(notes);
         setSideNotes(notes);
     };
 
     React.useEffect(() => {
         if (selected_item?.label !== previous_selected_item?.label) {
-            setSideNotes(note_array[0] ?? null);
-            note_array.splice(0, note_array.length);
+            setSideNotes(notes_array[0] ?? null);
+            notes_array.splice(0, notes_array.length);
         }
     }, [selected_item]);
 

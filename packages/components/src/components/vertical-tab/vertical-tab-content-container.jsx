@@ -3,11 +3,35 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Icon from '../icon/icon.jsx';
 
+const SideNotes = ({ side_notes }) => {
+    return (
+        <div className='dc-vertical-tab__content-side-note'>
+            {side_notes?.map((note, i) => (
+                <div className='dc-vertical-tab__content-side-note-wrapper' key={i}>
+                    {note}
+                </div>
+            ))}
+        </div>
+    );
+};
+
 const Content = ({ is_routed, items, selected }) => {
     const selected_item = items.find(item => item.label === selected.label);
     const TabContent = selected_item.value;
-
     const [side_notes, setSideNotes] = React.useState(null);
+
+    const note_array = [];
+
+    const setNotesSync = notes => {
+        note_array.unshift(notes);
+        setSideNotes(notes);
+    };
+
+    React.useEffect(() => {
+        setSideNotes(null);
+        setSideNotes(note_array[0]);
+        note_array.splice(0, note_array.length);
+    }, [selected_item]);
 
     return (
         <React.Fragment>
@@ -19,24 +43,18 @@ const Content = ({ is_routed, items, selected }) => {
                             <Route
                                 key={idx}
                                 path={path}
-                                render={() => <Component component_icon={icon} setSideNotes={setSideNotes} />}
+                                render={() => <Component component_icon={icon} setSideNotes={setNotesSync} />}
                             />
                         );
                     })}
                 </Switch>
             ) : (
-                <TabContent key={selected_item.label} className='item-id' setSideNotes={setSideNotes} />
+                <TabContent key={selected_item.label} className='item-id' setSideNotes={setNotesSync} />
             )}
             {selected.has_side_note && (
                 // for components that have side note, even if no note is passed currently,
                 // we want to keep the column space for side note
-                <div className='dc-vertical-tab__content-side-note'>
-                    {side_notes?.map((note, i) => (
-                        <div className='dc-vertical-tab__content-side-note-wrapper' key={i}>
-                            {note}
-                        </div>
-                    ))}
-                </div>
+                <SideNotes selected_item={selected_item} side_notes={side_notes} />
             )}
         </React.Fragment>
     );

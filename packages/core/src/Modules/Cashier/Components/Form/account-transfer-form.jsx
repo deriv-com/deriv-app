@@ -200,8 +200,6 @@ const AccountTransferForm = ({
             ]);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-
-        return () => setSideNotes(null);
     }, [transfer_fee, selected_from, minimum_fee, mt5_total_transfers, internal_total_transfers, setSideNotes]);
     return (
         <div className='cashier__wrapper account-transfer__wrapper'>

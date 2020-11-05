@@ -61,16 +61,14 @@ const Deposit = ({
     React.useEffect(() => {
         if (iframe_height && isDesktop()) {
             if (isCryptocurrency(currency)) {
-                if (/^(UST|eUSDT)$/i.test(currency) && typeof setSideNotes === 'function') {
+                if (/^(UST|eUSDT)$/i.test(currency)) {
                     setSideNotes([<DepositeSideNote key={0} />, <USDTSideNote key={1} />]);
                 } else {
                     setSideNotes([<DepositeSideNote key={0} />]);
                 }
             }
         }
-
-        return () => setSideNotes(null);
-    }, [currency, setSideNotes, iframe_height]);
+    }, [currency, iframe_height]);
 
     if (is_virtual) {
         return <Virtual />;

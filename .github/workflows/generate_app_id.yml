@@ -48,3 +48,34 @@ jobs:
               ```
             </details>
             
+
+  test_e2e:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: run_test_e2e
+        id: qawolf
+        uses:
+          - actions/checkout@v2
+          - actions/setup-node@v1
+          - microsoft/playwright-github-action@v1
+          - actions/cache@v1
+        with:
+          path: ~/.npm
+            key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+            restore-keys: |
+              ${{ runner.os }}-node-
+        run:
+          - npm ci
+          - npm run test:qa
+        env:
+          FFMPEG_PATH: /usr/bin/ffmpeg # for recording video
+          QAW_ARTIFACT_PATH: ${{ github.workspace }}/artifacts
+          VALID_USER: ${{ secrets.VALID_USER }}
+          VALID_PASSWORD: ${{ secrets.VALID_PASSWORD }}
+          HOME_URL: ${{ secrets.HOME_URL }}
+      - name: Upload Artifacts
+          if: always()
+          uses: actions/upload-artifact@master
+          with:
+            name: qawolf
+            path: ${{ github.workspace }}/artifacts

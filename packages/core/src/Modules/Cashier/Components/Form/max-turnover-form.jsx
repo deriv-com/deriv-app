@@ -71,7 +71,7 @@ const MaxTurnoverForm = ({ onMount, setErrorConfig, currency }) => {
                                     hint={localize('Limits your total stake for 30 days across all Deriv platforms.')}
                                     maxLength='13'
                                     required
-                                    error={touched.max_30day_turnover && errors.max_30day_turnover}
+                                    error={errors.max_30day_turnover}
                                 />
                             )}
                         </Field>

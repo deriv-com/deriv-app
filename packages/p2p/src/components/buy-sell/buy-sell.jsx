@@ -137,7 +137,7 @@ const BuySell = ({ navigate }) => {
                 toggleModal={onCancelClick}
             >
                 {/* Parent height - Modal.Header height - Modal.Footer height */}
-                <ThemedScrollbars height='calc(100% - 5.8rem - 7.4rem)'>
+                <ThemedScrollbars height='calc(100% - 5.8rem - 7.4rem)' is_scrollbar_hidden>
                     <Modal.Body>
                         <Form
                             advert={selected_ad_state}

@@ -103,10 +103,6 @@
             display: flex;
             align-items: center;
         }
-
-        .dc-themed-scrollbars__autohide--is-hovered::-webkit-scrollbar-thumb {
-            display: none;
-        }
     }
     &__cell {
         @include mobile {
@@ -133,16 +129,6 @@
 
             @include mobile {
                 justify-content: flex-end;
-
-                .dc-btn__small {
-                    height: 4rem;
-                }
-            }
-        }
-
-        &-price {
-            @include mobile {
-                margin: 0.2rem 0;
             }
         }
 
@@ -165,15 +151,6 @@
             width: 228px;
         }
 
-        .dc-tabs__list--header-fit-content {
-            @include mobile {
-                width: 100vw !important;
-                display: flex;
-                justify-content: space-evenly;
-                margin-bottom: 0 !important;
-            }
-        }
-
         .dc-tabs__item {
             @include mobile {
                 width: 50%;
@@ -185,13 +162,15 @@
         }
 
         &-scrollbar {
-            height: calc(100vh - 527px);
+            @include tablet-up {
+                height: calc(100vh - 527px);
+            }
+
             position: absolute;
             width: 657px;
 
             @include mobile {
                 bottom: 0;
-                height: unset;
                 max-height: calc(100vh - 440px);
                 position: fixed;
             }

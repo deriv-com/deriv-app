@@ -29,7 +29,7 @@ const RowComponent = React.memo(({ data: advert, showAdPopup, style }) => {
                 {isMobile() ? (
                     <React.Fragment>
                         <Table.Cell className='advertiser-page__cell'>
-                            <Text size='xxs'>
+                            <Text size='xxs' lineHeight='m'>
                                 <Localize
                                     i18n_default_text='Rate (1 {{currency}})'
                                     values={{
@@ -39,12 +39,12 @@ const RowComponent = React.memo(({ data: advert, showAdPopup, style }) => {
                             </Text>
 
                             <div className='advertiser-page__adverts-price'>
-                                <Text color='profit-success' size='s' weight='bold'>
+                                <Text color='profit-success' size='s' weight='bold' lineHeight='m'>
                                     {price_display} {local_currency}
                                 </Text>
                             </div>
                             <div className='advertiser-page__cell-limit'>
-                                <Text size='xxs'>
+                                <Text size='xxs' lineHeight='m'>
                                     <Localize
                                         i18n_default_text='Limit {{min_order_amount_limit_display}}-{{max_order_amount_limit_display}} {{currency}}'
                                         values={{
@@ -63,7 +63,7 @@ const RowComponent = React.memo(({ data: advert, showAdPopup, style }) => {
                             {`${min_order_amount_limit_display}-${max_order_amount_limit_display} ${currency}`}
                         </Table.Cell>
                         <Table.Cell className='advertiser-page__adverts-price'>
-                            <Text color='profit-success' size='xs' weight='bold'>
+                            <Text color='profit-success' size='xs' weight='bold' lineHeight='xs'>
                                 {price_display} {local_currency}
                             </Text>
                         </Table.Cell>
@@ -73,7 +73,7 @@ const RowComponent = React.memo(({ data: advert, showAdPopup, style }) => {
                     <Table.Cell />
                 ) : (
                     <Table.Cell className='advertiser-page__adverts-button'>
-                        <Button primary small onClick={() => showAdPopup(advert)}>
+                        <Button primary small={!isMobile()} large={isMobile()} onClick={() => showAdPopup(advert)}>
                             {is_buy_advert ? localize('Buy') : localize('Sell')} {currency}
                         </Button>
                     </Table.Cell>
@@ -120,7 +120,7 @@ const AdvertiserPage = observer(props => {
 
     if (advertiser_page_store.error_message) {
         return (
-            <Text size='xs' color='loss-danger'>
+            <Text size='xs' color='loss-danger' lineHeight='m'>
                 {advertiser_page_store.error_message}{' '}
             </Text>
         );
@@ -179,12 +179,12 @@ const AdvertiserPage = observer(props => {
                                 ),
                             }}
                         >
-                            <Text color='colored-background' size='xs'>
+                            <Text color='colored-background' size='xs' lineHeight='xs'>
                                 {advertiser_page_store.short_name}
                             </Text>
                         </div>
                         <div className='advertiser-page__header-name'>
-                            <Text color='prominent' size='s' weight='bold'>
+                            <Text color='prominent' size='s' weight='bold' lineHeight='m'>
                                 {advertiser_page_store.advertiser_details_name}
                             </Text>
                         </div>
@@ -192,7 +192,7 @@ const AdvertiserPage = observer(props => {
                     <div className='advertiser-page__header-verification'>
                         {basic_verification ? (
                             <div className='advertiser-page__header-verification-id'>
-                                <Text color='less-prominent' size={isMobile() ? 'xxs' : 'xs'}>
+                                <Text color='less-prominent' size={isMobile() ? 'xxs' : 'xs'} lineHeight='m'>
                                     <Localize i18n_default_text='ID verified' />
                                 </Text>
                                 <Icon
@@ -204,7 +204,7 @@ const AdvertiserPage = observer(props => {
                         ) : null}
                         {full_verification ? (
                             <div className='advertiser-page__header-verification-status'>
-                                <Text color='less-prominent' size={isMobile() ? 'xxs' : 'xs'}>
+                                <Text color='less-prominent' size={isMobile() ? 'xxs' : 'xs'} lineHeight='m'>
                                     <Localize i18n_default_text='Address verified' />
                                 </Text>
                                 <Icon
@@ -221,8 +221,9 @@ const AdvertiserPage = observer(props => {
                         <ThemedScrollbars
                             className='advertiser-page__horizontal-scroll'
                             is_bypassed={!isMobile()}
-                            is_only_horizontal
                             width='calc(100vw - 32px)'
+                            is_only_horizontal
+                            is_scrollbar_hidden
                         >
                             <Table.Row className='advertiser-page__stats'>
                                 <Table.Cell className='advertiser-page__stats-cell'>

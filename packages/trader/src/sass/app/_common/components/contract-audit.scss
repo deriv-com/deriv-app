@@ -52,10 +52,8 @@ $HEIGHT: calc(100vh - 34em);
         margin: 0 4px;
     }
     &__label {
-        font-size: 1em;
         white-space: nowrap;
         max-width: 90px;
-        color: var(--text-general);
     }
     &__value-wrapper {
         display: flex;
@@ -64,19 +62,13 @@ $HEIGHT: calc(100vh - 34em);
     &__value,
     &__value2 {
         padding-top: 2px;
-        line-height: 1.5;
-        font-size: 1.2em;
-        font-weight: bold;
-        color: var(--text-prominent);
     }
     &__timestamp {
         align-self: center;
         margin-left: auto;
-        text-align: right;
 
         &-value {
             display: block;
-            line-height: 1.2;
         }
     }
     &__empty {

@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { InputWithCheckbox } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { isDesktop } from '@deriv/shared';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { connect } from 'Stores/connect';
 
@@ -37,6 +38,7 @@ const TakeProfit = ({
                 removeToast={removeToast}
                 classNameInlinePrefix='trade-container__currency'
                 classNameInput='trade-container__input'
+                className={isDesktop() ? 'trade-container__amount trade-container__amount--multipliers' : null}
                 currency={currency}
                 current_focus={current_focus}
                 defaultChecked={has_take_profit}

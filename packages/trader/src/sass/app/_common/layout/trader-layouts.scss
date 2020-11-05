@@ -121,7 +121,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
                     flex: 2;
 
                     &--is-multiplier {
-                        max-height: 26.9rem;
+                        max-height: 27.9rem;
                         top: -0.5rem;
 
                         @media (max-width: 320px) and (max-height: 480px) {
@@ -246,7 +246,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
                         }
                     }
                     &.contract-drawer--is-expanded {
-                        transform: translateY(calc(-100% + 376px));
+                        transform: translateY(calc(-100% + 410px));
 
                         @media (max-width: 320px) and (max-height: 480px) {
                             transform: translateY(calc(-100% + 238px));
@@ -783,6 +783,10 @@ $FLOATING_HEADER_HEIGHT: 41px;
                         }
                     }
                 }
+            }
+            /** @define cq-top-ui-widgets; weak */
+            .cq-top-ui-widgets {
+                z-index: 15 !important;
             }
         }
     }

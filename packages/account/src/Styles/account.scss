@@ -1458,7 +1458,6 @@ $MIN_HEIGHT_FLOATING: calc(
             &__content {
                 text-overflow: ellipsis;
                 width: 100%;
-                white-space: nowrap;
                 display: inline-block;
                 overflow: hidden;
             }

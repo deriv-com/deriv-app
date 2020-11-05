@@ -1,4 +1,4 @@
-import { action, observable, computed, reaction } from 'mobx';
+import { action, computed, observable, reaction } from 'mobx';
 import { localize } from '@deriv/translations';
 import { getKebabCase, isCryptocurrency, routes, websiteUrl } from '@deriv/shared';
 import { WS } from 'Services';
@@ -19,6 +19,8 @@ export default class OnRampStore extends BaseStore {
     @observable widget_html = null;
 
     deposit_address_ref = null;
+    DEPENDENCY_TYPE_URL = 'url';
+    DEPENDENCY_TYPE_RAW = 'raw';
 
     constructor(root_store) {
         super({ root_store });
@@ -28,7 +30,7 @@ export default class OnRampStore extends BaseStore {
             this.setOnrampProviders([
                 OnrampProviders.createChangellyProvider(client),
                 // TODO: Re-enable once Wyre prod keys are added to production.
-                // OnrampProviders.createWyreProvider(),
+                OnrampProviders.createWyreProvider(),
                 OnrampProviders.createBanxaProvider(),
             ]);
         });

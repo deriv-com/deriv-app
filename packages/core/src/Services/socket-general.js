@@ -159,12 +159,12 @@ const BinarySocketGeneral = (() => {
                     if (window.TrackJS) window.TrackJS.track('Custom InvalidToken error');
                 }
                 client_store.logout().then(() => {
-                    const currenct_path = window.location.pathname;
+                    const current_path = window.location.pathname;
                     let redirect_to = routes.trade;
-                    if (currenct_path?.length > 1) {
-                        if (currenct_path.startsWith(routes.bot)) {
+                    if (current_path?.length > 1) {
+                        if (current_path.startsWith(routes.bot)) {
                             redirect_to = routes.bot;
-                        } else if (currenct_path.startsWith(routes.mt5)) {
+                        } else if (current_path.startsWith(routes.mt5)) {
                             redirect_to = routes.mt5;
                         }
                     }

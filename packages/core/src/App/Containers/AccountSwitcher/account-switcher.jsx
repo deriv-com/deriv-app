@@ -26,7 +26,7 @@ class AccountSwitcher extends React.Component {
         super(props);
 
         this.state = {
-            active_tab_index: props.is_virtual ? 1 : 0,
+            active_tab_index: !props.is_virtual || props.should_show_real_accounts_list ? 0 : 1,
             is_demo_deriv_visible: true,
             is_demo_dmt5_visible: true,
             is_real_deriv_visible: true,
@@ -173,6 +173,7 @@ class AccountSwitcher extends React.Component {
     };
 
     componentDidMount() {
+        this.props.toggleShouldShowRealAccountsList(false);
         document.addEventListener('mousedown', this.handleClickOutside);
         this.props.updateMt5LoginList();
     }
@@ -669,6 +670,8 @@ const account_switcher = withRouter(
         toggleAccountTypesModal: ui.toggleAccountTypesModal,
         togglePositionsDrawer: ui.togglePositionsDrawer,
         toggleSetCurrencyModal: ui.toggleSetCurrencyModal,
+        should_show_real_accounts_list: ui.should_show_real_accounts_list,
+        toggleShouldShowRealAccountsList: ui.toggleShouldShowRealAccountsList,
     }))(AccountSwitcher)
 );
 

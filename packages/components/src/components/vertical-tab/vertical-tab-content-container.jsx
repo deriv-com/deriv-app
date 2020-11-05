@@ -24,15 +24,14 @@ const Content = ({ is_routed, items, selected }) => {
 
     const note_array = [];
 
-    const setNotesSync = notes => {
+    const addToNotesQueue = notes => {
         note_array.unshift(notes);
         setSideNotes(notes);
     };
 
     React.useEffect(() => {
         if (selected_item?.label !== previous_selected_item?.label) {
-            setSideNotes(null);
-            setSideNotes(note_array[0]);
+            setSideNotes(note_array[0] ?? null);
             note_array.splice(0, note_array.length);
         }
     }, [selected_item]);
@@ -47,13 +46,13 @@ const Content = ({ is_routed, items, selected }) => {
                             <Route
                                 key={idx}
                                 path={path}
-                                render={() => <Component component_icon={icon} setSideNotes={setNotesSync} />}
+                                render={() => <Component component_icon={icon} setSideNotes={addToNotesQueue} />}
                             />
                         );
                     })}
                 </Switch>
             ) : (
-                <TabContent key={selected_item.label} className='item-id' setSideNotes={setNotesSync} />
+                <TabContent key={selected_item.label} className='item-id' setSideNotes={addToNotesQueue} />
             )}
             {selected.has_side_note && (
                 // for components that have side note, even if no note is passed currently,

@@ -87,12 +87,6 @@ $HEIGHT: calc(100vh - 34em);
             color: var(--text-less-prominent);
             padding: 8px;
         }
-        &-message {
-            color: var(--text-less-prominent);
-            font-size: 1.2rem;
-            text-align: center;
-            line-height: 1.4;
-        }
     }
     &__tabs {
         &-content {

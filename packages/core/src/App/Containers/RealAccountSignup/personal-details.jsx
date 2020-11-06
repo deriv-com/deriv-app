@@ -491,7 +491,6 @@ class PersonalDetails extends React.Component {
                                                                         disabled={this.props.disabled_items.includes(
                                                                             'account_opening_reason'
                                                                         )}
-                                                                        is_alignment_top
                                                                         is_align_text_left
                                                                         list={this.props.account_opening_reason_list}
                                                                         value={values.account_opening_reason}
@@ -502,6 +501,7 @@ class PersonalDetails extends React.Component {
                                                                             errors.account_opening_reason
                                                                         }
                                                                         {...field}
+                                                                        list_portal_id='modal_root'
                                                                         required
                                                                     />
                                                                 </DesktopWrapper>

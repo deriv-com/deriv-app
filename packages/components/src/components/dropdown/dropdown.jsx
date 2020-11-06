@@ -8,7 +8,7 @@ import { listPropType, findNextFocusableNode, findPreviousFocusableNode } from '
 import Items from './items.jsx';
 import NativeSelect from './native-select.jsx';
 import DisplayText from './display-text.jsx';
-import { useOnClickOutside } from '../../hooks';
+import { useBlockScroll, useOnClickOutside } from '../../hooks';
 import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars.jsx';
 import Icon from '../icon';
 
@@ -46,6 +46,8 @@ const DropdownList = React.forwardRef((props, list_ref) => {
             setStyle(position_style);
         }
     }, [is_list_visible, is_alignment_top, portal_id, list.length, parent_ref, list_ref]);
+
+    useBlockScroll(portal_id ? list_ref : false);
 
     /**
      * Calculate the offset for the dropdown list based on its width

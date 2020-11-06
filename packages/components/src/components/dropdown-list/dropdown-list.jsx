@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import PropTypes from 'prop-types';
 import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars.jsx';
+import { useBlockScroll } from '../../hooks/use-blockscroll';
 
 const ListItem = ({
     is_active,
@@ -121,6 +122,8 @@ const DropdownList = React.forwardRef((props, ref) => {
         not_found_text,
         portal_id,
     } = props;
+    useBlockScroll(portal_id ? dropdown_ref : false);
+
     if (list_items.length && typeof list_items[0] !== 'string' && typeof list_items[0] !== 'object') {
         throw Error('Dropdown received wrong data structure');
     }

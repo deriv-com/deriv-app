@@ -38,12 +38,14 @@ export const getPosition = ({ preferred_alignment = 'bottom', child_el, parent_e
         return {
             top: top + parent_rect.height,
             left,
+            width,
             transformOrigin: 'top',
         };
     }
     return {
         bottom: body_rect.bottom - top,
         left,
+        width,
         transformOrigin: 'bottom',
     };
 };

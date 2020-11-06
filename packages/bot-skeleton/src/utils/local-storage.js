@@ -51,7 +51,7 @@ export const getSavedWorkspaces = () => {
     try {
         return JSON.parse(LZString.decompress(localStorage.getItem('saved_workspaces'))) || [];
     } catch (e) {
-        return [];
+        return JSON.parse(localStorage.getItem('saved_workspaces')) || [];
     }
 };
 

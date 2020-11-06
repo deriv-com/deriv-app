@@ -81,6 +81,7 @@ class AddCryptoCurrency extends React.Component {
                                     error={errors.currency}
                                     touched={touched.currency}
                                     is_title_enabled={this.can_add_fiat}
+                                    item_count={this.state.available_fiat_currencies.length}
                                 >
                                     {this.state.available_fiat_currencies.map(currency => (
                                         <Field
@@ -109,6 +110,7 @@ class AddCryptoCurrency extends React.Component {
                                     error={errors.currency}
                                     touched={touched.currency}
                                     is_title_enabled={this.can_add_fiat}
+                                    item_count={this.crypto_currencies.length}
                                 >
                                     {this.crypto_currencies.map(currency => (
                                         <Field
@@ -127,6 +129,7 @@ class AddCryptoCurrency extends React.Component {
                                     className='currency-selector__radio-group with-margin'
                                     label={localize('Cryptocurrencies')}
                                     is_title_enabled={this.can_add_fiat}
+                                    item_count={this.crypto_currencies.length}
                                 >
                                     {this.crypto_currencies.map(currency => (
                                         <Field

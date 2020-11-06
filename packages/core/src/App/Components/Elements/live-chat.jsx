@@ -57,10 +57,10 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
                 }
                 if (!has_cookie_account) {
                     if (window.LiveChatWidget.get('customer_data').status !== 'chatting') {
-                        window.LiveChatWidget.call('set_session_variables', session_variables);
                         window.LiveChatWidget.call('set_customer_email', ' ');
                         window.LiveChatWidget.call('set_customer_name', ' ');
                     }
+                    window.LiveChatWidget.call('set_session_variables', session_variables);
                 }
             });
         }

@@ -15,7 +15,11 @@ const ThemedScrollbars = ({
     onScroll,
     refSetter,
 }) => {
+    // console.log('refSetter: ');
+    // console.log(refSetter);
     const [hoverRef, isHovered] = useHover(refSetter);
+    // console.log(hoverRef);
+    // console.log(isHovered);
 
     if (is_bypassed) return children;
     return (

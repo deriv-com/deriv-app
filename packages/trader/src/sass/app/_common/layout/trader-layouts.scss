@@ -117,20 +117,30 @@ $FLOATING_HEADER_HEIGHT: 41px;
 
                 &__mobile-wrapper {
                     position: relative;
-                    max-height: 22rem;
+                    max-height: 23.4rem;
                     flex: 2;
 
-                    &--is-multiplier {
-                        max-height: 27.9rem;
-                        top: -0.5rem;
+                    @media (max-width: 360px) {
+                        max-height: 24.8rem;
+                    }
 
-                        @media (max-width: 320px) and (max-height: 480px) {
-                            max-height: 26.6rem;
-                            top: -4px;
+                    &--is-multiplier {
+                        max-height: 29rem;
+
+                        @media (max-height: 480px) {
+                            top: -30px;
                         }
 
-                        @media (max-width: 320px) and (max-height: 450px) {
-                            top: -12px;
+                        @media (max-height: 450px) {
+                            top: -50px;
+                        }
+
+                        @media (max-width: 375px) {
+                            max-height: 30.2rem;
+                        }
+
+                        @media (max-width: 320px) {
+                            max-height: 31rem;
                         }
                     }
                 }
@@ -138,10 +148,18 @@ $FLOATING_HEADER_HEIGHT: 41px;
                     padding-top: 0;
 
                     &.contract-drawer--is-expanded {
-                        transform: translateY(calc(-100% + 270px));
+                        transform: translateY(calc(-100% + 300px));
+
+                        @media (max-width: 360px) {
+                            transform: translateY(calc(-100% + 328px));
+                        }
                     }
                     & .dc-contract-card {
-                        min-height: 178px;
+                        min-height: 194px;
+
+                        @media (max-width: 360px) {
+                            min-height: 208px;
+                        }
                     }
                 }
                 & .dc-contract-card {
@@ -251,19 +269,23 @@ $FLOATING_HEADER_HEIGHT: 41px;
                         }
                     }
                     &.contract-drawer--is-expanded {
-                        transform: translateY(calc(-100% + 410px));
+                        transform: translateY(calc(-100% + 412px));
 
-                        @media (max-width: 320px) and (max-height: 480px) {
-                            transform: translateY(calc(-100% + 370px));
+                        @media (max-width: 375px) {
+                            transform: translateY(calc(-100% + 436px));
                         }
 
-                        @media (max-width: 320px) and (max-height: 450px) {
-                            transform: translateY(calc(-100% + 360px));
+                        @media (max-width: 320px) {
+                            transform: translateY(calc(-100% + 452px));
+                        }
+
+                        @media (max-width: 320px) and (max-height: 480px) {
+                            transform: translateY(calc(-100% + 426px));
                         }
                     }
                     &.contract-drawer--with-collapsible-btn {
                         & .dc-contract-card {
-                            min-height: 242px;
+                            min-height: 250px;
 
                             &__indicative--movement {
                                 margin-top: 2px;
@@ -390,13 +412,25 @@ $FLOATING_HEADER_HEIGHT: 41px;
 
             & .contract-audit-card {
                 &__container {
-                    height: calc(100% - 0.4rem);
+                    height: calc(100% - 2.6rem);
+
+                    @media (max-width: 360px) {
+                        height: calc(100% - 4rem);
+                    }
 
                     &--is-multiplier {
-                        height: calc(100% - 6.4rem);
+                        height: calc(100% - 8.4rem);
+
+                        @media (max-width: 375px) {
+                            height: calc(100% - 9.4rem);
+                        }
+
+                        @media (max-width: 320px) {
+                            height: calc(100% - 10.2rem);
+                        }
 
                         @media (max-width: 320px) and (max-height: 480px) {
-                            height: calc(100% - 5rem);
+                            height: calc(100% - 9rem);
                         }
                     }
                 }

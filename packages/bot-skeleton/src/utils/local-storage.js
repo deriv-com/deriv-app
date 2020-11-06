@@ -49,7 +49,7 @@ export const saveWorkspaceToRecent = (xml, save_type = save_types.UNSAVED) => {
 
 export const getSavedWorkspaces = () => {
     try {
-        return JSON.parse(LZString.decompress(localStorage.getItem('saved_workspaces'))) ?? [];
+        return JSON.parse(LZString.decompress(localStorage.getItem('saved_workspaces'))) || [];
     } catch (e) {
         return [];
     }

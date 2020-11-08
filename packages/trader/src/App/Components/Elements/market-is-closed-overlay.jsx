@@ -5,28 +5,41 @@ import { localize, Localize } from '@deriv/translations';
 import MarketCountdownTimer from './market-countdown-timer.jsx';
 
 const MarketIsClosedOverlay = ({ is_eu, is_market_available, onClick }) => {
-    let message = '';
-    let btn_text = '';
+    let message = null;
+    let button = null;
     if (is_eu) {
-        btn_text = localize('View open markets');
-        message = is_market_available
-            ? 'Market is closed. Explore other available trading options.'
-            : 'Market is closed.';
+        button = (
+            <Button
+                className='market-is-closed-overlay__button'
+                onClick={onClick}
+                text={localize('View open markets')}
+                primary
+            />
+        );
+        message = is_market_available ? (
+            <Localize i18n_default_text='Market is closed. Explore other available trading options.' />
+        ) : (
+            <Localize i18n_default_text='Market is closed.' />
+        );
     } else {
-        btn_text = localize('Try Synthetic Indices');
-        message =
-            'Market is closed. Try Synthetic Indices which simulate real-world market volatility and are open 24/7.';
+        button = (
+            <Button
+                className='market-is-closed-overlay__button'
+                onClick={onClick}
+                text={localize('Try Synthetic Indices')}
+                primary
+            />
+        );
+        message = (
+            <Localize i18n_default_text='Market is closed. Try Synthetic Indices which simulate real-world market volatility and are open 24/7.' />
+        );
     }
 
     return (
         <div className='market-is-closed-overlay'>
             <MarketCountdownTimer is_main_page />
-            <p>
-                <Localize i18n_default_text={message} />
-            </p>
-            {(!is_eu || (is_eu && is_market_available)) && (
-                <Button className='market-is-closed-overlay__button' onClick={onClick} text={btn_text} primary />
-            )}
+            <p>{message}</p>
+            {(!is_eu || (is_eu && is_market_available)) && button}
         </div>
     );
 };

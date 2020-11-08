@@ -11,12 +11,11 @@ import { connect } from 'Stores/connect';
 const days_to_check_before_exit = 7;
 
 const getTradingTimes = async target_time => {
-    return new Promise(resolve => {
-        WS.tradingTimes(target_time).then(data => {
-            if (data.error) resolve({ api_initial_load_error: data.error.message });
-            resolve(data);
-        });
-    });
+    const data = await WS.tradingTimes(target_time);
+    if (data.error) {
+        return { api_initial_load_error: data.error.message };
+    }
+    return data;
 };
 // eslint-disable-next-line consistent-return
 const getSymbol = (target_symbol, trading_times) => {
@@ -87,7 +86,7 @@ const padWithZero = number => {
 };
 
 const MarketCountdownTimer = ({ is_main_page, symbol }) => {
-    const [when_market_opens, setWhenMarketOpens] = React.useState('');
+    const [when_market_opens, setWhenMarketOpens] = React.useState();
     const [time_left, setTimeLeft] = React.useState(calculateTimeLeft(when_market_opens));
 
     React.useEffect(() => {
@@ -116,10 +115,8 @@ const MarketCountdownTimer = ({ is_main_page, symbol }) => {
     let timer_components = '';
 
     Object.keys(time_left).forEach(interval => {
-        if (interval === 'days') {
-            if (time_left[interval]) {
-                timer_components += `${time_left[interval]} ${interval} `;
-            }
+        if (interval === 'days' && time_left.days) {
+            timer_components += `${time_left.days} ${interval} `;
         } else {
             const value = time_left[interval];
             timer_components += interval !== 'seconds' ? `${padWithZero(value)}:` : `${padWithZero(value)}`;

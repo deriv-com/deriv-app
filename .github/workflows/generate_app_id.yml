@@ -69,7 +69,7 @@ jobs:
           # LOGIN_PASSWORD: ${{ secrets.PASSWORD }}
           VALID_USER: ${{ secrets.VALID_USER }}
           VALID_PASSWORD: ${{ secrets.VALID_PASSWORD }}
-          HOME_URL: ${{ secrets.HOME_URL }}
+          HOME_URL: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}?qa_server=frontend.binaryws.com&app_id=${{ steps.generate_app_id.outputs.app_id }}
       - name: Upload Artifacts
         if: always()
         uses: actions/upload-artifact@master

@@ -2,26 +2,26 @@ import classNames from 'classnames';
 import React from 'react';
 
 const Text = ({ children, size, color, align, weight, line_height, as, className, ...props }) => {
-    function setStyle() {
+    const setStyle = () => {
         const style = {
-            '--text-size': `var(--text-size-${props.size || 's'})`,
-            '--text-color': `var(--text-${props.color || 'general'})`,
-            '--text-lh': `var(--text-lh-${props.line_height || 'm'})`,
-            '--text-weight': `var(--text-weight-${props.weight || 'normal'})`,
+            '--text-size': `var(--text-size-${size || 's'})`,
+            '--text-color': `var(--text-${color || 'general'})`,
+            '--text-lh': `var(--text-lh-${line_height || 'm'})`,
+            '--text-weight': `var(--text-weight-${weight || 'normal'})`,
         };
         return style;
-    }
-    function setClassName() {
-        const classStyle = ['dc-text', `${props.align ? `dc-text--${props.align}` : ''}`, props.className];
+    };
+    const setClassName = () => {
+        const classStyle = ['dc-text', `${align ? `dc-text--${align}` : ''}`, className];
         return classStyle;
-    }
+    };
     return (
-        (props.as === 'p' && (
-            <p className={classNames(setClassName())} style={setStyle()}>
+        (as === 'p' && (
+            <p {...props} className={classNames(setClassName())} style={setStyle()}>
                 {children}
             </p>
         )) || (
-            <span title={props.title} className={classNames(setClassName())} style={setStyle()}>
+            <span {...props} title={props.title} className={classNames(setClassName())} style={setStyle()}>
                 {children}
             </span>
         )

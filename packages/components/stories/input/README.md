@@ -3,6 +3,11 @@
 Renders a custom `Input` component.
 
 
+#### Supported Events:
+
+-   onChange
+
+
 ## Usage
 
 ```jsx
@@ -26,6 +31,7 @@ const DummyComponent = props => (
 | ------------------------- | ---------- | -------- | ----------------------------------------------------- |
 | label                     | {string}   | null     | The label of the input                                |
 | hint                      | {string}   | null     | The hint text showing at the bottom of the input      |
+| onChange                  | {function} | null     | Function triggers when the value has changed     |
 | leading_icon              | {string}   | null     | The loading icon for the input                        |
 | trailing_icon             | {string}   | null     | The trailing icon for the input                       |
 | has_character_counter     | {string}   | null     | Difines whether to show character counter or not      |

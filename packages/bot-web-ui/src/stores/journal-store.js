@@ -28,7 +28,7 @@ export default class JournalStore {
 
         when(
             () => !isNavigationFromPlatform(this.root_store.common.app_routing_history, routes.bot),
-            () => this.addServerMessage(log_types.WELCOME)
+            () => this.addWelcomeMessage()
         );
     }
 
@@ -64,10 +64,9 @@ export default class JournalStore {
         this.is_filter_dialog_visible = !this.is_filter_dialog_visible;
     }
 
-    @action.bound
-    addServerMessage(log_type) {
-        if (this.unfiltered_messages.length !== 0 && this.unfiltered_messages?.[0]?.message !== log_type) {
-            this.pushMessage(log_type, message_types.SUCCESS);
+    addWelcomeMessage() {
+        if (this.unfiltered_messages.length !== 0 && this.unfiltered_messages?.[0]?.message !== log_types.WELCOME) {
+            this.pushMessage(log_types.WELCOME, message_types.SUCCESS);
         }
     }
 

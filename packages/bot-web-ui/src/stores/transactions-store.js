@@ -146,7 +146,6 @@ export default class TransactionsStore {
         }
     }
 
-    @action.bound
     removeIncompleteTransaction() {
         this.elements = this.elements.filter(
             element => element.data.is_completed || element.type === transaction_elements.DIVIDER

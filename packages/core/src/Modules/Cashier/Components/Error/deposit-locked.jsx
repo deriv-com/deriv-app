@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import { routes } from '@deriv/shared';
-import { Icon, Checklist, StaticUrl } from '@deriv/components';
+import { Icon, Checklist, StaticUrl, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services';
@@ -97,7 +97,9 @@ const DepositsLocked = ({
                     <Icon icon='IcCashierDepositLock' className='cashier-locked__icon' />
                     <h2 className='cashier-locked__title'>{localize('Deposits are locked')}</h2>
 
-                    <p className='cashier-locked__desc'>{deposit_desc}</p>
+                    <Text as='p' align='center' size='xs' align='left' className='cashier-locked__desc'>
+                        {deposit_desc}
+                    </Text>
                     <Checklist className='cashier-locked__checklist' items={items} />
                 </div>
             ) : (

@@ -352,9 +352,13 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get allow_authentication() {
+        return this.account_status?.status?.some(status => status === 'allow_document_upload');
+    }
+
+    @computed
     get is_authentication_needed() {
-        if (!this.account_status.status) return false;
-        return this.account_status.authentication.needs_verification.length;
+        return this.account_status?.authentication?.needs_verification?.length;
     }
 
     @computed
@@ -369,34 +373,29 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_financial_information_incomplete() {
-        if (!this.account_status.status) return false;
-        return this.account_status.status.some(status => status === 'financial_information_not_complete');
+        return this.account_status?.status?.some(status => status === 'financial_information_not_complete');
     }
 
     @computed
     get is_withdrawal_lock() {
-        if (!this.account_status.status) return false;
-        return this.account_status.status.some(status_name =>
+        return this.account_status?.status?.some(status_name =>
             /^(withdrawal_locked|no_withdrawal_or_trading)$/.test(status_name)
         );
     }
 
     @computed
     get is_trading_experience_incomplete() {
-        if (!this.account_status.status) return false;
-        return this.account_status.status.some(status => status === 'trading_experience_not_complete');
+        return this.account_status?.status?.some(status => status === 'trading_experience_not_complete');
     }
 
     @computed
     get is_fully_authenticated() {
-        if (!this.account_status.status) return false;
-        return this.account_status.status.some(status => status === 'authenticated');
+        return this.account_status?.status?.some(status => status === 'authenticated');
     }
 
     @computed
     get is_pending_authentication() {
-        if (!this.account_status.status) return false;
-        return this.account_status.status.some(status => status === 'document_under_review');
+        return this.account_status?.status?.some(status => status === 'document_under_review');
     }
 
     @computed
@@ -407,8 +406,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_age_verified() {
-        if (!this.account_status.status) return false;
-        return this.account_status.status.some(status => status === 'age_verification');
+        return this.account_status?.status?.some(status => status === 'age_verification');
     }
 
     @computed
@@ -868,7 +866,7 @@ export default class ClientStore extends BaseStore {
     getRiskAssessment = () => {
         if (!this.account_status) return false;
 
-        const status = this.account_status.status;
+        const status = this.account_status?.status;
         const is_high_risk = /high/.test(this.account_status.risk_classification);
 
         return this.isAccountOfType('financial')
@@ -879,7 +877,7 @@ export default class ClientStore extends BaseStore {
     shouldCompleteTax = () => {
         if (!this.isAccountOfType('financial')) return false;
 
-        return !/crs_tin_information/.test((this.account_status || {}).status);
+        return !/crs_tin_information/.test((this.account_status || {})?.status);
     };
 
     @action.bound

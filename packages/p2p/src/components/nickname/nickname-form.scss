@@ -66,17 +66,17 @@
         }
     }
     &-field {
-        margin-bottom: 0 !important;
         flex: 1;
+        margin-bottom: unset;
 
         &:not(:first-child) {
             margin-left: 2.4rem;
         }
         &_wrapper {
-            width: 32.8rem;
+            align-items: center;
             display: flex;
             margin-bottom: 1.6rem;
-            align-items: center;
+            width: 32.8rem;
         }
         &--textarea {
             margin-top: 4.3rem;
@@ -85,18 +85,24 @@
                 top: 9.7rem;
             }
             .dc-input__counter {
-                top: 9.7rem;
                 right: 0rem;
+                top: 9.7rem;
             }
         }
         &--icon {
-            width: 3.66rem;
             margin: 0 1.6rem;
             transform: rotate(180deg);
+            width: 3.66rem;
         }
         &--trailing {
-            font-size: var(--text-size-xxs);
             color: var(--text-less-prominent);
+            font-size: var(--text-size-xxs);
+        }
+
+        @include mobile {
+            margin-left: 5vw;
+            margin-right: 5vw;
+            width: 100vw;
         }
     }
     &-info {
@@ -119,10 +125,18 @@
         }
     }
     &-footer {
-        display: flex;
         align-items: center;
+        bottom: 0;
+        display: flex;
         justify-content: flex-end;
         padding: 2.4rem;
+        position: fixed;
+        width: 100%;
+
+        @include mobile {
+            border-top: 2px solid var(--general-section-1);
+            padding: 1.6rem;
+        }
     }
     &-close_icon {
         cursor: pointer;

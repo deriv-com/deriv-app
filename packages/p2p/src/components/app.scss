@@ -90,11 +90,11 @@
 .dc-modal__container_p2p-nickname {
     &__dialog {
         height: auto;
-        padding: 0;
-        max-height: initial;
-        min-width: 44rem;
-        max-width: 44rem;
         margin-bottom: 0;
+        max-height: 500px !important;
+        max-width: 44rem;
+        min-width: 44rem;
+        padding: 0;
         width: 100%;
 
         @include mobile {

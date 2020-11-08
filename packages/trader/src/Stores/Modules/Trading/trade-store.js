@@ -23,7 +23,7 @@ import {
     pickDefaultSymbol,
     showUnavailableLocationError,
     isMarketClosed,
-    findFistOpenMarket,
+    findFirstOpenMarket,
 } from './Helpers/active-symbols';
 import ContractType from './Helpers/contract-type';
 import { convertDurationLimit, resetEndTimeOnVolatilityIndices } from './Helpers/duration';
@@ -1140,7 +1140,7 @@ export default class TradeStore extends BaseStore {
 
     async getFirstOpenMarket(markets_to_search) {
         if (this.active_symbols?.length) {
-            return findFistOpenMarket(this.active_symbols, markets_to_search);
+            return findFirstOpenMarket(this.active_symbols, markets_to_search);
         }
         const { active_symbols, error } = this.should_refresh_active_symbols
             ? // if SmartCharts has requested active_symbols, we wait for the response
@@ -1151,6 +1151,6 @@ export default class TradeStore extends BaseStore {
             this.root_store.common.showError({ message: localize('Trading is unavailable at this time.') });
             return undefined;
         }
-        return findFistOpenMarket(active_symbols, markets_to_search);
+        return findFirstOpenMarket(active_symbols, markets_to_search);
     }
 }

@@ -89,12 +89,12 @@ const findFirstSymbol = async (active_symbols, pattern) => {
     return undefined;
 };
 
-export const findFistOpenMarket = async (active_symbols, markets) => {
+export const findFirstOpenMarket = async (active_symbols, markets) => {
     const market = markets.shift();
     const first_symbol = active_symbols.find(symbol_info => market === symbol_info.market && isSymbolOpen(symbol_info));
     const is_symbol_offered = await isSymbolOffered(first_symbol);
     if (is_symbol_offered) return { category: first_symbol.market, subcategory: first_symbol.submarket };
-    else if (markets.length > 0) return findFistOpenMarket(active_symbols, markets);
+    else if (markets.length > 0) return findFirstOpenMarket(active_symbols, markets);
     return undefined;
 };
 const isSymbolOpen = symbol => symbol.exchange_is_open === 1;

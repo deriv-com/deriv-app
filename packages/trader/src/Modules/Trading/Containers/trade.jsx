@@ -40,7 +40,7 @@ class Trade extends React.Component {
         this.props.onMount();
         if (this.props.is_eu) {
             const markets_to_search = ['forex', 'indices', 'commodities']; // none-synthetic
-            const { category, subcategory } = await this.props.getFirstOpenMarket(markets_to_search);
+            const { category, subcategory } = (await this.props.getFirstOpenMarket(markets_to_search)) ?? {};
             if (category) {
                 this.setState({
                     category,

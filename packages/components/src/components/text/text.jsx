@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 
-const Text = ({ children, ...props }) => {
+const Text = ({ children, size, color, align, weight, lineHeight, as, className, ...props }) => {
     function setStyle() {
         const style = {
             '--text-size': `var(--text-size-${props.size || 's'})`,

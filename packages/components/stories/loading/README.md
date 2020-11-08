@@ -22,7 +22,7 @@ const DummyComponent = props => (
 
 | Name            | Type               | Default     | Description                                         |
 | --------------- | ------------------ | ----------- | --------------------------------------------------- |
-| id              | {number \| number} | null        | `id` for the loading                                |
+| id              | {string}           | null        | `id` for the loading                                |
 | is_fullscreen   | {boolean}          | `true`      | Defines whether the loading is fullscreen or not    |
 | is_slow_loading | {boolean}          | null        | Defines whether the loading is slow or not          |
 | status          | [string]           | null        | List of strings showes at the bottom of the loading |

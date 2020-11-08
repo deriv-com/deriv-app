@@ -55,11 +55,12 @@ jobs:
     runs-on: ubuntu-latest
     needs: [generate_app_id]
     steps:
+      - name: Test output URL
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
       - uses: microsoft/playwright-github-action@v1
       - name: Install dependencies and run tests
-        run: npm ci && npm run bootstrap && npm run test:qa
+        run: echo "Running tests against ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}?qa_server=frontend.binaryws.com&app_id=${{ steps.generate_app_id.outputs.app_id }}" && npm ci && npm run bootstrap && npm run test:qa
         env:
           # configure tests with environment variables
           FFMPEG_PATH: /usr/bin/ffmpeg # for recording video

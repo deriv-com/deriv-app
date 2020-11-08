@@ -1,53 +1,84 @@
 name: Deriv App ID Generator
 
 on:
-    issue_comment:
-        types: [edited]
+  issue_comment:
+    types: [ edited ]
 
 jobs:
-    generate_app_id:
-        timeout-minutes: 5
-        runs-on: ubuntu-latest
-        steps:
-            - name: Capture Vercel preview URL
-              id: vercel_preview_url
-              uses: aaron-binary/vercel-preview-url-action@v0.0.2
-              with:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            - name: Generate Deriv App ID for deployment Preview URL
-              id: generate_app_id
-              uses: aaron-binary/deriv-app-id-action@v0.0.4
-              with:
-                  DERIV_API_TOKEN: ${{ secrets.DERIV_API_TOKEN }}
-                  DERIV_APP_ID: ${{ secrets.DERIV_APP_ID }}
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  max_retries: 5
-                  vercel_preview_url: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}
-            - name: Comment on pull request with App ID and URLs
-              id: sticky_comment_on_pr
-              if: steps.generate_app_id.outputs.should_post_comment
-              uses: marocchino/sticky-pull-request-comment@v1
-              with:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  header: deriv-app-id-action
-                  number: ${{github.event.issue.number}}
-                  message: |
-                      A production App ID was automatically generated for this PR. ([log](https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}))
+  generate_app_id:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    steps:
+      - name: Capture Vercel preview URL
+        id: vercel_preview_url
+        uses: aaron-binary/vercel-preview-url-action@v0.0.2
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Generate Deriv App ID for deployment Preview URL
+        id: generate_app_id
+        uses: aaron-binary/deriv-app-id-action@v0.0.4
+        with:
+          DERIV_API_TOKEN: ${{ secrets.DERIV_API_TOKEN }}
+          DERIV_APP_ID: ${{ secrets.DERIV_APP_ID }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          max_retries: 5
+          vercel_preview_url: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}
+      - name: Comment on pull request with App ID and URLs
+        id: sticky_comment_on_pr
+        if: steps.generate_app_id.outputs.should_post_comment
+        uses: marocchino/sticky-pull-request-comment@v1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          header: deriv-app-id-action
+          number: ${{github.event.issue.number}}
+          message: |
+            A production App ID was automatically generated for this PR. ([log](https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}))
 
-                      - **PR**: [${{ steps.generate_app_id.outputs.pr_url }}](${{ steps.generate_app_id.outputs.pr_url }})
-                      - **URLs**: 
-                          - **URL w/ App ID + Server**: [${{ steps.vercel_preview_url.outputs.vercel_preview_url }}](${{ steps.vercel_preview_url.outputs.vercel_preview_url }}?qa_server=frontend.binaryws.com&app_id=${{ steps.generate_app_id.outputs.app_id }})
-                          - **Original URL**: [${{ steps.vercel_preview_url.outputs.vercel_preview_url }}](${{ steps.vercel_preview_url.outputs.vercel_preview_url }})
-                      - **App ID**: `${{ steps.generate_app_id.outputs.app_id }}`
+            - **PR**: [${{ steps.generate_app_id.outputs.pr_url }}](${{ steps.generate_app_id.outputs.pr_url }})
+            - **URLs**:
+                - **URL w/ App ID + Server**: [${{ steps.vercel_preview_url.outputs.vercel_preview_url }}](${{ steps.vercel_preview_url.outputs.vercel_preview_url }}?qa_server=frontend.binaryws.com&app_id=${{ steps.generate_app_id.outputs.app_id }})
+                - **Original URL**: [${{ steps.vercel_preview_url.outputs.vercel_preview_url }}](${{ steps.vercel_preview_url.outputs.vercel_preview_url }})
+            - **App ID**: `${{ steps.generate_app_id.outputs.app_id }}`
 
-                      <details>
-                        <summary>Copy/paste snippet</summary>
+            <details>
+              <summary>Copy/paste snippet</summary>
 
-                        ```
-                        - **PR**: [${{ steps.generate_app_id.outputs.pr_url }}](${{ steps.generate_app_id.outputs.pr_url }})
-                        - **URLs**: 
-                            - **URL w/ App ID + Server**: [${{ steps.vercel_preview_url.outputs.vercel_preview_url }}](${{ steps.vercel_preview_url.outputs.vercel_preview_url }}?qa_server=frontend.binaryws.com&app_id=${{ steps.generate_app_id.outputs.app_id }})
-                            - **Original URL**: [${{ steps.vercel_preview_url.outputs.vercel_preview_url }}](${{ steps.vercel_preview_url.outputs.vercel_preview_url }})
-                        - **App ID**: `${{ steps.generate_app_id.outputs.app_id }}`
-                        ```
-                      </details>
+              ```
+              - **PR**: [${{ steps.generate_app_id.outputs.pr_url }}](${{ steps.generate_app_id.outputs.pr_url }})
+              - **URLs**:
+                  - **URL w/ App ID + Server**: [${{ steps.vercel_preview_url.outputs.vercel_preview_url }}](${{ steps.vercel_preview_url.outputs.vercel_preview_url }}?qa_server=frontend.binaryws.com&app_id=${{ steps.generate_app_id.outputs.app_id }})
+                  - **Original URL**: [${{ steps.vercel_preview_url.outputs.vercel_preview_url }}](${{ steps.vercel_preview_url.outputs.vercel_preview_url }})
+              - **App ID**: `${{ steps.generate_app_id.outputs.app_id }}`
+              ```
+            </details>
+  run-e2e-test:
+    runs-on: ubuntu-latest
+    needs: [generate_app_id]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+      - uses: microsoft/playwright-github-action@v1
+      - name: Install dependencies and run tests
+        run: echo "Running tests against ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}?qa_server=frontend.binaryws.com&app_id=${{ steps.generate_app_id.outputs.app_id }}" && npm ci && npm run bootstrap && npm run test:qa
+        env:
+          # configure tests with environment variables
+          FFMPEG_PATH: /usr/bin/ffmpeg # for recording video
+          QAW_ARTIFACT_PATH: ${{ github.workspace }}/artifacts
+          # you can also use GitHub secrets for environment variables
+          # https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets
+          # LOGIN_PASSWORD: ${{ secrets.PASSWORD }}
+          VALID_USER: ${{ secrets.VALID_USER }}
+          VALID_PASSWORD: ${{ secrets.VALID_PASSWORD }}
+          HOME_URL: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}?qa_server=frontend.binaryws.com&app_id=${{ steps.generate_app_id.outputs.app_id }}
+      - name: Upload Artifacts
+        if: always()
+        uses: actions/upload-artifact@master
+        with:
+          name: qawolf
+          path: ${{ github.workspace }}/artifacts
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: test-artifacts
+          path: path/to/artifacts
+

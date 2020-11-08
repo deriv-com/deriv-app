@@ -55,7 +55,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: [generate_app_id]
     steps:
-      - name: Test output URL
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
       - uses: microsoft/playwright-github-action@v1

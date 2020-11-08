@@ -65,7 +65,7 @@ export default class JournalStore {
     }
 
     addWelcomeMessage() {
-        if (this.unfiltered_messages.length !== 0 && this.unfiltered_messages?.[0]?.message !== log_types.WELCOME) {
+        if (this.unfiltered_messages.length && this.unfiltered_messages?.[0]?.message !== log_types.WELCOME) {
             this.pushMessage(log_types.WELCOME, message_types.SUCCESS);
         }
     }

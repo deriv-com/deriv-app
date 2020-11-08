@@ -46,7 +46,7 @@
     "test:eslint": "./node_modules/.bin/eslint \"./packages/*/src/**/*.?(js|jsx)\"",
     "test:mocha": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run test:mocha ;}; f",
     "test:stylelint": "stylelint \"./packages/*/src/**/*.s(a|c)ss\"",
-    "test:qa": "DEBUG=pw:api node -r dotenv/config ./node_modules/.bin/qawolf test --detectOpenHandles --runInBand --all-browsers --headless",
+    "test:qa": "node -r dotenv/config ./node_modules/.bin/qawolf test --detectOpenHandles --runInBand --all-browsers --headless",
     "stylelint:fix": "stylelint \"./packages/*/src/**/*.s(a|c)ss\" --fix",
     "translate": "f () { lerna exec --scope @deriv/translations -- npm run translate ;}; f",
     "stylelint-check": "stylelint-config-prettier-check"

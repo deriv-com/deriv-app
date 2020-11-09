@@ -95,18 +95,27 @@ const BriefModal = ({
             </DesktopWrapper>
             <MobileWrapper>
                 <FadeWrapper is_visible={is_visible} className='reality-check' keyname='reality-check'>
-                    <div className='reality-check__wrapper'>
-                        <PageOverlay header={localize('Trading statistics report')} is_open={is_visible}>
-                            <Formik
-                                initialValues={{
-                                    interval: '',
-                                }}
-                                validate={validateForm}
-                                onSubmit={onSubmit}
-                            >
-                                {({ errors, isSubmitting, isValid, values, touched, handleChange, handleBlur }) => (
-                                    <Form noValidate>
-                                        <ThemedScrollbars style={{ minHeight: '500px' }}>
+                    <ThemedScrollbars>
+                        <div
+                            className={classNames('reality-check__wrapper', 'reality-check__brief', {
+                                'reality-check__brief--with-mobile-keyboard': is_onscreen_keyboard_active,
+                            })}
+                        >
+                            <PageOverlay header={localize('Trading statistics report')} is_open={is_visible}>
+                                <Formik
+                                    initialValues={{
+                                        interval: '',
+                                    }}
+                                    validate={validateForm}
+                                    onSubmit={onSubmit}
+                                >
+                                    {({ errors, isSubmitting, isValid, values, touched, handleChange, handleBlur }) => (
+                                        <Form
+                                            className={classNames('reality-check__brief__form', {
+                                                'reality-check__brief__form--with-mobile-keyboard': is_onscreen_keyboard_active,
+                                            })}
+                                            noValidate
+                                        >
                                             <Message />
                                             <IntervalField
                                                 ref={interval_input_ref}
@@ -124,8 +133,8 @@ const BriefModal = ({
                                                 }}
                                             />
                                             <FormSubmitButton
-                                                className={classNames('reality-check__submit', {
-                                                    'reality-check__submit--with-mobile-keyboard': is_onscreen_keyboard_active,
+                                                className={classNames('reality-check__brief__submit', {
+                                                    'reality-check__brief__submit--with-mobile-keyboard': is_onscreen_keyboard_active,
                                                 })}
                                                 has_cancel
                                                 cancel_label={localize('Log out')}
@@ -133,12 +142,12 @@ const BriefModal = ({
                                                 label={localize('Continue trading')}
                                                 onCancel={logout}
                                             />
-                                        </ThemedScrollbars>
-                                    </Form>
-                                )}
-                            </Formik>
-                        </PageOverlay>
-                    </div>
+                                        </Form>
+                                    )}
+                                </Formik>
+                            </PageOverlay>
+                        </div>
+                    </ThemedScrollbars>
                 </FadeWrapper>
             </MobileWrapper>
         </React.Fragment>
@@ -159,4 +168,4 @@ BriefModal.propTypes = {
     validateForm: PropTypes.func,
 };
 
-export default BriefModal;
+export default React.memo(BriefModal);

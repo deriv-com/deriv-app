@@ -130,36 +130,26 @@
             display: none;
         }
     }
+
     @include mobile {
         position: fixed;
         top: 4rem;
         z-index: 9999;
 
-        .dc-page-overlay__header {
-            padding: 1rem 0;
-            height: unset;
-
-            &-title {
-                font-size: 1.4rem;
-            }
-            &-close {
-                display: none;
-            }
-        }
-        &__wrapper {
-            height: 100vh;
-            overflow-y: auto;
-            overflow-x: hidden;
-
-            .dc-page-overlay__content {
+        .dc-page-overlay {
+            &__content {
                 padding: 1rem 1.5rem 0;
-                overflow-y: auto;
             }
-        }
-        &__text {
-            &--center {
-                padding: 0 2rem;
-                margin-bottom: 2.5rem !important;
+            &__header {
+                padding: 1rem 0;
+                height: unset;
+
+                &-title {
+                    font-size: 1.4rem;
+                }
+                &-close {
+                    display: none;
+                }
             }
         }
         &__fieldset {
@@ -169,56 +159,67 @@
                 padding: 0;
             }
         }
-        &__submit {
-            button {
-                width: 12.4rem;
+        &__text {
+            &--center {
+                padding: 0 2rem;
+                margin-bottom: 2.5rem !important;
             }
-            &.dc-form-submit-button {
-                width: 90%;
-                padding: 2rem 0;
-                display: block;
-                background-color: var(--general-main-1);
-                text-align: center;
-                position: fixed;
-                bottom: 0;
-                border-top: 2px solid var(--general-section-1);
-            }
+        }
+        &__wrapper {
+            height: 100vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        &__brief {
+            &__form {
+                height: calc(100% + 4rem);
 
-            &--with-mobile-keyboard {
-                &.dc-form-submit-button {
-                    width: 95%;
-                    display: inline-flex;
-                    position: unset;
-                    margin-top: 2rem;
-                    margin-left: auto;
-                    margin-right: auto;
-                }
-                button {
-                    margin-left: 0.8rem !important;
-                    margin-right: 0.8rem !important;
+                &--with-mobile-keyboard {
+                    height: unset;
                 }
             }
-            &__summary {
+            &__submit {
+                button {
+                    width: 12.4rem;
+                }
                 &.dc-form-submit-button {
-                    width: 100%;
-                    border: none;
+                    width: 90%;
+                    padding: 2rem 0;
+                    display: block;
+                    background-color: var(--general-main-1);
+                    text-align: center;
+                    position: fixed;
+                    bottom: 0;
+                    border-top: 2px solid var(--general-section-1);
                 }
                 &--with-mobile-keyboard {
-                    &.dc-form-submit-button {
-                        width: 90%;
-                        left: 1.5rem;
-                        border-top: 2px solid var(--general-section-1);
-                        margin-top: 0;
-                        position: relative;
+                    button {
+                        margin-left: 0.8rem !important;
+                        margin-right: 0.8rem !important;
                     }
+                    &.dc-form-submit-button {
+                        width: 95%;
+                        display: inline-flex;
+                        position: relative;
+                        margin-bottom: 1.5rem;
+                        margin-left: 0.5rem;
+                    }
+                }
+            }
+            &--with-mobile-keyboard {
+                .dc-page-overlay {
+                    height: unset;
+                    margin-bottom: 7rem;
                 }
             }
         }
         &__summary {
             .dc-page-overlay__content {
+                min-height: 88rem;
                 padding: 0;
             }
-            &__separator {
+
+            &__form-separator {
                 display: unset;
                 border: none;
                 border-top: 2px solid var(--general-section-1);
@@ -232,6 +233,41 @@
 
                 &--with-mobile-keyboard {
                     display: none;
+                }
+            }
+            &__submit {
+                button {
+                    width: 12.4rem;
+                }
+                &.dc-form-submit-button {
+                    background-color: var(--general-main-1);
+                    text-align: center;
+                    position: fixed;
+                    padding: 2rem 0;
+                    display: block;
+                    bottom: 0;
+                    border-top: 2px solid var(--general-section-1);
+                    width: 100%;
+                    border: none;
+                }
+                &--with-mobile-keyboard {
+                    &.dc-form-submit-button {
+                        width: 90%;
+                        left: 1.5rem;
+                        border-top: 2px solid var(--general-section-1);
+                        margin-top: 0;
+                        position: relative;
+                    }
+                }
+            }
+            &--with-mobile-keyboard {
+                .dc-page-overlay {
+                    height: unset;
+
+                    &__content {
+                        min-height: unset;
+                        margin-bottom: 9rem;
+                    }
                 }
             }
         }

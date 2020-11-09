@@ -155,10 +155,7 @@
     &__trailing-icon {
         margin-right: 1rem;
         position: absolute;
-        top: 1rem;
         right: 0;
-        pointer-events: none;
-        cursor: text;
         font-size: var(--text-size-xs);
 
         &.symbols {

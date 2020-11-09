@@ -60,7 +60,7 @@
         height: 40px;
 
         &-field {
-            margin-bottom: 0;
+            margin-bottom: unset !important;
 
             input {
                 width: 80%;

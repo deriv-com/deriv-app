@@ -1,16 +1,21 @@
 import { storiesOf } from '@storybook/react';
+import { withKnobs } from '@storybook/addon-knobs';
+import { withInfo } from '@storybook/addon-info';
+import { boolean } from '@storybook/addon-knobs';
+import Wrapper from '../shared/wrapper';
 import ButtonLink from 'Components/button-link';
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import notes from './README.md';
-import './button-link.stories.scss';
 
-storiesOf('ButtonLink', module).add(
-    'Main function',
-    () => {
-        return (
-            <React.Fragment>
-                <div className={'buttonlink__wrapper'}>
+storiesOf('ButtonLink', module)
+    .addDecorator(withKnobs)
+    .addDecorator(withInfo)
+    .add(
+        'Main function',
+        () => {
+            return (
+                <Wrapper is_dark={boolean('Dark Theme', false)}>
                     <BrowserRouter>
                         <ButtonLink
                             to='#'
@@ -22,11 +27,10 @@ storiesOf('ButtonLink', module).add(
                             <p>This is a button link</p>
                         </ButtonLink>
                     </BrowserRouter>
-                </div>
-            </React.Fragment>
-        );
-    },
-    {
-        notes,
-    }
-);
+                </Wrapper>
+            );
+        },
+        {
+            notes,
+        }
+    );

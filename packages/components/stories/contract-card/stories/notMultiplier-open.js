@@ -1,4 +1,5 @@
 import React from 'react';
+import Wrapper from '../../shared/wrapper';
 import ContractCard from 'Components/contract-card';
 import { getCardLabels, getContractTypeDisplay } from '../statics/contract';
 import sampleData from '../sample-data/sampleData.json';
@@ -9,8 +10,8 @@ const Basic = () => {
     const data = sampleData.not_multiplier__open;
 
     return (
-        <React.Fragment>
-            <div className={'contract-card__wrapper'}>
+        <Wrapper>
+            <div style={{ width: '240px' }}>
                 <ContractCard
                     contract_info={data.contract_info}
                     getCardLabels={getCardLabels}
@@ -39,27 +40,18 @@ const Basic = () => {
                         server_time={toMoment(1603881751)}
                     />
                     <ContractCard.Footer
-                        addToast={data.addToast}
-                        connectWithContractUpdate={data.connectWithContractUpdate}
                         contract_info={data.contract_info}
-                        current_focus={data.current_focus}
                         getCardLabels={getCardLabels}
-                        getContractById={data.getContractById}
                         is_multiplier={data.is_multiplier}
                         is_positions
                         is_sell_requested={data.is_sell_requested}
                         onClickCancel={data.onClickCancel}
                         onClickSell={data.onClickSell}
-                        removeToast={data.removeToast}
-                        setCurrentFocus={data.setCurrentFocus}
-                        server_time={toMoment(1603881751)}
-                        should_show_cancellation_warning={data.should_show_cancellation_warning}
-                        status={data.status}
-                        toggleCancellationWarning={data.toggleCancellationWarning}
+                        should_show_transition
                     />
                 </ContractCard>
             </div>
-        </React.Fragment>
+        </Wrapper>
     );
 };
 

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Wrapper from '../../shared/wrapper';
 import ContractCard from 'Components/contract-card';
 import { getCardLabels, getContractTypeDisplay } from '../statics/contract';
 import sampleData from '../sample-data/sampleData.json';
@@ -11,14 +12,13 @@ const Basic = () => {
         setLoaded(true);
     }, []);
 
-    const data = sampleData.multiplier__open;
-    data.getContractById = () => {};
+    let data = sampleData.multiplier__open;
 
     return (
-        <React.Fragment>
+        <Wrapper>
             <div id='modal_root' />
             <div id='deriv_app' />
-            <div className={'contract-card__wrapper'}>
+            <div style={{ width: '240px' }}>
                 {loaded && (
                     <ContractCard
                         contract_info={data.contract_info}
@@ -46,30 +46,22 @@ const Basic = () => {
                             is_multiplier={data.is_multiplier}
                             status={data.status}
                             server_time={null}
+                            getContractById={() => {}}
                         />
                         <ContractCard.Footer
-                            addToast={data.addToast}
-                            connectWithContractUpdate={null}
                             contract_info={data.contract_info}
-                            current_focus={data.current_focus}
                             getCardLabels={getCardLabels}
-                            getContractById={data.getContractById}
                             is_multiplier={data.is_multiplier}
                             is_positions
                             is_sell_requested={data.is_sell_requested}
                             onClickCancel={data.onClickCancel}
                             onClickSell={data.onClickSell}
-                            removeToast={data.removeToast}
-                            setCurrentFocus={data.setCurrentFocus}
-                            server_time={data.server_time}
-                            should_show_cancellation_warning={data.should_show_cancellation_warning}
-                            status={data.status}
-                            toggleCancellationWarning={data.toggleCancellationWarning}
+                            should_show_transition
                         />
                     </ContractCard>
                 )}
             </div>
-        </React.Fragment>
+        </Wrapper>
     );
 };
 

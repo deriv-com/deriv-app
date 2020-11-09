@@ -1,0 +1,89 @@
+# InputWithCheckbox Component
+
+Renders a `InputWithCheckbox` component.
+
+
+#### Supported Gestures:
+
+-   Click
+
+#### Supported Events:
+
+-   onChange
+
+## Usage
+
+```jsx
+import InputWithCheckbox from 'Components/input-wth-checkbox';
+
+const DummyComponent = props => (
+    <InputWithCheckbox
+        name='test_checkbox'
+        value={selected}
+        onChange={() => setSelected(!selected)}
+        label={('This is a test checkbox')}
+    />
+);
+```
+
+## Props
+
+| Name                    | Type         | Default     | Description                                                                |
+| ----------------------- | ------------ | ----------- | -------------------------------------------------------------------------- |
+| label                   | {string}     | null        | Lable of the input                                                         |
+| name                    | {string}     | null        | Name of the input                                                          |
+| value                   | {boolean}    | null        | Default value of the input                                                 |
+| max_value               | {number}     | null        | Defines the maximum acceptable value                                       |
+| onChange                | {function}   | null        | Function returns the changed value of Checkbox and input by their names    |
+| addToast                | {function}   | null        | Function to add toast                                                      |
+| removeToast             | {function}   | null        | Function to remove the toast                                               |
+| currency                | {string}     | null        | The currency                                                               |
+| defaultChecked          | {boolean}    | null        | Defines whether the checkbox is checked by default or not                  |
+| error_messages          | [string]     | null        | An array of error messages                                                 |
+| error_message_alignment | {string}     | null        | Error message alignment                                                    |
+| is_negative_disabled    | {boolean}    | null        | Defines whether prevent the value to be negative or not                    |
+| is_single_currency      | {boolean}    | null        | Defines whether there are single currency or not                           |
+| is_input_hidden         | {boolean}    | null        | Defines whether the input element is hidden or not                         |
+| current_focus           | {string}     | null        | Current focus                                                              |
+| setCurrentFocus         | {function}   | null        | Function to set the current focus                                          |
+| checkbox_tooltip_label  | {string}     | null        | Tolltip label for the Checkbox                                             |
+| tooltip_label           | {string}     | null        | Tolltip label                                                              |
+| tooltip_alignment       | {string}     | null        | Tolltip alignment                                                          |
+| className               | {string}     | null        | `className` for the main container                                         |
+| classNameInlinePrefix   | {string}     | null        | `className` for the inline preifx                                          |
+| classNameInput          | {string}     | null        | `className` for the input element                                          |
+| classNamePrefix         | {string}     | null        | `className` for the prefix                                                 |
+
+
+# Full example:
+
+```jsx
+import React, { useState } from 'react';
+import InputWithCheckbox from 'Components/input-wth-checkbox';
+
+const DummyComponent = props => {
+
+    const [value, setValue] = useState(0);
+    const [selected, setSelected] = useState(false);
+
+    const onChange = (e) => {
+        if (e.target.name === "use_credit") setValue(e.target.value)
+        else setSelected(e.target.value)
+    }
+    
+    return (
+        <React.Fragment>
+            <InputWithCheckbox
+                is_single_currency={true}
+                is_negative_disabled={true}
+                defaultChecked={selected}
+                is_input_hidden={!selected}
+                label={'Use Credit'}
+                name='use_credit'
+                onChange={onChange}
+                value={value}
+            />
+        </React.Fragment>
+    )
+}
+```

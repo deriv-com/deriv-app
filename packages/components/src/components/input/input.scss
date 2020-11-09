@@ -153,13 +153,25 @@
         }
     }
     &__trailing-icon {
-        margin: 0 1.2rem 0 0 !important;
+        margin-right: 1rem;
+        position: absolute;
+        top: 1rem;
+        right: 0;
+        pointer-events: none;
+        cursor: text;
+        font-size: var(--text-size-xs);
 
-        .color1-fill {
-            fill: var(--text-less-prominent);
-        }
-        .color1-stroke {
-            fill: var(--text-less-prominent);
+        &.symbols {
+            top: 0.9rem;
+
+            + .dc-input__field {
+                // default padding for three letter currency symbols
+                padding-right: calc(1.6rem + 2.4rem);
+            }
+            &--usdc + .dc-input__field,
+            &--ust + .dc-input__field {
+                padding-right: calc(1.6rem + 3.2rem);
+            }
         }
     }
     &__label {

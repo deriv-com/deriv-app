@@ -31,7 +31,7 @@ const DummyComponent = props => (
 
 | Name               | Type         | Default     | Description                                        |
 | ------------------ | ------------ | ----------- | -------------------------------------------------- |
-| lable              | {string}     | null        | Lable of the Checkbox                              |
+| label              | {string}     | null        | Lable of the Checkbox                              |
 | name               | {string}     | null        | Name of the Checkbox                               |
 | value              | {boolean}    | `false`     | Default value of the Checkbox                      |
 | onChange           | {function}   | undefined   | Function returns the changed value of Checkbox     |

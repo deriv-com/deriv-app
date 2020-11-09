@@ -1,29 +1,34 @@
 import { storiesOf } from '@storybook/react';
+import { withKnobs } from '@storybook/addon-knobs';
+import { withInfo } from '@storybook/addon-info';
+import { boolean } from '@storybook/addon-knobs';
+import Wrapper from '../shared/wrapper';
 import ButtonToggle from 'Components/button-toggle';
 import React from 'react';
 import notes from './README.md';
-import './button-toggle.stories.scss';
 
-storiesOf('ButtonToggle', module).add(
-    'Main function',
-    () => {
-        const [selected, setSelected] = React.useState('BUY');
+storiesOf('ButtonToggle', module)
+    .addDecorator(withKnobs)
+    .addDecorator(withInfo)
+    .add(
+        'Main function',
+        () => {
+            const [selected, setSelected] = React.useState('BUY');
 
-        const bottons_list = [
-            {
-                text: 'Buy',
-                value: 'BUY',
-                count: 5,
-            },
-            {
-                text: 'Sell',
-                value: 'SELL',
-            },
-        ];
+            const bottons_list = [
+                {
+                    text: 'Buy',
+                    value: 'BUY',
+                    count: 5,
+                },
+                {
+                    text: 'Sell',
+                    value: 'SELL',
+                },
+            ];
 
-        return (
-            <React.Fragment>
-                <div className={'buttontoggle__wrapper'}>
+            return (
+                <Wrapper is_dark={boolean('Dark Theme', false)}>
                     <ButtonToggle
                         buttons_arr={bottons_list}
                         is_animated
@@ -34,11 +39,10 @@ storiesOf('ButtonToggle', module).add(
                         value={selected}
                         has_rounded_button
                     />
-                </div>
-            </React.Fragment>
-        );
-    },
-    {
-        notes,
-    }
-);
+                </Wrapper>
+            );
+        },
+        {
+            notes,
+        }
+    );

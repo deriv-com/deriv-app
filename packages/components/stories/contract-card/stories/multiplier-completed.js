@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ContractCard from 'Components/contract-card';
+import Wrapper from '../../shared/wrapper';
 import { getCardLabels, getContractTypeDisplay } from '../statics/contract';
 import sampleData from '../sample-data/sampleData.json';
 import '../contract-card.stories.scss';
@@ -12,12 +13,11 @@ const Basic = () => {
     }, []);
 
     const data = sampleData.not_multiplier__complete;
-    data.getContractById = () => {};
 
     return (
-        <React.Fragment>
-            <div id='modal_root' />
-            <div className={'contract-card__wrapper'}>
+        <Wrapper>
+            <div style={{ width: '240px' }}>
+                <div id='modal_root' />
                 {loaded && (
                     <ContractCard
                         contract_info={data.contract_info}
@@ -47,28 +47,19 @@ const Basic = () => {
                             server_time={null}
                         />
                         <ContractCard.Footer
-                            addToast={data.addToast}
-                            connectWithContractUpdate={null}
                             contract_info={data.contract_info}
-                            current_focus={data.current_focus}
                             getCardLabels={getCardLabels}
-                            getContractById={data.getContractById}
                             is_multiplier={data.is_multiplier}
                             is_positions
                             is_sell_requested={data.is_sell_requested}
                             onClickCancel={data.onClickCancel}
                             onClickSell={data.onClickSell}
-                            removeToast={data.removeToast}
-                            setCurrentFocus={data.setCurrentFocus}
-                            server_time={data.server_time}
-                            should_show_cancellation_warning={data.should_show_cancellation_warning}
-                            status={data.status}
-                            toggleCancellationWarning={data.toggleCancellationWarning}
+                            should_show_transition
                         />
                     </ContractCard>
                 )}
             </div>
-        </React.Fragment>
+        </Wrapper>
     );
 };
 

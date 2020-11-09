@@ -73,7 +73,11 @@ const RowComponent = React.memo(({ data: advert, showAdPopup, style }) => {
                     <Table.Cell />
                 ) : (
                     <Table.Cell className='advertiser-page__adverts-button'>
-                        <Button primary small={!isMobile()} large={isMobile()} onClick={() => showAdPopup(advert)}>
+                        <Button
+                            primary
+                            {...(isMobile() ? { large: true } : { small: true })}
+                            onClick={() => showAdPopup(advert)}
+                        >
                             {is_buy_advert ? localize('Buy') : localize('Sell')} {currency}
                         </Button>
                     </Table.Cell>
@@ -84,6 +88,22 @@ const RowComponent = React.memo(({ data: advert, showAdPopup, style }) => {
 });
 
 RowComponent.displayName = 'RowComponent';
+
+const StatsHeader = ({ text }) => {
+    return (
+        <Text color='less-prominent' size='xs' lineHeight='m'>
+            {text}
+        </Text>
+    );
+};
+
+const StatsInfo = ({ text }) => {
+    return (
+        <Text color='prominent' size='s' weight='bold'>
+            {text}
+        </Text>
+    );
+};
 
 const AdvertiserPage = observer(props => {
     const { advertiser_page_store, general_store } = useStores();
@@ -227,62 +247,56 @@ const AdvertiserPage = observer(props => {
                         >
                             <Table.Row className='advertiser-page__stats'>
                                 <Table.Cell className='advertiser-page__stats-cell'>
-                                    <div className='advertiser-page__stats-cell-header'>{localize('Total orders')}</div>
-                                    <div className='advertiser-page__stats-cell-info'>{total_orders_count || '-'}</div>
+                                    <StatsHeader text={localize('Total orders')} />
+                                    <StatsInfo text={total_orders_count || '-'} />
                                 </Table.Cell>
                                 <div className='advertiser-page__stats-cell-separator' />
                                 {isMobile() ? (
                                     <Table.Cell className='advertiser-page__stats-cell'>
-                                        <div className='advertiser-page__stats-cell-header'>{localize('Buy/Sell')}</div>
-                                        <div className='advertiser-page__stats-cell-info'>{`${
-                                            buy_orders_count || '-'
-                                        }/${sell_orders_count || '-'}`}</div>
+                                        <StatsHeader text={localize('Buy/Sell')} />
+                                        <StatsInfo text={`${buy_orders_count || '-'}/${sell_orders_count || '-'}`} />
                                     </Table.Cell>
                                 ) : (
                                     <React.Fragment>
                                         <Table.Cell className='advertiser-page__stats-cell'>
-                                            <div className='advertiser-page__stats-cell-header'>{localize('Buy')}</div>
-                                            <div className='advertiser-page__stats-cell-info'>
-                                                {buy_orders_count || '-'}
-                                            </div>
+                                            <StatsHeader text={localize('Buy')} />
+                                            <StatsInfo text={buy_orders_count || '-'} />
                                         </Table.Cell>
                                         <div className='advertiser-page__stats-cell-separator' />
                                         <Table.Cell className='advertiser-page__stats-cell'>
-                                            <div className='advertiser-page__stats-cell-header'>{localize('Sell')}</div>
-                                            <div className='advertiser-page__stats-cell-info'>
-                                                {sell_orders_count || '-'}
-                                            </div>
+                                            <StatsHeader text={localize('Sell')} />
+                                            <StatsInfo text={sell_orders_count || '-'} />
                                         </Table.Cell>
                                     </React.Fragment>
                                 )}
                                 <div className='advertiser-page__stats-cell-separator' />
                                 <Table.Cell className='advertiser-page__stats-cell'>
-                                    <div className='advertiser-page__stats-cell-header'>{localize('Completion')}</div>
+                                    <StatsHeader text={localize('Completion')} />
                                     <div className='advertiser-page__stats-cell-completion'>
-                                        <div className='advertiser-page__stats-cell-info'>
-                                            {total_completion_rate ? `${total_completion_rate}%` : '-'}
-                                        </div>
-                                        <div className='advertiser-page__stats-cell-info_buy'>
-                                            {localize('(Buy {{- buy_completion_rate }})', {
-                                                buy_completion_rate: buy_completion_rate
-                                                    ? `${buy_completion_rate}%`
-                                                    : localize('N/A'),
-                                            })}
+                                        <StatsInfo text={total_completion_rate ? `${total_completion_rate}%` : '-'} />
+                                        <div className='advertiser-page__stats-cell-buy'>
+                                            <Text size='xs' color='prominent' lineHeight='m'>
+                                                {localize('(Buy {{- buy_completion_rate }})', {
+                                                    buy_completion_rate: buy_completion_rate
+                                                        ? `${buy_completion_rate}%`
+                                                        : localize('N/A'),
+                                                })}
+                                            </Text>
                                         </div>
                                     </div>
                                 </Table.Cell>
                                 <div className='advertiser-page__stats-cell-separator' />
                                 <Table.Cell className='advertiser-page__stats-cell'>
-                                    <div className='advertiser-page__stats-cell-header'>
-                                        {localize('Avg. release time')}
-                                    </div>
-                                    <div className='advertiser-page__stats-cell-info'>
-                                        {release_time_avg
-                                            ? localize('{{- avg_release_time_in_minutes}} min', {
-                                                  avg_release_time_in_minutes,
-                                              })
-                                            : '-'}
-                                    </div>
+                                    <StatsHeader text={localize('Avg. release time')} />
+                                    <StatsInfo
+                                        text={
+                                            release_time_avg
+                                                ? localize('{{- avg_release_time_in_minutes}} min', {
+                                                      avg_release_time_in_minutes,
+                                                  })
+                                                : '-'
+                                        }
+                                    />
                                 </Table.Cell>
                             </Table.Row>
                         </ThemedScrollbars>

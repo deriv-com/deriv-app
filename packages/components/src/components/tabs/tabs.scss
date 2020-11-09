@@ -47,7 +47,7 @@
             @include mobile {
                 display: flex;
                 justify-content: space-evenly;
-                width: 100vw !important;
+                width: 100vw;
             }
         }
         &:not(&--header-fit-content) {

@@ -56,6 +56,11 @@
             }
         }
     }
+
+    &__horizontal-scroll {
+        overflow-x: auto;
+    }
+
     &__stats {
         border-bottom: none;
         display: flex;
@@ -67,41 +72,43 @@
         width: 588px;
 
         &-cell {
-            display: block;
+            display: grid;
             min-width: 65px;
             text-align: center;
 
-            &-header {
-                color: var(--text-less-prominent);
-                font-size: var(--text-size-xs);
-                line-height: 20px;
+            @include mobile {
+                min-width: 11rem;
             }
+
             &-completion {
                 display: flex;
-            }
-            &-info {
-                font-size: var(--text-size-s);
-                font-weight: bold;
 
-                &_buy {
-                    font-size: var(--text-size-xs);
-                    line-height: 20px;
-                    margin-left: 0.5rem;
-                    margin-top: 0.14rem;
+                @include mobile {
+                    flex-flow: column;
                 }
             }
+
+            &-buy {
+                margin-left: 0.5rem;
+                margin-top: 0.14rem;
+            }
+
             &-separator {
                 border-right: 1px solid #ededed;
             }
         }
 
         @include mobile {
-            width: 110vw;
+            max-width: 100vw;
         }
 
         &--wrapper {
-            display: flex;
             align-items: center;
+            display: flex;
+
+            @media (max-height: 580px) {
+                height: 10rem;
+            }
         }
     }
     &__cell {

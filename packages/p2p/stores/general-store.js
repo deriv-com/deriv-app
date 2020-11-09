@@ -20,7 +20,6 @@ export default class GeneralStore {
     };
     @observable inactive_notification_count = 0;
     @observable is_advertiser = false;
-    @observable is_barred = false;
     @observable is_listed = false;
     @observable is_restricted = false;
     @observable nickname = null;
@@ -45,17 +44,24 @@ export default class GeneralStore {
     ws_subscriptions = {};
     service_token_timeout;
 
+    @computed
     get client() {
         return this.props?.client || {};
     }
 
     @computed
     get blocked_until_date_time() {
-        return getFormattedDateString(new Date(convertToMillis(this.user_blocked_until)), true, true);
+        return getFormattedDateString(new Date(convertToMillis(1604945766)), true, true);
     }
 
+    @computed
     get is_active_tab() {
         return this.order_table_type === orderToggleIndex.ACTIVE;
+    }
+
+    @computed
+    get is_barred() {
+        return !!this.user_blocked_until;
     }
 
     @action.bound
@@ -261,11 +267,6 @@ export default class GeneralStore {
     }
 
     @action.bound
-    setIsBarred(is_barred) {
-        this.is_barred = is_barred;
-    }
-
-    @action.bound
     setIsListed(is_listed) {
         this.is_listed = is_listed;
     }
@@ -375,13 +376,9 @@ export default class GeneralStore {
         if (!response.error) {
             this.setAdvertiserId(p2p_advertiser_info.id);
             this.setIsAdvertiser(!!p2p_advertiser_info.is_approved);
-            this.setIsBarred(!!p2p_advertiser_info.blocked_until);
             this.setIsListed(!!p2p_advertiser_info.is_listed);
             this.setNickname(p2p_advertiser_info.name);
-
-            if (this.is_barred) {
-                this.setUserBlockedUntil(p2p_advertiser_info.blocked_until);
-            }
+            this.setUserBlockedUntil(p2p_advertiser_info.blocked_until);
         } else {
             this.ws_subscriptions.advertiser_subscription.unsubscribe();
 

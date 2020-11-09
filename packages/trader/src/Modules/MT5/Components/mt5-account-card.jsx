@@ -42,8 +42,8 @@ const MT5AccountCardAction = ({
                     i18n_default_text='<0>Switch to your real account</0><1> to create a DMT5 Financial STP account.</1>'
                     components={[
                         <a
-                            className={classNames('link link--orange', {
-                                'mt5-account-card__action-wrapper--link-disabled': is_accounts_switcher_on,
+                            className={classNames('mt5-account-card__action-wrapper__link link link--orange', {
+                                'mt5-account-card__action-wrapper__link--disabled': is_accounts_switcher_on,
                             })}
                             key={0}
                             onClick={handleClickSwitchAccount}

@@ -613,8 +613,12 @@
         width: 75%;
         text-align: center;
 
-        &--link-disabled {
-            pointer-events: none;
+        &__link {
+            font-size: var(--text-size-xxs);
+
+            &--disabled {
+                pointer-events: none;
+            }
         }
     }
     @include mobile {

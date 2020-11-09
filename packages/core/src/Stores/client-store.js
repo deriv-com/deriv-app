@@ -867,7 +867,6 @@ export default class ClientStore extends BaseStore {
         if (!this.account_status) return false;
 
         const status = this.account_status?.status;
-        const is_high_risk = /high/.test(this.account_status.risk_classification);
 
         return this.isAccountOfType('financial')
             ? /(financial_assessment|trading_experience)_not_complete/.test(status)

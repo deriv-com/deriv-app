@@ -64,7 +64,7 @@ const ToggleMenuDrawer = React.forwardRef(
     (
         {
             account_status,
-            allow_authentication,
+            should_allow_authentication,
             enableApp,
             disableApp,
             needs_financial_assessment,
@@ -182,8 +182,8 @@ const ToggleMenuDrawer = React.forwardRef(
                                     <MenuLink
                                         key={subindex}
                                         is_disabled={
-                                            (!allow_authentication && /proof-of-address/.test(subroute.path)) ||
-                                            (!allow_authentication && /proof-of-identity/.test(subroute.path)) ||
+                                            (!should_allow_authentication && /proof-of-address/.test(subroute.path)) ||
+                                            (!should_allow_authentication && /proof-of-identity/.test(subroute.path)) ||
                                             (!needs_financial_assessment &&
                                                 /financial-assessment/.test(subroute.path)) ||
                                             subroute.is_disabled

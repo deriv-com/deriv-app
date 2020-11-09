@@ -18,7 +18,7 @@ const Account = ({
     currency,
     location,
     routes,
-    allow_authentication,
+    should_allow_authentication,
     toggleAccount,
     needs_financial_assessment,
 }) => {
@@ -44,7 +44,7 @@ const Account = ({
         !is_loading &&
         !isEmptyObject(account_status) &&
         ((!needs_financial_assessment && /financial-assessment/.test(selected_content.path)) ||
-            (!allow_authentication && /proof-of-identity|proof-of-address/.test(selected_content.path)))
+            (!should_allow_authentication && /proof-of-identity|proof-of-address/.test(selected_content.path)))
     )
         routeBackInApp(history);
 
@@ -55,7 +55,7 @@ const Account = ({
             }
 
             if (route.path === shared_routes.proof_of_identity || route.path === shared_routes.proof_of_address) {
-                route.is_disabled = !allow_authentication;
+                route.is_disabled = !should_allow_authentication;
             }
         });
     });
@@ -115,7 +115,7 @@ const Account = ({
 
 Account.propTypes = {
     account_status: PropTypes.object,
-    allow_authentication: PropTypes.bool,
+    should_allow_authentication: PropTypes.bool,
     currency: PropTypes.string,
     history: PropTypes.object,
     is_virtual: PropTypes.bool,
@@ -131,7 +131,7 @@ export default connect(({ client, common, ui }) => ({
     currency: client.currency,
     is_virtual: client.is_virtual,
     is_visible: ui.is_account_settings_visible,
-    allow_authentication: client.allow_authentication,
+    should_allow_authentication: client.should_allow_authentication,
     needs_financial_assessment: client.needs_financial_assessment,
     toggleAccount: ui.toggleAccountSettings,
 }))(withRouter(Account));

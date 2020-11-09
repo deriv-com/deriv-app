@@ -34,7 +34,7 @@ const DummyComponent = props => (
 | active_index      | {number}     | null        | Index of the active index                                                |
 | setActiveIndex    | {function}   | null        | Function returns the active index when it changes                        |
 | style             | {object}     | null        | Style object for the main wrapper                                        |
-| ref               | {object} | null  | `ref` for the main DropdownList and inner elements. An object of {dropdown_ref, list_item_ref, list_wrapper_ref} |
+| ref               | {object}     | null        | `ref` for the main DropdownList and inner elements. An object of {dropdown_ref, list_item_ref, list_wrapper_ref} |
 | onScrollStop      | {function}   | null        | Function triggers when the user stops scrolling                          |
 | not_found_text    | {string}     | null        | For AuthoComplete if the entered text is not found in the list of items  |
 

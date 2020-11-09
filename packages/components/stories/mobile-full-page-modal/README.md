@@ -25,7 +25,7 @@ const DummyComponent = props => (
 | Name            | Type        | Default     | Description                                             |
 | --------------- | ----------- | ----------- | ------------------------------------------------------- |
 | header          | {string}    | null        | The header text                                         |
-| is_modal_open   | {boolean}   | null        | Defines the visibility of the modal                     |
+| is\_modal\_open | {boolean}   | null        | Defines the visibility of the modal                     |
 | onClickClose    | {function}  | null        | Function triggers when the user clicks on close button  |
 | height_offset   | {string}    | `0px`       | Modal height offset                                     |
 | className       | {string}    | null        | `className` for the main container                      |

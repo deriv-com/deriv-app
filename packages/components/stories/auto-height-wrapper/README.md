@@ -30,7 +30,7 @@ const DummyComponent = props => (
 # Full example:
 
 ```jsx
-import Accordion from 'Components/accordion';
+import AutoHeightWrapper from 'Components/auto-height-wrapper';
 
 const DummyComponent = props => (
     <AutoHeightWrapper default_height={300} height_offset={50}>

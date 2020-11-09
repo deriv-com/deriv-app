@@ -27,15 +27,15 @@ const DummyComponent = props => (
 ```
 ## Props
 
-| Name               | Type                           | Default     | Description                                                                 |
-| ------------------ | ------------------------------ | ----------- | --------------------------------------------------------------------------- |
-| buttons_arr        | [object<text, value, count?>]  | undefined   | List of buttons                                                             |
-| id                 | {string}                       | null        | `id` of the main container                                                  |
-| name               | {string}                       | null        | Name of the ButtonToggle                                                    |
-| onChange           | {function}                     | undefined   | Function returns the selected button's value and the name of ButtonToggle   |
-| value              | {string \| number}             | null        | The selected button's value                                                 |
-| is_animated        | {boolean}                      | `false`     | Use animated ButtonToggle                                                   |
-| has_rounded_button | {boolean}                      | `false`     | Apply `border-radius` to buttons. Available if `is_animated` is enable      |
+| Name                 | Type                           | Default     | Description                                                                 |
+| -------------------- | ------------------------------ | ----------- | --------------------------------------------------------------------------- |
+| buttons_arr          | [object<text, value, count?>]  | undefined   | List of buttons                                                             |
+| id                   | {string}                       | null        | `id` of the main container                                                  |
+| name                 | {string}                       | null        | Name of the ButtonToggle                                                    |
+| onChange             | {function}                     | undefined   | Function returns the selected button's value and the name of ButtonToggle   |
+| value                | {string \| number}             | null        | The selected button's value                                                 |
+| is_animated          | {boolean}                      | `false`     | Use animated ButtonToggle                                                   |
+| has\_rounded\_button | {boolean}                      | `false`     | Apply `border-radius` to buttons. Available if `is_animated` is enable      |
 
 
 # Full example:

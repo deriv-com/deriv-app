@@ -1,6 +1,6 @@
 # ContractCard Component
 
-Renders a `ContractCard` component showing the information of a contract. Two types of contracts defined in this component are multiplier contract ahd not-multiplier contract. A contract may be completed or still ongoing. 
+Renders a `ContractCard` component showing the information of a contract. Two types of contracts defined in this component are multiplier contract and not-multiplier contract. A contract may be completed or still ongoing. 
 
 
 ##### Supported Gestures:
@@ -34,8 +34,8 @@ const DummyComponent = props => (
 | is_positions                     | {boolean}    | `false`     | Defines whether the contract is position or not                                                  |
 | onClickRemove                    | {function}   | null        | Function triggers when user clicks on close button                                               |
 | result                           | {string}     | null        | The result of the contract. one of `'won'` or `'lost'`                                           |
-| profit_loss                      | {number}     | null        | Fallback for the result of the contract. Won if `profit_loss` > 0 and lost if `profit_loss` < 0  |
-| should_show_result_overlay       | {boolean}    | null        | Defines the visibility of the result overlay                                                     |
+| profit\_loss                     | {number}     | null        | Fallback for the result of the contract. Won if `profit_loss > 0` and lost if `profit_loss < 0`  |
+| should\_show\_result\_overlay    | {boolean}    | null        | Defines the visibility of the result overlay                                                     |
 | is_unsupported                   | {boolean}    | `false`     | Defines whether the contract is supported or not                                                 |
 | toggleUnsupportedContractModal   | {function}   | null        | Function triggers when user clicks on result overlay if the contract is unsupported              |
 
@@ -68,9 +68,9 @@ const DummyComponent = props => (
 | contract_info           | {object}     | null        | The information of the contract                             |
 | getCardLabels           | {function}   | null        | Function returns the labels to show in the card             |
 | getContractTypeDisplay  | {function}   | null        | Function returns the display name of the contract type      |
-| has_progress_slider     | {boolean}    | null        | Defines visibility of the sidebar. For ongoing contracts    |
+| has\_progress\_slider   | {boolean}    | null        | Defines visibility of the sidebar. For ongoing contracts    |
 | is_mobile               | {boolean}    | null        | Showes whether the device is mobile or not                  |
-| is_sell_requested       | {boolean}    | null        | Showes whether the user requested for sell or not           |
+| is\_sell\_requested     | {boolean}    | null        | Showes whether the user requested for sell or not           |
 | is_sold                 | {boolean}    | null        | Showes whether the contract is sold or not                  |
 | onClickSell             | {function}   | null        | Function triggers when user clicks on sell button           |
 | server_time             | {object}     | null        | The server time moment object                               |
@@ -149,13 +149,13 @@ const DummyComponent = props => (
 | getContractById                    | {function}   | null        | Function returns the contract information                           |
 | is_multiplier                      | {boolean}    | null        | Defines the type of contract                                        |
 | is_positions                       | {boolean}    | null        | Defines whether the contract is position or not                     |
-| is_sell_requested                  | {boolean}    | null        | Showes whether the user requested for sell or not                   |
+| is\_sell\_requested                | {boolean}    | null        | Showes whether the user requested for sell or not                   |
 | onClickCancel                      | {function}   | null        | Function triggers when user clicks on cancel button                 |
 | onClickSell                        | {function}   | null        | Function triggers when user clicks on sell button                   |
 | addToast                           | {function}   | null        | Function for show toast                                             |
 | removeToast                        | {function}   | null        | Function for remove toast                                           |
 | setCurrentFocus                    | {function}   | null        | Function to set focus to the dialog                                 |
-| should_show_cancellation_warning   | {boolean}    | null        | Defines the visibility of cancellation warning                      |
+| should\_show\_cancellation\_warning| {boolean}    | null        | Defines the visibility of cancellation warning                      |
 | status                             | {string}     | null        | The status of the contract. One of `'profit'` or `'loss'`           |
 | toggleCancellationWarning          | {function}   | null        | Function toggles the canellation warning                            |
 | connectWithContractUpdate          | {function}   | null        | Function returns  store connected wrapper for contract update form  |
@@ -214,7 +214,7 @@ const DummyComponent = props => (
 | Name                    | Type         | Default     | Description                                             |
 | ----------------------- | ------------ | ----------- | ------------------------------------------------------- |
 | getContractTypeDisplay  | {function}   | null        | Function returns the display name of the contract type  |
-| is_high_low             | {boolean}    | null        | Defines whether the contract is high_low or not         |
+| is\_high\_low           | {boolean}    | null        | Defines whether the contract is high_low or not         |
 | multiplier              | {number}     | null        | Multiplier of the contract                              |
 | type                    | {string}     | null        | Type of the contract                                    |
 
@@ -253,7 +253,7 @@ const DummyComponent = props => (
 | Name                    | Type         | Default     | Description                                             |
 | ----------------------- | ------------ | ----------- | ------------------------------------------------------- |
 | getContractTypeDisplay  | {function}   | null        | Function returns the display name of the contract type  |
-| is_high_low             | {boolean}    | null        | Defines whether the contract is high_low or not         |
+| is\_high\_low           | {boolean}    | null        | Defines whether the contract is high_low or not         |
 | multiplier              | {number}     | null        | Multiplier of the contract                              |
 | type                    | {string}     | null        | Type of the contract                                    |
 
@@ -288,7 +288,7 @@ const DummyComponent = props => (
 | Name                    | Type         | Default     | Description                                             |
 | ----------------------- | ------------ | ----------- | ------------------------------------------------------- |
 | getContractTypeDisplay  | {function}   | null        | Function returns the display name of the contract type  |
-| is_high_low             | {boolean}    | null        | Defines whether the contract is high_low or not         |
+| is\_high\_low           | {boolean}    | null        | Defines whether the contract is high_low or not         |
 | multiplier              | {number}     | null        | Multiplier of the contract                              |
 | type                    | {string}     | null        | Type of the contract                                    |
 
@@ -303,7 +303,7 @@ import ContractCard from 'Components/contract-card';
 
 const DummyComponent = props => {
     const data = {} // a contract data
- 
+
     return (
        <React.Fragment>
                 <div className={'contract-card__wrapper'}>
@@ -345,3 +345,4 @@ const DummyComponent = props => {
             </React.Fragment>
     )
 }
+```

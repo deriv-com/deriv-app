@@ -1,4 +1,4 @@
-# Mobile Dialog Component
+# Accordion Component
 
 Renders an accordions with a list of inner objects. The objects must have `header` and `content` property and both of them can be a `simple` string or a `node object`.
 
@@ -21,10 +21,10 @@ const DummyComponent = props => (
 
 ## Props
 
-| Name          | Type            | Default   | Description                         |
-| ------------- | --------------- | --------- | ----------------------------------- |
-| list          | {array<object>} | []        | Array contains a list of objects.   |
-| classname     | {string}        | null      | Classname for accordion wrapper.    |
+| Name          | Type                | Default   | Description                         |
+| ------------- | ------------------- | --------- | ----------------------------------- |
+| list          | [{header, contant}] | []        | Array contains a list of objects.   |
+| classname     | {string}            | null      | Classname for accordion wrapper.    |
 
 
 # Full example:

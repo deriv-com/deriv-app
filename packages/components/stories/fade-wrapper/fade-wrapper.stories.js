@@ -44,7 +44,7 @@ storiesOf('FadeWrapper', module)
                         primary
                         medium
                     />
-                    <FadeWrapper is_visible={visibility} type={type}>
+                    <FadeWrapper keyname={'key'} is_visible={visibility} type={type}>
                         <p className={'fade-wrapper__content'}>This text is inside the fade wrapper</p>
                     </FadeWrapper>
                 </Wrapper>

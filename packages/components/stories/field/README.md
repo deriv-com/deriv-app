@@ -1,39 +1,26 @@
-# FileDropzone Component
+# Field Component
 
-Renders a `FileDropzone` component.
+Renders a `Field` component which is a text with normal, error, or warn style.
 
 
 ## Usage
 
 ```jsx
-import FileDropzone from 'Components/field';
+import Field from 'Components/field';
 
 const DummyComponent = props => (
-    <FileDropzone
-        accept={'image/png, image/jpeg, image/jpg'}
-        hover_message={'Drop files here..'}
-        max_size={8388608}
-        multiple={false}
-        value={[]}
-    />
+    <Field message={'This is an error Field'} type={'error'} />
 );
 ```
 
 ## Props
 
 
-| Name                      | Type         | Default     | Description                                                          |
-| ------------------------- | ------------ | ----------- | -------------------------------------------------------------------- |
-| accept                    | {string}     | null        | Comma seperated string of the accepted file formats                  |
-| error_message             | {string}     | null        | Message shown if there are errors with the dragged file              |
-| hover_message             | {string}     | null        | Message shown on hover if files are accepted onDrag                  |
-| max_size                  | {number}     | null        | Maximum size limit for file, in bytes (binary)                       |
-| message                   | {string}     | null        | Default message when not on hover or onDrag                          |
-| multiple                  | {boolean}    | `false`     | Allow multiple uploads                                               |
-| onDropAccepted            | {function}   | null        | Function sends back accepted files array                             |
-| onDropRejected            | {function}   | null        | Function sends back rejected files array                             |
-| validation_error_message  | {string}     | null        | Message shown on if there are validation errors with file uploaded   |
-| value                     | [object]     | null        | Array contains the default selected files                            |
+| Name          | Type         | Default     | Description                                                          |
+| ------------- | ------------ | ----------- | -------------------------------------------------------------------- |
+| message       | {string}     | null        | The main text of Field                                               |
+| type          | {string}     | null        | Type of fading. One of `'error'`, `'warn'` or null for normal field  |
+| className     | {string}     | null        | classname for the wrapper                                            |
 
 
 
@@ -41,32 +28,13 @@ const DummyComponent = props => (
 
 ```jsx
 import React, { useState } from 'react';
-import FileDropzone from 'Components/file-dropzone';
-import Icon from 'Components/icon';
+import Field from 'Components/field';
 
 const DummyComponent = props => {
 
-    const UploadMessage = (
-        <div style={{ margin: '20px' }}>
-            <Icon icon='IcCloudUpload' className='dc-file-dropzone__message-icon' size={50} />
-            <div className='dc-file-dropzone__message-subtitle'>
-                Drop file (JPEG  JPG  PNG  PDF  GIF) or click here to upload
-            </div>
-        </div>
-    );
-
     return (
         <React.Fragment>
-            <FileDropzone
-                accept={'image/png, image/jpeg, image/jpg, image/gif, application/pdf'}
-                error_message={'Please upload supported file type.'}
-                hover_message={'Drop files here..'}
-                max_size={8388608}
-                message={UploadMessage}
-                multiple={false}
-                validation_error_message={''}
-                value={[]}
-            />
+            <Field message={'This is an error Field'} type={'error'} />
         </React.Fragment>
     );
 }

@@ -34,8 +34,8 @@ const DummyComponent = props => (
 | onChange                  | {function} | null     | Function triggers when the value has changed     |
 | leading_icon              | {string}   | null     | The loading icon for the input                        |
 | trailing_icon             | {string}   | null     | The trailing icon for the input                       |
-| has_character_counter     | {string}   | null     | Difines whether to show character counter or not      |
-| initial_character_count   | {number}   | null     | The initial character count                           |
+| has\_character\_counter   | {string}   | null     | Difines whether to show character counter or not      |
+| initial\_character\_count | {number}   | null     | The initial character count                           |
 | max_characters            | {number}   | null     | Defines the maximum character count                   |
 | disabled                  | {boolean}  | null     | Defines the disability of the input                   |
 | error                     | {string}   | null     | The error message for the input                       |

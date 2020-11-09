@@ -28,32 +28,33 @@ const DummyComponent = props => (
 #### Props
 
 
-| Name                  | Type                   | Default       | Description                                                               |
-| --------------------- | ---------------------- | ------------- | ------------------------------------------------------------------------- |
-| id                    | {string}               | null          | `id` for the modal                                                        |
-| has_close_icon        | {boolean}              | `true`        | Defines whether the modal has close icon or not                           |
-| header                | {string}               | null          | Header for the modal                                                      |
-| height                | {string}               | null          | Height of the modal                                                       |
-| width                 | {string}               | null          | Width of the modal                                                        |
-| is_open               | {boolean}              | null          | Defines the visibility of the modal                                       |
-| is_confirmation_modal | {boolean}              | null          | Defines whether the modal is a confirmation modal                         |
-| is_vertical_bottom    | {boolean}              | null          | Set the modal vertical position to bottom                                 |
-| is_vertical_centered  | {boolean}              | null          | Set the modal vertical position to center                                 |
-| is_vertical_top       | {boolean}              | null          | Set the modal vertical position to top                                    |
-| is_title_centered     | {boolean}              | null          | Set the modal title position to center                                    |
-| onEntered             | {function}             | null          | Funnction triggers when the modal opened                                  |
-| onExited              | {function}             | null          | Funnction triggers when the modal closed                                  |
-| onMount               | {function}             | null          | Funnction triggers when the modal mounted                                 |
-| onUnmount             | {function}             | null          | Funnction triggers when the modal unmounted                               |
-| portalId              | {string}               | `'modal_root'`| Portal id to render the modal                                             |
-| renderTitle           | {function}             | null          | Funtion to render the modal title                                         |
-| small                 | {boolean}              | null          | Defines whether the modal is small or not                                 |
-| title                 | {string \| react node} | null          | The modal title                                                           |
-| toggleModal           | {function}             | null          | Toggle the visibility of the modal                                        |
-| elements_to_ignore    | [string]               | null          | List of element ids to ignore when user clicks outside to close the modal |
-| className             | {string}               | null          | `className` for the main container                                        |
+| Name                    | Type                   | Default       | Description                                                               |
+| ----------------------- | ---------------------- | ------------- | ------------------------------------------------------------------------- |
+| id                      | {string}               | null          | `id` for the modal                                                        |
+| has_close_icon          | {boolean}              | `true`        | Defines whether the modal has close icon or not                           |
+| header                  | {string}               | null          | Header for the modal                                                      |
+| height                  | {string}               | null          | Height of the modal                                                       |
+| width                   | {string}               | null          | Width of the modal                                                        |
+| is_open                 | {boolean}              | null          | Defines the visibility of the modal                                       |
+| is\_confirmation\_modal | {boolean}              | null          | Defines whether the modal is a confirmation modal                         |
+| is\_vertical\_bottom    | {boolean}              | null          | Set the modal vertical position to bottom                                 |
+| is\_vertical\_centered  | {boolean}              | null          | Set the modal vertical position to center                                 |
+| is\_vertical\_top       | {boolean}              | null          | Set the modal vertical position to top                                    |
+| is\_title\_centered     | {boolean}              | null          | Set the modal title position to center                                    |
+| onEntered               | {function}             | null          | Funnction triggers when the modal opened                                  |
+| onExited                | {function}             | null          | Funnction triggers when the modal closed                                  |
+| onMount                 | {function}             | null          | Funnction triggers when the modal mounted                                 |
+| onUnmount               | {function}             | null          | Funnction triggers when the modal unmounted                               |
+| portalId                | {string}               | `'modal_root'`| Portal id to render the modal                                             |
+| renderTitle             | {function}             | null          | Funtion to render the modal title                                         |
+| small                   | {boolean}              | null          | Defines whether the modal is small or not                                 |
+| title                   | {string \| react node} | null          | The modal title                                                           |
+| toggleModal             | {function}             | null          | Toggle the visibility of the modal                                        |
+| elements\_to\_ignore    | [string]               | null          | List of element ids to ignore when user clicks outside to close the modal |
+| className               | {string}               | null          | `className` for the main container                                        |
 
 ---
+
 ## Modal.Body
 
 
@@ -61,6 +62,7 @@ Renders a body for `Modal` component. `Modal.Body` just add a wrapper with some 
 
 
 ---
+
 ## Modal.Footer
 
 

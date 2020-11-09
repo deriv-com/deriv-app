@@ -40,13 +40,13 @@ const DummyComponent = props => (
 | currency                | {string}     | null        | The currency                                                               |
 | defaultChecked          | {boolean}    | null        | Defines whether the checkbox is checked by default or not                  |
 | error_messages          | [string]     | null        | An array of error messages                                                 |
-| error_message_alignment | {string}     | null        | Error message alignment                                                    |
-| is_negative_disabled    | {boolean}    | null        | Defines whether prevent the value to be negative or not                    |
-| is_single_currency      | {boolean}    | null        | Defines whether there are single currency or not                           |
-| is_input_hidden         | {boolean}    | null        | Defines whether the input element is hidden or not                         |
+| error\_message\_alignment| {string}    | null        | Error message alignment                                                    |
+| is\_negative\_disabled  | {boolean}    | null        | Defines whether prevent the value to be negative or not                    |
+| is\_single\_currency    | {boolean}    | null        | Defines whether there are single currency or not                           |
+| is\_input\_hidden       | {boolean}    | null        | Defines whether the input element is hidden or not                         |
 | current_focus           | {string}     | null        | Current focus                                                              |
 | setCurrentFocus         | {function}   | null        | Function to set the current focus                                          |
-| checkbox_tooltip_label  | {string}     | null        | Tolltip label for the Checkbox                                             |
+| checkbox\_tooltip\_label| {string}     | null        | Tolltip label for the Checkbox                                             |
 | tooltip_label           | {string}     | null        | Tolltip label                                                              |
 | tooltip_alignment       | {string}     | null        | Tolltip alignment                                                          |
 | className               | {string}     | null        | `className` for the main container                                         |

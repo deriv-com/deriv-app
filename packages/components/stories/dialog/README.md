@@ -38,15 +38,15 @@ const DummyComponent = props => (
 | --------------------- | ----------- | ----------- | --------------------------------------------------------- |
 | is_visible            | {boolean}   | null        | Define the visibility of modal                            |
 | title                 | {string}    | null        | Title of the modal                                        |
-| portal_element_id     | {string}    | null        | Portal element id for render modal                        |
-| confirm_button_text   | {string}    | null        | Inner text of the confirm button                          |
-| cancel_button_text    | {string}    | null        | Inner text of the cancel button                           |
+| portal\_element\_id   | {string}    | null        | Portal element id for render modal                        |
+| confirm\_button\_text | {string}    | null        | Inner text of the confirm button                          |
+| cancel\_button\_text  | {string}    | null        | Inner text of the cancel button                           |
 | onCancel              | {function}  | null        | Function triggers when user clicks on cancel button       |
 | onConfirm             | {function}  | null        | Function triggers when user clicks on confirm button      |
 | disableApp            | {function}  | null        | Function for disable app                                  |
 | enableApp             | {function}  | null        | Function for enable app                                   |
-| is_closed_on_cancel   | {boolean}   | `'true'`    | Define whether the modal should close on cancel or not    |
-| is_closed_on_confirm  | {boolean}   | `'true'`    | Define whether the modal should close on confirm or not   |
+| is\_closed\_on\_cancel| {boolean}   | `'true'`    | Define whether the modal should close on cancel or not    |
+| is\_closed\_on\_confirm| {boolean}  | `'true'`    | Define whether the modal should close on confirm or not   |
 | is_loading            | {boolean}   | null        | Define the loading state of modal                         |
 
 

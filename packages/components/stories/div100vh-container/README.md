@@ -12,7 +12,7 @@ Renders a `Div100vhContainer` component. In mobile, the `100vh` does not return 
 | height_offset     | {string}     | null        | Height offset for the container                            |
 | is_bypassed       | {boolean}    | null        | Bypass the main functionality and just render the children |
 | is_disabled       | {boolean}    | null        | To remove the offsets calculation and just tune `100vh`    |
-| max_height_offset | {string}     | null        | MaxHeight offset for the container                         |
+| max\_height\_offset| {string}    | null        | MaxHeight offset for the container                         |
 
 
 # Full example:

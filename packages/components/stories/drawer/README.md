@@ -34,9 +34,9 @@ const DummyComponent = props => (
 | footer                   | {react node} | null        | Footer element of the drawer                                  |
 | className                | {string}     | null        | classname for the main drawer component                       |
 | contentClassName         | {string}     | null        | classname for the children elements of the drawer             |
-| clear_stat_button_text   | {string}     | null        | Inner text for the clear stat button                          |
+| clear\_stat\_button_text | {string}     | null        | Inner text for the clear stat button                          |
 | onClearStatClick         | {function}   | null        | Function triggers when user clicks on the clear stat button   |
-| is_clear_stat_disabled   | {boolean}    | null        | Define whether the clear stat button is disable or not        |
+| is\_clear\_stat\_disabled| {boolean}    | null        | Define whether the clear stat button is disable or not        |
 
 
 # Full example:

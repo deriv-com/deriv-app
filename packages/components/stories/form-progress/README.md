@@ -18,7 +18,7 @@ const DummyComponent = props => (
 
 | Name          | Type                                         | Default  | Description                                                                          |
 | ------------- | -------------------------------------------- | -------- | ------------------------------------------------------------------------------------ |
-| steps         | [object<header:object<title, active_title>>] | null     | Array of steps. Each item has a `header` which contains `title` and `active_title`.  |
+| steps         | [object< header: object< title, active_title>>] | null     | Array of steps. Each item has a `header` which contains `title` and `active_title`.  |
 | current_step  | {number}                                     | null     | Current index of the progress                                                        |
 
 

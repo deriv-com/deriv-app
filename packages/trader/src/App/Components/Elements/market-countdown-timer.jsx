@@ -110,7 +110,7 @@ const MarketCountdownTimer = ({ is_main_page, symbol }) => {
                 clearTimeout(timer);
             }
         };
-    }, [time_left]);
+    }, [time_left, when_market_opens]);
 
     let timer_components = '';
 

@@ -1,21 +1,17 @@
-# SwipeableWrapper component
-Use this component only on mobile to have a swipeable wrapper.
-
-#### Supported events:
-All events for 'react-swipeable' plugin except 'onSwipedRight' and 'onSwipedLeft' because we're using them in the component.
-Please take a look at plugin's page to get more information  https://github.com/FormidableLabs/react-swipeable .
+# MultiStep component
+Use this component to render separate steps.
 
 ## Usage
  
 ```jsx
-import { SwipeableWrapper } from 'deriv-components';
+import { MultiStep } from 'deriv-components';
 
 const DummyComponent = (props) => (
-    <SwipeableWrapper>
-        {props.slides.map(id => (
-            <Slide id={id + 1} key={id} />
-        ))}
-    </SwipeableWrapper>
+     <MultiStep
+        ref={this.multi_step_ref}
+        lbl_previous='Back'
+        steps={props.steps}
+    />
 );
 ```
 
@@ -23,23 +19,24 @@ const DummyComponent = (props) => (
 
 | Name                     | Type                   | Default            | Description                                                                                                              |
 |--------------------------|------------------------|--------------------|--------------------------------------------------------------------------------------------------------------------------|
-| onChange                 | {function}             | null               | Callback function for swipe event                                                                                        |
-| is_disabled              | {boolean}              | null               | Set it to 'true' to disable the 'react-swipeable' functions                                                              |
+| lbl_previous             | {string}               | null               | Prev step button's text                                                                                                  |
+| steps                    | {array}                | null               | Pass steps's contents as an array                                                                                        |
 
 
 ## Full example:
 
 ```jsx
-import { SwipeableWrapper } from 'deriv-components';
+import { MultiStep, Button } from 'deriv-components';
 
 const DummyComponent = (props) => (
-    <SwipeableWrapper 
-        onChange={props.onChange} 
-        is_disabled={props.is_disabled}
-    >
-        {props.slides.map(id => (
-            <Slide id={id + 1} key={id} />
-        ))}
-    </SwipeableWrapper>
+    <MultiStep
+        ref={this.multi_step_ref}
+        lbl_previous='Back'
+        steps={props.steps}
+    />
+    <Button
+        onClick={() => this.multi_step_ref.current.nextStep())}
+        text='Next step'
+    />
 );
 ```

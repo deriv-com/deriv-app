@@ -1,9 +1,15 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Money, Button, Text } from '@deriv/components';
+import { Icon, Money, Button, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { Mt5AccountCopy } from './mt5-account-copy.jsx';
 import { getMT5WebTerminalLink } from '../Helpers/constants';
+
+const account_icons = {
+    synthetic: 'IcMt5SyntheticPlatform',
+    financial: 'IcMt5FinancialPlatform',
+    financial_stp: 'IcMt5FinancialStpPlatform',
+};
 
 const LoginBadge = ({ display_login }) => (
     <div className='mt5-account-card__login'>
@@ -83,7 +89,6 @@ const MT5AccountCard = ({
     existing_data,
     has_mt5_account,
     has_real_account,
-    icon,
     is_accounts_switcher_on,
     is_button_primary,
     is_disabled,
@@ -98,7 +103,7 @@ const MT5AccountCard = ({
     toggleAccountsDialog,
     toggleShouldShowRealAccountsList,
 }) => {
-    const IconComponent = icon || (() => null);
+    const icon = type.type ? <Icon icon={account_icons[type.type]} size={64} /> : null;
     const has_popular_banner = type.type === 'synthetic' && type.category === 'real';
     const has_demo_banner = type.category === 'demo';
 
@@ -125,7 +130,7 @@ const MT5AccountCard = ({
                 })}
                 id={`mt5_${type.category}_${type.type}`}
             >
-                {icon && <IconComponent />}
+                {icon}
                 <div className='mt5-account-card__type--description'>
                     <h1 className='mt5-account-card--heading'>{title}</h1>
                     {(!existing_data || !is_logged_in) && <p className='mt5-account-card--paragraph'>{descriptor}</p>}

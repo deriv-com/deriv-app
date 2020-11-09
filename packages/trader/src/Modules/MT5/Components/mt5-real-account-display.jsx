@@ -1,5 +1,4 @@
 import React from 'react';
-import { Icon } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import {
     eu_real_financial_specs,
@@ -101,7 +100,6 @@ const MT5RealAccountDisplay = ({
             {(landing_companies?.mt_gaming_company?.financial || !is_logged_in) && (
                 <MT5AccountCard
                     has_mt5_account={has_mt5_account}
-                    icon={() => <Icon icon='IcMt5SyntheticPlatform' size={64} />}
                     title={localize('Synthetic')}
                     is_disabled={!is_eu && !has_real_account}
                     type={{
@@ -125,7 +123,6 @@ const MT5RealAccountDisplay = ({
                 <MT5AccountCard
                     has_mt5_account={has_mt5_account}
                     is_disabled={!is_eu && !has_real_account}
-                    icon={() => <Icon icon='IcMt5FinancialPlatform' size={64} />}
                     title={localize('Financial')}
                     type={{
                         category: 'real',
@@ -152,7 +149,6 @@ const MT5RealAccountDisplay = ({
             {(landing_companies?.mt_financial_company?.financial_stp || !is_logged_in) && (
                 <MT5AccountCard
                     has_mt5_account={has_mt5_account}
-                    icon={() => <Icon icon='IcMt5FinancialStpPlatform' size={64} />}
                     title={localize('Financial STP')}
                     type={{
                         category: 'real',

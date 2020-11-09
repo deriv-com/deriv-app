@@ -10,12 +10,12 @@ export const useBlockScroll = target_ref => {
             }
         };
 
-        document.body.addEventListener('mousewheel', blockScroll, { capture: true, passive: false });
-        document.body.addEventListener('touchmove', blockScroll, { capture: true, passive: false });
+        document.addEventListener('mousewheel', blockScroll, { passive: false });
+        document.addEventListener('touchmove', blockScroll, { passive: false });
 
         return () => {
-            document.body.removeEventListener('mousewheel', blockScroll, { capture: true, passive: false });
-            document.body.removeEventListener('touchmove', blockScroll, { capture: true, passive: false });
+            document.removeEventListener('mousewheel', blockScroll, { passive: false });
+            document.removeEventListener('touchmove', blockScroll, { passive: false });
         };
     }, [target_ref]);
 };

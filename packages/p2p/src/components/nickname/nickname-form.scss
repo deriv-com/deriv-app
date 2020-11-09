@@ -130,7 +130,7 @@
         display: flex;
         justify-content: flex-end;
         padding: 2.4rem;
-        position: fixed;
+        position: absolute;
         width: 100%;
 
         @include mobile {

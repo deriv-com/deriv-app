@@ -3,6 +3,7 @@ import React from 'react';
 import { Loading } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Unverified from 'Components/poi-unverified';
+import NotRequired from 'Components/poi-not-required';
 import ErrorMessage from 'Components/error-component';
 import Onfido from './onfido.jsx';
 import { getIdentityStatus } from './proof-of-identity';
@@ -130,7 +131,8 @@ class ProofOfIdentityContainer extends React.Component {
                 />
             );
         if (is_loading) return <Loading is_fullscreen={false} className='account___intial-loader' />;
-        if (unwelcome && !allow_document_upload) return <Unverified />; // CS manually mark the account as unwelcome / suspends the account
+        if (unwelcome && !allow_document_upload) return <Unverified />;
+        if (status === 'not_required') return <NotRequired />; // CS manually mark the account as unwelcome / suspends the account
 
         return (
             <Onfido

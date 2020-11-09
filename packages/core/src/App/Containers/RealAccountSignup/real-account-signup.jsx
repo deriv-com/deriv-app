@@ -49,11 +49,6 @@ const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_re
     }
 };
 
-const map_error_to_step = {
-    CurrencyTypeNotAllowed: 0,
-    InvalidPhone: 1,
-};
-
 class RealAccountSignup extends React.Component {
     constructor(props) {
         super(props);
@@ -72,7 +67,6 @@ class RealAccountSignup extends React.Component {
                             onError={this.showErrorModal}
                             onClose={this.closeModal}
                             onSuccessSetAccountCurrency={this.showSetCurrencySuccess}
-                            step={map_error_to_step[this.props.state_value.error_code] ?? 1}
                         />
                     ),
                     title: WizardHeading,

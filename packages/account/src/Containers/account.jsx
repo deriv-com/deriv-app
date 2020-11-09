@@ -10,7 +10,6 @@ import AccountLimitInfo from '../Sections/Security/AccountLimits/account-limits-
 import 'Styles/account.scss';
 
 const Account = ({
-    account_status,
     should_allow_authentication,
     currency,
     history,
@@ -35,7 +34,7 @@ const Account = ({
             setIsLoading(false);
             setShouldAllowDocumentUpload(should_allow_authentication);
         }
-    }, [account_status]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [should_allow_authentication, setShouldAllowDocumentUpload]);
 
     const subroutes = flatten(props_routes.map(route => route.subroutes));
 

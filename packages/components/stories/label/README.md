@@ -1,12 +1,12 @@
 # Label Component
 
-Renders a `Label` component.
+A styled label component.
 
 
 ## Usage
 
 ```jsx
-import Label from 'Components/label';
+import Label from 'deriv-components';
 
 const DummyComponent = props => (
     <Label mode={'success'}>
@@ -28,7 +28,7 @@ const DummyComponent = props => (
 
 ```jsx
 import React from 'react';
-import Label from 'Components/label';
+import Label from 'deriv-components';
 
 const DummyComponent = props => {
 

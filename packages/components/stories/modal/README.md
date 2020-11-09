@@ -1,13 +1,12 @@
 # Modal Component
 
-Renders a `Modal` component.
-
+A custom modal component.
 
 
 #### Usage
 
 ```jsx
-import Modal from 'Components/modal';
+import Modal from'deriv-components';
 
 const DummyComponent = props => (
     <Modal
@@ -82,8 +81,8 @@ Renders a footer for `Modal` component.
 
 ```jsx
 import React from 'react';
-import Modal from 'Components/modal';
-import Button from 'Components/button';
+import Modal from 'deriv-components';
+import Button from 'deriv-components';
 
 const DummyComponent = props => {
     const [visibility, setVisibility] = React.useState(false)

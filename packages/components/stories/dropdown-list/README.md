@@ -1,6 +1,6 @@
 # DropdownList Component
 
-Renders a `DropdownList` component which is a list of selectable items for a DropDown.
+A list of selectable items for a DropDown.
 
 
 #### Supported Gestures:
@@ -10,7 +10,7 @@ Renders a `DropdownList` component which is a list of selectable items for a Dro
 ## Usage
 
 ```jsx
-import DropdownList from 'Components/dropdown-list';
+import DropdownList from 'deriv-components';
 
 const DummyComponent = props => (
     <DropdownList
@@ -34,16 +34,16 @@ const DummyComponent = props => (
 | active_index      | {number}     | null        | Index of the active index                                                |
 | setActiveIndex    | {function}   | null        | Function returns the active index when it changes                        |
 | style             | {object}     | null        | Style object for the main wrapper                                        |
-| ref               | {object}     | null        | `ref` for the main DropdownList and inner elements. An object of {dropdown_ref, list_item_ref, list_wrapper_ref} |
+| ref               | {object}     | null        | `ref` for the main DropdownList and inner elements. An object of {dropdown_ref, list\_item\_ref, list\_wrapper\_ref} |
 | onScrollStop      | {function}   | null        | Function triggers when the user stops scrolling                          |
-| not_found_text    | {string}     | null        | For AuthoComplete if the entered text is not found in the list of items  |
+| not\_found\_text  | {string}     | null        | For AuthoComplete if the entered text is not found in the list of items  |
 
 
 # Full example:
 
 ```jsx
 import React, { useState } from 'react';
-import DropdownList from 'Components/dropdown-list';
+import DropdownList from 'deriv-components';
 
 const DummyComponent = props => {
 

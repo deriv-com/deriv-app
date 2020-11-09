@@ -1,6 +1,6 @@
 # DateOfBirthPicker Component
 
-Renders a `DateOfBirthPicker` component. `DateOfBirthPicker` restricts users with age < 18 and age > 100.
+A component to get the user's birthdate. Allowed range is from 18 to 100 (excluding).
 
 
 #### Supported Gestures:
@@ -14,7 +14,7 @@ Renders a `DateOfBirthPicker` component. `DateOfBirthPicker` restricts users wit
 ## Usage
 
 ```jsx
-import DateOfBirthPicker from 'Components/date-of-birth-picker';
+import DateOfBirthPicker from 'deriv-components';
 
 const DummyComponent = props => (
     <DateOfBirthPicker
@@ -33,14 +33,14 @@ const DummyComponent = props => (
 | name               | {string}     | null        | Name of the DateOfBirthPicker                               |
 | lable              | {string}     | null        | Lable of the DateOfBirthPicker                              |
 | value              | {string}     | null        | Default value of the DateOfBirthPicker                      |
-| onChange           | {function}   | undefined   | Function returns the changed value of DateOfBirthPicker     |
+| onChange           | {function}   | undefined   | Function returns current value of DateOfBirthPicker         |
 
 
 # Full example:
 
 ```jsx
 import React from 'react';
-import DateOfBirthPicker from 'Components/date-of-birth-picker';
+import DateOfBirthPicker from 'deriv-components';
 
 const DummyComponent = props => {    
     return (

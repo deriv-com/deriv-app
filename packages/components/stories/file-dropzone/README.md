@@ -1,12 +1,12 @@
 # FileDropzone Component
 
-Renders a `FileDropzone` component.
+A dropzone area. Client can upload files by dragging them into dropzone area
 
 
 ## Usage
 
 ```jsx
-import FileDropzone from 'Components/field';
+import FileDropzone from 'deriv-components';
 
 const DummyComponent = props => (
     <FileDropzone
@@ -41,8 +41,8 @@ const DummyComponent = props => (
 
 ```jsx
 import React, { useState } from 'react';
-import FileDropzone from 'Components/file-dropzone';
-import Icon from 'Components/icon';
+import FileDropzone from 'deriv-components';
+import Icon from 'deriv-components';
 
 const DummyComponent = props => {
 

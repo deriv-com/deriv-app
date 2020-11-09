@@ -1,12 +1,12 @@
 # FormProgress Component
 
-Renders a `FormProgress` component which is a progress bar for forms.
+A progress bar for forms.
 
 
 ## Usage
 
 ```jsx
-import FormProgress from 'Components/form-progress';
+import FormProgress from 'deriv-components';
 
 const DummyComponent = props => (
     <FormProgress steps={steps} current_step={currentStep} />
@@ -18,7 +18,7 @@ const DummyComponent = props => (
 
 | Name          | Type                                         | Default  | Description                                                                          |
 | ------------- | -------------------------------------------- | -------- | ------------------------------------------------------------------------------------ |
-| steps         | [object< header: object< title, active_title>>] | null     | Array of steps. Each item has a `header` which contains `title` and `active_title`.  |
+| steps         | [object< header: object< title, active\_title >>] | null     | Array of steps. Each item has a `header` which contains `title` and `active_title`.  |
 | current_step  | {number}                                     | null     | Current index of the progress                                                        |
 
 
@@ -27,7 +27,7 @@ const DummyComponent = props => (
 
 ```jsx
 import React, { useState } from 'react';
-import FormProgress from 'Components/form-progress';
+import FormProgress from 'deriv-components';
 
  const steps = [
                 { header: { active_title: 'This is the first step', title: 'step 1' } },

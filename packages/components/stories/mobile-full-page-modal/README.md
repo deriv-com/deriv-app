@@ -1,12 +1,12 @@
 # MobileFullPageModal Component
 
-Renders a `MobileFullPageModal` component.
+A full screen modal for mobile view.
 
 
 ## Usage
 
 ```jsx
-import MobileFullPageModal from 'Components/mobile-full-page-modal';
+import MobileFullPageModal from 'deriv-components';
 
 const DummyComponent = props => (
     <MobileFullPageModal
@@ -35,7 +35,7 @@ const DummyComponent = props => (
 
 ```jsx
 import React from 'react';
-import MobileFullPageModal from 'Components/mobile-full-page-modal';
+import MobileFullPageModal from 'deriv-components';
 
 const DummyComponent = props => {
     

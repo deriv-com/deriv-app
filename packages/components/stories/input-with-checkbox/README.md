@@ -1,6 +1,6 @@
 # InputWithCheckbox Component
 
-Renders a `InputWithCheckbox` component.
+An input with a checkbox. The input disability is depends on the value of the checkbox.
 
 
 #### Supported Gestures:
@@ -14,7 +14,7 @@ Renders a `InputWithCheckbox` component.
 ## Usage
 
 ```jsx
-import InputWithCheckbox from 'Components/input-wth-checkbox';
+import InputWithCheckbox from 'deriv-components';
 
 const DummyComponent = props => (
     <InputWithCheckbox
@@ -59,7 +59,7 @@ const DummyComponent = props => (
 
 ```jsx
 import React, { useState } from 'react';
-import InputWithCheckbox from 'Components/input-wth-checkbox';
+import InputWithCheckbox from 'deriv-components';
 
 const DummyComponent = props => {
 

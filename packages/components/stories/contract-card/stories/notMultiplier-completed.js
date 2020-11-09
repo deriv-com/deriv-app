@@ -6,7 +6,7 @@ import sampleData from '../sample-data/sampleData.json';
 import '../contract-card.stories.scss';
 
 const Basic = () => {
-    const data = sampleData.not_multiplier__complete;
+    const data = sampleData.not_multiplier_complete;
 
     return (
         <Wrapper>

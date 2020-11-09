@@ -1,6 +1,6 @@
 # CheckBox Component
 
-Renders a `CheckBox` component.
+A selectable item.
 
 
 #### Supported Gestures:
@@ -15,14 +15,14 @@ Renders a `CheckBox` component.
 ## Usage
 
 ```jsx
-import Checkbox from 'Components/checkbox';
+import Checkbox from 'deriv-components';
 
 const DummyComponent = props => (
   <Checkbox
         name='test_checkbox'
         value={selected}
         onChange={() => setSelected(!selected)}
-        label={('This is a test checkbox')}
+        label='This is a test checkbox'
     />
 );
 ```
@@ -45,7 +45,7 @@ const DummyComponent = props => (
 
 ```jsx
 import React, { useState } from 'react';
-import Checkbox from 'Components/checkbox';
+import Checkbox from 'deriv-components';
 
 const DummyComponent = props => {
 
@@ -58,7 +58,7 @@ const DummyComponent = props => {
                     name='test_checkbox'
                     value={selected}
                     onChange={() => setSelected(!selected)}
-                    label={('This is a test checkbox')}
+                    label='This is a test checkbox'
                 />
             </div>
         </React.Fragment>

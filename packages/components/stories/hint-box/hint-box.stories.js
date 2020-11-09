@@ -10,5 +10,5 @@ const stories = storiesOf('HintBox', module);
 stories.addDecorator(withInfo);
 stories.addDecorator(withKnobs);
 
-stories.add('Info Hink', InfoHint, { notes });
+stories.add('Info Hint', InfoHint, { notes });
 stories.add('Not Info Hint', NotInfoHint, { notes });

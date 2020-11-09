@@ -1,13 +1,13 @@
 # Loading Component
 
-Renders a `Loading` component.
+A `Loading` component.
 
 
 
 ## Usage
 
 ```jsx
-import Loading from 'Components/loading';
+import Loading from 'deriv-components';
 
 const DummyComponent = props => (
     <Loading
@@ -34,7 +34,7 @@ const DummyComponent = props => (
 
 ```jsx
 import React from 'react';
-import Loading from 'Components/loading';
+import Loading from 'deriv-components';
 
 const DummyComponent = props => {
     

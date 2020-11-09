@@ -1,12 +1,12 @@
 # Field Component
 
-Renders a `Field` component which is a text with normal, error, or warn style.
+A text with normal, error, or warn style.
 
 
 ## Usage
 
 ```jsx
-import Field from 'Components/field';
+import Field from 'deriv-components';
 
 const DummyComponent = props => (
     <Field message={'This is an error Field'} type={'error'} />
@@ -28,7 +28,7 @@ const DummyComponent = props => (
 
 ```jsx
 import React, { useState } from 'react';
-import Field from 'Components/field';
+import Field from 'deriv-components';
 
 const DummyComponent = props => {
 

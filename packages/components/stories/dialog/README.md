@@ -1,6 +1,6 @@
 # Dialog Component
 
-Renders a `Dialog` component. The dialog may has Confirm and Cancel buttons.
+A dialog with Confirm and Cancel buttons.
 
 
 #### Supported Gestures:
@@ -15,7 +15,7 @@ Renders a `Dialog` component. The dialog may has Confirm and Cancel buttons.
 ## Usage
 
 ```jsx
-import Dialog from 'Components/dialog';
+import Dialog from 'deriv-components';
 
 const DummyComponent = props => (
     <Dialog
@@ -54,8 +54,8 @@ const DummyComponent = props => (
 
 ```jsx
 import React, { useState } from 'react';
-import Dialog from 'Components/dialog';
-import Button from 'Components/button';
+import Dialog from 'deriv-components';
+import Button from 'deriv-components';
 
 const DummyComponent = props => {
     const [visibility, setVisibility] = useState(false)

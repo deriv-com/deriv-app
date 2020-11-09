@@ -1,12 +1,12 @@
 # FormSubmitButton Component
 
-Renders a `FormSubmitButton` component contains a submit botton and optionally a back button.
+A submit botton and optionally a back button for forms.
 
 
 ## Usage
 
 ```jsx
-import FormSubmitButton from 'Components/form-submit-button';
+import FormSubmitButton from 'deriv-components';
 
 const DummyComponent = props => (
     <FormSubmitButton
@@ -41,7 +41,7 @@ const DummyComponent = props => (
 
 ```jsx
 import React from 'react';
-import FormSubmitButton from 'Components/form-submit-button';
+import FormSubmitButton from 'deriv-components';
 
 const DummyComponent = props => {
 

@@ -1,6 +1,6 @@
 # ButtonToggle Component
 
-Renders `ButtonToggle` component.
+A toggle button list.
 
 
 #### Supported Gestures:
@@ -14,7 +14,7 @@ Renders `ButtonToggle` component.
 ## Usage
 
 ```jsx
-import ButtonToggle from 'Components/button-toggle';
+import ButtonToggle from 'deriv-components';
 
 const DummyComponent = props => (
   <ButtonToggle
@@ -35,13 +35,13 @@ const DummyComponent = props => (
 | onChange             | {function}                     | undefined   | Function returns the selected button's value and the name of ButtonToggle   |
 | value                | {string \| number}             | null        | The selected button's value                                                 |
 | is_animated          | {boolean}                      | `false`     | Use animated ButtonToggle                                                   |
-| has\_rounded\_button | {boolean}                      | `false`     | Apply `border-radius` to buttons. Available if `is_animated` is enable      |
+| has\_rounded\_button | {boolean}                      | `false`     | Apply `border-radius` to buttons. Available if `is_animated` is true        |
 
 
 # Full example:
 
 ```jsx
-import ButtonToggle from 'Components/button-toggle';
+import ButtonToggle from 'deriv-components';
 
 const DummyComponent = props => (
     <React.Fragment>

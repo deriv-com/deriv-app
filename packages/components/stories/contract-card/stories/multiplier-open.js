@@ -12,7 +12,7 @@ const Basic = () => {
         setLoaded(true);
     }, []);
 
-    let data = sampleData.multiplier__open;
+    const data = sampleData.multiplier_open;
 
     return (
         <Wrapper>

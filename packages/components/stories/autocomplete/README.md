@@ -1,12 +1,12 @@
 # AutoComplete Component
 
-Renders an `AutoComplete` component.
+Advanced `AutoComplete` component.
 
 
 ## Usage
 
 ```jsx
-import Autocomplete from 'Components/autocomplete';
+import Autocomplete from 'deriv-components';
 
 const DummyComponent = props => (
     <Autocomplete
@@ -25,9 +25,9 @@ const DummyComponent = props => (
 
 | Name               | Type                             | Default             | Description                               |
 | ------------------ | -------------------------------- | ------------------- | ----------------------------------------- |
-| list_items         | [string] \| [object<text,value>] | []                  | Items of suggestion list                  |
-| list_height        | {string}                         | 0                   | Height of the suggestion list element.    |
-| not_found_text     | {string}                         | 'No results found'  | Text return if no item found              |
+| list_items         | [string] \| [object<text,value>] | []                  | Suggestion list                           |
+| list_height        | {string}                         | null                | Height of the suggestion list element.    |
+| not_found_text     | {string}                         | 'No results found'  | Text to show if no item found             |
 | onHideDropdownList | {function}                       | undefined           | Function triggers when the dropdown hides.|
 | onItemSelection    | {function}                       | undefined           | Function returns the selected element.    |
 
@@ -36,7 +36,7 @@ const DummyComponent = props => (
 
 ```jsx
 import { Formik, Field } from 'formik';
-import Autocomplete from 'Components/autocomplete';
+import Autocomplete from 'deriv-components';
 
 const DummyComponent = props => (
     <React.Fragment>

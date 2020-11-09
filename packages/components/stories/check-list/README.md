@@ -1,6 +1,6 @@
 # CheckList Component
 
-Renders a `CleckList` component.
+A list of items with an action button or with done status
 
 
 #### Supported Gestures:
@@ -10,7 +10,7 @@ Renders a `CleckList` component.
 ## Usage
 
 ```jsx
-import Checklist from 'Components/checklist';
+import Checklist from 'deriv-components';
 
 const DummyComponent = props => (
   <Checklist items={list} />
@@ -27,7 +27,7 @@ const DummyComponent = props => (
 
 
 ## `Items` Structure
-The `items` prop should be an array of this objects:
+The `items` prop should be an array of these objects:
 
 | Name               | Type         | Default     | Description                                                                                           |
 | ------------------ | ------------ | ----------- | ----------------------------------------------------------------------------------------------------- |
@@ -42,7 +42,7 @@ The `items` prop should be an array of this objects:
 
 ```jsx
 import React, { useState } from 'react';
-import Checkbox from 'Components/checkbox';
+import Checkbox from 'deriv-components';
 
 const DummyComponent = props => {
 

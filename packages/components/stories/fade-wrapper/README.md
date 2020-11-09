@@ -1,12 +1,12 @@
 # FadeWrapper Component
 
-Renders a `FadeWrapper` component.
+A wrapper with fade animation
 
 
 ## Usage
 
 ```jsx
-import FadeWrapper from 'Components/fade-wrapper';
+import FadeWrapper from 'deriv-components';
 
 const DummyComponent = props => (
    <FadeWrapper
@@ -34,8 +34,8 @@ const DummyComponent = props => (
 
 ```jsx
 import React, { useState } from 'react';
-import DropdownList from 'Components/dropdown-list';
-import Button from 'Components/button';
+import DropdownList from 'deriv-components';
+import Button from 'deriv-components';
 
 const DummyComponent = props => {
 

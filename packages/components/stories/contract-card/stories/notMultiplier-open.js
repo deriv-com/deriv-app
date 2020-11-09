@@ -7,7 +7,7 @@ import { toMoment } from '@deriv/shared';
 import '../contract-card.stories.scss';
 
 const Basic = () => {
-    const data = sampleData.not_multiplier__open;
+    const data = sampleData.not_multiplier_open;
 
     return (
         <Wrapper>

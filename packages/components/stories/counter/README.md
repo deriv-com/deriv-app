@@ -6,7 +6,7 @@ Renders a `Counter` component containing a number
 ## Usage
 
 ```jsx
-import Counter from 'Components/counter';
+import Counter from 'deriv-components';
 
 const DummyComponent = props => (
     <Counter count={5} className='counter' />
@@ -17,14 +17,14 @@ const DummyComponent = props => (
 
 | Name               | Type         | Default     | Description                             |
 | ------------------ | ------------ | ----------- | --------------------------------------- |
-| className          | {string}     | null        | The classname of the mani component     |
+| className          | {string}     | null        | The classname of the main component     |
 | count              | {string}     | null        | Number to show                          |
 
 # Full example:
 
 ```jsx
 import React from 'react';
-import Counter from 'Components/counter';
+import Counter from 'deriv-components';
 
 const DummyComponent = props => {    
     return (

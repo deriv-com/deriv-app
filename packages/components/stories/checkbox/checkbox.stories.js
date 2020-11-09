@@ -21,7 +21,7 @@ storiesOf('CheckBox', module)
                         name='test_checkbox'
                         value={selected}
                         onChange={() => setSelected(!selected)}
-                        label={'This is a test checkbox'}
+                        label='This is a test checkbox'
                     />
                 </Wrapper>
             );

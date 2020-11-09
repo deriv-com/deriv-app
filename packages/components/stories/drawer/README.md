@@ -1,6 +1,6 @@
 # Drawer Component
 
-Renders a `Drawer` component. The Drawer is a menu appears in the right side of the screen for desktop view and in the buttom of the screen for mobile view.
+A menu appears in the right side of the screen for desktop view and in the buttom of the screen for mobile view.
 
 
 #### Supported Gestures:
@@ -10,7 +10,7 @@ Renders a `Drawer` component. The Drawer is a menu appears in the right side of 
 ## Usage
 
 ```jsx
-import Drawer from 'Components/drawer';
+import Drawer from 'deriv-components';
 
 const DummyComponent = props => (
     <Drawer
@@ -43,7 +43,7 @@ const DummyComponent = props => (
 
 ```jsx
 import React, { useState } from 'react';
-import Drawer from 'Components/drawer';
+import Drawer from 'deriv-components';
 
 const DummyComponent = props => {
 

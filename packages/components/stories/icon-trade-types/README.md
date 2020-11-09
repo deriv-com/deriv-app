@@ -1,12 +1,12 @@
 # IconTradeTypes Component
 
-Renders a `IconTradeTypes` component.
+Icon for trade types.
 
 
 ## Usage
 
 ```jsx
-import IconTradeTypes from 'Components/icon-trade-types';
+import IconTradeTypes from 'deriv-components';
 
 const DummyComponent = props => (
     <IconTradeTypes type={'asiand'} size={16} />
@@ -26,7 +26,7 @@ const DummyComponent = props => (
 
 ```jsx
 import React from 'react';
-import IconTradeTypes from 'Components/icon-trade-types';
+import IconTradeTypes from 'deriv-components';
 
 const DummyComponent = props => {
 

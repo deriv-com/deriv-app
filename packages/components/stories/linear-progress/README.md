@@ -1,13 +1,13 @@
 # LinearProgress Component
 
-Renders a `LinearProgress` component. The LinearProgress component can run an action after a certain timeout.
+A linear progressbar component. The LinearProgress component can run an action after a certain timeout.
 
 
 
 ## Usage
 
 ```jsx
-import LinearProgress from 'Components/linear-progress';
+import LinearProgress from 'deriv-components';
 
 const DummyComponent = props => (
     <LinearProgress
@@ -32,7 +32,7 @@ const DummyComponent = props => (
 
 ```jsx
 import React from 'react';
-import LinearProgress from 'Components/linear-progress';
+import LinearProgress from 'deriv-components';
 
 const DummyComponent = props => {
     

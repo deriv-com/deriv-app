@@ -1,6 +1,6 @@
 # Input Component
 
-Renders a custom `Input` component.
+A custom `Input` component.
 
 
 #### Supported Events:
@@ -11,7 +11,7 @@ Renders a custom `Input` component.
 ## Usage
 
 ```jsx
-import Input from 'Components/input';
+import Input from 'deriv-components';
 
 const DummyComponent = props => (
     <Input 
@@ -31,7 +31,7 @@ const DummyComponent = props => (
 | ------------------------- | ---------- | -------- | ----------------------------------------------------- |
 | label                     | {string}   | null     | The label of the input                                |
 | hint                      | {string}   | null     | The hint text showing at the bottom of the input      |
-| onChange                  | {function} | null     | Function triggers when the value has changed     |
+| onChange                  | {function} | null     | Function triggers when the value has changed          |
 | leading_icon              | {string}   | null     | The loading icon for the input                        |
 | trailing_icon             | {string}   | null     | The trailing icon for the input                       |
 | has\_character\_counter   | {string}   | null     | Difines whether to show character counter or not      |
@@ -49,7 +49,7 @@ const DummyComponent = props => (
 
 ```jsx
 import React from 'react';
-import Input from 'Components/input';
+import Input from 'deriv-components';
 
 const DummyComponent = props => {
     

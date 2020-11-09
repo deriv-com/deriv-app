@@ -1,12 +1,12 @@
 # DesktopWrapper Component
 
-Renders a `DesktopWrapper` component which renders the children only if the user's device is desktop and otherwise, renders nothing
+A wrapper which shows its children only if the client's device is desktop (in terms of width).
 
 # Full example:
 
 ```jsx
 import React from 'react';
-import DesktopWrapper from 'Components/desktop-wrapper';
+import DesktopWrapper from 'deriv-components';
 
 const DummyComponent = props => {    
     return (

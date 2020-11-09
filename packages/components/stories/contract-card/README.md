@@ -1,6 +1,6 @@
 # ContractCard Component
 
-Renders a `ContractCard` component showing the information of a contract. Two types of contracts defined in this component are multiplier contract and not-multiplier contract. A contract may be completed or still ongoing. 
+Shows detailed information of a contract. Two types of contracts are available to use: `multiplier` contract and `simple` contracts. A contract can be either `completed` or `ongoing`. 
 
 
 ##### Supported Gestures:
@@ -10,7 +10,7 @@ Renders a `ContractCard` component showing the information of a contract. Two ty
 ##### Usage
 
 ```jsx
-import ContractCard from 'Components/contract-card';
+import ContractCard from 'deriv-components';
 
 const DummyComponent = props => (
   <ContractCard
@@ -47,7 +47,7 @@ Renders a `Header` for the contract card
 
 
 ```jsx
-import ContractCard from 'Components/contract-card';
+import ContractCard from 'deriv-components';
 
 const DummyComponent = props => (
     <ContractCard contract_info={data.contract_info}>
@@ -69,9 +69,9 @@ const DummyComponent = props => (
 | getCardLabels           | {function}   | null        | Function returns the labels to show in the card             |
 | getContractTypeDisplay  | {function}   | null        | Function returns the display name of the contract type      |
 | has\_progress\_slider   | {boolean}    | null        | Defines visibility of the sidebar. For ongoing contracts    |
-| is_mobile               | {boolean}    | null        | Showes whether the device is mobile or not                  |
-| is\_sell\_requested     | {boolean}    | null        | Showes whether the user requested for sell or not           |
-| is_sold                 | {boolean}    | null        | Showes whether the contract is sold or not                  |
+| is_mobile               | {boolean}    | null        | Shows whether the device is mobile or not                   |
+| is\_sell\_requested     | {boolean}    | null        | Shows whether the user requested for sell or not            |
+| is_sold                 | {boolean}    | null        | Shows whether the contract is sold or not                   |
 | onClickSell             | {function}   | null        | Function triggers when user clicks on sell button           |
 | server_time             | {object}     | null        | The server time moment object                               |
 
@@ -84,7 +84,7 @@ Renders a `Body` for the contract card
 
 
 ```jsx
-import ContractCard from 'Components/contract-card';
+import ContractCard from 'deriv-components';
 
 const DummyComponent = props => (
     <ContractCard contract_info={data.contract_info}>
@@ -110,8 +110,8 @@ const DummyComponent = props => (
 | getCardLabels    | {function}   | null        | Function returns the labels to show in the card             |
 | currency         | {string}     | null        | The contract currency                                       |
 | is_multiplier    | {boolean}    | null        | Defines the type of contract                                |
-| is_mobile        | {boolean}    | null        | Showes whether the device is mobile or not                  |
-| is_sold          | {boolean}    | null        | Showes whether the contract is sold or not                  |
+| is_mobile        | {boolean}    | null        | Shows whether the device is mobile or not                   |
+| is_sold          | {boolean}    | null        | Shows whether the contract is sold or not                   |
 | status           | {string}     | null        | The status of the contract. One of `'profit'` or `'loss'`   |
 | server_time      | {object}     | null        | The server time moment object                               |
 
@@ -125,7 +125,7 @@ Renders a `Footer` for the contract card
 
 
 ```jsx
-import ContractCard from 'Components/contract-card';
+import ContractCard from 'deriv-components';
 
 const DummyComponent = props => (
     <ContractCard contract_info={data.contract_info}>
@@ -149,7 +149,7 @@ const DummyComponent = props => (
 | getContractById                    | {function}   | null        | Function returns the contract information                           |
 | is_multiplier                      | {boolean}    | null        | Defines the type of contract                                        |
 | is_positions                       | {boolean}    | null        | Defines whether the contract is position or not                     |
-| is\_sell\_requested                | {boolean}    | null        | Showes whether the user requested for sell or not                   |
+| is\_sell\_requested                | {boolean}    | null        | Shows whether the user requested for sell or not                    |
 | onClickCancel                      | {function}   | null        | Function triggers when user clicks on cancel button                 |
 | onClickSell                        | {function}   | null        | Function triggers when user clicks on sell button                   |
 | addToast                           | {function}   | null        | Function for show toast                                             |
@@ -169,7 +169,7 @@ Renders a `Loader` for the contract card
 
 
 ```jsx
-import ContractCard from 'Components/contract-card';
+import ContractCard from 'deriv-components';
 
 const DummyComponent = props => (
     <ContractCard contract_info={data.contract_info}>
@@ -194,7 +194,7 @@ Renders `ContractTypeCell` for the contract card
 
 
 ```jsx
-import ContractCard from 'Components/contract-card';
+import ContractCard from 'deriv-components';
 
 const DummyComponent = props => (
     <ContractCard contract_info={data.contract_info}>
@@ -231,7 +231,7 @@ Renders `MultiplierCloseActions` for the contract card
 
 
 ```jsx
-import ContractCard from 'Components/contract-card';
+import ContractCard from 'deriv-components';
 
 const DummyComponent = props => (
     <ContractCard contract_info={data.contract_info}>
@@ -268,7 +268,7 @@ Renders `Sell` button for the contract card
 
 
 ```jsx
-import ContractCard from 'Components/contract-card';
+import ContractCard from 'deriv-components';
 
 const DummyComponent = props => (
     <ContractCard contract_info={data.contract_info}>
@@ -299,7 +299,7 @@ const DummyComponent = props => (
 
 ```jsx
 import React, { useState } from 'react';
-import ContractCard from 'Components/contract-card';
+import ContractCard from 'deriv-components';
 
 const DummyComponent = props => {
     const data = {} // a contract data

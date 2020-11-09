@@ -1,6 +1,6 @@
 # MobileCarousel Component
 
-Renders a `MobileCarousel` component.
+A carousel for mobile devices.
 
 ## Gestures
 - Swipe Left
@@ -9,7 +9,7 @@ Renders a `MobileCarousel` component.
 ## Usage
 
 ```jsx
-import MobileCarousel from 'Components/mobile-carousel';
+import MobileCarousel from 'deriv-components';
 
 const DummyComponent = props => (
     <MobileCarousel>
@@ -29,7 +29,7 @@ const DummyComponent = props => (
 
 ```jsx
 import React from 'react';
-import MobileCarousel from 'Components/mobile-carousel';
+import MobileCarousel from 'deriv-components';
 
 const DummyComponent = props => {
     

@@ -1,6 +1,6 @@
 # InputField Component
 
-Renders a custom `InputField` component.
+A custom `InputField` component.
 
 
 #### Supported Gestures:
@@ -15,7 +15,7 @@ Renders a custom `InputField` component.
 ## Usage
 
 ```jsx
-import InputField from 'Components/input-field';
+import InputField from 'deriv-components';
 
 const DummyComponent = props => (
     <InputField 
@@ -83,7 +83,7 @@ const DummyComponent = props => (
 
 ```jsx
 import React from 'react';
-import InputField from 'Components/input-field';
+import InputField from 'deriv-components';
 
 const DummyComponent = props => {
     

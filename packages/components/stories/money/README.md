@@ -1,12 +1,12 @@
 # Money Component
 
-Renders a `Money` component.
+A component to format money and append currency to it.
 
 
 ## Usage
 
 ```jsx
-import Money from 'Components/money';
+import Money from 'deriv-components';
 
 const DummyComponent = props => (
     <Money 
@@ -34,7 +34,7 @@ const DummyComponent = props => (
 
 ```jsx
 import React from 'react';
-import Money from 'Components/money';
+import Money from 'deriv-components';
 
 const DummyComponent = props => {
 

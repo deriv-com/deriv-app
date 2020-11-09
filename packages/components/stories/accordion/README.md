@@ -1,6 +1,6 @@
 # Accordion Component
 
-Renders an accordions with a list of inner objects. The objects must have `header` and `content` property and both of them can be a `simple` string or a `node object`.
+An accordions with a list of node objects. Objects must have `header` and `content` props and both of them can be a simple `string` or a `node object`.
 
 #### Supported Gestures:
 
@@ -9,7 +9,7 @@ Renders an accordions with a list of inner objects. The objects must have `heade
 ## Usage
 
 ```jsx
-import Accordion from 'Components/accordion';
+import Accordion from 'deriv-components';
 
 const DummyComponent = props => (
    <Accordion
@@ -21,24 +21,21 @@ const DummyComponent = props => (
 
 ## Props
 
-| Name          | Type                | Default   | Description                         |
-| ------------- | ------------------- | --------- | ----------------------------------- |
-| list          | [{header, contant}] | []        | Array contains a list of objects.   |
-| classname     | {string}            | null      | Classname for accordion wrapper.    |
+| Name          | Type                | Default   | Description                           |
+| ------------- | ------------------- | --------- | ------------------------------------- |
+| list          | [{header, contant}] | []        | Array containing the list of objects. |
+| className     | {string}            | null      | Accordion wrapper class.              |
 
 
 # Full example:
 
 ```jsx
-import Accordion from 'Components/accordion';
+import Accordion from 'deriv-components';
 
 const DummyComponent = props => (
     <Accordion
         className='accordion__wrapper'
-        list={[ { header: 'header 1', content: 'content 1' },
-                { header: 'header 2', content: 'content 2' },
-                { header: 'header 3', content: 'content 3' }
-        ]}
+        list={ Array.from(new Array(3)).map((_, i) => ({ header: `header ${i + 1}`, content: `content ${i + 1}`})) }
     />
 );
 ```

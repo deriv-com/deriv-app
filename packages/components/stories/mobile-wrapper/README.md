@@ -1,12 +1,12 @@
 # MobileWrapper Component
 
-Renders a `MobileWrapper` component which renders the children only if the user's device is mobile and otherwise, renders nothing
+A wrapper which shows its children only if the client's device is mobile (in terms of width).
 
 # Full example:
 
 ```jsx
 import React from 'react';
-import MobileWrapper from 'Components/mobile-wrapper';
+import MobileWrapper from 'deriv-components';
 
 const DummyComponent = props => {    
     return (

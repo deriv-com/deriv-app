@@ -1,6 +1,6 @@
 # ButtonLink Component
 
-Renders `ButtonLink` component.
+A button directs to a destination link.
 
 
 #### Supported Gestures:
@@ -14,7 +14,7 @@ Renders `ButtonLink` component.
 ## Usage
 
 ```jsx
-import ButtonLink from 'Components/button-link';
+import ButtonLink from 'deriv-components';
 
 const DummyComponent = props => (
    <ButtonLink
@@ -42,7 +42,7 @@ const DummyComponent = props => (
 
 ```jsx
 import { BrowserRouter } from 'react-router-dom';
-import ButtonLink from 'Components/button-link';
+import ButtonLink from 'deriv-components';
 
 const DummyComponent = props => (
     <React.Fragment>

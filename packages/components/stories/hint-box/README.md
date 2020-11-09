@@ -1,12 +1,12 @@
 # HintBox Component
 
-Renders a `HintBox` component.
+A styles message. Two available styles are `info` and `not_info`.
 
 
 ## Usage
 
 ```jsx
-import HintBox from 'Components/hint-box';
+import HintBox from 'deriv-components';
 
 const DummyComponent = props => (
     <HintBox
@@ -32,7 +32,7 @@ const DummyComponent = props => (
 
 ```jsx
 import React from 'react';
-import HintBox from 'Components/hint-box';
+import HintBox from 'deriv-components';
 
 const DummyComponent = props => {
 

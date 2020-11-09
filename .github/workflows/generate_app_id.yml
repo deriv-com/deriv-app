@@ -36,18 +36,18 @@ jobs:
 
             - **PR**: [${{ steps.generate_app_id.outputs.pr_url }}](${{ steps.generate_app_id.outputs.pr_url }})
             - **URLs**:
-                - **URL w/ App ID + Server**: [${{ steps.vercel_preview_url.outputs.vercel_preview_url }}](${{ steps.vercel_preview_url.outputs.vercel_preview_url }}?qa_server=frontend.binaryws.com&app_id=${{ steps.generate_app_id.outputs.app_id }})
-                - **Original URL**: [${{ steps.vercel_preview_url.outputs.vercel_preview_url }}](${{ steps.vercel_preview_url.outputs.vercel_preview_url }})
+                - **w/ App ID + Server**: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}?qa_server=frontend.binaryws.com&app_id=${{ steps.generate_app_id.outputs.app_id }}
+                - **Original**: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}
             - **App ID**: `${{ steps.generate_app_id.outputs.app_id }}`
 
             <details>
-              <summary>Copy/paste snippet</summary>
+              <summary>Click here to copy & paste above information.</summary>
 
               ```
               - **PR**: [${{ steps.generate_app_id.outputs.pr_url }}](${{ steps.generate_app_id.outputs.pr_url }})
               - **URLs**:
-                  - **URL w/ App ID + Server**: [${{ steps.vercel_preview_url.outputs.vercel_preview_url }}](${{ steps.vercel_preview_url.outputs.vercel_preview_url }}?qa_server=frontend.binaryws.com&app_id=${{ steps.generate_app_id.outputs.app_id }})
-                  - **Original URL**: [${{ steps.vercel_preview_url.outputs.vercel_preview_url }}](${{ steps.vercel_preview_url.outputs.vercel_preview_url }})
+                  - **w/ App ID + Server**: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}?qa_server=frontend.binaryws.com&app_id=${{ steps.generate_app_id.outputs.app_id }}
+                  - **Original**: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}
               - **App ID**: `${{ steps.generate_app_id.outputs.app_id }}`
               ```
             </details>

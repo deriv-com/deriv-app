@@ -11,7 +11,7 @@ const Popover = ({ ...props }) => {
     const [is_bubble_open, setIsBubbleOpen] = React.useState(false);
     const [popover_ref, setPopoverRef] = React.useState(undefined);
     const bubble_ref = React.useRef(is_bubble_open);
-    const [hoverRef, isHovered] = useHover();
+    const [hover_ref, is_hovered] = useHover();
 
     React.useEffect(() => {
         bubble_ref.current = is_bubble_open;
@@ -61,7 +61,7 @@ const Popover = ({ ...props }) => {
     const icon_class_name = classNames(classNameTargetIcon, icon);
 
     return (
-        <div ref={hoverRef} className={classNames({ 'dc-popover__wrapper': relative_render })}>
+        <div ref={hover_ref} className={classNames({ 'dc-popover__wrapper': relative_render })}>
             {relative_render && (
                 <div className='dc-popover__container' style={{ zIndex: zIndex || 1 }}>
                     <div ref={ref} className='dc-popover__container-relative' />
@@ -69,7 +69,7 @@ const Popover = ({ ...props }) => {
             )}
             {(popover_ref || !relative_render) && (
                 <TinyPopover
-                    isOpen={is_open ?? isHovered}
+                    isOpen={is_open ?? is_hovered}
                     position={alignment}
                     transitionDuration={0.25}
                     padding={margin + 8}

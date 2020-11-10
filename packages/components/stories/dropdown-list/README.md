@@ -6,6 +6,8 @@ A list of selectable items for a DropDown.
 #### Supported Gestures:
 
 -   Click
+-   Arrow keypresses for movement
+-   Space and Enter keypresses for selection
 
 ## Usage
 

@@ -27,8 +27,17 @@
         height: 2.4rem;
         white-space: nowrap;
     }
+    &__table-header {
+        display: grid;
+        grid-template-columns: 2fr repeat(3, 1fr);
+    }
+
     &__table-row {
-        grid-template-columns: 2fr 1fr 1fr 1fr;
+        grid-template-columns: 2fr repeat(3, 1fr);
+
+        &:hover {
+            background-color: var(--general-hover);
+        }
     }
     &__cell {
         cursor: pointer;

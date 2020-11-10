@@ -205,17 +205,18 @@ export default class CashierStore extends BaseStore {
     init() {
         reaction(
             () => [this.root_store.client.is_logged_in, this.root_store.client.residence],
-            async () => {
+            () => {
                 if (!this.is_p2p_visible && !this.root_store.client.is_virtual) {
-                    const advertiser_info = await WS.authorized.p2pAdvertiserInfo();
-                    const advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
-                    if (advertiser_error === 'RestrictedCountry') {
-                        this.setIsP2PBannerVisible(false);
-                    } else {
-                        this.setIsP2PBannerVisible(true);
-                    }
+                    WS.authorized.p2pAdvertiserInfo().then(advertiser_info => {
+                        const advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
+                        if (advertiser_error === 'RestrictedCountry') {
+                            this.setIsP2PBannerVisible(false);
+                        } else {
+                            this.setIsP2PBannerVisible(true);
+                        }
 
-                    this.is_p2p_advertiser = !advertiser_error;
+                        this.is_p2p_advertiser = !advertiser_error;
+                    });
                 }
             }
         );

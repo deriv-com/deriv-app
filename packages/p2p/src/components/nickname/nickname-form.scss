@@ -28,11 +28,12 @@
     }
     &-content {
         &__centre {
-            padding: 0 4rem;
+            align-items: center;
             display: flex;
             flex-direction: column;
+            height: calc(100% - 74px);
             justify-content: center;
-            align-items: center;
+            padding: 0 4rem;
         }
         &--title {
             color: var(--text-general);
@@ -130,7 +131,6 @@
         display: flex;
         justify-content: flex-end;
         padding: 2.4rem;
-        position: absolute;
         width: 100%;
 
         @include mobile {
@@ -141,5 +141,11 @@
     &-close_icon {
         cursor: pointer;
         fill: var(--text-general);
+    }
+
+    &-wrapper {
+        @include mobile {
+            height: 100%;
+        }
     }
 }

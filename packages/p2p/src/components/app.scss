@@ -102,7 +102,7 @@
 .p2p-nickname {
     &__dialog {
         @include mobile {
-            padding-top: 4rem;
+            height: 100%;
         }
     }
 }

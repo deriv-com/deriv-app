@@ -203,6 +203,7 @@ export default class CashierStore extends BaseStore {
     // Initial init just for displaying P2P banner without mounting the entire cashier
     @action.bound
     init() {
+        // eslint-disable-next-line no-undef
         reaction(
             () => [this.root_store.client.is_logged_in, this.root_store.client.residence],
             () => {

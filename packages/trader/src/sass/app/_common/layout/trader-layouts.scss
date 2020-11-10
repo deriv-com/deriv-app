@@ -121,7 +121,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
                     flex: 2;
 
                     &--is-multiplier {
-                        max-height: 26.9rem;
+                        max-height: 27.9rem;
                         top: -0.5rem;
 
                         @media (max-width: 320px) and (max-height: 480px) {
@@ -149,26 +149,6 @@ $FLOATING_HEADER_HEIGHT: 41px;
                     }
                 }
                 &--is-multiplier {
-                    & .dc-contract-card-dialog-toggle {
-                        top: 81px;
-                        width: 124px;
-                        height: 82px;
-                        right: 8px;
-
-                        @media only screen and (max-width: 380px) {
-                            width: 109px;
-                            top: 77px;
-                        }
-                        @media only screen and (max-width: 320px) {
-                            top: 69px;
-                            width: 98px;
-                            height: 78px;
-                        }
-                        @media (max-width: 320px) and (max-height: 480px) {
-                            top: 66px;
-                            height: 65px;
-                        }
-                    }
                     & .dc-contract-card {
                         &__body-wrapper {
                             flex-direction: column;
@@ -266,7 +246,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
                         }
                     }
                     &.contract-drawer--is-expanded {
-                        transform: translateY(calc(-100% + 376px));
+                        transform: translateY(calc(-100% + 410px));
 
                         @media (max-width: 320px) and (max-height: 480px) {
                             transform: translateY(calc(-100% + 238px));
@@ -803,6 +783,10 @@ $FLOATING_HEADER_HEIGHT: 41px;
                         }
                     }
                 }
+            }
+            /** @define cq-top-ui-widgets; weak */
+            .cq-top-ui-widgets {
+                z-index: 15 !important;
             }
         }
     }

@@ -86,7 +86,7 @@
     "@deriv/account": "^1.0.0",
     "@deriv/components": "^1.0.0",
     "@deriv/deriv-api": "^1.0.7",
-    "@deriv/deriv-charts": "^0.3.4",
+    "@deriv/deriv-charts": "^0.3.8",
     "@deriv/shared": "^1.0.0",
     "@deriv/translations": "^1.0.0",
     "acorn": "^6.1.1",
@@ -117,7 +117,6 @@
     "react-pose": "^4.0.10",
     "react-router-dom": "^5.0.1",
     "react-transition-group": "^2.5.0",
-    "react-window": "^1.8.4",
     "workbox-webpack-plugin": "^4.3.1"
   }
 }

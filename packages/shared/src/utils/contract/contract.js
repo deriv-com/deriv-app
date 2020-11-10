@@ -59,6 +59,8 @@ export const getDigitInfo = (digits_info, contract_info) => {
     };
 };
 
+export const getTotalProfit = contract_info => contract_info.bid_price - contract_info.buy_price;
+
 const createDigitInfo = (spot, spot_time) => {
     const digit = +`${spot}`.slice(-1);
 
@@ -100,7 +102,7 @@ export const getTimePercentage = (server_time, start_time, expiry_time) => {
 export const getDisplayStatus = contract_info => {
     let status = 'purchased';
     if (isEnded(contract_info)) {
-        status = contract_info.profit >= 0 ? 'won' : 'lost';
+        status = getTotalProfit(contract_info) >= 0 ? 'won' : 'lost';
     }
     return status;
 };

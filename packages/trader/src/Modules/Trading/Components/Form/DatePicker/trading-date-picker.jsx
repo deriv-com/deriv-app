@@ -2,10 +2,9 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import React from 'react';
-import { DatePicker } from '@deriv/components';
+import { DatePicker, Tooltip } from '@deriv/components';
 import { isTimeValid, setTime, toMoment } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import Tooltip from 'App/Components/Elements/tooltip.jsx';
 import { connect } from 'Stores/connect';
 import ContractType from 'Stores/Modules/Trading/Helpers/contract-type';
 import { hasIntradayDurationUnit } from 'Stores/Modules/Trading/Helpers/duration';
@@ -148,8 +147,8 @@ class TradingDatePicker extends React.Component {
 
         return (
             <div
-                className={classNames('input-field', {
-                    'input-field--has-error': has_error,
+                className={classNames('dc-input-field', {
+                    'dc-input-field--has-error': has_error,
                 })}
             >
                 <Tooltip

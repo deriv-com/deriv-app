@@ -3,6 +3,13 @@
 A searchable `Dropdown` input component that accepts text input and provides a suggested list based on keyword entered.
 
 
+#### Supported Events:
+
+-   onChange
+-   Arrow keypresses for movement
+-   Enter keypresses for selection
+
+
 ## Usage
 
 ```jsx

@@ -117,30 +117,24 @@ $FLOATING_HEADER_HEIGHT: 41px;
 
                 &__mobile-wrapper {
                     position: relative;
-                    max-height: 23.4rem;
                     flex: 2;
+                    top: calc(100% - 23.4rem);
 
-                    @media (max-width: 360px) {
-                        max-height: 24.8rem;
+                    @media (max-width: 363px) {
+                        top: calc(100% - 24.8rem);
                     }
 
                     &--is-multiplier {
-                        max-height: 29rem;
+                        top: calc(100% - 29rem);
 
-                        @media (max-height: 480px) {
-                            top: -30px;
+                        @media (max-width: 396px) {
+                            top: calc(100% - 30.2rem);
                         }
-
-                        @media (max-height: 450px) {
-                            top: -50px;
+                        @media (max-width: 358px) {
+                            top: calc(100% - 31.8rem);
                         }
-
-                        @media (max-width: 375px) {
-                            max-height: 30.2rem;
-                        }
-
                         @media (max-width: 320px) {
-                            max-height: 31rem;
+                            top: calc(100% - 31rem);
                         }
                     }
                 }
@@ -148,16 +142,16 @@ $FLOATING_HEADER_HEIGHT: 41px;
                     padding-top: 0;
 
                     &.contract-drawer--is-expanded {
-                        transform: translateY(calc(-100% + 300px));
+                        transform: translateY(calc(-100% + 30rem));
 
-                        @media (max-width: 360px) {
-                            transform: translateY(calc(-100% + 328px));
+                        @media (max-width: 363px) {
+                            transform: translateY(calc(-100% + 32.8rem));
                         }
                     }
                     & .dc-contract-card {
                         min-height: 194px;
 
-                        @media (max-width: 360px) {
+                        @media (max-width: 363px) {
                             min-height: 208px;
                         }
                     }
@@ -271,22 +265,29 @@ $FLOATING_HEADER_HEIGHT: 41px;
                     &.contract-drawer--is-expanded {
                         transform: translateY(calc(-100% + 412px));
 
-                        @media (max-width: 375px) {
+                        @media (max-width: 396px) {
                             transform: translateY(calc(-100% + 436px));
                         }
-
+                        @media (max-width: 358px) {
+                            transform: translateY(calc(-100% + 468px));
+                        }
                         @media (max-width: 320px) {
                             transform: translateY(calc(-100% + 452px));
-                        }
-
-                        @media (max-width: 320px) and (max-height: 480px) {
-                            transform: translateY(calc(-100% + 426px));
                         }
                     }
                     &.contract-drawer--with-collapsible-btn {
                         & .dc-contract-card {
                             min-height: 250px;
 
+                            @media (max-width: 396px) {
+                                min-height: 262px;
+                            }
+                            @media (max-width: 358px) {
+                                min-height: 278px;
+                            }
+                            @media (max-width: 320px) {
+                                min-height: 270px;
+                            }
                             &__indicative--movement {
                                 margin-top: 2px;
                             }
@@ -398,9 +399,31 @@ $FLOATING_HEADER_HEIGHT: 41px;
 
             @include mobile {
                 flex: 1;
-                height: 100%;
+                height: calc(100% - 31.4rem);
                 width: calc(100% - 1.6rem);
-                margin-left: 0.8rem;
+                margin: 0 0.8rem;
+                position: fixed;
+                top: 8rem;
+
+                @media (max-width: 363px) {
+                    height: calc(100% - 32.8rem);
+                }
+            }
+
+            &--is-multiplier {
+                @include mobile {
+                    height: calc(100% - 37rem);
+
+                    @media (max-width: 396px) {
+                        height: calc(100% - 38.2rem);
+                    }
+                    @media (max-width: 358px) {
+                        height: calc(100% - 39.8rem);
+                    }
+                    @media (max-width: 320px) {
+                        height: calc(100% - 39rem);
+                    }
+                }
             }
         }
         @include mobile {
@@ -414,23 +437,23 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 &__container {
                     height: calc(100% - 2.6rem);
 
-                    @media (max-width: 360px) {
+                    @media (max-width: 363px) {
                         height: calc(100% - 4rem);
                     }
 
                     &--is-multiplier {
                         height: calc(100% - 8.4rem);
 
-                        @media (max-width: 375px) {
+                        @media (max-width: 396px) {
                             height: calc(100% - 9.4rem);
+                        }
+
+                        @media (max-width: 358px) {
+                            height: calc(100% - 11rem);
                         }
 
                         @media (max-width: 320px) {
                             height: calc(100% - 10.2rem);
-                        }
-
-                        @media (max-width: 320px) and (max-height: 480px) {
-                            height: calc(100% - 9rem);
                         }
                     }
                 }

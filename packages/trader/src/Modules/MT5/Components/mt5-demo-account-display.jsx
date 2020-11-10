@@ -1,5 +1,4 @@
 import React from 'react';
-import { Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { eu_real_financial_specs } from 'Modules/MT5/Constants/mt5-specifications';
 import { MT5AccountCard } from './mt5-account-card.jsx';
@@ -40,7 +39,6 @@ const MT5DemoAccountDisplay = ({
             {(landing_companies?.mt_gaming_company?.financial || !is_logged_in) && (
                 <MT5AccountCard
                     has_mt5_account={has_mt5_account}
-                    icon={() => <Icon icon='IcMt5SyntheticPlatform' size={64} />}
                     title={localize('Synthetic')}
                     type={{
                         category: 'demo',
@@ -77,7 +75,6 @@ const MT5DemoAccountDisplay = ({
             {(landing_companies?.mt_financial_company?.financial || !is_logged_in) && (
                 <MT5AccountCard
                     has_mt5_account={has_mt5_account}
-                    icon={() => <Icon icon='IcMt5FinancialPlatform' size={64} />}
                     title={localize('Financial')}
                     is_logged_in={is_logged_in}
                     type={{
@@ -118,7 +115,6 @@ const MT5DemoAccountDisplay = ({
             {(landing_companies?.mt_financial_company?.financial_stp || !is_logged_in) && (
                 <MT5AccountCard
                     has_mt5_account={has_mt5_account}
-                    icon={() => <Icon icon='IcMt5FinancialStpPlatform' size={64} />}
                     title={localize('Financial STP')}
                     type={{
                         category: 'demo',

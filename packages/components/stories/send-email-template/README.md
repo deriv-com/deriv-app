@@ -20,11 +20,11 @@ const DummyComponent = (props) => (
 | Name                     | Type                   | Default            | Description                                                                                                              |
 |--------------------------|------------------------|--------------------|--------------------------------------------------------------------------------------------------------------------------|
 | onClickSendEmail         | {function}             | null               | Callback function for onClick function of send button                                                                    |
-| title                    | {string}               | null               |                                                                                                                          |
-| subtitle                 | {string}               | null               |                                                                                                                          |
+| title                    | {string}               | null               | Main title of the template                                                                                               |
+| subtitle                 | {string}               | null               | Short description about the email                                                                                        |
 | lbl\_no\_receive         | {string}               | null               | Text for send button                                                                                                     |
 | txt\_resend              | {string}               | null               | Text for resend button                                                                                                   |
-| txt\_resend\_in          | {string}               | null               | Text for resend button includes '{{seconds}}' string for remaining seconds                                               |
+| txt\_resend\_in          | {string}               | null               | Text for resend button includes `{{seconds}}` string for remaining seconds                                               |
 
 
 ## Full example:

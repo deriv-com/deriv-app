@@ -1,5 +1,5 @@
 # ThemedScrollbar component
-Wrap an element to have a customed scrollbar for it.
+Wrap an element to have a custome scrollbar for it.
 
 #### Supported events:
 - onScroll

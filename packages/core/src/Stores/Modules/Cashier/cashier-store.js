@@ -1,5 +1,6 @@
+/* eslint-disable max-classes-per-file */
 import React from 'react';
-import { action, computed, observable, toJS, reaction } from 'mobx';
+import { action, computed, observable, toJS } from 'mobx';
 import {
     routes,
     isCryptocurrency,
@@ -270,13 +271,6 @@ export default class CashierStore extends BaseStore {
         const current_container = this.active_container;
         this.onRemount = this.onMount;
         await this.onMountCommon();
-
-        reaction(
-            () => [this.root_store.client.is_tnc_needed],
-            () => {
-                this.onMount();
-            }
-        );
 
         if (this.containers.indexOf(this.active_container) === -1 && !this.root_store.client.is_switching) {
             throw new Error('Cashier Store onMount requires a valid container name.');

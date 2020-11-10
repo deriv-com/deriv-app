@@ -15,9 +15,7 @@ import AccountTransferConfirm from '../Components/Confirm/account-transfer-confi
 class AccountTransfer extends React.Component {
     componentDidMount() {
         this.props.setActiveTab(this.props.container);
-        if (!this.props.is_virtual) {
-            this.props.onMount();
-        }
+        this.props.onMount();
     }
 
     componentWillUnmount() {
@@ -29,7 +27,7 @@ class AccountTransfer extends React.Component {
         if (this.props.is_virtual) {
             return <Virtual />;
         }
-        if (this.props.is_loading) {
+        if (this.props.is_loading || this.props.is_switching) {
             return <Loading className='cashier__loader' />;
         }
         if (this.props.is_cashier_locked) {
@@ -82,6 +80,7 @@ AccountTransfer.propTypes = {
 
 export default connect(({ client, modules }) => ({
     is_virtual: client.is_virtual,
+    is_switching: client.is_switching,
     accounts_list: modules.cashier.config.account_transfer.accounts_list,
     container: modules.cashier.config.account_transfer.container,
     error: modules.cashier.config.account_transfer.error,

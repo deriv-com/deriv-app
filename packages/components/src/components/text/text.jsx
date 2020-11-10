@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const Text = ({ children, size, color, align, weight, line_height, as, className, ...props }) => {
     const setStyle = () => {
@@ -12,8 +13,9 @@ const Text = ({ children, size, color, align, weight, line_height, as, className
         return style;
     };
 
+    const text_align = align || 'left';
     const class_names = classNames('dc-text', {
-        [`dc-text--${align}`]: !!align,
+        [`dc-text--${text_align}`]: !!text_align,
         className,
     });
     return (
@@ -22,11 +24,16 @@ const Text = ({ children, size, color, align, weight, line_height, as, className
                 {children}
             </p>
         )) || (
-            <span {...props} title={props.title} className={class_names} style={setStyle()}>
+            <span {...props} className={class_names} style={setStyle()}>
                 {children}
             </span>
         )
     );
+};
+
+Text.propTypes = {
+    line_height: PropTypes.string.required,
+    size: PropTypes.string.required,
 };
 
 export default Text;

@@ -41,62 +41,67 @@ class NotificationsDialog extends React.Component {
         const notifications_list_el = (
             <React.Fragment>
                 {this.props.notifications && this.props.notifications.length ? (
-                    this.props.notifications.map((item, idx) => (
-                        <div className='notifications-item' key={idx}>
-                            <h2 className='notifications-item__title'>
-                                {item.type && (
-                                    <Icon
-                                        icon={
-                                            item.type === 'info' || item.type === 'contract_sold'
-                                                ? 'IcAlertInfo'
-                                                : `IcAlert${toTitleCase(item.type)}`
-                                        }
-                                        className={classNames('notifications-item__title-icon', {
-                                            [`notifications-item__title-icon--${item.type}`]: item.type,
-                                        })}
-                                    />
-                                )}
-                                {item.header}
-                            </h2>
-                            <div className='notifications-item__message'>{item.message}</div>
-                            <div className='notifications-item__action'>
-                                {!isEmptyObject(item.action) && (
-                                    <>
-                                        {item.action.route ? (
-                                            <BinaryLink
-                                                onClick={this.props.toggleDialog}
-                                                active_class='notifications-item'
-                                                className={classNames(
-                                                    'dc-btn',
-                                                    'dc-btn--secondary',
-                                                    'notifications-item__cta-button'
-                                                )}
-                                                to={item.action.route}
-                                            >
-                                                <span className='dc-btn__text'>{item.action.text}</span>
-                                            </BinaryLink>
-                                        ) : (
-                                            <Button
-                                                className={classNames(
-                                                    'dc-btn--secondary',
-                                                    'notifications-item__cta-button'
-                                                )}
-                                                onClick={item.action.onClick}
-                                                text={item.action.text}
-                                            />
-                                        )}
-                                    </>
-                                )}
+                    this.props.notifications
+                        .filter(message => message.type !== 'dp2p')
+                        .map((item, idx) => (
+                            <div className='notifications-item' key={idx}>
+                                <h2 className='notifications-item__title'>
+                                    {item.type && (
+                                        <Icon
+                                            icon={
+                                                item.type === 'info' || item.type === 'contract_sold'
+                                                    ? 'IcAlertInfo'
+                                                    : `IcAlert${toTitleCase(item.type)}`
+                                            }
+                                            className={classNames('notifications-item__title-icon', {
+                                                [`notifications-item__title-icon--${item.type}`]: item.type,
+                                            })}
+                                        />
+                                    )}
+                                    {item.header}
+                                </h2>
+                                <div className='notifications-item__message'>{item.message}</div>
+                                <div className='notifications-item__action'>
+                                    {!isEmptyObject(item.action) && (
+                                        <>
+                                            {item.action.route ? (
+                                                <BinaryLink
+                                                    onClick={this.props.toggleDialog}
+                                                    active_class='notifications-item'
+                                                    className={classNames(
+                                                        'dc-btn',
+                                                        'dc-btn--secondary',
+                                                        'notifications-item__cta-button'
+                                                    )}
+                                                    to={item.action.route}
+                                                >
+                                                    <span className='dc-btn__text'>{item.action.text}</span>
+                                                </BinaryLink>
+                                            ) : (
+                                                <Button
+                                                    className={classNames(
+                                                        'dc-btn--secondary',
+                                                        'notifications-item__cta-button'
+                                                    )}
+                                                    onClick={item.action.onClick}
+                                                    text={item.action.text}
+                                                />
+                                            )}
+                                        </>
+                                    )}
+                                </div>
                             </div>
-                        </div>
-                    ))
+                        ))
                 ) : (
                     <EmptyNotification />
                 )}
             </React.Fragment>
         );
 
-        const is_empty = !(this.props.notifications && this.props.notifications.length);
+        const is_empty = !(
+            this.props.notifications.filter(message => message.type !== 'dp2p') &&
+            this.props.notifications.filter(message => message.type !== 'dp2p').length
+        );
         const notifications_dialog_el = (
             <div className='notifications-dialog' ref={this.setWrapperRef}>
                 <div className='notifications-dialog__header'>

@@ -460,6 +460,8 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     updateNotifications(notifications_array) {
+        console.log('Update noti');
+        console.log(notifications_array);
         this.notifications = notifications_array.filter(message => !excluded_notifications.includes(message.key));
     }
 

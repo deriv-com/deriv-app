@@ -200,6 +200,41 @@ export default class CashierStore extends BaseStore {
         this.onSwitchAccount(this.accountSwitcherListener);
     }
 
+    createP2Pbanner = () => {
+        console.log('pushed');
+        this.root_store.ui.addNotificationMessage({
+            key: 'dp2p',
+            header: localize('Payment problems?'),
+            message: localize('There’s an app for that'),
+            type: 'dp2p',
+        });
+    };
+
+    @action.bound
+    init() {
+        console.log('cashier init');
+        console.log(`before init: ${this.is_p2p_visible}`);
+
+        reaction(
+            () => [this.root_store.client.is_logged_in, this.root_store.client.residence],
+            async () => {
+                if (!this.is_p2p_visible && !this.root_store.client.is_virtual) {
+                    const advertiser_info = await WS.authorized.p2pAdvertiserInfo();
+                    const advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
+                    // if (advertiser_error === 'RestrictedCountry') {
+                    //     this.setIsP2pBannerVisible(false);
+                    // }
+
+                    this.setIsP2pBannerVisible(true);
+                    this.createP2Pbanner();
+
+                    this.is_p2p_advertiser = !advertiser_error;
+                }
+                console.log(`after init: ${this.is_p2p_visible}`);
+            }
+        );
+    }
+
     @action.bound
     async onMountCommon(should_remount) {
         if (this.root_store.client.is_logged_in) {
@@ -262,6 +297,14 @@ export default class CashierStore extends BaseStore {
         this.is_p2p_visible = is_p2p_visible;
         if (!is_p2p_visible && window.location.pathname.endsWith(routes.cashier_p2p)) {
             this.root_store.common.routeTo(routes.cashier_deposit);
+        }
+    }
+
+    @action.bound
+    setIsP2pBannerVisible(is_p2p_visible) {
+        this.is_p2p_visible = is_p2p_visible;
+        if (!is_p2p_visible) {
+            this.is_p2p_visible = true;
         }
     }
 

@@ -6,6 +6,7 @@ import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import Notification, { max_display_notifications } from '../Components/Elements/NotificationMessage';
+// import DP2PBanner from '../Components/Elements/DP2PBanner/dp2p-banner.jsx';
 import 'Sass/app/_common/components/app-notification-message.scss';
 
 class AppNotificationMessages extends React.Component {
@@ -21,7 +22,7 @@ class AppNotificationMessages extends React.Component {
     render() {
         const allowed_on_mobile = ['unwelcome', 'contract_sold'];
 
-        const { marked_notifications, notification_messages, removeNotificationMessage } = this.props;
+        const { is_p2p_visible, marked_notifications, notification_messages, removeNotificationMessage } = this.props;
         const { bounds } = this.state;
         const style = isMobile()
             ? {
@@ -29,13 +30,26 @@ class AppNotificationMessages extends React.Component {
               }
             : null;
 
-        const notifications = notification_messages
-            .filter(
-                message =>
-                    !marked_notifications.includes(message.key) &&
-                    (isMobile() ? allowed_on_mobile.includes(message.key) : true)
-            )
-            .slice(0, max_display_notifications);
+        let notifications = [];
+
+        if (is_p2p_visible) {
+            notifications = notification_messages
+                .filter(
+                    message =>
+                        !marked_notifications.includes(message.key) &&
+                        (isMobile() ? allowed_on_mobile.includes(message.key) : true)
+                )
+                .slice(0, max_display_notifications);
+        } else {
+            notifications = notification_messages
+                .filter(
+                    message =>
+                        !marked_notifications.includes(message.key) &&
+                        message.type !== 'dp2p' &&
+                        (isMobile() ? allowed_on_mobile.includes(message.key) : true)
+                )
+                .slice(0, max_display_notifications);
+        }
 
         if (notifications.length === 0) return null;
 
@@ -85,15 +99,17 @@ AppNotificationMessages.propTypes = {
             delay: PropTypes.number,
             header: PropTypes.string,
             is_auto_close: PropTypes.bool,
+            is_p2p_visible: PropTypes.bool,
             message: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
             size: PropTypes.oneOf(['small']),
-            type: PropTypes.oneOf(['warning', 'info', 'success', 'danger', 'contract_sold']),
+            type: PropTypes.oneOf(['warning', 'info', 'success', 'danger', 'contract_sold', 'dp2p']),
         })
     ),
     removeNotificationMessage: PropTypes.func,
 };
 
-export default connect(({ ui }) => ({
+export default connect(({ ui, modules }) => ({
+    is_p2p_visible: modules.cashier.is_p2p_visible,
     marked_notifications: ui.marked_notifications,
     notification_messages: ui.notification_messages,
     removeNotificationMessage: ui.removeNotificationMessage,

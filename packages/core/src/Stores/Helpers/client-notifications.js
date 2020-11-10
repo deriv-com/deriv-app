@@ -12,12 +12,19 @@ import {
 import { StaticUrl } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
+import Cookies from 'js-cookie';
 import { WS } from 'Services';
 
 // TODO: Update links to app_2 links when components are done.
 /* eslint-disable react/jsx-no-target-blank */
 export const clientNotifications = (ui = {}, client = {}) => {
     const notifications = {
+        // dp2p: {
+        //     key: 'dp2p',
+        //     header: localize('Payment problems?'),
+        //     message: localize('There’s an app for that'),
+        //     type: 'dp2p',
+        // },
         currency: {
             action: {
                 text: localize('Set currency'),
@@ -414,6 +421,7 @@ const checkAccountStatus = (
     if (shouldCompleteTax(account_status)) addNotificationMessage(clientNotifications().tax);
 
     if (should_show_max_turnover) addNotificationMessage(clientNotifications().max_turnover_limit_not_set);
+
     return {
         has_risk_assessment,
     };
@@ -443,6 +451,7 @@ export const handleClientNotifications = (client, client_store, ui_store) => {
         shouldCompleteTax,
     } = client_store;
     const { addNotificationMessage } = ui_store;
+    // const { is_p2p_visible } = cashier_store;
 
     if (loginid !== LocalStore.get('active_loginid')) return {};
     if (!currency) addNotificationMessage(clientNotifications(ui_store).currency);
@@ -458,6 +467,13 @@ export const handleClientNotifications = (client, client_store, ui_store) => {
         getRiskAssessment,
         shouldCompleteTax
     );
+
+    // if (is_p2p_visible) {
+    //     const dp2p_banner = Cookies.get('banner_information');
+    //     if (!dp2p_banner) {
+    //         addNotificationMessage(clientNotifications().dp2p);
+    //     }
+    // }
 
     if (is_tnc_needed) addNotificationMessage(clientNotifications(ui_store).tnc);
 

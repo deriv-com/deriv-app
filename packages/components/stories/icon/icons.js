@@ -105,6 +105,7 @@ export const icons = {
         'IcClockOutline',
         'IcClock',
         'IcCloseCircle',
+        'IcCloseLight',
         'IcCloudUpload',
         'IcConfirmDetails',
         'IcCopy',

@@ -121,10 +121,12 @@ export default class RunPanelStore {
 
         // Do not proceed in case of an invalid token
         // TODO: Remove this after refactoring Bot so we can check things first before starting
-        const authorize_response = await ws.send({ authorize: client.getToken(), req_id: DBOT_AUTH_REQ_ID });
-        if (authorize_response.error?.code === 'InvalidToken') {
-            await client.logout();
-            return;
+        if (client.loginid) {
+            const authorize_response = await ws.send({ authorize: client.getToken(), req_id: DBOT_AUTH_REQ_ID });
+            if (authorize_response.error?.code === 'InvalidToken') {
+                await client.logout();
+                return;
+            }
         }
 
         this.dbot.unHighlightAllBlocks();

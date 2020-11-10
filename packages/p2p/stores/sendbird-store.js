@@ -327,7 +327,7 @@ export default class SendbirdStore extends BaseStore {
     }
 
     sendMessage(message) {
-        const modified_message = message.replace(/^[\r\n]+|\[\r\n]+$/g, '');
+        const modified_message = message.replace(/^[\r\n]+|[\r\n]+$/g, '');
 
         if (modified_message.length === 0 || modified_message.trim().length === 0) {
             return;

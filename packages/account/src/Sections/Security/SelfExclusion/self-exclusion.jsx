@@ -336,7 +336,7 @@ class SelfExclusion extends React.Component {
             show_article,
             submit_error_message,
         } = this.state;
-        const { is_virtual, is_switching, currency, is_eu } = this.props;
+        const { is_virtual, is_switching, currency, is_eu, is_tablet } = this.props;
 
         if (is_virtual) return <DemoMessage />;
 
@@ -382,7 +382,7 @@ class SelfExclusion extends React.Component {
                                         </ThemedScrollbars>
                                     </Modal>
                                     {is_confirm_page ? (
-                                        <>
+                                        <React.Fragment>
                                             <Modal
                                                 className='self_exclusion__modal'
                                                 is_open={show_confirm}
@@ -526,9 +526,9 @@ class SelfExclusion extends React.Component {
                                                     />
                                                 )}
                                             </div>
-                                        </>
+                                        </React.Fragment>
                                     ) : (
-                                        <>
+                                        <React.Fragment>
                                             <h2 className='self-exclusion__header'>
                                                 {localize('Your stake and loss limits')}
                                             </h2>
@@ -734,7 +734,7 @@ class SelfExclusion extends React.Component {
                                                         {({ field }) => (
                                                             <DatePicker
                                                                 {...field}
-                                                                alignment='left'
+                                                                alignment={is_tablet ? 'bottom' : 'left'}
                                                                 className='self-exclusion__input'
                                                                 label={localize('Date')}
                                                                 value={values.exclude_until}
@@ -961,7 +961,7 @@ class SelfExclusion extends React.Component {
                                                     {localize('Save')}
                                                 </Button>
                                             </div>
-                                        </>
+                                        </React.Fragment>
                                     )}
                                 </Form>
                             )}
@@ -976,7 +976,8 @@ class SelfExclusion extends React.Component {
     }
 }
 
-export default connect(({ client }) => ({
+export default connect(({ client, ui }) => ({
+    is_tablet: ui.is_tablet,
     currency: client.currency,
     is_virtual: client.is_virtual,
     is_switching: client.is_switching,

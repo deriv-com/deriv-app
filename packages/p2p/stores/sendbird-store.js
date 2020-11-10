@@ -327,10 +327,16 @@ export default class SendbirdStore extends BaseStore {
     }
 
     sendMessage(message) {
+        const modified_message = message.replace(/^[\r\n]+|\[\r\n]+$/g, '');
+
+        if (modified_message.length === 0 || modified_message.trim().length === 0) {
+            return;
+        }
+
         const params = new this.sendbird_api.UserMessageParams();
         const msg_identifier = `${Date.now()}${message.substring(0, 9)}${this.chat_messages.length}`;
 
-        params.message = message;
+        params.message = modified_message;
         params.data = msg_identifier;
 
         // Add a placeholder message with a pending indicator

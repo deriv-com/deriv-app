@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Input } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
@@ -24,26 +25,50 @@ const ChatFooter = observer(() => {
     };
 
     const handleChange = event => {
-        // Replace newlines with nothing.
-        event.target.value = event.target.value.replace(/[\r\n\v]+/g, '');
         setCharacterCount(event.target.value.length);
         updateTextAreaBounds();
     };
 
-    const handleKeyPress = event => {
-        if (event.key === 'Enter') {
-            sendMessage();
+    const handleKeyDown = event => {
+        if (event.key === 'Enter' && !isMobile()) {
+            if (event.ctrlKey || event.metaKey) {
+                const { target: element } = event;
+                const { value } = element;
+
+                if (typeof element.selectionStart === 'number' && typeof element.selectionEnd === 'number') {
+                    event.target.value = `${value.slice(0, element.selectionStart)}\n${value.slice(
+                        element.selectionEnd
+                    )}`;
+                } else if (document.selection?.createRange) {
+                    element.focus();
+
+                    const range = document.selection.createRange();
+
+                    range.text = '\r\n';
+                    range.collapse(false);
+                    range.select();
+                }
+
+                updateTextAreaBounds();
+            } else {
+                event.preventDefault();
+                sendMessage();
+            }
         }
     };
 
     const sendMessage = () => {
         const el_target = text_input_ref.current;
+        const should_restore_focus = document.activeElement === el_target;
 
         if (el_target && el_target.value) {
             sendbird_store.sendMessage(el_target.value);
             el_target.value = '';
             handleChange({ target: el_target });
-            el_target.focus();
+
+            if (should_restore_focus) {
+                el_target.focus();
+            }
         }
     };
 
@@ -64,7 +89,7 @@ const ChatFooter = observer(() => {
                     initial_character_count={character_count}
                     max_characters={max_characters}
                     onChange={handleChange}
-                    onKeyPress={handleKeyPress}
+                    onKeyDown={handleKeyDown}
                     placeholder={localize('Enter message')}
                     ref={ref => (text_input_ref.current = ref)}
                     rows={1}

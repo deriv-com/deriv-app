@@ -186,6 +186,7 @@ const App = observer(props => {
     );
 });
 
+App.displayName = 'App';
 App.propTypes = {
     client: PropTypes.shape({
         currency: PropTypes.string.isRequired,

@@ -36,6 +36,10 @@
             padding: 0.8rem 1.6rem;
             width: fit-content;
             word-break: break-word;
+
+            > p {
+                white-space: pre-wrap;
+            }
         }
         &-timestamp {
             align-items: center;

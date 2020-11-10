@@ -20,8 +20,8 @@ const DP2PBanner = ({ onClick, header, message }) => (
             </StaticUrl>
         </div>
         <div className='dp2p-banner__right'>
-            <div className='dp2p-banner__right-bg'></div>
-            <img src={getUrlBase('/public/images/common/dp2p_banner.png')} alt='DP2P'></img>
+            <div className='dp2p-banner__right-bg' />
+            <img src={getUrlBase('/public/images/common/dp2p_banner.png')} alt='DP2P' />
             <Icon className='dp2p-banner__right-icon' icon='IcCloseLight' onClick={onClick} />
         </div>
     </div>

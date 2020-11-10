@@ -5,9 +5,9 @@ import { Button, LinearProgress } from '@deriv/components';
 import { isEmptyObject, PlatformContext } from '@deriv/shared';
 import CloseButton from './close-button.jsx';
 import NotificationStatusIcons from './notification-status-icons.jsx';
+import DP2PBanner from './dp2p-banner.jsx';
 import { default_delay, types } from './constants';
 import { BinaryLink } from '../../Routes';
-import DP2PBanner from './dp2p-banner.jsx';
 
 const Notification = ({ data, removeNotificationMessage }) => {
     const { is_deriv_crypto } = React.useContext(PlatformContext);

@@ -12,7 +12,6 @@ import {
 import { StaticUrl } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
-import Cookies from 'js-cookie';
 import { WS } from 'Services';
 
 // TODO: Update links to app_2 links when components are done.

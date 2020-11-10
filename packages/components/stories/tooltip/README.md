@@ -1,5 +1,5 @@
 # Tooltip component
-Wrap an element to show a tooltip on mouse hover.
+Shows a tooltip on mouse hover.
 
 ## Usage
  

@@ -205,10 +205,7 @@ class RealAccountSignup extends React.Component {
 
     closeModal = e => {
         // Do not close modal on external link click event
-        if (e?.target.getAttribute('rel') === 'noopener noreferrer') {
-            return;
-        }
-        if (e?.target.closest('.redirect-notice')) {
+        if (!e || e.target.getAttribute('rel') === 'noopener noreferrer' || e.target.closest('.redirect-notice')) {
             return;
         }
         if (this.active_modal_index !== modal_pages_indices.status_dialog) {

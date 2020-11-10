@@ -82,7 +82,7 @@ class ToggleMenuDrawer extends React.Component {
         WS.wait('authorize', 'get_account_status').then(() => {
             if (this.props.account_status) {
                 if (this.is_mounted) {
-                    this.setState({ allow_document_upload: this.props.allow_authentication });
+                    this.setState({ allow_document_upload: this.props.should_allow_authentication });
                 }
             }
         });
@@ -98,7 +98,7 @@ class ToggleMenuDrawer extends React.Component {
         // we need to add this update once account_status changes
         // TODO: Refactor ToggleMenuDrawer into functional component with hooks to eliminate need for componentDidUpdate
         if (this.props.account_status !== prevProps.account_status) {
-            const allow_document_upload = this.props.allow_authentication;
+            const allow_document_upload = this.props.should_allow_authentication;
             if (this.is_mounted) this.setState({ allow_document_upload });
         }
     }

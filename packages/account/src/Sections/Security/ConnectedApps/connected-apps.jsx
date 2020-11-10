@@ -91,7 +91,7 @@ class ConnectedApps extends React.Component {
                             <DataList
                                 className='connected-apps'
                                 data_source={this.state.connected_apps}
-                                getRowSize={() => 128}
+                                row_gap={10}
                                 rowRenderer={this.mobileRowRenderer}
                             />
                         </MobileWrapper>

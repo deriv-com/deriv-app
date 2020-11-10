@@ -19,7 +19,7 @@ const Header = ({
     acc_switcher_disabled_message,
     account_status,
     addNotificationMessage,
-    allow_authentication,
+    should_allow_authentication,
     app_routing_history,
     balance,
     currency,
@@ -83,7 +83,7 @@ const Header = ({
                     <MobileWrapper>
                         <ToggleMenuDrawer
                             ref={toggle_menu_drawer_ref}
-                            allow_authentication={allow_authentication}
+                            should_allow_authentication={should_allow_authentication}
                             account_status={account_status}
                             enableApp={enableApp}
                             disableApp={disableApp}
@@ -158,7 +158,7 @@ const Header = ({
 
 Header.propTypes = {
     acc_switcher_disabled_message: PropTypes.string,
-    allow_authentication: PropTypes.bool,
+    should_allow_authentication: PropTypes.bool,
     account_status: PropTypes.object,
     addNotificationMessage: PropTypes.func,
     app_routing_history: PropTypes.array,
@@ -194,7 +194,7 @@ Header.propTypes = {
 export default connect(({ client, common, ui, modules }) => ({
     acc_switcher_disabled_message: ui.account_switcher_disabled_message,
     account_status: client.account_status,
-    allow_authentication: client.allow_authentication,
+    should_allow_authentication: client.should_allow_authentication,
     addNotificationMessage: ui.addNotificationMessage,
     app_routing_history: common.app_routing_history,
     balance: client.balance,

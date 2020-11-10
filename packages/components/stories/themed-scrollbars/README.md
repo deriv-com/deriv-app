@@ -27,7 +27,7 @@ const DummyComponent = (props) => (
 | autohide                       | {boolean}              | true               | Hide scrollbar if component is not hovered                                                                               |
 | is\_bypassed                   | {boolean}              | null               | Set it to 'true' if you want to disable the custom scrollbar component                                                   |
 | is\_only\_horizontal           | {boolean}              | null               | Set it to 'true' if you want to disable the vertical scrollbar                                                           |
-| is\_only\_horizontal\_overlay  | {boolean}              | null               | It's same as 'is\_only\_horizontal' but it use 'overflow-x: overlay' style.                                              |
+| is\_only\_horizontal\_overlay  | {boolean}              | null               | It's same as 'is\_only\_horizontal' but using 'overflow-x: overlay' style.                                              |
 | has\_horizontal                | {boolean}              | null               | If you want to have vertical and horizontal scrollbar set it to 'true'.                                                  |
 | onScroll                       | {function}             | null               | Call back function for scrolling event.                                                                                  |
 | refSetter                      | {object} React ref     | null               | Ref object that component uses it to handle the hover event.                                                             |

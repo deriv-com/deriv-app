@@ -1168,6 +1168,7 @@ export default class CashierStore extends BaseStore {
             return null;
         }
 
+        this.setLoading(true);
         this.setErrorMessage('');
         const currency = this.config.account_transfer.selected_from.currency;
         const transfer_between_accounts = await WS.authorized.transferBetweenAccounts(
@@ -1208,6 +1209,7 @@ export default class CashierStore extends BaseStore {
             this.setIsTransferConfirm(false);
             this.setIsTransferSuccessful(true);
         }
+        this.setLoading(false);
         return transfer_between_accounts;
     };
 

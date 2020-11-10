@@ -33,6 +33,7 @@
             flex-direction: column;
             height: calc(100% - 74px);
             justify-content: center;
+            min-height: 300px;
             padding: 0 4rem;
         }
         &--title {

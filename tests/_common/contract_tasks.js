@@ -8,7 +8,11 @@ async function chooseUnderlying(page) {
     await page.waitForChart();
     await page.click(MARKET_SELECT); // Click market select
     await page.fill('.data-hj-whitelist', 'Volatility');
-    await page.click('.market_dropdown-subcategory-item-1HZ10V');
+    if (await page.isMobile()) {
+        await page.click('.market_dropdown-subcategory-item-1HZ10V');
+    } else {
+        await page.click('.sc-mcd__item--1HZ10V');
+    }
     await qawolf.assertElementText(page, ".cq-symbol", 'Volatility 10 (1s) Index');
 }
 

@@ -39,10 +39,12 @@ class Common {
      * @returns {Promise<void>}
      */
     async switchVirtualAccount() {
-        await this.page.waitForSelector('.acc-info', {
-            timeout: 120000,
-        });
+        await this.page.waitForSelector('.acc-info');
         await this.page.click('.acc-info');
+        const element = await this.page.evaluate(`document.querySelector('.dc-content-expander')`)
+        if (element && !element.classList.contains('dc-content-expander--expanded')) {
+            await this.page.click('.dc-content-expander');
+        }
         const account_switcher_virtual = "div.acc-switcher__wrapper.acc-switcher__wrapper--enter-done > div > div.dc-tabs.dc-tabs.dc-tabs--acc-switcher__list-tabs > ul > li:nth-child(2)";
         await this.page.click(account_switcher_virtual);
         await this.page.click('.acc-switcher__id');
@@ -92,6 +94,12 @@ class Common {
         } catch (e) {
             return false;
         }
+    }
+
+    async isMobile() {
+        const { width } = await this.page.viewportSize()
+
+        return width < 400;
     }
 }
 

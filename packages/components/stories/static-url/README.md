@@ -3,7 +3,7 @@ Use this component to generate a link to 'deriv.com'.
 We need 'PlatformContext' provider's value from the application state.
 
 #### Supported events:
-All events supported for a '\<a>' tag.
+All events supported for an '\<a>' tag.
 
 ## Usage
  

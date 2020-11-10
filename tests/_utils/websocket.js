@@ -125,7 +125,7 @@ const checkForMessage =  (page, payload, options = {
             let message;
 
             if (options.subset) {
-                message = messages.find((msg) => isMatch(JSON.parse(msg), payload))
+                message = JSON.parse(messages.find((msg) => isMatch(JSON.parse(msg), payload)));
             } else {
                 message = messages.find((msg) => {
                     return !!msg.match(payload);

@@ -1,7 +1,9 @@
+const assert = require('assert').strict;
+const Common = require("../../objects/common");
+const {replaceWebsocket, waitForWSSubset} = require("../../_utils/websocket");
 const {setUp, tearDown} = require('../../bootstrap');
-const {waitForWSMessage, replaceWebsocket} = require('../../_utils/websocket');
 
-let browser, context;
+let browser, context, page;
 
 beforeAll(async () => {
     const out = await setUp({
@@ -18,13 +20,22 @@ beforeAll(async () => {
     context = out.context;
 });
 
+beforeEach(async () => {
+    await context.addInitScript(replaceWebsocket);
+    page = new Common(await context.newPage());
+});
+
 afterAll(async () => {
     await tearDown(browser);
 });
 
 test('It should send website_status on page start', async () => {
-    await context.addInitScript(replaceWebsocket);
-    const page = await context.newPage();
     await page.goto(process.env.HOME_URL, {waitUntil: "domcontentloaded"});
-    await waitForWSMessage(page, 'website_status', {timeout: 20000});
+    const message = await waitForWSSubset(page, {
+        website_status: {
+            site_status: "up",
+        },
+    });
+
+    assert.ok(message.website_status.site_status === 'up', 'Could not receive website status');
 });

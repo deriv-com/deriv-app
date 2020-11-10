@@ -11,10 +11,13 @@ const Text = ({ children, size, color, align, weight, line_height, as, className
     };
 
     const text_align = align || 'left';
-    const class_names = classNames('dc-text', {
-        [`dc-text--${text_align}`]: !!text_align,
-        className,
-    });
+    const class_names = classNames(
+        'dc-text',
+        {
+            [`dc-text--${text_align}`]: !!text_align,
+        },
+        className
+    );
     return (
         (as === 'p' && (
             <p {...props} className={class_names} style={style}>

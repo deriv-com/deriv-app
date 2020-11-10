@@ -1,4 +1,3 @@
-const {waitForPurchaseBtnEnabled} = require("../../_common/contract_tasks");
 const {setUp, tearDown} = require('../../bootstrap');
 const Trader = require('../../objects/trader');
 
@@ -124,6 +123,6 @@ async function preBuy() {
     await page.waitForChart();
     await page.click("#dt_contract_rise_fall_item");
     await page.waitForChart();
-    await waitForPurchaseBtnEnabled(page);
+    await page.waitForPurchaseBtnEnabled();
 }
 

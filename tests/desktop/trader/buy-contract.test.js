@@ -1,8 +1,3 @@
-const {
-  chooseUnderlying,
-  buyRiseContract,
-  openRecentPositionsDrawer,
-} = require("../../_common/contract_tasks");
 const Trader = require('../../objects/trader');
 const {setUp, tearDown, desktop_viewport} = require('../../bootstrap');
 
@@ -26,7 +21,7 @@ test("[desktop] trader/buy-contract", async () => {
     await page.waitForChart();
     await page.loadOrLogin(process.env.VALID_USER, process.env.VALID_PASSWORD);
     await page.switchVirtualAccount();
-    await chooseUnderlying(page);
-    await openRecentPositionsDrawer(page);
-    await buyRiseContract(page, 'Ups & Downs', "rise_fall", "Ticks", 5);
+    await page.chooseUnderlying('1HZ10V', 'Volatility 10 (1s) Index');
+    await page.openRecentPositionsDrawer();
+    await page.buyRiseContract('Ups & Downs', "rise_fall", "Ticks", 5);
 });

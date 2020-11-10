@@ -1,4 +1,3 @@
-const {waitForPurchaseBtnEnabled} = require("../../_common/contract_tasks");
 const {replaceWebsocket, waitForWSSubset} = require('../../_utils/websocket');
 const {setUp, tearDown} = require('../../bootstrap');
 const Trader = require('../../objects/trader');
@@ -117,7 +116,7 @@ test('[mobile] trader/buy-fall-contract-max-duration', async () => {
 });
 
 async function preBuy() {
-    await page.goto(process.env.HOME_URL, {waitUntil: "domcontentloaded"});
+    await page.navigate();
     await page.loadOrLogin(process.env.VALID_USER, process.env.VALID_PASSWORD)
     await page.waitForChart();
     await page.click('.acc-info__wrapper .acc-info');
@@ -131,6 +130,6 @@ async function preBuy() {
     await page.waitForChart();
     await page.click("#dt_contract_rise_fall_item");
     await page.waitForChart();
-    await waitForPurchaseBtnEnabled(page);
+    await page.waitForPurchaseBtnEnabled();
 }
 

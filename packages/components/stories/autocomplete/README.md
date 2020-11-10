@@ -1,6 +1,6 @@
 # AutoComplete Component
 
-Advanced `AutoComplete` component.
+A searchable `Dropdown` input component that accepts text input and provides a suggested list based on keyword entered.
 
 
 ## Usage

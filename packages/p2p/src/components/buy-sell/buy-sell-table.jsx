@@ -9,7 +9,7 @@ export const BuySellTable = ({ children }) => {
     return (
         <Table>
             <Table.Header>
-                <Table.Row className='buy-sell__table-row'>
+                <Table.Row className='buy-sell__table-header'>
                     <Table.Head>{localize('Advertisers')}</Table.Head>
                     <Table.Head>{localize('Limits')}</Table.Head>
                     <Table.Head>{localize('Rate (1 {{currency}})', { currency })}</Table.Head>

@@ -11,6 +11,10 @@
         justify-content: space-between;
         width: 657px;
 
+        @include mobile {
+            width: 100vw;
+        }
+
         &-avatar {
             align-items: center;
             border-radius: 50%;
@@ -178,7 +182,7 @@
 
             @include mobile {
                 bottom: 0;
-                max-height: calc(100vh - 440px);
+                max-height: calc(100vh - 440px) !important;
                 position: fixed;
             }
         }

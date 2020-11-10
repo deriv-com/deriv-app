@@ -1,6 +1,6 @@
 # DateOfBirthPicker Component
 
-A component to get the user's birthdate. Allowed range is from 18 to 100 (excluding).
+A desktop date picker component to get the user's birthdate based on `age` value. Allowed `age` range is from 18 to 100 (excluding).
 
 
 #### Supported Gestures:

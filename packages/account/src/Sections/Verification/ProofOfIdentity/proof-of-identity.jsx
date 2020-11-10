@@ -26,6 +26,7 @@ class ProofOfIdentity extends React.Component {
                 {({ setRef, height }) => (
                     <div ref={setRef} className='proof-of-identity'>
                         <ProofOfIdentityContainer
+                            account_status={this.props.account_status}
                             serviceToken={WS.serviceToken}
                             notificationEvent={WS.notificationEvent}
                             getAccountStatus={WS.authorized.getAccountStatus}
@@ -58,6 +59,7 @@ class ProofOfIdentity extends React.Component {
 }
 
 export default connect(({ client, ui, common }) => ({
+    account_status: client.account_status,
     has_missing_required_field: client.has_missing_required_field,
     is_virtual: client.is_virtual,
     is_mx_mlt: client.landing_company_shortcode === 'iom' || client.landing_company_shortcode === 'malta',

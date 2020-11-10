@@ -46,7 +46,5 @@ test("[desktop] trader/buy-contract rise", async () => {
             price: "10.00",
         },
     });
-
-    assert.equal(message.proposal.id, buy_response.echo_req.buy, 'Buy does not match Proposal');
     assert.equal(buy_response.buy.buy_price, 10, 'Buy price does not match proposal.');
 });

@@ -33,6 +33,7 @@ beforeEach(async () => {
 });
 
 test('[mobile] trader/buy-fall-contract', async () => {
+    await page.waitForSelector('#dt_purchase_put_price');
     await page.click('#dt_purchase_put_price');
     await waitForWSSubset(page, {
         "msg_type": "buy",

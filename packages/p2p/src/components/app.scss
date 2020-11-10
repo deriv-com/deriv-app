@@ -56,6 +56,26 @@
             padding: 3.5rem 2.5rem 0;
         }
     }
+    &__advertiser-tab {
+        @include mobile {
+            .dc-tabs {
+                &__item {
+                    padding: 0 1.6rem;
+                    margin: auto;
+                }
+                &__list {
+                    position: fixed;
+                    margin-bottom: unset !important;
+                    background-color: var(--general-main-1);
+                    z-index: 2;
+                    width: 100%;
+                }
+                &__content {
+                    margin-top: 4rem;
+                }
+            }
+        }
+    }
 }
 
 .p2p-not-allowed {

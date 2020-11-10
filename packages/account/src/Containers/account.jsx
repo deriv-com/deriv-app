@@ -34,11 +34,11 @@ const Account = ({
     const onClickClose = React.useCallback(() => routeBackInApp(history), [routeBackInApp, history]);
 
     React.useEffect(() => {
-        if (account_status) {
+        if (should_allow_authentication) {
             setIsLoading(false);
         }
         toggleAccount(true);
-    }, [toggleAccount, account_status]);
+    }, [should_allow_authentication, toggleAccount]);
 
     if (
         !is_loading &&
@@ -118,6 +118,7 @@ Account.propTypes = {
     should_allow_authentication: PropTypes.bool,
     currency: PropTypes.string,
     history: PropTypes.object,
+    needs_financial_assessment: PropTypes.bool,
     is_virtual: PropTypes.bool,
     is_visible: PropTypes.bool,
     location: PropTypes.object,

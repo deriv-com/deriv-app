@@ -98,10 +98,10 @@ const ToggleMenuDrawer = React.forwardRef(
                 setSecondaryRoutesConfig(getFilteredRoutesConfig(routes_config, secondary_routes));
             };
 
-            if (account_status) {
+            if (account_status || should_allow_authentication) {
                 processRoutes();
             }
-        }, [is_deriv_crypto, account_status]);
+        }, [is_deriv_crypto, account_status, should_allow_authentication]);
 
         const toggleDrawer = React.useCallback(() => {
             setIsOpen(!is_open);

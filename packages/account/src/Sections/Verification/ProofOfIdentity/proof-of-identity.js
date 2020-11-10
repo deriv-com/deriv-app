@@ -10,13 +10,13 @@ export const onfido_status_codes = {
     suspected: 'suspected',
 };
 
-export const getIdentityStatus = (identity, needs_verification, onfido_unsupported) => {
+export const getIdentityStatus = (identity, needs_verification, onfido_unsupported, is_mlt_mx) => {
     const { status } = identity;
     const submissions_allowed = needs_verification?.includes('identity');
 
     if (onfido_unsupported) return onfido_status_codes.unsupported;
     if (!submissions_allowed) {
-        if (status === 'none') {
+        if (status === 'none' && is_mlt_mx) {
             return onfido_status_codes.not_required;
         }
         return onfido_status_codes[status];

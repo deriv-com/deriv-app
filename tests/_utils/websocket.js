@@ -30,19 +30,17 @@ const replaceWebsocket = () => {
             // WebSocket "onmessage" handler
             const messageHandler = (event) => {
                 if (isJsonObject(event.data)) {
-                    window.messages.push(event.data);
+                    window.messages.unshift(event.data);
                 }
 
                 if (window.messages.length > this.BUFFER_LENGTH) {
                     // eslint-disable-next-line no-unused-vars
-                    const [_, ...rest] = this.messages;
-                    window.messages = rest;
+                    window.messages = window.messages.pop();
                 }
             };
 
             // WebSocket "onclose" handler
             const closeHandler = (event) => {
-                console.log('Close', event);
                 // remove event listeners
                 instance.removeEventListener('open', openHandler);
                 instance.removeEventListener('message', messageHandler);
@@ -82,11 +80,14 @@ const waitForWSSubset = async (page, subset, options = {timeout: 6000}) => {
             subset: true,
         }));
     } catch (err) {
+        const messages = await page.evaluate('window.messages');
         const error_message = `JSON subset not found in ${options.timeout}ms.`;
-        return new Error(error_message);
+        console.dir(messages);
+        throw new Error(error_message);
     }
 };
 
+// eslint-disable-next-line consistent-return
 const waitForWSMessage = async (page, message_type, {timeout = 5000}) => {
     try {
         return await promiseTimeout(timeout, checkForMessage(page, message_type, {
@@ -115,17 +116,21 @@ const promiseTimeout = (ms, promise) => {
 
 const checkForMessage =  (page, payload, options = {
     subset: false,
-}) => new Promise((resolve) => {
+}) => new Promise((resolve, reject) => {
     const id = setInterval(async () => {
+        const messages = await page.evaluate('window.messages');
         try {
-            const messages = await page.evaluate('window.messages');
             if (!messages) {
                 return;
             }
             let message;
 
             if (options.subset) {
-                message = JSON.parse(messages.find((msg) => isMatch(JSON.parse(msg), payload)));
+                try {
+                    message = JSON.parse(messages.find((msg) => isMatch(JSON.parse(msg), payload)));
+                } catch (e) {
+                    message = null;
+                }
             } else {
                 message = messages.find((msg) => {
                     return !!msg.match(payload);
@@ -137,7 +142,7 @@ const checkForMessage =  (page, payload, options = {
                 resolve(message);
             }
         } catch (e) {
-            console.warn('Evaluation failed', e);
+            reject(e);
         }
     }, 1000);
 });

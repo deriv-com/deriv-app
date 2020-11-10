@@ -11,7 +11,7 @@ class Trader extends Common {
         this.page = page;
     }
     async navigate() {
-        await this.page.goto(`${process.env.HOME_URL}/`);
+        await this.page.goto(`${process.env.HOME_URL}/`, { waitUntil: 'domcontentloaded'});
     }
 
     async waitForChart() {

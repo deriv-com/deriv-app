@@ -1,10 +1,6 @@
 const {waitForPurchaseBtnEnabled} = require("../../_common/contract_tasks");
-const {
-    waitForChart,
-} = require("../../_common/contract_tasks");
-
-const {loadOrLogin} = require("../../_utils/page");
 const {setUp, tearDown} = require('../../bootstrap');
+const Trader = require('../../objects/trader');
 
 let browser, context, page;
 
@@ -28,7 +24,7 @@ afterAll(async () => {
 });
 
 beforeEach(async () => {
-    page = await context.newPage();
+    page = new Trader(await context.newPage());
     await preBuy();
 });
 
@@ -115,8 +111,8 @@ test('[mobile] trader/buy-rise-contract-max-duration', async () => {
 
 async function preBuy() {
     await page.goto(process.env.HOME_URL, {waitUntil: "domcontentloaded"});
-    await loadOrLogin(page, process.env.VALID_USER, process.env.VALID_PASSWORD);
-    await waitForChart(page);
+    await page.loadOrLogin(process.env.VALID_USER, process.env.VALID_PASSWORD);
+    await page.waitForChart();
     await page.click('.acc-info__wrapper .acc-info');
     await page.click('.dc-tabs__item:nth-child(2)');
     await page.click(".acc-switcher__accounts >> text=Demo");
@@ -125,9 +121,9 @@ async function preBuy() {
     await page.fill(".data-hj-whitelist", "Volatility");
     await page.click('text="Volatility 10 (1s) Index"');
     await page.click(".contract-type-widget__display");
-    await waitForChart(page);
+    await page.waitForChart();
     await page.click("#dt_contract_rise_fall_item");
-    await waitForChart(page);
+    await page.waitForChart();
     await waitForPurchaseBtnEnabled(page);
 }
 

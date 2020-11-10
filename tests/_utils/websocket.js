@@ -1,4 +1,19 @@
+const isMatch = require('lodash').isMatch;
+
+
 const replaceWebsocket = () => {
+    function isJsonObject(str) {
+        if (typeof str !== 'string') return false;
+        try {
+            const result = JSON.parse(str);
+            const type = Object.prototype.toString.call(result);
+            return type === '[object Object]'
+                || type === '[object Array]';
+        } catch (err) {
+            return false;
+        }
+    }
+
 // proxy the window.WebSocket object
     const WebSocketProxy = new Proxy(window.WebSocket, {
         construct(target, args) {
@@ -14,7 +29,10 @@ const replaceWebsocket = () => {
 
             // WebSocket "onmessage" handler
             const messageHandler = (event) => {
-                window.messages.push(event.data);
+                if (isJsonObject(event.data)) {
+                    window.messages.push(event.data);
+                }
+
                 if (window.messages.length > this.BUFFER_LENGTH) {
                     // eslint-disable-next-line no-unused-vars
                     const [_, ...rest] = this.messages;
@@ -58,11 +76,24 @@ const replaceWebsocket = () => {
     window.messages = [];
 }
 
+const waitForWSSubset = async (page, subset, options = {timeout: 6000}) => {
+    try {
+        return await promiseTimeout(options.timeout, checkForMessage(page, subset, {
+            subset: true,
+        }));
+    } catch (err) {
+        const error_message = `JSON subset not found in ${options.timeout}ms.`;
+        return new Error(error_message);
+    }
+};
+
 const waitForWSMessage = async (page, message_type, {timeout = 5000}) => {
     try {
-        return await promiseTimeout(timeout, checkForMessage(page, message_type));
+        return await promiseTimeout(timeout, checkForMessage(page, message_type, {
+            subset: false,
+        }));
     } catch (err) {
-        throw new Error(`Could not read message ${message_type} in ${timeout}ms.`)
+        console.log(`Could not read message ${  message_type  } in ${  timeout  }ms`);
     }
 }
 
@@ -82,21 +113,37 @@ const promiseTimeout = (ms, promise) => {
     ])
 };
 
-const checkForMessage =  (page, message_type) => new Promise((resolve) => {
-    const id = setInterval(() => {
-        page.evaluate(() => window.messages).then(messages => {
-            const message = messages.find((msg) => {
-                return !!msg.match(message_type);
-            });
+const checkForMessage =  (page, payload, options = {
+    subset: false,
+}) => new Promise((resolve) => {
+    const id = setInterval(async () => {
+        try {
+            const messages = await page.evaluate('window.messages');
+            if (!messages) {
+                return;
+            }
+            let message;
+
+            if (options.subset) {
+                message = messages.find((msg) => isMatch(JSON.parse(msg), payload))
+            } else {
+                message = messages.find((msg) => {
+                    return !!msg.match(payload);
+                });
+            }
+
             if (message) {
                 clearInterval(id);
                 resolve(message);
             }
-        })
-    }, 50);
+        } catch (e) {
+            console.warn('Evaluation failed', e);
+        }
+    }, 1000);
 });
 
 module.exports = {
     replaceWebsocket,
     waitForWSMessage,
+    waitForWSSubset,
 }

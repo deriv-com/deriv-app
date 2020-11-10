@@ -1,0 +1,14 @@
+{
+  "name": "tests",
+  "version": "0.0.1",
+  "description": "E2E testing for DerivApp",
+  "main": "bootstrap.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "lodash": "^4.17.20"
+  }
+}

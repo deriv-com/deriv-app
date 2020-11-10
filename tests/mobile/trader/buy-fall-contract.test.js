@@ -1,10 +1,7 @@
 const {waitForPurchaseBtnEnabled} = require("../../_common/contract_tasks");
-const {
-    waitForChart,
-} = require("../../_common/contract_tasks");
-
-const {loadOrLogin} = require("../../_utils/page");
+const {replaceWebsocket, waitForWSSubset} = require('../../_utils/websocket');
 const {setUp, tearDown} = require('../../bootstrap');
+const Trader = require('../../objects/trader');
 
 let browser, context, page;
 
@@ -21,6 +18,7 @@ beforeAll(async () => {
     });
     browser = out.browser;
     context = out.context;
+    await context.addInitScript(replaceWebsocket);
 });
 
 afterAll(async () => {
@@ -28,18 +26,22 @@ afterAll(async () => {
 });
 
 beforeEach(async () => {
-    page = await context.newPage();
+    if (!page) {
+        page = new Trader(await context.newPage());
+    }
+
     await preBuy();
 });
 
-
 test('[mobile] trader/buy-fall-contract', async () => {
     await page.click('#dt_purchase_put_price');
-    await page.waitForTimeout(5000);
+    await waitForWSSubset(page, {
+        "msg_type": "buy",
+    });
 });
 test('[mobile] trader/buy-fall-contract-min-duration', async () => {
-    await page.waitForSelector('.mobile-wrapper > .dc-collapsible > .dc-collapsible__content > .mobile-widget__wrapper > .mobile-widget')
-    await page.click('.mobile-wrapper > .dc-collapsible > .dc-collapsible__content > .mobile-widget__wrapper > .mobile-widget')
+    await page.waitForSelector('[data-qa=duration_amount_selector]')
+    await page.click('[data-qa=duration_amount_selector]')
 
     const REDUCE_DURATION_BUTTON_SELECTOR = '.dc-tabs__content > .trade-params__duration-tickpicker > .dc-tick-picker > .dc-tick-picker__calculation > .dc-btn:nth-child(1)';
 
@@ -116,8 +118,8 @@ test('[mobile] trader/buy-fall-contract-max-duration', async () => {
 
 async function preBuy() {
     await page.goto(process.env.HOME_URL, {waitUntil: "domcontentloaded"});
-    await loadOrLogin(page, process.env.VALID_USER, process.env.VALID_PASSWORD);
-    await waitForChart(page);
+    await page.loadOrLogin(process.env.VALID_USER, process.env.VALID_PASSWORD)
+    await page.waitForChart();
     await page.click('.acc-info__wrapper .acc-info');
     await page.click('.dc-tabs__item:nth-child(2)');
     await page.click(".acc-switcher__accounts >> text=Demo");
@@ -126,9 +128,9 @@ async function preBuy() {
     await page.fill(".data-hj-whitelist", "Volatility");
     await page.click('text="Volatility 10 (1s) Index"');
     await page.click(".contract-type-widget__display");
-    await waitForChart(page);
+    await page.waitForChart();
     await page.click("#dt_contract_rise_fall_item");
-    await waitForChart(page);
+    await page.waitForChart();
     await waitForPurchaseBtnEnabled(page);
 }
 

@@ -88,7 +88,7 @@ class MobileWidget extends React.Component {
                         <MultiplierOptionsWidget />
                     </React.Fragment>
                 ) : (
-                    <div className='mobile-widget' onClick={this.toggleWidget}>
+                    <div data-qa='duration_amount_selector' className='mobile-widget' onClick={this.toggleWidget}>
                         <div className='mobile-widget__duration'>{this.getHumanReadableDuration()}</div>
                         <div className='mobile-widget__amount'>
                             <Money amount={amount} currency={currency} show_currency />

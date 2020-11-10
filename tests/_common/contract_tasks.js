@@ -5,7 +5,7 @@ const RECENT_POSITION_DRAWER_SELECTOR = '#dt_positions_toggle';
 const SIMPLE_DURATION_TOGGLE_SELECTOR = '#dt_simple_duration_toggle';
 
 async function chooseUnderlying(page) {
-    await waitForChart(page);
+    await page.waitForChart();
     await page.click(MARKET_SELECT); // Click market select
     await page.fill('.data-hj-whitelist', 'Volatility');
     await page.click('.market_dropdown-subcategory-item-1HZ10V');
@@ -26,11 +26,6 @@ async function chooseContract(page, contract) {
 async function waitForPurchaseBtnEnabled(page) {
     await page.waitForSelector('#dt_purchase_call_button:enabled', { timeout: 120000 });
     await page.waitForSelector('#dt_purchase_put_button:enabled', { timeout: 120000 });
-}
-
-async function waitForChart(page) {
-    await page.waitForSelector('.chart-container__loader', {state: 'hidden', timeout: 120000});
-    await page.waitForSelector('.ciq-menu.ciq-enabled', {timeout: 120000});
 }
 
 async function openRecentPositionsDrawer(page) {
@@ -56,7 +51,7 @@ async function setDuration(page, duration_unit, duration_amount) {
 async function buyRiseContract(page, tradeTypes, contract, duration_unit, duration_amount) {
     await chooseContractType(page, tradeTypes, contract);
     await setDuration(page, duration_unit, duration_amount);
-    await waitForChart(page);
+    await page.waitForChart();
     await waitForPurchaseBtnEnabled(page);
     await page.click('#dt_purchase_call_button');
     await verifyContractResult(page);
@@ -70,7 +65,6 @@ async function verifyContractResult(page) {
 
 module.exports = {
     buyRiseContract,
-    waitForChart,
     waitForPurchaseBtnEnabled,
     chooseContractType,
     chooseUnderlying,

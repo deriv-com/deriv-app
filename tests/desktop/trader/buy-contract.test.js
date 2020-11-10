@@ -1,20 +1,20 @@
 const {
   chooseUnderlying,
   buyRiseContract,
-  waitForChart,
   openRecentPositionsDrawer,
 } = require("../../_common/contract_tasks");
-const {switchVirtualAccount} = require('../../_common/common_tasks');
-const {loadOrLogin} = require("../../_utils/page");
+const Trader = require('../../objects/trader');
 const {setUp, tearDown, desktop_viewport} = require('../../bootstrap');
 
-let browser, context
+let browser, context, page;
 
 beforeAll(async () => {
     const out = await setUp(desktop_viewport);
 
     browser = out.browser;
     context = out.context;
+    const p = await context.newPage();
+    page = new Trader(p);
 });
 
 afterAll(async () => {
@@ -22,11 +22,10 @@ afterAll(async () => {
 });
 
 test("[desktop] trader/buy-contract", async () => {
-    const page = await context.newPage();
-    await page.goto(process.env.HOME_URL, {waitUntil: "domcontentloaded"});
-    await waitForChart(page);
-    await loadOrLogin(page, process.env.VALID_USER, process.env.VALID_PASSWORD);
-    await switchVirtualAccount(page);
+    await page.navigate();
+    await page.waitForChart();
+    await page.loadOrLogin(process.env.VALID_USER, process.env.VALID_PASSWORD);
+    await page.switchVirtualAccount();
     await chooseUnderlying(page);
     await openRecentPositionsDrawer(page);
     await buyRiseContract(page, 'Ups & Downs', "rise_fall", "Ticks", 5);

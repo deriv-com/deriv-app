@@ -1,5 +1,5 @@
 # StaticUrl component
-Use this component to generate a link to static site 'deriv.com'.
+Use this component to generate a link to 'deriv.com'.
 We need 'PlatformContext' provider's value from the application state.
 
 #### Supported events:

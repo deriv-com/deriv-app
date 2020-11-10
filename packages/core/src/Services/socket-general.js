@@ -1,5 +1,5 @@
 import { flow } from 'mobx';
-import { State, getPropertyValue, routes } from '@deriv/shared';
+import { DBOT_AUTH_REQ_ID, State, getPropertyValue, routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ServerTime from '_common/base/server_time';
 import BinarySocket from '_common/base/socket_base';
@@ -153,6 +153,10 @@ const BinarySocketGeneral = (() => {
                 break;
             case 'InvalidToken':
                 if (['cashier', 'paymentagent_withdraw', 'mt5_password_reset'].includes(msg_type)) {
+                    return;
+                }
+                // Special request IDs to skip
+                if ([DBOT_AUTH_REQ_ID].includes(response.req_id)) {
                     return;
                 }
                 if (!['reset_password', 'new_account_virtual'].includes(msg_type)) {

@@ -1,5 +1,6 @@
 import { observable, action, reaction, computed, runInAction } from 'mobx';
 import { localize } from '@deriv/translations';
+import { DBOT_AUTH_REQ_ID } from '@deriv/shared';
 import { error_types, unrecoverable_errors, observer, message_types } from '@deriv/bot-skeleton';
 import { contract_stages } from '../constants/contract-stage';
 import { journalError, switch_account_notification } from '../utils/bot-notifications';
@@ -115,8 +116,16 @@ export default class RunPanelStore {
 
     @action.bound
     async onRunButtonClick() {
-        const { core, summary_card, route_prompt_dialog, self_exclusion } = this.root_store;
+        const { core, summary_card, route_prompt_dialog, self_exclusion, ws } = this.root_store;
         const { client, ui } = core;
+
+        // Do not proceed in case of an invalid token
+        // TODO: Remove this after refactoring Bot so we can check things first before starting
+        const authorize_response = await ws.send({ authorize: client.getToken(), req_id: DBOT_AUTH_REQ_ID });
+        if (authorize_response.error?.code === 'InvalidToken') {
+            await client.logout();
+            return;
+        }
 
         this.dbot.unHighlightAllBlocks();
         if (!client.is_logged_in) {

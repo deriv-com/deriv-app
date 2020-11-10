@@ -193,7 +193,7 @@ class Chart extends React.Component {
 
     get chart_yAxis_margin() {
         const margin = {
-            top: isMobile() ? 96 : 136,
+            top: isMobile() ? 96 : 148,
             bottom: this.is_bottom_widget_visible ? 128 : 112,
         };
 
@@ -226,7 +226,7 @@ class Chart extends React.Component {
                 settings={this.props.settings}
                 startEpoch={this.props.start_epoch}
                 scrollToEpoch={this.props.scroll_to_epoch}
-                chartStatusListener={this.props.setIsChartReady}
+                stateChangeListener={this.props.chartStateChange}
                 symbol={this.props.symbol}
                 topWidgets={ChartTopWidgets}
                 isConnectionOpened={this.props.is_socket_opened}
@@ -275,7 +275,8 @@ const ReplayChart = connect(({ modules, ui, common }) => {
     const contract_replay = modules.contract_replay;
     const contract_store = contract_replay.contract_store;
     const contract_config = contract_store.contract_config;
-    const is_chart_ready = contract_replay.is_chart_ready;
+    const allow_scroll_to_epoch =
+        contract_replay.chart_state === 'READY' || contract_replay.chart_state === 'SCROLL_TO_LEFT';
     /**
      * TODO: remove forcing light theme once DBot supports dark theme
      * DBot does not support for dark theme since till now,
@@ -293,17 +294,18 @@ const ReplayChart = connect(({ modules, ui, common }) => {
         assetInformation: false, // ui.is_chart_asset_info_visible,
         isHighestLowestMarkerEnabled: false, // TODO: Pending UI
     };
+
     return {
         end_epoch: contract_config.end_epoch,
         chart_type: contract_config.chart_type,
         start_epoch: contract_config.start_epoch,
         granularity: contract_config.granularity,
-        scroll_to_epoch: is_chart_ready ? contract_config.scroll_to_epoch : undefined,
+        scroll_to_epoch: allow_scroll_to_epoch ? contract_config.scroll_to_epoch : undefined,
         settings,
         is_mobile: ui.is_mobile,
         is_socket_opened: common.is_socket_opened,
         is_digit_contract: contract_store.is_digit_contract,
-        setIsChartReady: contract_replay.setIsChartReady,
+        chartStateChange: contract_replay.chartStateChange,
         margin: contract_replay.margin,
         is_static_chart: contract_replay.is_static_chart,
         barriers_array: contract_store.barriers_array,

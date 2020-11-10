@@ -19,12 +19,12 @@ import { WS } from 'Services';
 /* eslint-disable react/jsx-no-target-blank */
 export const clientNotifications = (ui = {}, client = {}) => {
     const notifications = {
-        // dp2p: {
-        //     key: 'dp2p',
-        //     header: localize('Payment problems?'),
-        //     message: localize('There’s an app for that'),
-        //     type: 'dp2p',
-        // },
+        dp2p: {
+            key: 'dp2p',
+            header: localize('Payment problems?'),
+            message: localize('There’s an app for that'),
+            type: 'dp2p',
+        },
         currency: {
             action: {
                 text: localize('Set currency'),
@@ -439,7 +439,7 @@ export const excluded_notifications = isMobile()
           'new_version_available',
       ];
 
-export const handleClientNotifications = (client, client_store, ui_store) => {
+export const handleClientNotifications = (client, client_store, ui_store, cashier_store) => {
     const { currency, excluded_until } = client;
     const {
         loginid,
@@ -451,7 +451,7 @@ export const handleClientNotifications = (client, client_store, ui_store) => {
         shouldCompleteTax,
     } = client_store;
     const { addNotificationMessage } = ui_store;
-    // const { is_p2p_visible } = cashier_store;
+    const { is_p2p_visible } = cashier_store;
 
     if (loginid !== LocalStore.get('active_loginid')) return {};
     if (!currency) addNotificationMessage(clientNotifications(ui_store).currency);
@@ -468,12 +468,9 @@ export const handleClientNotifications = (client, client_store, ui_store) => {
         shouldCompleteTax
     );
 
-    // if (is_p2p_visible) {
-    //     const dp2p_banner = Cookies.get('banner_information');
-    //     if (!dp2p_banner) {
-    //         addNotificationMessage(clientNotifications().dp2p);
-    //     }
-    // }
+    if (is_p2p_visible) {
+        addNotificationMessage(clientNotifications().dp2p);
+    }
 
     if (is_tnc_needed) addNotificationMessage(clientNotifications(ui_store).tnc);
 

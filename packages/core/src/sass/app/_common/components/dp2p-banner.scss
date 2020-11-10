@@ -4,7 +4,7 @@
     background-color: var(--general-main-1);
     border-radius: 4px;
     box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.08), 0 0 8px 0 rgba(0, 0, 0, 0.08);
-    width: 348px;
+    max-width: 348px;
     height: 124px;
     transition: left 0.3s ease-in-out;
     z-index: 10;

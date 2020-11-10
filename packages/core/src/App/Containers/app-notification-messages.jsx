@@ -20,7 +20,7 @@ class AppNotificationMessages extends React.Component {
     };
 
     render() {
-        const allowed_on_mobile = ['unwelcome', 'contract_sold'];
+        const allowed_on_mobile = ['unwelcome', 'contract_sold', 'dp2p'];
 
         const { is_p2p_visible, marked_notifications, notification_messages, removeNotificationMessage } = this.props;
         const { bounds } = this.state;

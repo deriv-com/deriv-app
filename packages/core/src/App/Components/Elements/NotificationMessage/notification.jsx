@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import Cookies from 'js-cookie';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, LinearProgress } from '@deriv/components';
@@ -8,7 +7,7 @@ import CloseButton from './close-button.jsx';
 import NotificationStatusIcons from './notification-status-icons.jsx';
 import { default_delay, types } from './constants';
 import { BinaryLink } from '../../Routes';
-import DP2PBanner2 from './dp2p-banner.jsx';
+import DP2PBanner from './dp2p-banner.jsx';
 
 const Notification = ({ data, removeNotificationMessage }) => {
     const { is_deriv_crypto } = React.useContext(PlatformContext);
@@ -26,14 +25,9 @@ const Notification = ({ data, removeNotificationMessage }) => {
         setTimeout(destroy, data.delay || default_delay);
     }
 
-    const bannerDestroy = () => {
-        Cookies.set('banner_information', 1);
-        onClick();
-    };
-
     switch (data.type) {
         case 'dp2p':
-            return <DP2PBanner2 header={data.header} message={data.message} onClick={bannerDestroy} />;
+            return <DP2PBanner header={data.header} message={data.message} onClick={onClick} />;
         default:
             return (
                 <div

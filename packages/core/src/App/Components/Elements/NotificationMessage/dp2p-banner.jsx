@@ -1,9 +1,10 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { Button, Icon, StaticUrl } from '@deriv/components';
+import { getUrlBase } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 
-const DP2PBanner2 = ({ onClick, is_open, header, message }) => (
+const DP2PBanner = ({ onClick, header, message }) => (
     <div className='dp2p-banner'>
         <div className='dp2p-banner__left'>
             <div className='dp2p-banner__title'>
@@ -20,16 +21,16 @@ const DP2PBanner2 = ({ onClick, is_open, header, message }) => (
         </div>
         <div className='dp2p-banner__right'>
             <div className='dp2p-banner__right-bg'></div>
-            <img src='./src/App/Components/Elements/DP2PBanner/dp2p_banner.png' alt='DP2P'></img>
+            <img src={getUrlBase('/public/images/common/dp2p_banner.png')} alt='DP2P'></img>
             <Icon className='dp2p-banner__right-icon' icon='IcCloseLight' onClick={onClick} />
         </div>
     </div>
 );
 
-DP2PBanner2.prototype = {
-    is_open: PropTypes.bool,
+DP2PBanner.prototype = {
+    header: PropTypes.string,
+    message: PropTypes.string,
     onClick: PropTypes.func,
-    onClose: PropTypes.func,
 };
 
-export default DP2PBanner2;
+export default DP2PBanner;

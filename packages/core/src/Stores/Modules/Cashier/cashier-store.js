@@ -200,37 +200,23 @@ export default class CashierStore extends BaseStore {
         this.onSwitchAccount(this.accountSwitcherListener);
     }
 
-    createP2Pbanner = () => {
-        console.log('pushed');
-        this.root_store.ui.addNotificationMessage({
-            key: 'dp2p',
-            header: localize('Payment problems?'),
-            message: localize('There’s an app for that'),
-            type: 'dp2p',
-        });
-    };
-
+    // Initial init just for displaying P2P banner without mounting the entire cashier
     @action.bound
     init() {
-        console.log('cashier init');
-        console.log(`before init: ${this.is_p2p_visible}`);
-
         reaction(
             () => [this.root_store.client.is_logged_in, this.root_store.client.residence],
             async () => {
                 if (!this.is_p2p_visible && !this.root_store.client.is_virtual) {
                     const advertiser_info = await WS.authorized.p2pAdvertiserInfo();
                     const advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
-                    // if (advertiser_error === 'RestrictedCountry') {
-                    //     this.setIsP2pBannerVisible(false);
-                    // }
-
-                    this.setIsP2pBannerVisible(true);
-                    this.createP2Pbanner();
+                    if (advertiser_error === 'RestrictedCountry') {
+                        this.setIsP2PBannerVisible(false);
+                    } else {
+                        this.setIsP2PBannerVisible(true);
+                    }
 
                     this.is_p2p_advertiser = !advertiser_error;
                 }
-                console.log(`after init: ${this.is_p2p_visible}`);
             }
         );
     }
@@ -301,10 +287,10 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    setIsP2pBannerVisible(is_p2p_visible) {
-        this.is_p2p_visible = is_p2p_visible;
-        if (!is_p2p_visible) {
-            this.is_p2p_visible = true;
+    setIsP2PBannerVisible(is_visible) {
+        this.is_p2p_visible = is_visible;
+        if (!is_visible) {
+            this.is_p2p_visible = false;
         }
     }
 

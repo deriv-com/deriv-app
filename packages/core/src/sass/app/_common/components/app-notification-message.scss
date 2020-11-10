@@ -113,7 +113,7 @@
         margin-bottom: 16px;
     }
     @include mobile {
-        max-width: unset;
+        max-width: 348px;
 
         &--small {
             max-width: unset;

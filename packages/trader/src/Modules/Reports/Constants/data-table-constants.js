@@ -135,7 +135,7 @@ export const getProfitTableColumnsTemplate = (currency, items_count) => [
         },
     },
     {
-        title: localize('Profit/Loss'),
+        title: localize('Profit / Loss'),
         col_index: 'profit_loss',
         renderCellContent: ({ cell_value }) => (
             <ProfitLossCell value={cell_value}>

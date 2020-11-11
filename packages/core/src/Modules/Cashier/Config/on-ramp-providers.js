@@ -2,8 +2,6 @@ import { getCurrencyDisplayCode } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services';
 
-// TODO: Write tests to enforce provider structure.
-
 const createBanxaProvider = () => ({
     icon: { dark: 'IcCashierBanxaDark', light: 'IcCashierBanxaLight' },
     name: 'Banxa',
@@ -87,47 +85,105 @@ const createChangellyProvider = client => ({
     should_show_deposit_address: true,
 });
 
-// TODO: Re-enable once Wyre prod keys are added to production.
-// const createWyreProvider = () => ({
-//     icon: { dark: 'IcCashierWyre', light: 'IcCashierWyre' },
-//     name: 'Wyre',
-//     getDescription: () =>
-//         localize(
-//             'A secure and compliant bridge between fiat currencies and cryptocurrencies. Supports BTC, ETH, WETH, and DAI. Exchange crypto safely and securely with Wyre.'
-//         ),
-//     getAllowedResidencies: () => ['*'],
-//     getPaymentIcons: () => [
-//         { dark: 'IcCashierVisa', light: 'IcCashierVisa' },
-//         { dark: 'IcCashierMastercard', light: 'IcCashierMastercard' },
-//     ],
-//     getScriptDependencies: () => ['https://widget.changelly.com/affiliate.js'],
-//     getDefaultFromCurrency: () => 'usd',
-//     getFromCurrencies: () => ['usd', 'eur', 'gbp'],
-//     getToCurrencies: () => ['btc', 'eth', 'weth', 'dai'],
-//     getWidgetHtml: () => {
-//         return new Promise((resolve, reject) => {
-//             WS.serviceToken({ service_token: 1, service: 'wyre' }).then(response => {
-//                 if (response.error) {
-//                     reject(response.error.message);
-//                 } else {
-//                     const { url } = response.service_token.wyre;
+const createWyreProvider = () => ({
+    icon: { dark: 'IcCashierWyreDark', light: 'IcCashierWyreLight' },
+    name: 'Wyre',
+    getDescription: () =>
+        localize(
+            'A secure and compliant bridge between fiat currencies and cryptocurrencies. Supports BTC, ETH, WETH, and DAI. Exchange crypto safely and securely with Wyre.'
+        ),
+    getAllowedResidencies: () => [
+        // https://docs.sendwyre.com/docs/getting-started-wyre-checkout#supported-states-and-countries
+        'ar',
+        'at',
+        'au',
+        'be',
+        'bo',
+        'br',
+        'by',
+        'ca',
+        'ch',
+        'cl',
+        'co',
+        'cr',
+        'cy',
+        'cz',
+        'de',
+        'dk',
+        'do',
+        'dz',
+        'ee',
+        'es',
+        'fi',
+        'fr',
+        'fr',
+        'gb',
+        'gr',
+        'hk',
+        'id',
+        'ie',
+        'il',
+        'in',
+        'is',
+        'it',
+        'jp',
+        'kr',
+        'lt',
+        'lu',
+        'lv',
+        'mx',
+        'my',
+        'nl',
+        'no',
+        'np',
+        'nz',
+        'pe',
+        'ph',
+        'pl',
+        'pt',
+        'py',
+        'se',
+        'sg',
+        'si',
+        'sk',
+        'th',
+        'tr',
+        'tz',
+        'vn',
+        'za',
+    ],
+    getPaymentIcons: () => [
+        { dark: 'IcCashierVisaDark', light: 'IcCashierVisaLight' },
+        { dark: 'IcCashierMastercardDark', light: 'IcCashierMastercardLight' },
+    ],
+    getScriptDependencies: () => [],
+    getDefaultFromCurrency: () => 'usd',
+    getFromCurrencies: () => ['eur', 'aud', 'usd', 'brl', 'cad', 'gbp', 'mxn'],
+    getToCurrencies: () => ['btc', 'eth', 'husd', 'weth', 'usdt', 'usdc', 'busd', 'dai', 'gusd', 'pax'],
+    getWidgetHtml: () => {
+        return new Promise((resolve, reject) => {
+            WS.serviceToken({ service_token: 1, service: 'wyre' }).then(response => {
+                if (response.error) {
+                    reject(response.error.message);
+                } else {
+                    const { url } = response.service_token.wyre;
 
-//                     if (url) {
-//                         window.open(url);
-//                     }
+                    if (url) {
+                        window.open(url);
+                    }
 
-//                     // Resolving empty will/should redirect user.
-//                     resolve();
-//                 }
-//             });
-//         });
-//     },
-//     onMountWidgetContainer: () => {},
-//     should_show_deposit_address: false,
-// });
+                    // Resolving empty will/should redirect user.
+                    resolve();
+                }
+            });
+        });
+    },
+    onMountWidgetContainer: () => {},
+    should_show_deposit_address: false,
+});
 
 export default {
     createBanxaProvider,
     createChangellyProvider,
-    // createWyreProvider, TODO: Re-enable once Wyre prod keys are added to production.
+    createWyreProvider,
 };

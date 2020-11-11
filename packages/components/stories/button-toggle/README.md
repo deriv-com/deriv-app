@@ -18,7 +18,7 @@ import ButtonToggle from 'deriv-components';
 
 const DummyComponent = props => (
   <ButtonToggle
-        buttons_arr={bottons_list}
+        buttons_arr={buttons_list}
         name='type'
         onChange={(item) => setSelected(item.target.value);}
         value={selected}

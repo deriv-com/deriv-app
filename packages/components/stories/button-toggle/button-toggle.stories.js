@@ -15,7 +15,7 @@ storiesOf('ButtonToggle', module)
         () => {
             const [selected, setSelected] = React.useState('BUY');
 
-            const bottons_list = [
+            const buttons_list = [
                 {
                     text: 'Buy',
                     value: 'BUY',
@@ -30,7 +30,7 @@ storiesOf('ButtonToggle', module)
             return (
                 <Wrapper is_dark={boolean('Dark Theme', false)}>
                     <ButtonToggle
-                        buttons_arr={bottons_list}
+                        buttons_arr={buttons_list}
                         is_animated
                         name='type'
                         onChange={item => {

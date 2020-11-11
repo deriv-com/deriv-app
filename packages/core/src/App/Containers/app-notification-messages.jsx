@@ -6,7 +6,6 @@ import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import Notification, { max_display_notifications } from '../Components/Elements/NotificationMessage';
-// import DP2PBanner from '../Components/Elements/DP2PBanner/dp2p-banner.jsx';
 import 'Sass/app/_common/components/app-notification-message.scss';
 
 class AppNotificationMessages extends React.Component {

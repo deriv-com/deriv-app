@@ -1,5 +1,5 @@
 import { flow } from 'mobx';
-import { State, getPropertyValue, routes } from '@deriv/shared';
+import { State, getActivePlatform, getPropertyValue, routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ServerTime from '_common/base/server_time';
 import BinarySocket from '_common/base/socket_base';
@@ -159,14 +159,14 @@ const BinarySocketGeneral = (() => {
                     if (window.TrackJS) window.TrackJS.track('Custom InvalidToken error');
                 }
                 // eslint-disable-next-line no-case-declarations
-                const current_path = window.location.pathname;
+                const active_platform = getActivePlatform(common_store.app_routing_history);
 
                 // DBot handles this internally. Special case: 'client.invalid_token'
-                if (current_path.startsWith(routes.bot)) return;
+                if (active_platform === 'DBot') return;
 
                 client_store.logout().then(() => {
                     let redirect_to = routes.trade;
-                    if (current_path.startsWith(routes.mt5)) {
+                    if (active_platform === 'DMT5') {
                         redirect_to = routes.mt5;
                     }
                     common_store.routeTo(redirect_to);

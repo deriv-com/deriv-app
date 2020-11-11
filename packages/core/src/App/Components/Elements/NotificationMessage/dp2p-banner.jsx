@@ -6,7 +6,7 @@ import { localize, Localize } from '@deriv/translations';
 
 const DP2PBanner = ({ onClick, header, message }) => (
     <div className='dp2p-banner'>
-        <div className='dp2p-banner__left'>
+        <div className='dp2p-banner--left'>
             <div className='dp2p-banner__title'>
                 <Localize i18n_default_text={header} />
             </div>
@@ -14,15 +14,15 @@ const DP2PBanner = ({ onClick, header, message }) => (
                 <Localize i18n_default_text={message} />
             </div>
             <StaticUrl href='/cashier/p2p/v1'>
-                <Button className='dp2p-banner__btn-accept' secondary onClick={onClick}>
+                <Button className='dp2p-banner__btn' secondary onClick={onClick}>
                     {localize('Learn more')}
                 </Button>
             </StaticUrl>
         </div>
-        <div className='dp2p-banner__right'>
-            <div className='dp2p-banner__right-bg' />
-            <img src={getUrlBase('/public/images/common/dp2p_banner.png')} alt='DP2P' />
-            <Icon className='dp2p-banner__right-icon' icon='IcCloseLight' onClick={onClick} />
+        <div className='dp2p-banner--right'>
+            <div className='dp2p-banner__bg' />
+            <img className='dp2p-banner__img' src={getUrlBase('/public/images/common/dp2p_banner.png')} alt='DP2P' />
+            <Icon className='dp2p-banner__icon' icon='IcCloseLight' onClick={onClick} />
         </div>
     </div>
 );

@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import React from 'react';
-import { action, computed, observable, toJS } from 'mobx';
+import { action, computed, observable, toJS, reaction } from 'mobx';
 import {
     routes,
     isCryptocurrency,

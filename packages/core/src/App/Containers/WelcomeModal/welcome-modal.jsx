@@ -117,7 +117,7 @@ const WelcomeModal = ({ toggleWelcomeModal, history }) => {
                 {
                     icon: 'IcBrandDmt5',
                     title: localize('Deriv MetaTrader 5 (DMT5)'),
-                    description: localize('All-in-one multi-asset trading platform for CFD margin trading.'),
+                    description: localize('All-in-one multi-asset trading platform for CFDs & margin trading.'),
                 },
             ]}
             title={localize('Margin (MetaTrader 5)')}

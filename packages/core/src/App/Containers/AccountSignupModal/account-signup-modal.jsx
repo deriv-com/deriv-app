@@ -139,6 +139,7 @@ class AccountSignup extends React.Component {
                                                 <PasswordMeter
                                                     input={this.state.pw_input}
                                                     has_error={!!(touched.password && errors.password)}
+                                                    custom_feedback_messages={getErrorMessages().password_warnings}
                                                 >
                                                     <PasswordInput
                                                         {...field}

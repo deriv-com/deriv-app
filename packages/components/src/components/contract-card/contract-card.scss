@@ -130,6 +130,9 @@
         position: relative;
         background: var(--general-main-1);
 
+        .currency-badge {
+            margin-bottom: 5px;
+        }
         &--active:before {
             content: '';
             top: -1px;

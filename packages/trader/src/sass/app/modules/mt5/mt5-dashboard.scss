@@ -150,8 +150,6 @@
                     &:not(:last-child) {
                         margin-right: 0.8rem;
                     }
-                    &--top {
-                    }
                 }
             }
             &--mobile {
@@ -605,6 +603,21 @@
 
             &:not(:last-child) {
                 margin-right: 1.6rem;
+            }
+        }
+    }
+    &__action-wrapper {
+        height: 4rem;
+        margin: 0 auto 1.3rem;
+        padding-top: 1rem;
+        width: 75%;
+        text-align: center;
+
+        &__link {
+            font-size: var(--text-size-xxs);
+
+            &--disabled {
+                pointer-events: none;
             }
         }
     }

@@ -10,7 +10,7 @@ const Text = ({ children, size, color, align, weight, line_height, as, className
         '--text-weight': `var(--text-weight-${weight || 'normal'})`,
     };
 
-    const text_align = align || 'left';
+    const text_align = align || 'start';
     const class_names = classNames(
         'dc-text',
         {

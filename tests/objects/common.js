@@ -132,7 +132,7 @@ class Common {
     }
 
     async navigate() {
-        if (process.env.QA_SETUP) {
+        if (process.env.QA_SETUP === 'true') {
             await this.setEndpoint(process.env.HOME_URL, process.env.QABOX_SERVER, process.env.QABOX_APP_ID);
         }
         await this.page.goto(`${process.env.HOME_URL}`, {waitUntil: 'domcontentloaded'});

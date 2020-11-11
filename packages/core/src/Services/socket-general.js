@@ -1,5 +1,5 @@
 import { flow } from 'mobx';
-import { DBOT_AUTH_REQ_ID, State, getPropertyValue, routes } from '@deriv/shared';
+import { State, getPropertyValue, routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ServerTime from '_common/base/server_time';
 import BinarySocket from '_common/base/socket_base';
@@ -155,22 +155,19 @@ const BinarySocketGeneral = (() => {
                 if (['cashier', 'paymentagent_withdraw', 'mt5_password_reset'].includes(msg_type)) {
                     return;
                 }
-                // Special request IDs to skip
-                if ([DBOT_AUTH_REQ_ID].includes(response.req_id)) {
-                    return;
-                }
                 if (!['reset_password', 'new_account_virtual'].includes(msg_type)) {
                     if (window.TrackJS) window.TrackJS.track('Custom InvalidToken error');
                 }
+                // eslint-disable-next-line no-case-declarations
+                const current_path = window.location.pathname;
+
+                // DBot handles this internally. Special case: 'client.invalid_token'
+                if (current_path.startsWith(routes.bot)) return;
+
                 client_store.logout().then(() => {
-                    const current_path = window.location.pathname;
                     let redirect_to = routes.trade;
-                    if (current_path?.length > 1) {
-                        if (current_path.startsWith(routes.bot)) {
-                            redirect_to = routes.bot;
-                        } else if (current_path.startsWith(routes.mt5)) {
-                            redirect_to = routes.mt5;
-                        }
+                    if (current_path.startsWith(routes.mt5)) {
+                        redirect_to = routes.mt5;
                     }
                     common_store.routeTo(redirect_to);
                 });

@@ -5,4 +5,3 @@ export const website_domain = is_crypto_app ? 'app.derivcrypto.com' : 'app.deriv
 export const website_name = is_crypto_app ? 'DerivCrypto' : 'Deriv';
 export const default_title = website_name;
 export const TRACKING_STATUS_KEY = 'tracking_status';
-export const DBOT_AUTH_REQ_ID = 90001;

@@ -62,19 +62,34 @@ const FormInputField = ({ name, optional = false, warn, ...props }) => (
     </Field>
 );
 
-const PersonalDetails = props => {
+const PersonalDetails = ({
+    getCurrentStep,
+    onSave,
+    onCancel,
+    onSubmit,
+    goToPreviousStep,
+    goToNextStep,
+    validate,
+    salutation_list,
+    disabled_items,
+    is_svg,
+    residence_list,
+    is_fully_authenticated,
+    account_opening_reason_list,
+    ...props
+}) => {
     const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = React.useState(false);
     const [is_tin_popover_open, setIsTinPopoverOpen] = React.useState(false);
     const [warning_items, setWarningItems] = React.useState({});
 
     const handleCancel = values => {
-        const current_step = props.getCurrentStep() - 1;
-        props.onSave(current_step, values);
-        props.onCancel(current_step, props.goToPreviousStep);
+        const current_step = getCurrentStep() - 1;
+        onSave(current_step, values);
+        onCancel(current_step, goToPreviousStep);
     };
 
     const handleValidate = values => {
-        const { errors, warnings } = splitValidationResultTypes(props.validate(values));
+        const { errors, warnings } = splitValidationResultTypes(validate(values));
         setWarningItems(warnings);
         return errors;
     };
@@ -102,7 +117,7 @@ const PersonalDetails = props => {
             validate={handleValidate}
             validateOnMount
             onSubmit={(values, actions) => {
-                props.onSubmit(props.getCurrentStep() - 1, values, actions.setSubmitting, props.goToNextStep);
+                onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep);
             }}
         >
             {({ handleSubmit, isSubmitting, errors, setFieldValue, touched, values, handleChange, handleBlur }) => (
@@ -124,8 +139,8 @@ const PersonalDetails = props => {
                                             <RadioGroup
                                                 className='dc-radio__input'
                                                 name='salutation'
-                                                items={props.salutation_list.map(item => {
-                                                    if (props.disabled_items.includes('salutation')) {
+                                                items={salutation_list.map(item => {
+                                                    if (disabled_items.includes('salutation')) {
                                                         item.disabled = true;
                                                     }
                                                     return item;
@@ -141,18 +156,18 @@ const PersonalDetails = props => {
                                         {'first_name' in props.value && (
                                             <FormInputField
                                                 name='first_name'
-                                                required={props.is_svg}
-                                                label={props.is_svg ? localize('First name*') : localize('First name')}
-                                                disabled={props.disabled_items.includes('first_name')}
+                                                required={is_svg}
+                                                label={is_svg ? localize('First name*') : localize('First name')}
+                                                disabled={disabled_items.includes('first_name')}
                                                 placeholder={localize('John')}
                                             />
                                         )}
                                         {'last_name' in props.value && (
                                             <FormInputField
                                                 name='last_name'
-                                                required={props.is_svg}
-                                                label={props.is_svg ? localize('Last name*') : localize('Last name')}
-                                                disabled={props.disabled_items.includes('last_name')}
+                                                required={is_svg}
+                                                label={is_svg ? localize('Last name*') : localize('Last name')}
+                                                disabled={disabled_items.includes('last_name')}
                                                 placeholder={localize('Doe')}
                                             />
                                         )}
@@ -160,13 +175,9 @@ const PersonalDetails = props => {
                                         {'date_of_birth' in props.value && (
                                             <DateOfBirthField
                                                 name='date_of_birth'
-                                                required={props.is_svg}
-                                                label={
-                                                    props.is_svg
-                                                        ? localize('Date of birth*')
-                                                        : localize('Date of birth')
-                                                }
-                                                disabled={props.disabled_items.includes('date_of_birth')}
+                                                required={is_svg}
+                                                label={is_svg ? localize('Date of birth*') : localize('Date of birth')}
+                                                disabled={disabled_items.includes('date_of_birth')}
                                                 placeholder={localize('01-07-1999')}
                                             />
                                         )}
@@ -177,15 +188,13 @@ const PersonalDetails = props => {
                                                         <DesktopWrapper>
                                                             <Autocomplete
                                                                 {...field}
-                                                                disabled={props.disabled_items.includes(
-                                                                    'place_of_birth'
-                                                                )}
+                                                                disabled={disabled_items.includes('place_of_birth')}
                                                                 data-lpignore='true'
                                                                 autoComplete='off' // prevent chrome autocomplete
                                                                 type='text'
                                                                 label={localize('Place of birth')}
                                                                 error={touched.place_of_birth && errors.place_of_birth}
-                                                                list_items={props.residence_list}
+                                                                list_items={residence_list}
                                                                 onItemSelection={({ value, text }) =>
                                                                     setFieldValue(
                                                                         'place_of_birth',
@@ -200,11 +209,9 @@ const PersonalDetails = props => {
                                                             <SelectNative
                                                                 placeholder={localize('Place of birth')}
                                                                 name={field.name}
-                                                                disabled={props.disabled_items.includes(
-                                                                    'place_of_birth'
-                                                                )}
+                                                                disabled={disabled_items.includes('place_of_birth')}
                                                                 label={localize('Place of birth')}
-                                                                list_items={props.residence_list}
+                                                                list_items={residence_list}
                                                                 value={values.place_of_birth}
                                                                 use_text={true}
                                                                 error={touched.place_of_birth && errors.place_of_birth}
@@ -237,11 +244,10 @@ const PersonalDetails = props => {
                                                                 label={localize('Citizenship')}
                                                                 error={touched.citizen && errors.citizen}
                                                                 disabled={
-                                                                    (props.value.citizen &&
-                                                                        props.is_fully_authenticated) ||
-                                                                    props.disabled_items.includes('citizen')
+                                                                    (props.value.citizen && is_fully_authenticated) ||
+                                                                    disabled_items.includes('citizen')
                                                                 }
-                                                                list_items={props.residence_list}
+                                                                list_items={residence_list}
                                                                 onItemSelection={({ value, text }) =>
                                                                     setFieldValue('citizen', value ? text : '', true)
                                                                 }
@@ -253,12 +259,11 @@ const PersonalDetails = props => {
                                                                 placeholder={localize('Citizenship')}
                                                                 name={field.name}
                                                                 disabled={
-                                                                    (props.value.citizen &&
-                                                                        props.is_fully_authenticated) ||
-                                                                    props.disabled_items.includes('citizen')
+                                                                    (props.value.citizen && is_fully_authenticated) ||
+                                                                    disabled_items.includes('citizen')
                                                                 }
                                                                 label={localize('Citizenship')}
-                                                                list_items={props.residence_list}
+                                                                list_items={residence_list}
                                                                 value={values.citizen}
                                                                 use_text={true}
                                                                 error={touched.citizen && errors.citizen}
@@ -277,11 +282,9 @@ const PersonalDetails = props => {
                                         {'phone' in props.value && (
                                             <FormInputField
                                                 name='phone'
-                                                label={
-                                                    props.is_svg ? localize('Phone number*') : localize('Phone number')
-                                                }
+                                                label={is_svg ? localize('Phone number*') : localize('Phone number')}
                                                 placeholder={
-                                                    props.is_svg ? localize('Phone number*') : localize('Phone number')
+                                                    is_svg ? localize('Phone number*') : localize('Phone number')
                                                 }
                                                 maxLength={50}
                                             />
@@ -305,7 +308,7 @@ const PersonalDetails = props => {
                                                                             touched.tax_residence &&
                                                                             errors.tax_residence
                                                                         }
-                                                                        list_items={props.residence_list}
+                                                                        list_items={residence_list}
                                                                         onItemSelection={({ value, text }) =>
                                                                             setFieldValue(
                                                                                 'tax_residence',
@@ -320,7 +323,7 @@ const PersonalDetails = props => {
                                                                         placeholder={localize('Tax residence')}
                                                                         name={field.name}
                                                                         label={localize('Tax residence')}
-                                                                        list_items={props.residence_list}
+                                                                        list_items={residence_list}
                                                                         value={values.tax_residence}
                                                                         use_text={true}
                                                                         error={
@@ -436,12 +439,12 @@ const PersonalDetails = props => {
                                                                 <Dropdown
                                                                     placeholder={localize('Account opening reason')}
                                                                     name={field.name}
-                                                                    disabled={props.disabled_items.includes(
+                                                                    disabled={disabled_items.includes(
                                                                         'account_opening_reason'
                                                                     )}
                                                                     is_alignment_top
                                                                     is_align_text_left
-                                                                    list={props.account_opening_reason_list}
+                                                                    list={account_opening_reason_list}
                                                                     value={values.account_opening_reason}
                                                                     onChange={handleChange}
                                                                     handleBlur={handleBlur}
@@ -458,7 +461,7 @@ const PersonalDetails = props => {
                                                                     placeholder={localize('Please select')}
                                                                     name={field.name}
                                                                     label={localize('Account opening reason')}
-                                                                    list_items={props.account_opening_reason_list}
+                                                                    list_items={account_opening_reason_list}
                                                                     value={values.account_opening_reason}
                                                                     use_text={true}
                                                                     error={

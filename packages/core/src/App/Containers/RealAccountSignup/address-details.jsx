@@ -37,28 +37,41 @@ const InputField = props => {
     );
 };
 
-const AddressDetails = props => {
+const AddressDetails = ({
+    fetchStatesList,
+    states_list,
+    getCurrentStep,
+    onSave,
+    onCancel,
+    goToNextStep,
+    goToPreviousStep,
+    validate,
+    onSubmit,
+    is_svg,
+    is_gb_residence,
+    ...props
+}) => {
     const [has_fetched_states_list, setHasFetchedStatesList] = React.useState(false);
     const [address_state_to_display, setAddressStateToDisplay] = React.useState('');
 
     React.useEffect(() => {
-        const fetchedStateList = async () => {
-            await props.fetchStatesList();
+        const fetchStateList = async () => {
+            await fetchStatesList();
             setHasFetchedStatesList(true);
-            setAddressStateToDisplay(getLocation(props.states_list, props.value.address_state, 'text'));
+            setAddressStateToDisplay(getLocation(states_list, props.value.address_state, 'text'));
         };
-        fetchedStateList();
+        fetchStateList();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleCancel = values => {
-        const current_step = props.getCurrentStep() - 1;
-        props.onSave(current_step, values);
-        props.onCancel(current_step, props.goToPreviousStep);
+        const current_step = getCurrentStep() - 1;
+        onSave(current_step, values);
+        onCancel(current_step, goToPreviousStep);
     };
 
     const handleValidate = values => {
-        const { errors } = splitValidationResultTypes(props.validate(values));
+        const { errors } = splitValidationResultTypes(validate(values));
         return errors;
     };
 
@@ -68,12 +81,12 @@ const AddressDetails = props => {
             validate={handleValidate}
             validateOnMount
             onSubmit={(values, actions) => {
-                if (values.address_state && props.states_list.length) {
+                if (values.address_state && states_list.length) {
                     values.address_state = address_state_to_display
-                        ? getLocation(props.states_list, address_state_to_display, 'value')
-                        : getLocation(props.states_list, values.address_state, 'value');
+                        ? getLocation(states_list, address_state_to_display, 'value')
+                        : getLocation(states_list, values.address_state, 'value');
                 }
-                props.onSubmit(props.getCurrentStep() - 1, values, actions.setSubmitting, props.goToNextStep);
+                onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep);
             }}
         >
             {({ handleSubmit, isSubmitting, errors, values, setFieldValue }) => (
@@ -95,9 +108,9 @@ const AddressDetails = props => {
                                     <div className='details-form__elements'>
                                         <InputField
                                             name='address_line_1'
-                                            required={props.is_svg}
+                                            required={is_svg}
                                             label={
-                                                props.is_svg
+                                                is_svg
                                                     ? localize('First line of address*')
                                                     : localize('First line of address')
                                             }
@@ -112,8 +125,8 @@ const AddressDetails = props => {
                                         />
                                         <InputField
                                             name='address_city'
-                                            required={props.is_svg}
-                                            label={props.is_svg ? localize('Town/City*') : localize('Town/City')}
+                                            required={is_svg}
+                                            label={is_svg ? localize('Town/City*') : localize('Town/City')}
                                             placeholder={localize('Town/City')}
                                         />
                                         {!has_fetched_states_list && (
@@ -121,7 +134,7 @@ const AddressDetails = props => {
                                                 <Loading is_fullscreen={false} />
                                             </div>
                                         )}
-                                        {props.states_list?.length > 0 ? (
+                                        {states_list?.length > 0 ? (
                                             <Field name='address_state'>
                                                 {({ field }) => (
                                                     <>
@@ -136,7 +149,7 @@ const AddressDetails = props => {
                                                                 list_height='85px'
                                                                 type='text'
                                                                 label={localize('State/Province')}
-                                                                list_items={props.states_list}
+                                                                list_items={states_list}
                                                                 onItemSelection={({ value, text }) => {
                                                                     setFieldValue(
                                                                         'address_state',
@@ -152,7 +165,7 @@ const AddressDetails = props => {
                                                                 placeholder={localize('Please select')}
                                                                 label={localize('State/Province')}
                                                                 value={address_state_to_display || values.address_state}
-                                                                list_items={props.states_list}
+                                                                list_items={states_list}
                                                                 use_text={true}
                                                                 onChange={e => {
                                                                     setFieldValue(
@@ -177,7 +190,7 @@ const AddressDetails = props => {
                                         )}
                                         <InputField
                                             name='address_postcode'
-                                            required={props.is_gb_residence}
+                                            required={is_gb_residence}
                                             label={localize('Postal/ZIP Code')}
                                             placeholder={localize('Postal/ZIP Code')}
                                         />

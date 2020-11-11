@@ -14,24 +14,28 @@ import CheckboxField from 'App/Containers/RealAccountSignup/checkbox-field.jsx';
 import { SharedMessage, BrokerSpecificMessage, Hr } from './terms-of-use-messages.jsx';
 import 'Sass/terms-of-use.scss';
 
-const TermsOfUse = props => {
+const TermsOfUse = ({
+    getCurrentStep,
+    onCancel,
+    goToPreviousStep,
+    goToNextStep,
+    onSubmit,
+    value,
+    real_account_signup_target,
+    ...props
+}) => {
     const { is_deriv_crypto } = React.useContext(PlatformContext);
 
     const handleCancel = () => {
-        const current_step = props.getCurrentStep() - 1;
-        props.onCancel(current_step, props.goToPreviousStep);
+        const current_step = getCurrentStep() - 1;
+        onCancel(current_step, goToPreviousStep);
     };
 
     return (
         <Formik
-            initialValues={props.value}
+            initialValues={value}
             onSubmit={(values, actions) => {
-                props.onSubmit(
-                    props.getCurrentStep() - 1,
-                    values.agreed_tos,
-                    actions.setSubmitting,
-                    props.goToNextStep
-                );
+                onSubmit(getCurrentStep() - 1, values.agreed_tos, actions.setSubmitting, goToNextStep);
             }}
         >
             {({ handleSubmit, values, isSubmitting }) => (
@@ -44,7 +48,7 @@ const TermsOfUse = props => {
                                     height_offset='110px'
                                     is_disabled={isDesktop()}
                                 >
-                                    <BrokerSpecificMessage target={props.real_account_signup_target} />
+                                    <BrokerSpecificMessage target={real_account_signup_target} />
                                     <Hr />
                                     <SharedMessage />
                                     <Field

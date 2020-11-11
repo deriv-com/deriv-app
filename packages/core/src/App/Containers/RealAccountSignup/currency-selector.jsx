@@ -122,24 +122,34 @@ RadioButtonGroup.defaultProps = {
 
 export const Hr = () => <div className='currency-hr' />;
 
-const CurrencySelector = props => {
+const CurrencySelector = ({
+    has_currency,
+    has_real_account,
+    bypass_to_personal,
+    legal_allowed_currencies,
+    validate,
+    goToNextStep,
+    onSubmit,
+    getCurrentStep,
+    set_currency,
+    ...props
+}) => {
     const { is_deriv_crypto } = React.useContext(PlatformContext);
-    const { has_currency, has_real_account, bypass_to_personal, legal_allowed_currencies } = props;
     const crypto = legal_allowed_currencies.filter(currency => currency.type === 'crypto');
     const fiat = legal_allowed_currencies.filter(currency => currency.type === 'fiat');
 
     const handleValidate = values => {
-        const { errors } = splitValidationResultTypes(props.validate(values));
+        const { errors } = splitValidationResultTypes(validate(values));
         return errors;
     };
 
     // In case of form error bypass to update personal data
-    if (bypass_to_personal) props.goToNextStep();
+    if (bypass_to_personal) goToNextStep();
     return (
         <Formik
             initialValues={props.value}
             onSubmit={(values, actions) => {
-                props.onSubmit(props.getCurrentStep() - 1, values, actions.setSubmitting, props.goToNextStep);
+                onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep);
             }}
             validate={handleValidate}
         >
@@ -207,14 +217,14 @@ const CurrencySelector = props => {
                             <Modal.Footer is_bypassed={isMobile()}>
                                 <FormSubmitButton
                                     className={
-                                        props.set_currency
+                                        set_currency
                                             ? 'currency-selector--set-currency'
                                             : 'currency-selector--deriv-account'
                                     }
                                     is_disabled={isSubmitting || !values.currency}
                                     is_center={!has_currency}
-                                    is_absolute={props.set_currency}
-                                    label={props.set_currency ? localize('Set currency') : localize('Next')}
+                                    is_absolute={set_currency}
+                                    label={set_currency ? localize('Set currency') : localize('Next')}
                                 />
                             </Modal.Footer>
                         </form>

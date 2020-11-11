@@ -10,24 +10,33 @@ import LoadingModal from './real-account-signup-loader.jsx';
 import 'Sass/set-currency.scss';
 import 'Sass/change-account.scss';
 
-const SetCurrency = props => {
+const SetCurrency = ({
+    setLoading,
+    onSuccessSetAccountCurrency,
+    onError,
+    available_crypto_currencies,
+    has_fiat,
+    landing_company_shortcode,
+    is_loading,
+    ...props
+}) => {
     const { form_error } = React.useState('');
     const { form_value } = React.useState({ currency: '' });
 
     const setCurrency = (obj, setSubmitting) => {
-        props.setLoading(true);
+        setLoading(true);
         const { currency } = obj;
         if (currency) {
             props
                 .setCurrency(currency)
                 .then(response => {
                     setSubmitting(false);
-                    props.onSuccessSetAccountCurrency('', response.echo_req.set_account_currency);
+                    onSuccessSetAccountCurrency('', response.echo_req.set_account_currency);
                 })
                 .catch(error_message => {
-                    props.onError(error_message);
+                    onError(error_message);
                 })
-                .finally(() => props.setLoading(false));
+                .finally(() => setLoading(false));
         }
     };
 
@@ -36,10 +45,10 @@ const SetCurrency = props => {
     };
 
     const noCryptoAvailable = () => {
-        return props.available_crypto_currencies.length === 0 && props.has_fiat;
+        return available_crypto_currencies.length === 0 && has_fiat;
     };
 
-    if (props.is_loading) return <LoadingModal />;
+    if (is_loading) return <LoadingModal />;
     return (
         <div
             className={classNames('set-currency-modal', {
@@ -74,7 +83,7 @@ const SetCurrency = props => {
                 value={form_value}
                 form_error={form_error}
                 set_currency
-                validate={generateValidationFunction(props.landing_company_shortcode, currency_selector_config)}
+                validate={generateValidationFunction(landing_company_shortcode, currency_selector_config)}
                 {...props}
             />
         </div>

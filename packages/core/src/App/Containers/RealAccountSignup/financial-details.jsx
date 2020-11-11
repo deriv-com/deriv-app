@@ -135,7 +135,7 @@ const FinancialDetails = props => {
                             <form ref={setRef} onSubmit={handleSubmit}>
                                 <Div100vhContainer
                                     className='details-form'
-                                    height_offset='179px'
+                                    height_offset='110px'
                                     is_disabled={isDesktop()}
                                 >
                                     <ThemedScrollbars

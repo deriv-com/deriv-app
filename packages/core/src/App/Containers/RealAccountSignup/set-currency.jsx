@@ -10,94 +10,76 @@ import LoadingModal from './real-account-signup-loader.jsx';
 import 'Sass/set-currency.scss';
 import 'Sass/change-account.scss';
 
-class SetCurrency extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            form_error: '',
-            form_value: {
-                currency: '',
-            },
-        };
-    }
+const SetCurrency = props => {
+    const { form_error } = React.useState('');
+    const { form_value } = React.useState({ currency: '' });
 
-    clearError = () => this.setState({ form_error: '' });
-
-    setCurrency = (obj, setSubmitting) => {
-        this.props.setLoading(true);
+    const setCurrency = (obj, setSubmitting) => {
+        props.setLoading(true);
         const { currency } = obj;
         if (currency) {
-            this.props
+            props
                 .setCurrency(currency)
                 .then(response => {
                     setSubmitting(false);
-                    this.props.onSuccessSetAccountCurrency('', response.echo_req.set_account_currency);
+                    props.onSuccessSetAccountCurrency('', response.echo_req.set_account_currency);
                 })
                 .catch(error_message => {
-                    this.props.onError(error_message);
+                    props.onError(error_message);
                 })
-                .finally(() => this.props.setLoading(false));
+                .finally(() => props.setLoading(false));
         }
     };
 
-    updateValue = (index, value, setSubmitting) => {
-        this.setCurrency(value, setSubmitting);
+    const updateValue = (index, value, setSubmitting) => {
+        setCurrency(value, setSubmitting);
     };
 
-    get no_crypto_available() {
-        return this.props.available_crypto_currencies.length === 0 && this.props.has_fiat;
-    }
+    const noCryptoAvailable = () => {
+        return props.available_crypto_currencies.length === 0 && props.has_fiat;
+    };
 
-    get should_hide_crypto() {
-        return this.props.is_eu;
-    }
-
-    render() {
-        if (this.props.is_loading) return <LoadingModal />;
-        return (
-            <div
-                className={classNames('set-currency-modal', {
-                    'set-currency-modal--disabled': this.no_crypto_available,
-                })}
-            >
-                {this.no_crypto_available && (
-                    <div className='set-currency-modal--disabled-message'>
-                        <p>
-                            {localize(
-                                'You already have an account for each of the cryptocurrencies available on {{deriv}}.',
-                                {
-                                    deriv: website_name,
-                                }
-                            )}
-                        </p>
-                    </div>
-                )}
-                <div className='set-currency-modal__heading-container'>
-                    <p className='set-currency-modal__heading-container__main-heading'>
+    if (props.is_loading) return <LoadingModal />;
+    return (
+        <div
+            className={classNames('set-currency-modal', {
+                'set-currency-modal--disabled': noCryptoAvailable,
+            })}
+        >
+            {noCryptoAvailable && (
+                <div className='set-currency-modal--disabled-message'>
+                    <p>
                         {localize(
-                            'You have an account that do not have currency assigned. Please choose a currency to trade with this account.'
+                            'You already have an account for each of the cryptocurrencies available on {{deriv}}.',
+                            {
+                                deriv: website_name,
+                            }
                         )}
                     </p>
-                    <p className='set-currency-modal__heading-container__sub-heading'>
-                        {localize('Please choose your currency')}
-                    </p>
                 </div>
-                <CurrencySelector
-                    className='account-wizard__body'
-                    onSubmit={this.updateValue}
-                    value={this.state.form_value}
-                    form_error={this.state.form_error}
-                    set_currency
-                    validate={generateValidationFunction(
-                        this.props.landing_company_shortcode,
-                        currency_selector_config
+            )}
+            <div className='set-currency-modal__heading-container'>
+                <p className='set-currency-modal__heading-container__main-heading'>
+                    {localize(
+                        'You have an account that do not have currency assigned. Please choose a currency to trade with this account.'
                     )}
-                    {...this.props}
-                />
+                </p>
+                <p className='set-currency-modal__heading-container__sub-heading'>
+                    {localize('Please choose your currency')}
+                </p>
             </div>
-        );
-    }
-}
+            <CurrencySelector
+                className='account-wizard__body'
+                onSubmit={updateValue}
+                value={form_value}
+                form_error={form_error}
+                set_currency
+                validate={generateValidationFunction(props.landing_company_shortcode, currency_selector_config)}
+                {...props}
+            />
+        </div>
+    );
+};
 
 export default connect(({ client }) => ({
     available_crypto_currencies: client.available_crypto_currencies,

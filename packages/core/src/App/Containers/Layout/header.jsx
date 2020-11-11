@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
-import { routes, isMobile, getDecimalPlaces, getPlatformHeader } from '@deriv/shared';
+import { routes, isMobile, getDecimalPlaces, getPlatformInformation } from '@deriv/shared';
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
@@ -19,7 +19,7 @@ const Header = ({
     acc_switcher_disabled_message,
     account_status,
     addNotificationMessage,
-    allow_authentication,
+    should_allow_authentication,
     app_routing_history,
     balance,
     currency,
@@ -83,7 +83,7 @@ const Header = ({
                     <MobileWrapper>
                         <ToggleMenuDrawer
                             ref={toggle_menu_drawer_ref}
-                            allow_authentication={allow_authentication}
+                            should_allow_authentication={should_allow_authentication}
                             account_status={account_status}
                             enableApp={enableApp}
                             disableApp={disableApp}
@@ -97,7 +97,7 @@ const Header = ({
                             is_virtual={is_virtual}
                             needs_financial_assessment={needs_financial_assessment}
                             toggleTheme={setDarkMode}
-                            platform_header={getPlatformHeader(app_routing_history)}
+                            platform_header={getPlatformInformation(app_routing_history).header}
                             platform_switcher={
                                 <PlatformSwitcher
                                     app_routing_history={app_routing_history}
@@ -158,7 +158,7 @@ const Header = ({
 
 Header.propTypes = {
     acc_switcher_disabled_message: PropTypes.string,
-    allow_authentication: PropTypes.bool,
+    should_allow_authentication: PropTypes.bool,
     account_status: PropTypes.object,
     addNotificationMessage: PropTypes.func,
     app_routing_history: PropTypes.array,
@@ -194,7 +194,7 @@ Header.propTypes = {
 export default connect(({ client, common, ui, modules }) => ({
     acc_switcher_disabled_message: ui.account_switcher_disabled_message,
     account_status: client.account_status,
-    allow_authentication: client.allow_authentication,
+    should_allow_authentication: client.should_allow_authentication,
     addNotificationMessage: ui.addNotificationMessage,
     app_routing_history: common.app_routing_history,
     balance: client.balance,

@@ -76,8 +76,9 @@ class PersonalDetails extends React.Component {
     }
 
     handleCancel = values => {
-        this.props.onSave(this.props.index, values);
-        this.props.onCancel();
+        const current_step = this.props.getCurrentStep() - 1;
+        this.props.onSave(current_step, values);
+        this.props.onCancel(current_step, this.props.goToPreviousStep);
     };
 
     onFocus = is_active => {
@@ -116,11 +117,16 @@ class PersonalDetails extends React.Component {
                 validate={this.handleValidate}
                 validateOnMount
                 onSubmit={(values, actions) => {
-                    this.props.onSubmit(this.props.index, values, actions.setSubmitting);
+                    this.props.onSubmit(
+                        this.props.getCurrentStep() - 1,
+                        values,
+                        actions.setSubmitting,
+                        this.props.goToNextStep
+                    );
                 }}
             >
                 {({ handleSubmit, isSubmitting, errors, setFieldValue, touched, values, handleChange, handleBlur }) => (
-                    <AutoHeightWrapper default_height={200} height_offset={isDesktop() ? 81 : null}>
+                    <AutoHeightWrapper default_height={380} height_offset={isDesktop() ? 81 : null}>
                         {({ setRef, height }) => (
                             <form
                                 ref={setRef}
@@ -130,7 +136,7 @@ class PersonalDetails extends React.Component {
                             >
                                 <Div100vhContainer
                                     className='details-form'
-                                    height_offset='179px'
+                                    height_offset='110px'
                                     is_disabled={isDesktop()}
                                 >
                                     <ThemedScrollbars
@@ -543,10 +549,7 @@ class PersonalDetails extends React.Component {
                                     <FormSubmitButton
                                         cancel_label={localize('Previous')}
                                         has_cancel
-                                        is_disabled={
-                                            // eslint-disable-next-line no-unused-vars
-                                            isSubmitting || Object.keys(errors).length > 0
-                                        }
+                                        is_disabled={isSubmitting || Object.keys(errors).length > 0}
                                         is_absolute={isMobile()}
                                         label={localize('Next')}
                                         onCancel={this.handleCancel.bind(this, values)}

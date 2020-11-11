@@ -97,6 +97,7 @@ class ResetPassword extends React.Component {
                                             <PasswordMeter
                                                 input={values.password}
                                                 has_error={!!(touched.password && errors.password)}
+                                                custom_feedback_messages={getErrorMessages().password_warnings}
                                             >
                                                 <PasswordInput
                                                     className='reset-password__password-field'

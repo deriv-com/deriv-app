@@ -352,7 +352,7 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
-    get allow_authentication() {
+    get should_allow_authentication() {
         return this.account_status?.status?.some(status => status === 'allow_document_upload');
     }
 
@@ -373,34 +373,29 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_financial_information_incomplete() {
-        if (!this.account_status.status) return false;
-        return this.account_status.status.some(status => status === 'financial_information_not_complete');
+        return this.account_status?.status?.some(status => status === 'financial_information_not_complete');
     }
 
     @computed
     get is_withdrawal_lock() {
-        if (!this.account_status.status) return false;
-        return this.account_status.status.some(status_name =>
+        return this.account_status?.status?.some(status_name =>
             /^(withdrawal_locked|no_withdrawal_or_trading)$/.test(status_name)
         );
     }
 
     @computed
     get is_trading_experience_incomplete() {
-        if (!this.account_status.status) return false;
-        return this.account_status.status.some(status => status === 'trading_experience_not_complete');
+        return this.account_status?.status?.some(status => status === 'trading_experience_not_complete');
     }
 
     @computed
     get is_fully_authenticated() {
-        if (!this.account_status.status) return false;
-        return this.account_status.status.some(status => status === 'authenticated');
+        return this.account_status?.status?.some(status => status === 'authenticated');
     }
 
     @computed
     get is_pending_authentication() {
-        if (!this.account_status.status) return false;
-        return this.account_status.status.some(status => status === 'document_under_review');
+        return this.account_status?.status?.some(status => status === 'document_under_review');
     }
 
     @computed
@@ -411,8 +406,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_age_verified() {
-        if (!this.account_status.status) return false;
-        return this.account_status.status.some(status => status === 'age_verification');
+        return this.account_status?.status?.some(status => status === 'age_verification');
     }
 
     @computed
@@ -872,18 +866,17 @@ export default class ClientStore extends BaseStore {
     getRiskAssessment = () => {
         if (!this.account_status) return false;
 
-        const status = this.account_status.status;
-        const is_high_risk = /high/.test(this.account_status.risk_classification);
+        const status = this.account_status?.status;
 
         return this.isAccountOfType('financial')
             ? /(financial_assessment|trading_experience)_not_complete/.test(status)
-            : is_high_risk && /financial_assessment_not_complete/.test(status);
+            : /financial_assessment_not_complete/.test(status);
     };
 
     shouldCompleteTax = () => {
         if (!this.isAccountOfType('financial')) return false;
 
-        return !/crs_tin_information/.test((this.account_status || {}).status);
+        return !/crs_tin_information/.test((this.account_status || {})?.status);
     };
 
     @action.bound
@@ -1236,7 +1229,10 @@ export default class ClientStore extends BaseStore {
         this.root_store.gtm.setLoginFlag();
 
         await this.init();
-        this.broadcastAccountChange();
+
+        // broadcastAccountChange is already called after new connection is authorized
+        if (!should_switch_socket_connection) this.broadcastAccountChange();
+
         if (!this.is_virtual) this.getLimits();
 
         runInAction(() => (this.is_switching = false));
@@ -1748,7 +1744,7 @@ export default class ClientStore extends BaseStore {
     @computed
     get needs_financial_assessment() {
         if (this.is_virtual) return false;
-        if (this.is_high_risk || this.is_financial_information_incomplete) return true;
+        if (this.is_financial_information_incomplete) return true;
         if (!this.is_svg) {
             if (this.is_financial_account || this.is_trading_experience_incomplete) return true;
         }

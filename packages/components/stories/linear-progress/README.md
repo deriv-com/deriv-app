@@ -22,7 +22,7 @@ const DummyComponent = props => (
 
 | Name        | Type         | Default     | Description                          |
 | ----------- | ------------ | ----------- | ------------------------------------ |
-| timeout     | {number}     | null        | Timeout in millisecond               |
+| timeout     | {number}     | null        | Timeout in milliseconds               |
 | action      | {function}   | null        | Function to run after the timeout    |
 | render      | {function}   | null        | Function returns the remaining time  |
 | className   | {string}     | null        | `className` for the main container   |

@@ -40,12 +40,12 @@ const DummyComponent = props => (
 | is\_vertical\_centered  | {boolean}              | null          | Set the modal vertical position to center                                 |
 | is\_vertical\_top       | {boolean}              | null          | Set the modal vertical position to top                                    |
 | is\_title\_centered     | {boolean}              | null          | Set the modal title position to center                                    |
-| onEntered               | {function}             | null          | Funnction triggers when the modal opened                                  |
-| onExited                | {function}             | null          | Funnction triggers when the modal closed                                  |
-| onMount                 | {function}             | null          | Funnction triggers when the modal mounted                                 |
-| onUnmount               | {function}             | null          | Funnction triggers when the modal unmounted                               |
+| onEntered               | {function}             | null          | Function triggers when the modal opened                                  |
+| onExited                | {function}             | null          | Function triggers when the modal closed                                  |
+| onMount                 | {function}             | null          | Function triggers when the modal mounted                                 |
+| onUnmount               | {function}             | null          | Function triggers when the modal unmounted                               |
 | portalId                | {string}               | `'modal_root'`| Portal id to render the modal                                             |
-| renderTitle             | {function}             | null          | Funtion to render the modal title                                         |
+| renderTitle             | {function}             | null          | Function to render the modal title                                         |
 | small                   | {boolean}              | null          | Defines whether the modal is small or not                                 |
 | title                   | {string \| react node} | null          | The modal title                                                           |
 | toggleModal             | {function}             | null          | Toggle the visibility of the modal                                        |

@@ -1,5 +1,5 @@
 # RemainingTime component
-To get duration between two times use this component.
+This component is used to get duration between two different times.
 
 ## Usage
  
@@ -19,6 +19,6 @@ const DummyComponent = (props) => (
 
 | Name                     | Type                | Default            | Description                                                                                                              |
 |--------------------------|---------------------|--------------------|--------------------------------------------------------------------------------------------------------------------------|
-| start_time               | {object} moment     | null               | Start time in momen object format                                                                                        |
+| start_time               | {object} moment     | null               | Start time in moment object format                                                                                        |
 | end_time                 | {number \| string}  | null               | Timestamp of the end time                                                                                                |
 | getCardLabels            | {function}          | null               | getCardLabels localization function                                                                                      |

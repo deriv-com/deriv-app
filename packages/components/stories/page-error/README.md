@@ -1,5 +1,5 @@
 # PageError component
-Use this component to show a error page.
+Use this component to show an error page.
 
 ## Usage
  
@@ -25,7 +25,7 @@ const DummyComponent = (props) => (
 | redirect\_label                 | {string}               | null               | Redirect button text                                                                                                     |
 | redirect\_url                   | {string}               | null               | Where you want to land user after clicking on redirect button                                                            |
 | setError                        | {function}             | null               | Function to remove error on the parent component                                                                         |
-| should\_clear\_error\_on_click  | {boolean}              | null               | Set it to true to disable error on parent component on redirec. `setError` must be defined                               |
+| should\_clear\_error\_on_click  | {boolean}              | null               | Set it to true to disable error on parent component on redirect. `setError` must be defined                               |
 
 
 ## Full example:

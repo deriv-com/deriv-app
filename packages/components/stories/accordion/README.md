@@ -1,6 +1,6 @@
 # Accordion Component
 
-An accordions with a list of node objects. Objects must have `header` and `content` props and both of them can be a simple `string` or a `node object`.
+An accordion with a list of node objects. Objects must have `header` and `content` props and both of them can be a simple `string` or a `node object`.
 
 #### Supported Gestures:
 

@@ -38,7 +38,7 @@ const DummyComponent = props => (
 | style             | {object}     | null        | Style object for the main wrapper                                        |
 | ref               | {object}     | null        | `ref` for the main DropdownList and inner elements. An object of {dropdown_ref, list\_item\_ref, list\_wrapper\_ref} |
 | onScrollStop      | {function}   | null        | Function triggers when the user stops scrolling                          |
-| not\_found\_text  | {string}     | null        | For AuthoComplete if the entered text is not found in the list of items  |
+| not\_found\_text  | {string}     | null        | For AutoComplete if the entered text is not found in the list of items  |
 
 
 # Full example:

@@ -23,7 +23,7 @@ const DummyComponent = props => (
 | ---------- | ---------- | -------- | -------------------------------------------------- |
 | icon       | {string}   | null     | Icon name for the hint box                         |
 | message    | {string}   | null     | Message of the hint box                            |
-| is_info    | {boolean}  | null     | Defints whether the message is an info or not      |
+| is_info    | {boolean}  | null     | Defines whether the message is an info or not      |
 | className  | {string}   | null     | `className` for the main container                 |
 
 

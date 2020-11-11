@@ -1,6 +1,6 @@
 # Drawer Component
 
-A menu appears in the right side of the screen for desktop view and in the buttom of the screen for mobile view.
+A menu appears in the right side of the screen for desktop view and in the bottom of the screen for mobile view.
 
 
 #### Supported Gestures:

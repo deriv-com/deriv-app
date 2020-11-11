@@ -32,7 +32,7 @@ const DummyComponent = (props) => (
 
 | Name                     | Type                   | Default            | Description                                                                                                              |
 |--------------------------|------------------------|--------------------|--------------------------------------------------------------------------------------------------------------------------|
-| fixed                    | {boolean}              | null               | Set it to 'true' to have customed scrollbar for table                                                                    |
+| fixed                    | {boolean}              | null               | Set it to 'true' to have customed scrollbar for the table                                                                    |
 | scroll\_width            | {string \| number}     | 100%               | If 'fixed' is 'true' you can set fixed width of the table                                                                |
 | scroll\_height           | {string \| number}     | null               | If 'fixed' is 'true' you can set fixed height of the table                                                               |
 

@@ -21,10 +21,10 @@ const HasIcon = () => (
                 className='tooltip-storybook-wrapper'
                 classNameIcon='tooltip-storybook-icon'
                 alignment='right'
-                message='Information about item.'
+                message='Information about the item.'
                 icon='question'
             >
-                <span>Hover me to see tooltip.</span>
+                <span>Hover me to see a tooltip.</span>
             </Tooltip>
         </Wrapper>
     </React.Fragment>

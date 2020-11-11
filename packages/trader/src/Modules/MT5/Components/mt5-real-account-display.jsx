@@ -1,5 +1,4 @@
 import React from 'react';
-import { Icon } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import {
     eu_real_financial_specs,
@@ -21,12 +20,14 @@ const getRealFinancialStpBtnLbl = (is_fully_authenticated, is_pending_authentica
 
 const MT5RealAccountDisplay = ({
     has_real_account,
+    is_accounts_switcher_on,
     is_eu,
     is_eu_country,
     has_malta_account,
     has_maltainvest_account,
     is_fully_authenticated,
     is_pending_authentication,
+    is_virtual,
     landing_companies,
     onSelectAccount,
     openAccountTransfer,
@@ -38,6 +39,8 @@ const MT5RealAccountDisplay = ({
     openAccountNeededModal,
     standpoint,
     is_logged_in,
+    toggleAccountsDialog,
+    toggleShouldShowRealAccountsList,
 }) => {
     const has_required_credentials =
         account_settings.citizen && account_settings.tax_identification_number && account_settings.tax_residence;
@@ -97,7 +100,6 @@ const MT5RealAccountDisplay = ({
             {(landing_companies?.mt_gaming_company?.financial || !is_logged_in) && (
                 <MT5AccountCard
                     has_mt5_account={has_mt5_account}
-                    icon={() => <Icon icon='IcMt5SyntheticPlatform' size={64} />}
                     title={localize('Synthetic')}
                     is_disabled={!is_eu && !has_real_account}
                     type={{
@@ -121,7 +123,6 @@ const MT5RealAccountDisplay = ({
                 <MT5AccountCard
                     has_mt5_account={has_mt5_account}
                     is_disabled={!is_eu && !has_real_account}
-                    icon={() => <Icon icon='IcMt5FinancialPlatform' size={64} />}
                     title={localize('Financial')}
                     type={{
                         category: 'real',
@@ -148,7 +149,6 @@ const MT5RealAccountDisplay = ({
             {(landing_companies?.mt_financial_company?.financial_stp || !is_logged_in) && (
                 <MT5AccountCard
                     has_mt5_account={has_mt5_account}
-                    icon={() => <Icon icon='IcMt5FinancialStpPlatform' size={64} />}
                     title={localize('Financial STP')}
                     type={{
                         category: 'real',
@@ -167,6 +167,11 @@ const MT5RealAccountDisplay = ({
                     )}
                     specs={real_financial_stp_specs}
                     is_disabled={!is_eu && is_real_financial_stp_disabled}
+                    is_virtual={is_virtual}
+                    has_real_account={has_real_account}
+                    toggleAccountsDialog={toggleAccountsDialog}
+                    toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
+                    is_accounts_switcher_on={is_accounts_switcher_on}
                 />
             )}
         </div>

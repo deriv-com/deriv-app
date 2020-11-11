@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { TransitionGroup } from 'react-transition-group';
 import { CellMeasurer, CellMeasurerCache } from 'react-virtualized/dist/es/CellMeasurer';
 import { AutoSizer } from 'react-virtualized/dist/es/AutoSizer';
 import { List } from 'react-virtualized/dist/es/List';
@@ -122,17 +121,11 @@ class DataList extends React.PureComponent {
                     [`${className}__data-list`]: className,
                 })}
             >
-                <div className={classNames('data-list__body', { [`${className}__data-list-body`]: className })}>
-                    <AutoSizer>
-                        {({ width, height }) => (
-                            <div
-                                className='data-list__body-wrapper'
-                                style={{
-                                    height,
-                                    width,
-                                }}
-                            >
-                                <TransitionGroup>
+                <div className='data-list__body-wrapper'>
+                    <div className={classNames('data-list__body', { [`${className}__data-list-body`]: className })}>
+                        <AutoSizer>
+                            {({ width, height }) => (
+                                <div style={{ height, width }}>
                                     <ThemedScrollbars onScroll={this.handleScroll} autoHide is_bypassed={isMobile()}>
                                         <List
                                             ref={ref => (this.list_ref = ref)}
@@ -150,11 +143,11 @@ class DataList extends React.PureComponent {
                                                 : { onScroll: target => this.handleScroll({ target }) })}
                                         />
                                     </ThemedScrollbars>
-                                    {children}
-                                </TransitionGroup>
-                            </div>
-                        )}
-                    </AutoSizer>
+                                </div>
+                            )}
+                        </AutoSizer>
+                    </div>
+                    {children}
                 </div>
                 {footer && (
                     <div

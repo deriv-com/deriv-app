@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Icon, ThemedScrollbars } from '@deriv/components';
+import { Button, Icon, NewsTicker } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
@@ -17,13 +17,11 @@ const OnRampProviderCard = ({ is_dark_mode_on, provider, setSelectedProvider }) 
             <div className='on-ramp__provider-description'>{provider.getDescription()}</div>
             <div className='on-ramp__provider-payment-icons'>
                 <div className='on-ramp__provider-payment-icons-shadow' />
-                {payment_icons.length && (
-                    <ThemedScrollbars is_only_horizontal_overlay>
-                        {payment_icons.map((payment_icon, idx) => (
-                            <Icon key={idx} size={40} icon={is_dark_mode_on ? payment_icon.dark : payment_icon.light} />
-                        ))}
-                    </ThemedScrollbars>
-                )}
+                <NewsTicker speed={10}>
+                    {payment_icons.map((payment_icon, idx) => (
+                        <Icon key={idx} size={40} icon={is_dark_mode_on ? payment_icon.dark : payment_icon.light} />
+                    ))}
+                </NewsTicker>
             </div>
             <Button
                 id={`gtm-onramp-provider-select--${gtm_identifier}`}

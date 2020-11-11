@@ -6,6 +6,7 @@ import Unverified from 'Components/poa-unverified';
 import NeedsReview from 'Components/poa-needs-review';
 import Submitted from 'Components/poa-submitted';
 import Verified from 'Components/poa-verified';
+import NotRequired from 'Components/poa-not-required';
 import PoaStatusCodes from 'Components/poa-status-codes';
 import { WS } from 'Services/ws-methods';
 import ProofOfAddressForm from './proof-of-address-form.jsx';
@@ -57,6 +58,7 @@ class ProofOfAddressContainer extends React.Component {
         const { is_loading, allow_resubmission, needs_poi, resubmit_poa, status, submitted_poa } = this.state;
 
         if (is_loading) return <Loading is_fullscreen={false} className='account___intial-loader' />;
+        if (!allow_resubmission && status === 'none' && this.props.is_mx_mlt) return <NotRequired />;
         if (submitted_poa) return <Submitted needs_poi={needs_poi} />;
         if (resubmit_poa || allow_resubmission) {
             return <ProofOfAddressForm onSubmit={() => this.onSubmit({ needs_poi })} />;

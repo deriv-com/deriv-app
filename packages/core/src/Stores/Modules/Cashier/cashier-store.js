@@ -212,9 +212,9 @@ export default class CashierStore extends BaseStore {
                     WS.authorized.p2pAdvertiserInfo().then(advertiser_info => {
                         const advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
                         if (advertiser_error === 'RestrictedCountry') {
-                            this.setIsP2PBannerVisible(false);
+                            this.setIsP2pVisible(false);
                         } else {
-                            this.setIsP2PBannerVisible(true);
+                            this.setIsP2pVisible(true);
                         }
 
                         this.is_p2p_advertiser = !advertiser_error;
@@ -286,14 +286,6 @@ export default class CashierStore extends BaseStore {
         this.is_p2p_visible = is_p2p_visible;
         if (!is_p2p_visible && window.location.pathname.endsWith(routes.cashier_p2p)) {
             this.root_store.common.routeTo(routes.cashier_deposit);
-        }
-    }
-
-    @action.bound
-    setIsP2PBannerVisible(is_visible) {
-        this.is_p2p_visible = is_visible;
-        if (!is_visible) {
-            this.is_p2p_visible = false;
         }
     }
 

@@ -9,7 +9,6 @@ const Popover = ({ ...props }) => {
     const ref = React.useRef();
 
     const [is_bubble_open, setIsBubbleOpen] = React.useState(false);
-    const [is_popover_open, setIsPopoverOpen] = React.useState(false);
     const [popover_ref, setPopoverRef] = React.useState(undefined);
     const bubble_ref = React.useRef(is_bubble_open);
     const [hover_ref, is_hovered] = useHover();
@@ -20,7 +19,6 @@ const Popover = ({ ...props }) => {
 
     React.useEffect(() => {
         if (ref.current) {
-            setIsPopoverOpen(true);
             setPopoverRef(ref.current);
         }
     }, [ref.current, props.has_error]);
@@ -72,7 +70,7 @@ const Popover = ({ ...props }) => {
             )}
             {(popover_ref || !relative_render) && (
                 <TinyPopover
-                    isOpen={is_open ?? (is_hovered || is_popover_open)}
+                    isOpen={is_open ?? (is_hovered && message)}
                     position={alignment}
                     transitionDuration={0.25}
                     padding={margin + 8}

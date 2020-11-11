@@ -51,7 +51,7 @@ export default class GeneralStore {
 
     @computed
     get blocked_until_date_time() {
-        return getFormattedDateString(new Date(convertToMillis(1604945766)), true, true);
+        return getFormattedDateString(new Date(convertToMillis(this.user_blocked_until)), true, true);
     }
 
     @computed

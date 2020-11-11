@@ -52,5 +52,8 @@
       "post-merge": "bash ./hooks/post-merge.sh",
       "pre-commit": "npm run precommit"
     }
+  },
+  "dependencies": {
+    "@livechat/customer-sdk": "^2.0.4"
   }
 }

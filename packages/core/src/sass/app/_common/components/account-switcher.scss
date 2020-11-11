@@ -214,12 +214,6 @@
         height: 100%;
         background: var(--general-main-2);
 
-        &-title {
-            @include typeface(--title-left-bold-black);
-            display: block;
-            color: var(--text-prominent);
-            flex: 1;
-        }
         &-wrapper {
             padding: 0.4rem 0.8rem 0;
         }
@@ -278,6 +272,9 @@
             &:last-child {
                 margin-bottom: 8px;
             }
+        }
+        &--is-loading {
+            padding-bottom: 0.8rem;
         }
     }
     &__account {

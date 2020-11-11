@@ -4,6 +4,7 @@ import { InputWithCheckbox } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { connect } from 'Stores/connect';
+import { isDesktop } from '@deriv/shared';
 
 const StopLoss = ({
     addToast,
@@ -38,6 +39,7 @@ const StopLoss = ({
                 removeToast={removeToast}
                 classNameInlinePrefix='trade-container__currency'
                 classNameInput='trade-container__input'
+                className={isDesktop() ? 'trade-container__amount trade-container__amount--multipliers' : null}
                 currency={currency}
                 current_focus={current_focus}
                 defaultChecked={has_stop_loss}

@@ -1,4 +1,7 @@
 .dc-modal__container_usdt-note-modal {
+    .dc-modal-body {
+        padding-top: 0;
+    }
     .title {
         font-weight: bold;
     }
@@ -38,6 +41,13 @@
 
         @include desktop {
             max-width: 672px;
+
+            &--confirm,
+            &.account-transfer__receipt,
+            &.payment-agent-transfer__container,
+            &.payment-agent-transfer__wrapper {
+                margin-left: 0;
+            }
         }
 
         &,
@@ -106,10 +116,6 @@
         font-weight: bold;
         color: var(--text-prominent);
 
-        &:not(.cashier__content-header) {
-            margin-bottom: 1.6rem;
-            margin-top: 1.6rem;
-        }
         @include mobile {
             font-size: 1.4rem;
         }
@@ -189,14 +195,6 @@
                 display: flex;
                 align-items: center;
             }
-            .cashier__drop-down-display-brackets {
-                &:before {
-                    content: '(';
-                }
-                &:after {
-                    content: ')';
-                }
-            }
             @include mobile {
                 min-height: auto;
                 min-width: calc(100% - 4rem);
@@ -207,6 +205,12 @@
         &-items,
         &-label {
             justify-content: left;
+        }
+        &-items {
+            svg {
+                width: 24px;
+                height: 24px;
+            }
         }
         &-label {
             margin: 0 1.6rem;
@@ -300,11 +304,12 @@
         background-color: var(--general-main-1);
         padding: 2.4rem;
         width: 50.4rem;
-        margin: 0 auto 3.2rem;
+        margin: 0 auto 2rem;
     }
     &__done-button {
-        width: 15.6rem;
+        width: 18.9rem;
         margin-left: 0.8rem;
+        white-space: normal;
     }
     &__no-balance {
         &-icon {
@@ -345,7 +350,6 @@
         @include mobile {
             width: 100%;
             margin: 2.4rem 0 0;
-            height: 320px;
         }
     }
     &__usdt-side-note {
@@ -855,11 +859,10 @@
         }
     }
     &__transferred-contact {
-        margin-top: 1.6rem;
-        margin-bottom: 0.8rem;
+        margin: 0.8rem 0;
 
         &-wrapper {
-            margin: 3.2rem;
+            margin: 2.4rem 0;
         }
     }
     &__contact {
@@ -872,7 +875,7 @@
         }
     }
     &__explanation {
-        margin-top: -0.8rem;
+        margin-top: 0.8rem;
     }
     &__input {
         width: 12.6rem !important;
@@ -1054,7 +1057,6 @@
 
         &-wrapper {
             display: flex;
-            margin-bottom: 0.8rem;
         }
     }
 }
@@ -1155,9 +1157,21 @@
         &-from {
             margin-bottom: 3.5rem;
             margin-top: 2.5rem;
+
+            @include mobile {
+                margin-bottom: 4rem;
+            }
         }
         &-to {
             margin-bottom: 1.7rem;
+
+            @include mobile {
+                margin-bottom: 5rem;
+
+                &:not(.dc-select-native--error) {
+                    margin-bottom: 3.2rem;
+                }
+            }
         }
     }
     &__button {

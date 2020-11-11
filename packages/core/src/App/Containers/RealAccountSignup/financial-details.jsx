@@ -6,7 +6,6 @@ import { localize } from '@deriv/translations';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { splitValidationResultTypes } from 'App/Containers/RealAccountSignup/helpers/utils';
-import { screen_height_sm_threshold } from 'App/Containers/RealAccountSignup/helpers/constants';
 import {
     AccountTurnover,
     BinaryOptionsTradingExperience,
@@ -97,11 +96,10 @@ const TradingExperience = ({
 );
 
 const FinancialDetails = props => {
-    const padding_bottom = window.innerHeight < screen_height_sm_threshold ? '10rem' : '12rem';
-
     const handleCancel = values => {
-        props.onSave(props.index, values);
-        props.onCancel();
+        const current_step = props.getCurrentStep() - 1;
+        props.onSave(current_step, values);
+        props.onCancel(current_step, props.goToPreviousStep);
     };
 
     const handleValidate = values => {
@@ -114,7 +112,7 @@ const FinancialDetails = props => {
             initialValues={{ ...props.value }}
             validate={handleValidate}
             onSubmit={(values, actions) => {
-                props.onSubmit(props.index, values, actions.setSubmitting);
+                props.onSubmit(props.getCurrentStep() - 1, values, actions.setSubmitting, props.goToNextStep);
             }}
             validateOnMount
         >
@@ -142,10 +140,7 @@ const FinancialDetails = props => {
                                         autoHide={!(window.innerHeight < 890)}
                                         height={height - 77}
                                     >
-                                        <div
-                                            className='details-form__elements  details-form__elements--wide'
-                                            style={{ paddingBottom: isDesktop() ? padding_bottom : null }}
-                                        >
+                                        <div className='details-form__elements  details-form__elements--wide'>
                                             <FinancialInformation
                                                 shared_props={shared_props}
                                                 income_source_enum={props.income_source_enum}

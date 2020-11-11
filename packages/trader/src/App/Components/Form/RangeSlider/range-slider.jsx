@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { localize } from '@deriv/translations';
+import { Text } from '@deriv/components';
 import TickSteps from './tick-steps.jsx';
 
 class RangeSlider extends React.PureComponent {
@@ -99,10 +100,10 @@ class RangeSlider extends React.PureComponent {
                 </label>
                 <div className='range-slider__caption'>
                     {!!display_value && (
-                        <span id='dt_range_slider_label' className='range-slider__caption-title'>
+                        <Text align='center' weight='bold' size='xs' color='prominent' id='dt_range_slider_label'>
                             {display_value === 1 && localize('{{display_value}} Tick', { display_value })}
                             {display_value > 1 && localize('{{display_value}} Ticks', { display_value })}
-                        </span>
+                        </Text>
                     )}
                 </div>
             </div>

@@ -178,16 +178,5 @@
     }
     &__caption {
         padding-top: 8px;
-        line-height: 1.5;
-        font-size: 1.4em;
-        text-align: center;
-
-        &-title {
-            font-weight: bold;
-        }
-        /* postcss-bem-linter: ignore */
-        span {
-            color: var(--text-prominent);
-        }
     }
 }

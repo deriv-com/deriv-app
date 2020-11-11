@@ -10,9 +10,6 @@ class Trader extends Common {
         super(page);
         this.page = page;
     }
-    async navigate() {
-        await this.page.goto(`${process.env.HOME_URL}/`, { waitUntil: 'domcontentloaded'});
-    }
 
     async waitForChart() {
         await this.page.waitForSelector('.chart-container__loader', {state: 'hidden', timeout: 120000});

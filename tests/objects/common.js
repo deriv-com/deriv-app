@@ -2,7 +2,7 @@ const qawolf = require('qawolf');
 const path = require('path');
 const fs = require('fs');
 
-const LOGIN_STATE_PATH = '../tests/states/login.json';
+const LOGIN_STATE_PATH = './tests/states/login.json';
 
 class Common {
     constructor(page) {
@@ -10,12 +10,12 @@ class Common {
 
         // Call Page methods whenever it is not existed in the Common class
         return new Proxy(this, {
-            get (target, field) {
+            get(target, field) {
                 if (field in target) return target[field];
                 if (field in page) return page[field];
                 return undefined;
             },
-            apply (target, field, argumentList) {
+            apply(target, field, argumentList) {
                 if (target[field]) return target[field](...argumentList);
                 if (page[field]) return page[field](...argumentList);
                 return undefined;
@@ -54,12 +54,14 @@ class Common {
      * Set the Endpoint
      */
     async setEndpoint(url, endpoint_server, app_id) {
-        await this.page.goto(`${url}endpoint`);
+        await this.page.goto(`${url}/endpoint`);
         await this.page.fill('[name="server"]', endpoint_server);
         await this.page.fill('[name="app_id"]', app_id);
+        await this.page.press('[name="app_id"]', 'Tab');
         await this.page.click("text=Submit");
+        await this.page.waitForTimeout(300);
         await this.page.waitForLoadState('domcontentloaded');
-        await qawolf.saveState(this.page, './.qawolf/state/admin.json');
+        await qawolf.saveState(this.page, LOGIN_STATE_PATH);
     }
 
     /**
@@ -68,18 +70,26 @@ class Common {
      * @param password
      * @returns {Promise<void>}
      */
-    async login( email, password) {
+    async login(email, password) {
+        await this.page.waitForSelector('#dt_login_button');
         await this.page.click("#dt_login_button");
         await this.page.click('[name="email"]');
         await this.page.fill('[name="email"]', email);
         await this.page.fill('[name="password"]', password);
         await this.page.click(".button");
-        await this.page.waitForChart();
+        await this.page.waitForLoadState('domcontentloaded');
+        const grant = await this.page.evaluate('document.querySelector("#btnGrant")');
+
+        if (grant) {
+            await this.page.click('#btnGrant');
+            await this.page.waitForLoadState('domcontentloaded');
+        }
+
         await qawolf.saveState(this.page, LOGIN_STATE_PATH);
     }
 
     async loadOrLogin(email, password) {
-        const is_login_done = await this.checkIfStateExists();
+        const is_login_done = this.checkIfStateExists();
         if (!is_login_done) {
             await this.login(email, password);
         } else {
@@ -88,18 +98,44 @@ class Common {
         }
     }
 
-    async checkIfStateExists() {
+    checkIfStateExists() {
         try {
-            return fs.existsSync(path.resolve(LOGIN_STATE_PATH));
+            const state_path = path.resolve(LOGIN_STATE_PATH);
+            const result = fs.existsSync(state_path);
+            if (result) {
+                const content = JSON.parse(fs.readFileSync(path.resolve(LOGIN_STATE_PATH), 'utf-8'));
+                if (
+                    !content.localStorage['client.accounts'] || (
+                        content.localStorage['config.server_url'] &&
+                        content.localStorage['config.server_url'] !== process.env.QABOX_SERVER
+                    )
+                ) {
+                   // remove the file and allow redirection
+                    fs.unlinkSync(state_path);
+                    return false;
+                }
+            }
+            return result;
         } catch (e) {
             return false;
         }
     }
 
     async isMobile() {
-        const { width } = await this.page.viewportSize()
+        const {width} = await this.page.viewportSize()
 
         return width < 400;
+    }
+
+    removeLoginState() {
+        fs.unlinkSync(path.resolve(LOGIN_STATE_PATH));
+    }
+
+    async navigate() {
+        if (process.env.QA_SETUP) {
+            await this.setEndpoint(process.env.HOME_URL, process.env.QABOX_SERVER, process.env.QABOX_APP_ID);
+        }
+        await this.page.goto(`${process.env.HOME_URL}`, {waitUntil: 'domcontentloaded'});
     }
 }
 

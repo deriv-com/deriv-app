@@ -5,7 +5,7 @@ import { Button, LinearProgress } from '@deriv/components';
 import { isEmptyObject, PlatformContext } from '@deriv/shared';
 import CloseButton from './close-button.jsx';
 import NotificationStatusIcons from './notification-status-icons.jsx';
-import DP2PBanner from './dp2p-banner.jsx';
+import NotificationBanner from './notification-banner.jsx';
 import { default_delay, types } from './constants';
 import { BinaryLink } from '../../Routes';
 
@@ -26,8 +26,18 @@ const Notification = ({ data, removeNotificationMessage }) => {
     }
 
     switch (data.type) {
-        case 'dp2p':
-            return <DP2PBanner header={data.header} message={data.message} onClick={onClick} />;
+        case 'news':
+            return (
+                <NotificationBanner
+                    header={data.header}
+                    message={data.message}
+                    button_text={data.button_text}
+                    img_src={data.img_src}
+                    img_alt={data.img_alt}
+                    redirect_link={data.redirect_link}
+                    onClick={onClick}
+                />
+            );
         default:
             return (
                 <div
@@ -100,7 +110,7 @@ Notification.propTypes = {
         message: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
         should_hide_close_btn: PropTypes.bool,
         size: PropTypes.oneOf(['small']),
-        type: PropTypes.oneOf(['warning', 'info', 'success', 'danger', 'contract_sold', 'dp2p']).isRequired,
+        type: PropTypes.oneOf(['warning', 'info', 'success', 'danger', 'contract_sold', 'news']).isRequired,
     }),
     removeNotificationMessage: PropTypes.func,
 };

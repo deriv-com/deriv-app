@@ -22,7 +22,11 @@ export const clientNotifications = (ui = {}, client = {}) => {
             key: 'dp2p',
             header: localize('Payment problems?'),
             message: localize('There’s an app for that'),
-            type: 'dp2p',
+            button_text: localize('Learn more'),
+            img_src: '/public/images/common/dp2p_banner.png',
+            img_alt: 'D2P2',
+            redirect_link: '/cashier/p2p/v1',
+            type: 'news',
         },
         currency: {
             action: {

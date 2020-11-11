@@ -19,9 +19,9 @@ class AppNotificationMessages extends React.Component {
     };
 
     render() {
-        const allowed_on_mobile = ['unwelcome', 'contract_sold', 'dp2p'];
+        const allowed_on_mobile = ['unwelcome', 'contract_sold', 'news'];
 
-        const { is_p2p_visible, marked_notifications, notification_messages, removeNotificationMessage } = this.props;
+        const { marked_notifications, notification_messages, removeNotificationMessage } = this.props;
         const { bounds } = this.state;
         const style = isMobile()
             ? {
@@ -29,26 +29,13 @@ class AppNotificationMessages extends React.Component {
               }
             : null;
 
-        let notifications = [];
-
-        if (is_p2p_visible) {
-            notifications = notification_messages
-                .filter(
-                    message =>
-                        !marked_notifications.includes(message.key) &&
-                        (isMobile() ? allowed_on_mobile.includes(message.key) : true)
-                )
-                .slice(0, max_display_notifications);
-        } else {
-            notifications = notification_messages
-                .filter(
-                    message =>
-                        !marked_notifications.includes(message.key) &&
-                        message.type !== 'dp2p' &&
-                        (isMobile() ? allowed_on_mobile.includes(message.key) : true)
-                )
-                .slice(0, max_display_notifications);
-        }
+        const notifications = notification_messages
+            .filter(
+                message =>
+                    !marked_notifications.includes(message.key) &&
+                    (isMobile() ? allowed_on_mobile.includes(message.key) : true)
+            )
+            .slice(0, max_display_notifications);
 
         if (notifications.length === 0) return null;
 
@@ -101,7 +88,7 @@ AppNotificationMessages.propTypes = {
             is_p2p_visible: PropTypes.bool,
             message: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
             size: PropTypes.oneOf(['small']),
-            type: PropTypes.oneOf(['warning', 'info', 'success', 'danger', 'contract_sold', 'dp2p']),
+            type: PropTypes.oneOf(['warning', 'info', 'success', 'danger', 'contract_sold', 'news']),
         })
     ),
     removeNotificationMessage: PropTypes.func,

@@ -218,7 +218,7 @@ export default connect(({ client, common, ui, modules }) => ({
     is_virtual: client.is_virtual,
     logoutClient: client.logout,
     needs_financial_assessment: client.needs_financial_assessment,
-    notifications_count: ui.notifications.filter(message => message.type !== 'dp2p').length,
+    notifications_count: ui.notifications.filter(message => message.type !== 'news').length,
     openRealAccountSignup: ui.openRealAccountSignup,
     removeNotificationMessage: ui.removeNotificationMessage,
     setDarkMode: ui.setDarkMode,

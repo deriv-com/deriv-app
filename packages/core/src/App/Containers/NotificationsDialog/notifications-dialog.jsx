@@ -151,5 +151,5 @@ NotificationsDialog.propTypes = {
 };
 
 export default connect(({ ui }) => ({
-    notifications: ui.notifications.filter(message => message.type !== 'dp2p'),
+    notifications: ui.notifications.filter(message => message.type !== 'news'),
 }))(NotificationsDialog);

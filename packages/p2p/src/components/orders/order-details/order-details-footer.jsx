@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Checkbox, Modal, RadioGroup } from '@deriv/components';
-import { getPropertyValue, useIsMounted } from '@deriv/shared';
+import { useIsMounted } from '@deriv/shared';
 import { requestWS } from 'Utils/websocket';
-import { useStores } from 'Stores';
 import { localize, Localize } from 'Components/i18next';
 import FormError from '../../form/error.jsx';
 import './order-details.scss';
@@ -52,11 +51,9 @@ const CancelOrderModal = ({ id, hideCancelOrderModal, should_show_cancel_modal }
 };
 
 const ComplainOrderModal = ({ id, is_buy_order_for_user, hideComplainOrderModal, should_show_complain_modal }) => {
-    const { general_store } = useStores();
     const isMounted = useIsMounted();
     const [dispute_reason, setDisputeReason] = React.useState('');
     const [error_message, setErrorMessage] = React.useState('');
-    const email_domain = getPropertyValue(general_store.custom_strings, 'email_domain') || 'deriv.com';
 
     const disputeOrderRequest = () => {
         requestWS({
@@ -115,18 +112,7 @@ const ComplainOrderModal = ({ id, is_buy_order_for_user, hideComplainOrderModal,
                     required
                 />
                 <div className='order-details__contact-text'>
-                    <Localize
-                        i18n_default_text="If your complaint isn't listed here, please contact our <0>Customer Support</0> team."
-                        components={[
-                            <a
-                                key={0}
-                                className='link order-details__popup--danger'
-                                rel='noopener noreferrer'
-                                target='_blank'
-                                href={`mailto:p2p-support@${email_domain}`}
-                            />,
-                        ]}
-                    />
+                    <Localize i18n_default_text="If your complaint isn't listed here, please contact our Customer Support team." />
                 </div>
             </Modal.Body>
             <Modal.Footer>

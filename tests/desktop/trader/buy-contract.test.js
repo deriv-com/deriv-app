@@ -6,21 +6,21 @@ const {setUp, tearDown, desktop_viewport} = require('../../bootstrap');
 
 let browser, context, page;
 
-beforeAll(async () => {
+beforeEach(async () => {
     const out = await setUp(desktop_viewport);
 
     browser = out.browser;
     context = out.context;
+    await context.addInitScript(replaceWebsocket);
     const p = await context.newPage();
     page = new Trader(p);
 });
 
-afterAll(async () => {
+afterEach(async () => {
     await tearDown(browser);
 });
 
 test("[desktop] trader/buy-contract rise", async () => {
-    await context.addInitScript(replaceWebsocket);
     await page.navigate();
     await page.waitForChart();
     await page.loadOrLogin(process.env.VALID_USER, process.env.VALID_PASSWORD);

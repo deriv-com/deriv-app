@@ -5,7 +5,7 @@ const {waitForWSSubset, replaceWebsocket} = require("../../_utils/websocket");
 
 let browser, context, page;
 
-beforeAll(async () => {
+beforeEach(async () => {
     const out = await setUp({
         userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1',
         viewport: {
@@ -18,16 +18,13 @@ beforeAll(async () => {
     });
     browser = out.browser;
     context = out.context;
-});
-
-afterAll(async () => {
-    await tearDown(browser);
-});
-
-beforeEach(async () => {
     await context.addInitScript(replaceWebsocket);
     page = new Trader(await context.newPage());
     await preBuy();
+});
+
+afterEach(async () => {
+    await tearDown(browser);
 });
 
 test("[mobile] trader/buy-rise-contract", async () => {
@@ -89,6 +86,27 @@ test('[mobile] trader/buy-rise-contract-min-duration', async () => {
     await page.click('.dc-tabs__content > .trade-params__duration-tickpicker > .dc-tick-picker > .dc-tick-picker__submit-wrapper > .dc-btn');
 
     await page.waitForSelector('#dt_purchase_call_price')
+    const message = await waitForWSSubset(page, {
+        echo_req: {
+            amount: 10,
+            basis: "stake",
+            contract_type: "CALL",
+            currency: "USD",
+            duration: 1,
+            duration_unit: "t",
+            proposal: 1,
+        },
+    });
+    assert.ok(message, 'No proper proposal was found');
+    assert.ok(message.echo_req.duration === 1, `Duration was not set properly, expected 1, received: ${  message.echo_req.duration}`);
+    await page.click('#dt_purchase_call_price');
+    const buy_response = await waitForWSSubset(page, {
+        echo_req: {
+            price: "10.00",
+        },
+    });
+    assert.equal(buy_response.buy.buy_price, 10, 'Buy price does not match proposal.');
+
 });
 test('[mobile] trader/buy-rise-contract-max-duration', async () => {
     await page.waitForSelector('.mobile-wrapper > .dc-collapsible > .dc-collapsible__content > .mobile-widget__wrapper > .mobile-widget')

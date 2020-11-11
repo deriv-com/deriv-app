@@ -1,5 +1,6 @@
+/* eslint-disable max-classes-per-file */
 import React from 'react';
-import { action, computed, observable, toJS, reaction } from 'mobx';
+import { action, computed, observable, toJS } from 'mobx';
 import {
     routes,
     isCryptocurrency,
@@ -99,11 +100,13 @@ class ConfigAccountTransfer {
     @observable error = new ConfigError();
     @observable has_no_account = false;
     @observable has_no_accounts_balance = false;
+    @observable is_transfer_confirm = false;
     @observable is_transfer_successful = false;
     @observable minimum_fee = null;
     @observable receipt = {};
     @observable selected_from = {};
     @observable selected_to = {};
+    @observable account_transfer_amount = null;
     @observable transfer_fee = null;
     @observable transfer_limit = {};
 
@@ -175,6 +178,13 @@ export default class CashierStore extends BaseStore {
     @computed
     get is_payment_agent_transfer_visible() {
         return this.config.payment_agent_transfer.is_payment_agent;
+    }
+
+    @computed
+    get is_account_transfer_visible() {
+        // cashier Transfer account tab is hidden for iom clients
+        // check for residence to hide the tab before creating a real money account
+        return this.root_store.client.residence !== 'im';
     }
 
     @computed
@@ -262,14 +272,7 @@ export default class CashierStore extends BaseStore {
         this.onRemount = this.onMount;
         await this.onMountCommon();
 
-        reaction(
-            () => [this.root_store.client.is_tnc_needed],
-            () => {
-                this.onMount();
-            }
-        );
-
-        if (this.containers.indexOf(this.active_container) === -1) {
+        if (this.containers.indexOf(this.active_container) === -1 && !this.root_store.client.is_switching) {
             throw new Error('Cashier Store onMount requires a valid container name.');
         }
         this.setErrorMessage('');
@@ -1091,6 +1094,16 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
+    setIsTransferConfirm(is_transfer_confirm) {
+        this.config[this.active_container].is_transfer_confirm = is_transfer_confirm;
+    }
+
+    @action.bound
+    setAccountTransferAmount(amount) {
+        this.config[this.active_container].account_transfer_amount = amount;
+    }
+
+    @action.bound
     setIsTransferSuccessful(is_transfer_successful) {
         this.config[this.active_container].is_transfer_successful = is_transfer_successful;
     }
@@ -1155,6 +1168,7 @@ export default class CashierStore extends BaseStore {
             return null;
         }
 
+        this.setLoading(true);
         this.setErrorMessage('');
         const currency = this.config.account_transfer.selected_from.currency;
         const transfer_between_accounts = await WS.authorized.transferBetweenAccounts(
@@ -1191,8 +1205,11 @@ export default class CashierStore extends BaseStore {
                     });
                 }
             });
+            this.setAccountTransferAmount(null);
+            this.setIsTransferConfirm(false);
             this.setIsTransferSuccessful(true);
         }
+        this.setLoading(false);
         return transfer_between_accounts;
     };
 

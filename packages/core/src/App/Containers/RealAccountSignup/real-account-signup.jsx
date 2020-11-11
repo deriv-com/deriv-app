@@ -29,11 +29,12 @@ const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_re
         return <Localize i18n_default_text='Set a currency for your real account' />;
     }
 
-    if (
-        (real_account_signup_target === 'iom' && is_isle_of_man_residence) ||
-        (real_account_signup_target === 'malta' && is_belgium_residence)
-    ) {
+    if (real_account_signup_target === 'malta' && is_belgium_residence) {
         return <Localize i18n_default_text='Add a Deriv Synthetic account' />;
+    }
+
+    if (real_account_signup_target === 'iom' && is_isle_of_man_residence) {
+        return <Localize i18n_default_text='Add a Deriv account' />;
     }
 
     switch (real_account_signup_target) {
@@ -47,11 +48,6 @@ const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_re
         default:
             return <Localize i18n_default_text='Add a Deriv account' />;
     }
-};
-
-const map_error_to_step = {
-    CurrencyTypeNotAllowed: 0,
-    InvalidPhone: 1,
 };
 
 class RealAccountSignup extends React.Component {
@@ -72,7 +68,6 @@ class RealAccountSignup extends React.Component {
                             onError={this.showErrorModal}
                             onClose={this.closeModal}
                             onSuccessSetAccountCurrency={this.showSetCurrencySuccess}
-                            step={map_error_to_step[this.props.state_value.error_code] ?? 1}
                         />
                     ),
                     title: WizardHeading,
@@ -211,10 +206,7 @@ class RealAccountSignup extends React.Component {
 
     closeModal = e => {
         // Do not close modal on external link click event
-        if (e?.target.getAttribute('rel') === 'noopener noreferrer') {
-            return;
-        }
-        if (e?.target.closest('.redirect-notice')) {
+        if (!e || e.target.getAttribute('rel') === 'noopener noreferrer' || e.target.closest('.redirect-notice')) {
             return;
         }
         if (this.active_modal_index !== modal_pages_indices.status_dialog) {

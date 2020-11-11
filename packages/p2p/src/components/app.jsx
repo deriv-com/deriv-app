@@ -154,7 +154,9 @@ const App = observer(props => {
                             <Tabs
                                 onTabItemClick={general_store.handleTabClick}
                                 active_index={general_store.active_index}
-                                className='p2p-cashier'
+                                className={classNames('p2p-cashier', {
+                                    'p2p-cashier__advertiser-tab': is_mobile && general_store.is_advertiser,
+                                })}
                                 top
                                 header_fit_content
                             >

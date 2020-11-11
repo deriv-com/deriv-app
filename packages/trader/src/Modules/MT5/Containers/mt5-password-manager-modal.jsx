@@ -260,6 +260,7 @@ class MT5PasswordManagerModal extends React.Component {
                                     <PasswordMeter
                                         input={field.value}
                                         has_error={!!(touched.new_password && errors.new_password)}
+                                        custom_feedback_messages={getErrorMessages().password_warnings}
                                     >
                                         {({ has_warning }) => (
                                             <PasswordInput
@@ -356,6 +357,7 @@ class MT5PasswordManagerModal extends React.Component {
                                         <PasswordMeter
                                             input={field.value}
                                             has_error={!!(touched.new_password && errors.new_password)}
+                                            custom_feedback_messages={getErrorMessages().password_warnings}
                                         >
                                             {({ has_warning }) => (
                                                 <PasswordInput

@@ -867,11 +867,10 @@ export default class ClientStore extends BaseStore {
         if (!this.account_status) return false;
 
         const status = this.account_status?.status;
-        const is_high_risk = /high/.test(this.account_status.risk_classification);
 
         return this.isAccountOfType('financial')
             ? /(financial_assessment|trading_experience)_not_complete/.test(status)
-            : is_high_risk && /financial_assessment_not_complete/.test(status);
+            : /financial_assessment_not_complete/.test(status);
     };
 
     shouldCompleteTax = () => {
@@ -1745,7 +1744,7 @@ export default class ClientStore extends BaseStore {
     @computed
     get needs_financial_assessment() {
         if (this.is_virtual) return false;
-        if (this.is_high_risk || this.is_financial_information_incomplete) return true;
+        if (this.is_financial_information_incomplete) return true;
         if (!this.is_svg) {
             if (this.is_financial_account || this.is_trading_experience_incomplete) return true;
         }

@@ -97,7 +97,7 @@ const DepositsLocked = ({
                     <Icon icon='IcCashierDepositLock' className='cashier-locked__icon' />
                     <h2 className='cashier-locked__title'>{localize('Deposits are locked')}</h2>
 
-                    <Text as='p' align='center' size='xs' align='left' className='cashier-locked__desc'>
+                    <Text as='p' align='center' size='xs' className='cashier-locked__desc'>
                         {deposit_desc}
                     </Text>
                     <Checklist className='cashier-locked__checklist' items={items} />

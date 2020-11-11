@@ -25,9 +25,7 @@ afterAll(async () => {
 });
 
 beforeEach(async () => {
-    if (!page) {
-        page = new Trader(await context.newPage());
-    }
+    page = new Trader(await context.newPage());
 
     await preBuy();
 });

@@ -352,8 +352,9 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
-    get allow_authentication() {
-        return this.account_status?.status?.some(status => status === 'allow_document_upload');
+    get should_allow_authentication() {
+        const allow_document_upload = this.account_status?.status?.some(status => status === 'allow_document_upload');
+        return allow_document_upload || !!this.is_authentication_needed;
     }
 
     @computed
@@ -867,11 +868,10 @@ export default class ClientStore extends BaseStore {
         if (!this.account_status) return false;
 
         const status = this.account_status?.status;
-        const is_high_risk = /high/.test(this.account_status.risk_classification);
 
         return this.isAccountOfType('financial')
             ? /(financial_assessment|trading_experience)_not_complete/.test(status)
-            : is_high_risk && /financial_assessment_not_complete/.test(status);
+            : /financial_assessment_not_complete/.test(status);
     };
 
     shouldCompleteTax = () => {
@@ -1230,7 +1230,10 @@ export default class ClientStore extends BaseStore {
         this.root_store.gtm.setLoginFlag();
 
         await this.init();
-        this.broadcastAccountChange();
+
+        // broadcastAccountChange is already called after new connection is authorized
+        if (!should_switch_socket_connection) this.broadcastAccountChange();
+
         if (!this.is_virtual) this.getLimits();
 
         runInAction(() => (this.is_switching = false));
@@ -1742,7 +1745,7 @@ export default class ClientStore extends BaseStore {
     @computed
     get needs_financial_assessment() {
         if (this.is_virtual) return false;
-        if (this.is_high_risk || this.is_financial_information_incomplete) return true;
+        if (this.is_financial_information_incomplete) return true;
         if (!this.is_svg) {
             if (this.is_financial_account || this.is_trading_experience_incomplete) return true;
         }

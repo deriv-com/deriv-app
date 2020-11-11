@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { ContractCard, CurrencyBadge, Icon, Money, ProgressSliderMobile } from '@deriv/components';
+import { ContractCard, CurrencyBadge, Icon, Money, ProgressSliderMobile, Text } from '@deriv/components';
 import {
     getContractPath,
     isMultiplierContract,
@@ -72,7 +72,9 @@ const PositionsModalCard = ({
                         icon={contract_info.underlying ? `IcUnderlying${contract_info.underlying}` : 'IcUnknown'}
                         size={34}
                     />
-                    <span className='positions-modal-card__symbol'>{contract_info.display_name}</span>
+                    <Text size='xxxs' className='positions-modal-card__symbol'>
+                        {contract_info.display_name}
+                    </Text>
                 </div>
                 <div className='positions-modal-card__type'>
                     <ContractCard.ContractTypeCell
@@ -152,20 +154,24 @@ const PositionsModalCard = ({
                 </div>
                 <div className={classNames('positions-modal-card__grid-price-payout')}>
                     <div className='positions-modal-card__purchase-price'>
-                        <span className='positions-modal-card__purchase-label'>{localize('Purchase price:')}</span>
-                        <span className='positions-modal-card__purchase-value'>
+                        <Text size='xxxs' className='positions-modal-card__purchase-label'>
+                            {localize('Purchase price:')}
+                        </Text>
+                        <Text weight='bold' size='xxs' className='positions-modal-card__purchase-value'>
                             <Money amount={contract_info.buy_price} currency={currency} />
-                        </span>
+                        </Text>
                     </div>
                     <div className='positions-modal-card__payout-price'>
-                        <span className='positions-modal-card__payout-label'>{localize('Potential payout:')}</span>
-                        <span className='positions-modal-card__payout-value'>
+                        <Text size='xxxs' className='positions-modal-card__payout-label'>
+                            {localize('Potential payout:')}
+                        </Text>
+                        <Text weight='bold' size='xxs' className='positions-modal-card__payout-value'>
                             {contract_info.payout ? (
                                 <Money amount={contract_info.payout} currency={currency} />
                             ) : (
                                 <strong>-i</strong>
                             )}
-                        </span>
+                        </Text>
                     </div>
                 </div>
 

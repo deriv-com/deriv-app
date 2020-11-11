@@ -1,6 +1,6 @@
 import React from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import { Icon, Div100vhContainer, Modal } from '@deriv/components';
+import { Icon, Div100vhContainer, Modal, Text } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
@@ -100,10 +100,10 @@ class TogglePositionsMobile extends React.Component {
                 >
                     <Div100vhContainer className='positions-modal' height_offset='48px'>
                         <div className='positions-modal__header'>
-                            <span className='positions-modal__title'>
+                            <Text size='xxxs' className='positions-modal__title'>
                                 <Icon icon='IcPortfolio' className='positions-modal__title-icon' />
                                 {localize('Recent positions')}
-                            </span>
+                            </Text>
                             <div className='positions-modal__close-btn' onClick={this.closeModal}>
                                 <Icon icon='IcMinusBold' />
                             </div>

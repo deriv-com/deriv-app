@@ -24,7 +24,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
             message: localize('There’s an app for that'),
             button_text: localize('Learn more'),
             img_src: '/public/images/common/dp2p_banner.png',
-            img_alt: 'D2P2',
+            img_alt: 'DP2P',
             redirect_link: '/cashier/p2p/v1',
             type: 'news',
         },

@@ -52,7 +52,7 @@
             background-color: var(--general-main-1) !important;
         }
     }
-    .dc-select-native__placeholder {
+    .dc-select-native__placeholder:not(.dc-select-native__placeholder--has-value) {
         background: initial;
     }
 }

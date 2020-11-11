@@ -19,19 +19,14 @@ export const legacyUrlForLanguage = (target_language, url = window.location.href
 
 export const urlForLanguage = (lang, url = window.location.href) => {
     const current_url = new URL(url);
-    const params = new URLSearchParams(current_url.search.slice(1));
 
     if (lang === 'EN') {
-        return `${current_url.origin}${current_url.pathname}`;
+        current_url.searchParams.delete('lang');
+    } else {
+        current_url.searchParams.set('lang', lang);
     }
 
-    if (/[&?]lang=(\w*)/i.test(url)) {
-        return url.replace(/lang=(\w*)/, `lang=${lang?.trim().toUpperCase() || 'EN'}`);
-    }
-
-    params.append('lang', lang);
-
-    return `${current_url.origin}${current_url.pathname}?${params.toString()}${current_url.hash}`;
+    return `${current_url}`;
 };
 
 export const reset = () => {

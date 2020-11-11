@@ -9,7 +9,7 @@
         flex-wrap: wrap;
 
         @include desktop {
-            justify-content: center;
+            justify-content: flex-start;
         }
 
         @include mobile {
@@ -27,7 +27,7 @@
         height: 128px;
         justify-content: space-around;
         margin: 1.6rem 2rem 0;
-        min-width: 170px;
+        min-width: 128px;
 
         &:hover:not(&--selected) {
             cursor: pointer;

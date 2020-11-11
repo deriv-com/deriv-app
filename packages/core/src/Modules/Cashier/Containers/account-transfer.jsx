@@ -10,20 +10,24 @@ import TransferLock from '../Components/Error/transfer-locked.jsx';
 import AccountTransferForm from '../Components/Form/account-transfer-form.jsx';
 import AccountTransferReceipt from '../Components/Receipt/account-transfer-receipt.jsx';
 import Loading from '../../../templates/_common/components/loading.jsx';
+import AccountTransferConfirm from '../Components/Confirm/account-transfer-confirm.jsx';
 
 class AccountTransfer extends React.Component {
     componentDidMount() {
         this.props.setActiveTab(this.props.container);
-        if (!this.props.is_virtual) {
-            this.props.onMount();
-        }
+        this.props.onMount();
+    }
+
+    componentWillUnmount() {
+        this.props.setAccountTransferAmount('');
+        this.props.setIsTransferConfirm(false);
     }
 
     render() {
         if (this.props.is_virtual) {
             return <Virtual />;
         }
-        if (this.props.is_loading) {
+        if (this.props.is_loading || this.props.is_switching) {
             return <Loading className='cashier__loader' />;
         }
         if (this.props.is_cashier_locked) {
@@ -42,6 +46,12 @@ class AccountTransfer extends React.Component {
         }
         if (this.props.has_no_accounts_balance) {
             return <NoBalance />;
+        }
+        if (this.props.is_transfer_confirm) {
+            if (typeof this.props.setSideNotes === 'function') {
+                this.props.setSideNotes(null);
+            }
+            return <AccountTransferConfirm />;
         }
         if (this.props.is_transfer_successful) {
             if (typeof this.props.setSideNotes === 'function') {
@@ -70,6 +80,7 @@ AccountTransfer.propTypes = {
 
 export default connect(({ client, modules }) => ({
     is_virtual: client.is_virtual,
+    is_switching: client.is_switching,
     accounts_list: modules.cashier.config.account_transfer.accounts_list,
     container: modules.cashier.config.account_transfer.container,
     error: modules.cashier.config.account_transfer.error,
@@ -77,8 +88,11 @@ export default connect(({ client, modules }) => ({
     has_no_accounts_balance: modules.cashier.config.account_transfer.has_no_accounts_balance,
     is_cashier_locked: modules.cashier.is_cashier_locked,
     is_loading: modules.cashier.is_loading,
+    is_transfer_confirm: modules.cashier.config.account_transfer.is_transfer_confirm,
     is_transfer_successful: modules.cashier.config.account_transfer.is_transfer_successful,
     is_transfer_lock: modules.cashier.is_transfer_lock,
     onMount: modules.cashier.onMountAccountTransfer,
     setActiveTab: modules.cashier.setActiveTab,
+    setAccountTransferAmount: modules.cashier.setAccountTransferAmount,
+    setIsTransferConfirm: modules.cashier.setIsTransferConfirm,
 }))(AccountTransfer);

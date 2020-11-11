@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Field from '../field';
 import Loading from '../loading';
 
-const PasswordMeter = ({ children, has_error, input }) => {
+const PasswordMeter = ({ children, has_error, input, custom_feedback_messages }) => {
     const zxcvbn = React.useRef();
 
     const [is_loading, setLoading] = React.useState(true);
@@ -25,12 +25,14 @@ const PasswordMeter = ({ children, has_error, input }) => {
         if (typeof zxcvbn.current === 'function') {
             // 0 - 4 Score for password strength
             if (input?.length > 0) {
-                const { score: updated_score, feedback: updated_feedback } = zxcvbn.current(input);
+                const { score: updated_score, feedback: updated_feedback } = zxcvbn.current(input, {
+                    feedback_messages: custom_feedback_messages,
+                });
                 setScore(updated_score);
                 setFeedback(updated_feedback);
             }
         }
-    }, [has_error, input]);
+    }, [custom_feedback_messages, has_error, input]);
 
     if (is_loading) return <Loading is_fullscreen={false} />;
 
@@ -50,7 +52,11 @@ const PasswordMeter = ({ children, has_error, input }) => {
                     style={{ transform: `scale(${width_scale || 0}, 1)` }}
                 />
                 {feedback?.warning && !has_error && (
-                    <Field className='dc-password-meter__warning' message={`${feedback.warning}.`} type='error' />
+                    <Field
+                        className='dc-password-meter__warning'
+                        message={`${custom_feedback_messages ? feedback.warning() : feedback.warning}.`}
+                        type='error'
+                    />
                 )}
             </div>
         </React.Fragment>

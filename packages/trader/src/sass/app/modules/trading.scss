@@ -52,6 +52,9 @@
             background-color: var(--general-main-1) !important;
         }
     }
+    .dc-select-native__placeholder {
+        background: initial;
+    }
 }
 
 /** @define trade-container; weak */

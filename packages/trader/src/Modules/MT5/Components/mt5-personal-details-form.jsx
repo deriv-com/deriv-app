@@ -233,6 +233,7 @@ const MT5PersonalDetailsForm = ({
                                             </DesktopWrapper>
                                             <MobileWrapper>
                                                 <SelectNative
+                                                    placeholder={localize('Please select')}
                                                     label={localize('Citizenship')}
                                                     value={values.citizen}
                                                     list_items={residence_list}
@@ -269,6 +270,7 @@ const MT5PersonalDetailsForm = ({
                                             </DesktopWrapper>
                                             <MobileWrapper>
                                                 <SelectNative
+                                                    placeholder={localize('Please select')}
                                                     label={localize('Tax residence')}
                                                     value={values.tax_residence}
                                                     error={touched.tax_residence && errors.tax_residence}
@@ -314,6 +316,7 @@ const MT5PersonalDetailsForm = ({
                                                     </DesktopWrapper>
                                                     <MobileWrapper>
                                                         <SelectNative
+                                                            placeholder={localize('Please select')}
                                                             name={field.name}
                                                             label={localize('Account opening reason')}
                                                             list_items={account_opening_reason}

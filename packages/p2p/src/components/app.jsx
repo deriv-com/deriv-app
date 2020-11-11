@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
-import { getPropertyValue } from '@deriv/shared';
 import { Tabs, Modal } from '@deriv/components';
 import { Dp2pProvider } from 'Components/context/dp2p-context';
 import ServerTime from 'Utils/server-time';
@@ -23,7 +22,6 @@ const App = observer(props => {
     const { general_store } = useStores();
     const {
         className,
-        custom_strings,
         is_mobile,
         lang,
         loginid,
@@ -80,7 +78,6 @@ const App = observer(props => {
                 changeTab: general_store.handleTabClick,
                 createAdvertiser: general_store.createAdvertiser,
                 currency: general_store.client.currency,
-                email_domain: getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
                 getLocalStorageSettingsForLoginId: general_store.getLocalStorageSettingsForLoginId,
                 handleNotifications: general_store.handleNotifications,
                 inactive_notification_count: general_store.inactive_notification_count,

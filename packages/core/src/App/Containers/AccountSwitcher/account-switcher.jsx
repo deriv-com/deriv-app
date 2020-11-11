@@ -431,7 +431,9 @@ class AccountSwitcher extends React.Component {
                             <div key={index} className='acc-switcher__new-account'>
                                 <Icon icon='IcDeriv' size={24} />
                                 <Text size='xs' color='general' className='acc-switcher__new-account-text'>
-                                    {getAccountTitle(account)}
+                                    {getAccountTitle(account, {
+                                        account_residence: this.props.client_residence,
+                                    })}
                                 </Text>
                                 <Button
                                     onClick={() => this.props.openRealAccountSignup(account)}
@@ -649,6 +651,7 @@ const account_switcher = withRouter(
         can_change_fiat_currency: client.can_change_fiat_currency,
         account_list: client.account_list,
         can_upgrade_to: client.can_upgrade_to,
+        client_residence: client.residence,
         is_eu: client.is_eu,
         is_loading_mt5: client.is_populating_mt5_account_list,
         is_logged_in: client.is_logged_in,

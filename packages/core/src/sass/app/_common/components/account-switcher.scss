@@ -275,6 +275,9 @@
                 margin-bottom: 8px;
             }
         }
+        &--is-loading {
+            padding-bottom: 0.8rem;
+        }
     }
     &__account {
         display: flex;

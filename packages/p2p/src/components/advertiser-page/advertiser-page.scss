@@ -145,6 +145,13 @@
 
         &-table {
             width: 657px;
+
+            @include mobile {
+                display: flex;
+                flex-flow: column;
+                margin-top: 4rem;
+                width: 100vw;
+            }
         }
 
         &-table_row {

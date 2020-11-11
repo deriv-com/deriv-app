@@ -27,43 +27,41 @@ const RowComponent = React.memo(({ data: advert, showAdPopup, style }) => {
         <div style={style}>
             <Table.Row className='advertiser-page__adverts-table_row'>
                 {isMobile() ? (
-                    <React.Fragment>
-                        <Table.Cell className='advertiser-page__cell'>
-                            <Text size='xxs' lineHeight='m'>
+                    <Table.Cell className='advertiser-page__cell'>
+                        <Text size='xxs' line_height='m'>
+                            <Localize
+                                i18n_default_text='Rate (1 {{currency}})'
+                                values={{
+                                    currency,
+                                }}
+                            />
+                        </Text>
+
+                        <div className='advertiser-page__adverts-price'>
+                            <Text color='profit-success' size='s' weight='bold' line_height='m'>
+                                {price_display} {local_currency}
+                            </Text>
+                        </div>
+                        <div className='advertiser-page__cell-limit'>
+                            <Text size='xxs' line_height='m'>
                                 <Localize
-                                    i18n_default_text='Rate (1 {{currency}})'
+                                    i18n_default_text='Limit {{min_order_amount_limit_display}}-{{max_order_amount_limit_display}} {{currency}}'
                                     values={{
+                                        min_order_amount_limit_display,
+                                        max_order_amount_limit_display,
                                         currency,
                                     }}
                                 />
                             </Text>
-
-                            <div className='advertiser-page__adverts-price'>
-                                <Text color='profit-success' size='s' weight='bold' lineHeight='m'>
-                                    {price_display} {local_currency}
-                                </Text>
-                            </div>
-                            <div className='advertiser-page__cell-limit'>
-                                <Text size='xxs' lineHeight='m'>
-                                    <Localize
-                                        i18n_default_text='Limit {{min_order_amount_limit_display}}-{{max_order_amount_limit_display}} {{currency}}'
-                                        values={{
-                                            min_order_amount_limit_display,
-                                            max_order_amount_limit_display,
-                                            currency,
-                                        }}
-                                    />
-                                </Text>
-                            </div>
-                        </Table.Cell>
-                    </React.Fragment>
+                        </div>
+                    </Table.Cell>
                 ) : (
                     <React.Fragment>
                         <Table.Cell>
                             {`${min_order_amount_limit_display}-${max_order_amount_limit_display} ${currency}`}
                         </Table.Cell>
                         <Table.Cell className='advertiser-page__adverts-price'>
-                            <Text color='profit-success' size='xs' weight='bold' lineHeight='xs'>
+                            <Text color='profit-success' size='xs' weight='bold' line_height='xs'>
                                 {price_display} {local_currency}
                             </Text>
                         </Table.Cell>
@@ -91,7 +89,7 @@ RowComponent.displayName = 'RowComponent';
 
 const StatsHeader = ({ text }) => {
     return (
-        <Text color='less-prominent' size='xs' lineHeight='m'>
+        <Text color='less-prominent' size='xs' line_height='m'>
             {text}
         </Text>
     );
@@ -140,8 +138,8 @@ const AdvertiserPage = observer(props => {
 
     if (advertiser_page_store.error_message) {
         return (
-            <Text size='xs' color='loss-danger' lineHeight='m'>
-                {advertiser_page_store.error_message}{' '}
+            <Text size='xs' color='loss-danger' line_height='m'>
+                {advertiser_page_store.error_message}
             </Text>
         );
     }
@@ -199,12 +197,12 @@ const AdvertiserPage = observer(props => {
                                 ),
                             }}
                         >
-                            <Text color='colored-background' size='xs' lineHeight='xs'>
+                            <Text color='colored-background' size='xs' line_height='xs'>
                                 {advertiser_page_store.short_name}
                             </Text>
                         </div>
                         <div className='advertiser-page__header-name'>
-                            <Text color='prominent' size='s' weight='bold' lineHeight='m'>
+                            <Text color='prominent' size='s' weight='bold' line_height='m'>
                                 {advertiser_page_store.advertiser_details_name}
                             </Text>
                         </div>
@@ -212,7 +210,7 @@ const AdvertiserPage = observer(props => {
                     <div className='advertiser-page__header-verification'>
                         {basic_verification ? (
                             <div className='advertiser-page__header-verification-id'>
-                                <Text color='less-prominent' size={isMobile() ? 'xxs' : 'xs'} lineHeight='m'>
+                                <Text color='less-prominent' size={isMobile() ? 'xxs' : 'xs'} line_height='m'>
                                     <Localize i18n_default_text='ID verified' />
                                 </Text>
                                 <Icon
@@ -224,7 +222,7 @@ const AdvertiserPage = observer(props => {
                         ) : null}
                         {full_verification ? (
                             <div className='advertiser-page__header-verification-status'>
-                                <Text color='less-prominent' size={isMobile() ? 'xxs' : 'xs'} lineHeight='m'>
+                                <Text color='less-prominent' size={isMobile() ? 'xxs' : 'xs'} line_height='m'>
                                     <Localize i18n_default_text='Address verified' />
                                 </Text>
                                 <Icon
@@ -275,7 +273,7 @@ const AdvertiserPage = observer(props => {
                                     <div className='advertiser-page__stats-cell-completion'>
                                         <StatsInfo text={total_completion_rate ? `${total_completion_rate}%` : '-'} />
                                         <div className='advertiser-page__stats-cell-buy'>
-                                            <Text size='xs' color='prominent' lineHeight='m'>
+                                            <Text size='xs' color='prominent' line_height='m'>
                                                 {localize('(Buy {{- buy_completion_rate }})', {
                                                     buy_completion_rate: buy_completion_rate
                                                         ? `${buy_completion_rate}%`
@@ -318,8 +316,9 @@ const AdvertiserPage = observer(props => {
                         onTabItemClick={advertiser_page_store.handleTabItemClick}
                         active_index={advertiser_page_store.active_index}
                         className='advertiser-page__adverts-tabs'
-                        top
                         header_fit_content
+                        is_full_width={isMobile()}
+                        top
                     >
                         <div label={localize('Buy')} />
                         <div label={localize('Sell')} />
@@ -340,20 +339,20 @@ const AdvertiserPage = observer(props => {
                                         </Table.Row>
                                     </Table.Header>
                                 )}
-                                <ThemedScrollbars className='advertiser-page__adverts-scrollbar'>
-                                    <Table.Body>
-                                        <InfiniteLoaderList
-                                            autosizer_height={
-                                                isMobile()
-                                                    ? `calc(${advertiser_page_store.height_values_mobile.join(' - ')})`
-                                                    : `calc(${advertiser_page_store.height_values.join(' - ')})`
-                                            }
-                                            items={advertiser_page_store.adverts}
-                                            item_size={isMobile() ? 98 : 56}
-                                            RenderComponent={Row}
-                                        />
-                                    </Table.Body>
-                                </ThemedScrollbars>
+                                {/* <ThemedScrollbars className='advertiser-page__adverts-scrollbar'> */}
+                                <Table.Body>
+                                    <InfiniteLoaderList
+                                        autosizer_height={
+                                            isMobile()
+                                                ? `calc(${advertiser_page_store.height_values_mobile.join(' - ')})`
+                                                : `calc(${advertiser_page_store.height_values.join(' - ')})`
+                                        }
+                                        items={advertiser_page_store.adverts}
+                                        item_size={isMobile() ? 98 : 56}
+                                        RenderComponent={Row}
+                                    />
+                                </Table.Body>
+                                {/* </ThemedScrollbars> */}
                             </Table>
                         ) : (
                             <Empty icon='IcCashierNoAds' title={localize('No ads')} />

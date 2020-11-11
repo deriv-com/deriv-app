@@ -47,11 +47,14 @@
             @include mobile {
                 display: flex;
                 justify-content: space-evenly;
-                width: 100vw;
             }
         }
         &:not(&--header-fit-content) {
             justify-content: center;
+        }
+
+        &--full-width {
+            width: 100vw;
         }
     }
     &__item {

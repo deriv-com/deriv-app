@@ -1,3 +1,4 @@
+const assert = require('assert').strict;
 const {replaceWebsocket, waitForWSSubset} = require('../../_utils/websocket');
 const {setUp, tearDown} = require('../../bootstrap');
 const Trader = require('../../objects/trader');
@@ -33,9 +34,19 @@ beforeEach(async () => {
 test('[mobile] trader/buy-fall-contract', async () => {
     await page.waitForSelector('#dt_purchase_put_price');
     await page.click('#dt_purchase_put_price');
-    await waitForWSSubset(page, {
-        "msg_type": "buy",
+    const message = await waitForWSSubset(page, {
+        echo_req: {
+            amount: 10,
+            basis: "stake",
+            contract_type: "CALL",
+            currency: "USD",
+            duration: 5,
+            duration_unit: "t",
+            proposal: 1,
+        },
     });
+    assert.ok(message, 'No proper proposal was found');
+    assert.ok(message.echo_req.duration === 5, `Duration was not set properly, expected 5, received: ${  message.echo_req.duration}`);
 });
 test('[mobile] trader/buy-fall-contract-min-duration', async () => {
     await page.waitForSelector('[data-qa=duration_amount_selector]')

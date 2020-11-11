@@ -81,9 +81,8 @@ const waitForWSSubset = async (page, subset, options = {timeout: 6000}) => {
         }));
     } catch (err) {
         const messages = await page.evaluate('window.messages');
-        const error_message = `JSON subset not found in ${options.timeout}ms.`;
         console.dir(messages);
-        throw new Error(error_message);
+        return null;
     }
 };
 

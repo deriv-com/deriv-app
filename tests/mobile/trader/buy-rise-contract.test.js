@@ -1,5 +1,7 @@
+const assert = require('assert').strict;
 const {setUp, tearDown} = require('../../bootstrap');
 const Trader = require('../../objects/trader');
+const {waitForWSSubset, replaceWebsocket} = require("../../_utils/websocket");
 
 let browser, context, page;
 
@@ -23,13 +25,32 @@ afterAll(async () => {
 });
 
 beforeEach(async () => {
+    await context.addInitScript(replaceWebsocket);
     page = new Trader(await context.newPage());
     await preBuy();
 });
 
 test("[mobile] trader/buy-rise-contract", async () => {
-    await page.click("#dt_purchase_call_price");
-    await page.waitForTimeout(5000);
+    const message = await waitForWSSubset(page, {
+        echo_req: {
+            amount: 10,
+            basis: "stake",
+            contract_type: "CALL",
+            currency: "USD",
+            duration: 5,
+            duration_unit: "t",
+            proposal: 1,
+        },
+    });
+    assert.ok(message, 'No proper proposal was found');
+    assert.ok(message.echo_req.duration === 5, `Duration was not set properly, expected 5, received: ${  message.echo_req.duration}`);
+    await page.click('#dt_purchase_call_price');
+    const buy_response = await waitForWSSubset(page, {
+        echo_req: {
+            price: "10.00",
+        },
+    });
+    assert.equal(buy_response.buy.buy_price, 10, 'Buy price does not match proposal.');
 });
 test('[mobile] trader/buy-rise-contract-min-duration', async () => {
     await page.waitForSelector('.mobile-wrapper > .dc-collapsible > .dc-collapsible__content > .mobile-widget__wrapper > .mobile-widget')
@@ -106,6 +127,26 @@ test('[mobile] trader/buy-rise-contract-max-duration', async () => {
     await page.click('.dc-tabs__content > .trade-params__duration-tickpicker > .dc-tick-picker > .dc-tick-picker__submit-wrapper > .dc-btn');
 
     await page.waitForSelector('#dt_purchase_call_price')
+    const message = await waitForWSSubset(page, {
+        echo_req: {
+            amount: 10,
+            basis: "stake",
+            contract_type: "CALL",
+            currency: "USD",
+            duration: 10,
+            duration_unit: "t",
+            proposal: 1,
+        },
+    });
+    assert.ok(message, 'No proper proposal was found');
+    assert.ok(message.echo_req.duration === 10, `Duration was not set properly, expected 5, received: ${  message.echo_req.duration}`);
+    await page.click('#dt_purchase_call_price');
+    const buy_response = await waitForWSSubset(page, {
+        echo_req: {
+            price: "10.00",
+        },
+    });
+    assert.equal(buy_response.buy.buy_price, 10, 'Buy price does not match proposal.');
 });
 
 async function preBuy() {

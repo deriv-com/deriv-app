@@ -1,5 +1,5 @@
 # PasswordInput component
-To have a password type input use this component.
+This component is used to have a password type input.
 
 #### Supported events:
 All events supported by an '\<input>' tag.

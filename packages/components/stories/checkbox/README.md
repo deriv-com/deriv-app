@@ -36,7 +36,7 @@ const DummyComponent = props => (
 | value              | {boolean}    | `false`     | Default value of the Checkbox                      |
 | onChange           | {function}   | undefined   | Function returns the changed value of Checkbox     |
 | classNameLabel     | {string}     | null        | The classname for the Checkbox                     |
-| disabled           | {boolean}    | `false`     | Define whether the Checkbox is disable or not      |
+| disabled           | {boolean}    | `false`     | Define whether the Checkbox is disabled or not      |
 | id                 | {string}     | null        | `id` of the Checkbox                               |
 | withTabIndex       | {string}     | null        | Tabindex of the `span` element of the Checkbox     |
 

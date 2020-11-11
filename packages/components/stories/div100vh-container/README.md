@@ -1,6 +1,6 @@
 # Div100vhContainer Component
 
-Renders a `Div100vhContainer` component. In mobile, the `100vh` does not return the correct screen height so, this conponent helps us ensure about the correctness of the element's height.
+Renders a `Div100vhContainer` component. In mobile, the `100vh` does not return the correct screen height so, this component helps us to ensure about the correctness of the element's height.
 
 
 ## Props

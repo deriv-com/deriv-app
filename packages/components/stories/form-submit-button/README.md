@@ -1,6 +1,6 @@
 # FormSubmitButton Component
 
-A submit botton and optionally a back button for forms.
+A submit button and optionally a back button for forms.
 
 
 ## Usage
@@ -26,12 +26,12 @@ const DummyComponent = props => (
 | ------------- | ---------- | -------- | ------------------------------------------------------------- |
 | label         | {string}   | null     | Label for the main button                                     |
 | cancel_label  | {string}   | null     | Label for the cancel button                                   |
-| has_cancel    | {boolean}  | `false`  | Defins the visibility of the cancel button                    |
+| has_cancel    | {boolean}  | `false`  | Defines the visibility of the cancel button                    |
 | onClick       | {function} | null     | Function triggers when the user clicks on the main button     |
 | onCancel      | {function} | null     | Function triggers when the user clicks on the cancel button   |
 | is_absolute   | {boolean}  | `false`  | Set absolute position for buttons to right down of the form   |
-| is_center     | {boolean}  | `false`  | Set the position of buttons to buttom center of the form      |
-| is_disabled   | {boolean}  | `false`  | Defins the disablity of the buttons                           |
+| is_center     | {boolean}  | `false`  | Set the position of buttons to bottom center of the form      |
+| is_disabled   | {boolean}  | `false`  | Defines the disability of the buttons                           |
 | form_error    | {string}   | `''`     | The form error text                                           |
 | className     | {string}   | null     | `className` for the main container                            |
 

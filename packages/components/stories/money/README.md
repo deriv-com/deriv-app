@@ -24,9 +24,9 @@ const DummyComponent = props => (
 | ------------- | ------------------ | -------- | ------------------------------------------------- |
 | amount        | {string \| number} | null     | The amount of money to show                       |
 | currency      | {string}           | `'USD'`  | The currency of the money                         |
-| has_sign      | {boolean}          | null     | Defines whether show the sign or not              |
-| should_format | {boolean}          | `true`   | Defines whether format the money string or not    |
-| show_currency | {boolean}          | `false`  | Defines whether show the currency or not          |
+| has_sign      | {boolean}          | null     | Defines whether to show the sign or not              |
+| should_format | {boolean}          | `true`   | Defines whether to format the money string or not    |
+| show_currency | {boolean}          | `false`  | Defines whether to show the currency or not          |
 | className     | {string}           | null     | `className` for the main container                |
 
 

@@ -11,7 +11,7 @@ const PopoverComponent = ({ message }) => (
 );
 
 const Basic = () => {
-    const [is_checked, toggleCkeck] = React.useState(false);
+    const [is_checked, toggleCheck] = React.useState(false);
 
     return (
         <Wrapper className='popover-message-checkbox-storybook' is_dark={boolean('Dark Theme', false)}>

@@ -20,7 +20,7 @@ storiesOf('Drawer', module)
             return (
                 <Wrapper is_dark={boolean('Dark Theme', false)}>
                     <p className='simple-text'>
-                        Change isMobile property from Knobs to see the Drawer for mobile and desktp.
+                        Change isMobile property from Knobs to see the Drawer for mobile and desktop.
                     </p>
                     <Drawer
                         clear_stat_button_text={'Reset'}

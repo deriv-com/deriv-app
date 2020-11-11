@@ -1,6 +1,6 @@
 # ContractCard Component
 
-Shows detailed information of a contract. Two types of contracts are available to use: `multiplier` contract and `simple` contracts. A contract can be either `completed` or `ongoing`. 
+Shows detailed information of a contract. Two types of contracts are available to use: `multiplier` contract and `simple` contract. A contract can be either `completed` or `ongoing`. 
 
 
 ##### Supported Gestures:

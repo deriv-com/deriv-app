@@ -25,7 +25,7 @@ const DummyComponent = (props) => (
 | id                       | {string}               | null               | Id of the main wrapper of the component                                                                                                                  |
 | portal_id                | {string}               | null               | If you want to render page in a react portal insert a dom's id                                                                                           |
 | is\_open                 | {boolean}              | null               | If there is a 'portal\_id', set this props to 'true' to open the portal using 'react-transition-group' plugin                                            |
-| onClickClose             | {function}             | null               | Calback function for clicking on close button in header if it's 'null' default function will change the page to previous location. (window.history.back) |
+| onClickClose             | {function}             | null               | Callback function for clicking on close button in header if it's 'null' default function will change the page to previous location. (window.history.back) |
 
 ## Full example:
 

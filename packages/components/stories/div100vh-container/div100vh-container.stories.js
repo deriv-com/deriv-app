@@ -9,7 +9,7 @@ storiesOf('Div100vhContainer', module).add(
         return (
             <React.Fragment>
                 <Div100vhContainer>
-                    <p style={{ margin: 20, fontSize: 24 }}>My parrent has correct `100vh` style!</p>
+                    <p style={{ margin: 20, fontSize: 24 }}>My parent has correct `100vh` style!</p>
                 </Div100vhContainer>
             </React.Fragment>
         );

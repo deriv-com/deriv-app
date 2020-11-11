@@ -1,6 +1,6 @@
 # ExpansionPanel Component
 
-Renders a `ExpansionPanel` component which is a list of expandable values.
+Renders an `ExpansionPanel` component which is a list of expandable values.
 
 
 #### Supported Gestures:
@@ -31,7 +31,7 @@ const DummyComponent = props => (
 | Name                | Type                                     | Default     | Description                           |
 | ------------------- | ---------------------------------------- | ----------- | ------------------------------------- |
 | header `(optional)` | {string}                                 | null        | Header of the list                    |
-| content             | [object<id, value:{string \| content}>]  | null        | An object contains `id` and `value`. The `value` can be a simple strig or a object of `content` recursively.   |
+| content             | [object<id, value:{string \| content}>]  | null        | An object contains `id` and `value`. The `value` can be a simple string or an object of `content` recursively.   |
 
 
 

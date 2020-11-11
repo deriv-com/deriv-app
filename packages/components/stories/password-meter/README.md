@@ -1,5 +1,5 @@
 # PasswordMeter component
-To check strength of a password use this component and wrap the 'PasswordInput' component with it.
+Use this component to check strength of a password and wrap the 'PasswordInput' component with it.
 
 ## Usage
  

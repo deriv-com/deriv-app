@@ -1,6 +1,6 @@
 # InputWithCheckbox Component
 
-An input with a checkbox. The input disability is depends on the value of the checkbox.
+An input with a checkbox. The input disability depends on the value of the checkbox.
 
 
 #### Supported Gestures:
@@ -30,7 +30,7 @@ const DummyComponent = props => (
 
 | Name                    | Type         | Default     | Description                                                                |
 | ----------------------- | ------------ | ----------- | -------------------------------------------------------------------------- |
-| label                   | {string}     | null        | Lable of the input                                                         |
+| label                   | {string}     | null        | Label of the input                                                         |
 | name                    | {string}     | null        | Name of the input                                                          |
 | value                   | {boolean}    | null        | Default value of the input                                                 |
 | max_value               | {number}     | null        | Defines the maximum acceptable value                                       |
@@ -46,11 +46,11 @@ const DummyComponent = props => (
 | is\_input\_hidden       | {boolean}    | null        | Defines whether the input element is hidden or not                         |
 | current_focus           | {string}     | null        | Current focus                                                              |
 | setCurrentFocus         | {function}   | null        | Function to set the current focus                                          |
-| checkbox\_tooltip\_label| {string}     | null        | Tolltip label for the Checkbox                                             |
-| tooltip_label           | {string}     | null        | Tolltip label                                                              |
-| tooltip_alignment       | {string}     | null        | Tolltip alignment                                                          |
+| checkbox\_tooltip\_label| {string}     | null        | Tooltip label for the Checkbox                                             |
+| tooltip_label           | {string}     | null        | Tooltip label                                                              |
+| tooltip_alignment       | {string}     | null        | Tooltip alignment                                                          |
 | className               | {string}     | null        | `className` for the main container                                         |
-| classNameInlinePrefix   | {string}     | null        | `className` for the inline preifx                                          |
+| classNameInlinePrefix   | {string}     | null        | `className` for the inline prefix                                          |
 | classNameInput          | {string}     | null        | `className` for the input element                                          |
 | classNamePrefix         | {string}     | null        | `className` for the prefix                                                 |
 

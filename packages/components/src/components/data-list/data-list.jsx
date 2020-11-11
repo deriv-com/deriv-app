@@ -125,14 +125,14 @@ class DataList extends React.PureComponent {
                 <div className={classNames('data-list__body', { [`${className}__data-list-body`]: className })}>
                     <AutoSizer>
                         {({ width, height }) => (
-                            <TransitionGroup>
-                                <div
-                                    className='data-list__body-wrapper'
-                                    style={{
-                                        height,
-                                        width,
-                                    }}
-                                >
+                            <div
+                                className='data-list__body-wrapper'
+                                style={{
+                                    height,
+                                    width,
+                                }}
+                            >
+                                <TransitionGroup>
                                     <ThemedScrollbars onScroll={this.handleScroll} autoHide is_bypassed={isMobile()}>
                                         <List
                                             ref={ref => (this.list_ref = ref)}
@@ -151,8 +151,8 @@ class DataList extends React.PureComponent {
                                         />
                                     </ThemedScrollbars>
                                     {children}
-                                </div>
-                            </TransitionGroup>
+                                </TransitionGroup>
+                            </div>
                         )}
                     </AutoSizer>
                 </div>

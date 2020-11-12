@@ -140,7 +140,7 @@ export default class MyAdsStore {
 
     @action.bound
     onClickConfirm = showError => {
-        requestWS({ p2p_advert_update: 1, id: selected_ad_id, delete: 1 }).then(response => {
+        requestWS({ p2p_advert_update: 1, id: this.selected_ad_id, delete: 1 }).then(response => {
             if (response.error) {
                 showError({ error_message: response.error.message });
             } else {

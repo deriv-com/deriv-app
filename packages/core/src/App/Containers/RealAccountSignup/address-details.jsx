@@ -149,7 +149,6 @@ const AddressDetails = ({
                                                                 })}
                                                                 data-lpignore='true'
                                                                 autoComplete='new-password' // prevent chrome autocomplete
-                                                                list_height='85px'
                                                                 type='text'
                                                                 label={localize('State/Province')}
                                                                 list_items={states_list}
@@ -161,6 +160,7 @@ const AddressDetails = ({
                                                                     );
                                                                     setAddressStateToDisplay('');
                                                                 }}
+                                                                list_portal_id='modal_root'
                                                             />
                                                         </DesktopWrapper>
                                                         <MobileWrapper>

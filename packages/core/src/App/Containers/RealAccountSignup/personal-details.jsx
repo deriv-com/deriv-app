@@ -224,6 +224,7 @@ const PersonalDetails = ({
                                                                     );
                                                                 }}
                                                                 {...field}
+                                                                list_portal_id='modal_root'
                                                                 required
                                                             />
                                                         </MobileWrapper>
@@ -251,6 +252,7 @@ const PersonalDetails = ({
                                                                 onItemSelection={({ value, text }) =>
                                                                     setFieldValue('citizen', value ? text : '', true)
                                                                 }
+                                                                list_portal_id='modal_root'
                                                                 required
                                                             />
                                                         </DesktopWrapper>
@@ -316,6 +318,7 @@ const PersonalDetails = ({
                                                                                 true
                                                                             )
                                                                         }
+                                                                        list_portal_id='modal_root'
                                                                     />
                                                                 </DesktopWrapper>
                                                                 <MobileWrapper>
@@ -442,7 +445,6 @@ const PersonalDetails = ({
                                                                     disabled={disabled_items.includes(
                                                                         'account_opening_reason'
                                                                     )}
-                                                                    is_alignment_top
                                                                     is_align_text_left
                                                                     list={account_opening_reason_list}
                                                                     value={values.account_opening_reason}
@@ -453,6 +455,7 @@ const PersonalDetails = ({
                                                                         errors.account_opening_reason
                                                                     }
                                                                     {...field}
+                                                                    list_portal_id='modal_root'
                                                                     required
                                                                 />
                                                             </DesktopWrapper>

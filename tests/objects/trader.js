@@ -1,5 +1,7 @@
+const assert = require('assert').strict;
 const qawolf = require('qawolf');
 const Common = require('./common');
+const {waitForWSSubset} = require('../_utils/websocket');
 
 const RECENT_POSITION_DRAWER_SELECTOR = '#dt_positions_toggle';
 const MARKET_SELECT = '.cq-symbol-select-btn';
@@ -77,6 +79,68 @@ class Trader extends Common {
     async waitForPurchaseBtnEnabled() {
         await this.page.waitForSelector('#dt_purchase_call_button:enabled', { timeout: 120000 });
         await this.page.waitForSelector('#dt_purchase_put_button:enabled', { timeout: 120000 });
+    }
+
+    async assertPurchase(duration, amount, contract_type) {
+        const message = await waitForWSSubset(this.page, {
+            echo_req: {
+                amount,
+                basis: "stake",
+                contract_type,
+                currency: "USD",
+                duration,
+                duration_unit: "t",
+                proposal: 1,
+            },
+        });
+        assert.ok(message, 'No proper proposal was found');
+        assert.ok(message.echo_req.duration === duration, `Duration was not set properly, expected ${duration}, received: ${message.echo_req.duration}`);
+        if (contract_type === 'CALL') {
+            await this.page.click('#dt_purchase_call_price');
+        } else {
+            await this.page.click('#dt_purchase_put_price')
+        }
+        const buy_response = await waitForWSSubset(this.page, {
+            echo_req: {
+                price: "10.00",
+            },
+        });
+        assert.equal(buy_response.buy.buy_price, amount, 'Buy price does not match proposal.');
+    }
+
+    async changeDuration(target) {
+        if (await this.isMobile()) {
+            await this.page.waitForSelector('.mobile-widget__amount');
+            await this.page.click('.mobile-widget__amount');
+            const current_duration = await this.page.$eval('.dc-tick-picker__holder--large', el => el.innerText);
+            const steps = target - current_duration;
+
+            await this.loopOver(steps, async () => {
+                console.log('Iterate:', target, current_duration);
+                if (target > current_duration) {
+                    // eslint-disable-next-line no-await-in-loop
+                    await this.page.waitForSelector('.dc-tabs__content > .trade-params__duration-tickpicker > .dc-tick-picker > .dc-tick-picker__calculation > .dc-btn:nth-child(3)');
+                    await this.page.click('.dc-tabs__content > .trade-params__duration-tickpicker > .dc-tick-picker > .dc-tick-picker__calculation > .dc-btn:nth-child(3)');
+                } else {
+                    // eslint-disable-next-line no-await-in-loop
+                    await this.page.waitForSelector('.dc-tabs__content > .trade-params__duration-tickpicker > .dc-tick-picker > .dc-tick-picker__calculation > .dc-btn:nth-child(1)');
+                    await this.page.click('.dc-tabs__content > .trade-params__duration-tickpicker > .dc-tick-picker > .dc-tick-picker__calculation > .dc-btn:nth-child(1)');
+                }
+            });
+            await this.page.waitForSelector('.dc-tabs__content > .trade-params__duration-tickpicker > .dc-tick-picker > .dc-tick-picker__submit-wrapper > .dc-btn')
+            await this.page.click('.dc-tabs__content > .trade-params__duration-tickpicker > .dc-tick-picker > .dc-tick-picker__submit-wrapper > .dc-btn');
+        }
+    }
+
+    async loopOver(range, func) {
+        const steps = [...Array(Math.abs(range)).keys()];
+
+        for (const step of steps) {
+            // eslint-disable-next-line no-await-in-loop
+            await func();
+            // eslint-disable-next-line no-await-in-loop
+            await this.waitForTimeout(150);
+        }
     }
 }
 

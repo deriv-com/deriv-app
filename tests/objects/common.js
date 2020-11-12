@@ -46,7 +46,9 @@ class Common {
             await this.page.click('.dc-content-expander');
         }
         const account_switcher_virtual = "div.acc-switcher__wrapper.acc-switcher__wrapper--enter-done > div > div.dc-tabs.dc-tabs.dc-tabs--acc-switcher__list-tabs > ul > li:nth-child(2)";
+        await this.page.waitForSelector(account_switcher_virtual);
         await this.page.click(account_switcher_virtual);
+        await this.page.waitForSelector('.acc-switcher__id');
         await this.page.click('.acc-switcher__id');
     }
 

@@ -51,14 +51,17 @@ const Header = ({
     toggleNotifications,
 }) => {
     const toggle_menu_drawer_ref = React.useRef(null);
+    const addUpdateNotification = () => addNotificationMessage(clientNotifications().new_version_available);
+    const removeUpdateNotification = React.useCallback(
+        () => removeNotificationMessage({ key: 'new_version_available' }),
+        [removeNotificationMessage]
+    );
 
     React.useEffect(() => {
         document.addEventListener('IgnorePWAUpdate', removeUpdateNotification);
         return () => document.removeEventListener('IgnorePWAUpdate', removeUpdateNotification);
-    }, []);
+    }, [removeUpdateNotification]);
 
-    const addUpdateNotification = () => addNotificationMessage(clientNotifications().new_version_available);
-    const removeUpdateNotification = () => removeNotificationMessage({ key: 'new_version_available' });
     const onClickDeposit = () => history.push(routes.cashier_deposit);
     const filterPlatformsForClients = payload =>
         payload.filter(config => {

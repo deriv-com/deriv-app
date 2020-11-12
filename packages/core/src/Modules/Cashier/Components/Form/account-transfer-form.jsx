@@ -138,7 +138,9 @@ const AccountTransferForm = ({
         (account.is_mt ? mt_accounts_from : accounts_from).push({
             text,
             value,
-            nativepicker_text: `${account.text} (${account.currency} ${account.balance})`,
+            nativepicker_text: `${account.is_mt ? account.text : getCurrencyName(account.currency)} (${
+                account.balance
+            } ${account.text})`,
         });
         const is_selected_from = account.value === selected_from.value;
         // account from and to cannot be the same
@@ -152,7 +154,9 @@ const AccountTransferForm = ({
                 text,
                 value,
                 disabled: is_disabled,
-                nativepicker_text: `${account.text} (${account.currency} ${account.balance})`,
+                nativepicker_text: `${account.is_mt ? account.text : getCurrencyName(account.currency)} (${
+                    account.balance
+                } ${account.text})`,
             });
         }
     });

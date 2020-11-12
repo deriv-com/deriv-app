@@ -52,10 +52,10 @@ const SetCurrency = ({
     return (
         <div
             className={classNames('set-currency-modal', {
-                'set-currency-modal--disabled': noCryptoAvailable,
+                'set-currency-modal--disabled': noCryptoAvailable(),
             })}
         >
-            {noCryptoAvailable && (
+            {noCryptoAvailable() && (
                 <div className='set-currency-modal--disabled-message'>
                     <p>
                         {localize(

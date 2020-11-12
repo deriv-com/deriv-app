@@ -16,6 +16,7 @@ import {
 import { localize, Localize } from '@deriv/translations';
 import { isDesktop, isMobile, getLocation } from '@deriv/shared';
 import { connect } from 'Stores/connect';
+import { makeCancellablePromise } from '_common/base/cancellable_promise';
 import { splitValidationResultTypes } from 'App/Containers/RealAccountSignup/helpers/utils';
 
 const InputField = props => {
@@ -38,7 +39,6 @@ const InputField = props => {
 };
 
 const AddressDetails = ({
-    fetchStatesList,
     states_list,
     getCurrentStep,
     onSave,
@@ -55,12 +55,15 @@ const AddressDetails = ({
     const [address_state_to_display, setAddressStateToDisplay] = React.useState('');
 
     React.useEffect(() => {
-        const fetchStateList = async () => {
-            await fetchStatesList();
+        const { cancel, promise } = makeCancellablePromise(props.fetchStatesList());
+        Promise.all([promise]).then(() => {
             setHasFetchedStatesList(true);
             setAddressStateToDisplay(getLocation(states_list, props.value.address_state, 'text'));
+        });
+        return () => {
+            setHasFetchedStatesList(false);
+            cancel();
         };
-        fetchStateList();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

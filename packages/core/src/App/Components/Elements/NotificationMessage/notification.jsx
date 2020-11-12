@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, LinearProgress } from '@deriv/components';
+import { Button, LinearProgress, Text } from '@deriv/components';
 import { isEmptyObject, PlatformContext } from '@deriv/shared';
 import CloseButton from './close-button.jsx';
 import NotificationStatusIcons from './notification-status-icons.jsx';
@@ -55,7 +55,7 @@ const Notification = ({ data, removeNotificationMessage }) => {
                                     className={classNames('dc-btn', 'dc-btn--secondary', 'notification__cta-button')}
                                     to={data.action.route}
                                 >
-                                    <span className='dc-btn__text'>{data.action.text}</span>
+                                    <Text size='xxs'>{data.action.text}</Text>
                                 </BinaryLink>
                             ) : (
                                 <Button

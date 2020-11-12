@@ -22,44 +22,45 @@ const Div100vhContainer = ({
     height_offset,
     max_autoheight_offset,
 }) => {
-    const [has_onscreen_android_keyboard, setOnScreenAndroidKeyboard] = React.useState(false);
+    const is_android_device = mobileOSDetect() === 'Android';
+    const [has_keyboard, setHasKeyboard] = React.useState(false);
 
     React.useEffect(() => {
         const onFocus = e => {
             if (e.target.tagName === 'INPUT') {
-                // check if android keyboard is toggled
-                if (document.activeElement === e.target && mobileOSDetect() === 'Android') {
-                    setOnScreenAndroidKeyboard(true);
+                // check if target matches active element
+                if (document.activeElement === e.target) {
+                    setHasKeyboard(true);
                 }
             }
         };
 
         const onFocusOut = () => {
-            setOnScreenAndroidKeyboard(false);
+            setHasKeyboard(false);
         };
 
         document.addEventListener('focus', onFocus, true);
         document.addEventListener('focusout', onFocusOut, false);
-
         return () => {
             document.removeEventListener('focus', onFocus, true);
             document.removeEventListener('focusout', onFocusOut, false);
         };
-    }, [has_onscreen_android_keyboard, setOnScreenAndroidKeyboard]);
+    }, [has_keyboard, setHasKeyboard]);
 
     const height = use100vh();
     const height_rule = height_offset ? `calc(${height}px - ${height_offset})` : `${height}px`;
 
     // height:'100%' should be set for android devices whenever keyboard is toggled due to viewport resizing
-    const height_style = has_onscreen_android_keyboard
-        ? {
-              height: '100%',
-              maxHeight: 'none',
-          }
-        : {
-              height: max_autoheight_offset ? null : height_rule,
-              maxHeight: max_autoheight_offset ? `calc(${height}px - ${max_autoheight_offset})` : null,
-          };
+    const height_style =
+        has_keyboard && is_android_device
+            ? {
+                  height: '100%',
+                  maxHeight: 'none',
+              }
+            : {
+                  height: max_autoheight_offset ? null : height_rule,
+                  maxHeight: max_autoheight_offset ? `calc(${height}px - ${max_autoheight_offset})` : null,
+              };
     if (is_bypassed) return children;
     return (
         <div id={id} className={className} style={is_disabled ? {} : height_style}>

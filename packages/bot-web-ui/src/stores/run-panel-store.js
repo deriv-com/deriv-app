@@ -548,6 +548,7 @@ export default class RunPanelStore {
         observer.register('ui.log.error', this.showErrorMessage);
         observer.register('ui.log.notify', journal.onNotify);
         observer.register('ui.log.success', journal.onLogSuccess);
+        observer.register('client.invalid_token', this.handleInvalidToken);
     }
 
     @action.bound
@@ -562,6 +563,7 @@ export default class RunPanelStore {
         observer.unregisterAll('ui.log.error');
         observer.unregisterAll('ui.log.notify');
         observer.unregisterAll('ui.log.success');
+        observer.unregisterAll('client.invalid_token');
     }
 
     disposeListeners() {
@@ -576,5 +578,12 @@ export default class RunPanelStore {
         if (typeof this.disposeSwitchAccountListener === 'function') {
             this.disposeSwitchAccountListener();
         }
+    }
+
+    @action.bound
+    async handleInvalidToken() {
+        const { client } = this.root_store.core;
+        await client.logout();
+        this.setActiveTabIndex(run_panel.SUMMARY);
     }
 }

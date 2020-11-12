@@ -25,6 +25,7 @@ export const EmploymentStatus = ({
                         onChange={handleChange}
                         handleBlur={handleBlur}
                         error={touched.employment_status && errors.employment_status}
+                        list_portal_id='modal_root'
                         {...field}
                         required
                     />
@@ -73,6 +74,7 @@ export const IncomeSource = ({
                         onChange={handleChange}
                         handleBlur={handleBlur}
                         error={touched.income_source && errors.income_source}
+                        list_portal_id='modal_root'
                         {...field}
                         required
                     />
@@ -121,6 +123,7 @@ export const EmploymentIndustry = ({
                         onChange={handleChange}
                         handleBlur={handleBlur}
                         error={touched.employment_industry && errors.employment_industry}
+                        list_portal_id='modal_root'
                         {...field}
                         required
                     />
@@ -160,6 +163,7 @@ export const Occupation = ({ values, handleChange, handleBlur, touched, errors, 
                         onChange={handleChange}
                         handleBlur={handleBlur}
                         error={touched.occupation && errors.occupation}
+                        list_portal_id='modal_root'
                         {...field}
                         required
                     />
@@ -208,6 +212,7 @@ export const SourceOfWealth = ({
                         onChange={handleChange}
                         handleBlur={handleBlur}
                         error={touched.source_of_wealth && errors.source_of_wealth}
+                        list_portal_id='modal_root'
                         {...field}
                         required
                     />
@@ -256,6 +261,7 @@ export const EducationLevel = ({
                         onChange={handleChange}
                         handleBlur={handleBlur}
                         error={touched.education_level && errors.education_level}
+                        list_portal_id='modal_root'
                         {...field}
                         required
                     />
@@ -296,6 +302,7 @@ export const NetIncome = ({ values, handleChange, handleBlur, touched, errors, s
                         onChange={handleChange}
                         handleBlur={handleBlur}
                         error={touched.net_income && errors.net_income}
+                        list_portal_id='modal_root'
                         {...field}
                         required
                     />
@@ -344,6 +351,7 @@ export const EstimatedWorth = ({
                         onChange={handleChange}
                         handleBlur={handleBlur}
                         error={touched.estimated_worth && errors.estimated_worth}
+                        list_portal_id='modal_root'
                         {...field}
                         required
                     />
@@ -392,6 +400,7 @@ export const AccountTurnover = ({
                         onChange={handleChange}
                         handleBlur={handleBlur}
                         error={touched.account_turnover && errors.account_turnover}
+                        list_portal_id='modal_root'
                         {...field}
                         required
                     />
@@ -440,6 +449,7 @@ export const ForexTradingExperience = ({
                         onChange={handleChange}
                         handleBlur={handleBlur}
                         error={touched.forex_trading_experience && errors.forex_trading_experience}
+                        list_portal_id='modal_root'
                         {...field}
                         required
                     />
@@ -488,6 +498,7 @@ export const ForexTradingFrequency = ({
                         onChange={handleChange}
                         handleBlur={handleBlur}
                         error={touched.forex_trading_frequency && errors.forex_trading_frequency}
+                        list_portal_id='modal_root'
                         {...field}
                         required
                     />
@@ -536,6 +547,7 @@ export const BinaryOptionsTradingExperience = ({
                         onChange={handleChange}
                         handleBlur={handleBlur}
                         error={touched.binary_options_trading_experience && errors.binary_options_trading_experience}
+                        list_portal_id='modal_root'
                         {...field}
                         required
                     />
@@ -584,6 +596,7 @@ export const BinaryOptionsTradingFrequency = ({
                         onChange={handleChange}
                         handleBlur={handleBlur}
                         error={touched.binary_options_trading_frequency && errors.binary_options_trading_frequency}
+                        list_portal_id='modal_root'
                         {...field}
                         required
                     />
@@ -632,6 +645,7 @@ export const CFDTradingExperience = ({
                         onChange={handleChange}
                         handleBlur={handleBlur}
                         error={touched.cfd_trading_experience && errors.cfd_trading_experience}
+                        list_portal_id='modal_root'
                         {...field}
                         required
                     />
@@ -680,6 +694,7 @@ export const CFDTradingFrequency = ({
                         onChange={handleChange}
                         handleBlur={handleBlur}
                         error={touched.cfd_trading_frequency && errors.cfd_trading_frequency}
+                        list_portal_id='modal_root'
                         {...field}
                         required
                     />
@@ -730,6 +745,7 @@ export const OtherInstrumentsTradingExperience = ({
                         error={
                             touched.other_instruments_trading_experience && errors.other_instruments_trading_experience
                         }
+                        list_portal_id='modal_root'
                         {...field}
                         required
                     />
@@ -782,6 +798,7 @@ export const OtherInstrumentsTradingFrequency = ({
                         error={
                             touched.other_instruments_trading_frequency && errors.other_instruments_trading_frequency
                         }
+                        list_portal_id='modal_root'
                         {...field}
                         required
                     />

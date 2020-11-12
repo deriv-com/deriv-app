@@ -54,7 +54,7 @@ const LoadModal = ({
         <Modal
             title={header_text}
             className='load-strategy'
-            width='1092px'
+            width='1000px'
             height='80vh'
             is_open={is_load_modal_open}
             toggleModal={toggleLoadModal}

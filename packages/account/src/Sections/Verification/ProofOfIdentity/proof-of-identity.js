@@ -5,18 +5,19 @@ export const onfido_status_codes = {
     rejected: 'rejected',
     verified: 'verified',
     unsupported: 'unsupported',
+    not_required: 'not_required',
     expired: 'expired',
     suspected: 'suspected',
 };
 
-export const getIdentityStatus = (identity, needs_verification, onfido_unsupported) => {
+export const getIdentityStatus = (identity, needs_verification, onfido_unsupported, is_mlt_mx) => {
     const { status } = identity;
-    const further_resubmissions_allowed = needs_verification?.includes('identity');
+    const submissions_allowed = needs_verification?.includes('identity');
 
     if (onfido_unsupported) return onfido_status_codes.unsupported;
-    if (!further_resubmissions_allowed) {
-        if (status === 'none') {
-            return onfido_status_codes.onfido;
+    if (!submissions_allowed) {
+        if (status === 'none' && is_mlt_mx) {
+            return onfido_status_codes.not_required;
         }
         return onfido_status_codes[status];
     }

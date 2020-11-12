@@ -33,6 +33,17 @@
                 margin-top: 0.8rem;
             }
         }
+        @include tablet {
+            height: calc(80vh - 0.8rem - 4rem - 4.8rem - 5.8rem);
+
+            &--has-footer {
+                height: calc(80vh - 0.8rem - 4rem - 4.8rem - 5.8rem - 7.4rem);
+            }
+            > * {
+                height: 100%;
+                margin-top: 0.8rem;
+            }
+        }
         @include mobile {
             height: 100%;
         }
@@ -285,5 +296,10 @@
         height: 100%;
         width: 100%;
         top: 0px;
+    }
+}
+.dc-modal__container_load-strategy {
+    @include tablet {
+        width: calc(100vw - 4.8rem) !important;
     }
 }

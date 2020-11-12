@@ -942,10 +942,7 @@ $side-padding: 1.2em;
         @include colorIcon(var(--text-disabled));
     }
     &__text {
-        font-size: em(14px);
-        text-align: center;
         line-height: 20px;
-        color: var(--text-disabled);
     }
     .dc-btn {
         width: 100%;

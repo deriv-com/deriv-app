@@ -32,8 +32,8 @@ const Text = ({ children, size, color, align, weight, line_height, as, className
 };
 
 Text.propTypes = {
-    line_height: PropTypes.string.required,
-    size: PropTypes.string.required,
+    line_height: PropTypes.string,
+    size: PropTypes.string,
 };
 
 export default Text;

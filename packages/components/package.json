@@ -67,7 +67,7 @@
     "prop-types": "^15.7.2",
     "react": "~16.8.6",
     "react-content-loader": "^5.1.0",
-    "react-div-100vh": "^0.3.8",
+    "react-div-100vh": "^0.5.6",
     "react-dom": "~16.8.6",
     "react-drag-drawer": "^3.3.4",
     "react-dropzone": "^9.0.0",

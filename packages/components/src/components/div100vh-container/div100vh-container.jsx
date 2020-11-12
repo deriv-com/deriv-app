@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
+import { mobileOSDetect } from '@deriv/shared';
 import React from 'react';
-import Div100vh from 'react-div-100vh';
+import { use100vh } from 'react-div-100vh';
 
 /* Div100vh is workaround for getting accurate height of 100vh from browsers on mobile,
     because using normal css vh is not returning correct screen height */
@@ -21,16 +22,49 @@ const Div100vhContainer = ({
     height_offset,
     max_autoheight_offset,
 }) => {
-    const height_rule = height_offset ? `calc(100rvh - ${height_offset})` : 'calc(100rvh)';
-    const height_style = {
-        height: max_autoheight_offset ? null : height_rule,
-        maxHeight: max_autoheight_offset ? `calc(100rvh - ${max_autoheight_offset})` : null,
-    };
+    const [has_onscreen_android_keyboard, setOnScreenAndroidKeyboard] = React.useState(false);
+
+    React.useEffect(() => {
+        const onFocus = e => {
+            if (e.target.tagName === 'INPUT') {
+                // check if android keyboard is toggled
+                if (document.activeElement === e.target && mobileOSDetect() === 'Android') {
+                    setOnScreenAndroidKeyboard(true);
+                }
+            }
+        };
+
+        const onFocusOut = () => {
+            setOnScreenAndroidKeyboard(false);
+        };
+
+        document.addEventListener('focus', onFocus, true);
+        document.addEventListener('focusout', onFocusOut, false);
+
+        return () => {
+            document.removeEventListener('focus', onFocus, true);
+            document.removeEventListener('focusout', onFocusOut, false);
+        };
+    }, [has_onscreen_android_keyboard, setOnScreenAndroidKeyboard]);
+
+    const height = use100vh();
+    const height_rule = height_offset ? `calc(${height}px - ${height_offset})` : `${height}px`;
+
+    // height:'100%' should be set for android devices whenever keyboard is toggled due to viewport resizing
+    const height_style = has_onscreen_android_keyboard
+        ? {
+              height: '100%',
+              maxHeight: 'none',
+          }
+        : {
+              height: max_autoheight_offset ? null : height_rule,
+              maxHeight: max_autoheight_offset ? `calc(${height}px - ${max_autoheight_offset})` : null,
+          };
     if (is_bypassed) return children;
     return (
-        <Div100vh id={id} className={className} style={is_disabled ? {} : height_style}>
+        <div id={id} className={className} style={is_disabled ? {} : height_style}>
             {children}
-        </Div100vh>
+        </div>
     );
 };
 

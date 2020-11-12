@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { DesktopWrapper, MobileWrapper } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isEnded, isDigitContract } from '@deriv/shared';
 import { connect } from 'Stores/connect';
@@ -17,9 +17,9 @@ const TradeInfo = ({ markers_array, granularity }) => {
     const { contract_type, tick_stream, tick_count } = latest_tick_contract.contract_info;
     const current_tick = isDigitContract(contract_type) ? tick_stream.length : Math.max(tick_stream.length - 1, 0);
     return (
-        <span className='recent-trade-info'>
+        <Text weight='bold' className='recent-trade-info'>
             {localize('Tick')} {current_tick}/{tick_count}
-        </span>
+        </Text>
     );
 };
 

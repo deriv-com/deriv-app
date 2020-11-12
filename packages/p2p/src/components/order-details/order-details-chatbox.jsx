@@ -8,9 +8,8 @@ import { getShortNickname, generateHexColourFromNickname } from 'Utils/string';
 import { useStores } from 'Stores';
 import 'sendbird-uikit/dist/index.css';
 
-const OrderDetailsChatbox = observer(({ token, app_id, user_id }) => {
-    const { general_store, order_store } = useStores();
-    const { chat_channel_url, other_user_details } = order_store.order_information;
+const OrderDetailsChatbox = observer(({ token, app_id, channel_url, nickname, user_id }) => {
+    const { general_store } = useStores();
 
     const [is_loading, setIsLoading] = React.useState(true);
     const isMounted = useIsMounted();
@@ -23,14 +22,14 @@ const OrderDetailsChatbox = observer(({ token, app_id, user_id }) => {
 
             if (el_chat_title) {
                 if (/^Chat about order [0-9]+$/.test(el_chat_title.innerText)) {
-                    const short_name = getShortNickname(other_user_details.name);
+                    const short_name = getShortNickname(nickname);
                     const el_chat_header_avatar = document.createElement('div');
 
-                    el_chat_title.innerText = other_user_details.name;
+                    el_chat_title.innerText = nickname;
 
                     el_chat_header_avatar.innerText = short_name;
                     el_chat_avatar.appendChild(el_chat_header_avatar);
-                    el_chat_avatar.style.backgroundColor = generateHexColourFromNickname(other_user_details.name);
+                    el_chat_avatar.style.backgroundColor = generateHexColourFromNickname(nickname);
                     el_chat_header_avatar.className = 'sendbird-avatar-text';
 
                     el_sendbird_conversation.setAttribute('style', 'display: flex;');
@@ -103,7 +102,7 @@ const OrderDetailsChatbox = observer(({ token, app_id, user_id }) => {
                 accessToken={token}
                 theme={general_store.props.is_dark_mode_on ? 'dark' : 'light'}
             >
-                <Channel channelUrl={chat_channel_url} />
+                <Channel channelUrl={channel_url} />
             </SendBirdProvider>
         </div>
     );

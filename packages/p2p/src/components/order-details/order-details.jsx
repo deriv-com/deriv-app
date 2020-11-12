@@ -118,7 +118,13 @@ const OrderDetails = observer(() => {
                     </ThemedScrollbars>
                     {should_show_order_footer && <OrderDetailsFooter cancelPopup={order_details_store.onCancelClick} />}
                 </div>
-                {order_details_store.chat_channel_url && <OrderDetailsChatbox {...general_store.chat_info} />}
+                {order_details_store.chat_channel_url && (
+                    <OrderDetailsChatbox
+                        {...general_store.chat_info}
+                        channel_url={order_details_store.chat_channel_url}
+                        nickname={other_user_details.name}
+                    />
+                )}
                 <Popup
                     {...order_details_store.popup_options}
                     onCancel={order_details_store.onCancelClick}

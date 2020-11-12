@@ -7,12 +7,12 @@ import { localize, Localize } from '@deriv/translations';
 const NotificationBanner = ({ onClick, header, message, button_text, img_src, img_alt, redirect_link }) => (
     <div className='notification-banner'>
         <div className='notification-banner--left'>
-            <div className='notification-banner__title'>
+            <h4 className='notification-banner__title'>
                 <Localize i18n_default_text={header} />
-            </div>
-            <div className='notification-banner__description'>
+            </h4>
+            <p className='notification-banner__description'>
                 <Localize i18n_default_text={message} />
-            </div>
+            </p>
             <StaticUrl href={redirect_link}>
                 <Button className='notification-banner__btn' secondary onClick={onClick}>
                     {localize(button_text)}

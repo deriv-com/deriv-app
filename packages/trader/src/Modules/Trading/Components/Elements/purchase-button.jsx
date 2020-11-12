@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { DesktopWrapper, MobileWrapper, Money, IconTradeTypes } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, Money, IconTradeTypes, Text } from '@deriv/components';
 import { getContractTypeDisplay } from 'Constants/contract';
 import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
 
@@ -9,9 +9,9 @@ import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info
 const ButtonTextWrapper = ({ should_fade, is_loading, type, is_high_low }) => {
     return (
         <div className='btn-purchase__text_wrapper'>
-            <span className='btn-purchase__text'>
+            <Text size='xs' weight='bold' className='btn-purchase__text'>
                 {!should_fade && is_loading ? '' : getContractTypeDisplay(type, is_high_low)}
-            </span>
+            </Text>
         </div>
     );
 };
@@ -81,13 +81,13 @@ const PurchaseButton = ({
                 <div className='btn-purchase__info btn-purchase__info--right'>
                     <div className='btn-purchase__text_wrapper'>
                         {is_multiplier ? (
-                            <span className='btn-purchase__text'>
+                            <Text size='xs' weight='bold' className='btn-purchase__text'>
                                 <Money amount={info.stake} currency={currency} show_currency />
-                            </span>
+                            </Text>
                         ) : (
-                            <span className='btn-purchase__text'>
+                            <Text size='xs' weight='bold' className='btn-purchase__text'>
                                 {!(is_loading || is_disabled) ? info.returns : ''}
-                            </span>
+                            </Text>
                         )}
                     </div>
                 </div>

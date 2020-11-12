@@ -84,7 +84,7 @@
         }
     }
     &__text {
-        @include typeface(--paragraph-left-bold-active);
+        color: var(--general-active);
     }
     &__info {
         color: var(--text-colored-background);

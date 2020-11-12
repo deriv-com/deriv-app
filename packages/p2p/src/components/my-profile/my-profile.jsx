@@ -95,10 +95,10 @@ const MyProfile = observer(() => {
                         <Table.Row className='my-profile__stats'>
                             <div className='my-profile__stats-cell-separator' />
                             <Table.Cell className='my-profile__stats-cell'>
-                                <Text size={isMobile() ? 'xxxs' : 'xs'} color='less-prominent' lineHeight='m' as='p'>
+                                <Text size={isMobile() ? 'xxxs' : 'xs'} color='less-prominent' line_height='m' as='p'>
                                     {localize('Total orders')}
                                 </Text>
-                                <Text color='prominent' weight='bold' lineHeight='l' as='p'>
+                                <Text color='prominent' weight='bold' line_height='l' as='p'>
                                     {total_orders_count || '-'}
                                 </Text>
                             </Table.Cell>
@@ -108,14 +108,14 @@ const MyProfile = observer(() => {
                                     <Text
                                         size={isMobile() ? 'xxxs' : 'xs'}
                                         color='less-prominent'
-                                        lineHeight='m'
+                                        line_height='m'
                                         as='p'
                                     >
                                         {localize('Buy / Sell ({{currency}})', {
                                             currency: general_store.client.currency,
                                         })}
                                     </Text>
-                                    <Text color='prominent' weight='bold' lineHeight='l' as='p'>
+                                    <Text color='prominent' weight='bold' line_height='l' as='p'>
                                         {buy_orders_count || '-'}/{sell_orders_count || '-'}
                                     </Text>
                                 </Table.Cell>
@@ -125,14 +125,14 @@ const MyProfile = observer(() => {
                                         <Text
                                             size={isMobile() ? 'xxxs' : 'xs'}
                                             color='less-prominent'
-                                            lineHeight='m'
+                                            line_height='m'
                                             as='p'
                                         >
                                             {localize('Buy ({{currency}})', {
                                                 currency: general_store.client.currency,
                                             })}
                                         </Text>
-                                        <Text color='prominent' weight='bold' lineHeight='l' as='p'>
+                                        <Text color='prominent' weight='bold' line_height='l' as='p'>
                                             {buy_orders_count || '-'}
                                         </Text>
                                     </Table.Cell>
@@ -141,14 +141,14 @@ const MyProfile = observer(() => {
                                         <Text
                                             size={isMobile() ? 'xxxs' : 'xs'}
                                             color='less-prominent'
-                                            lineHeight='m'
+                                            line_height='m'
                                             as='p'
                                         >
                                             {localize('Sell ({{currency}})', {
                                                 currency: general_store.client.currency,
                                             })}
                                         </Text>
-                                        <Text color='prominent' weight='bold' lineHeight='l' as='p'>
+                                        <Text color='prominent' weight='bold' line_height='l' as='p'>
                                             {sell_orders_count || '-'}
                                         </Text>
                                     </Table.Cell>
@@ -156,12 +156,12 @@ const MyProfile = observer(() => {
                             )}
                             <div className='my-profile__stats-cell-separator' />
                             <Table.Cell className='my-profile__stats-cell'>
-                                <Text size={isMobile() ? 'xxxs' : 'xs'} color='less-prominent' lineHeight='m' as='p'>
+                                <Text size={isMobile() ? 'xxxs' : 'xs'} color='less-prominent' line_height='m' as='p'>
                                     {localize('Buy / Sell limit ({{currency}})', {
                                         currency: general_store.client.currency,
                                     })}
                                 </Text>
-                                <Text color='prominent' weight='bold' lineHeight='l' as='p'>
+                                <Text color='prominent' weight='bold' line_height='l' as='p'>
                                     {daily_buy_limit && daily_sell_limit
                                         ? `${Math.floor(daily_buy_limit)} / ${Math.floor(daily_sell_limit)}`
                                         : '-'}

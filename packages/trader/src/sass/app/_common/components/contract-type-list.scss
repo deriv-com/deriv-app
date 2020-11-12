@@ -40,8 +40,6 @@
         }
     }
     &__title {
-        @include typeface(--paragraph-left-normal-black);
-        color: var(--text-general);
         padding-left: 1.6rem;
     }
     &__icon {

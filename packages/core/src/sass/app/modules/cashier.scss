@@ -1101,8 +1101,6 @@
         line-height: 1.43;
     }
     &__currency {
-        font-size: 1.2rem;
-
         &-icon {
             align-self: center;
         }
@@ -1114,9 +1112,6 @@
             margin-left: 8px;
             margin-right: 8px;
         }
-    }
-    &__loginid {
-        @include typeface(--xsmall-left-normal-grey);
     }
     &__balance {
         margin-left: auto;

@@ -167,7 +167,6 @@ class AddressDetails extends React.Component {
                                                                     })}
                                                                     data-lpignore='true'
                                                                     autoComplete='new-password' // prevent chrome autocomplete
-                                                                    list_height='85px'
                                                                     type='text'
                                                                     label={localize('State/Province')}
                                                                     list_items={this.props.states_list}
@@ -181,6 +180,7 @@ class AddressDetails extends React.Component {
                                                                             address_state_to_display: '',
                                                                         });
                                                                     }}
+                                                                    list_portal_id='modal_root'
                                                                 />
                                                             </DesktopWrapper>
                                                             <MobileWrapper>

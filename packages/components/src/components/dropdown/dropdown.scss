@@ -201,6 +201,14 @@
                 opacity: 1;
             }
         }
+        &--portal {
+            height: auto;
+            margin: 0.4rem 0;
+
+            .dc-list {
+                position: static;
+            }
+        }
     }
     &--left {
         .dc-dropdown__display {

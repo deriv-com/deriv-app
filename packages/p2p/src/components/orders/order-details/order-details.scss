@@ -418,10 +418,16 @@
             display: inline;
 
             .dc-radio-group__item {
+                padding: 1.6rem 0;
                 border-bottom: 1px solid var(--general-section-1);
                 margin-right: 0;
+                max-height: 5.8rem;
+                line-height: 2rem;
+                font-size: 1.4rem;
 
                 .dc-radio-group__circle {
+                    align-self: start;
+                    margin-top: 0.3rem;
                     border: 2px solid var(--text-less-prominent);
                     transition: all 0.1s ease-in-out;
 
@@ -431,7 +437,6 @@
                 }
 
                 .dc-radio-group__label {
-                    padding: 1.6rem 0;
                     width: 90%;
                 }
             }

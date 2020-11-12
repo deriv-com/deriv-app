@@ -56,7 +56,7 @@ const AddressDetails = ({
 
     React.useEffect(() => {
         const { cancel, promise } = makeCancellablePromise(props.fetchStatesList());
-        Promise.all([promise]).then(() => {
+        promise.then(() => {
             setHasFetchedStatesList(true);
             setAddressStateToDisplay(getLocation(states_list, props.value.address_state, 'text'));
         });

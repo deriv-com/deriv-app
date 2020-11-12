@@ -111,6 +111,10 @@ const FormWithoutConfirmation = observer(
         const [api_error_message, setApiErrorMessage] = React.useState(null);
         const { general_store } = useStores();
 
+        React.useEffect(() => {
+            setApiErrorMessage(null);
+        }, [should_show_popup]);
+
         return (
             <Modal
                 className={className}

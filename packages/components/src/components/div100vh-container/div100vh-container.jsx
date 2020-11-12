@@ -27,7 +27,7 @@ const Div100vhContainer = ({
 
     React.useEffect(() => {
         const onFocus = e => {
-            if (e.target.tagName === 'INPUT') {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
                 // check if target matches active element
                 if (document.activeElement === e.target) {
                     setHasKeyboard(true);

@@ -76,7 +76,7 @@ class AddCryptoCurrency extends React.Component {
                                 <RadioButtonGroup
                                     id='fiat_currency'
                                     is_fiat
-                                    className='currency-selector__radio-group'
+                                    className='currency-selector__radio-group with-margin'
                                     value={values.currency}
                                     error={errors.currency}
                                     touched={touched.currency}

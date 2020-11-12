@@ -114,9 +114,7 @@ class Trader extends Common {
             await this.page.click('.mobile-widget__amount');
             const current_duration = await this.page.$eval('.dc-tick-picker__holder--large', el => el.innerText);
             const steps = target - current_duration;
-
             await this.loopOver(steps, async () => {
-                console.log('Iterate:', target, current_duration);
                 if (target > current_duration) {
                     // eslint-disable-next-line no-await-in-loop
                     await this.page.waitForSelector('.dc-tabs__content > .trade-params__duration-tickpicker > .dc-tick-picker > .dc-tick-picker__calculation > .dc-btn:nth-child(3)');
@@ -129,6 +127,10 @@ class Trader extends Common {
             });
             await this.page.waitForSelector('.dc-tabs__content > .trade-params__duration-tickpicker > .dc-tick-picker > .dc-tick-picker__submit-wrapper > .dc-btn')
             await this.page.click('.dc-tabs__content > .trade-params__duration-tickpicker > .dc-tick-picker > .dc-tick-picker__submit-wrapper > .dc-btn');
+        } else {
+            await this.page.waitForSelector('.trade-container__input range-slider__track');
+            await this.page.waitForSelector(`[data-qa=${target}]`);
+            await this.page.click(`[data-qa=${target}]`);
         }
     }
 

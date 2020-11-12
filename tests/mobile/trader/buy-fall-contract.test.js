@@ -29,7 +29,6 @@ afterEach(async () => {
 
 test('[mobile] trader/buy-fall-contract-default-duration', async () => {
     await page.waitForSelector('#dt_purchase_put_price');
-    await page.assertPurchase(5, 10, 'CALL');
     await page.assertPurchase(5, 10, 'PUT');
 });
 

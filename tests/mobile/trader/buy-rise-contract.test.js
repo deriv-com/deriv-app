@@ -27,145 +27,21 @@ afterEach(async () => {
     await tearDown(browser);
 });
 
-test("[mobile] trader/buy-rise-contract", async () => {
-    const message = await waitForWSSubset(page, {
-        echo_req: {
-            amount: 10,
-            basis: "stake",
-            contract_type: "CALL",
-            currency: "USD",
-            duration: 5,
-            duration_unit: "t",
-            proposal: 1,
-        },
-    });
-    assert.ok(message, 'No proper proposal was found');
-    assert.ok(message.echo_req.duration === 5, `Duration was not set properly, expected 5, received: ${  message.echo_req.duration}`);
-    await page.click('#dt_purchase_call_price');
-    const buy_response = await waitForWSSubset(page, {
-        echo_req: {
-            price: "10.00",
-        },
-    });
-    assert.equal(buy_response.buy.buy_price, 10, 'Buy price does not match proposal.');
+test('[mobile] trader/buy-rise-contract-default-duration', async () => {
+    await page.waitForSelector('#dt_purchase_call_price');
+    await page.assertPurchase(5, 10, 'CALL');
 });
-test('[mobile] trader/buy-rise-contract-min-duration', async () => {
-    await page.waitForSelector('.mobile-wrapper > .dc-collapsible > .dc-collapsible__content > .mobile-widget__wrapper > .mobile-widget')
-    await page.click('.mobile-wrapper > .dc-collapsible > .dc-collapsible__content > .mobile-widget__wrapper > .mobile-widget')
 
-    const REDUCE_DURATION_BUTTON_SELECTOR = '.dc-tabs__content > .trade-params__duration-tickpicker > .dc-tick-picker > .dc-tick-picker__calculation > .dc-btn:nth-child(1)';
-
-    await page.waitForSelector(REDUCE_DURATION_BUTTON_SELECTOR)
-    await page.click(REDUCE_DURATION_BUTTON_SELECTOR)
-
-    await page.waitForSelector(REDUCE_DURATION_BUTTON_SELECTOR)
-    await page.click(REDUCE_DURATION_BUTTON_SELECTOR)
-
-    await page.waitForSelector(REDUCE_DURATION_BUTTON_SELECTOR)
-    await page.click(REDUCE_DURATION_BUTTON_SELECTOR)
-
-    await page.waitForSelector(REDUCE_DURATION_BUTTON_SELECTOR)
-    await page.click(REDUCE_DURATION_BUTTON_SELECTOR)
-
-    await page.waitForSelector(REDUCE_DURATION_BUTTON_SELECTOR)
-    await page.click(REDUCE_DURATION_BUTTON_SELECTOR)
-
-    await page.waitForSelector(REDUCE_DURATION_BUTTON_SELECTOR)
-    await page.click(REDUCE_DURATION_BUTTON_SELECTOR)
-
-    await page.waitForSelector(REDUCE_DURATION_BUTTON_SELECTOR)
-    await page.click(REDUCE_DURATION_BUTTON_SELECTOR)
-
-    await page.waitForSelector(REDUCE_DURATION_BUTTON_SELECTOR)
-    await page.click(REDUCE_DURATION_BUTTON_SELECTOR)
-
-    await page.waitForSelector(REDUCE_DURATION_BUTTON_SELECTOR)
-    await page.click(REDUCE_DURATION_BUTTON_SELECTOR)
-
-    await page.waitForSelector('.dc-tabs__content > .trade-params__duration-tickpicker > .dc-tick-picker > .dc-tick-picker__submit-wrapper > .dc-btn')
-    await page.click('.dc-tabs__content > .trade-params__duration-tickpicker > .dc-tick-picker > .dc-tick-picker__submit-wrapper > .dc-btn');
-
-    await page.waitForSelector('#dt_purchase_call_price')
-    const message = await waitForWSSubset(page, {
-        echo_req: {
-            amount: 10,
-            basis: "stake",
-            contract_type: "CALL",
-            currency: "USD",
-            duration: 1,
-            duration_unit: "t",
-            proposal: 1,
-        },
-    });
-    assert.ok(message, 'No proper proposal was found');
-    assert.ok(message.echo_req.duration === 1, `Duration was not set properly, expected 1, received: ${  message.echo_req.duration}`);
-    await page.click('#dt_purchase_call_price');
-    const buy_response = await waitForWSSubset(page, {
-        echo_req: {
-            price: "10.00",
-        },
-    });
-    assert.equal(buy_response.buy.buy_price, 10, 'Buy price does not match proposal.');
-
+test('[mobile] trader/buy-rise-contract-min-duration', async () =>  {
+    await page.changeDuration(1);
+    await page.assertPurchase(1, 10, 'CALL');
 });
+
 test('[mobile] trader/buy-rise-contract-max-duration', async () => {
-    await page.waitForSelector('.mobile-wrapper > .dc-collapsible > .dc-collapsible__content > .mobile-widget__wrapper > .mobile-widget')
-    await page.click('.mobile-wrapper > .dc-collapsible > .dc-collapsible__content > .mobile-widget__wrapper > .mobile-widget')
-
-    const INCREASE_DURATION_BUTTON_SELECTOR = '.dc-tabs__content > .trade-params__duration-tickpicker > .dc-tick-picker > .dc-tick-picker__calculation > .dc-btn:nth-child(3)';
-
-    await page.waitForSelector(INCREASE_DURATION_BUTTON_SELECTOR)
-    await page.click(INCREASE_DURATION_BUTTON_SELECTOR)
-
-    await page.waitForSelector(INCREASE_DURATION_BUTTON_SELECTOR)
-    await page.click(INCREASE_DURATION_BUTTON_SELECTOR)
-
-    await page.waitForSelector(INCREASE_DURATION_BUTTON_SELECTOR)
-    await page.click(INCREASE_DURATION_BUTTON_SELECTOR)
-
-    await page.waitForSelector(INCREASE_DURATION_BUTTON_SELECTOR)
-    await page.click(INCREASE_DURATION_BUTTON_SELECTOR)
-
-    await page.waitForSelector(INCREASE_DURATION_BUTTON_SELECTOR)
-    await page.click(INCREASE_DURATION_BUTTON_SELECTOR)
-
-    await page.waitForSelector(INCREASE_DURATION_BUTTON_SELECTOR)
-    await page.click(INCREASE_DURATION_BUTTON_SELECTOR)
-
-    await page.waitForSelector(INCREASE_DURATION_BUTTON_SELECTOR)
-    await page.click(INCREASE_DURATION_BUTTON_SELECTOR)
-
-    await page.waitForSelector(INCREASE_DURATION_BUTTON_SELECTOR)
-    await page.click(INCREASE_DURATION_BUTTON_SELECTOR)
-
-    await page.waitForSelector(INCREASE_DURATION_BUTTON_SELECTOR)
-    await page.click(INCREASE_DURATION_BUTTON_SELECTOR)
-
-    await page.waitForSelector('.dc-tabs__content > .trade-params__duration-tickpicker > .dc-tick-picker > .dc-tick-picker__submit-wrapper > .dc-btn')
-    await page.click('.dc-tabs__content > .trade-params__duration-tickpicker > .dc-tick-picker > .dc-tick-picker__submit-wrapper > .dc-btn');
-
-    await page.waitForSelector('#dt_purchase_call_price')
-    const message = await waitForWSSubset(page, {
-        echo_req: {
-            amount: 10,
-            basis: "stake",
-            contract_type: "CALL",
-            currency: "USD",
-            duration: 10,
-            duration_unit: "t",
-            proposal: 1,
-        },
-    });
-    assert.ok(message, 'No proper proposal was found');
-    assert.ok(message.echo_req.duration === 10, `Duration was not set properly, expected 5, received: ${  message.echo_req.duration}`);
-    await page.click('#dt_purchase_call_price');
-    const buy_response = await waitForWSSubset(page, {
-        echo_req: {
-            price: "10.00",
-        },
-    });
-    assert.equal(buy_response.buy.buy_price, 10, 'Buy price does not match proposal.');
+    await page.changeDuration(10);
+    await page.assertPurchase(10, 10, 'CALL');
 });
+
 
 async function preBuy() {
     await page.goto(process.env.HOME_URL, {waitUntil: "domcontentloaded"});

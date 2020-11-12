@@ -20,7 +20,7 @@ const OrderDetails = observer(() => {
         account_currency,
         advert_details,
         amount_display,
-        chat_channel_url: order_channel_url,
+        chat_channel_url,
         contact_info,
         has_timer_expired,
         id,
@@ -41,9 +41,7 @@ const OrderDetails = observer(() => {
     } = order_store.order_information;
 
     React.useEffect(() => {
-        if (order_channel_url) {
-            order_details_store.setChatChannelUrl(order_channel_url);
-        }
+        order_details_store.setChatChannelUrl(chat_channel_url);
         order_details_store.createChatForNewOrder(id);
     }, []);
 
@@ -121,7 +119,7 @@ const OrderDetails = observer(() => {
                 {order_details_store.chat_channel_url && (
                     <OrderDetailsChatbox
                         {...general_store.chat_info}
-                        channel_url={order_details_store.chat_channel_url}
+                        channel_url={chat_channel_url}
                         nickname={other_user_details.name}
                     />
                 )}

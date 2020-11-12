@@ -1,3 +1,4 @@
+import React from 'react';
 import { action, computed, observable, runInAction } from 'mobx';
 import { epochToMoment, getSocketURL, isEmptyObject, mobileOSDetect, routes } from '@deriv/shared';
 import { localize, Localize } from 'Components/i18next';

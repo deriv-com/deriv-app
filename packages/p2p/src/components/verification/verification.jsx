@@ -30,7 +30,7 @@ const Verification = observer(() => {
                     </p>
                 </div>
             </div>
-            <Checklist className='p2p-verification__checklist' items={general_store.verification_checklist()} />
+            <Checklist className='p2p-verification__checklist' items={general_store.getVerificationChecklist()} />
         </div>
     );
 });

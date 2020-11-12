@@ -1,5 +1,6 @@
+/* eslint-disable max-classes-per-file */
 import React from 'react';
-import { action, computed, observable, toJS, reaction } from 'mobx';
+import { action, computed, observable, toJS } from 'mobx';
 import {
     routes,
     isCryptocurrency,
@@ -270,13 +271,6 @@ export default class CashierStore extends BaseStore {
         const current_container = this.active_container;
         this.onRemount = this.onMount;
         await this.onMountCommon();
-
-        reaction(
-            () => [this.root_store.client.is_tnc_needed],
-            () => {
-                this.onMount();
-            }
-        );
 
         if (this.containers.indexOf(this.active_container) === -1 && !this.root_store.client.is_switching) {
             throw new Error('Cashier Store onMount requires a valid container name.');
@@ -1174,6 +1168,7 @@ export default class CashierStore extends BaseStore {
             return null;
         }
 
+        this.setLoading(true);
         this.setErrorMessage('');
         const currency = this.config.account_transfer.selected_from.currency;
         const transfer_between_accounts = await WS.authorized.transferBetweenAccounts(
@@ -1214,6 +1209,7 @@ export default class CashierStore extends BaseStore {
             this.setIsTransferConfirm(false);
             this.setIsTransferSuccessful(true);
         }
+        this.setLoading(false);
         return transfer_between_accounts;
     };
 

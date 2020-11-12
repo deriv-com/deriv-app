@@ -85,7 +85,6 @@
     @include mobile {
         & .dc-select-native {
             &__placeholder {
-                top: 1.2rem;
                 background-color: var(--general-main-2);
             }
         }

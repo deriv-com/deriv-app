@@ -62,6 +62,7 @@ export { default as MobileWrapper } from './components/mobile-wrapper';
 export { default as Modal } from './components/modal';
 export { default as Money } from './components/money';
 export { default as MultiStep } from './components/multi-step';
+export { default as NewsTicker } from './components/news-ticker';
 export { default as Numpad } from './components/numpad';
 export { default as PageError } from './components/page-error';
 export { default as PageOverlay } from './components/page-overlay';

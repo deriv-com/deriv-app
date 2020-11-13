@@ -174,13 +174,15 @@ class ContractDrawer extends React.Component {
                     <div className='contract-drawer__body' ref={this.contract_drawer_card_ref}>
                         {body_content}
                     </div>
-                    <MobileWrapper>
-                        <div id='dt_contract_drawer_audit'>
-                            <SwipeableContractAudit is_multiplier={is_multiplier}>
-                                {contract_audit}
-                            </SwipeableContractAudit>
-                        </div>
-                    </MobileWrapper>
+                    {this.state.should_show_contract_audit && (
+                        <MobileWrapper>
+                            <div id='dt_contract_drawer_audit'>
+                                <SwipeableContractAudit is_multiplier={is_multiplier}>
+                                    {contract_audit}
+                                </SwipeableContractAudit>
+                            </div>
+                        </MobileWrapper>
+                    )}
                 </div>
             </CSSTransition>
         );

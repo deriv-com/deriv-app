@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
-import { Dropdown, Loading, Icon, Input, Button, ThemedScrollbars } from '@deriv/components';
+import { Dropdown, Loading, Modal, Input, Button, ThemedScrollbars } from '@deriv/components';
 import { getDecimalPlaces, useIsMounted } from '@deriv/shared';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { localize } from 'Components/i18next';
@@ -22,6 +22,7 @@ const FormAds = ({ handleShowForm }) => {
 
     React.useEffect(() => {
         getAdvertiserInfo();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const getAdvertiserInfo = () => {
@@ -439,10 +440,24 @@ const FormAds = ({ handleShowForm }) => {
                                     </Field>
                                     <div className='p2p-my-ads__form-container p2p-my-ads__form-footer'>
                                         {error_message && (
-                                            <div className='p2p-my-ads__form-error'>
-                                                <Icon icon='IcAlertDanger' />
-                                                <div>{error_message}</div>
-                                            </div>
+                                            <Modal
+                                                is_open={!!error_message}
+                                                small
+                                                has_close_icon={false}
+                                                title={localize('Oops, something went wrong.')}
+                                            >
+                                                <Modal.Body>{error_message}</Modal.Body>
+                                                <Modal.Footer>
+                                                    <Button
+                                                        className={'p2p-my-ads__modal-button'}
+                                                        has_effect
+                                                        text={localize('Ok')}
+                                                        onClick={() => setErrorMessage('')}
+                                                        primary
+                                                        large
+                                                    />
+                                                </Modal.Footer>
+                                            </Modal>
                                         )}
                                         <Button
                                             className='p2p-my-ads__form-button'

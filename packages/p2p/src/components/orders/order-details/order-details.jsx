@@ -1,12 +1,11 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, ThemedScrollbars } from '@deriv/components';
-import { getFormattedText, isMobile } from '@deriv/shared';
+import { ThemedScrollbars } from '@deriv/components';
+import { getFormattedText } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
 import Chat from 'Components/orders/chat/chat.jsx';
-import PageReturn from 'Components/page-return/page-return.jsx';
 import OrderDetailsFooter from 'Components/orders/order-details/order-details-footer.jsx';
 import OrderDetailsTimer from 'Components/orders/order-details/order-details-timer.jsx';
 import OrderInfoBlock from 'Components/orders/order-details/order-info-block.jsx';
@@ -73,30 +72,13 @@ const OrderDetails = observer(({ onPageReturn }) => {
         }
     }, [id, order_channel_url, setChatChannelUrl]);
 
-    if (sendbird_store.should_show_chat_modal) {
-        return <Chat />;
-    }
+    const page_title =
+        (is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad)
+            ? localize('Buy {{offered_currency}} order', { offered_currency: account_currency })
+            : localize('Sell {{offered_currency}} order', { offered_currency: account_currency });
 
     return (
-        <OrderDetailsWrapper>
-            <PageReturn
-                onClick={onPageReturn}
-                page_title={
-                    (is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad)
-                        ? localize('Buy {{offered_currency}} order', { offered_currency: account_currency })
-                        : localize('Sell {{offered_currency}} order', { offered_currency: account_currency })
-                }
-                trailing_icon={
-                    isMobile() ? (
-                        <Icon
-                            icon='IcChat'
-                            height={15}
-                            width={16}
-                            onClick={() => sendbird_store.setShouldShowChatModal(true)}
-                        />
-                    ) : undefined
-                }
-            />
+        <OrderDetailsWrapper page_title={page_title} onPageReturn={onPageReturn}>
             <div className='order-details'>
                 <div className='order-details-card'>
                     <div className='order-details-card__header'>
@@ -165,7 +147,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
                         <OrderDetailsFooter order_information={general_store.order_information} />
                     )}
                 </div>
-                {!isMobile() && chat_channel_url && <Chat />}
+                {chat_channel_url && <Chat />}
             </div>
         </OrderDetailsWrapper>
     );
@@ -174,6 +156,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
 OrderDetails.propTypes = {
     chat_channel_url: PropTypes.string,
     order_information: PropTypes.object,
+    onPageReturn: PropTypes.func,
     setChatChannelUrl: PropTypes.func,
 };
 

@@ -13,7 +13,7 @@ import 'Components/orders/chat/chat.scss';
 const Chat = observer(() => {
     const { sendbird_store } = useStores();
 
-    if (sendbird_store.is_chat_loading) {
+    if (sendbird_store.is_chat_loading && sendbird_store.should_show_chat_modal) {
         return (
             <div className='order-chat'>
                 <Loading is_fullscreen={false} />;

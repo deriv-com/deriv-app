@@ -1,29 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Text } from '@deriv/components';
+import { Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import ExtendedOrderDetails from 'Utils/orders';
 import { generateHexColourFromNickname, getShortNickname } from 'Utils/string';
 
-const ChatHeader = observer(() => {
+const ChatHeaderBody = observer(() => {
     const { general_store, sendbird_store } = useStores();
     const { other_user_details } = general_store.order_information;
     const icon_background_colour = generateHexColourFromNickname(other_user_details.name);
     const short_nickname = getShortNickname(other_user_details.name);
 
     return (
-        <div className='order-chat__header'>
-            {isMobile() && (
-                <div className='order-chat__header-return'>
-                    <Icon
-                        icon='IcArrowLeftBold'
-                        onClick={() => sendbird_store.setShouldShowChatModal(false)}
-                        size={16}
-                    />
-                </div>
-            )}
+        <React.Fragment>
             <div className='order-chat__header-icon' style={{ backgroundColor: icon_background_colour }}>
                 <Text size='xs' color='colored-background' line_height='m'>
                     {short_nickname}
@@ -52,10 +43,23 @@ const ChatHeader = observer(() => {
                     </Text>
                 )}
             </div>
-        </div>
+        </React.Fragment>
     );
 });
 
+const ChatHeader = () => {
+    if (isMobile()) {
+        return null; // Handled in chat-wrapper.jsx
+    }
+
+    return (
+        <div className='order-chat__header'>
+            <ChatHeaderBody />
+        </div>
+    );
+};
+
+ChatHeader.Body = ChatHeaderBody;
 ChatHeader.displayName = 'ChatHeader';
 ChatHeader.propTypes = {
     order_information: PropTypes.instanceOf(ExtendedOrderDetails),

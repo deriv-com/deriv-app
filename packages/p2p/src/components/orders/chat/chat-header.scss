@@ -28,12 +28,8 @@
 
         @include mobile {
             margin: 1.6rem;
+            margin-left: 0;
         }
-    }
-
-    &-return {
-        display: flex;
-        align-items: center;
     }
 
     &-user {

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Div100vhContainer, Icon } from '@deriv/components';
-import { routes, isDesktop } from '@deriv/shared';
+import { routes, isDesktop, isMobile } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { EXPERIAN, getExperianResult } from './helpers/constants';
 import { DialogHeading } from './helpers/dialog-heading.jsx';
@@ -85,7 +85,11 @@ class StatusDialogContainer extends React.Component {
                     {this.status === EXPERIAN.WARN && <Warning className='bottom-right-overlay' />}
                     {this.status === EXPERIAN.DANGER && <Danger className='bottom-right-overlay' />}
                 </div>
-                <div className='status-dialog__body-area'>
+                <div
+                    className={classNames('status-dialog__body-area', {
+                        'status-dialog__body-area--no-grow': isMobile(),
+                    })}
+                >
                     <DialogHeading status={this.status} landing_company_shortcode={landing_company_shortcode} />
                     <DialogMessage
                         status={this.status}

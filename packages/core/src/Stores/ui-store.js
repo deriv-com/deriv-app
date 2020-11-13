@@ -107,9 +107,6 @@ export default class UIStore extends BaseStore {
     @observable is_top_up_virtual_open = false;
     @observable is_top_up_virtual_success = false;
 
-    // MT5 create real STP from demo, show only real accounts from switcher
-    @observable should_show_real_accounts_list = false;
-
     // Real account signup
     @observable real_account_signup = {
         active_modal_index: -1,
@@ -245,6 +242,11 @@ export default class UIStore extends BaseStore {
     @computed
     get is_account_switcher_disabled() {
         return !!this.account_switcher_disabled_message;
+    }
+
+    @computed
+    get filtered_notifications() {
+        return this.notifications.filter(message => message.type !== 'news');
     }
 
     @action.bound
@@ -685,10 +687,5 @@ export default class UIStore extends BaseStore {
     @action.bound
     showAccountTypesModalForEuropean() {
         this.toggleAccountTypesModal(this.root_store.client.is_uk);
-    }
-
-    @action.bound
-    toggleShouldShowRealAccountsList(value) {
-        this.should_show_real_accounts_list = value;
     }
 }

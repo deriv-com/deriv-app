@@ -764,6 +764,12 @@ $MIN_HEIGHT_FLOATING: calc(
             width: 100%;
             height: 100%;
 
+            @media (min-width: 1025px) and (max-width: 1199px) {
+                .account__article {
+                    width: 19rem; // Need to decrease width for better user experience and wider Fields
+                }
+            }
+
             @include mobile {
                 flex-direction: column;
                 overflow-y: auto;
@@ -851,8 +857,8 @@ $MIN_HEIGHT_FLOATING: calc(
                 grid-template-columns: 1fr 1fr 1fr;
                 grid-gap: 1.6rem;
 
-                @media (max-width: 1200px) {
-                    grid-template-columns: 1fr 1fr;
+                @media (max-width: 1024px) {
+                    grid-template-columns: 1fr;
                 }
                 @include mobile {
                     grid-template-columns: 1fr;

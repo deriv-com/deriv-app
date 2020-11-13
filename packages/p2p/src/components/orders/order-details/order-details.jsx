@@ -5,7 +5,6 @@ import { Icon, ThemedScrollbars } from '@deriv/components';
 import { getFormattedText, isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
-import Popup from 'Components/orders/popup.jsx';
 import Chat from 'Components/orders/chat/chat.jsx';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import OrderDetailsFooter from 'Components/orders/order-details/order-details-footer.jsx';
@@ -46,14 +45,6 @@ const OrderDetails = observer(({ onPageReturn }) => {
     } = general_store.order_information;
 
     const { chat_channel_url, setChatChannelUrl } = sendbird_store;
-    const [should_show_popup, setShouldShowPopup] = React.useState(false);
-    const [popup_options, setPopupOptions] = React.useState({});
-
-    const onCancelClick = () => setShouldShowPopup(false);
-    const handleShowPopup = options => {
-        setPopupOptions(options);
-        setShouldShowPopup(true);
-    };
 
     React.useEffect(() => {
         const disposeListeners = sendbird_store.registerEventListeners();
@@ -171,20 +162,10 @@ const OrderDetails = observer(({ onPageReturn }) => {
                         <OrderInfoBlock label={labels.instructions} value={advert_details.description || '-'} />
                     </ThemedScrollbars>
                     {should_show_order_footer && (
-                        <OrderDetailsFooter
-                            cancelPopup={onCancelClick}
-                            showPopup={handleShowPopup}
-                            order_information={general_store.order_information}
-                        />
+                        <OrderDetailsFooter order_information={general_store.order_information} />
                     )}
                 </div>
                 {!isMobile() && chat_channel_url && <Chat />}
-                <Popup
-                    {...popup_options}
-                    onCancel={onCancelClick}
-                    should_show_popup={should_show_popup}
-                    setShouldShowPopup={setShouldShowPopup}
-                />
             </div>
         </OrderDetailsWrapper>
     );

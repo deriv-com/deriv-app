@@ -4,13 +4,10 @@
     line-height: var(--text-lh);
     font-weight: var(--text-weight);
 
-    &--center {
-        text-align: center;
-    }
-    &--left {
-        text-align: left;
-    }
     &--right {
         text-align: right;
+    }
+    &--center {
+        text-align: center;
     }
 }

@@ -304,10 +304,10 @@
         background-color: var(--general-main-1);
         padding: 2.4rem;
         width: 50.4rem;
-        margin: 0 auto 3.2rem;
+        margin: 0 auto 2rem;
     }
     &__done-button {
-        width: 15.6rem;
+        width: 18.9rem;
         margin-left: 0.8rem;
         white-space: normal;
     }
@@ -859,11 +859,10 @@
         }
     }
     &__transferred-contact {
-        margin-top: 1.6rem;
-        margin-bottom: 0.8rem;
+        margin: 0.8rem 0;
 
         &-wrapper {
-            margin: 3.2rem;
+            margin: 2.4rem 0;
         }
     }
     &__contact {
@@ -876,7 +875,7 @@
         }
     }
     &__explanation {
-        margin-top: -0.8rem;
+        margin-top: 0.8rem;
     }
     &__input {
         width: 12.6rem !important;
@@ -1123,8 +1122,6 @@
         line-height: 1.43;
     }
     &__currency {
-        font-size: 1.2rem;
-
         &-icon {
             align-self: center;
         }
@@ -1136,9 +1133,6 @@
             margin-left: 8px;
             margin-right: 8px;
         }
-    }
-    &__loginid {
-        @include typeface(--xsmall-left-normal-grey);
     }
     &__balance {
         margin-left: auto;

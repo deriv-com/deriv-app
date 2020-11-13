@@ -168,6 +168,85 @@ $card-width: 456px;
         line-height: 2rem;
         color: var(--text-general);
     }
+    &__contact-text {
+        background-color: var(--general-section-1);
+        border-radius: 8px;
+        font-size: var(--text-size-xxs);
+        height: 68px;
+        margin-top: 1.6rem;
+        padding: 1.6rem 2.4rem;
+    }
+    &__modal-checkbox {
+        margin: 2.4rem -0.7rem;
+    }
+}
+
+.dc-modal__container {
+    &_cancel-modal {
+        width: 440px !important;
+
+        .dc-modal-header {
+            border-bottom: none;
+        }
+
+        .dc-modal-body {
+            padding: 0.8rem 2.4rem;
+        }
+
+        .dc-modal-footer {
+            border-top: none;
+        }
+    }
+    &_complain-modal {
+        width: 440px !important;
+
+        .dc-modal-body {
+            padding-bottom: 11.2rem;
+            padding-top: 0.8rem;
+        }
+
+        .dc-modal-footer {
+            border-top: solid 2px var(--general-section-1);
+        }
+        .dc-radio-group {
+            display: inline;
+
+            .dc-radio-group__item {
+                padding: 1.6rem 0;
+                border-bottom: 1px solid var(--general-section-1);
+                margin-right: 0;
+                max-height: 5.8rem;
+                line-height: 2rem;
+                font-size: 1.4rem;
+
+                .dc-radio-group__circle {
+                    align-self: start;
+                    margin-top: 0.3rem;
+                    border: 2px solid var(--text-less-prominent);
+                    transition: all 0.1s ease-in-out;
+
+                    &--selected {
+                        border: 4px solid var(--brand-red-coral);
+                    }
+                }
+
+                .dc-radio-group__label {
+                    width: 90%;
+                }
+            }
+        }
+    }
+    &_confirm-modal {
+        width: 440px !important;
+
+        .dc-modal-header {
+            border-bottom: none;
+        }
+
+        .dc-modal-body {
+            padding: 0.8rem 2.4rem;
+        }
+    }
 }
 
 .dc-modal__container_orders__popup {

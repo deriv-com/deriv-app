@@ -31,6 +31,7 @@ export default class GeneralStore {
     @observable poi_status = null;
     @observable show_popup = false;
 
+    custom_string = this.props?.custom_string;
     list_item_limit = 20;
     path = {
         buy_sell: 0,

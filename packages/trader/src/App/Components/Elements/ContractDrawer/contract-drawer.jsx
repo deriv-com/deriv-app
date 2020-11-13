@@ -158,7 +158,6 @@ class ContractDrawer extends React.Component {
                     className={classNames('contract-drawer', {
                         'contract-drawer--with-collapsible-btn':
                             !!getEndTime(this.props.contract_info) || (is_multiplier && isMobile()),
-                        'contract-drawer--is-expanded': this.state.should_show_contract_audit,
                         'contract-drawer--is-multiplier': is_multiplier && isMobile(),
                         'contract-drawer--is-multiplier-sold':
                             is_multiplier && isMobile() && getEndTime(this.props.contract_info),

@@ -105,6 +105,7 @@ export default class UIStore extends BaseStore {
 
     // Mt5 topup
     @observable is_top_up_virtual_open = false;
+    @observable is_top_up_virtual_in_progress = false;
     @observable is_top_up_virtual_success = false;
 
     // MT5 create real STP from demo, show only real accounts from switcher
@@ -575,6 +576,11 @@ export default class UIStore extends BaseStore {
     @action.bound
     toggleHistoryTab(state_change = !this.is_history_tab_active) {
         this.is_history_tab_active = state_change;
+    }
+
+    @action.bound
+    setTopUpInProgress(bool) {
+        this.is_top_up_virtual_in_progress = bool;
     }
 
     @action.bound

@@ -60,6 +60,7 @@ module.exports = function (env, argv) {
                 'react-router-dom': 'react-router-dom',
                 'react-router': 'react-router',
                 mobx: 'mobx',
+                'react-virtualized': 'react-virtualized',
                 'mobx-react': 'mobx-react',
                 '@deriv/shared': '@deriv/shared',
                 '@deriv/components': '@deriv/components',

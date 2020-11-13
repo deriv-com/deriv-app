@@ -117,6 +117,7 @@
     "react-pose": "^4.0.10",
     "react-router-dom": "^5.0.1",
     "react-transition-group": "^2.5.0",
+    "react-virtualized": "^9.22.2",
     "workbox-webpack-plugin": "^4.3.1"
   }
 }

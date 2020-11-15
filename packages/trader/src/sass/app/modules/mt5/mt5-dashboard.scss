@@ -216,9 +216,6 @@
 
     .counter {
         color: var(--brand-red-coral);
-        font-size: 1rem;
-        font-weight: bold;
-        line-height: 1.43;
         vertical-align: top;
     }
     @include mobile {
@@ -246,7 +243,6 @@
 
     &__star {
         color: var(--brand-red-coral);
-        font-weight: bold;
     }
     &__bullet {
         flex: none;
@@ -261,9 +257,7 @@
             height: 0.4rem;
         }
         &--star {
-            font-size: 14px;
             margin-right: 1rem;
-            line-height: 1.43;
         }
         &-wrapper {
             display: flex;

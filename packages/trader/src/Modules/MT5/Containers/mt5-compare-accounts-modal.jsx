@@ -8,6 +8,7 @@ import {
     MobileWrapper,
     Table,
     UILoader,
+    Text,
 } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
@@ -31,7 +32,9 @@ const MT5AttributeDescriber = ({ name, tooltip, counter }) => {
             <p className='mt5-attribute-describer' onClick={toggleModal}>
                 {name}
                 <MobileWrapper>
-                    <span className='counter'>{counter}</span>
+                    <Text weight='bold' line_height='x' size='xxxs' className='counter'>
+                        {counter}
+                    </Text>
                 </MobileWrapper>
             </p>
             <DesktopWrapper>
@@ -150,9 +153,14 @@ const MT5CompareAccountHint = () => (
             <Localize i18n_default_text='At bank rollover, liquidity in the forex markets is reduced and may increase the spread and processing time for client orders. This happens around 21:00 GMT during daylight saving time, and 22:00 GMT non-daylight saving time.' />
         </div>
         <div className='mt5-compare-accounts__bullet-wrapper'>
-            <span className='mt5-compare-accounts__bullet mt5-compare-accounts__bullet--star mt5-compare-accounts__star'>
+            <Text
+                size='xs'
+                line_height='x'
+                weight='bold'
+                className='mt5-compare-accounts__bullet mt5-compare-accounts__bullet--star mt5-compare-accounts__star'
+            >
                 *
-            </span>
+            </Text>
             <Localize i18n_default_text='To protect your portfolio from adverse market movements due to the market opening gap, we reserve the right to decrease leverage on all offered symbols for financial accounts before market close and increase it again after market open. Please make sure that you have enough funds available in your MT5 account to support your positions at all times.' />
         </div>
     </div>
@@ -200,13 +208,17 @@ const ModalContent = ({ is_eu, landing_companies, is_eu_country, is_logged_in })
                                 {landing_companies?.mt_financial_company?.financial && (
                                     <Table.Head>
                                         {localize('Financial')}
-                                        <span className='mt5-compare-accounts__star'>*</span>
+                                        <Text size='s' weight='bold' className='mt5-compare-accounts__star'>
+                                            *
+                                        </Text>
                                     </Table.Head>
                                 )}
                                 {landing_companies?.mt_financial_company?.financial_stp && (
                                     <Table.Head>
                                         {localize('Financial STP')}
-                                        <span className='mt5-compare-accounts__star'>*</span>
+                                        <Text size='s' weight='bold' className='mt5-compare-accounts__star'>
+                                            *
+                                        </Text>
                                     </Table.Head>
                                 )}
                             </React.Fragment>
@@ -215,11 +227,15 @@ const ModalContent = ({ is_eu, landing_companies, is_eu_country, is_logged_in })
                                 <Table.Head>{localize('Synthetic')}</Table.Head>
                                 <Table.Head>
                                     {localize('Financial')}
-                                    <span className='mt5-compare-accounts__star'>*</span>
+                                    <Text size='s' weight='bold' className='mt5-compare-accounts__star'>
+                                        *
+                                    </Text>
                                 </Table.Head>
                                 <Table.Head>
                                     {localize('Financial STP')}
-                                    <span className='mt5-compare-accounts__star'>*</span>
+                                    <Text size='s' weight='bold' className='mt5-compare-accounts__star'>
+                                        *
+                                    </Text>
                                 </Table.Head>
                             </React.Fragment>
                         )}

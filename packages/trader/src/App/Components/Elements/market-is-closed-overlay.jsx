@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from '@deriv/components';
+import { Button, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import MarketCountdownTimer from './market-countdown-timer.jsx';
 
@@ -12,14 +12,9 @@ const MarketIsClosedOverlay = ({ is_eu, is_market_available, onClick }) => {
             <Button
                 className='market-is-closed-overlay__button'
                 onClick={onClick}
-                text={localize('View open markets')}
+                text={localize('See open markets')}
                 primary
             />
-        );
-        message = is_market_available ? (
-            <Localize i18n_default_text='Market is closed. Explore other available trading options.' />
-        ) : (
-            <Localize i18n_default_text='Market is closed.' />
         );
     } else {
         button = (
@@ -31,14 +26,27 @@ const MarketIsClosedOverlay = ({ is_eu, is_market_available, onClick }) => {
             />
         );
         message = (
-            <Localize i18n_default_text='Market is closed. Try Synthetic Indices which simulate real-world market volatility and are open 24/7.' />
+            <Localize i18n_default_text='In the meantime, try our synthetic indices. They simulate real-market volatility and are open 24/7.' />
         );
     }
 
     return (
         <div className='market-is-closed-overlay'>
+            <Text as='p' className='market-is-closed-overlay__main-heading' color='prominent' weight='bold'>
+                <Localize i18n_default_text='This market is closed' />
+            </Text>
             <MarketCountdownTimer is_main_page />
-            <p>{message}</p>
+            {message && (
+                <Text
+                    align='center'
+                    as='p'
+                    className='market-is-closed-overlay__main-message'
+                    line_height='xx'
+                    size='xs'
+                >
+                    {message}
+                </Text>
+            )}
             {(!is_eu || (is_eu && is_market_available)) && button}
         </div>
     );

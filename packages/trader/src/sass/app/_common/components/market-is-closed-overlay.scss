@@ -9,28 +9,26 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    padding: 0 32px;
+    padding: 0 2.5rem;
     background-color: var(--overlay-inside-dialog);
     z-index: 1000;
 
-    p {
-        @include typeface(--paragraph-center-normal-black);
-        color: var(--text-prominent);
-        text-transform: none;
-
-        &.market-is-closed-overlay__timer {
-            font-weight: bold;
-            font-size: 1.6rem;
-            margin-bottom: 4rem;
-
-            &--main-page {
-                margin-bottom: 2rem;
-            }
+    &__main-heading {
+        margin-bottom: 2rem;
+    }
+    &__open-date,
+    &__main-message {
+        margin-bottom: 1rem;
+    }
+    &__open-at {
+        &--main-page {
+            margin-bottom: 1rem;
         }
     }
     &__separator {
+        margin-top: 1rem;
         border: 2px solid var(--general-section-1);
-        width: 192px;
+        width: 19.2rem;
         margin-bottom: 2rem;
     }
     &__button {

@@ -227,6 +227,13 @@ class Trader extends Common {
             exit_time_displayed,
             `${end_time.getUTCFullYear()}-${(end_time.getUTCMonth() + 1).toString().padStart(2, '0')}-${end_time.getUTCDate().toString().padStart(2, '0')} ${end_time.getUTCHours().toString().padStart(2, '0')}:${end_time.getUTCMinutes().toString().padStart(2, '0')}:${end_time.getUTCSeconds().toString().padStart(2, '0')} GMT`
         )
+
+        // Assert profit/loss
+        await this.page.waitForSelector('text=Profit/Loss:');
+        const profit = await this.page.$eval('text=Profit/Loss:', el => Math.abs(parseFloat(el.nextSibling.textContent.trim())));
+
+
+        assert.equal(profit, Math.abs(last_proposal_open_contract_message.proposal_open_contract.profit));
     }
 }
 

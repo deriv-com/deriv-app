@@ -43,6 +43,7 @@ test('[mobile] trader/buy-fall-contract-max-duration', async () => {
     await page.changeDuration(10);
     await page.assertPurchase(10, 10, 'PUT');
     await page.assertContractDetails();
+
 });
 
 async function preBuy() {

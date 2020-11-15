@@ -44,6 +44,18 @@ test('[mobile] trader/buy-rise-contract-max-duration', async () => {
     await page.assertContractDetails();
 });
 
+test('[mobile] trader/buy-rise-equal-contract-min-duration', async () =>  {
+    await page.changeDuration(1);
+    await page.assertPurchase(1, 10, 'CALLE');
+    await page.assertContractDetails();
+});
+
+test('[mobile] trader/buy-rise-equal-contract-max-duration', async () => {
+    await page.changeDuration(10);
+    await page.assertPurchase(10, 10, 'CALLE');
+    await page.assertContractDetails();
+});
+
 
 async function preBuy() {
     await page.goto(process.env.HOME_URL, {waitUntil: "domcontentloaded"});

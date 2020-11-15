@@ -95,6 +95,21 @@ class Trader extends Common {
 
     async assertPurchase(duration, amount, contract_type) {
         this.duration = duration;
+        try {
+            if (contract_type.toLowerCase().endsWith('e')) {
+                if (await this.page.$eval('.dc-collapsible__icon--is-open', el => !!el)) {
+                    await this.page.click('.dc-collapsible__icon--is-open');
+                }
+            }
+        } catch (e) {
+            if (contract_type.toLowerCase().endsWith('e')) {
+                await this.page.waitForSelector('text=Equals');
+                await this.page.click('text=Equals');
+            }
+        }
+
+        await this.page.waitForSelector(`#dt_purchase_${contract_type.toLowerCase()}_button`);
+        await this.page.click(`#dt_purchase_${contract_type.toLowerCase()}_button`);
         const message = await waitForWSSubset(this.page, {
             echo_req: {
                 amount,
@@ -108,11 +123,6 @@ class Trader extends Common {
         });
         assert.ok(message, 'No proper proposal was found');
         assert.ok(message.echo_req.duration === duration, `Duration was not set properly, expected ${duration}, received: ${message.echo_req.duration}`);
-        if (contract_type === 'CALL') {
-            await this.page.click('#dt_purchase_call_price');
-        } else {
-            await this.page.click('#dt_purchase_put_price')
-        }
         const buy_response = await waitForWSSubset(this.page, {
             echo_req: {
                 price: "10.00",

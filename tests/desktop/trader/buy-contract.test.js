@@ -40,11 +40,12 @@ test("[desktop] trader/buy-contract rise", async () => {
         },
     });
     assert.ok(message, 'No proper proposal was found');
-    assert.ok(message.echo_req.duration === 5, `Duration was not set properly, expected 5, received: ${  message.echo_req.duration}`);
+    assert.ok(message.echo_req.duration === 5, `Duration was not set properly, expected 5, received: ${message.echo_req.duration}`);
     const buy_response = await waitForWSSubset(page, {
         echo_req: {
             price: "10.00",
         },
     });
     assert.equal(buy_response.buy.buy_price, 10, 'Buy price does not match proposal.');
+    await page.assertEntryTick();
 });

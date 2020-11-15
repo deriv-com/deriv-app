@@ -1,7 +1,6 @@
-const assert = require('assert').strict;
 const {setUp, tearDown} = require('../../bootstrap');
 const Trader = require('../../objects/trader');
-const {waitForWSSubset, replaceWebsocket} = require("../../_utils/websocket");
+const {replaceWebsocket} = require("../../_utils/websocket");
 
 let browser, context, page;
 
@@ -30,16 +29,19 @@ afterEach(async () => {
 test('[mobile] trader/buy-rise-contract-default-duration', async () => {
     await page.waitForSelector('#dt_purchase_call_price');
     await page.assertPurchase(5, 10, 'CALL');
+    await page.assertEntryTick();
 });
 
 test('[mobile] trader/buy-rise-contract-min-duration', async () =>  {
     await page.changeDuration(1);
     await page.assertPurchase(1, 10, 'CALL');
+    await page.assertEntryTick();
 });
 
 test('[mobile] trader/buy-rise-contract-max-duration', async () => {
     await page.changeDuration(10);
     await page.assertPurchase(10, 10, 'CALL');
+    await page.assertEntryTick();
 });
 
 

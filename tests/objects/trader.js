@@ -82,6 +82,7 @@ class Trader extends Common {
     }
 
     async assertPurchase(duration, amount, contract_type) {
+        this.duration = duration;
         const message = await waitForWSSubset(this.page, {
             echo_req: {
                 amount,
@@ -143,6 +144,44 @@ class Trader extends Common {
             // eslint-disable-next-line no-await-in-loop
             await this.waitForTimeout(150);
         }
+    }
+
+    async assertEntryTick() {
+        if (await this.isMobile()) {
+            await this.page.waitForSelector('#dt_positions_toggle');
+            await this.page.click('#dt_positions_toggle');
+            const buy_response = await waitForWSSubset(this.page, {
+                echo_req: {
+                    price: "10.00",
+                },
+            });
+
+            await this.page.waitForTimeout(this.duration ? this.duration * 1000 : 6000);
+            const contract_id = buy_response.buy.contract_id;
+            await this.page.waitForSelector(`#dt_drawer_card_${contract_id}`);
+            await this.page.click(`#dt_drawer_card_${contract_id}`);
+            await this.page.waitForSelector('.dc-collapsible__button');
+            await this.page.click('.dc-collapsible__button');
+        } else {
+            const buy_response = await waitForWSSubset(this.page, {
+                echo_req: {
+                    price: "10.00",
+                },
+            });
+            const contract_id = buy_response.buy.contract_id;
+            await this.page.waitForSelector(`#dc_contract_card_${contract_id}_result`, {timeout: 6000});
+            await this.page.hover(`#dc_contract_card_${contract_id}_result`);
+            await this.page.click(`#dc_contract_card_${contract_id}_result`);
+            await this.page.waitForSelector('#dt_entry_spot_label');
+        }
+        const last_proposal_open_contract_message = await waitForWSSubset(this.page, {
+            echo_req: {
+                proposal_open_contract: 1,
+            },
+        })
+        const entry_spot_tick = last_proposal_open_contract_message.proposal_open_contract.audit_details.all_ticks.find(t => t.name === 'Entry Spot');
+        const entry_spot_displayed = await this.page.$eval("#dt_entry_spot_label > div.contract-audit__item > div > span.contract-audit__value", (el) => parseFloat(el.textContent.replace(/,/, '')));
+        assert.equal(entry_spot_displayed, entry_spot_tick.tick);
     }
 }
 

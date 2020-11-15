@@ -1,5 +1,5 @@
 const assert = require('assert').strict;
-const {replaceWebsocket, waitForWSSubset} = require('../../_utils/websocket');
+const {waitForWSSubset, replaceWebsocket} = require('../../_utils/websocket');
 const {setUp, tearDown} = require('../../bootstrap');
 const Trader = require('../../objects/trader');
 
@@ -30,16 +30,19 @@ afterEach(async () => {
 test('[mobile] trader/buy-fall-contract-default-duration', async () => {
     await page.waitForSelector('#dt_purchase_put_price');
     await page.assertPurchase(5, 10, 'PUT');
+    await page.assertEntryTick();
 });
 
 test('[mobile] trader/buy-fall-contract-min-duration', async () =>  {
     await page.changeDuration(1);
     await page.assertPurchase(1, 10, 'PUT');
+    await page.assertEntryTick();
 });
 
 test('[mobile] trader/buy-fall-contract-max-duration', async () => {
     await page.changeDuration(10);
     await page.assertPurchase(10, 10, 'PUT');
+    await page.assertEntryTick();
 });
 
 async function preBuy() {

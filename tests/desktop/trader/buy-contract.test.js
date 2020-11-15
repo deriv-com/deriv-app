@@ -47,5 +47,5 @@ test("[desktop] trader/buy-contract rise", async () => {
         },
     });
     assert.equal(buy_response.buy.buy_price, 10, 'Buy price does not match proposal.');
-    await page.assertEntryTick();
+    await page.assertContractDetails();
 });

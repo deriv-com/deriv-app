@@ -30,19 +30,19 @@ afterEach(async () => {
 test('[mobile] trader/buy-fall-contract-default-duration', async () => {
     await page.waitForSelector('#dt_purchase_put_price');
     await page.assertPurchase(5, 10, 'PUT');
-    await page.assertEntryTick();
+    await page.assertContractDetails();
 });
 
 test('[mobile] trader/buy-fall-contract-min-duration', async () =>  {
     await page.changeDuration(1);
     await page.assertPurchase(1, 10, 'PUT');
-    await page.assertEntryTick();
+    await page.assertContractDetails();
 });
 
 test('[mobile] trader/buy-fall-contract-max-duration', async () => {
     await page.changeDuration(10);
     await page.assertPurchase(10, 10, 'PUT');
-    await page.assertEntryTick();
+    await page.assertContractDetails();
 });
 
 async function preBuy() {

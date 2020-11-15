@@ -138,6 +138,7 @@ class Trader extends Common {
     async loopOver(range, func) {
         const steps = [...Array(Math.abs(range)).keys()];
 
+        // eslint-disable-next-line no-restricted-syntax,no-unused-vars
         for (const step of steps) {
             // eslint-disable-next-line no-await-in-loop
             await func();
@@ -146,7 +147,7 @@ class Trader extends Common {
         }
     }
 
-    async assertEntryTick() {
+    async prepareAuditDetails() {
         if (await this.isMobile()) {
             await this.page.waitForSelector('#dt_positions_toggle');
             await this.page.click('#dt_positions_toggle');
@@ -174,14 +175,46 @@ class Trader extends Common {
             await this.page.click(`#dc_contract_card_${contract_id}_result`);
             await this.page.waitForSelector('#dt_entry_spot_label');
         }
+    }
+
+    async assertContractDetails() {
+        await this.prepareAuditDetails();
         const last_proposal_open_contract_message = await waitForWSSubset(this.page, {
             echo_req: {
                 proposal_open_contract: 1,
             },
         })
+
+        // Entry Spot check
         const entry_spot_tick = last_proposal_open_contract_message.proposal_open_contract.audit_details.all_ticks.find(t => t.name === 'Entry Spot');
-        const entry_spot_displayed = await this.page.$eval("#dt_entry_spot_label > div.contract-audit__item > div > span.contract-audit__value", (el) => parseFloat(el.textContent.replace(/,/, '')));
+        const entry_spot_displayed = await this.page.$eval(
+            '#dt_entry_spot_label > div.contract-audit__item > div > span.contract-audit__value',
+            el => parseFloat(el.textContent.replace(/,/, ''))
+        );
         assert.equal(entry_spot_displayed, entry_spot_tick.tick);
+        
+        // Start time check
+        const start_time_displayed = await this.page.$eval(
+            '#dt_start_time_label > div.contract-audit__item > div > span',
+            el => el.textContent
+        );
+
+        const start_time_tick = last_proposal_open_contract_message.proposal_open_contract.audit_details.all_ticks.find(
+            t => t.name === 'Start Time'
+        );
+        const d = new Date(start_time_tick.epoch * 1000);
+        assert.equal(
+            start_time_displayed,
+            `${d.getUTCFullYear()}-${(d.getUTCMonth() + 1).toString().padStart(2, '0')}-${d.getUTCDate().toString().padStart(2, '0')} ${d.getUTCHours().toString().padStart(2, '0')}:${d.getUTCMinutes().toString().padStart(2, '0')}:${d.getUTCSeconds().toString().padStart(2, '0')} GMT`
+        );
+
+        // Exit spot check
+        const exit_spot_tick =  last_proposal_open_contract_message.proposal_open_contract.audit_details.all_ticks.find(t => t.name === 'End Time and Exit Spot');
+        const exit_spot_displayed = await this.page.$eval(
+            '#dt_exit_spot_label > div.contract-audit__item > div > span.contract-audit__value',
+            el => parseFloat(el.textContent.replace(/,/, ''))
+        );
+        assert.equal(exit_spot_displayed, exit_spot_tick.tick);
     }
 }
 

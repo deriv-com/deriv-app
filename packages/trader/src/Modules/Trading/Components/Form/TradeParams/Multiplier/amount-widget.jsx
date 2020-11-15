@@ -1,5 +1,5 @@
 import React from 'react';
-import { Money } from '@deriv/components';
+import { Money, Text } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import { Localize } from '@deriv/translations';
 import MultiplierAmountModal from 'Modules/Trading/Containers/Multiplier/multiplier-amount-modal.jsx';
@@ -17,9 +17,9 @@ const AmountWidget = ({ amount, currency }) => {
             <MultiplierAmountModal is_open={is_open} toggleModal={toggleModal} />
             <div className='mobile-widget mobile-widget__multiplier-amount' onClick={toggleModal}>
                 <div className='mobile-widget__item'>
-                    <span className='mobile-widget__item-value'>
+                    <Text weight='bold' size='xxs'>
                         <Money amount={amount} currency={currency} show_currency />
-                    </span>
+                    </Text>
                 </div>
             </div>
         </React.Fragment>

@@ -215,6 +215,18 @@ class Trader extends Common {
             el => parseFloat(el.textContent.replace(/,/, ''))
         );
         assert.equal(exit_spot_displayed, exit_spot_tick.tick);
+        
+        
+        // End time check
+        const exit_time_displayed = await this.page.$eval(
+            '#dt_exit_time_label > div.contract-audit__item > div > span',
+            el => el.textContent
+        );
+        const end_time = new Date(exit_spot_tick.epoch * 1000);
+        assert.equal(
+            exit_time_displayed,
+            `${end_time.getUTCFullYear()}-${(end_time.getUTCMonth() + 1).toString().padStart(2, '0')}-${end_time.getUTCDate().toString().padStart(2, '0')} ${end_time.getUTCHours().toString().padStart(2, '0')}:${end_time.getUTCMinutes().toString().padStart(2, '0')}:${end_time.getUTCSeconds().toString().padStart(2, '0')} GMT`
+        )
     }
 }
 

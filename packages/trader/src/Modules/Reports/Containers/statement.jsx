@@ -2,7 +2,7 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { DesktopWrapper, MobileWrapper, DataList, DataTable, Money } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, DataList, DataTable, Money, Text } from '@deriv/components';
 import { extractInfoFromShortcode, urlFor, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
@@ -85,35 +85,53 @@ class Statement extends React.Component {
                 <div className='statement__account-statistics'>
                     <div className='statement__account-statistics-item'>
                         <div className='statement__account-statistics--is-rectangle'>
-                            <span className='statement__account-statistics-title'>
+                            <Text color='less-prominent' size='xs' className='statement__account-statistics-title'>
                                 {localize('Total deposits')} {`(${currency})`}
-                            </span>
-                            <span className='statement__account-statistics-amount'>
+                            </Text>
+                            <Text
+                                color='prominent'
+                                weight='bold'
+                                align='center'
+                                size='s'
+                                className='statement__account-statistics-amount'
+                            >
                                 <Money amount={account_statistics.total_deposits} currency={currency} />
-                            </span>
+                            </Text>
                         </div>
                     </div>
                     <div className='statement__account-statistics-item statement__account-statistics-total-withdrawal'>
                         <div className='statement__account-statistics--is-rectangle'>
-                            <span className='statement__account-statistics-title'>
+                            <Text color='less-prominent' size='xs' className='statement__account-statistics-title'>
                                 {localize('Total withdrawals')} {`(${currency})`}
-                            </span>
-                            <span className='statement__account-statistics-amount'>
+                            </Text>
+                            <Text
+                                color='prominent'
+                                weight='bold'
+                                align='center'
+                                size='s'
+                                className='statement__account-statistics-amount'
+                            >
                                 <Money amount={account_statistics.total_withdrawals} currency={currency} />
-                            </span>
+                            </Text>
                         </div>
                     </div>
                     <div className='statement__account-statistics-item'>
                         <div className='statement__account-statistics--is-rectangle'>
-                            <span className='statement__account-statistics-title'>
+                            <Text color='less-prominent' size='xs' className='statement__account-statistics-title'>
                                 {localize('Net deposits')} {`(${currency})`}
-                            </span>
-                            <span className='statement__account-statistics-amount'>
+                            </Text>
+                            <Text
+                                color='prominent'
+                                weight='bold'
+                                align='center'
+                                size='s'
+                                className='statement__account-statistics-amount'
+                            >
                                 <Money
                                     amount={account_statistics.total_deposits - account_statistics.total_withdrawals}
                                     currency={currency}
                                 />
-                            </span>
+                            </Text>
                         </div>
                     </div>
                 </div>

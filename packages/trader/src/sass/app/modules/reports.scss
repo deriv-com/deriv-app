@@ -284,9 +284,6 @@ $side-padding: 1.2em;
             }
         }
         &-title {
-            text-align: left;
-            color: var(--text-less-prominent);
-            font-size: 1.4rem;
             margin-bottom: 9px;
 
             @include mobile {
@@ -294,11 +291,6 @@ $side-padding: 1.2em;
             }
         }
         &-amount {
-            text-align: center;
-            font-weight: bold;
-            font-size: 1.6rem;
-            color: var(--text-prominent);
-
             @include mobile {
                 font-size: 1.4rem;
             }

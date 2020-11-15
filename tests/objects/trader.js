@@ -67,18 +67,30 @@ class Trader extends Common {
         await qawolf.assertElementText(this.page, '#dt_range_slider_label', `${duration_amount} ${duration_unit}`);
     }
 
-    async buyRiseContract(tradeTypes, contract, duration_unit, duration_amount) {
+    async buyContract(tradeTypes, contract, duration_unit, duration_amount, purchase_type = 'call', allow_equal = false) {
         await this.chooseContractType(tradeTypes, contract);
         await this.setDuration(duration_unit, duration_amount);
-        await this.waitForChart();
         await this.waitForPurchaseBtnEnabled();
-        await this.page.click('#dt_purchase_call_button');
+        if (allow_equal) {
+            await this.page.waitForSelector('.allow-equals__label');
+            await this.page.click('.allow-equals__label');
+        }
+        await this.waitForChart();
+        await this.waitForPurchaseBtnEnabled(allow_equal);
+        await this.clickOnPurchaseButton(purchase_type, allow_equal);
         await this.verifyContractResult();
     }
 
-    async waitForPurchaseBtnEnabled() {
-        await this.page.waitForSelector('#dt_purchase_call_button:enabled', { timeout: 120000 });
-        await this.page.waitForSelector('#dt_purchase_put_button:enabled', { timeout: 120000 });
+    async waitForPurchaseBtnEnabled(allow_equal = false) {
+        const is_equal = allow_equal ? 'e' : '';
+        await this.page.waitForSelector(`#dt_purchase_call${is_equal}_button:enabled`, { timeout: 120000 });
+        await this.page.waitForSelector(`#dt_purchase_put${is_equal}_button:enabled`, { timeout: 120000 });
+    }
+
+    async clickOnPurchaseButton(type, allow_equal = false) {
+        const is_equal = allow_equal ? 'e' : '';
+        const button = type + is_equal;
+        await this.page.click(`#dt_purchase_${button}_button`);
     }
 
     async assertPurchase(duration, amount, contract_type) {
@@ -192,7 +204,7 @@ class Trader extends Common {
             el => parseFloat(el.textContent.replace(/,/, ''))
         );
         assert.equal(entry_spot_displayed, entry_spot_tick.tick);
-        
+
         // Start time check
         const start_time_displayed = await this.page.$eval(
             '#dt_start_time_label > div.contract-audit__item > div > span',
@@ -215,8 +227,8 @@ class Trader extends Common {
             el => parseFloat(el.textContent.replace(/,/, ''))
         );
         assert.equal(exit_spot_displayed, exit_spot_tick.tick);
-        
-        
+
+
         // End time check
         const exit_time_displayed = await this.page.$eval(
             '#dt_exit_time_label > div.contract-audit__item > div > span',

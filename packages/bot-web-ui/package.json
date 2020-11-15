@@ -88,6 +88,7 @@
     "formik": "^2.1.4",
     "gh-pages": "^2.0.1",
     "immutable": "^3.8.2",
+    "lz-string": "^1.4.4",
     "mobx": "^5.15.4",
     "mobx-react": "^6.2.2",
     "pako": "^1.0.11",

@@ -1061,8 +1061,6 @@ export default class TradeStore extends BaseStore {
         if (this.root_store.ui.is_notifications_visible) {
             this.root_store.ui.toggleNotificationsModal();
         }
-        // clear url query string
-        window.history.replaceState(null, null, window.location.pathname);
         if (this.prev_chart_layout) {
             this.prev_chart_layout.is_used = false;
         }

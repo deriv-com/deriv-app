@@ -199,8 +199,6 @@
             &-value {
                 transform: scale(0.95);
                 display: inline-block;
-                @include typeface(--paragraph-center-bold-black);
-                color: var(--text-general);
             }
             &-last {
                 @include typeface(--paragraph-center-bold-black);

@@ -36,7 +36,7 @@ const AccountOption = ({ account, idx }) => {
             )}
 
             <div className='account-transfer__currency-wrapper'>
-                <Text size='xxs' line_height='xs'>
+                <Text size='xxs' line_height='s'>
                     {account.is_mt ? account.mt_icon : getCurrencyName(account.text)}
                 </Text>
                 <Text size='xxxs' align='left' color='less-prominent'>

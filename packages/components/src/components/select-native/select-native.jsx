@@ -79,19 +79,24 @@ class SelectNative extends React.Component {
                                         ))}
                                 </React.Fragment>
                             ) : (
-                                Object.keys(list_items).map(key => (
-                                    <optgroup key={key} label={key}>
-                                        {/* Safari on ios allows to select a disabled option.
-                                        So, we should avoid showing it */}
-                                        {list_items[key]
-                                            .filter(opt => !opt.disabled)
-                                            .map((option, idx) => (
-                                                <option key={idx} value={use_text ? option.text : option.value}>
-                                                    {option.nativepicker_text || option.text}
-                                                </option>
-                                            ))}
-                                    </optgroup>
-                                ))
+                                Object.keys(list_items).map(key => {
+                                    const list_items_enabled = list_items[key].filter(opt => !opt.disabled);
+                                    if (list_items_enabled.length > 0) {
+                                        return (
+                                            <optgroup key={key} label={key}>
+                                                {/* Safari on ios allows to select a disabled option.
+                                                So, we should avoid showing it */}
+                                                {list_items_enabled.map((option, idx) => (
+                                                    <option key={idx} value={use_text ? option.text : option.value}>
+                                                        {option.nativepicker_text || option.text}
+                                                    </option>
+                                                ))}
+                                            </optgroup>
+                                        );
+                                    }
+
+                                    return null;
+                                })
                             )}
                         </select>
                         {error && <Field message={error} type='error' />}

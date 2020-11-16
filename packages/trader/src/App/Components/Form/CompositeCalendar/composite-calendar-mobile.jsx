@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, DatePicker, Icon, InputField, MobileDialog } from '@deriv/components';
+import { Button, DatePicker, Icon, InputField, MobileDialog, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { toMoment } from '@deriv/shared';
 
@@ -20,7 +20,9 @@ export const RadioButton = ({ id, className, selected_value, value, label, onCha
                     'composite-calendar-modal__radio-circle--selected': selected_value === value,
                 })}
             />
-            <p className='composite-calendar-modal__radio-label'>{label}</p>
+            <Text as='p' color='prominent'>
+                {label}
+            </Text>
         </label>
     );
 };

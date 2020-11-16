@@ -31,6 +31,19 @@ class ExtendedOrderDetails {
     get is_completed_order() {
         return this.order_details.status === 'completed';
     }
+
+    get is_disputed_order() {
+        return this.order_details.status === 'disputed';
+    }
+
+    get is_dispute_refunded_order() {
+        return this.order_details.status === 'dispute-refunded';
+    }
+
+    get is_dispute_completed_order() {
+        return this.order_details.status === 'dispute-completed';
+    }
+
     get is_expired_order() {
         return this.order_details.status === 'timed-out';
     }
@@ -48,7 +61,13 @@ class ExtendedOrderDetails {
     }
 
     get is_inactive_order() {
-        return this.is_buyer_cancelled_order || this.is_refunded_order || this.is_completed_order;
+        return (
+            this.is_buyer_cancelled_order ||
+            this.is_refunded_order ||
+            this.is_completed_order ||
+            this.is_dispute_completed_order ||
+            this.is_dispute_refunded_order
+        );
     }
 
     get is_active_order() {
@@ -86,6 +105,8 @@ class ExtendedOrderDetails {
             this.is_buyer_cancelled_order ||
             this.is_expired_order ||
             this.is_refunded_order ||
+            this.is_disputed_order ||
+            this.is_dispute_refunded_order ||
             (this.has_timer_expired && !this.is_completed_order)
         );
     }
@@ -111,7 +132,7 @@ class ExtendedOrderDetails {
     }
 
     get should_highlight_success() {
-        return this.is_completed_order;
+        return this.is_completed_order || this.is_dispute_completed_order;
     }
 
     get should_show_cancel_and_paid_button() {
@@ -125,11 +146,9 @@ class ExtendedOrderDetails {
     }
 
     get should_show_complain_and_received_button() {
-        if (this.is_buy_order) {
-            return this.is_my_ad && (this.is_buyer_confirmed_order || this.is_expired_order);
-        }
+        if (this.is_finalised_order) return false;
 
-        return !this.is_my_ad && (this.is_buyer_confirmed_order || this.is_expired_order);
+        return (this.is_expired_order || (this.is_ongoing_order && this.has_timer_expired)) && this.is_my_ad;
     }
 
     // Only show the complain button for expired orders (determined by backend), or for orders
@@ -138,14 +157,24 @@ class ExtendedOrderDetails {
     // execute actions such as "I've paid" or "I've received payment" on technically expired orders.
     get should_show_only_complain_button() {
         if (this.is_finalised_order) return false;
+
         return (this.is_expired_order || (this.is_ongoing_order && this.has_timer_expired)) && !this.is_my_ad;
+    }
+
+    get should_show_only_received_button() {
+        if (this.is_buy_order) {
+            return this.is_my_ad && this.is_buyer_confirmed_order;
+        }
+
+        return !this.is_my_ad && this.is_buyer_confirmed_order;
     }
 
     get should_show_order_footer() {
         return (
             this.should_show_cancel_and_paid_button ||
             this.should_show_complain_and_received_button ||
-            this.should_show_only_complain_button
+            this.should_show_only_complain_button ||
+            this.should_show_only_received_button
         );
     }
 
@@ -156,14 +185,18 @@ class ExtendedOrderDetails {
 
     get status_string() {
         // Finalised orders, should take precedence over is_expired_order/has_timer_expired.
-        if (this.is_completed_order) {
+        if (this.is_completed_order || this.is_dispute_completed_order) {
             return localize('Completed');
         }
         if (this.is_buyer_cancelled_order) {
             return localize('Cancelled');
         }
-        if (this.is_refunded_order) {
+        if (this.is_refunded_order || this.is_dispute_refunded_order) {
             return localize('Expired');
+        }
+
+        if (this.is_disputed_order) {
+            return localize('Under dispute');
         }
 
         // Keep this here, has_timer_expired should take priority over statuses below.

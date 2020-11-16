@@ -122,36 +122,33 @@ class DataList extends React.PureComponent {
                     [`${className}__data-list`]: className,
                 })}
             >
-                <div className={classNames('data-list__body', { [`${className}__data-list-body`]: className })}>
-                    <AutoSizer>
-                        {({ width, height }) => (
-                            <TransitionGroup>
-                                <ThemedScrollbars
-                                    style={{
-                                        height,
-                                        width,
-                                    }}
-                                    onScroll={this.handleScroll}
-                                    autoHide
-                                    is_bypassed={isMobile()}
-                                >
-                                    <List
-                                        ref={ref => (this.list_ref = ref)}
-                                        className={className}
-                                        deferredMeasurementCache={this.cache}
-                                        width={width}
-                                        height={height}
-                                        overscanRowCount={1}
-                                        rowCount={data_source.length}
-                                        rowHeight={this.is_dynamic_height ? this.cache.rowHeight : getRowSize}
-                                        rowRenderer={this.rowRenderer}
-                                        scrollingResetTimeInterval={0}
-                                        {...(isDesktop() ? { scrollTop: this.state.scrollTop, autoHeight: true } : {})}
-                                    />
-                                </ThemedScrollbars>
-                            </TransitionGroup>
-                        )}
-                    </AutoSizer>
+                <div className='data-list__body-wrapper'>
+                    <div className={classNames('data-list__body', { [`${className}__data-list-body`]: className })}>
+                        <AutoSizer>
+                            {({ width, height }) => (
+                                // Don't remove `TransitionGroup`. When `TransitionGroup` is removed, transition life cycle events like `onEntered` won't be fired sometimes on it's `CSSTransition` children
+                                <TransitionGroup style={{ height, width }}>
+                                    <ThemedScrollbars onScroll={this.handleScroll} autoHide is_bypassed={isMobile()}>
+                                        <List
+                                            ref={ref => (this.list_ref = ref)}
+                                            className={className}
+                                            deferredMeasurementCache={this.cache}
+                                            width={width}
+                                            height={height}
+                                            overscanRowCount={1}
+                                            rowCount={data_source.length}
+                                            rowHeight={this.is_dynamic_height ? this.cache.rowHeight : getRowSize}
+                                            rowRenderer={this.rowRenderer}
+                                            scrollingResetTimeInterval={0}
+                                            {...(isDesktop()
+                                                ? { scrollTop: this.state.scrollTop, autoHeight: true }
+                                                : { onScroll: target => this.handleScroll({ target }) })}
+                                        />
+                                    </ThemedScrollbars>
+                                </TransitionGroup>
+                            )}
+                        </AutoSizer>
+                    </div>
                     {children}
                 </div>
                 {footer && (

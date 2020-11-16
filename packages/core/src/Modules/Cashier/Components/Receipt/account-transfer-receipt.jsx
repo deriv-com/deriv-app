@@ -2,8 +2,8 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
-import { Button, Modal, Icon } from '@deriv/components';
-import { formatMoney, getCurrencyDisplayCode, routes } from '@deriv/shared';
+import { Button, Modal, Icon, Text } from '@deriv/components';
+import { formatMoney, getCurrencyDisplayCode, getCurrencyName, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
@@ -60,17 +60,22 @@ class AccountTransferReceipt extends React.Component {
                 </h2>
                 <div className='cashier__transferred-amount cashier__text--bold'>
                     {formatMoney(selected_from.currency, receipt.amount_transferred, true)}
-                    <span className={classNames('symbols', `symbols--${selected_from.currency?.toLowerCase()}`)}>
+                    <Text
+                        size='xs'
+                        line_height='x'
+                        weight='bold'
+                        className={classNames('symbols', `symbols--${selected_from.currency?.toLowerCase()}`)}
+                    >
                         {getCurrencyDisplayCode(selected_from.currency)}
-                    </span>
+                    </Text>
                 </div>
                 <div className='cashier__transferred-details-wrapper'>
                     <span className='account-transfer__transfer-details-from'>
                         <div className='cashier__transferred-details'>
-                            <div className='cashier__text--bold cashier__text--right'>{selected_from.text}</div>
-                            <div className='cashier__text--faint'>
-                                {selected_from.value?.replace(/^(MT[DR]?)/i, '')}
+                            <div className='cashier__text--bold cashier__text--right'>
+                                {selected_from.is_mt ? selected_from.text : getCurrencyName(selected_from.text)}
                             </div>
+                            <div className='cashier__text--faint'>{selected_from.value}</div>
                         </div>
                         <Icon
                             icon={
@@ -92,8 +97,10 @@ class AccountTransferReceipt extends React.Component {
                             size={32}
                         />
                         <div className='cashier__transferred-details'>
-                            <div className='cashier__text--bold'>{selected_to.text}</div>
-                            <div className='cashier__text--faint'>{selected_to.value?.replace(/^(MT[DR]?)/i, '')}</div>
+                            <div className='cashier__text--bold'>
+                                {selected_to.is_mt ? selected_to.text : getCurrencyName(selected_to.text)}
+                            </div>
+                            <div className='cashier__text--faint'>{selected_to.value}</div>
                         </div>
                     </span>
                 </div>

@@ -197,7 +197,6 @@
 
         &-text {
             margin-left: 0.8rem;
-            color: var(--text-general);
         }
         &-btn {
             margin-left: auto;
@@ -214,14 +213,11 @@
         height: 100%;
         background: var(--general-main-2);
 
-        &-title {
-            @include typeface(--title-left-bold-black);
-            display: block;
-            color: var(--text-prominent);
-            flex: 1;
-        }
         &-wrapper {
             padding: 0.4rem 0.8rem 0;
+        }
+        &-title {
+            flex: 1;
         }
         &-container {
             height: auto;
@@ -278,6 +274,9 @@
             &:last-child {
                 margin-bottom: 8px;
             }
+        }
+        &--is-loading {
+            padding-bottom: 0.8rem;
         }
     }
     &__account {
@@ -346,8 +345,6 @@
         padding: 1.6em 1.3em;
 
         &-text {
-            @include typeface(--paragraph-left-normal-black, none);
-            color: var(--text-prominent);
             cursor: pointer;
         }
         &-icon {
@@ -357,9 +354,7 @@
         }
     }
     &__balance {
-        color: var(--text-prominent);
         margin-left: auto;
-        font-weight: normal;
     }
     &__separator {
         height: 4px;
@@ -375,18 +370,11 @@
     &__total {
         height: 2.6rem;
         margin: 0.4rem 1.6rem;
-        font-size: 1.4rem;
-        font-weight: bold;
-        color: var(--text-prominent);
         align-items: center;
         display: flex;
 
         &-subtitle {
             margin: 0 1.6rem 1.2rem;
-            font-size: 1rem;
-            line-height: 1.4rem;
-            font-weight: normal;
-            color: var(--text-less-prominent);
         }
     }
     &__loginid-text {

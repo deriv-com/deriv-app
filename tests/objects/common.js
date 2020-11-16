@@ -116,23 +116,28 @@ class Common {
 
     async bypassDuo() {
         await this.page.goto(`https://${process.env.QABOX_SERVER}`);
-        await this.page.waitForSelector('text=We need to verify your identity');
-        await this.page.waitForSelector('#user_name')
-        await this.page.click('#user_name')
-        await this.page.fill('#user_name', process.env.QABOX_DUO_EMAIL);
+        try {
+            await this.page.$eval('text=Welcome to nginx', el => el.textContent);
+            return;
+        } catch (e) {
+            await this.page.waitForSelector('text=We need to verify your identity');
+            await this.page.waitForSelector('#user_name')
+            await this.page.click('#user_name')
+            await this.page.fill('#user_name', process.env.QABOX_DUO_EMAIL);
 
-        await this.page.waitForSelector('#password')
-        await this.page.click('#password')
-        await this.page.fill('#password', process.env.QABOX_DUO_PASSWORD);
+            await this.page.waitForSelector('#password')
+            await this.page.click('#password')
+            await this.page.fill('#password', process.env.QABOX_DUO_PASSWORD);
 
-        await this.page.waitForSelector('#duo_code')
-        await this.page.click('#duo_code')
-        await this.page.fill('#duo_code', process.env.QABOX_DUO_CODE);
+            await this.page.waitForSelector('#duo_code')
+            await this.page.click('#duo_code')
+            await this.page.fill('#duo_code', process.env.QABOX_DUO_CODE);
 
-        await this.page.waitForSelector('.body > center > .main_widget > .input_form > .login_button')
-        await this.page.click('.body > center > .main_widget > .input_form > .login_button')
+            await this.page.waitForSelector('.body > center > .main_widget > .input_form > .login_button')
+            await this.page.click('.body > center > .main_widget > .input_form > .login_button')
 
-        await this.page.waitForSelector('text=Welcome to nginx');
+            await this.page.waitForSelector('text=Welcome to nginx');
+        }
     }
 
     checkIfStateExists = () => {

@@ -100,7 +100,42 @@ class Common {
         }
     }
 
-    checkIfStateExists() {
+    async isMobile() {
+        const {width} = await this.page.viewportSize()
+
+        return width < 400;
+    }
+
+    async navigate() {
+        if (process.env.QA_SETUP === 'true') {
+            await this.bypassDuo();
+            await this.setEndpoint(process.env.HOME_URL, process.env.QABOX_SERVER, process.env.QABOX_APP_ID);
+        }
+        await this.page.goto(`${process.env.HOME_URL}`, {waitUntil: 'domcontentloaded'});
+    }
+
+    async bypassDuo() {
+        await this.page.goto(`https://${process.env.QABOX_SERVER}`);
+        await this.page.waitForSelector('text=We need to verify your identity');
+        await this.page.waitForSelector('#user_name')
+        await this.page.click('#user_name')
+        await this.page.fill('#user_name', process.env.QABOX_DUO_EMAIL);
+
+        await this.page.waitForSelector('#password')
+        await this.page.click('#password')
+        await this.page.fill('#password', process.env.QABOX_DUO_PASSWORD);
+
+        await this.page.waitForSelector('#duo_code')
+        await this.page.click('#duo_code')
+        await this.page.fill('#duo_code', process.env.QABOX_DUO_CODE);
+
+        await this.page.waitForSelector('.body > center > .main_widget > .input_form > .login_button')
+        await this.page.click('.body > center > .main_widget > .input_form > .login_button')
+
+        await this.page.waitForSelector('text=Welcome to nginx');
+    }
+
+    checkIfStateExists = () => {
         try {
             const state_path = path.resolve(LOGIN_STATE_PATH);
             const result = fs.existsSync(state_path);
@@ -112,7 +147,7 @@ class Common {
                         content.localStorage['config.server_url'] !== process.env.QABOX_SERVER
                     )
                 ) {
-                   // remove the file and allow redirection
+                    // remove the file and allow redirection
                     fs.unlinkSync(state_path);
                     return false;
                 }
@@ -123,21 +158,8 @@ class Common {
         }
     }
 
-    async isMobile() {
-        const {width} = await this.page.viewportSize()
-
-        return width < 400;
-    }
-
-    removeLoginState() {
+    removeLoginState = () => {
         fs.unlinkSync(path.resolve(LOGIN_STATE_PATH));
-    }
-
-    async navigate() {
-        if (process.env.QA_SETUP === 'true') {
-            await this.setEndpoint(process.env.HOME_URL, process.env.QABOX_SERVER, process.env.QABOX_APP_ID);
-        }
-        await this.page.goto(`${process.env.HOME_URL}`, {waitUntil: 'domcontentloaded'});
     }
 }
 

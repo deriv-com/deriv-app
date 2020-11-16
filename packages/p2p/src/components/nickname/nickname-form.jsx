@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
-import { Input, Button, ThemedScrollbars, Icon } from '@deriv/components';
+import { Input, Button, Icon } from '@deriv/components';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { localize } from 'Components/i18next';
 import IconClose from 'Assets/icon-close.jsx';
@@ -72,37 +72,35 @@ const NicknameForm = ({ handleClose }) => {
                 }}
             >
                 {({ errors, handleChange, isSubmitting, values }) => (
-                    <Form noValidate>
-                        <ThemedScrollbars autoHide style={{ height: '437px' }}>
-                            <div className='nickname__form-content nickname__form-content__centre'>
-                                <Icon icon='IcCashierP2pUser' width='128' height='128' />
-                                <h5 className='nickname__form-content--title'>{localize('Choose a nickname')}</h5>
-                                <p className='nickname__form-content--text'>
-                                    {localize('You will appear to other users as')}
-                                </p>
-                                <div className='nickname__form-field_wrapper'>
-                                    <Field name='nickname'>
-                                        {({ field }) => (
-                                            <Input
-                                                {...field}
-                                                data-lpignore='true'
-                                                error={nickname_error || errors.nickname}
-                                                label={localize('Your nickname')}
-                                                className='nickname__form-field'
-                                                onChange={e => {
-                                                    handleChange(e);
-                                                    resetNicknameErrorState();
-                                                }}
-                                                required
-                                            />
-                                        )}
-                                    </Field>
-                                </div>
-                                <div className='nickname__form-content--ps'>
-                                    {localize('Once set, your nickname cannot be changed.')}
-                                </div>
+                    <Form className='nickname__form-wrapper' noValidate>
+                        <div className='nickname__form-content nickname__form-content__centre'>
+                            <Icon icon='IcCashierP2pUser' width='128' height='128' />
+                            <h5 className='nickname__form-content--title'>{localize('Choose a nickname')}</h5>
+                            <p className='nickname__form-content--text'>
+                                {localize('You will appear to other users as')}
+                            </p>
+                            <div className='nickname__form-field_wrapper'>
+                                <Field name='nickname'>
+                                    {({ field }) => (
+                                        <Input
+                                            {...field}
+                                            data-lpignore='true'
+                                            error={nickname_error || errors.nickname}
+                                            label={localize('Your nickname')}
+                                            className='nickname__form-field'
+                                            onChange={e => {
+                                                handleChange(e);
+                                                resetNicknameErrorState();
+                                            }}
+                                            required
+                                        />
+                                    )}
+                                </Field>
                             </div>
-                        </ThemedScrollbars>
+                            <div className='nickname__form-content--ps'>
+                                {localize('Once set, your nickname cannot be changed.')}
+                            </div>
+                        </div>
                         <div className='nickname__form-footer'>
                             <Button.Group>
                                 <Button secondary type='button' onClick={handleClose} large>

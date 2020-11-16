@@ -168,7 +168,7 @@ const MyAdsTable = observer(({ onClickCreate }) => {
         return (
             <React.Fragment>
                 <div className='p2p-my-ads__header'>
-                    <Button large primary onClick={onClickCreate}>
+                    <Button large primary is_disabled={general_store.is_barred} onClick={onClickCreate}>
                         {localize('Create new ad')}
                     </Button>
                     <ToggleAds />
@@ -215,7 +215,13 @@ const MyAdsTable = observer(({ onClickCreate }) => {
 
     return (
         <Empty icon='IcCashierNoAds' title={localize('You have no adverts')}>
-            <Button primary large className='p2p-empty__button' onClick={() => onClickCreate()}>
+            <Button
+                primary
+                large
+                className='p2p-empty__button'
+                is_disabled={general_store.is_barred}
+                onClick={() => onClickCreate()}
+            >
                 {localize('Create new ad')}
             </Button>
         </Empty>

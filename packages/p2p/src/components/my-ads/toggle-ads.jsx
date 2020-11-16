@@ -14,19 +14,21 @@ const ToggleAds = observer(() => {
     const isMounted = useIsMounted();
 
     const handleToggle = () => {
-        requestWS({
-            p2p_advertiser_update: 1,
-            is_listed: general_store.is_listed ? 0 : 1,
-        }).then(response => {
-            if (isMounted()) {
-                if (response.error) {
-                    setApiError(response.error.message);
-                } else {
-                    const { is_listed } = response.p2p_advertiser_update;
-                    general_store.setIsListed(is_listed === 1);
+        if (!general_store.is_barred) {
+            requestWS({
+                p2p_advertiser_update: 1,
+                is_listed: general_store.is_listed ? 0 : 1,
+            }).then(response => {
+                if (isMounted()) {
+                    if (response.error) {
+                        setApiError(response.error.message);
+                    } else {
+                        const { is_listed } = response.p2p_advertiser_update;
+                        general_store.setIsListed(is_listed === 1);
+                    }
                 }
-            }
-        });
+            });
+        }
     };
 
     return (
@@ -37,7 +39,7 @@ const ToggleAds = observer(() => {
             })}
         >
             <div className='toggle-ads__message'>
-                {api_error || general_store.is_listed
+                {(api_error || general_store.is_listed) && !general_store.is_barred
                     ? localize('Your ads are running')
                     : localize('Your ads are paused')}
             </div>

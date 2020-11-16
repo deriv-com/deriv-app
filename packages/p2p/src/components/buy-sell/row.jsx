@@ -5,6 +5,7 @@ import { Table, Button } from '@deriv/components';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { localize } from 'Components/i18next';
 import { generateHexColourFromNickname, getShortNickname } from 'Utils/string';
+import { useStores } from 'Stores';
 
 export const BuySellRowLoader = () => (
     <ContentLoader
@@ -36,7 +37,7 @@ export const RowComponent = React.memo(({ data: advert, setSelectedAdvert, showA
         min_order_amount_limit_display,
         price_display,
     } = advert;
-
+    const { general_store } = useStores();
     const { advertiser_id } = React.useContext(Dp2pContext);
     const is_my_advert = advert.advertiser_details.id === advertiser_id;
     const is_buy_advert = counterparty_type === 'buy';
@@ -67,7 +68,12 @@ export const RowComponent = React.memo(({ data: advert, setSelectedAdvert, showA
                     <Table.Cell />
                 ) : (
                     <Table.Cell className='buy-sell__button'>
-                        <Button primary small onClick={() => setSelectedAdvert(advert)}>
+                        <Button
+                            primary
+                            small
+                            is_disabled={general_store.is_barred}
+                            onClick={() => setSelectedAdvert(advert)}
+                        >
                             {is_buy_advert
                                 ? localize('Buy {{account_currency}}', { account_currency })
                                 : localize('Sell {{account_currency}}', { account_currency })}

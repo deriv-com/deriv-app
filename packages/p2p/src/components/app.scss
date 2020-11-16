@@ -78,6 +78,26 @@
             width: 90vw;
         }
     }
+    &__advertiser-tab {
+        @include mobile {
+            .dc-tabs {
+                &__item {
+                    padding: 0 1.6rem;
+                    margin: auto;
+                }
+                &__list {
+                    position: fixed;
+                    margin-bottom: unset !important;
+                    background-color: var(--general-main-1);
+                    z-index: 2;
+                    width: 100%;
+                }
+                &__content {
+                    margin-top: 4rem;
+                }
+            }
+        }
+    }
 }
 
 .p2p-not-allowed {
@@ -104,7 +124,7 @@
 .p2p-nickname {
     &__dialog {
         @include mobile {
-            padding-top: 4rem;
+            height: 100%;
         }
     }
 }
@@ -112,11 +132,11 @@
 .dc-modal__container_p2p-nickname {
     &__dialog {
         height: auto;
-        padding: 0;
-        max-height: initial;
-        min-width: 44rem;
-        max-width: 44rem;
         margin-bottom: 0;
+        max-height: 50rem !important;
+        max-width: 44rem;
+        min-width: 44rem;
+        padding: 0;
         width: 100%;
 
         @include mobile {

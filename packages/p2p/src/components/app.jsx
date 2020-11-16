@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
-import { getPropertyValue } from '@deriv/shared';
 import { HintBox, Modal, Tabs, Text } from '@deriv/components';
 import { Dp2pProvider } from 'Components/context/dp2p-context';
 import ServerTime from 'Utils/server-time';
@@ -43,7 +42,6 @@ const App = observer(props => {
     const { general_store } = useStores();
     const {
         className,
-        custom_strings,
         is_mobile,
         lang,
         loginid,
@@ -100,7 +98,6 @@ const App = observer(props => {
                 changeTab: general_store.handleTabClick,
                 createAdvertiser: general_store.createAdvertiser,
                 currency: general_store.client.currency,
-                email_domain: getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
                 getLocalStorageSettingsForLoginId: general_store.getLocalStorageSettingsForLoginId,
                 handleNotifications: general_store.handleNotifications,
                 inactive_notification_count: general_store.inactive_notification_count,
@@ -174,42 +171,39 @@ const App = observer(props => {
                         )}
                         {should_show_verification && general_store.is_advertiser && <Download />}
                         {!should_show_verification && (
-                            <React.Fragment>
-                                <Tabs
-                                    onTabItemClick={general_store.handleTabClick}
-                                    active_index={general_store.active_index}
-                                    className='p2p-cashier'
-                                    top
-                                    header_fit_content
-                                >
-                                    <div label={localize('Buy / Sell')}>
-                                        {general_store?.is_barred && <TemporaryBarredMessage />}
-                                        <BuySell
+                            <Tabs
+                                onTabItemClick={general_store.handleTabClick}
+                                active_index={general_store.active_index}
+                                className={classNames('p2p-cashier', {
+                                    'p2p-cashier__advertiser-tab': is_mobile && general_store.is_advertiser,
+                                })}
+                                top
+                                header_fit_content
+                            >
+                                <div label={localize('Buy / Sell')}>
+                                    {general_store?.is_barred && <TemporaryBarredMessage />}
+                                    <BuySell navigate={general_store.redirectTo} params={general_store.parameters} />
+                                </div>
+                                <div count={general_store.notification_count} label={localize('Orders')}>
+                                    <Orders
+                                        navigate={general_store.redirectTo}
+                                        params={general_store.parameters}
+                                        chat_info={general_store.chat_info}
+                                    />
+                                </div>
+                                <div label={localize('My ads')}>
+                                    {general_store?.is_barred && <TemporaryBarredMessage />}
+                                    <MyAds navigate={general_store.redirectTo} params={general_store.parameters} />
+                                </div>
+                                {general_store.is_advertiser && (
+                                    <div label={localize('My profile')}>
+                                        <MyProfile
                                             navigate={general_store.redirectTo}
                                             params={general_store.parameters}
                                         />
                                     </div>
-                                    <div count={general_store.notification_count} label={localize('Orders')}>
-                                        <Orders
-                                            navigate={general_store.redirectTo}
-                                            params={general_store.parameters}
-                                            chat_info={general_store.chat_info}
-                                        />
-                                    </div>
-                                    <div label={localize('My ads')}>
-                                        {general_store?.is_barred && <TemporaryBarredMessage />}
-                                        <MyAds navigate={general_store.redirectTo} params={general_store.parameters} />
-                                    </div>
-                                    {general_store.is_advertiser && (
-                                        <div label={localize('My profile')}>
-                                            <MyProfile
-                                                navigate={general_store.redirectTo}
-                                                params={general_store.parameters}
-                                            />
-                                        </div>
-                                    )}
-                                </Tabs>
-                            </React.Fragment>
+                                )}
+                            </Tabs>
                         )}
                     </>
                 )}

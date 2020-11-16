@@ -33,6 +33,7 @@ export default class GeneralStore {
     @observable show_popup = false;
     @observable user_blocked_until = null;
 
+    custom_string = this.props?.custom_string;
     list_item_limit = 20;
     path = {
         buy_sell: 0,

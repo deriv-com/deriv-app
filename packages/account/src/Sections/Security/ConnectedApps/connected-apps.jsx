@@ -43,8 +43,6 @@ class ConnectedApps extends React.Component {
                 is_loading: false,
                 connected_apps: response_connected_apps.oauth_apps,
             });
-        } else {
-            this.setState({ is_error: true });
         }
     };
 

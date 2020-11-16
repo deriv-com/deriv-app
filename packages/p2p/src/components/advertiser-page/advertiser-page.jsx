@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Icon, Loading, Modal, Popover, Table, Tabs, ThemedScrollbars } from '@deriv/components';
+import { Button, Icon, Loading, Modal, Popover, Table, Tabs, Text, ThemedScrollbars } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
 import { generateHexColourFromNickname } from 'Utils/string';
@@ -139,8 +139,10 @@ const AdvertiserPage = observer(props => {
                         </div>
                         <div className='advertiser-page__header-name'>
                             {advertiser_page_store.advertiser_details_name}
-                            {advertiser_page_store.show_advertiser_real_name &&
-                                ` (${advertiser_page_store.advertiser_full_name})`}
+                            <Text color='less-prominent' line_height='xs' size='xs'>
+                                {advertiser_page_store.show_advertiser_real_name &&
+                                    advertiser_page_store.advertiser_full_name}
+                            </Text>
                         </div>
                     </div>
                     <div className='advertiser-page__header-verification'>

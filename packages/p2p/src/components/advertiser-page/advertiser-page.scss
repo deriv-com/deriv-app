@@ -32,6 +32,8 @@
         &-name {
             align-self: center;
             color: var(--text-prominent);
+            display: flex;
+            flex-flow: column;
             font-size: var(--text-size-s);
             font-weight: bold;
             height: fit-content;

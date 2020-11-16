@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ThemedScrollbars } from '@deriv/components';
+import { Text, ThemedScrollbars } from '@deriv/components';
 import { getFormattedText, useIsMounted } from '@deriv/shared';
 import { Localize, localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
@@ -37,6 +37,7 @@ const OrderDetails = ({ order_information, chat_info }) => {
     } = order_information;
 
     const [channel_url, setChannelUrl] = React.useState(chat_channel_url);
+    const has_full_name = other_user_details.first_name && other_user_details.last_name;
     const isMounted = useIsMounted();
 
     React.useEffect(() => {
@@ -101,9 +102,22 @@ const OrderDetails = ({ order_information, chat_info }) => {
                                     <OrderInfoBlock
                                         label={labels.other_party_role}
                                         value={
-                                            other_user_details.first_name && other_user_details.last_name
-                                                ? `${other_user_details.name} (${other_user_details.first_name} ${other_user_details.last_name})`
-                                                : other_user_details.name
+                                            <React.Fragment>
+                                                <Text
+                                                    size={has_full_name ? 's' : 'xs'}
+                                                    color='prominent'
+                                                    line_height='m'
+                                                    weight={has_full_name && 'bold'}
+                                                >
+                                                    {other_user_details.name}
+                                                </Text>
+
+                                                {has_full_name && (
+                                                    <Text size='xs' line_height='xs'>
+                                                        {` ${other_user_details.first_name} ${other_user_details.last_name}`}
+                                                    </Text>
+                                                )}
+                                            </React.Fragment>
                                         }
                                     />
                                 </div>

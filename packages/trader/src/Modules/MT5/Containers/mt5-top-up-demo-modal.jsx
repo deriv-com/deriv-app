@@ -4,7 +4,7 @@ import SuccessDialog from 'App/Containers/Modals/success-dialog.jsx';
 import { Icon, Modal, Button, Money } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { topup_config } from '../Helpers/constants';
+import { getTopUpConfig } from '../Helpers/constants';
 
 const Mt5TopUpDemoModal = ({
     mt5_companies,
@@ -27,7 +27,7 @@ const Mt5TopUpDemoModal = ({
 
     if (!mt5_companies || !current_account) return null;
 
-    const { currency, minimum_amount, additional_amount } = topup_config;
+    const { currency, minimum_amount, additional_amount } = getTopUpConfig();
 
     return (
         <React.Fragment>
@@ -64,19 +64,21 @@ const Mt5TopUpDemoModal = ({
                     </div>
                     <div className='dc-modal__container_top-up-virtual--button'>
                         <Button
-                            is_disabled={current_account.balance > 1000}
+                            is_disabled={current_account.balance > 1000 || is_top_up_virtual_in_progress}
                             type='button'
                             is_loading={is_top_up_virtual_in_progress}
                             onClick={topUpVirtual}
                             primary
                             large
                         >
-                            <Localize
-                                i18n_default_text='Top up &nbsp;<0></0>'
-                                components={[
-                                    <Money key={0} amount={additional_amount} currency={currency} show_currency />,
-                                ]}
-                            />
+                            {!is_top_up_virtual_in_progress && (
+                                <Localize
+                                    i18n_default_text='Top up &nbsp;<0></0>'
+                                    components={[
+                                        <Money key={0} amount={additional_amount} currency={currency} show_currency />,
+                                    ]}
+                                />
+                            )}
                         </Button>
                     </div>
                 </div>

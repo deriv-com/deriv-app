@@ -4,10 +4,12 @@ const getServerName = is_demo => (is_demo ? 'Deriv-Demo' : 'Deriv-Server');
 
 const getBrokerName = () => 'Deriv Limited';
 
-const topup_config = {
-    currency: 'USD',
-    minimum_amount: 1000,
-    additional_amount: 10000,
+const getTopUpConfig = () => {
+    return {
+        currency: 'USD',
+        minimum_amount: 1000,
+        additional_amount: 10000,
+    };
 };
 
 const getPlatformMt5DownloadLink = (platform = undefined) => {
@@ -33,4 +35,4 @@ const getMT5WebTerminalLink = ({ category, loginid }) => {
     return `https://trade.mql5.com/trade?servers=${server}&trade_server=${server}${login && `&login=${login}`}`;
 };
 
-export { getServerName, getBrokerName, getPlatformMt5DownloadLink, getMT5WebTerminalLink, topup_config };
+export { getServerName, getBrokerName, getPlatformMt5DownloadLink, getMT5WebTerminalLink, getTopUpConfig };

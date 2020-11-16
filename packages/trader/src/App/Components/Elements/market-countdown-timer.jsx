@@ -173,7 +173,7 @@ const MarketCountdownTimer = ({ is_main_page, setActiveSymbols, symbol }) => {
                 className={classNames('market-is-closed-overlay__open-at', {
                     'market-is-closed-overlay__open-at--main-page': is_main_page,
                 })}
-                line_height='xx'
+                line_height='x'
                 size='xs'
             >
                 <Localize i18n_default_text='It will reopen at:' />

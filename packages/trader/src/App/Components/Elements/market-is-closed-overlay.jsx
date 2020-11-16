@@ -41,7 +41,7 @@ const MarketIsClosedOverlay = ({ is_eu, is_market_available, onClick }) => {
                     align='center'
                     as='p'
                     className='market-is-closed-overlay__main-message'
-                    line_height='xx'
+                    line_height='x'
                     size='xs'
                 >
                     {message}

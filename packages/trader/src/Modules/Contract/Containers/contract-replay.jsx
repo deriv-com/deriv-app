@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
-import { AutoSizer } from 'react-virtualized/dist/es/AutoSizer';
 import {
     DesktopWrapper,
     Div100vhContainer,
@@ -125,23 +124,17 @@ class ContractReplay extends React.Component {
                                     <ReplayChart />
                                 </DesktopWrapper>
                                 <MobileWrapper>
-                                    <AutoSizer>
-                                        {({ width, height }) => (
-                                            <div style={{ width, height }}>
-                                                {is_digit_contract ? (
-                                                    <React.Fragment>
-                                                        <InfoBoxWidget />
-                                                        <SwipeableWrapper className='replay-chart__container-swipeable-wrapper'>
-                                                            <DigitsWidget />
-                                                            <ReplayChart />
-                                                        </SwipeableWrapper>
-                                                    </React.Fragment>
-                                                ) : (
-                                                    <ReplayChart />
-                                                )}
-                                            </div>
-                                        )}
-                                    </AutoSizer>
+                                    {is_digit_contract ? (
+                                        <React.Fragment>
+                                            <InfoBoxWidget />
+                                            <SwipeableWrapper className='replay-chart__container-swipeable-wrapper'>
+                                                <DigitsWidget />
+                                                <ReplayChart />
+                                            </SwipeableWrapper>
+                                        </React.Fragment>
+                                    ) : (
+                                        <ReplayChart />
+                                    )}
                                 </MobileWrapper>
                             </div>
                         </React.Suspense>

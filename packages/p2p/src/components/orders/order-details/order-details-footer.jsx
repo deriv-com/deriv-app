@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Checkbox, Modal, RadioGroup } from '@deriv/components';
+import { Button, Checkbox, Modal } from '@deriv/components';
 import { useIsMounted } from '@deriv/shared';
 import { requestWS } from 'Utils/websocket';
 import { localize, Localize } from 'Components/i18next';
@@ -50,85 +50,123 @@ const CancelOrderModal = ({ id, hideCancelOrderModal, should_show_cancel_modal }
     );
 };
 
-const ComplainOrderModal = ({ id, is_buy_order_for_user, hideComplainOrderModal, should_show_complain_modal }) => {
-    const isMounted = useIsMounted();
-    const [dispute_reason, setDisputeReason] = React.useState('');
-    const [error_message, setErrorMessage] = React.useState('');
+// Remove when Dispute functionality is ready
 
-    const disputeOrderRequest = () => {
-        requestWS({
-            p2p_order_dispute: 1,
-            id,
-            dispute_reason,
-        }).then(response => {
-            if (isMounted()) {
-                if (response.error) {
-                    setErrorMessage(response.error.message);
-                }
-                hideComplainOrderModal();
-            }
-        });
-    };
-
-    const onChange = reason => {
-        setDisputeReason(reason);
-    };
-
+const ComplainOrderModal = ({ id, hideComplainOrderModal, should_show_complain_modal }) => {
     return (
         <Modal
-            className='complain-modal'
+            className='complain-modal-temp' // Remove class when Dispute functionality is ready
             is_open={should_show_complain_modal}
             toggleModal={hideComplainOrderModal}
-            title={localize('What’s your complaint?')}
+            title={localize('Did something go wrong?')}
             has_close_icon
         >
             <Modal.Body>
-                <RadioGroup
-                    name='reason'
-                    items={[
-                        {
-                            value: is_buy_order_for_user ? 'seller_not_released' : 'buyer_not_paid',
-                            label: is_buy_order_for_user
-                                ? localize('I’ve made full payment, but the seller hasn’t released the funds.')
-                                : localize('I’ve not received any payment.'),
-                        },
-                        {
-                            value: 'buyer_underpaid',
-                            label: is_buy_order_for_user
-                                ? localize('I wasn’t able to make full payment.')
-                                : localize('I’ve received less than the agreed amount.'),
-                        },
-                        {
-                            value: 'buyer_overpaid',
-                            label: is_buy_order_for_user
-                                ? localize('I’ve paid more than the agreed amount.')
-                                : localize('I’ve received more than the agreed amount.'),
-                        },
+                <Localize
+                    i18n_default_text="If you have a problem in using the app or if you have a dispute with the other party that the two of you haven't been able to resolve, please email <0>{{support_email}}</0>. Describe your situation, and include your order <1>ID ({{id}})</1>."
+                    values={{ support_email: `p2p-support@deriv.com`, id }}
+                    components={[
+                        <a
+                            key={0}
+                            className='link order-details--danger' // Remove class when Dispute functionality is ready
+                            rel='noopener noreferrer'
+                            target='_blank'
+                            href={`mailto:p2p-support@deriv.com`}
+                        />,
+                        <span key={1} className='order-details--danger' />,
                     ]}
-                    onToggle={event => {
-                        onChange(event.target.value);
-                    }}
-                    selected={dispute_reason}
-                    required
                 />
-                <div className='order-details__contact-text'>
-                    <Localize i18n_default_text="If your complaint isn't listed here, please contact our Customer Support team." />
-                </div>
             </Modal.Body>
             <Modal.Footer>
-                {error_message && <FormError message={error_message} />}
-                <Button.Group>
-                    <Button secondary type='button' onClick={hideComplainOrderModal} large>
-                        <Localize i18n_default_text='Cancel' />
-                    </Button>
-                    <Button is_disabled={!dispute_reason} primary large onClick={disputeOrderRequest}>
-                        <Localize i18n_default_text='Submit' />
-                    </Button>
-                </Button.Group>
+                <Button primary large onClick={hideComplainOrderModal}>
+                    <Localize i18n_default_text='Close' />
+                </Button>
             </Modal.Footer>
         </Modal>
     );
 };
+
+// Un-comment when Dispute functionality is ready
+//
+// const ComplainOrderModal = ({ id, is_buy_order_for_user, hideComplainOrderModal, should_show_complain_modal }) => {
+//     const isMounted = useIsMounted();
+//     const [dispute_reason, setDisputeReason] = React.useState('');
+//     const [error_message, setErrorMessage] = React.useState('');
+
+//     const disputeOrderRequest = () => {
+//         requestWS({
+//             p2p_order_dispute: 1,
+//             id,
+//             dispute_reason,
+//         }).then(response => {
+//             if (isMounted()) {
+//                 if (response.error) {
+//                     setErrorMessage(response.error.message);
+//                 }
+//                 hideComplainOrderModal();
+//             }
+//         });
+//     };
+
+//     const onChange = reason => {
+//         setDisputeReason(reason);
+//     };
+
+//     return (
+//         <Modal
+//             className='complain-modal'
+//             is_open={should_show_complain_modal}
+//             toggleModal={hideComplainOrderModal}
+//             title={localize('What’s your complaint?')}
+//             has_close_icon
+//         >
+//             <Modal.Body>
+//                 <RadioGroup
+//                     name='reason'
+//                     items={[
+//                         {
+//                             value: is_buy_order_for_user ? 'seller_not_released' : 'buyer_not_paid',
+//                             label: is_buy_order_for_user
+//                                 ? localize('I’ve made full payment, but the seller hasn’t released the funds.')
+//                                 : localize('I’ve not received any payment.'),
+//                         },
+//                         {
+//                             value: 'buyer_underpaid',
+//                             label: is_buy_order_for_user
+//                                 ? localize('I wasn’t able to make full payment.')
+//                                 : localize('I’ve received less than the agreed amount.'),
+//                         },
+//                         {
+//                             value: 'buyer_overpaid',
+//                             label: is_buy_order_for_user
+//                                 ? localize('I’ve paid more than the agreed amount.')
+//                                 : localize('I’ve received more than the agreed amount.'),
+//                         },
+//                     ]}
+//                     onToggle={event => {
+//                         onChange(event.target.value);
+//                     }}
+//                     selected={dispute_reason}
+//                     required
+//                 />
+//                 <div className='order-details__contact-text'>
+//                     <Localize i18n_default_text="If your complaint isn't listed here, please contact our Customer Support team." />
+//                 </div>
+//             </Modal.Body>
+//             <Modal.Footer>
+//                 {error_message && <FormError message={error_message} />}
+//                 <Button.Group>
+//                     <Button secondary type='button' onClick={hideComplainOrderModal} large>
+//                         <Localize i18n_default_text='Cancel' />
+//                     </Button>
+//                     <Button is_disabled={!dispute_reason} primary large onClick={disputeOrderRequest}>
+//                         <Localize i18n_default_text='Submit' />
+//                     </Button>
+//                 </Button.Group>
+//             </Modal.Footer>
+//         </Modal>
+//     );
+// };
 
 const ConfirmOrderModal = ({
     order_information,
@@ -311,7 +349,7 @@ const OrderDetailsFooter = ({ order_information }) => {
                 </div>
                 <ComplainOrderModal
                     id={order_information.id}
-                    is_buy_order_for_user={is_buy_order_for_user}
+                    // is_buy_order_for_user={is_buy_order_for_user}
                     hideComplainOrderModal={hideComplainOrderModal}
                     should_show_complain_modal={should_show_complain_modal}
                 />
@@ -342,7 +380,7 @@ const OrderDetailsFooter = ({ order_information }) => {
                 </div>
                 <ComplainOrderModal
                     id={order_information.id}
-                    is_buy_order_for_user={is_buy_order_for_user}
+                    // is_buy_order_for_user={is_buy_order_for_user}
                     hideComplainOrderModal={hideComplainOrderModal}
                     should_show_complain_modal={should_show_complain_modal}
                 />

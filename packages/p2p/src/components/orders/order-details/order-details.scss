@@ -385,6 +385,11 @@
     &__modal-checkbox {
         margin: 2.4rem -0.7rem;
     }
+
+    &--danger {
+        color: var(--status-danger);
+        font-weight: bold;
+    }
 }
 
 .dc-modal__container {
@@ -440,6 +445,10 @@
                     width: 90%;
                 }
             }
+        }
+        &-temp {
+            height: 270px;
+            width: 450px !important;
         }
     }
     &_confirm-modal {

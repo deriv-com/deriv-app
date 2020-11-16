@@ -148,6 +148,7 @@ export default class TradeStore extends BaseStore {
     constructor({ root_store }) {
         const local_storage_properties = [
             'amount',
+            'currency',
             'barrier_1',
             'barrier_2',
             'basis',
@@ -308,10 +309,23 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     async prepareTradeStore() {
-        // fallback to default currency if current logged-in client hasn't selected a currency yet
-        this.currency = this.root_store.client.currency || this.root_store.client.default_currency;
         this.initial_barriers = { barrier_1: this.barrier_1, barrier_2: this.barrier_2 };
         await when(() => !this.root_store.client.is_populating_account_list);
+
+        // waits for `website_status` in order to set `stake_default` for the selected currency
+        await WS.wait('website_status');
+        runInAction(() => {
+            this.processNewValuesAsync(
+                {
+                    // fallback to default currency if current logged-in client hasn't selected a currency yet
+                    currency: this.root_store.client.currency || this.root_store.client.default_currency,
+                },
+                true,
+                null,
+                false
+            );
+        });
+
         await this.setActiveSymbols();
         const r = await WS.storage.contractsFor(this.symbol);
         if (['InvalidSymbol', 'InputValidationFailed'].includes(r.error?.code)) {
@@ -663,15 +677,16 @@ export default class TradeStore extends BaseStore {
             this.proposal_requests = {};
         }
         if (is_changed_by_user && /\bcurrency\b/.test(Object.keys(obj_new_values))) {
-            const prev_currency =
-                obj_old_values && !isEmptyObject(obj_old_values) && obj_old_values.currency
-                    ? obj_old_values.currency
-                    : this.currency;
-            if (isCryptocurrency(obj_new_values.currency) !== isCryptocurrency(prev_currency)) {
-                obj_new_values.amount =
-                    is_changed_by_user && obj_new_values.amount
-                        ? obj_new_values.amount
-                        : getMinPayout(obj_new_values.currency);
+            const prev_currency = obj_old_values?.currency || this.currency;
+            const has_currency_changed = obj_new_values.currency !== prev_currency;
+
+            const should_reset_stake =
+                isCryptocurrency(obj_new_values.currency) ||
+                // For switch between fiat and crypto and vice versa
+                isCryptocurrency(obj_new_values.currency) !== isCryptocurrency(prev_currency);
+
+            if (has_currency_changed && should_reset_stake) {
+                obj_new_values.amount = obj_new_values.amount || getMinPayout(obj_new_values.currency);
             }
             this.currency = obj_new_values.currency;
         }
@@ -964,14 +979,13 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
-    logoutListener() {
+    async logoutListener() {
         this.should_refresh_active_symbols = true;
         this.clearContracts();
         this.refresh();
-        this.debouncedProposal();
         this.resetErrorServices();
-        this.setContractTypes();
-        return Promise.resolve();
+        await this.setContractTypes();
+        this.debouncedProposal();
     }
 
     @action.bound
@@ -1047,8 +1061,6 @@ export default class TradeStore extends BaseStore {
         if (this.root_store.ui.is_notifications_visible) {
             this.root_store.ui.toggleNotificationsModal();
         }
-        // clear url query string
-        window.history.replaceState(null, null, window.location.pathname);
         if (this.prev_chart_layout) {
             this.prev_chart_layout.is_used = false;
         }

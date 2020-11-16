@@ -30,10 +30,10 @@ class PaymentAgentTransferReceipt extends React.Component {
                         <span className='account-transfer__transfer-details-from'>
                             <Icon icon={`IcCurrency-${this.props.currency.toLowerCase()}`} />
                             <span className='cashier__transferred-details'>
-                                <Text size='xs' line_height='x' weight='bold' className='cashier__text--bold'>
+                                <Text size='xs' line_height='xs' weight='bold' className='cashier__text--bold'>
                                     {getCurrencyName(this.props.currency)}
                                 </Text>
-                                <Text size='xs' line_height='x' color='prominent' className='cashier__text--faint'>
+                                <Text size='xs' line_height='xs' color='prominent' className='cashier__text--faint'>
                                     {this.props.loginid}
                                 </Text>
                             </span>
@@ -42,10 +42,10 @@ class PaymentAgentTransferReceipt extends React.Component {
                         <span className='account-transfer__transfer-details-to'>
                             <Icon icon='IcClient' />
                             <span className='cashier__transferred-details'>
-                                <Text size='xs' line_height='x' weight='bold' className='cashier__text--bold'>
+                                <Text size='xs' line_height='xs' weight='bold' className='cashier__text--bold'>
                                     {this.props.receipt.client_name}
                                 </Text>
-                                <Text size='xs' line_height='x' color='prominent' className='cashier__text--faint'>
+                                <Text size='xs' line_height='xs' color='prominent' className='cashier__text--faint'>
                                     {this.props.receipt.client_id}
                                 </Text>
                             </span>

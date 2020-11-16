@@ -62,7 +62,7 @@ class AccountTransferReceipt extends React.Component {
                     {formatMoney(selected_from.currency, receipt.amount_transferred, true)}
                     <Text
                         size='xs'
-                        line_height='x'
+                        line_height='xs'
                         weight='bold'
                         className={classNames('symbols', `symbols--${selected_from.currency?.toLowerCase()}`)}
                     >

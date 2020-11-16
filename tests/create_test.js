@@ -1,13 +1,7 @@
-require('dotenv').config();
+const path = require('path');
+const fs = require('fs');
 
-module.exports = {
-  config: "node_modules/qawolf/js-jest.config.json",
-  rootDir: "tests",
-  testTimeout: 60000,
-  useTypeScript: false,
-  createTemplate: ({ name }) => {
-    return `
-const assert = require('assert').strict;
+const template = (name) => `const assert = require('assert').strict;
 const qawolf = require('qawolf');
 const {replaceWebsocket} = require('./_utils/websocket'); // TODO: Fix the path
 const {setUp, tearDown} = require('./bootstrap'); // TODO: Fix the path
@@ -39,8 +33,20 @@ afterEach(async () => {
 
 test("${name}", async () => {
       await page.navigate(); 
-      await qawolf.create();
+      await qawolf.create(); // writing tests.
 });
 `;
-  },
-}
+
+(async () => {
+    const args = process.argv.slice(2);
+    const test_name = `[${args[0]}]-${args[1]}`;
+    const file_name = `tests/${args[0]}/${args[1]}.test.js`;
+    const content = template(test_name);
+    const target_dir = path.dirname(file_name);
+    fs.mkdirSync(target_dir, { recursive: true });
+    fs.writeFile(file_name, content, function (err) {
+        if (err) throw err;
+        console.log('Saved!');
+    });
+})();
+

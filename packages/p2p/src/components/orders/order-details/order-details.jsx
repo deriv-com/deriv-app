@@ -98,7 +98,14 @@ const OrderDetails = ({ order_information, chat_info }) => {
                         <div className='order-details__info'>
                             <div className='order-details__info-columns'>
                                 <div className='order-details__info--left'>
-                                    <OrderInfoBlock label={labels.other_party_role} value={other_user_details.name} />
+                                    <OrderInfoBlock
+                                        label={labels.other_party_role}
+                                        value={
+                                            other_user_details.first_name && other_user_details.last_name
+                                                ? `${other_user_details.name} (${other_user_details.first_name} ${other_user_details.last_name})`
+                                                : other_user_details.name
+                                        }
+                                    />
                                 </div>
                                 <div className='order-details__info--right'>
                                     <OrderInfoBlock

@@ -12,8 +12,9 @@ export default class AdvertiserPageStore {
     }
 
     @observable active_index = 0;
-    @observable advertiser_info = {};
     @observable ad = null;
+    @observable advertiser_full_name = '';
+    @observable advertiser_info = {};
     @observable adverts = [];
     @observable counterparty_type = buy_sell.BUY;
     @observable api_error_message = '';
@@ -21,6 +22,7 @@ export default class AdvertiserPageStore {
     @observable is_loading = true;
     @observable is_submit_disabled = true;
     @observable show_ad_popup = false;
+    @observable show_advertiser_real_name = false;
     @observable submitForm = () => {};
 
     height_values = [
@@ -92,7 +94,13 @@ export default class AdvertiserPageStore {
         }).then(response => {
             if (!response.error) {
                 const { p2p_advertiser_info } = response;
+
                 this.setAdvertiserInfo(p2p_advertiser_info);
+                this.setShowAdvertiserRealName(!!p2p_advertiser_info.show_name);
+
+                if (this.show_advertiser_real_name) {
+                    this.setAdvertiserFullName(`${p2p_advertiser_info.first_name} ${p2p_advertiser_info.last_name}`);
+                }
             } else {
                 this.setErrorMessage(response.error);
             }
@@ -143,6 +151,11 @@ export default class AdvertiserPageStore {
     }
 
     @action.bound
+    setAdvertiserFullName(advertiser_full_name) {
+        this.advertiser_full_name = advertiser_full_name;
+    }
+
+    @action.bound
     setAdvertiserInfo(advertiser_info) {
         this.advertiser_info = advertiser_info;
     }
@@ -184,6 +197,11 @@ export default class AdvertiserPageStore {
     @action.bound
     setShowAdPopup(show_ad_popup) {
         this.show_ad_popup = show_ad_popup;
+    }
+
+    @action.bound
+    setShowAdvertiserRealName(show_advertiser_real_name) {
+        this.show_advertiser_real_name = show_advertiser_real_name;
     }
 
     @action.bound

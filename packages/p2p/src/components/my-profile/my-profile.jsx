@@ -1,10 +1,10 @@
 import React from 'react';
 import { Field, Form, Formik } from 'formik';
-import { Button, Icon, Input, Loading, Popover, Table, ThemedScrollbars, Text } from '@deriv/components';
+import { Button, Icon, Input, Loading, Popover, Table, Text, ThemedScrollbars, ToggleSwitch } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
-import { localize } from 'Components/i18next';
+import { localize, Localize } from 'Components/i18next';
 import { generateHexColourFromNickname, getShortNickname } from 'Utils/string';
 import { useStores } from 'Stores';
 import FormError from '../form/error.jsx';
@@ -25,6 +25,7 @@ const MyProfile = observer(() => {
     } = my_profile_store.advertiser_info;
 
     React.useEffect(() => {
+        my_profile_store.getSettings();
         my_profile_store.getAdvertiserInfo();
     }, []);
 
@@ -182,6 +183,29 @@ const MyProfile = observer(() => {
                             </Table.Cell>
                         </Table.Row>
                     </Table>
+                    <div className='my-profile__separator'>
+                        <div className='my-profile__separator-text--privacy'>
+                            <Text size='xs' color='prominent' weight='bold'>
+                                {localize('Privacy setting')}
+                            </Text>
+                        </div>
+                        <div className='my-profile__separator-horizontal_line' />
+                    </div>
+                    <div className='my-profile__toggle-container'>
+                        <ToggleSwitch
+                            id='toggle-name'
+                            classNameLabel='toggle-name__switch'
+                            is_enabled={general_store.should_show_real_name}
+                            handleToggle={my_profile_store.handleToggle}
+                        />
+
+                        <Text size='xs' line_height='m' color='prominent'>
+                            <Localize
+                                i18n_default_text={'Show my real name ({{full_name}})'}
+                                values={{ full_name: my_profile_store.full_name }}
+                            />
+                        </Text>
+                    </div>
                     <div className='my-profile__separator'>
                         <div className='my-profile__separator-text'>
                             <Text size='xs' color='prominent' weight='bold'>

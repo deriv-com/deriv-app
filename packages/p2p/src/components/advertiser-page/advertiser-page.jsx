@@ -139,6 +139,8 @@ const AdvertiserPage = observer(props => {
                         </div>
                         <div className='advertiser-page__header-name'>
                             {advertiser_page_store.advertiser_details_name}
+                            {advertiser_page_store.show_advertiser_real_name &&
+                                ` (${advertiser_page_store.advertiser_full_name})`}
                         </div>
                     </div>
                     <div className='advertiser-page__header-verification'>

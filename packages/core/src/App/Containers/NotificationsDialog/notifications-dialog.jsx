@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { Button, DesktopWrapper, Icon, MobileDialog, MobileWrapper, ThemedScrollbars } from '@deriv/components';
+import { Button, DesktopWrapper, Icon, MobileDialog, MobileWrapper, ThemedScrollbars, Text } from '@deriv/components';
 import { BinaryLink } from 'App/Components/Routes';
 import { connect } from 'Stores/connect';
 import { localize } from '@deriv/translations';
@@ -73,7 +73,7 @@ class NotificationsDialog extends React.Component {
                                                 )}
                                                 to={item.action.route}
                                             >
-                                                <span className='dc-btn__text'>{item.action.text}</span>
+                                                <Text size='xxs'>{item.action.text}</Text>
                                             </BinaryLink>
                                         ) : (
                                             <Button

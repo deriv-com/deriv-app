@@ -10,7 +10,6 @@ import OrderDetailsFooter from './order-details-footer.jsx';
 import OrderDetailsChatbox from './order-details-chatbox.jsx';
 import OrderDetailsTimer from './order-details-timer.jsx';
 import OrderInfoBlock from './order-info-block.jsx';
-import Popup from '../orders/popup.jsx';
 import './order-details.scss';
 
 const OrderDetails = observer(() => {
@@ -123,12 +122,6 @@ const OrderDetails = observer(() => {
                         nickname={other_user_details.name}
                     />
                 )}
-                <Popup
-                    {...order_details_store.popup_options}
-                    onCancel={order_details_store.onCancelClick}
-                    should_show_popup={order_details_store.should_show_popup}
-                    setShouldShowPopup={order_details_store.setShouldShowPopup}
-                />
             </div>
         </div>
     );

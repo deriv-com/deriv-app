@@ -43,8 +43,6 @@ class ConnectedApps extends React.Component {
                 is_loading: false,
                 connected_apps: response_connected_apps.oauth_apps,
             });
-        } else {
-            this.setState({ is_error: true });
         }
     };
 
@@ -93,7 +91,7 @@ class ConnectedApps extends React.Component {
                             <DataList
                                 className='connected-apps'
                                 data_source={this.state.connected_apps}
-                                getRowSize={() => 128}
+                                row_gap={10}
                                 rowRenderer={this.mobileRowRenderer}
                             />
                         </MobileWrapper>

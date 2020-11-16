@@ -108,7 +108,6 @@ $header-height: 3.6em;
             height: 40px;
         }
     }
-
     &__icon-main {
         margin-right: 0.8em;
     }
@@ -116,7 +115,6 @@ $header-height: 3.6em;
         display: inline-block;
         margin-left: auto;
         cursor: pointer;
-
         svg {
             @extend %inline-icon;
             height: 1.6em;

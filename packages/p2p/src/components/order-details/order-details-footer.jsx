@@ -4,7 +4,7 @@ import { Button, Checkbox, Modal, RadioGroup } from '@deriv/components';
 import { useIsMounted } from '@deriv/shared';
 import { requestWS } from 'Utils/websocket';
 import { localize, Localize } from 'Components/i18next';
-import FormError from '../../form/error.jsx';
+import FormError from '../form/error.jsx';
 import './order-details.scss';
 
 const CancelOrderModal = ({ id, hideCancelOrderModal, should_show_cancel_modal }) => {

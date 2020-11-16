@@ -17,6 +17,11 @@ const OrderTableContent = observer(() => {
     const { general_store, order_store } = useStores();
 
     React.useEffect(() => {
+        general_store.setOrderOffset(0);
+        general_store.setOrders([]);
+    }, [general_store.is_active_tab]);
+
+    React.useEffect(() => {
         order_store.setIsLoading(true);
         order_store.loadMoreOrders();
     }, [general_store.order_table_type]);

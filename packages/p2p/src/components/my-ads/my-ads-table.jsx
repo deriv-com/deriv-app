@@ -82,6 +82,8 @@ const MyAdsTable = observer(() => {
 
     React.useEffect(() => {
         my_ads_store.setIsTableLoading(true);
+        my_ads_store.setItemOffset(0);
+        my_ads_store.setAdverts([]);
         my_ads_store.loadMoreAds(my_ads_store.item_offset);
     }, []);
 

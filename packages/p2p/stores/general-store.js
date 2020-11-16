@@ -354,8 +354,6 @@ export default class GeneralStore {
             const { list } = p2p_order_list;
             // it's an array of orders from p2p_order_list
             this.handleNotifications(this.orders, list);
-            this.setOrderOffset(list.length);
-            this.setOrders(list);
         } else if (p2p_order_info) {
             // it's a single order from p2p_order_info
             const idx_order_to_update = this.orders.findIndex(order => order.id === p2p_order_info.id);
@@ -369,8 +367,6 @@ export default class GeneralStore {
             }
             // trigger re-rendering by setting orders again
             this.handleNotifications(this.orders, updated_orders);
-            this.setOrderOffset(updated_orders.length);
-            this.setOrders(updated_orders);
         }
     }
 

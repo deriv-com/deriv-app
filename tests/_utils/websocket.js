@@ -34,8 +34,7 @@ const replaceWebsocket = () => {
                 }
 
                 if (window.messages.length > this.BUFFER_LENGTH) {
-                    // eslint-disable-next-line no-unused-vars
-                    window.messages = window.messages.pop();
+                    window.messages.pop();
                 }
             };
 

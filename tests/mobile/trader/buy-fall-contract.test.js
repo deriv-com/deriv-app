@@ -1,20 +1,11 @@
 const {replaceWebsocket} = require('../../_utils/websocket');
-const {setUp, tearDown} = require('../../bootstrap');
+const {setUp, tearDown, mobile_viewport} = require('../../bootstrap');
 const Trader = require('../../objects/trader');
 
 let browser, context, page;
 
 beforeEach(async () => {
-    const out = await setUp({
-        userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1',
-        viewport: {
-            'width': 375,
-            'height': 667,
-        },
-        deviceScaleFactor: 2,
-        hasTouch: true,
-        defaultBrowserType: 'webkit',
-    });
+    const out = await setUp(mobile_viewport);
     browser = out.browser;
     context = out.context;
     await context.addInitScript(replaceWebsocket);

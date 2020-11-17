@@ -32,45 +32,36 @@ export const clientNotifications = (ui = {}, client = {}) => {
             type: 'danger',
         },
         self_exclusion: excluded_until => {
+            let message, header, action;
             if (client.is_uk) {
-                return {
-                    key: 'self_exclusion',
-                    header: localize('You’re taking a break from trading'),
-                    message: (
-                        <Localize
-                            i18n_default_text='You chose to exclude yourself from trading until {{exclusion_end}}. If you want to remove this self-exclusion, you can do so after {{exclusion_end}} by contacting Customer Support at +447723580049.'
-                            values={{
-                                exclusion_end: formatDate(excluded_until, 'DD/MM/YYYY'),
-                                interpolation: { escapeValue: false },
-                            }}
-                        />
-                    ),
-                    type: 'danger',
-                };
+                header = localize('You’re taking a break from trading');
+                message = (
+                    <Localize
+                        i18n_default_text='You chose to exclude yourself from trading until {{exclusion_end}}. If you want to remove this self-exclusion, you can do so after {{exclusion_end}} by contacting Customer Support at +447723580049.'
+                        values={{
+                            exclusion_end: formatDate(excluded_until, 'DD/MM/YYYY'),
+                            interpolation: { escapeValue: false },
+                        }}
+                    />
+                );
             } else if (client.is_eu) {
-                return {
-                    action: {
-                        onClick: () => window.LC_API.open_chat_window(),
-                        text: localize('Chat now'),
-                    },
-                    key: 'self_exclusion',
-                    header: localize('You’re taking a break from trading'),
-                    message: (
-                        <Localize
-                            i18n_default_text='You chose to exclude yourself from trading until {{exclusion_end}}. If you want to remove this self-exclusion, you can do so at any time by contacting Customer Support via chat.'
-                            values={{
-                                exclusion_end: formatDate(excluded_until, 'DD/MM/YYYY'),
-                                interpolation: { escapeValue: false },
-                            }}
-                        />
-                    ),
-                    type: 'danger',
+                action = {
+                    onClick: () => window.LC_API.open_chat_window(),
+                    text: localize('Chat now'),
                 };
-            }
-            return {
-                key: 'self_exclusion',
-                header: localize('Self-exclusion detected'),
-                message: (
+                header = localize('You’re taking a break from trading');
+                message = (
+                    <Localize
+                        i18n_default_text='You chose to exclude yourself from trading until {{exclusion_end}}. If you want to remove this self-exclusion, you can do so at any time by contacting Customer Support via chat.'
+                        values={{
+                            exclusion_end: formatDate(excluded_until, 'DD/MM/YYYY'),
+                            interpolation: { escapeValue: false },
+                        }}
+                    />
+                );
+            } else {
+                header = localize('Self-exclusion detected');
+                message = (
                     <Localize
                         i18n_default_text='You have opted to be excluded from {{website_domain}} until {{exclusion_end}}. Please <0>contact us</0> for assistance.'
                         values={{
@@ -80,7 +71,13 @@ export const clientNotifications = (ui = {}, client = {}) => {
                         }}
                         components={[<StaticUrl key={0} className='link' href='contact-us' />]}
                     />
-                ),
+                );
+            }
+            return {
+                key: 'self_exclusion',
+                header,
+                message,
+                action,
                 type: 'danger',
             };
         },

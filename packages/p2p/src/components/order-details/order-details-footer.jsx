@@ -4,6 +4,7 @@ import { Button, Checkbox, Modal, RadioGroup } from '@deriv/components';
 import { useIsMounted } from '@deriv/shared';
 import { requestWS } from 'Utils/websocket';
 import { localize, Localize } from 'Components/i18next';
+import { useStores } from 'Stores';
 import FormError from '../form/error.jsx';
 import './order-details.scss';
 
@@ -238,7 +239,8 @@ const ConfirmOrderModal = ({
     );
 };
 
-const OrderDetailsFooter = ({ order_information }) => {
+const OrderDetailsFooter = () => {
+    const { order_store } = useStores();
     const {
         is_buy_order,
         is_my_ad,
@@ -247,7 +249,7 @@ const OrderDetailsFooter = ({ order_information }) => {
         should_show_complain_and_received_button,
         should_show_only_received_button,
         should_show_only_complain_button,
-    } = order_information;
+    } = order_store.order_information;
 
     const is_buy_order_for_user = (is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad);
 
@@ -280,12 +282,12 @@ const OrderDetailsFooter = ({ order_information }) => {
                     </div>
                 </div>
                 <CancelOrderModal
-                    id={order_information.id}
+                    id={order_store.order_information.id}
                     hideCancelOrderModal={hideCancelOrderModal}
                     should_show_cancel_modal={should_show_cancel_modal}
                 />
                 <ConfirmOrderModal
-                    order_information={order_information}
+                    order_information={order_store.order_information}
                     is_buy_order_for_user={is_buy_order_for_user}
                     hideConfirmOrderModal={hideConfirmOrderModal}
                     should_show_confirm_modal={should_show_confirm_modal}
@@ -310,13 +312,13 @@ const OrderDetailsFooter = ({ order_information }) => {
                     </div>
                 </div>
                 <ComplainOrderModal
-                    id={order_information.id}
+                    id={order_store.order_information.id}
                     is_buy_order_for_user={is_buy_order_for_user}
                     hideComplainOrderModal={hideComplainOrderModal}
                     should_show_complain_modal={should_show_complain_modal}
                 />
                 <ConfirmOrderModal
-                    order_information={order_information}
+                    order_information={order_store.order_information}
                     is_buy_order_for_user={is_buy_order_for_user}
                     hideConfirmOrderModal={hideConfirmOrderModal}
                     should_show_confirm_modal={should_show_confirm_modal}
@@ -341,7 +343,7 @@ const OrderDetailsFooter = ({ order_information }) => {
                     </div>
                 </div>
                 <ComplainOrderModal
-                    id={order_information.id}
+                    id={order_store.order_information.id}
                     is_buy_order_for_user={is_buy_order_for_user}
                     hideComplainOrderModal={hideComplainOrderModal}
                     should_show_complain_modal={should_show_complain_modal}
@@ -361,7 +363,7 @@ const OrderDetailsFooter = ({ order_information }) => {
                     </div>
                 </div>
                 <ConfirmOrderModal
-                    order_information={order_information}
+                    order_information={order_store.order_information}
                     is_buy_order_for_user={is_buy_order_for_user}
                     hideConfirmOrderModal={hideConfirmOrderModal}
                     should_show_confirm_modal={should_show_confirm_modal}

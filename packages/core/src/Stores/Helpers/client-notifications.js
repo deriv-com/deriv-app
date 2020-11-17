@@ -66,24 +66,23 @@ export const clientNotifications = (ui = {}, client = {}) => {
                     ),
                     type: 'danger',
                 };
-            } else {
-                return {
-                    key: 'self_exclusion',
-                    header: localize('Self-exclusion detected'),
-                    message: (
-                        <Localize
-                            i18n_default_text='You have opted to be excluded from {{website_domain}} until {{exclusion_end}}. Please <0>contact us</0> for assistance.'
-                            values={{
-                                website_domain: website_name,
-                                exclusion_end: formatDate(excluded_until, 'DD/MM/YYYY'),
-                                interpolation: { escapeValue: false },
-                            }}
-                            components={[<StaticUrl key={0} className='link' href='contact-us' />]}
-                        />
-                    ),
-                    type: 'danger',
-                };
             }
+            return {
+                key: 'self_exclusion',
+                header: localize('Self-exclusion detected'),
+                message: (
+                    <Localize
+                        i18n_default_text='You have opted to be excluded from {{website_domain}} until {{exclusion_end}}. Please <0>contact us</0> for assistance.'
+                        values={{
+                            website_domain: website_name,
+                            exclusion_end: formatDate(excluded_until, 'DD/MM/YYYY'),
+                            interpolation: { escapeValue: false },
+                        }}
+                        components={[<StaticUrl key={0} className='link' href='contact-us' />]}
+                    />
+                ),
+                type: 'danger',
+            };
         },
         authenticate: {
             action: {

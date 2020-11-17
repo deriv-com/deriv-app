@@ -102,18 +102,6 @@
                 }
             }
         }
-        &-tooltip-text,
-        &-text {
-            margin-top: 0.8rem;
-            font-size: 1.2rem;
-            text-align: right;
-        }
-        &-tooltip-text {
-            border-bottom: 1px dotted var(--text-general);
-            text-decoration: none;
-            width: fit-content;
-            margin-left: auto;
-        }
         .dc-datepicker {
             .dc-input {
                 border: 1px solid var(--fill-normal);
@@ -447,6 +435,23 @@
             .trade-container__price-info-value {
                 color: var(--text-prominent);
                 font-size: 1rem;
+            }
+        }
+    }
+    &__multipliers-trade-info {
+        display: flex;
+        justify-content: space-evenly;
+
+        &-tooltip-text {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1.4;
+            padding-top: 0.8rem;
+            font-size: 1.2rem;
+            text-align: right;
+            span {
+                border-bottom: 1px dotted var(--text-general);
             }
         }
     }

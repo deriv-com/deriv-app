@@ -8,6 +8,7 @@ import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { connect } from 'Stores/connect';
 import { localize } from '@deriv/translations';
 import AllowEquals from './allow-equals.jsx';
+import MultipliersInfo from './Multiplier/info.jsx';
 
 const Input = ({
     amount,
@@ -157,6 +158,7 @@ const Amount = ({
                 onChange={onChange}
                 value={parseInt(is_equal)}
             />
+            {is_multiplier && <MultipliersInfo should_show_tooltip={true} />}
         </Fieldset>
     );
 };

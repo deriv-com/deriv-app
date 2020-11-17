@@ -116,6 +116,7 @@ export default class TradeStore extends BaseStore {
     @observable has_cancellation = false;
     @observable commission;
     @observable cancellation_price;
+    @observable stop_out;
     @observable hovered_contract_type;
     @observable cancellation_duration = '60m';
     @observable cancellation_range_list = [];
@@ -851,14 +852,15 @@ export default class TradeStore extends BaseStore {
         };
 
         if (this.is_multiplier && this.proposal_info && this.proposal_info.MULTUP) {
-            const { commission, cancellation } = this.proposal_info.MULTUP;
+            const { commission, cancellation, limit_order } = this.proposal_info.MULTUP;
             // commission and cancellation.ask_price is the same for MULTUP/MULTDOWN
             if (commission) {
                 this.commission = commission;
             }
             if (cancellation) {
-                this.cancellation_price = this.proposal_info.MULTUP.cancellation.ask_price;
+                this.cancellation_price = cancellation.ask_price;
             }
+            this.stop_out = limit_order?.stop_out?.order_amount;
         }
 
         if (!this.main_barrier || !(this.main_barrier.shade !== 'NONE_SINGLE')) {

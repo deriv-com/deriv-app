@@ -1,6 +1,5 @@
 import { website_name } from '../config/app-config';
 import { CookieStorage, isStorageSupported, LocalStore } from '../storage/storage';
-import { isMobileOs } from '../os/os_detect';
 import { getAppId, domain_app_ids } from '../config/config';
 import { getStaticUrl, urlForCurrentDomain } from '../url';
 

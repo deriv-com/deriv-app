@@ -1,110 +1,75 @@
 .buy-sell {
-    &__header {
-        background: var(--state-disabled);
-        padding: 0.4rem;
-        width: fit-content;
-        border-radius: 4px;
+    $mobile_tabs_height: 77px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 
-        &__filters {
-            width: 16.8rem;
-            height: 3.6rem;
+    &__empty {
+        margin-top: calc(#{$mobile_tabs_height} + 2.4rem); // Tabs + Margin
+    }
+
+    &__table {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+
+        @include mobile {
+            margin-top: #{$mobile_tabs_height};
+        }
+
+        &-body {
+            height: 100%;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
     }
-    &__price {
-        color: var(--text-profit-success);
-        font-weight: bold;
+
+    &__data-list {
+        flex: 1;
+
+        &__data-list-body {
+            flex: 1;
+        }
+
+        .data-list__body-wrapper {
+            flex: 1;
+        }
     }
-    &__icon {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        color: var(--text-colored-background);
-        margin-right: 0.8rem;
-        font-size: 12px;
-        line-height: 1.33;
-        width: 2.4rem;
-        height: 2.4rem;
-        white-space: nowrap;
-    }
+
     &__table-header {
         display: grid;
         grid-template-columns: 2fr repeat(3, 1fr);
     }
 
     &__table-row {
+        padding: 1.6rem;
         grid-template-columns: 2fr repeat(3, 1fr);
 
         &:hover {
             background-color: var(--general-hover);
         }
     }
+
     &__cell {
         cursor: pointer;
         display: flex;
+        align-items: center;
     }
+
     &__name {
+        margin-left: 0.8rem;
+
         &:hover {
             color: var(--brand-red-coral);
             text-decoration: underline;
             text-decoration-color: var(--brand-red-coral);
         }
     }
+
     &__button {
         display: flex;
         justify-content: center;
         align-items: center;
-    }
-    &__popup {
-        &-field {
-            margin-bottom: 0 !important;
-            margin-right: 0.7rem;
-            flex: 1;
-
-            &-wrapper {
-                gap: 2.4rem;
-                display: flex;
-                margin-bottom: 1.6rem;
-                align-items: center;
-
-                > .dc-input {
-                    margin-top: 1rem; // Compensate for label.
-                }
-            }
-            &--textarea {
-                margin-top: 4.3rem;
-
-                .dc-input__hint {
-                    top: 9.7rem;
-                }
-                .dc-input__counter {
-                    top: 9.7rem;
-                    right: 0rem;
-                }
-            }
-            &--trailing {
-                font-size: var(--text-size-xxs);
-                color: var(--text-less-prominent);
-            }
-            &--receive-amount {
-                margin-top: 1rem;
-            }
-        }
-        &-info {
-            margin-bottom: 1.6rem;
-
-            &--title {
-                color: var(--text-less-prominent);
-                font-size: var(--text-size-xxs);
-            }
-            &--text {
-                color: var(--text-general);
-                font-size: var(--text-size-xs);
-                word-break: break-word;
-            }
-            &--strong {
-                font-weight: bold;
-            }
-        }
     }
 }

@@ -16,3 +16,10 @@
         color: $color-grey-1;
     }
 }
+
+.dc-input__footer {
+    .dc-field {
+        position: relative;
+        top: unset;
+    }
+}

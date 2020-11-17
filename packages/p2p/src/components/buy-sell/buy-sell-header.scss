@@ -1,0 +1,17 @@
+.buy-sell__header {
+    @include mobile {
+        display: flex;
+        border-bottom: 1px solid var(--general-section-2);
+        justify-content: center;
+        flex: none;
+        position: fixed;
+        width: 100%;
+        background-color: var(--general-main-1);
+        z-index: 1;
+    }
+
+    &-filters {
+        width: 16.8rem;
+        height: 3.6rem;
+    }
+}

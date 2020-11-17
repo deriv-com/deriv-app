@@ -1,0 +1,14 @@
+.p2p-toggle-container {
+    background: var(--state-disabled);
+    padding: 0.4rem;
+    width: fit-content;
+    border-radius: $BORDER_RADIUS;
+
+    @include tablet-up {
+        margin: 2.4rem 0;
+    }
+
+    @include mobile {
+        margin: 1.6rem;
+    }
+}

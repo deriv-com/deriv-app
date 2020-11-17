@@ -66,6 +66,7 @@ class Tabs extends React.Component {
             top,
             bottom,
             center,
+            is_100vw,
             fit_content,
             header_fit_content,
             single_tab_has_no_label,
@@ -77,6 +78,8 @@ class Tabs extends React.Component {
             <div
                 className={classNames('dc-tabs', {
                     [`dc-tabs dc-tabs--${className}`]: className,
+                    'dc-tabs--top': top,
+                    'dc-tabs--100vw': is_100vw,
                 })}
                 style={{ '--tab-width': `${tab_width}` }}
             >

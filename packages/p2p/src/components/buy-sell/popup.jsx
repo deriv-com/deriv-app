@@ -8,7 +8,7 @@ const Popup = ({ advert, handleClose, handleConfirm }) => {
     const { nickname } = React.useContext(Dp2pContext);
 
     return (
-        <div className='buy-sell__popup'>
+        <div className='buy-sell__modal'>
             {nickname ? (
                 <BuySellForm advert={advert} handleClose={handleClose} handleConfirm={handleConfirm} />
             ) : (

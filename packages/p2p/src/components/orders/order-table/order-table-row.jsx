@@ -6,15 +6,16 @@ import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
 import { secondsToTimer } from 'Utils/date-time';
+import { createExtendedOrderDetails } from 'Utils/orders';
 import ServerTime from 'Utils/server-time';
-import { createExtendedOrderDetails } from '../../../utils/orders';
-import { useStores } from '../../../../stores';
+import { useStores } from 'Stores';
 
-const OrderRowComponent = observer(({ data: order, onOpenDetails, style, is_active }) => {
+const OrderRow = observer(({ row: order, onOpenDetails, is_active }) => {
     const { general_store } = useStores();
     const [order_state, setOrderState] = React.useState(order); // Use separate state to force refresh when (FE-)expired.
     const [remaining_time, setRemainingTime] = React.useState();
     const { getLocalStorageSettingsForLoginId } = React.useContext(Dp2pContext);
+    const interval = React.useRef(null);
 
     const {
         account_currency,
@@ -35,38 +36,35 @@ const OrderRowComponent = observer(({ data: order, onOpenDetails, style, is_acti
         status_string,
     } = order_state;
 
-    let interval;
-
     const isOrderSeen = order_id => {
         const { notifications } = getLocalStorageSettingsForLoginId();
         return notifications.some(notification => notification.order_id === order_id && notification.is_seen === true);
     };
 
-    const countDownTimer = () => {
-        const distance = ServerTime.getDistanceToServerTime(order_expiry_milliseconds);
-        const timer = secondsToTimer(distance);
-
-        if (distance < 1) {
-            const { client, props } = general_store;
-            setRemainingTime(localize('expired'));
-            setOrderState(createExtendedOrderDetails(order.order_details, client.loginid, props.server_time));
-            clearInterval(interval);
-        } else {
-            setRemainingTime(timer);
-        }
-    };
-
     React.useEffect(() => {
-        countDownTimer();
-        interval = setInterval(countDownTimer, 1000);
-        return () => clearInterval(interval);
-    }, []);
+        const countDownTimer = () => {
+            const distance = ServerTime.getDistanceToServerTime(order_expiry_milliseconds);
+            const timer = secondsToTimer(distance);
+
+            if (distance < 1) {
+                const { client, props } = general_store;
+                setRemainingTime(localize('expired'));
+                setOrderState(createExtendedOrderDetails(order.order_details, client.loginid, props.server_time));
+                clearInterval(interval.current);
+            } else {
+                setRemainingTime(timer);
+            }
+        };
+
+        interval.current = setInterval(countDownTimer, 1000);
+        return () => clearInterval(interval.current);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const offer_amount = `${amount_display} ${account_currency}`;
     const transaction_amount = `${price_display} ${local_currency}`;
 
     return (
-        <div onClick={() => onOpenDetails(order)} style={style}>
+        <div onClick={() => onOpenDetails(order)}>
             <Table.Row
                 className={classNames('orders__table-row orders__table-grid', {
                     'orders__table-grid--active': is_active,
@@ -108,7 +106,8 @@ const OrderRowComponent = observer(({ data: order, onOpenDetails, style, is_acti
     );
 });
 
-OrderRowComponent.propTypes = {
+OrderRow.displayName = 'OrderRow';
+OrderRow.propTypes = {
     data: PropTypes.shape({
         account_currency: PropTypes.string,
         amount_display: PropTypes.string,
@@ -123,6 +122,4 @@ OrderRowComponent.propTypes = {
     style: PropTypes.object,
 };
 
-OrderRowComponent.displayName = 'OrderRowComponent';
-
-export default OrderRowComponent;
+export default OrderRow;

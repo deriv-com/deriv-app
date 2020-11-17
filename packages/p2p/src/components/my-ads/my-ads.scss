@@ -1,11 +1,16 @@
 .p2p-my-ads {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
     &__header {
         display: flex;
         align-items: center;
-        margin-bottom: 1.6rem;
+        margin: 2.4rem 0 1.6rem;
         justify-content: space-between;
         min-height: 50px;
     }
+
     &__form {
         margin: 2.4rem 0;
 
@@ -91,7 +96,18 @@
             font-size: var(--text-size-xxs);
         }
     }
+
     &__table {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+
+        &-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
         &-price {
             color: var(--text-profit-success);
             font-weight: bold;
@@ -114,6 +130,7 @@
             }
         }
         &-row {
+            padding: 1.6rem;
             grid-template-columns: 2fr 2fr 2fr 2fr 1fr;
         }
         &--disabled {
@@ -130,6 +147,7 @@
             }
         }
     }
+
     &__popup {
         &-header {
             border-bottom: 1px solid var(--general-section-2);
@@ -246,6 +264,7 @@
             fill: var(--text-general);
         }
     }
+
     &__empty {
         width: fit-content;
         margin: 0 auto;
@@ -260,12 +279,25 @@
             height: 40px;
         }
     }
+
     &__state {
         text-align: center;
         margin: 0 auto;
 
         &-button {
             margin-top: 12px;
+        }
+    }
+
+    &__data-list {
+        flex: 1;
+
+        &__data-list-body {
+            flex: 1;
+        }
+
+        .data-list__body-wrapper {
+            flex: 1;
         }
     }
 }
@@ -275,7 +307,6 @@
     display: flex;
     font-size: var(--text-size-s);
     justify-items: flex-start;
-    margin-right: -50px; // Minus half of &__switch width
 
     &__switch {
         transform: scale(0.5) translateX(-50%);

@@ -1,8 +1,8 @@
 import { observable, action, runInAction } from 'mobx';
 import { isEmptyObject, epochToMoment, getSocketURL } from '@deriv/shared';
-import { orderToggleIndex } from 'Components/orders/order-info.js';
-import { createExtendedOrderDetails } from 'Utils/orders.js';
-import { init as WebsocketInit, requestWS, subscribeWS } from 'Utils/websocket.js';
+import { orderToggleIndex } from 'Components/orders/order-info';
+import { createExtendedOrderDetails } from 'Utils/orders';
+import { init as WebsocketInit, requestWS, subscribeWS } from 'Utils/websocket';
 
 export default class GeneralStore {
     constructor(root_store) {
@@ -24,6 +24,7 @@ export default class GeneralStore {
     @observable nickname = null;
     @observable nickname_error = null;
     @observable notification_count = 0;
+    @observable order_id = null;
     @observable order_offset = 0;
     @observable order_table_type = orderToggleIndex.ACTIVE;
     @observable orders = [];
@@ -80,9 +81,9 @@ export default class GeneralStore {
 
         if (isEmptyObject(local_storage_settings)) {
             return { is_cached: false, notifications: [] };
-        } else {
-            return local_storage_settings;
         }
+
+        return local_storage_settings;
     };
 
     @action.bound
@@ -276,6 +277,15 @@ export default class GeneralStore {
     @action.bound
     setNotificationCount(notification_count) {
         this.notification_count = notification_count;
+    }
+
+    @action.bound
+    setOrderId(order_id) {
+        this.order_id = order_id;
+
+        if (typeof this.props.setOrderId === 'function') {
+            this.props.setOrderId(order_id);
+        }
     }
 
     @action.bound

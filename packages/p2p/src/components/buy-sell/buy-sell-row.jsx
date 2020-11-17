@@ -1,0 +1,104 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Table, Text, Button, Icon } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
+import { observer } from 'mobx-react-lite';
+import { Localize, localize } from 'Components/i18next';
+import UserAvatar from 'Components/user/user-avatar';
+import { useStores } from 'Stores';
+import './buy-sell-row.scss';
+
+const BuySellRow = observer(({ row: advert, setSelectedAdvert, showAdvertiserPage }) => {
+    const { general_store } = useStores();
+    const {
+        account_currency,
+        counterparty_type,
+        local_currency,
+        max_order_amount_limit_display,
+        min_order_amount_limit_display,
+        price_display,
+    } = advert;
+
+    const is_my_advert = advert.advertiser_details.id === general_store.advertiser_id;
+    const is_buy_advert = counterparty_type === 'buy';
+    const { name: advertiser_name } = advert.advertiser_details;
+
+    if (isMobile()) {
+        return (
+            <div className='buy-sell-row'>
+                <div className='buy-sell-row__advertiser'>
+                    <UserAvatar nickname={advertiser_name} size={32} text_size='s' />
+                    <div className='buy-sell-row__advertiser-name'>
+                        <Text size='xs' line_height='m' color='general' weight='bold'>
+                            {advertiser_name}
+                        </Text>
+                    </div>
+                    <Icon className='buy-sell-row__advertiser-arrow' icon='IcChevronRightBold' size={16} />
+                </div>
+                <div className='buy-sell-row__information'>
+                    <div className='buy-sell-row__rate'>
+                        <Text as='div' color='general' line_height='m' size='xxs'>
+                            <Localize
+                                i18n_default_text='Rate (1 {{currency}})'
+                                values={{ currency: general_store.client.currency }}
+                            />
+                        </Text>
+                        <Text as='div' color='profit-success' line_height='m' size='s' weight='bold'>
+                            {price_display} {local_currency}
+                        </Text>
+                        <Text as='div' color='general' line_height='m' size='xxs'>
+                            {min_order_amount_limit_display}&ndash;{max_order_amount_limit_display} {account_currency}
+                        </Text>
+                    </div>
+                    <Button primary large onClick={() => setSelectedAdvert(advert)}>
+                        {is_buy_advert ? (
+                            <Localize i18n_default_text='Buy {{account_currency}}' values={{ account_currency }} />
+                        ) : (
+                            <Localize i18n_default_text='Sell {{account_currency}}' values={{ account_currency }} />
+                        )}
+                    </Button>
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <Table.Row className='buy-sell__table-row'>
+            <Table.Cell>
+                <div className='buy-sell__cell' onClick={() => showAdvertiserPage(advert)}>
+                    <UserAvatar nickname={advertiser_name} size={24} text_size='xxs' />
+                    <div className='buy-sell__name'>{advertiser_name}</div>
+                </div>
+            </Table.Cell>
+            <Table.Cell>
+                {min_order_amount_limit_display}&ndash;{max_order_amount_limit_display} {account_currency}
+            </Table.Cell>
+            <Table.Cell>
+                <Text color='profit-success' size='xs' line-height='m' weight='bold'>
+                    {price_display} {local_currency}
+                </Text>
+            </Table.Cell>
+            {is_my_advert ? (
+                <Table.Cell />
+            ) : (
+                <Table.Cell className='buy-sell__button'>
+                    <Button primary small onClick={() => setSelectedAdvert(advert)}>
+                        {is_buy_advert
+                            ? localize('Buy {{account_currency}}', { account_currency })
+                            : localize('Sell {{account_currency}}', { account_currency })}
+                    </Button>
+                </Table.Cell>
+            )}
+        </Table.Row>
+    );
+});
+
+BuySellRow.displayName = 'BuySellRow';
+BuySellRow.propTypes = {
+    advert: PropTypes.object,
+    is_buy: PropTypes.bool,
+    setSelectedAdvert: PropTypes.func,
+    style: PropTypes.object,
+};
+
+export default BuySellRow;

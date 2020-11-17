@@ -167,7 +167,7 @@ const SaveModal = ({
     is_mobile ? (
         <MobileFullPageModal
             is_modal_open={is_save_modal_open}
-            className='save-modal'
+            className='save-modal__wrapper'
             header={localize('Save strategy')}
             onClickClose={toggleSaveModal}
             height_offset='80px'

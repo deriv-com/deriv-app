@@ -1,53 +1,32 @@
 import React from 'react';
-import { Button, Icon, Loading, Modal, Popover, Table, Tabs, ThemedScrollbars } from '@deriv/components';
+import {
+    Button,
+    Icon,
+    InfiniteDataList,
+    Loading,
+    Modal,
+    Popover,
+    Table,
+    Tabs,
+    Text,
+    ThemedScrollbars,
+} from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
-import { generateHexColourFromNickname } from 'Utils/string';
-import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
-import { useStores } from 'Stores';
+import { buy_sell } from 'Constants/buy-sell';
+import BuySellForm from 'Components/buy-sell/buy-sell-form.jsx';
 import Empty from 'Components/empty/empty.jsx';
-import NicknameForm from '../nickname/nickname-form.jsx';
-import { buy_sell } from '../../constants/buy-sell';
-import BuySellForm from '../buy-sell/buy-sell-form.jsx';
-import FormError from '../form/error.jsx';
-import { localize } from '../i18next';
+import FormError from 'Components/form/error.jsx';
+import { localize } from 'Components/i18next';
+import NicknameForm from 'Components/nickname/nickname-form.jsx';
+import UserAvatar from 'Components/user/user-avatar/user-avatar.jsx';
+import { useStores } from 'Stores';
+import AdvertiserPageRow from './advertiser-page-row.jsx';
 import './advertiser-page.scss';
-
-const RowComponent = React.memo(({ data: advert, showAdPopup, style }) => {
-    const { advertiser_page_store, general_store } = useStores();
-    const { currency } = general_store.client;
-    const { local_currency, max_order_amount_limit_display, min_order_amount_limit_display, price_display } = advert;
-
-    const is_buy_advert = advertiser_page_store.counterparty_type === buy_sell.BUY;
-    const is_my_advert = advertiser_page_store.advertiser_details_id === general_store.advertiser_id;
-
-    return (
-        <div style={style}>
-            <Table.Row className='advertiser-page__adverts-table_row'>
-                <Table.Cell>
-                    {`${min_order_amount_limit_display}-${max_order_amount_limit_display} ${currency}`}
-                </Table.Cell>
-                <Table.Cell className='advertiser-page__adverts-price'>
-                    {price_display} {local_currency}
-                </Table.Cell>
-                {is_my_advert ? (
-                    <Table.Cell />
-                ) : (
-                    <Table.Cell className='advertiser-page__adverts-button'>
-                        <Button primary small onClick={() => showAdPopup(advert)}>
-                            {is_buy_advert ? localize('Buy') : localize('Sell')} {currency}
-                        </Button>
-                    </Table.Cell>
-                )}
-            </Table.Row>
-        </div>
-    );
-});
-
-RowComponent.displayName = 'RowComponent';
 
 const AdvertiserPage = observer(props => {
     const { advertiser_page_store, general_store } = useStores();
+
     advertiser_page_store.setAdvertiserPageProps(props);
 
     const {
@@ -61,17 +40,14 @@ const AdvertiserPage = observer(props => {
         total_orders_count,
     } = advertiser_page_store.advertiser_info;
 
-    const avg_release_time_in_minutes = release_time_avg > 60 ? Math.round(release_time_avg / 60) : '< 1';
-    const Form = general_store.nickname ? BuySellForm : NicknameForm;
-
-    const Row = row_props => <RowComponent {...row_props} showAdPopup={advertiser_page_store.showAdPopup} />;
-
     React.useEffect(() => {
         advertiser_page_store.onMount();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {
         advertiser_page_store.onTabChange();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [advertiser_page_store.active_index]);
 
     if (advertiser_page_store.is_loading) {
@@ -82,12 +58,19 @@ const AdvertiserPage = observer(props => {
         return <div className='advertiser-page__error'>{advertiser_page_store.error_message}</div>;
     }
 
+    const avg_release_time_in_minutes = release_time_avg > 60 ? Math.round(release_time_avg / 60) : '< 1';
+    const Form = general_store.nickname ? BuySellForm : NicknameForm;
+
+    const AdvertiserPageRowRenderer = row_props => (
+        <AdvertiserPageRow {...row_props} showAdPopup={advertiser_page_store.showAdPopup} />
+    );
+
     return (
         <div className='advertiser-page'>
             <div className='advertiser-page__container'>
                 {advertiser_page_store.show_ad_popup && (
                     <Modal
-                        className='buy-sell__popup'
+                        className='buy-sell__modal'
                         height={advertiser_page_store.counterparty_type === buy_sell.BUY ? '400px' : '649px'}
                         width='456px'
                         is_open={advertiser_page_store.show_ad_popup}
@@ -127,18 +110,15 @@ const AdvertiserPage = observer(props => {
                 )}
                 <div className='advertiser-page__header'>
                     <div className='advertiser-page__header-details'>
-                        <div
-                            className='advertiser-page__header-avatar'
-                            style={{
-                                backgroundColor: generateHexColourFromNickname(
-                                    advertiser_page_store.advertiser_details_name
-                                ),
-                            }}
-                        >
-                            {advertiser_page_store.short_name}
-                        </div>
+                        <UserAvatar
+                            nickname={advertiser_page_store.advertiser_details_name}
+                            size={32}
+                            text_size='xxs'
+                        />
                         <div className='advertiser-page__header-name'>
-                            {advertiser_page_store.advertiser_details_name}
+                            <Text color='prominent' line-height='m' size='s' weight='bold'>
+                                {advertiser_page_store.advertiser_details_name}
+                            </Text>
                         </div>
                     </div>
                     <div className='advertiser-page__header-verification'>
@@ -229,37 +209,41 @@ const AdvertiserPage = observer(props => {
                         <div label={localize('Buy')} />
                         <div label={localize('Sell')} />
                     </Tabs>
-                    <div className='advertiser-page__adverts-table'>
-                        {advertiser_page_store.adverts.length ? (
-                            <Table>
-                                <Table.Header>
-                                    <Table.Row className='advertiser-page__adverts-table_row'>
-                                        <Table.Head>{localize('Limits')}</Table.Head>
-                                        <Table.Head>
-                                            {localize('Rate (1 {{currency}})', {
-                                                currency: general_store.client.currency,
-                                            })}
-                                        </Table.Head>
-                                        <Table.Head>{''}</Table.Head>
-                                    </Table.Row>
-                                </Table.Header>
-                                <ThemedScrollbars className='advertiser-page__adverts-scrollbar'>
-                                    <Table.Body>
-                                        <InfiniteLoaderList
-                                            autosizer_height={`calc(${advertiser_page_store.height_values.join(
-                                                ' - '
-                                            )})`}
+                    {advertiser_page_store.is_loading_adverts ? (
+                        <div className='advertiser-page__adverts-table'>
+                            <Loading is_fullscreen={false} />
+                        </div>
+                    ) : (
+                        <React.Fragment>
+                            {advertiser_page_store.adverts.length ? (
+                                <Table className='advertiser-page__adverts-table'>
+                                    <Table.Header>
+                                        <Table.Row className='advertiser-page__adverts-table_row'>
+                                            <Table.Head>{localize('Limits')}</Table.Head>
+                                            <Table.Head>
+                                                {localize('Rate (1 {{currency}})', {
+                                                    currency: general_store.client.currency,
+                                                })}
+                                            </Table.Head>
+                                            <Table.Head>{''}</Table.Head>
+                                        </Table.Row>
+                                    </Table.Header>
+                                    <Table.Body className='advertiser-page__adverts-table-body'>
+                                        <InfiniteDataList
+                                            data_list_className='advertiser-page__data-list'
                                             items={advertiser_page_store.adverts}
-                                            item_size={advertiser_page_store.item_height}
-                                            RenderComponent={Row}
+                                            keyMapperFn={item => item.id}
+                                            rowRenderer={AdvertiserPageRowRenderer}
+                                            loadMoreRowsFn={advertiser_page_store.loadMoreAdvertiserAdverts}
+                                            has_more_items_to_load={advertiser_page_store.has_more_adverts_to_load}
                                         />
                                     </Table.Body>
-                                </ThemedScrollbars>
-                            </Table>
-                        ) : (
-                            <Empty icon='IcCashierNoAds' title={localize('No ads')} />
-                        )}
-                    </div>
+                                </Table>
+                            ) : (
+                                <Empty icon='IcCashierNoAds' title={localize('No ads')} />
+                            )}
+                        </React.Fragment>
+                    )}
                 </div>
             </div>
         </div>

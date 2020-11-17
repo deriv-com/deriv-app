@@ -21,7 +21,7 @@ const OrderTableHeader = ({ is_active, children }) => (
                 <Table.Head>{localize('Time')}</Table.Head>
             </Table.Row>
         </Table.Header>
-        <Table.Body>{children}</Table.Body>
+        <Table.Body className='orders__table-body'>{children}</Table.Body>
     </Table>
 );
 

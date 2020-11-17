@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 const Field = ({ message, className, type }) => (
-    <p
+    <div
         className={classNames('dc-field', className, {
             'dc-field--error': type === 'error',
             'dc-field--warn': type === 'warn',
         })}
     >
         {message}
-    </p>
+    </div>
 );
 
 Field.propTypes = {

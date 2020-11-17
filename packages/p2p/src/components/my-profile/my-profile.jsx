@@ -26,6 +26,7 @@ const MyProfile = observer(() => {
 
     React.useEffect(() => {
         my_profile_store.getAdvertiserInfo();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const setCurrentFocus = target => {
@@ -35,6 +36,7 @@ const MyProfile = observer(() => {
     if (my_profile_store.is_loading) {
         return <Loading is_fullscreen={false} />;
     }
+
     if (my_profile_store.error_message) {
         return (
             <div className='my-profile__error'>
@@ -89,7 +91,6 @@ const MyProfile = observer(() => {
                         ) : null}
                     </div>
                 </div>
-
                 <React.Fragment>
                     <Table>
                         <Table.Row className='my-profile__stats'>
@@ -120,7 +121,7 @@ const MyProfile = observer(() => {
                                     </Text>
                                 </Table.Cell>
                             ) : (
-                                <>
+                                <React.Fragment>
                                     <Table.Cell className='my-profile__stats-cell'>
                                         <Text
                                             size={isMobile() ? 'xxxs' : 'xs'}
@@ -152,7 +153,7 @@ const MyProfile = observer(() => {
                                             {sell_orders_count || '-'}
                                         </Text>
                                     </Table.Cell>
-                                </>
+                                </React.Fragment>
                             )}
                             <div className='my-profile__stats-cell-separator' />
                             <Table.Cell className='my-profile__stats-cell'>
@@ -216,6 +217,7 @@ const MyProfile = observer(() => {
                                                     label={localize('Payment details')}
                                                     error={errors.payment_info}
                                                     hint={localize('e.g. your bank/e-wallet account details')}
+                                                    is_relative_hint
                                                     className='my-profile__form-textarea'
                                                     has_character_counter
                                                     initial_character_count={my_profile_store.payment_info.length}
@@ -249,6 +251,7 @@ const MyProfile = observer(() => {
                                                     label={localize('Instructions')}
                                                     error={errors.default_advert_description}
                                                     hint={localize('This information will be visible to everyone.')}
+                                                    is_relative_hint
                                                     className='my-profile__form-textarea'
                                                     has_character_counter
                                                     initial_character_count={

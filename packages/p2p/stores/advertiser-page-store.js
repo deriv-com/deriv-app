@@ -1,7 +1,6 @@
 import { action, observable } from 'mobx';
-import { buy_sell } from '../src/constants/buy-sell';
+import { buy_sell } from 'Constants/buy-sell';
 import { getShortNickname } from 'Utils/string';
-import { height_constants } from 'Utils/height_constants';
 import { localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
 
@@ -18,24 +17,15 @@ export default class AdvertiserPageStore {
     @observable counterparty_type = buy_sell.BUY;
     @observable api_error_message = '';
     @observable form_error_message = '';
+    @observable has_more_adverts_to_load = false;
     @observable is_loading = true;
+    @observable is_loading_adverts = true;
     @observable is_submit_disabled = true;
     @observable show_ad_popup = false;
     @observable submitForm = () => {};
 
-    height_values = [
-        height_constants.screen,
-        height_constants.advertiser_page_content,
-        height_constants.core_header,
-        height_constants.core_footer,
-        height_constants.filters,
-        height_constants.filters_margin,
-        height_constants.page_overlay_header,
-        height_constants.page_overlay_content_padding,
-        height_constants.table_header,
-        height_constants.tabs,
-    ];
-    item_height = 56;
+    item_offset = 0;
+
     props = {};
 
     get account_currency() {
@@ -57,28 +47,36 @@ export default class AdvertiserPageStore {
     get modal_title() {
         if (this.counterparty_type === buy_sell.BUY) {
             return localize('Buy {{ currency }}', { currency: this.account_currency });
-        } else {
-            return localize('Sell {{ currency }}', { currency: this.account_currency });
         }
+
+        return localize('Sell {{ currency }}', { currency: this.account_currency });
     }
 
     get short_name() {
         return getShortNickname(this.advertiser_details_name);
     }
 
-    @action.bound
-    getAdvertiserAdverts() {
+    loadMoreAdvertiserAdverts({ startIndex }) {
+        this.setIsLoadingAdverts(true);
+
         requestWS({
             p2p_advert_list: 1,
             counterparty_type: this.counterparty_type,
             advertiser_id: this.advertiser_details_id,
+            offset: startIndex,
+            limit: this.general_store.list_item_limit,
         }).then(response => {
-            if (!response.error) {
-                const { list } = response.p2p_advert_list;
-                this.setAdverts(list);
-            } else {
+            if (response.error) {
                 this.setErrorMessage(response.error);
+            } else {
+                const { list } = response.p2p_advert_list;
+
+                this.setAdverts(list);
+                this.setHasMoreAdvertsToLoad(list.length >= this.general_store.list_item_limit);
+                this.item_offset += list.length;
             }
+
+            this.setIsLoadingAdverts(false);
         });
     }
 
@@ -123,13 +121,14 @@ export default class AdvertiserPageStore {
 
     @action.bound
     onMount() {
-        this.getAdvertiserAdverts();
+        this.loadMoreAdvertiserAdverts({ startIndex: 0 });
         this.getAdvertiserInfo();
     }
 
-    @action.bound
     onTabChange() {
-        this.getAdvertiserAdverts();
+        this.setAdverts([]);
+        this.item_offset = 0;
+        this.loadMoreAdvertiserAdverts({ startIndex: 0 });
     }
 
     @action.bound
@@ -172,8 +171,18 @@ export default class AdvertiserPageStore {
     }
 
     @action.bound
+    setHasMoreAdvertsToLoad(has_more_adverts_to_load) {
+        this.has_more_adverts_to_load = has_more_adverts_to_load;
+    }
+
+    @action.bound
     setIsLoading(is_loading) {
         this.is_loading = is_loading;
+    }
+
+    @action.bound
+    setIsLoadingAdverts(is_loading_adverts) {
+        this.is_loading_adverts = is_loading_adverts;
     }
 
     @action.bound

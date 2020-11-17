@@ -147,8 +147,10 @@ class ExtendedOrderDetails {
 
     get should_show_complain_and_received_button() {
         if (this.is_finalised_order) return false;
-
-        return (this.is_expired_order || (this.is_ongoing_order && this.has_timer_expired)) && this.is_my_ad;
+        if (this.is_buy_order) {
+            return this.is_my_ad && (this.is_buyer_confirmed_order || this.is_expired_order);
+        }
+        return !this.is_my_ad && (this.is_buyer_confirmed_order || this.is_expired_order);
     }
 
     // Only show the complain button for expired orders (determined by backend), or for orders
@@ -158,7 +160,7 @@ class ExtendedOrderDetails {
     get should_show_only_complain_button() {
         if (this.is_finalised_order) return false;
 
-        return (this.is_expired_order || (this.is_ongoing_order && this.has_timer_expired)) && !this.is_my_ad;
+        return this.is_expired_order || (this.is_ongoing_order && this.has_timer_expired);
     }
 
     get should_show_only_received_button() {

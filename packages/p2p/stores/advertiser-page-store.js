@@ -1,4 +1,4 @@
-import { action, observable } from 'mobx';
+import { action, observable, computed } from 'mobx';
 import { buy_sell } from '../src/constants/buy-sell';
 import { getShortNickname } from 'Utils/string';
 import { height_constants } from 'Utils/height_constants';
@@ -13,7 +13,8 @@ export default class AdvertiserPageStore {
 
     @observable active_index = 0;
     @observable ad = null;
-    @observable advertiser_full_name = '';
+    @observable advertiser_first_name = '';
+    @observable advertiser_last_name = '';
     @observable advertiser_info = {};
     @observable adverts = [];
     @observable counterparty_type = buy_sell.BUY;
@@ -40,22 +41,32 @@ export default class AdvertiserPageStore {
     item_height = 56;
     props = {};
 
+    @computed
     get account_currency() {
         return this.props?.selected_advert.account_currency;
     }
 
+    @computed
     get advertiser_details() {
         return this.props?.selected_advert.advertiser_details || {};
     }
 
+    @computed
     get advertiser_details_id() {
         return this.props?.selected_advert.advertiser_details.id;
     }
 
+    @computed
     get advertiser_details_name() {
         return this.props?.selected_advert.advertiser_details.name;
     }
 
+    @computed
+    get advertiser_full_name() {
+        return `${this.advertiser_first_name} ${this.advertiser_last_name}`;
+    }
+
+    @computed
     get modal_title() {
         if (this.counterparty_type === buy_sell.BUY) {
             return localize('Buy {{ currency }}', { currency: this.account_currency });
@@ -64,6 +75,7 @@ export default class AdvertiserPageStore {
         }
     }
 
+    @computed
     get short_name() {
         return getShortNickname(this.advertiser_details_name);
     }
@@ -97,10 +109,8 @@ export default class AdvertiserPageStore {
 
                 this.setAdvertiserInfo(p2p_advertiser_info);
                 this.setShowAdvertiserRealName(!!p2p_advertiser_info.show_name);
-
-                if (this.show_advertiser_real_name) {
-                    this.setAdvertiserFullName(`${p2p_advertiser_info.first_name} ${p2p_advertiser_info.last_name}`);
-                }
+                p2p_advertiser_info.first_name && this.setAdvertiserFirstName(p2p_advertiser_info.first_name);
+                p2p_advertiser_info.last_name && this.setAdvertiserLastName(p2p_advertiser_info.last_name);
             } else {
                 this.setErrorMessage(response.error);
             }
@@ -151,8 +161,13 @@ export default class AdvertiserPageStore {
     }
 
     @action.bound
-    setAdvertiserFullName(advertiser_full_name) {
-        this.advertiser_full_name = advertiser_full_name;
+    setAdvertiserFirstName(advertiser_first_name) {
+        this.advertiser_first_name = advertiser_first_name;
+    }
+
+    @action.bound
+    setAdvertiserLastName(advertiser_last_name) {
+        this.advertiser_last_name = advertiser_last_name;
     }
 
     @action.bound

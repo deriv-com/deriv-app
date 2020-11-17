@@ -193,8 +193,8 @@ const MyProfile = observer(() => {
                     </div>
                     <div className='my-profile__toggle-container'>
                         <ToggleSwitch
-                            id='toggle-name'
-                            classNameLabel='toggle-name__switch'
+                            id='p2p-toggle-name'
+                            classNameLabel='p2p-toggle-name__switch'
                             is_enabled={general_store.should_show_real_name}
                             handleToggle={my_profile_store.handleToggle}
                         />

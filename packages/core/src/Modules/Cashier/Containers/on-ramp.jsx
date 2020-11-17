@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Modal } from '@deriv/components';
-import { Localize } from '@deriv/translations';
+import { Modal, SelectNative, MobileWrapper, DesktopWrapper, ReadMore, Text } from '@deriv/components';
+import { routes } from '@deriv/shared';
+import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import OnRampProviderCard from '../Components/on-ramp-provider-card.jsx';
 import OnRampProviderPopup from '../Components/on-ramp-provider-popup.jsx';
@@ -21,7 +22,9 @@ const OnRampSideNote = () => {
 
 const OnRamp = ({
     filtered_onramp_providers,
+    history,
     is_onramp_modal_open,
+    menu_options,
     onMountOnramp,
     onUnmountOnramp,
     onramp_popup_modal_title,
@@ -30,6 +33,13 @@ const OnRamp = ({
     should_show_dialog,
     setSideNotes,
 }) => {
+    const [selected_cashier_path, setSelectedCashierPath] = React.useState(routes.cashier_onramp);
+    React.useEffect(() => {
+        if (menu_options) {
+            history.push(selected_cashier_path);
+        }
+    }, [selected_cashier_path]);
+
     React.useEffect(() => {
         onMountOnramp();
         if (typeof setSideNotes === 'function') {
@@ -39,35 +49,112 @@ const OnRamp = ({
         return () => onUnmountOnramp();
     }, [onMountOnramp, onUnmountOnramp]);
 
+    const getActivePaths = () => {
+        const items = [];
+        if (menu_options) {
+            menu_options.forEach(menu_item => {
+                const item = {};
+                item.text = menu_item.label;
+                item.value = menu_item.path;
+                items.push(item);
+            });
+        }
+        return items;
+    };
+
     return (
-        <div className='cashier__wrapper cashier__wrapper--align-left on-ramp'>
-            <h2 className='on-ramp__page-header'>
-                <Localize i18n_default_text='Select payment channel' />
-            </h2>
-            {filtered_onramp_providers.map(provider => (
-                <OnRampProviderCard key={provider.name} provider={provider} />
-            ))}
-            <Modal
-                className='on-ramp__modal'
-                has_close_icon
-                is_open={is_onramp_modal_open}
-                small={should_show_dialog}
-                title={onramp_popup_modal_title}
-                toggleModal={() => setIsOnRampModalOpen(!is_onramp_modal_open)}
-                onUnmount={resetPopup}
-                width={should_show_dialog ? '440px' : '628px'}
-            >
-                <Modal.Body>
-                    <OnRampProviderPopup />
-                </Modal.Body>
-            </Modal>
-        </div>
+        <React.Fragment>
+            <MobileWrapper>
+                <div className='cashier__wrapper cashier__wrapper--align-left on-ramp'>
+                    <SelectNative
+                        className='on-ramp__selector'
+                        list_items={getActivePaths()}
+                        value={selected_cashier_path}
+                        should_show_empty_option={false}
+                        onChange={e => {
+                            if (e.currentTarget.value !== selected_cashier_path) {
+                                setSelectedCashierPath(e.currentTarget.value);
+                            }
+                        }}
+                    />
+                    <div className='on-ramp__info'>
+                        <Text color='prominent' size='s' weight='bold' className='on-ramp__info-header' as='p'>
+                            <Localize i18n_default_text='What is Fiat onramp?' />
+                        </Text>
+
+                        <div className='on-ramp__info-content'>
+                            <ReadMore
+                                extend_text={localize('See more')}
+                                text={localize(
+                                    'Fiat onramp is a cashier service that allows you to convert fiat currencies to crypto to top up your Deriv crypto accounts. Listed here are third-party crypto exchanges. You’ll need to create an account with them to use their services.'
+                                )}
+                                collapse_length={140}
+                                className='on-ramp__read-more'
+                                text_props={{ size: 'xxs', line_height: 'm' }}
+                            />
+                        </div>
+                    </div>
+                    <Text
+                        weight='bold'
+                        color='less-prominent'
+                        align='center'
+                        line_height='m'
+                        className='on-ramp__page-header'
+                        as='p'
+                    >
+                        <Localize i18n_default_text='Select payment channel' />
+                    </Text>
+                    {filtered_onramp_providers.map(provider => (
+                        <OnRampProviderCard key={provider.name} provider={provider} />
+                    ))}
+                    <Modal
+                        className='on-ramp__modal'
+                        has_close_icon
+                        is_open={is_onramp_modal_open}
+                        small={should_show_dialog}
+                        title={onramp_popup_modal_title}
+                        toggleModal={() => setIsOnRampModalOpen(!is_onramp_modal_open)}
+                        onUnmount={resetPopup}
+                        width={should_show_dialog ? '440px' : '628px'}
+                    >
+                        <Modal.Body>
+                            <OnRampProviderPopup />
+                        </Modal.Body>
+                    </Modal>
+                </div>
+            </MobileWrapper>
+            <DesktopWrapper>
+                <div className='cashier__wrapper cashier__wrapper--align-left on-ramp'>
+                    <Text weight='bold' color='general' line_height='m' className='on-ramp__page-header' a='p'>
+                        <Localize i18n_default_text='Select payment channel' />
+                    </Text>
+                    {filtered_onramp_providers.map(provider => (
+                        <OnRampProviderCard key={provider.name} provider={provider} />
+                    ))}
+                    <Modal
+                        className='on-ramp__modal'
+                        has_close_icon
+                        is_open={is_onramp_modal_open}
+                        small={should_show_dialog}
+                        title={onramp_popup_modal_title}
+                        toggleModal={() => setIsOnRampModalOpen(!is_onramp_modal_open)}
+                        onUnmount={resetPopup}
+                        width={should_show_dialog ? '440px' : '628px'}
+                    >
+                        <Modal.Body>
+                            <OnRampProviderPopup />
+                        </Modal.Body>
+                    </Modal>
+                </div>
+            </DesktopWrapper>
+        </React.Fragment>
     );
 };
 
 OnRamp.propTypes = {
     filtered_onramp_providers: PropTypes.array,
     is_onramp_modal_open: PropTypes.bool,
+    menu_options: PropTypes.array,
     onMountOnramp: PropTypes.func,
     onUnmountOnramp: PropTypes.func,
     onramp_popup_modal_title: PropTypes.string,

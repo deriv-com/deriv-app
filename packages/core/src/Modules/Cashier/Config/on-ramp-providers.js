@@ -1,4 +1,3 @@
-import { getCurrencyDisplayCode } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services';
 
@@ -67,18 +66,26 @@ const createChangellyProvider = client => ({
         { dark: 'IcCashierVisaDark', light: 'IcCashierVisaLight' },
         { dark: 'IcCashierMastercardDark', light: 'IcCashierMastercardLight' },
     ],
-    getScriptDependencies: () => ['https://widget.changelly.com/affiliate.js'],
+    getScriptDependencies: () => [],
     getDefaultFromCurrency: () => 'usd',
     getFromCurrencies: () => ['usd', 'eur', 'gbp'],
     getToCurrencies: () => ['bch', 'btc', 'etc', 'eth', 'ltc', 'ust'],
-    getWidgetHtml() {
+    getWidgetHtml: () => {
         return new Promise(resolve => {
-            const currency = getCurrencyDisplayCode(client.currency).toLowerCase();
-            const from_currencies = this.getFromCurrencies().join(',');
-
-            resolve(
-                `<iframe src="https://widget.changelly.com?from=${from_currencies}&to=${currency}&amount=50&address=&fromDefault=${this.default_from_currency}&toDefault=${currency}&theme=danger&merchant_id=iiq3jdt2p44yrfbx&payment_id=&v=2" width="100%" height="475px" class="changelly" scrolling="no" onLoad="function at(t){var e=t.target,i=e.parentNode,n=e.contentWindow,r=function(){return n.postMessage({width:i.offsetWidth},it.url)};window.addEventListener('resize',r),r()};at.apply(this, arguments);" style="min-height: 100%; min-width: 100%; overflow-y: visible; border: none">Can't load widget</iframe>`
-            );
+            const to_currency_list = ['bch', 'btc', 'etc', 'eth', 'ltc', 'ust'];
+            const url = new URL('https://widget.changelly.com?theme=defualt&isPopUp=true');
+            url.searchParams.set('from', 'usd');
+            url.searchParams.append('fromDefault', 'usd');
+            let to_currency = 'etc';
+            if (to_currency_list.includes(client.currency.toLowerCase())) {
+                to_currency = client.currency;
+            }
+            url.searchParams.append('to', to_currency);
+            url.searchParams.append('toDefault', to_currency);
+            url.searchParams.append('amount', 1);
+            url.searchParams.append('merchant_id', 'iiq3jdt2p44yrfbx');
+            window.open(url);
+            resolve();
         });
     },
     onMountWidgetContainer: () => {},

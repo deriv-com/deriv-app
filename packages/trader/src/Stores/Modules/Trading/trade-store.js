@@ -587,7 +587,9 @@ export default class TradeStore extends BaseStore {
                             this.debouncedProposal();
                             this.clearLimitOrderBarriers();
                             this.pushPurchaseDataToGtm(contract_data);
-                            this.is_purchasing_contract = false;
+                            setTimeout(() => {
+                                this.is_purchasing_contract = false;
+                            }, 500);
                             return;
                         }
                     } else if (response.error) {

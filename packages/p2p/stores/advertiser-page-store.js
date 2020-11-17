@@ -109,8 +109,8 @@ export default class AdvertiserPageStore {
 
                 this.setAdvertiserInfo(p2p_advertiser_info);
                 this.setShowAdvertiserRealName(!!p2p_advertiser_info.show_name);
-                p2p_advertiser_info.first_name && this.setAdvertiserFirstName(p2p_advertiser_info.first_name);
-                p2p_advertiser_info.last_name && this.setAdvertiserLastName(p2p_advertiser_info.last_name);
+                this.setAdvertiserFirstName(p2p_advertiser_info.first_name);
+                this.setAdvertiserLastName(p2p_advertiser_info.last_name);
             } else {
                 this.setErrorMessage(response.error);
             }

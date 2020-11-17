@@ -31,22 +31,60 @@ export const clientNotifications = (ui = {}, client = {}) => {
             message: localize('Please set the currency of your account to enable trading.'),
             type: 'danger',
         },
-        self_exclusion: excluded_until => ({
-            key: 'self_exclusion',
-            header: localize('Self-exclusion detected'),
-            message: (
-                <Localize
-                    i18n_default_text='You have opted to be excluded from {{website_domain}} until {{exclusion_end}}. Please <0>contact us</0> for assistance.'
-                    values={{
-                        website_domain: website_name,
-                        exclusion_end: formatDate(excluded_until, 'DD/MM/YYYY'),
-                        interpolation: { escapeValue: false },
-                    }}
-                    components={[<StaticUrl key={0} className='link' href='contact-us' />]}
-                />
-            ),
-            type: 'danger',
-        }),
+        self_exclusion: excluded_until => {
+            if (client.is_uk) {
+                return {
+                    key: 'self_exclusion',
+                    header: localize('You’re taking a break from trading'),
+                    message: (
+                        <Localize
+                            i18n_default_text='You chose to exclude yourself from trading until {{exclusion_end}}. If you want to remove this self-exclusion, you can do so after {{exclusion_end}} by contacting Customer Support at +447723580049.'
+                            values={{
+                                exclusion_end: formatDate(excluded_until, 'DD/MM/YYYY'),
+                                interpolation: { escapeValue: false },
+                            }}
+                        />
+                    ),
+                    type: 'danger',
+                };
+            } else if (client.is_eu) {
+                return {
+                    action: {
+                        onClick: () => window.LC_API.open_chat_window(),
+                        text: localize('Chat now'),
+                    },
+                    key: 'self_exclusion',
+                    header: localize('You’re taking a break from trading'),
+                    message: (
+                        <Localize
+                            i18n_default_text='You chose to exclude yourself from trading until {{exclusion_end}}. If you want to remove this self-exclusion, you can do so at any time by contacting Customer Support via chat.'
+                            values={{
+                                exclusion_end: formatDate(excluded_until, 'DD/MM/YYYY'),
+                                interpolation: { escapeValue: false },
+                            }}
+                        />
+                    ),
+                    type: 'danger',
+                };
+            } else {
+                return {
+                    key: 'self_exclusion',
+                    header: localize('Self-exclusion detected'),
+                    message: (
+                        <Localize
+                            i18n_default_text='You have opted to be excluded from {{website_domain}} until {{exclusion_end}}. Please <0>contact us</0> for assistance.'
+                            values={{
+                                website_domain: website_name,
+                                exclusion_end: formatDate(excluded_until, 'DD/MM/YYYY'),
+                                interpolation: { escapeValue: false },
+                            }}
+                            components={[<StaticUrl key={0} className='link' href='contact-us' />]}
+                        />
+                    ),
+                    type: 'danger',
+                };
+            }
+        },
         authenticate: {
             action: {
                 route: routes.proof_of_identity,
@@ -447,7 +485,7 @@ export const handleClientNotifications = (client, client_store, ui_store) => {
     if (loginid !== LocalStore.get('active_loginid')) return {};
     if (!currency) addNotificationMessage(clientNotifications(ui_store).currency);
     if (excluded_until) {
-        addNotificationMessage(clientNotifications(ui_store).self_exclusion(excluded_until));
+        addNotificationMessage(clientNotifications(ui_store, client_store).self_exclusion(excluded_until));
     }
 
     const { has_risk_assessment } = checkAccountStatus(

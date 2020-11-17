@@ -1,5 +1,5 @@
 import { website_name } from '../config/app-config';
-import { isStorageSupported, LocalStore } from '../storage/storage';
+import { CookieStorage, isStorageSupported, LocalStore } from '../storage/storage';
 import { isMobileOs } from '../os/os_detect';
 import { getAppId, domain_app_ids } from '../config/config';
 import { getStaticUrl, urlForCurrentDomain } from '../url';
@@ -19,9 +19,11 @@ export const redirectToSignUp = ({ is_deriv_crypto }) => {
 
 export const loginUrl = ({ language }) => {
     const server_url = LocalStore.get('config.server_url');
-    const signup_device = LocalStore.get('signup_device') || (isMobileOs() ? 'mobile' : 'desktop');
-    const date_first_contact = LocalStore.get('date_first_contact');
-    const marketing_queries = `&signup_device=${signup_device}${
+    const signup_device_cookie = new CookieStorage('signup_device');
+    const signup_device = signup_device_cookie.get('signup_device');
+    const date_first_contact_cookie = new CookieStorage('date_first_contact');
+    const date_first_contact = date_first_contact_cookie.get('date_first_contact');
+    const marketing_queries = `${signup_device ? `&signup_device=${signup_device}` : ''}${
         date_first_contact ? `&date_first_contact=${date_first_contact}` : ''
     }`;
     const getOAuthUrl = domain => {

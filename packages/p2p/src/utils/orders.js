@@ -107,7 +107,7 @@ class ExtendedOrderDetails {
             this.is_refunded_order ||
             this.is_disputed_order ||
             this.is_dispute_refunded_order ||
-            (this.has_timer_expired && !this.is_completed_order)
+            (this.has_timer_expired && !this.is_completed_order && !this.is_dispute_completed_order)
         );
     }
 
@@ -147,6 +147,10 @@ class ExtendedOrderDetails {
 
     get should_show_complain_and_received_button() {
         if (this.is_finalised_order) return false;
+
+        if (this.is_sell_order) {
+            return (this.is_expired_order || (this.is_ongoing_order && this.has_timer_expired)) && !this.is_my_ad;
+        }
 
         return (this.is_expired_order || (this.is_ongoing_order && this.has_timer_expired)) && this.is_my_ad;
     }

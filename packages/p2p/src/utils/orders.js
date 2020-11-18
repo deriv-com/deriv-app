@@ -48,6 +48,10 @@ class ExtendedOrderDetails {
         return this.order_details.status === 'timed-out';
     }
 
+    get is_incoming_order() {
+        return !!this.order_details.is_incoming;
+    }
+
     get is_pending_order() {
         return this.order_details.status === 'pending';
     }
@@ -170,6 +174,10 @@ class ExtendedOrderDetails {
     }
 
     get should_show_only_received_button() {
+        if (this.is_disputed_order) {
+            return (!this.is_incoming_order && this.is_sell_order) || (this.is_incoming_order && this.is_buy_order);
+        }
+
         if (this.is_buy_order) {
             return this.is_my_ad && this.is_buyer_confirmed_order;
         }

@@ -1,6 +1,6 @@
 import { flow } from 'mobx';
-import { redirectToLogin, State, getPropertyValue } from '@deriv/shared';
-import { getLanguage, localize } from '@deriv/translations';
+import { State, getActivePlatform, getPropertyValue, routes } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import ServerTime from '_common/base/server_time';
 import BinarySocket from '_common/base/socket_base';
 import WS from './ws-methods';
@@ -158,14 +158,18 @@ const BinarySocketGeneral = (() => {
                 if (!['reset_password', 'new_account_virtual'].includes(msg_type)) {
                     if (window.TrackJS) window.TrackJS.track('Custom InvalidToken error');
                 }
+                // eslint-disable-next-line no-case-declarations
+                const active_platform = getActivePlatform(common_store.app_routing_history);
+
+                // DBot handles this internally. Special case: 'client.invalid_token'
+                if (active_platform === 'DBot') return;
+
                 client_store.logout().then(() => {
-                    common_store.setError(true, {
-                        header: response.error.message,
-                        message: localize('Please Log in'),
-                        should_show_refresh: false,
-                        redirect_label: localize('Log in'),
-                        redirectOnClick: () => redirectToLogin(false, getLanguage()),
-                    });
+                    let redirect_to = routes.trade;
+                    if (active_platform === 'DMT5') {
+                        redirect_to = routes.mt5;
+                    }
+                    common_store.routeTo(redirect_to);
                 });
                 break;
             case 'AuthorizationRequired':

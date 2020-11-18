@@ -103,11 +103,7 @@ const AddressDetails = ({
                                     </strong>
                                     <Localize i18n_default_text='a recent utility bill (e.g. electricity, water, gas, landline, or internet), bank statement, or government-issued letter with your name and this address.' />
                                 </p>
-                                <ThemedScrollbars
-                                    is_bypassed={isMobile()}
-                                    height={height}
-                                    className='details-form__scrollbar'
-                                >
+                                <ThemedScrollbars height={height} className='details-form__scrollbar'>
                                     <div className='details-form__elements'>
                                         <InputField
                                             name='address_line_1'

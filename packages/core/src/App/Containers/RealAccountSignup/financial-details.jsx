@@ -135,11 +135,7 @@ const FinancialDetails = props => {
                                     height_offset='110px'
                                     is_disabled={isDesktop()}
                                 >
-                                    <ThemedScrollbars
-                                        is_bypassed={isMobile()}
-                                        autoHide={!(window.innerHeight < 890)}
-                                        height={height - 77}
-                                    >
+                                    <ThemedScrollbars autoHide={!(window.innerHeight < 890)} height={height - 77}>
                                         <div className='details-form__elements  details-form__elements--wide'>
                                             <FinancialInformation
                                                 shared_props={shared_props}

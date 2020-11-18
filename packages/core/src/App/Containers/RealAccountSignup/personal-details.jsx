@@ -125,11 +125,7 @@ const PersonalDetails = ({
                     {({ setRef, height }) => (
                         <form ref={setRef} onSubmit={handleSubmit} autoComplete='off' onClick={handleClickOutside}>
                             <Div100vhContainer className='details-form' height_offset='110px' is_disabled={isDesktop()}>
-                                <ThemedScrollbars
-                                    is_bypassed={isMobile()}
-                                    height={height}
-                                    onScroll={closeTooltipOnScroll}
-                                >
+                                <ThemedScrollbars height={height} onScroll={closeTooltipOnScroll}>
                                     <div
                                         className='details-form__elements'
                                         style={{ paddingBottom: isDesktop() ? 'unset' : null }}

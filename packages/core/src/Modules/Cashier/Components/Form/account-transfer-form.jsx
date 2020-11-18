@@ -36,12 +36,17 @@ const AccountOption = ({ account, idx }) => {
             )}
 
             <div className='account-transfer__currency-wrapper'>
-                <Text styles={{ fontSize: '1.2rem', lineHeight: '1.4rem' }}>
+                <Text size='xxs' line_height='x' styles={{ color: 'inherit', fontWeight: 'inherit' }}>
                     {account.is_mt ? account.mt_icon : getCurrencyName(account.text)}
                 </Text>
                 <Text size='xxxs' align='left' color='less-prominent'>
                     {account.value}
                 </Text>
+
+                {/* <span className='account-transfer__currency'>
+                    {account.is_mt ? account.mt_icon : getCurrencyName(account.text)}
+                </span>
+                <span className='account-transfer__loginid'>{account.value}</span> */}
             </div>
 
             <span className='account-transfer__balance'>

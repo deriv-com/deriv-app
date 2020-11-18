@@ -16,4 +16,9 @@
     &__message {
         color: var(--text-prominent);
     }
+
+    @include mobile {
+        margin: 3vw 5vw 0vw;
+        width: 90vw;
+    }
 }

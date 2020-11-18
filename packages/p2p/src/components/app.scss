@@ -71,12 +71,6 @@
         &--info {
             background-color: rgba(255, 173, 58, 0.16);
         }
-
-        @include mobile {
-            margin-left: 5vw;
-            margin-right: 5vw;
-            width: 90vw;
-        }
     }
     &__advertiser-tab {
         @include mobile {

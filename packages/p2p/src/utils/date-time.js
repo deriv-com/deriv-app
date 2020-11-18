@@ -3,7 +3,7 @@ export const getFormattedDateString = (date_obj, is_local = false, has_seconds =
         throw Error('getFormattedDateString argument needs an instance of Date');
     }
 
-    const date_string = !is_local ? date_obj.toString().split(' ') : date_obj.toUTCString().split(' ');
+    const date_string = is_local ? date_obj.toString().split(' ') : date_obj.toUTCString().split(' ');
     const [, day, month, year, time] = date_string;
     const times = time.split(':');
 

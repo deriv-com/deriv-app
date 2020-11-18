@@ -26,10 +26,10 @@ const TemporaryBarredMessage = () => {
         <HintBox
             icon='IcAlertWarning'
             message={
-                <Text size='xxxs' color='prominent' lineHeight='xs'>
+                <Text size='xxxs' color='prominent' line_height='xs'>
                     <Localize
                         i18n_default_text="You've been temporarily barred from using our services due to multiple cancellation attempts. Try again after {{date_time}}."
-                        values={{ date_time: general_store?.blocked_until_date_time }}
+                        values={{ date_time: general_store.blocked_until_date_time }}
                     />
                 </Text>
             }
@@ -181,7 +181,7 @@ const App = observer(props => {
                                 header_fit_content
                             >
                                 <div label={localize('Buy / Sell')}>
-                                    {general_store?.is_barred && <TemporaryBarredMessage />}
+                                    {general_store.is_barred && <TemporaryBarredMessage />}
                                     <BuySell navigate={general_store.redirectTo} params={general_store.parameters} />
                                 </div>
                                 <div count={general_store.notification_count} label={localize('Orders')}>
@@ -192,7 +192,7 @@ const App = observer(props => {
                                     />
                                 </div>
                                 <div label={localize('My ads')}>
-                                    {general_store?.is_barred && <TemporaryBarredMessage />}
+                                    {general_store.is_barred && <TemporaryBarredMessage />}
                                     <MyAds navigate={general_store.redirectTo} params={general_store.parameters} />
                                 </div>
                                 {general_store.is_advertiser && (

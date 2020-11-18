@@ -126,7 +126,7 @@ class PaymentAgentList extends React.Component {
                     </React.Fragment>
                 )}
                 <div className='payment-agent__disclaimer'>
-                    <Text size='xs' line_height='x' weight='bold' className='cashier__text--bold'>
+                    <Text size='xs' line_height='xs' weight='bold' className='cashier__text--bold'>
                         <Localize i18n_default_text='DISCLAIMER' />
                     </Text>
                     :&nbsp;

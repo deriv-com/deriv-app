@@ -14,6 +14,7 @@ const ToggleAds = observer(() => {
     const isMounted = useIsMounted();
 
     const handleToggle = () => {
+        // Ads are automatically disabled when the user is barred
         if (!general_store.is_barred) {
             requestWS({
                 p2p_advertiser_update: 1,

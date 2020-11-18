@@ -7,7 +7,7 @@ import { localize } from '@deriv/translations';
  * @returns {{underlying: string, category: string}}
  */
 
-// TODO: Combine with shortcode
+// TODO: Combine with  extractInfoFromShortcode function in shared, both are currently used
 export const getMarketInformation = shortcode => {
     const market_info = {
         category: '',

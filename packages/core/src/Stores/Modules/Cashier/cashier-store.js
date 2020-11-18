@@ -570,7 +570,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async sendVerificationEmail() {
-        if (this.config[this.active_container].verification.is_button_clicked) {
+        if (this.config[this.active_container].verification.is_button_clicked || !this.root_store.client.email) {
             return;
         }
 

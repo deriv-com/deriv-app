@@ -25,7 +25,15 @@ import {
 } from '@deriv/account';
 import { WS } from 'Services/ws-methods';
 import { localize } from '@deriv/translations';
-import { isDesktop, isMobile, validAddress, validLength, validLetterSymbol, validPostCode } from '@deriv/shared';
+import {
+    isDesktop,
+    isMobile,
+    isEmptyObject,
+    validAddress,
+    validLength,
+    validLetterSymbol,
+    validPostCode,
+} from '@deriv/shared';
 import { InputField } from './mt5-personal-details-form.jsx';
 
 const form = React.createRef();
@@ -240,7 +248,15 @@ class MT5POA extends React.Component {
                     document_file: this.state.document_file,
                 }}
                 validateOnMount
-                validate={this.validateForm}
+                validate={values => {
+                    this.validateForm(values);
+                    // Save form values if there are no validation errors after form is touched
+                    // This ensures container values are updated before being validated in runtime  (mt5-financial-stp-real-account-signup.jsx)
+                    // To resolve sync issues with value states (form_values in container component and formik values)
+                    if (isEmptyObject(this.validateForm(values))) {
+                        this.props.saveFormData(this.props.index, values);
+                    }
+                }}
                 onSubmit={this.onSubmit}
                 innerRef={form}
             >
@@ -361,6 +377,7 @@ class MT5POA extends React.Component {
                                                                 name='address_state'
                                                                 label={localize('State/Province*')}
                                                                 placeholder={localize('State/Province*')}
+                                                                value={values.address_state}
                                                                 required
                                                                 onBlur={handleBlur}
                                                             />

@@ -42,11 +42,6 @@ const AccountOption = ({ account, idx }) => {
                 <Text size='xxxs' align='left' color='less-prominent'>
                     {account.value}
                 </Text>
-
-                {/* <span className='account-transfer__currency'>
-                    {account.is_mt ? account.mt_icon : getCurrencyName(account.text)}
-                </span>
-                <span className='account-transfer__loginid'>{account.value}</span> */}
             </div>
 
             <span className='account-transfer__balance'>

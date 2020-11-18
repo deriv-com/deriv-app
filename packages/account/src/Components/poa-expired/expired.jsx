@@ -11,7 +11,6 @@ export const Expired = ({ onClick }) => (
     >
         <Button onClick={onClick} has_effect primary>
             <Text className={'dc-btn__text'} size='small' weight='bold' as='p'>
-                {' '}
                 {localize('Resubmit')}
             </Text>
         </Button>

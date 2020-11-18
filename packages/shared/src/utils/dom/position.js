@@ -3,21 +3,38 @@ const getMaxHeightByAligningBottom = ({ parent_rect, child_height }) =>
 
 const getMinHeightByAligningTop = ({ parent_rect, child_height }) => parent_rect.top - child_height;
 
-export const getPosition = ({ preferred_alignment = 'bottom', child_el, parent_el }) => {
+export const getPosition = ({
+    preferred_alignment = 'bottom',
+    child_el,
+    parent_el,
+    shouldConsiderParentHeight = true,
+}) => {
     const parent_rect = parent_el.getBoundingClientRect();
     const child_height = child_el.clientHeight;
     const body_rect = document.body.getBoundingClientRect();
 
-    const { top, left, width } = parent_rect;
+    const { top, bottom, left, width } = parent_rect;
     const max_height = getMaxHeightByAligningBottom({ parent_rect, child_height });
+
+    const top_placement_style = {
+        bottom: body_rect.bottom - (shouldConsiderParentHeight ? top : bottom) + 8, // we add 8px extra margin for better UX
+        left,
+        width,
+        transformOrigin: 'bottom',
+    };
+
+    const bottom_placement_style = {
+        top: shouldConsiderParentHeight ? bottom : top,
+        left,
+        width,
+        transformOrigin: 'top',
+    };
 
     if (preferred_alignment === 'bottom') {
         if (max_height <= body_rect.height) {
             return {
-                top: top + parent_rect.height,
-                left,
-                width,
-                transformOrigin: 'top',
+                style: bottom_placement_style,
+                placement: 'bottom',
             };
         }
     }
@@ -26,26 +43,20 @@ export const getPosition = ({ preferred_alignment = 'bottom', child_el, parent_e
     if (preferred_alignment === 'top') {
         if (min_height >= 0) {
             return {
-                bottom: body_rect.bottom - top,
-                left,
-                width,
-                transformOrigin: 'bottom',
+                style: top_placement_style,
+                placement: 'top',
             };
         }
     }
 
     if (max_height - body_rect.height < 0 - min_height) {
         return {
-            top: top + parent_rect.height,
-            left,
-            width,
-            transformOrigin: 'top',
+            style: bottom_placement_style,
+            placement: 'bottom',
         };
     }
     return {
-        bottom: body_rect.bottom - top,
-        left,
-        width,
-        transformOrigin: 'bottom',
+        style: top_placement_style,
+        placement: 'top',
     };
 };

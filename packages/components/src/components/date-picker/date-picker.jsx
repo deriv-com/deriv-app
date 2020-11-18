@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { addDays, daysFromTodayTo, toMoment, convertDateFormat, isMobile } from '@deriv/shared';
+import { addDays, daysFromTodayTo, toMoment, convertDateFormat, getPosition, isMobile } from '@deriv/shared';
 
 import Input from './date-picker-input.jsx';
 import Calendar from './date-picker-calendar.jsx';
@@ -9,15 +9,20 @@ import MobileWrapper from '../mobile-wrapper';
 import DesktopWrapper from '../desktop-wrapper';
 
 class DatePicker extends React.PureComponent {
-    datepicker = React.createRef();
-    calendar_portal = React.createRef();
+    constructor(props) {
+        super(props);
+        this.datepicker = React.createRef();
+        this.calendar_portal = React.createRef();
 
-    state = {
-        date: this.props.value ? toMoment(this.props.value).format(this.props.display_format) : '',
-        duration: daysFromTodayTo(this.props.value),
-        is_datepicker_visible: false,
-        is_placeholder_visible: this.props.placeholder && !this.props.value,
-    };
+        this.state = {
+            style: {},
+            placement: '',
+            date: this.props.value ? toMoment(this.props.value).format(this.props.display_format) : '',
+            duration: daysFromTodayTo(this.props.value),
+            is_datepicker_visible: false,
+            is_placeholder_visible: this.props.placeholder && !this.props.value,
+        };
+    }
 
     componentDidMount() {
         document.addEventListener('click', this.onClickOutside, true);
@@ -39,28 +44,16 @@ class DatePicker extends React.PureComponent {
         this.setState(
             state => ({ is_datepicker_visible: !state.is_datepicker_visible }),
             () => {
-                if (
-                    this.state.is_datepicker_visible &&
-                    this.datepicker &&
-                    this.datepicker.current &&
-                    this.calendar_portal.current &&
-                    this.props.portal_id
-                ) {
-                    const date_picker_rect = this.datepicker.current.getBoundingClientRect();
-                    const calendar_rect = this.calendar_portal.current.getBoundingClientRect();
-                    const body_rect = document.body.getBoundingClientRect();
-                    let calendar_top = date_picker_rect.top;
-
-                    if (date_picker_rect.top + date_picker_rect.height + calendar_rect.height > body_rect.height) {
-                        const diff =
-                            date_picker_rect.top + date_picker_rect.height + calendar_rect.height - body_rect.height;
-                        calendar_top -= diff;
-                    }
-                    this.setState({
-                        top: calendar_top,
-                        left: date_picker_rect.left,
-                    });
-                }
+                const position_style = getPosition({
+                    preferred_alignment: 'bottom',
+                    parent_el: this.datepicker.current,
+                    child_el: this.calendar_portal.current,
+                    shouldConsiderParentHeight: false,
+                });
+                this.setState({
+                    style: position_style.style,
+                    placement: position_style.placement,
+                });
             }
         );
     };
@@ -214,20 +207,22 @@ class DatePicker extends React.PureComponent {
                     />
                 </MobileWrapper>
                 <DesktopWrapper>
-                    <div id={id} ref={this.datepicker} className='dc-datepicker' data-value={this.input_value}>
-                        <Input
-                            {...props}
-                            disabled={disabled}
-                            name={name}
-                            onClick={this.handleVisibility}
-                            onChangeInput={this.onChangeInput}
-                            // onClickClear={this.onClickClear}
-                            is_placeholder_visible={this.state.is_placeholder_visible}
-                            onBlur={onBlur}
-                            required={required}
-                            type={type}
-                            value={this.input_value}
-                        />
+                    <div id={id} className='dc-datepicker' data-value={this.input_value}>
+                        <div ref={this.datepicker}>
+                            <Input
+                                {...props}
+                                disabled={disabled}
+                                name={name}
+                                onClick={this.handleVisibility}
+                                onChangeInput={this.onChangeInput}
+                                // onClickClear={this.onClickClear}
+                                is_placeholder_visible={this.state.is_placeholder_visible}
+                                onBlur={onBlur}
+                                required={required}
+                                type={type}
+                                value={this.input_value}
+                            />
+                        </div>
                         <Calendar
                             ref={this.calendar_portal}
                             onRef={ref => (this.calendar = ref)}
@@ -235,8 +230,8 @@ class DatePicker extends React.PureComponent {
                             onHover={this.props.has_range_selection ? this.onHover : undefined}
                             onSelect={this.onSelectCalendar}
                             value={this.calendar_value} // Calendar accepts date format yyyy-mm-dd
-                            top={this.state.top}
-                            left={this.state.left}
+                            style={this.state.style}
+                            placement={this.state.placement}
                             {...props}
                         />
                     </div>
@@ -257,6 +252,7 @@ DatePicker.defaultProps = {
 DatePicker.propTypes = {
     error_messages: PropTypes.array,
     label: PropTypes.string,
+    is_alignment_top: PropTypes.bool,
 };
 
 export default DatePicker;

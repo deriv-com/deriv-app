@@ -71,7 +71,7 @@ const Autocomplete = React.memo(props => {
                 child_el: list_wrapper_ref.current,
             });
 
-            setStyle(position_style);
+            setStyle(position_style.style);
         }
     }, [should_show_list, is_alignment_top, list_portal_id, filtered_items.length]);
 

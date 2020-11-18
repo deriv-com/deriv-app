@@ -1,11 +1,13 @@
 import React from 'react';
-import { ButtonLink, Icon } from '@deriv/components';
+import { ButtonLink, Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import IconMessageContent from 'Components/icon-message-content';
 
 const GoToPersonalDetailsButton = () => (
     <ButtonLink to='/account/personal-details'>
-        <p className='dc-btn__text'>{localize('Go to personal details')}</p>
+        <Text className={'dc-btn__text'} size='small' weight='bold' as='p'>
+            {localize('Go to personal details')}
+        </Text>
     </ButtonLink>
 );
 

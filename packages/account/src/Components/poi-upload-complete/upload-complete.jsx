@@ -1,4 +1,4 @@
-import { Icon } from '@deriv/components';
+import { Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import React from 'react';
 import ContinueTradingButton from 'Components/poa-continue-trading-button';
@@ -23,12 +23,12 @@ export const UploadComplete = ({ has_poa, is_description_enabled, redirect_butto
             {is_description_enabled && (
                 <React.Fragment>
                     <div className='account-management__text-container'>
-                        <p className='account-management__text'>
+                        <Text className='account-management__text' size='small' as='p'>
                             {localize('Your document is being reviewed, please check back in 1-3 days.')}
-                        </p>
-                        <p className='account-management__text'>
+                        </Text>
+                        <Text className='account-management__text' size='small' as='p'>
                             {localize('You must also submit a proof of address.')}
-                        </p>
+                        </Text>
                     </div>
                     <PoaButton />
                 </React.Fragment>

@@ -2,7 +2,7 @@
 import React from 'react';
 import { getStaticUrl, PlatformContext } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { Icon } from '@deriv/components';
+import { Icon, Text } from '@deriv/components';
 import { connect } from 'Stores/connect';
 
 const ArticleContent = ({ is_eu, is_uk, toggleModal }) => {
@@ -131,7 +131,9 @@ const ArticleContent = ({ is_eu, is_uk, toggleModal }) => {
                 <ul className='account__article-list'>
                     {article_items.map((article, idx) => (
                         <li key={idx}>
-                            <p className='self-exclusion__article-text'>{article}</p>
+                            <Text size='small' as='p' className='self-exclusion__article-text'>
+                                {article}
+                            </Text>
                         </li>
                     ))}
                 </ul>

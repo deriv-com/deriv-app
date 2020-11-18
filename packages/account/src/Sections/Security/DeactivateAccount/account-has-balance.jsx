@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Icon, Money, ThemedScrollbars } from '@deriv/components';
+import { Button, Icon, Money, ThemedScrollbars, Text } from '@deriv/components';
 import { formatMoney, getMT5Account, getMT5AccountDisplay } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 
@@ -11,7 +11,9 @@ const getCurrMT5Account = (mt5_login_list, login_id) =>
 
 const Wrapper = ({ children, title }) => (
     <div className='deactivate-account-error'>
-        <p className='deactivate-account-error__title'>{title}</p>
+        <Text size='small' as='p' className='deactivate-account-error__title'>
+            {title}
+        </Text>
         {children}
     </div>
 );

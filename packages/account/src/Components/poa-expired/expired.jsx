@@ -1,4 +1,4 @@
-import { Button, Icon } from '@deriv/components';
+import { Button, Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import React from 'react';
 import IconMessageContent from 'Components/icon-message-content';
@@ -10,7 +10,10 @@ export const Expired = ({ onClick }) => (
         icon={<Icon icon='IcPoaUpload' size={128} />}
     >
         <Button onClick={onClick} has_effect primary>
-            <p className='dc-btn__text'>{localize('Resubmit')}</p>
+            <Text className={'dc-btn__text'} size='small' weight='bold' as='p'>
+                {' '}
+                {localize('Resubmit')}
+            </Text>
         </Button>
     </IconMessageContent>
 );

@@ -13,6 +13,7 @@ import {
     MobileWrapper,
     Clipboard,
     Loading,
+    Text,
 } from '@deriv/components';
 import { getPropertyValue, formatDate } from '@deriv/shared';
 
@@ -385,9 +386,13 @@ class ApiToken extends React.Component {
                                                                     <h5 className='api-token__scope--title'>
                                                                         {localize('Name')}
                                                                     </h5>
-                                                                    <p className='api-token__scope--text'>
+                                                                    <Text
+                                                                        size='small'
+                                                                        as='p'
+                                                                        className='api-token__scope--text'
+                                                                    >
                                                                         {token.display_name}
-                                                                    </p>
+                                                                    </Text>
                                                                 </div>
                                                             </div>
                                                             <div className='api-token__scope-item'>
@@ -395,20 +400,28 @@ class ApiToken extends React.Component {
                                                                     <h5 className='api-token__scope--title'>
                                                                         {localize('Token')}
                                                                     </h5>
-                                                                    <p className='api-token__scope--text'>
+                                                                    <Text
+                                                                        size='small'
+                                                                        as='p'
+                                                                        className='api-token__scope--text'
+                                                                    >
                                                                         <div className='api-token__clipboard-wrapper'>
                                                                             <span>{token.token}</span>
                                                                             <Clipboard token={token.token} />
                                                                         </div>
-                                                                    </p>
+                                                                    </Text>
                                                                 </div>
                                                                 <div>
                                                                     <h5 className='api-token__scope--title'>
                                                                         {localize('Last Used')}
                                                                     </h5>
-                                                                    <p className='api-token__scope--text'>
+                                                                    <Text
+                                                                        size='small'
+                                                                        as='p'
+                                                                        className='api-token__scope--text'
+                                                                    >
                                                                         {token.last_used}
-                                                                    </p>
+                                                                    </Text>
                                                                 </div>
                                                             </div>
                                                             <div className='api-token__scope-item'>
@@ -416,9 +429,13 @@ class ApiToken extends React.Component {
                                                                     <h5 className='api-token__scope--title'>
                                                                         {localize('Scope')}
                                                                     </h5>
-                                                                    <p className='api-token__scope--text'>
+                                                                    <Text
+                                                                        size='small'
+                                                                        as='p'
+                                                                        className='api-token__scope--text'
+                                                                    >
                                                                         {token.scopes}
-                                                                    </p>
+                                                                    </Text>
                                                                 </div>
                                                                 <div>
                                                                     <Button

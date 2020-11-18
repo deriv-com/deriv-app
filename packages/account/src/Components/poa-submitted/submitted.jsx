@@ -1,4 +1,4 @@
-import { Icon } from '@deriv/components';
+import { Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import React from 'react';
 import { ContinueTradingButton } from 'Components/poa-continue-trading-button/continue-trading-button.jsx';
@@ -11,10 +11,12 @@ export const Submitted = ({ needs_poi, is_description_disabled = false }) => {
         return (
             <IconMessageContent message={message} icon={<Icon icon='IcPoaVerified' size={128} />}>
                 <div className='account-management__text-container'>
-                    <p className='account-management__text'>
+                    <Text className={'account-management__text'} size='small' as='p'>
                         {localize('Your document is being reviewed, please check back in 1-3 days.')}
-                    </p>
-                    <p className='account-management__text'>{localize('You must also submit a proof of identity.')}</p>
+                    </Text>
+                    <Text className={'account-management__text'} size='small' as='p'>
+                        {localize('You must also submit a proof of identity.')}
+                    </Text>
                 </div>
                 <PoiButton />
             </IconMessageContent>

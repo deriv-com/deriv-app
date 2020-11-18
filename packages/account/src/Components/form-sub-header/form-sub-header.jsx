@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
+import { Text } from '@deriv/components';
 
 export const FormSubHeader = ({ title, subtitle, description }) => (
     <React.Fragment>
@@ -13,6 +14,10 @@ export const FormSubHeader = ({ title, subtitle, description }) => (
                 {subtitle && <h2 className='account-form__subtitle'>{subtitle}</h2>}
             </div>
         </div>
-        {description && <p className='account-form__description'>{description}</p>}
+        {description && (
+            <Text size='small' as='p' className='account-form__description'>
+                {description}
+            </Text>
+        )}
     </React.Fragment>
 );

@@ -1,24 +1,36 @@
 import React from 'react';
 import { Localize, localize } from '@deriv/translations';
-import { Icon } from '@deriv/components';
+import { Icon, Text } from '@deriv/components';
 import IconMessageContent from 'Components/icon-message-content';
 
 const UnsupportedIconRow = () => (
     <div className='poi-icon-row'>
         <div className='poi-icon-row__icon-container'>
             <Icon icon='IcIdentityCard' size={90} />
-            <p>{localize('Identity card')}</p>
-            <p>{localize('Front and back')}</p>
+            <Text size='small' as='p'>
+                {localize('Identity card')}
+            </Text>
+            <Text size='small' as='p'>
+                {localize('Front and back')}
+            </Text>
         </div>
         <div className='poi-icon-row__icon-container'>
             <Icon icon='IcDrivingLicense' size={90} />
-            <p>{localize('Driving license')}</p>
-            <p>{localize('Front and back')}</p>
+            <Text size='small' as='p'>
+                {localize('Driving license')}
+            </Text>
+            <Text size='small' as='p'>
+                {localize('Front and back')}
+            </Text>
         </div>
         <div className='poi-icon-row__icon-container'>
             <Icon icon='IcPassport' size={90} />
-            <p>{localize('Passport')}</p>
-            <p>{localize('Face photo page')}</p>
+            <Text size='small' as='p'>
+                {localize('Passport')}
+            </Text>
+            <Text size='small' as='p'>
+                {localize('Face photo page')}
+            </Text>
         </div>
     </div>
 );

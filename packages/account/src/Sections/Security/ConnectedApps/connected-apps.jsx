@@ -1,5 +1,15 @@
 import React from 'react';
-import { DesktopWrapper, MobileWrapper, Button, Modal, Icon, DataTable, DataList, Loading } from '@deriv/components';
+import {
+    DesktopWrapper,
+    MobileWrapper,
+    Button,
+    Modal,
+    Icon,
+    DataTable,
+    DataList,
+    Loading,
+    Text,
+} from '@deriv/components';
 import { localize } from '@deriv/translations';
 import ErrorComponent from 'Components/error-component';
 import { WS } from 'Services/ws-methods';
@@ -73,7 +83,9 @@ class ConnectedApps extends React.Component {
     render() {
         return (
             <section className='connected-apps__wrapper'>
-                <p className='connected-apps__title'>{localize('Authorised applications')}</p>
+                <Text size='small' as='p' className='connected-apps__title'>
+                    {localize('Authorised applications')}
+                </Text>
                 {this.state.is_error && <ErrorComponent />}
                 {this.state.is_loading ? (
                     <Loading is_fullscreen={false} />
@@ -105,7 +117,9 @@ class ConnectedApps extends React.Component {
                     <Modal.Body>
                         <div className='connected-app-modal'>
                             <Icon icon='IcAccountTrashCan' size={128} className='connected-app-modal__icon' />
-                            <p className='connected-app-modal__message'>{localize('Confirm revoke access?')}</p>
+                            <Text size='small' as='p' className='connected-app-modal__message'>
+                                {localize('Confirm revoke access?')}
+                            </Text>
                             <div className='connected-app-modal__confirmation'>
                                 <Button secondary onClick={this.handleToggleModal}>
                                     {localize('Back')}

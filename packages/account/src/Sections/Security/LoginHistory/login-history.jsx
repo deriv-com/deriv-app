@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
-import { DesktopWrapper, MobileWrapper, Loading, DataTable, Table } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, Loading, DataTable, Table, Text } from '@deriv/components';
 import Bowser from 'bowser';
 import { convertDateFormat } from '@deriv/shared';
 import { localize } from '@deriv/translations';
@@ -12,7 +12,9 @@ import LoadErrorMessage from 'Components/load-error-message';
 const CellContent = ({ title, text, className }) => (
     <React.Fragment>
         <h3 className='cell-title'>{title}</h3>
-        <p className={classNames('cell-value', className)}>{text}</p>
+        <Text size='small' as='p' className={classNames('cell-value', className)}>
+            {text}
+        </Text>
     </React.Fragment>
 );
 

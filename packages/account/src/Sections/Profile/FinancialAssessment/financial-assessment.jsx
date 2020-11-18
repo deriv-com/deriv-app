@@ -12,6 +12,7 @@ import {
     DesktopWrapper,
     MobileWrapper,
     SelectNative,
+    Text,
 } from '@deriv/components';
 import { routes, isMobile, isDesktop } from '@deriv/shared';
 
@@ -48,7 +49,7 @@ import {
 const ConfirmationContent = ({ className }) => {
     return (
         <React.Fragment>
-            <p className={className}>
+            <Text size='small' as='p' className={className}>
                 <Localize
                     i18n_default_text='In providing our services to you, we are required to obtain information from you in order to assess whether a given product or service is appropriate for you (that is, whether you possess the experience and knowledge to understand the risks involved).<0/><1/>'
                     components={[<br key={0} />, <br key={1} />]}
@@ -58,7 +59,7 @@ const ConfirmationContent = ({ className }) => {
                     components={[<br key={0} />, <br key={1} />]}
                 />
                 <Localize i18n_default_text='By clicking Accept below and proceeding with the Account Opening you should note that you may be exposing yourself to risks (which may be significant, including the risk of loss of the entire sum invested) that you may not have the knowledge and experience to properly assess or mitigate.' />
-            </p>
+            </Text>
         </React.Fragment>
     );
 };

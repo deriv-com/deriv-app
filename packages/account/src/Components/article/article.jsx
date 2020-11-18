@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import { Text } from '@deriv/components';
 
 const Article = ({ className, title, descriptions }) => (
     <article className={classNames('account__article', className)}>
@@ -9,7 +10,9 @@ const Article = ({ className, title, descriptions }) => (
             {descriptions &&
                 descriptions.map((desc, idx) => (
                     <li key={idx}>
-                        <p className='account__article-text'>{desc}</p>
+                        <Text className='account__article-text' as='p' size='small'>
+                            {desc}
+                        </Text>
                     </li>
                 ))}
         </ul>

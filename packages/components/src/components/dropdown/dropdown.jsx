@@ -43,7 +43,7 @@ const DropdownList = React.forwardRef((props, list_ref) => {
                 parent_el: parent_ref.current,
                 child_el: list_ref.current,
             });
-            setStyle(position_style);
+            setStyle(position_style.style);
         }
     }, [is_list_visible, is_alignment_top, portal_id, list.length, parent_ref, list_ref]);
 

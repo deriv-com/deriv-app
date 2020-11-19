@@ -44,7 +44,6 @@
     }
     &__picker {
         position: absolute;
-        top: 0;
         z-index: 2;
         transform: translate3d(0, 0, 0);
         opacity: 1;
@@ -71,7 +70,12 @@
                 opacity: 0;
             }
             &-enter-done {
-                transform: translate3d(0, 48px, 0);
+                &--from-top {
+                    transform: translate3d(0, -40px, 0);
+                }
+                &--from-bottom {
+                    transform: translate3d(0, 40px, 0);
+                }
                 opacity: 1;
             }
             &-enter-done,

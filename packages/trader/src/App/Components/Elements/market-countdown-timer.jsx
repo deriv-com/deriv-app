@@ -35,10 +35,8 @@ const whenMarketOpens = async (days_offset, target_symbol) => {
     // days_offset is 0 for today, 1 for tomorrow, etc.
     if (days_offset > days_to_check_before_exit) return {};
     let remaining_time_to_open;
-    const date_target = new Date();
-    date_target.setDate(date_target.getDate() + days_offset);
-    const date = moment(date_target).format('YYYY-MM-DD');
-    const api_res = await getTradingTimes(date);
+    const target_date = moment(new Date()).add(days_offset, 'days');
+    const api_res = await getTradingTimes(target_date.format('YYYY-MM-DD'));
     if (!api_res.api_initial_load_error) {
         const { times } = getSymbol(target_symbol, api_res.trading_times);
         const { open, close } = times;
@@ -47,7 +45,7 @@ const whenMarketOpens = async (days_offset, target_symbol) => {
             // check tomorrow trading times
             return whenMarketOpens(days_offset + 1, target_symbol);
         }
-        const date_str = date_target.toISOString().substring(0, 11);
+        const date_str = target_date.toISOString().substring(0, 11);
         const getUTCDate = hour => new Date(`${date_str}${hour}Z`);
         for (let i = 0; i < open?.length; i++) {
             const diff = +getUTCDate(open[i]) - +new Date();
@@ -62,26 +60,17 @@ const whenMarketOpens = async (days_offset, target_symbol) => {
 
 const calculateTimeLeft = remaining_time_to_open => {
     const difference = remaining_time_to_open - +new Date();
-    let timeLeft = {};
-
-    if (difference > 0) {
-        timeLeft = {
-            days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-            hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-            minutes: Math.floor((difference / 1000 / 60) % 60),
-            seconds: Math.floor((difference / 1000) % 60),
-        };
-    }
-
-    return timeLeft;
+    return difference > 0
+        ? {
+              days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+              hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+              minutes: Math.floor((difference / 1000 / 60) % 60),
+              seconds: Math.floor((difference / 1000) % 60),
+          }
+        : {};
 };
 
-const padWithZero = number => {
-    if (number < 10) {
-        return `0${number}`;
-    }
-    return number;
-};
+const padWithZero = num => (num < 10 ? '0' : 0) + num;
 
 const MarketCountdownTimer = ({ is_main_page, setActiveSymbols, symbol }) => {
     const [when_market_opens, setWhenMarketOpens] = React.useState({});
@@ -130,18 +119,16 @@ const MarketCountdownTimer = ({ is_main_page, setActiveSymbols, symbol }) => {
     const { opening_time, days_offset } = when_market_opens;
     let opening_time_banner = null;
     if (is_main_page && opening_time) {
-        const date_target = new Date();
-        date_target.setDate(date_target.getDate() + days_offset);
-        const date = moment(date_target).format('D MMM YYYY:dddd');
-        const opening_time_arr = opening_time.split(':');
-        const opening_time_hour = opening_time_arr[0];
-        const opening_time_min = opening_time_arr[1];
-        const formatted_opening_time = Number(opening_time_hour > 11)
-            ? `${Number(opening_time_hour)}:${opening_time_min} pm`
-            : `${Number(opening_time_hour)}:${opening_time_min} am`;
-        const date_arr = date.split(':');
-        const opening_date = date_arr[0];
-        const opening_day = date_arr[1];
+        const target_date = moment(new Date()).add(days_offset, 'days');
+        const opening_time_moment_obj = moment(opening_time, 'HH:mm');
+        const opening_time_hour = opening_time_moment_obj.format('HH');
+        const opening_time_min = opening_time_moment_obj.format('mm');
+        const formatted_opening_time =
+            Number(opening_time_hour) > 11
+                ? `${Number(opening_time_hour)}:${opening_time_min} pm`
+                : `${Number(opening_time_hour)}:${opening_time_min} am`;
+        const opening_date = target_date.format('D MMM YYYY');
+        const opening_day = target_date.format('dddd');
         opening_time_banner = (
             <Text
                 align='center'

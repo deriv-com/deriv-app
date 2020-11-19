@@ -15,49 +15,43 @@ import { requestWS } from 'Utils/websocket';
 
 const OrderTableContent = observer(({ showDetails, is_active }) => {
     const { general_store } = useStores();
-    const {
-        changeTab,
-        is_active_tab,
-        list_item_limit,
-        order_offset,
-        order_table_type,
-        orders,
-        setOrderOffset,
-        setOrders,
-    } = React.useContext(Dp2pContext);
-
+    const { changeTab, is_active_tab, order_table_type } = React.useContext(Dp2pContext);
+    const [orders, setOrders] = React.useState([]);
     const [api_error_message, setApiErrorMessage] = React.useState('');
     const [has_more_items_to_load, setHasMoreItemsToLoad] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(true);
     const isMounted = useIsMounted();
 
-    const loadMoreOrders = () => {
-        requestWS({
-            p2p_order_list: 1,
-            offset: order_offset,
-            limit: list_item_limit,
-            active: is_active_tab ? 1 : 0,
-        }).then(response => {
-            if (isMounted()) {
-                if (!response.error) {
-                    const { list } = response.p2p_order_list;
-                    setHasMoreItemsToLoad(list.length >= list_item_limit);
-                    setOrders(orders.concat(list));
-                    setOrderOffset(order_offset + list.length);
-                } else {
-                    setApiErrorMessage(response.error.message);
-                }
-                setIsLoading(false);
-            }
-        });
-    };
-
     React.useEffect(() => {
         if (isMounted()) {
             setIsLoading(true);
-            loadMoreOrders();
+            loadMoreOrders({ startIndex: 0 });
         }
     }, [order_table_type]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    const loadMoreOrders = ({ startIndex }) => {
+        return new Promise(resolve => {
+            requestWS({
+                p2p_order_list: 1,
+                active: is_active_tab ? 1 : 0,
+                offset: startIndex,
+                limit: general_store.list_item_limit,
+            }).then(response => {
+                if (isMounted()) {
+                    if (!response.error) {
+                        const { list } = response.p2p_order_list;
+                        setHasMoreItemsToLoad(list.length >= general_store.list_item_limit);
+                        setOrders(orders.concat(list));
+                    } else {
+                        setApiErrorMessage(response.error.message);
+                    }
+                    setIsLoading(false);
+                }
+
+                resolve();
+            });
+        });
+    };
 
     if (is_loading) {
         return <Loading is_fullscreen={false} />;

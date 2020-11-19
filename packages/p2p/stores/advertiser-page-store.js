@@ -24,8 +24,6 @@ export default class AdvertiserPageStore {
     @observable show_ad_popup = false;
     @observable submitForm = () => {};
 
-    item_offset = 0;
-
     props = {};
 
     get account_currency() {
@@ -59,24 +57,25 @@ export default class AdvertiserPageStore {
     loadMoreAdvertiserAdverts({ startIndex }) {
         this.setIsLoadingAdverts(true);
 
-        requestWS({
-            p2p_advert_list: 1,
-            counterparty_type: this.counterparty_type,
-            advertiser_id: this.advertiser_details_id,
-            offset: startIndex,
-            limit: this.general_store.list_item_limit,
-        }).then(response => {
-            if (response.error) {
-                this.setErrorMessage(response.error);
-            } else {
-                const { list } = response.p2p_advert_list;
+        return new Promise(resolve => {
+            requestWS({
+                p2p_advert_list: 1,
+                counterparty_type: this.counterparty_type,
+                advertiser_id: this.advertiser_details_id,
+                offset: startIndex,
+                limit: this.general_store.list_item_limit,
+            }).then(response => {
+                if (response.error) {
+                    this.setErrorMessage(response.error);
+                } else {
+                    const { list } = response.p2p_advert_list;
+                    this.setAdverts(list);
+                    this.setHasMoreAdvertsToLoad(list.length >= this.general_store.list_item_limit);
+                }
 
-                this.setAdverts(list);
-                this.setHasMoreAdvertsToLoad(list.length >= this.general_store.list_item_limit);
-                this.item_offset += list.length;
-            }
-
-            this.setIsLoadingAdverts(false);
+                this.setIsLoadingAdverts(false);
+                resolve();
+            });
         });
     }
 
@@ -127,7 +126,6 @@ export default class AdvertiserPageStore {
 
     onTabChange() {
         this.setAdverts([]);
-        this.item_offset = 0;
         this.loadMoreAdvertiserAdverts({ startIndex: 0 });
     }
 

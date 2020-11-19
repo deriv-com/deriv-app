@@ -4,7 +4,6 @@ import { InfiniteDataList, Loading, Table } from '@deriv/components';
 import { isMobile, useIsMounted } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
-import Dp2pContext from 'Components/context/dp2p-context';
 import Empty from 'Components/empty/empty.jsx';
 import { TableError } from 'Components/table/table-error.jsx';
 import { requestWS } from 'Utils/websocket';
@@ -14,8 +13,6 @@ import { buy_sell } from '../../constants/buy-sell';
 
 const BuySellTable = observer(({ is_buy, setSelectedAdvert, showAdvertiserPage }) => {
     const { general_store } = useStores();
-    const { list_item_limit } = React.useContext(Dp2pContext);
-    const item_offset = React.useRef(0);
     const [api_error_message, setApiErrorMessage] = React.useState('');
     const [has_more_items_to_load, setHasMoreItemsToLoad] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(true);
@@ -24,31 +21,31 @@ const BuySellTable = observer(({ is_buy, setSelectedAdvert, showAdvertiserPage }
 
     React.useEffect(() => {
         if (isMounted()) {
-            loadMoreItems({
-                startIndex: item_offset.current,
-                stopIndex: list_item_limit,
-            });
+            loadMoreItems({ startIndex: 0 });
         }
     }, [is_buy]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const loadMoreItems = ({ startIndex }) => {
-        requestWS({
-            p2p_advert_list: 1,
-            counterparty_type: is_buy ? buy_sell.BUY : buy_sell.SELL,
-            offset: startIndex,
-            limit: list_item_limit,
-        }).then(response => {
-            if (isMounted()) {
-                if (!response.error) {
-                    const { list } = response.p2p_advert_list;
-                    setHasMoreItemsToLoad(list.length >= list_item_limit);
-                    setItems(items.concat(list));
-                    item_offset.current += list.length;
-                } else {
-                    setApiErrorMessage(response.error.message);
+        return new Promise(resolve => {
+            requestWS({
+                p2p_advert_list: 1,
+                counterparty_type: is_buy ? buy_sell.BUY : buy_sell.SELL,
+                offset: startIndex,
+                limit: general_store.list_item_limit,
+            }).then(response => {
+                if (isMounted()) {
+                    if (!response.error) {
+                        const { list } = response.p2p_advert_list;
+                        setHasMoreItemsToLoad(list.length >= general_store.list_item_limit);
+                        setItems(items.concat(list));
+                    } else {
+                        setApiErrorMessage(response.error.message);
+                    }
+                    setIsLoading(false);
                 }
-                setIsLoading(false);
-            }
+
+                resolve();
+            });
         });
     };
 

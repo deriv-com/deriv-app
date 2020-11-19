@@ -1,5 +1,5 @@
 import { observable, action, runInAction } from 'mobx';
-import { isEmptyObject, epochToMoment, getSocketURL } from '@deriv/shared';
+import { isEmptyObject, epochToMoment, getSocketURL, isMobile } from '@deriv/shared';
 import { orderToggleIndex } from 'Components/orders/order-info';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import { init as WebsocketInit, requestWS, subscribeWS } from 'Utils/websocket';
@@ -33,7 +33,7 @@ export default class GeneralStore {
     @observable show_popup = false;
 
     custom_string = this.props?.custom_string;
-    list_item_limit = 20;
+    list_item_limit = isMobile() ? 10 : 25;
     path = {
         buy_sell: 0,
         orders: 1,

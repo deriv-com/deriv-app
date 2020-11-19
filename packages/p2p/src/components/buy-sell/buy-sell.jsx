@@ -64,7 +64,7 @@ const BuySell = observer(() => {
     return (
         <div className='buy-sell'>
             <BuySellHeader table_type={table_type} setTableType={setTableType} />
-            <BuySellTableContent
+            <BuySellTable
                 key={table_type}
                 is_buy={table_type === buy_sell.BUY}
                 setSelectedAdvert={setSelectedAdvert}

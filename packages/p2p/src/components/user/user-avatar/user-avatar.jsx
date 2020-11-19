@@ -1,12 +1,13 @@
+import classNames from 'classnames';
 import { Text } from '@deriv/components';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { generateHexColourFromNickname, getShortNickname } from '../../../utils/string';
+import { generateHexColourFromNickname, getShortNickname } from 'Utils/string';
 
-const UserAvatar = React.memo(({ nickname, size, text_size }) => {
+const UserAvatar = React.memo(({ className, nickname, size, text_size }) => {
     return (
         <div
-            className='dp2p-avatar'
+            className={classNames('dp2p-avatar', className)}
             style={{
                 backgroundColor: generateHexColourFromNickname(nickname),
                 height: `${size}px`,
@@ -22,9 +23,10 @@ const UserAvatar = React.memo(({ nickname, size, text_size }) => {
 
 UserAvatar.displayName = 'UserAvatar';
 UserAvatar.propTypes = {
+    className: PropTypes.string,
     nickname: PropTypes.string.isRequired,
-    size: PropTypes.number,
-    text_size: PropTypes.string,
+    size: PropTypes.number.isRequired,
+    text_size: PropTypes.string.isRequired,
 };
 
 export default UserAvatar;

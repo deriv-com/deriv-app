@@ -150,7 +150,7 @@ BuySellModal.propTypes = {
     table_type: PropTypes.string,
     selected_ad: PropTypes.object,
     should_show_popup: PropTypes.bool,
-    setShouldShowPopup: PropTypes.bool,
+    setShouldShowPopup: PropTypes.func,
 };
 
 export default BuySellModal;

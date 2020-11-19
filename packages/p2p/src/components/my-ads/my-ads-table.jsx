@@ -74,7 +74,6 @@ RowComponent.displayName = 'RowComponent';
 
 const MyAdsTable = observer(({ onClickCreate }) => {
     const { general_store } = useStores();
-    const item_offset = React.useRef(0);
     const [adverts, setAdverts] = React.useState([]);
     const [api_error_message, setApiErrorMessage] = React.useState('');
     const [has_more_items_to_load, setHasMoreItemsToLoad] = React.useState(false);
@@ -86,29 +85,33 @@ const MyAdsTable = observer(({ onClickCreate }) => {
     React.useEffect(() => {
         if (isMounted()) {
             setIsLoading(true);
-            loadMoreAds(item_offset.current);
+            loadMoreAds({ startIndex: 0 });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const loadMoreAds = start_idx => {
+    const loadMoreAds = ({ startIndex }) => {
         const { list_item_limit } = general_store;
 
-        requestWS({
-            p2p_advertiser_adverts: 1,
-            offset: start_idx,
-            limit: list_item_limit,
-        }).then(response => {
-            if (isMounted()) {
-                if (!response.error) {
-                    const { list } = response.p2p_advertiser_adverts;
-                    setHasMoreItemsToLoad(list.length >= list_item_limit);
-                    setAdverts(adverts.concat(list));
-                    item_offset.current += list.length;
-                } else {
-                    setApiErrorMessage(response.error.message);
+        return new Promise(resolve => {
+            requestWS({
+                p2p_advertiser_adverts: 1,
+                offset: startIndex,
+                limit: list_item_limit,
+            }).then(response => {
+                if (isMounted()) {
+                    if (!response.error) {
+                        const { list } = response.p2p_advertiser_adverts;
+                        setHasMoreItemsToLoad(list.length >= list_item_limit);
+                        setAdverts(adverts.concat(list));
+                    } else {
+                        setApiErrorMessage(response.error.message);
+                    }
+
+                    setIsLoading(false);
+                    resolve();
                 }
-                setIsLoading(false);
-            }
+            });
         });
     };
 

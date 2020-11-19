@@ -26,7 +26,7 @@ const BuySellRow = observer(({ row: advert, setSelectedAdvert, showAdvertiserPag
     if (isMobile()) {
         return (
             <div className='buy-sell-row'>
-                <div className='buy-sell-row__advertiser'>
+                <div className='buy-sell-row__advertiser' onClick={() => showAdvertiserPage(advert)}>
                     <UserAvatar nickname={advertiser_name} size={32} text_size='s' />
                     <div className='buy-sell-row__advertiser-name'>
                         <Text size='xs' line_height='m' color='general' weight='bold'>

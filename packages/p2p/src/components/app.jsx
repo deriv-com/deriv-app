@@ -190,7 +190,7 @@ const App = observer(props => {
                 is_100vw={isMobile()}
             >
                 <div label={localize('Buy / Sell')}>
-                    <BuySell navigate={general_store.redirectTo} params={general_store.parameters} />
+                    <BuySell />
                 </div>
                 <div count={general_store.notification_count} label={localize('Orders')}>
                     <Orders
@@ -200,11 +200,11 @@ const App = observer(props => {
                     />
                 </div>
                 <div label={localize('My ads')}>
-                    <MyAds navigate={general_store.redirectTo} params={general_store.parameters} />
+                    <MyAds />
                 </div>
                 {general_store.is_advertiser && (
                     <div label={localize('My profile')}>
-                        <MyProfile navigate={general_store.redirectTo} params={general_store.parameters} />
+                        <MyProfile />
                     </div>
                 )}
             </Tabs>

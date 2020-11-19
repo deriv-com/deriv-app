@@ -1,18 +1,14 @@
 .my-profile {
-    &__content {
-        @include mobile {
-            margin-bottom: 10rem;
-        }
+    @include mobile {
+        overflow-y: auto;
     }
-    &__scrollbar {
+
+    @include tablet-up {
         height: calc(100% - 15rem);
         position: absolute;
         width: calc(100% - 4.8rem);
-        @include mobile {
-            width: 100%;
-            height: unset;
-        }
     }
+
     &__header {
         display: flex;
         height: fit-content;
@@ -49,7 +45,12 @@
             display: flex;
 
             &-status {
-                margin-left: 1.6rem;
+                display: flex;
+                align-items: center;
+
+                &:not(:first-child) {
+                    margin-left: 1.6rem;
+                }
             }
             &-icon {
                 margin-left: 0.4rem;
@@ -121,13 +122,6 @@
         }
     }
     &__form {
-        @include mobile {
-            margin-bottom: 13rem;
-
-            &--active-keyboard {
-                margin-bottom: 0;
-            }
-        }
         &-textarea {
             margin-top: 2.5rem;
 
@@ -141,10 +135,6 @@
         .dc-input {
             margin-bottom: unset;
 
-            @include mobile {
-                margin-bottom: 0;
-            }
-
             &__wrapper {
                 @include mobile {
                     margin: 1.6rem;
@@ -156,8 +146,11 @@
         }
     }
     &__footer {
+        background-color: var(--general-main-1);
         border-top: 2px solid var(--general-section-1);
         bottom: 36px;
+        display: flex;
+        justify-content: flex-end;
         left: unset;
         position: fixed;
 
@@ -171,14 +164,7 @@
             bottom: 0px;
         }
 
-        &--active-keyboard {
-            position: absolute;
-            bottom: unset;
-            margin-top: 2.4rem;
-        }
-
         &-button {
-            float: right;
             margin: 1.6rem 2.4rem;
         }
     }

@@ -32,7 +32,9 @@ const MobileFullPageModal = ({
     page_header_trailing_icon,
     pageHeaderReturnFn,
     renderPageHeaderText,
-    should_wrap_body, // opt-in for backward compatibility.
+    // TODO: Refactor all MobileFullPageModal to allow its body to be wrapped (should_wrap_body).
+    // opt-in for backward compatibility.
+    should_wrap_body,
     children,
 }) => (
     <FadeWrapper

@@ -83,7 +83,7 @@ class ConnectedApps extends React.Component {
     render() {
         return (
             <section className='connected-apps__wrapper'>
-                <Text as='p' className='connected-apps__title'>
+                <Text color='prominent' weight='bold' as='p' className='connected-apps__title'>
                     {localize('Authorised applications')}
                 </Text>
                 {this.state.is_error && <ErrorComponent />}
@@ -117,7 +117,7 @@ class ConnectedApps extends React.Component {
                     <Modal.Body>
                         <div className='connected-app-modal'>
                             <Icon icon='IcAccountTrashCan' size={128} className='connected-app-modal__icon' />
-                            <Text as='p' weight='bold' className='connected-app-modal__message'>
+                            <Text as='p' color='prominent' weight='bold'>
                                 {localize('Confirm revoke access?')}
                             </Text>
                             <div className='connected-app-modal__confirmation'>

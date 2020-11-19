@@ -30,11 +30,12 @@ const IconMessageContent = ({ className, children, icon, icon_row, message, text
             {text && (
                 <div className='account-management__text-container'>
                     <Text
-                        className={classNames('account-management__text', {
+                        className={classNames({
                             [`${className}__text`]: className,
                         })}
                         as='p'
                         size='xs'
+                        align='center'
                     >
                         {text}
                     </Text>

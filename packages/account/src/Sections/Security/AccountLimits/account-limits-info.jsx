@@ -25,7 +25,7 @@ const AccountLimitsInfo = ({ currency, is_virtual }) => (
                     className='account__inset_header-icon'
                     icon={currency ? `IcCurrency-${currency}` : 'IcCurrencyUnknown'}
                 />
-                <Text as='p' size='xs' className='account__inset_header-subheading'>
+                <Text color='less-prominent' as='p' size='xs' className='account__inset_header-subheading'>
                     {currency ? (
                         <Localize
                             i18n_default_text='For your {{currency_name}} ({{currency}}) account'

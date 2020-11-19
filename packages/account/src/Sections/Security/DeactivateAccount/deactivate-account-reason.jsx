@@ -47,7 +47,7 @@ const WarningModal = props => {
     return (
         <div className='account-closure-warning-modal'>
             <Icon icon='IcRedWarning' size={96} />
-            <Text as='p' weight='bold' className='account-closure-warning-modal__warning-message'>
+            <Text as='p' weight='bold' color='loss-danger' className='account-closure-warning-modal__warning-message'>
                 {localize('Warning!')}
             </Text>
             <span className='account-closure-warning-modal__content'>{localize('if you deactivate:')}</span>
@@ -57,7 +57,7 @@ const WarningModal = props => {
                 </Text>
             </div>
             <div className='account-closure-warning-modal__content-wrapper'>
-                <Text as='p' className='account-closure-warning-modal__content'>
+                <Text as='p' size='xs' color='prominent'>
                     <Localize
                         i18n_default_text='You will <0>NOT</0> be able to log in again.'
                         components={[<span key={0} style={{ color: 'var(--text-loss-danger)', fontWeight: 'bold' }} />]}
@@ -349,7 +349,7 @@ class DeactivateAccountReason extends React.Component {
                                     </Text>
                                 ))}
                             {errors.characters_limits && (
-                                <Text as='p' weight='bold' size='xs' className='deactivate-account-reasons__error'>
+                                <Text as='p' weight='bold' size='xs' color='loss-danger'>
                                     {localize("Must be numbers, letters, and special characters . , ' -")}
                                 </Text>
                             )}

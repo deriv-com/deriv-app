@@ -23,10 +23,10 @@ export const UploadComplete = ({ has_poa, is_description_enabled, redirect_butto
             {is_description_enabled && (
                 <React.Fragment>
                     <div className='account-management__text-container'>
-                        <Text className='account-management__text' size='xs' as='p'>
+                        <Text align='center' size='xs' as='p'>
                             {localize('Your document is being reviewed, please check back in 1-3 days.')}
                         </Text>
-                        <Text className='account-management__text' size='xs' as='p'>
+                        <Text align='center' size='xs' as='p'>
                             {localize('You must also submit a proof of address.')}
                         </Text>
                     </div>

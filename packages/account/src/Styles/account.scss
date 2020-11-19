@@ -37,10 +37,7 @@ $MIN_HEIGHT_FLOATING: calc(
         box-shadow: inset 0 -1px 0 0 var(--general-section-1);
 
         &-subheading {
-            font-size: var(--text-size-xs);
-            line-height: 1.5;
             margin-right: 8px;
-            color: var(--text-less-prominent);
         }
     }
     &__inset_header-icon {
@@ -127,8 +124,6 @@ $MIN_HEIGHT_FLOATING: calc(
             max-width: 18.8rem;
         }
         &-description {
-            @include typeface(--small-left-normal-black, none);
-            line-height: 1.5;
             margin-bottom: 1.6rem;
         }
         &-link {
@@ -140,9 +135,6 @@ $MIN_HEIGHT_FLOATING: calc(
                 width: 16px;
                 height: 16px;
             }
-        }
-        &-text {
-            @include typeface(--small-left-normal-black, none);
         }
         @include mobile {
             width: auto;
@@ -443,12 +435,6 @@ $MIN_HEIGHT_FLOATING: calc(
             text-align: center;
         }
     }
-    .account-management__text {
-        text-align: center;
-        color: var(--text-general);
-        font-size: var(--text-size-xs);
-        line-height: 1.5;
-    }
     .account-management__text-container {
         margin-top: 10px;
         max-width: 672px;
@@ -618,9 +604,6 @@ $MIN_HEIGHT_FLOATING: calc(
             &--title {
                 @include typeface(--small-left-bold-black, none);
             }
-            &--text {
-                @include typeface(--paragraph-left-normal-black, none);
-            }
         }
         &__scrollbars {
             height: 100%;
@@ -777,7 +760,6 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &__error {
-            @include typeface(--paragraph-center-normal-red);
             margin-top: 1.6rem;
             margin-bottom: 1.6rem;
         }
@@ -801,14 +783,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 max-width: 40rem;
                 width: 100%;
             }
-            &-label {
-                @include typeface(--paragraph-left-normal-black);
-            }
-            &-value {
-                @include typeface(--paragraph-right-bold-black);
-            }
             &-note {
-                @include typeface(--paragraph-center-normal-black);
                 margin: 2.4rem 0;
                 max-width: 67.2rem;
             }
@@ -869,7 +844,6 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin-bottom: 0.8rem;
             }
             &-field {
-                @include typeface(--paragraph-left-normal-black);
                 margin-bottom: 1.4rem;
             }
         }
@@ -921,11 +895,6 @@ $MIN_HEIGHT_FLOATING: calc(
             }
             &-textbox {
                 padding: 0.9rem 3.2rem;
-            }
-            &-text {
-                color: var(--text-general);
-                font-size: var(--text-size-xxxs);
-                line-height: 1.4;
             }
             &-link {
                 color: var(--text-general);
@@ -1362,10 +1331,6 @@ $MIN_HEIGHT_FLOATING: calc(
         height: calc(100vh - 240px);
     }
     &__title {
-        color: var(--text-prominent);
-        font-size: var(--text-size-s);
-        font-weight: bold;
-        line-height: 1.5;
         margin-bottom: 1.6rem;
     }
     &__table {
@@ -1470,8 +1435,6 @@ $MIN_HEIGHT_FLOATING: calc(
         }
         .last_used {
             .last_used_content {
-                font-size: var(--text-size-xxs);
-                line-height: 1.5;
                 margin-bottom: 4px;
                 margin-top: 2px;
             }
@@ -1573,11 +1536,6 @@ $MIN_HEIGHT_FLOATING: calc(
                     &__icon {
                         margin: 24px 0;
                     }
-                    &__message {
-                        color: var(--text-prominent);
-                        font-weight: bold;
-                        font-size: var(--text-size-s);
-                    }
                     &__confirmation {
                         margin-top: 24px;
                         margin-bottom: 32px;
@@ -1678,9 +1636,6 @@ $MIN_HEIGHT_FLOATING: calc(
             &-icon {
                 cursor: pointer;
             }
-            &-text {
-                @include typeface(--paragraph-left-normal-black, none);
-            }
             &-content {
                 padding: 2.4rem;
             }
@@ -1754,7 +1709,6 @@ $MIN_HEIGHT_FLOATING: calc(
         margin-bottom: 0.8rem;
 
         &--bold {
-            font-weight: bold;
             margin: 0.5rem 0 0.8rem;
         }
         @include mobile {
@@ -1771,11 +1725,7 @@ $MIN_HEIGHT_FLOATING: calc(
         line-height: 1.43;
     }
     &__title {
-        font-weight: bold;
         margin-bottom: 0.8rem;
-    }
-    &__content {
-        color: var(--text-general);
     }
     &__link {
         color: var(--text-loss-danger);
@@ -1816,9 +1766,6 @@ $MIN_HEIGHT_FLOATING: calc(
             > input {
                 min-height: 96px;
             }
-        }
-        &__error {
-            color: var(--text-loss-danger);
         }
     }
     @include mobile {
@@ -1872,15 +1819,7 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &__warning-message {
-            color: var(--text-loss-danger);
             padding: 16px 0;
-            font-size: var(--text-size-s);
-            font-weight: bold;
-            line-height: 1.43;
-        }
-        &__content {
-            @include typeface(--paragraph-left-normal-prominent, none);
-            color: var(--text-general);
             line-height: 1.43;
         }
         &__content-wrapper {
@@ -1893,9 +1832,6 @@ $MIN_HEIGHT_FLOATING: calc(
     .deactivate-account-error {
         padding: 0 24px 24px 24px;
         &__title {
-            color: var(--text-prominent);
-            font-size: var(--text-size-xs);
-            font-weight: bold;
             margin-bottom: 5px;
         }
         &__account-details {

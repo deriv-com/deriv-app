@@ -11,10 +11,10 @@ export const Submitted = ({ needs_poi, is_description_disabled = false }) => {
         return (
             <IconMessageContent message={message} icon={<Icon icon='IcPoaVerified' size={128} />}>
                 <div className='account-management__text-container'>
-                    <Text className='account-management__text' size='xs' as='p'>
+                    <Text align='center' size='xs' as='p'>
                         {localize('Your document is being reviewed, please check back in 1-3 days.')}
                     </Text>
-                    <Text className='account-management__text' size='xs' as='p'>
+                    <Text align='center' size='xs' as='p'>
                         {localize('You must also submit a proof of identity.')}
                     </Text>
                 </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Icon, Money, ThemedScrollbars } from '@deriv/components';
+import { Button, Icon, Money, ThemedScrollbars, Text } from '@deriv/components';
 import { formatMoney, getMT5Account, getMT5AccountDisplay } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 
@@ -21,8 +21,12 @@ const Content = ({ currency_icon, loginid, title, value }) => (
         <div className='deactivate-account-error__account-details'>
             <Icon icon={currency_icon} size={24} />
             <div className='deactivate-account-error__account'>
-                <span className='deactivate-account-error__accounts-currency'>{title}</span>
-                <span className='deactivate-account-error__accounts-loginid'>{loginid}</span>
+                <Text className='deactivate-account-error__accounts-currency' color='prominent' size='xs'>
+                    {title}
+                </Text>
+                <Text color='prominent' size='xxxs' line_height='x'>
+                    {loginid}
+                </Text>
             </div>
         </div>
         <div className='deactivate-account-error__details'>{value}</div>

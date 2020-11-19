@@ -12,6 +12,7 @@ import {
     Button,
     DatePicker,
     StaticUrl,
+    Text,
 } from '@deriv/components';
 import {
     getPropertyValue,
@@ -482,9 +483,12 @@ class SelfExclusion extends React.Component {
                                                         <Localize
                                                             i18n_default_text='You’ll be able to adjust these limits at any time. You can reduce your limits from the <0>self-exclusion page</0>. To increase or remove your limits, please contact our <1>Customer Support team</1>.'
                                                             components={[
-                                                                <span
+                                                                <Text
                                                                     key={0}
-                                                                    className='self-exclusion__text-highlight'
+                                                                    size='xs'
+                                                                    color='loss-danger'
+                                                                    weight='bold'
+                                                                    text_align='left'
                                                                 />,
                                                                 <StaticUrl
                                                                     key={1}

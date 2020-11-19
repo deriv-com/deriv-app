@@ -12,6 +12,7 @@ import {
     DesktopWrapper,
     MobileWrapper,
     SelectNative,
+    Text,
 } from '@deriv/components';
 import { routes, isMobile, isDesktop } from '@deriv/shared';
 
@@ -91,7 +92,7 @@ const ConfirmationModal = ({ is_visible, toggleModal, onSubmit }) => (
 
 const ConfirmationPage = ({ toggleModal, onSubmit }) => (
     <div className='account__confirmation-page'>
-        <span className='account__confirmation-page-title'>{localize('Notice')}</span>
+        <Text className='account__confirmation-page-title'>{localize('Notice')}</Text>
         <ConfirmationContent className='account__confirmation-page-content' />
         <div className='account__confirmation-page-footer'>
             <Button large text={localize('Back')} onClick={() => toggleModal(false)} secondary />
@@ -851,9 +852,9 @@ class FinancialAssessment extends React.Component {
                                     <FormFooter>
                                         {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
                                         {isMobile() && (
-                                            <span className='account-form__footer-all-fields-required'>
+                                            <Text className='account-form__footer-all-fields-required'>
                                                 {localize('All fields are required')}
-                                            </span>
+                                            </Text>
                                         )}
                                         <Button
                                             type='button'

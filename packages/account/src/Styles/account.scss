@@ -133,8 +133,10 @@ $MIN_HEIGHT_FLOATING: calc(
         }
         &-link {
             display: flex;
-            @include typeface(--small-left-normal-red, none);
 
+            > span {
+                @include typeface(--small-left-normal-red, none);
+            }
             &--icon {
                 margin-left: 4px;
                 width: 16px;
@@ -902,8 +904,6 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &__text-highlight {
-            @include typeface(--paragraph-left-bold-red);
-
             &--small {
                 font-size: 1.2rem;
             }
@@ -961,6 +961,9 @@ $MIN_HEIGHT_FLOATING: calc(
             flex: 1;
         }
         &-title {
+            font-size: inherit;
+            font-weight: inherit;
+
             @include mobile {
                 padding-bottom: 0.8rem;
             }
@@ -1297,10 +1300,6 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &-text {
-            font-size: var(--text-size-xs);
-            line-height: 1.5;
-            color: var(--text-general);
-
             @include mobile {
                 font-size: 1.2rem;
             }
@@ -1880,7 +1879,6 @@ $MIN_HEIGHT_FLOATING: calc(
         }
         &__content {
             @include typeface(--paragraph-left-normal-prominent, none);
-            color: var(--text-general);
             line-height: 1.43;
         }
         &__content-wrapper {
@@ -1902,14 +1900,7 @@ $MIN_HEIGHT_FLOATING: calc(
             display: flex;
             align-items: center;
         }
-        &__accounts-loginid {
-            color: var(--text-prominent);
-            font-size: var(--text-size-xxxs);
-            line-height: 1.4;
-        }
         &__accounts-currency {
-            color: var(--text-prominent);
-            font-size: var(--text-size-xs);
             line-height: 1.43;
         }
         &__account {

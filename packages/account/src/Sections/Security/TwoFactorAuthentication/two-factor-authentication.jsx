@@ -1,6 +1,15 @@
 import React from 'react';
 import QRCode from 'qrcode.react';
-import { Timeline, DesktopWrapper, MobileWrapper, ThemedScrollbars, Clipboard, Icon, Loading } from '@deriv/components';
+import {
+    Timeline,
+    DesktopWrapper,
+    MobileWrapper,
+    ThemedScrollbars,
+    Clipboard,
+    Icon,
+    Loading,
+    Text,
+} from '@deriv/components';
 import { getPropertyValue, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
@@ -167,7 +176,9 @@ class TwoFactorAuthentication extends React.Component {
                                                         )}
                                                     </h4>
                                                     <div className='two-factor__qr--code'>
-                                                        <span>{secret_key}</span>
+                                                        <Text size='xs' text_align='left'>
+                                                            {secret_key}
+                                                        </Text>
                                                         <Clipboard
                                                             text_copy={secret_key}
                                                             info_message='Click here to copy key'

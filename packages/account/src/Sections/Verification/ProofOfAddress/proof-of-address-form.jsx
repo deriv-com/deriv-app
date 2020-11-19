@@ -8,6 +8,7 @@ import {
     MobileWrapper,
     SelectNative,
     FormSubmitErrorMessage,
+    Text,
 } from '@deriv/components';
 import { Formik, Field } from 'formik';
 import { localize } from '@deriv/translations';
@@ -304,11 +305,11 @@ class ProofOfAddressForm extends React.Component {
                                     <FormSubHeader title={localize('Details')} />
                                     <div className='account-poa__details-section'>
                                         <div className='account-poa__details-description'>
-                                            <span className='account-poa__details-text'>
+                                            <Text size='xs' className='account-poa__details-text'>
                                                 {localize(
                                                     'Please ensure that this address is the same as in your proof of address'
                                                 )}
-                                            </span>
+                                            </Text>
                                         </div>
                                         <div className='account-poa__details-fields'>
                                             <fieldset className='account-form__fieldset'>

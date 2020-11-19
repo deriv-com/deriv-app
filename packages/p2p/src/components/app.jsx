@@ -23,18 +23,20 @@ const TemporaryBarredMessage = () => {
     const { general_store } = useStores();
 
     return (
-        <HintBox
-            icon='IcAlertWarning'
-            message={
-                <Text size='xxxs' color='prominent' line_height='xs'>
-                    <Localize
-                        i18n_default_text="You've been temporarily barred from using our services due to multiple cancellation attempts. Try again after {{date_time}}."
-                        values={{ date_time: general_store.blocked_until_date_time }}
-                    />
-                </Text>
-            }
-            is_info
-        />
+        <div className='p2p-cashier__barred-user'>
+            <HintBox
+                icon='IcAlertWarning'
+                message={
+                    <Text size='xxxs' color='prominent' line_height='xs'>
+                        <Localize
+                            i18n_default_text="You've been temporarily barred from using our services due to multiple cancellation attempts. Try again after {{date_time}}."
+                            values={{ date_time: general_store.blocked_until_date_time }}
+                        />
+                    </Text>
+                }
+                is_warn
+            />
+        </div>
     );
 };
 

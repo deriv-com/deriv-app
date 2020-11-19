@@ -68,8 +68,8 @@
             }
         }
 
-        &--info {
-            background-color: rgba(255, 173, 58, 0.16);
+        @include mobile {
+            margin: 1rem 2rem;
         }
     }
     &__advertiser-tab {

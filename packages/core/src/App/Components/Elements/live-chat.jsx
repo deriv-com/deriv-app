@@ -16,39 +16,46 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
     }, []);
 
     React.useEffect(() => {
-        let session_variables = { loginid: '', landing_company_shortcode: '', currency: '', residence: '' };
-
-        if (has_cookie_account) {
-            const domain = window.location.hostname.includes('deriv.com') ? 'deriv.com' : 'binary.sx';
-            const client_information = Cookies.get('client_information', {
-                domain,
-            });
-            if (client_information) {
-                const {
-                    loginid,
-                    email,
-                    landing_company_shortcode,
-                    currency,
-                    residence,
-                    first_name,
-                    last_name,
-                } = JSON.parse(client_information);
-                session_variables = {
-                    ...(loginid && { loginid }),
-                    ...(landing_company_shortcode && { landing_company_shortcode }),
-                    ...(currency && { currency }),
-                    ...(residence && { residence }),
+        if (window.LiveChatWidget) {
+            window.LiveChatWidget.on('ready', () => {
+                let session_variables = {
+                    loginid: '',
+                    landing_company_shortcode: '',
+                    currency: '',
+                    residence: '',
+                    email: '',
                 };
 
-                window.LiveChatWidget.call('set_session_variables', session_variables);
+                if (has_cookie_account) {
+                    const domain = window.location.hostname.includes('deriv.com') ? 'deriv.com' : 'binary.sx';
+                    const client_information = Cookies.get('client_information', {
+                        domain,
+                    });
+                    if (client_information) {
+                        const {
+                            loginid,
+                            email,
+                            landing_company_shortcode,
+                            currency,
+                            residence,
+                            first_name,
+                            last_name,
+                        } = JSON.parse(client_information) || {};
+                        session_variables = {
+                            ...(loginid && { loginid }),
+                            ...(landing_company_shortcode && { landing_company_shortcode }),
+                            ...(currency && { currency }),
+                            ...(residence && { residence }),
+                            ...(email && { email }),
+                        };
 
-                window.LiveChatWidget.call('set_customer_email', email);
-                window.LiveChatWidget.call('set_customer_name', `${first_name} ${last_name}`);
-            }
-        } else {
-            window.LiveChatWidget.call('set_customer_email', ' ');
-            window.LiveChatWidget.call('set_customer_name', ' ');
-            window.LiveChatWidget.call('set_session_variables', session_variables);
+                        window.LiveChatWidget.call('set_session_variables', session_variables);
+
+                        window.LiveChatWidget.call('set_customer_email', email);
+                        window.LiveChatWidget.call('set_customer_name', `${first_name} ${last_name}`);
+                    }
+                }
+            });
         }
     }, [has_cookie_account]);
 
@@ -69,21 +76,21 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
                             <p className='livechat__title'>{localize('Live chat')}</p>
                         </div>
                     ) : (
-                        <Popover
-                            className='footer__link'
-                            classNameBubble='help-centre__tooltip'
-                            alignment='top'
-                            message={localize('Live chat')}
-                        >
-                            <Icon
-                                icon='IcLiveChat'
-                                className='footer__icon gtm-deriv-livechat'
-                                onClick={() => {
-                                    window.LiveChatWidget.call('maximize');
-                                }}
-                            />
-                        </Popover>
-                    )}
+                            <Popover
+                                className='footer__link'
+                                classNameBubble='help-centre__tooltip'
+                                alignment='top'
+                                message={localize('Live chat')}
+                            >
+                                <Icon
+                                    icon='IcLiveChat'
+                                    className='footer__icon gtm-deriv-livechat'
+                                    onClick={() => {
+                                        window.LiveChatWidget.call('maximize');
+                                    }}
+                                />
+                            </Popover>
+                        )}
                 </>
             )}
         </>

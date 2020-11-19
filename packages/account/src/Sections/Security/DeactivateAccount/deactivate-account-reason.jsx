@@ -48,7 +48,9 @@ const WarningModal = props => {
         <div className='account-closure-warning-modal'>
             <Icon icon='IcRedWarning' size={96} />
             <p className='account-closure-warning-modal__warning-message'>{localize('Warning!')}</p>
-            <Text className='account-closure-warning-modal__content'>{localize('if you deactivate:')}</Text>
+            <Text size='xs' line_height='x'>
+                {localize('if you deactivate:')}
+            </Text>
             <div className='account-closure-warning-modal__content-wrapper'>
                 <p className='account-closure-warning-modal__content'>
                     {localize('You’ll be logged out automatically.')}

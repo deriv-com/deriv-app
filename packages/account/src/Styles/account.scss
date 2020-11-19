@@ -134,9 +134,6 @@ $MIN_HEIGHT_FLOATING: calc(
         &-link {
             display: flex;
 
-            > span {
-                @include typeface(--small-left-normal-red, none);
-            }
             &--icon {
                 margin-left: 4px;
                 width: 16px;
@@ -1879,6 +1876,7 @@ $MIN_HEIGHT_FLOATING: calc(
         }
         &__content {
             @include typeface(--paragraph-left-normal-prominent, none);
+            color: var(--text-general);
             line-height: 1.43;
         }
         &__content-wrapper {

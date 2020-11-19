@@ -488,7 +488,6 @@ class SelfExclusion extends React.Component {
                                                                     size='xs'
                                                                     color='loss-danger'
                                                                     weight='bold'
-                                                                    text_align='left'
                                                                 />,
                                                                 <StaticUrl
                                                                     key={1}

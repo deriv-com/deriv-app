@@ -24,7 +24,9 @@ const SEArticle = ({ toggleArticle, is_eu }) => {
             <h4 className='account__article-title'>{localize('About trading limits and self-exclusion')}</h4>
             <p className='account__article-description'>{article_text}</p>
             <div onClick={toggleArticle} className='link link--orange account__article-link'>
-                <Text>{localize('Learn more')}</Text>
+                <Text size='xxs' color='loss-danger' line_height='s'>
+                    {localize('Learn more')}
+                </Text>
                 <Icon icon='IcChevronRight' className='account__article-link--icon' color='red' />
             </div>
         </article>

@@ -176,9 +176,7 @@ class TwoFactorAuthentication extends React.Component {
                                                         )}
                                                     </h4>
                                                     <div className='two-factor__qr--code'>
-                                                        <Text size='xs' text_align='left'>
-                                                            {secret_key}
-                                                        </Text>
+                                                        <Text size='xs'>{secret_key}</Text>
                                                         <Clipboard
                                                             text_copy={secret_key}
                                                             info_message='Click here to copy key'

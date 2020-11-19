@@ -5,6 +5,7 @@ import { getPosition } from '@deriv/shared';
 import Icon from '../icon';
 import Input from '../input';
 import DropdownList from '../dropdown-list';
+import { useBlockScroll } from '../../hooks/use-blockscroll';
 
 const KEY_CODE = {
     ENTER: 13,
@@ -46,6 +47,7 @@ const Autocomplete = React.memo(props => {
     const [active_index, setActiveIndex] = React.useState(null);
     const [filtered_items, setFilteredItems] = React.useState(list_items);
     const [style, setStyle] = React.useState({});
+    useBlockScroll(list_portal_id && should_show_list ? input_wrapper_ref : false);
 
     let scroll_timeout = null;
     let scroll_top_position = null;

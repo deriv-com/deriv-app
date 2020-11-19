@@ -7,7 +7,7 @@ export const getPosition = ({
     preferred_alignment = 'bottom',
     child_el,
     parent_el,
-    shouldConsiderParentHeight = true,
+    should_consider_parent_height = true,
 }) => {
     const parent_rect = parent_el.getBoundingClientRect();
     const child_height = child_el.clientHeight;
@@ -17,14 +17,14 @@ export const getPosition = ({
     const max_height = getMaxHeightByAligningBottom({ parent_rect, child_height });
 
     const top_placement_style = {
-        bottom: body_rect.bottom - (shouldConsiderParentHeight ? top : bottom) + 8, // we add 8px extra margin for better UX
+        bottom: body_rect.bottom - (should_consider_parent_height ? top : bottom) + 8, // add 8px extra margin for better UX
         left,
         width,
         transformOrigin: 'bottom',
     };
 
     const bottom_placement_style = {
-        top: shouldConsiderParentHeight ? bottom : top,
+        top: should_consider_parent_height ? bottom : top,
         left,
         width,
         transformOrigin: 'top',

@@ -44,16 +44,24 @@ class DatePicker extends React.PureComponent {
         this.setState(
             state => ({ is_datepicker_visible: !state.is_datepicker_visible }),
             () => {
-                const position_style = getPosition({
-                    preferred_alignment: 'bottom',
-                    parent_el: this.datepicker.current,
-                    child_el: this.calendar_portal.current,
-                    shouldConsiderParentHeight: false,
-                });
-                this.setState({
-                    style: position_style.style,
-                    placement: position_style.placement,
-                });
+                if (
+                    this.state.is_datepicker_visible &&
+                    this.datepicker &&
+                    this.datepicker.current &&
+                    this.calendar_portal.current &&
+                    this.props.portal_id
+                ) {
+                    const position_style = getPosition({
+                        preferred_alignment: 'bottom',
+                        parent_el: this.datepicker.current,
+                        child_el: this.calendar_portal.current,
+                        should_consider_parent_height: false,
+                    });
+                    this.setState({
+                        style: position_style.style,
+                        placement: position_style.placement,
+                    });
+                }
             }
         );
     };
@@ -222,18 +230,19 @@ class DatePicker extends React.PureComponent {
                                 type={type}
                                 value={this.input_value}
                             />
+                            <Calendar
+                                ref={this.calendar_portal}
+                                parent_ref={this.datepicker}
+                                onRef={ref => (this.calendar = ref)}
+                                is_datepicker_visible={this.state.is_datepicker_visible}
+                                onHover={this.props.has_range_selection ? this.onHover : undefined}
+                                onSelect={this.onSelectCalendar}
+                                value={this.calendar_value} // Calendar accepts date format yyyy-mm-dd
+                                style={this.state.style}
+                                placement={this.state.placement}
+                                {...props}
+                            />
                         </div>
-                        <Calendar
-                            ref={this.calendar_portal}
-                            onRef={ref => (this.calendar = ref)}
-                            is_datepicker_visible={this.state.is_datepicker_visible}
-                            onHover={this.props.has_range_selection ? this.onHover : undefined}
-                            onSelect={this.onSelectCalendar}
-                            value={this.calendar_value} // Calendar accepts date format yyyy-mm-dd
-                            style={this.state.style}
-                            placement={this.state.placement}
-                            {...props}
-                        />
                     </div>
                 </DesktopWrapper>
             </>

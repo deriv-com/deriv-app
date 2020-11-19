@@ -7,14 +7,13 @@ import Calendar from '../calendar';
 import { useBlockScroll } from '../../hooks';
 
 const DatePickerCalendar = React.forwardRef(
-    ({ alignment, is_datepicker_visible, portal_id, style, placement, ...props }, ref) => {
+    ({ alignment, is_datepicker_visible, parent_ref, portal_id, style, placement, ...props }, ref) => {
         const css_transition_classnames = {
             enter: classNames('dc-datepicker__picker--enter', {
                 [`dc-datepicker__picker--${alignment}-enter`]: alignment,
             }),
             enterDone: classNames('dc-datepicker__picker--enter-done', {
-                [`dc-datepicker__picker--${alignment}-enter-done`]: alignment,
-                [`dc-datepicker__picker--${alignment}-enter-done--from-${placement}`]: alignment && placement,
+                [`dc-datepicker__picker--${placement || alignment}-enter-done`]: placement || alignment,
             }),
             exit: classNames('dc-datepicker__picker--exit', {
                 [`dc-datepicker__picker--${alignment}-exit`]: alignment,
@@ -39,7 +38,9 @@ const DatePickerCalendar = React.forwardRef(
                                   bottom: style.bottom,
                                   left: style.left,
                               }
-                            : undefined
+                            : {
+                                  top: 0, // we pass 0 to overcome additional margin from calendar enter animation
+                              }
                     }
                 >
                     <Calendar forward_ref={ref} {...props} />
@@ -47,7 +48,7 @@ const DatePickerCalendar = React.forwardRef(
             </CSSTransition>
         );
 
-        useBlockScroll(portal_id ? ref : false);
+        useBlockScroll(portal_id && is_datepicker_visible ? parent_ref : false);
 
         if (portal_id) {
             return ReactDOM.createPortal(el_calendar, document.getElementById(portal_id));

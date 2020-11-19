@@ -63,6 +63,21 @@
                 transition: transform 0.25s ease, opacity 0.25s linear;
             }
         }
+        &--top {
+            &-enter,
+            &-exit {
+                transform: translate3d(0, 0, 0);
+                opacity: 0;
+            }
+            &-enter-done {
+                transform: translate3d(0, -40px, 0);
+                opacity: 1;
+            }
+            &-enter-done,
+            &-exit {
+                transition: transform 0.25s ease, opacity 0.25s linear;
+            }
+        }
         &--bottom {
             &-enter,
             &-exit {
@@ -70,12 +85,7 @@
                 opacity: 0;
             }
             &-enter-done {
-                &--from-top {
-                    transform: translate3d(0, -40px, 0);
-                }
-                &--from-bottom {
-                    transform: translate3d(0, 40px, 0);
-                }
+                transform: translate3d(0, 40px, 0);
                 opacity: 1;
             }
             &-enter-done,

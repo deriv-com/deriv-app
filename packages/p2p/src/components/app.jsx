@@ -19,7 +19,7 @@ import './app.scss';
 
 const allowed_currency = 'USD';
 
-const TemporaryBarredMessage = () => {
+const TemporaryBarredMessage = observer(() => {
     const { general_store } = useStores();
 
     return (
@@ -38,7 +38,9 @@ const TemporaryBarredMessage = () => {
             />
         </div>
     );
-};
+});
+
+TemporaryBarredMessage.displayName = 'TemporaryBarredMessage';
 
 const App = observer(props => {
     const { general_store } = useStores();

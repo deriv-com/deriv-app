@@ -39,6 +39,7 @@
         "react-dom": "^16.8.6",
         "react-i18next": "^11.0.0",
         "react-svg-loader": "^3.0.3",
+        "react-transition-group": "^4.4.1",
         "sendbird": "^3.0.122",
         "sendbird-uikit": "^1.0.1"
     },

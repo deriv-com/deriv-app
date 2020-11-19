@@ -14,11 +14,13 @@ import './buy-sell.scss';
 
 const BuySell = observer(() => {
     const { general_store } = useStores();
+    const [is_toggle_visible, setIsToggleVisible] = React.useState(true);
     const [selected_ad, setSelectedAdState] = React.useState({});
     const [should_show_popup, setShouldShowPopup] = React.useState(false);
     const [should_show_verification, setShouldShowVerification] = React.useState(false);
     const [should_show_advertiser_page, setShouldShowAdvertiserPage] = React.useState(false);
     const [table_type, setTableType] = React.useState(buy_sell.BUY);
+    const previous_scroll_top = React.useRef(0);
 
     const hideAdvertiserPage = () => setShouldShowAdvertiserPage(false);
     const hideVerification = () => setShouldShowVerification(false);
@@ -38,6 +40,15 @@ const BuySell = observer(() => {
     };
 
     const showVerification = () => setShouldShowVerification(true);
+
+    const onScroll = event => {
+        if (event.target.scrollTop !== previous_scroll_top.current) {
+            const is_scrolling_down = event.target.scrollTop > previous_scroll_top.current;
+            setIsToggleVisible(!is_scrolling_down);
+        }
+
+        previous_scroll_top.current = event.target.scrollTop;
+    };
 
     if (should_show_verification) {
         return (
@@ -63,12 +74,13 @@ const BuySell = observer(() => {
 
     return (
         <div className='buy-sell'>
-            <BuySellHeader table_type={table_type} setTableType={setTableType} />
+            <BuySellHeader is_visible={is_toggle_visible} table_type={table_type} setTableType={setTableType} />
             <BuySellTable
                 key={table_type}
                 is_buy={table_type === buy_sell.BUY}
                 setSelectedAdvert={setSelectedAdvert}
                 showAdvertiserPage={showAdvertiserPage}
+                onScroll={onScroll}
             />
             <BuySellModal
                 selected_ad={selected_ad}

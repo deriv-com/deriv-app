@@ -11,7 +11,7 @@ import { useStores } from 'Stores';
 import BuySellRow from './buy-sell-row.jsx';
 import { buy_sell } from '../../constants/buy-sell';
 
-const BuySellTable = observer(({ is_buy, setSelectedAdvert, showAdvertiserPage }) => {
+const BuySellTable = observer(({ is_buy, setSelectedAdvert, showAdvertiserPage, onScroll }) => {
     const { general_store } = useStores();
     const [api_error_message, setApiErrorMessage] = React.useState('');
     const [has_more_items_to_load, setHasMoreItemsToLoad] = React.useState(false);
@@ -37,7 +37,15 @@ const BuySellTable = observer(({ is_buy, setSelectedAdvert, showAdvertiserPage }
                     if (!response.error) {
                         const { list } = response.p2p_advert_list;
                         setHasMoreItemsToLoad(list.length >= general_store.list_item_limit);
-                        setItems(items.concat(list));
+
+                        if (isMobile() && list.length && items.length === 0) {
+                            // This allows for the sliding animation on the Buy/Sell toggle as it pushes
+                            // an empty item with an item that holds the same height of the toggle container.
+                            // Also see: buy-sell-row.jsx
+                            setItems([{ id: 'WATCH_THIS_SPACE' }].concat(items).concat(list));
+                        } else {
+                            setItems(items.concat(list));
+                        }
                     } else {
                         setApiErrorMessage(response.error.message);
                     }
@@ -65,6 +73,7 @@ const BuySellTable = observer(({ is_buy, setSelectedAdvert, showAdvertiserPage }
             showAdvertiserPage={showAdvertiserPage}
         />
     );
+
     if (items.length) {
         return (
             <Table className='buy-sell__table'>
@@ -76,7 +85,7 @@ const BuySellTable = observer(({ is_buy, setSelectedAdvert, showAdvertiserPage }
                             <Table.Head>
                                 {localize('Rate (1 {{currency}})', { currency: general_store.client.currency })}
                             </Table.Head>
-                            <Table.Head>{''}</Table.Head>
+                            <Table.Head />
                         </Table.Row>
                     </Table.Header>
                 )}
@@ -88,6 +97,7 @@ const BuySellTable = observer(({ is_buy, setSelectedAdvert, showAdvertiserPage }
                         loadMoreRowsFn={loadMoreItems}
                         has_more_items_to_load={has_more_items_to_load}
                         keyMapperFn={item => item.id}
+                        onScroll={onScroll}
                     />
                 </Table.Body>
             </Table>

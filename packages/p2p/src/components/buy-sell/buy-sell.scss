@@ -13,10 +13,6 @@
         flex: 1;
         flex-direction: column;
 
-        @include mobile {
-            margin-top: #{$mobile_tabs_height};
-        }
-
         &-body {
             height: 100%;
             flex: 1;

@@ -9,6 +9,13 @@ import { useStores } from 'Stores';
 import './buy-sell-row.scss';
 
 const BuySellRow = observer(({ row: advert, setSelectedAdvert, showAdvertiserPage }) => {
+    if (advert.id === 'WATCH_THIS_SPACE') {
+        // This allows for the sliding animation on the Buy/Sell toggle as it pushes
+        // an empty item with an item that holds the same height of the toggle container.
+        // Also see: buy-sell-table.jsx
+        return <div style={{ height: '77px' }} />;
+    }
+
     const { general_store } = useStores();
     const {
         account_currency,

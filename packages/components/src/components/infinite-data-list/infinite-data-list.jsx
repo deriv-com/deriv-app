@@ -10,6 +10,7 @@ const InfiniteDataList = ({
     items,
     keyMapperFn,
     loadMoreRowsFn,
+    onScroll,
     rowRenderer,
 }) => {
     const item_count = has_more_items_to_load ? items.length + 1 : items.length;
@@ -29,6 +30,7 @@ const InfiniteDataList = ({
                     rowRenderer={rowRenderer}
                     setListRef={registerChild}
                     onRowsRendered={onRowsRendered}
+                    onScroll={onScroll}
                     keyMapper={keyMapperFn}
                 />
             )}

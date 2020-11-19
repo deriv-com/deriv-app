@@ -289,6 +289,13 @@
                 }
             }
         }
+        &__contract-type-container {
+            display: flex;
+
+            .contract-type-widget {
+                flex: 1;
+            }
+        }
         &__multiplier {
             &-radio-group {
                 flex-direction: column;
@@ -368,6 +375,24 @@
 
                     .dc-checkbox__box {
                         margin-left: 0rem;
+                    }
+                }
+            }
+            &-trade-info {
+                display: flex;
+                justify-content: space-evenly;
+                padding-bottom: 1.6rem;
+
+                &-tooltip-text {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    line-height: 1.4;
+                    padding-top: 0.8rem;
+                    font-size: 1.2rem;
+                    text-align: right;
+                    span {
+                        border-bottom: 1px dotted var(--text-general);
                     }
                 }
             }

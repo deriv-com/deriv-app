@@ -125,5 +125,5 @@ export const getContractUpdateConfig = ({ contract_update, limit_order }) => {
 };
 
 export const shouldShowCancellation = symbol => {
-    return /^((1HZ[0-9-V]+)|(R_[\d]{2,3}))$/.test(symbol);
+    return !/^(CRASH|BOOM|stpRNG)/.test(symbol);
 };

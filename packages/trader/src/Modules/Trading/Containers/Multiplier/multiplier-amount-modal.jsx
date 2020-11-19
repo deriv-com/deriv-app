@@ -3,6 +3,7 @@ import { Div100vhContainer, Modal, Money, Popover } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import AmountMobile from 'Modules/Trading/Components/Form/TradeParams/amount-mobile.jsx';
+import MultipliersInfo from 'Modules/Trading/Components/Form/TradeParams/Multiplier/info.jsx';
 
 const MultiplierAmountModal = ({ is_open, enableApp, disableApp, toggleModal }) => {
     // Fix to prevent iOS from zooming in erratically on quick taps
@@ -83,6 +84,11 @@ const TradeParamsMobile = ({ amount, currency, toggleModal }) => {
                 setSelectedAmount={setSelectedAmount}
                 setAmountError={() => {}}
                 stake_value={stake_value}
+            />
+            <MultipliersInfo
+                className='trade-params__multiplier-trade-info'
+                should_show_tooltip
+                should_show_percentage_tooltip
             />
         </React.Fragment>
     );

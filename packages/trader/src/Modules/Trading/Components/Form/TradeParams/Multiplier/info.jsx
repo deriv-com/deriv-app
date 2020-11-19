@@ -5,9 +5,26 @@ import { Popover, Money } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
-const MultipliersInfo = ({ amount, commission, className, currency, multiplier, should_show_tooltip, stop_out }) => {
+const commission_tooltip_margin = 35;
+const stop_out_tooltip_margin = 135;
+
+const MultipliersInfo = ({
+    amount = 0,
+    commission = 0,
+    className,
+    currency,
+    multiplier = 0,
+    is_tooltip_relative,
+    should_show_tooltip,
+    should_show_percentage_tooltip,
+    stop_out = 0,
+}) => {
     const commission_text = (
-        <p className='trade-container__multipliers-trade-info-tooltip-text'>
+        <p
+            className={classNames({
+                [`${className}-tooltip-text`]: className,
+            })}
+        >
             <Localize
                 i18n_default_text='Commission <0/>'
                 components={[<Money key={0} amount={commission} currency={currency} show_currency />]}
@@ -16,7 +33,11 @@ const MultipliersInfo = ({ amount, commission, className, currency, multiplier, 
     );
 
     const stop_out_text = (
-        <p className='trade-container__multipliers-trade-info-tooltip-text'>
+        <p
+            className={classNames({
+                [`${className}-tooltip-text`]: className,
+            })}
+        >
             <Localize
                 i18n_default_text='Stop out <0/>'
                 components={[<Money key={0} amount={stop_out} currency={currency} show_currency />]}
@@ -37,34 +58,55 @@ const MultipliersInfo = ({ amount, commission, className, currency, multiplier, 
 
     const stop_out_tooltip = (
         <Localize
-            i18n_default_text='<0>{{commission_percentage}}%</0> of (<1/> * {{multiplier}})'
-            values={{
-                commission_percentage: Number((commission * 100) / (multiplier * amount)).toFixed(4),
-                multiplier,
-            }}
-            components={[<span className='bold' key={0} />, <Money key={1} amount={amount} currency={currency} />]}
+            i18n_default_text='To ensure your loss does not exceed your stake, your contract will be closed automatically when your loss equals to <0/>.'
+            components={[<Money key={0} amount={stop_out} currency={currency} show_currency />]}
         />
     );
 
-    const getInfo = (elem, message) => {
+    const stop_out_percentage_tooltip = (
+        <Localize
+            i18n_default_text='When your current loss equals or exceeds {{stop_out_percentage}}% of your stake, your contract will be closed at the nearest available asset price.'
+            values={{
+                stop_out_percentage: Math.abs(Number((stop_out * 100) / amount).toFixed(0)),
+            }}
+        />
+    );
+
+    const getInfo = ({ text, message, margin }) => {
         return should_show_tooltip ? (
-            <Popover alignment='left' message={message} relative_render>
-                {elem}
+            <Popover
+                message={message}
+                {...(is_tooltip_relative
+                    ? { alignment: 'left', relative_render: true, margin }
+                    : { alignment: 'bottom', zIndex: 9999 })}
+            >
+                {text}
             </Popover>
         ) : (
-            elem
+            text
         );
     };
 
     return (
-        <div className={classNames('trade-container__multipliers-trade-info', className)}>
-            {getInfo(commission_text, commission_tooltip)} {getInfo(stop_out_text, stop_out_tooltip)}
+        <div className={classNames('multipliers-trade-info', className)}>
+            {getInfo({
+                text: commission_text,
+                message: commission_tooltip,
+                margin: commission_tooltip_margin,
+            })}
+            {getInfo({
+                text: stop_out_text,
+                message: should_show_percentage_tooltip ? stop_out_percentage_tooltip : stop_out_tooltip,
+                margin: stop_out_tooltip_margin,
+            })}
         </div>
     );
 };
 
 MultipliersInfo.propTypes = {
     className: PropTypes.string,
+    is_tooltip_relative: PropTypes.bool,
+    should_show_percentage_tooltip: PropTypes.bool,
     should_show_tooltip: PropTypes.bool,
 };
 

@@ -158,7 +158,13 @@ const Amount = ({
                 onChange={onChange}
                 value={parseInt(is_equal)}
             />
-            {is_multiplier && <MultipliersInfo should_show_tooltip={true} />}
+            {is_multiplier && (
+                <MultipliersInfo
+                    className='trade-container__multipliers-trade-info'
+                    should_show_tooltip
+                    is_tooltip_relative
+                />
+            )}
         </Fieldset>
     );
 };

@@ -33,8 +33,8 @@ const IconMessageContent = ({ className, children, icon, icon_row, message, text
                         className={classNames('account-management__text', {
                             [`${className}__text`]: className,
                         })}
-                        size='small'
                         as='p'
+                        size='xs'
                     >
                         {text}
                     </Text>

@@ -7,30 +7,18 @@ const UnsupportedIconRow = () => (
     <div className='poi-icon-row'>
         <div className='poi-icon-row__icon-container'>
             <Icon icon='IcIdentityCard' size={90} />
-            <Text size='small' as='p'>
-                {localize('Identity card')}
-            </Text>
-            <Text size='small' as='p'>
-                {localize('Front and back')}
-            </Text>
+            <Text as='p'>{localize('Identity card')}</Text>
+            <Text as='p'>{localize('Front and back')}</Text>
         </div>
         <div className='poi-icon-row__icon-container'>
             <Icon icon='IcDrivingLicense' size={90} />
-            <Text size='small' as='p'>
-                {localize('Driving license')}
-            </Text>
-            <Text size='small' as='p'>
-                {localize('Front and back')}
-            </Text>
+            <Text as='p'>{localize('Driving license')}</Text>
+            <Text as='p'>{localize('Front and back')}</Text>
         </div>
         <div className='poi-icon-row__icon-container'>
             <Icon icon='IcPassport' size={90} />
-            <Text size='small' as='p'>
-                {localize('Passport')}
-            </Text>
-            <Text size='small' as='p'>
-                {localize('Face photo page')}
-            </Text>
+            <Text as='p'>{localize('Passport')}</Text>
+            <Text as='p'>{localize('Face photo page')}</Text>
         </div>
     </div>
 );

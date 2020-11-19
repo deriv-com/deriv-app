@@ -12,7 +12,7 @@ import LoadErrorMessage from 'Components/load-error-message';
 const CellContent = ({ title, text, className }) => (
     <React.Fragment>
         <h3 className='cell-title'>{title}</h3>
-        <Text size='small' as='p' className={classNames('cell-value', className)}>
+        <Text as='p' className={classNames('cell-value', className)}>
             {text}
         </Text>
     </React.Fragment>

@@ -22,13 +22,13 @@ const ForgotYourPassword = ({ onClickSendEmail }) => (
             >
                 <div className='forgot-password__content'>
                     <Icon icon='IcEmailSpam' size={32} />
-                    <Text size='small' as='p'>
+                    <Text size='xxs' as='p'>
                         {localize('The email is in your spam folder (Sometimes things get lost there).')}
                     </Text>
                 </div>
                 <div className='forgot-password__content'>
                     <Icon icon='IcEmail' size={32} />
-                    <Text size='small' as='p'>
+                    <Text size='xxs' as='p'>
                         {localize(
                             'You accidentally gave us another email address (Usually a work or a personal one instead of the one you meant).'
                         )}
@@ -36,7 +36,7 @@ const ForgotYourPassword = ({ onClickSendEmail }) => (
                 </div>
                 <div className='forgot-password__content'>
                     <Icon icon='IcEmailFirewall' size={32} />
-                    <Text size='small' as='p'>
+                    <Text size='xxs' as='p'>
                         {localize(
                             'We can’t deliver the email to this address (Usually because of firewalls or filtering).'
                         )}

@@ -40,7 +40,7 @@ const PrepareConnectedAppsAction = (app_id, handleToggleModal) => {
 };
 
 const PrepareConnectedAppsLastLogin = last_used => (
-    <Text size='small' as='p' className='last_used_content'>
+    <Text as='p' size='xs' className='last_used_content'>
         {toMoment(last_used).format('YYYY-MM-DD HH:mm:ss')}
     </Text>
 );

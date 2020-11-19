@@ -49,7 +49,7 @@ import {
 const ConfirmationContent = ({ className }) => {
     return (
         <React.Fragment>
-            <Text size='small' as='p' className={className}>
+            <Text as='p' className={className}>
                 <Localize
                     i18n_default_text='In providing our services to you, we are required to obtain information from you in order to assess whether a given product or service is appropriate for you (that is, whether you possess the experience and knowledge to understand the risks involved).<0/><1/>'
                     components={[<br key={0} />, <br key={1} />]}

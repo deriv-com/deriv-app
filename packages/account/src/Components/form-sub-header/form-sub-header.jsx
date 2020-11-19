@@ -15,7 +15,7 @@ export const FormSubHeader = ({ title, subtitle, description }) => (
             </div>
         </div>
         {description && (
-            <Text size='small' as='p' className='account-form__description'>
+            <Text as='p' className='account-form__description'>
                 {description}
             </Text>
         )}

@@ -131,7 +131,7 @@ const ArticleContent = ({ is_eu, is_uk, toggleModal }) => {
                 <ul className='account__article-list'>
                     {article_items.map((article, idx) => (
                         <li key={idx}>
-                            <Text size='small' as='p' className='self-exclusion__article-text'>
+                            <Text as='p' className='self-exclusion__article-text'>
                                 {article}
                             </Text>
                         </li>

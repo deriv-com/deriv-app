@@ -394,7 +394,7 @@ class SelfExclusion extends React.Component {
                                                     <h4 className='self-exclusion__popup-header'>
                                                         {localize('Save new limits?')}
                                                     </h4>
-                                                    <Text size='small' as='p' className='self-exclusion__popup-desc'>
+                                                    <Text as='p' className='self-exclusion__popup-desc'>
                                                         {localize(
                                                             'Remember: You cannot log in to your account until the selected date.'
                                                         )}
@@ -427,9 +427,7 @@ class SelfExclusion extends React.Component {
                                                 className='self-exclusion__back'
                                             >
                                                 <Icon icon='IcArrowLeftBold' />
-                                                <Text size='small' as='p'>
-                                                    {localize('Back')}
-                                                </Text>
+                                                <Text as='p'>{localize('Back')}</Text>
                                             </div>
                                             <div className='self-exclusion__confirm'>
                                                 <h2 className='self-exclusion__confirm-header'>
@@ -471,24 +469,16 @@ class SelfExclusion extends React.Component {
 
                                                     return (
                                                         <div key={idx} className='self-exclusion__confirm-item'>
-                                                            <Text
-                                                                size='small'
-                                                                as='p'
-                                                                className='self-exclusion__confirm-label'
-                                                            >
+                                                            <Text as='p' className='self-exclusion__confirm-label'>
                                                                 {this.exclusion_texts[key]}
                                                             </Text>
-                                                            <Text
-                                                                size='small'
-                                                                as='p'
-                                                                className='self-exclusion__confirm-value'
-                                                            >
+                                                            <Text as='p' className='self-exclusion__confirm-value'>
                                                                 {checked_value}
                                                             </Text>
                                                         </div>
                                                     );
                                                 })}
-                                                <Text size='small' as='p' className='self-exclusion__confirm-note'>
+                                                <Text as='p' className='self-exclusion__confirm-note'>
                                                     {is_eu ? (
                                                         <Localize
                                                             i18n_default_text='You’ll be able to adjust these limits at any time. You can reduce your limits from the <0>self-exclusion page</0>. To increase or remove your limits, please contact our <1>Customer Support team</1>.'
@@ -516,7 +506,7 @@ class SelfExclusion extends React.Component {
                                                         />
                                                     )}
                                                 </Text>
-                                                <Text size='small' as='p' className='self-exclusion__error'>
+                                                <Text as='p' className='self-exclusion__error'>
                                                     {submit_error_message}
                                                 </Text>
                                                 {is_eu ? (
@@ -550,7 +540,7 @@ class SelfExclusion extends React.Component {
                                                     <h3 className='self-exclusion__item-title'>
                                                         {localize('24 hours')}
                                                     </h3>
-                                                    <Text size='small' as='p' className='self-exclusion__item-field'>
+                                                    <Text as='p' className='self-exclusion__item-field'>
                                                         {localize('Max. total stake')}
                                                     </Text>
                                                     <Field name='max_turnover'>
@@ -568,7 +558,7 @@ class SelfExclusion extends React.Component {
                                                             />
                                                         )}
                                                     </Field>
-                                                    <Text size='small' as='p' className='self-exclusion__item-field'>
+                                                    <Text as='p' className='self-exclusion__item-field'>
                                                         {localize('Max. total loss')}
                                                     </Text>
                                                     <Field name='max_losses'>
@@ -589,7 +579,7 @@ class SelfExclusion extends React.Component {
                                                 </div>
                                                 <div className='self-exclusion__item'>
                                                     <h3 className='self-exclusion__item-title'>{localize('7 days')}</h3>
-                                                    <Text size='small' as='p' className='self-exclusion__item-field'>
+                                                    <Text as='p' className='self-exclusion__item-field'>
                                                         {localize('Max. total stake')}
                                                     </Text>
                                                     <Field name='max_7day_turnover'>
@@ -610,7 +600,7 @@ class SelfExclusion extends React.Component {
                                                             />
                                                         )}
                                                     </Field>
-                                                    <Text size='small' as='p' className='self-exclusion__item-field'>
+                                                    <Text as='p' className='self-exclusion__item-field'>
                                                         {localize('Max. total loss')}
                                                     </Text>
                                                     <Field name='max_7day_losses'>
@@ -635,7 +625,7 @@ class SelfExclusion extends React.Component {
                                                     <h3 className='self-exclusion__item-title'>
                                                         {localize('30 days')}
                                                     </h3>
-                                                    <Text size='small' as='p' className='self-exclusion__item-field'>
+                                                    <Text as='p' className='self-exclusion__item-field'>
                                                         {localize('Max. total stake')}
                                                     </Text>
                                                     <Field name='max_30day_turnover'>
@@ -656,7 +646,7 @@ class SelfExclusion extends React.Component {
                                                             />
                                                         )}
                                                     </Field>
-                                                    <Text size='small' as='p' className='self-exclusion__item-field'>
+                                                    <Text as='p' className='self-exclusion__item-field'>
                                                         {localize('Max. total loss')}
                                                     </Text>
                                                     <Field name='max_30day_losses'>
@@ -683,7 +673,7 @@ class SelfExclusion extends React.Component {
                                             </h2>
                                             <div className='self-exclusion__item-wrapper'>
                                                 <div className='self-exclusion__item'>
-                                                    <Text size='small' as='p' className='self-exclusion__item-field'>
+                                                    <Text as='p' className='self-exclusion__item-field'>
                                                         {localize(
                                                             'You will be automatically logged out from each session after this time limit.'
                                                         )}
@@ -708,7 +698,7 @@ class SelfExclusion extends React.Component {
                                                     </Field>
                                                 </div>
                                                 <div className='self-exclusion__item'>
-                                                    <Text size='small' as='p' className='self-exclusion__item-field'>
+                                                    <Text as='p' className='self-exclusion__item-field'>
                                                         {localize(
                                                             'You will not be able to log in to your account until this date (up to 6 weeks from today).'
                                                         )}
@@ -738,7 +728,7 @@ class SelfExclusion extends React.Component {
                                                     </Field>
                                                 </div>
                                                 <div className='self-exclusion__item'>
-                                                    <Text size='small' as='p' className='self-exclusion__item-field'>
+                                                    <Text as='p' className='self-exclusion__item-field'>
                                                         {localize(
                                                             'Your account will be excluded from the website until this date (at least 6 months, up to 5 years).'
                                                         )}
@@ -778,20 +768,12 @@ class SelfExclusion extends React.Component {
                                                         className='self-exclusion__warning-icon'
                                                     />
                                                     <div className='self-exclusion__warning-textbox'>
-                                                        <Text
-                                                            size='small'
-                                                            as='p'
-                                                            className='self-exclusion__warning-text'
-                                                        >
+                                                        <Text as='p' className='self-exclusion__warning-text'>
                                                             {localize(
                                                                 'Self-exclusion on the website only applies to your Deriv.com account and does not include other companies or websites.'
                                                             )}
                                                         </Text>
-                                                        <Text
-                                                            size='small'
-                                                            as='p'
-                                                            className='self-exclusion__warning-text'
-                                                        >
+                                                        <Text as='p' className='self-exclusion__warning-text'>
                                                             {this.props.is_mlt ? (
                                                                 <Localize
                                                                     i18n_default_text='If you are a UK resident, to self-exclude from all online gambling companies licensed in Great Britain, go to <0>www.gamstop.co.uk</0>.'
@@ -820,11 +802,7 @@ class SelfExclusion extends React.Component {
                                                                 />
                                                             )}
                                                         </Text>
-                                                        <Text
-                                                            size='small'
-                                                            as='p'
-                                                            className='self-exclusion__warning-text'
-                                                        >
+                                                        <Text as='p' className='self-exclusion__warning-text'>
                                                             <Localize
                                                                 i18n_default_text='For more information and assistance to counselling and support services, please visit <0>begambleaware.org</0>.'
                                                                 components={[
@@ -851,11 +829,7 @@ class SelfExclusion extends React.Component {
                                                             <h3 className='self-exclusion__item-title'>
                                                                 {localize('24 hours')}
                                                             </h3>
-                                                            <Text
-                                                                size='small'
-                                                                as='p'
-                                                                className='self-exclusion__item-field'
-                                                            >
+                                                            <Text as='p' className='self-exclusion__item-field'>
                                                                 {localize('Max. deposit limit')}
                                                             </Text>
                                                             <Field name='max_deposit'>
@@ -880,11 +854,7 @@ class SelfExclusion extends React.Component {
                                                             <h3 className='self-exclusion__item-title'>
                                                                 {localize('7 days')}
                                                             </h3>
-                                                            <Text
-                                                                size='small'
-                                                                as='p'
-                                                                className='self-exclusion__item-field'
-                                                            >
+                                                            <Text as='p' className='self-exclusion__item-field'>
                                                                 {localize('Max. deposit limit')}
                                                             </Text>
                                                             <Field name='max_7day_deposit'>
@@ -910,11 +880,7 @@ class SelfExclusion extends React.Component {
                                                             <h3 className='self-exclusion__item-title'>
                                                                 {localize('30 days')}
                                                             </h3>
-                                                            <Text
-                                                                size='small'
-                                                                as='p'
-                                                                className='self-exclusion__item-field'
-                                                            >
+                                                            <Text as='p' className='self-exclusion__item-field'>
                                                                 {localize('Max. deposit limit')}
                                                             </Text>
                                                             <Field name='max_30day_deposit'>
@@ -944,7 +910,7 @@ class SelfExclusion extends React.Component {
                                             </h2>
                                             <div className='self-exclusion__item-wrapper'>
                                                 <div className='self-exclusion__item'>
-                                                    <Text size='small' as='p' className='self-exclusion__item-field'>
+                                                    <Text as='p' className='self-exclusion__item-field'>
                                                         {localize(
                                                             'Once your account balance reaches this amount, you will not be able to deposit funds into your account.'
                                                         )}
@@ -966,7 +932,7 @@ class SelfExclusion extends React.Component {
                                                     </Field>
                                                 </div>
                                                 <div className='self-exclusion__item'>
-                                                    <Text size='small' as='p' className='self-exclusion__item-field'>
+                                                    <Text as='p' className='self-exclusion__item-field'>
                                                         {localize('You can only open positions up to this amount.')}
                                                     </Text>
                                                     <Field name='max_open_bets'>

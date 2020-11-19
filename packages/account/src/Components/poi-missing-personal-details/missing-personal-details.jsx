@@ -5,7 +5,7 @@ import IconMessageContent from 'Components/icon-message-content';
 
 const GoToPersonalDetailsButton = () => (
     <ButtonLink to='/account/personal-details'>
-        <Text className={'dc-btn__text'} size='small' weight='bold' as='p'>
+        <Text className='dc-btn__text' weight='bold' as='p'>
             {localize('Go to personal details')}
         </Text>
     </ButtonLink>

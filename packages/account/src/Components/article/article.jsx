@@ -10,7 +10,7 @@ const Article = ({ className, title, descriptions }) => (
             {descriptions &&
                 descriptions.map((desc, idx) => (
                     <li key={idx}>
-                        <Text className='account__article-text' as='p' size='small'>
+                        <Text className='account__article-text' as='p'>
                             {desc}
                         </Text>
                     </li>

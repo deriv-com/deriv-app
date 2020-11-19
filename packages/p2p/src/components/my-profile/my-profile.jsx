@@ -160,58 +160,6 @@ const MyProfile = observer(() => {
                                 </Text>
                             </Table.Cell>
                             <div className='my-profile__stats-cell-separator' />
-                            {isMobile() ? (
-                                <Table.Cell className='my-profile__stats-cell'>
-                                    <Text
-                                        size={isMobile() ? 'xxxs' : 'xs'}
-                                        color='less-prominent'
-                                        line_height='m'
-                                        as='p'
-                                    >
-                                        {localize('Buy / Sell ({{currency}})', {
-                                            currency: general_store.client.currency,
-                                        })}
-                                    </Text>
-                                    <Text color='prominent' weight='bold' line_height='l' as='p'>
-                                        {daily_buy || '-'}/{daily_sell || '-'}
-                                    </Text>
-                                </Table.Cell>
-                            ) : (
-                                <React.Fragment>
-                                    <Table.Cell className='my-profile__stats-cell'>
-                                        <Text
-                                            size={isMobile() ? 'xxxs' : 'xs'}
-                                            color='less-prominent'
-                                            line_height='m'
-                                            as='p'
-                                        >
-                                            {localize('Buy ({{currency}})', {
-                                                currency: general_store.client.currency,
-                                            })}
-                                        </Text>
-                                        <Text color='prominent' weight='bold' line_height='l' as='p'>
-                                            {daily_buy || '-'}
-                                        </Text>
-                                    </Table.Cell>
-                                    <div className='my-profile__stats-cell-separator' />
-                                    <Table.Cell className='my-profile__stats-cell'>
-                                        <Text
-                                            size={isMobile() ? 'xxxs' : 'xs'}
-                                            color='less-prominent'
-                                            line_height='m'
-                                            as='p'
-                                        >
-                                            {localize('Sell ({{currency}})', {
-                                                currency: general_store.client.currency,
-                                            })}
-                                        </Text>
-                                        <Text color='prominent' weight='bold' line_height='l' as='p'>
-                                            {daily_sell || '-'}
-                                        </Text>
-                                    </Table.Cell>
-                                </React.Fragment>
-                            )}
-                            <div className='my-profile__stats-cell-separator' />
                             <Table.Cell className='my-profile__stats-cell'>
                                 <Text size={isMobile() ? 'xxxs' : 'xs'} color='less-prominent' line_height='m' as='p'>
                                     <Localize

@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
-import { Button, Modal, Icon, Text } from '@deriv/components';
+import { Button, Modal, Icon } from '@deriv/components';
 import { formatMoney, getCurrencyDisplayCode, getCurrencyName, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -60,14 +60,9 @@ class AccountTransferReceipt extends React.Component {
                 </h2>
                 <div className='cashier__transferred-amount cashier__text--bold'>
                     {formatMoney(selected_from.currency, receipt.amount_transferred, true)}
-                    <Text
-                        size='xs'
-                        line_height='s'
-                        weight='bold'
-                        className={classNames('symbols', `symbols--${selected_from.currency?.toLowerCase()}`)}
-                    >
+                    <span className={classNames('symbols', `symbols--${selected_from.currency?.toLowerCase()}`)}>
                         {getCurrencyDisplayCode(selected_from.currency)}
-                    </Text>
+                    </span>
                 </div>
                 <div className='cashier__transferred-details-wrapper'>
                     <span className='account-transfer__transfer-details-from'>

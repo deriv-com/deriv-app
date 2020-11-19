@@ -20,18 +20,18 @@ const InfiniteDataList = ({
         <InfiniteLoader
             className={className}
             isRowLoaded={isRowLoaded}
-            rowCount={item_count}
             loadMoreRows={loadMoreRowsFn}
+            rowCount={item_count}
         >
             {({ onRowsRendered, registerChild }) => (
                 <DataList
                     className={data_list_className}
                     data_source={items}
-                    rowRenderer={rowRenderer}
-                    setListRef={registerChild}
+                    keyMapper={keyMapperFn}
                     onRowsRendered={onRowsRendered}
                     onScroll={onScroll}
-                    keyMapper={keyMapperFn}
+                    rowRenderer={rowRenderer}
+                    setListRef={registerChild}
                 />
             )}
         </InfiniteLoader>
@@ -45,6 +45,7 @@ InfiniteDataList.propTypes = {
     items: PropTypes.array.isRequired,
     keyMapperFn: PropTypes.func.isRequired,
     loadMoreRowsFn: PropTypes.func.isRequired,
+    onScroll: PropTypes.func,
     rowRenderer: PropTypes.func.isRequired,
 };
 

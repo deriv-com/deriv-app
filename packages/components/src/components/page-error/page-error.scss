@@ -66,4 +66,21 @@
             }
         }
     }
+    &__btn {
+        margin: 0 1rem;
+        min-width: 16rem;
+
+        &-wrapper {
+            display: flex;
+            justify-content: center;
+        }
+
+        @include mobile {
+            margin: 0 0 1.6rem;
+
+            &-wrapper {
+                flex-direction: column;
+            }
+        }
+    }
 }

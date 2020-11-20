@@ -69,11 +69,34 @@ const PageError = ({
                         )}
                     </span>
                 </div>
-                {redirect_label && (
-                    <ButtonLink className='dc-page-error__btn' to={redirect_url} onClick={onClickHandler} size='large'>
-                        <span className='dc-page-error__btn-text dc-btn__text'>{redirect_label}</span>
-                    </ButtonLink>
-                )}
+                <div className='dc-page-error__btn-wrapper'>
+                    {Array.isArray(redirect_url) ? (
+                        redirect_url.map((url, index) => {
+                            return (
+                                <ButtonLink
+                                    className='dc-page-error__btn'
+                                    to={url}
+                                    onClick={onClickHandler}
+                                    size='large'
+                                    key={index}
+                                >
+                                    <span className='dc-page-error__btn-text dc-btn__text'>
+                                        {redirect_label[index] || redirect_label}
+                                    </span>
+                                </ButtonLink>
+                            );
+                        })
+                    ) : (
+                        <ButtonLink
+                            className='dc-page-error__btn'
+                            to={redirect_url}
+                            onClick={onClickHandler}
+                            size='large'
+                        >
+                            <span className='dc-page-error__btn-text dc-btn__text'>{redirect_label}</span>
+                        </ButtonLink>
+                    )}
+                </div>
             </div>
         </div>
     );
@@ -85,8 +108,8 @@ PageError.propTypes = {
     header: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     image_url: PropTypes.string,
     messages: PropTypes.array,
-    redirect_label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-    redirect_url: PropTypes.string,
+    redirect_label: PropTypes.oneOfType([PropTypes.string, PropTypes.node, PropTypes.array]),
+    redirect_url: PropTypes.oneOfType(PropTypes.string, PropTypes.array),
     setError: PropTypes.func,
     should_clear_error_on_click: PropTypes.bool,
 };

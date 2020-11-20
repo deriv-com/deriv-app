@@ -510,7 +510,7 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    removeNotificationMessage({ key } = {}) {
+    removeNotificationMessage({ key } = {}, can_show_again = false) {
         if (!key) return;
         this.notification_messages = this.notification_messages.filter(n => n.key !== key);
         // Add notification messages to LocalStore when user closes, check for redundancy
@@ -528,9 +528,11 @@ export default class UIStore extends BaseStore {
                 }
                 return [key];
             };
-            // Store message into LocalStore upon closing message
-            Object.assign(messages, { [active_loginid]: current_message() });
-            LocalStore.setObject('notification_messages', messages);
+            if (!can_show_again) {
+                // Store message into LocalStore upon closing message
+                Object.assign(messages, { [active_loginid]: current_message() });
+                LocalStore.setObject('notification_messages', messages);
+            }
         }
     }
 

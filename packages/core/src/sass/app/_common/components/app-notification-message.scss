@@ -36,9 +36,10 @@
         max-width: 240px;
     }
     &__cta-button {
-        margin-top: 0.8rem;
-        flex-grow: 1;
+        padding: 0 0.8rem;
+        margin-top: 1.6rem;
         height: 24px;
+        width: fit-content;
         max-width: 150px;
         align-self: flex-end;
 

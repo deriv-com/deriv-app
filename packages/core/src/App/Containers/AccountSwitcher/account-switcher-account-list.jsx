@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Icon, Money } from '@deriv/components';
+import { Icon, Money, Button } from '@deriv/components';
 import { formatMoney, getCurrencyName, getMT5AccountDisplay, getCurrencyDisplayCode } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 
@@ -11,11 +11,13 @@ const AccountList = ({
     currency_icon,
     display_type,
     has_balance,
+    has_reset_balance,
     is_eu,
     is_disabled,
     is_virtual,
     loginid,
     onClickAccount,
+    onClickResetBalance,
     selected_loginid,
 }) => {
     const market_type = React.useMemo(() => {
@@ -59,17 +61,32 @@ const AccountList = ({
                         )}
                         <div className='acc-switcher__loginid-text'>{loginid}</div>
                     </span>
-                    {has_balance && (
-                        <span className='acc-switcher__balance'>
-                            {currency && (
-                                <Money
-                                    currency={getCurrencyDisplayCode(currency)}
-                                    amount={formatMoney(currency, balance, true)}
-                                    should_format={false}
-                                    show_currency
-                                />
-                            )}
-                        </span>
+                    {has_reset_balance ? (
+                        <Button
+                            is_disabled={is_disabled}
+                            onClick={e => {
+                                e.stopPropagation();
+                                onClickResetBalance();
+                            }}
+                            className='acc-switcher__reset-account-btn'
+                            secondary
+                            small
+                        >
+                            {localize('Reset balance')}
+                        </Button>
+                    ) : (
+                        has_balance && (
+                            <span className='acc-switcher__balance'>
+                                {currency && (
+                                    <Money
+                                        currency={getCurrencyDisplayCode(currency)}
+                                        amount={formatMoney(currency, balance, true)}
+                                        should_format={false}
+                                        show_currency
+                                    />
+                                )}
+                            </span>
+                        )
                     )}
                 </span>
             </div>

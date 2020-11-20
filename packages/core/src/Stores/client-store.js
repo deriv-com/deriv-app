@@ -23,7 +23,7 @@ import { isEuCountry } from '_common/utility';
 import BaseStore from './base-store';
 import { getClientAccountType, getAccountTitle } from './Helpers/client';
 import { createDeviceDataObject, setDeviceDataCookie } from './Helpers/device';
-import { handleClientNotifications } from './Helpers/client-notifications';
+import { handleClientNotifications, clientNotifications } from './Helpers/client-notifications';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
 
 const storage_key = 'client.accounts';
@@ -912,6 +912,13 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
+    async resetVirtualBalance() {
+        this.root_store.ui.removeNotificationByKey({ key: 'reset_virtual_balance' });
+        this.root_store.ui.removeNotificationMessage({ key: 'reset_virtual_balance' }, true);
+        await WS.authorized.topupVirtual();
+    }
+
+    @action.bound
     switchEndSignal() {
         this.switch_broadcast = false;
     }
@@ -1257,9 +1264,38 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
+    resetVirtualBalanceNotification(loginid) {
+        const min_reset_limit = 1000;
+        const max_reset_limit = 999000;
+        const balance = parseInt(this.accounts[loginid].balance);
+
+        // Display notification message to user with virtual account to reset their balance
+        // if the balance is less than equals to 1000 or more than equals to 999000
+        if (balance <= min_reset_limit || balance >= max_reset_limit) {
+            let message = localize(
+                'Your demo account balance is low. Reset your balance to continue trading from your demo account.'
+            );
+            if (balance >= max_reset_limit)
+                message = localize(
+                    'Your demo account balance has reached the maximum limit, and you will not be able to place new trades. Reset your balance to continue trading from your demo account.'
+                );
+            this.root_store.ui.addNotificationMessage(
+                clientNotifications({}, { resetVirtualBalance: this.resetVirtualBalance, message })
+                    .reset_virtual_balance
+            );
+        } else {
+            this.root_store.ui.removeNotificationByKey({ key: 'reset_virtual_balance' });
+            this.root_store.ui.removeNotificationMessage({ key: 'reset_virtual_balance' }, true);
+        }
+    }
+
+    @action.bound
     setBalanceActiveAccount(obj_balance) {
         if (this.accounts[obj_balance?.loginid] && obj_balance.loginid === this.loginid) {
             this.accounts[obj_balance.loginid].balance = obj_balance.balance;
+            if (this.accounts[obj_balance.loginid].is_virtual) {
+                this.resetVirtualBalanceNotification(obj_balance.loginid);
+            }
             this.resetLocalStorageValues(this.loginid);
         }
     }

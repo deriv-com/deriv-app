@@ -189,6 +189,11 @@ class AccountSwitcher extends React.Component {
         await this.props.switchAccount(loginid);
     }
 
+    async resetBalance() {
+        this.closeAccountsDialog();
+        this.props.resetVirtualBalance();
+    }
+
     get is_real_account_tab() {
         // Real accounts is always the first tab index based on design
         return this.state.active_tab_index === 0;
@@ -324,12 +329,14 @@ class AccountSwitcher extends React.Component {
                                     currency_icon={`IcCurrency-${account.icon}`}
                                     display_type={'currency'}
                                     has_balance={'balance' in this.props.accounts[account.loginid]}
+                                    has_reset_balance
                                     is_disabled={account.is_disabled}
                                     is_virtual={account.is_virtual}
                                     loginid={account.loginid}
                                     onClickAccount={
                                         account.is_disabled ? undefined : this.doSwitch.bind(this, account.loginid)
                                     }
+                                    onClickResetBalance={this.resetBalance.bind(this)}
                                     selected_loginid={this.props.account_loginid}
                                 />
                             ))}
@@ -636,6 +643,7 @@ AccountSwitcher.propTypes = {
     obj_total_balance: PropTypes.object,
     openRealAccountSignup: PropTypes.func,
     switchAccount: PropTypes.func,
+    resetVirtualBalance: PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
     toggleAccountTypesModal: PropTypes.func,
     togglePositionsDrawer: PropTypes.func,
@@ -665,6 +673,7 @@ const account_switcher = withRouter(
         mt5_login_list_error: client.mt5_login_list_error,
         obj_total_balance: client.obj_total_balance,
         switchAccount: client.switchAccount,
+        resetVirtualBalance: client.resetVirtualBalance,
         has_malta_account: client.has_malta_account,
         has_maltainvest_account: client.has_maltainvest_account,
         openAccountNeededModal: ui.openAccountNeededModal,

@@ -194,6 +194,20 @@ export const clientNotifications = (ui = {}, client = {}) => {
             message: <Localize i18n_default_text='Please log in with your updated password.' />,
             type: 'info',
         },
+        reset_virtual_balance: {
+            key: 'reset_virtual_balance',
+            header: localize('Reset your balance'),
+            message: client.message,
+            type: 'info',
+            is_persistent: true,
+            should_hide_close_btn: true,
+            action: {
+                text: localize('Reset balance'),
+                onClick: async () => {
+                    await client.resetVirtualBalance();
+                },
+            },
+        },
         needs_poi: {
             action: {
                 route: routes.proof_of_identity,

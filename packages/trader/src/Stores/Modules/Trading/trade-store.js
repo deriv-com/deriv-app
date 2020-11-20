@@ -527,7 +527,10 @@ export default class TradeStore extends BaseStore {
     };
 
     @action.bound
-    onPurchase(proposal_id, price, type) {
+    onPurchase = debounce(this.onPurchaseRaw, 300);
+
+    @action.bound
+    onPurchaseRaw(proposal_id, price, type) {
         if (!this.is_purchase_enabled) return;
         if (proposal_id) {
             this.is_purchase_enabled = false;
@@ -587,9 +590,7 @@ export default class TradeStore extends BaseStore {
                             this.debouncedProposal();
                             this.clearLimitOrderBarriers();
                             this.pushPurchaseDataToGtm(contract_data);
-                            setTimeout(() => {
-                                this.is_purchasing_contract = false;
-                            }, 500);
+                            this.is_purchasing_contract = false;
                             return;
                         }
                     } else if (response.error) {

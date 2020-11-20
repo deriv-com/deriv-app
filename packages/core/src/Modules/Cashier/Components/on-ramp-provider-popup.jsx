@@ -143,7 +143,7 @@ const OnRampProviderPopup = ({
                     className='on-ramp__popup-disclaimer-text'
                 >
                     <Localize
-                        i18n_default_text='Please note that by clicking ‘Continue’, you’ll leave {{website_name}}. Your payment will be processed by {{service}}, a third-party payment service provider. We are not liable for {{service}}’s security or performance.'
+                        i18n_default_text="By clicking 'Continue' you will be redirected to {{ service }}, a third-party payment service provider. Please note that {{ website_name }} is not responsible for the content or services provided by {{ service }}. If you encounter any issues related to {{ service }} services, you must contact {{ service }} directly."
                         values={{
                             service: selected_provider.name,
                             website_name,

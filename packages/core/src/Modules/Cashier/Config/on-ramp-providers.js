@@ -70,14 +70,13 @@ const createChangellyProvider = client => ({
     getDefaultFromCurrency: () => 'usd',
     getFromCurrencies: () => ['usd', 'eur', 'gbp'],
     getToCurrencies: () => ['bch', 'btc', 'etc', 'eth', 'ltc', 'ust'],
-    getWidgetHtml: () => {
+    getWidgetHtml() {
         return new Promise(resolve => {
-            const to_currency_list = ['bch', 'btc', 'etc', 'eth', 'ltc', 'ust'];
             const url = new URL('https://widget.changelly.com?theme=defualt&isPopUp=true');
             url.searchParams.set('from', 'usd');
             url.searchParams.append('fromDefault', 'usd');
             let to_currency = 'etc';
-            if (to_currency_list.includes(client.currency.toLowerCase())) {
+            if (this.getToCurrencies().includes(client.currency.toLowerCase())) {
                 to_currency = client.currency;
             }
             url.searchParams.append('to', to_currency);

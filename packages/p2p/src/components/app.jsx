@@ -131,9 +131,9 @@ const App = observer(props => {
     const wrapper_props = { context_obj: getContext(), className };
 
     if (general_store.show_popup) {
-        if (is_mobile) {
-            return (
-                <P2pWrapper {...wrapper_props}>
+        return (
+            <P2pWrapper {...wrapper_props}>
+                {isMobile() ? (
                     <div className='p2p-nickname__dialog'>
                         <NicknameForm
                             handleClose={general_store.onNicknamePopupClose}
@@ -141,18 +141,14 @@ const App = observer(props => {
                             is_mobile
                         />
                     </div>
-                </P2pWrapper>
-            );
-        }
-
-        return (
-            <P2pWrapper {...wrapper_props}>
-                <Modal is_open={general_store.show_popup} className='p2p-nickname__dialog'>
-                    <NicknameForm
-                        handleClose={general_store.onNicknamePopupClose}
-                        handleConfirm={general_store.toggleNicknamePopup}
-                    />
-                </Modal>
+                ) : (
+                    <Modal is_open={general_store.show_popup} className='p2p-nickname__dialog'>
+                        <NicknameForm
+                            handleClose={general_store.onNicknamePopupClose}
+                            handleConfirm={general_store.toggleNicknamePopup}
+                        />
+                    </Modal>
+                )}
             </P2pWrapper>
         );
     }

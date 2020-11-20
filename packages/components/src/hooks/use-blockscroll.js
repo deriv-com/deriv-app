@@ -24,10 +24,7 @@ export const useBlockScroll = target_ref => {
             if (!scrollable_parent) return;
 
             scrollable_parent.style.removeProperty('overflow');
-
-            if (scrollable_parent.style.width === content_width_style) {
-                scrollable_parent.style.removeProperty('width');
-            }
+            scrollable_parent.style.removeProperty('width');
         };
     }, [target_ref]);
 };

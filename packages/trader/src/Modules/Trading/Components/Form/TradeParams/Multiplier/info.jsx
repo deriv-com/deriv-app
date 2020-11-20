@@ -78,7 +78,7 @@ const MultipliersInfo = ({
                 message={message}
                 {...(is_tooltip_relative
                     ? { alignment: 'left', relative_render: true, margin }
-                    : { alignment: 'bottom', zIndex: 9999 })}
+                    : { alignment: 'top', zIndex: 9999 })}
             >
                 {text}
             </Popover>
@@ -110,10 +110,10 @@ MultipliersInfo.propTypes = {
     should_show_tooltip: PropTypes.bool,
 };
 
-export default connect(({ modules }) => ({
+export default connect(({ modules }, props) => ({
     amount: modules.trade.amount,
-    commission: modules.trade.commission,
+    commission: props.commission ?? modules.trade.commission,
     currency: modules.trade.currency,
     multiplier: modules.trade.multiplier,
-    stop_out: modules.trade.stop_out,
+    stop_out: props.stop_out ?? modules.trade.stop_out,
 }))(MultipliersInfo);

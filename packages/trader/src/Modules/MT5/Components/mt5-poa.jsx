@@ -253,7 +253,7 @@ class MT5POA extends React.Component {
                     // Save form values if there are no validation errors after form is touched
                     // This ensures container values are updated before being validated in runtime  (mt5-financial-stp-real-account-signup.jsx)
                     // To resolve sync issues with value states (form_values in container component and formik values)
-                    if (isEmptyObject(this.validateForm(values))) {
+                    if (isEmptyObject(this.validateForm(values)) && typeof this.props.saveFormData === 'function') {
                         this.props.saveFormData(this.props.index, values);
                     }
                 }}

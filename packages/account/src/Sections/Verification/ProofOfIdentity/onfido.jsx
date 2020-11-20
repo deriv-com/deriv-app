@@ -38,6 +38,7 @@ export default class Onfido extends React.Component {
                 language: {
                     locale: getLanguage().toLowerCase() || 'en',
                     phrases: onfido_phrases,
+                    mobilePhrases: onfido_phrases,
                 },
                 token: this.props.onfido_service_token,
                 useModal: false,

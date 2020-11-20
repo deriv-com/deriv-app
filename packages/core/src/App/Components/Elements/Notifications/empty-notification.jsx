@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from '@deriv/components';
+import { Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
 const EmptyNotification = () => (
@@ -8,9 +8,9 @@ const EmptyNotification = () => (
             <Icon icon='IcBox' className='notifications-empty__icon' size={64} color='secondary' />
             <div className='notifications-empty__content'>
                 <h4 className='notifications-empty__header'>{localize('No notifications')}</h4>
-                <span className='notifications-empty__message'>
+                <Text size='xxs' color='less-prominent'>
                     {localize('You have yet to receive any notifications')}
-                </span>
+                </Text>
             </div>
         </div>
     </div>

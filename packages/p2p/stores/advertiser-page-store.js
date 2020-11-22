@@ -23,7 +23,6 @@ export default class AdvertiserPageStore {
     @observable is_loading = true;
     @observable is_submit_disabled = true;
     @observable show_ad_popup = false;
-    @observable show_advertiser_real_name = false;
     @observable submitForm = () => {};
 
     height_values = [
@@ -108,7 +107,6 @@ export default class AdvertiserPageStore {
                 const { p2p_advertiser_info } = response;
 
                 this.setAdvertiserInfo(p2p_advertiser_info);
-                this.setShowAdvertiserRealName(!!p2p_advertiser_info.show_name);
                 this.setAdvertiserFirstName(p2p_advertiser_info.first_name);
                 this.setAdvertiserLastName(p2p_advertiser_info.last_name);
             } else {
@@ -212,11 +210,6 @@ export default class AdvertiserPageStore {
     @action.bound
     setShowAdPopup(show_ad_popup) {
         this.show_ad_popup = show_ad_popup;
-    }
-
-    @action.bound
-    setShowAdvertiserRealName(show_advertiser_real_name) {
-        this.show_advertiser_real_name = show_advertiser_real_name;
     }
 
     @action.bound

@@ -198,13 +198,14 @@ const MyProfile = observer(() => {
                             is_enabled={general_store.should_show_real_name}
                             handleToggle={my_profile_store.handleToggle}
                         />
-
-                        <Text size='xs' line_height='m' color='prominent'>
-                            <Localize
-                                i18n_default_text={'Show my real name ({{full_name}})'}
-                                values={{ full_name: my_profile_store.full_name }}
-                            />
-                        </Text>
+                        <div className='my-profile__toggle-name'>
+                            <Text size='xs' line_height='m' color='prominent'>
+                                <Localize
+                                    i18n_default_text={'Show my real name ({{full_name}})'}
+                                    values={{ full_name: my_profile_store.full_name }}
+                                />
+                            </Text>
+                        </div>
                     </div>
                     <div className='my-profile__separator'>
                         <div className='my-profile__separator-text'>

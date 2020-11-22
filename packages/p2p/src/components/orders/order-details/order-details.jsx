@@ -113,9 +113,11 @@ const OrderDetails = ({ order_information, chat_info }) => {
                                                 </Text>
 
                                                 {has_full_name && (
-                                                    <Text size='xs' line_height='xs'>
-                                                        {` ${other_user_details.first_name} ${other_user_details.last_name}`}
-                                                    </Text>
+                                                    <div className='order-details__info--real_name'>
+                                                        <Text size='xs' line_height='xs'>
+                                                            {` ${other_user_details.first_name} ${other_user_details.last_name}`}
+                                                        </Text>
+                                                    </div>
                                                 )}
                                             </React.Fragment>
                                         }

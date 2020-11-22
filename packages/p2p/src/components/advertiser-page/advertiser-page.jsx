@@ -54,7 +54,9 @@ const AdvertiserPage = observer(props => {
         basic_verification,
         buy_completion_rate,
         buy_orders_count,
+        first_name,
         full_verification,
+        last_name,
         release_time_avg,
         sell_orders_count,
         total_completion_rate,
@@ -139,10 +141,13 @@ const AdvertiserPage = observer(props => {
                         </div>
                         <div className='advertiser-page__header-name'>
                             {advertiser_page_store.advertiser_details_name}
-                            <Text color='less-prominent' line_height='xs' size='xs'>
-                                {advertiser_page_store.show_advertiser_real_name &&
-                                    advertiser_page_store.advertiser_full_name}
-                            </Text>
+                            {first_name && last_name && (
+                                <div className='advertiser-page__header-real-name'>
+                                    <Text color='less-prominent' line_height='xs' size='xs'>
+                                        {`${first_name} ${last_name}`}
+                                    </Text>
+                                </div>
+                            )}
                         </div>
                     </div>
                     <div className='advertiser-page__header-verification'>

@@ -354,7 +354,11 @@
             flex-flow: column nowrap;
             flex: 1;
         }
+        &--real_name {
+            display: grid;
+        }
     }
+
     &__footer {
         border-top: 1px solid var(--general-section-1);
         margin-top: auto;

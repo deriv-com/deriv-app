@@ -118,13 +118,18 @@
             }
         }
     }
-    &__toggle-container {
-        align-items: center;
-        display: flex;
-        margin: 1rem 0;
+    &__toggle {
+        &-container {
+            align-items: center;
+            display: flex;
+            margin: 1rem 0;
 
-        @include mobile {
-            margin: 0.5rem 1.8rem;
+            @include mobile {
+                margin: 0.5rem 1.8rem;
+            }
+        }
+        &-name {
+            max-width: calc(100% - 20rem);
         }
     }
     &__form {
@@ -189,6 +194,10 @@
         height: 35px;
         transform: scale(0.5) translateX(-50%);
         width: 65px;
+
+        .dc-toggle-switch__button {
+            top: unset;
+        }
     }
 
     &--on {

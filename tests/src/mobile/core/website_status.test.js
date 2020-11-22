@@ -1,7 +1,7 @@
 const assert = require('assert').strict;
-const Common = require("../../objects/common");
-const {replaceWebsocket, waitForWSSubset} = require("../../_utils/websocket");
-const {setUp, tearDown, mobile_viewport} = require('../../bootstrap');
+const Common = require("@root/objects/common");
+const {replaceWebsocket, waitForWSSubset} = require("@root/_utils/websocket");
+const {setUp, tearDown, mobile_viewport} = require('@root/bootstrap');
 
 let browser, context, page;
 

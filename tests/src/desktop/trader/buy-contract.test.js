@@ -1,8 +1,8 @@
 const assert = require('assert').strict;
-const Trader = require('../../objects/trader');
-const {waitForWSSubset} = require("../../_utils/websocket");
-const {replaceWebsocket} = require("../../_utils/websocket");
-const {setUp, tearDown, desktop_viewport} = require('../../bootstrap');
+const Trader = require('@root/objects/trader');
+const {waitForWSSubset} = require("@root/_utils/websocket");
+const {replaceWebsocket} = require("@root/_utils/websocket");
+const {setUp, tearDown, desktop_viewport} = require('@root/bootstrap');
 
 let browser, context, page;
 

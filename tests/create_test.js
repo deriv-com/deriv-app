@@ -3,9 +3,9 @@ const fs = require('fs');
 
 const template = (name) => `const assert = require('assert').strict;
 const qawolf = require('qawolf');
-const {replaceWebsocket} = require('./_utils/websocket'); // TODO: Fix the path
-const {setUp, tearDown, mobile_viewport} = require('./bootstrap'); // TODO: Fix the path
-const Common = require('./objects/common'); // TODO: Fix the path
+const {replaceWebsocket} = require('@root/_utils/websocket'); // TODO: Fix the path
+const {setUp, tearDown, mobile_viewport} = require('@root/bootstrap'); // TODO: Fix the path
+const Common = require('@root/objects/common'); // TODO: Fix the path
 
 let browser, context, page;
 
@@ -29,8 +29,11 @@ test("${name}", async () => {
 
 (async () => {
     const args = process.argv.slice(2);
+    if (args.length !== 2) {
+        throw new Error('Insufficient args. Please use node tests/create_test.js mobile|desktop test_name');
+    }
     const test_name = `[${args[0]}]-${args[1]}`;
-    const file_name = `tests/${args[0]}/${args[1]}.test.js`;
+    const file_name = `tests/src/${args[0]}/${args[1]}.test.js`;
     const content = template(test_name);
     const target_dir = path.dirname(file_name);
     fs.mkdirSync(target_dir, { recursive: true });

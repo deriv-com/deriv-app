@@ -1,5 +1,5 @@
 const qawolf = require('qawolf');
-const default_options = require('./_config/context');
+const default_options = require('@root/_config/context');
 
 async function setUp(options) {
     let browser;
@@ -26,6 +26,7 @@ async function tearDown(browser) {
     try {
         await browser.close();
     } catch (e) {
+        // eslint-disable-next-line no-console
         console.log(e);
     }
 

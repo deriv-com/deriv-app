@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 module.exports = {
-  config: "node_modules/qawolf/js-jest.config.json",
+  config: "./tests/jest.config.json",
   rootDir: "tests",
   testTimeout: 60000,
   useTypeScript: false,

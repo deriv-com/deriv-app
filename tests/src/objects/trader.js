@@ -1,7 +1,7 @@
 const assert = require('assert').strict;
 const qawolf = require('qawolf');
+const {waitForWSSubset} = require('@root/_utils/websocket');
 const Common = require('./common');
-const {waitForWSSubset} = require('../_utils/websocket');
 
 const RECENT_POSITION_DRAWER_SELECTOR = '#dt_positions_toggle';
 const MARKET_SELECT = '.cq-symbol-select-btn';

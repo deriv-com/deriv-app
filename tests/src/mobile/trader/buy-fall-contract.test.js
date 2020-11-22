@@ -1,6 +1,6 @@
-const {setUp, tearDown, mobile_viewport} = require('../../bootstrap');
-const Trader = require('../../objects/trader');
-const {replaceWebsocket} = require("../../_utils/websocket");
+const {replaceWebsocket} = require('@root/_utils/websocket');
+const {setUp, tearDown, mobile_viewport} = require('@root/bootstrap');
+const Trader = require('@root/objects/trader');
 
 let browser, context, page;
 
@@ -17,40 +17,40 @@ afterEach(async () => {
     await tearDown(browser);
 });
 
-test('[mobile] trader/buy-rise-contract-default-duration', async () => {
-    await page.waitForSelector('#dt_purchase_call_price');
-    await page.assertPurchase(5, 10, 'CALL');
+test('[mobile] trader/buy-fall-contract-default-duration', async () => {
+    await page.waitForSelector('#dt_purchase_put_price');
+    await page.assertPurchase(5, 10, 'PUT');
     await page.assertContractDetails();
 });
 
-test('[mobile] trader/buy-rise-contract-min-duration', async () =>  {
+test('[mobile] trader/buy-fall-contract-min-duration', async () =>  {
     await page.changeDuration(1);
-    await page.assertPurchase(1, 10, 'CALL');
+    await page.assertPurchase(1, 10, 'PUT');
     await page.assertContractDetails();
 });
 
-test('[mobile] trader/buy-rise-contract-max-duration', async () => {
+test('[mobile] trader/buy-fall-contract-max-duration', async () => {
     await page.changeDuration(10);
-    await page.assertPurchase(10, 10, 'CALL');
+    await page.assertPurchase(10, 10, 'PUT');
     await page.assertContractDetails();
 });
 
-test('[mobile] trader/buy-rise-equal-contract-min-duration', async () =>  {
+test('[mobile] trader/buy-falle-contract-max-duration', async () => {
+    await page.changeDuration(10);
+    await page.assertPurchase(10, 10, 'PUTE');
+    await page.assertContractDetails();
+});
+
+test('[mobile] trader/buy-falle-contract-min-duration', async () =>  {
     await page.changeDuration(1);
-    await page.assertPurchase(1, 10, 'CALLE');
-    await page.assertContractDetails();
-});
-
-test('[mobile] trader/buy-rise-equal-contract-max-duration', async () => {
-    await page.changeDuration(10);
-    await page.assertPurchase(10, 10, 'CALLE');
+    await page.assertPurchase(1, 10, 'PUTE');
     await page.assertContractDetails();
 });
 
 
 async function preBuy() {
-    await page.goto(process.env.HOME_URL, {waitUntil: "domcontentloaded"});
-    await page.loadOrLogin(process.env.VALID_USER, process.env.VALID_PASSWORD);
+    await page.navigate();
+    await page.loadOrLogin(process.env.VALID_USER, process.env.VALID_PASSWORD)
     await page.waitForChart();
     await page.click('.acc-info__wrapper .acc-info');
     await page.click('.dc-tabs__item:nth-child(2)');

@@ -1,11 +1,10 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Popover, DesktopWrapper, Loading, MobileWrapper, ThemedScrollbars } from '@deriv/components';
+import { Popover, DesktopWrapper, Loading, MobileWrapper, Text, ThemedScrollbars } from '@deriv/components';
 import { formatMoney, isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import LoadErrorMessage from 'Components/load-error-message';
 import FormBody from 'Components/form-body';
-import Text from 'Components/text';
 import TextContainer from 'Components/text-container';
 import DemoMessage from 'Components/demo-message';
 import { connect } from 'Stores/connect';
@@ -168,7 +167,7 @@ class AccountLimits extends React.Component {
                                     </tbody>
                                 </table>
                                 <TextContainer>
-                                    <Text size='small' color='grey'>
+                                    <Text as='p' size='xxs' color='less-prominent'>
                                         {localize(
                                             '*Any limits in your Self-exclusion settings will override these default limits.'
                                         )}
@@ -229,13 +228,13 @@ class AccountLimits extends React.Component {
                                 </table>
                                 <TextContainer>
                                     {is_fully_authenticated ? (
-                                        <Text>
+                                        <Text as='p'>
                                             {localize(
                                                 'Your account is fully authenticated and your withdrawal limits have been lifted.'
                                             )}
                                         </Text>
                                     ) : (
-                                        <Text size='small' color='grey'>
+                                        <Text as='p' size='xxs' color='less-prominent'>
                                             {localize('Stated limits are subject to change without prior notice.')}
                                         </Text>
                                     )}

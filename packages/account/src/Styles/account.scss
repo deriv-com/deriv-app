@@ -356,20 +356,6 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
     }
-    &__text {
-        @include typeface(--paragraph-left-normal-black, none);
-        color: var(--text-general);
-
-        &--small {
-            @include typeface(--small-left-normal-black, none);
-        }
-        &--xsmall {
-            @include typeface(--xsmall-left-normal-black, none);
-        }
-        &--grey {
-            color: var(--text-less-prominent);
-        }
-    }
     .account-management__message {
         margin-top: 1em;
         font-weight: bold;

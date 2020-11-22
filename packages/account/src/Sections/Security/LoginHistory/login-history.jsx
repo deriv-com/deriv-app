@@ -1,150 +1,166 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
-import { DesktopWrapper, MobileWrapper, Loading, DataTable, Table } from '@deriv/components';
+import { Loading, Table, Text, ThemedScrollbars } from '@deriv/components';
 import Bowser from 'bowser';
-import { convertDateFormat } from '@deriv/shared';
+import { convertDateFormat, isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';
 import LoadErrorMessage from 'Components/load-error-message';
 
-const CellContent = ({ title, text, className }) => (
-    <React.Fragment>
-        <h3 className='cell-title'>{title}</h3>
-        <p className={classNames('cell-value', className)}>{text}</p>
-    </React.Fragment>
-);
+const API_FETCH_LIMIT = 50;
 
-const LoginHistoryListView = ({ fields, login_history }) => (
-    <Table className='login-history-table'>
+const getFormattedData = login_history => {
+    const data = [];
+    const fetch_limit = Math.min(API_FETCH_LIMIT, login_history.length);
+    for (let i = 0; i < fetch_limit; i++) {
+        data[i] = {};
+        const environment = login_history[i].environment;
+        const environment_split = environment.split(' ');
+        const date = environment_split[0];
+        const time = environment_split[1].replace('GMT', '');
+        const date_time = convertDateFormat(`${date} ${time}`, 'D-MMMM-YY hh:mm:ss', 'YYYY-MM-DD hh:mm:ss');
+        data[i].date = `${date_time} GMT`;
+        data[i].action = login_history[i].action;
+        const user_agent = environment.substring(environment.indexOf('User_AGENT'), environment.indexOf('LANG'));
+        const ua = Bowser.getParser(user_agent)?.getBrowser();
+        data[i].browser = ua ? `${ua.name} v${ua.version}` : localize('Unknown');
+        data[i].ip = environment_split[2].split('=')[1];
+        data[i].status = login_history[i].status === 1 ? localize('Successful') : localize('Failed');
+        data[i].id = i;
+    }
+    return data;
+};
+
+const getFields = () => ({
+    date: localize('Date and time'),
+    action: localize('Action'),
+    browser: localize('Browser'),
+    ip: localize('IP address'),
+    status: localize('Status'),
+});
+
+const LoginHistoryContent = ({ data }) => {
+    if (isMobile()) {
+        return renderList(getFields(), data);
+    }
+    return renderTable(getFields(), data);
+};
+
+const renderTable = (fields, login_history) => (
+    <Table className='login-history__table'>
+        <Table.Header>
+            <Table.Row className='login-history__table__header'>
+                <Table.Head>{fields.date}</Table.Head>
+                <Table.Head>{fields.action}</Table.Head>
+                <Table.Head>{fields.browser}</Table.Head>
+                <Table.Head>{fields.ip}</Table.Head>
+                <Table.Head>{fields.status}</Table.Head>
+            </Table.Row>
+        </Table.Header>
         <Table.Body>
-            <Table.Row className='with-margin'>
-                <Table.Cell>
-                    <CellContent title={fields.date} text={login_history.date} />
-                </Table.Cell>
-            </Table.Row>
-            <Table.Row className='with-margin'>
-                <Table.Cell>
-                    <CellContent className='browser' title={fields.browser} text={login_history.browser} />
-                </Table.Cell>
-                <Table.Cell>
-                    <CellContent className='action' title={fields.action} text={login_history.action} />
-                </Table.Cell>
-            </Table.Row>
-            <Table.Row>
-                <Table.Cell>
-                    <CellContent className='ip-value' title={fields.ip} text={login_history.ip} />
-                </Table.Cell>
-                <Table.Cell>
-                    <CellContent title={fields.status} text={login_history.status} />
-                </Table.Cell>
-            </Table.Row>
+            {login_history.map(item => (
+                <Table.Row className='login-history__table__row' key={item.id}>
+                    <Table.Cell>
+                        <Text line_height='s' size='xs'>
+                            {item.date}
+                        </Text>
+                    </Table.Cell>
+                    <Table.Cell className='login-history__table__row__cell login-history__table__row__cell--action'>
+                        {item.action}
+                    </Table.Cell>
+                    <Table.Cell>{item.browser}</Table.Cell>
+                    <Table.Cell>{item.ip}</Table.Cell>
+                    <Table.Cell>{item.status}</Table.Cell>
+                </Table.Row>
+            ))}
         </Table.Body>
     </Table>
 );
 
-const fetch_limit = 50;
-
-class LoginHistory extends React.Component {
-    state = {
-        is_loading: true,
-        error: '',
-        data: [],
-    };
-
-    getFields = () => ({
-        date: localize('Date and time'),
-        action: localize('Action'),
-        browser: localize('Browser'),
-        ip: localize('IP address'),
-        status: localize('Status'),
-    });
-
-    getLoginHistoryColumnsTemplate = () => {
-        const fields = this.getFields();
-        return Object.keys(fields).map(key => ({ title: fields[key], col_index: key }));
-    };
-
-    static getFormattedData(login_history) {
-        const data = [];
-        const real_fetch_limit = Math.min(fetch_limit, login_history.length);
-        for (let i = 0; i < real_fetch_limit; i++) {
-            data[i] = {};
-            const environment = login_history[i].environment;
-            const environment_split = environment.split(' ');
-            const date = environment_split[0];
-            const time = environment_split[1].replace('GMT', '');
-            const date_time = convertDateFormat(`${date} ${time}`, 'D-MMMM-YY hh:mm:ss', 'YYYY-MM-DD hh:mm:ss');
-            data[i].date = `${date_time} GMT`;
-            data[i].action = login_history[i].action;
-            const user_agent = environment.substring(environment.indexOf('User_AGENT'), environment.indexOf('LANG'));
-            const ua = Bowser.getParser(user_agent)?.getBrowser();
-            data[i].browser = ua ? `${ua.name} v${ua.version}` : localize('Unknown');
-            data[i].ip = environment_split[2].split('=')[1];
-            data[i].status = login_history[i].status === 1 ? localize('Successful') : localize('Failed');
-            data[i].id = i;
-        }
-        return data;
-    }
-
-    static getLoginHistory(limit) {
-        return new Promise(resolve => {
-            WS.authorized.loginHistory(limit).then(data => {
-                if (data.error) resolve({ api_initial_load_error: data.error.message });
-                resolve(data);
-            });
-        });
-    }
-
-    async componentDidMount() {
-        const api_res = await LoginHistory.getLoginHistory(fetch_limit);
-        if (api_res.api_initial_load_error) {
-            this.setState({
-                is_loading: false,
-                error: api_res.api_initial_load_error,
-            });
-        } else {
-            const formatted_data = LoginHistory.getFormattedData(api_res.login_history);
-            this.setState({
-                is_loading: false,
-                data: formatted_data,
-            });
-        }
-    }
-
-    render() {
-        if (this.props.is_switching) return <Loading />;
-        if (this.state.is_loading) return <Loading is_fullscreen={false} className='account___intial-loader' />;
-
-        if (this.state.error) return <LoadErrorMessage error_message={this.state.error} />;
-
-        const columns = this.getLoginHistoryColumnsTemplate();
-        const row_size = () => 36;
-
-        return (
-            <section className='login-history-container'>
-                {this.state.data?.length > 0 ? (
-                    <>
-                        <DesktopWrapper>
-                            <DataTable
-                                className='login-history-table'
-                                data_source={this.state.data}
-                                columns={columns}
-                                getRowSize={row_size}
+const renderList = (fields, login_history) => (
+    <Table className='login-history__list'>
+        <Table.Body>
+            {login_history.map(item => (
+                <div className='login-history__list__wrapper' key={item.id}>
+                    <Table.Row className='login-history__list__row login-history__list__row--with-margin'>
+                        <Table.Cell className='login-history__list__row__cell'>
+                            <ListCell title={fields.date} text={item.date} />
+                        </Table.Cell>
+                    </Table.Row>
+                    <Table.Row className='login-history__list__row login-history__list__row--with-margin'>
+                        <Table.Cell className='login-history__list__row__cell'>
+                            <ListCell
+                                className='login-history__list__row__cell--browser'
+                                title={fields.browser}
+                                text={item.browser}
                             />
-                        </DesktopWrapper>
-                        <MobileWrapper>
-                            {this.state.data.map(item => (
-                                <LoginHistoryListView key={item.id} fields={this.getFields()} login_history={item} />
-                            ))}
-                        </MobileWrapper>
-                    </>
-                ) : null}
-            </section>
-        );
-    }
-}
+                        </Table.Cell>
+                        <Table.Cell className='login-history__list__row__cell'>
+                            <ListCell
+                                className='login-history__list__row__cell--action'
+                                title={fields.action}
+                                text={item.action}
+                            />
+                        </Table.Cell>
+                    </Table.Row>
+                    <Table.Row className='login-history__list__row'>
+                        <Table.Cell className='login-history__list__row__cell'>
+                            <ListCell
+                                className='login-history__list__row__cell--ip-value'
+                                title={fields.ip}
+                                text={item.ip}
+                            />
+                        </Table.Cell>
+                        <Table.Cell className='login-history__list__row__cell'>
+                            <ListCell title={fields.status} text={item.status} />
+                        </Table.Cell>
+                    </Table.Row>
+                </div>
+            ))}
+        </Table.Body>
+    </Table>
+);
+
+const ListCell = ({ title, text, className }) => (
+    <React.Fragment>
+        <h3 className='login-history__list__row__cell--title'>{title}</h3>
+        <p className={classNames('login-history__list__row__cell--value', className)}>{text}</p>
+    </React.Fragment>
+);
+
+const LoginHistory = ({ is_switching }) => {
+    const [is_loading, setLoading] = React.useState(true);
+    const [error, setError] = React.useState('');
+    const [data, setData] = React.useState([]);
+
+    React.useEffect(() => {
+        const fetchData = async () => {
+            const api_res = await WS.authorized.fetchLoginHistory(API_FETCH_LIMIT);
+            setLoading(false);
+
+            if (api_res.error) {
+                setError(api_res.error.message);
+            } else {
+                const formatted_data = getFormattedData(api_res.login_history);
+                setData(formatted_data);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    if (is_switching) return <Loading />;
+    if (is_loading) return <Loading is_fullscreen={false} />;
+    if (error) return <LoadErrorMessage error_message={error} />;
+
+    return (
+        <ThemedScrollbars is_bypassed={isMobile()} className='login-history'>
+            {data.length ? <LoginHistoryContent data={data} /> : null}
+        </ThemedScrollbars>
+    );
+};
 
 LoginHistory.propTypes = {
     is_switching: PropTypes.bool,

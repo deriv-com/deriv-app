@@ -14,8 +14,8 @@ class Trader extends Common {
     }
 
     async waitForChart() {
-        await this.page.waitForSelector('.chart-container__loader', {state: 'hidden', timeout: 120000});
-        await this.page.waitForSelector('.ciq-menu.ciq-enabled', {timeout: 120000});
+        await this.page.waitForSelector('.chart-container__loader', { state: 'hidden', timeout: 120000 });
+        await this.page.waitForSelector('.ciq-menu.ciq-enabled', { timeout: 120000 });
     }
 
     async chooseUnderlying(code, name) {
@@ -23,20 +23,20 @@ class Trader extends Common {
         await this.page.click(MARKET_SELECT); // Click market select
         await this.page.fill('.data-hj-whitelist', name);
         await this.page.click(`.sc-mcd__item--${code}`);
-        await qawolf.assertElementText(this.page, ".cq-symbol", name);
+        await qawolf.assertElementText(this.page, '.cq-symbol', name);
     }
 
     async openRecentPositionsDrawer() {
         await this.page.waitForSelector(RECENT_POSITION_DRAWER_SELECTOR);
         await this.page.click(RECENT_POSITION_DRAWER_SELECTOR);
-        await this.page.waitForSelector('positions-toggle--has-count', {state: 'hidden'});
+        await this.page.waitForSelector('positions-toggle--has-count', { state: 'hidden' });
     }
 
     async verifyContractResult() {
         if (await this.isMobile()) {
             await this.assertContractDetails();
         } else {
-            await this.page.waitForSelector('.portfolio-empty__wrapper', {state: 'hidden'});
+            await this.page.waitForSelector('.portfolio-empty__wrapper', { state: 'hidden' });
             await this.page.waitForSelector('.dc-result__close-btn');
             await this.page.waitForSelector('.dc-contract-card__wrapper');
         }
@@ -44,11 +44,13 @@ class Trader extends Common {
 
     async chooseContractType(trade_types, contract) {
         if (await this.isMobile()) {
-            await this.page.click("#dt_contract_dropdown");
+            await this.page.click('#dt_contract_dropdown');
             await this.page.waitForSelector('.dc-mobile-dialog__container');
         } else {
-            await this.page.click(".trade-container__fieldset.trade-types");
-            await this.page.waitForSelector('.contract-type-dialog.contract-type-dialog--enterDone .contract-type-dialog__wrapper');
+            await this.page.click('.trade-container__fieldset.trade-types');
+            await this.page.waitForSelector(
+                '.contract-type-dialog.contract-type-dialog--enterDone .contract-type-dialog__wrapper'
+            );
         }
 
         await this.chooseContract(contract);
@@ -77,16 +79,42 @@ class Trader extends Common {
         }
     }
 
-    async buyContract(tradeTypes, contract, duration_unit, duration_amount, purchase_type = 'call', allow_equal = false) {
+    async allowEquals(should) {
+        if (await this.isMobile()) {
+            try {
+                if (should) {
+                    if (await this.page.$eval('.dc-collapsible__icon--is-open', el => !!el)) {
+                        await this.page.click('.dc-collapsible__icon--is-open');
+                    }
+                }
+            } catch (e) {
+            }
+
+            if (should) {
+                await this.page.waitForSelector('text=Equals');
+                await this.page.click('text=Equals');
+            }
+        } else if (should) {
+                await this.page.waitForSelector('.allow-equals__label');
+                await this.page.click('.allow-equals__label');
+            }
+    }
+
+    async buyContract(
+        tradeTypes,
+        contract,
+        duration_unit,
+        duration_amount,
+        purchase_type = 'call',
+        allow_equal = false
+    ) {
+        this.contract = contract;
+        this.purchase_type = purchase_type;
         await this.chooseContractType(tradeTypes, contract);
         await this.setDuration(duration_unit, duration_amount);
-        await this.waitForPurchaseBtnEnabled(contract);
-        if (allow_equal) {
-            await this.page.waitForSelector('.allow-equals__label');
-            await this.page.click('.allow-equals__label');
-        }
-        await this.waitForChart();
+        await this.allowEquals(allow_equal);
         await this.waitForPurchaseBtnEnabled(contract, allow_equal);
+        await this.waitForChart();
         await this.clickOnPurchaseButton(purchase_type, allow_equal);
         await this.verifyContractResult();
     }
@@ -104,6 +132,8 @@ class Trader extends Common {
                 return ['onetouch', 'notouch'];
             case 'rise_fall':
                 return ['call', 'put'];
+            case 'over_under':
+                return ['digitover', 'digitunder'];
             default:
                 return [];
         }
@@ -117,35 +147,38 @@ class Trader extends Common {
 
     async assertPurchase(duration, amount, contract_type) {
         this.duration = duration;
-        try {
-            if (contract_type.toLowerCase().endsWith('e')) {
-                if (await this.page.$eval('.dc-collapsible__icon--is-open', el => !!el)) {
-                    await this.page.click('.dc-collapsible__icon--is-open');
-                }
-            }
-        } catch (e) {
-            if (contract_type.toLowerCase().endsWith('e')) {
-                await this.page.waitForSelector('text=Equals');
-                await this.page.click('text=Equals');
-            }
-        }
+        // try {
+        //     if (contract_type.toLowerCase().endsWith('e')) {
+        //         if (await this.page.$eval('.dc-collapsible__icon--is-open', el => !!el)) {
+        //             await this.page.click('.dc-collapsible__icon--is-open');
+        //         }
+        //     }
+        // } catch (e) {
+        //     if (contract_type.toLowerCase().endsWith('e')) {
+        //         await this.page.waitForSelector('text=Equals');
+        //         await this.page.click('text=Equals');
+        //     }
+        // }
 
         const message = await waitForWSSubset(this.page, {
             echo_req: {
                 amount,
-                basis: "stake",
-                contract_type,
-                currency: "USD",
+                basis: 'stake',
+                contract_type: contract_type.toUpperCase(),
+                currency: 'USD',
                 duration,
-                duration_unit: "t",
+                duration_unit: 't',
                 proposal: 1,
             },
         });
         assert.ok(message, 'No proper proposal was found');
-        assert.ok(message.echo_req.duration === duration, `Duration was not set properly, expected ${duration}, received: ${message.echo_req.duration}`);
+        assert.ok(
+            message.echo_req.duration === duration,
+            `Duration was not set properly, expected ${duration}, received: ${message.echo_req.duration}`
+        );
         const buy_response = await waitForWSSubset(this.page, {
             echo_req: {
-                price: "10.00",
+                price: '10.00',
             },
         });
         assert.equal(buy_response.buy.buy_price, amount, 'Buy price does not match proposal.');
@@ -160,16 +193,28 @@ class Trader extends Common {
             await this.loopOver(steps, async () => {
                 if (target > current_duration) {
                     // eslint-disable-next-line no-await-in-loop
-                    await this.page.waitForSelector('.dc-tabs__content > .trade-params__duration-tickpicker > .dc-tick-picker > .dc-tick-picker__calculation > .dc-btn:nth-child(3)');
-                    await this.page.click('.dc-tabs__content > .trade-params__duration-tickpicker > .dc-tick-picker > .dc-tick-picker__calculation > .dc-btn:nth-child(3)');
+                    await this.page.waitForSelector(
+                        '.dc-tabs__content > .trade-params__duration-tickpicker > .dc-tick-picker > .dc-tick-picker__calculation > .dc-btn:nth-child(3)'
+                    );
+                    await this.page.click(
+                        '.dc-tabs__content > .trade-params__duration-tickpicker > .dc-tick-picker > .dc-tick-picker__calculation > .dc-btn:nth-child(3)'
+                    );
                 } else {
                     // eslint-disable-next-line no-await-in-loop
-                    await this.page.waitForSelector('.dc-tabs__content > .trade-params__duration-tickpicker > .dc-tick-picker > .dc-tick-picker__calculation > .dc-btn:nth-child(1)');
-                    await this.page.click('.dc-tabs__content > .trade-params__duration-tickpicker > .dc-tick-picker > .dc-tick-picker__calculation > .dc-btn:nth-child(1)');
+                    await this.page.waitForSelector(
+                        '.dc-tabs__content > .trade-params__duration-tickpicker > .dc-tick-picker > .dc-tick-picker__calculation > .dc-btn:nth-child(1)'
+                    );
+                    await this.page.click(
+                        '.dc-tabs__content > .trade-params__duration-tickpicker > .dc-tick-picker > .dc-tick-picker__calculation > .dc-btn:nth-child(1)'
+                    );
                 }
             });
-            await this.page.waitForSelector('.dc-tabs__content > .trade-params__duration-tickpicker > .dc-tick-picker > .dc-tick-picker__submit-wrapper > .dc-btn')
-            await this.page.click('.dc-tabs__content > .trade-params__duration-tickpicker > .dc-tick-picker > .dc-tick-picker__submit-wrapper > .dc-btn');
+            await this.page.waitForSelector(
+                '.dc-tabs__content > .trade-params__duration-tickpicker > .dc-tick-picker > .dc-tick-picker__submit-wrapper > .dc-btn'
+            );
+            await this.page.click(
+                '.dc-tabs__content > .trade-params__duration-tickpicker > .dc-tick-picker > .dc-tick-picker__submit-wrapper > .dc-btn'
+            );
         } else {
             await this.page.waitForSelector('.trade-container__input range-slider__track');
             await this.page.waitForSelector(`[data-qa=${target}]`);
@@ -195,7 +240,7 @@ class Trader extends Common {
             await this.page.click('#dt_positions_toggle');
             const buy_response = await waitForWSSubset(this.page, {
                 echo_req: {
-                    price: "10.00",
+                    price: '10.00',
                 },
             });
 
@@ -208,11 +253,11 @@ class Trader extends Common {
         } else {
             const buy_response = await waitForWSSubset(this.page, {
                 echo_req: {
-                    price: "10.00",
+                    price: '10.00',
                 },
             });
             const contract_id = buy_response.buy.contract_id;
-            await this.page.waitForSelector(`#dc_contract_card_${contract_id}_result`, {timeout: 6000});
+            await this.page.waitForSelector(`#dc_contract_card_${contract_id}_result`, { timeout: 6000 });
             await this.page.hover(`#dc_contract_card_${contract_id}_result`);
             await this.page.click(`#dc_contract_card_${contract_id}_result`);
             await this.page.waitForSelector('#dt_entry_spot_label');
@@ -225,15 +270,19 @@ class Trader extends Common {
             echo_req: {
                 proposal_open_contract: 1,
             },
-        })
+        });
 
-        // Entry Spot check
-        const entry_spot_tick = last_proposal_open_contract_message.proposal_open_contract.audit_details.all_ticks.find(t => t.name === 'Entry Spot');
-        const entry_spot_displayed = await this.page.$eval(
-            '#dt_entry_spot_label > div.contract-audit__item > div > span.contract-audit__value',
-            el => parseFloat(el.textContent.replace(/,/, ''))
-        );
-        assert.equal(entry_spot_displayed, entry_spot_tick.tick);
+        if (!['over_under'].includes(this.contract)) {
+            // Entry Spot check
+            const entry_spot_tick = last_proposal_open_contract_message.proposal_open_contract.audit_details.all_ticks.find(
+                t => t.name === 'Entry Spot'
+            );
+            const entry_spot_displayed = await this.page.$eval(
+                '#dt_entry_spot_label > div.contract-audit__item > div > span.contract-audit__value',
+                el => parseFloat(el.textContent.replace(/,/, ''))
+            );
+            assert.equal(entry_spot_displayed, entry_spot_tick.tick);
+        }
 
         // Start time check
         const start_time_displayed = await this.page.$eval(
@@ -247,17 +296,26 @@ class Trader extends Common {
         const d = new Date(start_time_tick.epoch * 1000);
         assert.equal(
             start_time_displayed,
-            `${d.getUTCFullYear()}-${(d.getUTCMonth() + 1).toString().padStart(2, '0')}-${d.getUTCDate().toString().padStart(2, '0')} ${d.getUTCHours().toString().padStart(2, '0')}:${d.getUTCMinutes().toString().padStart(2, '0')}:${d.getUTCSeconds().toString().padStart(2, '0')} GMT`
+            `${d.getUTCFullYear()}-${(d.getUTCMonth() + 1)
+                .toString()
+                .padStart(2, '0')}-${d.getUTCDate().toString().padStart(2, '0')} ${d
+                .getUTCHours()
+                .toString()
+                .padStart(2, '0')}:${d
+                .getUTCMinutes()
+                .toString()
+                .padStart(2, '0')}:${d.getUTCSeconds().toString().padStart(2, '0')} GMT`
         );
 
         // Exit spot check
-        const exit_spot_tick =  last_proposal_open_contract_message.proposal_open_contract.audit_details.all_ticks.find(t => t.name === 'End Time and Exit Spot');
+        const exit_spot_tick = last_proposal_open_contract_message.proposal_open_contract.audit_details.all_ticks.find(
+            t => t.name === 'End Time and Exit Spot'
+        );
         const exit_spot_displayed = await this.page.$eval(
             '#dt_exit_spot_label > div.contract-audit__item > div > span.contract-audit__value',
             el => parseFloat(el.textContent.replace(/,/, ''))
         );
         assert.equal(exit_spot_displayed, exit_spot_tick.tick);
-
 
         // End time check
         const exit_time_displayed = await this.page.$eval(
@@ -267,13 +325,25 @@ class Trader extends Common {
         const end_time = new Date(exit_spot_tick.epoch * 1000);
         assert.equal(
             exit_time_displayed,
-            `${end_time.getUTCFullYear()}-${(end_time.getUTCMonth() + 1).toString().padStart(2, '0')}-${end_time.getUTCDate().toString().padStart(2, '0')} ${end_time.getUTCHours().toString().padStart(2, '0')}:${end_time.getUTCMinutes().toString().padStart(2, '0')}:${end_time.getUTCSeconds().toString().padStart(2, '0')} GMT`
-        )
+            `${end_time.getUTCFullYear()}-${(end_time.getUTCMonth() + 1)
+                .toString()
+                .padStart(2, '0')}-${end_time
+                .getUTCDate()
+                .toString()
+                .padStart(2, '0')} ${end_time
+                .getUTCHours()
+                .toString()
+                .padStart(2, '0')}:${end_time
+                .getUTCMinutes()
+                .toString()
+                .padStart(2, '0')}:${end_time.getUTCSeconds().toString().padStart(2, '0')} GMT`
+        );
 
         // Assert profit/loss
         await this.page.waitForSelector('text=Profit/Loss:');
-        const profit = await this.page.$eval('text=Profit/Loss:', el => Math.abs(parseFloat(el.nextSibling.textContent.trim())));
-
+        const profit = await this.page.$eval('text=Profit/Loss:', el =>
+            Math.abs(parseFloat(el.nextSibling.textContent.trim()))
+        );
 
         assert.equal(profit, Math.abs(last_proposal_open_contract_message.proposal_open_contract.profit));
     }

@@ -16,20 +16,11 @@ afterEach(async () => {
     await tearDown(browser);
 });
 
-test('[mobile]-trader/no-touch', async () => {
+test('[mobile]-trader/over-under', async () => {
     await page.navigate();
     await page.loadOrLogin(process.env.VALID_USER, process.env.VALID_PASSWORD);
     await page.switchVirtualAccount();
     await page.chooseUnderlying('1HZ10V', 'Volatility 10 (1s) Index');
-    await page.buyContract('Highs & Lows', "touch", "Ticks", 5, 'notouch');
-    await page.assertPurchase(5, 10, 'NOTOUCH');
-});
-
-test('[mobile]-trader/touch', async () => {
-    await page.navigate();
-    await page.loadOrLogin(process.env.VALID_USER, process.env.VALID_PASSWORD);
-    await page.switchVirtualAccount();
-    await page.chooseUnderlying('1HZ10V', 'Volatility 10 (1s) Index');
-    await page.buyContract('Highs & Lows', "touch", "Ticks", 5, 'onetouch');
-    await page.assertPurchase(5, 10, 'ONETOUCH');
+    await page.buyContract('Digits', 'over_under', 'Ticks', 5, 'digitover');
+    await page.assertPurchase(5, 10, 'DIGITOVER');
 });

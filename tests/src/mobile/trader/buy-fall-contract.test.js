@@ -1,6 +1,6 @@
-const {replaceWebsocket} = require('@root/_utils/websocket');
 const {setUp, tearDown, mobile_viewport} = require('@root/bootstrap');
 const Trader = require('@root/objects/trader');
+const {replaceWebsocket} = require("@root/_utils/websocket");
 
 let browser, context, page;
 
@@ -10,59 +10,54 @@ beforeEach(async () => {
     context = out.context;
     await context.addInitScript(replaceWebsocket);
     page = new Trader(await context.newPage());
-    await preBuy();
 });
 
 afterEach(async () => {
     await tearDown(browser);
 });
 
+
 test('[mobile] trader/buy-fall-contract-default-duration', async () => {
-    await page.waitForSelector('#dt_purchase_put_price');
+    await page.navigate();
+    await page.loadOrLogin(process.env.VALID_USER, process.env.VALID_PASSWORD);
+    await page.switchVirtualAccount();
+    await page.chooseUnderlying('1HZ10V', 'Volatility 10 (1s) Index');
+    await page.buyContract('Digits', 'rise_fall', 'Ticks', 5, 'put', false);
     await page.assertPurchase(5, 10, 'PUT');
-    await page.assertContractDetails();
 });
 
 test('[mobile] trader/buy-fall-contract-min-duration', async () =>  {
-    await page.changeDuration(1);
+    await page.navigate();
+    await page.loadOrLogin(process.env.VALID_USER, process.env.VALID_PASSWORD);
+    await page.switchVirtualAccount();
+    await page.chooseUnderlying('1HZ10V', 'Volatility 10 (1s) Index');
+    await page.buyContract('Digits', 'rise_fall', 'Ticks', 1, 'put', false);
     await page.assertPurchase(1, 10, 'PUT');
-    await page.assertContractDetails();
 });
 
 test('[mobile] trader/buy-fall-contract-max-duration', async () => {
-    await page.changeDuration(10);
-    await page.assertPurchase(10, 10, 'PUT');
-    await page.assertContractDetails();
-});
-
-test('[mobile] trader/buy-falle-contract-max-duration', async () => {
-    await page.changeDuration(10);
-    await page.assertPurchase(10, 10, 'PUTE');
-    await page.assertContractDetails();
-});
-
-test('[mobile] trader/buy-falle-contract-min-duration', async () =>  {
-    await page.changeDuration(1);
-    await page.assertPurchase(1, 10, 'PUTE');
-    await page.assertContractDetails();
-});
-
-
-async function preBuy() {
     await page.navigate();
-    await page.loadOrLogin(process.env.VALID_USER, process.env.VALID_PASSWORD)
-    await page.waitForChart();
-    await page.click('.acc-info__wrapper .acc-info');
-    await page.click('.dc-tabs__item:nth-child(2)');
-    await page.click(".acc-switcher__accounts >> text=Demo");
-    await page.click('.top-widgets-portal .cq-menu-btn');
-    await page.click(".data-hj-whitelist");
-    await page.fill(".data-hj-whitelist", "Volatility");
-    await page.click('text="Volatility 10 (1s) Index"');
-    await page.click(".contract-type-widget__display");
-    await page.waitForChart();
-    await page.click("#dt_contract_rise_fall_item");
-    await page.waitForChart();
-    await page.waitForPurchaseBtnEnabled('rise_fall');
-}
+    await page.loadOrLogin(process.env.VALID_USER, process.env.VALID_PASSWORD);
+    await page.switchVirtualAccount();
+    await page.chooseUnderlying('1HZ10V', 'Volatility 10 (1s) Index');
+    await page.buyContract('Digits', 'rise_fall', 'Ticks', 10, 'put', false);
+    await page.assertPurchase(10, 10, 'PUT');
+});
 
+test('[mobile] trader/buy-rise-equal-contract-min-duration', async () =>  {
+    await page.navigate();
+    await page.loadOrLogin(process.env.VALID_USER, process.env.VALID_PASSWORD);
+    await page.switchVirtualAccount();
+    await page.chooseUnderlying('1HZ10V', 'Volatility 10 (1s) Index');
+    await page.buyContract('Digits', 'rise_fall', 'Ticks', 1, 'put', true);
+    await page.assertPurchase(1, 10, 'PUTE');
+});
+
+test('[mobile] trader/buy-rise-equal-contract-max-duration', async () => {
+    await page.navigate();
+    await page.loadOrLogin(process.env.VALID_USER, process.env.VALID_PASSWORD);
+    await page.switchVirtualAccount();
+    await page.chooseUnderlying('1HZ10V', 'Volatility 10 (1s) Index');
+    await page.buyContract('Digits', 'rise_fall', 'Ticks', 10, 'put', true);
+    await page.assertPurchase(10, 10, 'PUTE');
+});

@@ -70,8 +70,6 @@ const calculateTimeLeft = remaining_time_to_open => {
         : {};
 };
 
-const padWithZero = num => (num < 10 ? '0' : 0) + num;
-
 const MarketCountdownTimer = ({ is_main_page, setActiveSymbols, symbol }) => {
     const [when_market_opens, setWhenMarketOpens] = React.useState({});
     const [time_left, setTimeLeft] = React.useState(calculateTimeLeft(when_market_opens?.remaining_time_to_open));
@@ -111,8 +109,8 @@ const MarketCountdownTimer = ({ is_main_page, setActiveSymbols, symbol }) => {
                 timer_components += `${time_left.days} ${localize(time_left.days > 1 ? 'days' : 'day')} `;
             }
         } else {
-            const value = time_left[interval];
-            timer_components += interval !== 'seconds' ? `${padWithZero(value)}:` : `${padWithZero(value)}`;
+            const value = time_left[interval].toString().padStart(2, '0');
+            timer_components += interval !== 'seconds' ? `${value}:` : value;
         }
     });
 

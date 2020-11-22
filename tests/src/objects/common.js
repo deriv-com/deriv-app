@@ -39,13 +39,13 @@ class Common {
      * @returns {Promise<void>}
      */
     async switchVirtualAccount() {
-        await this.page.waitForSelector('.acc-info');
-        await this.page.click('.acc-info');
+        await this.page.waitForSelector('.header__menu-items > .header__menu-right > .acc-info__container > .acc-info__wrapper > .acc-info');
+        await this.page.click('.header__menu-items > .header__menu-right > .acc-info__container > .acc-info__wrapper > .acc-info');
         const element = await this.page.evaluate(`document.querySelector('.dc-content-expander')`)
         if (element && !element.classList.contains('dc-content-expander--expanded')) {
             await this.page.click('.dc-content-expander');
         }
-        const account_switcher_virtual = "div.acc-switcher__wrapper.acc-switcher__wrapper--enter-done > div > div.dc-tabs.dc-tabs.dc-tabs--acc-switcher__list-tabs > ul > li:nth-child(2)";
+        const account_switcher_virtual = ".acc-switcher__wrapper > .acc-switcher__list > .dc-tabs > .dc-tabs__list > .dc-tabs__item:nth-child(2)";
         await this.page.waitForSelector(account_switcher_virtual);
         await this.page.click(account_switcher_virtual);
         await this.page.waitForSelector('.acc-switcher__id');

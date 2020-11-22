@@ -63,6 +63,6 @@ async function preBuy() {
     await page.waitForChart();
     await page.click("#dt_contract_rise_fall_item");
     await page.waitForChart();
-    await page.waitForPurchaseBtnEnabled();
+    await page.waitForPurchaseBtnEnabled('rise_fall');
 }
 

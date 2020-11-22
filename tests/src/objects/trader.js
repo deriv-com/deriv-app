@@ -22,11 +22,7 @@ class Trader extends Common {
         await this.waitForChart();
         await this.page.click(MARKET_SELECT); // Click market select
         await this.page.fill('.data-hj-whitelist', name);
-        if (await this.isMobile()) {
-            await this.page.click(`.market_dropdown-subcategory-item-${code}`);
-        } else {
-            await this.page.click(`.sc-mcd__item--${code}`);
-        }
+        await this.page.click(`.sc-mcd__item--${code}`);
         await qawolf.assertElementText(this.page, ".cq-symbol", name);
     }
 
@@ -37,14 +33,24 @@ class Trader extends Common {
     }
 
     async verifyContractResult() {
-        await this.page.waitForSelector('.portfolio-empty__wrapper', {state: 'hidden'});
-        await this.page.waitForSelector('.dc-result__close-btn');
-        await this.page.waitForSelector('.dc-contract-card__wrapper');
+        if (await this.isMobile()) {
+            await this.assertContractDetails();
+        } else {
+            await this.page.waitForSelector('.portfolio-empty__wrapper', {state: 'hidden'});
+            await this.page.waitForSelector('.dc-result__close-btn');
+            await this.page.waitForSelector('.dc-contract-card__wrapper');
+        }
     }
 
     async chooseContractType(trade_types, contract) {
-        await this.page.click(".trade-container__fieldset.trade-types");
-        await this.page.waitForSelector('.contract-type-dialog.contract-type-dialog--enterDone .contract-type-dialog__wrapper');
+        if (await this.isMobile()) {
+            await this.page.click("#dt_contract_dropdown");
+            await this.page.waitForSelector('.dc-mobile-dialog__container');
+        } else {
+            await this.page.click(".trade-container__fieldset.trade-types");
+            await this.page.waitForSelector('.contract-type-dialog.contract-type-dialog--enterDone .contract-type-dialog__wrapper');
+        }
+
         await this.chooseContract(contract);
     }
 
@@ -54,37 +60,53 @@ class Trader extends Common {
     }
 
     async setDuration(duration_unit, duration_amount) {
-        await this.page.waitForSelector(SIMPLE_DURATION_TOGGLE_SELECTOR);
-        if (duration_amount !== 5) {
-            await this.page.click(`.range-slider__ticks span:nth-child(${duration_amount - 5})`);
-        }
-        if (duration_unit === 'Ticks') {
-            await this.page.click('#dc_t_toggle_item');
-        } else if (duration_unit === 'Minutes') {
-            await this.page.click('#dc_m_toggle_item');
-        }
+        if (await this.isMobile()) {
+            await this.changeDuration(duration_amount);
+        } else {
+            await this.page.waitForSelector(SIMPLE_DURATION_TOGGLE_SELECTOR);
+            if (duration_amount !== 5) {
+                await this.page.click(`.range-slider__ticks span:nth-child(${duration_amount - 5})`);
+            }
+            if (duration_unit === 'Ticks') {
+                await this.page.click('#dc_t_toggle_item');
+            } else if (duration_unit === 'Minutes') {
+                await this.page.click('#dc_m_toggle_item');
+            }
 
-        await qawolf.assertElementText(this.page, '#dt_range_slider_label', `${duration_amount} ${duration_unit}`);
+            await qawolf.assertElementText(this.page, '#dt_range_slider_label', `${duration_amount} ${duration_unit}`);
+        }
     }
 
     async buyContract(tradeTypes, contract, duration_unit, duration_amount, purchase_type = 'call', allow_equal = false) {
         await this.chooseContractType(tradeTypes, contract);
         await this.setDuration(duration_unit, duration_amount);
-        await this.waitForPurchaseBtnEnabled();
+        await this.waitForPurchaseBtnEnabled(contract);
         if (allow_equal) {
             await this.page.waitForSelector('.allow-equals__label');
             await this.page.click('.allow-equals__label');
         }
         await this.waitForChart();
-        await this.waitForPurchaseBtnEnabled(allow_equal);
+        await this.waitForPurchaseBtnEnabled(contract, allow_equal);
         await this.clickOnPurchaseButton(purchase_type, allow_equal);
         await this.verifyContractResult();
     }
 
-    async waitForPurchaseBtnEnabled(allow_equal = false) {
+    async waitForPurchaseBtnEnabled(contract, allow_equal = false) {
         const is_equal = allow_equal ? 'e' : '';
-        await this.page.waitForSelector(`#dt_purchase_call${is_equal}_button:enabled`, { timeout: 120000 });
-        await this.page.waitForSelector(`#dt_purchase_put${is_equal}_button:enabled`, { timeout: 120000 });
+        const [green, red] = this.getPurchaseBtnId(contract);
+        await this.page.waitForSelector(`#dt_purchase_${green}${is_equal}_button:enabled`, { timeout: 120000 });
+        await this.page.waitForSelector(`#dt_purchase_${red}${is_equal}_button:enabled`, { timeout: 120000 });
+    }
+
+    getPurchaseBtnId(contract) {
+        switch (contract) {
+            case 'touch':
+                return ['onetouch', 'notouch'];
+            case 'rise_fall':
+                return ['call', 'put'];
+            default:
+                return [];
+        }
     }
 
     async clickOnPurchaseButton(type, allow_equal = false) {
@@ -108,8 +130,6 @@ class Trader extends Common {
             }
         }
 
-        await this.page.waitForSelector(`#dt_purchase_${contract_type.toLowerCase()}_button`);
-        await this.page.click(`#dt_purchase_${contract_type.toLowerCase()}_button`);
         const message = await waitForWSSubset(this.page, {
             echo_req: {
                 amount,

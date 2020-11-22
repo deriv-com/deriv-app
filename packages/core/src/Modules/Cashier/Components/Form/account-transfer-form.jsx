@@ -298,7 +298,7 @@ const AccountTransferForm = ({
                                         <DesktopWrapper>
                                             <Dropdown
                                                 id='transfer_to'
-                                                className='cashier__drop-down account-transfer__drop-down'
+                                                className='cashier__drop-down account-transfer__drop-down account-transfer__drop-down--to-dropdown'
                                                 classNameDisplay='cashier__drop-down-display'
                                                 classNameDisplaySpan='cashier__drop-down-display-span'
                                                 classNameItems='cashier__drop-down-items'

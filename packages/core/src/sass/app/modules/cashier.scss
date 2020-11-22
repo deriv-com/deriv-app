@@ -1095,6 +1095,9 @@
         max-width: 36rem;
         margin: 0 auto 5.1rem;
 
+        &--to-dropdown {
+            margin: 0 auto 3.3rem;
+        }
         @include mobile {
             width: 100%;
             min-width: auto;

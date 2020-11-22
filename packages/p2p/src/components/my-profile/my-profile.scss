@@ -42,13 +42,14 @@
         &-verification {
             align-items: center;
             display: flex;
+            flex: none;
 
             &-status {
                 margin-left: 1.6rem;
             }
             &-icon {
                 margin-left: 0.4rem;
-                vertical-align: bottom;
+                vertical-align: text-bottom;
             }
         }
     }
@@ -129,7 +130,7 @@
             }
         }
         &-name {
-            margin-left: 1.6rem;
+            margin-left: -1rem;
             max-width: calc(100% - 20rem);
         }
     }
@@ -192,11 +193,11 @@
     margin-right: -50px; // Minus half of &__switch width
 
     &__switch {
-        height: 17px;
-        width: 32px;
+        height: 35px;
+        transform: scale(0.5) translateX(-50%);
+        width: 65px;
 
         .dc-toggle-switch__button {
-            left: calc(100% - 4px) !important;
             top: unset;
         }
     }

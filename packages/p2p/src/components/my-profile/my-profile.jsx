@@ -80,7 +80,9 @@ const MyProfile = observer(() => {
                         ) : null}
                         {full_verification ? (
                             <div className='my-profile__header-verification-status'>
-                                {localize('Address verified')}
+                                <Text color='less-prominent' size='xs'>
+                                    {localize('Address verified')}
+                                </Text>
                                 <Icon
                                     className='my-profile__header-verification-icon'
                                     icon='IcCashierVerificationBadge'
@@ -198,14 +200,12 @@ const MyProfile = observer(() => {
                             is_enabled={general_store.should_show_real_name}
                             handleToggle={my_profile_store.handleToggle}
                         />
-                        {/* <div> */}
                         <Text size='xs' line_height='m' color='prominent' className='my-profile__toggle-name'>
                             <Localize
                                 i18n_default_text={'Show my real name ({{full_name}})'}
                                 values={{ full_name: my_profile_store.full_name }}
                             />
                         </Text>
-                        {/* </div> */}
                     </div>
                     <div className='my-profile__separator'>
                         <div className='my-profile__separator-text'>

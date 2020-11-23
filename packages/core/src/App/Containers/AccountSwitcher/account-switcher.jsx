@@ -189,10 +189,10 @@ class AccountSwitcher extends React.Component {
         await this.props.switchAccount(loginid);
     }
 
-    async resetBalance() {
+    resetBalance = async () => {
         this.closeAccountsDialog();
         this.props.resetVirtualBalance();
-    }
+    };
 
     get is_real_account_tab() {
         // Real accounts is always the first tab index based on design
@@ -336,7 +336,7 @@ class AccountSwitcher extends React.Component {
                                     onClickAccount={
                                         account.is_disabled ? undefined : this.doSwitch.bind(this, account.loginid)
                                     }
-                                    onClickResetBalance={this.resetBalance.bind(this)}
+                                    onClickResetBalance={this.resetBalance}
                                     selected_loginid={this.props.account_loginid}
                                 />
                             ))}

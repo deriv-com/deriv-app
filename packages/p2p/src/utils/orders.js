@@ -48,10 +48,6 @@ class ExtendedOrderDetails {
         return this.order_details.status === 'timed-out';
     }
 
-    get is_incoming_order() {
-        return !!this.order_details.is_incoming;
-    }
-
     get is_pending_order() {
         return this.order_details.status === 'pending';
     }
@@ -111,7 +107,7 @@ class ExtendedOrderDetails {
             this.is_refunded_order ||
             this.is_disputed_order ||
             this.is_dispute_refunded_order ||
-            (this.has_timer_expired && !this.is_completed_order && !this.is_dispute_completed_order)
+            (this.has_timer_expired && !this.is_completed_order)
         );
     }
 
@@ -152,10 +148,6 @@ class ExtendedOrderDetails {
     get should_show_complain_and_received_button() {
         if (this.is_finalised_order) return false;
 
-        if (this.is_sell_order) {
-            return (this.is_expired_order || (this.is_ongoing_order && this.has_timer_expired)) && !this.is_my_ad;
-        }
-
         return (this.is_expired_order || (this.is_ongoing_order && this.has_timer_expired)) && this.is_my_ad;
     }
 
@@ -166,18 +158,10 @@ class ExtendedOrderDetails {
     get should_show_only_complain_button() {
         if (this.is_finalised_order) return false;
 
-        if (this.is_sell_order) {
-            return this.is_expired_order || (this.is_ongoing_order && this.has_timer_expired);
-        }
-
         return (this.is_expired_order || (this.is_ongoing_order && this.has_timer_expired)) && !this.is_my_ad;
     }
 
     get should_show_only_received_button() {
-        if (this.is_disputed_order) {
-            return (!this.is_incoming_order && this.is_sell_order) || (this.is_incoming_order && this.is_buy_order);
-        }
-
         if (this.is_buy_order) {
             return this.is_my_ad && this.is_buyer_confirmed_order;
         }

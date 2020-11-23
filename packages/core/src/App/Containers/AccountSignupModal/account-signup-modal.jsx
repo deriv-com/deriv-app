@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { Field, Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Dialog, PasswordInput, PasswordMeter } from '@deriv/components';
+import { Button, Dialog, PasswordInput, PasswordMeter, Text } from '@deriv/components';
 import { validPassword, validLength, website_name, getErrorMessages, PlatformContext } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -131,9 +131,9 @@ class AccountSignup extends React.Component {
                                     </ResidenceForm>
                                 ) : (
                                     <div className='account-signup__password-selection'>
-                                        <p className='account-signup__heading'>
+                                        <Text as='p' weight='bold' className='account-signup__heading'>
                                             <Localize i18n_default_text='Keep your account secure with a password' />
-                                        </p>
+                                        </Text>
                                         <Field name='password'>
                                             {({ field }) => (
                                                 <PasswordMeter
@@ -159,9 +159,9 @@ class AccountSignup extends React.Component {
                                                 </PasswordMeter>
                                             )}
                                         </Field>
-                                        <p className='account-signup__subtext'>
+                                        <Text as='p' size='xxs' className='account-signup__subtext'>
                                             <Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters, numbers, and symbols.' />
-                                        </p>
+                                        </Text>
 
                                         <Button
                                             className={classNames('account-signup__btn', {

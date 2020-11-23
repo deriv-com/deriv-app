@@ -178,7 +178,6 @@
             margin-bottom: 4.2rem;
         }
         &--hint {
-            @include typeface(--xsmall-left-normal-black, none);
             margin-top: 1.6rem;
         }
         @include mobile {

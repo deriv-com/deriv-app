@@ -10,6 +10,22 @@ const Text = ({ children, size, color, align, weight, line_height, as, className
         '--text-weight': `var(--text-weight-${weight || 'normal'})`,
     };
 
+    ////////// in code jaygozin she - commente mamali
+    // const [style, setStyle] = React.useState({});
+
+    // React.useEffect(() => {
+    //     const class_styles = {
+    //         '--text-size': `var(--text-size-${size || 's'})`,
+    //         '--text-color': `var(--text-${color || 'general'})`,
+    //         '--text-lh': `var(--text-lh-${line_height || 'm'})`,
+    //         '--text-weight': `var(--text-weight-${weight || 'normal'})`,
+    //     };
+    //     if (!isEmptyObject(styles)) {
+    //         setStyle(...class_styles, ...styles);
+    //     }
+    //     setStyle(class_styles);
+    // }, []);
+
     const text_align = align || 'start';
     const class_names = classNames(
         'dc-text',

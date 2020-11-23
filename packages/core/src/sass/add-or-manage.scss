@@ -62,10 +62,10 @@
             margin-bottom: 6rem;
             margin-left: auto;
             margin-right: auto;
-            width: 704px;
+            width: 768px;
         }
         .add-crypto-currency {
-            padding: 0 20px 20px 0;
+            padding-bottom: 2rem;
         }
         .dc-form-submit-button--absolute {
             position: fixed;
@@ -240,7 +240,7 @@
         }
         &--no-grow {
             flex-grow: 0;
-            margin-bottom: 2rem;
+            margin-bottom: 3.2rem;
         }
     }
     &__btn-area {
@@ -255,13 +255,12 @@
             border-width: 2px;
 
             @include mobile {
-                width: 100%;
                 margin: 0 0.8rem;
+                width: 15.6rem;
             }
         }
         @include mobile {
             margin: 0 0 1rem;
-            height: 88px;
             align-items: center;
         }
     }

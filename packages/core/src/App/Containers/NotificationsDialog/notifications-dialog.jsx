@@ -82,8 +82,9 @@ class NotificationsDialog extends React.Component {
                                                     'notifications-item__cta-button'
                                                 )}
                                                 onClick={item.action.onClick}
-                                                text={item.action.text}
-                                            />
+                                            >
+                                                <Text size='xxs'>{item.action.text}</Text>
+                                            </Button>
                                         )}
                                     </>
                                 )}

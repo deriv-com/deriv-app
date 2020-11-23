@@ -33,7 +33,7 @@ const DepositeSideNote = () => {
         */
     ];
 
-    return <SideNote notes={notes} />;
+    return <SideNote has_bullets notes={notes} title={<Localize i18n_default_text='Notes' />} />;
 };
 
 const Deposit = ({
@@ -60,15 +60,15 @@ const Deposit = ({
 
     React.useEffect(() => {
         if (iframe_height && isDesktop()) {
-            if (isCryptocurrency(currency)) {
-                if (/^(UST|eUSDT)$/i.test(currency) && typeof setSideNotes === 'function') {
+            if (isCryptocurrency(currency) && typeof setSideNotes === 'function') {
+                if (/^(UST|eUSDT)$/i.test(currency)) {
                     setSideNotes([<DepositeSideNote key={0} />, <USDTSideNote key={1} />]);
                 } else {
                     setSideNotes([<DepositeSideNote key={0} />]);
                 }
             }
         }
-    }, [currency, setSideNotes, iframe_height]);
+    }, [currency, iframe_height, setSideNotes]);
 
     if (is_virtual) {
         return <Virtual />;

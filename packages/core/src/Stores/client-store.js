@@ -914,7 +914,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     async resetVirtualBalance() {
         this.root_store.ui.removeNotificationByKey({ key: 'reset_virtual_balance' });
-        this.root_store.ui.removeNotificationMessage({ key: 'reset_virtual_balance', can_show_again: true });
+        this.root_store.ui.removeNotificationMessage({ key: 'reset_virtual_balance', should_show_again: true });
         await WS.authorized.topupVirtual();
     }
 
@@ -1285,7 +1285,7 @@ export default class ClientStore extends BaseStore {
             );
         } else {
             this.root_store.ui.removeNotificationByKey({ key: 'reset_virtual_balance' });
-            this.root_store.ui.removeNotificationMessage({ key: 'reset_virtual_balance', can_show_again: true });
+            this.root_store.ui.removeNotificationMessage({ key: 'reset_virtual_balance', should_show_again: true });
         }
     }
 

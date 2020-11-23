@@ -43,7 +43,7 @@ class NotificationsDialog extends React.Component {
             if (getActivePlatform(this.props.app_routing_history) !== 'DTrader' || getPathname() !== 'DTrader') {
                 Object.keys(this.props.notifications).forEach(item => {
                     if (this.props.notifications[item].key === 'reset_virtual_balance') {
-                        this.props.removeNotificationMessage({ key: 'reset_virtual_balance', can_show_again: true });
+                        this.props.removeNotificationMessage({ key: 'reset_virtual_balance', should_show_again: true });
                     }
                 });
             }

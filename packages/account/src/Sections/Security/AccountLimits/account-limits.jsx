@@ -100,7 +100,7 @@ class AccountLimits extends React.Component {
 
         if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
         if (this.props.is_switching || this.state.is_loading)
-            return <Loading is_fullscreen={false} className='account___intial-loader' />;
+            return <Loading is_fullscreen={false} className='account__initial-loader' />;
 
         const { commodities, forex, indices, synthetic_index } = { ...market_specific };
         const { currency, is_fully_authenticated } = this.props;

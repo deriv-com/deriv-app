@@ -82,7 +82,7 @@ class TwoFactorAuthentication extends React.Component {
         } = this.state;
         const { is_switching } = this.props;
 
-        if (is_loading || is_switching) return <Loading is_fullscreen={false} className='account___intial-loader' />;
+        if (is_loading || is_switching) return <Loading is_fullscreen={false} className='account__initial-loader' />;
 
         if (error_message) return <LoadErrorMessage error_message={error_message} />;
 

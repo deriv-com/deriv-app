@@ -272,7 +272,7 @@ class ProofOfAddressForm extends React.Component {
         if (api_initial_load_error) {
             return <LoadErrorMessage error_message={api_initial_load_error} />;
         }
-        if (is_loading) return <Loading is_fullscreen={false} className='account___intial-loader' />;
+        if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
         const mobile_scroll_offset = status && status.msg ? '200px' : '154px';
 
         if (form_initial_values.address_state) {

@@ -115,7 +115,7 @@ class LoginHistory extends React.Component {
 
     render() {
         if (this.props.is_switching) return <Loading />;
-        if (this.state.is_loading) return <Loading is_fullscreen={false} className='account___intial-loader' />;
+        if (this.state.is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
 
         if (this.state.error) return <LoadErrorMessage error_message={this.state.error} />;
 

@@ -290,7 +290,7 @@ class FinancialAssessment extends React.Component {
             has_trading_experience,
         } = this.state;
 
-        if (is_loading) return <Loading is_fullscreen={false} className='account___intial-loader' />;
+        if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
         if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
         if (this.props.is_virtual) return <DemoMessage />;
         if (isMobile() && is_submit_success) return <SubmittedPage />;

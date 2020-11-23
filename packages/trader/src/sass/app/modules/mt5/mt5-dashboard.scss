@@ -210,12 +210,6 @@
 }
 
 .mt5-attribute-describer {
-    @include typeface(--paragraph-left-bold-black, none);
-    font-size: 14px;
-    font-weight: bold;
-    line-height: 1.43;
-    color: var(--text-general);
-
     .counter {
         color: var(--brand-red-coral);
         font-size: 1rem;

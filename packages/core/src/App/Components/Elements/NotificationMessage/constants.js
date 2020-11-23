@@ -8,9 +8,11 @@ export const icon_types = {
     success: 'IcAlertSuccess',
     warning: 'IcAlertWarning',
     contract_sold: 'IcAlertInfo',
+    announce: 'IcAnnounce',
 };
 
 export const types = {
+    announce: 'notification--announce',
     danger: 'notification--danger',
     info: 'notification--info',
     success: 'notification--success',

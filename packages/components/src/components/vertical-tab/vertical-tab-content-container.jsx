@@ -1,14 +1,14 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { usePrevious } from '../../hooks';
+import { usePreviousState } from '../../hooks';
 import Icon from '../icon/icon.jsx';
 
 const SideNotes = ({ side_notes }) => {
     return (
         <div className='dc-vertical-tab__content-side-note'>
             {side_notes?.map((note, i) => (
-                <div className='dc-vertical-tab__content-side-note-wrapper' key={i}>
+                <div className='dc-vertical-tab__content-side-note-item' key={i}>
                     {note}
                 </div>
             ))}
@@ -18,7 +18,7 @@ const SideNotes = ({ side_notes }) => {
 
 const Content = ({ is_routed, items, selected }) => {
     const selected_item = items.find(item => item.label === selected.label);
-    const previous_selected_item = usePrevious(selected_item);
+    const previous_selected_item = usePreviousState(selected_item);
     const TabContent = selected_item.value;
     const [side_notes, setSideNotes] = React.useState(null);
 

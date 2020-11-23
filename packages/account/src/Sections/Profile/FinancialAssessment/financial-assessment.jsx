@@ -92,7 +92,9 @@ const ConfirmationModal = ({ is_visible, toggleModal, onSubmit }) => (
 
 const ConfirmationPage = ({ toggleModal, onSubmit }) => (
     <div className='account__confirmation-page'>
-        <Text className='account__confirmation-page-title'>{localize('Notice')}</Text>
+        <Text size='xs' weight='bold' className='account__confirmation-page-title'>
+            {localize('Notice')}
+        </Text>
         <ConfirmationContent className='account__confirmation-page-content' />
         <div className='account__confirmation-page-footer'>
             <Button large text={localize('Back')} onClick={() => toggleModal(false)} secondary />
@@ -852,7 +854,11 @@ class FinancialAssessment extends React.Component {
                                     <FormFooter>
                                         {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
                                         {isMobile() && (
-                                            <Text className='account-form__footer-all-fields-required'>
+                                            <Text
+                                                align='center'
+                                                size='xxs'
+                                                className='account-form__footer-all-fields-required'
+                                            >
                                                 {localize('All fields are required')}
                                             </Text>
                                         )}

@@ -305,7 +305,7 @@ class ProofOfAddressForm extends React.Component {
                                     <FormSubHeader title={localize('Details')} />
                                     <div className='account-poa__details-section'>
                                         <div className='account-poa__details-description'>
-                                            <Text size='xs' className='account-poa__details-text'>
+                                            <Text size={isMobile() ? 'xxs' : 'xs'}>
                                                 {localize(
                                                     'Please ensure that this address is the same as in your proof of address'
                                                 )}

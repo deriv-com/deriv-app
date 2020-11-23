@@ -21,7 +21,7 @@ const Content = ({ currency_icon, loginid, title, value }) => (
         <div className='deactivate-account-error__account-details'>
             <Icon icon={currency_icon} size={24} />
             <div className='deactivate-account-error__account'>
-                <Text className='deactivate-account-error__accounts-currency' color='prominent' size='xs'>
+                <Text line_height='x' color='prominent' size='xs'>
                     {title}
                 </Text>
                 <Text color='prominent' size='xxxs' line_height='x'>

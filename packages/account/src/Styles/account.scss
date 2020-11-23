@@ -280,11 +280,8 @@ $MIN_HEIGHT_FLOATING: calc(
                 }
             }
             &-all-fields-required {
-                color: var(--text-general);
-                text-align: center;
                 padding-bottom: 2.4rem;
                 padding-top: 0.8rem;
-                font-size: 1.2rem;
             }
             @include mobile {
                 padding: 16px 0px;
@@ -1174,8 +1171,6 @@ $MIN_HEIGHT_FLOATING: calc(
         &-title {
             color: var(--brand-red-coral);
             height: 20px;
-            font-size: 1.4rem;
-            font-weight: bold;
             margin-bottom: 0.8rem;
         }
         &-content {
@@ -1294,11 +1289,6 @@ $MIN_HEIGHT_FLOATING: calc(
 
             @include mobile {
                 margin-bottom: 2.4rem;
-            }
-        }
-        &-text {
-            @include mobile {
-                font-size: 1.2rem;
             }
         }
         &-fields {
@@ -1897,9 +1887,6 @@ $MIN_HEIGHT_FLOATING: calc(
         &__account-details {
             display: flex;
             align-items: center;
-        }
-        &__accounts-currency {
-            line-height: 1.43;
         }
         &__account {
             margin-left: 8px;

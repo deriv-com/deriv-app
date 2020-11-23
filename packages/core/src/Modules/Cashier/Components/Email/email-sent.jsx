@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Icon } from '@deriv/components';
+import { Button, Icon, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
@@ -13,25 +13,25 @@ class EmailSent extends React.Component {
         return (
             <div className='withdraw__email-sent'>
                 <Icon icon='IcEmailSent' className='withdraw__icon' size={128} />
-                <p className='withdraw__email-sent-title'>
+                <Text as='p' weight='bold' className='withdraw__email-sent-title'>
                     <Localize i18n_default_text={"We've sent you an email."} />
-                </p>
-                <p className='withdraw__email-sent-text'>
+                </Text>
+                <Text as='p' size='xs' lineHeight='x' className='withdraw__email-sent'>
                     <Localize i18n_default_text='Please check your email for the verification link to complete the process.' />
-                </p>
+                </Text>
                 <div className='withdraw__email-resend'>
                     {this.props.is_resend_clicked ? (
                         <React.Fragment>
-                            <p className='withdraw__email-sent-title withdraw__email-sent-title-sub'>
+                            <Text as='p' weight='bold' size='xs' className='withdraw__email-sent-title'>
                                 <Localize i18n_default_text={"Didn't receive the email?"} />
-                            </p>
-                            <p className='withdraw__email-sent-text'>
+                            </Text>
+                            <Text as='p' size='xs' lineHeight='x' className='withdraw__email-sent'>
                                 <Localize
                                     i18n_default_text={
                                         "Check your spam or junk folder. If it's not there, try resending the email."
                                     }
                                 />
-                            </p>
+                            </Text>
                             <Button
                                 className='withdraw__resend-button'
                                 classNameSpan='withdraw__resend-button-text'

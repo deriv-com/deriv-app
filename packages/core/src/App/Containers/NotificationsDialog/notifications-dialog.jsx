@@ -73,7 +73,9 @@ class NotificationsDialog extends React.Component {
                                                 )}
                                                 to={item.action.route}
                                             >
-                                                <Text size='xxs'>{item.action.text}</Text>
+                                                <Text weight='bold' size='xxs'>
+                                                    {item.action.text}
+                                                </Text>
                                             </BinaryLink>
                                         ) : (
                                             <Button

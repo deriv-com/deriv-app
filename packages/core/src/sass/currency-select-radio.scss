@@ -7,6 +7,11 @@
     &__items {
         display: flex;
         flex-wrap: wrap;
+        width: 768px;
+
+        &__center {
+            justify-content: center !important;
+        }
 
         @include desktop {
             justify-content: flex-start;
@@ -25,8 +30,9 @@
         display: inline-flex;
         flex-direction: column;
         height: 128px;
+        width: 128px;
         justify-content: space-around;
-        margin: 1.6rem 2rem 0;
+        margin: 1.6rem 3.2rem 0;
         min-width: 128px;
 
         &:hover:not(&--selected) {

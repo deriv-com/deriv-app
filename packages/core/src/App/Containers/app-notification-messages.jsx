@@ -88,7 +88,7 @@ AppNotificationMessages.propTypes = {
             is_p2p_visible: PropTypes.bool,
             message: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
             size: PropTypes.oneOf(['small']),
-            type: PropTypes.oneOf(['warning', 'info', 'success', 'danger', 'contract_sold', 'news']),
+            type: PropTypes.oneOf(['warning', 'info', 'success', 'danger', 'contract_sold', 'news', 'announce']),
         })
     ),
     removeNotificationMessage: PropTypes.func,

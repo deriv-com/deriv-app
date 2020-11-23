@@ -39,11 +39,12 @@
         margin-top: 0.8rem;
         flex-grow: 1;
         height: 24px;
-        max-width: 150px;
+        max-width: fit-content;
         align-self: flex-end;
 
         .dc-btn__text {
             font-size: 1.2rem;
+            font-weight: normal;
         }
     }
     &__text-container {

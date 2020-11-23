@@ -839,8 +839,6 @@
         color: var(--text-prominent);
     }
     &__description {
-        @include typeface(--paragraph-center-normal-black);
-        color: var(--text-prominent);
         margin: 0.6rem 0 0;
     }
     &__btn-area {

@@ -163,7 +163,7 @@ class CurrencySelector extends React.Component {
                 initialValues={this.props.value}
                 onSubmit={(values, actions) => {
                     this.props.onSubmit(
-                        this.props.getCurrentStep() - 1,
+                        this.props.getCurrentStep ? this.props.getCurrentStep() - 1 : null,
                         values,
                         actions.setSubmitting,
                         this.props.goToNextStep

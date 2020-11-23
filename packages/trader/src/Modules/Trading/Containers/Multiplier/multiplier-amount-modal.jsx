@@ -2,6 +2,7 @@ import React from 'react';
 import { Div100vhContainer, Modal, Money, Popover } from '@deriv/components';
 import { useIsMounted } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
+import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 import { requestPreviewProposal } from 'Stores/Modules/Trading/Helpers/preview-proposal';
 import AmountMobile from 'Modules/Trading/Components/Form/TradeParams/amount-mobile.jsx';
@@ -68,7 +69,7 @@ const TradeParamsMobile = ({ amount, currency, toggleModal, trade_store }) => {
         if (stake_value === amount) return undefined;
 
         const onProposalResponse = response => {
-            const { proposal, echo_req } = response;
+            const { proposal, echo_req, subscription } = response;
             if (
                 is_mounted &&
                 proposal &&
@@ -77,6 +78,8 @@ const TradeParamsMobile = ({ amount, currency, toggleModal, trade_store }) => {
             ) {
                 setCommission(proposal.commission);
                 setStopOut(proposal.limit_order?.stop_out?.order_amount);
+            } else if (subscription?.id) {
+                WS.forget(subscription.id);
             }
         };
         const dispose = requestPreviewProposal(trade_store, { amount: stake_value }, onProposalResponse);

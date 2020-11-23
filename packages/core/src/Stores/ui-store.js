@@ -510,7 +510,7 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    removeNotificationMessage({ key } = {}, can_show_again = false) {
+    removeNotificationMessage({ key, can_show_again } = {}) {
         if (!key) return;
         this.notification_messages = this.notification_messages.filter(n => n.key !== key);
         // Add notification messages to LocalStore when user closes, check for redundancy

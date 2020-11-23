@@ -906,7 +906,7 @@ export default class ClientStore extends BaseStore {
         this.setPreSwitchAccount(true);
         this.setIsLoggingIn(true);
         this.root_store.ui.removeNotifications();
-        this.root_store.ui.removeAllNotificationMessages();
+        this.root_store.ui.removeAllNotificationMessages(true);
         this.setSwitched(loginid);
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
     }
@@ -914,7 +914,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     async resetVirtualBalance() {
         this.root_store.ui.removeNotificationByKey({ key: 'reset_virtual_balance' });
-        this.root_store.ui.removeNotificationMessage({ key: 'reset_virtual_balance' }, true);
+        this.root_store.ui.removeNotificationMessage({ key: 'reset_virtual_balance', can_show_again: true });
         await WS.authorized.topupVirtual();
     }
 
@@ -1285,7 +1285,7 @@ export default class ClientStore extends BaseStore {
             );
         } else {
             this.root_store.ui.removeNotificationByKey({ key: 'reset_virtual_balance' });
-            this.root_store.ui.removeNotificationMessage({ key: 'reset_virtual_balance' }, true);
+            this.root_store.ui.removeNotificationMessage({ key: 'reset_virtual_balance', can_show_again: true });
         }
     }
 

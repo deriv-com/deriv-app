@@ -6,7 +6,7 @@ import { Button, DesktopWrapper, Icon, MobileDialog, MobileWrapper, ThemedScroll
 import { BinaryLink } from 'App/Components/Routes';
 import { connect } from 'Stores/connect';
 import { localize } from '@deriv/translations';
-import { toTitleCase, isEmptyObject, isMobile } from '@deriv/shared';
+import { toTitleCase, isEmptyObject, isMobile, getActivePlatform, getPathname } from '@deriv/shared';
 
 import { EmptyNotification } from 'App/Components/Elements/Notifications/empty-notification.jsx';
 
@@ -35,6 +35,19 @@ class NotificationsDialog extends React.Component {
 
     componentWillUnmount() {
         document.removeEventListener('mousedown', this.handleClickOutside);
+    }
+
+    componentDidUpdate(prevProps) {
+        // Remove notification message if not on DTrader
+        if (prevProps.notifications !== this.props.notifications) {
+            if (getActivePlatform(this.props.app_routing_history) !== 'DTrader' || getPathname() !== 'DTrader') {
+                Object.keys(this.props.notifications).forEach(item => {
+                    if (this.props.notifications[item].key === 'reset_virtual_balance') {
+                        this.props.removeNotificationMessage({ key: 'reset_virtual_balance', can_show_again: true });
+                    }
+                });
+            }
+        }
     }
 
     render() {
@@ -150,6 +163,9 @@ NotificationsDialog.propTypes = {
     toggleDialog: PropTypes.func,
 };
 
-export default connect(({ ui }) => ({
+export default connect(({ ui, common }) => ({
     notifications: ui.notifications,
+    app_routing_history: common.app_routing_history,
+    removeNotificationByKey: ui.removeNotificationByKey,
+    removeNotificationMessage: ui.removeNotificationMessage,
 }))(NotificationsDialog);

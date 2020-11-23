@@ -527,10 +527,10 @@ export default class TradeStore extends BaseStore {
     };
 
     @action.bound
-    onPurchase = debounce(this.onPurchaseRaw, 300);
+    onPurchase = debounce(this.processPurchase, 300);
 
     @action.bound
-    onPurchaseRaw(proposal_id, price, type) {
+    processPurchase(proposal_id, price, type) {
         if (!this.is_purchase_enabled) return;
         if (proposal_id) {
             this.is_purchase_enabled = false;

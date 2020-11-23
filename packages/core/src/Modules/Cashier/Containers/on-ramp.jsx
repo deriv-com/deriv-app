@@ -39,13 +39,13 @@ const OnRampInfo = () => (
 
 const OnRamp = ({
     filtered_onramp_providers,
-    history,
     is_onramp_modal_open,
     menu_options,
     onMountOnramp,
     onUnmountOnramp,
     onramp_popup_modal_title,
     resetPopup,
+    routeTo,
     setIsOnRampModalOpen,
     should_show_dialog,
     setSideNotes,
@@ -54,7 +54,7 @@ const OnRamp = ({
 
     React.useEffect(() => {
         if (menu_options && selected_cashier_path !== routes.cashier_onramp) {
-            history.push(selected_cashier_path);
+            routeTo(selected_cashier_path);
         }
     }, [selected_cashier_path]);
 
@@ -67,18 +67,11 @@ const OnRamp = ({
         return () => onUnmountOnramp();
     }, [onMountOnramp, onUnmountOnramp]);
 
-    const getActivePaths = () => {
-        const items = [];
-        if (menu_options) {
-            menu_options.map(menu_option => {
-                const item = {};
-                item.text = menu_option.label;
-                item.value = menu_option.path;
-                items.push(item);
-            });
-        }
-        return items;
-    };
+    const getActivePaths = () =>
+        (menu_options ?? []).map(menu_option => ({
+            text: menu_option.label,
+            value: menu_option.path,
+        }));
 
     return (
         <React.Fragment>
@@ -133,25 +126,26 @@ const OnRamp = ({
 
 OnRamp.propTypes = {
     filtered_onramp_providers: PropTypes.array,
-    history: PropTypes.object,
     is_onramp_modal_open: PropTypes.bool,
     menu_options: PropTypes.array,
     onMountOnramp: PropTypes.func,
     onUnmountOnramp: PropTypes.func,
     onramp_popup_modal_title: PropTypes.string,
     resetPopup: PropTypes.func,
+    routeTo: PropTypes.func,
     setIsOnRampModalOpen: PropTypes.func,
     setSideNotes: PropTypes.func,
     should_show_dialog: PropTypes.bool,
 };
 
-export default connect(({ modules }) => ({
+export default connect(({ modules, common }) => ({
     filtered_onramp_providers: modules.cashier.onramp.filtered_onramp_providers,
     is_onramp_modal_open: modules.cashier.onramp.is_onramp_modal_open,
     onMountOnramp: modules.cashier.onramp.onMountOnramp,
     onUnmountOnramp: modules.cashier.onramp.onUnmountOnramp,
     onramp_popup_modal_title: modules.cashier.onramp.onramp_popup_modal_title,
     resetPopup: modules.cashier.onramp.resetPopup,
+    routeTo: common.routeTo,
     setIsOnRampModalOpen: modules.cashier.onramp.setIsOnRampModalOpen,
     should_show_dialog: modules.cashier.onramp.should_show_dialog,
 }))(OnRamp);

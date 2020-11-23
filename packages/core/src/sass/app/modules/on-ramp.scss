@@ -104,8 +104,14 @@
                 margin: 1.6rem;
                 background-color: var(--general-section-2);
 
+                & > div {
+                    width: 100%;
+                }
+
                 &-text {
                     cursor: pointer;
+                    width: 80%;
+                    overflow: scroll;
                 }
                 &-icon {
                     margin-left: 0.8rem;
@@ -198,8 +204,12 @@
                 padding-top: 2.4rem !important;
             }
         }
+        > .dc-modal-body {
+            overflow: scroll;
+        }
         @include mobile {
             max-width: calc(100vw - 6rem) !important;
+            max-height: calc(100vh - 6rem) !important;
         }
     }
 }

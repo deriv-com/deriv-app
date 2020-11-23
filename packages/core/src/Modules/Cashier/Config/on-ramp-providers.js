@@ -72,7 +72,7 @@ const createChangellyProvider = client => ({
     getToCurrencies: () => ['bch', 'btc', 'etc', 'eth', 'ltc', 'ust'],
     getWidgetHtml() {
         return new Promise(resolve => {
-            const url = new URL('https://widget.changelly.com?theme=defualt&isPopUp=true');
+            const url = new URL('https://widget.changelly.com?theme=default');
             url.searchParams.set('from', 'usd');
             url.searchParams.append('fromDefault', 'usd');
             let to_currency = 'etc';

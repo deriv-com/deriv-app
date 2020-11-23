@@ -115,6 +115,7 @@ class StatusDialogContainer extends React.Component {
 
 StatusDialogContainer.propTypes = {
     currency: PropTypes.string,
+    closeModal: PropTypes.func,
     has_cancel: PropTypes.bool,
     has_submit: PropTypes.bool,
     heading: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
@@ -125,17 +126,15 @@ StatusDialogContainer.propTypes = {
     is_belgium_residence: PropTypes.bool,
     is_real: PropTypes.bool,
     message: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    onCancel: PropTypes.func,
     onSubmit: PropTypes.func,
     text_submit: PropTypes.string,
 };
 
-export default connect(({ client, ui }) => ({
+export default connect(({ client }) => ({
     landing_company_shortcode: client.landing_company_shortcode,
     is_fully_authenticated: client.is_fully_authenticated,
     is_age_verified: client.is_age_verified,
     is_isle_of_man_residence: client.residence === 'im', // TODO: [deriv-eu] refactor this once more residence checks are required
     is_belgium_residence: client.residence === 'be', // TODO: [deriv-eu] refactor this once more residence checks are required
-    closeModal: ui.closeRealAccountSignup,
     switchToVirtual: () => client.switchAccount(client.virtual_account_loginid),
 }))(withRouter(StatusDialogContainer));

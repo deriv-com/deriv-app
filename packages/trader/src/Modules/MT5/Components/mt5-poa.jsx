@@ -55,7 +55,7 @@ class MT5POA extends React.Component {
             address_line_2: [v => !v || validAddress(v), v => validLength(v, { max: 70 })],
             address_city: [v => !!v, v => validLength(v, { min: 1, max: 35 }), v => validLetterSymbol(v)],
             address_state: [v => !!v, v => !v || validLength(v, { min: 1, max: 35 })],
-            address_postcode: [v => validLength(v, { min: 1, max: 20 }), v => validPostCode(v)],
+            address_postcode: [v => !!v, v => validLength(v, { min: 1, max: 20 }), v => validPostCode(v)],
         };
 
         const validation_errors = {
@@ -80,6 +80,7 @@ class MT5POA extends React.Component {
                 localize('State/Province is not in a proper format.'),
             ],
             address_postcode: [
+                localize('Postal/ZIP code is required'),
                 localize('This should not exceed {{max_number}} characters.', {
                     max_number: 20,
                 }),
@@ -104,10 +105,15 @@ class MT5POA extends React.Component {
         this.props.onCancel();
     };
 
-    onFileDrop = (document_file, file_error_message, setFieldTouched, setFieldValue) => {
+    onFileDrop = (document_file, file_error_message, setFieldTouched, setFieldValue, values) => {
         setFieldTouched('document_file', true);
         setFieldValue('document_file', document_file);
         this.setState({ document_file, file_error_message });
+        // To resolve sync issues with value states (form_values in container component and formik values)
+        // This ensures container values are updated before being validated in runtime  (mt5-financial-stp-real-account-signup.jsx)
+        if (typeof this.props.onSave === 'function') {
+            this.props.onSave(this.props.index, { ...values, ...{ document_file } });
+        }
     };
 
     proceed = () => {
@@ -240,14 +246,8 @@ class MT5POA extends React.Component {
                     document_file: this.state.document_file,
                 }}
                 validateOnMount
-                validate={values => {
-                    // To resolve sync issues with value states (form_values in container component and formik values)
-                    // This ensures container values are updated before being validated in runtime  (mt5-financial-stp-real-account-signup.jsx)
-                    if (typeof this.props.saveFormData === 'function') {
-                        this.props.saveFormData(this.props.index, values);
-                    }
-                    return this.validateForm(values);
-                }}
+                validate={this.validateForm}
+                enableReinitialize
                 onSubmit={this.onSubmit}
                 innerRef={form}
             >
@@ -257,6 +257,7 @@ class MT5POA extends React.Component {
                     handleSubmit,
                     isSubmitting,
                     handleBlur,
+                    handleChange,
                     setFieldTouched,
                     setFieldValue,
                     values,
@@ -327,13 +328,7 @@ class MT5POA extends React.Component {
                                                                                 }
                                                                                 name='address_state'
                                                                                 value={values.address_state}
-                                                                                onChange={e =>
-                                                                                    setFieldValue(
-                                                                                        'address_state',
-                                                                                        e.target.value,
-                                                                                        true
-                                                                                    )
-                                                                                }
+                                                                                onChange={handleChange}
                                                                                 placeholder={localize(
                                                                                     'State/Province*'
                                                                                 )}
@@ -351,13 +346,14 @@ class MT5POA extends React.Component {
                                                                             touched.address_state &&
                                                                             errors.address_state
                                                                         }
-                                                                        onChange={e =>
+                                                                        onChange={e => {
+                                                                            handleChange(e);
                                                                             setFieldValue(
                                                                                 'address_state',
                                                                                 e.target.value,
                                                                                 true
-                                                                            )
-                                                                        }
+                                                                            );
+                                                                        }}
                                                                         required
                                                                     />
                                                                 </MobileWrapper>
@@ -380,6 +376,7 @@ class MT5POA extends React.Component {
                                                         label={localize('Postal/ZIP code*')}
                                                         placeholder={localize('Postal/ZIP code*')}
                                                         onBlur={handleBlur}
+                                                        required
                                                     />
                                                 </div>
                                                 <div className='mt5-proof-of-address__file-upload'>
@@ -391,7 +388,8 @@ class MT5POA extends React.Component {
                                                                 df,
                                                                 file_error_message,
                                                                 setFieldTouched,
-                                                                setFieldValue
+                                                                setFieldValue,
+                                                                values
                                                             )
                                                         }
                                                     />

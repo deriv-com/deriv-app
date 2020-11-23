@@ -248,6 +248,11 @@ export default class UIStore extends BaseStore {
         return !!this.account_switcher_disabled_message;
     }
 
+    @computed
+    get filtered_notifications() {
+        return this.notifications.filter(message => message.type !== 'news');
+    }
+
     @action.bound
     filterNotificationMessages() {
         this.notifications = this.notification_messages.filter(notification => {

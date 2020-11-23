@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import React from 'react';
-import { action, computed, observable, toJS } from 'mobx';
+import { action, computed, observable, toJS, reaction } from 'mobx';
 import {
     routes,
     isCryptocurrency,
@@ -139,7 +139,6 @@ export default class CashierStore extends BaseStore {
     @observable is_loading = false;
     @observable is_p2p_visible = false;
     @observable p2p_notification_count = 0;
-    @observable is_p2p_advertiser = false;
     @observable cashier_route_tab_index = 0;
 
     @observable config = {
@@ -201,6 +200,23 @@ export default class CashierStore extends BaseStore {
         this.onSwitchAccount(this.accountSwitcherListener);
     }
 
+    // Initialise P2P attributes on app load without mounting the entire cashier
+    @action.bound
+    init() {
+        // eslint-disable-next-line no-undef
+        reaction(
+            () => [this.root_store.client.is_logged_in, this.root_store.client.residence],
+            () => {
+                if (!this.is_p2p_visible && !this.root_store.client.is_virtual) {
+                    WS.authorized.p2pAdvertiserInfo().then(advertiser_info => {
+                        const advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
+                        this.setIsP2pVisible(advertiser_error !== 'RestrictedCountry');
+                    });
+                }
+            }
+        );
+    }
+
     @action.bound
     async onMountCommon(should_remount) {
         if (this.root_store.client.is_logged_in) {
@@ -230,21 +246,6 @@ export default class CashierStore extends BaseStore {
 
             if (!this.onramp.is_onramp_tab_visible && window.location.pathname.endsWith(routes.cashier_onramp)) {
                 this.root_store.common.routeTo(routes.cashier_deposit);
-            }
-
-            // show p2p if:
-            // 1. we have not already checked this before, and
-            // 2. client is not virtual
-            if (!this.is_p2p_visible && !this.root_store.client.is_virtual) {
-                const advertiser_info = await WS.authorized.p2pAdvertiserInfo();
-                const advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
-                if (advertiser_error === 'RestrictedCountry') {
-                    this.setIsP2pVisible(false);
-                } else {
-                    this.setIsP2pVisible(true);
-                }
-
-                this.is_p2p_advertiser = !advertiser_error;
             }
         }
     }

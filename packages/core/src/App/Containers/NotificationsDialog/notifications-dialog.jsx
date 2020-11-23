@@ -154,5 +154,5 @@ NotificationsDialog.propTypes = {
 };
 
 export default connect(({ ui }) => ({
-    notifications: ui.notifications,
+    notifications: ui.filtered_notifications,
 }))(NotificationsDialog);

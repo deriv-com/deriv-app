@@ -396,7 +396,7 @@
                     display: flex;
 
                     *:first-child {
-                        &::before {
+                        &:before {
                             content: ': ';
                         }
                     }

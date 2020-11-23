@@ -82,7 +82,7 @@
         &-trade-info {
             display: flex;
             justify-content: space-evenly;
-            background: white;
+            background: var(--general-main-1);
             flex: 2;
 
             &-tooltip-text {

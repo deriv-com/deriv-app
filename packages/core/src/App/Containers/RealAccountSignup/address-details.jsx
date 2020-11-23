@@ -102,7 +102,7 @@ const AddressDetails = ({
                                     as='p'
                                     align='left'
                                     size='xxs'
-                                    lineHeight='l'
+                                    line_height='l'
                                     className='details-form__description'
                                 >
                                     <strong>

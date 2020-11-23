@@ -69,7 +69,7 @@ const SetCurrency = ({
                 </div>
             )}
             <div className='set-currency-modal__heading-container'>
-                <Text as='p' size='xs' lineHeight='x' className='set-currency-modal__heading-container__main-heading'>
+                <Text as='p' size='xs' line_height='x' className='set-currency-modal__heading-container__main-heading'>
                     {localize(
                         'You have an account that do not have currency assigned. Please choose a currency to trade with this account.'
                     )}

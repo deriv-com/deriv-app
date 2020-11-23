@@ -479,7 +479,7 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     addNotificationMessageByKey(key) {
-        if (key) this.addNotificationMessage(clientNotifications()[key]);
+        if (key) this.addNotificationMessage(clientNotifications(this)[key]);
     }
 
     @action.bound
@@ -691,6 +691,23 @@ export default class UIStore extends BaseStore {
     @action.bound
     showAccountTypesModalForEuropean() {
         this.toggleAccountTypesModal(this.root_store.client.is_uk);
+    }
+
+    @action.bound
+    notifyAppInstall(prompt) {
+        this.deferred_prompt = prompt;
+        setTimeout(() => {
+            this.addNotificationMessageByKey('install_pwa');
+        }, 10000);
+    }
+
+    @action.bound
+    async installWithDeferredPrompt() {
+        this.deferred_prompt.prompt();
+        const choice = await this.deferred_prompt.userChoice;
+        if (choice.outcome === 'accepted') {
+            this.removeNotificationByKey('install_pwa');
+        }
     }
 
     @action.bound

@@ -317,6 +317,17 @@ export const clientNotifications = (ui = {}, client = {}) => {
             timeout: 300000,
             timeoutMessage: remaining => localize('Auto update in {{ remaining }} seconds', { remaining }),
         },
+        install_pwa: {
+            key: 'install_pwa',
+            action: {
+                onClick: () => ui.installWithDeferredPrompt(),
+                text: localize('Install'),
+            },
+            header: localize('Install the DTrader web app'),
+            message: localize('Launch DTrader in seconds the next time you want to trade.'),
+            type: 'announce',
+            should_hide_close_btn: false,
+        },
     };
     return notifications;
 };

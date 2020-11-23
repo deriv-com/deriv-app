@@ -1025,6 +1025,9 @@
 
 /** @define cashier-side-note; weak */
 .cashier-side-note {
+    &__text {
+        margin-bottom: 0.8rem;
+    }
     &__bullet {
         background-color: var(--text-general);
         border-radius: 100%;

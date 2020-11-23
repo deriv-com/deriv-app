@@ -32,7 +32,7 @@ const WithdrawalSideNote = () => {
         */
     ];
 
-    return <SideNote notes={notes} />;
+    return <SideNote has_bullets notes={notes} title={<Localize i18n_default_text='Notes' />} />;
 };
 
 const Withdrawal = ({

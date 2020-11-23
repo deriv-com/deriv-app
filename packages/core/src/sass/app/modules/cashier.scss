@@ -254,9 +254,7 @@
         }
     }
     &__paragraph {
-        font-size: 1.4rem;
         align-self: center;
-        line-height: 1.43;
 
         @include mobile {
             padding-left: 1.6rem;
@@ -291,9 +289,6 @@
         }
     }
     &__tab-header-note {
-        color: var(--text-general);
-        font-size: 1.2rem;
-        line-height: 1.5;
         max-width: 256px;
     }
     &__modal-tab {
@@ -304,10 +299,10 @@
         background-color: var(--general-main-1);
         padding: 2.4rem;
         width: 50.4rem;
-        margin: 0 auto 3.2rem;
+        margin: 0 auto 2rem;
     }
     &__done-button {
-        width: 15.6rem;
+        width: 18.9rem;
         margin-left: 0.8rem;
         white-space: normal;
     }
@@ -572,7 +567,6 @@
         margin-bottom: 0.8rem;
     }
     &__desc {
-        @include typeface(--paragraph-center-normal-black);
         margin-bottom: 3.2rem;
     }
 }
@@ -584,14 +578,9 @@
         margin-bottom: 8px;
         font-size: 1.6rem;
         line-height: 1.5;
-    }
-    &__header,
-    &__text {
         color: var(--text-general);
     }
-    &__text {
-        font-size: 1.4rem;
-    }
+
     &__verify-button {
         margin: 3.2rem auto;
 
@@ -619,19 +608,9 @@
             margin: auto;
 
             &-title {
-                color: var(--text-general);
-                font-size: 1.6rem;
-                font-weight: bold;
                 margin-bottom: 0.8rem;
-                line-height: 1.5;
+            }
 
-                &-sub {
-                    font-size: 1.4rem;
-                }
-            }
-            &-text {
-                color: var(--text-general);
-            }
             @include mobile {
                 width: 100%;
                 padding: 1.6rem;
@@ -859,11 +838,10 @@
         }
     }
     &__transferred-contact {
-        margin-top: 1.6rem;
-        margin-bottom: 0.8rem;
+        margin: 0.8rem 0;
 
         &-wrapper {
-            margin: 3.2rem;
+            margin: 2.4rem 0;
         }
     }
     &__contact {
@@ -876,7 +854,7 @@
         }
     }
     &__explanation {
-        margin-top: -0.8rem;
+        margin-top: 0.8rem;
     }
     &__input {
         width: 12.6rem !important;
@@ -1123,8 +1101,6 @@
         line-height: 1.43;
     }
     &__currency {
-        font-size: 1.2rem;
-
         &-icon {
             align-self: center;
         }
@@ -1136,9 +1112,6 @@
             margin-left: 8px;
             margin-right: 8px;
         }
-    }
-    &__loginid {
-        @include typeface(--xsmall-left-normal-grey);
     }
     &__balance {
         margin-left: auto;

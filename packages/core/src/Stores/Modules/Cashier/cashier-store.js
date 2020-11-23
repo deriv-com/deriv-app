@@ -342,6 +342,7 @@ export default class CashierStore extends BaseStore {
             is_trading_experience_incomplete,
             account_status,
             is_eu,
+            mt5_login_list,
         } = this.root_store.client;
         if (!account_status.status) return false;
 
@@ -349,10 +350,12 @@ export default class CashierStore extends BaseStore {
             this.config.deposit.error.is_ask_authentication || (is_authentication_needed && is_eu);
         const need_financial_assessment =
             is_financial_account && (is_financial_information_incomplete || is_trading_experience_incomplete);
+        // CR can deposit without accepting latest tnc except those with Financial STP
+        const need_tnc = (is_eu || mt5_login_list.some(item => item.group.startsWith('real_labuan'))) && is_tnc_needed;
 
         return (
             need_authentication ||
-            is_tnc_needed ||
+            need_tnc ||
             need_financial_assessment ||
             this.config.deposit.error.is_ask_financial_risk_approval
         );
@@ -570,7 +573,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async sendVerificationEmail() {
-        if (this.config[this.active_container].verification.is_button_clicked) {
+        if (this.config[this.active_container].verification.is_button_clicked || !this.root_store.client.email) {
             return;
         }
 
@@ -1168,6 +1171,7 @@ export default class CashierStore extends BaseStore {
             return null;
         }
 
+        this.setLoading(true);
         this.setErrorMessage('');
         const currency = this.config.account_transfer.selected_from.currency;
         const transfer_between_accounts = await WS.authorized.transferBetweenAccounts(
@@ -1208,6 +1212,7 @@ export default class CashierStore extends BaseStore {
             this.setIsTransferConfirm(false);
             this.setIsTransferSuccessful(true);
         }
+        this.setLoading(false);
         return transfer_between_accounts;
     };
 

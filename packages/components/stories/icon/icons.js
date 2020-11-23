@@ -48,7 +48,8 @@ export const icons = {
         'IcCashierWallet',
         'IcCashierWithdrawalLock',
         'IcCashierWithdrawal',
-        'IcCashierWyre',
+        'IcCashierWyreDark',
+        'IcCashierWyreLight',
         'IcCashierXanpool',
     ],
     common: [
@@ -64,6 +65,7 @@ export const icons = {
         'IcAlertInfo',
         'IcAlertSuccess',
         'IcAlertWarning',
+        'IcAnnounce',
         'IcArrowDown',
         'IcArrowLeftBold',
         'IcArrowLeftCurly',

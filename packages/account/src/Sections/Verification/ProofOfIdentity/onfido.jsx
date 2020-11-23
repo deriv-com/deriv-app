@@ -71,6 +71,7 @@ export default class Onfido extends React.Component {
     };
 
     componentDidUpdate(prevProps) {
+        // Ensure that we initialize onfido only if onfido_service_token is available
         if (prevProps.onfido_service_token !== this.props.onfido_service_token) {
             if (this.props.status === onfido_status_codes.onfido && this.props.onfido_service_token) {
                 this.initOnfido();

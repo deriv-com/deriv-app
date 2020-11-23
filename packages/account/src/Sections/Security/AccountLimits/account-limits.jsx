@@ -179,7 +179,11 @@ class AccountLimits extends React.Component {
                                         <Row>
                                             <TableHeader>
                                                 <div className='account-management-flex-wrapper'>
-                                                    <TextComp className='account-limit-container-title'>
+                                                    <TextComp
+                                                        size={isMobile() ? 'xxs' : 'x'}
+                                                        weight='bold'
+                                                        className='account-limit-container-title'
+                                                    >
                                                         {localize('Trading limits - Maximum daily turnover')}
                                                     </TextComp>
                                                     <ExtraInfo

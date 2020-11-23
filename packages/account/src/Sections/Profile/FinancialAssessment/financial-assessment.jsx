@@ -92,7 +92,12 @@ const ConfirmationModal = ({ is_visible, toggleModal, onSubmit }) => (
 
 const ConfirmationPage = ({ toggleModal, onSubmit }) => (
     <div className='account__confirmation-page'>
-        <Text size='xs' weight='bold' className='account__confirmation-page-title'>
+        <Text
+            size='xs'
+            weight='bold'
+            styles={{ color: 'var(--brand-red-coral)' }}
+            className='account__confirmation-page-title'
+        >
             {localize('Notice')}
         </Text>
         <ConfirmationContent className='account__confirmation-page-content' />

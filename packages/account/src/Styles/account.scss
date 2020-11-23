@@ -897,11 +897,6 @@ $MIN_HEIGHT_FLOATING: calc(
                 }
             }
         }
-        &__text-highlight {
-            &--small {
-                font-size: 1.2rem;
-            }
-        }
         &__warning {
             background-color: rgba(255, 173, 58, 0.3);
             border-radius: $BORDER_RADIUS;
@@ -955,9 +950,6 @@ $MIN_HEIGHT_FLOATING: calc(
             flex: 1;
         }
         &-title {
-            font-size: inherit;
-            font-weight: inherit;
-
             @include mobile {
                 padding-bottom: 0.8rem;
             }
@@ -1169,7 +1161,6 @@ $MIN_HEIGHT_FLOATING: calc(
         padding: 2.4rem 1.6rem 0;
 
         &-title {
-            color: var(--brand-red-coral);
             height: 20px;
             margin-bottom: 0.8rem;
         }

@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { localize } from '@deriv/translations';
 import { website_name } from '@deriv/shared';
+import { Text } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import CurrencySelector from './currency-selector.jsx';
 import { generateValidationFunction } from './form-validations';
@@ -73,14 +74,19 @@ class SetCurrency extends React.Component {
                     </div>
                 )}
                 <div className='set-currency-modal__heading-container'>
-                    <p className='set-currency-modal__heading-container__main-heading'>
+                    <Text
+                        as='p'
+                        size='xs'
+                        lineHeight='x'
+                        className='set-currency-modal__heading-container__main-heading'
+                    >
                         {localize(
                             'You have an account that do not have currency assigned. Please choose a currency to trade with this account.'
                         )}
-                    </p>
-                    <p className='set-currency-modal__heading-container__sub-heading'>
+                    </Text>
+                    <Text as='p' weight='bold' className='set-currency-modal__heading-container__sub-heading'>
                         {localize('Please choose your currency')}
-                    </p>
+                    </Text>
                 </div>
                 <CurrencySelector
                     className='account-wizard__body'

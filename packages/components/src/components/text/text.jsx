@@ -17,7 +17,7 @@ const Text = ({ children, size, color, align, weight, line_height, as, className
         return class_styles;
     };
 
-    ////////// in code jaygozin she - commente mamali
+    // to do list - Mamali comment
     // const [style, setStyle] = React.useState({});
 
     // React.useEffect(() => {

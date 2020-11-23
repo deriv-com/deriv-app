@@ -19,9 +19,10 @@ const RouteWithSubRoutes = route => {
     const validateRoute = pathname => {
         if (pathname === '') return true;
         if (route.path?.includes(':')) {
-            pathname = pathname.substring(0, pathname.lastIndexOf('/') + 1);
-            return pathname === route.path.substring(0, route.path.indexOf(':'));
-        } else return route.path === pathname || !!(route.routes && route.routes.find(r => pathname === r.path));
+            const static_pathname = pathname.substring(0, pathname.lastIndexOf('/') + 1);
+            return static_pathname === route.path.substring(0, route.path.indexOf(':'));
+        }
+        return route.path === pathname || !!(route.routes && route.routes.find(r => pathname === r.path));
     };
 
     const renderFactory = props => {
@@ -46,8 +47,7 @@ const RouteWithSubRoutes = route => {
         } else {
             const default_subroute = route.routes ? route.routes.find(r => r.default) : {};
             const has_default_subroute = !isEmptyObject(default_subroute);
-            let pathname = removeBranchName(location.pathname);
-            if (pathname.charAt(pathname.length - 1) === '/') pathname = pathname.slice(0, pathname.length - 1);
+            const pathname = removeBranchName(location.pathname).replace(/\/$/, '');
             const is_valid_route = validateRoute(pathname);
 
             result = (

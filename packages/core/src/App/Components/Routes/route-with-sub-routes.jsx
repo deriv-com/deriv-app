@@ -20,7 +20,8 @@ const RouteWithSubRoutes = route => {
     const validateRoute = pathname => {
         if (pathname.startsWith('/cashier')) {
             return route.path === pathname || !!(route.routes && route.routes.find(r => pathname === r.path));
-        } else return true;
+        }
+        return true;
     };
 
     const renderFactory = props => {
@@ -45,8 +46,7 @@ const RouteWithSubRoutes = route => {
         } else {
             const default_subroute = route.routes ? route.routes.find(r => r.default) : {};
             const has_default_subroute = !isEmptyObject(default_subroute);
-            let pathname = removeBranchName(location.pathname);
-            if (pathname.charAt(pathname.length - 1) === '/') pathname = pathname.slice(0, pathname.length - 1);
+            const pathname = removeBranchName(location.pathname).replace(/\/$/, '');
             const is_valid_route = validateRoute(pathname);
 
             result = (

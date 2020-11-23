@@ -41,6 +41,7 @@ const FinancialInformation = ({
     <React.Fragment>
         <FormSubHeader
             title={localize('Financial information')}
+            subtitle={localize('(All fields are required)')}
             description={localize("We're legally obliged to ask for your financial information.")}
         />
         <IncomeSource {...shared_props} income_source_enum={income_source_enum} />

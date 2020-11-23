@@ -133,12 +133,8 @@
         height: 100%;
     }
     &__description {
-        text-align: left;
-        font-size: var(--text-size-xxs);
-        line-height: 1.8rem;
         margin: 1.6rem auto;
         width: 45%;
-        color: var(--text-general);
         @include desktop {
             display: flex;
             flex-direction: column;

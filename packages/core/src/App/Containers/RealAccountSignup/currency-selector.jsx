@@ -87,7 +87,7 @@ export const RadioButton = ({ field: { name, value, onChange, onBlur }, id, labe
 };
 
 // Radio group
-export const RadioButtonGroup = ({ label, className, children, is_title_enabled, is_fiat }) => {
+export const RadioButtonGroup = ({ label, className, children, is_title_enabled, is_fiat, item_count }) => {
     return (
         <div className={className}>
             {is_title_enabled && (
@@ -101,6 +101,7 @@ export const RadioButtonGroup = ({ label, className, children, is_title_enabled,
             )}
             <div
                 className={classNames('currency-list__items', {
+                    'currency-list__items__center': item_count < 4,
                     'currency-list__items__is-fiat': is_fiat,
                     'currency-list__items__is-crypto': !is_fiat,
                 })}
@@ -176,6 +177,7 @@ const CurrencySelector = ({
                                                 value={values.currency}
                                                 error={errors.currency}
                                                 touched={touched.currency}
+                                                item_count={reorderCurrencies(fiat).length}
                                             >
                                                 {reorderCurrencies(fiat).map(currency => (
                                                     <Field
@@ -199,6 +201,7 @@ const CurrencySelector = ({
                                                 value={values.currency}
                                                 error={errors.currency}
                                                 touched={touched.currency}
+                                                item_count={reorderCurrencies(crypto, 'crypto').length}
                                             >
                                                 {reorderCurrencies(crypto, 'crypto').map(currency => (
                                                     <Field

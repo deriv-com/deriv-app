@@ -143,7 +143,7 @@ Blockly.Css.CONTENT = [
     'color: var(--text-prominent);',
     'padding: 8px;',
     'font-size: 12px;',
-    'font-family: IBMPlexSans;',
+    'font-family: "IBM Plex Sans";',
     'line-height: 1.5;',
     'letter-spacing: normal;',
     'position: absolute;',

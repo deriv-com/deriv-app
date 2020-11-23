@@ -87,7 +87,7 @@ AppNotificationMessages.propTypes = {
             is_auto_close: PropTypes.bool,
             message: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
             size: PropTypes.oneOf(['small']),
-            type: PropTypes.oneOf(['warning', 'info', 'success', 'danger', 'contract_sold']),
+            type: PropTypes.oneOf(['warning', 'info', 'success', 'danger', 'contract_sold', 'announce']),
         })
     ),
     removeNotificationMessage: PropTypes.func,

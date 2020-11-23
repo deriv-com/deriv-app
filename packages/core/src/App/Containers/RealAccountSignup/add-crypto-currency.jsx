@@ -1,7 +1,7 @@
 import { Field, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { FormSubmitButton } from '@deriv/components';
+import { FormSubmitButton, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { isMobile, reorderCurrencies } from '@deriv/shared';
@@ -96,9 +96,9 @@ class AddCryptoCurrency extends React.Component {
                             </React.Fragment>
                         )}
                         {this.can_add_fiat && (
-                            <p className='currency-selector__deposit-warn'>
+                            <Text as='p' color='prominent' size='xxs' className='currency-selector__deposit-warn'>
                                 <Localize i18n_default_text='You’ll be not able to change currency once you have made a deposit.' />
-                            </p>
+                            </Text>
                         )}
                         {!this.props.should_show_fiat_only &&
                             (this.props.available_crypto_currencies.length !== 0 ? (

@@ -41,8 +41,6 @@
             width: 70%;
             margin: 2.8rem auto 0;
             padding: 10px;
-            @include typeface(--paragraph-center-normal-prominent);
-            font-size: 1.2rem;
             background-color: var(--general-section-1);
             border-radius: $BORDER_RADIUS;
         }

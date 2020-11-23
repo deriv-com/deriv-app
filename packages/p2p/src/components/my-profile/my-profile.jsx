@@ -44,11 +44,11 @@ const MyProfile = observer(() => {
 
     const {
         basic_verification,
-        daily_buy,
+        buy_orders_count,
         daily_buy_limit,
-        daily_sell,
         daily_sell_limit,
         full_verification,
+        sell_orders_count,
         total_orders_count,
     } = my_profile_store.advertiser_info;
 
@@ -131,50 +131,35 @@ const MyProfile = observer(() => {
                     {isMobile() ? (
                         <Table.Cell className='my-profile__stats-cell'>
                             <Text size={isMobile() ? 'xxxs' : 'xs'} color='less-prominent' line_height='m' as='p'>
-                                <Localize
-                                    i18n_default_text='Buy / Sell ({{currency}})'
-                                    values={{ currency: general_store.client.currency }}
-                                />
+                                {localize('Buy / Sell ({{currency}})', {
+                                    currency: general_store.client.currency,
+                                })}
                             </Text>
-                            <Text color='prominent' weight='bold' line_height='m' as='p' size={isMobile() ? 'xs' : 's'}>
-                                {daily_buy || '-'}/{daily_sell || '-'}
+                            <Text color='prominent' weight='bold' line_height='l' as='p'>
+                                {buy_orders_count || '-'}/{sell_orders_count || '-'}
                             </Text>
                         </Table.Cell>
                     ) : (
                         <React.Fragment>
                             <Table.Cell className='my-profile__stats-cell'>
                                 <Text size={isMobile() ? 'xxxs' : 'xs'} color='less-prominent' line_height='m' as='p'>
-                                    <Localize
-                                        i18n_default_text='Buy ({{currency}})'
-                                        values={{ currency: general_store.client.currency }}
-                                    />
+                                    {localize('Buy ({{currency}})', {
+                                        currency: general_store.client.currency,
+                                    })}
                                 </Text>
-                                <Text
-                                    color='prominent'
-                                    weight='bold'
-                                    line_height='m'
-                                    as='p'
-                                    size={isMobile() ? 'xs' : 's'}
-                                >
-                                    {daily_buy || '-'}
+                                <Text color='prominent' weight='bold' line_height='l' as='p'>
+                                    {buy_orders_count || '-'}
                                 </Text>
                             </Table.Cell>
                             <div className='my-profile__stats-cell-separator' />
                             <Table.Cell className='my-profile__stats-cell'>
                                 <Text size={isMobile() ? 'xxxs' : 'xs'} color='less-prominent' line_height='m' as='p'>
-                                    <Localize
-                                        i18n_default_text='Sell ({{currency}})'
-                                        values={{ currency: general_store.client.currency }}
-                                    />
+                                    {localize('Sell ({{currency}})', {
+                                        currency: general_store.client.currency,
+                                    })}
                                 </Text>
-                                <Text
-                                    color='prominent'
-                                    weight='bold'
-                                    line_height='m'
-                                    as='p'
-                                    size={isMobile() ? 'xs' : 's'}
-                                >
-                                    {daily_sell || '-'}
+                                <Text color='prominent' weight='bold' line_height='l' as='p'>
+                                    {sell_orders_count || '-'}
                                 </Text>
                             </Table.Cell>
                         </React.Fragment>

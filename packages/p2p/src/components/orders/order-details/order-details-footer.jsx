@@ -123,11 +123,11 @@ const OrderDetailsFooter = ({ order_information }) => {
                         </Button>
                     </div>
                 </div>
-                <OrderDetailsComplainModal
-                    id={order_information.id}
+                <OrderDetailsConfirmModal
+                    order_information={order_information}
                     is_buy_order_for_user={is_buy_order_for_user}
-                    hideComplainOrderModal={hideComplainOrderModal}
-                    should_show_complain_modal={should_show_complain_modal}
+                    hideConfirmOrderModal={hideConfirmOrderModal}
+                    should_show_confirm_modal={should_show_confirm_modal}
                 />
             </React.Fragment>
         );

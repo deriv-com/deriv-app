@@ -15,6 +15,7 @@ import {
     Modal,
     SelectNative,
     ThemedScrollbars,
+    Text,
 } from '@deriv/components';
 import { FormSubHeader } from '@deriv/account';
 import { isDeepEqual, isDesktop, isMobile } from '@deriv/shared';
@@ -194,13 +195,13 @@ const MT5PersonalDetailsForm = ({
                                 max_autoheight_offset='179px'
                                 is_disabled={isDesktop()}
                             >
-                                <p className='details-form__description'>
+                                <Text as='p' align='center' className='details-form__description'>
                                     <Localize
                                         i18n_default_text={
                                             'Any information you provide is confidential and will be used for verification purposes only.'
                                         }
                                     />
-                                </p>
+                                </Text>
                                 <ThemedScrollbars height={height} is_bypassed={isMobile()}>
                                     <div className='details-form__elements'>
                                         <FormSubHeader title={localize('Details')} />

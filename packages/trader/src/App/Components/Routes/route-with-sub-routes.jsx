@@ -15,6 +15,14 @@ import LoginPrompt from 'App/Components/Elements/login-prompt.jsx';
 const RouteWithSubRoutes = route => {
     const { is_deriv_crypto } = React.useContext(PlatformContext);
 
+    const validateRoute = pathname => {
+        if (route.path?.includes(':')) {
+            // if the route has dynamic part
+            pathname = pathname.substring(0, pathname.lastIndexOf('/') + 1);
+            return pathname === route.path.substring(0, route.path.indexOf(':'));
+        } else return route.path === pathname || !!(route.routes && route.routes.find(r => pathname === r.path));
+    };
+
     const renderFactory = props => {
         let result = null;
         if (route.component === Redirect) {
@@ -37,10 +45,14 @@ const RouteWithSubRoutes = route => {
         } else {
             const default_subroute = route.routes ? route.routes.find(r => r.default) : {};
             const has_default_subroute = !isEmptyObject(default_subroute);
-            const pathname = removeBranchName(location.pathname);
+            let pathname = removeBranchName(location.pathname);
+            if (pathname.charAt(pathname.length - 1) === '/') pathname = pathname.slice(0, pathname.length - 1);
+            const is_valid_route = validateRoute(pathname);
+
             result = (
                 <React.Fragment>
                     {has_default_subroute && pathname === route.path && <Redirect to={default_subroute.path} />}
+                    {!is_valid_route && <Redirect to={'/404'} />}
                     <route.component {...props} routes={route.routes} />
                 </React.Fragment>
             );

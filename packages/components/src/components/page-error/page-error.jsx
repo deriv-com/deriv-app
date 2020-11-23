@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ButtonLink from '../button-link/button-link.jsx';
 import DesktopWrapper from '../desktop-wrapper/desktop-wrapper.jsx';
+import Text from '../text/text.jsx';
 
 const PageError = ({
     buttonOnClick,
@@ -49,25 +50,35 @@ const PageError = ({
                         'dc-page-error__message-wrapper--left': !!image_url,
                     })}
                 >
-                    <span
+                    <Text
+                        color='prominent'
                         className={classNames('dc-page-error__message', {
                             'dc-page-error__message--left': !!image_url,
                         })}
                     >
                         {messages.map((message, index) =>
                             message.has_html ? (
-                                <p
+                                <Text
+                                    as='p'
+                                    size='s'
+                                    lineHeight='x'
                                     key={index}
                                     className='dc-page-error__message-paragraph'
                                     dangerouslySetInnerHTML={{ __html: message.message }}
                                 />
                             ) : (
-                                <p key={index} className='dc-page-error__message-paragraph'>
+                                <Text
+                                    as='p'
+                                    size='s'
+                                    lineHeight='x'
+                                    key={index}
+                                    className='dc-page-error__message-paragraph'
+                                >
                                     {message}
-                                </p>
+                                </Text>
                             )
                         )}
-                    </span>
+                    </Text>
                 </div>
                 <div className='dc-page-error__btn-wrapper'>
                     {Array.isArray(redirect_url) ? (
@@ -80,9 +91,9 @@ const PageError = ({
                                     size='large'
                                     key={index}
                                 >
-                                    <span className='dc-page-error__btn-text dc-btn__text'>
+                                    <Text weight='bold' className='dc-page-error__btn-text dc-btn__text'>
                                         {redirect_label[index] || redirect_label}
-                                    </span>
+                                    </Text>
                                 </ButtonLink>
                             );
                         })
@@ -93,7 +104,9 @@ const PageError = ({
                             onClick={onClickHandler}
                             size='large'
                         >
-                            <span className='dc-page-error__btn-text dc-btn__text'>{redirect_label}</span>
+                            <Text weight='bold' className='dc-page-error__btn-text dc-btn__text'>
+                                {redirect_label}
+                            </Text>
                         </ButtonLink>
                     )}
                 </div>

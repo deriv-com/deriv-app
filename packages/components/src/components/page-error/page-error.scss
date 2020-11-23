@@ -41,8 +41,6 @@
     }
     &__message {
         @include typeface(--title-center-normal-black, none);
-        color: var(--text-prominent);
-        line-height: 1.5;
         max-width: 502px;
         margin: 1.6rem 0 2.4rem;
 

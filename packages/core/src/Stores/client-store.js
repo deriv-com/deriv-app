@@ -921,7 +921,12 @@ export default class ClientStore extends BaseStore {
         this.root_store.ui.removeNotifications();
         this.root_store.ui.removeAllNotificationMessages();
         const client = this.accounts[this.loginid];
-        const { has_missing_required_field } = handleClientNotifications(client, this, this.root_store.ui);
+        const { has_missing_required_field } = handleClientNotifications(
+            client,
+            this,
+            this.root_store.ui,
+            this.root_store.modules.cashier
+        );
         this.setHasMissingRequiredField(has_missing_required_field);
     }
 
@@ -978,10 +983,10 @@ export default class ClientStore extends BaseStore {
         }
 
         /**
-         * Set up reaction for account_settings, account_status
+         * Set up reaction for account_settings, account_status, is_p2p_visible
          */
         reaction(
-            () => [this.account_settings, this.account_status],
+            () => [this.account_settings, this.account_status, this.root_store.modules.cashier.is_p2p_visible],
             () => {
                 client = this.accounts[this.loginid];
                 BinarySocket.wait('landing_company').then(() => {
@@ -991,7 +996,8 @@ export default class ClientStore extends BaseStore {
                         const { has_missing_required_field } = handleClientNotifications(
                             client,
                             this,
-                            this.root_store.ui
+                            this.root_store.ui,
+                            this.root_store.modules.cashier
                         );
                         this.setHasMissingRequiredField(has_missing_required_field);
                     }

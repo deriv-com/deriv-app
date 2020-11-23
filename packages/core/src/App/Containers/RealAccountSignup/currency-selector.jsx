@@ -152,21 +152,21 @@ class CurrencySelector extends React.Component {
     };
 
     render() {
-        const { has_currency, has_real_account, bypass_to_personal } = this.props;
+        const { getCurrentStep, goToNextStep, has_currency, has_real_account, bypass_to_personal } = this.props;
         const { is_deriv_crypto } = this.context;
 
         // In case of form error bypass to update personal data
-        if (bypass_to_personal) this.props.goToNextStep();
+        if (bypass_to_personal) goToNextStep();
 
         return (
             <Formik
                 initialValues={this.props.value}
                 onSubmit={(values, actions) => {
                     this.props.onSubmit(
-                        this.props.getCurrentStep ? this.props.getCurrentStep() - 1 : null,
+                        getCurrentStep ? getCurrentStep() - 1 : null,
                         values,
                         actions.setSubmitting,
-                        this.props.goToNextStep
+                        goToNextStep
                     );
                 }}
                 validate={this.handleValidate}

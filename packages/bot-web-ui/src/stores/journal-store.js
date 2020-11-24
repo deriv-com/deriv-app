@@ -1,7 +1,7 @@
-import { observable, action, computed, reaction } from 'mobx';
+import { observable, action, computed, reaction, when } from 'mobx';
 import { localize } from '@deriv/translations';
 import { formatDate } from '@deriv/shared';
-import { message_types } from '@deriv/bot-skeleton';
+import { log_types, message_types } from '@deriv/bot-skeleton';
 import { config } from '@deriv/bot-skeleton/src/constants/config';
 import { storeSetting, getSetting } from '../utils/settings';
 import { isCustomJournalMessage } from '../utils/journal-notifications';
@@ -11,6 +11,16 @@ export default class JournalStore {
     constructor(root_store) {
         this.root_store = root_store;
         this.disposeReactionsFn = this.registerReactions();
+
+        // Add a "Welcome back!" message when messages were restored.
+        when(
+            () => this.unfiltered_messages,
+            () => {
+                if (this.unfiltered_messages.length > 0) {
+                    this.pushMessage(log_types.WELCOME_BACK, message_types.SUCCESS, 'journal__text--info');
+                }
+            }
+        );
     }
 
     JOURNAL_CACHE = 'journal_cache';
@@ -19,7 +29,7 @@ export default class JournalStore {
     @observable.shallow journal_filters = getSetting('journal_filter') || this.filters.map(filter => filter.id);
     @observable.shallow unfiltered_messages = getStoredItemsByUser(
         this.JOURNAL_CACHE,
-        this.root_store.core.loginid,
+        this.root_store.core.client.loginid,
         []
     );
 
@@ -128,7 +138,13 @@ export default class JournalStore {
             () => this.unfiltered_messages,
             unfiltered_messages => {
                 const stored_journals = getStoredItemsByKey(this.JOURNAL_CACHE, {});
-                stored_journals[client.loginid] = unfiltered_messages.slice(0, 5000);
+
+                stored_journals[client.loginid] = unfiltered_messages.slice(0, 5000).filter(
+                    // Filter out special messages (e.g. "Welcome back!")
+                    unfiltered_message =>
+                        unfiltered_message.message_type !== message_types.SUCCESS &&
+                        unfiltered_message.message !== log_types.WELCOME_BACK
+                );
                 setStoredItemsByKey(this.JOURNAL_CACHE, stored_journals);
             }
         );
@@ -136,8 +152,7 @@ export default class JournalStore {
         // Attempt to load cached journal messages on client loginid change.
         this.disposeJournalMessageListener = reaction(
             () => client.loginid,
-            () =>
-                (this.unfiltered_messages = getStoredItemsByUser(this.JOURNAL_CACHE, this.root_store.core.loginid, []))
+            () => (this.unfiltered_messages = getStoredItemsByUser(this.JOURNAL_CACHE, client.loginid, []))
         );
 
         return () => {

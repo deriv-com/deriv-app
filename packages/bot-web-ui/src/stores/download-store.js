@@ -1,6 +1,6 @@
 import { action } from 'mobx';
 import { localize } from '@deriv/translations';
-import { log_types } from '@deriv/bot-skeleton/src/constants/messages';
+import { log_types } from '@deriv/bot-skeleton';
 
 export default class DownloadStore {
     constructor(root_store) {
@@ -27,6 +27,9 @@ export default class DownloadStore {
             }
             case log_types.LOST: {
                 return localize('Loss amount: {{profit}}', { profit });
+            }
+            case log_types.WELCOME_BACK: {
+                return localize('Welcome back! Your messages have been restored.');
             }
             default:
                 return null;

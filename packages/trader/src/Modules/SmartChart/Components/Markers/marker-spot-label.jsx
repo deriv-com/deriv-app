@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Icon } from '@deriv/components';
+import { Icon, Text } from '@deriv/components';
 import { addComma, toMoment } from '@deriv/shared';
 
 import MarkerSpot from './marker-spot.jsx';
@@ -48,9 +48,9 @@ class MarkerSpotLabel extends React.Component {
                                     width={10}
                                     className='chart-spot-label__time-icon'
                                 />
-                                <p className='chart-spot-label__time'>
+                                <Text as='p' color='prominent' size='xxxs'>
                                     {toMoment(+this.props.spot_epoch).format('HH:mm:ss')}
-                                </p>
+                                </Text>
                             </div>
                             <div
                                 className={classNames('chart-spot-label__value-container', {

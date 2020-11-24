@@ -13,7 +13,7 @@ import {
     SelectNative,
     Text,
 } from '@deriv/components';
-import { getDecimalPlaces, getCurrencyDisplayCode, getCurrencyName, validNumber, website_name } from '@deriv/shared';
+import { getDecimalPlaces, getCurrencyDisplayCode, getCurrencyName, validNumber } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import FormError from '../Error/form-error.jsx';
@@ -36,7 +36,7 @@ const AccountOption = ({ account, idx }) => {
             )}
 
             <div className='account-transfer__currency-wrapper'>
-                <Text size='xxs' line_height='xs'>
+                <Text size='xxs' line_height='xs' styles={{ color: 'inherit', fontWeight: 'inherit' }}>
                     {account.is_mt ? account.mt_icon : getCurrencyName(account.text)}
                 </Text>
                 <Text size='xxxs' align='left' color='less-prominent'>
@@ -58,13 +58,7 @@ const AccountTransferBullet = ({ children }) => (
     </div>
 );
 
-const AccountTransferNote = ({
-    currency,
-    transfer_fee,
-    minimum_fee,
-    internal_total_transfers,
-    mt5_total_transfers,
-}) => (
+const AccountTransferNote = ({ currency, transfer_fee, minimum_fee }) => (
     <div className='account-transfer__notes'>
         <DesktopWrapper>
             <div className='cashier__header account-transfer__notes-header'>
@@ -73,30 +67,12 @@ const AccountTransferNote = ({
         </DesktopWrapper>
         <AccountTransferBullet>
             <Localize
-                i18n_default_text='Daily transfer limits: up to {{number_deriv}} times for Deriv accounts, and up to {{number_dmt5}} times for DMT5 accounts.'
-                values={{
-                    number_deriv: internal_total_transfers,
-                    number_dmt5: mt5_total_transfers,
-                }}
-            />
-        </AccountTransferBullet>
-        <AccountTransferBullet>
-            <Localize i18n_default_text='Transfer limits may vary depending on the exchange rates.' />
-        </AccountTransferBullet>
-        <AccountTransferBullet>
-            <Localize
                 i18n_default_text='We’ll charge a {{transfer_fee}}% transfer fee, or {{minimum_fee}} {{currency}}, whichever is higher.'
                 values={{
                     transfer_fee,
                     minimum_fee,
                     currency: getCurrencyDisplayCode(currency),
                 }}
-            />
-        </AccountTransferBullet>
-        <AccountTransferBullet>
-            <Localize
-                i18n_default_text='You may transfer between your fiat and cryptocurrency accounts or between your {{website_name}} and DMT5 accounts.'
-                values={{ website_name }}
             />
         </AccountTransferBullet>
         <AccountTransferBullet>
@@ -186,8 +162,6 @@ const AccountTransferForm = ({
     const { daily_transfers } = account_limits;
     const mt5_remaining_transfers = daily_transfers?.mt5?.available;
     const internal_remaining_transfers = daily_transfers?.internal?.available;
-    const mt5_total_transfers = daily_transfers?.mt5?.allowed;
-    const internal_total_transfers = daily_transfers?.internal?.allowed;
 
     const is_mt_transfer = selected_to.is_mt || selected_from.is_mt;
     const remaining_transfers = is_mt_transfer ? mt5_remaining_transfers : internal_remaining_transfers;
@@ -206,8 +180,6 @@ const AccountTransferForm = ({
         if (Object.keys(from_accounts).length && typeof setSideNotes === 'function') {
             setSideNotes([
                 <AccountTransferNote
-                    mt5_total_transfers={mt5_total_transfers}
-                    internal_total_transfers={internal_total_transfers}
                     transfer_fee={transfer_fee}
                     currency={selected_from.currency}
                     minimum_fee={minimum_fee}
@@ -216,7 +188,7 @@ const AccountTransferForm = ({
             ]);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [transfer_fee, selected_from, minimum_fee, mt5_total_transfers, internal_total_transfers, setSideNotes]);
+    }, [transfer_fee, selected_from, minimum_fee, setSideNotes]);
     return (
         <div className='cashier__wrapper account-transfer__wrapper'>
             <React.Fragment>
@@ -298,7 +270,7 @@ const AccountTransferForm = ({
                                         <DesktopWrapper>
                                             <Dropdown
                                                 id='transfer_to'
-                                                className='cashier__drop-down account-transfer__drop-down'
+                                                className='cashier__drop-down account-transfer__drop-down account-transfer__drop-down--to-dropdown'
                                                 classNameDisplay='cashier__drop-down-display'
                                                 classNameDisplaySpan='cashier__drop-down-display-span'
                                                 classNameItems='cashier__drop-down-items'
@@ -401,8 +373,6 @@ const AccountTransferForm = ({
                                     </div>
                                     <MobileWrapper>
                                         <AccountTransferNote
-                                            mt5_total_transfers={mt5_total_transfers}
-                                            internal_total_transfers={internal_total_transfers}
                                             transfer_fee={transfer_fee}
                                             currency={selected_from.currency}
                                             minimum_fee={minimum_fee}

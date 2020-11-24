@@ -131,7 +131,11 @@
         }
         &-name {
             margin-left: -1rem;
-            max-width: calc(100% - 20rem);
+            max-width: calc(100% - 25rem);
+
+            @include mobile {
+                max-width: calc(100% - 6rem);
+            }
         }
     }
     &__form {

@@ -15,7 +15,7 @@
     position: relative;
     display: flex;
     border-radius: $BORDER_RADIUS;
-    max-width: 400px;
+    max-width: 348px;
     padding: 30px 16px;
     color: var(--text-prominent);
     background-color: var(--general-main-2);
@@ -39,11 +39,12 @@
         margin-top: 0.8rem;
         flex-grow: 1;
         height: 24px;
-        max-width: 150px;
+        max-width: fit-content;
         align-self: flex-end;
 
         .dc-btn__text {
             font-size: 1.2rem;
+            font-weight: normal;
         }
     }
     &__text-container {
@@ -113,7 +114,7 @@
         margin-bottom: 16px;
     }
     @include mobile {
-        max-width: unset;
+        max-width: 348px;
 
         &--small {
             max-width: unset;

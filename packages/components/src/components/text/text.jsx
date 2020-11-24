@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import { isEmptyObject } from '@deriv/shared';
 
 const Text = ({ children, size, color, align, weight, line_height, as, className, styles, ...props }) => {
-    const setStyle = () => {
+    const [style, setStyle] = React.useState({});
+    React.useEffect(() => {
         const class_styles = {
             '--text-size': `var(--text-size-${size || 's'})`,
             '--text-color': `var(--text-${color || 'general'})`,
@@ -12,26 +13,10 @@ const Text = ({ children, size, color, align, weight, line_height, as, className
             '--text-weight': `var(--text-weight-${weight || 'normal'})`,
         };
         if (!isEmptyObject(styles)) {
-            return { ...class_styles, ...styles };
+            setStyle(...class_styles, ...styles);
         }
-        return class_styles;
-    };
-
-    // to do list - Mamali comment
-    // const [style, setStyle] = React.useState({});
-
-    // React.useEffect(() => {
-    //     const class_styles = {
-    //         '--text-size': `var(--text-size-${size || 's'})`,
-    //         '--text-color': `var(--text-${color || 'general'})`,
-    //         '--text-lh': `var(--text-lh-${line_height || 'm'})`,
-    //         '--text-weight': `var(--text-weight-${weight || 'normal'})`,
-    //     };
-    //     if (!isEmptyObject(styles)) {
-    //         setStyle(...class_styles, ...styles);
-    //     }
-    //     setStyle(class_styles);
-    // }, []);
+        setStyle(class_styles);
+    }, [size, color, align, weight, line_height]);
 
     const text_align = align || 'start';
     const class_names = classNames(
@@ -43,11 +28,11 @@ const Text = ({ children, size, color, align, weight, line_height, as, className
     );
     return (
         (as === 'p' && (
-            <p {...props} className={class_names} style={setStyle()}>
+            <p {...props} className={class_names} style={style}>
                 {children}
             </p>
         )) || (
-            <span {...props} className={class_names} style={setStyle()}>
+            <span {...props} className={class_names} style={style}>
                 {children}
             </span>
         )

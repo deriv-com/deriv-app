@@ -62,7 +62,7 @@ export const getDurationUnitText = obj_duration => {
 
 export const getDurationPeriod = contract_info =>
     getDiffDuration(
-        epochToMoment(contract_info.purchase_time || contract_info.date_start),
+        epochToMoment(contract_info.date_start || contract_info.purchase_time),
         epochToMoment(contract_info.date_expiry)
     );
 

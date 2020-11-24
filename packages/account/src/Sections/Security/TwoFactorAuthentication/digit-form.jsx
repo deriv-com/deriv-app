@@ -45,7 +45,7 @@ const DigitForm = ({ is_enabled, setEnabled }) => {
                 setFieldError('digit_code', message);
             }
         } else {
-            const is_enabled_response = getPropertyValue(enable_response, ['account_security', 'totp', 'is_enabled']);
+            const is_enabled_response = !!getPropertyValue(enable_response, ['account_security', 'totp', 'is_enabled']);
             setEnabled(is_enabled_response);
             setSuccess(true);
 

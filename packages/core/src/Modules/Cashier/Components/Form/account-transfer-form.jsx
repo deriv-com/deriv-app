@@ -36,17 +36,12 @@ const AccountOption = ({ account, idx }) => {
             )}
 
             <div className='account-transfer__currency-wrapper'>
-                <Text size='xxs' line_height='x' styles={{ color: 'inherit', fontWeight: 'inherit' }}>
+                <Text size='xxs' line_height='s' styles={{ color: 'inherit', fontWeight: 'inherit' }}>
                     {account.is_mt ? account.mt_icon : getCurrencyName(account.text)}
                 </Text>
                 <Text size='xxxs' align='left' color='less-prominent'>
                     {account.value}
                 </Text>
-
-                {/* <span className='account-transfer__currency'>
-                    {account.is_mt ? account.mt_icon : getCurrencyName(account.text)}
-                </span>
-                <span className='account-transfer__loginid'>{account.value}</span> */}
             </div>
 
             <span className='account-transfer__balance'>
@@ -275,7 +270,7 @@ const AccountTransferForm = ({
                                         <DesktopWrapper>
                                             <Dropdown
                                                 id='transfer_to'
-                                                className='cashier__drop-down account-transfer__drop-down'
+                                                className='cashier__drop-down account-transfer__drop-down account-transfer__drop-down--to-dropdown'
                                                 classNameDisplay='cashier__drop-down-display'
                                                 classNameDisplaySpan='cashier__drop-down-display-span'
                                                 classNameItems='cashier__drop-down-items'

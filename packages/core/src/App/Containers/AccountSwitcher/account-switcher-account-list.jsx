@@ -17,7 +17,7 @@ const AccountList = ({
     is_virtual,
     loginid,
     onClickAccount,
-    onClickResetBalance,
+    onClickResetVirtualBalance,
     selected_loginid,
 }) => {
     const market_type = React.useMemo(() => {
@@ -66,7 +66,7 @@ const AccountList = ({
                             is_disabled={is_disabled}
                             onClick={e => {
                                 e.stopPropagation();
-                                onClickResetBalance();
+                                onClickResetVirtualBalance();
                             }}
                             className='acc-switcher__reset-account-btn'
                             secondary

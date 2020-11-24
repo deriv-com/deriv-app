@@ -16,7 +16,7 @@
     position: relative;
     display: flex;
     border-radius: $BORDER_RADIUS;
-    max-width: 400px;
+    max-width: 40rem;
     padding: 1.6rem;
     color: var(--text-prominent);
     background-color: var(--general-main-2);
@@ -99,8 +99,8 @@
             height: 1.6rem;
 
             &--is-background {
-                width: 210px;
-                height: 210px;
+                width: 21rem;
+                height: 21rem;
             }
         }
         &-background {

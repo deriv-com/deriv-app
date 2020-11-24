@@ -343,7 +343,7 @@ class AccountSwitcher extends React.Component {
                                     onClickAccount={
                                         account.is_disabled ? undefined : this.doSwitch.bind(this, account.loginid)
                                     }
-                                    onClickResetBalance={this.resetBalance}
+                                    onClickResetVirtualBalance={this.resetBalance}
                                     selected_loginid={this.props.account_loginid}
                                 />
                             ))}

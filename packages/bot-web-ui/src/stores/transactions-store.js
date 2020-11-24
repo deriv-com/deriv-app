@@ -1,42 +1,31 @@
-import { action, observable, reaction } from 'mobx';
-import LZString from 'lz-string';
+import { action, computed, observable, reaction, when } from 'mobx';
 import { formatDate, isEnded } from '@deriv/shared';
 import { transaction_elements } from '../constants/transactions';
+import { getStoredItemsByKey, getStoredItemsByUser, setStoredItemsByKey } from '../utils/session-storage';
 
 export default class TransactionsStore {
     constructor(root_store) {
         this.root_store = root_store;
-        this.transaction_storage_key = 'transaction_cache';
+        this.disposeReactionsFn = this.registerReactions();
 
-        this.disposeTransactionsListener = reaction(
-            () => this.elements,
-            elements => {
-                const { client } = this.root_store.core;
-                const stored_transactions = this.getTransactionSessionStorage();
-
-                const new_elements = { transaction_elements: elements.slice(0, 5000) };
-                stored_transactions[client.loginid] = new_elements;
-
-                sessionStorage.setItem(
-                    this.transaction_storage_key,
-                    LZString.compress(JSON.stringify(stored_transactions))
-                );
-            }
+        // User could've left the page mid-contract. On initial load, try
+        // to recover any pending contracts so we can reflect accurate stats
+        // and transactions.
+        this.disposeRecoverContracts = when(
+            () => this.elements.length,
+            () => this.recoverPendingContracts()
         );
     }
 
-    @observable elements =
-        this.getTransactionSessionStorage()?.[this.root_store.core.client.loginid]?.transaction_elements ?? [];
+    TRANSACTION_CACHE = 'transaction_cache';
 
+    @observable elements = getStoredItemsByUser(this.TRANSACTION_CACHE, this.root_store.core.client.loginid, []);
     @observable active_transaction_id = null;
 
-    getTransactionSessionStorage = () => {
-        try {
-            return JSON.parse(LZString.decompress(sessionStorage.getItem(this.transaction_storage_key))) ?? {};
-        } catch (e) {
-            return {};
-        }
-    };
+    @computed
+    get transactions() {
+        return this.elements.filter(element => element.type === transaction_elements.CONTRACT);
+    }
 
     @action.bound
     onBotContractEvent(data) {
@@ -50,10 +39,11 @@ export default class TransactionsStore {
         const contract = {
             barrier: data.barrier,
             buy_price: data.buy_price,
+            contract_id: data.contract_id,
             contract_type: data.contract_type,
             currency: data.currency,
-            display_name: data.display_name,
             date_start: formatDate(data.date_start, 'YYYY-M-D HH:mm:ss [GMT]'),
+            display_name: data.display_name,
             entry_tick: data.entry_tick_display_value,
             entry_tick_time: data.entry_tick_time && formatDate(data.entry_tick_time, 'YYYY-M-D HH:mm:ss [GMT]'),
             exit_tick: data.exit_tick_display_value,
@@ -61,6 +51,7 @@ export default class TransactionsStore {
             high_barrier: data.high_barrier,
             is_completed,
             low_barrier: data.low_barrier,
+            payout: data.payout,
             profit: is_completed && data.profit,
             run_id,
             shortcode: data.shortcode,
@@ -139,13 +130,52 @@ export default class TransactionsStore {
 
     @action.bound
     clear() {
-        this.elements = this.elements.slice(0, 0); // force array update
+        this.elements = this.elements.slice(0, 0);
     }
 
-    @action.bound
-    disposeListeners() {
-        if (typeof this.disposeTransactionsListener === 'function') {
-            this.disposeTransactionsListener();
-        }
+    registerReactions() {
+        const { client } = this.root_store.core;
+
+        // Write transactions to session storage on each change in unfiltered messages.
+        this.disposeTransactionElementsListener = reaction(
+            () => this.elements,
+            elements => {
+                const stored_transactions = getStoredItemsByKey(this.TRANSACTION_CACHE, {});
+                stored_transactions[client.loginid] = elements.slice(0, 5000);
+                setStoredItemsByKey(this.TRANSACTION_CACHE, stored_transactions);
+            }
+        );
+
+        // Attempt to load cached transactions on client loginid change.
+        this.disposeClientLoginIdListener = reaction(
+            () => client.loginid,
+            () =>
+                (this.unfiltered_messages = getStoredItemsByUser(
+                    this.TRANSACTION_CACHE,
+                    this.root_store.core.client.loginid,
+                    []
+                ))
+        );
+
+        return () => {
+            if (this.disposeTransactionElementsListener === 'function') {
+                this.disposeTransactionElementsListener();
+            }
+
+            if (this.disposeClientLoginIdListener === 'function') {
+                this.disposeClientLoginIdListener();
+            }
+        };
+    }
+
+    recoverPendingContracts() {
+        this.transactions.forEach(({ data: trx }) => {
+            if (trx.is_completed) return;
+            this.root_store.ws.subscribeProposalOpenContract(trx.contract_id, response => {
+                if (!response.error) {
+                    this.onBotContractEvent(response.proposal_open_contract);
+                }
+            });
+        });
     }
 }

@@ -1,5 +1,4 @@
 import { observable, action, reaction, computed, runInAction } from 'mobx';
-import LZString from 'lz-string';
 import { localize } from '@deriv/translations';
 import { error_types, unrecoverable_errors, observer, message_types } from '@deriv/bot-skeleton';
 import { contract_stages } from '../constants/contract-stage';
@@ -10,68 +9,8 @@ export default class RunPanelStore {
     constructor(root_store) {
         this.root_store = root_store;
         this.dbot = this.root_store.dbot;
-        this.registerCoreReactions();
-
-        this.statistics_storage_key = 'statistics_cache';
-        this.empty_statistics = Object.freeze({
-            lost_contracts: 0,
-            number_of_runs: 0,
-            total_profit: 0,
-            total_payout: 0,
-            total_stake: 0,
-            won_contracts: 0,
-        });
-
-        this.disposeStatisticsListener = reaction(
-            () => this.statistics,
-            statistics => {
-                const { client } = this.root_store.core;
-                const stored_statistics = this.getSessionStorage(this.statistics_storage_key);
-
-                const new_statistics = { statistics };
-                stored_statistics[client.loginid] = new_statistics;
-
-                sessionStorage.setItem(
-                    this.statistics_storage_key,
-                    LZString.compress(JSON.stringify(stored_statistics))
-                );
-            }
-        );
-
-        this.disposeSwitchAccountListener = reaction(
-            () => this.root_store.core.client.loginid,
-            () => {
-                const { core, transactions, journal, summary_card } = this.root_store;
-                const { client } = core;
-
-                if (client.is_logged_in) {
-                    this.statistics =
-                        this.getAccountStatisticsInfo(this.statistics_storage_key, 'Statistics')?.statistics ??
-                        this.empty_statistics;
-
-                    journal.unfiltered_messages =
-                        this.getAccountStatisticsInfo('journal_cache', 'Journals')?.journal_messages ?? [];
-
-                    transactions.elements =
-                        this.getAccountStatisticsInfo('transaction_cache', 'Transactions')?.transaction_elements ?? [];
-                } else {
-                    this.statistics = this.empty_statistics;
-                    journal.unfiltered_messages = [];
-                    transactions.elements = [];
-                }
-
-                this.is_running = false;
-                this.has_open_contract = false;
-                summary_card.clear();
-                this.setContractStage(contract_stages.NOT_RUNNING);
-            }
-        );
+        this.disposeReactionsFn = this.registerReactions();
     }
-
-    run_id = '';
-
-    @observable statistics =
-        this.getAccountStatisticsInfo(this.statistics_storage_key, 'statistics')?.statistics ?? this.empty_statistics;
 
     @observable active_index = 0;
     @observable contract_stage = contract_stages.NOT_RUNNING;
@@ -83,29 +22,48 @@ export default class RunPanelStore {
     @observable is_dialog_open = false;
     @observable is_sell_requested = false;
 
+    run_id = '';
+
     // when error happens, if it is unrecoverable_errors we reset run-panel
     // we activate run-button and clear trade info and set the ContractStage to NOT_RUNNING
     // otherwise we keep opening new contracts and set the ContractStage to PURCHASE_SENT
     error_type = undefined;
 
-    getSessionStorage = key => {
-        try {
-            return JSON.parse(LZString.decompress(sessionStorage.getItem(key))) ?? {};
-        } catch (e) {
-            return {};
-        }
-    };
+    @computed
+    get statistics() {
+        let total_runs = 0;
+        const { transactions } = this.root_store.transactions;
+        const statistics = transactions.reduce(
+            (stats, { data: trx }) => {
+                if (trx.is_completed) {
+                    if (trx.profit > 0) {
+                        stats.won_contracts += 1;
+                        stats.total_payout += trx.payout;
+                    } else {
+                        stats.lost_contracts += 1;
+                    }
 
-    getAccountStatisticsInfo = (key, type) => {
-        const { client } = this.root_store.core;
+                    stats.total_profit += trx.profit;
+                    stats.total_stake += trx.buy_price;
+                    total_runs += 1;
+                }
 
-        if (type === 'Statistics') {
-            return this.getSessionStorage(key)?.[client.loginid] ?? this.empty_statistics;
-        }
-        return this.getSessionStorage(key)?.[client.loginid] ?? [];
-    };
+                return stats;
+            },
+            {
+                lost_contracts: 0,
+                number_of_runs: 0,
+                total_profit: 0,
+                total_payout: 0,
+                total_stake: 0,
+                won_contracts: 0,
+            }
+        );
 
-    // #region button clicks
+        statistics.number_of_runs = total_runs;
+        return statistics;
+    }
+
     @computed
     get is_stop_button_visible() {
         return this.is_running || this.has_open_contract;
@@ -141,7 +99,7 @@ export default class RunPanelStore {
         this.registerBotListeners();
 
         if (!this.dbot.shouldRunBot()) {
-            RunPanelStore.unregisterBotListeners();
+            this.unregisterBotListeners();
             return;
         }
 
@@ -151,7 +109,7 @@ export default class RunPanelStore {
             )
         );
         runInAction(() => {
-            this.is_running = true;
+            this.setIsRunning(true);
             ui.setPromptHandler(true, route_prompt_dialog.shouldNavigateAfterPrompt);
             this.toggleDrawer(true);
             this.run_id = `run-${Date.now()}`;
@@ -172,16 +130,16 @@ export default class RunPanelStore {
             // when user click stop button when there is a error but bot is retrying
             this.setContractStage(contract_stages.NOT_RUNNING);
             ui.setAccountSwitcherDisabledMessage(false);
-            this.is_running = false;
+            this.setIsRunning(false);
         } else if (this.has_open_contract) {
             // when user click stop button when bot is running
             this.setContractStage(contract_stages.IS_STOPPING);
         } else {
             // when user click stop button before bot start running
             this.setContractStage(contract_stages.NOT_RUNNING);
-            RunPanelStore.unregisterBotListeners();
+            this.unregisterBotListeners();
             ui.setAccountSwitcherDisabledMessage(false);
-            this.is_running = false;
+            this.setIsRunning(false);
         }
 
         if (this.error_type) {
@@ -198,22 +156,20 @@ export default class RunPanelStore {
     clearStat() {
         const { summary_card, journal, transactions } = this.root_store;
 
-        this.is_running = false;
-        this.has_open_contract = false;
+        this.setIsRunning(false);
+        this.setHasOpenContract(false);
         this.clear();
         journal.clear();
         summary_card.clear();
         transactions.clear();
         this.setContractStage(contract_stages.NOT_RUNNING);
     }
-    // #endregion
 
     @action.bound
     toggleStatisticsInfoModal() {
         this.is_statistics_info_modal_open = !this.is_statistics_info_modal_open;
     }
 
-    // #region Drawer
     @action.bound
     toggleDrawer(is_open) {
         this.is_drawer_open = is_open;
@@ -227,9 +183,7 @@ export default class RunPanelStore {
             this.root_store.transactions.setActiveTransactionId(null);
         }
     }
-    // #endregion
 
-    // #region Dialog
     @action.bound
     onCloseDialog() {
         this.is_dialog_open = false;
@@ -283,9 +237,7 @@ export default class RunPanelStore {
         };
         this.is_dialog_open = true;
     }
-    // #endregion
 
-    // #region Bot listenets
     registerBotListeners() {
         const { summary_card, transactions } = this.root_store;
 
@@ -301,15 +253,52 @@ export default class RunPanelStore {
         observer.register('Error', this.onError);
     }
 
+    registerReactions() {
+        const { client, common, ui } = this.root_store.core;
+
+        const registerIsSocketOpenedListener = () => {
+            if (common.is_socket_opened) {
+                this.disposeIsSocketOpenedListener = reaction(
+                    () => client.loginid,
+                    loginid => {
+                        if (loginid && this.is_running) {
+                            ui.addNotificationMessage(switch_account_notification);
+                        }
+                        this.dbot.terminateBot();
+                        this.unregisterBotListeners();
+                    }
+                );
+            } else if (typeof this.disposeLogoutListener === 'function') {
+                this.disposeLogoutListener();
+            }
+        };
+
+        registerIsSocketOpenedListener();
+
+        this.disposeLogoutListener = reaction(
+            () => common.is_socket_opened,
+            () => registerIsSocketOpenedListener()
+        );
+
+        return () => {
+            if (typeof this.disposeIsSocketOpenedListener === 'function') {
+                this.disposeIsSocketOpenedListener();
+            }
+
+            if (typeof this.disposeLogoutListener === 'function') {
+                this.disposeLogoutListener();
+            }
+        };
+    }
+
     @action.bound
     onBotRunningEvent() {
-        this.has_open_contract = true;
+        this.setHasOpenContract(true);
 
         // prevent new version update
         const ignore_new_version = new Event('IgnorePWAUpdate');
         document.dispatchEvent(ignore_new_version);
         const { self_exclusion } = this.root_store;
-        this.has_open_contract = true;
 
         if (self_exclusion.should_bot_run && self_exclusion.run_limit !== -1) {
             self_exclusion.run_limit -= 1;
@@ -330,10 +319,10 @@ export default class RunPanelStore {
         const { ui } = this.root_store.core;
         const indicateBotStopped = () => {
             this.error_type = undefined;
-            this.is_running = false;
+            this.setIsRunning(false);
             this.setContractStage(contract_stages.NOT_RUNNING);
             ui.setAccountSwitcherDisabledMessage(false);
-            RunPanelStore.unregisterBotListeners();
+            this.unregisterBotListeners();
             self_exclusion.resetSelfExclusion();
         };
         if (this.error_type === error_types.RECOVERABLE_ERRORS) {
@@ -356,15 +345,15 @@ export default class RunPanelStore {
             // Bot should indicate the contract is closed in below cases:
             // - When bot was running and an error happens
             this.error_type = undefined;
-            this.is_running = false;
+            this.setIsRunning(false);
             this.is_sell_requested = false;
             this.setContractStage(contract_stages.CONTRACT_CLOSED);
             ui.setAccountSwitcherDisabledMessage(false);
-            RunPanelStore.unregisterBotListeners();
+            this.unregisterBotListeners();
             self_exclusion.resetSelfExclusion();
         }
 
-        this.has_open_contract = false;
+        this.setHasOpenContract(false);
 
         // listen for new version update
         const listen_new_version = new Event('ListenPWAUpdate');
@@ -392,8 +381,8 @@ export default class RunPanelStore {
                 this.root_store.transactions.setActiveTransactionId(null);
 
                 const { buy } = contract_status;
-                this.statistics.total_stake += buy.buy_price;
                 const { is_virtual } = this.root_store.core.client;
+
                 if (!is_virtual) {
                     this.root_store.core.gtm.pushDataLayer({ event: 'dbot_purchase', buy_price: buy.buy_price });
                 }
@@ -403,33 +392,6 @@ export default class RunPanelStore {
             case 'contract.sold': {
                 this.is_sell_requested = false;
                 this.setContractStage(contract_stages.CONTRACT_CLOSED);
-
-                const { contract } = contract_status;
-                this.statistics.total_profit += contract.profit;
-                this.statistics.number_of_runs += 1;
-
-                switch (contract.status) {
-                    case 'won': {
-                        this.statistics.won_contracts += 1;
-                        this.statistics.total_payout += contract.payout;
-                        break;
-                    }
-                    case 'lost': {
-                        this.statistics.lost_contracts += 1;
-                        break;
-                    }
-                    case 'sold': {
-                        if (contract.profit > 0) {
-                            this.statistics.won_contracts += 1;
-                            this.statistics.total_payout += contract.profit;
-                        } else {
-                            this.statistics.lost_contracts += 1;
-                        }
-                        break;
-                    }
-                    default:
-                        break;
-                }
                 break;
             }
             default: {
@@ -437,15 +399,6 @@ export default class RunPanelStore {
                 break;
             }
         }
-
-        this.statistics = {
-            lost_contracts: this.statistics.lost_contracts,
-            number_of_runs: this.statistics.number_of_runs,
-            total_profit: this.statistics.total_profit,
-            total_payout: this.statistics.total_payout,
-            total_stake: this.statistics.total_stake,
-            won_contracts: this.statistics.won_contracts,
-        };
     }
 
     @action.bound
@@ -453,11 +406,9 @@ export default class RunPanelStore {
         this.dbot.interpreter.bot.getBotInterface().sellAtMarket();
     }
 
-    @action.bound
-    clear() {
-        this.statistics = this.empty_statistics;
+    clear = () => {
         observer.emit('statistics.clear');
-    }
+    };
 
     @action.bound
     onBotContractEvent(data) {
@@ -503,51 +454,28 @@ export default class RunPanelStore {
         ui.removeNotificationByKey({ key: 'bot_error' });
     }
 
-    static unregisterBotListeners() {
+    unregisterBotListeners = () => {
         observer.unregisterAll('bot.running');
         observer.unregisterAll('bot.stop');
         observer.unregisterAll('bot.trade_again');
         observer.unregisterAll('contract.status');
         observer.unregisterAll('bot.contract');
         observer.unregisterAll('Error');
-    }
-
-    // #endregion
+    };
 
     @action.bound
-    registerCoreReactions() {
-        const { client, common, ui } = this.root_store.core;
-
-        const register = () => {
-            if (common.is_socket_opened) {
-                this.disposeIsSocketOpenedListener = reaction(
-                    () => client.loginid,
-                    loginid => {
-                        if (loginid && this.is_running) {
-                            ui.addNotificationMessage(switch_account_notification);
-                        }
-                        this.dbot.terminateBot();
-                        RunPanelStore.unregisterBotListeners();
-                    }
-                );
-            } else if (typeof this.disposeLogoutListener === 'function') {
-                this.disposeLogoutListener();
-            }
-        };
-
-        register();
-
-        this.disposeLogoutListener = reaction(
-            () => common.is_socket_opened,
-            () => {
-                register();
-            }
-        );
+    setContractStage(contract_stage) {
+        this.contract_stage = contract_stage;
     }
 
     @action.bound
-    setContractStage(value) {
-        this.contract_stage = value;
+    setHasOpenContract(has_open_contract) {
+        this.has_open_contract = has_open_contract;
+    }
+
+    @action.bound
+    setIsRunning(is_running) {
+        this.is_running = is_running;
     }
 
     @action.bound
@@ -563,29 +491,15 @@ export default class RunPanelStore {
     onUnmount() {
         const { journal, transactions } = this.root_store;
 
-        RunPanelStore.unregisterBotListeners();
-        this.disposeListeners();
-        journal.disposeListeners();
-        transactions.disposeListeners();
+        this.unregisterBotListeners();
+        this.disposeReactionsFn();
+        journal.disposeReactionsFn();
+        transactions.disposeReactionsFn();
 
         observer.unregisterAll('ui.log.error');
         observer.unregisterAll('ui.log.notify');
         observer.unregisterAll('ui.log.success');
         observer.unregisterAll('client.invalid_token');
-    }
-
-    disposeListeners() {
-        if (typeof this.disposeIsSocketOpenedListener === 'function') {
-            this.disposeIsSocketOpenedListener();
-        }
-
-        if (typeof this.disposeStatisticsListener === 'function') {
-            this.disposeStatisticsListener();
-        }
-
-        if (typeof this.disposeSwitchAccountListener === 'function') {
-            this.disposeSwitchAccountListener();
-        }
     }
 
     @action.bound

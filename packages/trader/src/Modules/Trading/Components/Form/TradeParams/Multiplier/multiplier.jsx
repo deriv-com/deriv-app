@@ -1,7 +1,7 @@
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Dropdown, Money, Popover } from '@deriv/components';
+import { Dropdown, Money, Popover, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { connect } from 'Stores/connect';
@@ -43,12 +43,12 @@ const Multiplier = ({ amount, commission, currency, multiplier, multiplier_range
                 }
                 relative_render
             >
-                <p className='trade-container__fieldset-tooltip-text'>
+                <Text as='p' align='right' size='xxs' className='trade-container__fieldset-tooltip-text'>
                     <Localize
                         i18n_default_text='Commission: <0/>'
                         components={[<Money key={0} amount={commission} currency={currency} show_currency />]}
                     />
-                </p>
+                </Text>
             </Popover>
         </Fieldset>
     );

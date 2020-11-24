@@ -168,12 +168,9 @@
         margin: 0.8rem 0;
 
         &--sub {
-            font-size: 1.4rem;
+            margin-bottom: 0.8rem;
             margin-top: 3rem;
         }
-    }
-    &__description {
-        @include typeface(--paragraph-center-normal-black);
     }
     &__resend-button {
         display: block;

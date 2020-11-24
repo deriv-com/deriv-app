@@ -15,6 +15,7 @@ import {
     PageOverlay,
     ThemedScrollbars,
     UILoader,
+    Text,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { isMobile, validLength, validPassword, getErrorMessages } from '@deriv/shared';
@@ -67,9 +68,9 @@ const MT5PasswordReset = ({ sendVerifyEmail, password_type, account_type, accoun
             <h2 className='mt5-verification-email-sent__title'>
                 <Localize i18n_default_text="We've sent you an email" />
             </h2>
-            <p className='mt5-verification-email-sent__description'>
+            <Text as='p' size='xs' align='center'>
                 <Localize i18n_default_text='Please click on the link in the email to reset your password.' />
-            </p>
+            </Text>
             {!is_resend_verification_requested && (
                 <Button className='mt5-verification-email-sent__resend-button' primary onClick={onClickVerification}>
                     <Localize i18n_default_text="Didn't receive the email?" />
@@ -77,12 +78,18 @@ const MT5PasswordReset = ({ sendVerifyEmail, password_type, account_type, accoun
             )}
             {is_resend_verification_requested && (
                 <>
-                    <p className='mt5-verification-email-sent__title mt5-verification-email-sent__title--sub'>
+                    <Text
+                        as='p'
+                        size='xs'
+                        align='center'
+                        weight='bold'
+                        className='mt5-verification-email-sent__title--sub'
+                    >
                         <Localize i18n_default_text={"Didn't receive the email?"} />
-                    </p>
-                    <p className='mt5-verification-email-sent__description'>
+                    </Text>
+                    <Text as='p' size='xs' align='center'>
                         <Localize i18n_default_text="Check your spam or junk folder. If it's not there, try resending the email." />
-                    </p>
+                    </Text>
                     <Button
                         className='mt5-verification-email-sent__resend-button'
                         large
@@ -118,13 +125,13 @@ const MT5PasswordSuccessMessage = ({ toggleModal, is_investor }) => (
         <h1 className='mt5-password-manager__success-header'>
             <Localize i18n_default_text='Password changed' />
         </h1>
-        <p className='mt5-password-manager__success-paragraph'>
+        <Text as='p' size='xxs' align='center'>
             {is_investor ? (
                 <Localize i18n_default_text='Your investor password has been changed.' />
             ) : (
                 <Localize i18n_default_text='Your password has been changed.' />
             )}
-        </p>
+        </Text>
         <Button onClick={toggleModal} className='mt5-password-manager__success-btn' primary large>
             <p className='dc-btn__text'>{localize('OK')}</p>
         </Button>
@@ -243,7 +250,14 @@ class MT5PasswordManagerModal extends React.Component {
                     {({ isSubmitting, errors, setFieldTouched, values, touched }) => (
                         <Form className='mt5-password-manager__main-form' noValidate>
                             {this.state.error_message_main && (
-                                <p className='mt5-password-manager--error-message'>{this.state.error_message_main}</p>
+                                <Text
+                                    as='p'
+                                    color='loss-danger'
+                                    size='xs'
+                                    className='mt5-password-manager--error-message'
+                                >
+                                    {this.state.error_message_main}
+                                </Text>
                             )}
                             <Field name='old_password'>
                                 {({ field }) => (
@@ -330,14 +344,16 @@ class MT5PasswordManagerModal extends React.Component {
 
             return (
                 <div className='mt5-password-manager__investor-wrapper'>
-                    <p className='mt5-password-manager--paragraph'>
+                    <Text as='p' size='xs' className='mt5-password-manager--paragraph'>
                         <Localize i18n_default_text='Use this password to grant viewing access to another user. While they may view your trading account, they will not be able to trade or take any other actions.' />
-                    </p>
-                    <p className='mt5-password-manager--paragraph'>
+                    </Text>
+                    <Text as='p' size='xs' className='mt5-password-manager--paragraph'>
                         <Localize i18n_default_text='If this is the first time you try to create a password, or you have forgotten your password, please reset it.' />
-                    </p>
+                    </Text>
                     {this.state.error_message_investor && (
-                        <p className='mt5-password-manager--error-message'>{this.state.error_message_investor}</p>
+                        <Text as='p' color='loss-danger' size='xs' className='mt5-password-manager--error-message'>
+                            {this.state.error_message_investor}
+                        </Text>
                     )}
                     <Formik initialValues={initial_values} validate={validatePassword} onSubmit={onSubmit}>
                         {({ isSubmitting, errors, setFieldTouched, values, touched }) => (

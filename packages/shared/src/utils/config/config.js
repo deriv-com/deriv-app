@@ -125,3 +125,10 @@ export const checkAndSetEndpointFromUrl = () => {
         }
     }
 };
+
+export const getDebugServiceWorker = () => {
+    const debug_service_worker_flag = window.localStorage.getItem('debug_service_worker');
+    if (debug_service_worker_flag) return parseInt(debug_service_worker_flag);
+
+    return false;
+};

@@ -566,7 +566,7 @@ class AccountSwitcher extends React.Component {
                     })}
                 />
                 <div className='acc-switcher__total'>
-                    <Text size='xs' weight='bold' color='prominent'>
+                    <Text line_height='s' size='xs' weight='bold' color='prominent'>
                         <Localize i18n_default_text='Total assets' />
                     </Text>
                     <Text size='xs' color='prominent' className='acc-switcher__balance'>
@@ -582,7 +582,7 @@ class AccountSwitcher extends React.Component {
                         />
                     </Text>
                 </div>
-                <Text color='less-prominent' line_height='x' size='xxxs' className='acc-switcher__total-subtitle'>
+                <Text color='less-prominent' line_height='s' size='xxxs' className='acc-switcher__total-subtitle'>
                     {total_assets_message}
                 </Text>
                 <div className='acc-switcher__separator' />

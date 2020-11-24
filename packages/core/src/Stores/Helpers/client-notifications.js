@@ -487,7 +487,7 @@ export const excluded_notifications = isMobile()
           'new_version_available',
       ];
 
-export const handleClientNotifications = (client, client_store, ui_store) => {
+export const handleClientNotifications = (client, client_store, ui_store, cashier_store) => {
     const { currency, excluded_until } = client;
     const {
         loginid,
@@ -499,8 +499,7 @@ export const handleClientNotifications = (client, client_store, ui_store) => {
         shouldCompleteTax,
     } = client_store;
     const { addNotificationMessage } = ui_store;
-    // TODO: Add P2P banner when landing page is ready
-    // const { is_p2p_visible } = cashier_store;
+    const { is_p2p_visible } = cashier_store;
 
     if (loginid !== LocalStore.get('active_loginid')) return {};
     if (!currency) addNotificationMessage(clientNotifications(ui_store).currency);
@@ -517,10 +516,9 @@ export const handleClientNotifications = (client, client_store, ui_store) => {
         shouldCompleteTax
     );
 
-    // TODO: Add P2P banner when landing page is ready
-    // if (is_p2p_visible) {
-    //     addNotificationMessage(clientNotifications().dp2p);
-    // }
+    if (is_p2p_visible) {
+        addNotificationMessage(clientNotifications().dp2p);
+    }
 
     if (is_tnc_needed) addNotificationMessage(clientNotifications(ui_store).tnc);
 

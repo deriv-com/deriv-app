@@ -387,8 +387,8 @@ class MT5Dashboard extends React.Component {
                             />
                         }
                         messages={[<Localize key={0} i18n_default_text='Please explore our other platforms.' />]}
-                        redirect_url={[routes.trade, routes.bot]}
-                        redirect_label={[
+                        redirect_urls={[routes.trade, routes.bot]}
+                        redirect_labels={[
                             <Localize key={0} i18n_default_text='Explore DTrader' />,
                             <Localize key={1} i18n_default_text='Explore DBot' />,
                         ]}

@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import classNames from 'classnames';
 import { Loading, Table, Text, ThemedScrollbars } from '@deriv/components';
 import Bowser from 'bowser';
 import { convertDateFormat, isMobile } from '@deriv/shared';
@@ -126,7 +125,9 @@ const renderList = (fields, login_history) => (
 const ListCell = ({ title, text, className }) => (
     <React.Fragment>
         <h3 className='login-history__list__row__cell--title'>{title}</h3>
-        <p className={classNames('login-history__list__row__cell--value', className)}>{text}</p>
+        <Text className={className} line_height='s' size='xs'>
+            {text}
+        </Text>
     </React.Fragment>
 );
 
@@ -152,7 +153,7 @@ const LoginHistory = ({ is_switching }) => {
     }, []);
 
     if (is_switching) return <Loading />;
-    if (is_loading) return <Loading is_fullscreen={false} />;
+    if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
     if (error) return <LoadErrorMessage error_message={error} />;
 
     return (

@@ -194,6 +194,13 @@ class AccountSwitcher extends React.Component {
         return this.state.active_tab_index === 0;
     }
 
+    get has_required_credentials() {
+        // for MT5 Real Financial STP, if true, users can instantly create a new account by setting password
+        if (!this.props.account_settings) return false;
+        const { citizen, tax_identification_number, tax_residence } = this.props.account_settings;
+        return !!(citizen && tax_identification_number && tax_residence);
+    }
+
     get sorted_account_list() {
         // sort accounts as follows:
         // top is fiat, then crypto (each alphabetically by currency), then demo
@@ -513,7 +520,8 @@ class AccountSwitcher extends React.Component {
                                                 is_disabled={
                                                     (!this.props.is_eu && !this.props.has_any_real_account) ||
                                                     (account.type === 'financial_stp' &&
-                                                        this.props.is_pending_authentication) ||
+                                                        (this.props.is_pending_authentication ||
+                                                            this.has_required_credentials)) ||
                                                     !!this.props.mt5_login_list_error
                                                 }
                                             >
@@ -566,7 +574,7 @@ class AccountSwitcher extends React.Component {
                     })}
                 />
                 <div className='acc-switcher__total'>
-                    <Text size='xs' weight='bold' color='prominent'>
+                    <Text line_height='s' size='xs' weight='bold' color='prominent'>
                         <Localize i18n_default_text='Total assets' />
                     </Text>
                     <Text size='xs' color='prominent' className='acc-switcher__balance'>
@@ -582,7 +590,7 @@ class AccountSwitcher extends React.Component {
                         />
                     </Text>
                 </div>
-                <Text color='less-prominent' line_height='x' size='xxxs' className='acc-switcher__total-subtitle'>
+                <Text color='less-prominent' line_height='s' size='xxxs' className='acc-switcher__total-subtitle'>
                     {total_assets_message}
                 </Text>
                 <div className='acc-switcher__separator' />
@@ -648,6 +656,7 @@ const account_switcher = withRouter(
         available_crypto_currencies: client.available_crypto_currencies,
         account_loginid: client.loginid,
         accounts: client.accounts,
+        account_settings: client.account_settings,
         can_change_fiat_currency: client.can_change_fiat_currency,
         account_list: client.account_list,
         can_upgrade_to: client.can_upgrade_to,

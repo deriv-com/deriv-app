@@ -499,7 +499,8 @@ export const handleClientNotifications = (client, client_store, ui_store, cashie
         shouldCompleteTax,
     } = client_store;
     const { addNotificationMessage } = ui_store;
-    const { is_p2p_visible } = cashier_store;
+    // TODO: Add P2P banner when landing page is ready
+    // const { is_p2p_visible } = cashier_store;
 
     if (loginid !== LocalStore.get('active_loginid')) return {};
     if (!currency) addNotificationMessage(clientNotifications(ui_store).currency);

@@ -39,7 +39,7 @@ const Mt5TopUpDemoModal = ({
                 width='384px'
             >
                 <div className='dc-modal__container_top-up-virtual__body'>
-                    <p className='dc-modal__container_top-up-virtual__description'>
+                    <Text as='p' align='center' size='xxs' className='dc-modal__container_top-up-virtual__description'>
                         <Localize
                             i18n_default_text='You can top up your demo account with an additional <0></0> if your balance is <1></1> or less.'
                             components={[
@@ -47,7 +47,7 @@ const Mt5TopUpDemoModal = ({
                                 <Money key={1} amount={minimum_amount} currency={currency} show_currency />,
                             ]}
                         />
-                    </p>
+                    </Text>
                     <h4 className='dc-modal__container_top-up-virtual--h4'>
                         <Localize
                             i18n_default_text='DMT5 {{ account_title }} account'

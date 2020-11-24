@@ -18,6 +18,16 @@ import { WS } from 'Services';
 /* eslint-disable react/jsx-no-target-blank */
 export const clientNotifications = (ui = {}, client = {}) => {
     const notifications = {
+        dp2p: {
+            key: 'dp2p',
+            header: localize('Payment problems?'),
+            message: localize('There’s an app for that'),
+            button_text: localize('Learn more'),
+            img_src: '/public/images/common/dp2p_banner.png',
+            img_alt: 'DP2P',
+            redirect_link: '/cashier/p2p/v1',
+            type: 'news',
+        },
         currency: {
             action: {
                 text: localize('Set currency'),
@@ -459,6 +469,7 @@ const checkAccountStatus = (
     if (shouldCompleteTax(account_status)) addNotificationMessage(clientNotifications().tax);
 
     if (should_show_max_turnover) addNotificationMessage(clientNotifications().max_turnover_limit_not_set);
+
     return {
         has_risk_assessment,
     };
@@ -476,7 +487,7 @@ export const excluded_notifications = isMobile()
           'new_version_available',
       ];
 
-export const handleClientNotifications = (client, client_store, ui_store) => {
+export const handleClientNotifications = (client, client_store, ui_store, cashier_store) => {
     const { currency, excluded_until } = client;
     const {
         loginid,
@@ -488,6 +499,7 @@ export const handleClientNotifications = (client, client_store, ui_store) => {
         shouldCompleteTax,
     } = client_store;
     const { addNotificationMessage } = ui_store;
+    const { is_p2p_visible } = cashier_store;
 
     if (loginid !== LocalStore.get('active_loginid')) return {};
     if (!currency) addNotificationMessage(clientNotifications(ui_store).currency);
@@ -503,6 +515,10 @@ export const handleClientNotifications = (client, client_store, ui_store) => {
         getRiskAssessment,
         shouldCompleteTax
     );
+
+    if (is_p2p_visible) {
+        addNotificationMessage(clientNotifications().dp2p);
+    }
 
     if (is_tnc_needed) addNotificationMessage(clientNotifications(ui_store).tnc);
 

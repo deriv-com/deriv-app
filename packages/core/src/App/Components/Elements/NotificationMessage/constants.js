@@ -22,11 +22,12 @@ export const types = {
 
 export const sortNotifications = (() => {
     const notification_order = {
-        contract_sold: 1,
-        danger: 2,
-        warning: 3,
-        info: 4,
-        success: 5,
+        dp2p: 1,
+        contract_sold: 2,
+        danger: 3,
+        warning: 4,
+        info: 5,
+        success: 6,
     };
 
     return (a, b) => notification_order[a.type] - notification_order[b.type];

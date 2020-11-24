@@ -48,25 +48,23 @@ class App extends React.Component {
     }
 
     render() {
+        if (this.state.is_loading) {
+            return <Loading />;
+        }
         return (
-            <>
-                {this.state.is_loading && <Loading />}
-                {!this.state.is_loading && (
-                    <MobxContentProvider store={this.root_store}>
-                        <div className='bot'>
-                            <BotNotificationMessages />
-                            <Toolbar />
-                            <MainContent />
-                            <RunPanel />
-                            <QuickStrategy />
-                            <BotFooterExtensions />
-                            <Audio />
-                            <RoutePromptDialog />
-                            <BlocklyLoading />
-                        </div>
-                    </MobxContentProvider>
-                )}
-            </>
+            <MobxContentProvider store={this.root_store}>
+                <div className='bot'>
+                    <BotNotificationMessages />
+                    <Toolbar />
+                    <MainContent />
+                    <RunPanel />
+                    <QuickStrategy />
+                    <BotFooterExtensions />
+                    <Audio />
+                    <RoutePromptDialog />
+                    <BlocklyLoading />
+                </div>
+            </MobxContentProvider>
         );
     }
 }

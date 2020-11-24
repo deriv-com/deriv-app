@@ -1,5 +1,6 @@
 /** @define notification-messages; */
 .notification-messages {
+    width: 40rem;
     z-index: 4;
     position: absolute;
     right: 0;
@@ -16,7 +17,7 @@
     display: flex;
     border-radius: $BORDER_RADIUS;
     max-width: 400px;
-    padding: 30px 16px;
+    padding: 1.6rem;
     color: var(--text-prominent);
     background-color: var(--general-main-2);
     box-shadow: 0 4px 6px 0 var(--shadow-menu), 0 4px 6px 0 var(--shadow-menu);
@@ -54,6 +55,7 @@
         width: 100%;
     }
     &__text-body {
+        width: 28.4rem;
         font-size: 1.4rem;
         line-height: 1.43;
     }
@@ -65,7 +67,7 @@
         font-size: 1.6rem;
         font-weight: bold;
         line-height: 1.5;
-        margin-bottom: 8px;
+        margin-bottom: 1.2rem;
     }
     &__close-button {
         position: absolute;
@@ -91,20 +93,20 @@
     }
     &__icon {
         &-type {
-            margin-right: 15px;
-            margin-top: 0.5rem;
-            width: 1.4rem;
-            height: 1.4rem;
+            margin-right: 1.6rem;
+            margin-top: 0.4rem;
+            width: 1.6rem;
+            height: 1.6rem;
 
             &--is-background {
-                width: 160px;
-                height: 160px;
+                width: 210px;
+                height: 210px;
             }
         }
         &-background {
             position: absolute;
-            left: -20px;
-            bottom: -20px;
+            left: -25px;
+            bottom: -5px;
             pointer-events: none;
             opacity: 0.07;
             z-index: 0;

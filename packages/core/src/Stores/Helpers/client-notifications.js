@@ -8,6 +8,7 @@ import {
     routes,
     State,
     website_name,
+    platform_name,
 } from '@deriv/shared';
 import { StaticUrl } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
@@ -201,6 +202,9 @@ export const clientNotifications = (ui = {}, client = {}) => {
             type: 'info',
             is_persistent: true,
             should_hide_close_btn: true,
+            should_show_again: true,
+            platform: [platform_name.DTrader],
+            is_disposable: true,
             action: {
                 text: localize('Reset balance'),
                 onClick: async () => {

@@ -905,7 +905,7 @@ export default class ClientStore extends BaseStore {
     async switchAccount(loginid) {
         this.setPreSwitchAccount(true);
         this.setIsLoggingIn(true);
-        this.root_store.ui.removeNotifications();
+        this.root_store.ui.removeNotifications(true);
         this.root_store.ui.removeAllNotificationMessages(true);
         this.setSwitched(loginid);
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
@@ -925,7 +925,7 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     refreshNotifications() {
-        this.root_store.ui.removeNotifications();
+        this.root_store.ui.removeNotifications(true);
         this.root_store.ui.removeAllNotificationMessages();
         const client = this.accounts[this.loginid];
         const { has_missing_required_field } = handleClientNotifications(client, this, this.root_store.ui);
@@ -1254,7 +1254,7 @@ export default class ClientStore extends BaseStore {
             () => {
                 // Remove real account notifications upon switching to virtual
                 if (this.accounts[this.switched]?.is_virtual) {
-                    this.root_store.ui.removeNotifications();
+                    this.root_store.ui.removeNotifications(true);
                     this.root_store.ui.removeAllNotificationMessages();
                 }
 
@@ -1380,7 +1380,7 @@ export default class ClientStore extends BaseStore {
         runInAction(async () => {
             this.responsePayoutCurrencies(await WS.payoutCurrencies());
         });
-        this.root_store.ui.removeAllNotificationMessages();
+        this.root_store.ui.removeAllNotificationMessages(true);
         this.syncWithSmartTrader(this.loginid, this.accounts);
         this.cleanupRealityCheck();
     }

@@ -126,8 +126,7 @@ export default class ActiveSymbols {
         return all_symbols;
     }
 
-    async getMarketDropdownOptions() {
-        await this.retrieveActiveSymbols();
+    getMarketDropdownOptions() {
         const market_options = [];
 
         Object.keys(this.processed_symbols).forEach(market_name => {
@@ -157,9 +156,7 @@ export default class ActiveSymbols {
         return market_options;
     }
 
-    async getSubmarketDropdownOptions(market) {
-        await this.retrieveActiveSymbols();
-
+    getSubmarketDropdownOptions(market) {
         const submarket_options = [];
         const market_obj = this.processed_symbols[market];
 
@@ -184,9 +181,7 @@ export default class ActiveSymbols {
         return this.sortDropdownOptions(submarket_options, this.isSubmarketClosed);
     }
 
-    async getSymbolDropdownOptions(submarket) {
-        await this.retrieveActiveSymbols();
-
+    getSymbolDropdownOptions(submarket) {
         const symbol_options = Object.keys(this.processed_symbols).reduce((accumulator, market_name) => {
             const { submarkets } = this.processed_symbols[market_name];
 

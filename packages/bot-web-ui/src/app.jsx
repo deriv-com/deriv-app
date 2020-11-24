@@ -1,6 +1,7 @@
 import './public-path'; // Leave this here (at the top)! OK boss!
 import React from 'react'; // eslint-disable-line import/first
-import { DBot, ServerTime } from '@deriv/bot-skeleton'; // eslint-disable-line import/first
+import { Loading } from '@deriv/components';
+import { DBot, ServerTime, ApiHelpers } from '@deriv/bot-skeleton'; // eslint-disable-line import/first
 import Audio from './components/audio.jsx';
 import BotFooterExtensions from './components/bot-footer-extensions.jsx';
 import MainContent from './components/main-content.jsx';
@@ -25,10 +26,21 @@ class App extends React.Component {
         GTM.init(this.root_store);
         ServerTime.init(this.root_store.common);
         this.root_store.app.setDBotEngineStores(this.root_store);
+
+        this.state = {
+            is_loading: true,
+        };
     }
 
     componentDidMount() {
-        this.root_store.app.onMount();
+        ApiHelpers.setInstance(this.root_store.app.api_helpers_store);
+        const { active_symbols } = ApiHelpers.instance;
+
+        this.setState({ is_loading: true });
+        active_symbols.retrieveActiveSymbols(true).then(() => {
+            this.setState({ is_loading: false });
+            this.root_store.app.onMount();
+        });
     }
 
     componentWillUnmount() {
@@ -37,19 +49,24 @@ class App extends React.Component {
 
     render() {
         return (
-            <MobxContentProvider store={this.root_store}>
-                <div className='bot'>
-                    <BotNotificationMessages />
-                    <Toolbar />
-                    <MainContent />
-                    <RunPanel />
-                    <QuickStrategy />
-                    <BotFooterExtensions />
-                    <Audio />
-                    <RoutePromptDialog />
-                    <BlocklyLoading />
-                </div>
-            </MobxContentProvider>
+            <>
+                {this.state.is_loading && <Loading />}
+                {!this.state.is_loading && (
+                    <MobxContentProvider store={this.root_store}>
+                        <div className='bot'>
+                            <BotNotificationMessages />
+                            <Toolbar />
+                            <MainContent />
+                            <RunPanel />
+                            <QuickStrategy />
+                            <BotFooterExtensions />
+                            <Audio />
+                            <RoutePromptDialog />
+                            <BlocklyLoading />
+                        </div>
+                    </MobxContentProvider>
+                )}
+            </>
         );
     }
 }

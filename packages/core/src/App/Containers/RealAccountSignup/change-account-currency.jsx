@@ -59,6 +59,7 @@ class ChangeAccountCurrency extends React.Component {
                             error={errors.fiat}
                             touched={touched.fiat}
                             is_title_enabled={false}
+                            item_count={this.state.selectable_currencies.length}
                         >
                             {this.state.selectable_currencies.map(currency => (
                                 <Field

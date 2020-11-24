@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Flyout from './flyout.jsx';
 import Chart from './chart/chart.jsx';
+import Toolbox from './toolbox/toolbox.jsx';
 import { tabs_title } from '../constants/bot-contents';
 import { connect } from '../stores/connect';
 import '../assets/sass/workspace.scss';
@@ -31,6 +32,7 @@ const MainContent = ({ active_tab, onMount, onUnmount, setContainerSize }) => {
                     height: 'var(--bot-content-height)',
                 }}
             >
+                <Toolbox />
                 <Flyout />
             </div>
         );

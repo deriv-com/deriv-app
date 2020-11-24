@@ -19,6 +19,7 @@ class DBotStore extends DBotStoreInterface {
         this.client = store.client;
         this.flyout = store.flyout;
         this.toolbar = store.toolbar;
+        this.toolbox = store.toolbox;
         this.save_modal = store.save_modal;
         this.toggleStrategyModal = store.toggleStrategyModal;
         this.handleFileChange = store.handleFileChange;

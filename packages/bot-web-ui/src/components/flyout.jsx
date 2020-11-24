@@ -29,7 +29,8 @@ const FlyoutContent = props => {
         flyout_content,
         active_helper,
         setHelpContent,
-        initialiseFlyoutHelp,
+        initFlyoutButton,
+        initFlyoutHelp,
         is_empty,
         is_search_flyout,
         selected_category,
@@ -92,7 +93,7 @@ const FlyoutContent = props => {
                                             help_content_config(__webpack_public_path__)[block_type] &&
                                             (is_search_flyout
                                                 ? () => setHelpContent(node)
-                                                : () => initialiseFlyoutHelp(node, block_type))
+                                                : () => initFlyoutHelp(node, block_type))
                                         }
                                         is_active={active_helper === block_type}
                                     />
@@ -107,11 +108,12 @@ const FlyoutContent = props => {
                             }
                             case Blockly.Xml.NODE_BUTTON: {
                                 const cb_key = node.getAttribute('callbackKey');
-                                const button_cb = Blockly.derivWorkspace.getButtonCallback(cb_key);
-                                const callback = button_cb || (() => {});
+                                const cb_id = node.getAttribute('id');
+                                initFlyoutButton(node);
 
                                 return (
                                     <button
+                                        id={cb_id}
                                         key={`${cb_key}${index}`}
                                         className={classNames(
                                             'dc-btn',
@@ -120,17 +122,19 @@ const FlyoutContent = props => {
                                             'flyout__button-new'
                                         )}
                                         onClick={button => {
-                                            const flyout_button = button;
+                                            const workspace = Blockly.derivWorkspace;
+                                            const button_cb = workspace.getButtonCallback(cb_key);
+                                            const callback = button_cb || (() => {});
 
                                             // Workaround for not having a flyout workspace.
                                             // eslint-disable-next-line no-underscore-dangle
-                                            flyout_button.targetWorkspace_ = Blockly.derivWorkspace;
-                                            flyout_button.getTargetWorkspace = () => {
+                                            button.targetWorkspace_ = workspace;
+                                            button.getTargetWorkspace = () => {
                                                 // eslint-disable-next-line no-underscore-dangle
-                                                return flyout_button.targetWorkspace_;
+                                                return button.targetWorkspace_;
                                             };
 
-                                            callback(flyout_button);
+                                            callback(button);
                                         }}
                                     >
                                         {node.getAttribute('text')}
@@ -173,22 +177,23 @@ const Flyout = props => {
     const is_empty = total_result === 0;
 
     return (
-        <div
-            id='gtm-search-results'
-            gtm-search-term={search_term}
-            className={classNames('flyout', {
-                hidden: !is_visible,
-                flyout__search: is_search_flyout,
-                flyout__help: is_help_content,
-                flyout__normal: !is_help_content && !is_search_flyout,
-            })}
-            style={{ width: `${flyout_width}px` }}
-        >
-            {is_search_flyout && !is_help_content && (
-                <SearchResult search_term={search_term} total_result={total_result} />
-            )}
-            {is_help_content ? <HelpBase /> : <FlyoutContent is_empty={is_empty} {...props} />}
-        </div>
+        is_visible && (
+            <div
+                id='gtm-search-results'
+                gtm-search-term={search_term}
+                className={classNames('flyout', {
+                    flyout__search: is_search_flyout,
+                    flyout__help: is_help_content,
+                    flyout__normal: !is_help_content && !is_search_flyout,
+                })}
+                style={{ width: `${flyout_width}px` }}
+            >
+                {is_search_flyout && !is_help_content && (
+                    <SearchResult search_term={search_term} total_result={total_result} />
+                )}
+                {is_help_content ? <HelpBase /> : <FlyoutContent is_empty={is_empty} {...props} />}
+            </div>
+        )
     );
 };
 
@@ -196,7 +201,8 @@ Flyout.propTypes = {
     active_helper: PropTypes.string,
     flyout_content: PropTypes.any,
     flyout_width: PropTypes.number,
-    initialiseFlyoutHelp: PropTypes.func,
+    initFlyoutButton: PropTypes.func,
+    initFlyoutHelp: PropTypes.func,
     is_help_content: PropTypes.bool,
     is_search_flyout: PropTypes.bool,
     is_visible: PropTypes.bool,
@@ -213,7 +219,8 @@ export default connect(({ flyout, flyout_help, gtm }) => ({
     pushDataLayer: gtm.pushDataLayer,
     flyout_content: flyout.flyout_content,
     flyout_width: flyout.flyout_width,
-    initialiseFlyoutHelp: flyout_help.initialiseFlyoutHelp,
+    initFlyoutButton: flyout.initFlyoutButton,
+    initFlyoutHelp: flyout_help.initFlyoutHelp,
     is_help_content: flyout.is_help_content,
     is_search_flyout: flyout.is_search_flyout,
     is_visible: flyout.is_visible,

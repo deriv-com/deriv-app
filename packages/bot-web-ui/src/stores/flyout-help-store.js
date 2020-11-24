@@ -79,22 +79,19 @@ export default class FlyoutHelpStore {
 
     @action.bound
     onBackClick() {
-        // eslint-disable-next-line no-underscore-dangle
-        const toolbox = Blockly.derivWorkspace.toolbox_;
-        const { toolbar, flyout } = this.root_store;
+        const { toolbox, flyout } = this.root_store;
 
         if (flyout.is_search_flyout) {
             const search = document.getElementsByName('search')[0].value;
-
-            toolbar.onSearch({ search });
+            toolbox.onSearch({ search });
         } else {
-            toolbox.refreshCategory();
+            flyout.refreshCategory();
         }
     }
 
     @action.bound
     async onSequenceClick(should_go_next) {
-        const current_block = this.xml_list.find(xml => xml.getAttribute('type') === this.block_type);
+        const current_block = Array.from(this.xml_list).find(xml => xml.getAttribute('type') === this.block_type);
 
         let current_block_index;
 
@@ -136,10 +133,9 @@ export default class FlyoutHelpStore {
     }
 
     @action.bound
-    initialiseFlyoutHelp(block_node) {
-        const toolbox = Blockly.derivWorkspace.getToolbox();
-        const selected_category = toolbox.getSelectedItem();
-        this.xml_list = toolbox.getCategoryContents(selected_category);
+    initFlyoutHelp(block_node) {
+        const { flyout, toolbox } = this.root_store;
+        this.xml_list = toolbox.getCategoryContents(flyout.selected_category);
         this.xml_list_group = this.groupBy(this.xml_list, true);
 
         this.setHelpContent(block_node);
@@ -147,7 +143,7 @@ export default class FlyoutHelpStore {
 
     @action.bound
     async updateSequenceButtons() {
-        const current_block = this.xml_list.find(xml => xml.getAttribute('type') === this.block_type);
+        const current_block = Array.from(this.xml_list).find(xml => xml.getAttribute('type') === this.block_type);
         const current_index = Object.keys(this.xml_list_group).findIndex(
             key => current_block.getAttribute('type') === key
         );
@@ -165,7 +161,7 @@ export default class FlyoutHelpStore {
 
     // eslint-disable-next-line
     groupBy(nodes, should_include_block_only = false) {
-        return nodes.reduce(function (block_group, node) {
+        return Array.from(nodes).reduce(function (block_group, node) {
             const type = node.getAttribute('type');
 
             if (should_include_block_only && type === null) {

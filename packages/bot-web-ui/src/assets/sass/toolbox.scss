@@ -22,7 +22,7 @@ $category-colours: (
     notifications: #f3f3f3,
 );
 
-.toolbox {
+.db-toolbox {
     $toolbox: &;
     $white: #fff;
     $lightgrey: #ebebeb;
@@ -30,23 +30,28 @@ $category-colours: (
     $gray20: #333;
     $category-text-spacing: 10px;
 
-    background-color: $white;
-    border: 1px solid $lightgrey;
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    position: absolute;
     user-select: none;
     z-index: 1;
-    width: 250px;
+    padding-right: 1.6rem;
     visibility: visible;
 
+    &__container {
+        height: var(--bot-content-height) !important;
+        top: 10.4rem !important;
+        width: 25.6rem !important;
+
+        &--open {
+            transform: translateX(-25.6rem) !important;
+        }
+    }
     &--hidden {
         visibility: hidden;
     }
     &__header {
         padding: 8px;
-        margin-bottom: 10px;
         position: relative;
         font-weight: bold;
         font-size: 1.6em;
@@ -56,22 +61,21 @@ $category-colours: (
     &__item {
         display: flex;
         flex-direction: row;
+
+        &:hover {
+            background-color: var(--general-hover);
+        }
     }
     &__category-arrow {
-        display: flex;
-        margin: auto;
         width: 16px;
         height: 16px;
         padding: 6px;
         background-image: url('/js/bot/media/ic-chevron-down-bold.svg');
+        margin-right: $category-text-spacing;
+        transition: transform 0.3s ease;
 
-        &--left {
-            margin-left: $category-text-spacing;
-            transform: rotate(90deg);
-        }
-        &--right {
-            margin-right: $category-text-spacing;
-            transform: rotate(270deg);
+        &--active {
+            transform: rotate(180deg);
         }
     }
     &__category-colour {
@@ -114,8 +118,10 @@ $category-colours: (
         }
     }
     &__category-text {
+        display: flex;
         align-self: center;
-        margin: $category-text-spacing;
+        justify-content: space-between;
+        margin: 10px;
         width: 100%;
     }
     &__description {
@@ -141,9 +147,6 @@ $category-colours: (
         cursor: pointer;
         border-top: 1px solid $lightgrey;
 
-        &:hover {
-            background-color: var(--general-hover);
-        }
         #{$toolbox}__category--selected {
             background-color: var(--general-active);
         }
@@ -164,5 +167,25 @@ $category-colours: (
         font-size: 14px;
         font-weight: bold;
         line-height: 1.4;
+    }
+    &__category--analysis {
+        &-row {
+            height: 38px;
+        }
+    }
+    &__category--utility {
+        &-row {
+            height: 38px;
+        }
+    }
+    &__sub-category {
+        &-row {
+            padding: 1rem;
+            cursor: pointer;
+
+            &:hover {
+                background-color: var(--general-hover);
+            }
+        }
     }
 }

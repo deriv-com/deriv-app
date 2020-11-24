@@ -17,6 +17,7 @@ import RoutePromptDialogStore from './route-prompt-dialog-store';
 import DataCollectionStore from './data-collection-store';
 import BlocklyStore from './blockly-store';
 import SelfExclusionStore from './self-exclusion-store';
+import ToolboxStore from './toolbox-store';
 import AppStore from './app-store';
 
 export default class RootStore {
@@ -41,6 +42,7 @@ export default class RootStore {
         this.summary = new SummaryStore(this);
         this.transactions = new TransactionsStore(this);
         this.toolbar = new ToolbarStore(this);
+        this.toolbox = new ToolboxStore(this);
         this.quick_strategy = new QuickStrategyStore(this);
         this.route_prompt_dialog = new RoutePromptDialogStore(this);
         this.self_exclusion = new SelfExclusionStore(this);

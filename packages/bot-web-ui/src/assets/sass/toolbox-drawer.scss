@@ -1,0 +1,45 @@
+/** @define db-toolbox-drawer */
+// TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
+.db-toolbox-drawer {
+    $toggler-width: 16px;
+
+    position: fixed;
+    top: 1px;
+    right: calc(100vw - 16px);
+    width: 256px;
+    will-change: transform;
+    transition: transform 0.3s ease;
+    background: var(--general-main-2);
+    z-index: 4;
+
+    &__container {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+    &__toggle {
+        align-items: center;
+        border-left: 1px solid var(--border-disabled);
+        border-right: 1px solid var(--border-disabled);
+        display: flex;
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: $toggler-width;
+        height: 100%;
+        background-color: var(--general-section-1);
+        cursor: pointer;
+
+        &-icon {
+            transition: 0.25s ease;
+            transform: rotate(0);
+        }
+        &--open {
+            transform: rotate(180deg);
+        }
+    }
+    &--open {
+        transform: translateX(256px);
+        right: 100vw;
+    }
+}

@@ -22,10 +22,114 @@ export default class FlyoutStore {
     @observable is_search_flyout = false;
     @observable is_loading = false;
     @observable search_term = '';
-    @observable selected_category = '';
+    @observable selected_category = null;
 
     constructor(root_store) {
         this.root_store = root_store;
+    }
+
+    @action.bound
+    onMount() {
+        this.workspace = Blockly.derivWorkspace;
+        this.initFlyout();
+        window.addEventListener('click', this.onClickOutsideFlyout);
+    }
+
+    @action.bound
+    onUnmount() {
+        window.removeEventListener('click', this.onClickOutsideFlyout);
+    }
+
+    @action.bound
+    initFlyout() {
+        var workspace = this.workspace;
+
+        var options = {
+            parentWorkspace: workspace,
+            RTL: workspace.RTL,
+            horizontalLayout: workspace.horizontalLayout,
+        };
+
+        if (workspace.horizontalLayout) {
+            this.flyout = new Blockly.HorizontalFlyout(options);
+        } else {
+            this.flyout = new Blockly.VerticalFlyout(options);
+        }
+
+        this.flyout.targetWorkspace_ = workspace;
+        this.flyout.workspace_.targetWorkspace = workspace;
+
+        // A flyout connected to a workspace doesn't have its own current gesture.
+        this.flyout.workspace_.getGesture = this.flyout.targetWorkspace_.getGesture.bind(this.flyout.targetWorkspace_);
+
+        // Get variables from the main workspace rather than the target workspace.
+        this.workspace.variableMap_ = this.flyout.targetWorkspace_.getVariableMap();
+
+        this.flyout.workspace_.createPotentialVariableMap();
+
+        workspace.flyout_ = this.flyout;
+    }
+
+    @action.bound
+    initFlyoutButton(button) {
+        const callbackKey = button.getAttribute('callbackKey');
+
+        const callback = button => {
+            const buttonWorkspace = button.getTargetWorkspace();
+            Blockly.Variables.createVariable(buttonWorkspace, this.refreshCategory, '');
+        };
+
+        button.setAttribute('callbackKey', callbackKey);
+        this.workspace.registerButtonCallback(callbackKey, callback);
+    }
+
+    /**
+     * Intialises a workspace unique to the passed block_node
+     * @param {Element} el_block_workspace Element where Blockly.Workspace will be mounted on
+     * @param {Element} block_node DOM of a Blockly.Block
+     * @memberof FlyoutStore
+     */
+    @action.bound
+    initBlockWorkspace(el_block_workspace, block_node) {
+        const workspace = Blockly.inject(el_block_workspace, this.options);
+
+        workspace.isFlyout = true;
+        workspace.targetWorkspace = this.workspace;
+
+        const block = Blockly.Xml.domToBlock(block_node, workspace);
+        // Using block.getHeightWidth() here because getDimentions() also calls Blockly.Xml.domToBlock
+        const block_hw = block.getHeightWidth();
+
+        block.isInFlyout = true;
+
+        // Update block workspace widths to accommodate block widths.
+        // addind 1px to highet and then moving the block 1px down to make block top border visible
+        el_block_workspace.style.height = `${Math.ceil(block_hw.height * this.options.zoom.startScale) + 1}px`;
+        el_block_workspace.style.width = `${Math.ceil(block_hw.width * this.options.zoom.startScale) + 1}px`;
+        block.moveBy(1, 1);
+
+        // Use original Blockly flyout functionality to create block on drag.
+        const block_svg_root = block.getSvgRoot();
+
+        this.block_listeners.push(
+            Blockly.bindEventWithChecks_(block_svg_root, 'mousedown', null, event => {
+                GTM.pushDataLayer({
+                    event: 'dbot_drag_block',
+                    block_type: block.type,
+                });
+                this.flyout.blockMouseDown_(block)(event);
+            }),
+            Blockly.bindEvent_(block_svg_root, 'mouseout', block, block.removeSelect),
+            Blockly.bindEvent_(block_svg_root, 'mouseover', block, block.addSelect)
+        );
+
+        this.block_workspaces.push(workspace);
+        Blockly.svgResize(workspace);
+    }
+
+    @action.bound
+    getFlyout() {
+        return this.flyout;
     }
 
     /**
@@ -58,76 +162,6 @@ export default class FlyoutStore {
     }
 
     /**
-     * Sets whether the flyout is visible or not.
-     * @param {boolean} is_visible
-     * @memberof FlyoutStore
-     */
-    @action.bound
-    setVisibility(is_visible) {
-        this.is_visible = is_visible;
-
-        if (!is_visible) {
-            this.flyout_content = [];
-        }
-    }
-
-    /**
-     * Sets whether the flyout is search or not.
-     * @param {boolean} is_search
-     * @memberof FlyoutStore
-     */
-    @action.bound
-    setIsSearchFlyout(is_search) {
-        this.selected_category = '';
-        this.is_search_flyout = is_search;
-    }
-
-    /**
-     * Intialises a workspace unique to the passed block_node
-     * @param {Element} el_block_workspace Element where Blockly.Workspace will be mounted on
-     * @param {Element} block_node DOM of a Blockly.Block
-     * @memberof FlyoutStore
-     */
-    @action.bound
-    initBlockWorkspace(el_block_workspace, block_node) {
-        const workspace = Blockly.inject(el_block_workspace, this.options);
-
-        workspace.isFlyout = true;
-        workspace.targetWorkspace = Blockly.derivWorkspace;
-
-        const block = Blockly.Xml.domToBlock(block_node, workspace);
-        // Using block.getHeightWidth() here because getDimentions() also calls Blockly.Xml.domToBlock
-        const block_hw = block.getHeightWidth();
-
-        block.isInFlyout = true;
-
-        // Update block workspace widths to accommodate block widths.
-        // addind 1px to highet and then moving the block 1px down to make block top border visible
-        el_block_workspace.style.height = `${Math.ceil(block_hw.height * this.options.zoom.startScale) + 1}px`;
-        el_block_workspace.style.width = `${Math.ceil(block_hw.width * this.options.zoom.startScale) + 1}px`;
-        block.moveBy(1, 1);
-
-        // Use original Blockly flyout functionality to create block on drag.
-        const blockly_flyout = Blockly.derivWorkspace.getToolbox().flyout_;
-        const block_svg_root = block.getSvgRoot();
-
-        this.block_listeners.push(
-            Blockly.bindEventWithChecks_(block_svg_root, 'mousedown', null, event => {
-                GTM.pushDataLayer({
-                    event: 'dbot_drag_block',
-                    block_type: block.type,
-                });
-                blockly_flyout.blockMouseDown_(block)(event);
-            }),
-            Blockly.bindEvent_(block_svg_root, 'mouseout', block, block.removeSelect),
-            Blockly.bindEvent_(block_svg_root, 'mouseover', block, block.addSelect)
-        );
-
-        this.block_workspaces.push(workspace);
-        Blockly.svgResize(workspace);
-    }
-
-    /**
      * Walks through xmlList and finds width of the longest block while setting
      * height and width (in workspace pixels) attributes on each of the block nodes.
      * @param {Element[]} xmlList
@@ -156,26 +190,28 @@ export default class FlyoutStore {
     }
 
     /**
-     * Close the flyout on click outside itself or parent toolbox.
+     * Sets whether the flyout is visible or not.
+     * @param {boolean} is_visible
+     * @memberof FlyoutStore
      */
     @action.bound
-    onClickOutsideFlyout(event) {
-        const workspace = Blockly.derivWorkspace;
+    setVisibility(is_visible) {
+        this.is_visible = is_visible;
 
-        if (!this.is_visible || !workspace) {
-            return;
+        if (!is_visible) {
+            this.setSelectedCategory(null);
+            this.flyout_content = [];
         }
+    }
 
-        const toolbox = workspace.getToolbox();
-        const path = event.path || (event.composedPath && event.composedPath());
-        const is_flyout_click = path.some(el => el.classList && el.classList.contains('flyout'));
-        const is_search_focus = this.root_store.toolbar.is_search_focus;
-        const isToolboxClick = () => toolbox.HtmlDiv.contains(event.target);
-
-        if (!is_flyout_click && !isToolboxClick() && !is_search_focus) {
-            toolbox.clearSelection();
-            this.setSelectedCategory('');
-        }
+    /**
+     * Sets whether the flyout is search or not.
+     * @param {boolean} is_search
+     * @memberof FlyoutStore
+     */
+    @action.bound
+    setIsSearchFlyout(is_search) {
+        this.is_search_flyout = is_search;
     }
 
     @action.bound
@@ -184,12 +220,42 @@ export default class FlyoutStore {
     }
 
     @action.bound
-    onMount() {
-        window.addEventListener('click', this.onClickOutsideFlyout);
+    getSelectedCategory() {
+        return this.selected_category;
+    }
+
+    /**
+     * Close the flyout on click outside itself or parent toolbox.
+     */
+    @action.bound
+    onClickOutsideFlyout(event) {
+        if (!this.is_visible || !this.workspace) {
+            return;
+        }
+
+        const toolbox = document.getElementById('gtm-toolbox');
+        const path = event.path || (event.composedPath && event.composedPath());
+        const is_flyout_click = path.some(el => el.classList && el.classList.contains('flyout'));
+        const is_search_focus = this.root_store.toolbox.is_search_focus;
+        const isToolboxClick = () => toolbox.contains(event.target);
+
+        if (!is_flyout_click && !isToolboxClick() && !is_search_focus) {
+            this.setVisibility(false);
+            this.setSelectedCategory(null);
+        }
     }
 
     @action.bound
-    onUnmount() {
-        window.removeEventListener('click', this.onClickOutsideFlyout);
+    refreshCategory() {
+        const category = this.getSelectedCategory();
+        const dynamic = category.getAttribute('dynamic');
+        let flyout_content = Array.from(category.childNodes);
+
+        if (typeof dynamic === 'string') {
+            const fnToApply = this.workspace.getToolboxCategoryCallback(dynamic);
+            flyout_content = fnToApply(this.workspace);
+        }
+
+        this.setContents(flyout_content);
     }
 }

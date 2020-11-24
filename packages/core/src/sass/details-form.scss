@@ -68,6 +68,9 @@
         }
         .dc-select-native {
             margin-bottom: 3.2rem;
+            &__placeholder {
+                background-color: var(--general-section-2);
+            }
         }
         .dc-dropdown__display {
             background-color: var(--general-main-2);
@@ -82,8 +85,8 @@
         @include mobile {
             width: 100%;
             margin: 0;
-            padding: 1rem 1.6rem 4rem;
-            overflow-y: scroll;
+            padding: 1rem 1.6rem 6rem;
+            overflow-y: auto;
         }
     }
     &__loader {

@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Icon, Money, Button } from '@deriv/components';
+import { Icon, Money, Button, Text } from '@deriv/components';
 import { formatMoney, getCurrencyName, getMT5AccountDisplay, getCurrencyDisplayCode } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 
@@ -76,7 +76,7 @@ const AccountList = ({
                         </Button>
                     ) : (
                         has_balance && (
-                            <span className='acc-switcher__balance'>
+                            <Text size='xs' color='prominent' className='acc-switcher__balance'>
                                 {currency && (
                                     <Money
                                         currency={getCurrencyDisplayCode(currency)}
@@ -85,7 +85,7 @@ const AccountList = ({
                                         show_currency
                                     />
                                 )}
-                            </span>
+                            </Text>
                         )
                     )}
                 </span>

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import SuccessDialog from 'App/Containers/Modals/success-dialog.jsx';
-import { Icon, Modal, Button, Money } from '@deriv/components';
+import { Icon, Modal, Button, Money, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { getTopUpConfig } from '../Helpers/constants';
@@ -55,9 +55,9 @@ const Mt5TopUpDemoModal = ({
                         />
                     </h4>
                     <div>
-                        <p className='dc-modal__container_top-up-virtual--balance-descriptor'>
+                        <Text as='p' align='center' size='xxs'>
                             <Localize i18n_default_text='Current balance' />
-                        </p>
+                        </Text>
                         <div className='dc-modal__container_top-up-virtual--balance'>
                             <Money amount={current_account.display_balance} currency={current_account.currency} />
                         </div>

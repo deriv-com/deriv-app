@@ -25,7 +25,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
             button_text: localize('Learn more'),
             img_src: '/public/images/common/dp2p_banner.png',
             img_alt: 'DP2P',
-            redirect_link: '/cashier/p2p/v1',
+            redirect_link: '/p2p/v1',
             type: 'news',
         },
         currency: {
@@ -516,9 +516,10 @@ export const handleClientNotifications = (client, client_store, ui_store, cashie
         shouldCompleteTax
     );
 
-    if (is_p2p_visible) {
-        addNotificationMessage(clientNotifications().dp2p);
-    }
+    // TODO: Add P2P banner when landing page is ready
+    // if (is_p2p_visible) {
+    //     addNotificationMessage(clientNotifications().dp2p);
+    // }
 
     if (is_tnc_needed) addNotificationMessage(clientNotifications(ui_store).tnc);
 

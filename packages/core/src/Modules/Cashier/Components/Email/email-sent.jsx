@@ -4,64 +4,56 @@ import { Button, Icon, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
-class EmailSent extends React.Component {
-    onClickVerification = () => {
-        this.props.setVerificationResendClicked(true);
-    };
-
-    render() {
-        return (
-            <div className='withdraw__email-sent'>
-                <Icon icon='IcEmailSent' className='withdraw__icon' size={128} />
-                <Text as='p' weight='bold' className='withdraw__email-sent-title'>
-                    <Localize i18n_default_text={"We've sent you an email."} />
-                </Text>
-                <Text as='p' size='xs' lineHeight='x' className='withdraw__email-sent'>
-                    <Localize i18n_default_text='Please check your email for the verification link to complete the process.' />
-                </Text>
-                <div className='withdraw__email-resend'>
-                    {this.props.is_resend_clicked ? (
-                        <React.Fragment>
-                            <Text as='p' weight='bold' size='xs' className='withdraw__email-sent-title'>
-                                <Localize i18n_default_text={"Didn't receive the email?"} />
-                            </Text>
-                            <Text as='p' size='xs' lineHeight='x' className='withdraw__email-sent'>
-                                <Localize
-                                    i18n_default_text={
-                                        "Check your spam or junk folder. If it's not there, try resending the email."
-                                    }
-                                />
-                            </Text>
-                            <Button
-                                className='withdraw__resend-button'
-                                classNameSpan='withdraw__resend-button-text'
-                                is_disabled={this.props.resend_timeout < 60}
-                                has_effect
-                                text={
-                                    this.props.resend_timeout < 60
-                                        ? localize('Resend email in {{seconds}}s', {
-                                              seconds: this.props.resend_timeout,
-                                          })
-                                        : localize('Resend email')
-                                }
-                                onClick={this.props.resendVerificationEmail}
-                                primary
-                                large
-                            />
-                        </React.Fragment>
-                    ) : (
-                        <Button
-                            className='withdraw__email-resend-text'
-                            text={localize("Didn't receive the email?")}
-                            onClick={this.onClickVerification}
-                            tertiary
+const EmailSent = ({ is_resend_clicked, resend_timeout, resendVerificationEmail, setVerificationResendClicked }) => (
+    <div className='withdraw__email-sent'>
+        <Icon icon='IcEmailSent' className='withdraw__icon' size={128} />
+        <Text as='p' weight='bold' className='withdraw__email-sent-title'>
+            <Localize i18n_default_text={"We've sent you an email."} />
+        </Text>
+        <Text as='p' size='xs' lineHeight='x' className='withdraw__email-sent'>
+            <Localize i18n_default_text='Please check your email for the verification link to complete the process.' />
+        </Text>
+        <div className='withdraw__email-resend'>
+            {is_resend_clicked ? (
+                <React.Fragment>
+                    <Text as='p' weight='bold' size='xs' className='withdraw__email-sent-title'>
+                        <Localize i18n_default_text={"Didn't receive the email?"} />
+                    </Text>
+                    <Text as='p' size='xs' lineHeight='x' className='withdraw__email-sent'>
+                        <Localize
+                            i18n_default_text={
+                                "Check your spam or junk folder. If it's not there, try resending the email."
+                            }
                         />
-                    )}
-                </div>
-            </div>
-        );
-    }
-}
+                    </Text>
+                    <Button
+                        className='withdraw__resend-button'
+                        classNameSpan='withdraw__resend-button-text'
+                        is_disabled={resend_timeout < 60}
+                        has_effect
+                        text={
+                            resend_timeout < 60
+                                ? localize('Resend email in {{seconds}}s', {
+                                      seconds: resend_timeout,
+                                  })
+                                : localize('Resend email')
+                        }
+                        onClick={resendVerificationEmail}
+                        primary
+                        large
+                    />
+                </React.Fragment>
+            ) : (
+                <Button
+                    className='withdraw__email-resend-text'
+                    text={localize("Didn't receive the email?")}
+                    onClick={() => setVerificationResendClicked(true)}
+                    tertiary
+                />
+            )}
+        </div>
+    </div>
+);
 
 EmailSent.propTypes = {
     is_resend_clicked: PropTypes.bool,

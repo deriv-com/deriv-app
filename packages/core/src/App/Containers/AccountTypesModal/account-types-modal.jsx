@@ -9,6 +9,7 @@ import {
     Icon,
     Modal,
     ThemedScrollbars,
+    Text,
 } from '@deriv/components';
 import { isDesktop, isMobile, routes, getStaticUrl, urlFor, PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
@@ -31,8 +32,14 @@ const Box = ({ title, description, footer_text, icons, cards }) => {
         <div className='account-types__box'>
             <div className='account-types__box-left'>
                 <h2 className='account-types__box-title'>{title}</h2>
-                <p className='account-types__box-description'>{description}</p>
-                {footer_text && <p className='account-types__box-footer'>{footer_text}</p>}
+                <Text as='p' size='xs' lineHeight='x' className='account-types__box-description'>
+                    {description}
+                </Text>
+                {footer_text && (
+                    <Text as='p' size='xxs' weight='bold' className='account-types__box-footer'>
+                        {footer_text}
+                    </Text>
+                )}
                 <div className='account-types__box-icons'>
                     {icons.map((icon, index) => {
                         return <Icon className='account-types__box-icon' icon={icon} key={index} />;
@@ -251,9 +258,9 @@ class AccountTypesModal extends React.Component {
                         className='account-types__container'
                     >
                         <div className='account-types'>
-                            <p className='account-types__intro'>
+                            <Text as='p' size='xs' lineHeight='x' className='account-types__intro'>
                                 {localize('Choose an account that suits your needs.')}
-                            </p>
+                            </Text>
                             <div>
                                 <SyntheticBox
                                     derivOnClick={() => {

@@ -487,7 +487,7 @@ export const excluded_notifications = isMobile()
           'new_version_available',
       ];
 
-export const handleClientNotifications = (client, client_store, ui_store, cashier_store) => {
+export const handleClientNotifications = (client, client_store, ui_store) => {
     const { currency, excluded_until } = client;
     const {
         loginid,

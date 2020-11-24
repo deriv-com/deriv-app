@@ -149,12 +149,7 @@ export default class TransactionsStore {
         // Attempt to load cached transactions on client loginid change.
         this.disposeClientLoginIdListener = reaction(
             () => client.loginid,
-            () =>
-                (this.unfiltered_messages = getStoredItemsByUser(
-                    this.TRANSACTION_CACHE,
-                    this.root_store.core.client.loginid,
-                    []
-                ))
+            () => (this.elements = getStoredItemsByUser(this.TRANSACTION_CACHE, client.loginid, []))
         );
 
         return () => {

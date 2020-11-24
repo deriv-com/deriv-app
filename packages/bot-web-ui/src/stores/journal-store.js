@@ -17,7 +17,7 @@ export default class JournalStore {
             () => this.unfiltered_messages,
             () => {
                 if (this.unfiltered_messages.length > 0) {
-                    this.pushMessage(log_types.WELCOME_BACK, message_types.SUCCESS, 'journal__text--info');
+                    this.welcomeBackUser();
                 }
             }
         );
@@ -130,6 +130,10 @@ export default class JournalStore {
         this.unfiltered_messages = this.unfiltered_messages.slice(0, 0);
     }
 
+    welcomeBackUser() {
+        this.pushMessage(log_types.WELCOME_BACK, message_types.SUCCESS, 'journal__text--info');
+    }
+
     registerReactions() {
         const { client } = this.root_store.core;
 
@@ -139,12 +143,14 @@ export default class JournalStore {
             unfiltered_messages => {
                 const stored_journals = getStoredItemsByKey(this.JOURNAL_CACHE, {});
 
-                stored_journals[client.loginid] = unfiltered_messages.slice(0, 5000).filter(
-                    // Filter out special messages (e.g. "Welcome back!")
-                    unfiltered_message =>
-                        unfiltered_message.message_type !== message_types.SUCCESS &&
-                        unfiltered_message.message !== log_types.WELCOME_BACK
-                );
+                stored_journals[client.loginid] = unfiltered_messages.slice(0, 5000).filter(unfiltered_message => {
+                    // Filter out "Welcome back!" message. This can be extended.
+                    const is_welcome_back =
+                        unfiltered_message.message_type === message_types.SUCCESS &&
+                        unfiltered_message.message === log_types.WELCOME_BACK;
+
+                    return !is_welcome_back;
+                });
                 setStoredItemsByKey(this.JOURNAL_CACHE, stored_journals);
             }
         );
@@ -152,7 +158,13 @@ export default class JournalStore {
         // Attempt to load cached journal messages on client loginid change.
         this.disposeJournalMessageListener = reaction(
             () => client.loginid,
-            () => (this.unfiltered_messages = getStoredItemsByUser(this.JOURNAL_CACHE, client.loginid, []))
+            () => {
+                this.unfiltered_messages = getStoredItemsByUser(this.JOURNAL_CACHE, client.loginid, []);
+
+                if (this.unfiltered_messages.length > 0) {
+                    this.welcomeBackUser();
+                }
+            }
         );
 
         return () => {

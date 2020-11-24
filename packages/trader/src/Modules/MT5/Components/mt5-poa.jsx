@@ -51,11 +51,19 @@ class MT5POA extends React.Component {
         }
 
         const validations = {
-            address_line_1: [v => !!v, v => validAddress(v), v => validLength(v, { max: 70 })],
+            address_line_1: [v => !!v && !v.match(/^\s*$/), v => validAddress(v), v => validLength(v, { max: 70 })],
             address_line_2: [v => !v || validAddress(v), v => validLength(v, { max: 70 })],
-            address_city: [v => !!v, v => validLength(v, { min: 1, max: 35 }), v => validLetterSymbol(v)],
-            address_state: [v => !!v, v => !v || validLength(v, { min: 1, max: 35 })],
-            address_postcode: [v => !!v, v => validLength(v, { min: 1, max: 20 }), v => validPostCode(v)],
+            address_city: [
+                v => !!v && !v.match(/^\s*$/),
+                v => validLength(v, { min: 1, max: 35 }),
+                v => validLetterSymbol(v),
+            ],
+            address_state: [v => !!v && !v.match(/^\s*$/), v => !v || validLength(v, { min: 1, max: 35 })],
+            address_postcode: [
+                v => !!v && !v.match(/^\s*$/),
+                v => validLength(v, { min: 1, max: 20 }),
+                v => validPostCode(v),
+            ],
         };
 
         const validation_errors = {
@@ -207,7 +215,7 @@ class MT5POA extends React.Component {
     }
 
     isFormDisabled(dirty, errors) {
-        if (this.state.poa_status && this.state.poa_status === PoaStatusCodes.verified) {
+        if (this.state.poa_status === PoaStatusCodes.verified) {
             return false;
         }
         return Object.keys(errors).length !== 0;
@@ -430,10 +438,16 @@ class MT5POA extends React.Component {
                                                 cancel_label={localize('Previous')}
                                                 is_disabled={
                                                     this.isFormDisabled(dirty, errors) ||
-                                                    (this.state.document_file && this.state.document_file.length < 1) ||
+                                                    (!(this.state.poa_status === PoaStatusCodes.verified) &&
+                                                        this.state.document_file &&
+                                                        this.state.document_file.length < 1) ||
                                                     !!this.state.file_error_message
                                                 }
-                                                label={localize('Next')}
+                                                label={
+                                                    this.state.poa_status === PoaStatusCodes.verified
+                                                        ? localize('Submit')
+                                                        : localize('Next')
+                                                }
                                                 is_absolute={isMobile()}
                                                 is_loading={isSubmitting}
                                                 form_error={this.state.form_error}

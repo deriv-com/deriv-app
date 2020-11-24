@@ -247,8 +247,7 @@
         margin-bottom: 2.4rem;
 
         &--is-centered {
-            @include typeface(--paragraph-center-normal-black);
-            color: var(--text-prominent);
+            margin-bottom: 2.4rem;
             max-width: 70%;
         }
     }

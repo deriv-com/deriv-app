@@ -2,7 +2,7 @@ import { Formik } from 'formik';
 import * as PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { Button, Icon, PasswordMeter, PasswordInput, FormSubmitButton, Loading, Modal } from '@deriv/components';
+import { Button, Icon, PasswordMeter, PasswordInput, FormSubmitButton, Loading, Modal, Text } from '@deriv/components';
 import { routes, validLength, validPassword, getErrorMessages } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -198,10 +198,18 @@ class MT5ResetPasswordModal extends React.Component {
                 {this.state.has_error && (
                     <div className='mt5-reset-password__error'>
                         <Icon icon='IcMt5Expired' size={128} />
-                        <p className='mt5-reset-password__heading'>{this.state.error_message}</p>
-                        <p className='mt5-reset-password__description mt5-reset-password__description--is-centered'>
+                        <Text as='p' size='xs' weight='bold' align='center' className='mt5-reset-password__heading'>
+                            {this.state.error_message}
+                        </Text>
+                        <Text
+                            as='p'
+                            color='prominent'
+                            size='xs'
+                            align='center'
+                            className='mt5-reset-password__description--is-centered'
+                        >
                             <Localize i18n_default_text='Please request a new password and check your email for the new token.' />
-                        </p>
+                        </Text>
                         <Button
                             primary
                             large

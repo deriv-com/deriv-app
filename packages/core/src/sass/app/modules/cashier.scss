@@ -1077,6 +1077,9 @@
         max-width: 36rem;
         margin: 0 auto 5.1rem;
 
+        &--to-dropdown {
+            margin: 0 auto 3.3rem;
+        }
         @include mobile {
             width: 100%;
             min-width: auto;
@@ -1146,7 +1149,7 @@
                 margin-bottom: 5rem;
 
                 &:not(.dc-select-native--error) {
-                    margin-bottom: 3.2rem;
+                    margin-bottom: 2.2rem;
                 }
             }
         }

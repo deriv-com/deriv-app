@@ -44,11 +44,11 @@ const MyProfile = observer(() => {
 
     const {
         basic_verification,
-        buy_orders_count,
+        daily_buy,
         daily_buy_limit,
+        daily_sell,
         daily_sell_limit,
         full_verification,
-        sell_orders_count,
         total_orders_count,
     } = my_profile_store.advertiser_info;
 
@@ -136,7 +136,7 @@ const MyProfile = observer(() => {
                                 })}
                             </Text>
                             <Text color='prominent' weight='bold' line_height='l' as='p'>
-                                {buy_orders_count || '-'}/{sell_orders_count || '-'}
+                                {daily_buy || '-'}/{daily_sell || '-'}
                             </Text>
                         </Table.Cell>
                     ) : (
@@ -148,7 +148,7 @@ const MyProfile = observer(() => {
                                     })}
                                 </Text>
                                 <Text color='prominent' weight='bold' line_height='l' as='p'>
-                                    {buy_orders_count || '-'}
+                                    {daily_buy || '-'}
                                 </Text>
                             </Table.Cell>
                             <div className='my-profile__stats-cell-separator' />
@@ -159,7 +159,7 @@ const MyProfile = observer(() => {
                                     })}
                                 </Text>
                                 <Text color='prominent' weight='bold' line_height='l' as='p'>
-                                    {sell_orders_count || '-'}
+                                    {daily_sell || '-'}
                                 </Text>
                             </Table.Cell>
                         </React.Fragment>

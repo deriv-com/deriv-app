@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Popover, Money } from '@deriv/components';
+import { Popover, Money, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
@@ -20,7 +20,10 @@ const MultipliersInfo = ({
     stop_out = 0,
 }) => {
     const commission_text = (
-        <p
+        <Text
+            as='p'
+            line_height='s'
+            size='xxxs'
             className={classNames({
                 [`${className}-tooltip-text`]: className,
             })}
@@ -29,11 +32,14 @@ const MultipliersInfo = ({
                 i18n_default_text='Commission <0/>'
                 components={[<Money key={0} amount={commission} currency={currency} show_currency />]}
             />
-        </p>
+        </Text>
     );
 
     const stop_out_text = (
-        <p
+        <Text
+            as='p'
+            line_height='s'
+            size='xxxs'
             className={classNames({
                 [`${className}-tooltip-text`]: className,
             })}
@@ -42,7 +48,7 @@ const MultipliersInfo = ({
                 i18n_default_text='Stop out <0/>'
                 components={[<Money key={0} amount={stop_out} currency={currency} show_currency />]}
             />
-        </p>
+        </Text>
     );
 
     const commission_tooltip = (

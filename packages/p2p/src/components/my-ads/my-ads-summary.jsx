@@ -4,40 +4,65 @@ import { formatMoney } from '@deriv/shared';
 import { Localize } from 'Components/i18next';
 import { buy_sell } from '../../constants/buy-sell';
 
-const AdSummary = ({ offer_amount, offer_currency, transaction_currency, price_rate, type }) => {
+const AdSummary = ({ offer_amount, offer_currency, price_rate, transaction_currency, type }) => {
     const display_offer_amount = offer_amount ? formatMoney(offer_currency, offer_amount, true) : '';
     const display_price_rate = price_rate ? formatMoney(transaction_currency, price_rate, true) : '';
     const display_total =
         offer_amount && price_rate ? formatMoney(transaction_currency, offer_amount * price_rate, true) : '';
-    return (
-        // progressively build ad summary as form is filled in
-        // e.g. "You're creating an ad to buy 100 USD for 1,400,000 IDR (14,000 IDR/USD)"
-        <React.Fragment>
-            {type === buy_sell.BUY ? (
-                <Localize i18n_default_text="You're creating an ad to buy" />
-            ) : (
-                <Localize i18n_default_text="You're creating an ad to sell" />
-            )}
-            {!offer_amount ? '...' : ' '}
-            {offer_amount && (
-                <span className='p2p-my-ads__form-summary--bold'>
-                    {display_offer_amount} {offer_currency}
-                </span>
-            )}
-            {offer_amount && !price_rate ? '...' : ' '}
-            {offer_amount && price_rate && (
+
+    if (offer_amount) {
+        const components = [<span key={0} className='p2p-my-ads__form-summary--bold' />];
+        const values = { target_amount: display_offer_amount, target_currency: offer_currency };
+
+        if (price_rate) {
+            Object.assign(values, {
+                local_amount: display_total,
+                local_currency: transaction_currency,
+                price_rate: display_price_rate,
+            });
+
+            if (type === buy_sell.BUY) {
+                return (
+                    <Localize
+                        i18n_default_text="You're creating an ad to buy <0>{{ target_amount }} {{ target_currency }}</0> for <0>{{ local_amount }} {{ local_currency }}</0> ({{ price_rate }}/{{ target_currency }})"
+                        components={components}
+                        values={values}
+                    />
+                );
+            }
+
+            return (
                 <Localize
-                    i18n_default_text='for <0>{{total_amount}} {{local_currency}}</0> ({{price_rate}} {{local_currency}}/{{currency}})'
-                    values={{
-                        total_amount: display_total,
-                        local_currency: transaction_currency,
-                        price_rate: display_price_rate,
-                        currency: offer_currency,
-                    }}
-                    components={[<span key={0} className='p2p-my-ads__form-summary--bold' />]}
+                    i18n_default_text="You're creating an ad to sell <0>{{ target_amount }} {{ target_currency }}</0> for <0>{{ local_amount }} {{ local_currency }}</0> ({{ price_rate }}/{{ target_currency }})"
+                    components={components}
+                    values={values}
                 />
-            )}
-        </React.Fragment>
+            );
+        }
+
+        if (type === buy_sell.BUY) {
+            return (
+                <Localize
+                    i18n_default_text="You're creating an ad to buy <0>{{ target_amount }} {{ target_currency }}</0>..."
+                    components={components}
+                    values={values}
+                />
+            );
+        }
+
+        return (
+            <Localize
+                i18n_default_text="You're creating an ad to sell <0>{{ target_amount }} {{ target_currency }}</0>..."
+                components={components}
+                values={values}
+            />
+        );
+    }
+
+    return type === buy_sell.BUY ? (
+        <Localize i18n_default_text="You're creating an ad to buy..." />
+    ) : (
+        <Localize i18n_default_text="You're creating an ad to sell..." />
     );
 };
 

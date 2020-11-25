@@ -612,8 +612,8 @@ export default class ClientStore extends BaseStore {
     setCookieAccount() {
         const domain = window.location.hostname.includes('deriv.com') ? 'deriv.com' : 'binary.sx';
         const { loginid, email, landing_company_shortcode, currency, residence, account_settings } = this;
-        const { first_name, last_name } = account_settings;
-        if (loginid && email && first_name) {
+        const { first_name, last_name, name } = account_settings;
+        if (loginid && email && name) {
             const client_information = {
                 loginid,
                 email,
@@ -622,6 +622,7 @@ export default class ClientStore extends BaseStore {
                 residence,
                 first_name,
                 last_name,
+                name,
             };
             Cookies.set('client_information', client_information, { domain });
             this.has_cookie_account = true;

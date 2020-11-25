@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Table, Text, Button, Icon } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
+import { buy_sell } from 'Constants/buy-sell';
 import { Localize, localize } from 'Components/i18next';
 import UserAvatar from 'Components/user/user-avatar';
 import { useStores } from 'Stores';
@@ -27,7 +28,7 @@ const BuySellRow = observer(({ row: advert, setSelectedAdvert, showAdvertiserPag
     } = advert;
 
     const is_my_advert = advert.advertiser_details.id === general_store.advertiser_id;
-    const is_buy_advert = counterparty_type === 'buy';
+    const is_buy_advert = counterparty_type === buy_sell.BUY;
     const { name: advertiser_name } = advert.advertiser_details;
 
     if (isMobile()) {

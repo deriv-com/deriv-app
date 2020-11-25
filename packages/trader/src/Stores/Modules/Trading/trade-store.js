@@ -1,14 +1,14 @@
 import debounce from 'lodash.debounce';
 import { action, computed, observable, reaction, runInAction, toJS, when } from 'mobx';
 import {
-    isDesktop,
-    isMobile,
-    isCryptocurrency,
-    getMinPayout,
     cloneObject,
-    isEmptyObject,
-    getPropertyValue,
     extractInfoFromShortcode,
+    getMinPayout,
+    getPropertyValue,
+    isCryptocurrency,
+    isDesktop,
+    isEmptyObject,
+    isMobile,
     showDigitalOptionsUnavailableError,
 } from '@deriv/shared';
 
@@ -19,7 +19,7 @@ import ServerTime from '_common/base/server_time';
 import { processPurchase } from './Actions/purchase';
 import * as Symbol from './Actions/symbol';
 import getValidationRules, { getMultiplierValidationRules } from './Constants/validation-rules';
-import { pickDefaultSymbol, showUnavailableLocationError, isMarketClosed } from './Helpers/active-symbols';
+import { isMarketClosed, pickDefaultSymbol, showUnavailableLocationError } from './Helpers/active-symbols';
 import ContractType from './Helpers/contract-type';
 import { convertDurationLimit, resetEndTimeOnVolatilityIndices } from './Helpers/duration';
 import { processTradeParams } from './Helpers/process';
@@ -513,14 +513,9 @@ export default class TradeStore extends BaseStore {
         if (isBarrierSupported(contract_type)) {
             const color = this.root_store.ui.is_dark_mode_on ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY;
             // create barrier only when it's available in response
-            const main_barrier = new ChartBarrierStore(
-                barrier || high_barrier,
-                low_barrier,
-                this.onChartBarrierChange,
-                { color }
-            );
-
-            this.main_barrier = main_barrier;
+            this.main_barrier = new ChartBarrierStore(barrier || high_barrier, low_barrier, this.onChartBarrierChange, {
+                color,
+            });
             // this.main_barrier.updateBarrierShade(true, contract_type);
         } else {
             this.main_barrier = null;
@@ -788,7 +783,6 @@ export default class TradeStore extends BaseStore {
             settings: {
                 theme: this.root_store.ui.is_dark_mode_on ? 'dark' : 'light',
                 positions_drawer: this.root_store.ui.is_positions_drawer_on ? 'open' : 'closed',
-                purchase_confirm: this.root_store.ui.is_purchase_confirm_on ? 'enabled' : 'disabled',
                 chart: {
                     toolbar_position: this.root_store.ui.is_chart_layout_default ? 'bottom' : 'left',
                     chart_asset_info: this.root_store.ui.is_chart_asset_info_visible ? 'visible' : 'hidden',

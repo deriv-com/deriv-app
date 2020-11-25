@@ -23,7 +23,7 @@ const MultipliersInfo = ({
         <Text
             as='p'
             line_height='s'
-            size='xxxs'
+            size='xxs'
             className={classNames({
                 [`${className}-tooltip-text`]: className,
             })}
@@ -39,7 +39,7 @@ const MultipliersInfo = ({
         <Text
             as='p'
             line_height='s'
-            size='xxxs'
+            size='xxs'
             className={classNames({
                 [`${className}-tooltip-text`]: className,
             })}

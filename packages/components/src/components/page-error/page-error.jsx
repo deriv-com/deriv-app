@@ -61,7 +61,7 @@ const PageError = ({
                                 <Text
                                     as='p'
                                     size='s'
-                                    lineHeight='x'
+                                    line_height='x'
                                     key={index}
                                     className='dc-page-error__message-paragraph'
                                     dangerouslySetInnerHTML={{ __html: message.message }}
@@ -70,7 +70,7 @@ const PageError = ({
                                 <Text
                                     as='p'
                                     size='s'
-                                    lineHeight='x'
+                                    line_height='x'
                                     key={index}
                                     className='dc-page-error__message-paragraph'
                                 >

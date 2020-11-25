@@ -97,16 +97,16 @@ const OnRampProviderPopup = ({
                                 message={localize('Copied!')}
                                 is_open={is_deposit_address_popover_open}
                             >
-                                <span
+                                <input
                                     className='on-ramp__popup-deposit-address-text'
-                                    onClick={onClickCopyDepositAddress}
                                     ref={setDepositAddressRef}
-                                >
-                                    {deposit_address}
-                                </span>
+                                    defaultValue={deposit_address}
+                                    disabled
+                                    onFocus={e => e.preventDefault()}
+                                />
                                 <Icon
                                     className='on-ramp__popup-deposit-address-icon'
-                                    icon='IcClipboard'
+                                    icon={isMobile() ? 'IcCopy' : 'icClipboard'}
                                     size={16}
                                     onClick={onClickCopyDepositAddress}
                                 />

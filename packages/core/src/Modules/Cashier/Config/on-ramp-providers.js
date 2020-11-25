@@ -72,15 +72,17 @@ const createChangellyProvider = client => ({
     getToCurrencies: () => ['bch', 'btc', 'etc', 'eth', 'ltc', 'ust'],
     getWidgetHtml() {
         return new Promise(resolve => {
-            const url = new URL('https://widget.changelly.com?theme=default');
-            url.searchParams.set('from', 'usd');
-            url.searchParams.append('fromDefault', 'usd');
-            let to_currency = 'etc';
+            const url = new URL('https://widget.changelly.com/?v=3&theme=default');
+            url.searchParams.append('fromDefault', this.getDefaultFromCurrency());
             if (this.getToCurrencies().includes(client.currency.toLowerCase())) {
-                to_currency = client.currency;
+                let to_currency = client.currency.toLowerCase();
+                if (to_currency === 'ust') {
+                    to_currency = 'usdt';
+                }
+                url.searchParams.append('to', to_currency);
+                url.searchParams.append('toDefault', to_currency);
             }
-            url.searchParams.append('to', to_currency);
-            url.searchParams.append('toDefault', to_currency);
+
             url.searchParams.append('amount', 1);
             url.searchParams.append('merchant_id', 'iiq3jdt2p44yrfbx');
             window.open(url);

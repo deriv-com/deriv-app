@@ -113,7 +113,7 @@ const OnRamp = ({
                     title={onramp_popup_modal_title}
                     toggleModal={() => setIsOnRampModalOpen(!is_onramp_modal_open)}
                     onUnmount={resetPopup}
-                    width={should_show_dialog ? '440px' : '628px'}
+                    width={should_show_dialog ? '44rem' : '62.8rem'}
                 >
                     <Modal.Body>
                         <OnRampProviderPopup />

@@ -8,6 +8,7 @@ import {
     routes,
     State,
     website_name,
+    platform_name,
 } from '@deriv/shared';
 import { StaticUrl } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
@@ -25,7 +26,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
             button_text: localize('Learn more'),
             img_src: '/public/images/common/dp2p_banner.png',
             img_alt: 'DP2P',
-            redirect_link: '/cashier/p2p/v1',
+            redirect_link: '/p2p/v1',
             type: 'news',
         },
         currency: {
@@ -237,6 +238,23 @@ export const clientNotifications = (ui = {}, client = {}) => {
             header: localize('Password updated.'),
             message: <Localize i18n_default_text='Please log in with your updated password.' />,
             type: 'info',
+        },
+        reset_virtual_balance: {
+            key: 'reset_virtual_balance',
+            header: localize('Reset your balance'),
+            message: client.message,
+            type: 'info',
+            is_persistent: true,
+            should_hide_close_btn: true,
+            should_show_again: true,
+            platform: [platform_name.DTrader],
+            is_disposable: true,
+            action: {
+                text: localize('Reset balance'),
+                onClick: async () => {
+                    await client.resetVirtualBalance();
+                },
+            },
         },
         needs_poi: {
             action: {

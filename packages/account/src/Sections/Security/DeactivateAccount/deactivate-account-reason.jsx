@@ -342,6 +342,7 @@ class DeactivateAccountReason extends React.Component {
                                         as='p'
                                         weight='bold'
                                         size='xs'
+                                        color='loss-danger'
                                         className='deactivate-account-reasons__error'
                                         key={key}
                                     >

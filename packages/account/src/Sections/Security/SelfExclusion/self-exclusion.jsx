@@ -480,7 +480,12 @@ class SelfExclusion extends React.Component {
                                                         </div>
                                                     );
                                                 })}
-                                                <Text as='p' align='center' className='self-exclusion__confirm-note'>
+                                                <Text
+                                                    as='p'
+                                                    size='xs'
+                                                    align='center'
+                                                    className='self-exclusion__confirm-note'
+                                                >
                                                     {is_eu ? (
                                                         <Localize
                                                             i18n_default_text='You’ll be able to adjust these limits at any time. You can reduce your limits from the <0>self-exclusion page</0>. To increase or remove your limits, please contact our <1>Customer Support team</1>.'
@@ -509,7 +514,7 @@ class SelfExclusion extends React.Component {
                                                     )}
                                                 </Text>
                                                 <Text as='p' color='loss-danger' className='self-exclusion__error'>
-                                                    ttttt{submit_error_message}
+                                                    {submit_error_message}
                                                 </Text>
                                                 {is_eu ? (
                                                     <Button

@@ -356,6 +356,10 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
     }
+    &__text {
+        @include typeface(--paragraph-left-normal-black, none);
+        color: var(--text-general);
+    }
     .account-management__message {
         margin-top: 1em;
         font-weight: bold;
@@ -1806,6 +1810,11 @@ $MIN_HEIGHT_FLOATING: calc(
         }
         &__warning-message {
             padding: 16px 0;
+            line-height: 1.43;
+        }
+        &__content {
+            @include typeface(--paragraph-left-normal-prominent, none);
+            color: var(--text-general);
             line-height: 1.43;
         }
         &__content-wrapper {

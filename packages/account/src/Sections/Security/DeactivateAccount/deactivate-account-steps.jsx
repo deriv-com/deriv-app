@@ -28,7 +28,7 @@ const DeactivateAccountSteps = ({ redirectToReasons }) => (
             </Text>
         </div>
         <div className='deactivate-account__steps'>
-            <Text size='xs' as='p' color='bold' className='deactivate-account__title'>
+            <Text size='xs' as='p' weight='bold' className='deactivate-account__title'>
                 <Localize i18n_default_text='2. Withdraw your funds' />
             </Text>
             <Text size='xs' as='p'>

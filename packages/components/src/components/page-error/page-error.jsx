@@ -26,7 +26,7 @@ const PageError = ({
 
     return (
         // if image_url is passed we should split the page to two columns and left-align messages
-        <div className={classNames('dc-page-error__container', { 'dc-page-error__container--left': !!image_url })}>
+        <div className='dc-page-error__container'>
             {!!image_url && (
                 <DesktopWrapper>
                     <img
@@ -34,8 +34,8 @@ const PageError = ({
                         src={image_url}
                         alt={'404'}
                         loading='lazy'
-                        width='771px' // width and height should be specified so it doesn't jump to the right after image loads
-                        height='448px'
+                        width='607px' // width and height should be specified so it doesn't jump to the right after image loads
+                        height='366px'
                     />
                 </DesktopWrapper>
             )}

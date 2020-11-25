@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { PageError, Dialog } from '@deriv/components';
 import { routes } from '@deriv/shared';
-import { Localize, localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 
 const ErrorComponent = ({
     header,
@@ -12,11 +12,7 @@ const ErrorComponent = ({
     redirectOnClick,
     should_show_refresh = true,
 }) => {
-    const refresh_message = should_show_refresh ? (
-        <Localize i18n_default_text='Please refresh this page to continue.' />
-    ) : (
-        ''
-    );
+    const refresh_message = should_show_refresh ? localize('Please refresh this page to continue.') : '';
 
     return is_dialog ? (
         <Dialog
@@ -29,20 +25,14 @@ const ErrorComponent = ({
         </Dialog>
     ) : (
         <PageError
-            header={header || <Localize i18n_default_text='Something’s not right' />}
+            header={header || localize('Something’s not right')}
             messages={
                 message
                     ? [message, refresh_message]
-                    : [
-                          <Localize
-                              key={0}
-                              i18n_default_text='Sorry, an error occured while processing your request.'
-                          />,
-                          refresh_message,
-                      ]
+                    : [localize('Sorry, an error occured while processing your request.'), refresh_message]
             }
             redirect_urls={[routes.trade]}
-            redirect_labels={[redirect_label || <Localize i18n_default_text='Refresh' />]}
+            redirect_labels={[redirect_label || localize('Refresh')]}
             buttonOnClick={redirectOnClick || (() => location.reload())}
         />
     );

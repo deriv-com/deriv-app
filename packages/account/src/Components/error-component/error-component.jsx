@@ -26,7 +26,7 @@ const ErrorComponent = ({ header, message, redirect_label, redirectOnClick, shou
                       ]
             }
             redirect_urls={[routes.trade]}
-            redirect_labels={[redirect_label || <Localize i18n_default_text='Refresh' />]}
+            redirect_labels={[redirect_label || localize('Refresh')]}
             buttonOnClick={redirectOnClick || (() => location.reload())}
         />
     );

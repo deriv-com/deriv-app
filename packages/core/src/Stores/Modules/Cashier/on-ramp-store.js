@@ -27,8 +27,8 @@ export default class OnRampStore extends BaseStore {
             this.setOnrampProviders([
                 OnrampProviders.createChangellyProvider(this),
                 OnrampProviders.createWyreProvider(this),
-                OnrampProviders.createBanxaProvider(this),
                 OnrampProviders.createXanPoolProvider(this),
+                OnrampProviders.createBanxaProvider(this),
             ]);
         });
     }

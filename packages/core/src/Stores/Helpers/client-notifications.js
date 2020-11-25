@@ -26,7 +26,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
             button_text: localize('Learn more'),
             img_src: '/public/images/common/dp2p_banner.png',
             img_alt: 'DP2P',
-            redirect_link: '/cashier/p2p/v1',
+            redirect_link: '/p2p/v1',
             type: 'news',
         },
         currency: {

@@ -218,7 +218,7 @@ const getRowAction = row_obj =>
  */
 const isPurchaseReceived = item => isNaN(item.purchase) || !item.purchase;
 
-const getTotals = (active_positions_filtered, is_multiplier_selected) => {
+const getOpenPositionsTotals = (active_positions_filtered, is_multiplier_selected) => {
     let totals;
 
     if (is_multiplier_selected) {
@@ -338,7 +338,7 @@ const OpenPositions = ({
         return true;
     });
 
-    const active_positions_filtered_totals = getTotals(active_positions_filtered, is_multiplier_selected);
+    const active_positions_filtered_totals = getOpenPositionsTotals(active_positions_filtered, is_multiplier_selected);
 
     const columns = is_multiplier_selected
         ? getMultiplierOpenPositionsColumnsTemplate({

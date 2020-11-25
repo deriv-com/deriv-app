@@ -68,7 +68,7 @@ const Deposit = ({
                 }
             }
         }
-    }, [currency, iframe_height, setSideNotes]);
+    }, [currency, iframe_height]);
 
     if (is_virtual) {
         return <Virtual />;

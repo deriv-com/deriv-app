@@ -1,22 +1,14 @@
-import { observable, action, runInAction } from 'mobx';
-import { isEmptyObject, epochToMoment, getSocketURL } from '@deriv/shared';
-import { orderToggleIndex } from 'Components/orders/order-info.js';
-import { createExtendedOrderDetails } from 'Utils/orders.js';
-import { init as WebsocketInit, requestWS, subscribeWS } from 'Utils/websocket.js';
+import { observable, action } from 'mobx';
+import { isEmptyObject } from '@deriv/shared';
+import { orderToggleIndex } from 'Components/orders/order-info';
+import { createExtendedOrderDetails } from 'Utils/orders';
+import { init as WebsocketInit, requestWS, subscribeWS } from 'Utils/websocket';
+import BaseStore from 'Stores/base_store';
 
-export default class GeneralStore {
-    constructor(root_store) {
-        this.root_store = root_store;
-    }
-
+export default class GeneralStore extends BaseStore {
     @observable active_index = 0;
     @observable active_notification_count = 0;
     @observable advertiser_id = null;
-    @observable chat_info = {
-        app_id: '',
-        user_id: '',
-        token: '',
-    };
     @observable inactive_notification_count = 0;
     @observable is_advertiser = false;
     @observable is_listed = false;
@@ -24,6 +16,8 @@ export default class GeneralStore {
     @observable nickname = null;
     @observable nickname_error = null;
     @observable notification_count = 0;
+    @observable order_id = null;
+    @observable.ref order_information = null;
     @observable order_offset = 0;
     @observable order_table_type = orderToggleIndex.ACTIVE;
     @observable orders = [];
@@ -56,6 +50,7 @@ export default class GeneralStore {
         return new Promise(resolve => {
             requestWS({ p2p_advertiser_create: 1, name }).then(response => {
                 const { p2p_advertiser_create } = response;
+
                 if (response) {
                     if (response.error) {
                         this.setNicknameError(response.error.message);
@@ -64,7 +59,7 @@ export default class GeneralStore {
                         this.setIsAdvertiser(!!p2p_advertiser_create.is_approved);
                         this.setNickname(p2p_advertiser_create.name);
                         this.setNicknameError(undefined);
-                        this.setChatInfo(response);
+                        this.root_store.sendbird_store.handleP2pAdvertiserInfo(response);
                         this.toggleNicknamePopup();
                     }
                     resolve();
@@ -80,9 +75,9 @@ export default class GeneralStore {
 
         if (isEmptyObject(local_storage_settings)) {
             return { is_cached: false, notifications: [] };
-        } else {
-            return local_storage_settings;
         }
+
+        return local_storage_settings;
     };
 
     @action.bound
@@ -141,13 +136,15 @@ export default class GeneralStore {
 
     @action.bound
     onMount() {
+        const { sendbird_store } = this.root_store;
+
         this.ws_subscriptions = {
             advertiser_subscription: subscribeWS(
                 {
                     p2p_advertiser_info: 1,
                     subscribe: 1,
                 },
-                [this.updateAdvertiserInfo, this.setChatInfo]
+                [this.updateAdvertiserInfo, response => sendbird_store.handleP2pAdvertiserInfo(response)]
             ),
             order_list_subscription: subscribeWS(
                 {
@@ -203,47 +200,6 @@ export default class GeneralStore {
     }
 
     @action.bound
-    setChatInfo(response) {
-        if (this.service_token_timeout) return;
-        if (response.error) {
-            this.ws_subscriptions.advertiser_subscription?.unsubscribe();
-            return;
-        }
-
-        // Response could be both from p2p_advertiser_create or p2p_advertiser_info.
-        const advertiser_info = response.p2p_advertiser_create || response.p2p_advertiser_info;
-
-        const getSendbirdServiceToken = () => {
-            requestWS({ service: 'sendbird', service_token: 1 }).then(service_token_response => {
-                if (service_token_response.error) {
-                    return;
-                }
-
-                const { service_token } = service_token_response;
-
-                runInAction(() => {
-                    this.chat_info = {
-                        app_id: getSocketURL().endsWith('binaryws.com')
-                            ? '1465991C-5D64-4C88-8BD9-B0D7A6455E69'
-                            : '4E259BA5-C383-4624-89A6-8365E06D9D39',
-                        user_id: advertiser_info.chat_user_id,
-                        token: service_token.sendbird.token,
-                    };
-                });
-
-                // Refresh chat token ±1 hour before it expires (BE will refresh the token
-                // when we request within 2 hours of the token expiring)
-                const expiry_moment = epochToMoment(service_token.sendbird.expiry_time);
-                const delay_ms = expiry_moment.diff(this.props.server_time.get().clone().subtract(1, 'hour'));
-
-                this.service_token_timeout = setTimeout(() => getSendbirdServiceToken(), delay_ms);
-            });
-        };
-
-        getSendbirdServiceToken();
-    }
-
-    @action.bound
     setInactiveNotificationCount(inactive_notification_count) {
         this.inactive_notification_count = inactive_notification_count;
     }
@@ -276,6 +232,20 @@ export default class GeneralStore {
     @action.bound
     setNotificationCount(notification_count) {
         this.notification_count = notification_count;
+    }
+
+    @action.bound
+    setOrderId(order_id) {
+        this.order_id = order_id;
+
+        if (typeof this.props.setOrderId === 'function') {
+            this.props.setOrderId(order_id);
+        }
+    }
+
+    @action.bound
+    setOrderInformation(order_information) {
+        this.order_information = order_information;
     }
 
     @action.bound

@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const OrderInfoBlock = ({ label, value }) => (
-    <div className='order-details__info-block'>
-        <p className='order-details__info-block-label'>{label}</p>
-        <div className='order-details__info-block-value'>{value}</div>
+    <div className='order-details-card__info-block'>
+        <p className='order-details-card__info-block-label'>{label}</p>
+        <div className='order-details-card__info-block-value'>{value}</div>
     </div>
 );
 

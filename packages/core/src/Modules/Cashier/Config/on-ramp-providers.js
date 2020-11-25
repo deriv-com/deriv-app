@@ -203,15 +203,17 @@ const createXanPoolProvider = store => ({
         { dark: 'IcCashierViettlePay', light: 'IcCashierViettlePay' },
     ],
     getScriptDependencies: () => [],
-    getToCurrencies: () => ['btc', 'eth', 'usdt', 'zil', 'nem'],
+    getToCurrencies: () => ['btc', 'eth', 'ust', 'zil', 'nem'],
     getWidgetHtml() {
         return new Promise(resolve => {
+            const { currency } = store.root_store.client;
+
             let url = 'https://checkout.xanpool.com/';
 
             url += `?apiKey=db4ec638dff9a68abda1ef6b7638c220`;
             url += `&redirectUrl=${window.location.href}`;
             url += `&wallet=${store.deposit_address}`;
-            url += `&cryptoCurrency=${store.root_store.client.currency}`;
+            url += `&cryptoCurrency=${currency === 'UST' ? 'USDT' : currency}`;
             url += `&transactionType=buy`;
 
             window.open(url);

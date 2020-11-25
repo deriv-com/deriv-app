@@ -136,7 +136,7 @@ export default class TransactionsStore {
     registerReactions() {
         const { client } = this.root_store.core;
 
-        // Write transactions to session storage on each change in unfiltered messages.
+        // Write transactions to session storage on each change in transaction elements.
         this.disposeTransactionElementsListener = reaction(
             () => this.elements,
             elements => {

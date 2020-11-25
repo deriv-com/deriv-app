@@ -11,9 +11,7 @@ const PageError = ({
     header,
     image_url,
     messages,
-    redirect_label,
     redirect_labels,
-    redirect_url,
     redirect_urls,
     should_clear_error_on_click,
     setError,
@@ -83,34 +81,21 @@ const PageError = ({
                     </Text>
                 </div>
                 <div className='dc-page-error__btn-wrapper'>
-                    {redirect_urls ? (
-                        redirect_urls.map((url, index) => {
-                            return (
-                                <ButtonLink
-                                    className='dc-page-error__btn'
-                                    to={url}
-                                    onClick={onClickHandler}
-                                    size='large'
-                                    key={index}
-                                >
-                                    <Text weight='bold' className='dc-page-error__btn-text dc-btn__text'>
-                                        {redirect_labels[index] || redirect_label}
-                                    </Text>
-                                </ButtonLink>
-                            );
-                        })
-                    ) : (
-                        <ButtonLink
-                            className='dc-page-error__btn'
-                            to={redirect_url}
-                            onClick={onClickHandler}
-                            size='large'
-                        >
-                            <Text weight='bold' className='dc-page-error__btn-text dc-btn__text'>
-                                {redirect_label}
-                            </Text>
-                        </ButtonLink>
-                    )}
+                    {redirect_urls.map((url, index) => {
+                        return (
+                            <ButtonLink
+                                className='dc-page-error__btn'
+                                to={url}
+                                onClick={onClickHandler}
+                                size='large'
+                                key={index}
+                            >
+                                <Text weight='bold' className='dc-page-error__btn-text dc-btn__text'>
+                                    {redirect_labels[index]}
+                                </Text>
+                            </ButtonLink>
+                        );
+                    })}
                 </div>
             </div>
         </div>
@@ -123,9 +108,7 @@ PageError.propTypes = {
     header: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     image_url: PropTypes.string,
     messages: PropTypes.array,
-    redirect_label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     redirect_labels: PropTypes.array,
-    redirect_url: PropTypes.string,
     redirect_urls: PropTypes.array,
     setError: PropTypes.func,
     should_clear_error_on_click: PropTypes.bool,

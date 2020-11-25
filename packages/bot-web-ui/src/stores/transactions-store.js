@@ -166,7 +166,10 @@ export default class TransactionsStore {
     recoverPendingContracts() {
         this.transactions.forEach(({ data: trx }) => {
             if (trx.is_completed) return;
-            this.root_store.ws.subscribeProposalOpenContract(trx.contract_id, response => {
+
+            const { ws } = this.root_store;
+
+            ws.authorized.subscribeProposalOpenContract(trx.contract_id, response => {
                 if (!response.error) {
                     this.onBotContractEvent(response.proposal_open_contract);
                 }

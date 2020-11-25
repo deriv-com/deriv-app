@@ -182,6 +182,11 @@ export const getStaticUrl = (
 
     if (is_document) return `${host}/${normalizePath(path)}`;
 
+    // Deriv.com supports languages separated by '-' not '_'
+    if (host === deriv_urls.DERIV_COM_PRODUCTION && lang.includes('_')) {
+        lang = lang.replace('_', '-');
+    }
+
     return `${host}${lang}/${normalizePath(path)}`;
 };
 

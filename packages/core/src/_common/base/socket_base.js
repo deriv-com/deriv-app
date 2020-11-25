@@ -279,7 +279,7 @@ const BinarySocketBase = (() => {
 
     const p2pAdvertiserInfo = () => deriv_api.send({ p2p_advertiser_info: 1 });
 
-    const loginHistory = limit =>
+    const fetchLoginHistory = limit =>
         deriv_api.send({
             login_history: 1,
             limit,
@@ -353,7 +353,7 @@ const BinarySocketBase = (() => {
         subscribeWebsiteStatus,
         tncApproval,
         transferBetweenAccounts,
-        loginHistory,
+        fetchLoginHistory,
         closeAndOpenNewConnection,
         accountStatistics,
         realityCheck,

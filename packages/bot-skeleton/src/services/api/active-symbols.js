@@ -25,7 +25,7 @@ export default class ActiveSymbols {
 
         this.is_initialised = true;
 
-        const { active_symbols } = await this.ws.activeSymbols();
+        const { active_symbols } = await this.ws.authorized.activeSymbols();
 
         this.active_symbols = active_symbols;
         this.processed_symbols = this.processActiveSymbols();

@@ -24,11 +24,11 @@ export default class OnRampStore extends BaseStore {
         super({ root_store });
 
         this.onClientInit(async () => {
-            const { client } = root_store;
             this.setOnrampProviders([
-                OnrampProviders.createChangellyProvider(client),
-                OnrampProviders.createWyreProvider(),
-                OnrampProviders.createBanxaProvider(),
+                OnrampProviders.createChangellyProvider(this),
+                OnrampProviders.createWyreProvider(this),
+                OnrampProviders.createBanxaProvider(this),
+                OnrampProviders.createXanPoolProvider(this),
             ]);
         });
     }

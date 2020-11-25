@@ -11,12 +11,12 @@ import BuySellForm from './buy-sell-form.jsx';
 import NicknameForm from '../nickname/nickname-form.jsx';
 import 'Components/buy-sell/buy-sell-modal.scss';
 
-const BuySellModalFooter = ({ onCancelClick, error_message, is_submit_disabled, onSubmit }) => {
+const BuySellModalFooter = ({ onCancel, error_message, is_submit_disabled, onSubmit }) => {
     return (
         <React.Fragment>
             {error_message && <FormError message={error_message} />}
             <Button.Group>
-                <Button secondary type='button' onClick={onCancelClick} large>
+                <Button secondary type='button' onClick={onCancel} large>
                     {localize('Cancel')}
                 </Button>
                 <Button is_disabled={is_submit_disabled} primary large onClick={onSubmit}>
@@ -28,7 +28,7 @@ const BuySellModalFooter = ({ onCancelClick, error_message, is_submit_disabled, 
 };
 
 BuySellModalFooter.propTypes = {
-    onCancelClick: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
     error_message: PropTypes.string,
     is_submit_disabled: PropTypes.bool,
     onSubmit: PropTypes.func.isRequired,
@@ -50,7 +50,7 @@ const BuySellModal = observer(({ table_type, selected_ad, should_show_popup, set
         }
     };
 
-    const onCancelClick = () => {
+    const onCancel = () => {
         if (isMounted()) {
             setShouldShowPopup(false);
         }
@@ -85,13 +85,13 @@ const BuySellModal = observer(({ table_type, selected_ad, should_show_popup, set
                 is_modal_open={should_show_popup}
                 page_header_className='buy-sell__modal-header'
                 page_header_text={modal_title}
-                pageHeaderReturnFn={onCancelClick}
+                pageHeaderReturnFn={onCancel}
                 page_footer_parent={page_footer_parent}
                 page_footer_children={
                     <BuySellModalFooter
                         error_message={error_message}
                         is_submit_disabled={is_submit_disabled}
-                        onCancelClick={onCancelClick}
+                        onCancel={onCancel}
                         onSubmit={submitForm.current}
                     />
                 }
@@ -100,7 +100,7 @@ const BuySellModal = observer(({ table_type, selected_ad, should_show_popup, set
             >
                 <Form
                     advert={selected_ad}
-                    handleClose={onCancelClick}
+                    handleClose={onCancel}
                     handleConfirm={onConfirmClick}
                     setIsSubmitDisabled={stateUpdateFnWrapper(setIsSubmitDisabled)}
                     setErrorMessage={stateUpdateFnWrapper(setErrorMessage)}
@@ -119,14 +119,14 @@ const BuySellModal = observer(({ table_type, selected_ad, should_show_popup, set
             is_open={should_show_popup}
             title={modal_title}
             portalId={general_store.props.modal_root_id}
-            toggleModal={onCancelClick}
+            toggleModal={onCancel}
         >
             {/* Parent height - Modal.Header height - Modal.Footer height */}
             <ThemedScrollbars height='calc(100% - 5.8rem - 7.4rem)'>
                 <Modal.Body>
                     <Form
                         advert={selected_ad}
-                        handleClose={onCancelClick}
+                        handleClose={onCancel}
                         handleConfirm={onConfirmClick}
                         setIsSubmitDisabled={stateUpdateFnWrapper(setIsSubmitDisabled)}
                         setErrorMessage={stateUpdateFnWrapper(setErrorMessage)}
@@ -138,7 +138,7 @@ const BuySellModal = observer(({ table_type, selected_ad, should_show_popup, set
                 <BuySellModalFooter
                     error_message={error_message}
                     is_submit_disabled={is_submit_disabled}
-                    onCancelClick={onCancelClick}
+                    onCancel={onCancel}
                     onSubmit={submitForm.current}
                 />
             </Modal.Footer>

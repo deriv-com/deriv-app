@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { formatMoney } from '@deriv/shared';
 import { Localize } from 'Components/i18next';
+import { buy_sell } from '../../constants/buy-sell';
 
 const AdSummary = ({ offer_amount, offer_currency, transaction_currency, price_rate, type }) => {
     const display_offer_amount = offer_amount ? formatMoney(offer_currency, offer_amount, true) : '';
@@ -12,12 +13,11 @@ const AdSummary = ({ offer_amount, offer_currency, transaction_currency, price_r
         // progressively build ad summary as form is filled in
         // e.g. "You're creating an ad to buy 100 USD for 1,400,000 IDR (14,000 IDR/USD)"
         <React.Fragment>
-            <Localize
-                i18n_default_text="You're creating an ad to {{buy_or_sell}}"
-                values={{
-                    buy_or_sell: type,
-                }}
-            />
+            {type === buy_sell.BUY ? (
+                <Localize i18n_default_text="You're creating an ad to buy" />
+            ) : (
+                <Localize i18n_default_text="You're creating an ad to sell" />
+            )}
             {!offer_amount ? '...' : ' '}
             {offer_amount && (
                 <span className='p2p-my-ads__form-summary--bold'>

@@ -170,7 +170,7 @@ const MarketCountdownTimer = ({ is_main_page, setActiveSymbols, symbol }) => {
                     'market-is-closed-overlay__timer--main-page': is_main_page,
                 })}
             >
-                {timer_components} GMT
+                {timer_components}
             </Text>
             <div className='market-is-closed-overlay__separator' />
         </React.Fragment>

@@ -974,10 +974,11 @@
         height: 100%;
     }
     &__file-upload {
+        padding-top: 0.8rem;
         position: relative;
 
         li {
-            margin: 0 0 1.5rem 0;
+            margin: 0 0 0.8rem 0;
         }
     }
     &__field-area {

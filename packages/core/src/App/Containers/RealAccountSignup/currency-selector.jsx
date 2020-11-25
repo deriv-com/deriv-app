@@ -150,7 +150,7 @@ const CurrencySelector = ({
         <Formik
             initialValues={props.value}
             onSubmit={(values, actions) => {
-                onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep);
+                onSubmit(getCurrentStep ? getCurrentStep() - 1 : null, values, actions.setSubmitting, goToNextStep);
             }}
             validate={handleValidate}
         >

@@ -37,7 +37,7 @@ const OnRamp = ({
         }
 
         return () => onUnmountOnramp();
-    }, [onMountOnramp, onUnmountOnramp, setSideNotes]);
+    }, [onMountOnramp, onUnmountOnramp]);
 
     return (
         <div className='cashier__wrapper cashier__wrapper--align-left on-ramp'>

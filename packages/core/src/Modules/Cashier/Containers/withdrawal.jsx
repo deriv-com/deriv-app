@@ -64,7 +64,7 @@ const Withdrawal = ({
                 setSideNotes([<WithdrawalSideNote key={0} />]);
             }
         }
-    }, [currency, setSideNotes, iframe_url, verification_code]);
+    }, [currency, iframe_url, verification_code]);
 
     if (verification_code || iframe_url) {
         return <Withdraw />;

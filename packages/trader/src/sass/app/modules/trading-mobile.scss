@@ -304,6 +304,9 @@
                 margin-top: 0rem;
                 flex: 1;
 
+                &--empty {
+                    display: none;
+                }
                 .dc-radio-group__item {
                     min-height: 4.8rem;
                     max-height: 4.8rem;

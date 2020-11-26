@@ -1,15 +1,12 @@
 import { action, computed, observable } from 'mobx';
-import { buy_sell } from '../src/constants/buy-sell';
 import { getShortNickname } from 'Utils/string';
 import { height_constants } from 'Utils/height_constants';
 import { localize } from 'Components/i18next';
+import { buy_sell } from 'Constants/buy-sell';
 import { requestWS } from 'Utils/websocket';
+import BaseStore from 'Stores/base_store';
 
-export default class AdvertiserPageStore {
-    constructor(root_store) {
-        this.root_store = root_store;
-    }
-
+export default class AdvertiserPageStore extends BaseStore {
     @observable active_index = 0;
     @observable advertiser_info = {};
     @observable adverts = [];

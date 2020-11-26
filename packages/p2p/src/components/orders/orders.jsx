@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
-import { localize } from 'Components/i18next';
-import PageReturn from 'Components/page-return/page-return.jsx';
 import { useStores } from 'Stores';
 import OrderTable from './order-table.jsx';
 import OrderDetails from '../order-details/order-details.jsx';
@@ -10,37 +8,27 @@ import './orders.scss';
 
 const Orders = observer(() => {
     const { general_store, order_store } = useStores();
+    const { order_information } = general_store;
 
     React.useEffect(() => {
         return () => order_store.onUnmount();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {
         order_store.onOrderIdUpdate();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [general_store.props.order_id]);
 
     React.useEffect(() => {
         order_store.onOrdersUpdate();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [general_store.orders]);
 
-    if (order_store.order_information) {
-        const { order_information } = order_store;
+    if (order_information) {
         return (
-            <div className='orders orders--order-view'>
-                <PageReturn
-                    onClick={() => order_store.hideDetails(true)}
-                    page_title={
-                        (order_information.is_buy_order && !order_information.is_my_ad) ||
-                        (order_information.is_sell_order && order_information.is_my_ad)
-                            ? localize('Buy {{offered_currency}} order', {
-                                  offered_currency: order_information.account_currency,
-                              })
-                            : localize('Sell {{offered_currency}} order', {
-                                  offered_currency: order_information.account_currency,
-                              })
-                    }
-                />
-                <OrderDetails />
+            <div className='orders'>
+                <OrderDetails onPageReturn={() => order_store.hideDetails(true)} />
             </div>
         );
     }
@@ -53,10 +41,8 @@ const Orders = observer(() => {
 });
 
 Orders.propTypes = {
-    hideDetails: PropTypes.func,
-    order_information: PropTypes.object,
-    onOrderIdUpdate: PropTypes.func,
-    onUnmount: PropTypes.func,
+    navigate: PropTypes.func,
+    params: PropTypes.object,
 };
 
 export default Orders;

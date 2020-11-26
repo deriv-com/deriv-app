@@ -2,36 +2,48 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
+import { secondsToTimer } from 'Utils/date-time';
+import ServerTime from 'Utils/server-time';
 import { useStores } from 'Stores';
 
 const OrderDetailsTimer = observer(() => {
-    const { order_store, order_details_store } = useStores();
+    const { general_store } = useStores();
+    const [remaining_time, setRemainingTime] = React.useState();
+    const { should_show_order_timer } = general_store.order_information;
+    const interval = React.useRef(null);
 
-    const { should_show_order_timer } = order_store.order_information;
+    const countDownTimer = () => {
+        const distance = ServerTime.getDistanceToServerTime(general_store.order_information.order_expiry_milliseconds);
+        const timer = secondsToTimer(distance);
+        if (distance < 0) {
+            setRemainingTime(localize('expired'));
+            clearInterval(interval.current);
+        } else {
+            setRemainingTime(timer);
+        }
+    };
 
     React.useEffect(() => {
-        order_details_store.countDownTimer();
-        order_details_store.setIntervalState(setInterval(order_details_store.countDownTimer, 1000));
-        return () => clearInterval(order_details_store.interval);
+        countDownTimer();
+        interval.current = setInterval(countDownTimer, 1000);
+        return () => clearInterval(interval.current);
     }, []);
 
     if (should_show_order_timer) {
         return (
-            <div className='order-details__header-timer'>
+            <div className='order-details-card__header-timer'>
                 <div>{localize('Time left')}</div>
-                <div className='order-details__header-timer-counter'>{order_details_store.remaining_time}</div>
+                <div className='order-details-card__header-timer-counter'>{remaining_time}</div>
             </div>
         );
     }
 
-    clearInterval(order_details_store.interval);
+    clearInterval(interval.current);
     return null;
 });
 
 OrderDetailsTimer.propTypes = {
-    countDownTimer: PropTypes.func,
     order_information: PropTypes.object,
-    setIntervalState: PropTypes.func,
 };
 
 export default OrderDetailsTimer;

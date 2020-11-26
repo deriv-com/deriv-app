@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
-import { Checkbox, Button, Modal } from '@deriv/components';
+import { Button, Checkbox, Modal, Text } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import { localize } from '../i18next';
@@ -34,13 +34,19 @@ const FormWithConfirmation = observer(
                             is_confirmation_modal
                             is_open={should_show_popup}
                             portalId={general_store.props.modal_root_id}
-                            title={title}
+                            renderTitle={() => (
+                                <Text color='prominent' line-height='m' size='s' weight='bold'>
+                                    {title}
+                                </Text>
+                            )}
                             toggleModal={() => setShouldShowPopup(false)}
                             width={width}
                         >
                             <Modal.Body>
                                 <div className='orders__popup-content'>
-                                    {message}
+                                    <Text color='prominent' line_height='m' size='xs'>
+                                        {message}
+                                    </Text>
                                     <div className='orders__popup-field'>
                                         <Field name='need_confirmation'>
                                             {({ field }) => (
@@ -121,15 +127,21 @@ const FormWithoutConfirmation = observer(
                 is_confirmation_modal
                 is_open={should_show_popup}
                 portalId={general_store.props.modal_root_id}
-                title={title}
+                renderTitle={() => (
+                    <Text color='prominent' line-height='m' size='s' weight='bold'>
+                        {title}
+                    </Text>
+                )}
                 toggleModal={() => setShouldShowPopup(false)}
                 width={width}
             >
                 <Modal.Body>
                     <div className='orders__popup-content'>
-                        {message}
+                        <Text color='prominent' line_height='m' size='xs'>
+                            {message}
+                        </Text>
                         {should_confirm_payment && (
-                            <div className='order-details__popup-checkBox'>
+                            <div className='order-details-card__popup-checkBox'>
                                 <Checkbox
                                     onChange={() => setShouldDisableConfirm(!should_disable_confirm)}
                                     defaultChecked={!should_disable_confirm}

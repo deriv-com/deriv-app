@@ -11,7 +11,6 @@ export default class OrderStore {
     @observable api_error_message = '';
     @observable has_more_items_to_load = false;
     @observable is_loading = false;
-    @observable order_information = null;
     @observable order_rerender_timeout = null;
 
     height_values = [
@@ -28,6 +27,11 @@ export default class OrderStore {
     interval;
     item_height = 72;
     order_info_subscription = {};
+
+    @computed
+    get order_information() {
+        return this.root_store.general_store.order_information;
+    }
 
     @computed
     get nav() {
@@ -123,7 +127,7 @@ export default class OrderStore {
 
     @action.bound
     setOrderInformation(order_information) {
-        this.order_information = order_information;
+        this.root_store.general_store.setOrderInformation(order_information);
     }
 
     @action.bound

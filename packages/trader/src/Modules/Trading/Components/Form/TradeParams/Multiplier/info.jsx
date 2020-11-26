@@ -58,7 +58,10 @@ const MultipliersInfo = ({
                 commission_percentage: Number((commission * 100) / (multiplier * amount)).toFixed(4),
                 multiplier,
             }}
-            components={[<span className='bold' key={0} />, <Money key={1} amount={amount} currency={currency} />]}
+            components={[
+                <Text size='xxs' weight='bold' key={0} />,
+                <Money key={1} amount={amount} currency={currency} />,
+            ]}
         />
     );
 
@@ -73,7 +76,7 @@ const MultipliersInfo = ({
         <Localize
             i18n_default_text='When your current loss equals or exceeds {{stop_out_percentage}}% of your stake, your contract will be closed at the nearest available asset price.'
             values={{
-                stop_out_percentage: Math.abs(Number((stop_out * 100) / amount).toFixed(0)),
+                stop_out_percentage: Math.floor(Math.abs(Number((stop_out * 100) / amount))),
             }}
         />
     );

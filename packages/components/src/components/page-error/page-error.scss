@@ -15,7 +15,7 @@
     &__box {
         background: var(--general-main-1);
         border: var(--general-main-1);
-        padding: 5em;
+        padding: 2rem;
         display: flex;
         flex-flow: column nowrap;
         align-items: center;
@@ -57,6 +57,7 @@
 
                 .dc-page-error__message-paragraph:not(:last-child) {
                     margin-bottom: 1.6rem;
+                    max-width: 38rem;
                 }
             }
         }

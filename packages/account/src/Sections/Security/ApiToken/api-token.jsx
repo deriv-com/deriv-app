@@ -227,6 +227,7 @@ class ApiToken extends React.Component {
                                 values,
                                 errors,
                                 isValid,
+                                dirty,
                                 touched,
                                 handleChange,
                                 handleBlur,
@@ -314,7 +315,7 @@ class ApiToken extends React.Component {
                                                         'api-token__button--success': is_success,
                                                     })}
                                                     type='submit'
-                                                    is_disabled={isSubmitting || !isValid}
+                                                    is_disabled={!dirty || isSubmitting || !isValid}
                                                     has_effect
                                                     is_loading={isSubmitting}
                                                     is_submit_success={is_success}

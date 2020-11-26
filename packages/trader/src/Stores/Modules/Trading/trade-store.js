@@ -539,10 +539,20 @@ export default class TradeStore extends BaseStore {
             processPurchase(proposal_id, price).then(
                 action(response => {
                     const last_digit = +this.last_digit;
-                    if (this.proposal_info[type]?.id !== proposal_id) {
-                        throw new Error('Proposal ID does not match.');
-                    }
-                    if (response.buy) {
+                    if (response.error) {
+                        // using javascript to disable purchase-buttons manually to compensate for mobx lag
+                        this.disablePurchaseButtons();
+                        // invalidToken error will handle in socket-general.js
+                        if (response.error.code !== 'InvalidToken') {
+                            this.root_store.common.setServicesError({
+                                type: response.msg_type,
+                                ...response.error,
+                            });
+                        }
+                    } else if (response.buy) {
+                        if (this.proposal_info[type]?.id !== proposal_id) {
+                            throw new Error('Proposal ID does not match.');
+                        }
                         const contract_data = {
                             ...this.proposal_requests[type],
                             ...this.proposal_info[type],
@@ -592,16 +602,6 @@ export default class TradeStore extends BaseStore {
                             this.pushPurchaseDataToGtm(contract_data);
                             this.is_purchasing_contract = false;
                             return;
-                        }
-                    } else if (response.error) {
-                        // using javascript to disable purchase-buttons manually to compensate for mobx lag
-                        this.disablePurchaseButtons();
-                        // invalidToken error will handle in socket-general.js
-                        if (response.error.code !== 'InvalidToken') {
-                            this.root_store.common.setServicesError({
-                                type: response.msg_type,
-                                ...response.error,
-                            });
                         }
                     }
                     this.forgetAllProposal();

@@ -38,11 +38,11 @@ const App = observer(props => {
         order_id,
         poi_url,
         server_time,
-        setOrderId,
         should_show_verification,
         websocket_api,
     } = props;
     general_store.setAppProps(props);
+    general_store.setOrderId(props.order_id);
     general_store.setWebsocketInit(websocket_api, general_store.client.local_currency_config.decimal_places);
 
     const getContext = () => ({
@@ -83,7 +83,7 @@ const App = observer(props => {
             general_store.setIsAdvertiser(is_advertiser);
         },
         setNickname: general_store.setNickname,
-        setOrderId,
+        setOrderId: general_store.setOrderId,
         setOrders: general_store.setOrders,
         setOrderOffset: order_offset => {
             general_store.setOrderOffset(order_offset);
@@ -208,6 +208,7 @@ const App = observer(props => {
     );
 });
 
+App.displayName = 'App';
 App.propTypes = {
     client: PropTypes.shape({
         currency: PropTypes.string.isRequired,

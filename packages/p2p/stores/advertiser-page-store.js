@@ -3,10 +3,11 @@ import { buy_sell } from 'Constants/buy-sell';
 import { getShortNickname } from 'Utils/string';
 import { localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
+import BaseStore from 'Stores/base_store';
 
-export default class AdvertiserPageStore {
+export default class AdvertiserPageStore extends BaseStore {
     constructor(root_store) {
-        this.root_store = root_store;
+        super(root_store);
         this.general_store = this.root_store.general_store;
     }
 

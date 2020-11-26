@@ -379,6 +379,7 @@ class MT5Dashboard extends React.Component {
                     </div>
                 ) : (
                     <PageError
+                        buttonSize={'medium'}
                         header={
                             <Localize
                                 i18n_default_text='DMT5 is not available in {{country}}'

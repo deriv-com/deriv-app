@@ -7,6 +7,7 @@ import Text from '../text/text.jsx';
 
 const PageError = ({
     buttonOnClick,
+    buttonSize,
     classNameImage,
     header,
     image_url,
@@ -87,7 +88,7 @@ const PageError = ({
                                 className='dc-page-error__btn'
                                 to={url}
                                 onClick={onClickHandler}
-                                size='large'
+                                size={buttonSize || 'large'}
                                 key={index}
                             >
                                 <Text weight='bold' className='dc-page-error__btn-text dc-btn__text'>
@@ -104,6 +105,7 @@ const PageError = ({
 
 PageError.propTypes = {
     buttonOnClick: PropTypes.func,
+    buttonSize: PropTypes.string,
     classNameImage: PropTypes.string,
     header: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     image_url: PropTypes.string,

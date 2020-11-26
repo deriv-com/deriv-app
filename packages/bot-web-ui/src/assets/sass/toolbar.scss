@@ -56,18 +56,6 @@
             }
         }
     }
-    &__form {
-        margin: 8px;
-        height: 40px;
-
-        &-field {
-            margin-bottom: 0 !important;
-
-            input::-ms-clear {
-                display: none;
-            }
-        }
-    }
     &__animation {
         margin-right: 0.5rem;
     }
@@ -76,15 +64,6 @@
             margin-top: 2.4rem;
         }
     }
-}
-
-.loader {
-    border: 1px solid var(--general-active);
-    border-top: 1px solid var(--brand-secondary);
-    border-radius: 50%;
-    width: 15px;
-    height: 15px;
-    animation: spin 1s linear infinite;
 }
 
 @keyframes spin {

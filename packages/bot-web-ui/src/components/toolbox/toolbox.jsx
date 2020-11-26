@@ -9,7 +9,7 @@ import { connect } from '../../stores/connect';
 import { popover_zindex } from '../../constants/z-indexes';
 
 const SearchBox = ({ is_search_loading, onSearch, onSearchBlur, onSearchClear, onSearchKeyUp }) => (
-    <div className='toolbar__form'>
+    <div className='db-toolbox__search'>
         <Formik initialValues={{ search: '' }} onSubmit={onSearch}>
             {({ submitForm, values: { search }, setFieldValue }) => (
                 <Form>
@@ -17,26 +17,25 @@ const SearchBox = ({ is_search_loading, onSearch, onSearchBlur, onSearchClear, o
                         {({ field }) => (
                             <Input
                                 {...field}
-                                className='toolbar__form-field'
+                                className='db-toolbox__search-field'
                                 type='text'
                                 name='search'
                                 placeholder={localize('Search')}
                                 onKeyUp={() => onSearchKeyUp(submitForm)}
                                 onFocus={submitForm}
                                 onBlur={onSearchBlur}
-                                trailing_icon={
+                                leading_icon={
                                     (search &&
                                         (is_search_loading ? (
                                             <div className='loader' />
                                         ) : (
                                             <Icon
                                                 icon='IcCloseCircle'
-                                                className='toolbar__btn--icon'
                                                 onClick={() => onSearchClear(setFieldValue)}
                                                 color='secondary'
                                             />
                                         ))) ||
-                                    (!search && <Icon icon='IcSearch' color='disabled' />)
+                                    (!search && <Icon icon='IcSearch' />)
                                 }
                             />
                         )}

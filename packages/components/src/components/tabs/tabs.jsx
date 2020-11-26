@@ -72,7 +72,8 @@ class Tabs extends React.Component {
             single_tab_has_no_label,
         } = this.props;
         const { active_index } = this.state;
-        const tab_width = fit_content ? '150px' : `${(100 / children.length).toFixed(2)}%`;
+        const valid_children = children.filter(child => child);
+        const tab_width = fit_content ? '150px' : `${(100 / valid_children.length).toFixed(2)}%`;
 
         return (
             <div

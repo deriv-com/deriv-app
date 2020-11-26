@@ -26,7 +26,7 @@
     "stylelint-webpack-plugin": "^2.1.0"
   },
   "scripts": {
-    "bootstrap": "f () { npm ci && lerna link && lerna bootstrap --ci --scope=@deriv/${1:-'*'} && lerna link && npm run build:travis ;}; f",
+    "bootstrap": "f () { npm ci && lerna link && lerna bootstrap --ci --scope=@deriv/${1:-'*'} && lerna link && npm run build:travis && npm run install:tests ;}; f",
     "build": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run build $2 ;}; f",
     "build:crypto": "export IS_CRYPTO_APP=true && npm run build && export IS_CRYPTO_APP=",
     "build:local": "f () { lerna exec --scope @deriv/trader --scope @deriv/bot-web-ui --parallel -- npm run build $1 ;}; f",
@@ -36,6 +36,7 @@
     "deploy": "f () { npm run build:travis && npm run build:local && lerna exec --scope @deriv/core -- npm run deploy $@ ;}; f",
     "deploy:clean": "f () { npm run build:travis && npm run build:local && lerna exec --scope @deriv/core -- npm run deploy:clean $@ ;}; f",
     "deploy:folder": "f () { npm run build:travis && npm run build:local $1 && lerna exec --scope @deriv/core -- npm run deploy:folder $@ ;}; f",
+    "install:tests": "npm --prefix ./tests ci",
     "prettify": "./node_modules/.bin/prettier --config ./.prettierrc --write \"./packages/*/{stories,script,src,build}/**/*.{js,jsx,scss}\"",
     "precommit": "lint-staged --allow-empty",
     "publish:p2p": "f () { lerna publish from-package ;}; f",

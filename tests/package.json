@@ -10,5 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "lodash": "^4.17.20"
+  },
+  "devDependencies": {
+    "promise.any": "^2.0.1"
   }
 }

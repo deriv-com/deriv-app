@@ -8,6 +8,7 @@ const AutoHeightWrapper = props => {
     React.useEffect(() => {
         window.addEventListener('resize', updateHeight);
         return () => window.removeEventListener('resize', updateHeight);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {

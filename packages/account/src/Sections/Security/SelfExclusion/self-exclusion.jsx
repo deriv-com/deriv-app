@@ -513,7 +513,13 @@ class SelfExclusion extends React.Component {
                                                         />
                                                     )}
                                                 </Text>
-                                                <Text as='p' color='loss-danger' className='self-exclusion__error'>
+                                                <Text
+                                                    as='p'
+                                                    size='xs'
+                                                    align='center'
+                                                    color='loss-danger'
+                                                    className='self-exclusion__error'
+                                                >
                                                     {submit_error_message}
                                                 </Text>
                                                 {is_eu ? (

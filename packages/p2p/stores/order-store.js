@@ -202,6 +202,10 @@ export default class OrderStore {
             }
         });
 
+        if (order_idx < 0) {
+            this.root_store.general_store.orders.unshift(p2p_order_info);
+        }
+
         if (get_order_status.is_inactive_order) {
             this.root_store.general_store.orders.splice(order_idx, 1);
         }

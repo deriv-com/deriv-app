@@ -334,7 +334,7 @@ export default class GeneralStore extends BaseStore {
                 // otherwise, update the correct order
                 updated_orders[idx_order_to_update] = p2p_order_info;
             }
-            // trigger re-rendering by setting orders again
+
             this.handleNotifications(this.orders, updated_orders);
             this.root_store.order_store.syncOrder(p2p_order_info);
         }

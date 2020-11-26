@@ -209,6 +209,9 @@ export default class OrderStore {
         if (get_order_status.is_inactive_order) {
             this.root_store.general_store.orders.splice(order_idx, 1);
         }
+        if (get_order_status.is_disputed_order || get_order_status.is_active_order) {
+            this.root_store.general_store.orders[order_idx] = p2p_order_info;
+        }
     }
 
     @action.bound

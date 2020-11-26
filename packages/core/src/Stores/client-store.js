@@ -613,7 +613,7 @@ export default class ClientStore extends BaseStore {
         const domain = window.location.hostname.includes('deriv.com') ? 'deriv.com' : 'binary.sx';
         const { loginid, email, landing_company_shortcode, currency, residence, account_settings } = this;
         const { first_name, last_name, name } = account_settings;
-        if (loginid && email && name) {
+        if (loginid && email) {
             const client_information = {
                 loginid,
                 email,

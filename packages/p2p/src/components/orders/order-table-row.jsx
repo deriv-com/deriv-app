@@ -67,9 +67,9 @@ const OrderRowComponent = observer(({ data: order, style }) => {
     const offer_amount = `${amount_display} ${account_currency}`;
     const transaction_amount = `${price_display} ${local_currency}`;
     const title = () => {
-        const order_type =
-            (is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad) ? localize('Buy') : localize('Sell');
-        const send = (is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad) ? transaction_amount : offer_amount;
+        const is_buy_order_type_for_user = (is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad);
+        const order_type = is_buy_order_type_for_user ? localize('Buy') : localize('Sell');
+        const send = is_buy_order_type_for_user ? transaction_amount : offer_amount;
         return (
             <React.Fragment>
                 <div className='orders__expander-content__title' as='p'>

@@ -171,7 +171,7 @@ const CurrencySelector = ({
                                         <React.Fragment>
                                             <RadioButtonGroup
                                                 id='currency'
-                                                className='currency-selector__radio-group'
+                                                className='with-margin currency-selector__radio-group'
                                                 label={localize('Fiat currencies')}
                                                 is_fiat
                                                 value={values.currency}
@@ -196,7 +196,7 @@ const CurrencySelector = ({
                                         <React.Fragment>
                                             <RadioButtonGroup
                                                 id='currency'
-                                                className='currency-selector__radio-group'
+                                                className='with-margin currency-selector__radio-group'
                                                 label={is_deriv_crypto ? '' : localize('Cryptocurrencies')}
                                                 value={values.currency}
                                                 error={errors.currency}

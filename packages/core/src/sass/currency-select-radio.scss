@@ -7,7 +7,7 @@
     &__items {
         display: flex;
         flex-wrap: wrap;
-        width: 768px;
+        width: 704px;
 
         &__center {
             justify-content: center !important;
@@ -19,6 +19,7 @@
 
         @include mobile {
             display: grid;
+            margin-bottom: 5rem;
             grid-template-columns: 1fr 1fr;
             justify-items: center;
             width: 100%;
@@ -32,7 +33,7 @@
         height: 128px;
         width: 128px;
         justify-content: space-around;
-        margin: 1.6rem 3.2rem 0;
+        margin: 1.6rem 2rem 0;
         min-width: 128px;
 
         &:hover:not(&--selected) {
@@ -118,5 +119,20 @@
         border-color: var(--border-disabled);
         margin-left: -2.4rem;
         width: calc(100% + 2.4rem);
+    }
+}
+
+@include desktop {
+    .currency-selector__radio-group.with-margin {
+        margin-bottom: 6rem;
+        margin-left: auto;
+        margin-right: auto;
+        width: 704px;
+    }
+}
+
+@include desktop {
+    .currency-selector__radio-group.with-margin {
+        margin-bottom: 7rem;
     }
 }

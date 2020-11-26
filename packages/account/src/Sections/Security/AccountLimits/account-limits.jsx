@@ -167,7 +167,7 @@ class AccountLimits extends React.Component {
                                     </tbody>
                                 </table>
                                 <TextContainer>
-                                    <Text as='p' size='xxs' color='less-prominent'>
+                                    <Text as='p' size='xxs' color='less-prominent' line_height='xs'>
                                         {localize(
                                             '*Any limits in your Self-exclusion settings will override these default limits.'
                                         )}
@@ -234,7 +234,7 @@ class AccountLimits extends React.Component {
                                             )}
                                         </Text>
                                     ) : (
-                                        <Text as='p' size='xxs' color='less-prominent'>
+                                        <Text as='p' size='xxs' color='less-prominent' line_height='xs'>
                                             {localize('Stated limits are subject to change without prior notice.')}
                                         </Text>
                                     )}

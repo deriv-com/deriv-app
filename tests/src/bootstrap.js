@@ -29,7 +29,6 @@ async function tearDown(browser) {
         // eslint-disable-next-line no-console
         console.log(e);
     }
-
 }
 
 function getContext() {

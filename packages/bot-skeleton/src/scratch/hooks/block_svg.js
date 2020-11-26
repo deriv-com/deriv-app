@@ -290,12 +290,13 @@ Blockly.BlockSvg.prototype.initSvg = function () {
     if (!this.isInsertionMarker()) {
         // Insertion markers not allowed to have inputs or icons
         // Input shapes are empty holes drawn when a value input is not connected.
-        for (var i = 0, input; (input = this.inputList[i]); i++) {
+        // eslint-disable-next-line no-cond-assign
+        for (let i = 0, input; (input = this.inputList[i]); i++) {
             input.init();
             input.initOutlinePath(this.svgGroup_);
         }
-        var icons = this.getIcons();
-        for (i = 0; i < icons.length; i++) {
+        const icons = this.getIcons();
+        for (let i = 0; i < icons.length; i++) {
             icons[i].createIcon();
         }
     }

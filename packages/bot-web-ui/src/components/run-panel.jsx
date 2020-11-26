@@ -165,6 +165,21 @@ const StatisticsInfoModal = ({ is_mobile, is_statistics_info_modal_open, toggleS
     );
 };
 
+const drawerHeader = ({ is_clear_stat_disabled, is_mobile, is_drawer_open, onClearStatClick }) => {
+    return (
+        is_mobile &&
+        is_drawer_open && (
+            <Button
+                id='db-run-panel__clear-button'
+                className='run-panel__clear-button'
+                is_disabled={is_clear_stat_disabled}
+                text={localize('Reset')}
+                onClick={onClearStatClick}
+                secondary
+            />
+        )
+    );
+};
 class RunPanel extends React.PureComponent {
     componentDidMount() {
         this.props.onMount();
@@ -193,20 +208,20 @@ class RunPanel extends React.PureComponent {
         } = this.props;
         const content = drawerContent({ active_index, is_drawer_open, setActiveTabIndex, ...this.props });
         const footer = drawerFooter({ is_clear_stat_disabled, onClearStatClick });
+        const header = drawerHeader({ is_clear_stat_disabled, is_mobile, is_drawer_open, onClearStatClick });
 
         return (
             <>
                 <div className={is_mobile && is_drawer_open ? 'run-panel__container--mobile' : undefined}>
                     <Drawer
+                        anchor='right'
                         className={!is_mobile ? 'run-panel__container' : undefined}
                         contentClassName='run-panel__content'
-                        clear_stat_button_text={localize('Reset')}
+                        header={header}
                         footer={!is_mobile && footer}
-                        is_clear_stat_disabled={is_clear_stat_disabled}
-                        is_mobile={is_mobile}
                         is_open={is_drawer_open}
-                        onClearStatClick={onClearStatClick}
                         toggleDrawer={toggleDrawer}
+                        width={366}
                         zIndex={popover_zindex.RUN_PANEL}
                     >
                         {content}

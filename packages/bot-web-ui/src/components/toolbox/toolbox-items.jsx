@@ -57,16 +57,16 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
             <Block type='trade_definition'>
                 <Statement name='TRADE_OPTIONS'>
                     <Block type='trade_definition_market' deletable='false' movable='false'>
-                        <Field name='MARKET_LIST'></Field>
-                        <Field name='SUBMARKET_LIST'></Field>
-                        <Field name='SYMBOL_LIST'></Field>
+                        <Field name='MARKET_LIST' />
+                        <Field name='SUBMARKET_LIST' />
+                        <Field name='SYMBOL_LIST' />
                         <Next>
                             <Block type='trade_definition_tradetype' deletable='false' movable='false'>
-                                <Field name='TRADETYPECAT_LIST'></Field>
-                                <Field name='TRADETYPE_LIST'></Field>
+                                <Field name='TRADETYPECAT_LIST' />
+                                <Field name='TRADETYPE_LIST' />
                                 <Next>
                                     <Block type='trade_definition_contracttype' deletable='false' movable='false'>
-                                        <Field name='TYPE_LIST'></Field>
+                                        <Field name='TYPE_LIST' />
                                         <Next>
                                             <Block
                                                 type='trade_definition_candleinterval'
@@ -102,8 +102,8 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                 </Statement>
             </Block>
             <Block type='trade_definition_tradeoptions'>
-                <Mutation has_first_barrier='false' has_second_barrier='false' has_prediction='false'></Mutation>
-                <Field name='DURATIONTYPE_LIST'></Field>
+                <Mutation has_first_barrier='false' has_second_barrier='false' has_prediction='false' />
+                <Field name='DURATIONTYPE_LIST' />
                 <Field name='CURRENCY_LIST'>USD</Field>
                 <Value name='DURATION'>
                     <Shadow type='math_number'>
@@ -123,8 +123,8 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
             description='Define your purchase conditions.'
             iconURI='IcStage2'
         >
-            <Block type='before_purchase'></Block>
-            <Block type='purchase'></Block>
+            <Block type='before_purchase' />
+            <Block type='purchase' />
         </Category>
         <Category
             id='sell_conditions'
@@ -132,8 +132,8 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
             description='Sell your contract at the market price.'
             iconURI='IcStage3'
         >
-            <Block type='during_purchase'></Block>
-            <Block type='sell_at_market'></Block>
+            <Block type='during_purchase' />
+            <Block type='sell_at_market' />
         </Category>
         <Category
             id='trade_results'
@@ -141,8 +141,8 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
             description='Check your trade results and trade again.'
             iconURI='IcStage4'
         >
-            <Block type='after_purchase'></Block>
-            <Block type='trade_again'></Block>
+            <Block type='after_purchase' />
+            <Block type='trade_again' />
         </Category>
 
         <Category id='analysis' name='Analysis' description='Indicators, ticks, stats, etc.' iconURI='ic-arrow'>
@@ -154,7 +154,7 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                 <Block type='sma_statement'>
                     <Statement name='STATEMENT'>
                         <Block type='input_list' deletable='false' movable='false'>
-                            <Value name='INPUT_LIST'></Value>
+                            <Value name='INPUT_LIST' />
                             <Next>
                                 <Block type='period' deletable='false' movable='false'>
                                     <Value name='PERIOD'>
@@ -170,7 +170,7 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                 <Block type='smaa_statement'>
                     <Statement name='STATEMENT'>
                         <Block type='input_list' deletable='false' movable='false'>
-                            <Value name='INPUT_LIST'></Value>
+                            <Value name='INPUT_LIST' />
                             <Next>
                                 <Block type='period' deletable='false' movable='false'>
                                     <Value name='PERIOD'>
@@ -187,7 +187,7 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                     <Field name='BBRESULT_LIST'>0</Field>
                     <Statement name='STATEMENT'>
                         <Block type='input_list' deletable='false' movable='false'>
-                            <Value name='INPUT_LIST'></Value>
+                            <Value name='INPUT_LIST' />
                             <Next>
                                 <Block type='period' deletable='false' movable='false'>
                                     <Value name='PERIOD'>
@@ -222,7 +222,7 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                     <Field name='BBRESULT_LIST'>0</Field>
                     <Statement name='STATEMENT'>
                         <Block type='input_list' deletable='false' movable='false'>
-                            <Value name='INPUT_LIST'></Value>
+                            <Value name='INPUT_LIST' />
                             <Next>
                                 <Block type='period' deletable='false' movable='false'>
                                     <Value name='PERIOD'>
@@ -256,7 +256,7 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                 <Block type='ema_statement'>
                     <Statement name='STATEMENT'>
                         <Block type='input_list' deletable='false' movable='false'>
-                            <Value name='INPUT_LIST'></Value>
+                            <Value name='INPUT_LIST' />
                             <Next>
                                 <Block type='period' deletable='false' movable='false'>
                                     <Value name='PERIOD'>
@@ -272,7 +272,7 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                 <Block type='emaa_statement'>
                     <Statement name='STATEMENT'>
                         <Block type='input_list' deletable='false' movable='false'>
-                            <Value name='INPUT_LIST'></Value>
+                            <Value name='INPUT_LIST' />
                             <Next>
                                 <Block type='period' deletable='false' movable='false'>
                                     <Value name='PERIOD'>
@@ -303,7 +303,7 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                 <Block type='rsia_statement'>
                     <Statement name='STATEMENT'>
                         <Block type='input_list' deletable='false' movable='false'>
-                            <Value name='INPUT_LIST'></Value>
+                            <Value name='INPUT_LIST' />
                             <Next>
                                 <Block type='period' deletable='false' movable='false'>
                                     <Value name='PERIOD'>
@@ -320,7 +320,7 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                     <Field name='MACDFIELDS_LIST'>1</Field>
                     <Statement name='STATEMENT'>
                         <Block type='input_list' deletable='false' movable='false'>
-                            <Value name='INPUT_LIST'></Value>
+                            <Value name='INPUT_LIST' />
                             <Next>
                                 <Block type='fast_ema_period' deletable='false' movable='false'>
                                     <Value name='FAST_EMA_PERIOD'>
@@ -354,13 +354,13 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
             </Category>
 
             <Category name='Tick and candle analysis' id='tick_analysis' description='Tools for tick analysis'>
-                <Block type='tick_analysis'></Block>
-                <Block type='tick'></Block>
-                <Block type='last_digit'></Block>
-                <Block type='ticks'></Block>
-                <Block type='lastDigitList'></Block>
-                <Block type='check_direction'></Block>
-                <Block type='is_candle_black'></Block>
+                <Block type='tick_analysis' />
+                <Block type='tick' />
+                <Block type='last_digit' />
+                <Block type='ticks' />
+                <Block type='lastDigitList' />
+                <Block type='check_direction' />
+                <Block type='is_candle_black' />
                 <Block type='read_ohlc'>
                     <Field name='OHLCFIELD_LIST'>open</Field>
                     <Field name='CANDLEINTERVAL_LIST'>default</Field>
@@ -370,9 +370,9 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                         </Shadow>
                     </Value>
                 </Block>
-                <Block type='read_ohlc_obj'></Block>
-                <Block type='ohlc_values'></Block>
-                <Block type='ohlc_values_in_list'></Block>
+                <Block type='read_ohlc_obj' />
+                <Block type='ohlc_values' />
+                <Block type='ohlc_values_in_list' />
                 <Block type='get_ohlc'>
                     <Field name='CANDLEINTERVAL_LIST'>default</Field>
                     <Value name='CANDLEINDEX'>
@@ -381,22 +381,22 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                         </Shadow>
                     </Value>
                 </Block>
-                <Block type='ohlc'></Block>
+                <Block type='ohlc' />
             </Category>
 
             <Category name='Contract' id='contract_details' description='Contract details'>
-                <Block type='contract_check_result'></Block>
-                <Block type='read_details'></Block>
-                <Block type='sell_price'></Block>
-                <Block type='check_sell'></Block>
-                <Block type='payout'></Block>
-                <Block type='ask_price'></Block>
+                <Block type='contract_check_result' />
+                <Block type='read_details' />
+                <Block type='sell_price' />
+                <Block type='check_sell' />
+                <Block type='payout' />
+                <Block type='ask_price' />
             </Category>
 
             <Category name='Stats' id='stats' description='Run time statistics'>
-                <Block type='balance'></Block>
-                <Block type='total_profit'></Block>
-                <Block type='total_runs'></Block>
+                <Block type='balance' />
+                <Block type='total_profit' />
+                <Block type='total_runs' />
             </Category>
         </Category>
 
@@ -406,14 +406,14 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                 id='custom_functions'
                 description='Create your own functions'
                 dynamic='PROCEDURE'
-            ></Category>
+            />
 
             <Category
                 name='Variables'
                 id='variables'
                 description='Create and name memory locations to store values'
                 dynamic='VARIABLE'
-            ></Category>
+            />
 
             <Category name='Notifications' id='notifications' description='Create notification messages'>
                 <Block type='text_print'>
@@ -442,12 +442,12 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                 <Block type='notify_telegram'>
                     <Value name='TELEGRAM_ACCESS_TOKEN'>
                         <Shadow type='text'>
-                            <Field name='TEXT'></Field>
+                            <Field name='TEXT' />
                         </Shadow>
                     </Value>
                     <Value name='TELEGRAM_CHAT_ID'>
                         <Shadow type='text'>
-                            <Field name='TEXT'></Field>
+                            <Field name='TEXT' />
                         </Shadow>
                     </Value>
                     <Value name='TELEGRAM_MESSAGE'>
@@ -510,7 +510,7 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                 </Block>
                 <Block type='math_constant' />
                 <Block type='math_number_property'>
-                    <Mutation divisor_input='false'></Mutation>
+                    <Mutation divisor_input='false' />
                     <Field name='PROPERTY'>EVEN</Field>
                     <Value name='NUMBER_TO_CHECK'>
                         <Shadow type='math_number'>
@@ -619,7 +619,7 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                 <Block type='text_isEmpty'>
                     <Value name='Value'>
                         <Shadow type='text'>
-                            <Field name='TEXT'></Field>
+                            <Field name='TEXT' />
                         </Shadow>
                     </Value>
                 </Block>
@@ -639,7 +639,7 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                     </Value>
                 </Block>
                 <Block type='text_charAt'>
-                    <Mutation at='true'></Mutation>
+                    <Mutation at='true' />
                     <Field name='WHERE'>FROM_START</Field>
                     <Value name='Value'>
                         <Block type='variables_get'>
@@ -655,7 +655,7 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                     </Value>
                 </Block>
                 <Block type='text_getSubstring'>
-                    <Mutation at1='true' at2='true'></Mutation>
+                    <Mutation at1='true' at2='true' />
                     <Field name='WHERE1'>FROM_START</Field>
                     <Field name='WHERE2'>FROM_START</Field>
                     <Value name='STRING'>
@@ -712,7 +712,7 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                     <Statement name='STACK'>
                         <Block type='lists_statement' movable='false'>
                             <Next>
-                                <Block type='lists_statement' movable='false'></Block>
+                                <Block type='lists_statement' movable='false' />
                             </Next>
                         </Block>
                     </Statement>
@@ -724,14 +724,14 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                         </Shadow>
                     </Value>
                 </Block>
-                <Block type='lists_length'></Block>
-                <Block type='lists_isEmpty'></Block>
-                <Block type='lists_indexOf'></Block>
-                <Block type='lists_getIndex'></Block>
-                <Block type='lists_setIndex'></Block>
-                <Block type='lists_getSublist'></Block>
+                <Block type='lists_length' />
+                <Block type='lists_isEmpty' />
+                <Block type='lists_indexOf' />
+                <Block type='lists_getIndex' />
+                <Block type='lists_setIndex' />
+                <Block type='lists_getSublist' />
                 <Block type='lists_split'>
-                    <Mutation mode='SPLIT'></Mutation>
+                    <Mutation mode='SPLIT' />
                     <Field name='MODE'>SPLIT</Field>
                     <Value name='DELIM'>
                         <Shadow type='text'>
@@ -739,21 +739,21 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                         </Shadow>
                     </Value>
                 </Block>
-                <Block type='lists_sort'></Block>
+                <Block type='lists_sort' />
             </Category>
 
             <Category name='Loops' id='loops' description='Create repetitive instructions'>
-                <Block type='controls_repeat'></Block>
-                <Block type='controls_repeat_ext'></Block>
-                <Block type='controls_whileUntil'></Block>
-                <Block type='controls_for'></Block>
-                <Block type='controls_forEach'></Block>
-                <Block type='controls_flow_statements'></Block>
+                <Block type='controls_repeat' />
+                <Block type='controls_repeat_ext' />
+                <Block type='controls_whileUntil' />
+                <Block type='controls_for' />
+                <Block type='controls_forEach' />
+                <Block type='controls_flow_statements' />
             </Category>
 
             <Category name='Miscellaneous' id='misc' description='Miscellaneous blocks'>
-                <Block type='loader'></Block>
-                <Block type='block_holder'></Block>
+                <Block type='loader' />
+                <Block type='block_holder' />
                 <Block type='console'>
                     <Value name='MESSAGE'>
                         <Shadow type='text'>

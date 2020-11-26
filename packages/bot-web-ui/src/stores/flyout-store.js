@@ -42,9 +42,9 @@ export default class FlyoutStore {
 
     @action.bound
     initFlyout() {
-        var workspace = this.workspace;
+        const workspace = this.workspace;
 
-        var options = {
+        const options = {
             parentWorkspace: workspace,
             RTL: workspace.RTL,
             horizontalLayout: workspace.horizontalLayout,
@@ -71,15 +71,15 @@ export default class FlyoutStore {
     }
 
     @action.bound
-    initFlyoutButton(button) {
-        const callbackKey = button.getAttribute('callbackKey');
+    initFlyoutButton(flyout_button) {
+        const callbackKey = flyout_button.getAttribute('callbackKey');
 
         const callback = button => {
             const buttonWorkspace = button.getTargetWorkspace();
             Blockly.Variables.createVariable(buttonWorkspace, this.refreshCategory, '');
         };
 
-        button.setAttribute('callbackKey', callbackKey);
+        flyout_button.setAttribute('callbackKey', callbackKey);
         this.workspace.registerButtonCallback(callbackKey, callback);
     }
 

@@ -2,11 +2,11 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Field as FormField, Formik, Form } from 'formik';
-import { Input, Icon, Text } from '@deriv/components';
+import { Drawer, Input, Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { ToolboxItems } from './toolbox-items.jsx';
-import Drawer from './toolbox-drawer.jsx';
 import { connect } from '../../stores/connect';
+import { popover_zindex } from '../../constants/z-indexes';
 
 const SearchBox = ({ is_search_loading, onSearch, onSearchBlur, onSearchClear, onSearchKeyUp }) => (
     <div className='toolbar__form'>
@@ -73,8 +73,15 @@ const Toolbox = ({
 
     return (
         !is_mobile && (
-            <Drawer className='db-toolbox__container' is_open={is_toolbox_open} toggleDrawer={toggleDrawer}>
-                <div id='gtm-toolbox' className='db-toolbox'>
+            <Drawer
+                anchor='left'
+                className='db-toolbox'
+                is_open={is_toolbox_open}
+                toggleDrawer={toggleDrawer}
+                width={256}
+                zIndex={popover_zindex.RUN_PANEL}
+            >
+                <div id='gtm-toolbox' className='db-toolbox__content'>
                     <div className='db-toolbox__header'>
                         <div className='db-toolbox__title'>Blocks menu</div>
                     </div>
@@ -87,6 +94,7 @@ const Toolbox = ({
                     />
                     <div className='db-toolbox__category-menu'>
                         {toolbox_dom &&
+                            // eslint-disable-next-line consistent-return
                             Array.from(toolbox_dom.childNodes).map((category, index) => {
                                 if (category.tagName.toUpperCase() === 'CATEGORY') {
                                     const has_sub_category = hasSubCategory(category.children);
@@ -99,6 +107,7 @@ const Toolbox = ({
                                             <div
                                                 className='db-toolbox__item'
                                                 onClick={() => {
+                                                    // eslint-disable-next-line no-unused-expressions
                                                     has_sub_category
                                                         ? onToolboxItemExpand(index)
                                                         : onToolboxItemClick(category);

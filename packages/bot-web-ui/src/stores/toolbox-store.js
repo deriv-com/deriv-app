@@ -40,7 +40,7 @@ export default class ToolboxStore {
     adjustWorkspace() {
         const { core } = this.root_store;
 
-        const toolbox_width = document.getElementById('gtm-toolbox').getBoundingClientRect().width;
+        const toolbox_width = document.getElementById('gtm-toolbox')?.getBoundingClientRect().width;
         const block_canvas_rect = this.workspace.svgBlockCanvas_.getBoundingClientRect(); // eslint-disable-line
 
         if (block_canvas_rect.left < toolbox_width) {
@@ -106,19 +106,22 @@ export default class ToolboxStore {
 
     @action.bound
     getAllCategories() {
-        let categories = [];
-        Array.from(this.toolbox_dom.childNodes).map(category => {
+        const categories = [];
+        Array.from(this.toolbox_dom.childNodes).forEach(category => {
             categories.push(category);
-            this.hasSubCategory(category.children) &&
-                Array.from(category.children).map(subCategory => {
+            if (this.hasSubCategory(category.children)) {
+                Array.from(category.children).forEach(subCategory => {
                     categories.push(subCategory);
                 });
+            }
         });
         return categories;
     }
 
     @action.bound
+    // eslint-disable-next-line class-methods-use-this
     hasSubCategory(category) {
+        // eslint-disable-next-line consistent-return
         const subCategory = Object.keys(category).filter(key => {
             if (category[key].tagName.toUpperCase() === 'CATEGORY') {
                 return category[key];

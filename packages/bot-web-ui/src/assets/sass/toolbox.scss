@@ -30,22 +30,17 @@ $category-colours: (
     $gray20: #333;
     $category-text-spacing: 10px;
 
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    user-select: none;
-    z-index: 1;
-    padding-right: 1.6rem;
-    visibility: visible;
+    height: var(--bot-content-height) !important;
+    top: 10.4rem !important;
+    width: 25.6rem !important;
 
-    &__container {
-        height: var(--bot-content-height) !important;
-        top: 10.4rem !important;
-        width: 25.6rem !important;
-
-        &--open {
-            transform: translateX(-25.6rem) !important;
-        }
+    &__content {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        user-select: none;
+        z-index: 1;
+        visibility: visible;
     }
     &--hidden {
         visibility: hidden;

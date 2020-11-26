@@ -19,9 +19,6 @@
                 position: unset;
             }
         }
-        &--open {
-            transform: translateX(-36.6rem) !important;
-        }
     }
     &__tile {
         display: flex;
@@ -127,6 +124,15 @@
                 width: 100vw;
                 height: calc(100% - 7.6rem);
             }
+        }
+    }
+    &__clear-button {
+        @include mobile {
+            position: absolute !important;
+            top: 0.5rem;
+            right: 1.6rem;
+            height: 2.6rem !important;
+            width: 8rem;
         }
     }
 }

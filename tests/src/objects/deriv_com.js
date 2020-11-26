@@ -1,5 +1,4 @@
 const assert = require('assert').strict;
-const { initEvaluateScript } = require('playwright-utils');
 const Common = require('./common');
 
 class DerivCom extends Common {
@@ -8,6 +7,7 @@ class DerivCom extends Common {
         this.page = page;
     }
 
+    // eslint-disable-next-line class-methods-use-this
     async generateString() {
         return ((Math.random()) * 1000000).toString(36).substring(0).replace('.', '');
     }
@@ -23,10 +23,16 @@ class DerivCom extends Common {
     }
 
     async signup(email) {
-        await this.page.click('text=Create free demo account');
+        if (await this.isMobile()) {
+            await this.page.click('text=Create free demo account');
+        } else {
+            await this.page.click('text=Start trading');
+        }
+        await this.page.waitForTimeout(1000);
         await this.page.waitForLoadState('domcontentloaded');
-        await this.page.waitForSelector('.checkbox__CheckboxContainer-sc-1a4wwhl-0.hABeAr')
-        await this.page.click('.checkbox__CheckboxContainer-sc-1a4wwhl-0.hABeAr');
+
+        await this.page.waitForSelector('.checkbox__StyledCheckbox-sc-1a4wwhl-3.iIffUy');
+        await this.page.click('.checkbox__StyledCheckbox-sc-1a4wwhl-3.iIffUy');
         await this.page.waitForSelector('#email');
         await this.page.fill('#email', email);
         await this.page.waitForSelector('#gtm-signup-email');

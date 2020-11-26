@@ -35,6 +35,6 @@ test("[mobile]-core/cr_signup", async () => {
         await page.loadStateVRTC();
     }
     await page.realAccountSignup({
-        currency: 'USD',
+        currency: 'US Dollar',
     });
 });

@@ -5,6 +5,7 @@ const { waitForWSSubset } = require('@root/_utils/websocket');
 
 const LOGIN_STATE_PATH = './tests/states/login.json';
 const VIRTUAL_SIGNUP_STATE = './tests/states/vrtc.json';
+const REAL_SIGNUP_STATE = './tests/states/real.json';
 
 class Common {
     constructor(page) {
@@ -202,25 +203,23 @@ class Common {
                 '#deriv_app > div.dc-dialog__wrapper.dc-dialog__wrapper--enter-done > div > div.dc-dialog__content.dc-dialog__content--centered > div > form > div > div > div > div > input',
                 country
             );
-            await this.page.fill(
+            await this.page.press(
                 '#deriv_app > div.dc-dialog__wrapper.dc-dialog__wrapper--enter-done > div > div.dc-dialog__content.dc-dialog__content--centered > div > form > div > div > div > div > input',
                 'Enter'
             );
             await this.page.click('text=Next');
 
             await this.page.waitForSelector(
-                '.account-signup__password-selection > .dc-password-meter__container > .dc-password-input > .dc-input > .dc-input__field'
+                'input[type=password]'
             );
             await this.page.click(
-                '.account-signup__password-selection > .dc-password-meter__container > .dc-password-input > .dc-input > .dc-input__field'
+                'input[type=password]'
             );
+            await this.page.fill(
+                'input[type=password]',
+                password,
+            )
 
-            await this.page.waitForSelector(
-                '.account-signup__password-selection > .dc-password-meter__container > .dc-password-input > .dc-input > .dc-input__field'
-            );
-            await this.page.click(
-                '.account-signup__password-selection > .dc-password-meter__container > .dc-password-input > .dc-input > .dc-input__field'
-            );
 
             await this.page.waitForSelector(
                 '.dc-dialog__content > .account-signup > form > .account-signup__password-selection > .dc-btn'
@@ -236,15 +235,20 @@ class Common {
     }
 
     async realAccountSignup(options) {
-        await this.page.waitForSelector('#modal_root');
-        await this.page.waitForSelector(
-            '#modal_root > div > div > div > div.welcome__body > div > div > nav.dc-carousel__nav.dc-carousel__nav--lower > ul > li:nth-child(2)'
-        );
-        await this.page.mouse.move(180, 220);
-        await this.page.mouse.down();
-        await this.page.mouse.move(320, 220);
-        await this.page.mouse.up();
-        await this.page.click('text=Start here');
+        if (await this.isMobile()) {
+            await this.page.waitForSelector('#modal_root');
+            await this.page.waitForSelector(
+                '#modal_root > div > div > div > div.welcome__body > div > div > nav.dc-carousel__nav.dc-carousel__nav--lower > ul > li:nth-child(2)'
+            );
+            await this.page.mouse.move(180, 220);
+            await this.page.mouse.down();
+            await this.page.mouse.move(320, 220);
+            await this.page.mouse.up();
+            await this.page.click('text=Start here');
+        } else {
+            await this.page.waitForSelector('.dc-themed-scrollbars > .welcome__body > .welcome-column--right > .welcome-column__footer > .dc-btn')
+            await this.page.click('.dc-themed-scrollbars > .welcome__body > .welcome-column--right > .welcome-column__footer > .dc-btn')
+        }
 
         await this.page.waitForSelector(
             '.header__menu-items > .header__menu-right > .acc-info__container > .acc-info__wrapper > .acc-info'
@@ -262,20 +266,31 @@ class Common {
         await this.page.click(
             '.acc-switcher__list-wrapper > .dc-content-expander__wrapper:nth-child(1) > .dc-content-expander__content > .acc-switcher__new-account > .dc-btn'
         );
-        await this.page.click('text=US Dollar');
+        await this.page.waitForSelector(`text=${options.currency}`);
+        await this.page.click(`text=${options.currency}`);
+        await this.page.waitForSelector('text=Next');
         await this.page.click('text=Next');
 
         await this.fillPersonalDetails();
         await this.fillAddressDetails();
         await this.fillTermsAndConditions();
+        await this.waitForAccountDropdown();
+        await this.removeLoginState(VIRTUAL_SIGNUP_STATE);
+        await qawolf.saveState(this.page, REAL_SIGNUP_STATE);
     }
 
     async fillTermsAndConditions() {
         await this.page.waitForSelector('text=Terms of use');
         const elementHandle =  await this.page.$('text=I agree');
         await elementHandle.scrollIntoViewIfNeeded();
+        await this.page.waitForSelector('text=I am not a PEP, and I have not been a PEP in the last 12 months.');
         await this.page.click('text=I am not a PEP, and I have not been a PEP in the last 12 months.');
-        await this.page.click('//html/body/div[2]/div/div/div[2]/div/div/div[2]/form/div[1]/div[5]/label/span[1]');
+        if (await this.isMobile()) {
+            await this.page.click('//html/body/div[2]/div/div/div[2]/div/div/div[2]/form/div[1]/div[5]/label/span[1]');
+        } else {
+            await this.page.click('//html/body/div[2]/div/div/div[2]/div[2]/form/div[1]/div/div[5]/label/span[1]');
+        }
+
         await this.page.waitForSelector('text=Add Account');
         await this.page.click('text=Add Account');
     }
@@ -302,7 +317,19 @@ class Common {
         await this.page.fill('input[name=first_name]', 'John');
         await this.page.fill('input[name=last_name]', 'Doe');
         await this.page.fill('input[name=phone]', '+62 335 000000');
-        await this.page.fill('input[name=date_of_birth]', '2000-01-01');
+        if (await this.isMobile()) {
+            await this.page.fill('input[name=date_of_birth]', '2000-01-01');
+        } else {
+            await this.page.waitForSelector('input[name="date_of_birth"]');
+            await this.page.click('input[name="date_of_birth"]');
+            await this.page.waitForSelector('.dc-calendar');
+            await this.page.click('[data-year="2001"]');
+            await this.page.waitForSelector('[data-month=Feb]');
+            await this.page.click('[data-month=Feb]');
+            await this.page.waitForSelector('[data-date="2001-02-01"]');
+            await this.page.click('[data-date="2001-02-01"]');
+        }
+
         await this.page.waitForSelector('text=Next');
         await this.page.click('text=Next');
     }
@@ -312,11 +339,13 @@ class Common {
         // Invalid data assertions
         switch (type) {
             case 'alphanum':
+                await this.page.waitForSelector(`input[name=${selector}]`);
                 await this.page.click(`input[name=${selector}]`);
                 await this.page.press(`input[name=${selector}]`, 'Tab');
                 await this.page.waitForSelector('text=is required');
                 return Promise.resolve();
             case 'general':
+                await this.page.waitForSelector(`input[name=${selector}]`);
                 await this.page.click(`input[name=${selector}]`);
                 await this.page.press(`input[name=${selector}]`, 'Tab');
                 await this.page.waitForSelector('text=is required');
@@ -325,15 +354,19 @@ class Common {
                 await this.page.waitForSelector('text=Only letters');
                 return Promise.resolve();
             case 'phone':
+                await this.page.waitForSelector(`input[name=${selector}]`);
                 await this.page.fill(`input[name=${selector}]`, 'asdfghjkl');
                 await this.page.press(`input[name=${selector}]`, 'Tab');
                 await this.page.waitForSelector('text=is not in a proper format');
                 return Promise.resolve();
             case 'date':
-                await this.page.click(`input[name=${selector}]`);
-                await this.page.press(`input[name=${selector}]`, 'Tab');
-                await this.page.waitForSelector('text=is not in a proper format');
-                return Promise.resolve();
+                if (await this.isMobile()) {
+                    await this.page.waitForSelector(`input[name=${selector}]`);
+                    await this.page.click(`input[name=${selector}]`);
+                    await this.page.press(`input[name=${selector}]`, 'Tab');
+                    await this.page.waitForSelector('text=is not in a proper format');
+                    return Promise.resolve();
+                }
             default:
                 return Promise.resolve();
         }
@@ -370,8 +403,8 @@ class Common {
         }
     };
 
-    removeLoginState = () => {
-        fs.unlinkSync(path.resolve(LOGIN_STATE_PATH));
+    removeLoginState = (target = LOGIN_STATE_PATH) => {
+        fs.unlinkSync(path.resolve(target));
     };
 }
 

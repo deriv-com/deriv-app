@@ -356,14 +356,14 @@ class Common {
             case 'phone':
                 await this.page.waitForSelector(`input[name=${selector}]`);
                 await this.page.fill(`input[name=${selector}]`, 'asdfghjkl');
-                await this.page.press(`input[name=${selector}]`, 'Tab');
+                await this.page.click(`#modal_root`);
                 await this.page.waitForSelector('text=is not in a proper format');
                 return Promise.resolve();
             case 'date':
                 if (await this.isMobile()) {
                     await this.page.waitForSelector(`input[name=${selector}]`);
                     await this.page.click(`input[name=${selector}]`);
-                    await this.page.press(`input[name=${selector}]`, 'Tab');
+                    await this.page.click(`#modal_root`);
                     await this.page.waitForSelector('text=is not in a proper format');
                     return Promise.resolve();
                 }

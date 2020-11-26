@@ -14,7 +14,7 @@ class Trader extends Common {
     }
 
     async waitForChart() {
-        await this.page.waitForSelector('.chart-container__loader', { state: 'hidden', timeout: 120000 });
+        await this.page.waitForSelector('.chart-container__loader', { state: 'hidden', timeout: 600000 });
         await this.page.waitForSelector('.ciq-menu.ciq-enabled', { timeout: 120000 });
     }
 

@@ -74,7 +74,7 @@ jobs:
       - shell: bash
         run: echo $(cat ${{ github.workspace}}/url.txt) >> $GITHUB_ENV
       - name: Install dependencies and run tests
-        run: npm ci && npm run test:qa
+        run: npm ci && npm run install:tests && npm run test:qa
         env:
           # configure tests with environment variables
           FFMPEG_PATH: /usr/bin/ffmpeg # for recording video

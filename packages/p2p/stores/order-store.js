@@ -187,6 +187,26 @@ export default class OrderStore {
         );
     }
 
+    syncOrder(p2p_order_info) {
+        const get_order_status = createExtendedOrderDetails(
+            p2p_order_info,
+            this.root_store.general_store.client.loginid,
+            this.root_store.general_store.props.server_time
+        );
+
+        const order_idx = this.root_store.general_store.orders.findIndex(order => {
+            if (order.id === p2p_order_info.id) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+
+        if (get_order_status.is_inactive_order) {
+            this.root_store.general_store.orders.splice(order_idx, 1);
+        }
+    }
+
     @action.bound
     unsubscribeFromCurrentOrder() {
         clearTimeout(this.order_rerender_timeout);

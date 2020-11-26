@@ -1,7 +1,7 @@
 import { Field, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { FormSubmitButton } from '@deriv/components';
+import { FormSubmitButton, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { isMobile, reorderCurrencies } from '@deriv/shared';
@@ -76,11 +76,12 @@ class AddCryptoCurrency extends React.Component {
                                 <RadioButtonGroup
                                     id='fiat_currency'
                                     is_fiat
-                                    className='currency-selector__radio-group'
+                                    className='currency-selector__radio-group with-margin'
                                     value={values.currency}
                                     error={errors.currency}
                                     touched={touched.currency}
                                     is_title_enabled={this.can_add_fiat}
+                                    item_count={this.state.available_fiat_currencies.length}
                                 >
                                     {this.state.available_fiat_currencies.map(currency => (
                                         <Field
@@ -95,9 +96,9 @@ class AddCryptoCurrency extends React.Component {
                             </React.Fragment>
                         )}
                         {this.can_add_fiat && (
-                            <p className='currency-selector__deposit-warn'>
+                            <Text as='p' color='prominent' size='xxs' className='currency-selector__deposit-warn'>
                                 <Localize i18n_default_text='You’ll be not able to change currency once you have made a deposit.' />
-                            </p>
+                            </Text>
                         )}
                         {!this.props.should_show_fiat_only &&
                             (this.props.available_crypto_currencies.length !== 0 ? (
@@ -109,6 +110,7 @@ class AddCryptoCurrency extends React.Component {
                                     error={errors.currency}
                                     touched={touched.currency}
                                     is_title_enabled={this.can_add_fiat}
+                                    item_count={this.crypto_currencies.length}
                                 >
                                     {this.crypto_currencies.map(currency => (
                                         <Field
@@ -127,6 +129,7 @@ class AddCryptoCurrency extends React.Component {
                                     className='currency-selector__radio-group with-margin'
                                     label={localize('Cryptocurrencies')}
                                     is_title_enabled={this.can_add_fiat}
+                                    item_count={this.crypto_currencies.length}
                                 >
                                     {this.crypto_currencies.map(currency => (
                                         <Field

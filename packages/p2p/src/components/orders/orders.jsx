@@ -2,9 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useIsMounted } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
-import { localize } from 'Components/i18next';
 import Dp2pContext from 'Components/context/dp2p-context';
-import PageReturn from 'Components/page-return/page-return.jsx';
 import { useStores } from 'Stores';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import { subscribeWS } from 'Utils/websocket';
@@ -12,17 +10,11 @@ import OrderDetails from './order-details/order-details.jsx';
 import OrderTable from './order-table/order-table.jsx';
 import './orders.scss';
 
-const Orders = observer(({ params, navigate, chat_info }) => {
+const Orders = observer(({ params, navigate }) => {
     const { general_store } = useStores();
     const isMounted = useIsMounted();
-    const {
-        getLocalStorageSettingsForLoginId,
-        order_id,
-        orders,
-        setOrderId,
-        updateP2pNotifications,
-    } = React.useContext(Dp2pContext);
-    const [order_information, setOrderInformation] = React.useState(null);
+    const { getLocalStorageSettingsForLoginId, updateP2pNotifications } = React.useContext(Dp2pContext);
+    const { order_information, setOrderId, order_id, setOrderInformation, orders } = general_store;
     const [nav, setNav] = React.useState(params?.nav);
     const order_info_subscription = React.useRef(null);
     const order_rerender_timeout = React.useRef(null);
@@ -92,7 +84,7 @@ const Orders = observer(({ params, navigate, chat_info }) => {
 
             order_rerender_timeout.current = setTimeout(() => {
                 setQueryDetails(input_order);
-            }, remaining_seconds + 1 * 1000);
+            }, (remaining_seconds + 1) * 1000);
         }
     };
 
@@ -131,19 +123,9 @@ const Orders = observer(({ params, navigate, chat_info }) => {
     }, [orders]);
 
     if (order_information) {
-        const { account_currency } = order_information;
         return (
-            <div className='orders orders--order-view'>
-                <PageReturn
-                    onClick={() => hideDetails(true)}
-                    page_title={
-                        (order_information.is_buy_order && !order_information.is_my_ad) ||
-                        (order_information.is_sell_order && order_information.is_my_ad)
-                            ? localize('Buy {{offered_currency}} order', { offered_currency: account_currency })
-                            : localize('Sell {{offered_currency}} order', { offered_currency: account_currency })
-                    }
-                />
-                <OrderDetails order_information={order_information} chat_info={chat_info} />
+            <div className='orders'>
+                <OrderDetails onPageReturn={() => hideDetails(true)} />
             </div>
         );
     }
@@ -156,7 +138,6 @@ const Orders = observer(({ params, navigate, chat_info }) => {
 });
 
 Orders.propTypes = {
-    chat_info: PropTypes.object,
     navigate: PropTypes.func,
     params: PropTypes.object,
 };

@@ -10,6 +10,8 @@ commands:
           name: "Git restore cache"
           keys:
             - source-v{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-{{ .Revision }}
+            - source-v{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-
+            - source-v{{ .Environment.CACHE_VERSION }}-
       - run:
           name: "Fetch git tags"
           command: |

@@ -122,17 +122,24 @@
     }
 }
 
-@include desktop {
-    .currency-selector__radio-group.with-margin {
-        margin-bottom: 6rem;
-        margin-left: auto;
-        margin-right: auto;
-        width: 704px;
-    }
-}
+.currency-selector {
+    &__radio-group--with-margin {
+        &--is-header {
+            font-size: 1.6rem;
+            margin: 2rem 0 0;
+            font-weight: bold;
+            color: var(--text-prominent);
+        }
 
-@include desktop {
-    .currency-selector__radio-group.with-margin {
-        margin-bottom: 7rem;
+        @include desktop {
+            margin-bottom: 6rem;
+            margin-left: auto;
+            margin-right: auto;
+            width: 704px;
+        }
+
+        @include mobile {
+            margin-bottom: 7rem;
+        }
     }
 }

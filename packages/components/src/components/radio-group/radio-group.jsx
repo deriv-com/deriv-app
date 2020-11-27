@@ -2,32 +2,32 @@ import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
-class RadioGroup extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            selected_option: this.props.selected,
-        };
+const ItemWrapper = ({ children, should_wrap_items }) => {
+    if (should_wrap_items) {
+        return <div className='dc-radio-group__item-wrapper'>{children}</div>;
     }
 
-    onChange = e => {
-        this.setState({
-            selected_option: e.target.value,
-        });
-        this.props.onToggle(e);
+    return children;
+};
+
+const RadioGroup = ({ className, items, name, onToggle, required, selected, should_wrap_items }) => {
+    const [selected_option, setSelectedOption] = React.useState(selected);
+
+    const onChange = event => {
+        setSelectedOption(event.target.value);
+
+        if (typeof onToggle === 'function') {
+            onToggle(event);
+        }
     };
 
-    render() {
-        const { items, className, name, required } = this.props;
-
-        return (
-            <div className={classNames('dc-radio-group', className)}>
-                {items.map((item, idx) => (
+    return (
+        <div className={classNames('dc-radio-group', className)}>
+            {items.map((item, idx) => (
+                <ItemWrapper key={idx} should_wrap_items={should_wrap_items}>
                     <label
-                        key={idx}
                         className={classNames('dc-radio-group__item', className, {
-                            'dc-radio-group__item--selected': this.state.selected_option === item.value,
+                            'dc-radio-group__item--selected': selected_option === item.value,
                         })}
                     >
                         <input
@@ -36,34 +36,37 @@ class RadioGroup extends React.Component {
                             className='dc-radio-group__input'
                             type='radio'
                             value={item.value}
-                            checked={this.state.selected_option === item.value}
-                            onChange={this.onChange}
+                            checked={selected_option === item.value}
+                            onChange={onChange}
                             disabled={item.disabled}
                             required={required}
                         />
                         <span
                             className={classNames('dc-radio-group__circle', {
-                                'dc-radio-group__circle--selected': this.state.selected_option === item.value,
+                                'dc-radio-group__circle--selected': selected_option === item.value,
                             })}
                         />
                         <span className='dc-radio-group__label'>{item.label}</span>
                     </label>
-                ))}
-            </div>
-        );
-    }
-}
+                </ItemWrapper>
+            ))}
+        </div>
+    );
+};
 
 RadioGroup.propTypes = {
+    className: PropTypes.string,
     items: PropTypes.arrayOf(
         PropTypes.shape({
             label: PropTypes.node.isRequired,
             value: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.number]),
         })
     ),
+    name: PropTypes.string,
     onToggle: PropTypes.func,
-    selected: PropTypes.any,
     required: PropTypes.bool,
+    selected: PropTypes.any,
+    should_wrap_items: PropTypes.bool,
 };
 
 export default RadioGroup;

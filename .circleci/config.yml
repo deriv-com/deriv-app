@@ -223,22 +223,6 @@ jobs:
     environment:
       NODE_ENV: staging
 
-    test:
-      description: "npm test"
-      docker:
-        - image: circleci/node:12.18.0-stretch
-      steps:
-        - git_checkout_from_cache
-        - npm_install_from_cache
-        - run:
-            name: "Bootstrap packages"
-            command: npm run bootstrap
-        - run:
-            name: "Run tests"
-            command: npm test
-      environment:
-        NODE_ENV: staging
-
   release_production:
     docker:
       - image: circleci/node:12.18.0-stretch
@@ -272,6 +256,22 @@ jobs:
           k8s_svc_name: production-deriv-app-crypto
           k8s_image_name: deriv-app-crypto
       - notify_slack
+    environment:
+      NODE_ENV: staging
+  
+  test:
+    description: "npm test"
+    docker:
+      - image: circleci/node:12.18.0-stretch
+    steps:
+      - git_checkout_from_cache
+      - npm_install_from_cache
+      - run:
+          name: "Bootstrap packages"
+          command: npm run bootstrap
+      - run:
+          name: "Run tests"
+          command: npm test
     environment:
       NODE_ENV: staging
 

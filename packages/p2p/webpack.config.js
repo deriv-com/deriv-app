@@ -23,6 +23,7 @@ module.exports = {
         alias: {
             Assets: path.resolve(__dirname, 'src/assets'),
             Components: path.resolve(__dirname, 'src/components'),
+            Constants: path.resolve(__dirname, 'src/constants'),
             Translations: path.resolve(__dirname, 'src/translations'),
             Utils: path.resolve(__dirname, 'src/utils'),
             Stores: path.resolve(__dirname, 'stores'), // TODO: Move stores into ./src!

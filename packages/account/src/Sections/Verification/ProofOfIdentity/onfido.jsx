@@ -9,7 +9,7 @@ import Unsupported from 'Components/poi-unsupported';
 import Expired from 'Components/poi-expired';
 import OnfidoFailed from 'Components/poi-onfido-failed';
 import Verified from 'Components/poi-verified';
-import { getOnfidoPhrases } from 'Constants/onfido-phrases';
+import onfido_phrases from 'Constants/onfido-phrases';
 import { onfido_status_codes } from './proof-of-identity';
 
 const onfido_container_id = 'onfido';
@@ -37,8 +37,8 @@ export default class Onfido extends React.Component {
                 containerId: onfido_container_id,
                 language: {
                     locale: getLanguage().toLowerCase() || 'en',
-                    phrases: getOnfidoPhrases(),
-                    mobile_phrases: getOnfidoPhrases(),
+                    phrases: onfido_phrases,
+                    mobilePhrases: onfido_phrases,
                 },
                 token: this.props.onfido_service_token,
                 useModal: false,

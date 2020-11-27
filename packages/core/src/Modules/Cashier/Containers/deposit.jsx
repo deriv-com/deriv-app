@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'Stores/connect';
 import { Localize } from '@deriv/translations';
-import { isCryptocurrency } from '@deriv/shared';
+import { isCryptocurrency, isDesktop } from '@deriv/shared';
 import CashierContainer from '../Components/cashier-container.jsx';
 import Error from '../Components/Error/error.jsx';
 import Virtual from '../Components/Error/virtual.jsx';
@@ -33,7 +33,7 @@ const DepositeSideNote = () => {
         */
     ];
 
-    return <SideNote notes={notes} />;
+    return <SideNote has_bullets notes={notes} title={<Localize i18n_default_text='Notes' />} />;
 };
 
 const Deposit = ({
@@ -55,19 +55,20 @@ const Deposit = ({
         if (!is_virtual) {
             onMount();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {
-        if (iframe_height) {
-            if (isCryptocurrency(currency)) {
-                if (/^(UST|eUSDT)$/i.test(currency) && typeof setSideNotes === 'function') {
+        if (iframe_height && isDesktop()) {
+            if (isCryptocurrency(currency) && typeof setSideNotes === 'function') {
+                if (/^(UST|eUSDT)$/i.test(currency)) {
                     setSideNotes([<DepositeSideNote key={0} />, <USDTSideNote key={1} />]);
                 } else {
                     setSideNotes([<DepositeSideNote key={0} />]);
                 }
             }
         }
-    }, [iframe_height]);
+    }, [currency, iframe_height]);
 
     if (is_virtual) {
         return <Virtual />;

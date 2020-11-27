@@ -1,4 +1,7 @@
 .dc-modal__container_usdt-note-modal {
+    .dc-modal-body {
+        padding-top: 0;
+    }
     .title {
         font-weight: bold;
     }
@@ -38,6 +41,13 @@
 
         @include desktop {
             max-width: 672px;
+
+            &--confirm,
+            &.account-transfer__receipt,
+            &.payment-agent-transfer__container,
+            &.payment-agent-transfer__wrapper {
+                margin-left: 0;
+            }
         }
 
         &,
@@ -106,10 +116,6 @@
         font-weight: bold;
         color: var(--text-prominent);
 
-        &:not(.cashier__content-header) {
-            margin-bottom: 1.6rem;
-            margin-top: 1.6rem;
-        }
         @include mobile {
             font-size: 1.4rem;
         }
@@ -119,41 +125,6 @@
             display: flex;
             justify-content: flex-end;
             width: 100%;
-        }
-        &-error {
-            flex: 1;
-            margin: 2rem 5.6rem 4.4rem 0;
-            font-size: 1.2rem;
-            font-weight: 500;
-            line-height: 1.33;
-
-            &-icon {
-                position: absolute;
-                left: -10px;
-                bottom: -15px;
-                pointer-events: none;
-                opacity: 0.07;
-                z-index: 0;
-            }
-            &-small-icon {
-                margin: 2rem 1.6rem 4.4rem 2.4rem;
-            }
-            &-wrapper {
-                display: flex;
-                margin-right: auto;
-
-                .cashier__form-error,
-                .cashier__form-error-small-icon {
-                    margin-top: 5.8rem;
-                    margin-bottom: 0;
-                }
-                .cashier__form-error-small-icon {
-                    margin-left: 0.8rem;
-                }
-                .cashier__form-error-icon {
-                    bottom: 21rem;
-                }
-            }
         }
         &-submit-button {
             margin: 3.2rem 0 2.4rem 2.4rem;
@@ -176,19 +147,6 @@
             &-submit-button {
                 margin: 0;
                 width: 100%;
-            }
-            &-error-container {
-                display: flex;
-                align-items: center;
-                margin-bottom: 0.8rem;
-            }
-            &-error {
-                margin: 0;
-
-                &-small-icon {
-                    margin: 0;
-                    margin-right: 0.8rem;
-                }
             }
         }
     }
@@ -237,14 +195,6 @@
                 display: flex;
                 align-items: center;
             }
-            .cashier__drop-down-display-brackets {
-                &:before {
-                    content: '(';
-                }
-                &:after {
-                    content: ')';
-                }
-            }
             @include mobile {
                 min-height: auto;
                 min-width: calc(100% - 4rem);
@@ -255,6 +205,12 @@
         &-items,
         &-label {
             justify-content: left;
+        }
+        &-items {
+            svg {
+                width: 24px;
+                height: 24px;
+            }
         }
         &-label {
             margin: 0 1.6rem;
@@ -268,6 +224,10 @@
             line-height: 1.25;
             margin-top: 2.4rem;
             margin-bottom: 2.8rem;
+
+            & .symbols {
+                padding-left: 0.8rem;
+            }
         }
         &-details {
             margin-left: 8px;
@@ -294,9 +254,7 @@
         }
     }
     &__paragraph {
-        font-size: 1.4rem;
         align-self: center;
-        line-height: 1.43;
 
         @include mobile {
             padding-left: 1.6rem;
@@ -314,6 +272,10 @@
         margin-left: auto;
         margin-right: auto;
 
+        &--full-width {
+            max-width: unset;
+            min-width: 44.5rem;
+        }
         &--bold {
             font-weight: bold;
         }
@@ -325,15 +287,13 @@
         }
         @include mobile {
             max-width: 100%;
+            min-width: unset;
             margin: 0;
             padding: 0;
             text-align: left;
         }
     }
     &__tab-header-note {
-        color: var(--text-general);
-        font-size: 1.2rem;
-        line-height: 1.5;
         max-width: 256px;
     }
     &__modal-tab {
@@ -344,11 +304,12 @@
         background-color: var(--general-main-1);
         padding: 2.4rem;
         width: 50.4rem;
-        margin: 0 auto 3.2rem;
+        margin: 0 auto 2rem;
     }
     &__done-button {
-        width: 15.6rem;
+        width: 18.9rem;
         margin-left: 0.8rem;
+        white-space: normal;
     }
     &__no-balance {
         &-icon {
@@ -389,7 +350,6 @@
         @include mobile {
             width: 100%;
             margin: 2.4rem 0 0;
-            height: 320px;
         }
     }
     &__usdt-side-note {
@@ -445,18 +405,10 @@
             > :last-child {
                 text-align: right;
                 max-width: 50%;
-            }
-        }
-        &-error {
-            max-width: 40rem;
-            margin: auto;
 
-            @include mobile {
-                margin-top: 1.6rem;
-            }
-
-            .cashier__form-error {
-                margin-right: 0;
+                &.description {
+                    word-wrap: break-word;
+                }
             }
         }
         &-submit {
@@ -620,7 +572,6 @@
         margin-bottom: 0.8rem;
     }
     &__desc {
-        @include typeface(--paragraph-center-normal-black);
         margin-bottom: 3.2rem;
     }
 }
@@ -632,14 +583,9 @@
         margin-bottom: 8px;
         font-size: 1.6rem;
         line-height: 1.5;
-    }
-    &__header,
-    &__text {
         color: var(--text-general);
     }
-    &__text {
-        font-size: 1.4rem;
-    }
+
     &__verify-button {
         margin: 3.2rem auto;
 
@@ -667,19 +613,9 @@
             margin: auto;
 
             &-title {
-                color: var(--text-general);
-                font-size: 1.6rem;
-                font-weight: bold;
                 margin-bottom: 0.8rem;
-                line-height: 1.5;
+            }
 
-                &-sub {
-                    font-size: 1.4rem;
-                }
-            }
-            &-text {
-                color: var(--text-general);
-            }
             @include mobile {
                 width: 100%;
                 padding: 1.6rem;
@@ -907,11 +843,10 @@
         }
     }
     &__transferred-contact {
-        margin-top: 1.6rem;
-        margin-bottom: 0.8rem;
+        margin: 0.8rem 0;
 
         &-wrapper {
-            margin: 3.2rem;
+            margin: 2.4rem 0;
         }
     }
     &__contact {
@@ -924,7 +859,7 @@
         }
     }
     &__explanation {
-        margin-top: -0.8rem;
+        margin-top: 0.8rem;
     }
     &__input {
         width: 12.6rem !important;
@@ -1095,6 +1030,9 @@
 
 /** @define cashier-side-note; weak */
 .cashier-side-note {
+    &__text {
+        margin-bottom: 0.8rem;
+    }
     &__bullet {
         background-color: var(--text-general);
         border-radius: 100%;
@@ -1106,7 +1044,6 @@
 
         &-wrapper {
             display: flex;
-            margin-bottom: 0.8rem;
         }
     }
 }
@@ -1145,6 +1082,9 @@
         max-width: 36rem;
         margin: 0 auto 5.1rem;
 
+        &--to-dropdown {
+            margin: 0 auto 3.3rem;
+        }
         @include mobile {
             width: 100%;
             min-width: auto;
@@ -1172,8 +1112,6 @@
         line-height: 1.43;
     }
     &__currency {
-        font-size: 1.2rem;
-
         &-icon {
             align-self: center;
         }
@@ -1185,9 +1123,6 @@
             margin-left: 8px;
             margin-right: 8px;
         }
-    }
-    &__loginid {
-        @include typeface(--xsmall-left-normal-grey);
     }
     &__balance {
         margin-left: auto;
@@ -1207,9 +1142,21 @@
         &-from {
             margin-bottom: 3.5rem;
             margin-top: 2.5rem;
+
+            @include mobile {
+                margin-bottom: 4rem;
+            }
         }
         &-to {
             margin-bottom: 1.7rem;
+
+            @include mobile {
+                margin-bottom: 5rem;
+
+                &:not(.dc-select-native--error) {
+                    margin-bottom: 2.2rem;
+                }
+            }
         }
     }
     &__button {

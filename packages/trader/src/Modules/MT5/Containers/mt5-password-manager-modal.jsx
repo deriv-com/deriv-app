@@ -36,6 +36,7 @@ const CountdownComponent = ({ count_from = 60, onTimeout }) => {
         onTimeout();
 
         return () => {};
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [count]);
     return <span className='countdown'>{count}</span>;
 };
@@ -48,6 +49,7 @@ const MT5PasswordReset = ({ sendVerifyEmail, password_type, account_type, accoun
         localStorage.setItem('mt5_reset_password_intent', [account_group, account_type].join('.'));
         localStorage.setItem('mt5_reset_password_type', password_type);
         sendVerifyEmail();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const onClickVerification = () => {
@@ -258,6 +260,7 @@ class MT5PasswordManagerModal extends React.Component {
                                     <PasswordMeter
                                         input={field.value}
                                         has_error={!!(touched.new_password && errors.new_password)}
+                                        custom_feedback_messages={getErrorMessages().password_warnings}
                                     >
                                         {({ has_warning }) => (
                                             <PasswordInput
@@ -354,6 +357,7 @@ class MT5PasswordManagerModal extends React.Component {
                                         <PasswordMeter
                                             input={field.value}
                                             has_error={!!(touched.new_password && errors.new_password)}
+                                            custom_feedback_messages={getErrorMessages().password_warnings}
                                         >
                                             {({ has_warning }) => (
                                                 <PasswordInput

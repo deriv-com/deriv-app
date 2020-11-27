@@ -1,4 +1,5 @@
 import { observable, action, reaction, computed, runInAction } from 'mobx';
+import LZString from 'lz-string';
 import { localize } from '@deriv/translations';
 import { error_types, unrecoverable_errors, observer, message_types } from '@deriv/bot-skeleton';
 import { contract_stages } from '../constants/contract-stage';
@@ -10,18 +11,67 @@ export default class RunPanelStore {
         this.root_store = root_store;
         this.dbot = this.root_store.dbot;
         this.registerCoreReactions();
+
+        this.statistics_storage_key = 'statistics_cache';
+        this.empty_statistics = Object.freeze({
+            lost_contracts: 0,
+            number_of_runs: 0,
+            total_profit: 0,
+            total_payout: 0,
+            total_stake: 0,
+            won_contracts: 0,
+        });
+
+        this.disposeStatisticsListener = reaction(
+            () => this.statistics,
+            statistics => {
+                const { client } = this.root_store.core;
+                const stored_statistics = this.getSessionStorage(this.statistics_storage_key);
+
+                const new_statistics = { statistics };
+                stored_statistics[client.loginid] = new_statistics;
+
+                sessionStorage.setItem(
+                    this.statistics_storage_key,
+                    LZString.compress(JSON.stringify(stored_statistics))
+                );
+            }
+        );
+
+        this.disposeSwitchAccountListener = reaction(
+            () => this.root_store.core.client.loginid,
+            () => {
+                const { core, transactions, journal, summary_card } = this.root_store;
+                const { client } = core;
+
+                if (client.is_logged_in) {
+                    this.statistics =
+                        this.getAccountStatisticsInfo(this.statistics_storage_key, 'Statistics')?.statistics ??
+                        this.empty_statistics;
+
+                    journal.unfiltered_messages =
+                        this.getAccountStatisticsInfo('journal_cache', 'Journals')?.journal_messages ?? [];
+
+                    transactions.elements =
+                        this.getAccountStatisticsInfo('transaction_cache', 'Transactions')?.transaction_elements ?? [];
+                } else {
+                    this.statistics = this.empty_statistics;
+                    journal.unfiltered_messages = [];
+                    transactions.elements = [];
+                }
+
+                this.is_running = false;
+                this.has_open_contract = false;
+                summary_card.clear();
+                this.setContractStage(contract_stages.NOT_RUNNING);
+            }
+        );
     }
 
     run_id = '';
 
-    @observable statistics = {
-        lost_contracts: 0,
-        number_of_runs: 0,
-        total_profit: 0,
-        total_payout: 0,
-        total_stake: 0,
-        won_contracts: 0,
-    };
+    @observable statistics =
+        this.getAccountStatisticsInfo(this.statistics_storage_key, 'statistics')?.statistics ?? this.empty_statistics;
 
     @observable active_index = 0;
     @observable contract_stage = contract_stages.NOT_RUNNING;
@@ -31,11 +81,29 @@ export default class RunPanelStore {
     @observable is_statistics_info_modal_open = false;
     @observable is_drawer_open = true;
     @observable is_dialog_open = false;
+    @observable is_sell_requested = false;
 
     // when error happens, if it is unrecoverable_errors we reset run-panel
     // we activate run-button and clear trade info and set the ContractStage to NOT_RUNNING
     // otherwise we keep opening new contracts and set the ContractStage to PURCHASE_SENT
     error_type = undefined;
+
+    getSessionStorage = key => {
+        try {
+            return JSON.parse(LZString.decompress(sessionStorage.getItem(key))) ?? {};
+        } catch (e) {
+            return {};
+        }
+    };
+
+    getAccountStatisticsInfo = (key, type) => {
+        const { client } = this.root_store.core;
+
+        if (type === 'Statistics') {
+            return this.getSessionStorage(key)?.[client.loginid] ?? this.empty_statistics;
+        }
+        return this.getSessionStorage(key)?.[client.loginid] ?? [];
+    };
 
     // #region button clicks
     @computed
@@ -222,6 +290,7 @@ export default class RunPanelStore {
         const { summary_card, transactions } = this.root_store;
 
         observer.register('bot.running', this.onBotRunningEvent);
+        observer.register('bot.sell', this.onBotSellEvent);
         observer.register('bot.stop', this.onBotStopEvent);
         observer.register('bot.click_stop', this.onStopButtonClick);
         observer.register('bot.trade_again', this.onBotTradeAgain);
@@ -248,6 +317,11 @@ export default class RunPanelStore {
                 this.onStopButtonClick();
             }
         }
+    }
+
+    @action.bound
+    onBotSellEvent() {
+        this.is_sell_requested = true;
     }
 
     @action.bound
@@ -283,6 +357,7 @@ export default class RunPanelStore {
             // - When bot was running and an error happens
             this.error_type = undefined;
             this.is_running = false;
+            this.is_sell_requested = false;
             this.setContractStage(contract_stages.CONTRACT_CLOSED);
             ui.setAccountSwitcherDisabledMessage(false);
             RunPanelStore.unregisterBotListeners();
@@ -326,6 +401,7 @@ export default class RunPanelStore {
                 break;
             }
             case 'contract.sold': {
+                this.is_sell_requested = false;
                 this.setContractStage(contract_stages.CONTRACT_CLOSED);
 
                 const { contract } = contract_status;
@@ -361,24 +437,32 @@ export default class RunPanelStore {
                 break;
             }
         }
+
+        this.statistics = {
+            lost_contracts: this.statistics.lost_contracts,
+            number_of_runs: this.statistics.number_of_runs,
+            total_profit: this.statistics.total_profit,
+            total_payout: this.statistics.total_payout,
+            total_stake: this.statistics.total_stake,
+            won_contracts: this.statistics.won_contracts,
+        };
+    }
+
+    @action.bound
+    onClickSell() {
+        this.dbot.interpreter.bot.getBotInterface().sellAtMarket();
     }
 
     @action.bound
     clear() {
-        this.statistics = {
-            lost_contracts: 0,
-            number_of_runs: 0,
-            total_profit: 0,
-            total_payout: 0,
-            total_stake: 0,
-            won_contracts: 0,
-        };
+        this.statistics = this.empty_statistics;
         observer.emit('statistics.clear');
     }
 
     @action.bound
     onBotContractEvent(data) {
         if (data?.is_sold) {
+            this.is_sell_requested = false;
             this.setContractStage(contract_stages.CONTRACT_CLOSED);
         }
     }
@@ -444,16 +528,10 @@ export default class RunPanelStore {
                         }
                         this.dbot.terminateBot();
                         RunPanelStore.unregisterBotListeners();
-                        this.clearStat();
                     }
                 );
-            } else {
-                if (typeof this.disposeLogoutListener === 'function') {
-                    this.disposeLogoutListener();
-                }
-                if (typeof this.disposeSwitchAccountListener === 'function') {
-                    this.disposeSwitchAccountListener();
-                }
+            } else if (typeof this.disposeLogoutListener === 'function') {
+                this.disposeLogoutListener();
             }
         };
 
@@ -478,15 +556,42 @@ export default class RunPanelStore {
         observer.register('ui.log.error', this.showErrorMessage);
         observer.register('ui.log.notify', journal.onNotify);
         observer.register('ui.log.success', journal.onLogSuccess);
+        observer.register('client.invalid_token', this.handleInvalidToken);
     }
 
     @action.bound
     onUnmount() {
+        const { journal, transactions } = this.root_store;
+
         RunPanelStore.unregisterBotListeners();
-        this.disposeIsSocketOpenedListener();
+        this.disposeListeners();
+        journal.disposeListeners();
+        transactions.disposeListeners();
 
         observer.unregisterAll('ui.log.error');
         observer.unregisterAll('ui.log.notify');
         observer.unregisterAll('ui.log.success');
+        observer.unregisterAll('client.invalid_token');
+    }
+
+    disposeListeners() {
+        if (typeof this.disposeIsSocketOpenedListener === 'function') {
+            this.disposeIsSocketOpenedListener();
+        }
+
+        if (typeof this.disposeStatisticsListener === 'function') {
+            this.disposeStatisticsListener();
+        }
+
+        if (typeof this.disposeSwitchAccountListener === 'function') {
+            this.disposeSwitchAccountListener();
+        }
+    }
+
+    @action.bound
+    async handleInvalidToken() {
+        const { client } = this.root_store.core;
+        await client.logout();
+        this.setActiveTabIndex(run_panel.SUMMARY);
     }
 }

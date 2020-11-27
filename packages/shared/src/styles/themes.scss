@@ -11,6 +11,18 @@
     --text-size-xl: 4.8rem;
     --text-size-xxl: 6.4rem;
 
+    //Line Height
+    --text-lh-xs: 1.25;
+    --text-lh-s: 1.4;
+    --text-lh-m: 1.5;
+    --text-lh-l: 1.75;
+
+    //Font Weight
+    --text-weight-lighter: lighter;
+    --text-weight-normal: normal;
+    --text-weight-bold: bold;
+    --text-weight-bolder: bolder;
+
     // Brand primary colors
     --brand-dark-grey: #{$color-black};
     --brand-red-coral: #{$color-red};
@@ -86,6 +98,7 @@
         // Gradient
         --gradient-success: #{$gradient-color-green-1};
         --gradient-danger: #{$gradient-color-red-1};
+        --gradient-right-edge: #{$gradient-color-white};
     }
     .theme--dark {
         // General
@@ -154,5 +167,6 @@
         // Gradient
         --gradient-success: #{$gradient-color-green-2};
         --gradient-danger: #{$gradient-color-red-2};
+        --gradient-right-edge: #{$gradient-color-black};
     }
 }

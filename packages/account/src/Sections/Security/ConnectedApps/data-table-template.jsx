@@ -1,10 +1,17 @@
+/* eslint-disable react/display-name */
 import React from 'react';
 import { toMoment } from '@deriv/shared';
 import { Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
-const GetConnectedAppsColumnsTemplate = (handleToggleModal) => [
-    { title: localize('Name'), col_index: 'name' },
+const GetConnectedAppsColumnsTemplate = handleToggleModal => [
+    {
+        title: localize('Name'),
+        col_index: 'name',
+        renderCellContent: ({ cell_value }) => {
+            return <span className='name__content'>{cell_value}</span>;
+        },
+    },
     {
         title: localize('Permission'),
         col_index: 'scopes',
@@ -32,7 +39,7 @@ const PrepareConnectedAppsAction = (app_id, handleToggleModal) => {
     );
 };
 
-const PrepareConnectedAppsLastLogin = (last_used) => (
+const PrepareConnectedAppsLastLogin = last_used => (
     <p className='last_used_content'>{toMoment(last_used).format('YYYY-MM-DD HH:mm:ss')}</p>
 );
 
@@ -44,11 +51,11 @@ const generatePermissions = () => ({
     admin: localize('Admin'),
 });
 
-const PrepareConnectedAppsScopes = (permissions_list) => {
+const PrepareConnectedAppsScopes = permissions_list => {
     const is_trading_information = permissions_list.includes('trading_information');
     let oauth_apps_list = [];
     if (is_trading_information) {
-        oauth_apps_list = permissions_list.filter((permission) => permission !== 'trading_information');
+        oauth_apps_list = permissions_list.filter(permission => permission !== 'trading_information');
         oauth_apps_list.push('trading_information');
     } else {
         oauth_apps_list = permissions_list;

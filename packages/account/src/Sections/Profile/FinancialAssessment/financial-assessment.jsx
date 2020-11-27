@@ -164,7 +164,7 @@ class FinancialAssessment extends React.Component {
         if (this.props.is_virtual) {
             this.setState({ is_loading: false });
         } else {
-            WS.authorized.storage.getFinancialAssessment().then((data) => {
+            WS.authorized.storage.getFinancialAssessment().then(data => {
                 // TODO: Find a better solution for handling no-op instead of using is_mounted flags
                 if (this.is_mounted) {
                     WS.wait('get_account_status').then(() => {
@@ -210,25 +210,30 @@ class FinancialAssessment extends React.Component {
     onSubmit = (values, { setSubmitting, setStatus }) => {
         setStatus({ msg: '' });
         this.setState({ is_btn_loading: true });
-        WS.setFinancialAssessment(values).then((data) => {
+        WS.setFinancialAssessment(values).then(data => {
             this.setState({ is_btn_loading: false });
             if (data.error) {
                 setStatus({ msg: data.error.message });
             } else {
-                this.setState({ is_submit_success: true });
-                setTimeout(() => this.setState({ is_submit_success: false }), 3000);
+                WS.authorized.storage.getFinancialAssessment().then(res_data => {
+                    this.setState({
+                        ...res_data.get_financial_assessment,
+                        is_submit_success: true,
+                    });
+                    setTimeout(() => this.setState({ is_submit_success: false }), 3000);
 
-                this.props.removeNotificationMessage({ key: 'risk' });
-                this.props.removeNotificationByKey({ key: 'risk' });
+                    this.props.removeNotificationMessage({ key: 'risk' });
+                    this.props.removeNotificationByKey({ key: 'risk' });
+                });
             }
             setSubmitting(false);
         });
     };
 
-    validateFields = (values) => {
+    validateFields = values => {
         this.setState({ is_submit_success: false });
         const errors = {};
-        Object.keys(values).forEach((field) => {
+        Object.keys(values).forEach(field => {
             if (values[field] !== undefined && !values[field]) {
                 errors[field] = localize('This field is required');
             }
@@ -236,15 +241,25 @@ class FinancialAssessment extends React.Component {
         return errors;
     };
 
-    showForm = (show_form) => this.setState({ show_form, is_confirmation_visible: false });
+    showForm = show_form => this.setState({ show_form, is_confirmation_visible: false });
 
-    toggleConfirmationModal = (value) => {
+    toggleConfirmationModal = value => {
         const new_state = { is_confirmation_visible: value };
         if (isMobile()) {
             new_state.show_form = !value;
         }
 
         this.setState(new_state);
+    };
+
+    onClickSubmit = handleSubmit => {
+        const is_confirmation_needed = this.state.has_trading_experience && this.props.is_trading_experience_incomplete;
+
+        if (is_confirmation_needed) {
+            this.toggleConfirmationModal(true);
+        } else {
+            handleSubmit();
+        }
     };
 
     render() {
@@ -304,6 +319,7 @@ class FinancialAssessment extends React.Component {
                             other_instruments_trading_frequency,
                         }),
                     }}
+                    enableReinitialize={true}
                     validate={this.validateFields}
                     onSubmit={this.onSubmit}
                 >
@@ -844,7 +860,7 @@ class FinancialAssessment extends React.Component {
                                             className={classNames('account-form__footer-btn', {
                                                 'dc-btn--green': is_submit_success,
                                             })}
-                                            onClick={() => this.toggleConfirmationModal(true)}
+                                            onClick={() => this.onClickSubmit(handleSubmit)}
                                             is_disabled={isSubmitting || !dirty || Object.keys(errors).length > 0}
                                             has_effect
                                             is_loading={is_btn_loading}

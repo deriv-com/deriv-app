@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Icon } from '@deriv/components';
+import { Button, Icon, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import EmailSent from './email-sent.jsx';
@@ -18,16 +18,16 @@ class SendEmail extends React.Component {
                 ) : (
                     <React.Fragment>
                         <Icon icon='IcCashierAuthenticate' className='withdraw__icon' size={128} />
-                        <p className='withdraw__header'>
-                            <Localize i18n_default_text='To initiate a withdrawal, we need to authenticate you via email.' />
-                        </p>
-                        <p className='withdraw__text'>
-                            <Localize i18n_default_text='This is a safeguard against unauthorised withdrawals from your account.' />
-                        </p>
+                        <Text weight='bold' as='p' className='withdraw__header'>
+                            <Localize i18n_default_text='We will send you an email to confirm your withdrawal request.' />
+                        </Text>
+                        <Text size='xs' as='p'>
+                            <Localize i18n_default_text='This is to protect your account from unauthorised withdrawals.' />
+                        </Text>
                         <Button
                             className='withdraw__verify-button'
                             has_effect
-                            text={localize('Request authentication email')}
+                            text={localize('Verify my request')}
                             onClick={this.props.sendVerificationEmail}
                             primary
                             large

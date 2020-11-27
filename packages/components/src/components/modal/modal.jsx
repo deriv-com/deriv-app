@@ -36,23 +36,33 @@ const ModalElement = ({
     const modal_root_ref = React.useRef(el_portal_node || document.getElementById('modal_root'));
     const wrapper_ref = React.useRef();
 
-    const is_datepicker_visible = () => modal_root_ref.current.querySelectorAll('.dc-datepicker__picker').length;
-    const is_dialog_visible = () => modal_root_ref.current.querySelectorAll('.dc-mobile-dialog').length;
+    const portal_elements_selector = [
+        '.dc-datepicker__picker',
+        '.dc-mobile-dialog',
+        '.dc-dropdown-list',
+        '.dc-dropdown__list',
+    ];
+
+    const isPortalElementVisible = () =>
+        modal_root_ref.current.querySelectorAll(portal_elements_selector.join(', ')).length;
 
     const validateClickOutside = e => {
         const is_absolute_modal_visible = document.getElementById('modal_root_absolute')?.hasChildNodes();
         const path = e.path ?? e.composedPath?.();
         return (
             has_close_icon &&
-            !is_datepicker_visible() &&
-            !is_dialog_visible() &&
+            !isPortalElementVisible() &&
             is_open &&
             !is_absolute_modal_visible &&
             !(elements_to_ignore && path?.find(el => elements_to_ignore.includes(el)))
         );
     };
 
-    useOnClickOutside(wrapper_ref, toggleModal, validateClickOutside);
+    const closeModal = () => {
+        if (is_open) toggleModal();
+    };
+
+    useOnClickOutside(wrapper_ref, closeModal, validateClickOutside);
 
     React.useEffect(() => {
         el_ref.current.classList.add('dc-modal');

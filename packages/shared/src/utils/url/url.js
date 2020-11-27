@@ -1,3 +1,4 @@
+import { deriv_urls } from './constants';
 import { getPlatformFromUrl } from './helpers';
 import { getCurrentProductionDomain } from '../config/config';
 import { routes } from '../routes';
@@ -17,16 +18,15 @@ export const legacyUrlForLanguage = (target_language, url = window.location.href
     url.replace(new RegExp(`/${default_language}/`, 'i'), `/${(target_language || 'EN').trim().toLowerCase()}/`);
 
 export const urlForLanguage = (lang, url = window.location.href) => {
-    if (/[&?]lang=(\w*)/i.test(url)) {
-        return url.replace(/lang=(\w*)/, `lang=${lang?.trim().toUpperCase() || 'EN'}`);
+    const current_url = new URL(url);
+
+    if (lang === 'EN') {
+        current_url.searchParams.delete('lang');
+    } else {
+        current_url.searchParams.set('lang', lang);
     }
 
-    const current_url = new URL(url);
-    const params = new URLSearchParams(current_url.search.slice(1));
-
-    params.append('lang', lang);
-
-    return `${current_url.origin}${current_url.pathname}?${params.toString()}${current_url.hash}`;
+    return `${current_url}`;
 };
 
 export const reset = () => {
@@ -56,7 +56,7 @@ export const paramsHash = href => {
     return param_hash;
 };
 
-export const normalizePath = path => (path ? path.replace(/(^\/|\/$|[^a-zA-Z0-9-_./])/g, '') : '');
+export const normalizePath = path => (path ? path.replace(/(^\/|\/$|[^a-zA-Z0-9-_./()])/g, '') : '');
 
 export const urlFor = (
     path,
@@ -168,12 +168,24 @@ export const getStaticUrl = (
     path = '',
     options = {
         is_deriv_crypto: false,
-    }
+    },
+    is_document = false
 ) => {
-    const host = options.is_deriv_crypto ? 'https://derivcrypto.com' : 'https://deriv.com';
+    const host = options.is_deriv_crypto ? deriv_urls.DERIV_CRYPTO_COM_PRODUCTION : deriv_urls.DERIV_COM_PRODUCTION;
     let lang = default_language?.toLowerCase();
-    if (lang && lang !== 'en') lang = `/${lang}`;
-    else lang = '';
+
+    if (lang && lang !== 'en') {
+        lang = `/${lang}`;
+    } else {
+        lang = '';
+    }
+
+    if (is_document) return `${host}/${normalizePath(path)}`;
+
+    // Deriv.com supports languages separated by '-' not '_'
+    if (host === deriv_urls.DERIV_COM_PRODUCTION && lang.includes('_')) {
+        lang = lang.replace('_', '-');
+    }
 
     return `${host}${lang}/${normalizePath(path)}`;
 };

@@ -6,8 +6,17 @@
     }
     &__items {
         display: flex;
-        justify-content: space-between;
         flex-wrap: wrap;
+        width: 768px;
+
+        &__center {
+            justify-content: center !important;
+        }
+
+        @include desktop {
+            justify-content: flex-start;
+        }
+
         @include mobile {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -21,9 +30,10 @@
         display: inline-flex;
         flex-direction: column;
         height: 128px;
+        width: 128px;
         justify-content: space-around;
-        margin: 1.6rem 2rem 0;
-        min-width: 170px;
+        margin: 1.6rem 3.2rem 0;
+        min-width: 128px;
 
         &:hover:not(&--selected) {
             cursor: pointer;
@@ -75,7 +85,9 @@
             min-width: unset;
 
             @media only screen and (max-width: 340px) {
-                width: 120px;
+                margin: 1.6rem 1rem 0.8rem;
+                width: 136px;
+                height: 136px;
             }
         }
     }

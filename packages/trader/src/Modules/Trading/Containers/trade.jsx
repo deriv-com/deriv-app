@@ -14,11 +14,13 @@ import AllMarkers from '../../SmartChart/Components/all-markers.jsx';
 const BottomWidgetsMobile = ({ tick, digits, setTick, setDigits }) => {
     React.useEffect(() => {
         setTick(tick);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [tick]);
 
     React.useEffect(() => {
         setDigits(digits);
-    }, digits);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [digits]);
 
     // render nothing for bottom widgets on chart in mobile
     return null;
@@ -205,7 +207,6 @@ const ChartMarkers = connect(({ modules, ui, client }) => ({
 
 class ChartTradeClass extends React.Component {
     state = {
-        active_markets: [],
         active_category: null,
     };
     bottomWidgets = ({ digits, tick }) => <ChartBottomWidgets digits={digits} tick={tick} />;
@@ -222,21 +223,15 @@ class ChartTradeClass extends React.Component {
         );
     };
 
-    componentDidMount() {
-        this.setActiveMarkets();
-    }
-
     componentDidUpdate(prevProps) {
         if (prevProps.should_refresh) this.props.resetRefresh();
-        if (this.props.active_symbols !== prevProps.active_symbols) this.setActiveMarkets();
     }
 
-    setActiveMarkets() {
-        const { active_symbols } = this.props;
+    getMarketsOrder(active_symbols) {
         const synthetic_index = 'synthetic_index';
 
         const has_synthetic_index = !!active_symbols.find(s => s.market === synthetic_index);
-        const active_markets = active_symbols
+        return active_symbols
             .slice()
             .sort((a, b) => (a.display_name < b.display_name ? -1 : 1))
             .map(s => s.market)
@@ -247,19 +242,25 @@ class ChartTradeClass extends React.Component {
                 },
                 has_synthetic_index ? [synthetic_index] : []
             );
-        this.setState({ active_markets });
     }
 
     render() {
-        const { show_digits_stats, main_barrier, should_refresh, extra_barriers = [], symbol } = this.props;
-        const { active_markets } = this.state;
+        const {
+            show_digits_stats,
+            main_barrier,
+            should_refresh,
+            extra_barriers = [],
+            symbol,
+            active_symbols,
+        } = this.props;
 
         const barriers = main_barrier ? [main_barrier, ...extra_barriers] : extra_barriers;
 
         // max ticks to display for mobile view for tick chart
         const max_ticks = this.props.granularity === 0 ? 8 : 24;
 
-        if (!symbol || active_markets.length === 0) return null;
+        if (!symbol || active_symbols.length === 0) return null;
+
         return (
             <SmartChart
                 ref={ref => (this.charts_ref = ref)}
@@ -293,7 +294,7 @@ class ChartTradeClass extends React.Component {
                 refreshActiveSymbols={should_refresh}
                 hasAlternativeSource={this.props.has_alternative_source}
                 refToAddTick={this.props.refToAddTick}
-                activeSymbols={active_markets}
+                getMarketsOrder={this.getMarketsOrder}
                 yAxisMargin={{
                     top: isMobile() ? 76 : 106,
                 }}

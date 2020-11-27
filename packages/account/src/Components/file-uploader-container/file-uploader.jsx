@@ -27,7 +27,7 @@ class FileUploader extends React.PureComponent {
         file_error_message: null,
     };
 
-    handleAcceptedFiles = (files) => {
+    handleAcceptedFiles = files => {
         if (files.length > 0) {
             this.setState(
                 {
@@ -41,9 +41,9 @@ class FileUploader extends React.PureComponent {
         }
     };
 
-    handleRejectedFiles = (files) => {
+    handleRejectedFiles = files => {
         const is_file_too_large = files.length > 0 && files[0].size > max_document_size;
-        const supported_files = files.filter((file) => getSupportedFiles(file.name));
+        const supported_files = files.filter(file => getSupportedFiles(file.name));
         const file_error_message =
             is_file_too_large && supported_files.length > 0
                 ? localize('File size should be 8MB or less')
@@ -83,9 +83,9 @@ class FileUploader extends React.PureComponent {
         let is_any_file_error = false;
 
         return new Promise((resolve, reject) => {
-            compressImageFiles(this.state.document_file).then((files_to_process) => {
-                readFiles(files_to_process).then((processed_files) => {
-                    processed_files.forEach((file) => {
+            compressImageFiles(this.state.document_file).then(files_to_process => {
+                readFiles(files_to_process).then(processed_files => {
+                    processed_files.forEach(file => {
                         if (file.message) {
                             is_any_file_error = true;
                             reject(file);
@@ -98,7 +98,7 @@ class FileUploader extends React.PureComponent {
                     }
 
                     // send files
-                    const uploader_promise = uploader.upload(processed_files[0]).then((api_response) => api_response);
+                    const uploader_promise = uploader.upload(processed_files[0]).then(api_response => api_response);
                     resolve(uploader_promise);
                 });
             });

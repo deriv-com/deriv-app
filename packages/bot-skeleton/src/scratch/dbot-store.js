@@ -27,10 +27,7 @@ class DBotStore extends DBotStoreInterface {
     }
 
     static setInstance(store) {
-        if (!this.singleton) {
-            this.singleton = new DBotStore(store);
-        }
-
+        this.singleton = new DBotStore(store);
         return this.instance;
     }
 

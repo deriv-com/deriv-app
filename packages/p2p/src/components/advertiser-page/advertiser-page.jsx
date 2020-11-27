@@ -1,11 +1,10 @@
 import React from 'react';
 import { Button, Icon, Loading, Modal, Popover, Table, Tabs, ThemedScrollbars } from '@deriv/components';
-import { useIsMounted } from '@deriv/shared';
-import { generateHexColourFromNickname, getShortNickname } from 'Utils/string';
-import { height_constants } from 'Utils/height_constants';
-import Dp2pContext from 'Components/context/dp2p-context';
+import PropTypes from 'prop-types';
+import { observer } from 'mobx-react-lite';
+import { generateHexColourFromNickname } from 'Utils/string';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
-import { requestWS } from 'Utils/websocket';
+import { useStores } from 'Stores';
 import Empty from 'Components/empty/empty.jsx';
 import NicknameForm from '../nickname/nickname-form.jsx';
 import { buy_sell } from '../../constants/buy-sell';
@@ -14,26 +13,19 @@ import FormError from '../form/error.jsx';
 import { localize } from '../i18next';
 import './advertiser-page.scss';
 
-const RowComponent = React.memo(({ advert, showAdPopup, style }) => {
-    const { advertiser_id } = React.useContext(Dp2pContext);
-    const {
-        account_currency,
-        advertiser_details,
-        counterparty_type,
-        local_currency,
-        max_order_amount_limit_display,
-        min_order_amount_limit_display,
-        price_display,
-    } = advert;
+const RowComponent = observer(({ data: advert, showAdPopup, style }) => {
+    const { advertiser_page_store, general_store } = useStores();
+    const { currency } = general_store.client;
+    const { local_currency, max_order_amount_limit_display, min_order_amount_limit_display, price_display } = advert;
 
-    const is_buy_advert = counterparty_type === buy_sell.BUY;
-    const is_my_advert = advertiser_details.id === advertiser_id;
+    const is_buy_advert = advertiser_page_store.counterparty_type === buy_sell.BUY;
+    const is_my_advert = advertiser_page_store.advertiser_details_id === general_store.advertiser_id;
 
     return (
         <div style={style}>
             <Table.Row className='advertiser-page__adverts-table_row'>
                 <Table.Cell>
-                    {min_order_amount_limit_display}&ndash;{max_order_amount_limit_display} {account_currency}
+                    {`${min_order_amount_limit_display}-${max_order_amount_limit_display} ${currency}`}
                 </Table.Cell>
                 <Table.Cell className='advertiser-page__adverts-price'>
                     {price_display} {local_currency}
@@ -43,7 +35,7 @@ const RowComponent = React.memo(({ advert, showAdPopup, style }) => {
                 ) : (
                     <Table.Cell className='advertiser-page__adverts-button'>
                         <Button primary small onClick={() => showAdPopup(advert)}>
-                            {is_buy_advert ? localize('Buy') : localize('Sell')} {account_currency}
+                            {is_buy_advert ? localize('Buy') : localize('Sell')} {currency}
                         </Button>
                     </Table.Cell>
                 )}
@@ -54,173 +46,78 @@ const RowComponent = React.memo(({ advert, showAdPopup, style }) => {
 
 RowComponent.displayName = 'RowComponent';
 
-const AdvertiserPage = ({ navigate, selected_advert, showVerification }) => {
-    const { is_advertiser, nickname } = React.useContext(Dp2pContext);
-    const { advertiser_details, account_currency } = selected_advert;
-    const [active_index, setActiveIndex] = React.useState(0);
-    const [ad, setAd] = React.useState(null);
-    const [adverts, setAdverts] = React.useState([]);
-    const [counterparty_type, setCounterpartyType] = React.useState(buy_sell.BUY);
-    const [error_message, setErrorMessage] = React.useState('');
-    const [form_error_message, setFormErrorMessage] = React.useState('');
+const AdvertiserPage = observer(() => {
+    const { advertiser_page_store, general_store } = useStores();
 
-    const height_values = [
-        height_constants.screen,
-        height_constants.advertiser_page_content,
-        height_constants.core_header,
-        height_constants.core_footer,
-        height_constants.filters,
-        height_constants.filters_margin,
-        height_constants.page_overlay_header,
-        height_constants.page_overlay_content_padding,
-        height_constants.table_header,
-        height_constants.tabs,
-    ];
-    const [is_loading, setIsLoading] = React.useState(true);
-    const [is_submit_disabled, setIsSubmitDisabled] = React.useState(true);
-    const isMounted = useIsMounted();
-    const item_height = 56;
-    const short_name = getShortNickname(advertiser_details.name);
-    const [show_ad_popup, setShowAdPopup] = React.useState(false);
-    const [stats, setStats] = React.useState({});
-    const submitForm = React.useRef(() => {});
     const {
+        basic_verification,
         buy_completion_rate,
         buy_orders_count,
+        full_verification,
         release_time_avg,
         sell_orders_count,
         total_completion_rate,
         total_orders_count,
-    } = stats;
+    } = advertiser_page_store.advertiser_info;
+
     const avg_release_time_in_minutes = release_time_avg > 60 ? Math.round(release_time_avg / 60) : '< 1';
-    const Form = nickname ? BuySellForm : NicknameForm;
-    const modal_title =
-        counterparty_type === buy_sell.BUY
-            ? localize('Buy {{ currency }}', { currency: account_currency })
-            : localize('Sell {{ currency }}', { currency: account_currency });
+    const Form = general_store.nickname ? BuySellForm : NicknameForm;
+
+    const Row = row_props => <RowComponent {...row_props} showAdPopup={advertiser_page_store.showAdPopup} />;
 
     React.useEffect(() => {
-        getAdvertiserAdverts();
-        getAdvertiserStats();
+        advertiser_page_store.onMount();
     }, []);
 
     React.useEffect(() => {
-        getAdvertiserAdverts();
-    }, [active_index]);
+        advertiser_page_store.onTabChange();
+    }, [advertiser_page_store.active_index]);
 
-    const getAdvertiserAdverts = () => {
-        return new Promise(resolve => {
-            requestWS({
-                p2p_advert_list: 1,
-                counterparty_type,
-                advertiser_id: advertiser_details.id,
-            }).then(response => {
-                if (isMounted()) {
-                    if (!response.error) {
-                        const { list } = response.p2p_advert_list;
-                        setAdverts(list);
-                    } else {
-                        setErrorMessage(response.error);
-                    }
-                }
-                resolve();
-            });
-        });
-    };
-
-    const getAdvertiserStats = () => {
-        return new Promise(resolve => {
-            requestWS({
-                p2p_advertiser_stats: 1,
-                id: advertiser_details.id,
-            }).then(response => {
-                if (isMounted()) {
-                    if (!response.error) {
-                        const { p2p_advertiser_stats } = response;
-                        setStats(p2p_advertiser_stats);
-                    } else {
-                        setErrorMessage(response.error);
-                    }
-                    setIsLoading(false);
-                }
-                resolve();
-            });
-        });
-    };
-
-    const handleTabItemClick = idx => {
-        if (isMounted()) {
-            setActiveIndex(idx);
-            if (idx === 0) {
-                setCounterpartyType(buy_sell.BUY);
-            } else {
-                setCounterpartyType(buy_sell.SELL);
-            }
-        }
-    };
-
-    const onCancelClick = () => {
-        setShowAdPopup(false);
-    };
-
-    const onConfirmClick = order_info => {
-        const nav = { location: 'buy_sell' };
-        navigate('orders', { order_info, nav });
-    };
-
-    const Row = props => <RowComponent {...props} showAdPopup={showAdPopup} />;
-
-    const setSubmitForm = submitFormFn => (submitForm.current = submitFormFn);
-
-    const showAdPopup = advert => {
-        if (!is_advertiser) {
-            showVerification();
-        } else {
-            setAd(advert);
-            setShowAdPopup(true);
-        }
-    };
-
-    if (is_loading) {
+    if (advertiser_page_store.is_loading) {
         return <Loading is_fullscreen={false} />;
     }
 
-    if (error_message) {
-        return <div className='advertiser-page__error'>{error_message}</div>;
+    if (advertiser_page_store.error_message) {
+        return <div className='advertiser-page__error'>{advertiser_page_store.error_message}</div>;
     }
 
     return (
         <div className='advertiser-page'>
             <div className='advertiser-page__container'>
-                {show_ad_popup && (
+                {advertiser_page_store.show_ad_popup && (
                     <Modal
                         className='buy-sell__popup'
-                        height={counterparty_type === buy_sell.BUY ? '400px' : '649px'}
+                        height={advertiser_page_store.counterparty_type === buy_sell.BUY ? '400px' : '649px'}
                         width='456px'
-                        is_open={show_ad_popup}
-                        title={modal_title}
-                        toggleModal={onCancelClick}
+                        is_open={advertiser_page_store.show_ad_popup}
+                        title={advertiser_page_store.modal_title}
+                        toggleModal={advertiser_page_store.onCancelClick}
                     >
                         {/* Parent height - Modal.Header height - Modal.Footer height */}
                         <ThemedScrollbars height='calc(100% - 5.8rem - 7.4rem)'>
                             <Modal.Body>
                                 <Form
-                                    advert={ad}
-                                    handleClose={onCancelClick}
-                                    handleConfirm={onConfirmClick}
-                                    setIsSubmitDisabled={setIsSubmitDisabled}
-                                    setErrorMessage={setFormErrorMessage}
-                                    setSubmitForm={setSubmitForm}
+                                    advert={advertiser_page_store.advert}
+                                    handleClose={advertiser_page_store.onCancelClick}
+                                    handleConfirm={advertiser_page_store.onConfirmClick}
+                                    setIsSubmitDisabled={advertiser_page_store.setIsSubmitDisabled}
+                                    setErrorMessage={advertiser_page_store.setFormErrorMessage}
+                                    setSubmitForm={advertiser_page_store.setSubmitForm}
                                 />
                             </Modal.Body>
                         </ThemedScrollbars>
                         <Modal.Footer has_separator>
-                            <FormError message={form_error_message} />
+                            <FormError message={advertiser_page_store.form_error_message} />
                             <Button.Group>
-                                <Button secondary type='button' onClick={onCancelClick} large>
+                                <Button secondary type='button' onClick={advertiser_page_store.onCancelClick} large>
                                     {localize('Cancel')}
                                 </Button>
-                                <Button is_disabled={is_submit_disabled} primary large onClick={submitForm.current}>
+                                <Button
+                                    is_disabled={advertiser_page_store.is_submit_disabled}
+                                    primary
+                                    large
+                                    onClick={advertiser_page_store.submitForm}
+                                >
                                     {localize('Confirm')}
                                 </Button>
                             </Button.Group>
@@ -231,23 +128,40 @@ const AdvertiserPage = ({ navigate, selected_advert, showVerification }) => {
                     <div className='advertiser-page__header-details'>
                         <div
                             className='advertiser-page__header-avatar'
-                            style={{ backgroundColor: generateHexColourFromNickname(advertiser_details.name) }}
+                            style={{
+                                backgroundColor: generateHexColourFromNickname(
+                                    advertiser_page_store.advertiser_details_name
+                                ),
+                            }}
                         >
-                            {short_name}
+                            {advertiser_page_store.short_name}
                         </div>
-                        <div className='advertiser-page__header-name'>{advertiser_details.name}</div>
+                        <div className='advertiser-page__header-name'>
+                            {advertiser_page_store.advertiser_details_name}
+                        </div>
                     </div>
-                    {/* TODO: add check for id and address verified */}
-                    {/* <div className='advertiser-page__header-verification'>
-                        <div className='advertiser-page__header-verification-id'>
-                            {localize('ID Verified')}
-                            <Icon icon='IcCashierVerificationBadge' size={14} />
-                        </div>
-                        <div className='advertiser-page__header-verification-address'>
-                            {localize('Address verified')}
-                            <Icon icon='IcCashierVerificationBadge' size={14} />
-                        </div>
-                    </div> */}
+                    <div className='advertiser-page__header-verification'>
+                        {basic_verification ? (
+                            <div>
+                                {localize('ID verified')}
+                                <Icon
+                                    className='advertiser-page__header-verification-icon'
+                                    icon='IcCashierVerificationBadge'
+                                    size={16}
+                                />
+                            </div>
+                        ) : null}
+                        {full_verification ? (
+                            <div className='advertiser-page__header-verification-status'>
+                                {localize('Address verified')}
+                                <Icon
+                                    className='advertiser-page__header-verification-icon'
+                                    icon='IcCashierVerificationBadge'
+                                    size={16}
+                                />
+                            </div>
+                        ) : null}
+                    </div>
                 </div>
                 <Table>
                     <Table.Row className='advertiser-page__stats'>
@@ -273,15 +187,17 @@ const AdvertiserPage = ({ navigate, selected_advert, showVerification }) => {
                                     {total_completion_rate ? `${total_completion_rate}%` : '-'}
                                 </div>
                                 <div className='advertiser-page__stats-cell-info_buy'>
-                                    {localize('(Buy {{ buy_completion_rate }}%)', {
-                                        buy_completion_rate: buy_completion_rate || 0,
+                                    {localize('(Buy {{- buy_completion_rate }})', {
+                                        buy_completion_rate: buy_completion_rate
+                                            ? `${buy_completion_rate}%`
+                                            : localize('N/A'),
                                     })}
                                 </div>
                             </div>
                         </Table.Cell>
                         <div className='advertiser-page__stats-cell-separator' />
                         <Table.Cell className='advertiser-page__stats-cell'>
-                            <div className='advertiser-page__stats-cell-header'>{localize('Avg. release')}</div>
+                            <div className='advertiser-page__stats-cell-header'>{localize('Avg. release time')}</div>
                             <div className='advertiser-page__stats-cell-info'>
                                 {release_time_avg
                                     ? localize('{{- avg_release_time_in_minutes}} min', {
@@ -294,7 +210,7 @@ const AdvertiserPage = ({ navigate, selected_advert, showVerification }) => {
                             className='advertiser-page__popover-icon'
                             alignment='top'
                             message={localize(
-                                "These fields are based on the last 30 days' activity: Buy, Sell, Completion, and Avg. release."
+                                "These fields are based on the last 30 days' activity: Buy, Sell, Completion, and Avg. release time."
                             )}
                         >
                             <Icon icon='IcInfoOutline' size={16} />
@@ -303,8 +219,8 @@ const AdvertiserPage = ({ navigate, selected_advert, showVerification }) => {
                 </Table>
                 <div className='advertiser-page__adverts'>
                     <Tabs
-                        onTabItemClick={handleTabItemClick}
-                        active_index={active_index}
+                        onTabItemClick={advertiser_page_store.handleTabItemClick}
+                        active_index={advertiser_page_store.active_index}
                         className='advertiser-page__adverts-tabs'
                         top
                         header_fit_content
@@ -313,13 +229,15 @@ const AdvertiserPage = ({ navigate, selected_advert, showVerification }) => {
                         <div label={localize('Sell')} />
                     </Tabs>
                     <div className='advertiser-page__adverts-table'>
-                        {adverts.length ? (
+                        {advertiser_page_store.adverts.length ? (
                             <Table>
                                 <Table.Header>
                                     <Table.Row className='advertiser-page__adverts-table_row'>
                                         <Table.Head>{localize('Limits')}</Table.Head>
                                         <Table.Head>
-                                            {localize('Rate (1 {{account_currency}})', { account_currency })}
+                                            {localize('Rate (1 {{currency}})', {
+                                                currency: general_store.client.currency,
+                                            })}
                                         </Table.Head>
                                         <Table.Head>{''}</Table.Head>
                                     </Table.Row>
@@ -327,9 +245,11 @@ const AdvertiserPage = ({ navigate, selected_advert, showVerification }) => {
                                 <ThemedScrollbars className='advertiser-page__adverts-scrollbar'>
                                     <Table.Body>
                                         <InfiniteLoaderList
-                                            autosizer_height={`calc(${height_values.join(' - ')})`}
-                                            items={adverts}
-                                            item_size={item_height}
+                                            autosizer_height={`calc(${advertiser_page_store.height_values.join(
+                                                ' - '
+                                            )})`}
+                                            items={advertiser_page_store.adverts}
+                                            item_size={advertiser_page_store.item_height}
                                             RenderComponent={Row}
                                         />
                                     </Table.Body>
@@ -343,6 +263,33 @@ const AdvertiserPage = ({ navigate, selected_advert, showVerification }) => {
             </div>
         </div>
     );
+});
+
+AdvertiserPage.propTypes = {
+    active_index: PropTypes.number,
+    advert: PropTypes.object,
+    advertiser_info: PropTypes.object,
+    adverts: PropTypes.array,
+    api_error_message: PropTypes.string,
+    counterparty_type: PropTypes.string,
+    error_message: PropTypes.string,
+    form_error_message: PropTypes.string,
+    handleTabItemClick: PropTypes.func,
+    height_values: PropTypes.array,
+    is_loading: PropTypes.bool,
+    is_submit_disabled: PropTypes.bool,
+    item_height: PropTypes.number,
+    modal_title: PropTypes.string,
+    onCancelClick: PropTypes.func,
+    onConfirmClick: PropTypes.func,
+    onMount: PropTypes.func,
+    onTabChange: PropTypes.func,
+    setFormErrorMessage: PropTypes.func,
+    setIsSubmitDisabled: PropTypes.func,
+    setSubmitForm: PropTypes.func,
+    show_ad_popup: PropTypes.bool,
+    showAdPopup: PropTypes.func,
+    submitForm: PropTypes.func,
 };
 
 export default AdvertiserPage;

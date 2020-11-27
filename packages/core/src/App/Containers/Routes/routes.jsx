@@ -4,6 +4,8 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import Loadable from 'react-loadable';
 import { UILoader } from '@deriv/components';
+import { urlForLanguage } from '@deriv/shared';
+import { getLanguage } from '@deriv/translations';
 import BinaryRoutes from 'App/Components/Routes';
 import { connect } from 'Stores/connect';
 
@@ -28,7 +30,7 @@ class Routes extends React.Component {
         this.props.setInitialRouteHistoryItem(this.props.history.location);
 
         this.unlisten_to_change = this.props.history.listen((route_to, action) => {
-            if (action === 'PUSH') this.props.addRouteHistoryItem({ ...route_to, action });
+            if (['PUSH', 'POP'].includes(action)) this.props.addRouteHistoryItem({ ...route_to, action });
         });
 
         this.props.setAppRouterHistory(this.props.history);
@@ -44,9 +46,17 @@ class Routes extends React.Component {
 
     render() {
         const { error, has_error, is_logged_in, passthrough } = this.props;
+        const lang = getLanguage();
+        const lang_regex = /[?&]lang=/;
 
         if (has_error) {
             return <Error {...error} />;
+        }
+
+        // we need to replace state of history object on every route
+        // to prevent language query parameter from disappering for non-english languages
+        if (!lang_regex.test(location.search) && lang !== 'EN') {
+            window.history.replaceState({}, document.title, urlForLanguage(lang));
         }
 
         return <BinaryRoutes is_logged_in={is_logged_in} passthrough={passthrough} />;

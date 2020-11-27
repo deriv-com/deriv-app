@@ -71,7 +71,7 @@ class DBot {
                 this.workspace.current_strategy_id = Blockly.utils.genUid();
                 let strategy_to_load = main_xml;
                 let file_name = config.default_file_name;
-                if (recent_files) {
+                if (recent_files && recent_files.length) {
                     const latest_file = recent_files[0];
                     strategy_to_load = latest_file.xml;
                     file_name = latest_file.name;

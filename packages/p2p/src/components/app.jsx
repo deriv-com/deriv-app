@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
-import { getPropertyValue } from '@deriv/shared';
 import { Tabs, Modal } from '@deriv/components';
 import { Dp2pProvider } from 'Components/context/dp2p-context';
 import ServerTime from 'Utils/server-time';
@@ -23,7 +22,6 @@ const App = observer(props => {
     const { general_store } = useStores();
     const {
         className,
-        custom_strings,
         is_mobile,
         lang,
         loginid,
@@ -31,11 +29,11 @@ const App = observer(props => {
         order_id,
         poi_url,
         server_time,
-        setOrderId,
         should_show_verification,
         websocket_api,
     } = props;
     general_store.setAppProps(props);
+    general_store.setOrderId(props.order_id);
     general_store.setWebsocketInit(websocket_api, general_store.client.local_currency_config.decimal_places);
 
     React.useEffect(() => {
@@ -43,9 +41,9 @@ const App = observer(props => {
         ServerTime.init(server_time);
 
         // force safari refresh on back/forward
-        window.onpageshow = function(event) {
+        window.onpageshow = function (event) {
             if (event.persisted) {
-                window.location.reload(true);
+                window.location.reload();
             }
         };
 
@@ -80,7 +78,6 @@ const App = observer(props => {
                 changeTab: general_store.handleTabClick,
                 createAdvertiser: general_store.createAdvertiser,
                 currency: general_store.client.currency,
-                email_domain: getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
                 getLocalStorageSettingsForLoginId: general_store.getLocalStorageSettingsForLoginId,
                 handleNotifications: general_store.handleNotifications,
                 inactive_notification_count: general_store.inactive_notification_count,
@@ -103,7 +100,6 @@ const App = observer(props => {
                 poi_url,
                 resetNicknameErrorState: general_store.resetNicknameErrorState,
                 residence: general_store.client.residence,
-                setChatInfo: general_store.setChatInfo,
                 setIsListed: is_listed => {
                     general_store.setIsListed(is_listed);
                 },
@@ -111,7 +107,7 @@ const App = observer(props => {
                     general_store.setIsAdvertiser(is_advertiser);
                 },
                 setNickname: general_store.setNickname,
-                setOrderId,
+                setOrderId: general_store.setOrderId,
                 setOrders: general_store.setOrders,
                 setOrderOffset: order_offset => {
                     general_store.setOrderOffset(order_offset);
@@ -157,7 +153,9 @@ const App = observer(props => {
                             <Tabs
                                 onTabItemClick={general_store.handleTabClick}
                                 active_index={general_store.active_index}
-                                className='p2p-cashier'
+                                className={classNames('p2p-cashier', {
+                                    'p2p-cashier__advertiser-tab': is_mobile && general_store.is_advertiser,
+                                })}
                                 top
                                 header_fit_content
                             >
@@ -165,11 +163,7 @@ const App = observer(props => {
                                     <BuySell navigate={general_store.redirectTo} params={general_store.parameters} />
                                 </div>
                                 <div count={general_store.notification_count} label={localize('Orders')}>
-                                    <Orders
-                                        navigate={general_store.redirectTo}
-                                        params={general_store.parameters}
-                                        chat_info={general_store.chat_info}
-                                    />
+                                    <Orders navigate={general_store.redirectTo} params={general_store.parameters} />
                                 </div>
                                 <div label={localize('My ads')}>
                                     <MyAds navigate={general_store.redirectTo} params={general_store.parameters} />
@@ -191,6 +185,7 @@ const App = observer(props => {
     );
 });
 
+App.displayName = 'App';
 App.propTypes = {
     client: PropTypes.shape({
         currency: PropTypes.string.isRequired,

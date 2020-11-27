@@ -20,12 +20,16 @@ export const isEnded = contract_info =>
         contract_info.is_settleable
     );
 
+export const isOpen = contract_info => contract_info.status === 'open';
+
 export const isUserSold = contract_info => contract_info.status === 'sold';
 
 export const isValidToCancel = contract_info => !!contract_info.is_valid_to_cancel;
 
 export const isValidToSell = contract_info =>
     !isEnded(contract_info) && !isUserSold(contract_info) && +contract_info.is_valid_to_sell === 1;
+
+export const hasContractEntered = contract_info => !!contract_info.entry_spot;
 
 export const isMultiplierContract = contract_type => /MULT/i.test(contract_type);
 
@@ -54,6 +58,8 @@ export const getDigitInfo = (digits_info, contract_info) => {
         ...current,
     };
 };
+
+export const getTotalProfit = contract_info => contract_info.bid_price - contract_info.buy_price;
 
 const createDigitInfo = (spot, spot_time) => {
     const digit = +`${spot}`.slice(-1);
@@ -96,7 +102,7 @@ export const getTimePercentage = (server_time, start_time, expiry_time) => {
 export const getDisplayStatus = contract_info => {
     let status = 'purchased';
     if (isEnded(contract_info)) {
-        status = contract_info.profit >= 0 ? 'won' : 'lost';
+        status = getTotalProfit(contract_info) >= 0 ? 'won' : 'lost';
     }
     return status;
 };

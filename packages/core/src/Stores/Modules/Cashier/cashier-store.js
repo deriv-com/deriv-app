@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import React from 'react';
 import { action, computed, observable, toJS, reaction } from 'mobx';
 import {
@@ -99,11 +100,13 @@ class ConfigAccountTransfer {
     @observable error = new ConfigError();
     @observable has_no_account = false;
     @observable has_no_accounts_balance = false;
+    @observable is_transfer_confirm = false;
     @observable is_transfer_successful = false;
     @observable minimum_fee = null;
     @observable receipt = {};
     @observable selected_from = {};
     @observable selected_to = {};
+    @observable account_transfer_amount = null;
     @observable transfer_fee = null;
     @observable transfer_limit = {};
 
@@ -136,7 +139,6 @@ export default class CashierStore extends BaseStore {
     @observable is_loading = false;
     @observable is_p2p_visible = false;
     @observable p2p_notification_count = 0;
-    @observable is_p2p_advertiser = false;
     @observable cashier_route_tab_index = 0;
 
     @observable config = {
@@ -178,6 +180,13 @@ export default class CashierStore extends BaseStore {
     }
 
     @computed
+    get is_account_transfer_visible() {
+        // cashier Transfer account tab is hidden for iom clients
+        // check for residence to hide the tab before creating a real money account
+        return this.root_store.client.residence !== 'im';
+    }
+
+    @computed
     get is_p2p_enabled() {
         return this.is_p2p_visible && !this.root_store.client.is_eu;
     }
@@ -189,6 +198,23 @@ export default class CashierStore extends BaseStore {
         // so we don't have any unmount function here and everything gets reset on switch instead
         this.disposeSwitchAccount();
         this.onSwitchAccount(this.accountSwitcherListener);
+    }
+
+    // Initialise P2P attributes on app load without mounting the entire cashier
+    @action.bound
+    init() {
+        // eslint-disable-next-line no-undef
+        reaction(
+            () => [this.root_store.client.is_logged_in, this.root_store.client.residence],
+            () => {
+                if (!this.is_p2p_visible && !this.root_store.client.is_virtual) {
+                    WS.authorized.p2pAdvertiserInfo().then(advertiser_info => {
+                        const advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
+                        this.setIsP2pVisible(advertiser_error !== 'RestrictedCountry');
+                    });
+                }
+            }
+        );
     }
 
     @action.bound
@@ -221,21 +247,6 @@ export default class CashierStore extends BaseStore {
             if (!this.onramp.is_onramp_tab_visible && window.location.pathname.endsWith(routes.cashier_onramp)) {
                 this.root_store.common.routeTo(routes.cashier_deposit);
             }
-
-            // show p2p if:
-            // 1. we have not already checked this before, and
-            // 2. client is not virtual
-            if (!this.is_p2p_visible && !this.root_store.client.is_virtual) {
-                const advertiser_info = await WS.authorized.p2pAdvertiserInfo();
-                const advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
-                if (advertiser_error === 'RestrictedCountry') {
-                    this.setIsP2pVisible(false);
-                } else {
-                    this.setIsP2pVisible(true);
-                }
-
-                this.is_p2p_advertiser = !advertiser_error;
-            }
         }
     }
 
@@ -262,14 +273,7 @@ export default class CashierStore extends BaseStore {
         this.onRemount = this.onMount;
         await this.onMountCommon();
 
-        reaction(
-            () => [this.root_store.client.is_tnc_needed],
-            () => {
-                this.onMount();
-            }
-        );
-
-        if (this.containers.indexOf(this.active_container) === -1) {
+        if (this.containers.indexOf(this.active_container) === -1 && !this.root_store.client.is_switching) {
             throw new Error('Cashier Store onMount requires a valid container name.');
         }
         this.setErrorMessage('');
@@ -339,6 +343,7 @@ export default class CashierStore extends BaseStore {
             is_trading_experience_incomplete,
             account_status,
             is_eu,
+            mt5_login_list,
         } = this.root_store.client;
         if (!account_status.status) return false;
 
@@ -346,10 +351,12 @@ export default class CashierStore extends BaseStore {
             this.config.deposit.error.is_ask_authentication || (is_authentication_needed && is_eu);
         const need_financial_assessment =
             is_financial_account && (is_financial_information_incomplete || is_trading_experience_incomplete);
+        // CR can deposit without accepting latest tnc except those with Financial STP
+        const need_tnc = (is_eu || mt5_login_list.some(item => item.group.startsWith('real_labuan'))) && is_tnc_needed;
 
         return (
             need_authentication ||
-            is_tnc_needed ||
+            need_tnc ||
             need_financial_assessment ||
             this.config.deposit.error.is_ask_financial_risk_approval
         );
@@ -390,7 +397,7 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async checkIframeLoaded() {
         this.removeOnIframeLoaded();
-        this.config[this.active_container].onIframeLoaded = function(e) {
+        this.config[this.active_container].onIframeLoaded = function (e) {
             if (/cashier|doughflow/.test(e.origin)) {
                 this.setLoading(false);
                 // set the height of the container after content loads so that the
@@ -567,7 +574,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async sendVerificationEmail() {
-        if (this.config[this.active_container].verification.is_button_clicked) {
+        if (this.config[this.active_container].verification.is_button_clicked || !this.root_store.client.email) {
             return;
         }
 
@@ -664,7 +671,7 @@ export default class CashierStore extends BaseStore {
     sortSupportedBanks() {
         // sort supported banks alphabetically by value, the option 'All payment agents' with value 0 should be on top
         this.config.payment_agent.supported_banks.replace(
-            this.config.payment_agent.supported_banks.slice().sort(function(a, b) {
+            this.config.payment_agent.supported_banks.slice().sort(function (a, b) {
                 if (a.value < b.value) {
                     return -1;
                 }
@@ -708,10 +715,7 @@ export default class CashierStore extends BaseStore {
             this.config.payment_agent.list.forEach(payment_agent => {
                 if (
                     payment_agent.supported_banks &&
-                    payment_agent.supported_banks
-                        .toLowerCase()
-                        .split(',')
-                        .indexOf(bank) !== -1
+                    payment_agent.supported_banks.toLowerCase().split(',').indexOf(bank) !== -1
                 ) {
                     this.config.payment_agent.filtered_list.push(payment_agent);
                 }
@@ -819,6 +823,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async requestTryPaymentAgentWithdraw({ loginid, currency, amount, verification_code }) {
+        this.setErrorMessage('');
         const payment_agent_withdraw = await WS.authorized.paymentAgentWithdraw({
             loginid,
             currency,
@@ -842,6 +847,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async requestPaymentAgentWithdraw({ loginid, currency, amount, verification_code }) {
+        this.setErrorMessage('');
         const payment_agent_withdraw = await WS.authorized.paymentAgentWithdraw({
             loginid,
             currency,
@@ -1092,6 +1098,16 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
+    setIsTransferConfirm(is_transfer_confirm) {
+        this.config[this.active_container].is_transfer_confirm = is_transfer_confirm;
+    }
+
+    @action.bound
+    setAccountTransferAmount(amount) {
+        this.config[this.active_container].account_transfer_amount = amount;
+    }
+
+    @action.bound
     setIsTransferSuccessful(is_transfer_successful) {
         this.config[this.active_container].is_transfer_successful = is_transfer_successful;
     }
@@ -1130,6 +1146,7 @@ export default class CashierStore extends BaseStore {
         }
 
         this.config.account_transfer.selected_from = selected_from;
+        this.setTransferFee();
         this.setMinimumFee();
         this.setTransferLimit();
     }
@@ -1155,6 +1172,7 @@ export default class CashierStore extends BaseStore {
             return null;
         }
 
+        this.setLoading(true);
         this.setErrorMessage('');
         const currency = this.config.account_transfer.selected_from.currency;
         const transfer_between_accounts = await WS.authorized.transferBetweenAccounts(
@@ -1164,6 +1182,13 @@ export default class CashierStore extends BaseStore {
             amount
         );
         if (transfer_between_accounts.error) {
+            // if there is fiat2crypto transfer limit error, we need to refresh the account_status for authentication
+            if (transfer_between_accounts.error.code === 'Fiat2CryptoTransferOverLimit') {
+                const account_status_response = await WS.authorized.getAccountStatus();
+                if (!account_status_response.error) {
+                    this.root_store.client.setAccountStatus(account_status_response.get_account_status);
+                }
+            }
             this.setErrorMessage(transfer_between_accounts.error);
         } else {
             this.setReceiptTransfer({ amount: formatMoney(currency, amount, true) });
@@ -1184,8 +1209,11 @@ export default class CashierStore extends BaseStore {
                     });
                 }
             });
+            this.setAccountTransferAmount(null);
+            this.setIsTransferConfirm(false);
             this.setIsTransferSuccessful(true);
         }
+        this.setLoading(false);
         return transfer_between_accounts;
     };
 
@@ -1249,6 +1277,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     requestTryPaymentAgentTransfer = async ({ amount, currency, description, transfer_to }) => {
+        this.setErrorMessage('');
         const payment_agent_transfer = await WS.authorized.paymentAgentTransfer({
             amount,
             currency,
@@ -1283,6 +1312,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     requestPaymentAgentTransfer = async ({ amount, currency, description, transfer_to }) => {
+        this.setErrorMessage('');
         const payment_agent_transfer = await WS.authorized.paymentAgentTransfer({
             amount,
             currency,

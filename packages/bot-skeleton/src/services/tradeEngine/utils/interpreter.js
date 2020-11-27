@@ -5,12 +5,12 @@ import Interface from '../Interface';
 import { unrecoverable_errors } from '../../../constants/messages';
 import { observer as globalObserver } from '../../../utils/observer';
 
-JSInterpreter.prototype.takeStateSnapshot = function() {
+JSInterpreter.prototype.takeStateSnapshot = function () {
     const newStateStack = cloneThorough(this.stateStack, undefined, undefined, undefined, true);
     return newStateStack;
 };
 
-JSInterpreter.prototype.restoreStateSnapshot = function(snapshot) {
+JSInterpreter.prototype.restoreStateSnapshot = function (snapshot) {
     this.stateStack = cloneThorough(snapshot, undefined, undefined, undefined, true);
     this.global = this.stateStack[0].scope.object || this.stateStack[0].scope;
     this.initFunc_(this, this.global);
@@ -116,7 +116,11 @@ export default class Interpreter {
                 if (this.stopped) {
                     return;
                 }
-
+                // DBot handles 'InvalidToken' internally
+                if (e.name === 'InvalidToken') {
+                    globalObserver.emit('client.invalid_token');
+                    return;
+                }
                 if (shouldStopOnError(this.bot, e.name)) {
                     globalObserver.emit('ui.log.error', e.message);
                     globalObserver.emit('bot.click_stop');
@@ -181,7 +185,7 @@ export default class Interpreter {
             timeout => global_timeouts[timeout].is_cancellable
         );
 
-        if (!this.bot.contractId && is_timeouts_cancellable) {
+        if (!this.bot.tradeEngine.contractId && is_timeouts_cancellable) {
             // When user is rate limited, allow them to stop the bot immediately
             // granted there is no active contract.
             global_timeouts.forEach(timeout => clearTimeout(global_timeouts[timeout]));

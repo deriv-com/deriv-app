@@ -150,6 +150,9 @@ export const useOnLoadTranslation = () => {
     const [is_loaded, setLoaded] = React.useState(false);
 
     React.useEffect(() => {
+        if (!i18n.language) {
+            i18n.language = getInitialLanguage();
+        }
         const is_english = i18n.language === 'EN';
 
         if (is_english) {

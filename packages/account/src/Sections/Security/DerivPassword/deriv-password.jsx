@@ -34,7 +34,7 @@ class DerivPassword extends React.Component {
     }
 
     render() {
-        return <MultiStep ref={(node) => (this.node = node)} steps={this.steps} lbl_previous={localize('Back')} />;
+        return <MultiStep ref={node => (this.node = node)} steps={this.steps} lbl_previous={localize('Back')} />;
     }
 }
 

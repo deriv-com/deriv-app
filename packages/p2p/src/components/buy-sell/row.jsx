@@ -2,9 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ContentLoader from 'react-content-loader';
 import { Table, Button } from '@deriv/components';
-import Dp2pContext from 'Components/context/dp2p-context';
+import { observer } from 'mobx-react-lite';
+import { useStores } from 'Stores';
 import { localize } from 'Components/i18next';
 import { generateHexColourFromNickname, getShortNickname } from 'Utils/string';
+import { buy_sell } from '../../constants/buy-sell';
 
 export const BuySellRowLoader = () => (
     <ContentLoader
@@ -27,7 +29,7 @@ BuySellRowLoader.propTypes = {
     width: PropTypes.number,
 };
 
-export const RowComponent = React.memo(({ advert, setSelectedAdvert, showAdvertiserPage, style }) => {
+export const RowComponent = observer(({ data: advert, style }) => {
     const {
         account_currency,
         counterparty_type,
@@ -37,9 +39,9 @@ export const RowComponent = React.memo(({ advert, setSelectedAdvert, showAdverti
         price_display,
     } = advert;
 
-    const { advertiser_id } = React.useContext(Dp2pContext);
-    const is_my_advert = advert.advertiser_details.id === advertiser_id;
-    const is_buy_advert = counterparty_type === 'buy';
+    const { buy_sell_store, general_store } = useStores();
+    const is_my_advert = advert.advertiser_details.id === general_store.advertiser_id;
+    const is_buy_advert = counterparty_type === buy_sell.BUY;
     const { name: advertiser_name } = advert.advertiser_details;
     const advertiser_short_name = getShortNickname(advertiser_name);
 
@@ -47,14 +49,14 @@ export const RowComponent = React.memo(({ advert, setSelectedAdvert, showAdverti
         <div style={style}>
             <Table.Row className='buy-sell__table-row'>
                 <Table.Cell>
-                    <div className='buy-sell__cell' onClick={() => showAdvertiserPage(advert)}>
+                    <div className='buy-sell__cell' onClick={() => buy_sell_store.showAdvertiserPage(advert)}>
                         <div
                             className='buy-sell__icon'
                             style={{ backgroundColor: generateHexColourFromNickname(advertiser_name) }}
                         >
                             {advertiser_short_name}
                         </div>
-                        {advertiser_name}
+                        <div className='buy-sell__name'>{advertiser_name}</div>
                     </div>
                 </Table.Cell>
                 <Table.Cell>
@@ -67,7 +69,7 @@ export const RowComponent = React.memo(({ advert, setSelectedAdvert, showAdverti
                     <Table.Cell />
                 ) : (
                     <Table.Cell className='buy-sell__button'>
-                        <Button primary small onClick={() => setSelectedAdvert(advert)}>
+                        <Button primary small onClick={() => buy_sell_store.setSelectedAdvert(advert)}>
                             {is_buy_advert
                                 ? localize('Buy {{account_currency}}', { account_currency })
                                 : localize('Sell {{account_currency}}', { account_currency })}
@@ -81,8 +83,10 @@ export const RowComponent = React.memo(({ advert, setSelectedAdvert, showAdverti
 
 RowComponent.propTypes = {
     advert: PropTypes.object,
+    advertiser_id: PropTypes.string,
     is_buy: PropTypes.bool,
     setSelectedAdvert: PropTypes.func,
+    showAdvertiserPage: PropTypes.func,
     style: PropTypes.object,
 };
 

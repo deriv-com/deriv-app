@@ -19,7 +19,7 @@ class AppNotificationMessages extends React.Component {
     };
 
     render() {
-        const allowed_on_mobile = ['mf_retail', 'unwelcome', 'contract_sold'];
+        const allowed_on_mobile = ['unwelcome', 'contract_sold', 'dp2p'];
 
         const { marked_notifications, notification_messages, removeNotificationMessage } = this.props;
         const { bounds } = this.state;
@@ -85,15 +85,17 @@ AppNotificationMessages.propTypes = {
             delay: PropTypes.number,
             header: PropTypes.string,
             is_auto_close: PropTypes.bool,
+            is_p2p_visible: PropTypes.bool,
             message: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
             size: PropTypes.oneOf(['small']),
-            type: PropTypes.oneOf(['warning', 'info', 'success', 'danger', 'contract_sold']),
+            type: PropTypes.oneOf(['warning', 'info', 'success', 'danger', 'contract_sold', 'news', 'announce']),
         })
     ),
     removeNotificationMessage: PropTypes.func,
 };
 
-export default connect(({ ui }) => ({
+export default connect(({ ui, modules }) => ({
+    is_p2p_visible: modules.cashier.is_p2p_visible,
     marked_notifications: ui.marked_notifications,
     notification_messages: ui.notification_messages,
     removeNotificationMessage: ui.removeNotificationMessage,

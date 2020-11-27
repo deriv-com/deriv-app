@@ -46,7 +46,7 @@ export default class MT5Store extends BaseStore {
 
         this.root_store.client.mt5_login_list.forEach(login => {
             const { type, category } = getMt5GroupConfig(login.group);
-            list[`${category}.${type}`] = Object.assign({}, login);
+            list[`${category}.${type}`] = { ...login };
         });
 
         return list;
@@ -279,6 +279,7 @@ export default class MT5Store extends BaseStore {
 
     @action.bound
     async topUpVirtual() {
+        this.root_store.ui.setTopUpInProgress(true);
         const response = await WS.authorized.mt5Deposit({
             to_mt5: this.current_account.login,
         });
@@ -301,6 +302,7 @@ export default class MT5Store extends BaseStore {
             // eslint-disable-next-line no-console
             console.error(response);
         }
+        this.root_store.ui.setTopUpInProgress(false);
     }
 
     @action.bound

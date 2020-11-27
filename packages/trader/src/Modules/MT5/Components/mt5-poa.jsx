@@ -35,8 +35,8 @@ class MT5POA extends React.Component {
     is_mounted = false;
     file_uploader_ref = undefined;
     state = {
-        document_file: undefined,
-        file_error_message: undefined,
+        document_file: [],
+        file_error_message: null,
         form_error: '',
         poa_status: 'none',
         is_loading: true,
@@ -51,12 +51,19 @@ class MT5POA extends React.Component {
         }
 
         const validations = {
-            address_line_1: [v => !!v, v => validAddress(v), v => validLength(v, { max: 70 })],
+            address_line_1: [v => !!v && !v.match(/^\s*$/), v => validAddress(v), v => validLength(v, { max: 70 })],
             address_line_2: [v => !v || validAddress(v), v => validLength(v, { max: 70 })],
-            address_city: [v => !!v, v => validLength(v, { min: 1, max: 35 }), v => validLetterSymbol(v)],
-            address_state: [v => !!v, v => !v || validLength(v, { min: 1, max: 35 })],
-            address_postcode: [v => validLength(v, { min: 1, max: 20 }), v => validPostCode(v)],
-            document_file: [v => !!v, ([file]) => !!file?.name],
+            address_city: [
+                v => !!v && !v.match(/^\s*$/),
+                v => validLength(v, { min: 1, max: 35 }),
+                v => validLetterSymbol(v),
+            ],
+            address_state: [v => !!v && !v.match(/^\s*$/), v => !v || validLength(v, { min: 1, max: 35 })],
+            address_postcode: [
+                v => !!v && !v.match(/^\s*$/),
+                v => validLength(v, { min: 1, max: 20 }),
+                v => validPostCode(v),
+            ],
         };
 
         const validation_errors = {
@@ -81,12 +88,12 @@ class MT5POA extends React.Component {
                 localize('State/Province is not in a proper format.'),
             ],
             address_postcode: [
+                localize('Postal/ZIP code is required'),
                 localize('This should not exceed {{max_number}} characters.', {
                     max_number: 20,
                 }),
                 localize('Only letters, numbers, space, and hyphen are allowed.'),
             ],
-            document_file: [localize('Document file is not in a proper format.')],
         };
 
         const errors = {};
@@ -106,10 +113,15 @@ class MT5POA extends React.Component {
         this.props.onCancel();
     };
 
-    onFileDrop = (document_file, file_error_message, setFieldTouched, setFieldValue) => {
+    onFileDrop = (document_file, file_error_message, setFieldTouched, setFieldValue, values) => {
         setFieldTouched('document_file', true);
         setFieldValue('document_file', document_file);
         this.setState({ document_file, file_error_message });
+        // To resolve sync issues with value states (form_values in container component and formik values)
+        // This ensures container values are updated before being validated in runtime  (mt5-financial-stp-real-account-signup.jsx)
+        if (typeof this.props.onSave === 'function') {
+            this.props.onSave(this.props.index, { ...values, ...{ document_file } });
+        }
     };
 
     proceed = () => {
@@ -203,14 +215,10 @@ class MT5POA extends React.Component {
     }
 
     isFormDisabled(dirty, errors) {
-        if (this.state.poa_status && this.state.poa_status === PoaStatusCodes.verified) {
+        if (this.state.poa_status === PoaStatusCodes.verified) {
             return false;
         }
-        if (Object.keys(errors).length !== 0) {
-            return true;
-        }
-
-        return false;
+        return Object.keys(errors).length !== 0;
     }
 
     componentWillUnmount() {
@@ -247,6 +255,7 @@ class MT5POA extends React.Component {
                 }}
                 validateOnMount
                 validate={this.validateForm}
+                enableReinitialize
                 onSubmit={this.onSubmit}
                 innerRef={form}
             >
@@ -316,9 +325,6 @@ class MT5POA extends React.Component {
                                                                     <Field name='address_state'>
                                                                         {({ field }) => (
                                                                             <Dropdown
-                                                                                is_alignment_top={
-                                                                                    window.innerHeight < 930
-                                                                                }
                                                                                 id='address_state'
                                                                                 required
                                                                                 className='address_state-dropdown'
@@ -334,6 +340,7 @@ class MT5POA extends React.Component {
                                                                                 placeholder={localize(
                                                                                     'State/Province*'
                                                                                 )}
+                                                                                list_portal_id='modal_root'
                                                                             />
                                                                         )}
                                                                     </Field>
@@ -347,13 +354,14 @@ class MT5POA extends React.Component {
                                                                             touched.address_state &&
                                                                             errors.address_state
                                                                         }
-                                                                        onChange={e =>
+                                                                        onChange={e => {
+                                                                            handleChange(e);
                                                                             setFieldValue(
                                                                                 'address_state',
                                                                                 e.target.value,
                                                                                 true
-                                                                            )
-                                                                        }
+                                                                            );
+                                                                        }}
                                                                         required
                                                                     />
                                                                 </MobileWrapper>
@@ -364,6 +372,8 @@ class MT5POA extends React.Component {
                                                                 name='address_state'
                                                                 label={localize('State/Province*')}
                                                                 placeholder={localize('State/Province*')}
+                                                                value={values.address_state}
+                                                                required
                                                                 onBlur={handleBlur}
                                                             />
                                                         )}
@@ -374,6 +384,7 @@ class MT5POA extends React.Component {
                                                         label={localize('Postal/ZIP code*')}
                                                         placeholder={localize('Postal/ZIP code*')}
                                                         onBlur={handleBlur}
+                                                        required
                                                     />
                                                 </div>
                                                 <div className='mt5-proof-of-address__file-upload'>
@@ -385,13 +396,11 @@ class MT5POA extends React.Component {
                                                                 df,
                                                                 file_error_message,
                                                                 setFieldTouched,
-                                                                setFieldValue
+                                                                setFieldValue,
+                                                                values
                                                             )
                                                         }
                                                     />
-                                                    {errors.document_file && touched.document_file && (
-                                                        <p className='dc-field--error'>{errors.document_file}</p>
-                                                    )}
                                                 </div>
                                             </div>
                                         </ThemedScrollbars>
@@ -427,8 +436,18 @@ class MT5POA extends React.Component {
                                             <FormSubmitButton
                                                 has_cancel
                                                 cancel_label={localize('Previous')}
-                                                is_disabled={this.isFormDisabled(dirty, errors)}
-                                                label={localize('Next')}
+                                                is_disabled={
+                                                    this.isFormDisabled(dirty, errors) ||
+                                                    (!(this.state.poa_status === PoaStatusCodes.verified) &&
+                                                        this.state.document_file &&
+                                                        this.state.document_file.length < 1) ||
+                                                    !!this.state.file_error_message
+                                                }
+                                                label={
+                                                    this.state.poa_status === PoaStatusCodes.verified
+                                                        ? localize('Submit')
+                                                        : localize('Next')
+                                                }
                                                 is_absolute={isMobile()}
                                                 is_loading={isSubmitting}
                                                 form_error={this.state.form_error}

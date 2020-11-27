@@ -1,5 +1,13 @@
 import { action, autorun, computed, observable } from 'mobx';
-import { getPathname, getPlatformHeader, isEmptyObject, LocalStore, unique } from '@deriv/shared';
+import {
+    getPathname,
+    getPlatformInformation,
+    isEmptyObject,
+    LocalStore,
+    unique,
+    isTouchDevice,
+    platform_name,
+} from '@deriv/shared';
 import { sortNotifications } from 'App/Components/Elements/NotificationMessage';
 import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
 import BaseStore from './base-store';
@@ -39,7 +47,6 @@ export default class UIStore extends BaseStore {
     @observable is_account_signup_modal_visible = false;
     @observable is_set_residence_modal_visible = false;
     @observable is_reset_password_modal_visible = false;
-    @observable is_account_transfer_limit_modal_visible = false;
     // @observable is_purchase_lock_on       = false;
 
     // SmartCharts Controls
@@ -53,7 +60,7 @@ export default class UIStore extends BaseStore {
 
     @observable screen_width = window.innerWidth;
     @observable screen_height = window.innerHeight;
-    @observable is_keyboard_active = false;
+    @observable is_onscreen_keyboard_active = false;
 
     @observable notifications = [];
     @observable notification_messages = [];
@@ -98,7 +105,11 @@ export default class UIStore extends BaseStore {
 
     // Mt5 topup
     @observable is_top_up_virtual_open = false;
+    @observable is_top_up_virtual_in_progress = false;
     @observable is_top_up_virtual_success = false;
+
+    // MT5 create real STP from demo, show only real accounts from switcher
+    @observable should_show_real_accounts_list = false;
 
     // Real account signup
     @observable real_account_signup = {
@@ -159,24 +170,28 @@ export default class UIStore extends BaseStore {
 
         window.addEventListener('resize', this.handleResize);
         autorun(() => {
-            // TODO: [disable-dark-bot] Delete this condition when Bot is ready
-            const new_app_routing_history = this.root_store.common.app_routing_history.slice();
-            const platform = getPlatformHeader(new_app_routing_history);
-            if (platform === 'DBot') {
-                document.body.classList.remove('theme--dark');
-                document.body.classList.add('theme--light');
-                return;
-            }
-
-            if (this.is_dark_mode_on) {
-                document.body.classList.remove('theme--light');
-                document.body.classList.add('theme--dark');
-            } else {
-                document.body.classList.remove('theme--dark');
-                document.body.classList.add('theme--light');
-            }
+            this.changeTheme();
         });
     }
+
+    changeTheme = () => {
+        // TODO: [disable-dark-bot] Delete this condition when Bot is ready
+        const new_app_routing_history = this.root_store.common.app_routing_history.slice();
+        const platform = getPlatformInformation(new_app_routing_history).header;
+        if (platform === platform_name.DBot) {
+            document.body.classList.remove('theme--dark');
+            document.body.classList.add('theme--light');
+            return;
+        }
+
+        if (this.is_dark_mode_on) {
+            document.body.classList.remove('theme--light');
+            document.body.classList.add('theme--dark');
+        } else {
+            document.body.classList.remove('theme--dark');
+            document.body.classList.add('theme--light');
+        }
+    };
 
     @action.bound
     init(notification_messages) {
@@ -208,10 +223,6 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     handleResize() {
-        if (this.is_mobile) {
-            this.is_keyboard_active =
-                window.innerWidth === this.screen_width && this.screen_height > window.innerHeight;
-        }
         this.screen_width = window.innerWidth;
         this.screen_height = window.innerHeight;
     }
@@ -237,14 +248,24 @@ export default class UIStore extends BaseStore {
         return !!this.account_switcher_disabled_message;
     }
 
+    @computed
+    get filtered_notifications() {
+        return this.notifications.filter(message => message.type !== 'news');
+    }
+
     @action.bound
     filterNotificationMessages() {
+        if (LocalStore.get('active_loginid') !== 'null')
+            this.root_store.client.resetVirtualBalanceNotification(LocalStore.get('active_loginid'));
         this.notifications = this.notification_messages.filter(notification => {
             if (notification.platform === undefined || notification.platform.includes(getPathname())) {
                 return true;
             } else if (!notification.platform.includes(getPathname())) {
                 if (notification.is_disposable) {
-                    this.removeNotificationMessage({ key: notification.key });
+                    this.removeNotificationMessage({
+                        key: notification.key,
+                        should_show_again: notification.should_show_again,
+                    });
                     this.removeNotificationByKey({ key: notification.key });
                 }
             }
@@ -457,8 +478,10 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    removeNotifications() {
-        this.notifications = [];
+    removeNotifications(should_close_persistent) {
+        this.notifications = should_close_persistent
+            ? []
+            : [...this.notifications.filter(notifs => notifs.is_persistent)];
     }
 
     @action.bound
@@ -468,7 +491,7 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     addNotificationMessageByKey(key) {
-        if (key) this.addNotificationMessage(clientNotifications()[key]);
+        if (key) this.addNotificationMessage(clientNotifications(this)[key]);
     }
 
     @action.bound
@@ -500,7 +523,7 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    removeNotificationMessage({ key } = {}) {
+    removeNotificationMessage({ key, should_show_again } = {}) {
         if (!key) return;
         this.notification_messages = this.notification_messages.filter(n => n.key !== key);
         // Add notification messages to LocalStore when user closes, check for redundancy
@@ -518,9 +541,11 @@ export default class UIStore extends BaseStore {
                 }
                 return [key];
             };
-            // Store message into LocalStore upon closing message
-            Object.assign(messages, { [active_loginid]: current_message() });
-            LocalStore.setObject('notification_messages', messages);
+            if (!should_show_again) {
+                // Store message into LocalStore upon closing message
+                Object.assign(messages, { [active_loginid]: current_message() });
+                LocalStore.setObject('notification_messages', messages);
+            }
         }
     }
 
@@ -548,11 +573,6 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    toggleAccountTransferLimitModal(state_change = !this.is_account_transfer_limit_modal_visible) {
-        this.is_account_transfer_limit_modal_visible = state_change;
-    }
-
-    @action.bound
     toggleAccountSignupModal(state_change = !this.is_account_signup_modal_visible) {
         this.is_account_signup_modal_visible = state_change;
     }
@@ -570,6 +590,11 @@ export default class UIStore extends BaseStore {
     @action.bound
     toggleHistoryTab(state_change = !this.is_history_tab_active) {
         this.is_history_tab_active = state_change;
+    }
+
+    @action.bound
+    setTopUpInProgress(bool) {
+        this.is_top_up_virtual_in_progress = bool;
     }
 
     @action.bound
@@ -618,8 +643,14 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
+    toggleOnScreenKeyboard() {
+        this.is_onscreen_keyboard_active = this.current_focus !== null && this.is_mobile && isTouchDevice();
+    }
+
+    @action.bound
     setCurrentFocus(value) {
         this.current_focus = value;
+        this.toggleOnScreenKeyboard();
     }
 
     @action.bound
@@ -665,11 +696,36 @@ export default class UIStore extends BaseStore {
     toggleWelcomeModal({ is_visible = !this.is_welcome_modal_visible, should_persist = false }) {
         if (LocalStore.get('has_viewed_welcome_screen') && !should_persist) return;
         this.is_welcome_modal_visible = is_visible;
-        LocalStore.set('has_viewed_welcome_screen', true);
+
+        if (!is_visible) {
+            LocalStore.set('has_viewed_welcome_screen', true);
+        }
     }
 
     @action.bound
     showAccountTypesModalForEuropean() {
         this.toggleAccountTypesModal(this.root_store.client.is_uk);
+    }
+
+    @action.bound
+    notifyAppInstall(prompt) {
+        this.deferred_prompt = prompt;
+        setTimeout(() => {
+            this.addNotificationMessageByKey('install_pwa');
+        }, 10000);
+    }
+
+    @action.bound
+    async installWithDeferredPrompt() {
+        this.deferred_prompt.prompt();
+        const choice = await this.deferred_prompt.userChoice;
+        if (choice.outcome === 'accepted') {
+            this.removeNotificationByKey('install_pwa');
+        }
+    }
+
+    @action.bound
+    toggleShouldShowRealAccountsList(value) {
+        this.should_show_real_accounts_list = value;
     }
 }

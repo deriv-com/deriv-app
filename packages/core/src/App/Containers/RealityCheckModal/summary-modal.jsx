@@ -11,6 +11,7 @@ import {
     Money,
     Button,
     FormSubmitButton,
+    Text,
 } from '@deriv/components';
 import { isDesktop, isEmptyObject, getDiffDuration, toGMTFormat, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
@@ -24,11 +25,11 @@ const Row = ({ label, value }) => (
 );
 
 const RowInfo = ({ label, value }) => (
-    <p className='reality-check__text'>
+    <Text as='p' size='xs' className='reality-check__text'>
         <span>{label}</span>
         <br />
         <strong>{value}</strong>
-    </p>
+    </Text>
 );
 
 const SummaryModal = ({
@@ -66,6 +67,7 @@ const SummaryModal = ({
                 ...reality_check,
             });
         });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const getSessionDuration = (start_time, current_time) => {
@@ -199,9 +201,15 @@ const SummaryModal = ({
                                             <div className='reality-check__separator' />
                                         </DesktopWrapper>
 
-                                        <p className='reality-check__text reality-check__text--center'>
+                                        <Text
+                                            as='p'
+                                            size='xs'
+                                            lineHeight='m'
+                                            align='center'
+                                            className='reality-check__text reality-check__text--center'
+                                        >
                                             <Localize i18n_default_text='Your preferred time interval between each report:' />
-                                        </p>
+                                        </Text>
 
                                         <IntervalField
                                             values={values}

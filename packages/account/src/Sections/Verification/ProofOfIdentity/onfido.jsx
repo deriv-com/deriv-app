@@ -47,9 +47,9 @@ export default class Onfido extends React.Component {
                         type: 'document',
                         options: {
                             documentTypes: {
-                                passport: documents_supported.some((doc) => /Passport/g.test(doc)),
-                                driving_licence: documents_supported.some((doc) => /Driving Licence/g.test(doc)),
-                                national_identity_card: documents_supported.some((doc) =>
+                                passport: documents_supported.some(doc => /Passport/g.test(doc)),
+                                driving_licence: documents_supported.some(doc => /Driving Licence/g.test(doc)),
+                                national_identity_card: documents_supported.some(doc =>
                                     /National Identity Card/g.test(doc)
                                 ),
                             },

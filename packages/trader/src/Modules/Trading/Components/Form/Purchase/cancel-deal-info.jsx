@@ -21,7 +21,7 @@ const CancelDealInfo = ({ currency, has_cancellation, proposal_info }) => {
                 setIsRowLayout(false);
             }
         }
-    }, [cancellation, is_row_layout, setIsRowLayout]);
+    }, [cancellation, currency, is_row_layout, setIsRowLayout]);
 
     if (!has_cancellation) return null;
 

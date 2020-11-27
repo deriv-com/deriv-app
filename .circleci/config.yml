@@ -172,18 +172,6 @@ commands:
               fi
             done
 
-  test:
-    description: "npm test"
-    steps:
-      - git_checkout_from_cache
-      - npm_install_from_cache
-      - run:
-          name: "Bootstrap packages"
-          command: npm run bootstrap
-      - run:
-          name: "Run tests"
-          command: npm test
-
 jobs:
   build:
     docker:
@@ -234,6 +222,20 @@ jobs:
       - notify_slack
     environment:
       NODE_ENV: staging
+
+    test:
+      docker:
+        - image: circleci/node:12.18.0-stretch
+      description: "npm test"
+      steps:
+        - git_checkout_from_cache
+        - npm_install_from_cache
+        - run:
+            name: "Bootstrap packages"
+            command: npm run bootstrap
+        - run:
+            name: "Run tests"
+            command: npm test
 
   release_production:
     docker:

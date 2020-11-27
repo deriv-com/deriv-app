@@ -14,6 +14,7 @@ const MultipliersInfo = ({
     className,
     currency,
     multiplier = 0,
+    has_stop_loss,
     is_tooltip_relative,
     should_show_tooltip,
     should_show_percentage_tooltip,
@@ -97,17 +98,22 @@ const MultipliersInfo = ({
     };
 
     return (
-        <div className={classNames('multipliers-trade-info', className)}>
+        <div
+            className={classNames('multipliers-trade-info', className, {
+                'mobile-widget__multiplier-trade-info--no-stop-out': has_stop_loss,
+            })}
+        >
             {getInfo({
                 text: commission_text,
                 message: commission_tooltip,
                 margin: commission_tooltip_margin,
             })}
-            {getInfo({
-                text: stop_out_text,
-                message: should_show_percentage_tooltip ? stop_out_percentage_tooltip : stop_out_tooltip,
-                margin: stop_out_tooltip_margin,
-            })}
+            {!has_stop_loss &&
+                getInfo({
+                    text: stop_out_text,
+                    message: should_show_percentage_tooltip ? stop_out_percentage_tooltip : stop_out_tooltip,
+                    margin: stop_out_tooltip_margin,
+                })}
         </div>
     );
 };
@@ -123,6 +129,7 @@ export default connect(({ modules }, props) => ({
     amount: modules.trade.amount,
     commission: props.commission ?? modules.trade.commission,
     currency: modules.trade.currency,
+    has_stop_loss: modules.trade.has_stop_loss,
     multiplier: modules.trade.multiplier,
     stop_out: props.stop_out ?? modules.trade.stop_out,
 }))(MultipliersInfo);

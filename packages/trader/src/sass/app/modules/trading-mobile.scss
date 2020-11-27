@@ -334,6 +334,9 @@
                 display: grid;
                 grid-template-rows: auto auto auto 1fr;
 
+                &--no-cancel {
+                    grid-template-rows: auto auto 1fr;
+                }
                 &-apply-button {
                     display: flex;
                     align-items: flex-end;

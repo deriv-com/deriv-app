@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import React from 'react';
 import { Checkbox, RadioGroup, Dialog, Popover } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
@@ -100,9 +99,7 @@ const CancelDeal = ({
                 {has_cancellation && (
                     <React.Fragment>
                         <RadioGroup
-                            className={classNames('trade-params__multiplier-radio-group', {
-                                'trade-params__multiplier-radio-group--empty': cancellation_range_list?.length < 1,
-                            })}
+                            className='trade-params__multiplier-radio-group'
                             name='trade-params__multiplier-radio'
                             items={cancellation_range_list.map(({ text, value }) => ({
                                 id: text,

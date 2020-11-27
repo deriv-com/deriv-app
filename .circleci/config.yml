@@ -224,9 +224,9 @@ jobs:
       NODE_ENV: staging
 
     test:
+      description: "npm test"
       docker:
         - image: circleci/node:12.18.0-stretch
-      description: "npm test"
       steps:
         - git_checkout_from_cache
         - npm_install_from_cache
@@ -236,6 +236,8 @@ jobs:
         - run:
             name: "Run tests"
             command: npm test
+      environment:
+        NODE_ENV: staging
 
   release_production:
     docker:

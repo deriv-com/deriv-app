@@ -288,7 +288,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
 };
 
 const hasMissingRequiredField = (account_settings, client, isAccountOfType) => {
-    if (!account_settings) return false;
+    if (!account_settings || isEmptyObject(account_settings)) return false;
 
     const { is_svg, landing_company_shortcode } = client;
 

@@ -7,7 +7,7 @@
     &__items {
         display: flex;
         flex-wrap: wrap;
-        width: 704px;
+        width: 768px;
 
         &__center {
             justify-content: center !important;
@@ -33,7 +33,7 @@
         height: 128px;
         width: 128px;
         justify-content: space-around;
-        margin: 1.6rem 2rem 0;
+        margin: 1.6rem 3.2rem 0;
         min-width: 128px;
 
         &:hover:not(&--selected) {
@@ -135,7 +135,7 @@
             margin-bottom: 6rem;
             margin-left: auto;
             margin-right: auto;
-            width: 704px;
+            width: 768px;
         }
 
         @include mobile {

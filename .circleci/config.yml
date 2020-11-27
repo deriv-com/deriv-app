@@ -172,6 +172,18 @@ commands:
               fi
             done
 
+  test:
+    description: "npm test"
+    steps:
+      - git_checkout_from_cache
+      - npm_install_from_cache
+      - run:
+          name: "Bootstrap packages"
+          command: npm run bootstrap
+      - run:
+          name: "Run tests"
+          command: npm test
+
 jobs:
   build:
     docker:

@@ -50,6 +50,11 @@ class SelfExclusion extends React.Component {
         max_open_bets: '',
     };
 
+    exclusion_fields_settings = {
+        max_number: 9999999999999,
+        six_weeks: 60480, // in minutes
+    };
+
     exclusion_texts = {
         max_deposit: localize('Max. deposit limit per day'),
         max_turnover: localize('Max. total stake per day'),
@@ -98,8 +103,8 @@ class SelfExclusion extends React.Component {
         // Regex
         const is_number = /^\d+(\.\d+)?$/;
         const is_integer = /^\d+$/;
-        const max_number = 9999999999999;
-        const six_weeks = 60480; // in minutes
+        const max_number = this.exclusion_fields_settings.max_number;
+        const six_weeks = this.exclusion_fields_settings.six_weeks; // in minutes
 
         // Messages
         const valid_number_message = localize('Should be a valid number');
@@ -311,6 +316,11 @@ class SelfExclusion extends React.Component {
         this.populateExclusionResponse(get_self_exclusion_response);
     };
 
+    getMaxLength = field =>
+        this.state.self_exclusions[field]
+            ? this.state.self_exclusions[field].toString().length
+            : this.exclusion_fields_settings.max_number.toString().length;
+
     componentDidMount() {
         const { is_virtual } = this.props;
         if (is_virtual) {
@@ -337,6 +347,7 @@ class SelfExclusion extends React.Component {
             submit_error_message,
         } = this.state;
         const { is_virtual, is_switching, currency, is_eu, is_tablet } = this.props;
+        const { six_weeks } = this.exclusion_fields_settings;
 
         if (is_virtual) return <DemoMessage />;
 
@@ -345,6 +356,7 @@ class SelfExclusion extends React.Component {
         if (error_message) return <LoadErrorMessage error_message={error_message} />;
 
         const currency_display = getCurrencyDisplayCode(currency);
+        const session_duration_digits = six_weeks.toString().length;
 
         return (
             <section className='self-exclusion'>
@@ -364,7 +376,6 @@ class SelfExclusion extends React.Component {
                                 errors,
                                 isValid,
                                 dirty,
-                                touched,
                                 handleChange,
                                 handleBlur,
                                 isSubmitting,
@@ -550,8 +561,9 @@ class SelfExclusion extends React.Component {
                                                                 value={values.max_turnover}
                                                                 onChange={handleChange}
                                                                 onBlur={handleBlur}
+                                                                maxLength={this.getMaxLength('max_turnover')}
                                                                 required
-                                                                error={touched.max_turnover && errors.max_turnover}
+                                                                error={errors.max_turnover}
                                                             />
                                                         )}
                                                     </Field>
@@ -568,8 +580,9 @@ class SelfExclusion extends React.Component {
                                                                 value={values.max_losses}
                                                                 onChange={handleChange}
                                                                 onBlur={handleBlur}
+                                                                maxLength={this.getMaxLength('max_losses')}
                                                                 required
-                                                                error={touched.max_losses && errors.max_losses}
+                                                                error={errors.max_losses}
                                                             />
                                                         )}
                                                     </Field>
@@ -589,11 +602,9 @@ class SelfExclusion extends React.Component {
                                                                 value={values.max_7day_turnover}
                                                                 onChange={handleChange}
                                                                 onBlur={handleBlur}
+                                                                maxLength={this.getMaxLength('max_7day_turnover')}
                                                                 required
-                                                                error={
-                                                                    touched.max_7day_turnover &&
-                                                                    errors.max_7day_turnover
-                                                                }
+                                                                error={errors.max_7day_turnover}
                                                             />
                                                         )}
                                                     </Field>
@@ -610,10 +621,9 @@ class SelfExclusion extends React.Component {
                                                                 value={values.max_7day_losses}
                                                                 onChange={handleChange}
                                                                 onBlur={handleBlur}
+                                                                maxLength={this.getMaxLength('max_7day_losses')}
                                                                 required
-                                                                error={
-                                                                    touched.max_7day_losses && errors.max_7day_losses
-                                                                }
+                                                                error={errors.max_7day_losses}
                                                             />
                                                         )}
                                                     </Field>
@@ -635,11 +645,9 @@ class SelfExclusion extends React.Component {
                                                                 value={values.max_30day_turnover}
                                                                 onChange={handleChange}
                                                                 onBlur={handleBlur}
+                                                                maxLength={this.getMaxLength('max_30day_turnover')}
                                                                 required
-                                                                error={
-                                                                    touched.max_30day_turnover &&
-                                                                    errors.max_30day_turnover
-                                                                }
+                                                                error={errors.max_30day_turnover}
                                                             />
                                                         )}
                                                     </Field>
@@ -656,10 +664,9 @@ class SelfExclusion extends React.Component {
                                                                 value={values.max_30day_losses}
                                                                 onChange={handleChange}
                                                                 onBlur={handleBlur}
+                                                                maxLength={this.getMaxLength('max_30day_losses')}
                                                                 required
-                                                                error={
-                                                                    touched.max_30day_losses && errors.max_30day_losses
-                                                                }
+                                                                error={errors.max_30day_losses}
                                                             />
                                                         )}
                                                     </Field>
@@ -685,11 +692,9 @@ class SelfExclusion extends React.Component {
                                                                 value={values.session_duration_limit}
                                                                 onChange={handleChange}
                                                                 onBlur={handleBlur}
+                                                                maxLength={session_duration_digits}
                                                                 required
-                                                                error={
-                                                                    touched.session_duration_limit &&
-                                                                    errors.session_duration_limit
-                                                                }
+                                                                error={errors.session_duration_limit}
                                                             />
                                                         )}
                                                     </Field>
@@ -719,7 +724,7 @@ class SelfExclusion extends React.Component {
                                                                 }
                                                                 required
                                                                 readOnly
-                                                                error={touched.timeout_until && errors.timeout_until}
+                                                                error={errors.timeout_until}
                                                             />
                                                         )}
                                                     </Field>
@@ -752,7 +757,7 @@ class SelfExclusion extends React.Component {
                                                                 required
                                                                 autoComplete='off'
                                                                 readOnly
-                                                                error={touched.exclude_until && errors.exclude_until}
+                                                                error={errors.exclude_until}
                                                             />
                                                         )}
                                                     </Field>
@@ -839,10 +844,9 @@ class SelfExclusion extends React.Component {
                                                                         value={values.max_deposit}
                                                                         onChange={handleChange}
                                                                         onBlur={handleBlur}
+                                                                        maxLength={this.getMaxLength('max_deposit')}
                                                                         required
-                                                                        error={
-                                                                            touched.max_deposit && errors.max_deposit
-                                                                        }
+                                                                        error={errors.max_deposit}
                                                                     />
                                                                 )}
                                                             </Field>
@@ -864,11 +868,11 @@ class SelfExclusion extends React.Component {
                                                                         value={values.max_7day_deposit}
                                                                         onChange={handleChange}
                                                                         onBlur={handleBlur}
+                                                                        maxLength={this.getMaxLength(
+                                                                            'max_7day_deposit'
+                                                                        )}
                                                                         required
-                                                                        error={
-                                                                            touched.max_7day_deposit &&
-                                                                            errors.max_7day_deposit
-                                                                        }
+                                                                        error={errors.max_7day_deposit}
                                                                     />
                                                                 )}
                                                             </Field>
@@ -890,11 +894,11 @@ class SelfExclusion extends React.Component {
                                                                         value={values.max_30day_deposit}
                                                                         onChange={handleChange}
                                                                         onBlur={handleBlur}
+                                                                        maxLength={this.getMaxLength(
+                                                                            'max_30day_deposit'
+                                                                        )}
                                                                         required
-                                                                        error={
-                                                                            touched.max_30day_deposit &&
-                                                                            errors.max_30day_deposit
-                                                                        }
+                                                                        error={errors.max_30day_deposit}
                                                                     />
                                                                 )}
                                                             </Field>
@@ -922,8 +926,9 @@ class SelfExclusion extends React.Component {
                                                                 value={values.max_balance}
                                                                 onChange={handleChange}
                                                                 onBlur={handleBlur}
+                                                                maxLength={this.getMaxLength('max_balance')}
                                                                 required
-                                                                error={touched.max_balance && errors.max_balance}
+                                                                error={errors.max_balance}
                                                             />
                                                         )}
                                                     </Field>
@@ -942,8 +947,9 @@ class SelfExclusion extends React.Component {
                                                                 value={values.max_open_bets}
                                                                 onChange={handleChange}
                                                                 onBlur={handleBlur}
+                                                                maxLength={this.getMaxLength('max_open_bets')}
                                                                 required
-                                                                error={touched.max_open_bets && errors.max_open_bets}
+                                                                error={errors.max_open_bets}
                                                             />
                                                         )}
                                                     </Field>

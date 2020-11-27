@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Money } from '@deriv/components';
+import { isDesktop, isMobile, getDecimalPlaces } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
@@ -14,7 +15,7 @@ const CancelDealInfo = ({ currency, has_cancellation, proposal_info }) => {
     React.useEffect(() => {
         if (ref.current) {
             const el_height = ref.current.parentElement?.clientHeight;
-            if (el_height > 21) {
+            if ((el_height > 21 && isDesktop()) || ((el_height > 21 || getDecimalPlaces(currency) > 2) && isMobile())) {
                 setIsRowLayout(true);
             } else {
                 setIsRowLayout(false);

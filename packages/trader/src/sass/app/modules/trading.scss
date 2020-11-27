@@ -200,7 +200,7 @@
                 }
             }
             @include desktop {
-                height: 2.1rem;
+                min-height: 2.1rem;
             }
 
             &--disabled {
@@ -225,11 +225,11 @@
                 }
             }
             &-value {
-                font-size: 1.4em;
+                font-size: 1.4rem;
                 font-weight: 700;
                 text-align: left;
                 line-height: 1.25;
-                margin-left: 0.1em;
+                margin-left: 0.1rem;
                 color: var(--text-prominent);
                 opacity: 1;
                 transition: 0.3s;
@@ -417,14 +417,34 @@
         width: 28rem;
     }
     &__cancel-deal-info {
-        .trade-container__price-info-currency {
-            font-size: 1.1rem;
-        }
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
 
+        &--row-layout {
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+
+            .trade-container__price-info-currency {
+                margin-left: -0.1rem;
+            }
+            @include mobile {
+                padding: 0.4rem 0 0 !important;
+                margin-bottom: -0.5rem;
+
+                .trade-container__price-info-currency {
+                    font-size: 0.9rem !important;
+                }
+                .trade-container__price-info-basis {
+                    font-size: 0.8rem;
+                }
+            }
+        }
+        .trade-container__price-info-currency {
+            font-size: 1.2rem;
+        }
         @include mobile {
             padding: 0 0.4rem;
             min-height: 1.4rem;

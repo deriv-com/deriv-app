@@ -260,7 +260,6 @@ jobs:
       NODE_ENV: staging
   
   test:
-    description: "npm test"
     docker:
       - image: circleci/node:12.18.0-stretch
     steps:

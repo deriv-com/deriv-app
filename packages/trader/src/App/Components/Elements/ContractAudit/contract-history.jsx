@@ -12,7 +12,7 @@ const ContractHistory = ({ currency, history = [] }) => {
             <div className='contract-audit__empty'>
                 <Icon icon='IcBox' size={48} color='secondary' />
                 <h4 className='contract-audit__empty-header'>{localize('No history')}</h4>
-                <Text line_height='x' color='less-prominent' size='xxs'>
+                <Text align='center' line_height='s' color='less-prominent' size='xxs'>
                     {localize('You have yet to update either take profit or stop loss')}
                 </Text>
             </div>

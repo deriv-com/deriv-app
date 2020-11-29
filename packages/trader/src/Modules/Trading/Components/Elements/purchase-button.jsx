@@ -9,7 +9,7 @@ import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info
 const ButtonTextWrapper = ({ should_fade, is_loading, type, is_high_low }) => {
     return (
         <div className='btn-purchase__text_wrapper'>
-            <Text size='xs' weight='bold' className='btn-purchase__text'>
+            <Text size='xs' weight='bold' color='colored-background'>
                 {!should_fade && is_loading ? '' : getContractTypeDisplay(type, is_high_low)}
             </Text>
         </div>
@@ -81,11 +81,11 @@ const PurchaseButton = ({
                 <div className='btn-purchase__info btn-purchase__info--right'>
                     <div className='btn-purchase__text_wrapper'>
                         {is_multiplier ? (
-                            <Text size='xs' weight='bold' className='btn-purchase__text'>
+                            <Text size='xs' weight='bold' color='colored-background'>
                                 <Money amount={info.stake} currency={currency} show_currency />
                             </Text>
                         ) : (
-                            <Text size='xs' weight='bold' className='btn-purchase__text'>
+                            <Text size='xs' weight='bold' color='colored-background'>
                                 {!(is_loading || is_disabled) ? info.returns : ''}
                             </Text>
                         )}

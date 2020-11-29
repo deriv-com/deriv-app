@@ -78,7 +78,7 @@ const ContractInfo = ({
                         <MobileWrapper>
                             <div className='trade-container__price-info-wrapper'>
                                 <div className='btn-purchase__text_wrapper'>
-                                    <Text size='xs' weight='bold' className='btn-purchase__text'>
+                                    <Text size='xs' weight='bold' color='colored-background'>
                                         <Money amount={stake} currency={currency} show_currency />
                                     </Text>
                                 </div>

@@ -15,6 +15,7 @@ import {
 import { CommonPropTypes } from './types';
 import Popover from '../../popover';
 import { getDaysOfTheWeek, week_headers_abbr } from '../helpers';
+import Text from '../../text';
 
 const getDays = ({
     calendar_date,

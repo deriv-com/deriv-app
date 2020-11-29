@@ -34,7 +34,6 @@ const initStore = notification_messages => {
     // OutdatedBrowser.init(root_store);
     root_store.client.init();
     root_store.ui.init(notification_messages);
-    root_store.modules.cashier.init();
     // root_store.modules.trade.init();
 
     return root_store;

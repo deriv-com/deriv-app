@@ -31,6 +31,17 @@ const Account = React.lazy(() => {
     return import(/* webpackChunkName: "account" */ '@deriv/account');
 });
 
+const Cashier = React.lazy(() => {
+    const el_head = document.querySelector('head');
+    const el_main_css = document.createElement('link');
+    el_main_css.href = getUrlBase('/cashier/css/cashier.css');
+    el_main_css.rel = 'stylesheet';
+    el_main_css.type = 'text/css';
+    el_head.appendChild(el_main_css);
+    // eslint-disable-next-line import/no-unresolved
+    return import(/* webpackChunkName: "cashier" */ '@deriv/cashier');
+});
+
 const Bot = React.lazy(() => {
     // eslint-disable-next-line import/no-unresolved
     return import(/* webpackChunkName: "bot" */ '@deriv/bot-web-ui');
@@ -147,6 +158,68 @@ const getModules = ({ is_deriv_crypto }) => {
             ],
         },
         {
+            path: routes.cashier,
+            component: Cashier,
+            is_modal: true,
+            is_authenticated: true,
+            getTitle: () => localize('Cashier'),
+            icon_component: 'IcCashier',
+            routes: [
+                {
+                    path: routes.cashier_deposit,
+                    component: Cashier,
+                    getTitle: () => localize('Deposit'),
+                    icon_component: 'IcWalletAdd',
+                    default: true,
+                },
+                {
+                    path: routes.cashier_withdrawal,
+                    component: Cashier,
+                    getTitle: () => localize('Withdrawal'),
+                    icon_component: 'IcWalletMinus',
+                },
+                ...(is_deriv_crypto
+                    ? []
+                    : [
+                          {
+                              path: routes.cashier_pa,
+                              component: Cashier,
+                              getTitle: () => localize('Payment agents'),
+                              icon_component: 'IcPaymentAgent',
+                          },
+                      ]),
+                {
+                    path: routes.cashier_acc_transfer,
+                    component: Cashier,
+                    getTitle: () => localize('Transfer'),
+                    icon_component: 'IcAccountTransfer',
+                },
+                ...(is_deriv_crypto
+                    ? []
+                    : [
+                          {
+                              path: routes.cashier_pa_transfer,
+                              component: Cashier,
+                              getTitle: () => localize('Transfer to client'),
+                              icon_component: 'IcAccountTransfer',
+                          },
+                          {
+                              path: routes.cashier_p2p,
+                              component: Cashier,
+                              getTitle: () => localize('DP2P'),
+                              icon_component: 'IcDp2p',
+                          },
+                      ]),
+                {
+                    id: 'gtm-onramp-tab',
+                    path: routes.cashier_onramp,
+                    component: Cashier,
+                    getTitle: () => localize('Fiat onramp'),
+                    icon_component: 'IcCashierOnRamp',
+                },
+            ],
+        },
+        {
             path: routes.root,
             component: Trader,
             getTitle: () => localize('Trader'),
@@ -194,8 +267,6 @@ const getModules = ({ is_deriv_crypto }) => {
     return modules;
 };
 
-const lazyLoadCashierComponent = makeLazyLoader(() => import(/* webpackChunkName: "cashier" */ 'Modules/Cashier'));
-
 const lazyLoadComplaintsPolicy = makeLazyLoader(() =>
     import(/* webpackChunkName: "complaints-policy" */ 'Modules/ComplaintsPolicy')
 );
@@ -206,68 +277,6 @@ const initRoutesConfig = ({ is_deriv_crypto }) => [
     { path: routes.index, component: RouterRedirect, getTitle: () => '', to: routes.root },
     { path: routes.endpoint, component: Endpoint, getTitle: () => 'Endpoint' }, // doesn't need localization as it's for internal use
     { path: routes.redirect, component: Redirect, getTitle: () => localize('Redirect') },
-    {
-        path: routes.cashier,
-        component: lazyLoadCashierComponent('Cashier'),
-        is_modal: true,
-        is_authenticated: true,
-        getTitle: () => localize('Cashier'),
-        icon_component: 'IcCashier',
-        routes: [
-            {
-                path: routes.cashier_deposit,
-                component: lazyLoadCashierComponent('Deposit'),
-                getTitle: () => localize('Deposit'),
-                icon_component: 'IcWalletAdd',
-                default: true,
-            },
-            {
-                path: routes.cashier_withdrawal,
-                component: lazyLoadCashierComponent('Withdrawal'),
-                getTitle: () => localize('Withdrawal'),
-                icon_component: 'IcWalletMinus',
-            },
-            ...(is_deriv_crypto
-                ? []
-                : [
-                      {
-                          path: routes.cashier_pa,
-                          component: lazyLoadCashierComponent('PaymentAgent'),
-                          getTitle: () => localize('Payment agents'),
-                          icon_component: 'IcPaymentAgent',
-                      },
-                  ]),
-            {
-                path: routes.cashier_acc_transfer,
-                component: lazyLoadCashierComponent('AccountTransfer'),
-                getTitle: () => localize('Transfer'),
-                icon_component: 'IcAccountTransfer',
-            },
-            ...(is_deriv_crypto
-                ? []
-                : [
-                      {
-                          path: routes.cashier_pa_transfer,
-                          component: lazyLoadCashierComponent('PaymentAgentTransfer'),
-                          getTitle: () => localize('Transfer to client'),
-                          icon_component: 'IcAccountTransfer',
-                      },
-                      {
-                          path: routes.cashier_p2p,
-                          component: lazyLoadCashierComponent('P2PCashier'),
-                          getTitle: () => localize('DP2P'),
-                          icon_component: 'IcDp2p',
-                      },
-                  ]),
-            {
-                id: 'gtm-onramp-tab',
-                path: routes.cashier_onramp,
-                component: lazyLoadCashierComponent('OnRamp'),
-                getTitle: () => localize('Fiat onramp'),
-                icon_component: 'IcCashierOnRamp',
-            },
-        ],
-    },
     {
         path: routes.complaints_policy,
         component: lazyLoadComplaintsPolicy(),

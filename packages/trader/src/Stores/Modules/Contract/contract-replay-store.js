@@ -15,6 +15,7 @@ export default class ContractReplayStore extends BaseStore {
     @observable error_message = '';
     @observable error_code = '';
     @observable is_chart_loading = true;
+    @observable is_chart_fitting = false;
     // ---- chart props
     @observable margin;
 
@@ -163,8 +164,22 @@ export default class ContractReplayStore extends BaseStore {
         this.chart_state = state;
 
         switch (state) {
+            case 'INITIAL':
+                this.is_chart_fitting = false;
+                break;
+            case 'READY':
+                setTimeout(
+                    action(() => (this.is_chart_fitting = true)),
+                    100
+                );
+                break;
             case 'SCROLL_TO_LEFT':
-                this.is_chart_loading = false;
+                setTimeout(
+                    action(() => {
+                        this.is_chart_loading = false;
+                    }),
+                    400
+                );
                 break;
             default:
         }

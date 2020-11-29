@@ -151,6 +151,7 @@ ContractReplay.propTypes = {
     history: PropTypes.object,
     indicative_status: PropTypes.string,
     is_chart_loading: PropTypes.bool,
+    is_chart_fitting: PropTypes.bool,
     is_dark_theme: PropTypes.bool,
     is_digit_contract: PropTypes.bool,
     location: PropTypes.object,
@@ -177,6 +178,7 @@ export default withRouter(
             onUnmount: contract_replay.onUnmount,
             indicative_status: contract_replay.indicative_status,
             is_chart_loading: contract_replay.is_chart_loading,
+            is_chart_fitting: contract_replay.is_chart_fitting,
             is_dark_theme: ui.is_dark_mode_on,
             NotificationMessages: ui.notification_messages_ui,
             toggleHistoryTab: ui.toggleHistoryTab,
@@ -275,8 +277,6 @@ const ReplayChart = connect(({ modules, ui, common }) => {
     const contract_replay = modules.contract_replay;
     const contract_store = contract_replay.contract_store;
     const contract_config = contract_store.contract_config;
-    const allow_scroll_to_epoch =
-        contract_replay.chart_state === 'READY' || contract_replay.chart_state === 'SCROLL_TO_LEFT';
     /**
      * TODO: remove forcing light theme once DBot supports dark theme
      * DBot does not support for dark theme since till now,
@@ -300,7 +300,7 @@ const ReplayChart = connect(({ modules, ui, common }) => {
         chart_type: contract_config.chart_type,
         start_epoch: contract_config.start_epoch,
         granularity: contract_config.granularity,
-        scroll_to_epoch: allow_scroll_to_epoch ? contract_config.scroll_to_epoch : undefined,
+        scroll_to_epoch: contract_replay.is_chart_fitting ? contract_config.scroll_to_epoch : undefined,
         settings,
         is_mobile: ui.is_mobile,
         is_socket_opened: common.is_socket_opened,

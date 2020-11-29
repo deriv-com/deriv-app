@@ -248,14 +248,24 @@ export default class UIStore extends BaseStore {
         return !!this.account_switcher_disabled_message;
     }
 
+    @computed
+    get filtered_notifications() {
+        return this.notifications.filter(message => message.type !== 'news');
+    }
+
     @action.bound
     filterNotificationMessages() {
+        if (LocalStore.get('active_loginid') !== 'null')
+            this.root_store.client.resetVirtualBalanceNotification(LocalStore.get('active_loginid'));
         this.notifications = this.notification_messages.filter(notification => {
             if (notification.platform === undefined || notification.platform.includes(getPathname())) {
                 return true;
             } else if (!notification.platform.includes(getPathname())) {
                 if (notification.is_disposable) {
-                    this.removeNotificationMessage({ key: notification.key });
+                    this.removeNotificationMessage({
+                        key: notification.key,
+                        should_show_again: notification.should_show_again,
+                    });
                     this.removeNotificationByKey({ key: notification.key });
                 }
             }
@@ -468,8 +478,10 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    removeNotifications() {
-        this.notifications = [];
+    removeNotifications(should_close_persistent) {
+        this.notifications = should_close_persistent
+            ? []
+            : [...this.notifications.filter(notifs => notifs.is_persistent)];
     }
 
     @action.bound
@@ -511,7 +523,7 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    removeNotificationMessage({ key } = {}) {
+    removeNotificationMessage({ key, should_show_again } = {}) {
         if (!key) return;
         this.notification_messages = this.notification_messages.filter(n => n.key !== key);
         // Add notification messages to LocalStore when user closes, check for redundancy
@@ -529,9 +541,11 @@ export default class UIStore extends BaseStore {
                 }
                 return [key];
             };
-            // Store message into LocalStore upon closing message
-            Object.assign(messages, { [active_loginid]: current_message() });
-            LocalStore.setObject('notification_messages', messages);
+            if (!should_show_again) {
+                // Store message into LocalStore upon closing message
+                Object.assign(messages, { [active_loginid]: current_message() });
+                LocalStore.setObject('notification_messages', messages);
+            }
         }
     }
 

@@ -8,6 +8,7 @@ import {
     routes,
     State,
     website_name,
+    platform_name,
 } from '@deriv/shared';
 import { StaticUrl } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
@@ -18,6 +19,16 @@ import { WS } from 'Services';
 /* eslint-disable react/jsx-no-target-blank */
 export const clientNotifications = (ui = {}, client = {}) => {
     const notifications = {
+        dp2p: {
+            key: 'dp2p',
+            header: localize('Payment problems?'),
+            message: localize('There’s an app for that'),
+            button_text: localize('Learn more'),
+            img_src: '/public/images/common/dp2p_banner.png',
+            img_alt: 'DP2P',
+            redirect_link: '/p2p/v1',
+            type: 'news',
+        },
         currency: {
             action: {
                 text: localize('Set currency'),
@@ -228,6 +239,23 @@ export const clientNotifications = (ui = {}, client = {}) => {
             message: <Localize i18n_default_text='Please log in with your updated password.' />,
             type: 'info',
         },
+        reset_virtual_balance: {
+            key: 'reset_virtual_balance',
+            header: localize('Reset your balance'),
+            message: client.message,
+            type: 'info',
+            is_persistent: true,
+            should_hide_close_btn: true,
+            should_show_again: true,
+            platform: [platform_name.DTrader],
+            is_disposable: true,
+            action: {
+                text: localize('Reset balance'),
+                onClick: async () => {
+                    await client.resetVirtualBalance();
+                },
+            },
+        },
         needs_poi: {
             action: {
                 route: routes.proof_of_identity,
@@ -333,7 +361,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
 };
 
 const hasMissingRequiredField = (account_settings, client, isAccountOfType) => {
-    if (!account_settings) return false;
+    if (!account_settings || isEmptyObject(account_settings)) return false;
 
     const { is_svg, landing_company_shortcode } = client;
 
@@ -459,6 +487,7 @@ const checkAccountStatus = (
     if (shouldCompleteTax(account_status)) addNotificationMessage(clientNotifications().tax);
 
     if (should_show_max_turnover) addNotificationMessage(clientNotifications().max_turnover_limit_not_set);
+
     return {
         has_risk_assessment,
     };
@@ -476,7 +505,7 @@ export const excluded_notifications = isMobile()
           'new_version_available',
       ];
 
-export const handleClientNotifications = (client, client_store, ui_store) => {
+export const handleClientNotifications = (client, client_store, ui_store, cashier_store) => {
     const { currency, excluded_until } = client;
     const {
         loginid,
@@ -488,6 +517,7 @@ export const handleClientNotifications = (client, client_store, ui_store) => {
         shouldCompleteTax,
     } = client_store;
     const { addNotificationMessage } = ui_store;
+    const { is_p2p_visible } = cashier_store;
 
     if (loginid !== LocalStore.get('active_loginid')) return {};
     if (!currency) addNotificationMessage(clientNotifications(ui_store).currency);
@@ -503,6 +533,10 @@ export const handleClientNotifications = (client, client_store, ui_store) => {
         getRiskAssessment,
         shouldCompleteTax
     );
+
+    if (is_p2p_visible) {
+        addNotificationMessage(clientNotifications().dp2p);
+    }
 
     if (is_tnc_needed) addNotificationMessage(clientNotifications(ui_store).tnc);
 

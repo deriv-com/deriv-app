@@ -3,7 +3,7 @@ import { localize } from 'Components/i18next';
 import { convertToMillis, getFormattedDateString } from 'Utils/date-time';
 import { buy_sell } from '../constants/buy-sell';
 
-class ExtendedOrderDetails {
+export default class ExtendedOrderDetails {
     constructor(order_details, loginid, server_time) {
         this.order_details = order_details;
         this.loginid = loginid;

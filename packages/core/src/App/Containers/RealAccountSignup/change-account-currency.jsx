@@ -54,11 +54,12 @@ class ChangeAccountCurrency extends React.Component {
                         <RadioButtonGroup
                             id='fiat'
                             label={localize('Cryptocurrencies')}
-                            className='currency-selector__radio-group with-margin'
+                            className='currency-selector__radio-group currency-selector__radio-group--with-margin'
                             value={values.fiat}
                             error={errors.fiat}
                             touched={touched.fiat}
                             is_title_enabled={false}
+                            item_count={this.state.selectable_currencies.length}
                         >
                             {this.state.selectable_currencies.map(currency => (
                                 <Field

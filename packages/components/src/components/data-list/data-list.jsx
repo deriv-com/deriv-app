@@ -122,17 +122,12 @@ class DataList extends React.PureComponent {
                     [`${className}__data-list`]: className,
                 })}
             >
-                <div className={classNames('data-list__body', { [`${className}__data-list-body`]: className })}>
-                    <AutoSizer>
-                        {({ width, height }) => (
-                            <div
-                                className='data-list__body-wrapper'
-                                style={{
-                                    height,
-                                    width,
-                                }}
-                            >
-                                <TransitionGroup>
+                <div className='data-list__body-wrapper'>
+                    <div className={classNames('data-list__body', { [`${className}__data-list-body`]: className })}>
+                        <AutoSizer>
+                            {({ width, height }) => (
+                                // Don't remove `TransitionGroup`. When `TransitionGroup` is removed, transition life cycle events like `onEntered` won't be fired sometimes on it's `CSSTransition` children
+                                <TransitionGroup style={{ height, width }}>
                                     <ThemedScrollbars onScroll={this.handleScroll} autoHide is_bypassed={isMobile()}>
                                         <List
                                             ref={ref => (this.list_ref = ref)}
@@ -150,11 +145,11 @@ class DataList extends React.PureComponent {
                                                 : { onScroll: target => this.handleScroll({ target }) })}
                                         />
                                     </ThemedScrollbars>
-                                    {children}
                                 </TransitionGroup>
-                            </div>
-                        )}
-                    </AutoSizer>
+                            )}
+                        </AutoSizer>
+                    </div>
+                    {children}
                 </div>
                 {footer && (
                     <div

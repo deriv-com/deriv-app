@@ -9,23 +9,8 @@
     margin-bottom: 2.4rem;
 
     &__button {
-        border-radius: 4px;
         cursor: pointer;
-        display: flex;
-        padding-right: 2.4rem;
-    }
-
-    &__container {
-        display: contents;
-
-        &--mobile {
-            display: flex;
-            margin: 0 0 1.6rem 1.6rem;
-        }
-    }
-
-    &--mobile {
-        border-bottom: 2px solid var(--general-section-1);
-        line-height: unset;
+        border-radius: $BORDER_RADIUS;
+        padding-right: 0.8rem;
     }
 }

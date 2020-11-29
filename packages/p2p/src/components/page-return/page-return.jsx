@@ -1,27 +1,20 @@
 import React from 'react';
+import { Icon, Text } from '@deriv/components';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import { isMobile } from '@deriv/shared';
-import { observer } from 'mobx-react-lite';
-import IconBack from 'Assets/icon-back.jsx';
 import './page-return.scss';
 
-const PageReturn = observer(({ onClick, page_title }) => {
+const PageReturn = ({ onClick, page_title }) => {
     return (
-        <div className={classNames('page-return', { 'page-return--mobile': isMobile() })}>
-            <div
-                className={classNames('page-return__container', {
-                    'page-return__container--mobile': isMobile(),
-                })}
-            >
-                <div onClick={onClick} className='page-return__button'>
-                    <IconBack />
-                </div>
-                <div>{page_title}</div>
+        <div className='page-return'>
+            <div onClick={onClick} className='page-return__button'>
+                <Icon icon='IcArrowLeftBold' size={16} />
             </div>
+            <Text size='s' color='general' line_height='m' weight='bold'>
+                {page_title}
+            </Text>
         </div>
     );
-});
+};
 
 PageReturn.propTypes = {
     onClick: PropTypes.func,

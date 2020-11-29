@@ -4,7 +4,6 @@ const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 
-const is_serve = process.env.BUILD_MODE === 'serve';
 const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 const is_publishing = process.env.NPM_PUBLISHING_MODE === '1';
 
@@ -24,9 +23,16 @@ module.exports = {
         alias: {
             Assets: path.resolve(__dirname, 'src/assets'),
             Components: path.resolve(__dirname, 'src/components'),
+            Constants: path.resolve(__dirname, 'src/constants'),
             Translations: path.resolve(__dirname, 'src/translations'),
             Utils: path.resolve(__dirname, 'src/utils'),
             Stores: path.resolve(__dirname, 'stores'), // TODO: Move stores into ./src!
+            ...(is_publishing
+                ? {
+                      '@deriv/shared': path.resolve(__dirname, '../shared/src/index.js'),
+                      '@deriv/components': path.resolve(__dirname, '../components/src/index.js'),
+                  }
+                : {}),
         },
         symlinks: false,
     },
@@ -36,9 +42,6 @@ module.exports = {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
                 use: [
-                    {
-                        loader: '@deriv/shared/src/loaders/react-import-loader.js',
-                    },
                     {
                         loader: '@deriv/shared/src/loaders/react-import-loader.js',
                     },
@@ -63,12 +66,20 @@ module.exports = {
                           ]
                         : []),
                     'css-loader',
-                    'postcss-loader',
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            config: {
+                                path: path.resolve(__dirname),
+                            },
+                        },
+                    },
                     'sass-loader',
                     {
                         loader: 'sass-resources-loader',
                         options: {
                             // Provide path to the file with resources
+                            // eslint-disable-next-line global-require, import/no-dynamic-require
                             resources: require('@deriv/shared/src/styles/index.js'),
                         },
                     },
@@ -119,16 +130,16 @@ module.exports = {
         {
             react: 'react',
             'react-dom': 'react-dom',
-            'babel-polyfill': 'babel-polyfill',
             'prop-types': 'prop-types',
-            ...(is_publishing
-                ? {}
-                : {
-                      '@deriv/shared': '@deriv/shared',
-                      '@deriv/components': '@deriv/components',
-                      formik: 'formik',
-                  }),
         },
-        ...(is_publishing ? [] : [/^@deriv\/components\/.+$/, /^@deriv\/shared\/.+$/]),
+        ...(is_publishing
+            ? []
+            : [
+                  {
+                      '@deriv/components': '@deriv/components',
+                      '@deriv/shared': '@deriv/shared',
+                      formik: 'formik',
+                  },
+              ]),
     ],
 };

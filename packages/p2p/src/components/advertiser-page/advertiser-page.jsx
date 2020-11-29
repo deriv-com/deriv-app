@@ -14,7 +14,7 @@ import FormError from '../form/error.jsx';
 import { localize, Localize } from '../i18next';
 import './advertiser-page.scss';
 
-const RowComponent = React.memo(({ data: advert, showAdPopup, style }) => {
+const RowComponent = observer(({ data: advert, showAdPopup, style }) => {
     const { advertiser_page_store, general_store } = useStores();
     const { currency } = general_store.client;
 
@@ -103,10 +103,8 @@ const StatsInfo = ({ text }) => {
     );
 };
 
-const AdvertiserPage = observer(props => {
+const AdvertiserPage = observer(() => {
     const { advertiser_page_store, general_store } = useStores();
-
-    advertiser_page_store.setAdvertiserPageProps(props);
 
     const {
         basic_verification,
@@ -160,7 +158,7 @@ const AdvertiserPage = observer(props => {
                         <ThemedScrollbars height='calc(100% - 5.8rem - 7.4rem)'>
                             <Modal.Body>
                                 <Form
-                                    advert={advertiser_page_store.ad}
+                                    advert={advertiser_page_store.advert}
                                     handleClose={advertiser_page_store.onCancelClick}
                                     handleConfirm={advertiser_page_store.onConfirmClick}
                                     setIsSubmitDisabled={advertiser_page_store.setIsSubmitDisabled}
@@ -363,9 +361,32 @@ const AdvertiserPage = observer(props => {
         </div>
     );
 });
+
 AdvertiserPage.propTypes = {
-    navigate: PropTypes.func,
-    selected_advert: PropTypes.object,
-    showVerification: PropTypes.func,
+    active_index: PropTypes.number,
+    advert: PropTypes.object,
+    advertiser_info: PropTypes.object,
+    adverts: PropTypes.array,
+    api_error_message: PropTypes.string,
+    counterparty_type: PropTypes.string,
+    error_message: PropTypes.string,
+    form_error_message: PropTypes.string,
+    handleTabItemClick: PropTypes.func,
+    height_values: PropTypes.array,
+    is_loading: PropTypes.bool,
+    is_submit_disabled: PropTypes.bool,
+    item_height: PropTypes.number,
+    modal_title: PropTypes.string,
+    onCancelClick: PropTypes.func,
+    onConfirmClick: PropTypes.func,
+    onMount: PropTypes.func,
+    onTabChange: PropTypes.func,
+    setFormErrorMessage: PropTypes.func,
+    setIsSubmitDisabled: PropTypes.func,
+    setSubmitForm: PropTypes.func,
+    show_ad_popup: PropTypes.bool,
+    showAdPopup: PropTypes.func,
+    submitForm: PropTypes.func,
 };
+
 export default AdvertiserPage;

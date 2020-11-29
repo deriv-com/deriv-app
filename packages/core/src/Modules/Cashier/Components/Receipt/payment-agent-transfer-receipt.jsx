@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
-import { Button, Icon } from '@deriv/components';
+import { Button, Icon, Text } from '@deriv/components';
 import { routes, formatMoney, getCurrencyDisplayCode, getCurrencyName } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -30,16 +30,24 @@ class PaymentAgentTransferReceipt extends React.Component {
                         <span className='account-transfer__transfer-details-from'>
                             <Icon icon={`IcCurrency-${this.props.currency.toLowerCase()}`} />
                             <span className='cashier__transferred-details'>
-                                <span className='cashier__text--bold'>{getCurrencyName(this.props.currency)}</span>
-                                <span className='cashier__text--faint'>{this.props.loginid}</span>
+                                <Text size='xs' line_height='s' weight='bold' className='cashier__text--bold'>
+                                    {getCurrencyName(this.props.currency)}
+                                </Text>
+                                <Text size='xs' line_height='s' color='prominent' className='cashier__text--faint'>
+                                    {this.props.loginid}
+                                </Text>
                             </span>
                         </span>
                         <Icon className='cashier__transferred-icon' icon='IcArrowLeftBold' />
                         <span className='account-transfer__transfer-details-to'>
                             <Icon icon='IcClient' />
                             <span className='cashier__transferred-details'>
-                                <span className='cashier__text--bold'>{this.props.receipt.client_name}</span>
-                                <span className='cashier__text--faint'>{this.props.receipt.client_id}</span>
+                                <Text size='xs' line_height='s' weight='bold' className='cashier__text--bold'>
+                                    {this.props.receipt.client_name}
+                                </Text>
+                                <Text size='xs' line_height='s' color='prominent' className='cashier__text--faint'>
+                                    {this.props.receipt.client_id}
+                                </Text>
                             </span>
                         </span>
                     </div>

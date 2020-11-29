@@ -1,4 +1,3 @@
-const assert = require('assert').strict;
 const {setUp, tearDown, mobile_viewport, desktop_viewport} = require('@root/bootstrap');
 const Trader = require('@root/objects/trader');
 const {replaceWebsocket} = require("@root/_utils/websocket");
@@ -19,106 +18,37 @@ describe('Contract purchases in desktop', () => {
     });
 
     test('[desktop] trader/buy-contract rise', async () => {
-        await preBuy();
-        await page.buyContract('Ups & Downs', 'rise_fall', 'Ticks', 5);
-        const message = await waitForWSSubset(page, {
-            echo_req: {
-                amount: 10,
-                basis: 'stake',
-                contract_type: 'CALL',
-                currency: 'USD',
-                duration: 5,
-                duration_unit: 't',
-                proposal: 1,
-            },
-        });
-        assert.ok(message, 'No proper proposal was found');
-        assert.ok(
-            message.echo_req.duration === 5,
-            `Duration was not set properly, expected 5, received: ${message.echo_req.duration}`
-        );
-        const buy_response = await waitForWSSubset(page, {
-            echo_req: {
-                price: '10.00',
-            },
-        });
-        assert.equal(buy_response.buy.buy_price, 10, 'Buy price does not match proposal.');
-        await page.assertContractDetails();
+        await page.navigate();
+        await page.loadOrLogin(process.env.VALID_USER, process.env.VALID_PASSWORD);
+        await page.switchVirtualAccount();
+        await page.chooseUnderlying('1HZ10V', 'Volatility 10 (1s) Index');
+        await page.buyContract('Ups & Downs', 'rise_fall', 'Ticks', 5, 'call', false);
+        await page.assertPurchase(5, 10, 'CALL');
     });
-
     test("[desktop] trader/buy-contract fall", async () => {
-        await preBuy();
-        await page.buyContract('Ups & Downs', "rise_fall", "Ticks", 5, 'put');
-        const message = await waitForWSSubset(page, {
-            echo_req: {
-                amount: 10,
-                basis: "stake",
-                contract_type: "PUT",
-                currency: "USD",
-                duration: 5,
-                duration_unit: "t",
-                proposal: 1,
-            },
-        });
-        assert.ok(message, 'No proper proposal was found');
-        assert.ok(message.echo_req.duration === 5, `Duration was not set properly, expected 5, received: ${message.echo_req.duration}`);
-        const buy_response = await waitForWSSubset(page, {
-            echo_req: {
-                price: "10.00",
-            },
-        });
-        assert.equal(buy_response.buy.buy_price, 10, 'Buy price does not match proposal.');
-        await page.assertContractDetails();
+        await page.navigate();
+        await page.loadOrLogin(process.env.VALID_USER, process.env.VALID_PASSWORD);
+        await page.switchVirtualAccount();
+        await page.chooseUnderlying('1HZ10V', 'Volatility 10 (1s) Index');
+        await page.buyContract('Ups & Downs', 'rise_fall', 'Ticks', 5, 'put', false);
+        await page.assertPurchase(5, 10, 'PUT');
     });
     test("[desktop] trader/buy-contract rise equal", async () => {
-        await preBuy();
-        await page.buyContract('Ups & Downs', "rise_fall", "Ticks", 5, 'call', true);
-        const message = await waitForWSSubset(page, {
-            echo_req: {
-                amount: 10,
-                basis: "stake",
-                contract_type: "CALLE",
-                currency: "USD",
-                duration: 5,
-                duration_unit: "t",
-                proposal: 1,
-            },
-        });
-        assert.ok(message, 'No proper proposal was found');
-        assert.ok(message.echo_req.duration === 5, `Duration was not set properly, expected 5, received: ${message.echo_req.duration}`);
-        const buy_response = await waitForWSSubset(page, {
-            echo_req: {
-                price: "10.00",
-            },
-        });
-        assert.equal(buy_response.buy.buy_price, 10, 'Buy price does not match proposal.');
-        await page.assertContractDetails();
+        await page.navigate();
+        await page.loadOrLogin(process.env.VALID_USER, process.env.VALID_PASSWORD);
+        await page.switchVirtualAccount();
+        await page.chooseUnderlying('1HZ10V', 'Volatility 10 (1s) Index');
+        await page.buyContract('Ups & Downs', 'rise_fall', 'Ticks', 5, 'call', true);
+        await page.assertPurchase(5, 10, 'CALLE');
     });
     test("[desktop] trader/buy-contract fall equal", async () => {
-        await preBuy();
-        await page.buyContract('Ups & Downs', "rise_fall", "Ticks", 5, 'put', true);
-        const message = await waitForWSSubset(page, {
-            echo_req: {
-                amount: 10,
-                basis: "stake",
-                contract_type: "PUTE",
-                currency: "USD",
-                duration: 5,
-                duration_unit: "t",
-                proposal: 1,
-            },
-        });
-        assert.ok(message, 'No proper proposal was found');
-        assert.ok(message.echo_req.duration === 5, `Duration was not set properly, expected 5, received: ${message.echo_req.duration}`);
-        const buy_response = await waitForWSSubset(page, {
-            echo_req: {
-                price: "10.00",
-            },
-        });
-        assert.equal(buy_response.buy.buy_price, 10, 'Buy price does not match proposal.');
-        await page.assertContractDetails();
+        await page.navigate();
+        await page.loadOrLogin(process.env.VALID_USER, process.env.VALID_PASSWORD);
+        await page.switchVirtualAccount();
+        await page.chooseUnderlying('1HZ10V', 'Volatility 10 (1s) Index');
+        await page.buyContract('Ups & Downs', 'rise_fall', 'Ticks', 5, 'put', true);
+        await page.assertPurchase(5, 10, 'PUTE');
     });
-
 })
 
 describe('Contract purchases in mobile', () => {
@@ -224,7 +154,7 @@ describe('Contract purchases in mobile', () => {
         await page.assertPurchase(10, 10, 'CALLE');
     });
 
-    test('[mobile]-trader/over-under', async () => {
+    test('[mobile] trader/over-under', async () => {
         await page.navigate();
         await page.loadOrLogin(process.env.VALID_USER, process.env.VALID_PASSWORD);
         await page.switchVirtualAccount();
@@ -233,7 +163,7 @@ describe('Contract purchases in mobile', () => {
         await page.assertPurchase(5, 10, 'DIGITOVER');
     });
 
-    test('[mobile]-trader/no-touch', async () => {
+    test('[mobile] trader/no-touch', async () => {
         await page.navigate();
         await page.loadOrLogin(process.env.VALID_USER, process.env.VALID_PASSWORD);
         await page.switchVirtualAccount();
@@ -242,7 +172,7 @@ describe('Contract purchases in mobile', () => {
         await page.assertPurchase(5, 10, 'NOTOUCH');
     });
 
-    test('[mobile]-trader/touch', async () => {
+    test('[mobile] trader/touch', async () => {
         await page.navigate();
         await page.loadOrLogin(process.env.VALID_USER, process.env.VALID_PASSWORD);
         await page.switchVirtualAccount();

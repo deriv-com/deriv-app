@@ -69,8 +69,7 @@ class Common {
         await this.page.fill('[name="app_id"]', app_id);
         await this.page.press('[name="app_id"]', 'Tab');
         await this.page.click('text=Submit');
-        await this.page.waitForTimeout(300);
-        await this.page.waitForLoadState('domcontentloaded');
+        await this.page.waitForNavigation();
         await qawolf.saveState(this.page, LOGIN_STATE_PATH);
     }
 
@@ -118,7 +117,7 @@ class Common {
         if (process.env.QA_SETUP === 'true') {
             await this.connectToQA();
         }
-        await this.page.goto(`${process.env.HOME_URL}`, { waitUntil: 'domcontentloaded' });
+        await this.page.goto(process.env.HOME_URL);
     }
 
     async connectToQA() {

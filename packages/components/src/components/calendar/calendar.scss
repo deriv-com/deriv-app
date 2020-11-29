@@ -129,14 +129,6 @@
             right: 14%;
         }
     }
-    &__text {
-        @include typeface(--small-center-normal-black, unset);
-        color: var(--text-general);
-
-        &--bold {
-            font-weight: bold;
-        }
-    }
     &__cell {
         @include typeface(--small-left-normal-black);
         align-self: center;

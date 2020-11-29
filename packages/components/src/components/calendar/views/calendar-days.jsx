@@ -143,9 +143,9 @@ const Days = props => {
     return (
         <div className='dc-calendar__body dc-calendar__body--date'>
             {Object.keys(week_headers_abbr).map((item, idx) => (
-                <span key={idx} className='dc-calendar__text dc-calendar__text--bold'>
+                <Text size='xxs' align='center' weight='bold' key={idx}>
                     {week_headers_abbr[item]}
-                </span>
+                </Text>
             ))}
             {days}
         </div>

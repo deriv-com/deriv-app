@@ -71,7 +71,10 @@ class Statement extends React.Component {
                               />
                           ),
                       };
-        } else if (row_obj.desc && ['deposit', 'withdrawal', 'adjustment'].includes(row_obj.action_type)) {
+        } else if (
+            row_obj.desc &&
+            ['deposit', 'withdrawal', 'adjustment', 'hold', 'release'].includes(row_obj.action_type)
+        ) {
             action = {
                 message: row_obj.desc,
             };

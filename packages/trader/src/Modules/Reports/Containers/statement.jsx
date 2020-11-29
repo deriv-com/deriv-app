@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper, DataList, DataTable, Money } from '@deriv/components';
-import { extractInfoFromShortcode, urlFor, website_name } from '@deriv/shared';
+import { extractInfoFromShortcode, isForwardStarting, urlFor, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
 import CompositeCalendar from 'App/Components/Form/CompositeCalendar/composite-calendar.jsx';
@@ -48,27 +48,29 @@ class Statement extends React.Component {
         let action;
 
         if (row_obj.id && ['buy', 'sell'].includes(row_obj.action_type)) {
-            action = getSupportedContracts()[extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase()]
-                ? getContractPath(row_obj.id)
-                : {
-                      component: (
-                          <Localize
-                              i18n_default_text='This trade type is currently not supported on {{website_name}}. Please go to <0>Binary.com</0> for details.'
-                              values={{
-                                  website_name,
-                              }}
-                              components={[
-                                  <a
-                                      key={0}
-                                      className='link link--orange'
-                                      rel='noopener noreferrer'
-                                      target='_blank'
-                                      href={urlFor('user/statementws', { legacy: true })}
-                                  />,
-                              ]}
-                          />
-                      ),
-                  };
+            action =
+                getSupportedContracts()[extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase()] &&
+                !isForwardStarting(row_obj.shortcode, row_obj.purchase_time)
+                    ? getContractPath(row_obj.id)
+                    : {
+                          component: (
+                              <Localize
+                                  i18n_default_text='This trade type is currently not supported on {{website_name}}. Please go to <0>Binary.com</0> for details.'
+                                  values={{
+                                      website_name,
+                                  }}
+                                  components={[
+                                      <a
+                                          key={0}
+                                          className='link link--orange'
+                                          rel='noopener noreferrer'
+                                          target='_blank'
+                                          href={urlFor('user/statementws', { legacy: true })}
+                                      />,
+                                  ]}
+                              />
+                          ),
+                      };
         } else if (row_obj.desc && ['deposit', 'withdrawal', 'adjustment'].includes(row_obj.action_type)) {
             action = {
                 message: row_obj.desc,

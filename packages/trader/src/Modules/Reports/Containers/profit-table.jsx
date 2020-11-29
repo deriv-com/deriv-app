@@ -4,7 +4,7 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { DesktopWrapper, MobileWrapper, DataList, DataTable } from '@deriv/components';
-import { extractInfoFromShortcode, urlFor, website_name } from '@deriv/shared';
+import { extractInfoFromShortcode, isForwardStarting, urlFor, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
 import CompositeCalendar from 'App/Components/Form/CompositeCalendar';
@@ -85,7 +85,8 @@ class ProfitTable extends React.Component {
     };
 
     getRowAction = row_obj =>
-        getSupportedContracts()[extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase()]
+        getSupportedContracts()[extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase()] &&
+        !isForwardStarting(row_obj.shortcode, row_obj.purchase_time_unix)
             ? getContractPath(row_obj.contract_id)
             : {
                   component: (

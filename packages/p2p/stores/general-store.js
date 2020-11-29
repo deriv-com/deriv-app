@@ -5,6 +5,7 @@ import { localize, Localize } from 'Components/i18next';
 import { createExtendedOrderDetails } from 'Utils/orders.js';
 import { init as WebsocketInit, requestWS, subscribeWS } from 'Utils/websocket';
 import { order_list } from '../src/constants/order-list';
+import { convertToMillis, getFormattedDateString } from 'Utils/date-time';
 import BaseStore from 'Stores/base_store';
 
 export default class GeneralStore extends BaseStore {
@@ -47,7 +48,7 @@ export default class GeneralStore extends BaseStore {
 
     @computed
     get blocked_until_date_time() {
-        return getFormattedDateString(new Date(convertToMillis(this.user_blocked_until)), true, true);
+        return getFormattedDateString(new Date(convertToMillis(this.user_blocked_until)), false, true);
     }
 
     @computed

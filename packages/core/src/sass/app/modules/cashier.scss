@@ -272,6 +272,10 @@
         margin-left: auto;
         margin-right: auto;
 
+        &--full-width {
+            max-width: unset;
+            min-width: 44.5rem;
+        }
         &--bold {
             font-weight: bold;
         }
@@ -283,6 +287,7 @@
         }
         @include mobile {
             max-width: 100%;
+            min-width: unset;
             margin: 0;
             padding: 0;
             text-align: left;
@@ -1077,6 +1082,9 @@
         max-width: 36rem;
         margin: 0 auto 5.1rem;
 
+        &--to-dropdown {
+            margin: 0 auto 3.3rem;
+        }
         @include mobile {
             width: 100%;
             min-width: auto;
@@ -1146,7 +1154,7 @@
                 margin-bottom: 5rem;
 
                 &:not(.dc-select-native--error) {
-                    margin-bottom: 3.2rem;
+                    margin-bottom: 2.2rem;
                 }
             }
         }

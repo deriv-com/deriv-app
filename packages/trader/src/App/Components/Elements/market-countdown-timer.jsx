@@ -65,7 +65,6 @@ const calculateTimeLeft = remaining_time_to_open => {
               days: Math.floor(difference / (1000 * 60 * 60 * 24)),
               hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
               minutes: Math.floor((difference / 1000 / 60) % 60),
-              seconds: Math.floor((difference / 1000) % 60),
           }
         : {};
 };
@@ -106,11 +105,14 @@ const MarketCountdownTimer = ({ is_main_page, setActiveSymbols, symbol }) => {
     Object.keys(time_left).forEach(interval => {
         if (interval === 'days') {
             if (time_left.days) {
-                timer_components += `${time_left.days} ${localize(time_left.days > 1 ? 'days' : 'day')} `;
+                timer_components += `${time_left.days} ${localize(time_left.days > 1 ? 'days' : 'day')}`;
             }
-        } else {
-            const value = time_left[interval].toString().padStart(2, '0');
-            timer_components += interval !== 'seconds' ? `${value}:` : value;
+        } else if (time_left[interval] !== 0) {
+            const value = time_left[interval];
+            timer_components +=
+                interval === 'hours'
+                    ? `${time_left.days ? ', ' : ''}${value} ${localize(time_left.hours > 1 ? 'hrs' : 'hr')}`
+                    : ` ${localize('and')} ${value} ${localize(time_left.minutes > 1 ? 'mins' : 'min')}`;
         }
     });
 
@@ -165,10 +167,24 @@ const MarketCountdownTimer = ({ is_main_page, setActiveSymbols, symbol }) => {
             </Text>
             {opening_time_banner}
             <Text
+                align='center'
+                as='p'
+                className={classNames('market-is-closed-overlay__come-back', {
+                    'market-is-closed-overlay__come-back--main-page': is_main_page,
+                })}
+                line_height='x'
+                size='xs'
+            >
+                <Localize i18n_default_text='Please come back in' />
+            </Text>
+            <Text
                 as='p'
                 className={classNames('market-is-closed-overlay__timer', {
                     'market-is-closed-overlay__timer--main-page': is_main_page,
                 })}
+                line_height='m'
+                color='prominent'
+                weight='bold'
             >
                 {timer_components}
             </Text>

@@ -37,13 +37,7 @@ const MarketIsClosedOverlay = ({ is_eu, is_market_available, onClick }) => {
             </Text>
             <MarketCountdownTimer is_main_page />
             {message && (
-                <Text
-                    align='center'
-                    as='p'
-                    className='market-is-closed-overlay__main-message'
-                    line_height='x'
-                    size='xs'
-                >
+                <Text align='center' as='p' className='market-is-closed-overlay__main-message' size='xs'>
                     {message}
                 </Text>
             )}

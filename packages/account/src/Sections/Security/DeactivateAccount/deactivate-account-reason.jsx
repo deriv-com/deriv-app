@@ -60,7 +60,7 @@ const WarningModal = props => {
                 <p className='account-closure-warning-modal__content'>
                     <Localize
                         i18n_default_text='You will <0>NOT</0> be able to log in again.'
-                        components={[<Text key={0} color='loss-danger' weight='bold' />]}
+                        components={[<Text size='xs' line_height='s' key={0} color='loss-danger' weight='bold' />]}
                     />
                 </p>
             </div>

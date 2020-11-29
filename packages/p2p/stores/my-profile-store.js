@@ -2,12 +2,9 @@ import { observable, action } from 'mobx';
 import { requestWS } from 'Utils/websocket';
 import { localize } from 'Components/i18next';
 import { textValidator } from 'Utils/validations';
+import BaseStore from 'Stores/base_store';
 
-export default class MyProfileStore {
-    constructor(root_store) {
-        this.root_store = root_store;
-    }
-
+export default class MyProfileStore extends BaseStore {
     @observable advertiser_info = {};
     @observable contact_info = '';
     @observable default_advert_description = '';

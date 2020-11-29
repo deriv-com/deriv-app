@@ -1,16 +1,12 @@
-import { action, observable, computed } from 'mobx';
-import { buy_sell } from '../src/constants/buy-sell';
+import { action, computed, observable } from 'mobx';
 import { getShortNickname } from 'Utils/string';
 import { height_constants } from 'Utils/height_constants';
 import { localize } from 'Components/i18next';
+import { buy_sell } from 'Constants/buy-sell';
 import { requestWS } from 'Utils/websocket';
+import BaseStore from 'Stores/base_store';
 
-export default class AdvertiserPageStore {
-    constructor(root_store) {
-        this.root_store = root_store;
-        this.general_store = this.root_store.general_store;
-    }
-
+export default class AdvertiserPageStore extends BaseStore {
     @observable active_index = 0;
     @observable ad = null;
     @observable advertiser_first_name = '';
@@ -38,26 +34,25 @@ export default class AdvertiserPageStore {
         height_constants.tabs,
     ];
     item_height = 56;
-    props = {};
 
     @computed
     get account_currency() {
-        return this.props?.selected_advert.account_currency;
+        return this.advert?.account_currency;
     }
 
     @computed
     get advertiser_details() {
-        return this.props?.selected_advert.advertiser_details || {};
+        return this.advert?.advertiser_details || {};
     }
 
     @computed
     get advertiser_details_id() {
-        return this.props?.selected_advert.advertiser_details.id;
+        return this.advert?.advertiser_details?.id;
     }
 
     @computed
     get advertiser_details_name() {
-        return this.props?.selected_advert.advertiser_details.name;
+        return this.advert?.advertiser_details?.name;
     }
 
     @computed
@@ -134,7 +129,7 @@ export default class AdvertiserPageStore {
     @action.bound
     onConfirmClick(order_info) {
         const nav = { location: 'buy_sell' };
-        this.props.navigate('orders', { order_info, nav });
+        this.root_store.general_store.redirectTo('orders', { order_info, nav });
     }
 
     @action.bound
@@ -171,10 +166,6 @@ export default class AdvertiserPageStore {
     @action.bound
     setAdvertiserInfo(advertiser_info) {
         this.advertiser_info = advertiser_info;
-    }
-
-    setAdvertiserPageProps(props) {
-        this.props = props;
     }
 
     @action.bound
@@ -218,11 +209,10 @@ export default class AdvertiserPageStore {
     }
 
     @action.bound
-    showAdPopup(advert) {
-        if (!this.general_store.is_advertiser) {
-            this.props.showVerification();
+    showAdPopup() {
+        if (!this.root_store.general_store.is_advertiser) {
+            this.root_store.buy_sell_store.showVerification();
         } else {
-            this.setAd(advert);
             this.setShowAdPopup(true);
         }
     }

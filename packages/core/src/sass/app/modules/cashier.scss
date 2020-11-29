@@ -272,6 +272,10 @@
         margin-left: auto;
         margin-right: auto;
 
+        &--full-width {
+            max-width: unset;
+            min-width: 44.5rem;
+        }
         &--bold {
             font-weight: bold;
         }
@@ -283,6 +287,7 @@
         }
         @include mobile {
             max-width: 100%;
+            min-width: unset;
             margin: 0;
             padding: 0;
             text-align: left;

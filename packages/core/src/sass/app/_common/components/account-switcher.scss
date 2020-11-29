@@ -206,6 +206,11 @@
             cursor: default;
         }
     }
+    &__reset-account {
+        &-btn {
+            margin-left: auto;
+        }
+    }
     &__list {
         border-radius: $BORDER_RADIUS;
         display: flex;

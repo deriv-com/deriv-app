@@ -2,12 +2,9 @@ import { action, computed, observable } from 'mobx';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import { requestWS, subscribeWS } from 'Utils/websocket';
 import { height_constants } from 'Utils/height_constants';
+import BaseStore from 'Stores/base_store';
 
-export default class OrderStore {
-    constructor(root_store) {
-        this.root_store = root_store;
-    }
-
+export default class OrderStore extends BaseStore {
     @observable api_error_message = '';
     @observable has_more_items_to_load = false;
     @observable is_loading = false;

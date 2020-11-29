@@ -6,12 +6,9 @@ import { formatMoney, getDecimalPlaces, getRoundedNumber } from '@deriv/shared';
 import { buy_sell } from '../src/constants/buy-sell';
 import { textValidator, lengthValidator } from 'Utils/validations';
 import { countDecimalPlaces } from 'Utils/string';
+import BaseStore from 'Stores/base_store';
 
-export default class BuySellStore {
-    constructor(root_store) {
-        this.root_store = root_store;
-    }
-
+export default class BuySellStore extends BaseStore {
     @observable api_error_message = '';
     @observable contact_info = '';
     @observable error_message = '';

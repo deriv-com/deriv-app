@@ -6,12 +6,9 @@ import { localize } from 'Components/i18next';
 import { decimalValidator, lengthValidator, textValidator } from 'Utils/validations';
 import { buy_sell } from '../src/constants/buy-sell';
 import { height_constants } from 'Utils/height_constants';
+import BaseStore from 'Stores/base_store';
 
-export default class MyAdsStore {
-    constructor(root_store) {
-        this.root_store = root_store;
-    }
-
+export default class MyAdsStore extends BaseStore {
     @observable adverts = [];
     @observable api_error = '';
     @observable api_error_message = '';

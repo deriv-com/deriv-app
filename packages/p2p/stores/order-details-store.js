@@ -3,12 +3,9 @@ import { requestWS } from 'Utils/websocket';
 import { secondsToTimer } from 'Utils/date-time';
 import ServerTime from 'Utils/server-time';
 import { localize } from 'Components/i18next';
+import BaseStore from 'Stores/base_store';
 
-export default class OrderDetailsStore {
-    constructor(root_store) {
-        this.root_store = root_store;
-    }
-
+export default class OrderDetailsStore extends BaseStore {
     @observable chat_channel_url = '';
     @observable interval = null;
     @observable popup_options = {};

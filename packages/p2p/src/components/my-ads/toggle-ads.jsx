@@ -1,16 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { ToggleSwitch } from '@deriv/components';
 import { useIsMounted } from '@deriv/shared';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
-import { localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
-import { useStores } from '../../../stores';
+import { localize } from 'Components/i18next';
+import { useStores } from 'Stores';
 import './my-ads.scss';
 
 const ToggleAds = observer(() => {
-    const { general_store } = useStores();
-    const [api_error, setApiError] = React.useState(null);
+    const { general_store, my_ads_store } = useStores();
     const isMounted = useIsMounted();
 
     const handleToggle = () => {
@@ -22,7 +22,7 @@ const ToggleAds = observer(() => {
             }).then(response => {
                 if (isMounted()) {
                     if (response.error) {
-                        setApiError(response.error.message);
+                        my_ads_store.setApiError(response.error.message);
                     } else {
                         const { is_listed } = response.p2p_advertiser_update;
                         general_store.setIsListed(is_listed === 1);
@@ -40,7 +40,7 @@ const ToggleAds = observer(() => {
             })}
         >
             <div className='toggle-ads__message'>
-                {(api_error || general_store.is_listed) && !general_store.is_barred
+                {(my_ads_store.api_error || general_store.is_listed) && !general_store.is_barred
                     ? localize('Your ads are running')
                     : localize('Your ads are paused')}
             </div>
@@ -55,5 +55,11 @@ const ToggleAds = observer(() => {
         </div>
     );
 });
+
+ToggleAds.propTypes = {
+    api_error: PropTypes.string,
+    handleToggle: PropTypes.func,
+    is_listed: PropTypes.bool,
+};
 
 export default ToggleAds;

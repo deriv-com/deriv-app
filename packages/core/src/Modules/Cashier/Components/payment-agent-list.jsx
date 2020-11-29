@@ -34,20 +34,20 @@ class PaymentAgentList extends React.Component {
 
         return (
             <div className='cashier__wrapper--align-left'>
-                <p className='cashier__paragraph'>
+                <Text as='p' size='xs' lineHeight='x' className='cashier__paragraph'>
                     <Localize
                         i18n_default_text='A payment agent is authorised to process deposits and withdrawals for you if your local payment methods or currencies are not supported on {{website_name}}.'
                         values={{ website_name }}
                     />
-                </p>
+                </Text>
                 <div className='payment-agent__instructions'>
                     <div className='payment-agent__instructions-section'>
                         <h2 className='cashier__header payment-agent__header'>
                             <Localize i18n_default_text='Deposit' />
                         </h2>
-                        <p className='cashier__paragraph'>
+                        <Text as='p' size='xs' lineHeight='x' className='cashier__paragraph'>
                             <Localize i18n_default_text='Choose a payment agent and contact them for instructions.' />
-                        </p>
+                        </Text>
                     </div>
                     <div className='payment-agent__instructions-section'>
                         <h2 className='cashier__header payment-agent__header'>
@@ -126,7 +126,7 @@ class PaymentAgentList extends React.Component {
                     </React.Fragment>
                 )}
                 <div className='payment-agent__disclaimer'>
-                    <Text size='xs' line_height='xs' weight='bold' className='cashier__text--bold'>
+                    <Text size='xs' line_height='s' weight='bold' className='cashier__text'>
                         <Localize i18n_default_text='DISCLAIMER' />
                     </Text>
                     :&nbsp;

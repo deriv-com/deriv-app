@@ -53,11 +53,11 @@ const App = observer(props => {
         order_id,
         poi_url,
         server_time,
-        setOrderId,
         should_show_verification,
         websocket_api,
     } = props;
     general_store.setAppProps(props);
+    general_store.setOrderId(props.order_id);
     general_store.setWebsocketInit(websocket_api, general_store.client.local_currency_config.decimal_places);
 
     React.useEffect(() => {
@@ -124,7 +124,6 @@ const App = observer(props => {
                 poi_url,
                 resetNicknameErrorState: general_store.resetNicknameErrorState,
                 residence: general_store.client.residence,
-                setChatInfo: general_store.setChatInfo,
                 setIsListed: is_listed => {
                     general_store.setIsListed(is_listed);
                 },
@@ -132,7 +131,7 @@ const App = observer(props => {
                     general_store.setIsAdvertiser(is_advertiser);
                 },
                 setNickname: general_store.setNickname,
-                setOrderId,
+                setOrderId: general_store.setOrderId,
                 setOrders: general_store.setOrders,
                 setOrderOffset: order_offset => {
                     general_store.setOrderOffset(order_offset);
@@ -189,11 +188,7 @@ const App = observer(props => {
                                     <BuySell navigate={general_store.redirectTo} params={general_store.parameters} />
                                 </div>
                                 <div count={general_store.notification_count} label={localize('Orders')}>
-                                    <Orders
-                                        navigate={general_store.redirectTo}
-                                        params={general_store.parameters}
-                                        chat_info={general_store.chat_info}
-                                    />
+                                    <Orders navigate={general_store.redirectTo} params={general_store.parameters} />
                                 </div>
                                 <div label={localize('My ads')}>
                                     {general_store.is_barred && <TemporaryBarredMessage />}
@@ -216,6 +211,7 @@ const App = observer(props => {
     );
 });
 
+App.displayName = 'App';
 App.propTypes = {
     client: PropTypes.shape({
         currency: PropTypes.string.isRequired,

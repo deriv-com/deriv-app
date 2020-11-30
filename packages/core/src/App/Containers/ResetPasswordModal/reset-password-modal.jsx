@@ -112,7 +112,7 @@ class ResetPassword extends React.Component {
                                                 />
                                             </PasswordMeter>
                                         </fieldset>
-                                        <Text align="center" as='p' size='xxs' className='reset-password__subtext'>
+                                        <Text align='center' as='p' size='xxs' className='reset-password__subtext'>
                                             {status.error_msg ? (
                                                 <Localize
                                                     i18n_default_text='{{error_msg}}'

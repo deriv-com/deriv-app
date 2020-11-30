@@ -27,6 +27,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
             img_src: '/public/images/common/dp2p_banner.png',
             img_alt: 'DP2P',
             redirect_link: '/p2p/v1',
+            is_persistent: true,
             type: 'news',
         },
         currency: {

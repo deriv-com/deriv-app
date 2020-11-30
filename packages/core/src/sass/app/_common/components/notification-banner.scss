@@ -76,4 +76,9 @@
         top: 16px;
         cursor: pointer;
     }
+
+    @include mobile {
+        max-width: 95%;
+        margin-right: 5px;
+    }
 }

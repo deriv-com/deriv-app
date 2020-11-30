@@ -6,7 +6,7 @@ import { localize, Localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
 import FormError from 'Components/form/error.jsx';
 import OrderDetailsComplainModalRadioGroup from './order-details-complain-modal-radio-group.jsx';
-import 'Components/orders/order-details/order-details-complain-modal.scss';
+import 'Components/order-details/order-details-complain-modal.scss';
 
 const ComplainExplanation = () => (
     <div className='order-details-complain-modal__explanation'>

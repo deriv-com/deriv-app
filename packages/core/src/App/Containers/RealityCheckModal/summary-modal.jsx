@@ -204,7 +204,7 @@ const SummaryModal = ({
                                         <Text
                                             as='p'
                                             size='xs'
-                                            lineHeight='m'
+                                            line_height='m'
                                             align='center'
                                             className='reality-check__text reality-check__text--center'
                                         >

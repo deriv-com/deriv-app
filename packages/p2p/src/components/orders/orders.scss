@@ -67,10 +67,14 @@
             max-width: 100%;
         }
     }
+    &__separator {
+        width: 100%;
+        border-bottom: 1px solid var(--general-section-1);
+    }
     &__expander {
         padding: 1.6rem;
-        border-top: 1px solid var(--general-section-1);
-        &-heighlight-danger {
+        border-bottom: 1px solid var(--general-section-1);
+        &-highlight-danger {
             background-color: #fff8f8;
         }
         & .dc-table__row {

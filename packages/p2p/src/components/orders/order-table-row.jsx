@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { localize, Localize } from 'Components/i18next';
+import { localize } from 'Components/i18next';
 import { secondsToTimer } from 'Utils/date-time';
 import ServerTime from 'Utils/server-time';
 import { createExtendedOrderDetails } from 'Utils/orders';
@@ -13,7 +13,7 @@ import { useStores } from 'Stores';
 const OrderRowComponent = observer(component_props => {
     const { style, is_active, measure } = component_props;
     const order = isMobile() ? component_props.row : component_props.data;
-    const { general_store, order_store } = useStores();
+    const { general_store, order_store, sendbird_store } = useStores();
     const [order_state, setOrderState] = React.useState(order); // Use separate state to force refresh when (FE-)expired.
     const [remaining_time, setRemainingTime] = React.useState();
     const [is_timer_visible, setIsTimerVisible] = React.useState();
@@ -54,8 +54,7 @@ const OrderRowComponent = observer(component_props => {
             setOrderState(createExtendedOrderDetails(order.order_details, client.loginid, props.server_time));
             clearInterval(interval);
         } else {
-            const { is_active_tab } = general_store;
-            if (is_active_tab) {
+            if (general_store.is_active_tab) {
                 setIsTimerVisible(true);
             }
             setRemainingTime(timer);
@@ -70,15 +69,16 @@ const OrderRowComponent = observer(component_props => {
 
     const offer_amount = `${amount_display} ${account_currency}`;
     const transaction_amount = `${price_display} ${local_currency}`;
+    const is_buy_order_type_for_user = (is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad);
+    const order_type = is_buy_order_type_for_user ? localize('Buy') : localize('Sell');
+
     const title = () => {
-        const is_buy_order_type_for_user = (is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad);
-        const order_type = is_buy_order_type_for_user ? localize('Buy') : localize('Sell');
-        const send = is_buy_order_type_for_user ? transaction_amount : offer_amount;
+        const send_amount = is_buy_order_type_for_user ? transaction_amount : offer_amount;
         return (
             <React.Fragment>
                 <div className='orders__expander-content__title' as='p'>
                     <Text size='sm' weight='bold'>
-                        {order_type} {send}
+                        {order_type} {send_amount}
                     </Text>
                     <Text color='less-prominent' as='p' size='xxs'>
                         {order_purchase_datetime}
@@ -93,7 +93,7 @@ const OrderRowComponent = observer(component_props => {
                 <div
                     style={style}
                     className={classNames('orders__expander', {
-                        'orders__expander-heighlight-danger': should_highlight_danger,
+                        'orders__expander-highlight-danger': should_highlight_danger,
                     })}
                 >
                     <div className='orders__expander-top' onClick={() => order_store.setQueryDetails(order)}>
@@ -117,7 +117,12 @@ const OrderRowComponent = observer(component_props => {
                             <Table.Cell className='orders__expander-header-right'>
                                 {is_timer_visible && <div className='orders__expander-time'>{remaining_time}</div>}
                                 <div className='orders__expander-chat'>
-                                    <Icon icon='IcChat' size={16} />
+                                    <Icon
+                                        icon='IcChat'
+                                        height={15}
+                                        width={16}
+                                        onClick={() => sendbird_store.setShouldShowChatModal(true)}
+                                    />
                                 </div>
                             </Table.Cell>
                         </Table.Row>
@@ -146,9 +151,7 @@ const OrderRowComponent = observer(component_props => {
                                     {localize('Send')}
                                 </Text>
                                 <Text color='prominent' as='p' size='xs' line_height='m'>
-                                    {(is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad)
-                                        ? transaction_amount
-                                        : offer_amount}
+                                    {is_buy_order_type_for_user ? transaction_amount : offer_amount}
                                 </Text>
                             </div>
                             <div>
@@ -156,9 +159,7 @@ const OrderRowComponent = observer(component_props => {
                                     {localize('Receive')}
                                 </Text>
                                 <Text color='prominent' as='p' size='xs' line_height='m'>
-                                    {(is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad)
-                                        ? offer_amount
-                                        : transaction_amount}
+                                    {is_buy_order_type_for_user ? offer_amount : transaction_amount}
                                 </Text>
                             </div>
                         </div>
@@ -172,13 +173,7 @@ const OrderRowComponent = observer(component_props => {
                             'orders__table-row--attention': !isOrderSeen(id),
                         })}
                     >
-                        <Table.Cell>
-                            {(is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad) ? (
-                                <Localize i18n_default_text='Buy' />
-                            ) : (
-                                <Localize i18n_default_text='Sell' />
-                            )}
-                        </Table.Cell>
+                        <Table.Cell>{order_type}</Table.Cell>
                         <Table.Cell>{id}</Table.Cell>
                         <Table.Cell>{other_user_details.name}</Table.Cell>
                         <Table.Cell>
@@ -193,16 +188,8 @@ const OrderRowComponent = observer(component_props => {
                                 {status_string}
                             </div>
                         </Table.Cell>
-                        <Table.Cell>
-                            {(is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad)
-                                ? transaction_amount
-                                : offer_amount}
-                        </Table.Cell>
-                        <Table.Cell>
-                            {(is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad)
-                                ? offer_amount
-                                : transaction_amount}
-                        </Table.Cell>
+                        <Table.Cell>{is_buy_order_type_for_user ? transaction_amount : offer_amount}</Table.Cell>
+                        <Table.Cell>{is_buy_order_type_for_user ? offer_amount : transaction_amount}</Table.Cell>
                         <Table.Cell>
                             {general_store.is_active_tab ? (
                                 <div className='orders__table-time'>{remaining_time}</div>

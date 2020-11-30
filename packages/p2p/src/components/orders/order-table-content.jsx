@@ -45,6 +45,7 @@ const OrderTableContent = observer(() => {
                 <React.Fragment>
                     {isMobile() ? (
                         <Div100vhContainer height_offset='20rem'>
+                            <div className='orders__separator' />
                             <DataList data_source={modified_list} rowRenderer={Row} keyMapper={row => row.id} />
                         </Div100vhContainer>
                     ) : (

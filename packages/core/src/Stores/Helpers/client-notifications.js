@@ -8,6 +8,7 @@ import {
     routes,
     State,
     website_name,
+    platform_name,
 } from '@deriv/shared';
 import { StaticUrl } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
@@ -238,6 +239,23 @@ export const clientNotifications = (ui = {}, client = {}) => {
             message: <Localize i18n_default_text='Please log in with your updated password.' />,
             type: 'info',
         },
+        reset_virtual_balance: {
+            key: 'reset_virtual_balance',
+            header: localize('Reset your balance'),
+            message: client.message,
+            type: 'info',
+            is_persistent: true,
+            should_hide_close_btn: true,
+            should_show_again: true,
+            platform: [platform_name.DTrader],
+            is_disposable: true,
+            action: {
+                text: localize('Reset balance'),
+                onClick: async () => {
+                    await client.resetVirtualBalance();
+                },
+            },
+        },
         needs_poi: {
             action: {
                 route: routes.proof_of_identity,
@@ -343,7 +361,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
 };
 
 const hasMissingRequiredField = (account_settings, client, isAccountOfType) => {
-    if (!account_settings) return false;
+    if (!account_settings || isEmptyObject(account_settings)) return false;
 
     const { is_svg, landing_company_shortcode } = client;
 

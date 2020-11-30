@@ -21,8 +21,8 @@ const SetCurrency = ({
     is_loading,
     ...props
 }) => {
-    const { form_error } = React.useState('');
-    const { form_value } = React.useState({ currency: '' });
+    const form_error = React.useState('');
+    const form_value = React.useState({ currency: '' });
 
     const setCurrency = (obj, setSubmitting) => {
         setLoading(true);

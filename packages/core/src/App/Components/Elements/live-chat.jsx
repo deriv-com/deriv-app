@@ -6,20 +6,15 @@ import { localize } from '@deriv/translations';
 
 const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
     const [is_livechat_interactive, setLiveChatInteractive] = React.useState(false);
+    const [has_client_information, setClientInformation] = React.useState(false);
 
     React.useEffect(() => {
         if (window.LiveChatWidget) {
             window.LiveChatWidget.on('ready', () => {
-                window.LC_API.on_chat_ended = () => {
-                    if (!has_cookie_account){
-                        window.LiveChatWidget.call('set_customer_email', ' ');
-                        window.LiveChatWidget.call('set_customer_name', ' ');
-                    }
-                }
                 setLiveChatInteractive(true);
             });
         }
-    });
+    },[]);
 
     React.useEffect(() => {
         if (window.LiveChatWidget) {
@@ -38,6 +33,7 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
                         domain,
                     });
                     if (client_information) {
+                        setClientInformation(true);
                         const {
                             loginid,
                             email,
@@ -56,14 +52,24 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
                         };
 
                         window.LiveChatWidget.call('set_session_variables', session_variables);
-
                         window.LiveChatWidget.call('set_customer_email', email);
                         window.LiveChatWidget.call('set_customer_name', `${first_name} ${last_name}`);
+                    } else{
+                        setClientInformation(false);
                     }
                 }
             });
         }
     }, [has_cookie_account]);
+
+    React.useEffect(() => {
+        window.LC_API.on_chat_ended = () => {
+            if (!has_client_information){
+                window.LiveChatWidget.call('set_customer_email', ' ');
+                window.LiveChatWidget.call('set_customer_name', ' ');
+            }
+        }
+    }, [has_client_information])
 
     return (
         <>

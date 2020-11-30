@@ -72,15 +72,15 @@ export default class FlyoutStore {
 
     @action.bound
     initFlyoutButton(flyout_button) {
-        const callbackKey = flyout_button.getAttribute('callbackKey');
+        const callback_key = flyout_button.getAttribute('callbackKey');
 
         const callback = button => {
-            const buttonWorkspace = button.getTargetWorkspace();
-            Blockly.Variables.createVariable(buttonWorkspace, this.refreshCategory, '');
+            const button_workspace = button.getTargetWorkspace();
+            Blockly.Variables.createVariable(button_workspace, this.refreshCategory, '');
         };
 
-        flyout_button.setAttribute('callbackKey', callbackKey);
-        this.workspace.registerButtonCallback(callbackKey, callback);
+        flyout_button.setAttribute('callbackKey', callback_key);
+        this.workspace.registerButtonCallback(callback_key, callback);
     }
 
     /**
@@ -248,14 +248,8 @@ export default class FlyoutStore {
     @action.bound
     refreshCategory() {
         const category = this.getSelectedCategory();
-        const dynamic = category.getAttribute('dynamic');
-        let flyout_content = Array.from(category.childNodes);
-
-        if (typeof dynamic === 'string') {
-            const fnToApply = this.workspace.getToolboxCategoryCallback(dynamic);
-            flyout_content = fnToApply(this.workspace);
-        }
-
+        const { toolbox } = this.root_store;
+        let flyout_content = toolbox.getCategoryContents(category);
         this.setContents(flyout_content);
     }
 }

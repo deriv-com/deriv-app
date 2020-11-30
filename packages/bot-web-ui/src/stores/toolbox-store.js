@@ -63,13 +63,7 @@ export default class ToolboxStore {
     onToolboxItemClick(category) {
         const { flyout } = this.root_store;
         const category_id = category.getAttribute('id');
-        const dynamic = category.getAttribute('dynamic');
-        let flyout_content = Array.from(category.childNodes);
-
-        if (typeof dynamic === 'string') {
-            const fnToApply = this.workspace.getToolboxCategoryCallback(dynamic);
-            flyout_content = fnToApply(this.workspace);
-        }
+        let flyout_content = this.getCategoryContents(category);
 
         flyout.setIsSearchFlyout(false);
 
@@ -153,7 +147,6 @@ export default class ToolboxStore {
 
     @action.bound
     onSearchKeyUp(submitForm) {
-        const typing_interval = 1000;
         this.is_search_loading = true;
 
         clearTimeout(this.typing_timer);
@@ -162,7 +155,7 @@ export default class ToolboxStore {
                 submitForm();
                 this.is_search_loading = false;
             }),
-            typing_interval
+            1000
         );
     }
 
@@ -202,12 +195,7 @@ export default class ToolboxStore {
         const block_contents = all_categories
             .filter(category => !this.hasSubCategory(category.children))
             .map(category => {
-                let contents = category.childNodes.length ? category.childNodes : category.getAttribute('dynamic');
-
-                if (typeof contents === 'string') {
-                    const fnToApply = this.workspace.getToolboxCategoryCallback(contents);
-                    contents = fnToApply(this.workspace);
-                }
+                let contents = this.getCategoryContents(category);
 
                 const only_block_contents = Array.from(contents).filter(
                     content => content.tagName.toUpperCase() === 'BLOCK'

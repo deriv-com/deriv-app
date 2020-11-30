@@ -107,14 +107,14 @@ const FlyoutContent = props => {
                                 );
                             }
                             case Blockly.Xml.NODE_BUTTON: {
-                                const cb_key = node.getAttribute('callbackKey');
-                                const cb_id = node.getAttribute('id');
+                                const callback_key = node.getAttribute('callbackKey');
+                                const callback_id = node.getAttribute('id');
                                 initFlyoutButton(node);
 
                                 return (
                                     <button
-                                        id={cb_id}
-                                        key={`${cb_key}${index}`}
+                                        id={callback_id}
+                                        key={`${callback_key}${index}`}
                                         className={classNames(
                                             'dc-btn',
                                             'dc-btn-effect',
@@ -123,7 +123,7 @@ const FlyoutContent = props => {
                                         )}
                                         onClick={button => {
                                             const workspace = Blockly.derivWorkspace;
-                                            const button_cb = workspace.getButtonCallback(cb_key);
+                                            const button_cb = workspace.getButtonCallback(callback_key);
                                             const callback = button_cb || (() => {});
 
                                             // Workaround for not having a flyout workspace.

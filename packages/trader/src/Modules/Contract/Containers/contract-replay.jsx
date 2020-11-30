@@ -10,10 +10,11 @@ import {
     SwipeableWrapper,
     FadeWrapper,
 } from '@deriv/components';
-import { isDesktop, isMobile, isMultiplierContract, isEmptyObject, getPlatformRedirect } from '@deriv/shared';
+import { isDesktop, isMobile, isMultiplierContract, isEmptyObject, getPlatformRedirect, urlFor } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
 import ContractDrawer from 'App/Components/Elements/ContractDrawer';
+import UnsupportedContractModal from 'App/Components/Elements/Modals/UnsupportedContractModal';
 import { SmartChart } from 'Modules/SmartChart';
 import { connect } from 'Stores/connect';
 import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget, InfoBoxWidget } from './contract-replay-widget.jsx';
@@ -51,6 +52,7 @@ class ContractReplay extends React.Component {
             is_chart_loading,
             is_dark_theme,
             is_digit_contract,
+            is_forward_starting,
             is_sell_requested,
             is_valid_to_cancel,
             onClickCancel,
@@ -63,6 +65,14 @@ class ContractReplay extends React.Component {
         if (!contract_info.underlying) return null;
 
         const is_multiplier = isMultiplierContract(contract_info.contract_type);
+
+        const unsupportedContractOnConfirm = () => {
+            this.props.history.push('/reports');
+        };
+
+        const unsupportedContractOnClose = () => {
+            window.open(urlFor('user/statementws', { legacy: true }), '_blank');
+        };
 
         const contract_drawer_el = (
             <ContractDrawer
@@ -90,6 +100,11 @@ class ContractReplay extends React.Component {
                 <MobileWrapper>
                     <NotificationMessages />
                 </MobileWrapper>
+                <UnsupportedContractModal
+                    onConfirm={unsupportedContractOnConfirm}
+                    onClose={unsupportedContractOnClose}
+                    is_visible={is_forward_starting}
+                />
                 <PageOverlay
                     id='dt_contract_replay_container'
                     header={localize('Contract details')}
@@ -177,6 +192,7 @@ export default withRouter(
             onUnmount: contract_replay.onUnmount,
             indicative_status: contract_replay.indicative_status,
             is_chart_loading: contract_replay.is_chart_loading,
+            is_forward_starting: contract_replay.is_forward_starting,
             is_dark_theme: ui.is_dark_mode_on,
             NotificationMessages: ui.notification_messages_ui,
             toggleHistoryTab: ui.toggleHistoryTab,

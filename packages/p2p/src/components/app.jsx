@@ -2,9 +2,8 @@ import classNames from 'classnames';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
-import { getPropertyValue, isMobile } from '@deriv/shared';
+import { isMobile } from '@deriv/shared';
 import { Tabs, Modal } from '@deriv/components';
-import { Dp2pProvider } from 'Components/context/dp2p-context';
 import ServerTime from 'Utils/server-time';
 import { waitWS } from 'Utils/websocket';
 import { useStores } from 'Stores';
@@ -20,78 +19,16 @@ import './app.scss';
 
 const allowed_currency = 'USD';
 
-const P2pWrapper = ({ className, children, context_obj }) => (
-    <Dp2pProvider value={context_obj}>
-        <main className={classNames('p2p-cashier', className)}>{children}</main>
-    </Dp2pProvider>
+const P2pWrapper = ({ className, children }) => (
+    <main className={classNames('p2p-cashier', className)}>{children}</main>
 );
 
 const App = observer(props => {
-    const { general_store } = useStores();
-    const {
-        custom_strings,
-        className,
-        is_mobile,
-        lang,
-        loginid,
-        modal_root_id,
-        order_id,
-        poi_url,
-        server_time,
-        should_show_verification,
-        websocket_api,
-    } = props;
+    const { general_store, order_store } = useStores();
+    const { className, is_mobile, lang, order_id, server_time, should_show_verification, websocket_api } = props;
     general_store.setAppProps(props);
-    general_store.setOrderId(props.order_id);
     general_store.setWebsocketInit(websocket_api, general_store.client.local_currency_config.decimal_places);
-
-    const getContext = () => ({
-        active_notification_count: general_store.active_notification_count,
-        advertiser_id: general_store.advertiser_id,
-        changeOrderToggle: order_table_type => general_store.setOrderTableType(order_table_type),
-        changeTab: general_store.handleTabClick,
-        createAdvertiser: general_store.createAdvertiser,
-        currency: general_store.client.currency,
-        email_domain: getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
-        getLocalStorageSettingsForLoginId: general_store.getLocalStorageSettingsForLoginId,
-        handleNotifications: general_store.handleNotifications,
-        inactive_notification_count: general_store.inactive_notification_count,
-        is_active_tab: general_store.is_active_tab,
-        is_advertiser: general_store.is_advertiser,
-        is_listed: general_store.is_listed,
-        is_mobile,
-        is_restricted: general_store.is_restricted,
-        list_item_limit: general_store.list_item_limit,
-        local_currency_config: general_store.client.local_currency_config,
-        loginid,
-        modal_root_id,
-        nickname: general_store.nickname,
-        nickname_error: general_store.nickname_error,
-        order_id,
-        order_offset: general_store.order_offset,
-        order_table_type: general_store.order_table_type,
-        orders: general_store.orders,
-        poi_status: general_store.poi_status,
-        poi_url,
-        resetNicknameErrorState: general_store.resetNicknameErrorState,
-        residence: general_store.client.residence,
-        setChatInfo: general_store.setChatInfo,
-        setIsListed: is_listed => {
-            general_store.setIsListed(is_listed);
-        },
-        setIsAdvertiser: is_advertiser => {
-            general_store.setIsAdvertiser(is_advertiser);
-        },
-        setNickname: general_store.setNickname,
-        setOrderId: general_store.setOrderId,
-        setOrders: general_store.setOrders,
-        setOrderOffset: order_offset => {
-            general_store.setOrderOffset(order_offset);
-        },
-        setPoiStatus: general_store.setPoiStatus,
-        toggleNicknamePopup: general_store.toggleNicknamePopup,
-        updateP2pNotifications: general_store.updateP2pNotifications,
-    });
+    order_store.setOrderId(order_id);
 
     React.useEffect(() => {
         setLanguage(lang);
@@ -128,7 +65,7 @@ const App = observer(props => {
         );
     }
 
-    const wrapper_props = { context_obj: getContext(), className };
+    const wrapper_props = { className };
 
     if (general_store.show_popup) {
         return (

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Field, Form, Formik } from 'formik';
 import {
     Button,
@@ -41,7 +42,6 @@ const ContentWrapper = ({ children, className }) => {
 
 const MyProfile = observer(() => {
     const { general_store, my_profile_store } = useStores();
-
     const {
         basic_verification,
         daily_buy,
@@ -285,5 +285,20 @@ const MyProfile = observer(() => {
         </ContentWrapper>
     );
 });
+
+MyProfile.propTypes = {
+    advertiser_info: PropTypes.object,
+    contact_info: PropTypes.string,
+    default_advert_description: PropTypes.string,
+    error_message: PropTypes.string,
+    form_error: PropTypes.string,
+    getAdvertiserInfo: PropTypes.func,
+    handleSubmit: PropTypes.func,
+    is_button_loading: PropTypes.bool,
+    is_loading: PropTypes.bool,
+    is_submit_success: PropTypes.bool,
+    payment_info: PropTypes.string,
+    validateForm: PropTypes.func,
+};
 
 export default MyProfile;

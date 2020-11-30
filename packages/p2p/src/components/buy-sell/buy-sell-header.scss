@@ -1,7 +1,7 @@
 .buy-sell__header {
     @include mobile {
         display: flex;
-        border-bottom: 1px solid var(--general-section-2);
+        border-bottom: 1px solid var(--general-section-1);
         justify-content: center;
         flex: none;
         position: fixed;

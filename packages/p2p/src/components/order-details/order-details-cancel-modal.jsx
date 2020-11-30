@@ -5,7 +5,7 @@ import { useIsMounted } from '@deriv/shared';
 import { Localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
 import FormError from 'Components/form/error.jsx';
-import 'Components/orders/order-details/order-details-confirm-modal.scss';
+import 'Components/order-details/order-details-confirm-modal.scss';
 
 const OrderDetailsCancelModal = ({ hideCancelOrderModal, order_id, should_show_cancel_modal }) => {
     const isMounted = useIsMounted();
@@ -20,6 +20,8 @@ const OrderDetailsCancelModal = ({ hideCancelOrderModal, order_id, should_show_c
                 if (response.error) {
                     setErrorMessage(response.error.message);
                 }
+
+                hideCancelOrderModal();
             }
         });
     };

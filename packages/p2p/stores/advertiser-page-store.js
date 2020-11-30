@@ -1,4 +1,4 @@
-import { action, observable } from 'mobx';
+import { action, computed, observable } from 'mobx';
 import { buy_sell } from 'Constants/buy-sell';
 import { getShortNickname } from 'Utils/string';
 import { localize } from 'Components/i18next';
@@ -6,14 +6,8 @@ import { requestWS } from 'Utils/websocket';
 import BaseStore from 'Stores/base_store';
 
 export default class AdvertiserPageStore extends BaseStore {
-    constructor(root_store) {
-        super(root_store);
-        this.general_store = this.root_store.general_store;
-    }
-
     @observable active_index = 0;
     @observable advertiser_info = {};
-    @observable ad = null;
     @observable adverts = [];
     @observable counterparty_type = buy_sell.BUY;
     @observable api_error_message = '';
@@ -25,24 +19,32 @@ export default class AdvertiserPageStore extends BaseStore {
     @observable show_ad_popup = false;
     @observable submitForm = () => {};
 
-    props = {};
+    @computed
+    get advert() {
+        return this.root_store.buy_sell_store.selected_ad_state;
+    }
 
+    @computed
     get account_currency() {
-        return this.props?.selected_advert.account_currency;
+        return this.advert?.account_currency;
     }
 
+    @computed
     get advertiser_details() {
-        return this.props?.selected_advert.advertiser_details || {};
+        return this.advert?.advertiser_details || {};
     }
 
+    @computed
     get advertiser_details_id() {
-        return this.props?.selected_advert.advertiser_details.id;
+        return this.advert?.advertiser_details?.id;
     }
 
+    @computed
     get advertiser_details_name() {
-        return this.props?.selected_advert.advertiser_details.name;
+        return this.advert?.advertiser_details?.name;
     }
 
+    @computed
     get modal_title() {
         if (this.counterparty_type === buy_sell.BUY) {
             return localize('Buy {{ currency }}', { currency: this.account_currency });
@@ -51,11 +53,13 @@ export default class AdvertiserPageStore extends BaseStore {
         return localize('Sell {{ currency }}', { currency: this.account_currency });
     }
 
+    @computed
     get short_name() {
         return getShortNickname(this.advertiser_details_name);
     }
 
     loadMoreAdvertiserAdverts({ startIndex }) {
+        const { general_store } = this.root_store;
         this.setIsLoadingAdverts(true);
 
         return new Promise(resolve => {
@@ -64,14 +68,14 @@ export default class AdvertiserPageStore extends BaseStore {
                 counterparty_type: this.counterparty_type,
                 advertiser_id: this.advertiser_details_id,
                 offset: startIndex,
-                limit: this.general_store.list_item_limit,
+                limit: general_store.list_item_limit,
             }).then(response => {
                 if (response.error) {
                     this.setErrorMessage(response.error);
                 } else {
                     const { list } = response.p2p_advert_list;
                     this.setAdverts(list);
-                    this.setHasMoreAdvertsToLoad(list.length >= this.general_store.list_item_limit);
+                    this.setHasMoreAdvertsToLoad(list.length >= general_store.list_item_limit);
                 }
 
                 this.setIsLoadingAdverts(false);
@@ -116,7 +120,7 @@ export default class AdvertiserPageStore extends BaseStore {
     @action.bound
     onConfirmClick(order_info) {
         const nav = { location: 'buy_sell' };
-        this.props.navigate('orders', { order_info, nav });
+        this.root_store.general_store.redirectTo('orders', { order_info, nav });
     }
 
     @action.bound
@@ -136,17 +140,8 @@ export default class AdvertiserPageStore extends BaseStore {
     }
 
     @action.bound
-    setAd(ad) {
-        this.ad = ad;
-    }
-
-    @action.bound
     setAdvertiserInfo(advertiser_info) {
         this.advertiser_info = advertiser_info;
-    }
-
-    setAdvertiserPageProps(props) {
-        this.props = props;
     }
 
     @action.bound
@@ -200,11 +195,10 @@ export default class AdvertiserPageStore extends BaseStore {
     }
 
     @action.bound
-    showAdPopup(advert) {
-        if (!this.general_store.is_advertiser) {
-            this.props.showVerification();
+    showAdPopup() {
+        if (!this.root_store.general_store.is_advertiser) {
+            this.root_store.buy_sell_store.showVerification();
         } else {
-            this.setAd(advert);
             this.setShowAdPopup(true);
         }
     }

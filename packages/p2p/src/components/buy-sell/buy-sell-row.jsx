@@ -9,7 +9,7 @@ import UserAvatar from 'Components/user/user-avatar';
 import { useStores } from 'Stores';
 import './buy-sell-row.scss';
 
-const BuySellRow = observer(({ row: advert, setSelectedAdvert, showAdvertiserPage }) => {
+const BuySellRow = observer(({ row: advert }) => {
     if (advert.id === 'WATCH_THIS_SPACE') {
         // This allows for the sliding animation on the Buy/Sell toggle as it pushes
         // an empty item with an item that holds the same height of the toggle container.
@@ -17,7 +17,7 @@ const BuySellRow = observer(({ row: advert, setSelectedAdvert, showAdvertiserPag
         return <div style={{ height: '77px' }} />;
     }
 
-    const { general_store } = useStores();
+    const { buy_sell_store, general_store } = useStores();
     const {
         account_currency,
         counterparty_type,
@@ -34,7 +34,7 @@ const BuySellRow = observer(({ row: advert, setSelectedAdvert, showAdvertiserPag
     if (isMobile()) {
         return (
             <div className='buy-sell-row'>
-                <div className='buy-sell-row__advertiser' onClick={() => showAdvertiserPage(advert)}>
+                <div className='buy-sell-row__advertiser' onClick={() => buy_sell_store.showAdvertiserPage(advert)}>
                     <UserAvatar nickname={advertiser_name} size={32} text_size='s' />
                     <div className='buy-sell-row__advertiser-name'>
                         <Text size='xs' line_height='m' color='general' weight='bold'>
@@ -58,7 +58,7 @@ const BuySellRow = observer(({ row: advert, setSelectedAdvert, showAdvertiserPag
                             {min_order_amount_limit_display}&ndash;{max_order_amount_limit_display} {account_currency}
                         </Text>
                     </div>
-                    <Button primary large onClick={() => setSelectedAdvert(advert)}>
+                    <Button primary large onClick={() => buy_sell_store.setSelectedAdvert(advert)}>
                         {is_buy_advert ? (
                             <Localize i18n_default_text='Buy {{account_currency}}' values={{ account_currency }} />
                         ) : (
@@ -73,7 +73,7 @@ const BuySellRow = observer(({ row: advert, setSelectedAdvert, showAdvertiserPag
     return (
         <Table.Row className='buy-sell__table-row'>
             <Table.Cell>
-                <div className='buy-sell__cell' onClick={() => showAdvertiserPage(advert)}>
+                <div className='buy-sell__cell' onClick={() => buy_sell_store.showAdvertiserPage(advert)}>
                     <UserAvatar nickname={advertiser_name} size={24} text_size='xxs' />
                     <div className='buy-sell__name'>{advertiser_name}</div>
                 </div>
@@ -90,7 +90,7 @@ const BuySellRow = observer(({ row: advert, setSelectedAdvert, showAdvertiserPag
                 <Table.Cell />
             ) : (
                 <Table.Cell className='buy-sell__button'>
-                    <Button primary small onClick={() => setSelectedAdvert(advert)}>
+                    <Button primary small onClick={() => buy_sell_store.setSelectedAdvert(advert)}>
                         {is_buy_advert
                             ? localize('Buy {{account_currency}}', { account_currency })
                             : localize('Sell {{account_currency}}', { account_currency })}

@@ -108,7 +108,7 @@ export default class MyProfileStore extends BaseStore {
     }
 
     @action.bound
-    validateForm(values) {
+    validateForm = values => {
         const validations = {
             contact_info: [v => textValidator(v)],
             default_advert_description: [v => textValidator(v)],
@@ -150,5 +150,5 @@ export default class MyProfileStore extends BaseStore {
         });
 
         return errors;
-    }
+    };
 }

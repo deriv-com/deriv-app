@@ -36,7 +36,7 @@ BuySellModalFooter.propTypes = {
 
 const BuySellModal = observer(({ table_type, selected_ad, should_show_popup, setShouldShowPopup }) => {
     const isMounted = useIsMounted();
-    const { general_store } = useStores();
+    const { general_store, order_store } = useStores();
     const submitForm = React.useRef(() => {});
     const [error_message, setErrorMessage] = React.useState(null);
     const [is_submit_disabled, setIsSubmitDisabled] = React.useState(true);
@@ -57,8 +57,9 @@ const BuySellModal = observer(({ table_type, selected_ad, should_show_popup, set
     };
 
     const onConfirmClick = order_info => {
-        general_store.setOrderId(order_info.id);
+        order_store.setOrderId(order_info.id);
         general_store.redirectTo('orders', { nav: { location: 'buy_sell' } });
+        setShouldShowPopup(false);
     };
 
     const setSubmitForm = submitFormFn => (submitForm.current = submitFormFn);

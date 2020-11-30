@@ -4,17 +4,15 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
-import Dp2pContext from 'Components/context/dp2p-context';
 import { secondsToTimer } from 'Utils/date-time';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import ServerTime from 'Utils/server-time';
 import { useStores } from 'Stores';
 
-const OrderRow = observer(({ row: order, onOpenDetails, is_active }) => {
-    const { general_store } = useStores();
+const OrderRow = observer(({ row: order }) => {
+    const { general_store, order_store } = useStores();
     const [order_state, setOrderState] = React.useState(order); // Use separate state to force refresh when (FE-)expired.
     const [remaining_time, setRemainingTime] = React.useState();
-    const { getLocalStorageSettingsForLoginId } = React.useContext(Dp2pContext);
     const interval = React.useRef(null);
 
     const {
@@ -37,7 +35,7 @@ const OrderRow = observer(({ row: order, onOpenDetails, is_active }) => {
     } = order_state;
 
     const isOrderSeen = order_id => {
-        const { notifications } = getLocalStorageSettingsForLoginId();
+        const { notifications } = general_store.getLocalStorageSettingsForLoginId();
         return notifications.some(notification => notification.order_id === order_id && notification.is_seen === true);
     };
 
@@ -64,10 +62,10 @@ const OrderRow = observer(({ row: order, onOpenDetails, is_active }) => {
     const transaction_amount = `${price_display} ${local_currency}`;
 
     return (
-        <div onClick={() => onOpenDetails(order)}>
+        <div onClick={() => order_store.setQueryDetails(order)}>
             <Table.Row
                 className={classNames('orders__table-row orders__table-grid', {
-                    'orders__table-grid--active': is_active,
+                    'orders__table-grid--active': general_store.is_active_tab,
                     'orders__table-row--attention': !isOrderSeen(id),
                 })}
             >
@@ -99,7 +97,11 @@ const OrderRow = observer(({ row: order, onOpenDetails, is_active }) => {
                     {(is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad) ? offer_amount : transaction_amount}
                 </Table.Cell>
                 <Table.Cell>
-                    {is_active ? <div className='orders__table-time'>{remaining_time}</div> : order_purchase_datetime}
+                    {general_store.is_active_tab ? (
+                        <div className='orders__table-time'>{remaining_time}</div>
+                    ) : (
+                        order_purchase_datetime
+                    )}
                 </Table.Cell>
             </Table.Row>
         </div>
@@ -108,18 +110,7 @@ const OrderRow = observer(({ row: order, onOpenDetails, is_active }) => {
 
 OrderRow.displayName = 'OrderRow';
 OrderRow.propTypes = {
-    data: PropTypes.shape({
-        account_currency: PropTypes.string,
-        amount_display: PropTypes.string,
-        display_status: PropTypes.string,
-        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-        is_buy_order: PropTypes.bool,
-        local_currency: PropTypes.string,
-        order_purchase_datetime: PropTypes.string,
-        price_display: PropTypes.string,
-    }),
-    onOpenDetails: PropTypes.func,
-    style: PropTypes.object,
+    order: PropTypes.object,
 };
 
 export default OrderRow;

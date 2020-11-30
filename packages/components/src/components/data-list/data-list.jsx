@@ -12,6 +12,7 @@ import ThemedScrollbars from '../themed-scrollbars';
 
 class DataList extends React.PureComponent {
     state = {
+        is_mounted: false,
         scrollTop: 0,
         isScrolling: false,
     };
@@ -29,6 +30,16 @@ class DataList extends React.PureComponent {
             });
         }
         this.trackItemsForTransition();
+
+        this.is_mounted = false;
+    }
+
+    componentDidMount() {
+        this.is_mounted = true;
+    }
+
+    componentWillUnmount() {
+        this.is_mounted = false;
     }
 
     footerRowRenderer = () => {
@@ -87,7 +98,9 @@ class DataList extends React.PureComponent {
         }
 
         this.timeout = setTimeout(() => {
-            this.setState({ isScrolling: false });
+            if (this.is_mounted) {
+                this.setState({ isScrolling: false });
+            }
         }, 200);
 
         const { scrollTop } = ev.target;

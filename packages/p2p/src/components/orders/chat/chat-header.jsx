@@ -8,8 +8,8 @@ import ExtendedOrderDetails from 'Utils/orders';
 import { generateHexColourFromNickname, getShortNickname } from 'Utils/string';
 
 const ChatHeaderBody = observer(() => {
-    const { general_store, sendbird_store } = useStores();
-    const { other_user_details } = general_store.order_information;
+    const { order_store, sendbird_store } = useStores();
+    const { other_user_details } = order_store.order_information;
     const icon_background_colour = generateHexColourFromNickname(other_user_details.name);
     const short_nickname = getShortNickname(other_user_details.name);
 

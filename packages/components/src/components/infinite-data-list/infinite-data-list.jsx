@@ -14,7 +14,7 @@ const InfiniteDataList = ({
     rowRenderer,
 }) => {
     const item_count = has_more_items_to_load ? items.length + 1 : items.length;
-    const isRowLoaded = ({ index }) => !!items[index];
+    const isRowLoaded = ({ index }) => (index < items.length ? !!items[index] : false);
 
     return (
         <InfiniteLoader

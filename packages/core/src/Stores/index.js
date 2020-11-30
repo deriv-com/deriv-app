@@ -3,6 +3,7 @@ import CommonStore from './common-store';
 import GTMStore from './gtm-store';
 import SegmentStore from './segment-store';
 import ModulesStore from './Modules';
+import MenuStore from './menu-store';
 import UIStore from './ui-store';
 
 export default class RootStore {
@@ -13,5 +14,6 @@ export default class RootStore {
         this.ui = new UIStore(this);
         this.gtm = new GTMStore(this);
         this.segment = new SegmentStore(this);
+        this.menu = new MenuStore(this);
     }
 }

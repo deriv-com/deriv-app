@@ -4,6 +4,7 @@ const path = require('path');
 const js_loaders = [
     '@deriv/shared/src/loaders/react-import-loader.js',
     '@deriv/shared/src/loaders/deriv-account-loader.js',
+    '@deriv/shared/src/loaders/deriv-cashier-loader.js',
     {
         loader: 'babel-loader',
         options: {

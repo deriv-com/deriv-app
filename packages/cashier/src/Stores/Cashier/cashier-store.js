@@ -18,6 +18,7 @@ import BinarySocket from '_common/socket_base';
 import { WS } from 'Services';
 import OnRampStore from './on-ramp-store';
 import BaseStore from '../base-store';
+import CashierNotifications from '../../Containers/cashier-notifications';
 
 const hasTransferNotAllowedLoginid = loginid => loginid.startsWith('MX');
 
@@ -203,6 +204,13 @@ export default class CashierStore extends BaseStore {
     // Initialise P2P attributes on app load without mounting the entire cashier
     @action.bound
     init() {
+        this.root_store.menu_store.attach({
+            id: 'dt_cashier_tab',
+            icon: <CashierNotifications />,
+            text: () => localize('Cashier'),
+            link_to: routes.cashier,
+            login_only: true,
+        });
         // eslint-disable-next-line no-undef
         reaction(
             () => [this.root_store.client.is_logged_in, this.root_store.client.residence],

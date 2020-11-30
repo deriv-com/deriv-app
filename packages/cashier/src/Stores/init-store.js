@@ -1,18 +1,15 @@
 import { configure } from 'mobx';
 import { setWebsocket } from 'Services/ws-methods';
 import CashierStore from './Cashier/cashier-store';
-import RootStore from './index';
 
 configure({ enforceActions: 'observed' });
 
 const initStore = (core_store, websocket) => {
     setWebsocket(websocket);
-    const root_store = new RootStore(core_store);
-    root_store.modules.cashier = new CashierStore();
+    core_store.modules.attachModule('cashier', new CashierStore({ root_store: core_store }));
+    core_store.modules.cashier.init();
 
-    root_store.modules.cashier.init();
-
-    return root_store;
+    return core_store;
 };
 
 export default initStore;

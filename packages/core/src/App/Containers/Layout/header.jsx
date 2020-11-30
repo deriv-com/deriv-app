@@ -11,7 +11,6 @@ import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
 import NewVersionNotification from 'App/Containers/new-version-notification.jsx';
 import { connect } from 'Stores/connect';
 import { clientNotifications } from 'Stores/Helpers/client-notifications';
-import { header_links } from 'App/Constants/header-links';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
 
@@ -42,6 +41,7 @@ const Header = ({
     is_virtual,
     location,
     logoutClient,
+    menu_items,
     needs_financial_assessment,
     notifications_count,
     openRealAccountSignup,
@@ -114,7 +114,7 @@ const Header = ({
                             <div className='header__menu-left-extensions'>{header_extension}</div>
                         )}
                     </MobileWrapper>
-                    <MenuLinks is_logged_in={is_logged_in} items={header_links} />
+                    <MenuLinks is_logged_in={is_logged_in} items={menu_items} />
                 </div>
                 <div
                     className={classNames('header__menu-right', {
@@ -194,7 +194,7 @@ Header.propTypes = {
     toggleNotifications: PropTypes.func,
 };
 
-export default connect(({ client, common, ui, modules }) => ({
+export default connect(({ client, common, ui, menu }) => ({
     acc_switcher_disabled_message: ui.account_switcher_disabled_message,
     account_status: client.account_status,
     should_allow_authentication: client.should_allow_authentication,
@@ -220,6 +220,7 @@ export default connect(({ client, common, ui, modules }) => ({
     is_route_modal_on: ui.is_route_modal_on,
     is_virtual: client.is_virtual,
     logoutClient: client.logout,
+    menu_items: menu.extensions,
     needs_financial_assessment: client.needs_financial_assessment,
     notifications_count: ui.filtered_notifications.length,
     openRealAccountSignup: ui.openRealAccountSignup,

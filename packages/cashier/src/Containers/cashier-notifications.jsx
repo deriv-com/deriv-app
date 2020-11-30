@@ -14,6 +14,4 @@ CashierNotifications.propTypes = {
     p2p_notification_count: PropTypes.number,
 };
 
-export default connect(({ modules }) => ({
-    p2p_notification_count: modules.cashier.p2p_notification_count,
-}))(CashierNotifications);
+export default CashierNotifications;

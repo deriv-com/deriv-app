@@ -1,7 +1,7 @@
 import { observable, action, reaction } from 'mobx';
+import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { scrollWorkspace } from '@deriv/bot-skeleton';
-import { isMobile } from '@deriv/shared';
 
 export default class ToolboxStore {
     constructor(root_store) {

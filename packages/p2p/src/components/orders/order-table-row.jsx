@@ -10,12 +10,13 @@ import ServerTime from 'Utils/server-time';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import { useStores } from 'Stores';
 
-const OrderRowComponent = observer(({ data: order, style }) => {
+const OrderRowComponent = observer(component_props => {
+    const { style, is_active, measure } = component_props;
+    const order = isMobile() ? component_props.row : component_props.data;
     const { general_store, order_store } = useStores();
     const [order_state, setOrderState] = React.useState(order); // Use separate state to force refresh when (FE-)expired.
     const [remaining_time, setRemainingTime] = React.useState();
     const [is_timer_visible, setIsTimerVisible] = React.useState();
-    const [remaining_time, setRemainingTime] = React.useState();
 
     const {
         account_currency,
@@ -53,7 +54,10 @@ const OrderRowComponent = observer(({ data: order, style }) => {
             setOrderState(createExtendedOrderDetails(order.order_details, client.loginid, props.server_time));
             clearInterval(interval);
         } else {
-            setIsTimerVisible(true);
+            const { is_active_tab } = general_store;
+            if (is_active_tab) {
+                setIsTimerVisible(true);
+            }
             setRemainingTime(timer);
         }
     };
@@ -92,7 +96,7 @@ const OrderRowComponent = observer(({ data: order, style }) => {
                         'orders__expander-heighlight-danger': should_highlight_danger,
                     })}
                 >
-                    <div className='orders__expander-top' onClick={() => onOpenDetails(order)}>
+                    <div className='orders__expander-top' onClick={() => order_store.setQueryDetails(order)}>
                         <Table.Row className='orders__expander-header'>
                             <Table.Cell
                                 className={classNames('orders__table-row orders__expander-header', {
@@ -162,50 +166,53 @@ const OrderRowComponent = observer(({ data: order, style }) => {
                 </div>
             ) : (
                 <div onClick={() => order_store.setQueryDetails(order)} style={style}>
-                <Table.Row
-                    className={classNames('orders__table-row orders__table-grid', {
-                        'orders__table-grid--active': general_store.is_active_tab,
-                        'orders__table-row--attention': !isOrderSeen(id),
-                    })}
-                >
-                    <Table.Cell>
-                        {(is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad) ? (
-                            <Localize i18n_default_text='Buy' />
-                        ) : (
-                            <Localize i18n_default_text='Sell' />
-                        )}
-                    </Table.Cell>
-                    <Table.Cell>{id}</Table.Cell>
-                    <Table.Cell>{other_user_details.name}</Table.Cell>
-                    <Table.Cell>
-                        <div
-                            className={classNames('orders__table-status', {
-                                'orders__table-status--danger': should_highlight_danger,
-                                'orders__table-status--alert': should_highlight_alert,
-                                'orders__table-status--success': should_highlight_success,
-                                'orders__table-status--disabled': should_highlight_disabled,
-                            })}
-                        >
-                            {status_string}
-                        </div>
-                    </Table.Cell>
-                    <Table.Cell>
-                        {(is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad) ? transaction_amount : offer_amount}
-                    </Table.Cell>
-                    <Table.Cell>
-                        {(is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad) ? offer_amount : transaction_amount}
-                    </Table.Cell>
-                    <Table.Cell>
-                        {general_store.is_active_tab ? (
-                            <div className='orders__table-time'>{remaining_time}</div>
-                        ) : (
-                            order_purchase_datetime
-                        )}
-                    </Table.Cell>
-                </Table.Row>
-            </div>
+                    <Table.Row
+                        className={classNames('orders__table-row orders__table-grid', {
+                            'orders__table-grid--active': general_store.is_active_tab,
+                            'orders__table-row--attention': !isOrderSeen(id),
+                        })}
+                    >
+                        <Table.Cell>
+                            {(is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad) ? (
+                                <Localize i18n_default_text='Buy' />
+                            ) : (
+                                <Localize i18n_default_text='Sell' />
+                            )}
+                        </Table.Cell>
+                        <Table.Cell>{id}</Table.Cell>
+                        <Table.Cell>{other_user_details.name}</Table.Cell>
+                        <Table.Cell>
+                            <div
+                                className={classNames('orders__table-status', {
+                                    'orders__table-status--danger': should_highlight_danger,
+                                    'orders__table-status--alert': should_highlight_alert,
+                                    'orders__table-status--success': should_highlight_success,
+                                    'orders__table-status--disabled': should_highlight_disabled,
+                                })}
+                            >
+                                {status_string}
+                            </div>
+                        </Table.Cell>
+                        <Table.Cell>
+                            {(is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad)
+                                ? transaction_amount
+                                : offer_amount}
+                        </Table.Cell>
+                        <Table.Cell>
+                            {(is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad)
+                                ? offer_amount
+                                : transaction_amount}
+                        </Table.Cell>
+                        <Table.Cell>
+                            {general_store.is_active_tab ? (
+                                <div className='orders__table-time'>{remaining_time}</div>
+                            ) : (
+                                order_purchase_datetime
+                            )}
+                        </Table.Cell>
+                    </Table.Row>
+                </div>
             )}
-            :
         </React.Fragment>
     );
 });

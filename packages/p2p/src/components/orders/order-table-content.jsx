@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Loading, Button } from '@deriv/components';
+import { Loading, Button, Div100vhContainer, DataList } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
 import { TableError } from 'Components/table/table-error.jsx';
@@ -41,16 +42,24 @@ const OrderTableContent = observer(() => {
 
         if (modified_list.length) {
             return (
-                <OrderTableHeader>
-                    <InfiniteLoaderList
-                        autosizer_height={`calc(${order_store.height_values.join(' - ')})`}
-                        items={modified_list}
-                        item_size={order_store.item_height}
-                        RenderComponent={Row}
-                        has_more_items_to_load={order_store.has_more_items_to_load}
-                        loadMore={order_store.loadMoreOrders}
-                    />
-                </OrderTableHeader>
+                <React.Fragment>
+                    {isMobile() ? (
+                        <Div100vhContainer height_offset='20rem'>
+                            <DataList data_source={modified_list} rowRenderer={Row} keyMapper={row => row.id} />
+                        </Div100vhContainer>
+                    ) : (
+                        <OrderTableHeader>
+                            <InfiniteLoaderList
+                                autosizer_height={`calc(${order_store.height_values.join(' - ')})`}
+                                items={modified_list}
+                                item_size={order_store.item_height}
+                                RenderComponent={Row}
+                                has_more_items_to_load={order_store.has_more_items_to_load}
+                                loadMore={order_store.loadMoreOrders}
+                            />
+                        </OrderTableHeader>
+                    )}
+                </React.Fragment>
             );
         }
     }

@@ -29,7 +29,8 @@
         width: fit-content;
         border-radius: 4px;
         @include mobile {
-            margin: 2rem auto 0rem;
+            margin: 2rem auto;
+            border-bottom: 1px solid var(--general-section-1);
         }
         &-filter {
             .dc-button-menu__wrapper {
@@ -68,7 +69,7 @@
     }
     &__expander {
         padding: 1.6rem;
-        border-bottom: 1px solid var(--general-section-1);
+        border-top: 1px solid var(--general-section-1);
         &-heighlight-danger {
             background-color: #fff8f8;
         }
@@ -124,7 +125,7 @@
             height: 2.4rem;
             font-weight: bold;
             text-align: center;
-            font-size: var(--text-size-s);
+            font-size: var(--text-size-xs);
             border-radius: 1.6rem;
         }
     }

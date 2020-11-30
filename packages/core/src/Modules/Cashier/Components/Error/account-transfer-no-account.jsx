@@ -9,7 +9,7 @@ const AccountTransferNoAccount = ({ toggleAccountsDialog }) => (
         <h2 className='withdraw__header'>
             <Localize i18n_default_text='You need at least two accounts' />
         </h2>
-        <Text as='p' size='xs' line_height='s' className='cashier__text'>
+        <Text as='p' size='xs' lineHeight='x' className='cashier__text'>
             <Localize i18n_default_text='Please create a second account (Deriv or DMT5) to enable fund transfers.' />
         </Text>
         <Button className='cashier__button' primary large onClick={toggleAccountsDialog}>

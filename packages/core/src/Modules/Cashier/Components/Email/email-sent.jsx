@@ -16,7 +16,7 @@ class EmailSent extends React.Component {
                 <Text as='p' weight='bold' className='withdraw__email-sent-title'>
                     <Localize i18n_default_text={"We've sent you an email."} />
                 </Text>
-                <Text as='p' size='xs' line_height='s' className='withdraw__email-sent'>
+                <Text as='p' size='xs' lineHeight='x' className='withdraw__email-sent'>
                     <Localize i18n_default_text='Please check your email for the verification link to complete the process.' />
                 </Text>
                 <div className='withdraw__email-resend'>
@@ -25,7 +25,7 @@ class EmailSent extends React.Component {
                             <Text as='p' weight='bold' size='xs' className='withdraw__email-sent-title'>
                                 <Localize i18n_default_text={"Didn't receive the email?"} />
                             </Text>
-                            <Text as='p' size='xs' line_height='s' className='withdraw__email-sent'>
+                            <Text as='p' size='xs' lineHeight='x' className='withdraw__email-sent'>
                                 <Localize
                                     i18n_default_text={
                                         "Check your spam or junk folder. If it's not there, try resending the email."

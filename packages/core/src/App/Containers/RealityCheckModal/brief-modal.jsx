@@ -44,7 +44,7 @@ const BriefModal = ({
                                 <Text
                                     as='p'
                                     size='xs'
-                                    line_height='m'
+                                    lineHeight='m'
                                     className='reality-check__text reality-check__text--description'
                                 >
                                     <Localize i18n_default_text='Options trading can become a real addiction, as can any other activity pushed to its limits. To avoid the danger of such an addiction, we provide a reality-check that gives you a summary of your trades and accounts on a regular basis.' />
@@ -52,7 +52,7 @@ const BriefModal = ({
                                 <Text
                                     as='p'
                                     size='xs'
-                                    line_height='m'
+                                    lineHeight='m'
                                     className='reality-check__text reality-check__text--description'
                                 >
                                     <Localize
@@ -66,7 +66,7 @@ const BriefModal = ({
                                 <Text
                                     as='p'
                                     size='xs'
-                                    line_height='m'
+                                    lineHeight='m'
                                     align='center'
                                     className='reality-check__text reality-check__text--center'
                                 >

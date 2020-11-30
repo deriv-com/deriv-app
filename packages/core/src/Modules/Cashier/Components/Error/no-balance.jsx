@@ -24,7 +24,7 @@ class NoBalance extends React.Component {
                         values={{ currency: getCurrencyDisplayCode(this.props.currency) }}
                     />
                 </h2>
-                <Text as='p' size='xs' line_height='s' className='cashier__text'>
+                <Text as='p' size='xs' lineHeight='x' className='cashier__text'>
                     <Localize i18n_default_text='Please make a deposit to use this feature.' />
                 </Text>
                 <Button

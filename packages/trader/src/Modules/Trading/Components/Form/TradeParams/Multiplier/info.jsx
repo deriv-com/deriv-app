@@ -17,14 +17,13 @@ const MultipliersInfo = ({
     has_stop_loss,
     is_tooltip_relative,
     should_show_tooltip,
-    should_show_percentage_tooltip,
     stop_out = 0,
 }) => {
     const commission_text = (
         <Text
             as='p'
             line_height='s'
-            size='xxs'
+            size='xxxs'
             className={classNames({
                 [`${className}-tooltip-text`]: className,
             })}
@@ -40,7 +39,7 @@ const MultipliersInfo = ({
         <Text
             as='p'
             line_height='s'
-            size='xxs'
+            size='xxxs'
             className={classNames({
                 [`${className}-tooltip-text`]: className,
             })}
@@ -67,13 +66,6 @@ const MultipliersInfo = ({
     );
 
     const stop_out_tooltip = (
-        <Localize
-            i18n_default_text='To ensure your loss does not exceed your stake, your contract will be closed automatically when your loss equals to <0/>.'
-            components={[<Money key={0} amount={stop_out} currency={currency} show_currency />]}
-        />
-    );
-
-    const stop_out_percentage_tooltip = (
         <Localize
             i18n_default_text='When your current loss equals or exceeds {{stop_out_percentage}}% of your stake, your contract will be closed at the nearest available asset price.'
             values={{
@@ -111,7 +103,7 @@ const MultipliersInfo = ({
             {!has_stop_loss &&
                 getInfo({
                     text: stop_out_text,
-                    message: should_show_percentage_tooltip ? stop_out_percentage_tooltip : stop_out_tooltip,
+                    message: stop_out_tooltip,
                     margin: stop_out_tooltip_margin,
                 })}
         </div>
@@ -121,7 +113,6 @@ const MultipliersInfo = ({
 MultipliersInfo.propTypes = {
     className: PropTypes.string,
     is_tooltip_relative: PropTypes.bool,
-    should_show_percentage_tooltip: PropTypes.bool,
     should_show_tooltip: PropTypes.bool,
 };
 

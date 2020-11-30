@@ -107,7 +107,7 @@ const TradeParamsMobile = ({ amount, currency, toggleModal, trade_store }) => {
                     message={
                         <Localize
                             i18n_default_text='To ensure your loss does not exceed your stake, your contract will be closed automatically when your loss equals to <0/>.'
-                            components={[<Money key={0} amount={stake_value} currency={currency} />]}
+                            components={[<Money key={0} amount={stake_value} currency={currency} show_currency />]}
                         />
                     }
                 />
@@ -122,7 +122,6 @@ const TradeParamsMobile = ({ amount, currency, toggleModal, trade_store }) => {
             <MultipliersInfo
                 className='trade-params__multiplier-trade-info'
                 should_show_tooltip
-                should_show_percentage_tooltip
                 commission={commission}
                 stop_out={stop_out}
             />

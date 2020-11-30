@@ -14,18 +14,19 @@ import { createExtendedOrderDetails } from 'Utils/orders';
 const OrderTableContent = observer(() => {
     const { general_store, order_store } = useStores();
 
-    React.useEffect(() => {
-        return reaction(
-            () => general_store.order_table_type,
-            () => {
-                order_store.setIsLoading(true);
-                order_store.setOrders([]);
-                order_store.loadMoreOrders({ startIndex: 0 });
-            },
-            { fireImmediately: true }
-        );
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    React.useEffect(
+        () =>
+            reaction(
+                () => general_store.order_table_type,
+                () => {
+                    order_store.setIsLoading(true);
+                    order_store.setOrders([]);
+                    order_store.loadMoreOrders({ startIndex: 0 });
+                },
+                { fireImmediately: true }
+            ),
+        [] // eslint-disable-line react-hooks/exhaustive-deps
+    );
 
     if (order_store.is_loading) {
         return <Loading is_fullscreen={false} />;

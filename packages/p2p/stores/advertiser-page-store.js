@@ -125,7 +125,6 @@ export default class AdvertiserPageStore extends BaseStore {
 
     @action.bound
     onMount() {
-        this.loadMoreAdvertiserAdverts({ startIndex: 0 });
         this.getAdvertiserInfo();
     }
 

@@ -13,9 +13,8 @@ const FormAds = observer(() => {
     const { general_store, my_ads_store } = useStores();
     const { currency, local_currency_config } = general_store.client;
 
-    React.useEffect(() => {
-        my_ads_store.getAdvertiserInfo();
-    }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    React.useEffect(() => my_ads_store.getAdvertiserInfo(), []);
 
     const PageReturnComponent = () => {
         return <PageReturn onClick={() => my_ads_store.setShowAdForm(false)} page_title={localize('Create new ad')} />;

@@ -11,6 +11,7 @@ import {
     Text,
     ThemedScrollbars,
 } from '@deriv/components';
+import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
 import { buy_sell } from 'Constants/buy-sell';
@@ -40,13 +41,15 @@ const AdvertiserPage = observer(() => {
 
     React.useEffect(() => {
         advertiser_page_store.onMount();
+
+        return reaction(
+            () => advertiser_page_store.active_index,
+            () => advertiser_page_store.onTabChange(),
+            { fireImmediately: true }
+        );
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    React.useEffect(() => {
-        advertiser_page_store.onTabChange();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [advertiser_page_store.active_index]);
 
     if (advertiser_page_store.is_loading) {
         return <Loading is_fullscreen={false} />;

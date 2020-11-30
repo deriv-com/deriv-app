@@ -27,6 +27,7 @@ const OrderDetailsTimer = observer(() => {
         countDownTimer();
         interval.current = setInterval(countDownTimer, 1000);
         return () => clearInterval(interval.current);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     if (should_show_order_timer) {

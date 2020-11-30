@@ -37,6 +37,8 @@ const DigitForm = ({ is_enabled, setEnabled }) => {
             totp_action,
             otp: values.digit_code,
         });
+        setSubmitting(false);
+
         if (enable_response.error) {
             const { code, message } = enable_response.error;
             if (code === 'InvalidOTP') {
@@ -46,13 +48,10 @@ const DigitForm = ({ is_enabled, setEnabled }) => {
             }
         } else {
             const is_enabled_response = !!getPropertyValue(enable_response, ['account_security', 'totp', 'is_enabled']);
-            setEnabled(is_enabled_response);
             setSuccess(true);
-
             resetForm();
+            setEnabled(is_enabled_response);
         }
-
-        setSubmitting(false);
     };
 
     return (

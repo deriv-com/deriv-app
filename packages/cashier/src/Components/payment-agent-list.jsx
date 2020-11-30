@@ -42,7 +42,7 @@ class PaymentAgentList extends React.Component {
 
         return (
             <div className='cashier__wrapper--align-left'>
-                <Text as='p' size='xs' lineHeight='x' className='cashier__paragraph'>
+                <Text as='p' size='xs' line_height='s' className='cashier__paragraph'>
                     <Localize
                         i18n_default_text='A payment agent is authorised to process deposits and withdrawals for you if your local payment methods or currencies are not supported on {{website_name}}.'
                         values={{ website_name }}
@@ -53,7 +53,7 @@ class PaymentAgentList extends React.Component {
                         <h2 className='cashier__header payment-agent__header'>
                             <Localize i18n_default_text='Deposit' />
                         </h2>
-                        <Text as='p' size='xs' lineHeight='x' className='cashier__paragraph'>
+                        <Text as='p' size='xs' line_height='s' className='cashier__paragraph'>
                             <Localize i18n_default_text='Choose a payment agent and contact them for instructions.' />
                         </Text>
                     </div>

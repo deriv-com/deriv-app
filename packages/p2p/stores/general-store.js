@@ -1,8 +1,10 @@
-import { observable, action } from 'mobx';
-import { isEmptyObject } from '@deriv/shared';
-import { orderToggleIndex } from 'Components/orders/order-info';
-import { createExtendedOrderDetails } from 'Utils/orders';
+import React from 'react';
+import { action, computed, observable } from 'mobx';
+import { isEmptyObject, mobileOSDetect, routes } from '@deriv/shared';
+import { localize, Localize } from 'Components/i18next';
+import { createExtendedOrderDetails } from 'Utils/orders.js';
 import { init as WebsocketInit, requestWS, subscribeWS } from 'Utils/websocket';
+import { order_list } from '../src/constants/order-list';
 import BaseStore from 'Stores/base_store';
 
 export default class GeneralStore extends BaseStore {
@@ -14,12 +16,12 @@ export default class GeneralStore extends BaseStore {
     @observable is_listed = false;
     @observable is_restricted = false;
     @observable nickname = null;
-    @observable nickname_error = null;
+    @observable nickname_error = '';
     @observable notification_count = 0;
     @observable order_id = null;
     @observable.ref order_information = null;
     @observable order_offset = 0;
-    @observable order_table_type = orderToggleIndex.ACTIVE;
+    @observable order_table_type = order_list.ACTIVE;
     @observable orders = [];
     @observable parameters = null;
     @observable poi_status = null;
@@ -37,40 +39,40 @@ export default class GeneralStore extends BaseStore {
     ws_subscriptions = {};
     service_token_timeout;
 
+    @computed
     get client() {
         return this.props?.client || {};
     }
 
+    @computed
     get is_active_tab() {
-        return this.order_table_type === orderToggleIndex.ACTIVE;
+        return this.order_table_type === order_list.ACTIVE;
     }
 
     @action.bound
-    createAdvertiser = name => {
-        return new Promise(resolve => {
-            requestWS({ p2p_advertiser_create: 1, name }).then(response => {
-                const { p2p_advertiser_create } = response;
-
-                if (response) {
-                    if (response.error) {
-                        this.setNicknameError(response.error.message);
-                    } else {
-                        this.setAdvertiserId(p2p_advertiser_create.id);
-                        this.setIsAdvertiser(!!p2p_advertiser_create.is_approved);
-                        this.setNickname(p2p_advertiser_create.name);
-                        this.setNicknameError(undefined);
-                        this.root_store.sendbird_store.handleP2pAdvertiserInfo(response);
-                        this.toggleNicknamePopup();
-                    }
-                    resolve();
+    createAdvertiser(name) {
+        requestWS({ p2p_advertiser_create: 1, name }).then(response => {
+            const { p2p_advertiser_create } = response;
+            if (response) {
+                if (response.error) {
+                    this.setNicknameError(response.error.message);
+                } else {
+                    this.setAdvertiserId(p2p_advertiser_create.id);
+                    this.setIsAdvertiser(!!p2p_advertiser_create.is_approved);
+                    this.setNickname(p2p_advertiser_create.name);
+                    this.setNicknameError(undefined);
+                    this.root_store.sendbird_store.handleP2pAdvertiserInfo(response);
+                    this.toggleNicknamePopup();
                 }
-            });
+            }
         });
-    };
+    }
 
-    getLocalStorageSettings = () => JSON.parse(localStorage.getItem('p2p_settings') || '{}');
+    getLocalStorageSettings() {
+        return JSON.parse(localStorage.getItem('p2p_settings') || '{}');
+    }
 
-    getLocalStorageSettingsForLoginId = () => {
+    getLocalStorageSettingsForLoginId() {
         const local_storage_settings = this.getLocalStorageSettings()[this.client.loginid];
 
         if (isEmptyObject(local_storage_settings)) {
@@ -78,7 +80,7 @@ export default class GeneralStore extends BaseStore {
         }
 
         return local_storage_settings;
-    };
+    }
 
     @action.bound
     handleNotifications(old_orders, new_orders) {
@@ -135,6 +137,24 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
+    getVerificationChecklist = () => [
+        {
+            content: this.nickname || <Localize i18n_default_text='Choose your nickname' />,
+            status: this.nickname ? 'done' : 'action',
+            onClick: this.nickname ? () => {} : this.toggleNicknamePopup,
+        },
+        {
+            content: this.poiStatusText(this.poi_status),
+            status: this.poi_status === 'verified' ? 'done' : 'action',
+            onClick:
+                this.poi_status === 'verified'
+                    ? () => {}
+                    : () => (window.location.href = `${this.props.poi_url}?ext_platform_url=${routes.cashier_p2p}`),
+            is_disabled: this.poi_status !== 'verified' && !this.nickname,
+        },
+    ];
+
+    @action.bound
     onMount() {
         const { sendbird_store } = this.root_store;
 
@@ -170,15 +190,43 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
+    openApplicationStore() {
+        if (mobileOSDetect() === 'Android') {
+            window.location.href =
+                'https://play.app.goo.gl/?link=https://play.google.com/store/apps/details?id=com.deriv.dp2p';
+        }
+        // uncomment when iOS app is ready
+        // if (mobileOSDetect() === 'iOS') {
+        //     window.location.href = 'http://itunes.apple.com/lb/app/truecaller-caller-id-number/id448142450?mt=8';
+        // }
+    }
+
+    @action.bound
+    poiStatusText(status) {
+        switch (status) {
+            case 'pending':
+            case 'rejected':
+                return <Localize i18n_default_text='Check your verification status.' />;
+            case 'none':
+            default:
+                return (
+                    <Localize i18n_default_text='We’ll need you to upload your documents to verify your identity.' />
+                );
+            case 'verified':
+                return <Localize i18n_default_text='Identity verification is complete.' />;
+        }
+    }
+
+    @action.bound
     redirectTo(path_name, params = null) {
         this.setActiveIndex(this.path[path_name]);
         this.setParameters(params);
     }
 
     @action.bound
-    resetNicknameErrorState = () => {
+    resetNicknameErrorState() {
         this.setNicknameError(undefined);
-    };
+    }
 
     @action.bound
     setActiveIndex(active_index) {
@@ -275,8 +323,6 @@ export default class GeneralStore extends BaseStore {
             const { list } = p2p_order_list;
             // it's an array of orders from p2p_order_list
             this.handleNotifications(this.orders, list);
-            this.setOrderOffset(list.length);
-            this.setOrders(list);
         } else if (p2p_order_info) {
             // it's a single order from p2p_order_info
             const idx_order_to_update = this.orders.findIndex(order => order.id === p2p_order_info.id);
@@ -288,10 +334,9 @@ export default class GeneralStore extends BaseStore {
                 // otherwise, update the correct order
                 updated_orders[idx_order_to_update] = p2p_order_info;
             }
-            // trigger re-rendering by setting orders again
+
             this.handleNotifications(this.orders, updated_orders);
-            this.setOrderOffset(updated_orders.length);
-            this.setOrders(updated_orders);
+            this.root_store.order_store.syncOrder(p2p_order_info);
         }
     }
 
@@ -375,5 +420,51 @@ export default class GeneralStore extends BaseStore {
         if (typeof this.props?.setNotificationCount === 'function') {
             this.props.setNotificationCount(notification_count);
         }
+    }
+
+    @action.bound
+    validatePopup(values) {
+        const validations = {
+            nickname: [
+                v => !!v,
+                v => v.length >= 2,
+                v => v.length <= 24,
+                v => /^[a-zA-Z0-9\\.@_-]{2,24}$/.test(v),
+                v => /^(?!(.*(.)\\2{4,})|.*[\\.@_-]{2,}|^([\\.@_-])|.*([\\.@_-])$)[a-zA-Z0-9\\.@_-]{2,24}$/.test(v),
+                v =>
+                    Array.from(v).every(
+                        word => (v.match(new RegExp(word === '.' ? `\\${word}` : word, 'g')) || []).length <= 5
+                    ),
+            ],
+        };
+
+        const nickname_messages = [
+            localize('Nickname is required'),
+            localize('Nickname is too short'),
+            localize('Nickname is too long'),
+            localize('Can only contain letters, numbers, and special characters .- _ @.'),
+            localize('Cannot start, end with, or repeat special characters.'),
+            localize('Cannot repeat a character more than 5 times.'),
+        ];
+
+        const errors = {};
+
+        Object.entries(validations).forEach(([key, rules]) => {
+            const error_index = rules.findIndex(v => {
+                return !v(values[key]);
+            });
+
+            if (error_index !== -1) {
+                switch (key) {
+                    case 'nickname':
+                    default: {
+                        errors[key] = nickname_messages[error_index];
+                        break;
+                    }
+                }
+            }
+        });
+
+        return errors;
     }
 }

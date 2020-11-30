@@ -687,6 +687,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setWebsiteStatus(response) {
         this.website_status = response.website_status;
+        this.responseWebsiteStatus(response);
         setCurrencies(this.website_status);
     }
 

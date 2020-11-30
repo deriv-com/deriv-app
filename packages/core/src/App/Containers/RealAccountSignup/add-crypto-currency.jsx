@@ -76,7 +76,7 @@ class AddCryptoCurrency extends React.Component {
                                 <RadioButtonGroup
                                     id='fiat_currency'
                                     is_fiat
-                                    className='currency-selector__radio-group currency-selector__radio-group--with-margin'
+                                    className='currency-selector__radio-group with-margin'
                                     value={values.currency}
                                     error={errors.currency}
                                     touched={touched.currency}
@@ -104,7 +104,7 @@ class AddCryptoCurrency extends React.Component {
                             (this.props.available_crypto_currencies.length !== 0 ? (
                                 <RadioButtonGroup
                                     id='crypto_currency'
-                                    className='currency-selector__radio-group currency-selector__radio-group--with-margin'
+                                    className='currency-selector__radio-group with-margin'
                                     label={localize('Cryptocurrencies')}
                                     value={values.currency}
                                     error={errors.currency}
@@ -126,7 +126,7 @@ class AddCryptoCurrency extends React.Component {
                             ) : (
                                 <RadioButtonGroup
                                     id='crypto_currency'
-                                    className='currency-selector__radio-group currency-selector__radio-group--with-margin'
+                                    className='currency-selector__radio-group with-margin'
                                     label={localize('Cryptocurrencies')}
                                     is_title_enabled={this.can_add_fiat}
                                     item_count={this.crypto_currencies.length}

@@ -1,19 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
 import { secondsToTimer } from 'Utils/date-time';
 import ServerTime from 'Utils/server-time';
-import { useStores } from 'Stores';
 
-const OrderDetailsTimer = observer(() => {
-    const { general_store } = useStores();
+const OrderDetailsTimer = ({ order_information }) => {
     const [remaining_time, setRemainingTime] = React.useState();
-    const { should_show_order_timer } = general_store.order_information;
+    const { should_show_order_timer } = order_information;
     const interval = React.useRef(null);
 
     const countDownTimer = () => {
-        const distance = ServerTime.getDistanceToServerTime(general_store.order_information.order_expiry_milliseconds);
+        const distance = ServerTime.getDistanceToServerTime(order_information.order_expiry_milliseconds);
         const timer = secondsToTimer(distance);
         if (distance < 0) {
             setRemainingTime(localize('expired'));
@@ -40,7 +37,7 @@ const OrderDetailsTimer = observer(() => {
 
     clearInterval(interval.current);
     return null;
-});
+};
 
 OrderDetailsTimer.propTypes = {
     order_information: PropTypes.object,

@@ -4,15 +4,17 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
+import Dp2pContext from 'Components/context/dp2p-context';
 import { secondsToTimer } from 'Utils/date-time';
 import ServerTime from 'Utils/server-time';
-import { createExtendedOrderDetails } from 'Utils/orders';
-import { useStores } from 'Stores';
+import { createExtendedOrderDetails } from '../../../utils/orders';
+import { useStores } from '../../../../stores';
 
-const OrderRowComponent = observer(({ data: order, style }) => {
-    const { general_store, order_store } = useStores();
+const OrderRowComponent = observer(({ data: order, onOpenDetails, style, is_active }) => {
+    const { general_store } = useStores();
     const [order_state, setOrderState] = React.useState(order); // Use separate state to force refresh when (FE-)expired.
     const [remaining_time, setRemainingTime] = React.useState();
+    const { getLocalStorageSettingsForLoginId } = React.useContext(Dp2pContext);
 
     const {
         account_currency,
@@ -36,7 +38,7 @@ const OrderRowComponent = observer(({ data: order, style }) => {
     let interval;
 
     const isOrderSeen = order_id => {
-        const { notifications } = general_store.getLocalStorageSettingsForLoginId();
+        const { notifications } = getLocalStorageSettingsForLoginId();
         return notifications.some(notification => notification.order_id === order_id && notification.is_seen === true);
     };
 
@@ -64,10 +66,10 @@ const OrderRowComponent = observer(({ data: order, style }) => {
     const transaction_amount = `${price_display} ${local_currency}`;
 
     return (
-        <div onClick={() => order_store.setQueryDetails(order)} style={style}>
+        <div onClick={() => onOpenDetails(order)} style={style}>
             <Table.Row
                 className={classNames('orders__table-row orders__table-grid', {
-                    'orders__table-grid--active': general_store.is_active_tab,
+                    'orders__table-grid--active': is_active,
                     'orders__table-row--attention': !isOrderSeen(id),
                 })}
             >
@@ -99,11 +101,7 @@ const OrderRowComponent = observer(({ data: order, style }) => {
                     {(is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad) ? offer_amount : transaction_amount}
                 </Table.Cell>
                 <Table.Cell>
-                    {general_store.is_active_tab ? (
-                        <div className='orders__table-time'>{remaining_time}</div>
-                    ) : (
-                        order_purchase_datetime
-                    )}
+                    {is_active ? <div className='orders__table-time'>{remaining_time}</div> : order_purchase_datetime}
                 </Table.Cell>
             </Table.Row>
         </div>
@@ -121,10 +119,7 @@ OrderRowComponent.propTypes = {
         order_purchase_datetime: PropTypes.string,
         price_display: PropTypes.string,
     }),
-    getLocalStorageSettingsForLoginId: PropTypes.func,
-    is_active_tab: PropTypes.bool,
     onOpenDetails: PropTypes.func,
-    setQueryDetails: PropTypes.func,
     style: PropTypes.object,
 };
 

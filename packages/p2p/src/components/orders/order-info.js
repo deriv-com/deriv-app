@@ -1,4 +1,4 @@
-export const order_list = {
+export const orderToggleIndex = {
     ACTIVE: 'active',
     INACTIVE: 'inactive',
 };

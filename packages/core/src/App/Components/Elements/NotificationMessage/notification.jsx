@@ -74,9 +74,7 @@ const Notification = ({ data, removeNotificationMessage }) => {
                                             )}
                                             to={data.action.route}
                                         >
-                                            <Text size='xxs' weight='bold'>
-                                                {data.action.text}
-                                            </Text>
+                                            <Text size='xxs'>{data.action.text}</Text>
                                         </BinaryLink>
                                     ) : (
                                         <Button

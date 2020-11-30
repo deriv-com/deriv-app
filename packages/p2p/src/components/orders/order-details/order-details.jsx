@@ -6,16 +6,16 @@ import { getFormattedText } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
 import Chat from 'Components/orders/chat/chat.jsx';
-import OrderDetailsFooter from 'Components/order-details/order-details-footer.jsx';
-import OrderDetailsTimer from 'Components/order-details/order-details-timer.jsx';
-import OrderInfoBlock from 'Components/order-details/order-info-block.jsx';
-import OrderDetailsWrapper from 'Components/order-details/order-details-wrapper.jsx';
+import OrderDetailsFooter from 'Components/orders/order-details/order-details-footer.jsx';
+import OrderDetailsTimer from 'Components/orders/order-details/order-details-timer.jsx';
+import OrderInfoBlock from 'Components/orders/order-details/order-info-block.jsx';
+import OrderDetailsWrapper from 'Components/orders/order-details/order-details-wrapper.jsx';
 import { useStores } from 'Stores';
 import { requestWS } from 'Utils/websocket';
-import 'Components/order-details/order-details.scss';
+import 'Components/orders/order-details/order-details.scss';
 
 const OrderDetails = observer(({ onPageReturn }) => {
-    const { general_store, order_details_store, sendbird_store } = useStores();
+    const { general_store, sendbird_store } = useStores();
     const {
         account_currency,
         advert_details,
@@ -46,9 +46,6 @@ const OrderDetails = observer(({ onPageReturn }) => {
     const { chat_channel_url, setChatChannelUrl } = sendbird_store;
 
     React.useEffect(() => {
-        order_details_store.setChatChannelUrl(chat_channel_url);
-        order_details_store.createChatForNewOrder(id);
-
         const disposeListeners = sendbird_store.registerEventListeners();
         const disposeReactions = sendbird_store.registerMobXReactions();
 
@@ -112,7 +109,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
                             </div>
                         </div>
                         <div className='order-details-card__header--right'>
-                            <OrderDetailsTimer />
+                            <OrderDetailsTimer order_information={general_store.order_information} />
                         </div>
                     </div>
                     <ThemedScrollbars height='unset' className='order-details-card__info'>
@@ -158,15 +155,9 @@ const OrderDetails = observer(({ onPageReturn }) => {
 
 OrderDetails.propTypes = {
     chat_channel_url: PropTypes.string,
-    chat_info: PropTypes.object,
-    createChatForNewOrder: PropTypes.func,
     order_information: PropTypes.object,
-    onCancelClick: PropTypes.func,
-    popup_options: PropTypes.object,
-    setChatChannelUrl: PropTypes.func,
-    setShouldShowPopup: PropTypes.func,
-    should_show_popup: PropTypes.bool,
     onPageReturn: PropTypes.func,
+    setChatChannelUrl: PropTypes.func,
 };
 
 export default OrderDetails;

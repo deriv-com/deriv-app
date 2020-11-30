@@ -166,10 +166,10 @@ export const setUrlLanguage = lang => {
 
 export const getStaticUrl = (
     path = '',
+    is_document = false,
     options = {
         is_deriv_crypto: false,
-    },
-    is_document = false
+    }
 ) => {
     const host = options.is_deriv_crypto ? deriv_urls.DERIV_CRYPTO_COM_PRODUCTION : deriv_urls.DERIV_COM_PRODUCTION;
     let lang = default_language?.toLowerCase();
@@ -181,11 +181,6 @@ export const getStaticUrl = (
     }
 
     if (is_document) return `${host}/${normalizePath(path)}`;
-
-    // Deriv.com supports languages separated by '-' not '_'
-    if (host === deriv_urls.DERIV_COM_PRODUCTION && lang.includes('_')) {
-        lang = lang.replace('_', '-');
-    }
 
     return `${host}${lang}/${normalizePath(path)}`;
 };

@@ -45,7 +45,7 @@
             border-radius: $BORDER_RADIUS;
         }
     }
-    &__with-margin--is-header {
+    .with-margin--is-header {
         font-size: 1.6rem;
         font-weight: bold;
         font-stretch: normal;
@@ -56,7 +56,7 @@
         text-align: center;
     }
     @include desktop {
-        .currency-selector__radio-group--with-margin {
+        .currency-selector__radio-group.with-margin {
             margin-bottom: 6rem;
             margin-left: auto;
             margin-right: auto;
@@ -86,7 +86,7 @@
                 margin: 0 1.6rem;
             }
         }
-        .currency-selector__radio-group--with-margin {
+        .currency-selector__radio-group.with-margin {
             margin-bottom: 7rem;
         }
         & .change-currency {

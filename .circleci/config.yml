@@ -258,19 +258,15 @@ jobs:
       - notify_slack
     environment:
       NODE_ENV: staging
-  
-  build_and_test:
-    docker:
-      - image: circleci/node:12.18.0-stretch
-    steps:
-      - git_checkout_from_cache
-      - npm_install_from_cache
-      - build
-      - run:
-          name: "Run tests"
-          command: npm test
 
 workflows:
+  build:
+    jobs:
+      - build:
+          filters:
+            branches:
+              ignore: /^master$/
+
   release_staging:
     jobs:
       - release_staging:
@@ -301,12 +297,3 @@ workflows:
               ignore: /.*/
             tags:
               only: /^crypto-production.*/
-
-  test:
-    jobs:
-      - build_and_test:
-          filters:
-            branches:
-              ignore: master
-            tags:
-              ignore: /.*/

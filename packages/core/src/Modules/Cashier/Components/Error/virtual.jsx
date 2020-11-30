@@ -31,12 +31,7 @@ class Virtual extends React.Component {
                 </h2>
                 {this.props.has_real_account ? (
                     <React.Fragment>
-                        <Text
-                            as='p'
-                            size='xs'
-                            line_height='x'
-                            className='cashier__paragraph cashier__text cashier__text--full-width'
-                        >
+                        <Text as='p' size='xs' lineHeight='x' className='cashier__paragraph cashier__text'>
                             <Localize
                                 i18n_default_text='You need to switch to a real money account to use this feature.<0/>You can do this by selecting a real account from the <1>Account Switcher.</1>'
                                 components={[
@@ -52,7 +47,7 @@ class Virtual extends React.Component {
                     </React.Fragment>
                 ) : (
                     <React.Fragment>
-                        <Text as='p' size='xs' line_height='x' className='cashier__paragraph cashier__text'>
+                        <Text as='p' size='xs' lineHeight='x' className='cashier__paragraph cashier__text'>
                             <Localize
                                 i18n_default_text={
                                     "You need a real money account to use this feature. It's easy to create a real money account and start trading."

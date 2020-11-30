@@ -1271,8 +1271,6 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     resetVirtualBalanceNotification(loginid) {
-        if (!this.is_logged_in) return;
-        if (!this.accounts[loginid].is_virtual) return;
         const min_reset_limit = 1000;
         const max_reset_limit = 999000;
         const balance = parseInt(this.accounts[loginid].balance);

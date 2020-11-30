@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Field, Form, Formik } from 'formik';
 import { Button, Icon, Input, Loading, Popover, Table, ThemedScrollbars, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
@@ -13,7 +12,6 @@ import './my-profile.scss';
 
 const MyProfile = observer(() => {
     const { general_store, my_profile_store } = useStores();
-    const { currency } = general_store.client;
     const [has_on_screen_keyboard, setHasOnScreenKeyboard] = React.useState(false);
 
     const {
@@ -114,7 +112,7 @@ const MyProfile = observer(() => {
                                         as='p'
                                     >
                                         {localize('Buy / Sell ({{currency}})', {
-                                            currency,
+                                            currency: general_store.client.currency,
                                         })}
                                     </Text>
                                     <Text color='prominent' weight='bold' line_height='l' as='p'>
@@ -131,7 +129,7 @@ const MyProfile = observer(() => {
                                             as='p'
                                         >
                                             {localize('Buy ({{currency}})', {
-                                                currency,
+                                                currency: general_store.client.currency,
                                             })}
                                         </Text>
                                         <Text color='prominent' weight='bold' line_height='l' as='p'>
@@ -147,7 +145,7 @@ const MyProfile = observer(() => {
                                             as='p'
                                         >
                                             {localize('Sell ({{currency}})', {
-                                                currency,
+                                                currency: general_store.client.currency,
                                             })}
                                         </Text>
                                         <Text color='prominent' weight='bold' line_height='l' as='p'>
@@ -160,7 +158,7 @@ const MyProfile = observer(() => {
                             <Table.Cell className='my-profile__stats-cell'>
                                 <Text size={isMobile() ? 'xxxs' : 'xs'} color='less-prominent' line_height='m' as='p'>
                                     {localize('Buy / Sell limit ({{currency}})', {
-                                        currency,
+                                        currency: general_store.client.currency,
                                     })}
                                 </Text>
                                 <Text color='prominent' weight='bold' line_height='l' as='p'>
@@ -292,20 +290,5 @@ const MyProfile = observer(() => {
         </div>
     );
 });
-
-MyProfile.propTypes = {
-    advertiser_info: PropTypes.object,
-    contact_info: PropTypes.string,
-    default_advert_description: PropTypes.string,
-    error_message: PropTypes.string,
-    form_error: PropTypes.string,
-    getAdvertiserInfo: PropTypes.func,
-    handleSubmit: PropTypes.func,
-    is_button_loading: PropTypes.bool,
-    is_loading: PropTypes.bool,
-    is_submit_success: PropTypes.bool,
-    payment_info: PropTypes.string,
-    validateForm: PropTypes.func,
-};
 
 export default MyProfile;

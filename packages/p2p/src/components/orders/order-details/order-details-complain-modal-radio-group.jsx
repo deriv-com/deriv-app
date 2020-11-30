@@ -3,7 +3,7 @@ import React from 'react';
 import { RadioGroup } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize } from 'Components/i18next';
-import 'Components/order-details/order-details-complain-modal.scss';
+import 'Components/orders/order-details/order-details-complain-modal.scss';
 
 const OrderDetailsComplainModalRadioGroup = ({ dispute_reason, onCheckboxChange, is_buy_order_for_user }) => (
     <RadioGroup

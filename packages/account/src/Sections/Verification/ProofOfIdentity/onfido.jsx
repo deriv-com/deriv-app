@@ -38,7 +38,6 @@ export default class Onfido extends React.Component {
                 language: {
                     locale: getLanguage().toLowerCase() || 'en',
                     phrases: onfido_phrases,
-                    mobilePhrases: onfido_phrases,
                 },
                 token: this.props.onfido_service_token,
                 useModal: false,
@@ -70,12 +69,9 @@ export default class Onfido extends React.Component {
         this.props.handleComplete();
     };
 
-    componentDidUpdate(prevProps) {
-        // Ensure that we initialize onfido only if onfido_service_token is available
-        if (prevProps.onfido_service_token !== this.props.onfido_service_token) {
-            if (this.props.status === onfido_status_codes.onfido && this.props.onfido_service_token) {
-                this.initOnfido();
-            }
+    componentDidMount() {
+        if (this.props.status === onfido_status_codes.onfido) {
+            this.initOnfido();
         }
     }
 

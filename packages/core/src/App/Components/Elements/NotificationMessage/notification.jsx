@@ -25,10 +25,6 @@ const Notification = ({ data, removeNotificationMessage }) => {
         setTimeout(destroy, data.delay || default_delay);
     }
 
-    // React.useEffect(() => {
-    //     console.log('data', data)
-    // }, [data])
-
     switch (data.type) {
         case 'news':
             return (

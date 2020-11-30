@@ -34,9 +34,11 @@ const TwoFactorAuthentication = ({ email_address, is_switching }) => {
             setErrorMessage(generate_response.error.message);
             return;
         }
+        const secret_key_value = getPropertyValue(generate_response, ['account_security', 'totp', 'secret_key']);
+        const qr_secret_key_value = `otpauth://totp/${email_address}?secret=${secret_key_value}&issuer=Deriv.com`;
 
-        setSecretKey(getPropertyValue(generate_response, ['account_security', 'totp', 'secret_key']));
-        setQrSecretKey(`otpauth://totp/${email_address}?secret=${secret_key}&issuer=Deriv.com`);
+        setSecretKey(secret_key_value);
+        setQrSecretKey(qr_secret_key_value);
         setQrLoading(false);
     };
 

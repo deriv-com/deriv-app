@@ -16,7 +16,7 @@ class App extends React.Component {
 
     render() {
         return (
-            <MobxContentProvider store={this.props.passthrough.root_store}>
+            <MobxContentProvider store={this.root_store}>
                 <Routes />
             </MobxContentProvider>
         );

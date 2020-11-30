@@ -104,7 +104,6 @@
         "formik": "^2.1.4",
         "i18next": "^17.0.3",
         "js-cookie": "^2.2.0",
-        "loadjs": "^4.2.0",
         "lodash.debounce": "^4.0.8",
         "mobx": "^5.15.4",
         "mobx-react": "^6.2.2",

@@ -13,11 +13,11 @@ import {
     getMT5AccountDisplay,
     getMT5Account,
 } from '@deriv/shared';
-import BinarySocket from '_common/base/socket_base';
 import { localize, Localize } from '@deriv/translations';
+import BinarySocket from '_common/socket_base';
 import { WS } from 'Services';
 import OnRampStore from './on-ramp-store';
-import BaseStore from '../../base-store';
+import BaseStore from '../base-store';
 
 const hasTransferNotAllowedLoginid = loginid => loginid.startsWith('MX');
 

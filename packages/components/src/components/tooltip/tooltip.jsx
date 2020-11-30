@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Icon from '../icon';
+import { useHover } from '../../hooks/use-hover';
 
 const Tooltip = ({
     alignment,
@@ -12,7 +13,7 @@ const Tooltip = ({
     icon, // only question, info and dot accepted
     message,
 }) => {
-    const [show_tooltip_balloon_icon, setShowTooltipBalloonIcon] = React.useState(false);
+    const [hover_ref, show_tooltip_balloon_icon_on_hover] = useHover();
 
     const icon_class = classNames(classNameIcon, icon);
 
@@ -24,16 +25,11 @@ const Tooltip = ({
         >
             {icon === 'info' && (
                 <React.Fragment>
-                    <Icon
-                        icon='IcInfoOutline'
-                        className={icon_class}
-                        onMouseEnter={() => setShowTooltipBalloonIcon(true)}
-                        onMouseLeave={() => setShowTooltipBalloonIcon(false)}
-                    />
+                    <Icon icon='IcInfoOutline' className={icon_class} ref={hover_ref} />
                     <Icon
                         icon='IcInfoBlue'
                         className={classNames(`${classNameIcon}-balloon-icon`, 'dc-tooltip__balloon-icon', {
-                            'dc-tooltip__balloon-icon--show': show_tooltip_balloon_icon,
+                            'dc-tooltip__balloon-icon--show': show_tooltip_balloon_icon_on_hover,
                         })}
                     />
                 </React.Fragment>

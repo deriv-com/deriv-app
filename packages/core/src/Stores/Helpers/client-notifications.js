@@ -517,7 +517,7 @@ export const handleClientNotifications = (client, client_store, ui_store, cashie
         shouldCompleteTax,
     } = client_store;
     const { addNotificationMessage } = ui_store;
-    const { is_p2p_visible } = cashier_store;
+    // const { is_p2p_visible } = cashier_store;
 
     if (loginid !== LocalStore.get('active_loginid')) return {};
     if (!currency) addNotificationMessage(clientNotifications(ui_store).currency);
@@ -534,9 +534,9 @@ export const handleClientNotifications = (client, client_store, ui_store, cashie
         shouldCompleteTax
     );
 
-    if (is_p2p_visible) {
-        addNotificationMessage(clientNotifications().dp2p);
-    }
+    // if (is_p2p_visible) {
+    //     addNotificationMessage(clientNotifications().dp2p);
+    // }
 
     if (is_tnc_needed) addNotificationMessage(clientNotifications(ui_store).tnc);
 

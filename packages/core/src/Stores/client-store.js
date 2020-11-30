@@ -993,7 +993,11 @@ export default class ClientStore extends BaseStore {
          * Set up reaction for account_settings, account_status, is_p2p_visible
          */
         reaction(
-            () => [this.account_settings, this.account_status, this.root_store.modules.cashier.is_p2p_visible],
+            () => [
+                this.account_settings,
+                this.account_status,
+                // this.root_store.modules.cashier.is_p2p_visible
+            ],
             () => {
                 client = this.accounts[this.loginid];
                 BinarySocket.wait('landing_company').then(() => {

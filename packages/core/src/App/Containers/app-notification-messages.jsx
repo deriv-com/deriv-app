@@ -85,7 +85,7 @@ AppNotificationMessages.propTypes = {
             delay: PropTypes.number,
             header: PropTypes.string,
             is_auto_close: PropTypes.bool,
-            is_p2p_visible: PropTypes.bool,
+            // is_p2p_visible: PropTypes.bool,
             message: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
             size: PropTypes.oneOf(['small']),
             type: PropTypes.oneOf(['warning', 'info', 'success', 'danger', 'contract_sold', 'news', 'announce']),
@@ -95,7 +95,7 @@ AppNotificationMessages.propTypes = {
 };
 
 export default connect(({ ui, modules }) => ({
-    is_p2p_visible: modules.cashier.is_p2p_visible,
+    // is_p2p_visible: modules.cashier.is_p2p_visible,
     marked_notifications: ui.marked_notifications,
     notification_messages: ui.notification_messages,
     removeNotificationMessage: ui.removeNotificationMessage,

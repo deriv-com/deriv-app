@@ -54,8 +54,8 @@ class TradeHeaderExtensions extends React.Component {
             if (this.props.is_logged_in) {
                 await WS.wait('authorize');
                 this.props.onMountPositions();
-                this.props.onMountCashier(true);
-                this.props.setAccountSwitchListener();
+                // this.props.onMountCashier(true);
+                // this.props.setAccountSwitchListener();
             }
         }
 
@@ -91,7 +91,7 @@ export default connect(({ client, modules, ui }) => ({
     onPositionsSell: modules.portfolio.onClickSell,
     onPositionsRemove: modules.portfolio.removePositionById,
     onPositionsCancel: modules.portfolio.onClickCancel,
-    onMountCashier: modules.cashier.onMountCommon,
+    // onMountCashier: modules.cashier.onMountCommon,
     onMountPositions: modules.portfolio.onMount,
     onUnmountPositions: modules.portfolio.onUnmount,
     active_positions_count: modules.portfolio.active_positions_count,
@@ -99,5 +99,5 @@ export default connect(({ client, modules, ui }) => ({
     enableApp: ui.enableApp,
     populateHeaderExtensions: ui.populateHeaderExtensions,
     toggleUnsupportedContractModal: ui.toggleUnsupportedContractModal,
-    setAccountSwitchListener: modules.cashier.setAccountSwitchListener,
+    // setAccountSwitchListener: modules.cashier.setAccountSwitchListener,
 }))(TradeHeaderExtensions);

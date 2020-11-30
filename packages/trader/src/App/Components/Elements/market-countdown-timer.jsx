@@ -118,7 +118,7 @@ const MarketCountdownTimer = ({ is_main_page, setActiveSymbols, symbol }) => {
 
     const { opening_time, days_offset } = when_market_opens;
     let opening_time_banner = null;
-    if (is_main_page && opening_time) {
+    if (opening_time) {
         const target_date = moment(new Date()).add(days_offset, 'days');
         const opening_time_moment_obj = moment(opening_time, 'HH:mm');
         const opening_time_hour = opening_time_moment_obj.format('HH');
@@ -139,7 +139,7 @@ const MarketCountdownTimer = ({ is_main_page, setActiveSymbols, symbol }) => {
                 weight='bold'
             >
                 <Localize
-                    i18n_default_text='{{formatted_opening_time}} GMT on {{opening_day}},<0></0> {{opening_date}}.'
+                    i18n_default_text='{{formatted_opening_time}} (GMT) on {{opening_day}},<0></0> {{opening_date}}.'
                     components={[<br key={0} />]}
                     values={{
                         formatted_opening_time,
@@ -163,7 +163,7 @@ const MarketCountdownTimer = ({ is_main_page, setActiveSymbols, symbol }) => {
                 line_height='x'
                 size='xs'
             >
-                <Localize i18n_default_text='It will reopen at:' />
+                <Localize i18n_default_text='It will reopen at' />
             </Text>
             {opening_time_banner}
             <Text

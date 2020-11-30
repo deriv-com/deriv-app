@@ -336,7 +336,7 @@ class AccountSwitcher extends React.Component {
                                     currency_icon={`IcCurrency-${account.icon}`}
                                     display_type={'currency'}
                                     has_balance={'balance' in this.props.accounts[account.loginid]}
-                                    has_reset_balance
+                                    has_reset_balance={this.props.accounts[this.props.account_loginid].is_virtual}
                                     is_disabled={account.is_disabled}
                                     is_virtual={account.is_virtual}
                                     loginid={account.loginid}

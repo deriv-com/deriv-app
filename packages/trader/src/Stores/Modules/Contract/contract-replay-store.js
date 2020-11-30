@@ -178,7 +178,7 @@ export default class ContractReplayStore extends BaseStore {
                     action(() => {
                         this.is_chart_loading = false;
                     }),
-                    400
+                    900
                 );
                 break;
             default:

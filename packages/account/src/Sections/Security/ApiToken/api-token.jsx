@@ -92,9 +92,7 @@ class ApiToken extends React.Component {
         };
     };
 
-    selectedTokenScope = values => {
-        return Object.keys(values).filter(item => item !== 'token_name' && values[item]);
-    };
+    selectedTokenScope = values => Object.keys(values).filter(item => item !== 'token_name' && values[item]);
 
     handleSubmit = async (values, { setSubmitting, setFieldError, resetForm }) => {
         const request = {

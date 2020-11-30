@@ -319,12 +319,12 @@ class SelfExclusion extends React.Component {
     getMaxLength = field => {
         const { currency, is_cr } = this.props;
 
-        const decimalsLength = getDecimalPlaces(currency) + 1; //add 1 to allow typing dot
-        const isIntegerField = field => /session_duration_limit|max_open_bets/.test(field);
-        const getLength = field => field.toString().length + (isIntegerField(field) ? 0 : decimalsLength);
+        const decimalsLength = getDecimalPlaces(currency) + 1; // add 1 to allow typing dot
+        const isIntegerField = value => /session_duration_limit|max_open_bets/.test(value);
+        const getLength = value => value.toString().length + (isIntegerField(value) ? 0 : decimalsLength);
 
         if (!this.state.self_exclusions[field] || is_cr) {
-            if (/max_open_bets/.test(field)) return 9; //TODO: remove when the error is fixed on BE
+            if (/max_open_bets/.test(field)) return 9; // TODO: remove when the error is fixed on BE
             return getLength(this.exclusion_fields_settings.max_number);
         }
 

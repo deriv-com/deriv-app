@@ -15,10 +15,9 @@ import {
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import BinarySocket from '_common/socket_base';
-import { WS } from 'Services';
 import OnRampStore from './on-ramp-store';
 import BaseStore from '../base-store';
-import CashierNotifications from '../../Containers/cashier-notifications';
+import CashierNotifications from '../../Containers/cashier-notifications.jsx';
 
 const hasTransferNotAllowedLoginid = loginid => loginid.startsWith('MX');
 
@@ -168,7 +167,7 @@ export default class CashierStore extends BaseStore {
         [this.config.payment_agent.container]: 'payment_agent_withdraw',
     };
 
-    onramp = new OnRampStore(this.root_store);
+    onramp = new OnRampStore(this.root_store, this.WS);
 
     @computed
     get is_payment_agent_visible() {
@@ -203,10 +202,11 @@ export default class CashierStore extends BaseStore {
 
     // Initialise P2P attributes on app load without mounting the entire cashier
     @action.bound
-    init() {
-        this.root_store.menu_store.attach({
+    init({ ws }) {
+        this.WS = ws;
+        this.root_store.menu.attach({
             id: 'dt_cashier_tab',
-            icon: <CashierNotifications />,
+            icon: <CashierNotifications p2p_notification_count={this.p2p_notification_count} />,
             text: () => localize('Cashier'),
             link_to: routes.cashier,
             login_only: true,
@@ -216,7 +216,7 @@ export default class CashierStore extends BaseStore {
             () => [this.root_store.client.is_logged_in, this.root_store.client.residence],
             () => {
                 if (!this.is_p2p_visible && !this.root_store.client.is_virtual) {
-                    WS.authorized.p2pAdvertiserInfo().then(advertiser_info => {
+                    this.WS.authorized.p2pAdvertiserInfo().then(advertiser_info => {
                         const advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
                         this.setIsP2pVisible(advertiser_error !== 'RestrictedCountry');
                     });
@@ -304,7 +304,7 @@ export default class CashierStore extends BaseStore {
             return;
         }
 
-        const response_cashier = await WS.authorized.cashier(this.active_container, { verification_code });
+        const response_cashier = await this.WS.authorized.cashier(this.active_container, { verification_code });
 
         // if tab changed while waiting for response, ignore it
         if (current_container !== this.active_container) {
@@ -505,7 +505,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     submitFundsProtection() {
-        WS.send({ ukgc_funds_protection: 1, tnc_approval: 1 }).then(response => {
+        this.WS.send({ ukgc_funds_protection: 1, tnc_approval: 1 }).then(response => {
             if (response.error) {
                 this.setErrorConfig('message', response.error.message);
             } else {
@@ -591,7 +591,7 @@ export default class CashierStore extends BaseStore {
         const withdrawal_type = `payment${
             this.active_container === this.config.payment_agent.container ? 'agent' : ''
         }_withdraw`;
-        const response_verify_email = await WS.verifyEmail(this.root_store.client.email, withdrawal_type);
+        const response_verify_email = await this.WS.verifyEmail(this.root_store.client.email, withdrawal_type);
 
         if (response_verify_email.error) {
             this.clearVerification();
@@ -662,7 +662,7 @@ export default class CashierStore extends BaseStore {
         // wait for get_settings so residence gets populated in client-store
         // TODO: set residence in client-store from authorize so it's faster
         await BinarySocket.wait('get_settings');
-        return WS.authorized.paymentAgentList(this.root_store.client.residence, this.root_store.client.currency);
+        return this.WS.authorized.paymentAgentList(this.root_store.client.residence, this.root_store.client.currency);
     }
 
     @action.bound
@@ -832,7 +832,7 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async requestTryPaymentAgentWithdraw({ loginid, currency, amount, verification_code }) {
         this.setErrorMessage('');
-        const payment_agent_withdraw = await WS.authorized.paymentAgentWithdraw({
+        const payment_agent_withdraw = await this.WS.authorized.paymentAgentWithdraw({
             loginid,
             currency,
             amount,
@@ -856,7 +856,7 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async requestPaymentAgentWithdraw({ loginid, currency, amount, verification_code }) {
         this.setErrorMessage('');
-        const payment_agent_withdraw = await WS.authorized.paymentAgentWithdraw({
+        const payment_agent_withdraw = await this.WS.authorized.paymentAgentWithdraw({
             loginid,
             currency,
             amount,
@@ -919,7 +919,7 @@ export default class CashierStore extends BaseStore {
         // e.g. new account may have been created, transfer may have been done elsewhere, etc
         // so on load of this page just call it again
         if (this.root_store.client.is_logged_in) {
-            const transfer_between_accounts = await WS.authorized.transferBetweenAccounts();
+            const transfer_between_accounts = await this.WS.authorized.transferBetweenAccounts();
 
             if (transfer_between_accounts.error) {
                 this.setErrorMessage(transfer_between_accounts.error, this.onMountAccountTransfer);
@@ -1012,7 +1012,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async sortAccountsTransfer(response_accounts) {
-        const transfer_between_accounts = response_accounts || (await WS.authorized.transferBetweenAccounts());
+        const transfer_between_accounts = response_accounts || (await this.WS.authorized.transferBetweenAccounts());
         if (!this.config.account_transfer.accounts_list.length) {
             // should have more than one account
             if (transfer_between_accounts.error || transfer_between_accounts.accounts.length <= 1) {
@@ -1183,7 +1183,7 @@ export default class CashierStore extends BaseStore {
         this.setLoading(true);
         this.setErrorMessage('');
         const currency = this.config.account_transfer.selected_from.currency;
-        const transfer_between_accounts = await WS.authorized.transferBetweenAccounts(
+        const transfer_between_accounts = await this.WS.authorized.transferBetweenAccounts(
             this.config.account_transfer.selected_from.value,
             this.config.account_transfer.selected_to.value,
             currency,
@@ -1192,7 +1192,7 @@ export default class CashierStore extends BaseStore {
         if (transfer_between_accounts.error) {
             // if there is fiat2crypto transfer limit error, we need to refresh the account_status for authentication
             if (transfer_between_accounts.error.code === 'Fiat2CryptoTransferOverLimit') {
-                const account_status_response = await WS.authorized.getAccountStatus();
+                const account_status_response = await this.WS.authorized.getAccountStatus();
                 if (!account_status_response.error) {
                     this.root_store.client.setAccountStatus(account_status_response.get_account_status);
                 }
@@ -1210,9 +1210,9 @@ export default class CashierStore extends BaseStore {
                 // if one of the accounts was mt5
                 if (account.mt5_group) {
                     // update the balance for account switcher by renewing the mt5_login_list response
-                    WS.mt5LoginList().then(this.root_store.client.responseMt5LoginList);
+                    this.WS.mt5LoginList().then(this.root_store.client.responseMt5LoginList);
                     // update total balance since MT5 total only comes in non-stream balance call
-                    WS.balanceAll().then(response => {
+                    this.WS.balanceAll().then(response => {
                         this.root_store.client.setBalanceOtherAccounts(response.balance);
                     });
                 }
@@ -1253,7 +1253,7 @@ export default class CashierStore extends BaseStore {
     }
 
     async checkIsPaymentAgent() {
-        const get_settings = (await WS.authorized.storage.getSettings()).get_settings;
+        const get_settings = (await this.WS.authorized.storage.getSettings()).get_settings;
         this.setIsPaymentAgent(get_settings?.is_authenticated_payment_agent ?? false);
     }
 
@@ -1286,7 +1286,7 @@ export default class CashierStore extends BaseStore {
     @action.bound
     requestTryPaymentAgentTransfer = async ({ amount, currency, description, transfer_to }) => {
         this.setErrorMessage('');
-        const payment_agent_transfer = await WS.authorized.paymentAgentTransfer({
+        const payment_agent_transfer = await this.WS.authorized.paymentAgentTransfer({
             amount,
             currency,
             description,
@@ -1321,7 +1321,7 @@ export default class CashierStore extends BaseStore {
     @action.bound
     requestPaymentAgentTransfer = async ({ amount, currency, description, transfer_to }) => {
         this.setErrorMessage('');
-        const payment_agent_transfer = await WS.authorized.paymentAgentTransfer({
+        const payment_agent_transfer = await this.WS.authorized.paymentAgentTransfer({
             amount,
             currency,
             description,

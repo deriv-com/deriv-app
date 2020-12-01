@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Counter } from '@deriv/components';
-import { connect } from 'Stores/connect';
 
 const CashierNotifications = ({ p2p_notification_count }) => (
     <React.Fragment>

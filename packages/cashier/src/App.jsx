@@ -2,7 +2,6 @@ import React from 'react';
 import Routes from './Containers/routes.jsx';
 import { setWebsocket } from './Services/ws-methods';
 import { MobxContentProvider } from './Stores/connect';
-import initStore from './Stores/init-store';
 
 class App extends React.Component {
     constructor(props) {
@@ -10,8 +9,8 @@ class App extends React.Component {
         const {
             passthrough: { WS, root_store },
         } = props;
-        this.root_store = initStore(root_store, WS);
         setWebsocket(WS);
+        this.root_store = root_store;
     }
 
     render() {

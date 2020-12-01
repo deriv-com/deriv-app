@@ -3,7 +3,6 @@ import { action, computed, observable, reaction, runInAction, toJS, when } from 
 import moment from 'moment';
 import {
     redirectToLogin,
-    getMT5AccountType,
     getPropertyValue,
     getUrlSmartTrader,
     isDesktopOs,
@@ -1725,13 +1724,10 @@ export default class ClientStore extends BaseStore {
         }, 60000);
 
         if (!response.error) {
-            this.mt5_login_list = response.mt5_login_list
-                .filter(account => !/inactive/.test(account.group)) // remove disabled mt5 accounts
-                .map(account => ({
-                    ...account,
-                    group: getMT5AccountType(account.group),
-                    display_login: account.login.replace(/^(MT[DR]?)/i, ''),
-                }));
+            this.mt5_login_list = response.mt5_login_list.map(account => ({
+                ...account,
+                display_login: account.login.replace(/^(MT[DR]?)/i, ''),
+            }));
         } else {
             this.mt5_login_list_error = response.error;
         }

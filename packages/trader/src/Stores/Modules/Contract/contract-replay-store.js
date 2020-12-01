@@ -15,7 +15,7 @@ export default class ContractReplayStore extends BaseStore {
     @observable error_message = '';
     @observable error_code = '';
     @observable is_chart_loading = true;
-    @observable is_chart_fitting = false;
+    @observable is_chart_scaling = false;
     // ---- chart props
     @observable margin;
 
@@ -163,17 +163,24 @@ export default class ContractReplayStore extends BaseStore {
     chartStateChange(state) {
         this.chart_state = state;
 
+        // SmartChart has a weird interaction for getting scale 1:1,
+        // the process of loading an expired contract should follow this,
+        // show loading, first load the chart, then add the endEpoch then request for
+        // scale 1:1 and then wait till chart perform the scale 1:1 then
+        // hide the loading.
         switch (state) {
             case 'INITIAL':
-                this.is_chart_fitting = false;
+                this.is_chart_scaling = false;
                 break;
             case 'READY':
                 setTimeout(
-                    action(() => (this.is_chart_fitting = true)),
+                    action(() => (this.is_chart_scaling = true)),
                     100
                 );
                 break;
             case 'SCROLL_TO_LEFT':
+                // this Delay is for when the chart try to sacle 1:1 and we want to hide
+                // scale 1:1 jumping from the user
                 setTimeout(
                     action(() => {
                         this.is_chart_loading = false;

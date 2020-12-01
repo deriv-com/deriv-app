@@ -3,55 +3,39 @@ import classNames from 'classnames';
 import React from 'react';
 import Icon from '../icon';
 
-class MultiStep extends React.Component {
-    state = {
-        step: 0,
-        component: this.props.steps[0].component,
-    };
+const MultiStep = React.forwardRef(({ className, lbl_previous, steps }, ref) => {
+    const [step, setStep] = React.useState(0);
+    const [component, setComponent] = React.useState(steps[0].component);
 
-    nextStep = () => {
-        this.setState(
-            {
-                step: this.state.step + 1,
-            },
-            () =>
-                this.setState({
-                    component: this.props.steps[this.state.step].component,
-                })
-        );
-    };
+    React.useEffect(() => {
+        setComponent(steps[step].component);
+    }, [step, steps]);
 
-    prevStep = () => {
-        this.setState(
-            {
-                step: this.state.step - 1,
-            },
-            () =>
-                this.setState({
-                    component: this.props.steps[this.state.step].component,
-                })
-        );
-    };
+    React.useImperativeHandle(ref, () => ({
+        goNextStep,
+    }));
 
-    prevButton = () =>
-        this.state.step !== 0 && (
-            <div className='multi-step__header'>
-                <a onClick={this.prevStep} className='multi-step__btn'>
-                    <Icon icon='IcArrowLeftBold' className='multi-step__btn-icon' />
-                    {this.props.lbl_previous}
-                </a>
-            </div>
-        );
+    const goNextStep = () => setStep(step + 1);
+    const goPrevStep = () => setStep(step - 1);
 
-    render() {
-        return (
-            <div className={classNames('multi-step', this.props.className)}>
-                {this.prevButton()}
-                <div className='multi-step__component'>{this.state.component}</div>
-            </div>
-        );
-    }
-}
+    const prev_btn = (
+        <div className='multi-step__header'>
+            <a onClick={goPrevStep} className='multi-step__btn'>
+                <Icon icon='IcArrowLeftBold' className='multi-step__btn-icon' />
+                {lbl_previous}
+            </a>
+        </div>
+    );
+
+    return (
+        <div className={classNames('multi-step', className)}>
+            {step !== 0 && prev_btn}
+            <div className='multi-step__component'>{component}</div>
+        </div>
+    );
+});
+
+MultiStep.displayName = 'MultiStep';
 
 MultiStep.propTypes = {
     className: PropTypes.string,

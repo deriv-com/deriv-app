@@ -23,7 +23,7 @@ export default class OrderStore {
         const order = this.orders.find(o => o.id === this.order_id);
 
         return order
-            ? createExtendedOrderDetails(order, general_store.props.loginid, general_store.props.server_time)
+            ? createExtendedOrderDetails(order, general_store.client.loginid, general_store.props.server_time)
             : null;
     }
 

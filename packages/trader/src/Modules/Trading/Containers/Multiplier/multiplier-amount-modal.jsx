@@ -124,6 +124,7 @@ const TradeParamsMobile = ({ amount, currency, toggleModal, trade_store }) => {
                 should_show_tooltip
                 commission={commission}
                 stop_out={stop_out}
+                amount={stake_value}
             />
         </React.Fragment>
     );

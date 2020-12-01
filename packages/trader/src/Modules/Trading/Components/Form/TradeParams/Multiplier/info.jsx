@@ -117,7 +117,7 @@ MultipliersInfo.propTypes = {
 };
 
 export default connect(({ modules }, props) => ({
-    amount: modules.trade.amount,
+    amount: props.amount ?? modules.trade.amount,
     commission: props.commission ?? modules.trade.commission,
     currency: modules.trade.currency,
     has_stop_loss: modules.trade.has_stop_loss,

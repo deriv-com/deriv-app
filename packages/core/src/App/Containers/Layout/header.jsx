@@ -34,9 +34,9 @@ const Header = ({
     is_logging_in,
     is_mt5_allowed,
     is_notifications_visible,
-    // is_p2p_enabled,
-    // is_payment_agent_transfer_visible,
-    // is_payment_agent_visible,
+    is_p2p_enabled,
+    is_payment_agent_transfer_visible,
+    is_payment_agent_visible,
     is_route_modal_on,
     is_virtual,
     location,
@@ -94,9 +94,9 @@ const Header = ({
                             logoutClient={logoutClient}
                             is_dark_mode={is_dark_mode}
                             is_logged_in={is_logged_in}
-                            // is_p2p_enabled={is_p2p_enabled}
-                            // is_payment_agent_transfer_visible={is_payment_agent_transfer_visible}
-                            // is_payment_agent_visible={is_payment_agent_visible}
+                            is_p2p_enabled={is_p2p_enabled}
+                            is_payment_agent_transfer_visible={is_payment_agent_transfer_visible}
+                            is_payment_agent_visible={is_payment_agent_visible}
                             is_virtual={is_virtual}
                             needs_financial_assessment={needs_financial_assessment}
                             toggleTheme={setDarkMode}
@@ -194,7 +194,7 @@ Header.propTypes = {
     toggleNotifications: PropTypes.func,
 };
 
-export default connect(({ client, common, ui, menu }) => ({
+export default connect(({ client, common, ui, menu, modules }) => ({
     acc_switcher_disabled_message: ui.account_switcher_disabled_message,
     account_status: client.account_status,
     should_allow_authentication: client.should_allow_authentication,
@@ -214,9 +214,9 @@ export default connect(({ client, common, ui, menu }) => ({
     is_logging_in: client.is_logging_in,
     is_mt5_allowed: client.is_mt5_allowed,
     is_notifications_visible: ui.is_notifications_visible,
-    // is_p2p_enabled: modules.cashier.is_p2p_enabled,
-    // is_payment_agent_transfer_visible: modules.cashier.is_payment_agent_transfer_visible,
-    // is_payment_agent_visible: modules.cashier.is_payment_agent_visible,
+    is_p2p_enabled: modules.cashier.is_p2p_enabled,
+    is_payment_agent_transfer_visible: modules.cashier.is_payment_agent_transfer_visible,
+    is_payment_agent_visible: modules.cashier.is_payment_agent_visible,
     is_route_modal_on: ui.is_route_modal_on,
     is_virtual: client.is_virtual,
     logoutClient: client.logout,

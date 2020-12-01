@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import P2P from '@deriv/p2p';
 import { getLanguage } from '@deriv/translations';
+import { routes } from '@deriv/shared';
+import { Loading } from '@deriv/components';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 import ServerTime from '_common/server_time';
-import { routes } from '@deriv/shared';
-import { Loading } from '@deriv/components';
 
 /* P2P will use the same websocket connection as Deriv/Binary, we need to pass it as a prop */
 const P2PCashier = ({

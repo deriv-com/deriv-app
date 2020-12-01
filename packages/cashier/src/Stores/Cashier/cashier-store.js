@@ -14,7 +14,6 @@ import {
     getMT5Account,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import BinarySocket from '_common/socket_base';
 import OnRampStore from './on-ramp-store';
 import BaseStore from '../base-store';
 import CashierNotifications from '../../Containers/cashier-notifications.jsx';
@@ -656,12 +655,12 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async getPaymentAgentList() {
         if (this.config.payment_agent.list.length) {
-            return BinarySocket.wait('paymentagent_list');
+            return this.WS.wait('paymentagent_list');
         }
 
         // wait for get_settings so residence gets populated in client-store
         // TODO: set residence in client-store from authorize so it's faster
-        await BinarySocket.wait('get_settings');
+        await this.WS.wait('get_settings');
         return this.WS.authorized.paymentAgentList(this.root_store.client.residence, this.root_store.client.currency);
     }
 
@@ -901,7 +900,7 @@ export default class CashierStore extends BaseStore {
         this.setLoading(true);
         this.onRemount = this.onMountAccountTransfer;
         await this.onMountCommon();
-        await BinarySocket.wait('website_status');
+        await this.WS.wait('website_status');
 
         // check if some balance update has come in since the last mount
         const has_updated_account_balance =

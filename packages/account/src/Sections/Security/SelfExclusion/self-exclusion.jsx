@@ -20,9 +20,9 @@ import {
     isDesktop,
     isMobile,
     formatMoney,
-    hasCorrectDecimalPlaces,
     getDecimalPlaces,
     getCurrencyDisplayCode,
+    validNumber,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -101,44 +101,17 @@ class SelfExclusion extends React.Component {
         const { currency, is_eu, is_cr } = this.props;
         const errors = {};
         // Regex
-        const is_number = /^\d+(\.\d+)?$/;
-        const is_integer = /^\d+$/;
         const max_number = this.exclusion_fields_settings.max_number;
         const six_weeks = this.exclusion_fields_settings.six_weeks; // in minutes
 
-        // Messages
-        const valid_number_message = localize('Should be a valid number');
-        const more_than_equal_zero_message = localize('Please input number greater than or equal to 0');
         const more_than_zero_message = localize('Please input number greater than 0');
-        const max_number_message = localize('Reached maximum number of digits');
-        const max_decimal_message = (
-            <Localize
-                i18n_default_text='Reached maximum number of decimals: {{decimal}}'
-                values={{ decimal: getDecimalPlaces(currency) }}
-            />
-        );
 
-        const getLimitNumberMessage = current_value => (
-            <Localize
-                i18n_default_text='Please enter a number between 0 and {{current_value}}'
-                values={{ current_value }}
-            />
-        );
+        const getSmallestMinValue = decimals =>
+            `0.${Array(decimals - 1)
+                .fill(0)
+                .join('')}1`;
 
-        const only_numbers = [
-            'max_deposit',
-            'max_7day_deposit',
-            'max_30day_deposit',
-            'max_turnover',
-            'max_losses',
-            'max_7day_turnover',
-            'max_7day_losses',
-            'max_30day_turnover',
-            'max_30day_losses',
-            'max_balance',
-            'max_open_bets',
-            'session_duration_limit',
-        ];
+        const only_numbers = ['max_open_bets', 'session_duration_limit'];
         const only_currency = [
             'max_deposit',
             'max_7day_deposit',
@@ -151,7 +124,6 @@ class SelfExclusion extends React.Component {
             'max_30day_losses',
             'max_balance',
         ];
-        const only_integers = ['session_duration_limit', 'max_open_bets'];
 
         if (values.session_duration_limit) {
             if (values.session_duration_limit > six_weeks) {
@@ -181,40 +153,30 @@ class SelfExclusion extends React.Component {
 
         only_numbers.forEach(item => {
             if (values[item]) {
-                if (!is_number.test(values[item])) {
-                    errors[item] = valid_number_message;
-                } else if (
-                    this.state.self_exclusions[item] &&
-                    +values[item] > +this.state.self_exclusions[item] &&
-                    is_eu
-                ) {
-                    errors[item] = getLimitNumberMessage(this.state.self_exclusions[item]);
-                } else if (this.state.self_exclusions[item] && +values[item] < 0 && !is_eu) {
-                    errors[item] = more_than_equal_zero_message;
-                } else if (+values[item] <= 0 && is_eu) {
-                    errors[item] = more_than_zero_message;
-                } else if (+values[item] > max_number) {
-                    errors[item] = max_number_message;
-                }
+                const { is_ok, message } = validNumber(values[item], {
+                    type: 'integer',
+                    min: is_eu ? 1 : null,
+                    max: this.state.self_exclusions[item] || max_number,
+                });
+                if (!is_ok) errors[item] = message;
             }
-            if (+this.state.self_exclusions[item] && !values[item] && !is_cr) {
+            if (this.state.self_exclusions[item] && !values[item] && !is_cr) {
                 errors[item] = more_than_zero_message;
-            }
-        });
-
-        only_integers.forEach(item => {
-            if (values[item]) {
-                if (!is_integer.test(values[item])) {
-                    errors[item] = valid_number_message;
-                }
             }
         });
 
         only_currency.forEach(item => {
             if (values[item]) {
-                if (!hasCorrectDecimalPlaces(currency, values[item])) {
-                    errors[item] = max_decimal_message;
-                }
+                const { is_ok, message } = validNumber(values[item], {
+                    type: 'float',
+                    decimals: getDecimalPlaces(currency),
+                    min: is_eu ? getSmallestMinValue(getDecimalPlaces(currency)) : null,
+                    max: this.state.self_exclusions[item] || max_number,
+                });
+                if (!is_ok) errors[item] = message;
+            }
+            if (this.state.self_exclusions[item] && !values[item] && !is_cr) {
+                errors[item] = more_than_zero_message;
             }
         });
 
@@ -319,9 +281,9 @@ class SelfExclusion extends React.Component {
     getMaxLength = field => {
         const { currency, is_cr } = this.props;
 
-        const decimalsLength = getDecimalPlaces(currency) + 1; // add 1 to allow typing dot
+        const decimals_length = getDecimalPlaces(currency) + 1; // add 1 to allow typing dot
         const isIntegerField = value => /session_duration_limit|max_open_bets/.test(value);
-        const getLength = value => value.toString().length + (isIntegerField(value) ? 0 : decimalsLength);
+        const getLength = value => value.toString().length + (isIntegerField(value) ? 0 : decimals_length);
 
         if (!this.state.self_exclusions[field] || is_cr) {
             if (/max_open_bets/.test(field)) return 9; // TODO: remove when the error is fixed on BE
@@ -471,7 +433,6 @@ class SelfExclusion extends React.Component {
                                                     const need_minutes = ['session_duration_limit'];
                                                     const need_amount = ['max_open_bets'];
                                                     let value = '';
-
                                                     if (need_date_format.includes(key)) {
                                                         value = toMoment(values[key]).format('DD/MM/YYYY');
                                                     } else if (need_money_format.includes(key)) {
@@ -486,7 +447,6 @@ class SelfExclusion extends React.Component {
                                                         value = `${values[key]}`;
                                                     }
                                                     const checked_value = +values[key] === 0 ? 'Removed' : value;
-
                                                     return (
                                                         <div key={idx} className='self-exclusion__confirm-item'>
                                                             <p className='self-exclusion__confirm-label'>

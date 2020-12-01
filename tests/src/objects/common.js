@@ -68,8 +68,9 @@ class Common {
         await this.page.fill('[name="server"]', endpoint_server);
         await this.page.fill('[name="app_id"]', app_id);
         await this.page.press('[name="app_id"]', 'Tab');
+        await this.page.waitForSelector('text=Submit');
         await this.page.click('text=Submit');
-        await this.page.waitForNavigation();
+        await this.page.waitForLoadState('load');
         await qawolf.saveState(this.page, LOGIN_STATE_PATH);
     }
 
@@ -114,6 +115,7 @@ class Common {
     }
 
     async navigate() {
+        await this.blockExternals();
         if (process.env.QA_SETUP === 'true') {
             await this.connectToQA();
         }
@@ -378,6 +380,12 @@ class Common {
     async loadStateVRTC() {
         await qawolf.setState(this.page, VIRTUAL_SIGNUP_STATE);
         await this.page.reload();
+    }
+
+    async blockExternals() {
+        await this.page.route('**/*', route => {
+            return /(livechatinc|datadog|smarttrader)/.test(route.request().url()) ? route.abort() : route.continue();
+        });
     }
 
     checkIfStateExists = target => {

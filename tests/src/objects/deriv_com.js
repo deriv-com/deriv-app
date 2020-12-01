@@ -23,11 +23,7 @@ class DerivCom extends Common {
     }
 
     async signup(email) {
-        if (await this.isMobile()) {
-            await this.page.click('text=Create free demo account');
-        } else {
-            await this.page.click('text=Start trading');
-        }
+        await this.page.click('text=Start trading');
         await this.page.waitForTimeout(1000);
         await this.page.waitForLoadState('domcontentloaded');
 

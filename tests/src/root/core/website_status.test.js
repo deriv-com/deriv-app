@@ -19,7 +19,9 @@ afterEach(async () => {
 });
 
 test('It should send website_status on page start', async () => {
-    await page.goto(process.env.HOME_URL);
+
+
+    await page.navigate();
     const message = await waitForWSSubset(page, {
         website_status: {
             site_status: "up",

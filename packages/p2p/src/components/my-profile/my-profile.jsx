@@ -95,7 +95,7 @@ const MyProfile = observer(() => {
                             classNameBubble='my-profile__balance-popover'
                             alignment='top'
                             message={localize(
-                                "These fields are based on the last 24 hours' activity: Buy, Sell, and Limit."
+                                'DP2P balance is a sum of non-reversible deposits into your account (via bank wire, e-wallets, etc.) + reversible deposits (via debit and credit cards).'
                             )}
                             zIndex={2}
                         >

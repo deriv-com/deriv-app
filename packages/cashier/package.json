@@ -25,7 +25,7 @@
     "url": "git+https://github.com/reza-fs/deriv-app.git"
   },
   "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1",
+    "test": "echo \"No test specified\"",
     "serve": "echo \"Serving...\" && webpack --progress --watch --config \"./build/webpack.config.js\"",
     "build": "f () { webpack --config \"./build/webpack.config.js\" --env.base $1;}; f"
   },

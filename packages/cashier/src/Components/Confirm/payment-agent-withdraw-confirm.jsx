@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 import { Money } from '@deriv/components';
+import { connect } from 'Stores/connect';
 import Confirm from '../confirm.jsx';
 
 const PaymentAgentWithdrawConfirm = ({

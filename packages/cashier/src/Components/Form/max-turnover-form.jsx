@@ -1,10 +1,10 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Formik, Form, Field } from 'formik';
 import { getDecimalPlaces, routes, validNumber } from '@deriv/shared';
 import { Button, Input } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import BinaryLink from 'Routes/binary-link.jsx';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services';
 
@@ -80,7 +80,7 @@ const MaxTurnoverForm = ({ onMount, setErrorConfig, currency }) => {
                             <Localize
                                 i18n_default_text='You can further control the amount of money and time you spend on your trading activities on the <0>Self-exclusion</0> page.'
                                 components={[
-                                    <BinaryLink key={0} className='link link--orange' to={routes.self_exclusion} />,
+                                    <NavLink key={0} className='link link--orange' to={routes.self_exclusion} />,
                                 ]}
                             />
                         </p>

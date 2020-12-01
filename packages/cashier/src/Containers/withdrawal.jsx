@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { connect } from 'Stores/connect';
 import { Localize } from '@deriv/translations';
 import { isDesktop } from '@deriv/shared';
+import { connect } from 'Stores/connect';
 import Withdraw from '../Components/withdraw.jsx';
 import SendEmail from '../Components/Email/send-email.jsx';
 import Error from '../Components/Error/error.jsx';

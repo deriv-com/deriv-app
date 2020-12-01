@@ -326,7 +326,7 @@ const AccountTransferForm = ({
                                             className='cashier__input dc-input--no-placeholder account-transfer__input'
                                             type='text'
                                             label={localize('Amount')}
-                                            error={touched.amount && errors.amount}
+                                            error={touched.amount && errors.amount ? errors.amount : ''}
                                             required
                                             trailing_icon={
                                                 selected_from.currency ? (

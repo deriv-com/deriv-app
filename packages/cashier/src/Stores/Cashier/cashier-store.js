@@ -166,7 +166,7 @@ export default class CashierStore extends BaseStore {
         [this.config.payment_agent.container]: 'payment_agent_withdraw',
     };
 
-    onramp = new OnRampStore(this.root_store, this.WS);
+    onramp = new OnRampStore(this.root_store);
 
     @computed
     get is_payment_agent_visible() {

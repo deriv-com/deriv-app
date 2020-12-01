@@ -34,7 +34,7 @@ const Account = React.lazy(() => {
 const Cashier = React.lazy(() => {
     const el_head = document.querySelector('head');
     const el_main_css = document.createElement('link');
-    el_main_css.href = getUrlBase('/cashier/css/cashier.css');
+    el_main_css.href = getUrlBase('/css/cashier.css');
     el_main_css.rel = 'stylesheet';
     el_main_css.type = 'text/css';
     el_head.appendChild(el_main_css);

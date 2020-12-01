@@ -19,9 +19,8 @@ export default class OnRampStore extends BaseStore {
 
     deposit_address_ref = null;
 
-    constructor(root_store, WS) {
+    constructor(root_store) {
         super({ root_store });
-        this.WS = WS;
 
         this.onClientInit(async () => {
             const { client } = root_store;
@@ -189,26 +188,28 @@ export default class OnRampStore extends BaseStore {
 
         const deposit_address_interval = setInterval(() => getDepositAddressFromApi, 3000);
         const getDepositAddressFromApi = () => {
-            this.WS.authorized.cashier('deposit', { provider: 'crypto', type: 'api' }).then(response => {
-                let should_clear_interval = false;
+            this.root_store.modules.cashier.WS.authorized
+                .cashier('deposit', { provider: 'crypto', type: 'api' })
+                .then(response => {
+                    let should_clear_interval = false;
 
-                if (response.error) {
-                    this.setApiError(response.error);
-                    should_clear_interval = true;
-                } else {
-                    const { address } = response.cashier.deposit;
-
-                    if (address || should_allow_empty_address) {
-                        this.setDepositAddress(address);
+                    if (response.error) {
+                        this.setApiError(response.error);
                         should_clear_interval = true;
-                    }
-                }
+                    } else {
+                        const { address } = response.cashier.deposit;
 
-                if (should_clear_interval) {
-                    clearInterval(deposit_address_interval);
-                    this.setIsDepositAddressLoading(false);
-                }
-            });
+                        if (address || should_allow_empty_address) {
+                            this.setDepositAddress(address);
+                            should_clear_interval = true;
+                        }
+                    }
+
+                    if (should_clear_interval) {
+                        clearInterval(deposit_address_interval);
+                        this.setIsDepositAddressLoading(false);
+                    }
+                });
         };
 
         getDepositAddressFromApi();

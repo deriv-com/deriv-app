@@ -80,6 +80,12 @@
         & .dc-table__row {
             border-bottom: unset;
         }
+        & .dc-content-expander__select-arrow {
+            align-self: start;
+        }
+        & .dc-content-expander {
+            height: unset;
+        }
         &-separator {
             width: 100vw;
             height: 1px;
@@ -91,7 +97,7 @@
         &-header {
             display: flex;
             justify-content: space-between;
-            margin: 0.4rem 0rem 0.8rem;
+            margin-bottom: 0.4rem;
             align-items: center;
 
             &-right {
@@ -103,10 +109,13 @@
             margin-top: 1.6rem;
             grid-template-columns: repeat(2, 1fr);
             align-items: center;
-            grid-auto-rows: 6.2rem;
-            padding: 0.8rem;
+
+            & > div {
+                padding: 1.6rem 0.8rem 0rem;
+                align-self: start;
+            }
             &__title {
-                margin-bottom: 1.6rem;
+                margin-bottom: 0.8rem;
             }
         }
 
@@ -125,8 +134,7 @@
         }
         &-status {
             width: auto;
-            padding: 0rem 1.6rem;
-            height: 2.4rem;
+            padding: 0.2rem 1.6rem;
             font-weight: bold;
             text-align: center;
             font-size: var(--text-size-xs);

@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { localize } from 'Components/i18next';
+import { localize, Localize } from 'Components/i18next';
 import { secondsToTimer } from 'Utils/date-time';
 import ServerTime from 'Utils/server-time';
 import { createExtendedOrderDetails } from 'Utils/orders';
@@ -72,21 +72,20 @@ const OrderRowComponent = observer(component_props => {
     const is_buy_order_type_for_user = (is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad);
     const order_type = is_buy_order_type_for_user ? localize('Buy') : localize('Sell');
 
-    const title = () => {
+    const Title = () => {
         const send_amount = is_buy_order_type_for_user ? transaction_amount : offer_amount;
         return (
             <React.Fragment>
-                <div className='orders__expander-content__title' as='p'>
-                    <Text size='sm' weight='bold'>
-                        {order_type} {send_amount}
-                    </Text>
-                    <Text color='less-prominent' as='p' size='xxs'>
-                        {order_purchase_datetime}
-                    </Text>
-                </div>
+                <Text size='sm' line_height='xxs' weight='bold' as='p' className='orders__expander-content__title'>
+                    {order_type} {send_amount}
+                </Text>
+                <Text color='less-prominent' as='p' line_height='xxs' size='xxs'>
+                    {order_purchase_datetime}
+                </Text>
             </React.Fragment>
         );
     };
+
     return (
         <React.Fragment>
             {isMobile() ? (
@@ -127,12 +126,12 @@ const OrderRowComponent = observer(component_props => {
                             </Table.Cell>
                         </Table.Row>
                     </div>
-                    <ContentExpander measure={measure} title={title()} is_expanded={false} is_title_spaced>
+                    <ContentExpander measure={measure} title={<Title />} is_expanded={false} is_title_spaced>
                         <div className='orders__expander-separator' />
                         <div className='orders__expander-content'>
                             <div>
                                 <Text color='less-prominent' as='p' size='xxs' line_height='m'>
-                                    {localize('Counterparty')}
+                                    <Localize i18n_default_text='Counterparty' />
                                 </Text>
                                 <Text color='prominent' as='p' size='xs' line_height='m'>
                                     {other_user_details.name}
@@ -140,7 +139,7 @@ const OrderRowComponent = observer(component_props => {
                             </div>
                             <div>
                                 <Text color='less-prominent' as='p' size='xxs' line_height='m'>
-                                    {localize('Order ID')}
+                                    <Localize i18n_default_text='Order ID' />
                                 </Text>
                                 <Text color='prominent' as='p' size='xs' line_height='m'>
                                     {id}
@@ -148,7 +147,7 @@ const OrderRowComponent = observer(component_props => {
                             </div>
                             <div>
                                 <Text color='less-prominent' as='p' size='xxs' line_height='m'>
-                                    {localize('Send')}
+                                    <Localize i18n_default_text='Send' />
                                 </Text>
                                 <Text color='prominent' as='p' size='xs' line_height='m'>
                                     {is_buy_order_type_for_user ? transaction_amount : offer_amount}
@@ -156,7 +155,7 @@ const OrderRowComponent = observer(component_props => {
                             </div>
                             <div>
                                 <Text color='less-prominent' as='p' size='xxs' line_height='m'>
-                                    {localize('Receive')}
+                                    <Localize i18n_default_text='Receive' />
                                 </Text>
                                 <Text color='prominent' as='p' size='xs' line_height='m'>
                                     {is_buy_order_type_for_user ? offer_amount : transaction_amount}

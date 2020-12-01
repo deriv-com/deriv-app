@@ -1,4 +1,4 @@
-// import PropTypes        from 'prop-types';
+import PropTypes from 'prop-types';
 import React from 'react';
 import { MultiStep } from '@deriv/components';
 import { localize } from '@deriv/translations';
@@ -7,38 +7,37 @@ import { connect } from 'Stores/connect';
 import ChangePasswordForm from './change-password-form.jsx';
 import ForgotYourPassword from './forgot-your-password.jsx';
 
-class DerivPassword extends React.Component {
-    constructor(props) {
-        super(props);
-        this.steps = [
-            {
-                component: (
-                    <ChangePasswordForm
-                        onClickSendEmail={() => {
-                            WS.verifyEmail(this.props.email, 'reset_password');
-                            this.node.nextStep(); // go to the next step
-                        }}
-                    />
-                ),
-            },
-            {
-                component: (
-                    <ForgotYourPassword
-                        onClickSendEmail={() => {
-                            WS.verifyEmail(this.props.email, 'reset_password');
-                        }}
-                    />
-                ),
-            },
-        ];
-    }
+const DerivPassword = ({ email }) => {
+    const multi_step_ref = React.useRef();
 
-    render() {
-        return <MultiStep ref={node => (this.node = node)} steps={this.steps} lbl_previous={localize('Back')} />;
-    }
-}
+    const steps = [
+        {
+            component: (
+                <ChangePasswordForm
+                    onClickSendEmail={() => {
+                        WS.verifyEmail(email, 'reset_password');
+                        multi_step_ref?.current.goNextStep();
+                    }}
+                />
+            ),
+        },
+        {
+            component: (
+                <ForgotYourPassword
+                    onClickSendEmail={() => {
+                        WS.verifyEmail(email, 'reset_password');
+                    }}
+                />
+            ),
+        },
+    ];
 
-// DerivPassword.propTypes = {};
+    return <MultiStep ref={multi_step_ref} steps={steps} lbl_previous={localize('Back')} />;
+};
+
+DerivPassword.propTypes = {
+    email: PropTypes.string,
+};
 
 export default connect(({ client }) => ({
     email: client.email,

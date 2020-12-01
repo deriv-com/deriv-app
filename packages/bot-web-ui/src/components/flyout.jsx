@@ -9,8 +9,6 @@ import HelpBase from './help-contents/flyout-help-base.jsx';
 import { connect } from '../stores/connect';
 import '../assets/sass/flyout.scss';
 
-const Hr = () => <div className='flyout__hr' />;
-
 const SearchResult = ({ search_term, total_result }) => (
     <div className='flyout__search-header'>
         <span className='flyout__search-header-text'>
@@ -134,33 +132,30 @@ const FlyoutContent = props => {
                                 const callback = button_cb || (() => {});
 
                                 return (
-                                    <React.Fragment key={`fragment_${index}`}>
-                                        <button
-                                            key={`${cb_key}${index}`}
-                                            className={classNames(
-                                                'dc-btn',
-                                                'dc-btn-effect',
-                                                'dc-btn--primary',
-                                                `${node.getAttribute('className')}`
-                                            )}
-                                            onClick={button => {
-                                                const flyout_button = button;
+                                    <button
+                                        key={`${cb_key}${index}`}
+                                        className={classNames(
+                                            'dc-btn',
+                                            'dc-btn-effect',
+                                            'dc-btn--primary',
+                                            `${node.getAttribute('className')}`
+                                        )}
+                                        onClick={button => {
+                                            const flyout_button = button;
 
-                                                // Workaround for not having a flyout workspace.
+                                            // Workaround for not having a flyout workspace.
+                                            // eslint-disable-next-line no-underscore-dangle
+                                            flyout_button.targetWorkspace_ = Blockly.derivWorkspace;
+                                            flyout_button.getTargetWorkspace = () => {
                                                 // eslint-disable-next-line no-underscore-dangle
-                                                flyout_button.targetWorkspace_ = Blockly.derivWorkspace;
-                                                flyout_button.getTargetWorkspace = () => {
-                                                    // eslint-disable-next-line no-underscore-dangle
-                                                    return flyout_button.targetWorkspace_;
-                                                };
+                                                return flyout_button.targetWorkspace_;
+                                            };
 
-                                                callback(flyout_button);
-                                            }}
-                                        >
-                                            {node.getAttribute('text')}
-                                        </button>
-                                        <Hr />
-                                    </React.Fragment>
+                                            callback(flyout_button);
+                                        }}
+                                    >
+                                        {node.getAttribute('text')}
+                                    </button>
                                 );
                             }
                             default:

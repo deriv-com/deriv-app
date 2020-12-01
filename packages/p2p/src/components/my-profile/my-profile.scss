@@ -1,4 +1,23 @@
 .my-profile {
+    &__balance {
+        &-wrapper {
+            @include tablet-up {
+                width: 657px;
+                margin: 1.6rem 0;
+            }
+
+            @include mobile {
+                margin: 1.6rem;
+            }
+        }
+
+        display: flex;
+        align-items: center;
+
+        &-amount {
+            margin: 0.4rem 0.8rem 0.4rem 0;
+        }
+    }
     &__content {
         @include mobile {
             margin-bottom: 10rem;
@@ -38,18 +57,6 @@
             align-self: center;
             height: fit-content;
             width: fit-content;
-        }
-        &-verification {
-            align-items: center;
-            display: flex;
-
-            &-status {
-                margin-left: 1.6rem;
-            }
-            &-icon {
-                margin-left: 0.4rem;
-                vertical-align: bottom;
-            }
         }
     }
     &__stats {

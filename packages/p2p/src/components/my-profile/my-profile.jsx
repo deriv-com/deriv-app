@@ -1,11 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, Form, Formik } from 'formik';
-import { Button, Icon, Input, Loading, Popover, Table, ThemedScrollbars, Text } from '@deriv/components';
+import {
+    Button,
+    Icon,
+    Input,
+    LineSeparatedComponents,
+    Loading,
+    Popover,
+    Table,
+    ThemedScrollbars,
+    Text,
+    Money,
+} from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
-import { localize } from 'Components/i18next';
+import { localize, Localize } from 'Components/i18next';
 import { generateHexColourFromNickname, getShortNickname } from 'Utils/string';
 import { useStores } from 'Stores';
 import FormError from '../form/error.jsx';
@@ -17,12 +28,11 @@ const MyProfile = observer(() => {
     const [has_on_screen_keyboard, setHasOnScreenKeyboard] = React.useState(false);
 
     const {
-        basic_verification,
+        balance_available,
         daily_buy,
         daily_buy_limit,
         daily_sell,
         daily_sell_limit,
-        full_verification,
         total_orders_count,
     } = my_profile_store.advertiser_info;
 
@@ -66,32 +76,33 @@ const MyProfile = observer(() => {
                             </Text>
                         </div>
                     </div>
-                    <div className='my-profile__header-verification'>
-                        {basic_verification ? (
-                            <div>
-                                <Text color='less-prominent' size='xs'>
-                                    {localize('ID verified')}
-                                </Text>
-                                <Icon
-                                    className='my-profile__header-verification-icon'
-                                    icon='IcCashierVerificationBadge'
-                                    size={16}
-                                />
-                            </div>
-                        ) : null}
-                        {full_verification ? (
-                            <div className='my-profile__header-verification-status'>
-                                {localize('Address verified')}
-                                <Icon
-                                    className='my-profile__header-verification-icon'
-                                    icon='IcCashierVerificationBadge'
-                                    size={16}
-                                />
-                            </div>
-                        ) : null}
-                    </div>
                 </div>
-
+                <LineSeparatedComponents className='my-profile__balance-wrapper' is_invisible_line={isMobile()}>
+                    <Text size='xs' line_height='m' color='less-prominent'>
+                        <Localize i18n_default_text='Available DP2P balance' />
+                    </Text>
+                    <div className='my-profile__balance'>
+                        <Text
+                            className='my-profile__balance-amount'
+                            color='prominent'
+                            line_height='m'
+                            size={isMobile() ? 'xs' : 's'}
+                            weight='bold'
+                        >
+                            <Money amount={balance_available} currency={currency} show_currency />
+                        </Text>
+                        <Popover
+                            classNameBubble='my-profile__balance-popover'
+                            alignment='top'
+                            message={localize(
+                                "These fields are based on the last 24 hours' activity: Buy, Sell, and Limit."
+                            )}
+                            zIndex={2}
+                        >
+                            <Icon icon='IcInfoOutline' size={16} />
+                        </Popover>
+                    </div>
+                </LineSeparatedComponents>
                 <React.Fragment>
                     <Table>
                         <Table.Row className='my-profile__stats'>

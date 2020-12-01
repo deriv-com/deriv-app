@@ -6,6 +6,7 @@ import BaseStore from 'Stores/base_store';
 
 export default class MyProfileStore extends BaseStore {
     @observable advertiser_info = {};
+    @observable balance_available = null;
     @observable contact_info = '';
     @observable default_advert_description = '';
     @observable error_message = '';
@@ -24,7 +25,9 @@ export default class MyProfileStore extends BaseStore {
         }).then(response => {
             if (!response.error) {
                 const { p2p_advertiser_info } = response;
+
                 this.setAdvertiserInfo(p2p_advertiser_info);
+                this.setBalanceAvailable(p2p_advertiser_info.balance_available);
                 this.setContactInfo(p2p_advertiser_info.contact_info);
                 this.setDefaultAdvertDescription(p2p_advertiser_info.default_advert_description);
                 this.setPaymentInfo(p2p_advertiser_info.payment_info);
@@ -47,6 +50,8 @@ export default class MyProfileStore extends BaseStore {
         }).then(response => {
             if (!response.error) {
                 const { p2p_advertiser_update } = response;
+
+                this.setBalanceAvailable(p2p_advertiser_update.balance_available);
                 this.setContactInfo(p2p_advertiser_update.contact_info);
                 this.setDefaultAdvertDescription(p2p_advertiser_update.default_advert_description);
                 this.setPaymentInfo(p2p_advertiser_update.payment_info);
@@ -65,6 +70,11 @@ export default class MyProfileStore extends BaseStore {
     @action.bound
     setAdvertiserInfo(advertiser_info) {
         this.advertiser_info = advertiser_info;
+    }
+
+    @action.bound
+    setBalanceAvailable(balance_available) {
+        this.balance_available = balance_available;
     }
 
     @action.bound
@@ -108,7 +118,7 @@ export default class MyProfileStore extends BaseStore {
     }
 
     @action.bound
-    validateForm(values) {
+    validateForm = values => {
         const validations = {
             contact_info: [v => textValidator(v)],
             default_advert_description: [v => textValidator(v)],
@@ -150,5 +160,5 @@ export default class MyProfileStore extends BaseStore {
         });
 
         return errors;
-    }
+    };
 }

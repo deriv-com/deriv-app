@@ -1,0 +1,16 @@
+.dc-line-separated-components {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+
+    &__line {
+        background-color: var(--general-section-1);
+        flex: 1;
+        height: 1px;
+        margin: 0 1.6rem;
+
+        &--invisible {
+            background-color: inherit;
+        }
+    }
+}

@@ -34,8 +34,8 @@ const Confirm = ({ data, error, header, onClickBack, onClickConfirm }) => (
         <h2 className='cashier__header cashier__confirm-header'>{header}</h2>
         <div className='cashier__confirm-column-wrapper'>
             <div className='cashier__confirm-column'>
-                {data.map(d => (
-                    <Row item_key={d.key} label={d.label} value={d.value} key={d.key} />
+                {data.map((d, key) => (
+                    <Row item_key={key} label={d.label} value={d.value} key={key} />
                 ))}
             </div>
         </div>

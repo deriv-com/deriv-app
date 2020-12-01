@@ -105,7 +105,7 @@ class ConfigAccountTransfer {
     @observable receipt = {};
     @observable selected_from = {};
     @observable selected_to = {};
-    @observable account_transfer_amount = null;
+    @observable account_transfer_amount = '';
     @observable transfer_fee = null;
     @observable transfer_limit = {};
 

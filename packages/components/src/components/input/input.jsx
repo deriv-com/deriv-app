@@ -106,7 +106,7 @@ Input.propTypes = {
     disabled: PropTypes.bool,
     error: PropTypes.string,
     has_character_counter: PropTypes.bool,
-    hint: PropTypes.string,
+    hint: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     initial_character_count: PropTypes.number,
     label: PropTypes.string,
     leading_icon: PropTypes.any,

@@ -9,6 +9,8 @@ import HelpBase from './help-contents/flyout-help-base.jsx';
 import { connect } from '../stores/connect';
 import '../assets/sass/flyout.scss';
 
+const Hr = () => <div className='terms-of-use__hr terms-of-use__hr__absolute' />;
+
 const SearchResult = ({ search_term, total_result }) => (
     <div className='flyout__search-header'>
         <span className='flyout__search-header-text'>
@@ -33,6 +35,7 @@ const FlyoutContent = props => {
         is_empty,
         is_search_flyout,
         selected_category,
+        first_get_variable_block_index,
     } = props;
 
     React.useEffect(() => {
@@ -88,6 +91,11 @@ const FlyoutContent = props => {
                                         key={`${node.getAttribute('type')}${Blockly.utils.genUid()}`}
                                         id={`flyout__item-workspace--${index}`}
                                         block_node={node}
+                                        should_hide_display_name={
+                                            block_type === 'variables_get'
+                                                ? index !== first_get_variable_block_index
+                                                : false
+                                        }
                                         onInfoClick={
                                             help_content_config(__webpack_public_path__)[block_type] &&
                                             (is_search_flyout
@@ -100,7 +108,10 @@ const FlyoutContent = props => {
                             }
                             case Blockly.Xml.NODE_LABEL: {
                                 return (
-                                    <div key={`${node.getAttribute('text')}${index}`} className='flyout__item-label'>
+                                    <div
+                                        key={`${node.getAttribute('text')}${index}`}
+                                        className='flyout__item-label-bold'
+                                    >
                                         {node.getAttribute('text')}
                                     </div>
                                 );
@@ -123,30 +134,33 @@ const FlyoutContent = props => {
                                 const callback = button_cb || (() => {});
 
                                 return (
-                                    <button
-                                        key={`${cb_key}${index}`}
-                                        className={classNames(
-                                            'dc-btn',
-                                            'dc-btn-effect',
-                                            'dc-btn--primary',
-                                            `${node.getAttribute('className')}`
-                                        )}
-                                        onClick={button => {
-                                            const flyout_button = button;
+                                    <React.Fragment key={`fragment_${index}`}>
+                                        <button
+                                            key={`${cb_key}${index}`}
+                                            className={classNames(
+                                                'dc-btn',
+                                                'dc-btn-effect',
+                                                'dc-btn--primary',
+                                                `${node.getAttribute('className')}`
+                                            )}
+                                            onClick={button => {
+                                                const flyout_button = button;
 
-                                            // Workaround for not having a flyout workspace.
-                                            // eslint-disable-next-line no-underscore-dangle
-                                            flyout_button.targetWorkspace_ = Blockly.derivWorkspace;
-                                            flyout_button.getTargetWorkspace = () => {
+                                                // Workaround for not having a flyout workspace.
                                                 // eslint-disable-next-line no-underscore-dangle
-                                                return flyout_button.targetWorkspace_;
-                                            };
+                                                flyout_button.targetWorkspace_ = Blockly.derivWorkspace;
+                                                flyout_button.getTargetWorkspace = () => {
+                                                    // eslint-disable-next-line no-underscore-dangle
+                                                    return flyout_button.targetWorkspace_;
+                                                };
 
-                                            callback(flyout_button);
-                                        }}
-                                    >
-                                        {node.getAttribute('text')}
-                                    </button>
+                                                callback(flyout_button);
+                                            }}
+                                        >
+                                            {node.getAttribute('text')}
+                                        </button>
+                                        <Hr />
+                                    </React.Fragment>
                                 );
                             }
                             default:
@@ -218,6 +232,7 @@ Flyout.propTypes = {
     search_term: PropTypes.string,
     setHelpContent: PropTypes.func,
     selected_category: PropTypes.string,
+    first_get_variable_block_index: PropTypes.number,
 };
 
 export default connect(({ flyout, flyout_help, gtm }) => ({
@@ -235,4 +250,5 @@ export default connect(({ flyout, flyout_help, gtm }) => ({
     search_term: flyout.search_term,
     setHelpContent: flyout_help.setHelpContent,
     selected_category: flyout.selected_category,
+    first_get_variable_block_index: flyout.first_get_variable_block_index,
 }))(Flyout);

@@ -18,6 +18,13 @@
         width: 100%;
         border-top: 1px solid var(--general-section-1);
 
+        &__absolute {
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin: 0;
+        }
+
         @include mobile {
             border-top-width: 2px;
             border-color: var(--border-disabled);

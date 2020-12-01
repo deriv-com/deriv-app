@@ -60,7 +60,16 @@
         }
     }
     &__block-workspace {
-        margin-bottom: $default-margin;
+        &--top {
+            margin-bottom: $default-margin;
+        }
+
+        &--center {
+            margin-top: 0.6em;
+        }
+        &__header {
+            display: flex;
+        }
     }
     &__button {
         &-new {
@@ -118,9 +127,14 @@
             margin-bottom: 10px;
         }
         &-label {
-            font-weight: bold;
-            font-size: 18px;
-            line-height: 2em;
+            &--bold {
+                line-height: 2em;
+                font-weight: bold;
+                font-size: 18px;
+            }
+            &--small {
+                font-size: 14px;
+            }
         }
         &-buttons {
             margin-left: auto;

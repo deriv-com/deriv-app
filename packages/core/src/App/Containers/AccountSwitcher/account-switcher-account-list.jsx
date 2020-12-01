@@ -76,7 +76,12 @@ const AccountList = ({
                         </Button>
                     ) : (
                         has_balance && (
-                            <Text size='xs' color='prominent' className='acc-switcher__balance'>
+                            <Text
+                                size='xs'
+                                color='prominent'
+                                styles={{ fontWeight: 'inherit' }}
+                                className='acc-switcher__balance'
+                            >
                                 {currency && (
                                     <Money
                                         currency={getCurrencyDisplayCode(currency)}

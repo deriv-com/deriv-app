@@ -7,9 +7,7 @@ import { routes, getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
-const NoBalance = props => {
-    const { currency, history, setTabIndex } = props;
-
+const NoBalance = ({ currency, history, setTabIndex }) => {
     const onClickDeposit = () => {
         // index of deposit tab in the cashier modal is 0
         setTabIndex(0);
@@ -42,6 +40,7 @@ const NoBalance = props => {
 
 NoBalance.propTypes = {
     currency: PropTypes.string,
+    history: PropTypes.object,
     setTabIndex: PropTypes.func,
 };
 

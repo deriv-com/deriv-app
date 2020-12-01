@@ -12,13 +12,16 @@ const PasswordMeter = ({ children, has_error, input, custom_feedback_messages })
     const [feedback, setFeedback] = React.useState();
 
     React.useEffect(() => {
+        let is_subscribed = true;
         async function loadLibrary() {
             const lib = await import('@contentpass/zxcvbn');
             zxcvbn.current = lib.default;
-            setLoading(false);
+            if (is_subscribed) setLoading(false);
         }
 
         loadLibrary();
+
+        return () => (is_subscribed = false);
     }, []);
 
     React.useEffect(() => {

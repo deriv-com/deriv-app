@@ -181,29 +181,31 @@ const ChartMarkers = connect(({ modules, ui, client }) => ({
 
 const ChartTradeClass = props => {
     const charts_ref = React.useRef();
+    const props_ref = React.useRef();
+    props_ref.current = props;
+
     const prev_should_refresh = usePreviousState(props.should_refresh);
     if (prev_should_refresh) props.resetRefresh();
-
-    const { is_digits_widget_active, try_synthetic_indices } = props;
 
     const bottomWidgets = React.useCallback(
         ({ digits, tick }) => <ChartBottomWidgets digits={digits} tick={tick} />,
         []
     );
-    const topWidgets = React.useCallback(
-        ({ ...params }) => {
-            return (
-                <ChartTopWidgets
-                    active_category={try_synthetic_indices ? 'synthetic_index' : null}
-                    open={!!try_synthetic_indices}
-                    charts_ref={charts_ref}
-                    is_digits_widget_active={is_digits_widget_active}
-                    {...params}
-                />
-            );
-        },
-        [is_digits_widget_active, try_synthetic_indices]
-    );
+
+    const topWidgets = React.useCallback(({ ...params }) => {
+        // changing reference of topWidgets function by adding dependencies to useCallback results in Smartcharts performance drop.
+        // so, using props_ref to get current props value
+        const { is_digits_widget_active, try_synthetic_indices } = props_ref.current;
+        return (
+            <ChartTopWidgets
+                active_category={try_synthetic_indices ? 'synthetic_index' : null}
+                open={!!try_synthetic_indices}
+                charts_ref={charts_ref}
+                is_digits_widget_active={is_digits_widget_active}
+                {...params}
+            />
+        );
+    }, []);
 
     const getMarketsOrder = active_symbols => {
         const synthetic_index = 'synthetic_index';

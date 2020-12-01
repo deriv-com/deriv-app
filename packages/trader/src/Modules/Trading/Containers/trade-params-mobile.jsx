@@ -20,135 +20,133 @@ const DEFAULT_DURATION = Object.freeze({
 const makeGetDefaultDuration = (trade_duration, trade_duration_unit) => duration_unit =>
     trade_duration_unit === duration_unit ? trade_duration : DEFAULT_DURATION[duration_unit];
 
-class TradeParamsModal extends React.Component {
-    constructor(props) {
-        super(props);
-        const { amount, duration, duration_unit } = this.props;
-        const getDefaultDuration = makeGetDefaultDuration(duration, duration_unit);
+const TradeParamsModal = props => {
+    const { amount, duration, duration_unit } = props;
 
-        this.state = {
-            trade_param_tab_idx: 0,
-            duration_tab_idx: undefined,
-            amount_tab_idx: undefined,
-            has_amount_error: false,
-            has_duration_error: false,
-            // duration unit values
-            curr_duration_unit: duration_unit,
-            curr_duration_value: duration,
-            t_duration: getDefaultDuration('t'),
-            s_duration: getDefaultDuration('s'),
-            m_duration: getDefaultDuration('m'),
-            h_duration: getDefaultDuration('h'),
-            d_duration: getDefaultDuration('d'),
-            // amount values
-            stake_value: amount,
-            payout_value: amount,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const getDefaultDuration = React.useCallback(makeGetDefaultDuration(duration, duration_unit), []);
+
+    const [state, setState] = React.useState({
+        trade_param_tab_idx: 0,
+        duration_tab_idx: undefined,
+        amount_tab_idx: undefined,
+        has_amount_error: false,
+        has_duration_error: false,
+        // duration unit values
+        curr_duration_unit: duration_unit,
+        curr_duration_value: duration,
+        t_duration: getDefaultDuration('t'),
+        s_duration: getDefaultDuration('s'),
+        m_duration: getDefaultDuration('m'),
+        h_duration: getDefaultDuration('h'),
+        d_duration: getDefaultDuration('d'),
+        // amount values
+        stake_value: amount,
+        payout_value: amount,
+    });
+
+    React.useEffect(() => {
+        // Fix to prevent iOS from zooming in erratically on quick taps
+        const preventIOSZoom = event => {
+            if (event.touches.length > 1) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
         };
-    }
 
-    // Fix to prevent iOS from zooming in erratically on quick taps
-    preventIOSZoom = event => {
-        if (event.touches.length > 1) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
-    };
+        document.addEventListener('touchstart', event => preventIOSZoom(event), { passive: false });
 
-    componentDidMount() {
-        document.addEventListener('touchstart', event => this.preventIOSZoom(event), { passive: false });
-    }
+        return () => {
+            document.removeEventListener('touchstart', event => preventIOSZoom(event));
+        };
+    }, []);
 
-    componentDidUpdate(prev_props) {
+    React.useEffect(() => {
+        setSelectedDuration(duration_unit, duration);
+        setDurationTabIdx(undefined);
         // duration and duration_unit can be changed in trade-store when contract type is changed
-        if (this.props.duration !== prev_props.duration || this.props.duration_unit !== prev_props.duration_unit) {
-            this.setSelectedDuration(this.props.duration_unit, this.props.duration);
-            this.setState({ duration_tab_idx: undefined });
-        }
-    }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [duration, duration_unit]);
 
-    componentWillUnmount() {
-        document.removeEventListener('touchstart', event => this.preventIOSZoom(event));
-    }
+    const setTradeParamTabIdx = trade_param_tab_idx => setState({ ...state, trade_param_tab_idx });
 
-    setTradeParamTabIdx = trade_param_tab_idx => this.setState({ trade_param_tab_idx });
+    const setDurationTabIdx = duration_tab_idx => setState({ ...state, duration_tab_idx });
 
-    setDurationTabIdx = duration_tab_idx => this.setState({ duration_tab_idx });
+    const setAmountTabIdx = amount_tab_idx => setState({ ...state, amount_tab_idx });
 
-    setAmountTabIdx = amount_tab_idx => this.setState({ amount_tab_idx });
+    const setSelectedAmount = (basis, selected_basis_value) =>
+        setState({ ...state, [`${basis}_value`]: selected_basis_value });
 
-    setSelectedAmount = (basis, selected_basis_value) => this.setState({ [`${basis}_value`]: selected_basis_value });
-
-    setSelectedDuration = (duration_unit, selected_duration) => {
-        this.setState({
-            [`${duration_unit}_duration`]: selected_duration,
-            curr_duration_unit: duration_unit,
+    const setSelectedDuration = (selected_duration_unit, selected_duration) => {
+        setState({
+            ...state,
+            [`${selected_duration_unit}_duration`]: selected_duration,
+            curr_duration_unit: selected_duration_unit,
             curr_duration_value: selected_duration,
         });
     };
 
-    setAmountError = has_error => {
-        this.setState({ has_amount_error: has_error });
+    const setAmountError = has_error => {
+        setState({ ...state, has_amount_error: has_error });
     };
-    setDurationError = has_error => {
-        this.setState({ has_duration_error: has_error });
+    const setDurationError = has_error => {
+        setState({ ...state, has_duration_error: has_error });
     };
 
-    isVisible = component_key => this.props.form_components.includes(component_key);
+    const isVisible = component_key => props.form_components.includes(component_key);
 
-    render() {
-        const { currency, duration_units_list } = this.props;
-        return (
-            <React.Fragment>
-                <Modal
-                    id='dt_trade_parameters_mobile'
-                    className='trade-params'
-                    enableApp={this.props.enableApp}
-                    is_open={this.props.is_open}
-                    is_vertical_top
-                    header={<div />}
-                    disableApp={this.props.disableApp}
-                    toggleModal={this.props.toggleModal}
-                    height='auto'
-                    width='calc(100vw - 32px)'
-                >
-                    <ThemedScrollbars>
-                        <Div100vhContainer className='mobile-widget-dialog__wrapper' max_autoheight_offset='120px'>
-                            <TradeParamsMobileWrapper
-                                currency={currency}
-                                toggleModal={this.props.toggleModal}
-                                isVisible={this.isVisible}
-                                setTradeParamTabIdx={this.setTradeParamTabIdx}
-                                trade_param_tab_idx={this.state.trade_param_tab_idx}
-                                setDurationTabIdx={this.setDurationTabIdx}
-                                duration_tab_idx={this.state.duration_tab_idx}
-                                setAmountTabIdx={this.setAmountTabIdx}
-                                amount_tab_idx={this.state.amount_tab_idx}
-                                // amount
-                                setSelectedAmount={this.setSelectedAmount}
-                                stake_value={this.state.stake_value}
-                                payout_value={this.state.payout_value}
-                                duration_unit={this.state.curr_duration_unit}
-                                duration_value={this.state.curr_duration_value}
-                                duration_units_list={duration_units_list}
-                                has_amount_error={this.state.has_amount_error}
-                                setAmountError={this.setAmountError}
-                                // duration
-                                setSelectedDuration={this.setSelectedDuration}
-                                has_duration_error={this.state.has_duration_error}
-                                setDurationError={this.setDurationError}
-                                t_duration={this.state.t_duration}
-                                s_duration={this.state.s_duration}
-                                m_duration={this.state.m_duration}
-                                h_duration={this.state.h_duration}
-                                d_duration={this.state.d_duration}
-                            />
-                        </Div100vhContainer>
-                    </ThemedScrollbars>
-                </Modal>
-            </React.Fragment>
-        );
-    }
-}
+    const { currency, duration_units_list } = props;
+    return (
+        <React.Fragment>
+            <Modal
+                id='dt_trade_parameters_mobile'
+                className='trade-params'
+                enableApp={props.enableApp}
+                is_open={props.is_open}
+                is_vertical_top
+                header={<div />}
+                disableApp={props.disableApp}
+                toggleModal={props.toggleModal}
+                height='auto'
+                width='calc(100vw - 32px)'
+            >
+                <ThemedScrollbars>
+                    <Div100vhContainer className='mobile-widget-dialog__wrapper' max_autoheight_offset='120px'>
+                        <TradeParamsMobileWrapper
+                            currency={currency}
+                            toggleModal={props.toggleModal}
+                            isVisible={isVisible}
+                            setTradeParamTabIdx={setTradeParamTabIdx}
+                            trade_param_tab_idx={state.trade_param_tab_idx}
+                            setDurationTabIdx={setDurationTabIdx}
+                            duration_tab_idx={state.duration_tab_idx}
+                            setAmountTabIdx={setAmountTabIdx}
+                            amount_tab_idx={state.amount_tab_idx}
+                            // amount
+                            setSelectedAmount={setSelectedAmount}
+                            stake_value={state.stake_value}
+                            payout_value={state.payout_value}
+                            duration_unit={state.curr_duration_unit}
+                            duration_value={state.curr_duration_value}
+                            duration_units_list={duration_units_list}
+                            has_amount_error={state.has_amount_error}
+                            setAmountError={setAmountError}
+                            // duration
+                            setSelectedDuration={setSelectedDuration}
+                            has_duration_error={state.has_duration_error}
+                            setDurationError={setDurationError}
+                            t_duration={state.t_duration}
+                            s_duration={state.s_duration}
+                            m_duration={state.m_duration}
+                            h_duration={state.h_duration}
+                            d_duration={state.d_duration}
+                        />
+                    </Div100vhContainer>
+                </ThemedScrollbars>
+            </Modal>
+        </React.Fragment>
+    );
+};
 
 export default connect(({ client, modules, ui }) => ({
     amount: modules.trade.amount,

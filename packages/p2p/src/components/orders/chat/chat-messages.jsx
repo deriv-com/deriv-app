@@ -3,7 +3,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, ThemedScrollbars } from '@deriv/components';
 import { formatMiliseconds } from '@deriv/shared';
-import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import ChatMessageReceipt from 'Components/orders/chat/chat-message-receipt.jsx';
 import ChatMessageText from 'Components/orders/chat/chat-message-text.jsx';

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Icon, Table, ProgressIndicator } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { Localize } from 'Components/i18next';
+import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
 
 const MyAdsRowRenderer = observer(({ row: advert }) => {
@@ -24,7 +25,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
     return (
         <Table.Row className='p2p-my-ads__table-row'>
             <Table.Cell>
-                {type === 'buy' ? (
+                {type === buy_sell.BUY ? (
                     <Localize i18n_default_text='Buy {{ id }}' values={{ id }} />
                 ) : (
                     <Localize i18n_default_text='Sell {{ id }}' values={{ id }} />

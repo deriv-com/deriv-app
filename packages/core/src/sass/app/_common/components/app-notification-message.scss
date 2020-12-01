@@ -12,7 +12,9 @@
     }
 
     @include mobile {
-        width: 100%;
+        max-width: calc(100% - 3.2rem);
+        left: 1.6rem;
+        right: 1.6rem;
     }
 }
 
@@ -122,10 +124,7 @@
     }
     @include mobile {
         max-width: 328px;
-        margin-right: 5px;
-
-        @media (max-width: 320px) {
-            max-width: 95%;
-        }
+        width: calc(100% - 0.8rem);
+        margin-right: 0.4rem;
     }
 }

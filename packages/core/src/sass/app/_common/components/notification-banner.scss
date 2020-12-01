@@ -78,7 +78,11 @@
     }
 
     @include mobile {
-        max-width: 95%;
+        max-width: 328px;
         margin-right: 5px;
+
+        @media (max-width: 320px) {
+            max-width: 95%;
+        }
     }
 }

@@ -121,10 +121,11 @@
         margin-bottom: 16px;
     }
     @include mobile {
-        max-width: 348px;
+        max-width: 328px;
+        margin-right: 5px;
 
-        &--small {
-            max-width: unset;
+        @media (max-width: 320px) {
+            max-width: 95%;
         }
     }
 }

@@ -1,10 +1,10 @@
 import React from 'react';
-import { action, computed, observable } from 'mobx';
-import { isEmptyObject, mobileOSDetect, routes } from '@deriv/shared';
+import { action, computed, observable, reaction } from 'mobx';
+import { isEmptyObject, mobileOSDetect, routes, toMoment } from '@deriv/shared';
 import { localize, Localize } from 'Components/i18next';
-import { createExtendedOrderDetails } from 'Utils/orders.js';
+import { order_list } from 'Constants/order-list';
+import { createExtendedOrderDetails } from 'Utils/orders';
 import { init as WebsocketInit, requestWS, subscribeWS } from 'Utils/websocket';
-import { order_list } from '../src/constants/order-list';
 import { convertToMillis, getFormattedDateString } from 'Utils/date-time';
 import BaseStore from 'Stores/base_store';
 
@@ -80,9 +80,9 @@ export default class GeneralStore extends BaseStore {
         });
     }
 
-    getLocalStorageSettings() {
+    getLocalStorageSettings = () => {
         return JSON.parse(localStorage.getItem('p2p_settings') || '{}');
-    }
+    };
 
     getLocalStorageSettingsForLoginId() {
         const local_storage_settings = this.getLocalStorageSettings()[this.client.loginid];
@@ -188,12 +188,32 @@ export default class GeneralStore extends BaseStore {
                 [this.setP2pOrderList]
             ),
         };
+
+        this.disposeUserBarredReaction = reaction(
+            () => this.user_blocked_until,
+            blocked_until => {
+                if (typeof blocked_until === 'number') {
+                    const server_time = this.props.server_time.get();
+                    const blocked_until_moment = toMoment(blocked_until);
+
+                    this.user_blocked_timeout = setTimeout(() => {
+                        this.setUserBlockedUntil(null);
+                    }, blocked_until_moment.diff(server_time));
+                }
+            }
+        );
     }
 
     @action.bound
     onUnmount() {
         clearTimeout(this.service_token_timeout);
+        clearTimeout(this.user_blocked_timeout);
+
         Object.keys(this.ws_subscriptions).forEach(key => this.ws_subscriptions[key].unsubscribe());
+
+        if (typeof this.disposeUserBarredReaction === 'function') {
+            this.disposeUserBarredReaction();
+        }
     }
 
     @action.bound
@@ -202,7 +222,7 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
-    openApplicationStore() {
+    openApplicationStore = () => {
         if (mobileOSDetect() === 'Android') {
             window.location.href =
                 'https://play.app.goo.gl/?link=https://play.google.com/store/apps/details?id=com.deriv.dp2p';
@@ -211,10 +231,10 @@ export default class GeneralStore extends BaseStore {
         // if (mobileOSDetect() === 'iOS') {
         //     window.location.href = 'http://itunes.apple.com/lb/app/truecaller-caller-id-number/id448142450?mt=8';
         // }
-    }
+    };
 
     @action.bound
-    poiStatusText(status) {
+    poiStatusText = status => {
         switch (status) {
             case 'pending':
             case 'rejected':
@@ -227,7 +247,7 @@ export default class GeneralStore extends BaseStore {
             case 'verified':
                 return <Localize i18n_default_text='Identity verification is complete.' />;
         }
-    }
+    };
 
     @action.bound
     redirectTo(path_name, params = null) {
@@ -441,7 +461,7 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
-    validatePopup(values) {
+    validatePopup = values => {
         const validations = {
             nickname: [
                 v => !!v,
@@ -484,5 +504,5 @@ export default class GeneralStore extends BaseStore {
         });
 
         return errors;
-    }
+    };
 }

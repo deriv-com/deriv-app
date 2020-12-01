@@ -27,6 +27,7 @@
   "scripts": {
     "test": "echo \"No test specified\"",
     "serve": "echo \"Serving...\" && webpack --progress --watch --config \"./build/webpack.config.js\"",
+    "build:travis": "rimraf dist && webpack --config \"./build/webpack.config.js\"  --mode=production --optimize-minimize",
     "build": "f () { webpack --config \"./build/webpack.config.js\" --env.base $1;}; f"
   },
   "bugs": {

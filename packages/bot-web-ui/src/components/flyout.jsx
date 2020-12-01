@@ -9,7 +9,7 @@ import HelpBase from './help-contents/flyout-help-base.jsx';
 import { connect } from '../stores/connect';
 import '../assets/sass/flyout.scss';
 
-const Hr = () => <div className='terms-of-use__hr terms-of-use__hr__absolute' />;
+const Hr = () => <div className='flyout__hr flyout__hr__absolute' />;
 
 const SearchResult = ({ search_term, total_result }) => (
     <div className='flyout__search-header'>

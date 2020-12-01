@@ -239,4 +239,17 @@
         display: inline-block !important;
         margin-top: 3.3rem;
     }
+    &__hr {
+        height: 2px;
+        margin: 1.6rem 0 0;
+        width: 100%;
+        border-top: 1px solid var(--general-section-1);
+
+        &__absolute {
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin: 0;
+        }
+    }
 }

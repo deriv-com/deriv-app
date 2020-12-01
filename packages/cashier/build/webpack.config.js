@@ -9,7 +9,6 @@ module.exports = function (env, argv) {
         devtool: IS_RELEASE ? 'source-map' : 'cheap-module-eval-source-map',
         entry: {
             cashier: path.resolve(__dirname, '../src', 'index.js'),
-            'cashier-notifications': path.resolve(__dirname, '../src', 'Containers/cashier-notifications.jsx'),
             'cashier-store': path.resolve(__dirname, '../src', 'Stores/Cashier/cashier-store'),
         },
         mode: IS_RELEASE ? 'production' : 'development',

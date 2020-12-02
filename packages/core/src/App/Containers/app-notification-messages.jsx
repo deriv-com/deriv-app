@@ -5,7 +5,10 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import Notification, { max_display_notifications } from '../Components/Elements/NotificationMessage';
+import Notification, {
+    max_display_notifications,
+    max_display_notifications_mobile,
+} from '../Components/Elements/NotificationMessage';
 import 'Sass/app/_common/components/app-notification-message.scss';
 
 class AppNotificationMessages extends React.Component {
@@ -19,7 +22,7 @@ class AppNotificationMessages extends React.Component {
     };
 
     render() {
-        const allowed_on_mobile = ['unwelcome', 'contract_sold'];
+        const allowed_on_mobile = ['unwelcome', 'contract_sold', 'dp2p'];
 
         const { marked_notifications, notification_messages, removeNotificationMessage } = this.props;
         const { bounds } = this.state;
@@ -35,7 +38,7 @@ class AppNotificationMessages extends React.Component {
                     !marked_notifications.includes(message.key) &&
                     (isMobile() ? allowed_on_mobile.includes(message.key) : true)
             )
-            .slice(0, max_display_notifications);
+            .slice(0, isMobile() ? max_display_notifications_mobile : max_display_notifications);
 
         if (notifications.length === 0) return null;
 

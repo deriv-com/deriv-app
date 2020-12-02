@@ -1,6 +1,14 @@
 import { action, autorun, computed, observable } from 'mobx';
-import { getPathname, getPlatformInformation, LocalStore, unique, isTouchDevice, platform_name } from '@deriv/shared';
-import { sortNotifications } from 'App/Components/Elements/NotificationMessage';
+import {
+    getPathname,
+    getPlatformInformation,
+    LocalStore,
+    unique,
+    isTouchDevice,
+    platform_name,
+    isMobile,
+} from '@deriv/shared';
+import { sortNotifications, sortNotificationsMobile } from 'App/Components/Elements/NotificationMessage';
 import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
 import BaseStore from './base-store';
 import { clientNotifications, excluded_notifications } from './Helpers/client-notifications';
@@ -511,7 +519,9 @@ export default class UIStore extends BaseStore {
                 if (is_existing_message) {
                     this.markNotificationMessage({ key: notification.key });
                 } else {
-                    this.notification_messages = [...this.notification_messages, notification].sort(sortNotifications);
+                    this.notification_messages = [...this.notification_messages, notification].sort(
+                        isMobile() ? sortNotificationsMobile : sortNotifications
+                    );
                     if (!excluded_notifications.includes(notification.key)) {
                         this.updateNotifications(this.notification_messages);
                     }

@@ -633,13 +633,14 @@
             .dc-btn {
                 margin: 0;
                 width: 100%;
-            }
-            .dc-btn--primary {
-                order: 1;
-                margin-bottom: 1rem;
-            }
-            .dc-btn--secondary {
-                order: 2;
+
+                &--primary {
+                    order: 1;
+                    margin-bottom: 1rem;
+                }
+                &--secondary {
+                    order: 2;
+                }
             }
         }
     }

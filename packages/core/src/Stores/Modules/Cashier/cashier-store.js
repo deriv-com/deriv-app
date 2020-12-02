@@ -205,7 +205,11 @@ export default class CashierStore extends BaseStore {
     init() {
         // eslint-disable-next-line no-undef
         reaction(
-            () => [this.root_store.client.switched, this.root_store.client.is_logged_in],
+            () => [
+                this.root_store.client.switched,
+                this.root_store.client.is_logged_in,
+                this.root_store.client.currency,
+            ],
             () => {
                 if (!this.root_store.client.is_virtual) {
                     WS.authorized.p2pAdvertiserInfo().then(advertiser_info => {

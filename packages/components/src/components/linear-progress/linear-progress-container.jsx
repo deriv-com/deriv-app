@@ -2,61 +2,51 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { LinearProgress } from './linear-progress.jsx';
 
-class LinearProgressContainer extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            timeout: props.timeout / 1000,
-            total_ticks: Math.round(props.timeout / 1000),
-            current_tick: Math.round(props.timeout / 1000),
+const LinearProgressContainer = ({ timeout, action, render, ...other_props }) => {
+    const [timeout_state, setTimeout] = React.useState(timeout);
+    const [current_tick, setCurrentTick] = React.useState(Math.round(timeout / 1000));
+    const total_ticks = React.useState(Math.round(timeout / 1000));
+
+    const progress = () => {
+        return 100 - Math.round((current_tick / total_ticks) * 100);
+    };
+
+    const remaining = () => {
+        return timeout >= 0 ? timeout : 0;
+    };
+
+    const makeProgress = () => {
+        setCurrentTick(current_tick - 1);
+        setTimeout(timeout_state - 1);
+    };
+
+    const run = () => {
+        action();
+    };
+
+    React.useEffect(() => {
+        const interval = setInterval(makeProgress, 1000);
+        return () => {
+            clearInterval(interval);
         };
-    }
+    }, []);
 
-    get progress() {
-        return 100 - Math.round((this.state.current_tick / this.state.total_ticks) * 100);
-    }
-
-    get remaining() {
-        return this.state.timeout >= 0 ? this.state.timeout : 0;
-    }
-
-    makeProgress = () => {
-        this.setState({
-            current_tick: this.state.current_tick - 1,
-            timeout: this.state.timeout - 1,
-        });
-    };
-
-    run = () => {
-        this.props.action();
-    };
-
-    componentDidMount() {
-        this.interval = setInterval(this.makeProgress, 1000);
-    }
-
-    componentDidUpdate() {
-        if (this.progress > 100) {
-            this.run();
+    React.useEffect(() => {
+        if (progress > 100) {
+            run();
         }
-    }
+    });
 
-    componentWillUnmount() {
-        clearInterval(this.interval);
-    }
+    const { className } = other_props;
+    if (!timeout) return null;
 
-    render() {
-        const { timeout, className } = this.props;
-        if (!timeout) return null;
-
-        return (
-            <div className='dc-linear-progress-container'>
-                <div className='dc-linear-progress__countdown'>{this.props.render(this.remaining)}</div>
-                <LinearProgress className={className} progress={this.progress} height={4} />
-            </div>
-        );
-    }
-}
+    return (
+        <div className='dc-linear-progress-container'>
+            <div className='dc-linear-progress__countdown'>{render(remaining())}</div>
+            <LinearProgress className={className} progress={progress()} height={4} />
+        </div>
+    );
+};
 
 LinearProgressContainer.propTypes = {
     timeout: PropTypes.number,

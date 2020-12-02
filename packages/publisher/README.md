@@ -34,3 +34,9 @@ Below is a simple example that could easily be extended.
   }
 }
 ```
+
+# Install
+
+```
+lerna exec --scope=@deriv/package -- npm i @deriv/publisher@^v0.0.1-beta4 --save-dev
+```

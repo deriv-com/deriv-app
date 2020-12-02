@@ -17,6 +17,7 @@ import {
     RadioGroup,
     SelectNative,
     ThemedScrollbars,
+    Text,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { isDesktop, isMobile, toMoment } from '@deriv/shared';
@@ -420,9 +421,11 @@ const PersonalDetails = ({
                                                             )
                                                         }
                                                         value={values.tax_identification_confirm}
-                                                        label={localize(
-                                                            'I hereby confirm that the tax information I provided is true and complete. I will also inform Deriv Investments (Europe) Limited about any changes to this information.'
-                                                        )}
+                                                        label='I hereby confirm that the tax information I provided is true and complete. I will also inform Deriv Investments (Europe) Limited about any changes to this information.'
+                                                        // label={localize(
+                                                        //     'I hereby confirm that the tax information I provided is true and complete. I will also inform Deriv Investments (Europe) Limited about any changes to this information.'
+                                                        // )}
+                                                        renderLabel={label => <Text label={label} />}
                                                         withTabIndex='0'
                                                     />
                                                 )}

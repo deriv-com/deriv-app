@@ -106,7 +106,7 @@ const DurationWrapper = props => {
         }
 
         assertDurationIsWithinBoundary(current_duration);
-    });
+    }, [duration_unit, is_advanced_duration, expiry_type, duration, advanced_expiry_type]);
 
     const assertDurationIsWithinBoundary = current_duration => {
         const [min_value, max_value] = getDurationMinMaxValues(duration_min_max, contract_expiry_type, duration_unit);

@@ -1,7 +1,7 @@
 import { Button } from '@deriv/components';
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import { localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 import classNames from 'classnames';
 import FlyoutBlock from './flyout-block.jsx';
 
@@ -31,15 +31,13 @@ const FlyoutBlockGroup = ({ onInfoClick, block_node, is_active, should_hide_disp
     return (
         <>
             {is_variables_set && <Hr />}
+            {is_variables_set && <div className='flyout__hr' />}
             <div className={classNames('flyout__item', { 'flyout__item--active': is_active })}>
                 {!should_hide_display_name && (
                     <>
                         <div className='flyout__item-header'>
                             <div
-                                className={classNames({
-                                    'flyout__item-label--small': is_variables_get,
-                                    'flyout__item-label--bold': !is_variables_get,
-                                })}
+                                className={is_variables_get ? 'flyout__item-label--small' : 'flyout__item-label--bold'}
                             >
                                 {display_name}
                             </div>
@@ -53,7 +51,7 @@ const FlyoutBlockGroup = ({ onInfoClick, block_node, is_active, should_hide_disp
                                     className='flyout__item-info'
                                     onClick={onInfoClick}
                                 >
-                                    {localize('Learn more')}
+                                    <Localize i18n_default_text='Learn more' />
                                 </a>
                             )}
                         </div>

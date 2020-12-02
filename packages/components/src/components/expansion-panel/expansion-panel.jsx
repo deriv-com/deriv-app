@@ -15,8 +15,9 @@ const ExpansionPanel = ({ message }) => {
     const onArrayItemClick = id => {
         if (open_ids.includes(id)) {
             setOpenIds(open_ids.filter(open_id => open_id !== id));
+        } else {
+            setOpenIds([...open_ids, id]);
         }
-        setOpenIds([...open_ids, id]);
     };
 
     const renderArrayContent = array => {

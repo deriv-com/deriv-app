@@ -31,6 +31,7 @@ const FlyoutBlockGroup = ({ onInfoClick, block_node, is_active, should_hide_disp
     return (
         <>
             {is_variables_set && <Hr />}
+            {is_variables_set && <div className='flyout__hr' />}
             <div className={classNames('flyout__item', { 'flyout__item--active': is_active })}>
                 {!should_hide_display_name && (
                     <>

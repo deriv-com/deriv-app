@@ -20,12 +20,6 @@ const Dialog = ({
         if (is_visible && disableApp) {
             disableApp();
         }
-    }, []);
-
-    React.useEffect(() => {
-        if (is_visible && disableApp) {
-            disableApp();
-        }
     });
 
     const handleCancel = () => {

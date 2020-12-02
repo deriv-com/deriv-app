@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { Button } from '@deriv/components';
+import { Button, Text } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -31,7 +31,12 @@ class Virtual extends React.Component {
                 </h2>
                 {this.props.has_real_account ? (
                     <React.Fragment>
-                        <p className='cashier__paragraph cashier__text'>
+                        <Text
+                            as='p'
+                            size='xs'
+                            line_height='s'
+                            className='cashier__paragraph cashier__text cashier__text--full-width'
+                        >
                             <Localize
                                 i18n_default_text='You need to switch to a real money account to use this feature.<0/>You can do this by selecting a real account from the <1>Account Switcher.</1>'
                                 components={[
@@ -43,17 +48,17 @@ class Virtual extends React.Component {
                                     />,
                                 ]}
                             />
-                        </p>
+                        </Text>
                     </React.Fragment>
                 ) : (
                     <React.Fragment>
-                        <p className='cashier__paragraph cashier__text'>
+                        <Text as='p' size='xs' line_height='s' className='cashier__paragraph cashier__text'>
                             <Localize
                                 i18n_default_text={
                                     "You need a real money account to use this feature. It's easy to create a real money account and start trading."
                                 }
                             />
-                        </p>
+                        </Text>
                         <Button
                             className='cashier-error__button'
                             has_effect

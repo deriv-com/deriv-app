@@ -19,7 +19,7 @@ const Header = ({
     acc_switcher_disabled_message,
     account_status,
     addNotificationMessage,
-    allow_authentication,
+    should_allow_authentication,
     app_routing_history,
     balance,
     currency,
@@ -51,14 +51,17 @@ const Header = ({
     toggleNotifications,
 }) => {
     const toggle_menu_drawer_ref = React.useRef(null);
+    const addUpdateNotification = () => addNotificationMessage(clientNotifications().new_version_available);
+    const removeUpdateNotification = React.useCallback(
+        () => removeNotificationMessage({ key: 'new_version_available' }),
+        [removeNotificationMessage]
+    );
 
     React.useEffect(() => {
         document.addEventListener('IgnorePWAUpdate', removeUpdateNotification);
         return () => document.removeEventListener('IgnorePWAUpdate', removeUpdateNotification);
-    }, []);
+    }, [removeUpdateNotification]);
 
-    const addUpdateNotification = () => addNotificationMessage(clientNotifications().new_version_available);
-    const removeUpdateNotification = () => removeNotificationMessage({ key: 'new_version_available' });
     const onClickDeposit = () => history.push(routes.cashier_deposit);
     const filterPlatformsForClients = payload =>
         payload.filter(config => {
@@ -83,7 +86,7 @@ const Header = ({
                     <MobileWrapper>
                         <ToggleMenuDrawer
                             ref={toggle_menu_drawer_ref}
-                            allow_authentication={allow_authentication}
+                            should_allow_authentication={should_allow_authentication}
                             account_status={account_status}
                             enableApp={enableApp}
                             disableApp={disableApp}
@@ -158,7 +161,7 @@ const Header = ({
 
 Header.propTypes = {
     acc_switcher_disabled_message: PropTypes.string,
-    allow_authentication: PropTypes.bool,
+    should_allow_authentication: PropTypes.bool,
     account_status: PropTypes.object,
     addNotificationMessage: PropTypes.func,
     app_routing_history: PropTypes.array,
@@ -194,7 +197,7 @@ Header.propTypes = {
 export default connect(({ client, common, ui, modules }) => ({
     acc_switcher_disabled_message: ui.account_switcher_disabled_message,
     account_status: client.account_status,
-    allow_authentication: client.allow_authentication,
+    should_allow_authentication: client.should_allow_authentication,
     addNotificationMessage: ui.addNotificationMessage,
     app_routing_history: common.app_routing_history,
     balance: client.balance,
@@ -218,7 +221,7 @@ export default connect(({ client, common, ui, modules }) => ({
     is_virtual: client.is_virtual,
     logoutClient: client.logout,
     needs_financial_assessment: client.needs_financial_assessment,
-    notifications_count: ui.notifications.length,
+    notifications_count: ui.filtered_notifications.length,
     openRealAccountSignup: ui.openRealAccountSignup,
     removeNotificationMessage: ui.removeNotificationMessage,
     setDarkMode: ui.setDarkMode,

@@ -150,8 +150,6 @@
                     &:not(:last-child) {
                         margin-right: 0.8rem;
                     }
-                    &--top {
-                    }
                 }
             }
             &--mobile {
@@ -608,6 +606,21 @@
             }
         }
     }
+    &__action-wrapper {
+        height: 4rem;
+        margin: 0 auto 1.3rem;
+        padding-top: 1rem;
+        width: 75%;
+        text-align: center;
+
+        &__link {
+            font-size: var(--text-size-xxs);
+
+            &--disabled {
+                pointer-events: none;
+            }
+        }
+    }
     @include mobile {
         width: calc(100vw - 3.2rem);
 
@@ -961,10 +974,11 @@
         height: 100%;
     }
     &__file-upload {
+        padding-top: 0.8rem;
         position: relative;
 
         li {
-            margin: 0 0 1.5rem 0;
+            margin: 0 0 0.8rem 0;
         }
     }
     &__field-area {

@@ -1,6 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Field, Form, Formik } from 'formik';
-import { Button, Icon, Input, Loading, Popover, Table, ThemedScrollbars } from '@deriv/components';
+import { Button, Icon, Input, Loading, Popover, Table, ThemedScrollbars, Text } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 import { localize } from 'Components/i18next';
@@ -11,14 +13,16 @@ import './my-profile.scss';
 
 const MyProfile = observer(() => {
     const { general_store, my_profile_store } = useStores();
+    const { currency } = general_store.client;
+    const [has_on_screen_keyboard, setHasOnScreenKeyboard] = React.useState(false);
 
     const {
         basic_verification,
-        buy_orders_count,
+        daily_buy,
         daily_buy_limit,
+        daily_sell,
         daily_sell_limit,
         full_verification,
-        sell_orders_count,
         total_orders_count,
     } = my_profile_store.advertiser_info;
 
@@ -26,11 +30,21 @@ const MyProfile = observer(() => {
         my_profile_store.getAdvertiserInfo();
     }, []);
 
+    const setCurrentFocus = target => {
+        setHasOnScreenKeyboard(isMobile() && target);
+    };
+
     if (my_profile_store.is_loading) {
         return <Loading is_fullscreen={false} />;
     }
     if (my_profile_store.error_message) {
-        return <div className='my-profile__error'>{my_profile_store.error_message}</div>;
+        return (
+            <div className='my-profile__error'>
+                <Text size='xs' font='loss-danger'>
+                    {my_profile_store.error_message}
+                </Text>
+            </div>
+        );
     }
 
     return (
@@ -42,14 +56,22 @@ const MyProfile = observer(() => {
                             className='my-profile__header-avatar'
                             style={{ backgroundColor: generateHexColourFromNickname(general_store.nickname) }}
                         >
-                            {getShortNickname(general_store.nickname)}
+                            <Text size='xs' color='colored-background'>
+                                {getShortNickname(general_store.nickname)}
+                            </Text>
                         </div>
-                        <div className='my-profile__header-name'>{general_store.nickname}</div>
+                        <div className='my-profile__header-name'>
+                            <Text color='prominent' weight='bold'>
+                                {general_store.nickname}
+                            </Text>
+                        </div>
                     </div>
                     <div className='my-profile__header-verification'>
                         {basic_verification ? (
                             <div>
-                                {localize('ID verified')}
+                                <Text color='less-prominent' size='xs'>
+                                    {localize('ID verified')}
+                                </Text>
                                 <Icon
                                     className='my-profile__header-verification-icon'
                                     icon='IcCashierVerificationBadge'
@@ -75,37 +97,79 @@ const MyProfile = observer(() => {
                         <Table.Row className='my-profile__stats'>
                             <div className='my-profile__stats-cell-separator' />
                             <Table.Cell className='my-profile__stats-cell'>
-                                <div className='my-profile__stats-cell-header'>{localize('Total orders')}</div>
-                                <div className='my-profile__stats-cell-info'>{total_orders_count || '-'}</div>
+                                <Text size={isMobile() ? 'xxxs' : 'xs'} color='less-prominent' line_height='m' as='p'>
+                                    {localize('Total orders')}
+                                </Text>
+                                <Text color='prominent' weight='bold' line_height='l' as='p'>
+                                    {total_orders_count || '-'}
+                                </Text>
                             </Table.Cell>
                             <div className='my-profile__stats-cell-separator' />
-                            <Table.Cell className='my-profile__stats-cell'>
-                                <div className='my-profile__stats-cell-header'>
-                                    {localize('Buy ({{currency}})', { currency: general_store.client.currency })}
-                                </div>
-                                <div className='my-profile__stats-cell-info'>{buy_orders_count || '-'}</div>
-                            </Table.Cell>
+                            {isMobile() ? (
+                                <Table.Cell className='my-profile__stats-cell'>
+                                    <Text
+                                        size={isMobile() ? 'xxxs' : 'xs'}
+                                        color='less-prominent'
+                                        line_height='m'
+                                        as='p'
+                                    >
+                                        {localize('Buy / Sell ({{currency}})', {
+                                            currency,
+                                        })}
+                                    </Text>
+                                    <Text color='prominent' weight='bold' line_height='l' as='p'>
+                                        {daily_buy || '-'}/{daily_sell || '-'}
+                                    </Text>
+                                </Table.Cell>
+                            ) : (
+                                <>
+                                    <Table.Cell className='my-profile__stats-cell'>
+                                        <Text
+                                            size={isMobile() ? 'xxxs' : 'xs'}
+                                            color='less-prominent'
+                                            line_height='m'
+                                            as='p'
+                                        >
+                                            {localize('Buy ({{currency}})', {
+                                                currency,
+                                            })}
+                                        </Text>
+                                        <Text color='prominent' weight='bold' line_height='l' as='p'>
+                                            {daily_buy || '-'}
+                                        </Text>
+                                    </Table.Cell>
+                                    <div className='my-profile__stats-cell-separator' />
+                                    <Table.Cell className='my-profile__stats-cell'>
+                                        <Text
+                                            size={isMobile() ? 'xxxs' : 'xs'}
+                                            color='less-prominent'
+                                            line_height='m'
+                                            as='p'
+                                        >
+                                            {localize('Sell ({{currency}})', {
+                                                currency,
+                                            })}
+                                        </Text>
+                                        <Text color='prominent' weight='bold' line_height='l' as='p'>
+                                            {daily_sell || '-'}
+                                        </Text>
+                                    </Table.Cell>
+                                </>
+                            )}
                             <div className='my-profile__stats-cell-separator' />
                             <Table.Cell className='my-profile__stats-cell'>
-                                <div className='my-profile__stats-cell-header'>
-                                    {localize('Sell ({{currency}})', { currency: general_store.client.currency })}
-                                </div>
-                                <div className='my-profile__stats-cell-info'>{sell_orders_count || '-'}</div>
-                            </Table.Cell>
-                            <div className='my-profile__stats-cell-separator' />
-                            <Table.Cell className='my-profile__stats-cell'>
-                                <div className='my-profile__stats-cell-header'>
+                                <Text size={isMobile() ? 'xxxs' : 'xs'} color='less-prominent' line_height='m' as='p'>
                                     {localize('Buy / Sell limit ({{currency}})', {
-                                        currency: general_store.client.currency,
+                                        currency,
                                     })}
-                                </div>
-                                <div className='my-profile__stats-cell-info'>
+                                </Text>
+                                <Text color='prominent' weight='bold' line_height='l' as='p'>
                                     {daily_buy_limit && daily_sell_limit
                                         ? `${Math.floor(daily_buy_limit)} / ${Math.floor(daily_sell_limit)}`
                                         : '-'}
-                                </div>
+                                </Text>
                             </Table.Cell>
-                            <div className='my-profile__stats-cell-separator' />
+                            {!isMobile() && <div className='my-profile__stats-cell-separator' />}
                             <Table.Cell>
                                 <Popover
                                     classNameBubble='my-profile__popover-text'
@@ -113,6 +177,7 @@ const MyProfile = observer(() => {
                                     message={localize(
                                         "These fields are based on the last 24 hours' activity: Buy, Sell, and Limit."
                                     )}
+                                    zIndex={2}
                                 >
                                     <Icon className='my-profile__popover-icon' icon='IcInfoOutline' size={16} />
                                 </Popover>
@@ -120,7 +185,11 @@ const MyProfile = observer(() => {
                         </Table.Row>
                     </Table>
                     <div className='my-profile__separator'>
-                        <div className='my-profile__separator-text'>{localize('Ad template')}</div>
+                        <div className='my-profile__separator-text'>
+                            <Text size='xs' color='prominent' weight='bold'>
+                                {localize('Ad template')}
+                            </Text>
+                        </div>
                         <div className='my-profile__separator-horizontal_line' />
                     </div>
                     <Formik
@@ -135,7 +204,11 @@ const MyProfile = observer(() => {
                     >
                         {({ dirty, errors, isSubmitting, isValid }) => {
                             return (
-                                <Form>
+                                <Form
+                                    className={classNames('my-profile__form', {
+                                        'my-profile__form--active-keyboard': has_on_screen_keyboard,
+                                    })}
+                                >
                                     <React.Fragment>
                                         <Field name='payment_info'>
                                             {({ field }) => (
@@ -149,6 +222,8 @@ const MyProfile = observer(() => {
                                                     has_character_counter
                                                     initial_character_count={my_profile_store.payment_info.length}
                                                     max_characters={300}
+                                                    onFocus={e => setCurrentFocus(e.currentTarget.name)}
+                                                    onBlur={() => setCurrentFocus(null)}
                                                 />
                                             )}
                                         </Field>
@@ -163,6 +238,8 @@ const MyProfile = observer(() => {
                                                     has_character_counter
                                                     initial_character_count={my_profile_store.contact_info.length}
                                                     max_characters={300}
+                                                    onFocus={e => setCurrentFocus(e.currentTarget.name)}
+                                                    onBlur={() => setCurrentFocus(null)}
                                                 />
                                             )}
                                         </Field>
@@ -180,10 +257,16 @@ const MyProfile = observer(() => {
                                                         my_profile_store.default_advert_description.length
                                                     }
                                                     max_characters={300}
+                                                    onFocus={e => setCurrentFocus(e.currentTarget.name)}
+                                                    onBlur={() => setCurrentFocus(null)}
                                                 />
                                             )}
                                         </Field>
-                                        <div className='my-profile__footer'>
+                                        <div
+                                            className={classNames('my-profile__footer', {
+                                                'my-profile__footer--active-keyboard': has_on_screen_keyboard,
+                                            })}
+                                        >
                                             <FormError message={my_profile_store.form_error} />
 
                                             <Button
@@ -209,5 +292,20 @@ const MyProfile = observer(() => {
         </div>
     );
 });
+
+MyProfile.propTypes = {
+    advertiser_info: PropTypes.object,
+    contact_info: PropTypes.string,
+    default_advert_description: PropTypes.string,
+    error_message: PropTypes.string,
+    form_error: PropTypes.string,
+    getAdvertiserInfo: PropTypes.func,
+    handleSubmit: PropTypes.func,
+    is_button_loading: PropTypes.bool,
+    is_loading: PropTypes.bool,
+    is_submit_success: PropTypes.bool,
+    payment_info: PropTypes.string,
+    validateForm: PropTypes.func,
+};
 
 export default MyProfile;

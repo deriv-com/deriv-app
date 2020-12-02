@@ -6,24 +6,19 @@
         color: var(--text-general);
 
         &__main-heading {
-            font-size: 1.4rem;
-            line-height: 1.43;
             @include mobile {
                 padding: 0 3rem;
             }
         }
         &__sub-heading {
-            font-size: 1.6rem;
-            font-weight: bold;
             font-stretch: normal;
             font-style: normal;
-            line-height: 1.5;
             letter-spacing: normal;
             margin-top: 2rem;
         }
     }
     .currency-selector {
-        min-height: 330px;
+        min-height: 390px;
 
         &__radio-group--is-header {
             font-size: 1.6rem;

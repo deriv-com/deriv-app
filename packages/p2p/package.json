@@ -1,6 +1,6 @@
 {
     "name": "@deriv/p2p",
-    "version": "0.6.0",
+    "version": "0.7.3",
     "description": "p2p cashier",
     "main": "lib/index.js",
     "private": false,
@@ -21,13 +21,11 @@
         "deploy:folder": "echo \"No deploy:folder specified\"",
         "deploy:staging": "echo \"No deploy:staging specified\"",
         "deploy:production": "echo \"No deploy:production specified\"",
-        "prepublishOnly": "export NODE_ENV=production && export NPM_PUBLISHING_MODE=1 && lerna exec --scope @deriv/shared --scope @deriv/components -- npm run build:travis && npm run build:travis",
-        "postpublish": "export NODE_ENV= && export NPM_PUBLISHING_MODE="
+        "publish_package": "node ./scripts/publish.js prepublish && lerna exec --scope=@deriv/shared --scope=@deriv/components -- npm run build:travis -- && rimraf lib && cross-env NODE_ENV=production NPM_PUBLISHING_MODE=1 webpack --optimize-minimize --progress && npm publish; node ./scripts/publish.js postpublish"
     },
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "@babel/polyfill": "^7.4.4",
         "@deriv/components": "^1.0.0",
         "@deriv/shared": "^1.0.0",
         "classnames": "^2.2.6",
@@ -43,8 +41,7 @@
         "react-virtualized-auto-sizer": "^1.0.2",
         "react-window": "^1.8.5",
         "react-window-infinite-loader": "^1.0.5",
-        "sendbird": "^3.0.122",
-        "sendbird-uikit": "^1.0.1"
+        "sendbird": "^3.0.137"
     },
     "devDependencies": {
         "@babel/plugin-proposal-class-properties": "^7.5.5",

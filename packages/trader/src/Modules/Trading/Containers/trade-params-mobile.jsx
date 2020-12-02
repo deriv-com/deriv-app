@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
-import { Div100vhContainer, Tabs, Modal, Money, ThemedScrollbars } from '@deriv/components';
+import { Div100vhContainer, Tabs, Modal, Money, ThemedScrollbars, usePreventIOSZoom } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import { localize } from '@deriv/translations';
 import AmountMobile from 'Modules/Trading/Components/Form/TradeParams/amount-mobile.jsx';
@@ -63,21 +63,7 @@ const TradeParamsModal = ({
         payout_value: amount,
     });
 
-    React.useEffect(() => {
-        // Fix to prevent iOS from zooming in erratically on quick taps
-        const preventIOSZoom = event => {
-            if (event.touches.length > 1) {
-                event.preventDefault();
-                event.stopPropagation();
-            }
-        };
-
-        document.addEventListener('touchstart', event => preventIOSZoom(event), { passive: false });
-
-        return () => {
-            document.removeEventListener('touchstart', event => preventIOSZoom(event));
-        };
-    }, []);
+    usePreventIOSZoom();
 
     React.useEffect(() => {
         setSelectedDuration(duration_unit, duration);

@@ -1,24 +1,12 @@
 import React from 'react';
-import { Div100vhContainer, Modal, Money, Popover } from '@deriv/components';
+import { Div100vhContainer, Modal, Money, Popover, usePreventIOSZoom } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import AmountMobile from 'Modules/Trading/Components/Form/TradeParams/amount-mobile.jsx';
 
 const MultiplierAmountModal = ({ is_open, enableApp, disableApp, toggleModal }) => {
     // Fix to prevent iOS from zooming in erratically on quick taps
-    const preventIOSZoom = React.useCallback(event => {
-        if (event.touches.length > 1) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
-    }, []);
-
-    React.useEffect(() => {
-        document.addEventListener('touchstart', event => preventIOSZoom(event), { passive: false });
-        return () => {
-            document.removeEventListener('touchstart', event => preventIOSZoom(event));
-        };
-    }, [preventIOSZoom]);
+    usePreventIOSZoom();
 
     return (
         <React.Fragment>

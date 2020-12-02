@@ -179,7 +179,7 @@ class AccountSwitcher extends React.Component {
                     mt5_config.push({
                         icon: getMT5Account(market_type, company),
                         title: getMT5AccountDisplay(market_type, company),
-                        type: getMT5AccountKey,
+                        type,
                     });
                 }
             }

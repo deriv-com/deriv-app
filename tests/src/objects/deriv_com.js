@@ -13,7 +13,7 @@ class DerivCom extends Common {
     }
 
     async navigate() {
-        await this.page.goto('https://deriv.com');
+        await this.page.goto(process.env.DERIV_COM_URL);
     }
 
     async fakeEmail(prefix = 'qawolf', suffix = 'cr') {
@@ -26,9 +26,8 @@ class DerivCom extends Common {
         await this.page.click('text=Start trading');
         await this.page.waitForTimeout(1000);
         await this.page.waitForLoadState('domcontentloaded');
-
-        await this.page.waitForSelector('.checkbox__StyledCheckbox-sc-1a4wwhl-3.iIffUy');
-        await this.page.click('.checkbox__StyledCheckbox-sc-1a4wwhl-3.iIffUy');
+        await this.page.waitForSelector('#signup_agree_tnc');
+        await this.page.click('#signup_agree_tnc');
         await this.page.waitForSelector('#email');
         await this.page.fill('#email', email);
         await this.page.waitForSelector('#gtm-signup-email');

@@ -482,6 +482,11 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
+    removeNotificationMessageByKey({ key }) {
+        this.notification_messages = this.notification_messages.filter(n => n.key !== key);
+    }
+
+    @action.bound
     addNotificationMessageByKey(key) {
         if (key) this.addNotificationMessage(clientNotifications(this)[key]);
     }

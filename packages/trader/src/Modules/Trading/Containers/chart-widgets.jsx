@@ -54,10 +54,7 @@ export const ChartTopWidgets = connect(({ modules, ui }) => ({
     onSymbolChange: modules.trade.onChange,
     theme: ui.is_dark_mode_on ? 'dark' : 'light',
 }))(({ onSymbolChange, charts_ref, theme, is_digits_widget_active, active_category, open }) => {
-    let yAxiswidth;
-    if (charts_ref?.current?.mainStore?.chart) {
-        yAxiswidth = charts_ref.current.mainStore.chart.yAxiswidth;
-    }
+    const yAxiswidth = charts_ref.current?.mainStore?.chart?.yAxiswidth;
     return (
         <TopWidgets
             active_category={active_category}

@@ -1,5 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
+import PropTypes from 'prop-types';
+import { PropTypes as MobxPropTypes } from 'mobx-react';
 import { Div100vhContainer, Tabs, Modal, Money, ThemedScrollbars } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import { localize } from '@deriv/translations';
@@ -17,16 +19,32 @@ const DEFAULT_DURATION = Object.freeze({
     d: 1,
 });
 
+const reducer = (state, payload) => {
+    return {
+        ...state,
+        payload,
+    };
+};
+
 const makeGetDefaultDuration = (trade_duration, trade_duration_unit) => duration_unit =>
     trade_duration_unit === duration_unit ? trade_duration : DEFAULT_DURATION[duration_unit];
 
-const TradeParamsModal = props => {
-    const { amount, duration, duration_unit } = props;
-
+const TradeParamsModal = ({
+    amount,
+    duration,
+    duration_unit,
+    form_components,
+    is_open,
+    enableApp,
+    disableApp,
+    toggleModal,
+    currency,
+    duration_units_list,
+}) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const getDefaultDuration = React.useCallback(makeGetDefaultDuration(duration, duration_unit), []);
 
-    const [state, setState] = React.useState({
+    const [state, dispatch] = React.useReducer(reducer, {
         trade_param_tab_idx: 0,
         duration_tab_idx: undefined,
         amount_tab_idx: undefined,
@@ -65,21 +83,18 @@ const TradeParamsModal = props => {
         setSelectedDuration(duration_unit, duration);
         setDurationTabIdx(undefined);
         // duration and duration_unit can be changed in trade-store when contract type is changed
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [duration, duration_unit]);
 
-    const setTradeParamTabIdx = trade_param_tab_idx => setState({ ...state, trade_param_tab_idx });
+    const setTradeParamTabIdx = trade_param_tab_idx => dispatch({ trade_param_tab_idx });
 
-    const setDurationTabIdx = duration_tab_idx => setState({ ...state, duration_tab_idx });
+    const setDurationTabIdx = duration_tab_idx => dispatch({ duration_tab_idx });
 
-    const setAmountTabIdx = amount_tab_idx => setState({ ...state, amount_tab_idx });
+    const setAmountTabIdx = amount_tab_idx => dispatch({ amount_tab_idx });
 
-    const setSelectedAmount = (basis, selected_basis_value) =>
-        setState({ ...state, [`${basis}_value`]: selected_basis_value });
+    const setSelectedAmount = (basis, selected_basis_value) => dispatch({ [`${basis}_value`]: selected_basis_value });
 
     const setSelectedDuration = (selected_duration_unit, selected_duration) => {
-        setState({
-            ...state,
+        dispatch({
             [`${selected_duration_unit}_duration`]: selected_duration,
             curr_duration_unit: selected_duration_unit,
             curr_duration_value: selected_duration,
@@ -87,26 +102,25 @@ const TradeParamsModal = props => {
     };
 
     const setAmountError = has_error => {
-        setState({ ...state, has_amount_error: has_error });
+        dispatch({ has_amount_error: has_error });
     };
     const setDurationError = has_error => {
-        setState({ ...state, has_duration_error: has_error });
+        dispatch({ has_duration_error: has_error });
     };
 
-    const isVisible = component_key => props.form_components.includes(component_key);
+    const isVisible = component_key => form_components.includes(component_key);
 
-    const { currency, duration_units_list } = props;
     return (
         <React.Fragment>
             <Modal
                 id='dt_trade_parameters_mobile'
                 className='trade-params'
-                enableApp={props.enableApp}
-                is_open={props.is_open}
+                enableApp={enableApp}
+                is_open={is_open}
                 is_vertical_top
                 header={<div />}
-                disableApp={props.disableApp}
-                toggleModal={props.toggleModal}
+                disableApp={disableApp}
+                toggleModal={toggleModal}
                 height='auto'
                 width='calc(100vw - 32px)'
             >
@@ -114,7 +128,7 @@ const TradeParamsModal = props => {
                     <Div100vhContainer className='mobile-widget-dialog__wrapper' max_autoheight_offset='120px'>
                         <TradeParamsMobileWrapper
                             currency={currency}
-                            toggleModal={props.toggleModal}
+                            toggleModal={toggleModal}
                             isVisible={isVisible}
                             setTradeParamTabIdx={setTradeParamTabIdx}
                             trade_param_tab_idx={state.trade_param_tab_idx}
@@ -146,6 +160,19 @@ const TradeParamsModal = props => {
             </Modal>
         </React.Fragment>
     );
+};
+
+TradeParamsModal.propTypes = {
+    amount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    duration: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    duration_unit: PropTypes.string,
+    duration_units_list: MobxPropTypes.arrayOrObservableArray,
+    form_components: MobxPropTypes.arrayOrObservableArray,
+    is_open: PropTypes.bool,
+    disableApp: PropTypes.func,
+    enableApp: PropTypes.func,
+    toggleModal: PropTypes.func,
+    currency: PropTypes.string,
 };
 
 export default connect(({ client, modules, ui }) => ({

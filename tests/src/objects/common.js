@@ -42,12 +42,8 @@ class Common {
      * @returns {Promise<void>}
      */
     async switchVirtualAccount() {
-        await this.page.waitForSelector(
-            '.header__menu-items > .header__menu-right > .acc-info__container > .acc-info__wrapper > .acc-info'
-        );
-        await this.page.click(
-            '.header__menu-items > .header__menu-right > .acc-info__container > .acc-info__wrapper > .acc-info'
-        );
+        await this.waitForAccountInfoDropdown();
+        await this.clickOnAccountInfoDropdown();
         const element = await this.page.evaluate(`document.querySelector('.dc-content-expander')`);
         if (element && !element.classList.contains('dc-content-expander--expanded')) {
             await this.page.click('.dc-content-expander');
@@ -58,6 +54,18 @@ class Common {
         await this.page.click(account_switcher_virtual);
         await this.page.waitForSelector('.acc-switcher__id');
         await this.page.click('.acc-switcher__id');
+    }
+
+    async waitForAccountInfoDropdown() {
+        await this.page.waitForSelector(
+            '.acc-info__preloader'
+        , { state: 'hidden' });
+    }
+
+    async clickOnAccountInfoDropdown() {
+        await this.page.click(
+            '.header__menu-items > .header__menu-right > .acc-info__container > .acc-info__wrapper > .acc-info'
+        );
     }
 
     /**
@@ -210,17 +218,9 @@ class Common {
             );
             await this.page.click('text=Next');
 
-            await this.page.waitForSelector(
-                'input[type=password]'
-            );
-            await this.page.click(
-                'input[type=password]'
-            );
-            await this.page.fill(
-                'input[type=password]',
-                password,
-            )
-
+            await this.page.waitForSelector('input[type=password]');
+            await this.page.click('input[type=password]');
+            await this.page.fill('input[type=password]', password);
 
             await this.page.waitForSelector(
                 '.dc-dialog__content > .account-signup > form > .account-signup__password-selection > .dc-btn'
@@ -247,8 +247,12 @@ class Common {
             await this.page.mouse.up();
             await this.page.click('text=Start here');
         } else {
-            await this.page.waitForSelector('.dc-themed-scrollbars > .welcome__body > .welcome-column--right > .welcome-column__footer > .dc-btn')
-            await this.page.click('.dc-themed-scrollbars > .welcome__body > .welcome-column--right > .welcome-column__footer > .dc-btn')
+            await this.page.waitForSelector(
+                '.dc-themed-scrollbars > .welcome__body > .welcome-column--right > .welcome-column__footer > .dc-btn'
+            );
+            await this.page.click(
+                '.dc-themed-scrollbars > .welcome__body > .welcome-column--right > .welcome-column__footer > .dc-btn'
+            );
         }
 
         await this.page.waitForSelector(
@@ -282,7 +286,7 @@ class Common {
 
     async fillTermsAndConditions() {
         await this.page.waitForSelector('text=Terms of use');
-        const elementHandle =  await this.page.$('text=I agree');
+        const elementHandle = await this.page.$('text=I agree');
         await elementHandle.scrollIntoViewIfNeeded();
         await this.page.waitForSelector('text=I am not a PEP, and I have not been a PEP in the last 12 months.');
         await this.page.click('text=I am not a PEP, and I have not been a PEP in the last 12 months.');

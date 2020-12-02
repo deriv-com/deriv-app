@@ -19,7 +19,6 @@ class Trader extends Common {
     }
 
     async chooseUnderlying(code, name) {
-        await this.waitForChart();
         await this.page.click(MARKET_SELECT); // Click market select
         await this.page.fill('.data-hj-whitelist', name);
         await this.page.click(`.sc-mcd__item--${code}`);
@@ -114,7 +113,6 @@ class Trader extends Common {
         await this.setDuration(duration_unit, duration_amount);
         await this.allowEquals(allow_equal);
         await this.waitForPurchaseBtnEnabled(contract, allow_equal);
-        await this.waitForChart();
         await this.clickOnPurchaseButton(purchase_type, allow_equal);
         await this.verifyContractResult();
     }

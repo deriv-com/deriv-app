@@ -21,6 +21,7 @@ describe('Contract purchases in desktop', () => {
         await page.navigate();
         await page.loadOrLogin(process.env.VALID_USER, process.env.VALID_PASSWORD);
         await page.switchVirtualAccount();
+        await page.waitForAccountInfoDropdown();
         await page.chooseUnderlying('1HZ10V', 'Volatility 10 (1s) Index');
         await page.buyContract('Ups & Downs', 'rise_fall', 'Ticks', 5, 'call', false);
         await page.assertPurchase(5, 10, 'CALL');

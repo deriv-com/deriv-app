@@ -8,7 +8,7 @@ import { getLanguage, localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/index';
 
-const ResetPassword = ({ is_logged_in, logoutClient, verification_code }) => {
+const ResetPassword = ({ logoutClient, verification_code }) => {
     const onResetComplete = (error_msg, actions) => {
         actions.setSubmitting(false);
         actions.resetForm({ password: '' });
@@ -24,7 +24,7 @@ const ResetPassword = ({ is_logged_in, logoutClient, verification_code }) => {
         actions.setStatus({ reset_complete: true });
 
         logoutClient().then(() => {
-            redirectToLogin(is_logged_in, getLanguage());
+            redirectToLogin(false, getLanguage());
         });
     };
 
@@ -127,7 +127,7 @@ const ResetPassword = ({ is_logged_in, logoutClient, verification_code }) => {
                                                 !values.password || errors.password || isSubmitting,
                                         })}
                                         type='submit'
-                                        is_disabled={!values.password || errors.password || isSubmitting}
+                                        is_disabled={!values.password || !!errors.password || isSubmitting}
                                         primary
                                     >
                                         <Localize i18n_default_text='Reset my password' />
@@ -143,27 +143,14 @@ const ResetPassword = ({ is_logged_in, logoutClient, verification_code }) => {
 };
 
 ResetPassword.propTypes = {
-    is_logged_in: PropTypes.bool,
     logoutClient: PropTypes.func,
     verification_code: PropTypes.string,
 };
 
-const ResetPasswordModal = ({
-    disableApp,
-    enableApp,
-    is_loading,
-    is_logged_in,
-    is_visible,
-    logoutClient,
-    verification_code,
-}) => {
+const ResetPasswordModal = ({ disableApp, enableApp, is_loading, is_visible, logoutClient, verification_code }) => {
     return (
         <Dialog is_visible={is_visible} disableApp={disableApp} enableApp={enableApp} is_loading={is_loading}>
-            <ResetPassword
-                is_logged_in={is_logged_in}
-                verification_code={verification_code}
-                logoutClient={logoutClient}
-            />
+            <ResetPassword verification_code={verification_code} logoutClient={logoutClient} />
         </Dialog>
     );
 };
@@ -181,7 +168,6 @@ export default connect(({ ui, client }) => ({
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     is_loading: ui.is_loading,
-    is_logged_in: client.is_logged_in,
     is_visible: ui.is_reset_password_modal_visible,
     logoutClient: client.logout,
     verification_code: client.verification_code.reset_password,

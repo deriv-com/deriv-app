@@ -47,8 +47,6 @@ const DurationWrapper = props => {
         });
     };
 
-    const advancedHasWrongExpiry = () => is_advanced_duration && expiry_type !== advanced_expiry_type;
-
     const handleEndTime = () => {
         const symbol_has_endtime = duration_units_list.length > 1 || is_advanced_duration;
 
@@ -80,12 +78,14 @@ const DurationWrapper = props => {
 
         if (expiry_type === 'endtime') handleEndTime();
 
-        if (advancedHasWrongExpiry()) {
-            onChange({ target: { name: 'expiry_type', value: advanced_expiry_type } });
-        }
-
         assertDurationIsWithinBoundary(current_duration);
     }, []);
+
+    React.useEffect(() => {
+        if (is_advanced_duration && expiry_type !== advanced_expiry_type) {
+            onChange({ target: { name: 'expiry_type', value: advanced_expiry_type } });
+        }
+    }, [is_advanced_duration, expiry_type, advanced_expiry_type]);
 
     // intercept changes to contract duration and check that trade_store and ui_store are aligned.
     React.useEffect(() => {
@@ -97,16 +97,12 @@ const DurationWrapper = props => {
             onChange({ target: { name: 'expiry_type', value: 'duration' } });
         }
 
-        if (advancedHasWrongExpiry()) {
-            onChange({ target: { name: 'expiry_type', value: advanced_expiry_type } });
-        }
-
         if (duration !== current_duration) {
             onChangeUiStore({ name: `duration_${duration_unit}`, value: duration });
         }
 
         assertDurationIsWithinBoundary(current_duration);
-    }, [duration_unit, is_advanced_duration, expiry_type, duration, advanced_expiry_type]);
+    }, [duration_unit, is_advanced_duration, expiry_type, duration]);
 
     const assertDurationIsWithinBoundary = current_duration => {
         const [min_value, max_value] = getDurationMinMaxValues(duration_min_max, contract_expiry_type, duration_unit);

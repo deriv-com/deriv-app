@@ -12,7 +12,7 @@ const AutoHeightWrapper = props => {
     }, []);
 
     React.useEffect(() => {
-        updateHeight();
+        if (ref) updateHeight();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ref]);
 

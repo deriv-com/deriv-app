@@ -1,11 +1,9 @@
-import { Button } from '@deriv/components';
+import { Button, Text } from '@deriv/components';
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import { localize, Localize } from '@deriv/translations';
 import classNames from 'classnames';
 import FlyoutBlock from './flyout-block.jsx';
-
-const Hr = () => <div className='flyout__hr' />;
 
 const FlyoutBlockGroup = ({ onInfoClick, block_node, is_active, should_hide_display_name }) => {
     const block_type = block_node.getAttribute('type');
@@ -30,18 +28,15 @@ const FlyoutBlockGroup = ({ onInfoClick, block_node, is_active, should_hide_disp
 
     return (
         <>
-            {is_variables_set && <Hr />}
             {is_variables_set && <div className='flyout__hr' />}
             <div className={classNames('flyout__item', { 'flyout__item--active': is_active })}>
                 {!should_hide_display_name && (
                     <>
                         <div className='flyout__item-header'>
-                            <div
-                                className={is_variables_get ? 'flyout__item-label--small' : 'flyout__item-label--bold'}
-                            >
+                            <Text weight={!is_variables_get ? 'bold' : ''} color='$color-black-1'>
                                 {display_name}
-                            </div>
-                            {!is_variables_get && AddButton()}
+                            </Text>
+                            {!is_variables_get && <AddButton />}
                         </div>
                         <div className='flyout__item-description'>
                             {description}
@@ -58,8 +53,8 @@ const FlyoutBlockGroup = ({ onInfoClick, block_node, is_active, should_hide_disp
                     </>
                 )}
                 <div className='flyout__block-workspace__header'>
-                    <FlyoutBlock should_center_block={true} block_node={block_node} should_hide_display_name />
-                    {is_variables_get && AddButton()}
+                    <FlyoutBlock should_center_block block_node={block_node} should_hide_display_name />
+                    {is_variables_get && <AddButton />}
                 </div>
             </div>
         </>

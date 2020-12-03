@@ -211,6 +211,7 @@ export default class CashierStore extends BaseStore {
                 this.root_store.client.currency,
             ],
             async () => {
+                // wait for get_settings so is_virtual gets populated in client-store
                 await BinarySocket.wait('get_settings');
 
                 if (!this.root_store.client.is_virtual) {

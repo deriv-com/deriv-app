@@ -1570,12 +1570,21 @@ export default class ClientStore extends BaseStore {
             this.root_store.common.server_time.format('YYYY-MM-DD')
         );
         const signup_device_cookie = setDeviceDataCookie('signup_device', isDesktopOs() ? 'desktop' : 'mobile');
-        const cookies_list = ['affiliate_token', 'gclid_url', 'utm_source', 'utm_campaign', 'utm_medium', 'utm_source'];
+        const cookies_list = [
+            'affiliate_token',
+            'gclid_url',
+            'utm_source',
+            'utm_campaign',
+            'utm_medium',
+            'utm_source',
+            'utm_term',
+            'utm_content',
+        ];
         const cookies = {
-            'signup_device': signup_device_cookie,
-            'data_first_contact': date_first_contact_cookie,
+            signup_device: signup_device_cookie,
+            data_first_contact: date_first_contact_cookie,
         };
-        
+
         cookies_list.forEach(element => {
             cookies[element] = getCookieObject(element);
         });

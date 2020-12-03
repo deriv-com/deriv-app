@@ -32,6 +32,7 @@ TableRowInfo.propTypes = {
     cells: PropTypes.arrayOf(PropTypes.node),
     className: PropTypes.string,
     replace: PropTypes.object,
+    is_footer: PropTypes.bool,
 };
 
 export default TableRowInfo;

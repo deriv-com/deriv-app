@@ -25,14 +25,14 @@ const FIAT_CURRENCY_TYPE = 'fiat';
 const CRYPTO_CURRENCY_TYPE = 'crypto';
 
 const AddCryptoCurrency = ({
-    legal_allowed_currencies,
+    available_crypto_currencies,
+    form_error,
     has_fiat,
+    legal_allowed_currencies,
+    onSubmit,
     should_show_crypto_only,
     should_show_fiat_only,
-    available_crypto_currencies,
     value,
-    form_error,
-    onSubmit,
 }) => {
     const getReorderedFiatCurrencies = () =>
         reorderCurrencies(legal_allowed_currencies.filter(currency => currency.type === FIAT_CURRENCY_TYPE));

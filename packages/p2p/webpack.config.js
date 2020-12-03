@@ -127,7 +127,7 @@ module.exports = {
             react: 'react',
             'react-dom': 'react-dom',
             'prop-types': 'prop-types',
-            ...(is_publishing ? { formik: 'formik' } : {}),
+            ...(is_publishing ? {} : { formik: 'formik' }),
             ...publisher_utils.getLocalDerivPackageExternals(__dirname, is_publishing),
         },
     ],

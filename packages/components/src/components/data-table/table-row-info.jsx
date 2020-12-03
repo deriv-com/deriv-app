@@ -14,7 +14,7 @@ const TableRowInfo = ({ replace, is_footer, cells, className }) => {
 
     return (
         <div
-            onClick={is_footer || !replace ? undefined : toggleDetails()}
+            onClick={is_footer || !replace ? undefined : toggleDetails}
             className={classNames(className, { 'statement__row--detail': show_details })}
         >
             {show_details ? (

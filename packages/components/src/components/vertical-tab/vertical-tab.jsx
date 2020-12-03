@@ -50,16 +50,16 @@ const VerticalTab = ({
 
     const changeSelected = e => {
         setSelectedIndex({
-            list: list,
+            list,
             selected_index: e,
         });
     };
 
     React.useEffect(() => {
         setSelectedIndex({
-            current_path: current_path,
-            list: list,
-            is_routed: is_routed,
+            current_path,
+            list,
+            is_routed,
         });
     }, [vertical_tab_index, list]);
 

@@ -22,8 +22,8 @@ async function setUp(options) {
 }
 
 async function tearDown(browser) {
-    await qawolf.stopVideos();
     try {
+        await qawolf.stopVideos();
         await browser.close();
     } catch (e) {
         // eslint-disable-next-line no-console

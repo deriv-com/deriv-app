@@ -41,8 +41,37 @@ class Trader extends Common {
         }
     }
 
+    async unsetAllowEquals() {
+        if (await this.isMobile()) {
+            try {
+                const is_allow_equal_selected = await this.page.$eval('.dc-checkbox__box', el => el.classList.contains('dc-checkbox__box--active'));
+                const toggleAllowEqual = async () => {
+                    await this.page.waitForSelector('text=Equals');
+                    await this.page.click('text=Equals');
+                };
+                if (is_allow_equal_selected) {
+                    await toggleAllowEqual();
+                }
+            } catch (e) {}
+        }
+    }
+
+    async clearTradeUIArtifacts() {
+        if (await this.isMobile()) {
+            await this.page.waitForSelector('.dc-collapsible__button');
+            await this.page.click('.dc-collapsible__button');
+            await this.page.waitForSelector('.dc-page-overlay__header-close');
+            await this.page.click('.dc-page-overlay__header-close');
+            await this.unsetAllowEquals();
+        } else {
+            await this.page.waitForSelector('.dc-result__close-btn');
+            await this.page.click('.dc-result__close-btn');
+        }
+    }
+
     async chooseContractType(trade_types, contract) {
         if (await this.isMobile()) {
+            await this.page.waitForSelector('#dt_contract_dropdown');
             await this.page.click('#dt_contract_dropdown');
             await this.page.waitForSelector('.dc-mobile-dialog__container');
         } else {
@@ -56,6 +85,7 @@ class Trader extends Common {
     }
 
     async chooseContract(contract) {
+        await this.page.waitForSelector(`#dt_contract_${contract}_item`);
         await this.page.click(`#dt_contract_${contract}_item`);
         await this.page.waitForSelector(`span[name=contract_type][value=${contract}]`);
     }
@@ -80,23 +110,29 @@ class Trader extends Common {
 
     async allowEquals(should) {
         if (await this.isMobile()) {
-            try {
-                if (should) {
-                    if (await this.page.$eval('.dc-collapsible__icon--is-open', el => !!el)) {
-                        await this.page.click('.dc-collapsible__icon--is-open');
-                    }
-                }
-            } catch (e) {
+            const is_allow_equal_selected = await this.page.$eval('.dc-checkbox__box', el => el.classList.contains('dc-checkbox__box--active'));
+            const toggleAllowEqual = async () => {
+                await this.page.waitForSelector('text=Equals');
+                await this.page.click('text=Equals');
+            };
+
+            if (!should && is_allow_equal_selected) {
+                await toggleAllowEqual();
             }
 
             if (should) {
-                await this.page.waitForSelector('text=Equals');
-                await this.page.click('text=Equals');
+                try {
+                    await this.page.$eval('.dc-collapsible__icon--is-open', el => !!el)
+                } catch (e) {
+                    await this.page.click('.dc-collapsible__icon');
+                }
+                await this.page.click('.dc-collapsible__icon--is-open');
+                await toggleAllowEqual();
             }
         } else if (should) {
-                await this.page.waitForSelector('.allow-equals__label');
-                await this.page.click('.allow-equals__label');
-            }
+            await this.page.waitForSelector('.allow-equals__label');
+            await this.page.click('.allow-equals__label');
+        }
     }
 
     async buyContract(
@@ -109,19 +145,22 @@ class Trader extends Common {
     ) {
         this.contract = contract;
         this.purchase_type = purchase_type;
-        await this.chooseContractType(tradeTypes, contract);
+        this.should_set_allow_equal = ['rise_fall', 'rise_fall_equal'].includes(contract);
+        await this.chooseContractType(tradeTypes, contract, allow_equal);
         await this.setDuration(duration_unit, duration_amount);
-        await this.allowEquals(allow_equal);
+        if (this.should_set_allow_equal) {
+            await this.allowEquals(allow_equal);
+        }
         await this.waitForPurchaseBtnEnabled(contract, allow_equal);
         await this.clickOnPurchaseButton(purchase_type, allow_equal);
         await this.verifyContractResult();
     }
 
     async waitForPurchaseBtnEnabled(contract, allow_equal = false) {
-        const is_equal = allow_equal ? 'e' : '';
+        const allow_equal_suffix = this.should_set_allow_equal && allow_equal ? 'e' : '';
         const [green, red] = this.getPurchaseBtnId(contract);
-        await this.page.waitForSelector(`#dt_purchase_${green}${is_equal}_button:enabled`, { timeout: 120000 });
-        await this.page.waitForSelector(`#dt_purchase_${red}${is_equal}_button:enabled`, { timeout: 120000 });
+        await this.page.waitForSelector(`#dt_purchase_${green}${allow_equal_suffix}_button:enabled`, { timeout: 120000 });
+        await this.page.waitForSelector(`#dt_purchase_${red}${allow_equal_suffix}_button:enabled`, { timeout: 120000 });
     }
 
     getPurchaseBtnId(contract) {
@@ -138,25 +177,14 @@ class Trader extends Common {
     }
 
     async clickOnPurchaseButton(type, allow_equal = false) {
-        const is_equal = allow_equal ? 'e' : '';
+        const is_equal = this.should_set_allow_equal && allow_equal ? 'e' : '';
         const button = type + is_equal;
         await this.page.click(`#dt_purchase_${button}_button`);
     }
 
+
     async assertPurchase(duration, amount, contract_type) {
         this.duration = duration;
-        // try {
-        //     if (contract_type.toLowerCase().endsWith('e')) {
-        //         if (await this.page.$eval('.dc-collapsible__icon--is-open', el => !!el)) {
-        //             await this.page.click('.dc-collapsible__icon--is-open');
-        //         }
-        //     }
-        // } catch (e) {
-        //     if (contract_type.toLowerCase().endsWith('e')) {
-        //         await this.page.waitForSelector('text=Equals');
-        //         await this.page.click('text=Equals');
-        //     }
-        // }
 
         const message = await waitForWSSubset(this.page, {
             echo_req: {
@@ -184,29 +212,46 @@ class Trader extends Common {
 
     async changeDuration(target) {
         if (await this.isMobile()) {
+
+            const increment = async () => {
+                // eslint-disable-next-line no-await-in-loop
+                await this.page.waitForSelector(
+                    '.dc-tabs__content > .trade-params__duration-tickpicker > .dc-tick-picker > .dc-tick-picker__calculation > .dc-btn:nth-child(3)'
+                );
+                await this.page.click(
+                    '.dc-tabs__content > .trade-params__duration-tickpicker > .dc-tick-picker > .dc-tick-picker__calculation > .dc-btn:nth-child(3)'
+                );
+            }
+            const decrement = async () => {
+                // eslint-disable-next-line no-await-in-loop
+                await this.page.waitForSelector(
+                    '.dc-tabs__content > .trade-params__duration-tickpicker > .dc-tick-picker > .dc-tick-picker__calculation > .dc-btn:nth-child(1)'
+                );
+                await this.page.click(
+                    '.dc-tabs__content > .trade-params__duration-tickpicker > .dc-tick-picker > .dc-tick-picker__calculation > .dc-btn:nth-child(1)'
+                );
+            };
+
+            const reachTarget = async (t, current) => {
+                if (+current === +target) {
+                    return Promise.resolve(current);
+                }
+
+                if (current < t) {
+                    await increment();
+                }
+                if (current > t) {
+                    await decrement();
+                }
+                const updated_duration = await this.page.$eval('.dc-tick-picker__holder--large', el => el.innerText);
+                return await reachTarget(t, updated_duration);
+            };
+
             await this.page.waitForSelector('.mobile-widget__amount');
             await this.page.click('.mobile-widget__amount');
             const current_duration = await this.page.$eval('.dc-tick-picker__holder--large', el => el.innerText);
-            const steps = target - current_duration;
-            await this.loopOver(steps, async () => {
-                if (target > current_duration) {
-                    // eslint-disable-next-line no-await-in-loop
-                    await this.page.waitForSelector(
-                        '.dc-tabs__content > .trade-params__duration-tickpicker > .dc-tick-picker > .dc-tick-picker__calculation > .dc-btn:nth-child(3)'
-                    );
-                    await this.page.click(
-                        '.dc-tabs__content > .trade-params__duration-tickpicker > .dc-tick-picker > .dc-tick-picker__calculation > .dc-btn:nth-child(3)'
-                    );
-                } else {
-                    // eslint-disable-next-line no-await-in-loop
-                    await this.page.waitForSelector(
-                        '.dc-tabs__content > .trade-params__duration-tickpicker > .dc-tick-picker > .dc-tick-picker__calculation > .dc-btn:nth-child(1)'
-                    );
-                    await this.page.click(
-                        '.dc-tabs__content > .trade-params__duration-tickpicker > .dc-tick-picker > .dc-tick-picker__calculation > .dc-btn:nth-child(1)'
-                    );
-                }
-            });
+            await reachTarget(target, current_duration);
+
             await this.page.waitForSelector(
                 '.dc-tabs__content > .trade-params__duration-tickpicker > .dc-tick-picker > .dc-tick-picker__submit-wrapper > .dc-btn'
             );

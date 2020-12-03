@@ -20,7 +20,7 @@ const Dialog = ({
         if (is_visible && disableApp) {
             disableApp();
         }
-    });
+    }, [is_visible, disableApp]);
 
     const handleCancel = () => {
         if (is_closed_on_cancel && enableApp) {

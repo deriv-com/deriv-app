@@ -126,16 +126,6 @@
             margin-top: $default-margin;
             margin-bottom: 10px;
         }
-        &-label {
-            &--bold {
-                line-height: 2em;
-                font-weight: bold;
-                font-size: 1.8em;
-            }
-            &--small {
-                font-size: 1.4em;
-            }
-        }
         &-buttons {
             margin-left: auto;
             align-self: center;

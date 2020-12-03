@@ -193,12 +193,13 @@ export default class FlyoutStore {
         window.removeEventListener('click', this.onClickOutsideFlyout);
     }
 
-    getVariablesBlocksCount() {
+    @computed
+    get variables_blocks_count() {
         return this.flyout_content.filter(block => block.getAttribute('type') === 'variables_get').length;
     }
 
     @computed
     get first_get_variable_block_index() {
-        return this.flyout_content.length - this.getVariablesBlocksCount();
+        return this.flyout_content.length - this.variables_blocks_count;
     }
 }

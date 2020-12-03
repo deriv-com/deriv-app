@@ -1,7 +1,6 @@
 import './public-path'; // Leave this here (at the top)! OK boss!
 import React from 'react'; // eslint-disable-line import/first
-import { Loading } from '@deriv/components';
-import { DBot, ServerTime, ApiHelpers } from '@deriv/bot-skeleton'; // eslint-disable-line import/first
+import { DBot, ServerTime } from '@deriv/bot-skeleton'; // eslint-disable-line import/first
 import Audio from './components/audio.jsx';
 import BotFooterExtensions from './components/bot-footer-extensions.jsx';
 import MainContent from './components/main-content.jsx';
@@ -16,54 +15,43 @@ import RootStore from './stores';
 import GTM from './utils/gtm';
 import './assets/sass/app.scss';
 
-const App = ({ passthrough }) => {
-    const { root_store, WS } = passthrough;
-    const [is_loading, setIsLoading] = React.useState(true);
-    const root_store_instance = React.useRef(new RootStore(root_store, WS, DBot));
+class App extends React.Component {
+    constructor(props) {
+        super(props);
 
-    const { app, common } = root_store_instance.current;
+        const { root_store, WS } = props.passthrough;
+        this.root_store = new RootStore(root_store, WS, DBot);
 
-    React.useEffect(() => {
-        GTM.init(root_store_instance.current);
-        ServerTime.init(common);
-    }, [root_store_instance.current]);
-
-    app.setDBotEngineStores(root_store_instance.current);
-
-    const { onMount, onUnmount } = app;
-    React.useEffect(() => {
-        ApiHelpers.setInstance(app.api_helpers_store);
-        const { active_symbols } = ApiHelpers.instance;
-
-        setIsLoading(true);
-        active_symbols.retrieveActiveSymbols(true).then(() => {
-            setIsLoading(false);
-            onMount();
-        });
-
-        return () => {
-            onUnmount();
-        };
-    }, [onMount, onUnmount]);
-
-    if (is_loading) {
-        return <Loading />;
+        GTM.init(this.root_store);
+        ServerTime.init(this.root_store.common);
+        this.root_store.app.setDBotEngineStores(this.root_store);
     }
-    return (
-        <MobxContentProvider store={root_store_instance.current}>
-            <div className='bot'>
-                <BotNotificationMessages />
-                <Toolbar />
-                <MainContent />
-                <RunPanel />
-                <QuickStrategy />
-                <BotFooterExtensions />
-                <Audio />
-                <RoutePromptDialog />
-                <BlocklyLoading />
-            </div>
-        </MobxContentProvider>
-    );
-};
+
+    componentDidMount() {
+        this.root_store.app.onMount();
+    }
+
+    componentWillUnmount() {
+        this.root_store.app.onUnmount();
+    }
+
+    render() {
+        return (
+            <MobxContentProvider store={this.root_store}>
+                <div className='bot'>
+                    <BotNotificationMessages />
+                    <Toolbar />
+                    <MainContent />
+                    <RunPanel />
+                    <QuickStrategy />
+                    <BotFooterExtensions />
+                    <Audio />
+                    <RoutePromptDialog />
+                    <BlocklyLoading />
+                </div>
+            </MobxContentProvider>
+        );
+    }
+}
 
 export default App;

@@ -54,6 +54,13 @@ class Trader extends Common {
                 }
             } catch (e) {
             }
+        } else {
+            try {
+                await this.page.waitForSelector('.dc-checkbox__box--active');
+                await this.page.click('.dc-checkbox__box--active');
+            } catch (e) {
+                console.log('could not find dc-checkbox')
+            }
         }
     }
 
@@ -67,6 +74,7 @@ class Trader extends Common {
         } else {
             await this.page.waitForSelector('.dc-result__close-btn');
             await this.page.click('.dc-result__close-btn');
+            await this.unsetAllowEquals();
         }
     }
 

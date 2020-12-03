@@ -4,53 +4,48 @@ const {replaceWebsocket} = require("@root/_utils/websocket");
 
 let browser, context, page;
 
-// describe('Contract purchases in desktop', () => {
-//     beforeEach(async () => {
-//         const out = await setUp(desktop_viewport);
-//         browser = out.browser;
-//         context = out.context;
-//         await context.addInitScript(replaceWebsocket);
-//         page = new Trader(await context.newPage());
-//     });
-//
-//     afterEach(async () => {
-//         await tearDown(browser);
-//     });
-//
-//     test('[desktop] trader/buy-contract rise', async () => {
-//         await page.navigate();
-//         await page.loadOrLogin(process.env.VALID_USER, process.env.VALID_PASSWORD);
-//         await page.switchVirtualAccount();
-//         await page.waitForAccountInfoDropdown();
-//         await page.chooseUnderlying('1HZ10V', 'Volatility 10 (1s) Index');
-//         await page.buyContract('Ups & Downs', 'rise_fall', 'Ticks', 5, 'call', false);
-//         await page.assertPurchase(5, 10, 'CALL');
-//     });
-//     test("[desktop] trader/buy-contract fall", async () => {
-//         await page.navigate();
-//         await page.loadOrLogin(process.env.VALID_USER, process.env.VALID_PASSWORD);
-//         await page.switchVirtualAccount();
-//         await page.chooseUnderlying('1HZ10V', 'Volatility 10 (1s) Index');
-//         await page.buyContract('Ups & Downs', 'rise_fall', 'Ticks', 5, 'put', false);
-//         await page.assertPurchase(5, 10, 'PUT');
-//     });
-//     test("[desktop] trader/buy-contract rise equal", async () => {
-//         await page.navigate();
-//         await page.loadOrLogin(process.env.VALID_USER, process.env.VALID_PASSWORD);
-//         await page.switchVirtualAccount();
-//         await page.chooseUnderlying('1HZ10V', 'Volatility 10 (1s) Index');
-//         await page.buyContract('Ups & Downs', 'rise_fall', 'Ticks', 5, 'call', true);
-//         await page.assertPurchase(5, 10, 'CALLE');
-//     });
-//     test("[desktop] trader/buy-contract fall equal", async () => {
-//         await page.navigate();
-//         await page.loadOrLogin(process.env.VALID_USER, process.env.VALID_PASSWORD);
-//         await page.switchVirtualAccount();
-//         await page.chooseUnderlying('1HZ10V', 'Volatility 10 (1s) Index');
-//         await page.buyContract('Ups & Downs', 'rise_fall', 'Ticks', 5, 'put', true);
-//         await page.assertPurchase(5, 10, 'PUTE');
-//     });
-// })
+describe('Contract purchases in desktop', () => {
+    beforeAll(async () => {
+        const out = await setUp(desktop_viewport);
+        browser = out.browser;
+        context = out.context;
+        await context.addInitScript(replaceWebsocket);
+        page = new Trader(await context.newPage());
+        await page.navigate();
+        await page.loadOrLogin(process.env.VALID_USER, process.env.VALID_PASSWORD);
+        await page.switchVirtualAccount();
+        await page.waitForAccountInfoDropdown();
+        await page.chooseUnderlying('1HZ10V', 'Volatility 10 (1s) Index');
+    });
+
+    afterEach(async () => {
+        await page.clearTradeUIArtifacts();
+    });
+
+    afterAll(async () => {
+        await tearDown(browser);
+    });
+
+    test('[desktop] trader/buy-contract rise', async () => {
+        await page.buyContract('Ups & Downs', 'rise_fall', 'Ticks', 5, 'call', false);
+        await page.assertPurchase(5, 10, 'CALL');
+    });
+
+    test("[desktop] trader/buy-contract fall", async () => {
+        await page.buyContract('Ups & Downs', 'rise_fall', 'Ticks', 5, 'put', false);
+        await page.assertPurchase(5, 10, 'PUT');
+    });
+
+    test("[desktop] trader/buy-contract rise equal", async () => {
+        await page.buyContract('Ups & Downs', 'rise_fall', 'Ticks', 5, 'call', true);
+        await page.assertPurchase(5, 10, 'CALLE');
+    });
+
+    test("[desktop] trader/buy-contract fall equal", async () => {
+        await page.buyContract('Ups & Downs', 'rise_fall', 'Ticks', 5, 'put', true);
+        await page.assertPurchase(5, 10, 'PUTE');
+    });
+})
 
 describe('Contract purchases in mobile', () => {
     beforeAll(async () => {

@@ -2,62 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
 import { Input, Button, Icon } from '@deriv/components';
-import Dp2pContext from 'Components/context/dp2p-context';
+import { observer } from 'mobx-react-lite';
+import { useStores } from 'Stores';
 import { localize } from 'Components/i18next';
 import IconClose from 'Assets/icon-close.jsx';
 import './nickname-form.scss';
 
-const NicknameForm = ({ handleClose }) => {
-    const { createAdvertiser, is_mobile, nickname_error, resetNicknameErrorState } = React.useContext(Dp2pContext);
-
-    const validatePopup = values => {
-        const validations = {
-            nickname: [
-                v => !!v,
-                v => v.length >= 2,
-                v => v.length <= 24,
-                v => /^[a-zA-Z0-9\\.@_-]{2,24}$/.test(v),
-                v => /^(?!(.*(.)\\2{4,})|.*[\\.@_-]{2,}|^([\\.@_-])|.*([\\.@_-])$)[a-zA-Z0-9\\.@_-]{2,24}$/.test(v),
-                v =>
-                    Array.from(v).every(
-                        word => (v.match(new RegExp(word === '.' ? `\\${word}` : word, 'g')) || []).length <= 5
-                    ),
-            ],
-        };
-
-        const nickname_messages = [
-            localize('Nickname is required'),
-            localize('Nickname is too short'),
-            localize('Nickname is too long'),
-            localize('Can only contain letters, numbers, and special characters .- _ @.'),
-            localize('Cannot start, end with, or repeat special characters.'),
-            localize('Cannot repeat a character more than 5 times.'),
-        ];
-
-        const errors = {};
-
-        Object.entries(validations).forEach(([key, rules]) => {
-            const error_index = rules.findIndex(v => {
-                return !v(values[key]);
-            });
-
-            if (error_index !== -1) {
-                switch (key) {
-                    case 'nickname':
-                    default: {
-                        errors[key] = nickname_messages[error_index];
-                        break;
-                    }
-                }
-            }
-        });
-
-        return errors;
-    };
+const NicknameForm = observer(({ handleClose }) => {
+    const { general_store } = useStores();
 
     return (
         <>
-            {!is_mobile && (
+            {!general_store.props.is_mobile && (
                 <div className='nickname__form-header nickname__form-header--no-border'>
                     <div className='nickname__form-header_wrapper nickname__form-header_right'>
                         <IconClose className='nickname__form-close_icon' onClick={handleClose} />
@@ -65,10 +21,10 @@ const NicknameForm = ({ handleClose }) => {
                 </div>
             )}
             <Formik
-                validate={validatePopup}
+                validate={general_store.validatePopup}
                 initialValues={{ nickname: '' }}
                 onSubmit={async values => {
-                    await createAdvertiser(values.nickname);
+                    await general_store.createAdvertiser(values.nickname);
                 }}
             >
                 {({ errors, handleChange, isSubmitting, values }) => (
@@ -85,12 +41,12 @@ const NicknameForm = ({ handleClose }) => {
                                         <Input
                                             {...field}
                                             data-lpignore='true'
-                                            error={nickname_error || errors.nickname}
+                                            error={general_store.nickname_error || errors.nickname}
                                             label={localize('Your nickname')}
                                             className='nickname__form-field'
                                             onChange={e => {
                                                 handleChange(e);
-                                                resetNicknameErrorState();
+                                                general_store.resetNicknameErrorState();
                                             }}
                                             required
                                         />
@@ -109,7 +65,10 @@ const NicknameForm = ({ handleClose }) => {
                                 <Button
                                     type='submit'
                                     is_disabled={
-                                        !!errors.nickname || values.nickname === '' || isSubmitting || nickname_error
+                                        !!errors.nickname ||
+                                        values.nickname === '' ||
+                                        isSubmitting ||
+                                        general_store.nickname_error
                                     }
                                     primary
                                     large
@@ -123,11 +82,13 @@ const NicknameForm = ({ handleClose }) => {
             </Formik>
         </>
     );
-};
+});
 
 NicknameForm.propTypes = {
     handleClose: PropTypes.func,
+    nickname_error: PropTypes.string,
     setNicknameTrue: PropTypes.func,
+    validatePopup: PropTypes.func,
 };
 
 export default NicknameForm;

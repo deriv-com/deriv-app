@@ -35,7 +35,7 @@ const Notification = ({ data, removeNotificationMessage }) => {
                     img_src={data.img_src}
                     img_alt={data.img_alt}
                     redirect_link={data.redirect_link}
-                    onClick={onClick}
+                    onClick={destroy}
                 />
             );
         default:
@@ -74,7 +74,9 @@ const Notification = ({ data, removeNotificationMessage }) => {
                                             )}
                                             to={data.action.route}
                                         >
-                                            <Text size='xxs'>{data.action.text}</Text>
+                                            <Text size='xxs' weight='bold'>
+                                                {data.action.text}
+                                            </Text>
                                         </BinaryLink>
                                     ) : (
                                         <Button

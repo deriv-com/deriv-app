@@ -79,7 +79,7 @@ const Dialog = ({
                     <div className='dc-dialog__header-wrapper'>
                         {!!title && <h1 className='dc-dialog__header'>{title}</h1>}
                         {has_close_icon && (
-                            <div onClick={!!onCancel ? handleCancel : handleConfirm} className='dc-dialog__header--close'>
+                            <div onClick={onCancel ? handleCancel : handleConfirm} className='dc-dialog__header--close'>
                                 <Icon icon='IcCross' />
                             </div>
                         )}

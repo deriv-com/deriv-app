@@ -14,8 +14,8 @@ class Trader extends Common {
     }
 
     async waitForChart() {
-        await this.page.waitForSelector('.chart-container__loader', { state: 'hidden', timeout: 600000 });
-        await this.page.waitForSelector('.ciq-menu.ciq-enabled', { timeout: 120000 });
+        await this.page.waitForSelector('.chart-container__loader', {state: 'hidden', timeout: 600000});
+        await this.page.waitForSelector('.ciq-menu.ciq-enabled', {timeout: 120000});
     }
 
     async chooseUnderlying(code, name) {
@@ -28,14 +28,14 @@ class Trader extends Common {
     async openRecentPositionsDrawer() {
         await this.page.waitForSelector(RECENT_POSITION_DRAWER_SELECTOR);
         await this.page.click(RECENT_POSITION_DRAWER_SELECTOR);
-        await this.page.waitForSelector('positions-toggle--has-count', { state: 'hidden' });
+        await this.page.waitForSelector('positions-toggle--has-count', {state: 'hidden'});
     }
 
     async verifyContractResult() {
         if (await this.isMobile()) {
             await this.assertContractDetails();
         } else {
-            await this.page.waitForSelector('.portfolio-empty__wrapper', { state: 'hidden' });
+            await this.page.waitForSelector('.portfolio-empty__wrapper', {state: 'hidden'});
             await this.page.waitForSelector('.dc-result__close-btn');
             await this.page.waitForSelector('.dc-contract-card__wrapper');
         }
@@ -52,7 +52,8 @@ class Trader extends Common {
                 if (is_allow_equal_selected) {
                     await toggleAllowEqual();
                 }
-            } catch (e) {}
+            } catch (e) {
+            }
         }
     }
 
@@ -159,8 +160,8 @@ class Trader extends Common {
     async waitForPurchaseBtnEnabled(contract, allow_equal = false) {
         const allow_equal_suffix = this.should_set_allow_equal && allow_equal ? 'e' : '';
         const [green, red] = this.getPurchaseBtnId(contract);
-        await this.page.waitForSelector(`#dt_purchase_${green}${allow_equal_suffix}_button:enabled`, { timeout: 120000 });
-        await this.page.waitForSelector(`#dt_purchase_${red}${allow_equal_suffix}_button:enabled`, { timeout: 120000 });
+        await this.page.waitForSelector(`#dt_purchase_${green}${allow_equal_suffix}_button:enabled`, {timeout: 120000});
+        await this.page.waitForSelector(`#dt_purchase_${red}${allow_equal_suffix}_button:enabled`, {timeout: 120000});
     }
 
     getPurchaseBtnId(contract) {
@@ -237,10 +238,10 @@ class Trader extends Common {
                     return Promise.resolve(current);
                 }
 
-                if (current < t) {
+                if (current<t) {
                     await increment();
                 }
-                if (current > t) {
+                if (current>t) {
                     await decrement();
                 }
                 const updated_duration = await this.page.$eval('.dc-tick-picker__holder--large', el => el.innerText);
@@ -287,7 +288,7 @@ class Trader extends Common {
                 },
             });
 
-            await this.page.waitForTimeout(this.duration ? this.duration * 1000 : 6000);
+            await this.waitForSelector('.dc-tick-progress', {state: 'hidden'});
             const contract_id = buy_response.buy.contract_id;
             await this.page.waitForSelector(`#dt_drawer_card_${contract_id}`);
             await this.page.click(`#dt_drawer_card_${contract_id}`);
@@ -300,7 +301,7 @@ class Trader extends Common {
                 },
             });
             const contract_id = buy_response.buy.contract_id;
-            await this.page.waitForSelector(`#dc_contract_card_${contract_id}_result`, { timeout: 6000 });
+            await this.page.waitForSelector(`#dc_contract_card_${contract_id}_result`, {timeout: 6000});
             await this.page.hover(`#dc_contract_card_${contract_id}_result`);
             await this.page.click(`#dc_contract_card_${contract_id}_result`);
             await this.page.waitForSelector('#dt_entry_spot_label');

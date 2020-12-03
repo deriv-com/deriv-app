@@ -16,6 +16,7 @@ const Checkbox = ({
     ...otherProps
 }) => {
     const [checked, setChecked] = React.useState(defaultChecked || value);
+    const inputRef = React.useRef();
 
     React.useEffect(() => {
         setChecked(value);
@@ -30,8 +31,10 @@ const Checkbox = ({
     const handleKeyDown = e => {
         // Enter or space
         if (e.key === 'Enter' || e.keyCode === 32) {
-            setChecked(!checked);
-            onChange();
+            e.persist();
+            const is_checked = checked;
+            setChecked(!is_checked);
+            onChange({ target: { name: inputRef.current.name, checked: !is_checked } });
         }
     };
 
@@ -47,6 +50,7 @@ const Checkbox = ({
                 className='dc-checkbox__input'
                 type='checkbox'
                 id={id}
+                ref={inputRef}
                 onChange={onInputChange}
                 defaultChecked={checked}
                 {...otherProps}
@@ -57,6 +61,7 @@ const Checkbox = ({
                     'dc-checkbox__box--disabled': disabled,
                 })}
                 {...(withTabIndex?.length > 0 ? { tabIndex: withTabIndex } : {})}
+                tabIndex='0'
                 onKeyDown={handleKeyDown}
             >
                 {!!checked && <Icon icon='IcCheckmark' color='active' />}

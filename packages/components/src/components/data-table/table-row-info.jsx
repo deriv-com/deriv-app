@@ -31,7 +31,10 @@ const TableRowInfo = ({ replace, is_footer, cells, className }) => {
 TableRowInfo.propTypes = {
     cells: PropTypes.arrayOf(PropTypes.node),
     className: PropTypes.string,
-    replace: PropTypes.object,
+    replace: PropTypes.shape({
+        component: PropTypes.func,
+        message: PropTypes.string,
+    }),
     is_footer: PropTypes.bool,
 };
 

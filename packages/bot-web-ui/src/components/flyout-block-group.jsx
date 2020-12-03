@@ -33,7 +33,12 @@ const FlyoutBlockGroup = ({ onInfoClick, block_node, is_active, should_hide_disp
                 {!should_hide_display_name && (
                     <>
                         <div className='flyout__item-header'>
-                            <Text weight={!is_variables_get ? 'bold' : ''} color='$color-black-1'>
+                            <Text
+                                size={is_variables_get ? 's' : 'xsm'}
+                                line_height={is_variables_get ? '' : 'xl'}
+                                weight={is_variables_get ? '' : 'bold'}
+                                color='$color-black-1'
+                            >
                                 {display_name}
                             </Text>
                             {!is_variables_get && <AddButton />}

@@ -10,20 +10,20 @@ import VerticalTabLayout from './vertical-tab-layout.jsx';
 import VerticalTabWrapper from './vertical-tab-wrapper.jsx';
 
 const VerticalTab = ({
-    list,
-    is_routed,
     action_bar,
-    is_floating,
-    list_groups,
-    header_title,
-    current_path,
-    is_full_width,
-    tab_headers_note,
-    header_classname,
-    vertical_tab_index,
-    is_sidebar_enabled,
     action_bar_classname,
-    setVerticalTabIndex
+    current_path,
+    header_classname,
+    header_title,
+    is_floating,
+    is_full_width,
+    is_routed,
+    is_sidebar_enabled,
+    list,
+    list_groups,
+    setVerticalTabIndex,
+    tab_headers_note,
+    vertical_tab_index,
 }) => {
     const [curr_tab_index, setCurrTabIndex] = React.useState(vertical_tab_index || 0);
     const [selected_element, setSelectedElement] = React.useState(list[0]);

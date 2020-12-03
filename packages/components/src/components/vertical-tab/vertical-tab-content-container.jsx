@@ -64,16 +64,15 @@ const Content = ({ is_routed, items, selected }) => {
 };
 
 const VerticalTabContentContainer = ({
+    action_bar,
+    action_bar_classname,
     id,
+    is_floating,
+    is_routed,
     items,
     selected,
-    is_routed,
-    action_bar,
-    is_floating,
-    action_bar_classname,
     tab_container_classname,
-}) => {
-    return (
+}) => (
         <div
             className={classNames('dc-vertical-tab__content', {
                 'dc-vertical-tab__content--floating': is_floating,
@@ -113,6 +112,5 @@ const VerticalTabContentContainer = ({
             </div>
         </div>
     );
-};
 
 export default VerticalTabContentContainer;

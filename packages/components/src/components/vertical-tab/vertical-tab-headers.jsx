@@ -6,14 +6,14 @@ import VerticalTabHeaderGroup from './vertical-tab-header-group.jsx';
 import VerticalTabHeaderTitle from './vertical-tab-header-title.jsx';
 
 const VerticalTabHeaders = ({
+    className,
+    header_title,
+    is_floating,
+    is_routed,
+    item_groups,
     items,
     onChange,
     selected,
-    className,
-    is_routed,
-    item_groups,
-    is_floating,
-    header_title,
 }) => {
     const ref = React.useRef(null);
     const [top, setTop] = React.useState(0);

@@ -210,14 +210,15 @@ export default class CashierStore extends BaseStore {
                 this.root_store.client.is_logged_in,
                 this.root_store.client.currency,
             ],
-            () => {
+            async () => {
+                await BinarySocket.wait('get_settings');
+
                 if (!this.root_store.client.is_virtual) {
-                    WS.authorized.p2pAdvertiserInfo().then(advertiser_info => {
-                        const advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
-                        const is_p2p_restricted =
-                            advertiser_error === 'RestrictedCountry' || advertiser_error === 'RestrictedCurrency';
-                        this.setIsP2pVisible(!is_p2p_restricted);
-                    });
+                    const advertiser_info = await WS.authorized.p2pAdvertiserInfo();
+                    const advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
+                    const is_p2p_restricted =
+                        advertiser_error === 'RestrictedCountry' || advertiser_error === 'RestrictedCurrency';
+                    this.setIsP2pVisible(!is_p2p_restricted);
                 }
             }
         );

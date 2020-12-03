@@ -7,18 +7,30 @@ const UnsupportedIconRow = () => (
     <div className='poi-icon-row'>
         <div className='poi-icon-row__icon-container'>
             <Icon icon='IcIdentityCard' size={90} />
-            <Text as='p'>{localize('Identity card')}</Text>
-            <Text as='p'>{localize('Front and back')}</Text>
+            <Text color='less-prominent' as='p'>
+                {localize('Identity card')}
+            </Text>
+            <Text line_height='xs' color='less-prominent' as='p'>
+                {localize('Front and back')}
+            </Text>
         </div>
         <div className='poi-icon-row__icon-container'>
             <Icon icon='IcDrivingLicense' size={90} />
-            <Text as='p'>{localize('Driving license')}</Text>
-            <Text as='p'>{localize('Front and back')}</Text>
+            <Text color='less-prominent' as='p'>
+                {localize('Driving license')}
+            </Text>
+            <Text line_height='xs' color='less-prominent' as='p'>
+                {localize('Front and back')}
+            </Text>
         </div>
         <div className='poi-icon-row__icon-container'>
             <Icon icon='IcPassport' size={90} />
-            <Text as='p'>{localize('Passport')}</Text>
-            <Text as='p'>{localize('Face photo page')}</Text>
+            <Text color='less-prominent' as='p'>
+                {localize('Passport')}
+            </Text>
+            <Text line_height='xs' color='less-prominent' as='p'>
+                {localize('Face photo page')}
+            </Text>
         </div>
     </div>
 );

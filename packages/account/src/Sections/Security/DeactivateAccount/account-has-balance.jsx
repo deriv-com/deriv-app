@@ -11,7 +11,14 @@ const getCurrMT5Account = (mt5_login_list, login_id) =>
 
 const Wrapper = ({ children, title }) => (
     <div className='deactivate-account-error'>
-        <Text as='p' size='xs' weight='bold' color='prominent' className='deactivate-account-error__title'>
+        <Text
+            as='p'
+            line_height='s'
+            size='xs'
+            weight='bold'
+            color='prominent'
+            className='deactivate-account-error__title'
+        >
             {title}
         </Text>
         {children}

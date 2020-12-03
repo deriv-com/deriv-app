@@ -135,6 +135,11 @@ class ConfigVerification {
 }
 
 export default class CashierStore extends BaseStore {
+    constructor({ root_store, WS }) {
+        super({ root_store });
+        this.WS = WS;
+    }
+
     @observable is_loading = false;
     @observable is_p2p_visible = false;
     @observable p2p_notification_count = 0;
@@ -201,8 +206,7 @@ export default class CashierStore extends BaseStore {
 
     // Initialise P2P attributes on app load without mounting the entire cashier
     @action.bound
-    init({ ws }) {
-        this.WS = ws;
+    init() {
         this.root_store.menu.attach({
             id: 'dt_cashier_tab',
             icon: <CashierNotifications p2p_notification_count={this.p2p_notification_count} />,

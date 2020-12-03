@@ -34,9 +34,8 @@ import { MT5_TEXT } from '../Constants/mt5-text';
 // eslint-disable-next-line import/no-unresolved
 import 'Sass/app.scss';
 
-const bootCashierStore = () => {
-    root_store.modules.attachModule('cashier', new CashierStore({ root_store }));
-    root_store.modules.cashier.init({ ws: WS });
+const initCashierStore = () => {
+    root_store.modules.attachModule('cashier', new CashierStore({ root_store, WS }));
 };
 
 const App = ({ root_store }) => {
@@ -45,7 +44,7 @@ const App = ({ root_store }) => {
     const has_base = /^\/(br_)/.test(l.pathname);
     const url_params = new URLSearchParams(l.search);
     const [is_translation_loaded] = useOnLoadTranslation();
-    React.useEffect(bootCashierStore, []);
+    React.useEffect(initCashierStore, []);
     React.useEffect(() => {
         checkAndSetEndpointFromUrl();
         initializeTranslations();

@@ -22,7 +22,7 @@ import * as SocketCache from '_common/base/socket_cache';
 import { isEuCountry } from '_common/utility';
 import BaseStore from './base-store';
 import { getClientAccountType, getAccountTitle } from './Helpers/client';
-import { createDeviceDataObject, setDeviceDataCookie } from './Helpers/device';
+import { createDeviceDataObject, setDeviceDataCookie, getCookieObject } from './Helpers/device';
 import { handleClientNotifications, clientNotifications } from './Helpers/client-notifications';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
 
@@ -1565,13 +1565,22 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     setDeviceData() {
-        // Set client URL params on init
         const date_first_contact_cookie = setDeviceDataCookie(
             'date_first_contact',
             this.root_store.common.server_time.format('YYYY-MM-DD')
         );
         const signup_device_cookie = setDeviceDataCookie('signup_device', isDesktopOs() ? 'desktop' : 'mobile');
-        const device_data = createDeviceDataObject(date_first_contact_cookie, signup_device_cookie);
+        const cookies_list = ['affiliate_token', 'gclid_url', 'utm_source', 'utm_campaign', 'utm_medium', 'utm_source'];
+        const cookies = {
+            'signup_device': signup_device_cookie,
+            'data_first_contact': date_first_contact_cookie,
+        };
+        
+        cookies_list.forEach(element => {
+            cookies[element] = getCookieObject(element);
+        });
+
+        const device_data = createDeviceDataObject(cookies);
 
         this.device_data = { ...this.device_data, ...device_data };
     }

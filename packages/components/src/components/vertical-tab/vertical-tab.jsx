@@ -50,7 +50,7 @@ const VerticalTab = ({
 
     const changeSelected = e => {
         setSelectedIndex({
-            list: list,
+            list,
             selected_index: e,
         });
     };

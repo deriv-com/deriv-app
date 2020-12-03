@@ -14,6 +14,7 @@ const LineSeparatedComponents = ({ children, className, is_invisible_line }) => 
                 <div
                     className={classNames('dc-line-separated-components__line', {
                         'dc-line-separated-components__line--invisible': is_invisible_line,
+                        'dc-line-separated-components__line--single-child': num_children === 1,
                     })}
                 />
             );

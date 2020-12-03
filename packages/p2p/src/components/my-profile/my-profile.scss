@@ -1,4 +1,15 @@
 .my-profile {
+    &__ad-template {
+        &-wrapper {
+            @include tablet-up {
+                width: 657px;
+            }
+
+            @include mobile {
+                margin: 0 1.6rem;
+            }
+        }
+    }
     &__balance {
         &-wrapper {
             @include tablet-up {
@@ -69,7 +80,7 @@
         width: 657px;
 
         @include mobile {
-            width: 100vw;
+            width: 100%;
             grid-template-columns: unset;
             justify-content: center;
         }
@@ -87,37 +98,14 @@
             }
         }
     }
-    &__popover {
-        &-icon {
-            margin: 0 0.8rem;
-        }
-        &-text {
-            margin-right: 2rem;
-            @include mobile {
-                margin-right: 0;
-            }
-        }
-    }
-    &__separator {
-        display: flex;
+    &__popover-container {
+        margin-left: 0.8rem;
 
-        &-text {
-            display: flex;
-            @include mobile {
-                margin-left: 1.6rem;
-                width: 10rem;
-            }
-        }
-        &-horizontal_line {
-            align-self: center;
-            border-bottom: 1px solid var(--general-section-1);
-            margin-left: 1.6rem;
-            width: 564px;
-            @include mobile {
-                width: calc(100vw - 9rem);
-            }
+        @include mobile {
+            margin-right: 1.6rem;
         }
     }
+
     &__form {
         @include mobile {
             margin-bottom: 18rem;

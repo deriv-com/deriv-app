@@ -26,6 +26,13 @@ const MyProfile = observer(() => {
     const { general_store, my_profile_store } = useStores();
     const { currency } = general_store.client;
     const [has_on_screen_keyboard, setHasOnScreenKeyboard] = React.useState(false);
+    const popover_margin = 8;
+
+    React.useEffect(() => {
+        my_profile_store.getAdvertiserInfo();
+    }, []);
+
+    const setCurrentFocus = target => setHasOnScreenKeyboard(isMobile() && target);
 
     const {
         balance_available,
@@ -35,14 +42,6 @@ const MyProfile = observer(() => {
         daily_sell_limit,
         total_orders_count,
     } = my_profile_store.advertiser_info;
-
-    React.useEffect(() => {
-        my_profile_store.getAdvertiserInfo();
-    }, []);
-
-    const setCurrentFocus = target => {
-        setHasOnScreenKeyboard(isMobile() && target);
-    };
 
     if (my_profile_store.is_loading) {
         return <Loading is_fullscreen={false} />;
@@ -92,31 +91,43 @@ const MyProfile = observer(() => {
                             <Money amount={balance_available} currency={currency} show_currency />
                         </Text>
                         <Popover
-                            classNameBubble='my-profile__balance-popover'
-                            alignment='top'
+                            alignment='left'
+                            margin={popover_margin}
                             message={localize(
                                 'DP2P balance is a sum of non-reversible deposits into your account (via bank wire, etc.) and a percentage of reversible deposits (via credit cards, etc.).'
                             )}
+                            relative_render
                             zIndex={2}
                         >
                             <Icon icon='IcInfoOutline' size={16} />
                         </Popover>
                     </div>
                 </LineSeparatedComponents>
-                <React.Fragment>
-                    <Table>
-                        <Table.Row className='my-profile__stats'>
-                            <div className='my-profile__stats-cell-separator' />
+                <Table>
+                    <Table.Row className='my-profile__stats'>
+                        <div className='my-profile__stats-cell-separator' />
+                        <Table.Cell className='my-profile__stats-cell'>
+                            <Text size={isMobile() ? 'xxxs' : 'xs'} color='less-prominent' line_height='m' as='p'>
+                                {localize('Total orders')}
+                            </Text>
+                            <Text color='prominent' weight='bold' line_height='l' as='p'>
+                                {total_orders_count || '-'}
+                            </Text>
+                        </Table.Cell>
+                        <div className='my-profile__stats-cell-separator' />
+                        {isMobile() ? (
                             <Table.Cell className='my-profile__stats-cell'>
                                 <Text size={isMobile() ? 'xxxs' : 'xs'} color='less-prominent' line_height='m' as='p'>
-                                    {localize('Total orders')}
+                                    {localize('Buy / Sell ({{currency}})', {
+                                        currency,
+                                    })}
                                 </Text>
                                 <Text color='prominent' weight='bold' line_height='l' as='p'>
-                                    {total_orders_count || '-'}
+                                    {daily_buy || '-'}/{daily_sell || '-'}
                                 </Text>
                             </Table.Cell>
-                            <div className='my-profile__stats-cell-separator' />
-                            {isMobile() ? (
+                        ) : (
+                            <>
                                 <Table.Cell className='my-profile__stats-cell'>
                                     <Text
                                         size={isMobile() ? 'xxxs' : 'xs'}
@@ -124,181 +135,163 @@ const MyProfile = observer(() => {
                                         line_height='m'
                                         as='p'
                                     >
-                                        {localize('Buy / Sell ({{currency}})', {
+                                        {localize('Buy ({{currency}})', {
                                             currency,
                                         })}
                                     </Text>
                                     <Text color='prominent' weight='bold' line_height='l' as='p'>
-                                        {daily_buy || '-'}/{daily_sell || '-'}
+                                        {daily_buy || '-'}
                                     </Text>
                                 </Table.Cell>
-                            ) : (
-                                <>
-                                    <Table.Cell className='my-profile__stats-cell'>
-                                        <Text
-                                            size={isMobile() ? 'xxxs' : 'xs'}
-                                            color='less-prominent'
-                                            line_height='m'
-                                            as='p'
-                                        >
-                                            {localize('Buy ({{currency}})', {
-                                                currency,
-                                            })}
-                                        </Text>
-                                        <Text color='prominent' weight='bold' line_height='l' as='p'>
-                                            {daily_buy || '-'}
-                                        </Text>
-                                    </Table.Cell>
-                                    <div className='my-profile__stats-cell-separator' />
-                                    <Table.Cell className='my-profile__stats-cell'>
-                                        <Text
-                                            size={isMobile() ? 'xxxs' : 'xs'}
-                                            color='less-prominent'
-                                            line_height='m'
-                                            as='p'
-                                        >
-                                            {localize('Sell ({{currency}})', {
-                                                currency,
-                                            })}
-                                        </Text>
-                                        <Text color='prominent' weight='bold' line_height='l' as='p'>
-                                            {daily_sell || '-'}
-                                        </Text>
-                                    </Table.Cell>
-                                </>
-                            )}
-                            <div className='my-profile__stats-cell-separator' />
-                            <Table.Cell className='my-profile__stats-cell'>
-                                <Text size={isMobile() ? 'xxxs' : 'xs'} color='less-prominent' line_height='m' as='p'>
-                                    {localize('Buy / Sell limit ({{currency}})', {
-                                        currency,
-                                    })}
-                                </Text>
-                                <Text color='prominent' weight='bold' line_height='l' as='p'>
-                                    {daily_buy_limit && daily_sell_limit
-                                        ? `${Math.floor(daily_buy_limit)} / ${Math.floor(daily_sell_limit)}`
-                                        : '-'}
-                                </Text>
-                            </Table.Cell>
-                            {!isMobile() && <div className='my-profile__stats-cell-separator' />}
-                            <Table.Cell>
+                                <div className='my-profile__stats-cell-separator' />
+                                <Table.Cell className='my-profile__stats-cell'>
+                                    <Text
+                                        size={isMobile() ? 'xxxs' : 'xs'}
+                                        color='less-prominent'
+                                        line_height='m'
+                                        as='p'
+                                    >
+                                        {localize('Sell ({{currency}})', {
+                                            currency,
+                                        })}
+                                    </Text>
+                                    <Text color='prominent' weight='bold' line_height='l' as='p'>
+                                        {daily_sell || '-'}
+                                    </Text>
+                                </Table.Cell>
+                            </>
+                        )}
+                        <div className='my-profile__stats-cell-separator' />
+                        <Table.Cell className='my-profile__stats-cell'>
+                            <Text size={isMobile() ? 'xxxs' : 'xs'} color='less-prominent' line_height='m' as='p'>
+                                {localize('Buy / Sell limit ({{currency}})', {
+                                    currency,
+                                })}
+                            </Text>
+                            <Text color='prominent' weight='bold' line_height='l' as='p'>
+                                {daily_buy_limit && daily_sell_limit
+                                    ? `${Math.floor(daily_buy_limit)} / ${Math.floor(daily_sell_limit)}`
+                                    : '-'}
+                            </Text>
+                        </Table.Cell>
+                        {!isMobile() && <div className='my-profile__stats-cell-separator' />}
+                        <Table.Cell>
+                            <div className='my-profile__popover-container'>
                                 <Popover
-                                    classNameBubble='my-profile__popover-text'
-                                    alignment='top'
+                                    alignment='left'
+                                    margin={popover_margin}
                                     message={localize(
                                         "These fields are based on the last 24 hours' activity: Buy, Sell, and Limit."
                                     )}
                                     zIndex={2}
+                                    relative_render
                                 >
                                     <Icon className='my-profile__popover-icon' icon='IcInfoOutline' size={16} />
                                 </Popover>
-                            </Table.Cell>
-                        </Table.Row>
-                    </Table>
-                    <div className='my-profile__separator'>
-                        <div className='my-profile__separator-text'>
-                            <Text size='xs' color='prominent' weight='bold'>
-                                {localize('Ad template')}
-                            </Text>
-                        </div>
-                        <div className='my-profile__separator-horizontal_line' />
-                    </div>
-                    <Formik
-                        enableReinitialize
-                        initialValues={{
-                            contact_info: my_profile_store.contact_info,
-                            default_advert_description: my_profile_store.default_advert_description,
-                            payment_info: my_profile_store.payment_info,
-                        }}
-                        onSubmit={my_profile_store.handleSubmit}
-                        validate={my_profile_store.validateForm}
-                    >
-                        {({ dirty, errors, isSubmitting, isValid }) => {
-                            return (
-                                <Form
-                                    className={classNames('my-profile__form', {
-                                        'my-profile__form--active-keyboard': has_on_screen_keyboard,
-                                    })}
-                                >
-                                    <React.Fragment>
-                                        <Field name='payment_info'>
-                                            {({ field }) => (
-                                                <Input
-                                                    {...field}
-                                                    type='textarea'
-                                                    label={localize('Payment details')}
-                                                    error={errors.payment_info}
-                                                    hint={localize('e.g. your bank/e-wallet account details')}
-                                                    className='my-profile__form-textarea'
-                                                    has_character_counter
-                                                    initial_character_count={my_profile_store.payment_info.length}
-                                                    max_characters={300}
-                                                    onFocus={e => setCurrentFocus(e.currentTarget.name)}
-                                                    onBlur={() => setCurrentFocus(null)}
-                                                />
-                                            )}
-                                        </Field>
-                                        <Field name='contact_info'>
-                                            {({ field }) => (
-                                                <Input
-                                                    {...field}
-                                                    type='textarea'
-                                                    label={localize('Contact details')}
-                                                    error={errors.contact_info}
-                                                    className='my-profile__form-textarea'
-                                                    has_character_counter
-                                                    initial_character_count={my_profile_store.contact_info.length}
-                                                    max_characters={300}
-                                                    onFocus={e => setCurrentFocus(e.currentTarget.name)}
-                                                    onBlur={() => setCurrentFocus(null)}
-                                                />
-                                            )}
-                                        </Field>
-                                        <Field name='default_advert_description'>
-                                            {({ field }) => (
-                                                <Input
-                                                    {...field}
-                                                    type='textarea'
-                                                    label={localize('Instructions')}
-                                                    error={errors.default_advert_description}
-                                                    hint={localize('This information will be visible to everyone.')}
-                                                    className='my-profile__form-textarea'
-                                                    has_character_counter
-                                                    initial_character_count={
-                                                        my_profile_store.default_advert_description.length
-                                                    }
-                                                    max_characters={300}
-                                                    onFocus={e => setCurrentFocus(e.currentTarget.name)}
-                                                    onBlur={() => setCurrentFocus(null)}
-                                                />
-                                            )}
-                                        </Field>
-                                        <div
-                                            className={classNames('my-profile__footer', {
-                                                'my-profile__footer--active-keyboard': has_on_screen_keyboard,
-                                            })}
-                                        >
-                                            <FormError message={my_profile_store.form_error} />
-
-                                            <Button
-                                                className={classNames('my-profile__footer-button', {
-                                                    'dc-btn--green': my_profile_store.is_submit_success,
-                                                })}
-                                                is_disabled={!dirty || isSubmitting || !isValid}
-                                                is_loading={my_profile_store.is_button_loading}
-                                                is_submit_success={my_profile_store.is_submit_success}
-                                                text={localize('Save')}
-                                                has_effect
-                                                primary
-                                                large
+                            </div>
+                        </Table.Cell>
+                    </Table.Row>
+                </Table>
+                <LineSeparatedComponents className='my-profile__ad-template-wrapper'>
+                    <Text size='xs' color='prominent' weight='bold'>
+                        <Localize i18n_default_text='Ad template' />
+                    </Text>
+                </LineSeparatedComponents>
+                <Formik
+                    enableReinitialize
+                    initialValues={{
+                        contact_info: my_profile_store.contact_info,
+                        default_advert_description: my_profile_store.default_advert_description,
+                        payment_info: my_profile_store.payment_info,
+                    }}
+                    onSubmit={my_profile_store.handleSubmit}
+                    validate={my_profile_store.validateForm}
+                >
+                    {({ dirty, errors, isSubmitting, isValid }) => {
+                        return (
+                            <Form
+                                className={classNames('my-profile__form', {
+                                    'my-profile__form--active-keyboard': has_on_screen_keyboard,
+                                })}
+                            >
+                                <React.Fragment>
+                                    <Field name='payment_info'>
+                                        {({ field }) => (
+                                            <Input
+                                                {...field}
+                                                type='textarea'
+                                                label={localize('Payment details')}
+                                                error={errors.payment_info}
+                                                hint={localize('e.g. your bank/e-wallet account details')}
+                                                className='my-profile__form-textarea'
+                                                has_character_counter
+                                                initial_character_count={my_profile_store.payment_info.length}
+                                                max_characters={300}
+                                                onFocus={e => setCurrentFocus(e.currentTarget.name)}
+                                                onBlur={() => setCurrentFocus(null)}
                                             />
-                                        </div>
-                                    </React.Fragment>
-                                </Form>
-                            );
-                        }}
-                    </Formik>
-                </React.Fragment>
+                                        )}
+                                    </Field>
+                                    <Field name='contact_info'>
+                                        {({ field }) => (
+                                            <Input
+                                                {...field}
+                                                type='textarea'
+                                                label={localize('Contact details')}
+                                                error={errors.contact_info}
+                                                className='my-profile__form-textarea'
+                                                has_character_counter
+                                                initial_character_count={my_profile_store.contact_info.length}
+                                                max_characters={300}
+                                                onFocus={e => setCurrentFocus(e.currentTarget.name)}
+                                                onBlur={() => setCurrentFocus(null)}
+                                            />
+                                        )}
+                                    </Field>
+                                    <Field name='default_advert_description'>
+                                        {({ field }) => (
+                                            <Input
+                                                {...field}
+                                                type='textarea'
+                                                label={localize('Instructions')}
+                                                error={errors.default_advert_description}
+                                                hint={localize('This information will be visible to everyone.')}
+                                                className='my-profile__form-textarea'
+                                                has_character_counter
+                                                initial_character_count={
+                                                    my_profile_store.default_advert_description.length
+                                                }
+                                                max_characters={300}
+                                                onFocus={e => setCurrentFocus(e.currentTarget.name)}
+                                                onBlur={() => setCurrentFocus(null)}
+                                            />
+                                        )}
+                                    </Field>
+                                    <div
+                                        className={classNames('my-profile__footer', {
+                                            'my-profile__footer--active-keyboard': has_on_screen_keyboard,
+                                        })}
+                                    >
+                                        <FormError message={my_profile_store.form_error} />
+
+                                        <Button
+                                            className={classNames('my-profile__footer-button', {
+                                                'dc-btn--green': my_profile_store.is_submit_success,
+                                            })}
+                                            is_disabled={!dirty || isSubmitting || !isValid}
+                                            is_loading={my_profile_store.is_button_loading}
+                                            is_submit_success={my_profile_store.is_submit_success}
+                                            text={localize('Save')}
+                                            has_effect
+                                            primary
+                                            large
+                                        />
+                                    </div>
+                                </React.Fragment>
+                            </Form>
+                        );
+                    }}
+                </Formik>
             </ThemedScrollbars>
         </div>
     );

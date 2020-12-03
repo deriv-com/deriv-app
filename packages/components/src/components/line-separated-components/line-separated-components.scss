@@ -12,5 +12,9 @@
         &--invisible {
             background-color: inherit;
         }
+
+        &--single-child {
+            margin-right: 0;
+        }
     }
 }

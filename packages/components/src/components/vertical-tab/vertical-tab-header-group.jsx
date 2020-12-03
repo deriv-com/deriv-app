@@ -15,15 +15,18 @@ const Header = ({ text }) => <div className='dc-vertical-tab__header-group__link
 
 const VerticalTabHeaderGroup = ({ children, className, group, selected, onToggle }) => {
     const [show_items, setShowItems] = React.useState(true);
+
+    const label = group.label || group.title; // group.label.charAt(0).toUpperCase() + group.label.slice(1).toLowerCase();
+    const id = `dt_${label}_link`;
+    const is_disabled = !!group.is_disabled;
+
     React.useEffect(() => {
         onToggle(true);
     }, [show_items]);
-    const label = group.label || group.title; // group.label.charAt(0).toUpperCase() + group.label.slice(1).toLowerCase();
+
     const handleClick = () => {
         if (!selected) setShowItems(!show_items);
     };
-    const id = `dt_${label}_link`;
-    const is_disabled = !!group.is_disabled;
 
     return (
         <>

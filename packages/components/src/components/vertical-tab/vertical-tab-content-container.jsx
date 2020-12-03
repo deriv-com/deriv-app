@@ -63,58 +63,56 @@ const Content = ({ is_routed, items, selected }) => {
     );
 };
 
-export default class VerticalTabContentContainer extends React.PureComponent {
-    render() {
-        const {
-            action_bar,
-            action_bar_classname,
-            id,
-            is_floating,
-            is_routed,
-            items,
-            selected,
-            tab_container_classname,
-        } = this.props;
-
-        return (
-            <div
-                className={classNames('dc-vertical-tab__content', {
-                    'dc-vertical-tab__content--floating': is_floating,
-                })}
-            >
-                {!is_floating && action_bar && (
-                    <div
-                        className={classNames('dc-vertical-tab__action-bar', {
-                            [action_bar_classname]: !!action_bar_classname,
-                        })}
-                    >
-                        {action_bar.map(({ component, icon, onClick }, idx) => {
-                            const Component = component;
-                            return component ? (
-                                <Component key={idx} />
-                            ) : (
-                                <div
-                                    id={`dt_${id}_close_icon`}
-                                    className='dc-vertical-tab__action-bar-wrapper'
-                                    key={idx}
-                                    onClick={onClick}
-                                >
-                                    <Icon className='dc-vertical-tab__action-bar--icon' icon={icon} />
-                                </div>
-                            );
-                        })}
-                    </div>
-                )}
-                <div className={classNames('dc-vertical-tab__content-container', tab_container_classname)}>
-                    {selected.has_side_note ? (
-                        <div className='dc-vertical-tab__content-inner'>
-                            <Content is_routed={is_routed} items={items} selected={selected} />
-                        </div>
-                    ) : (
-                        <Content is_routed={is_routed} items={items} selected={selected} />
-                    )}
+const VerticalTabContentContainer = ({
+    id,
+    items,
+    selected,
+    is_routed,
+    action_bar,
+    is_floating,
+    action_bar_classname,
+    tab_container_classname,
+}) => {
+    return (
+        <div
+            className={classNames('dc-vertical-tab__content', {
+                'dc-vertical-tab__content--floating': is_floating,
+            })}
+        >
+            {!is_floating && action_bar && (
+                <div
+                    className={classNames('dc-vertical-tab__action-bar', {
+                        [action_bar_classname]: !!action_bar_classname,
+                    })}
+                >
+                    {action_bar.map(({ component, icon, onClick }, idx) => {
+                        const Component = component;
+                        return component ? (
+                            <Component key={idx} />
+                        ) : (
+                            <div
+                                id={`dt_${id}_close_icon`}
+                                className='dc-vertical-tab__action-bar-wrapper'
+                                key={idx}
+                                onClick={onClick}
+                            >
+                                <Icon className='dc-vertical-tab__action-bar--icon' icon={icon} />
+                            </div>
+                        );
+                    })}
                 </div>
+            )}
+            <div className={classNames('dc-vertical-tab__content-container', tab_container_classname)}>
+                {selected.has_side_note ? (
+                    <div className='dc-vertical-tab__content-inner'>
+                        <Content is_routed={is_routed} items={items} selected={selected} />
+                    </div>
+                ) : (
+                    <Content is_routed={is_routed} items={items} selected={selected} />
+                )}
             </div>
-        );
-    }
-}
+        </div>
+    );
+};
+
+export default VerticalTabContentContainer;

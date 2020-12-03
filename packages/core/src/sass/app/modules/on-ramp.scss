@@ -118,8 +118,10 @@
                     cursor: pointer;
                     width: 26.5rem;
                     background: unset;
-                    color: var(--text-general);
 
+                    &--dark {
+                        color: var(--text-general);
+                    }
                     &:disabled {
                         opacity: 1;
                     }

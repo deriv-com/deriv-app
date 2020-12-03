@@ -9,6 +9,7 @@ import { connect } from 'Stores/connect';
 const OnRampProviderPopup = ({
     api_error,
     deposit_address,
+    is_dark_mode_on,
     is_deposit_address_loading,
     is_deposit_address_popover_open,
     is_requesting_widget_html,
@@ -98,7 +99,9 @@ const OnRampProviderPopup = ({
                                 is_open={is_deposit_address_popover_open}
                             >
                                 <input
-                                    className='on-ramp__popup-deposit-address-text'
+                                    className={classNames('on-ramp__popup-deposit-address-text', {
+                                        'on-ramp__popup-deposit-address-text--dark': is_dark_mode_on,
+                                    })}
                                     ref={setDepositAddressRef}
                                     defaultValue={deposit_address}
                                     disabled
@@ -187,9 +190,10 @@ OnRampProviderPopup.propTypes = {
     widget_html: PropTypes.string,
 };
 
-export default connect(({ modules }) => ({
+export default connect(({ modules, ui }) => ({
     api_error: modules.cashier.onramp.api_error,
     deposit_address: modules.cashier.onramp.deposit_address,
+    is_dark_mode_on: ui.is_dark_mode_on,
     is_deposit_address_loading: modules.cashier.onramp.is_deposit_address_loading,
     is_deposit_address_popover_open: modules.cashier.onramp.is_deposit_address_popover_open,
     is_requesting_widget_html: modules.cashier.onramp.is_requesting_widget_html,

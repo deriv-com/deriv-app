@@ -129,7 +129,7 @@ class Cashier extends React.Component {
                                     should_show_tab_headers_note ? (
                                         <Text as='p' size='xxs' className='cashier__tab-header-note'>
                                             <Localize
-                                                i18n_default_text='Want to exchange between e-wallet currencies? Try <0>ewallet.exchange</0>'
+                                                i18n_default_text='Want to exchange between e-wallet currencies? Try <0>Ewallet.Exchange</0>'
                                                 components={[
                                                     <a
                                                         key={0}

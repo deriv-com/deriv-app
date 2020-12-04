@@ -206,11 +206,14 @@ export default class CashierStore extends BaseStore {
         // eslint-disable-next-line no-undef
         reaction(
             () => [
-                this.root_store.client.loginid,
+                this.root_store.client.switched,
                 this.root_store.client.is_logged_in,
                 this.root_store.client.currency,
             ],
             async () => {
+                // wait for get_settings so is_virtual gets populated in client-store
+                await BinarySocket.wait('get_settings');
+
                 if (this.root_store.client.is_logged_in && !this.root_store.client.is_virtual) {
                     const advertiser_info = await WS.authorized.p2pAdvertiserInfo();
                     const advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);

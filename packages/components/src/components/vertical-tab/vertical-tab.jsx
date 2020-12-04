@@ -28,17 +28,17 @@ const VerticalTab = ({
     const [curr_tab_index, setCurrTabIndex] = React.useState(vertical_tab_index || 0);
     const [selected_element, setSelectedElement] = React.useState(list[0]);
 
-    const setSelectedIndex = ({ list, selected_index, is_routed, current_path }) => {
+    const setSelectedIndex = ({ path_list, selected_index, is_routed_path, curr_path }) => {
         let index;
         if (typeof selected_index === 'undefined') {
-            index = is_routed
+            index = is_routed_path
                 ? Math.max(
-                      list.indexOf(list.find(item => item.path === current_path) || list.find(item => item.default)),
+                    path_list.indexOf(path_list.find(item => item.path === curr_path) || path_list.find(item => item.default)),
                       0
                   )
                 : 0;
         } else {
-            index = typeof selected_index === 'object' ? list.indexOf(selected_index) : selected_index;
+            index = typeof selected_index === 'object' ? path_list.indexOf(selected_index) : selected_index;
         }
 
         setCurrTabIndex(index);
@@ -50,16 +50,16 @@ const VerticalTab = ({
 
     const changeSelected = e => {
         setSelectedIndex({
-            list,
+            path_list: list,
             selected_index: e,
         });
     };
 
     React.useEffect(() => {
         setSelectedIndex({
-            current_path,
-            list,
-            is_routed,
+            curr_path: current_path,
+            path_list: list,
+            is_routed_path: is_routed,
         });
     }, [vertical_tab_index, list]);
 

@@ -1,14 +1,13 @@
 import { CookieStorage } from '@deriv/shared';
 
 export const createDeviceDataObject = cookies_object => {
-    const url_params = new URLSearchParams(window.location.search);
     const device_data = {};
 
-    for (cookie_name in cookies_object) {
-        if (cookie_object[key].get(cookie_name)) {
-            device_data[cookie_name] = cookie_object[key].get(cookie_name);
+    Object.keys(cookies_object).forEach( cookie_name => {
+        if (cookies_object[cookie_name].get(cookie_name)) {
+            device_data[cookie_name] = cookies_object[cookie_name].get(cookie_name);
         }
-    }
+    })
 
     return device_data;
 };

@@ -8,6 +8,7 @@ import {
     LineSeparatedComponents,
     Loading,
     Popover,
+    PopoverMobile,
     Table,
     ThemedScrollbars,
     Text,
@@ -26,7 +27,8 @@ const MyProfile = observer(() => {
     const { general_store, my_profile_store } = useStores();
     const { currency } = general_store.client;
     const [has_on_screen_keyboard, setHasOnScreenKeyboard] = React.useState(false);
-    const popover_margin = 8;
+    const [is_balance_tooltip_open, setIsBalanceTooltipOpen] = React.useState(false);
+    const [is_statistics_tooltip_open, setIsStatisticsTooltipOpen] = React.useState(false);
 
     React.useEffect(() => {
         my_profile_store.getAdvertiserInfo();
@@ -90,17 +92,16 @@ const MyProfile = observer(() => {
                         >
                             <Money amount={balance_available} currency={currency} show_currency />
                         </Text>
-                        <Popover
-                            alignment='left'
-                            margin={popover_margin}
+                        <PopoverMobile
+                            is_open={is_balance_tooltip_open}
                             message={localize(
                                 'DP2P balance is a sum of non-reversible deposits into your account (via bank wire, etc.) and a percentage of reversible deposits (via credit cards, etc.).'
                             )}
-                            relative_render
-                            zIndex={2}
+                            setIsOpen={setIsBalanceTooltipOpen}
+                            title={localize('Available DP2P balance')}
                         >
                             <Icon icon='IcInfoOutline' size={16} />
-                        </Popover>
+                        </PopoverMobile>
                     </div>
                 </LineSeparatedComponents>
                 <Table>
@@ -127,7 +128,7 @@ const MyProfile = observer(() => {
                                 </Text>
                             </Table.Cell>
                         ) : (
-                            <>
+                            <React.Fragment>
                                 <Table.Cell className='my-profile__stats-cell'>
                                     <Text
                                         size={isMobile() ? 'xxxs' : 'xs'}
@@ -159,7 +160,7 @@ const MyProfile = observer(() => {
                                         {daily_sell || '-'}
                                     </Text>
                                 </Table.Cell>
-                            </>
+                            </React.Fragment>
                         )}
                         <div className='my-profile__stats-cell-separator' />
                         <Table.Cell className='my-profile__stats-cell'>
@@ -177,17 +178,15 @@ const MyProfile = observer(() => {
                         {!isMobile() && <div className='my-profile__stats-cell-separator' />}
                         <Table.Cell>
                             <div className='my-profile__popover-container'>
-                                <Popover
-                                    alignment='left'
-                                    margin={popover_margin}
+                                <PopoverMobile
+                                    is_open={is_statistics_tooltip_open}
                                     message={localize(
                                         "These fields are based on the last 24 hours' activity: Buy, Sell, and Limit."
                                     )}
-                                    zIndex={2}
-                                    relative_render
+                                    setIsOpen={setIsStatisticsTooltipOpen}
                                 >
-                                    <Icon className='my-profile__popover-icon' icon='IcInfoOutline' size={16} />
-                                </Popover>
+                                    <Icon icon='IcInfoOutline' size={16} />
+                                </PopoverMobile>
                             </div>
                         </Table.Cell>
                     </Table.Row>

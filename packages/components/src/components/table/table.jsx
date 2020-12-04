@@ -8,30 +8,22 @@ import Cell from './table-cell.jsx';
 import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars.jsx';
 
 // TODO: update the <Table /> component to fit with the DataTable in Trader
-class Table extends React.Component {
-    render() {
-        return (
-            <div
-                role='table'
-                className={classNames('dc-table', this.props.className, {
-                    'dc-table--scroll': this.props.fixed,
-                })}
-            >
-                {this.props.fixed ? (
-                    <ThemedScrollbars
-                        has_horizontal
-                        width={this.props.scroll_width || '100%'}
-                        height={this.props.scroll_height}
-                    >
-                        {this.props.children}
-                    </ThemedScrollbars>
-                ) : (
-                    this.props.children
-                )}
-            </div>
-        );
-    }
-}
+const Table = ({ className, fixed, children, scroll_width, scroll_height }) => (
+    <div
+        role='table'
+        className={classNames('dc-table', className, {
+            'dc-table--scroll': fixed,
+        })}
+    >
+        {fixed ? (
+            <ThemedScrollbars has_horizontal width={scroll_width || '100%'} height={scroll_height}>
+                {children}
+            </ThemedScrollbars>
+        ) : (
+            children
+        )}
+    </div>
+);
 
 Table.Head = Head;
 Table.Header = Header;

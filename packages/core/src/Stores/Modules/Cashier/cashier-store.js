@@ -203,7 +203,6 @@ export default class CashierStore extends BaseStore {
     // Initialise P2P attributes on app load without mounting the entire cashier
     @action.bound
     init() {
-        // eslint-disable-next-line no-undef
         reaction(
             () => [
                 this.root_store.client.switched,

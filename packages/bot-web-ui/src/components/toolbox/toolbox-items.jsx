@@ -2,58 +2,44 @@ import React from 'react';
 import ReactDomServer from 'react-dom/server';
 
 const Block = ({ ...props }) => {
-    props.is = 'blockly';
     return React.createElement('block', props);
 };
 
 const Category = ({ ...props }) => {
-    props.is = 'blockly';
     return React.createElement('category', props);
 };
 
 const Field = ({ ...props }) => {
-    props.is = 'blockly';
     return React.createElement('field', props);
 };
 
 const Mutation = ({ ...props }) => {
-    props.is = 'blockly';
     return React.createElement('mutation', props);
 };
 
 const Next = ({ ...props }) => {
-    props.is = 'blockly';
     return React.createElement('next', props);
 };
 
 const Shadow = ({ ...props }) => {
-    props.is = 'blockly';
     return React.createElement('shadow', props);
 };
 
 const Statement = ({ ...props }) => {
-    props.is = 'blockly';
     return React.createElement('statement', props);
 };
 
 const Value = ({ ...props }) => {
-    props.is = 'blockly';
     return React.createElement('value', props);
 };
 
 const Xml = ({ ...props }) => {
-    props.is = 'blockly';
     return React.createElement('xml', props);
 };
 
 export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
     <Xml xmlns='http://www.w3.org/1999/xhtml'>
-        <Category
-            id='trade_parameters'
-            name='Set up your trade'
-            description='Choose the market, contract type, stake, duration, and barrier.'
-            iconURI='IcStage1'
-        >
+        <Category id='trade_parameters' name='Set up your trade'>
             <Block type='trade_definition'>
                 <Statement name='TRADE_OPTIONS'>
                     <Block type='trade_definition_market' deletable='false' movable='false'>
@@ -117,40 +103,21 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                 </Value>
             </Block>
         </Category>
-        <Category
-            id='purchase_conditions'
-            name='Purchase contract'
-            description='Define your purchase conditions.'
-            iconURI='IcStage2'
-        >
+        <Category id='purchase_conditions' name='Purchase contract'>
             <Block type='before_purchase' />
             <Block type='purchase' />
         </Category>
-        <Category
-            id='sell_conditions'
-            name='Sell contract (optional)'
-            description='Sell your contract at the market price.'
-            iconURI='IcStage3'
-        >
+        <Category id='sell_conditions' name='Sell contract (optional)'>
             <Block type='during_purchase' />
             <Block type='sell_at_market' />
         </Category>
-        <Category
-            id='trade_results'
-            name='Trade again'
-            description='Check your trade results and trade again.'
-            iconURI='IcStage4'
-        >
+        <Category id='trade_results' name='Trade again'>
             <Block type='after_purchase' />
             <Block type='trade_again' />
         </Category>
 
-        <Category id='analysis' name='Analysis' description='Indicators, ticks, stats, etc.' iconURI='ic-arrow'>
-            <Category
-                id='indicators'
-                name='Indicators'
-                description='Simple Moving Average, Bollinger Bands, Exponential Moving Average, etc.'
-            >
+        <Category id='analysis' name='Analysis'>
+            <Category id='indicators' name='Indicators'>
                 <Block type='sma_statement'>
                     <Statement name='STATEMENT'>
                         <Block type='input_list' deletable='false' movable='false'>
@@ -353,7 +320,7 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                 </Block>
             </Category>
 
-            <Category name='Tick and candle analysis' id='tick_analysis' description='Tools for tick analysis'>
+            <Category name='Tick and candle analysis' id='tick_analysis'>
                 <Block type='tick_analysis' />
                 <Block type='tick' />
                 <Block type='last_digit' />
@@ -384,7 +351,7 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                 <Block type='ohlc' />
             </Category>
 
-            <Category name='Contract' id='contract_details' description='Contract details'>
+            <Category name='Contract' id='contract_details'>
                 <Block type='contract_check_result' />
                 <Block type='read_details' />
                 <Block type='sell_price' />
@@ -393,29 +360,19 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                 <Block type='ask_price' />
             </Category>
 
-            <Category name='Stats' id='stats' description='Run time statistics'>
+            <Category name='Stats' id='stats'>
                 <Block type='balance' />
                 <Block type='total_profit' />
                 <Block type='total_runs' />
             </Category>
         </Category>
 
-        <Category id='utility' name='Utility' description='Math, text, logic, lists, etc.' iconURI='ic-arrow'>
-            <Category
-                name='Custom functions'
-                id='custom_functions'
-                description='Create your own functions'
-                dynamic='PROCEDURE'
-            />
+        <Category id='utility' name='Utility'>
+            <Category name='Custom functions' id='custom_functions' dynamic='PROCEDURE' />
 
-            <Category
-                name='Variables'
-                id='variables'
-                description='Create and name memory locations to store values'
-                dynamic='VARIABLE'
-            />
+            <Category name='Variables' id='variables' dynamic='VARIABLE' />
 
-            <Category name='Notifications' id='notifications' description='Create notification messages'>
+            <Category name='Notifications' id='notifications'>
                 <Block type='text_print'>
                     <Value name='TEXT'>
                         <Shadow type='text'>
@@ -458,7 +415,7 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                 </Block>
             </Category>
 
-            <Category name='Time' id='time' description='Time-based blocks'>
+            <Category name='Time' id='time'>
                 <Block type='epoch' />
                 <Block type='timeout' />
                 <Block type='totimestamp'>
@@ -477,7 +434,7 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                 </Block>
             </Category>
 
-            <Category name='Math' id='math' description='Arithmetical operations'>
+            <Category name='Math' id='math'>
                 <Block type='math_number' />
                 <Block type='math_arithmetic'>
                     <Field name='OP'>ADD</Field>
@@ -581,7 +538,7 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                 <Block type='math_random_float' />
             </Category>
 
-            <Category name='Text' id='text' description='Operations with text strings'>
+            <Category name='Text' id='text'>
                 <Block type='text'>
                     <Field name='TEXT'>abc</Field>
                 </Block>
@@ -694,7 +651,7 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                 </Block>
             </Category>
 
-            <Category name='Logic' id='logic' description='Logic comparison blocks'>
+            <Category name='Logic' id='logic'>
                 <Block type='controls_if' />
                 <Block type='logic_compare' />
                 <Block type='logic_operation' />
@@ -704,7 +661,7 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                 <Block type='logic_ternary' />
             </Category>
 
-            <Category name='Lists' id='lists' description='List-related blocks'>
+            <Category name='Lists' id='lists'>
                 <Block type='lists_create_with'>
                     <Field name='VARIABLE' variabletype=''>
                         list
@@ -742,7 +699,7 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                 <Block type='lists_sort' />
             </Category>
 
-            <Category name='Loops' id='loops' description='Create repetitive instructions'>
+            <Category name='Loops' id='loops'>
                 <Block type='controls_repeat' />
                 <Block type='controls_repeat_ext' />
                 <Block type='controls_whileUntil' />
@@ -751,7 +708,7 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                 <Block type='controls_flow_statements' />
             </Category>
 
-            <Category name='Miscellaneous' id='misc' description='Miscellaneous blocks'>
+            <Category name='Miscellaneous' id='misc'>
                 <Block type='loader' />
                 <Block type='block_holder' />
                 <Block type='console'>

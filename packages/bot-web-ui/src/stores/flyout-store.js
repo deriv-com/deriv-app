@@ -249,7 +249,7 @@ export default class FlyoutStore {
     refreshCategory() {
         const category = this.getSelectedCategory();
         const { toolbox } = this.root_store;
-        let flyout_content = toolbox.getCategoryContents(category);
+        const flyout_content = toolbox.getCategoryContents(category);
         this.setContents(flyout_content);
     }
 }

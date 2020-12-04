@@ -12,8 +12,6 @@ export default class ToolbarStore {
     @observable has_undo_stack = false;
     @observable has_redo_stack = false;
 
-    typing_timer;
-
     @action.bound
     toggleAnimationInfoModal() {
         this.is_animation_info_modal_open = !this.is_animation_info_modal_open;

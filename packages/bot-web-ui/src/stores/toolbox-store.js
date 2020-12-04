@@ -1,5 +1,5 @@
 import { observable, action, reaction } from 'mobx';
-import { isMobile } from '@deriv/shared';
+import { isMobile, isDesktop } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { scrollWorkspace } from '@deriv/bot-skeleton';
 
@@ -16,18 +16,21 @@ export default class ToolboxStore {
 
     @action.bound
     onMount(toolbox_ref) {
-        this.toolbox_dom = Blockly.Xml.textToDom(toolbox_ref?.current);
-
         this.workspace = Blockly.derivWorkspace;
         this.adjustWorkspace();
-        this.disposeToolboxToggleReaction = reaction(
-            () => this.is_toolbox_open,
-            is_toolbox_open => {
-                if (is_toolbox_open) {
-                    this.adjustWorkspace();
+
+        if (isDesktop()) {
+            this.toolbox_dom = Blockly.Xml.textToDom(toolbox_ref?.current);
+
+            this.disposeToolboxToggleReaction = reaction(
+                () => this.is_toolbox_open,
+                is_toolbox_open => {
+                    if (is_toolbox_open) {
+                        this.adjustWorkspace();
+                    }
                 }
-            }
-        );
+            );
+        }
     }
 
     @action.bound
@@ -63,7 +66,7 @@ export default class ToolboxStore {
     onToolboxItemClick(category) {
         const { flyout } = this.root_store;
         const category_id = category.getAttribute('id');
-        let flyout_content = this.getCategoryContents(category);
+        const flyout_content = this.getCategoryContents(category);
 
         flyout.setIsSearchFlyout(false);
 
@@ -195,7 +198,7 @@ export default class ToolboxStore {
         const block_contents = all_categories
             .filter(category => !this.hasSubCategory(category.children))
             .map(category => {
-                let contents = this.getCategoryContents(category);
+                const contents = this.getCategoryContents(category);
 
                 const only_block_contents = Array.from(contents).filter(
                     content => content.tagName.toUpperCase() === 'BLOCK'

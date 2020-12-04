@@ -82,7 +82,7 @@ const Toolbox = ({
             >
                 <div id='gtm-toolbox' className='db-toolbox__content'>
                     <div className='db-toolbox__header'>
-                        <div className='db-toolbox__title'>Blocks menu</div>
+                        <div className='db-toolbox__title'>{localize('Blocks menu')}</div>
                     </div>
                     <SearchBox
                         is_search_loading={is_search_loading}

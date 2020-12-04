@@ -45,9 +45,16 @@ const validateSignup = (values, residence_list) => {
     return errors;
 };
 
-const AccountSignup = ({ isModalVisible, enableApp, onSignup, residence_list, is_account_signup_modal_visible, is_eu }) => {
+const AccountSignup = ({
+    enableApp,
+    isModalVisible,
+    is_account_signup_modal_visible,
+    is_eu,
+    onSignup,
+    residence_list,
+}) => {
     const contextType = React.useContext(PlatformContext);
-    
+
     const [pw_input, setPWInput] = React.useState('');
     const [has_valid_residence, setHasValidResidence] = React.useState(false);
 
@@ -178,7 +185,7 @@ const AccountSignup = ({ isModalVisible, enableApp, onSignup, residence_list, is
             </Formik>
         </div>
     );
-}
+};
 
 AccountSignup.propTypes = {
     enableApp: PropTypes.func,

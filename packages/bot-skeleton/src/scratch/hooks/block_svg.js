@@ -285,6 +285,9 @@ Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
     this.setErrorHighlighted(collapsed && this.hasErrorHighlightedDescendant());
 };
 
+/**
+ * @deriv/bot: Add check for workspace.getCanvas() before appendChild() is called.
+ */
 Blockly.BlockSvg.prototype.initSvg = function () {
     goog.asserts.assert(this.workspace.rendered, 'Workspace is headless.');
     if (!this.isInsertionMarker()) {

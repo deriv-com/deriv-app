@@ -20,8 +20,7 @@ const ToggleFullScreen = () => {
     }, []);
 
     const onFullScreen = () => {
-        const is_full_screen = fullscreen_map.element.some(el => document[el]);
-        setIsFullScreen(is_full_screen);
+        setIsFullScreen(fullscreen_map.element.some(el => document[el]));
     };
 
     const toggleFullScreen = e => {

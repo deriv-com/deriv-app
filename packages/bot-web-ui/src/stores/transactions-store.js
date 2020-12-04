@@ -1,5 +1,6 @@
 import { action, computed, observable, reaction, when } from 'mobx';
 import { formatDate, isEnded } from '@deriv/shared';
+import { log_types } from '@deriv/bot-skeleton';
 import { transaction_elements } from '../constants/transactions';
 import { getStoredItemsByKey, getStoredItemsByUser, setStoredItemsByKey } from '../utils/session-storage';
 
@@ -7,14 +8,6 @@ export default class TransactionsStore {
     constructor(root_store) {
         this.root_store = root_store;
         this.disposeReactionsFn = this.registerReactions();
-
-        // User could've left the page mid-contract. On initial load, try
-        // to recover any pending contracts so we can reflect accurate stats
-        // and transactions.
-        this.disposeRecoverContracts = when(
-            () => this.elements.length,
-            () => this.recoverPendingContracts()
-        );
     }
 
     TRANSACTION_CACHE = 'transaction_cache';
@@ -137,7 +130,7 @@ export default class TransactionsStore {
         const { client } = this.root_store.core;
 
         // Write transactions to session storage on each change in transaction elements.
-        this.disposeTransactionElementsListener = reaction(
+        const disposeTransactionElementsListener = reaction(
             () => this.elements,
             elements => {
                 const stored_transactions = getStoredItemsByKey(this.TRANSACTION_CACHE, {});
@@ -147,19 +140,23 @@ export default class TransactionsStore {
         );
 
         // Attempt to load cached transactions on client loginid change.
-        this.disposeClientLoginIdListener = reaction(
+        const disposeClientLoginIdListener = reaction(
             () => client.loginid,
             () => (this.elements = getStoredItemsByUser(this.TRANSACTION_CACHE, client.loginid, []))
         );
 
-        return () => {
-            if (this.disposeTransactionElementsListener === 'function') {
-                this.disposeTransactionElementsListener();
-            }
+        // User could've left the page mid-contract. On initial load, try
+        // to recover any pending contracts so we can reflect accurate stats
+        // and transactions.
+        const disposeRecoverContracts = when(
+            () => this.elements.length,
+            () => this.recoverPendingContracts()
+        );
 
-            if (this.disposeClientLoginIdListener === 'function') {
-                this.disposeClientLoginIdListener();
-            }
+        return () => {
+            disposeTransactionElementsListener();
+            disposeClientLoginIdListener();
+            disposeRecoverContracts();
         };
     }
 
@@ -171,7 +168,18 @@ export default class TransactionsStore {
 
             ws.authorized.subscribeProposalOpenContract(trx.contract_id, response => {
                 if (!response.error) {
-                    this.onBotContractEvent(response.proposal_open_contract);
+                    const { proposal_open_contract } = response;
+
+                    this.onBotContractEvent(proposal_open_contract);
+
+                    if (isEnded(proposal_open_contract)) {
+                        const { currency, profit } = proposal_open_contract;
+
+                        this.root_store.journal.onLogSuccess({
+                            log_type: profit > 0 ? log_types.PROFIT : log_types.LOST,
+                            extra: { currency, profit },
+                        });
+                    }
                 }
             });
         });

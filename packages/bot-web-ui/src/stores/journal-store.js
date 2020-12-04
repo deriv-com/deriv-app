@@ -138,7 +138,7 @@ export default class JournalStore {
         const { client } = this.root_store.core;
 
         // Write journal messages to session storage on each change in unfiltered messages.
-        this.disposeWriteJournalMessageListener = reaction(
+        const disposeWriteJournalMessageListener = reaction(
             () => this.unfiltered_messages,
             unfiltered_messages => {
                 const stored_journals = getStoredItemsByKey(this.JOURNAL_CACHE, {});
@@ -156,7 +156,7 @@ export default class JournalStore {
         );
 
         // Attempt to load cached journal messages on client loginid change.
-        this.disposeJournalMessageListener = reaction(
+        const disposeJournalMessageListener = reaction(
             () => client.loginid,
             () => {
                 this.unfiltered_messages = getStoredItemsByUser(this.JOURNAL_CACHE, client.loginid, []);
@@ -168,13 +168,8 @@ export default class JournalStore {
         );
 
         return () => {
-            if (typeof this.disposeWriteJournalMessageListener === 'function') {
-                this.disposeWriteJournalMessageListener();
-            }
-
-            if (typeof this.disposeJournalMessageListener === 'function') {
-                this.disposeJournalMessageListener();
-            }
+            disposeWriteJournalMessageListener();
+            disposeJournalMessageListener();
         };
     }
 }

@@ -68,9 +68,7 @@ const TradingDatePicker = ({
             : getMomentContractStartDateTime().clone().add(getMaxDailyDuration(), 'second');
     };
 
-    const hasRangeSelection = () => {
-        return mode === 'duration';
-    };
+    const hasRangeSelection = () => mode === 'duration';
 
     const getFooter = () => {
         if (!hasRangeSelection()) return null;
@@ -159,7 +157,7 @@ const TradingDatePicker = ({
                     footer={getFooter()}
                     events={market_events}
                     disabled_days={disabled_days}
-                    keep_open={true}
+                    keep_open
                     readOnly={!hasRangeSelection()}
                     value={getDatepickerValue()}
                 />

@@ -154,9 +154,7 @@ const DatePicker = React.memo(props => {
         return mode === 'duration' ? new_duration : calendar_value;
     };
 
-    const getInputValue = () => {
-        return mode === 'duration' ? duration : date;
-    };
+    const getInputValue = () => mode === 'duration' ? duration : date;
 
     const getCalendarValue = new_date => {
         if (!new_date) return isMobile() ? null : toMoment(max_date).format(date_format);

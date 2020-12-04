@@ -23,16 +23,16 @@ const VerticalTabHeaders = ({
         setTop(offset_top(selected));
     }, [selected]);
 
-    const offset_top = selected => {
+    const offset_top = selected_element => {
         let calculated_offset = 0;
 
         const headers = ref.current.querySelectorAll('.dc-vertical-tab__header__link');
         let selected_el = null;
 
         if (selected.path) {
-            selected_el = [...headers].find(header => header.id === selected.path);
+            selected_el = [...headers].find(header => header.id === selected_element.path);
         } else {
-            selected_el = [...headers].find(header => header.innerText === selected.label);
+            selected_el = [...headers].find(header => header.innerText === selected_element.label);
         }
 
         if (selected_el) {

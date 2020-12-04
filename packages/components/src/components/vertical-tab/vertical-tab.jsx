@@ -33,8 +33,9 @@ const VerticalTab = ({
         if (typeof selected_index === 'undefined') {
             index = is_routed_path
                 ? Math.max(
-                    path_list.indexOf(path_list.find(item => item.path === curr_path) || path_list.find(item => item.default)),
-                      0
+                    path_list.indexOf(
+                        path_list.find(item => item.path === curr_path) || path_list.find(item => item.default)
+                    ), 0
                   )
                 : 0;
         } else {

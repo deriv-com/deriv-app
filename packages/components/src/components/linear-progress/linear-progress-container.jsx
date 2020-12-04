@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { LinearProgress } from './linear-progress.jsx';
 
 const LinearProgressContainer = ({ timeout, action, render, className }) => {
-    const [timeout_state, setTimeout] = React.useState(timeout);
+    const [timeout_state, setTimeout] = React.useState(timeout / 1000);
     const [current_tick, setCurrentTick] = React.useState(Math.round(timeout / 1000));
     const total_ticks = React.useState(Math.round(timeout / 1000));
 
@@ -16,10 +16,6 @@ const LinearProgressContainer = ({ timeout, action, render, className }) => {
         setTimeout(timeout_state - 1);
     };
 
-    const run = () => {
-        action();
-    };
-
     React.useEffect(() => {
         const interval = setInterval(makeProgress, 1000);
         return () => {
@@ -29,7 +25,7 @@ const LinearProgressContainer = ({ timeout, action, render, className }) => {
 
     React.useEffect(() => {
         if (getProgress() > 100) {
-            run();
+            action();
         }
     });
 

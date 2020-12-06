@@ -84,7 +84,7 @@ class Checkbox extends React.Component {
                 >
                     {!!this.state.checked && <Icon icon='IcCheckmark' color='active' />}
                 </span>
-                {(typeof this.props.render === 'function' && this.props.render(label)) || (
+                {(typeof this.props.renderlabel === 'function' && this.props.renderlabel(label)) || (
                     <Text size='xs' className={classNames('dc-checkbox__label', classNameLabel)}>
                         {label}
                     </Text>

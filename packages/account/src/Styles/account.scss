@@ -1781,10 +1781,6 @@ $MIN_HEIGHT_FLOATING: calc(
         &__checkbox {
             margin-top: 10px;
             width: fit-content;
-
-            .dc-checkbox__label {
-                font-weight: normal;
-            }
         }
         &__input {
             margin: 16px 0 0;

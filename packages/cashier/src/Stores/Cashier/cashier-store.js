@@ -138,6 +138,13 @@ export default class CashierStore extends BaseStore {
     constructor({ root_store, WS }) {
         super({ root_store });
         this.WS = WS;
+        this.root_store.menu.attach({
+            id: 'dt_cashier_tab',
+            icon: <CashierNotifications p2p_notification_count={this.p2p_notification_count} />,
+            text: () => localize('Cashier'),
+            link_to: routes.cashier,
+            login_only: true,
+        });
     }
 
     @observable is_loading = false;
@@ -207,13 +214,6 @@ export default class CashierStore extends BaseStore {
     // Initialise P2P attributes on app load without mounting the entire cashier
     @action.bound
     init() {
-        this.root_store.menu.attach({
-            id: 'dt_cashier_tab',
-            icon: <CashierNotifications p2p_notification_count={this.p2p_notification_count} />,
-            text: () => localize('Cashier'),
-            link_to: routes.cashier,
-            login_only: true,
-        });
         // eslint-disable-next-line no-undef
         reaction(
             () => [

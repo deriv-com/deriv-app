@@ -1,5 +1,5 @@
 const moment = require('moment');
-const BinarySocket = require('./socket_base');
+const BinarySocket = require('Services/ws-methods.js');
 const PromiseClass = require('./utility').PromiseClass;
 
 const ServerTime = (() => {

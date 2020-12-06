@@ -19,8 +19,6 @@ afterEach(async () => {
 });
 
 test('It should send website_status on page start', async () => {
-
-
     await page.navigate();
     const message = await waitForWSSubset(page, {
         website_status: {

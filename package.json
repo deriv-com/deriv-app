@@ -36,7 +36,7 @@
     "deploy:folder": "f () { npm run build:travis && npm run build:local $1 && lerna exec --scope @deriv/core -- npm run deploy:folder $@ ;}; f",
     "prettify": "./node_modules/.bin/prettier --config ./.prettierrc --write \"./packages/*/{stories,script,src,build}/**/*.{js,jsx,scss}\"",
     "precommit": "lint-staged --allow-empty",
-    "publish:p2p": "f () { lerna publish from-package ;}; f",
+    "publish_package": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run publish_package $2 ;}; f",
     "serve": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run serve $npm_config_open;}; f",
     "start": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run start ;}; f",
     "test": "f () { bash ./scripts/circleci-config.test.sh && npm run test:stylelint  && npm run test:eslint && lerna exec --scope=@deriv/${1:-'*'} --parallel -- npm run test ;}; f",

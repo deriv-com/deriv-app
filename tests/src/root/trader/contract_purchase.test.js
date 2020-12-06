@@ -136,4 +136,26 @@ describe('Contract purchases in mobile', () => {
         await page.buyContract('Highs & Lows', 'touch', 'Ticks', 5, 'onetouch', false);
         await page.assertPurchase(5, 10, 'ONETOUCH');
     });
+
+    test('[mobile] trader/even', async () => {
+        await page.buyContract('Digits', 'even_odd', 'Ticks', 5, 'digiteven', false);
+        await page.assertPurchase(5, 10, 'digiteven');
+    });
+
+    test('[mobile] trader/odd', async () => {
+        await page.buyContract('Digits', 'even_odd', 'Ticks', 5, 'digitodd', false);
+        await page.assertPurchase(5, 10, 'DIGITODD');
+    });
+
+    test('[mobile] trader/match', async () => {
+        await page.buyContract('Digits', 'match_diff', 'Ticks', 5, 'digitmatch', false);
+        await page.assertPurchase(5, 10, 'digitmatch');
+    });
+
+    test('[mobile] trader/diff', async () => {
+        await page.buyContract('Digits', 'match_diff', 'Ticks', 5, 'digitdiff', false);
+        await page.assertPurchase(5, 10, 'digitdiff');
+    });
+
+
 });

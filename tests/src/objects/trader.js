@@ -19,8 +19,14 @@ class Trader extends Common {
     }
 
     async chooseUnderlying(code, name) {
-        await this.page.click(MARKET_SELECT); // Click market select
+        // Click market select
+        await this.page.waitForSelector(MARKET_SELECT);
+        await this.page.click(MARKET_SELECT);
+
+        // Wait for dropdown to load
+        await this.page.waitForSelector('.data-hj-whitelist');
         await this.page.fill('.data-hj-whitelist', name);
+        await this.page.waitForSelector(`.sc-mcd__item--${code}`);
         await this.page.click(`.sc-mcd__item--${code}`);
         await qawolf.assertElementText(this.page, '.cq-symbol', name);
     }
@@ -59,7 +65,7 @@ class Trader extends Common {
                 await this.page.waitForSelector('.dc-checkbox__box--active');
                 await this.page.click('.dc-checkbox__box--active');
             } catch (e) {
-                console.log('could not find dc-checkbox')
+                // No need to take action here. we can continue the pipeline.
             }
         }
     }
@@ -160,29 +166,14 @@ class Trader extends Common {
         if (this.should_set_allow_equal) {
             await this.allowEquals(allow_equal);
         }
-        await this.waitForPurchaseBtnEnabled(contract, allow_equal);
+        await this.waitForPurchaseBtnEnabled(purchase_type, allow_equal);
         await this.clickOnPurchaseButton(purchase_type, allow_equal);
         await this.verifyContractResult();
     }
 
-    async waitForPurchaseBtnEnabled(contract, allow_equal = false) {
+    async waitForPurchaseBtnEnabled(purchase_type, allow_equal = false) {
         const allow_equal_suffix = this.should_set_allow_equal && allow_equal ? 'e' : '';
-        const [green, red] = this.getPurchaseBtnId(contract);
-        await this.page.waitForSelector(`#dt_purchase_${green}${allow_equal_suffix}_button:enabled`, {timeout: 120000});
-        await this.page.waitForSelector(`#dt_purchase_${red}${allow_equal_suffix}_button:enabled`, {timeout: 120000});
-    }
-
-    getPurchaseBtnId(contract) {
-        switch (contract) {
-            case 'touch':
-                return ['onetouch', 'notouch'];
-            case 'rise_fall':
-                return ['call', 'put'];
-            case 'over_under':
-                return ['digitover', 'digitunder'];
-            default:
-                return [];
-        }
+        await this.page.waitForSelector(`#dt_purchase_${purchase_type}${allow_equal_suffix}_button:enabled`, {timeout: 120000});
     }
 
     async clickOnPurchaseButton(type, allow_equal = false) {
@@ -192,20 +183,21 @@ class Trader extends Common {
     }
 
 
-    async assertPurchase(duration, amount, contract_type) {
+    async assertPurchase(duration, amount, purchase_type) {
         this.duration = duration;
 
-        const message = await waitForWSSubset(this.page, {
+        const expected_response = {
             echo_req: {
                 amount,
                 basis: 'stake',
-                contract_type: contract_type.toUpperCase(),
+                contract_type: purchase_type.toUpperCase(),
                 currency: 'USD',
                 duration,
                 duration_unit: 't',
                 proposal: 1,
             },
-        });
+        };
+        const message = await waitForWSSubset(this.page, expected_response);
         assert.ok(message, 'No proper proposal was found');
         assert.ok(
             message.echo_req.duration === duration,
@@ -287,6 +279,7 @@ class Trader extends Common {
     }
 
     async prepareAuditDetails() {
+        const should_check_entry_spot = ['']
         if (await this.isMobile()) {
             await this.page.waitForSelector('#dt_positions_toggle');
             await this.page.click('#dt_positions_toggle');
@@ -311,8 +304,7 @@ class Trader extends Common {
             const contract_id = buy_response.buy.contract_id;
             await this.page.waitForSelector(`#dc_contract_card_${contract_id}_result`, {timeout: 6000});
             await this.page.hover(`#dc_contract_card_${contract_id}_result`);
-            await this.page.click(`#dc_contract_card_${contract_id}_result`);
-            await this.page.waitForSelector('#dt_entry_spot_label');
+            await this.page.click(`#dc_contract_card_${contract_id}_result`)
         }
     }
 
@@ -324,11 +316,13 @@ class Trader extends Common {
             },
         });
 
-        if (!['over_under'].includes(this.contract)) {
+        if (!['over_under', 'even_odd', 'match_diff'].includes(this.contract)) {
             // Entry Spot check
-            const entry_spot_tick = last_proposal_open_contract_message.proposal_open_contract.audit_details.all_ticks.find(
-                t => t.name === 'Entry Spot'
-            );
+            const entry_spot_tick = last_proposal_open_contract_message
+                .proposal_open_contract
+                .audit_details
+                .all_ticks
+                .find(t => t.name === 'Entry Spot');
             const entry_spot_displayed = await this.page.$eval(
                 '#dt_entry_spot_label > div.contract-audit__item > div > span.contract-audit__value',
                 el => parseFloat(el.textContent.replace(/,/, ''))

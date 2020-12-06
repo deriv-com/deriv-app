@@ -5,9 +5,10 @@ import PaymentAgentList from '../Components/payment-agent-list.jsx';
 import Virtual from '../Components/Error/virtual.jsx';
 import PaymentAgentWithdrawForm from '../Components/Form/payment-agent-withdraw-form.jsx';
 
-const PaymentAgent = ({ setActiveTab, container, is_virtual, verification_code, is_payment_agent_withdraw }) => {
+const PaymentAgent = ({ container, is_payment_agent_withdraw, is_virtual, setActiveTab, verification_code }) => {
     React.useEffect(() => {
         setActiveTab(container);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     if (is_virtual) {

@@ -37,7 +37,7 @@ const SelectNative = ({
         <div className='dc-select-native__wrapper'>
             <div
                 className={classNames('dc-input', {
-                    'dc-input__disabled': disabled,
+                    'dc-input--disabled': disabled,
                     'dc-input--error': error,
                 })}
             >

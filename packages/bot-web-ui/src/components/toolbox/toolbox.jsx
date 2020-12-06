@@ -70,88 +70,88 @@ const Toolbox = ({
         return () => onUnmount();
     }, [onMount, onUnmount]);
 
+    if (is_mobile) {
+        return null;
+    }
+
     return (
-        !is_mobile && (
-            <Drawer
-                anchor='left'
-                className='db-toolbox'
-                is_open={is_toolbox_open}
-                toggleDrawer={toggleDrawer}
-                width={256}
-                zIndex={popover_zindex.RUN_PANEL}
-            >
-                <div id='gtm-toolbox' className='db-toolbox__content'>
-                    <div className='db-toolbox__header'>
-                        <div className='db-toolbox__title'>{localize('Blocks menu')}</div>
-                    </div>
-                    <SearchBox
-                        is_search_loading={is_search_loading}
-                        onSearch={onSearch}
-                        onSearchBlur={onSearchBlur}
-                        onSearchClear={onSearchClear}
-                        onSearchKeyUp={onSearchKeyUp}
-                    />
-                    <div className='db-toolbox__category-menu'>
-                        {toolbox_dom &&
-                            // eslint-disable-next-line consistent-return
-                            Array.from(toolbox_dom.childNodes).map((category, index) => {
-                                if (category.tagName.toUpperCase() === 'CATEGORY') {
-                                    const has_sub_category = hasSubCategory(category.children);
-                                    const is_sub_category_open = sub_category_index.includes(index);
-                                    return (
-                                        <div
-                                            key={`db-toolbox__row--${category.getAttribute('id')}`}
-                                            className='db-toolbox__row'
-                                        >
-                                            <div
-                                                className='db-toolbox__item'
-                                                onClick={() => {
-                                                    // eslint-disable-next-line no-unused-expressions
-                                                    has_sub_category
-                                                        ? onToolboxItemExpand(index)
-                                                        : onToolboxItemClick(category);
-                                                }}
-                                            >
-                                                <div className='db-toolbox__category-text'>
-                                                    <div className='db-toolbox__label'>
-                                                        {category.getAttribute('name')}
-                                                    </div>
-                                                    {has_sub_category && (
-                                                        <div
-                                                            className={classNames('db-toolbox__category-arrow', {
-                                                                'db-toolbox__category-arrow--active': is_sub_category_open,
-                                                            })}
-                                                        />
-                                                    )}
-                                                </div>
-                                            </div>
-                                            {has_sub_category &&
-                                                is_sub_category_open &&
-                                                Array.from(category.childNodes).map(subCategory => {
-                                                    return (
-                                                        <div
-                                                            key={`db-toolbox__sub-category-row--${subCategory.getAttribute(
-                                                                'id'
-                                                            )}`}
-                                                            className='db-toolbox__sub-category-row'
-                                                            onClick={() => {
-                                                                onToolboxItemClick(subCategory);
-                                                            }}
-                                                        >
-                                                            <Text size='xxs' line_height='m'>
-                                                                {subCategory.getAttribute('name')}
-                                                            </Text>
-                                                        </div>
-                                                    );
-                                                })}
-                                        </div>
-                                    );
-                                }
-                            })}
-                    </div>
+        <Drawer
+            anchor='left'
+            className='db-toolbox'
+            is_open={is_toolbox_open}
+            toggleDrawer={toggleDrawer}
+            width={256}
+            zIndex={popover_zindex.RUN_PANEL}
+        >
+            <div id='gtm-toolbox' className='db-toolbox__content'>
+                <div className='db-toolbox__header'>
+                    <div className='db-toolbox__title'>{localize('Blocks menu')}</div>
                 </div>
-            </Drawer>
-        )
+                <SearchBox
+                    is_search_loading={is_search_loading}
+                    onSearch={onSearch}
+                    onSearchBlur={onSearchBlur}
+                    onSearchClear={onSearchClear}
+                    onSearchKeyUp={onSearchKeyUp}
+                />
+                <div className='db-toolbox__category-menu'>
+                    {toolbox_dom &&
+                        // eslint-disable-next-line consistent-return
+                        Array.from(toolbox_dom.childNodes).map((category, index) => {
+                            if (category.tagName.toUpperCase() === 'CATEGORY') {
+                                const has_sub_category = hasSubCategory(category.children);
+                                const is_sub_category_open = sub_category_index.includes(index);
+                                return (
+                                    <div
+                                        key={`db-toolbox__row--${category.getAttribute('id')}`}
+                                        className='db-toolbox__row'
+                                    >
+                                        <div
+                                            className='db-toolbox__item'
+                                            onClick={() => {
+                                                // eslint-disable-next-line no-unused-expressions
+                                                has_sub_category
+                                                    ? onToolboxItemExpand(index)
+                                                    : onToolboxItemClick(category);
+                                            }}
+                                        >
+                                            <div className='db-toolbox__category-text'>
+                                                <div className='db-toolbox__label'>{category.getAttribute('name')}</div>
+                                                {has_sub_category && (
+                                                    <div
+                                                        className={classNames('db-toolbox__category-arrow', {
+                                                            'db-toolbox__category-arrow--active': is_sub_category_open,
+                                                        })}
+                                                    />
+                                                )}
+                                            </div>
+                                        </div>
+                                        {has_sub_category &&
+                                            is_sub_category_open &&
+                                            Array.from(category.childNodes).map(subCategory => {
+                                                return (
+                                                    <div
+                                                        key={`db-toolbox__sub-category-row--${subCategory.getAttribute(
+                                                            'id'
+                                                        )}`}
+                                                        className='db-toolbox__sub-category-row'
+                                                        onClick={() => {
+                                                            onToolboxItemClick(subCategory);
+                                                        }}
+                                                    >
+                                                        <Text size='xxs' line_height='m'>
+                                                            {subCategory.getAttribute('name')}
+                                                        </Text>
+                                                    </div>
+                                                );
+                                            })}
+                                    </div>
+                                );
+                            }
+                        })}
+                </div>
+            </div>
+        </Drawer>
     );
 };
 

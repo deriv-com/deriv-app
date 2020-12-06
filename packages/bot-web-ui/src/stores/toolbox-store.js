@@ -1,5 +1,5 @@
 import { observable, action, reaction } from 'mobx';
-import { isMobile, isDesktop } from '@deriv/shared';
+import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { scrollWorkspace } from '@deriv/bot-skeleton';
 
@@ -16,17 +16,20 @@ export default class ToolboxStore {
 
     @action.bound
     onMount(toolbox_ref) {
+        const { core } = this.root_store;
         this.workspace = Blockly.derivWorkspace;
         this.adjustWorkspace();
 
-        if (isDesktop()) {
+        if (!isMobile()) {
             this.toolbox_dom = Blockly.Xml.textToDom(toolbox_ref?.current);
-
             this.disposeToolboxToggleReaction = reaction(
                 () => this.is_toolbox_open,
                 is_toolbox_open => {
                     if (is_toolbox_open) {
                         this.adjustWorkspace();
+                        // Emit event to GTM
+                        const { gtm } = core;
+                        gtm.pushDataLayer({ event: 'dbot_toolbox_visible', value: true });
                     }
                 }
             );
@@ -42,19 +45,15 @@ export default class ToolboxStore {
 
     @action.bound
     adjustWorkspace() {
-        const { core } = this.root_store;
-
         const toolbox_width = document.getElementById('gtm-toolbox')?.getBoundingClientRect().width || 0;
         const block_canvas_rect = this.workspace.svgBlockCanvas_.getBoundingClientRect(); // eslint-disable-line
 
         if (Math.round(block_canvas_rect.left) <= toolbox_width) {
-            const scroll_distance = isMobile() ? toolbox_width + 20 : toolbox_width + 36;
+            const scroll_distance = isMobile()
+                ? toolbox_width - block_canvas_rect.left + 20
+                : toolbox_width - block_canvas_rect.left + 36;
             scrollWorkspace(this.workspace, scroll_distance, true, false);
         }
-
-        // Emit event to GTM.
-        const { gtm } = core;
-        gtm.pushDataLayer({ event: 'dbot_toolbox_visible', value: true });
     }
 
     @action.bound

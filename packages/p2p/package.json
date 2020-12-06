@@ -21,7 +21,7 @@
         "deploy:folder": "echo \"No deploy:folder specified\"",
         "deploy:staging": "echo \"No deploy:staging specified\"",
         "deploy:production": "echo \"No deploy:production specified\"",
-        "publish_package": "node ./scripts/publish.js prepublish && lerna exec --scope=@deriv/shared --scope=@deriv/components -- npm run build:travis -- && rimraf lib && cross-env NODE_ENV=production NPM_PUBLISHING_MODE=1 webpack --optimize-minimize --progress && npm publish; node ./scripts/publish.js postpublish"
+        "publish_package": "deriv-publisher prepublish && lerna exec --scope=@deriv/shared --scope=@deriv/components -- npm run build:travis -- && rimraf lib && cross-env NODE_ENV=production NPM_PUBLISHING_MODE=1 webpack --optimize-minimize --progress && npm publish; deriv-publisher postpublish"
     },
     "author": "",
     "license": "ISC",
@@ -44,6 +44,19 @@
         "sendbird": "^3.0.137"
     },
     "devDependencies": {
+        "@babel/plugin-proposal-class-properties": "^7.5.5",
+        "@babel/plugin-proposal-decorators": "^7.4.4",
+        "@babel/plugin-proposal-export-default-from": "^7.5.2",
+        "@babel/plugin-proposal-export-namespace-from": "^7.5.2",
+        "@babel/plugin-proposal-nullish-coalescing-operator": "^7.8.3",
+        "@babel/plugin-proposal-object-rest-spread": "^7.5.5",
+        "@babel/plugin-proposal-optional-chaining": "^7.8.3",
+        "@babel/plugin-proposal-unicode-property-regex": "^7.7.7",
+        "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+        "@babel/preset-env": "^7.5.5",
+        "@babel/preset-react": "^7.0.0",
+        "@deriv/publisher": "0.0.1-beta4",
+        "babel-core": "^6.26.3",
         "babel-eslint": "^10.1.0",
         "babel-jest": "^26.5.2",
         "babel-loader": "^8.1.0",

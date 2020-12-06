@@ -223,10 +223,10 @@ export default class CashierStore extends BaseStore {
             ],
             async () => {
                 // wait for get_settings so is_virtual gets populated in client-store
-                await BinarySocket.wait('get_settings');
+                await this.WS.wait('get_settings');
 
                 if (this.root_store.client.is_logged_in && !this.root_store.client.is_virtual) {
-                    const advertiser_info = await WS.authorized.p2pAdvertiserInfo();
+                    const advertiser_info = await this.WS.authorized.p2pAdvertiserInfo();
                     const advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
                     const is_p2p_restricted =
                         advertiser_error === 'RestrictedCountry' || advertiser_error === 'RestrictedCurrency';

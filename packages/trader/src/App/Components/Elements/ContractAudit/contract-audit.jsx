@@ -6,14 +6,14 @@ import { WS } from 'Services/ws-methods';
 import ContractDetails from './contract-details.jsx';
 import ContractHistory from './contract-history.jsx';
 
-const ContractAudit = ({ has_result, toggleHistoryTab, is_multiplier, contract_update_history, ...props }) => {
+const ContractAudit = ({ contract_update_history, has_result, is_multiplier, toggleHistoryTab, ...props }) => {
     const { contract_id, currency } = props.contract_info;
     const [update_history, setUpdateHistory] = React.useState([]);
 
     React.useEffect(() => {
         if (!!contract_update_history.length && contract_update_history.length > update_history.length)
             setUpdateHistory(contract_update_history);
-    }, [contract_update_history]);
+    }, [contract_update_history, update_history]);
 
     const onTabItemClick = tab_index => {
         toggleHistoryTab(tab_index);

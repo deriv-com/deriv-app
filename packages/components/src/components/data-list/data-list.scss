@@ -23,7 +23,10 @@
         position: relative;
     }
     &__item {
+        height: inherit;
+
         &--wrapper {
+            height: inherit;
             text-decoration: none;
             -webkit-touch-callout: none;
             -webkit-tap-highlight-color: transparent;
@@ -72,6 +75,19 @@
                 display: block;
                 border-top: 1px solid var(--general-main-1);
             }
+        }
+        &--wrapper {
+            height: 100%;
+        }
+    }
+    &__desc {
+        &--wrapper {
+            height: inherit;
+            display: flex;
+            text-align: center;
+            align-items: center;
+            font-size: var(--text-size-xxs);
+            padding: 1rem;
         }
     }
 }

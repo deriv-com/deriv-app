@@ -58,13 +58,18 @@ const DataList = React.memo(props => {
         const { data_source, getRowAction, keyMapper, row_gap } = props;
         const row = data_source[index];
         const action = getRowAction && getRowAction(row);
-        const to = typeof action === 'string' ? action : undefined;
-        const replace = typeof action === 'object' ? action : undefined;
+        const destination_link = typeof action === 'string' ? action : undefined;
+        const acion_desc = typeof action === 'object' ? action : undefined;
         const row_key = keyMapper?.(row) || key;
         const is_new_row = !items_transition_map[row_key];
 
         const getContent = ({ measure } = {}) => (
-            <DataListRowWrapper to={to} replace={replace} row_key={row_key} row_gap={row_gap}>
+            <DataListRowWrapper
+                destination_link={destination_link}
+                acion_desc={acion_desc}
+                row_key={row_key}
+                row_gap={row_gap}
+            >
                 <div className='data-list__item'>{props.rowRenderer({ row, measure, isScrolling, is_new_row })}</div>
             </DataListRowWrapper>
         );

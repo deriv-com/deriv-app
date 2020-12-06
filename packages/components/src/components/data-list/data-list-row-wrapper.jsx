@@ -4,17 +4,17 @@ import { NavLink } from 'react-router-dom';
 
 // eslint-disable-next-line react/display-name
 const DataListRowWrapper = React.memo(props => {
-    const [showDetails, setShowDetails] = React.useState(false);
-    const { to, replace, row_key, row_gap } = props;
+    const [showDesc, setShowDesc] = React.useState(false);
+    const { destination_link, acion_desc, row_key, row_gap } = props;
 
     return (
         <div className='data-list__row--wrapper' style={{ paddingBottom: `${row_gap || 0}px` }}>
-            {to ? (
+            {destination_link ? (
                 <NavLink
                     className='data-list__item--wrapper'
                     id={`dt_reports_contract_${row_key}`}
                     to={{
-                        pathname: to,
+                        pathname: destination_link,
                         state: {
                             from_table_row: true,
                         },
@@ -24,14 +24,14 @@ const DataListRowWrapper = React.memo(props => {
                 </NavLink>
             ) : (
                 <div className='data-list__item--wrapper'>
-                    {replace ? (
-                        <div className={'data-list__item'} onClick={() => setShowDetails(!showDetails)}>
-                            {showDetails ? (
+                    {acion_desc ? (
+                        <div className={'data-list__item'} onClick={() => setShowDesc(!showDesc)}>
+                            {showDesc ? (
                                 <div className={'data-list__desc--wrapper'}>
-                                    {replace.component ? (
-                                        <div>{replace.component}</div>
+                                    {acion_desc.component ? (
+                                        <div>{acion_desc.component}</div>
                                     ) : (
-                                        <p className='statement__row--detail-text'>{replace.message}</p>
+                                        <p className='statement__row--detail-text'>{acion_desc.message}</p>
                                     )}
                                 </div>
                             ) : (

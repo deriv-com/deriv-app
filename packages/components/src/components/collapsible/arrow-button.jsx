@@ -3,11 +3,14 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { positionPropType } from './utils';
 import Icon from '../icon';
+import Text from '../text';
 
 const IconArrow = props => <Icon width={30} height={9} icon='IcChevronUp' {...props} />;
 const IconArrowWithTitle = ({ title, ...props }) => (
     <>
-        <span className='dc-collapsible__title'>{title}</span>
+        <Text size='xs' weight='bold' color='prominent' className='dc-collapsible__title'>
+            {title}
+        </Text>
         <Icon icon='IcChevronDown' {...props} />
     </>
 );

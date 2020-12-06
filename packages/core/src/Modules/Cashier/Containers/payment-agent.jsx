@@ -5,21 +5,19 @@ import PaymentAgentList from '../Components/payment-agent-list.jsx';
 import Virtual from '../Components/Error/virtual.jsx';
 import PaymentAgentWithdrawForm from '../Components/Form/payment-agent-withdraw-form.jsx';
 
-class PaymentAgent extends React.Component {
-    componentDidMount() {
-        this.props.setActiveTab(this.props.container);
-    }
+const PaymentAgent = ({ setActiveTab, container, is_virtual, verification_code, is_payment_agent_withdraw }) => {
+    React.useEffect(() => {
+        setActiveTab(container);
+    }, []);
 
-    render() {
-        if (this.props.is_virtual) {
-            return <Virtual />;
-        }
-        if (this.props.verification_code || this.props.is_payment_agent_withdraw) {
-            return <PaymentAgentWithdrawForm verification_code={this.props.verification_code} />;
-        }
-        return <PaymentAgentList />;
+    if (is_virtual) {
+        return <Virtual />;
     }
-}
+    if (verification_code || is_payment_agent_withdraw) {
+        return <PaymentAgentWithdrawForm verification_code={verification_code} />;
+    }
+    return <PaymentAgentList />;
+};
 
 PaymentAgent.propTypes = {
     container: PropTypes.string,

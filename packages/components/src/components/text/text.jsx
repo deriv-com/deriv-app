@@ -39,7 +39,6 @@ const Text = ({ children, size, color, align, weight, line_height, as, className
         )) || (
             <span {...props} className={class_names} style={setStyle()}>
                 {children}
-                {props.label}
             </span>
         )
     );

@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Icon from '../icon';
-// import Text from '../text';
+import Text from '../text';
 
 class Checkbox extends React.Component {
     constructor(props) {
@@ -84,8 +84,11 @@ class Checkbox extends React.Component {
                 >
                     {!!this.state.checked && <Icon icon='IcCheckmark' color='active' />}
                 </span>
-                {this.props.renderLabel(this.props.label)}
-                {/* <Text size='xs' className={classNames('dc-checkbox__label', classNameLabel)}>{label}</Text> */}
+                {(typeof this.props.render === 'function' && this.props.render(label)) || (
+                    <Text size='xs' className={classNames('dc-checkbox__label', classNameLabel)}>
+                        {label}
+                    </Text>
+                )}
             </label>
         );
     }

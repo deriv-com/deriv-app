@@ -421,11 +421,14 @@ const PersonalDetails = ({
                                                             )
                                                         }
                                                         value={values.tax_identification_confirm}
-                                                        label='I hereby confirm that the tax information I provided is true and complete. I will also inform Deriv Investments (Europe) Limited about any changes to this information.'
-                                                        // label={localize(
-                                                        //     'I hereby confirm that the tax information I provided is true and complete. I will also inform Deriv Investments (Europe) Limited about any changes to this information.'
-                                                        // )}
-                                                        renderLabel={label => <Text label={label} />}
+                                                        label={localize(
+                                                            'I hereby confirm that the tax information I provided is true and complete. I will also inform Deriv Investments (Europe) Limited about any changes to this information.'
+                                                        )}
+                                                        render={title => (
+                                                            <Text size='xs' line_height='s'>
+                                                                {title}
+                                                            </Text>
+                                                        )}
                                                         withTabIndex='0'
                                                     />
                                                 )}

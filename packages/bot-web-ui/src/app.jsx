@@ -47,10 +47,9 @@ const App = ({ passthrough }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [onMount, onUnmount]);
 
-    if (is_loading) {
-        return <Loading />;
-    }
-    return (
+    return is_loading ? (
+        <Loading />
+    ) : (
         <MobxContentProvider store={root_store_instance.current}>
             <div className='bot'>
                 <BotNotificationMessages />

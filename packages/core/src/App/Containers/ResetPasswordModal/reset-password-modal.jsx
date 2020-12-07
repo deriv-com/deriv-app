@@ -65,7 +65,7 @@ const ResetPassword = ({ logoutClient, verification_code }) => {
     };
 
     const reset_initial_values = { password: '' };
-
+  
     return (
         <div className='reset-password'>
             <Formik
@@ -82,7 +82,7 @@ const ResetPassword = ({ logoutClient, verification_code }) => {
                                     <Text as='p' weight='bold' className='reset-password__heading'>
                                         <Localize i18n_default_text='Your password has been changed' />
                                     </Text>
-                                    <Text as='p' size='xxs' className='reset-password__subtext'>
+                                    <Text align='center' as='p' size='xxs' className='reset-password__subtext'>
                                         <Localize i18n_default_text='We will now redirect you to the login page.' />
                                     </Text>
                                 </div>
@@ -110,7 +110,7 @@ const ResetPassword = ({ logoutClient, verification_code }) => {
                                             />
                                         </PasswordMeter>
                                     </fieldset>
-                                    <Text as='p' size='xxs' className='reset-password__subtext'>
+                                    <Text align='center' as='p' size='xxs' className='reset-password__subtext'>
                                         {status.error_msg ? (
                                             <Localize
                                                 i18n_default_text='{{error_msg}}'

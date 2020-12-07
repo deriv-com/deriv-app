@@ -31,9 +31,9 @@
         display: inline-flex;
         flex-direction: column;
         height: 128px;
-        width: 128px;
+        width: 160px;
         justify-content: space-around;
-        margin: 1.6rem 3.2rem 0;
+        margin: 1.6rem 1.6rem 0;
         min-width: 128px;
 
         &:hover:not(&--selected) {

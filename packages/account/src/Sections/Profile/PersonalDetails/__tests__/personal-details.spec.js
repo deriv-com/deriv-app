@@ -3,7 +3,7 @@ import React from 'react';
 import { cleanup, render, waitForElementToBeRemoved, waitFor } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
-import { PersonalDetailsForm } from './personal-details.jsx';
+import { PersonalDetailsForm } from '../personal-details.jsx';
 
 afterAll(cleanup);
 

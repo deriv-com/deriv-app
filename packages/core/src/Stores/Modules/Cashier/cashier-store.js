@@ -203,21 +203,22 @@ export default class CashierStore extends BaseStore {
     // Initialise P2P attributes on app load without mounting the entire cashier
     @action.bound
     init() {
-        // eslint-disable-next-line no-undef
         reaction(
             () => [
                 this.root_store.client.switched,
                 this.root_store.client.is_logged_in,
                 this.root_store.client.currency,
             ],
-            () => {
-                if (!this.root_store.client.is_virtual) {
-                    WS.authorized.p2pAdvertiserInfo().then(advertiser_info => {
-                        const advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
-                        const is_p2p_restricted =
-                            advertiser_error === 'RestrictedCountry' || advertiser_error === 'RestrictedCurrency';
-                        this.setIsP2pVisible(!is_p2p_restricted);
-                    });
+            async () => {
+                // wait for get_settings so is_virtual gets populated in client-store
+                await BinarySocket.wait('get_settings');
+
+                if (this.root_store.client.is_logged_in && !this.root_store.client.is_virtual) {
+                    const advertiser_info = await WS.authorized.p2pAdvertiserInfo();
+                    const advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
+                    const is_p2p_restricted =
+                        advertiser_error === 'RestrictedCountry' || advertiser_error === 'RestrictedCurrency';
+                    this.setIsP2pVisible(!is_p2p_restricted);
                 }
             }
         );

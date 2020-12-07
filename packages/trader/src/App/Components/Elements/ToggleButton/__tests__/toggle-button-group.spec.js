@@ -1,9 +1,13 @@
 import { expect } from 'chai';
-import { mount, shallow } from 'enzyme';
+import { configure, mount, shallow } from 'enzyme';
+
 import React from 'react';
 import { fake } from 'sinon';
 import ToggleButton from '../toggle-button.jsx';
 import ToggleButtonGroup from '../toggle-button-group.jsx';
+import Adapter from 'enzyme-adapter-react-16';
+
+configure({ adapter: new Adapter() });
 
 describe('<ToggleButtonGroup />', () => {
     it('should render a <ToggleButtonGroup /> element', () => {

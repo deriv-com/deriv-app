@@ -65,7 +65,7 @@ const ResetPassword = ({ logoutClient, verification_code }) => {
     };
 
     const reset_initial_values = { password: '' };
-  
+
     return (
         <div className='reset-password'>
             <Formik

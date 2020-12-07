@@ -6,7 +6,6 @@ import { localize } from '@deriv/translations';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { splitValidationResultTypes } from 'App/Containers/RealAccountSignup/helpers/utils';
-import { screen_height_sm_threshold } from 'App/Containers/RealAccountSignup/helpers/constants';
 import {
     AccountTurnover,
     BinaryOptionsTradingExperience,
@@ -42,6 +41,7 @@ const FinancialInformation = ({
     <React.Fragment>
         <FormSubHeader
             title={localize('Financial information')}
+            subtitle={localize('(All fields are required)')}
             description={localize("We're legally obliged to ask for your financial information.")}
         />
         <IncomeSource {...shared_props} income_source_enum={income_source_enum} />
@@ -97,8 +97,6 @@ const TradingExperience = ({
 );
 
 const FinancialDetails = props => {
-    const padding_bottom = window.innerHeight < screen_height_sm_threshold ? '10rem' : '12rem';
-
     const handleCancel = values => {
         const current_step = props.getCurrentStep() - 1;
         props.onSave(current_step, values);
@@ -135,18 +133,11 @@ const FinancialDetails = props => {
                             <form ref={setRef} onSubmit={handleSubmit}>
                                 <Div100vhContainer
                                     className='details-form'
-                                    height_offset='179px'
+                                    height_offset='110px'
                                     is_disabled={isDesktop()}
                                 >
-                                    <ThemedScrollbars
-                                        is_bypassed={isMobile()}
-                                        autoHide={!(window.innerHeight < 890)}
-                                        height={height - 77}
-                                    >
-                                        <div
-                                            className='details-form__elements  details-form__elements--wide'
-                                            style={{ paddingBottom: isDesktop() ? padding_bottom : null }}
-                                        >
+                                    <ThemedScrollbars autoHide={!(window.innerHeight < 890)} height={height - 77}>
+                                        <div className='details-form__elements  details-form__elements--wide'>
                                             <FinancialInformation
                                                 shared_props={shared_props}
                                                 income_source_enum={props.income_source_enum}

@@ -100,44 +100,43 @@ $FLOATING_HEADER_HEIGHT: 41px;
             &-wrapper {
                 z-index: 4;
             }
-            .dc-contract-card__sell-button--exit {
-                display: none;
+
+            .dc-contract-card {
+                margin: 0.8rem 0;
+                &__sell-button {
+                    &--exit {
+                        display: none;
+                    }
+                }
             }
+
             @include mobile {
-                position: absolute;
-                top: 0;
-                transition: transform 0.25s linear;
                 z-index: 4;
                 height: auto;
                 border-bottom-right-radius: $BORDER_RADIUS;
                 border-top-right-radius: $BORDER_RADIUS;
                 width: calc(100% - 1.6rem);
                 margin-left: 0.8rem;
-                margin-bottom: 0.8rem;
+                transition: none;
 
                 &__mobile-wrapper {
                     position: relative;
-                    max-height: 20.6rem;
-                    flex: 2;
-
-                    &--is-multiplier {
-                        max-height: 27.9rem;
-                        top: -0.5rem;
-
-                        @media (max-width: 320px) and (max-height: 480px) {
-                            max-height: 20.6rem;
-                            top: 0;
-                        }
-                    }
                 }
                 &--with-collapsible-btn {
-                    padding-top: 0;
+                    overflow: visible;
+                    position: relative;
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
 
-                    &.contract-drawer--is-expanded {
-                        transform: translateY(calc(-100% + 242px));
-                    }
                     & .dc-contract-card {
-                        min-height: 164px;
+                        margin-top: 0;
+                    }
+                }
+                &__transition {
+                    &-enter,
+                    &-exit {
+                        transition: transform 0.25s linear;
                     }
                 }
                 & .dc-contract-card {
@@ -245,22 +244,10 @@ $FLOATING_HEADER_HEIGHT: 41px;
                             }
                         }
                     }
-                    &.contract-drawer--is-expanded {
-                        transform: translateY(calc(-100% + 410px));
-
-                        @media (max-width: 320px) and (max-height: 480px) {
-                            transform: translateY(calc(-100% + 238px));
-                        }
-                    }
                     &.contract-drawer--with-collapsible-btn {
                         & .dc-contract-card {
-                            min-height: 232px;
-
                             &__indicative--movement {
                                 margin-top: 2px;
-                            }
-                            @media (max-width: 320px) and (max-height: 480px) {
-                                min-height: 140px;
                             }
                         }
                     }
@@ -362,11 +349,21 @@ $FLOATING_HEADER_HEIGHT: 41px;
                             position: relative;
                         }
                     }
+
+                    .cq-context {
+                        height: 100%;
+                    }
+                }
+            }
+
+            &-swipeable-wrapper {
+                .dc-swipeable__item {
+                    margin-left: 0.8rem;
+                    width: calc(100vw - 1.6rem);
                 }
             }
 
             @include mobile {
-                flex: 1;
                 height: 100%;
                 width: calc(100% - 1.6rem);
                 margin-left: 0.8rem;
@@ -379,17 +376,15 @@ $FLOATING_HEADER_HEIGHT: 41px;
             padding-bottom: 0;
             position: relative;
 
+            #dt_contract_drawer_audit {
+                flex: 1;
+                overflow: auto;
+            }
+
             & .contract-audit-card {
+                height: calc(100% - 1rem);
                 &__container {
-                    height: calc(100% - 0.4rem);
-
-                    &--is-multiplier {
-                        height: calc(100% - 6.4rem);
-
-                        @media (max-width: 320px) and (max-height: 480px) {
-                            height: calc(100% - 1.6rem);
-                        }
-                    }
+                    height: 100%;
                 }
             }
         }
@@ -427,7 +422,6 @@ $FLOATING_HEADER_HEIGHT: 41px;
 .chart-container {
     width: 100%;
     position: relative;
-    z-index: 1;
 
     &__wrapper {
         position: fixed;

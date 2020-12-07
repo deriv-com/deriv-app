@@ -1,14 +1,14 @@
 import debounce from 'lodash.debounce';
 import { action, computed, observable, reaction, runInAction, toJS, when } from 'mobx';
 import {
-    isDesktop,
-    isMobile,
-    isCryptocurrency,
-    getMinPayout,
     cloneObject,
-    isEmptyObject,
-    getPropertyValue,
     extractInfoFromShortcode,
+    getMinPayout,
+    getPropertyValue,
+    isCryptocurrency,
+    isDesktop,
+    isEmptyObject,
+    isMobile,
     showDigitalOptionsUnavailableError,
 } from '@deriv/shared';
 
@@ -19,7 +19,7 @@ import ServerTime from '_common/base/server_time';
 import { processPurchase } from './Actions/purchase';
 import * as Symbol from './Actions/symbol';
 import getValidationRules, { getMultiplierValidationRules } from './Constants/validation-rules';
-import { pickDefaultSymbol, showUnavailableLocationError, isMarketClosed } from './Helpers/active-symbols';
+import { isMarketClosed, pickDefaultSymbol, showUnavailableLocationError } from './Helpers/active-symbols';
 import ContractType from './Helpers/contract-type';
 import { convertDurationLimit, resetEndTimeOnVolatilityIndices } from './Helpers/duration';
 import { processTradeParams } from './Helpers/process';
@@ -116,6 +116,7 @@ export default class TradeStore extends BaseStore {
     @observable has_cancellation = false;
     @observable commission;
     @observable cancellation_price;
+    @observable stop_out;
     @observable hovered_contract_type;
     @observable cancellation_duration = '60m';
     @observable cancellation_range_list = [];
@@ -148,6 +149,7 @@ export default class TradeStore extends BaseStore {
     constructor({ root_store }) {
         const local_storage_properties = [
             'amount',
+            'currency',
             'barrier_1',
             'barrier_2',
             'basis',
@@ -308,10 +310,23 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     async prepareTradeStore() {
-        // fallback to default currency if current logged-in client hasn't selected a currency yet
-        this.currency = this.root_store.client.currency || this.root_store.client.default_currency;
         this.initial_barriers = { barrier_1: this.barrier_1, barrier_2: this.barrier_2 };
         await when(() => !this.root_store.client.is_populating_account_list);
+
+        // waits for `website_status` in order to set `stake_default` for the selected currency
+        await WS.wait('website_status');
+        runInAction(() => {
+            this.processNewValuesAsync(
+                {
+                    // fallback to default currency if current logged-in client hasn't selected a currency yet
+                    currency: this.root_store.client.currency || this.root_store.client.default_currency,
+                },
+                true,
+                null,
+                false
+            );
+        });
+
         await this.setActiveSymbols();
         const r = await WS.storage.contractsFor(this.symbol);
         if (['InvalidSymbol', 'InputValidationFailed'].includes(r.error?.code)) {
@@ -498,14 +513,9 @@ export default class TradeStore extends BaseStore {
         if (isBarrierSupported(contract_type)) {
             const color = this.root_store.ui.is_dark_mode_on ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY;
             // create barrier only when it's available in response
-            const main_barrier = new ChartBarrierStore(
-                barrier || high_barrier,
-                low_barrier,
-                this.onChartBarrierChange,
-                { color }
-            );
-
-            this.main_barrier = main_barrier;
+            this.main_barrier = new ChartBarrierStore(barrier || high_barrier, low_barrier, this.onChartBarrierChange, {
+                color,
+            });
             // this.main_barrier.updateBarrierShade(true, contract_type);
         } else {
             this.main_barrier = null;
@@ -663,15 +673,16 @@ export default class TradeStore extends BaseStore {
             this.proposal_requests = {};
         }
         if (is_changed_by_user && /\bcurrency\b/.test(Object.keys(obj_new_values))) {
-            const prev_currency =
-                obj_old_values && !isEmptyObject(obj_old_values) && obj_old_values.currency
-                    ? obj_old_values.currency
-                    : this.currency;
-            if (isCryptocurrency(obj_new_values.currency) !== isCryptocurrency(prev_currency)) {
-                obj_new_values.amount =
-                    is_changed_by_user && obj_new_values.amount
-                        ? obj_new_values.amount
-                        : getMinPayout(obj_new_values.currency);
+            const prev_currency = obj_old_values?.currency || this.currency;
+            const has_currency_changed = obj_new_values.currency !== prev_currency;
+
+            const should_reset_stake =
+                isCryptocurrency(obj_new_values.currency) ||
+                // For switch between fiat and crypto and vice versa
+                isCryptocurrency(obj_new_values.currency) !== isCryptocurrency(prev_currency);
+
+            if (has_currency_changed && should_reset_stake) {
+                obj_new_values.amount = obj_new_values.amount || getMinPayout(obj_new_values.currency);
             }
             this.currency = obj_new_values.currency;
         }
@@ -772,7 +783,6 @@ export default class TradeStore extends BaseStore {
             settings: {
                 theme: this.root_store.ui.is_dark_mode_on ? 'dark' : 'light',
                 positions_drawer: this.root_store.ui.is_positions_drawer_on ? 'open' : 'closed',
-                purchase_confirm: this.root_store.ui.is_purchase_confirm_on ? 'enabled' : 'disabled',
                 chart: {
                     toolbar_position: this.root_store.ui.is_chart_layout_default ? 'bottom' : 'left',
                     chart_asset_info: this.root_store.ui.is_chart_asset_info_visible ? 'visible' : 'hidden',
@@ -836,14 +846,15 @@ export default class TradeStore extends BaseStore {
         };
 
         if (this.is_multiplier && this.proposal_info && this.proposal_info.MULTUP) {
-            const { commission, cancellation } = this.proposal_info.MULTUP;
+            const { commission, cancellation, limit_order } = this.proposal_info.MULTUP;
             // commission and cancellation.ask_price is the same for MULTUP/MULTDOWN
             if (commission) {
                 this.commission = commission;
             }
             if (cancellation) {
-                this.cancellation_price = this.proposal_info.MULTUP.cancellation.ask_price;
+                this.cancellation_price = cancellation.ask_price;
             }
+            this.stop_out = limit_order?.stop_out?.order_amount;
         }
 
         if (!this.main_barrier || !(this.main_barrier.shade !== 'NONE_SINGLE')) {
@@ -964,14 +975,13 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
-    logoutListener() {
+    async logoutListener() {
         this.should_refresh_active_symbols = true;
         this.clearContracts();
         this.refresh();
-        this.debouncedProposal();
         this.resetErrorServices();
-        this.setContractTypes();
-        return Promise.resolve();
+        await this.setContractTypes();
+        this.debouncedProposal();
     }
 
     @action.bound
@@ -1047,8 +1057,6 @@ export default class TradeStore extends BaseStore {
         if (this.root_store.ui.is_notifications_visible) {
             this.root_store.ui.toggleNotificationsModal();
         }
-        // clear url query string
-        window.history.replaceState(null, null, window.location.pathname);
         if (this.prev_chart_layout) {
             this.prev_chart_layout.is_used = false;
         }

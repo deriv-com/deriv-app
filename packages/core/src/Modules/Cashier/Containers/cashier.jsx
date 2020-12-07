@@ -8,6 +8,7 @@ import {
     MobileWrapper,
     PageOverlay,
     VerticalTab,
+    Text,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { getSelectedRoute, isCryptocurrency, isMobile, isTouchDevice, routes } from '@deriv/shared';
@@ -126,7 +127,7 @@ class Cashier extends React.Component {
                                 list={menu_options()}
                                 tab_headers_note={
                                     should_show_tab_headers_note ? (
-                                        <p className='cashier__tab-header-note'>
+                                        <Text as='p' size='xxs' className='cashier__tab-header-note'>
                                             <Localize
                                                 i18n_default_text='Want to exchange between e-wallet currencies? Try <0>bestchange.com</0>'
                                                 components={[
@@ -139,7 +140,7 @@ class Cashier extends React.Component {
                                                     />,
                                                 ]}
                                             />
-                                        </p>
+                                        </Text>
                                     ) : undefined
                                 }
                             />
@@ -147,7 +148,11 @@ class Cashier extends React.Component {
                         <MobileWrapper>
                             <Div100vhContainer className='cashier__wrapper--is-mobile' height_offset='80px'>
                                 {selected_route && (
-                                    <selected_route.component component_icon={selected_route.icon_component} />
+                                    <selected_route.component
+                                        component_icon={selected_route.icon_component}
+                                        history={this.props.history}
+                                        menu_options={menu_options()}
+                                    />
                                 )}
                             </Div100vhContainer>
                         </MobileWrapper>

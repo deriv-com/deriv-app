@@ -7,6 +7,11 @@
     &__items {
         display: flex;
         flex-wrap: wrap;
+        width: 768px;
+
+        &__center {
+            justify-content: center !important;
+        }
 
         @include desktop {
             justify-content: flex-start;
@@ -14,6 +19,7 @@
 
         @include mobile {
             display: grid;
+            margin-bottom: 5rem;
             grid-template-columns: 1fr 1fr;
             justify-items: center;
             width: 100%;
@@ -25,8 +31,9 @@
         display: inline-flex;
         flex-direction: column;
         height: 128px;
+        width: 128px;
         justify-content: space-around;
-        margin: 1.6rem 2rem 0;
+        margin: 1.6rem 3.2rem 0;
         min-width: 128px;
 
         &:hover:not(&--selected) {
@@ -112,5 +119,27 @@
         border-color: var(--border-disabled);
         margin-left: -2.4rem;
         width: calc(100% + 2.4rem);
+    }
+}
+
+.currency-selector {
+    &__radio-group--with-margin {
+        &--is-header {
+            font-size: 1.6rem;
+            margin: 2rem 0 0;
+            font-weight: bold;
+            color: var(--text-prominent);
+        }
+
+        @include desktop {
+            margin-bottom: 6rem;
+            margin-left: auto;
+            margin-right: auto;
+            width: 768px;
+        }
+
+        @include mobile {
+            margin-bottom: 7rem;
+        }
     }
 }

@@ -11,6 +11,7 @@ import {
     Money,
     Tabs,
     ThemedScrollbars,
+    Text,
 } from '@deriv/components';
 import { urlFor, routes, isCryptocurrency, formatMoney, getMT5Account } from '@deriv/shared';
 
@@ -188,9 +189,21 @@ class AccountSwitcher extends React.Component {
         await this.props.switchAccount(loginid);
     }
 
+    resetBalance = async () => {
+        this.closeAccountsDialog();
+        this.props.resetVirtualBalance();
+    };
+
     get is_real_account_tab() {
         // Real accounts is always the first tab index based on design
         return this.state.active_tab_index === 0;
+    }
+
+    get has_required_credentials() {
+        // for MT5 Real Financial STP, if true, users can instantly create a new account by setting password
+        if (!this.props.account_settings) return false;
+        const { citizen, tax_identification_number, tax_residence } = this.props.account_settings;
+        return !!(citizen && tax_identification_number && tax_residence);
     }
 
     get sorted_account_list() {
@@ -323,12 +336,14 @@ class AccountSwitcher extends React.Component {
                                     currency_icon={`IcCurrency-${account.icon}`}
                                     display_type={'currency'}
                                     has_balance={'balance' in this.props.accounts[account.loginid]}
+                                    has_reset_balance={this.props.accounts[this.props.account_loginid].is_virtual}
                                     is_disabled={account.is_disabled}
                                     is_virtual={account.is_virtual}
                                     loginid={account.loginid}
                                     onClickAccount={
                                         account.is_disabled ? undefined : this.doSwitch.bind(this, account.loginid)
                                     }
+                                    onClickResetVirtualBalance={this.resetBalance}
                                     selected_loginid={this.props.account_loginid}
                                 />
                             ))}
@@ -369,7 +384,9 @@ class AccountSwitcher extends React.Component {
                                     {this.remaining_demo_mt5.map(account => (
                                         <div key={account.title} className='acc-switcher__new-account'>
                                             <Icon icon={`IcMt5-${account.icon}`} size={24} />
-                                            <span className='acc-switcher__new-account-text'>{account.title}</span>
+                                            <Text size='xs' color='general' className='acc-switcher__new-account-text'>
+                                                {account.title}
+                                            </Text>
                                             <Button
                                                 onClick={() => this.openMt5DemoAccount(account.type)}
                                                 className='acc-switcher__new-account-btn'
@@ -427,11 +444,11 @@ class AccountSwitcher extends React.Component {
                         {this.remaining_real_accounts.map((account, index) => (
                             <div key={index} className='acc-switcher__new-account'>
                                 <Icon icon='IcDeriv' size={24} />
-                                <span className='acc-switcher__new-account-text'>
+                                <Text size='xs' color='general' className='acc-switcher__new-account-text'>
                                     {getAccountTitle(account, {
                                         account_residence: this.props.client_residence,
                                     })}
-                                </span>
+                                </Text>
                                 <Button
                                     onClick={() => this.props.openRealAccountSignup(account)}
                                     className='acc-switcher__new-account-btn'
@@ -499,7 +516,9 @@ class AccountSwitcher extends React.Component {
                                             })}
                                         >
                                             <Icon icon={`IcMt5-${account.icon}`} size={24} />
-                                            <span className='acc-switcher__new-account-text'>{account.title}</span>
+                                            <Text size='xs' color='general' className='acc-switcher__new-account-text'>
+                                                {account.title}
+                                            </Text>
                                             <Button
                                                 onClick={() => this.openMt5RealAccount(account.type)}
                                                 className='acc-switcher__new-account-btn'
@@ -508,7 +527,8 @@ class AccountSwitcher extends React.Component {
                                                 is_disabled={
                                                     (!this.props.is_eu && !this.props.has_any_real_account) ||
                                                     (account.type === 'financial_stp' &&
-                                                        this.props.is_pending_authentication) ||
+                                                        (this.props.is_pending_authentication ||
+                                                            this.has_required_credentials)) ||
                                                     !!this.props.mt5_login_list_error
                                                 }
                                             >
@@ -561,10 +581,10 @@ class AccountSwitcher extends React.Component {
                     })}
                 />
                 <div className='acc-switcher__total'>
-                    <span>
+                    <Text line_height='s' size='xs' weight='bold' color='prominent'>
                         <Localize i18n_default_text='Total assets' />
-                    </span>
-                    <span className='acc-switcher__balance'>
+                    </Text>
+                    <Text size='xs' color='prominent' className='acc-switcher__balance'>
                         <Money
                             currency={this.is_real_account_tab ? this.props.obj_total_balance.currency : 'USD'}
                             amount={formatMoney(
@@ -575,11 +595,11 @@ class AccountSwitcher extends React.Component {
                             show_currency
                             should_format={false}
                         />
-                    </span>
+                    </Text>
                 </div>
-                <div className='acc-switcher__total-subtitle'>
-                    <span>{total_assets_message}</span>
-                </div>
+                <Text color='less-prominent' line_height='s' size='xxxs' className='acc-switcher__total-subtitle'>
+                    {total_assets_message}
+                </Text>
                 <div className='acc-switcher__separator' />
                 <div className='acc-switcher__footer'>
                     {this.props.is_uk && this.props.has_any_real_account && (
@@ -592,10 +612,10 @@ class AccountSwitcher extends React.Component {
                             secondary
                         />
                     )}
-                    <div id='dt_logout_button' className='acc-switcher__logout'>
-                        <span className='acc-switcher__logout-text' onClick={this.handleLogout}>
+                    <div id='dt_logout_button' className='acc-switcher__logout' onClick={this.handleLogout}>
+                        <Text color='prominent' size='xs' align='left' className='acc-switcher__logout-text'>
                             {localize('Log out')}
-                        </span>
+                        </Text>
                         <Icon
                             icon='IcLogout'
                             className='acc-switcher__logout-icon drawer__icon'
@@ -631,6 +651,7 @@ AccountSwitcher.propTypes = {
     obj_total_balance: PropTypes.object,
     openRealAccountSignup: PropTypes.func,
     switchAccount: PropTypes.func,
+    resetVirtualBalance: PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
     toggleAccountTypesModal: PropTypes.func,
     togglePositionsDrawer: PropTypes.func,
@@ -643,6 +664,7 @@ const account_switcher = withRouter(
         available_crypto_currencies: client.available_crypto_currencies,
         account_loginid: client.loginid,
         accounts: client.accounts,
+        account_settings: client.account_settings,
         can_change_fiat_currency: client.can_change_fiat_currency,
         account_list: client.account_list,
         can_upgrade_to: client.can_upgrade_to,
@@ -660,6 +682,7 @@ const account_switcher = withRouter(
         mt5_login_list_error: client.mt5_login_list_error,
         obj_total_balance: client.obj_total_balance,
         switchAccount: client.switchAccount,
+        resetVirtualBalance: client.resetVirtualBalance,
         has_malta_account: client.has_malta_account,
         has_maltainvest_account: client.has_maltainvest_account,
         openAccountNeededModal: ui.openAccountNeededModal,

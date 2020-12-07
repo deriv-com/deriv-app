@@ -261,8 +261,6 @@ export default class MT5Store extends BaseStore {
             });
         } else {
             this.setError(true, response.error);
-            // eslint-disable-next-line no-console
-            console.warn('API Error: ', response);
         }
         setSubmitting(false);
     }
@@ -279,6 +277,7 @@ export default class MT5Store extends BaseStore {
 
     @action.bound
     async topUpVirtual() {
+        this.root_store.ui.setTopUpInProgress(true);
         const response = await WS.authorized.mt5Deposit({
             to_mt5: this.current_account.login,
         });
@@ -301,6 +300,7 @@ export default class MT5Store extends BaseStore {
             // eslint-disable-next-line no-console
             console.error(response);
         }
+        this.root_store.ui.setTopUpInProgress(false);
     }
 
     @action.bound

@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import React from 'react';
-import { action, computed, observable, toJS } from 'mobx';
+import { action, computed, observable, toJS, reaction } from 'mobx';
 import {
     routes,
     isCryptocurrency,
@@ -139,7 +139,6 @@ export default class CashierStore extends BaseStore {
     @observable is_loading = false;
     @observable is_p2p_visible = false;
     @observable p2p_notification_count = 0;
-    @observable is_p2p_advertiser = false;
     @observable cashier_route_tab_index = 0;
 
     @observable config = {
@@ -201,6 +200,30 @@ export default class CashierStore extends BaseStore {
         this.onSwitchAccount(this.accountSwitcherListener);
     }
 
+    // Initialise P2P attributes on app load without mounting the entire cashier
+    @action.bound
+    init() {
+        reaction(
+            () => [
+                this.root_store.client.switched,
+                this.root_store.client.is_logged_in,
+                this.root_store.client.currency,
+            ],
+            async () => {
+                // wait for get_settings so is_virtual gets populated in client-store
+                await BinarySocket.wait('get_settings');
+
+                if (this.root_store.client.is_logged_in && !this.root_store.client.is_virtual) {
+                    const advertiser_info = await WS.authorized.p2pAdvertiserInfo();
+                    const advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
+                    const is_p2p_restricted =
+                        advertiser_error === 'RestrictedCountry' || advertiser_error === 'RestrictedCurrency';
+                    this.setIsP2pVisible(!is_p2p_restricted);
+                }
+            }
+        );
+    }
+
     @action.bound
     async onMountCommon(should_remount) {
         if (this.root_store.client.is_logged_in) {
@@ -230,21 +253,6 @@ export default class CashierStore extends BaseStore {
 
             if (!this.onramp.is_onramp_tab_visible && window.location.pathname.endsWith(routes.cashier_onramp)) {
                 this.root_store.common.routeTo(routes.cashier_deposit);
-            }
-
-            // show p2p if:
-            // 1. we have not already checked this before, and
-            // 2. client is not virtual
-            if (!this.is_p2p_visible && !this.root_store.client.is_virtual) {
-                const advertiser_info = await WS.authorized.p2pAdvertiserInfo();
-                const advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
-                if (advertiser_error === 'RestrictedCountry') {
-                    this.setIsP2pVisible(false);
-                } else {
-                    this.setIsP2pVisible(true);
-                }
-
-                this.is_p2p_advertiser = !advertiser_error;
             }
         }
     }
@@ -342,6 +350,7 @@ export default class CashierStore extends BaseStore {
             is_trading_experience_incomplete,
             account_status,
             is_eu,
+            mt5_login_list,
         } = this.root_store.client;
         if (!account_status.status) return false;
 
@@ -349,10 +358,12 @@ export default class CashierStore extends BaseStore {
             this.config.deposit.error.is_ask_authentication || (is_authentication_needed && is_eu);
         const need_financial_assessment =
             is_financial_account && (is_financial_information_incomplete || is_trading_experience_incomplete);
+        // CR can deposit without accepting latest tnc except those with Financial STP
+        const need_tnc = (is_eu || mt5_login_list.some(item => item.group.startsWith('real_labuan'))) && is_tnc_needed;
 
         return (
             need_authentication ||
-            is_tnc_needed ||
+            need_tnc ||
             need_financial_assessment ||
             this.config.deposit.error.is_ask_financial_risk_approval
         );
@@ -570,7 +581,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async sendVerificationEmail() {
-        if (this.config[this.active_container].verification.is_button_clicked) {
+        if (this.config[this.active_container].verification.is_button_clicked || !this.root_store.client.email) {
             return;
         }
 
@@ -1350,7 +1361,6 @@ export default class CashierStore extends BaseStore {
         this.config.account_transfer = new ConfigAccountTransfer();
         this.config.payment_agent_transfer = new ConfigPaymentAgentTransfer();
         this.is_populating_values = false;
-        this.setIsP2pVisible(false);
 
         this.onRemount();
 

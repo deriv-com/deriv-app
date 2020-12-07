@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { Button, DesktopWrapper, Icon, MobileDialog, MobileWrapper, ThemedScrollbars } from '@deriv/components';
+import { Button, DesktopWrapper, Icon, MobileDialog, MobileWrapper, ThemedScrollbars, Text } from '@deriv/components';
 import { BinaryLink } from 'App/Components/Routes';
 import { connect } from 'Stores/connect';
 import { localize } from '@deriv/translations';
@@ -73,7 +73,9 @@ class NotificationsDialog extends React.Component {
                                                 )}
                                                 to={item.action.route}
                                             >
-                                                <span className='dc-btn__text'>{item.action.text}</span>
+                                                <Text weight='bold' size='xxs'>
+                                                    {item.action.text}
+                                                </Text>
                                             </BinaryLink>
                                         ) : (
                                             <Button
@@ -82,8 +84,11 @@ class NotificationsDialog extends React.Component {
                                                     'notifications-item__cta-button'
                                                 )}
                                                 onClick={item.action.onClick}
-                                                text={item.action.text}
-                                            />
+                                            >
+                                                <Text weight='bold' size='xxs'>
+                                                    {item.action.text}
+                                                </Text>
+                                            </Button>
                                         )}
                                     </>
                                 )}
@@ -150,6 +155,9 @@ NotificationsDialog.propTypes = {
     toggleDialog: PropTypes.func,
 };
 
-export default connect(({ ui }) => ({
-    notifications: ui.notifications,
+export default connect(({ ui, common }) => ({
+    notifications: ui.filtered_notifications,
+    app_routing_history: common.app_routing_history,
+    removeNotificationByKey: ui.removeNotificationByKey,
+    removeNotificationMessage: ui.removeNotificationMessage,
 }))(NotificationsDialog);

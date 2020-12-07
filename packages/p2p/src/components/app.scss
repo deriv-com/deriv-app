@@ -1,5 +1,5 @@
-@import '~@deriv/shared/src/styles/reset.scss';
-@import '~@deriv/shared/src/styles/themes.scss';
+@import '../../../shared/src/styles/reset.scss';
+@import '../../../shared/src/styles/themes.scss';
 
 .p2p-cashier {
     background: transparent;
@@ -102,7 +102,7 @@
 .p2p-nickname {
     &__dialog {
         @include mobile {
-            padding-top: 4rem;
+            height: 100%;
         }
     }
 }
@@ -110,11 +110,11 @@
 .dc-modal__container_p2p-nickname {
     &__dialog {
         height: auto;
-        padding: 0;
-        max-height: initial;
-        min-width: 44rem;
-        max-width: 44rem;
         margin-bottom: 0;
+        max-height: 50rem !important;
+        max-width: 44rem;
+        min-width: 44rem;
+        padding: 0;
         width: 100%;
 
         @include mobile {

@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Icon from '../icon';
+import Text from '../text';
 
 class ExpansionPanel extends React.Component {
     state = {
@@ -42,7 +43,7 @@ class ExpansionPanel extends React.Component {
                                         'dc-expansion-panel__content-active': this.state.open_ids.includes(item.id),
                                     })}
                                 >
-                                    <span className='dc-expansion-panel__content-array-item-index'>{index + 1}: </span>(
+                                    <Text className='dc-expansion-panel__content-array-item-index'>{index + 1}: </Text>(
                                     {item.value.length})
                                     <Icon
                                         className='dc-expansion-panel__content-chevron-icon'
@@ -58,7 +59,7 @@ class ExpansionPanel extends React.Component {
                     }
                     return (
                         <div key={index} className='dc-expansion-panel__content-array'>
-                            <span className='dc-expansion-panel__content-array-item-index'>{index + 1}:</span>
+                            <Text className='dc-expansion-panel__content-array-item-index'>{index + 1}:</Text>
                             {item && item.value !== undefined && item.value !== null
                                 ? item.value.toString()
                                 : undefined}

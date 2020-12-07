@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useIsMounted } from '@deriv/shared';
 import Field from '../field';
 import Loading from '../loading';
 
@@ -11,17 +12,16 @@ const PasswordMeter = ({ children, has_error, input, custom_feedback_messages })
     const [score, setScore] = React.useState();
     const [feedback, setFeedback] = React.useState();
 
+    const is_mounted = useIsMounted();
+
     React.useEffect(() => {
-        let is_subscribed = true;
         async function loadLibrary() {
             const lib = await import('@contentpass/zxcvbn');
             zxcvbn.current = lib.default;
-            if (is_subscribed) setLoading(false);
+            if (is_mounted()) setLoading(false);
         }
 
         loadLibrary();
-
-        return () => (is_subscribed = false);
     }, []);
 
     React.useEffect(() => {

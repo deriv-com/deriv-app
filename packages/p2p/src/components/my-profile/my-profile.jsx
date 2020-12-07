@@ -43,12 +43,10 @@ const ContentWrapper = ({ children, className }) => {
 const MyProfile = observer(() => {
     const { general_store, my_profile_store } = useStores();
     const {
-        basic_verification,
         daily_buy,
         daily_buy_limit,
         daily_sell,
         daily_sell_limit,
-        full_verification,
         total_orders_count,
     } = my_profile_store.advertiser_info;
 

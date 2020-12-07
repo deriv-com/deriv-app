@@ -1,7 +1,16 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import QRCode from 'qrcode.react';
-import { Timeline, DesktopWrapper, MobileWrapper, ThemedScrollbars, Clipboard, Icon, Loading } from '@deriv/components';
+import {
+    Timeline,
+    DesktopWrapper,
+    MobileWrapper,
+    ThemedScrollbars,
+    Clipboard,
+    Icon,
+    Loading,
+    Text,
+} from '@deriv/components';
 import { getPropertyValue, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';

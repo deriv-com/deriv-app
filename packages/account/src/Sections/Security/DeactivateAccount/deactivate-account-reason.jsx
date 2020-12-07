@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 import { routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { Formik, Field } from 'formik';
-import { Checkbox, Input, FormSubmitButton, Modal, Icon, Loading } from '@deriv/components';
+import { Checkbox, Input, FormSubmitButton, Modal, Icon, Loading, Text } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';
 import AccountHasBalanceOrOpenPositions from './account-has-balance.jsx';
@@ -48,7 +48,9 @@ const WarningModal = props => {
         <div className='account-closure-warning-modal'>
             <Icon icon='IcRedWarning' size={96} />
             <p className='account-closure-warning-modal__warning-message'>{localize('Warning!')}</p>
-            <span className='account-closure-warning-modal__content'>{localize('if you deactivate:')}</span>
+            <Text size='xs' line_height='x'>
+                {localize('if you deactivate:')}
+            </Text>
             <div className='account-closure-warning-modal__content-wrapper'>
                 <p className='account-closure-warning-modal__content'>
                     {localize('You’ll be logged out automatically.')}
@@ -58,7 +60,7 @@ const WarningModal = props => {
                 <p className='account-closure-warning-modal__content'>
                     <Localize
                         i18n_default_text='You will <0>NOT</0> be able to log in again.'
-                        components={[<span key={0} style={{ color: 'var(--text-loss-danger)', fontWeight: 'bold' }} />]}
+                        components={[<Text size='xs' line_height='s' key={0} color='loss-danger' weight='bold' />]}
                     />
                 </p>
             </div>

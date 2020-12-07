@@ -1,13 +1,13 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { usePreviousState } from '../../hooks';
+import { usePrevious } from '../../hooks';
 import Icon from '../icon';
 
 const Accordion = ({ className, list }) => {
     const [open_idx, setOpenIdx] = React.useState(null);
 
-    const prev_list = usePreviousState(list);
+    const prev_list = usePrevious(list);
 
     React.useEffect(() => {
         if (prev_list !== list) setOpenIdx(null);

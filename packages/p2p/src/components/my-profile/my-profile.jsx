@@ -175,7 +175,7 @@ const MyProfile = observer(() => {
                                     classNameBubble='my-profile__popover-text'
                                     alignment='top'
                                     message={localize(
-                                        "These fields are based on the last 24 hours' activity: Buy, Sell, and Limit."
+                                        'These fields are based on activities since 00:00 GMT: Buy, Sell, and Buy/Sell limit.'
                                     )}
                                     zIndex={2}
                                 >

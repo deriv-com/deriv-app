@@ -89,10 +89,10 @@
         }
         &-grid {
             // Sizes are different for inactive due to timeout being full time string.
-            grid-template-columns: 1fr 1.5fr 2fr 2.5fr 1.5fr 1.5fr 2fr;
+            grid-template-columns: 1.5fr 1.5fr 2fr 2.5fr 1.5fr 1.5fr 2fr;
 
             &--active {
-                grid-template-columns: 1fr 1.5fr 2fr 2.5fr 1.5fr 1.5fr 1.5fr;
+                grid-template-columns: 1.5fr 1.5fr 2fr 2.5fr 1.5fr 1.5fr 1.5fr;
             }
         }
         &-status {
@@ -122,8 +122,11 @@
                 background-color: rgba(28, 90, 227, 0.16);
             }
         }
-        & .dc-table__head:first-child {
-            padding-left: 1.7rem;
+
+        .dc-table__header {
+            > .orders__table-grid {
+                padding: 0 2.4rem;
+            }
         }
     }
 

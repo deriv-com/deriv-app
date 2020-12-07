@@ -36,6 +36,10 @@
     &__table-header {
         display: grid;
         grid-template-columns: 2fr repeat(3, 1fr);
+
+        > .dc-table__head:first-child {
+            margin-left: 1.6rem;
+        }
     }
 
     &__table-row {

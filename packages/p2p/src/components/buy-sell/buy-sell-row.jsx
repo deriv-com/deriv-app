@@ -55,7 +55,14 @@ const BuySellRow = observer(({ row: advert }) => {
                             {price_display} {local_currency}
                         </Text>
                         <Text as='div' color='general' line_height='m' size='xxs'>
-                            {min_order_amount_limit_display}&ndash;{max_order_amount_limit_display} {account_currency}
+                            <Localize
+                                i18n_default_text='Limit {{ min_order }}–{{ max_order }} {{ currency }}'
+                                values={{
+                                    min_order: min_order_amount_limit_display,
+                                    max_order: max_order_amount_limit_display,
+                                    currency: account_currency,
+                                }}
+                            />
                         </Text>
                     </div>
                     <Button primary large onClick={() => buy_sell_store.setSelectedAdvert(advert)}>

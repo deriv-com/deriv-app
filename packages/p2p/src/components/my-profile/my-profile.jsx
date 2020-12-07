@@ -87,34 +87,6 @@ const MyProfile = observer(() => {
                         </Text>
                     </div>
                 </div>
-                {isDesktop() && (
-                    <div className='my-profile__header-verification'>
-                        {basic_verification && (
-                            <div className='my-profile__header-verification-status'>
-                                <Text color='less-prominent' size='xs' line_height='m'>
-                                    <Localize i18n_default_text='ID verified' />
-                                </Text>
-                                <Icon
-                                    className='my-profile__header-verification-icon'
-                                    icon='IcCashierVerificationBadge'
-                                    size={16}
-                                />
-                            </div>
-                        )}
-                        {full_verification && (
-                            <div className='my-profile__header-verification-status'>
-                                <Text color='less-prominent' size='xs' line_height='m'>
-                                    <Localize i18n_default_text='Address verified' />
-                                </Text>
-                                <Icon
-                                    className='my-profile__header-verification-icon'
-                                    icon='IcCashierVerificationBadge'
-                                    size={16}
-                                />
-                            </div>
-                        )}
-                    </div>
-                )}
             </div>
             <Table>
                 <Table.Row className='my-profile__stats'>

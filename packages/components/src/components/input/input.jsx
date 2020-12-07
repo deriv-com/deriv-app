@@ -96,14 +96,14 @@ const Input = React.forwardRef(
                         <React.Fragment>
                             {error && <Field className={classNameError} message={error} type='error' />}
                             {warn && <Field className={classNameWarn} message={warn} type='warn' />}
+                            {!error && hint && !is_relative_hint && (
+                                <div className='dc-input__hint'>
+                                    <Text color='less-prominent' line-height='m' size='xxs'>
+                                        {hint}
+                                    </Text>
+                                </div>
+                            )}
                         </React.Fragment>
-                    )}
-                    {!error && hint && !is_relative_hint && (
-                        <div className='dc-input__hint'>
-                            <Text color='less-prominent' line-height='m' size='xxs'>
-                                {hint}
-                            </Text>
-                        </div>
                     )}
                 </div>
                 {has_footer && (

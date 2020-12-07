@@ -3,6 +3,10 @@
     display: flex;
     flex-direction: column;
 
+    .dc-input__wrapper {
+        width: 67.2rem; // TODO: Kill these fixed widths.
+    }
+
     &__header {
         display: flex;
         align-items: center;
@@ -12,11 +16,10 @@
     }
 
     &__form {
-        margin: 2.4rem 0;
-
         &-summary {
             color: var(--text-less-prominent);
             font-size: 1.4rem;
+            margin-bottom: -1.6rem;
 
             &--bold {
                 font-weight: bold;
@@ -40,29 +43,12 @@
             &:not(:last-child) {
                 margin-right: 2.4rem;
             }
-            & .dc-input__label {
-                top: 1.2rem;
-            }
-            & .dc-input__hint {
-                padding-top: 0.4rem;
-            }
-            & .dc-input__field[type='textarea'] ~ .dc-field-error {
-                top: 9.7rem;
-            }
             &--single {
                 width: 18.9rem;
             }
             &--textarea {
-                width: 67.2rem;
                 height: 9.6rem;
-
-                .dc-input__hint {
-                    top: 9.7rem;
-                }
-                .dc-input__counter {
-                    top: 9.7rem;
-                    right: 0rem;
-                }
+                margin-bottom: 0;
             }
             &--trailing {
                 font-size: var(--text-size-xxs);
@@ -91,9 +77,6 @@
             align-items: center;
             justify-content: flex-end;
             background-color: var(--general-main-1);
-        }
-        .dc-input__hint {
-            font-size: var(--text-size-xxs);
         }
     }
 

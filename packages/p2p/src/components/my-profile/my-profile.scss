@@ -40,23 +40,6 @@
             height: fit-content;
             width: fit-content;
         }
-        &-verification {
-            align-items: center;
-            display: flex;
-
-            &-status {
-                display: flex;
-                align-items: center;
-
-                &:not(:first-child) {
-                    margin-left: 1.6rem;
-                }
-            }
-            &-icon {
-                margin-left: 0.4rem;
-                vertical-align: bottom;
-            }
-        }
     }
     &__stats {
         border-bottom: none;

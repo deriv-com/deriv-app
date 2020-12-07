@@ -112,9 +112,6 @@ const FormAds = observer(() => {
                                                     label={localize('Fixed rate (1 {{currency}})', {
                                                         currency,
                                                     })}
-                                                    hint={localize('Per 1 {{currency}}', {
-                                                        currency,
-                                                    })}
                                                     className='p2p-my-ads__form-field'
                                                     trailing_icon={
                                                         <span className='p2p-my-ads__form-field--trailing'>

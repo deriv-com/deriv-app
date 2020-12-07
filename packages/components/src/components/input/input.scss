@@ -8,7 +8,7 @@
     margin-bottom: 3.2rem;
     line-height: 1.43;
 
-    &:hover:not(.dc-input__disabled) {
+    &:hover:not(.dc-input--disabled) {
         border-color: var(--border-hover);
     }
     &:focus-within {
@@ -18,7 +18,7 @@
             border-color: var(--brand-secondary);
         }
     }
-    &__disabled {
+    &--disabled {
         border-color: var(--general-disabled);
         color: var(--text-disabled);
     }

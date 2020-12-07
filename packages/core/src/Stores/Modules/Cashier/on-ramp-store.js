@@ -35,11 +35,10 @@ export default class OnRampStore extends BaseStore {
 
     @computed
     get is_onramp_tab_visible() {
-        const { client, ui } = this.root_store;
+        const { client } = this.root_store;
 
         return (
             client.is_virtual === false &&
-            ui.is_mobile === false &&
             isCryptocurrency(client.currency) &&
             this.filtered_onramp_providers.length > 0
         );
@@ -134,7 +133,9 @@ export default class OnRampStore extends BaseStore {
                                 this.setShouldShowWidget(false);
                             }
                         })
-                        .catch(error => this.setWidgetError(error))
+                        .catch(error => {
+                            this.setWidgetError(error);
+                        })
                         .finally(() => this.setIsRequestingWidgetHtml(false));
                 }
             }

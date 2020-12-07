@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-
+import Text from '../text';
 class FormProgress extends React.PureComponent {
     constructor(props) {
         super(props);
@@ -49,7 +49,15 @@ class FormProgress extends React.PureComponent {
                                     'dc-form-progress__step--current': idx === current_step,
                                 })}
                             >
-                                <span className='identifier'>{idx + 1}</span>
+                                <Text
+                                    size='xs'
+                                    weight='bold'
+                                    align='center'
+                                    color='colored-background'
+                                    className='identifier'
+                                >
+                                    {idx + 1}
+                                </Text>
                                 <p className='title'>{item.header.title}</p>
                             </div>
                         ))}

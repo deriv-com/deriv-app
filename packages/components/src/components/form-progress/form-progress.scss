@@ -33,10 +33,8 @@
             border-radius: 50%;
             display: block;
             width: 24px;
-            @include typeface(--paragraph-center-bold-black);
             background-color: var(--text-less-prominent);
             border: 1px solid var(--text-less-prominent);
-            color: var(--text-colored-background);
         }
         &--active {
             .identifier {

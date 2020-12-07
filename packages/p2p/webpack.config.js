@@ -1,3 +1,4 @@
+const publisher_utils = require('@deriv/publisher/utils');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 // const BundleAnalyzerPlugin    = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
@@ -27,12 +28,7 @@ module.exports = {
             Translations: path.resolve(__dirname, 'src/translations'),
             Utils: path.resolve(__dirname, 'src/utils'),
             Stores: path.resolve(__dirname, 'stores'), // TODO: Move stores into ./src!
-            ...(is_publishing
-                ? {
-                      '@deriv/shared': path.resolve(__dirname, '../shared/src/index.js'),
-                      '@deriv/components': path.resolve(__dirname, '../components/src/index.js'),
-                  }
-                : {}),
+            ...publisher_utils.getLocalDerivPackageAliases(__dirname, is_publishing),
         },
         symlinks: false,
     },
@@ -131,15 +127,8 @@ module.exports = {
             react: 'react',
             'react-dom': 'react-dom',
             'prop-types': 'prop-types',
+            ...(is_publishing ? {} : { formik: 'formik' }),
+            ...publisher_utils.getLocalDerivPackageExternals(__dirname, is_publishing),
         },
-        ...(is_publishing
-            ? []
-            : [
-                  {
-                      '@deriv/components': '@deriv/components',
-                      '@deriv/shared': '@deriv/shared',
-                      formik: 'formik',
-                  },
-              ]),
     ],
 };

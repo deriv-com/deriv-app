@@ -35,10 +35,6 @@ describe('ToggleFullScreen', () => {
         const wrapper = shallow(<ToggleFullScreen />);
         expect(wrapper.contains(<Icon icon='IcFullScreen' className='footer__icon' />)).to.be.true;
     });
-    it('should have onclick property as an instance of a Function', () => {
-        const wrapper = shallow(<ToggleFullScreen />);
-        expect(wrapper.prop('onClick')).to.be.an.instanceof(Function);
-    });
     it('should set is_full_screen equal to false in state, after onclick, when is_full_screen is false and there is no browser', () => {
         const wrapper = shallow(<ToggleFullScreen />);
         wrapper.setState({ is_full_screen: false });

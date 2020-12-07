@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Icon, Label, Money, ContractCard } from '@deriv/components';
-import { isMobile, getCurrencyDisplayCode, getTotalProfit } from '@deriv/shared';
+import { isMobile, getCurrencyDisplayCode, getTotalProfit, shouldShowCancellation } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import ProgressSliderStream from 'App/Containers/ProgressSliderStream';
 import { getCardLabels } from 'Constants/contract';
@@ -265,7 +265,11 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
         title: localize('Deal cancel. fee'),
         col_index: 'cancellation',
         renderCellContent: ({ row_obj }) => {
-            if (row_obj.contract_info && row_obj.contract_info.cancellation) {
+            if (!row_obj.contract_info || !row_obj.contract_info.underlying) return '-';
+
+            if (!shouldShowCancellation(row_obj.contract_info.underlying)) return localize('N/A');
+
+            if (row_obj.contract_info.cancellation) {
                 return <Money amount={row_obj.contract_info.cancellation.ask_price} currency={currency} />;
             }
             return '-';

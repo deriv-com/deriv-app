@@ -118,7 +118,7 @@ const Header = ({
                 </div>
                 <div
                     className={classNames('header__menu-right', {
-                        'header__menu-right--mobile': isMobile(),
+                        'header__menu-right--hidden': isMobile() && is_logging_in,
                     })}
                 >
                     {is_logging_in && (

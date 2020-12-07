@@ -13,6 +13,7 @@ import {
     MobileWrapper,
     Clipboard,
     Loading,
+    Text,
 } from '@deriv/components';
 import { getPropertyValue, formatDate } from '@deriv/shared';
 
@@ -344,7 +345,7 @@ class ApiToken extends React.Component {
                                                                     <Table.Cell>{token.display_name}</Table.Cell>
                                                                     <Table.Cell>
                                                                         <div className='api-token__clipboard-wrapper'>
-                                                                            <span>{token.token}</span>
+                                                                            <Text size='xs'>{token.token}</Text>
                                                                             <Clipboard
                                                                                 text_copy={token.token}
                                                                                 info_message={localize(
@@ -397,7 +398,7 @@ class ApiToken extends React.Component {
                                                                     </h5>
                                                                     <p className='api-token__scope--text'>
                                                                         <div className='api-token__clipboard-wrapper'>
-                                                                            <span>{token.token}</span>
+                                                                            <Text size='xs'>{token.token}</Text>
                                                                             <Clipboard token={token.token} />
                                                                         </div>
                                                                     </p>

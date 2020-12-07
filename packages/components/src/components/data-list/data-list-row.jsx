@@ -2,10 +2,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-// eslint-disable-next-line react/display-name
-const DataListRowWrapper = React.memo(props => {
-    const [showDesc, setShowDesc] = React.useState(false);
+const DataListRow = props => {
+    const [show_desc, setShowDesc] = React.useState(false);
     const { destination_link, acion_desc, row_key, row_gap } = props;
+    const { rowRenderer, row, measure, is_scrolling, is_new_row } = props;
 
     return (
         <div className='data-list__row--wrapper' style={{ paddingBottom: `${row_gap || 0}px` }}>
@@ -20,13 +20,15 @@ const DataListRowWrapper = React.memo(props => {
                         },
                     }}
                 >
-                    {props.children}
+                    <div className='data-list__item'>
+                        {rowRenderer({ row, measure, isScrolling: is_scrolling, is_new_row })}
+                    </div>
                 </NavLink>
             ) : (
                 <div className='data-list__item--wrapper'>
                     {acion_desc ? (
-                        <div className={'data-list__item'} onClick={() => setShowDesc(!showDesc)}>
-                            {showDesc ? (
+                        <div className={'data-list__item'} onClick={() => setShowDesc(!show_desc)}>
+                            {show_desc ? (
                                 <div className={'data-list__desc--wrapper'}>
                                     {acion_desc.component ? (
                                         <div>{acion_desc.component}</div>
@@ -35,23 +37,28 @@ const DataListRowWrapper = React.memo(props => {
                                     )}
                                 </div>
                             ) : (
-                                props.children
+                                rowRenderer({ row, measure, is_scrolling, is_new_row })
                             )}
                         </div>
                     ) : (
-                        props.children
+                        <div className='data-list__item'>{rowRenderer({ row, measure, is_scrolling, is_new_row })}</div>
                     )}
                 </div>
             )}
         </div>
     );
-});
-
-DataListRowWrapper.propTypes = {
-    to: PropTypes.string,
-    replace: PropTypes.object,
-    row_key: PropTypes.string,
-    row_gap: PropTypes.number,
 };
 
-export default DataListRowWrapper;
+DataListRow.propTypes = {
+    acion_desc: PropTypes.object,
+    destination_link: PropTypes.string,
+    is_scrolling: PropTypes.bool,
+    is_new_row: PropTypes.bool,
+    measure: PropTypes.func,
+    row: PropTypes.object,
+    row_gap: PropTypes.number,
+    row_key: PropTypes.string,
+    rowRenderer: PropTypes.func,
+};
+
+export default React.memo(DataListRow);

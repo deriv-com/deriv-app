@@ -7,33 +7,33 @@ import { AutoSizer } from 'react-virtualized/dist/es/AutoSizer';
 import { List } from 'react-virtualized/dist/es/List';
 import { isMobile, isDesktop } from '@deriv/shared';
 import DataListCell from './data-list-cell.jsx';
-import DataListRowWrapper from './data-list-row-wrapper.jsx';
+import DataListRow from './data-list-row.jsx';
 import ThemedScrollbars from '../themed-scrollbars';
 
 const DataList = React.memo(props => {
-    const [scrollTop, setScrollTop] = React.useState(0);
-    const [isScrolling, setIsScrolling] = React.useState(false);
-    const [loading, setLoading] = React.useState(true);
+    const [scroll_top, setScrollTop] = React.useState(0);
+    const [is_scrolling, setIsScrolling] = React.useState(false);
+    const [is_loading, setLoading] = React.useState(true);
 
+    const { className, children, data_source, footer, getRowSize, keyMapper } = props;
     const cache = React.useRef();
     const list_ref = React.useRef();
     const items_transition_map = {};
-    const is_dynamic_height = !props.getRowSize;
+    const is_dynamic_height = !getRowSize;
 
-    const trackItemsForTransition = () => {
-        props.data_source.forEach((item, index) => {
-            const row_key = props.keyMapper?.(item) || `${index}-0`;
+    const trackItemsForTransition = React.useCallback(() => {
+        data_source.forEach((item, index) => {
+            const row_key = keyMapper?.(item) || `${index}-0`;
             items_transition_map[row_key] = true;
         });
-    };
+    }, [data_source, items_transition_map, keyMapper]);
 
     React.useEffect(() => {
         if (is_dynamic_height) {
             cache.current = new CellMeasurerCache({
                 fixedWidth: true,
                 keyMapper: row_index => {
-                    if (row_index < props.data_source.length)
-                        return props.keyMapper?.(props.data_source[row_index]) || row_index;
+                    if (row_index < data_source.length) return keyMapper?.(data_source[row_index]) || row_index;
                     return row_index;
                 },
             });
@@ -47,31 +47,32 @@ const DataList = React.memo(props => {
             list_ref.current?.recomputeGridSize(0);
         }
         trackItemsForTransition();
-    }, [props.data_source]);
+    }, [data_source, is_dynamic_height, trackItemsForTransition]);
 
     const footerRowRenderer = () => {
-        const { footer, rowRenderer } = props;
-        return <React.Fragment>{rowRenderer({ row: footer, is_footer: true })}</React.Fragment>;
+        return <React.Fragment>{props.rowRenderer({ row: footer, is_footer: true })}</React.Fragment>;
     };
 
     const rowRenderer = ({ style, index, key, parent }) => {
-        const { data_source, getRowAction, keyMapper, row_gap } = props;
+        const { getRowAction, row_gap } = props;
         const row = data_source[index];
         const action = getRowAction && getRowAction(row);
         const destination_link = typeof action === 'string' ? action : undefined;
         const acion_desc = typeof action === 'object' ? action : undefined;
         const row_key = keyMapper?.(row) || key;
-        const is_new_row = !items_transition_map[row_key];
 
         const getContent = ({ measure } = {}) => (
-            <DataListRowWrapper
+            <DataListRow
                 destination_link={destination_link}
                 acion_desc={acion_desc}
                 row_key={row_key}
                 row_gap={row_gap}
-            >
-                <div className='data-list__item'>{props.rowRenderer({ row, measure, isScrolling, is_new_row })}</div>
-            </DataListRowWrapper>
+                rowRenderer={props.rowRenderer}
+                row={row}
+                is_scrolling={is_scrolling}
+                is_new_row={!items_transition_map[row_key]}
+                measure={measure}
+            />
         );
 
         return is_dynamic_height ? (
@@ -87,7 +88,7 @@ const DataList = React.memo(props => {
 
     const handleScroll = ev => {
         clearTimeout(timeout);
-        if (!isScrolling) {
+        if (!is_scrolling) {
             setIsScrolling(true);
         }
         const timeout = setTimeout(() => {
@@ -100,8 +101,7 @@ const DataList = React.memo(props => {
         }
     };
 
-    const { className, children, data_source, footer, getRowSize } = props;
-    if (loading) {
+    if (is_loading) {
         return <div />;
     }
     return (
@@ -129,7 +129,7 @@ const DataList = React.memo(props => {
                                         rowRenderer={rowRenderer}
                                         scrollingResetTimeInterval={0}
                                         {...(isDesktop()
-                                            ? { scrollTop, autoHeight: true }
+                                            ? { scrollTop: scroll_top, autoHeight: true }
                                             : { onScroll: target => handleScroll({ target }) })}
                                     />
                                 </ThemedScrollbars>
@@ -156,10 +156,13 @@ DataList.Cell = DataListCell;
 DataList.propTypes = {
     className: PropTypes.string,
     data_source: PropTypes.array,
+    footer: PropTypes.object,
     getRowAction: PropTypes.func,
     getRowSize: PropTypes.func,
-    rowRenderer: PropTypes.func,
+    keyMapper: PropTypes.func,
     onScroll: PropTypes.func,
+    row_gap: PropTypes.number,
+    rowRenderer: PropTypes.func,
 };
 
 export default DataList;

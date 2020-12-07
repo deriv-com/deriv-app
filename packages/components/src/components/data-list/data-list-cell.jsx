@@ -1,8 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 
-// eslint-disable-next-line react/display-name
-const DataListCell = React.memo(({ row, column, className, is_footer }) => {
+const DataListCell = ({ className, column, is_footer, row }) => {
     if (!column) return null;
     const { col_index, title } = column;
     const cell_value = row[col_index];
@@ -20,6 +19,6 @@ const DataListCell = React.memo(({ row, column, className, is_footer }) => {
             </div>
         </div>
     );
-});
+};
 
-export default DataListCell;
+export default React.memo(DataListCell);

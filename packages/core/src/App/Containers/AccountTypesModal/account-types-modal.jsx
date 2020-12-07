@@ -165,6 +165,11 @@ const SyntheticBox = ({ derivOnClick, add_account_label, is_deriv_crypto }) => {
                 'IcUnderlyingR_50',
                 'IcUnderlyingR_75',
                 'IcUnderlyingR_100',
+                'IcUnderlyingBOOM1000',
+                'IcUnderlyingBOOM500',
+                'IcUnderlyingCRASH1000',
+                'IcUnderlyingCRASH500',
+                'IcUnderlyingSTPRNG',
             ]}
             cards={[
                 <AccountCard

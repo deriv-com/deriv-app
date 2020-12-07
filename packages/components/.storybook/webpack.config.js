@@ -29,7 +29,6 @@ module.exports = async ({ config, mode }) => {
             alias: {
                 Components: path.resolve(__dirname, '../src/components'),
                 Stories: path.resolve(__dirname, '../stories'),
-                react: path.resolve(__dirname, '../node_modules/react'),
             },
             extensions: ['.js', '.jsx'],
         },

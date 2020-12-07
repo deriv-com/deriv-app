@@ -184,7 +184,6 @@ AccountSignup.propTypes = {
     enableApp: PropTypes.func,
     onSignup: PropTypes.func,
     residence_list: PropTypes.array,
-    is_eu: PropTypes.bool,
     isModalVisible: PropTypes.func,
     is_account_signup_modal_visible: PropTypes.bool,
 };

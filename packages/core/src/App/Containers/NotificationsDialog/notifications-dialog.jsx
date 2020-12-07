@@ -85,7 +85,9 @@ class NotificationsDialog extends React.Component {
                                                 )}
                                                 onClick={item.action.onClick}
                                             >
-                                                <Text size='xxs'>{item.action.text}</Text>
+                                                <Text weight='bold' size='xxs'>
+                                                    {item.action.text}
+                                                </Text>
                                             </Button>
                                         )}
                                     </>
@@ -153,6 +155,9 @@ NotificationsDialog.propTypes = {
     toggleDialog: PropTypes.func,
 };
 
-export default connect(({ ui }) => ({
+export default connect(({ ui, common }) => ({
     notifications: ui.filtered_notifications,
+    app_routing_history: common.app_routing_history,
+    removeNotificationByKey: ui.removeNotificationByKey,
+    removeNotificationMessage: ui.removeNotificationMessage,
 }))(NotificationsDialog);

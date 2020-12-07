@@ -150,7 +150,7 @@ const CurrencySelector = ({
         <Formik
             initialValues={props.value}
             onSubmit={(values, actions) => {
-                onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep);
+                onSubmit(getCurrentStep ? getCurrentStep() - 1 : null, values, actions.setSubmitting, goToNextStep);
             }}
             validate={handleValidate}
         >
@@ -171,7 +171,7 @@ const CurrencySelector = ({
                                         <React.Fragment>
                                             <RadioButtonGroup
                                                 id='currency'
-                                                className='currency-selector__radio-group'
+                                                className='currency-selector__radio-group currency-selector__radio-group--with-margin'
                                                 label={localize('Fiat currencies')}
                                                 is_fiat
                                                 value={values.currency}
@@ -196,7 +196,7 @@ const CurrencySelector = ({
                                         <React.Fragment>
                                             <RadioButtonGroup
                                                 id='currency'
-                                                className='currency-selector__radio-group'
+                                                className='currency-selector__radio-group currency-selector__radio-group--with-margin'
                                                 label={is_deriv_crypto ? '' : localize('Cryptocurrencies')}
                                                 value={values.currency}
                                                 error={errors.currency}

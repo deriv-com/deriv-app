@@ -1,10 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Field, Form, Formik } from 'formik';
-import { Button, Icon, Input, Loading, Popover, Table, ThemedScrollbars, Text } from '@deriv/components';
+import { Button, Icon, Input, Loading, Popover, Table, Text, ThemedScrollbars, ToggleSwitch } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
-import { localize } from 'Components/i18next';
+import { localize, Localize } from 'Components/i18next';
 import { generateHexColourFromNickname, getShortNickname } from 'Utils/string';
 import { useStores } from 'Stores';
 import FormError from '../form/error.jsx';
@@ -12,19 +13,21 @@ import './my-profile.scss';
 
 const MyProfile = observer(() => {
     const { general_store, my_profile_store } = useStores();
+    const { currency } = general_store.client;
     const [has_on_screen_keyboard, setHasOnScreenKeyboard] = React.useState(false);
 
     const {
         basic_verification,
-        buy_orders_count,
+        daily_buy,
         daily_buy_limit,
+        daily_sell,
         daily_sell_limit,
         full_verification,
-        sell_orders_count,
         total_orders_count,
     } = my_profile_store.advertiser_info;
 
     React.useEffect(() => {
+        my_profile_store.getSettings();
         my_profile_store.getAdvertiserInfo();
     }, []);
 
@@ -79,7 +82,9 @@ const MyProfile = observer(() => {
                         ) : null}
                         {full_verification ? (
                             <div className='my-profile__header-verification-status'>
-                                {localize('Address verified')}
+                                <Text color='less-prominent' size='xs'>
+                                    {localize('Address verified')}
+                                </Text>
                                 <Icon
                                     className='my-profile__header-verification-icon'
                                     icon='IcCashierVerificationBadge'
@@ -112,11 +117,11 @@ const MyProfile = observer(() => {
                                         as='p'
                                     >
                                         {localize('Buy / Sell ({{currency}})', {
-                                            currency: general_store.client.currency,
+                                            currency,
                                         })}
                                     </Text>
                                     <Text color='prominent' weight='bold' line_height='l' as='p'>
-                                        {buy_orders_count || '-'}/{sell_orders_count || '-'}
+                                        {daily_buy || '-'}/{daily_sell || '-'}
                                     </Text>
                                 </Table.Cell>
                             ) : (
@@ -129,11 +134,11 @@ const MyProfile = observer(() => {
                                             as='p'
                                         >
                                             {localize('Buy ({{currency}})', {
-                                                currency: general_store.client.currency,
+                                                currency,
                                             })}
                                         </Text>
                                         <Text color='prominent' weight='bold' line_height='l' as='p'>
-                                            {buy_orders_count || '-'}
+                                            {daily_buy || '-'}
                                         </Text>
                                     </Table.Cell>
                                     <div className='my-profile__stats-cell-separator' />
@@ -145,11 +150,11 @@ const MyProfile = observer(() => {
                                             as='p'
                                         >
                                             {localize('Sell ({{currency}})', {
-                                                currency: general_store.client.currency,
+                                                currency,
                                             })}
                                         </Text>
                                         <Text color='prominent' weight='bold' line_height='l' as='p'>
-                                            {sell_orders_count || '-'}
+                                            {daily_sell || '-'}
                                         </Text>
                                     </Table.Cell>
                                 </>
@@ -158,7 +163,7 @@ const MyProfile = observer(() => {
                             <Table.Cell className='my-profile__stats-cell'>
                                 <Text size={isMobile() ? 'xxxs' : 'xs'} color='less-prominent' line_height='m' as='p'>
                                     {localize('Buy / Sell limit ({{currency}})', {
-                                        currency: general_store.client.currency,
+                                        currency,
                                     })}
                                 </Text>
                                 <Text color='prominent' weight='bold' line_height='l' as='p'>
@@ -182,6 +187,28 @@ const MyProfile = observer(() => {
                             </Table.Cell>
                         </Table.Row>
                     </Table>
+                    <div className='my-profile__separator'>
+                        <div className='my-profile__separator-text--privacy'>
+                            <Text size='xs' color='prominent' weight='bold'>
+                                {localize('Privacy setting')}
+                            </Text>
+                        </div>
+                        <div className='my-profile__separator-horizontal_line' />
+                    </div>
+                    <div className='my-profile__toggle-container'>
+                        <ToggleSwitch
+                            id='p2p-toggle-name'
+                            classNameLabel='p2p-toggle-name__switch'
+                            is_enabled={general_store.should_show_real_name}
+                            handleToggle={my_profile_store.handleToggle}
+                        />
+                        <Text size='xs' line_height='m' color='prominent' className='my-profile__toggle-name'>
+                            <Localize
+                                i18n_default_text={'Show my real name ({{full_name}})'}
+                                values={{ full_name: my_profile_store.full_name }}
+                            />
+                        </Text>
+                    </div>
                     <div className='my-profile__separator'>
                         <div className='my-profile__separator-text'>
                             <Text size='xs' color='prominent' weight='bold'>
@@ -290,5 +317,20 @@ const MyProfile = observer(() => {
         </div>
     );
 });
+
+MyProfile.propTypes = {
+    advertiser_info: PropTypes.object,
+    contact_info: PropTypes.string,
+    default_advert_description: PropTypes.string,
+    error_message: PropTypes.string,
+    form_error: PropTypes.string,
+    getAdvertiserInfo: PropTypes.func,
+    handleSubmit: PropTypes.func,
+    is_button_loading: PropTypes.bool,
+    is_loading: PropTypes.bool,
+    is_submit_success: PropTypes.bool,
+    payment_info: PropTypes.string,
+    validateForm: PropTypes.func,
+};
 
 export default MyProfile;

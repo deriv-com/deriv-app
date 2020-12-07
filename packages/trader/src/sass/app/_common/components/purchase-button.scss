@@ -304,5 +304,10 @@
                 justify-content: center;
             }
         }
+        @include mobile {
+            &-deal-cancel {
+                height: 64px;
+            }
+        }
     }
 }

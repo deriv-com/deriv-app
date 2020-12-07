@@ -8,10 +8,8 @@ import { getLanguage, localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/index';
 
-const resetInitialValues = { password: '' };
-
-class ResetPassword extends React.Component {
-    onResetComplete = (error_msg, actions) => {
+const ResetPassword = ({ logoutClient, verification_code }) => {
+    const onResetComplete = (error_msg, actions) => {
         actions.setSubmitting(false);
         actions.resetForm({ password: '' });
         // Error would be returned on invalid token (and the like) cases.
@@ -25,13 +23,12 @@ class ResetPassword extends React.Component {
 
         actions.setStatus({ reset_complete: true });
 
-        this.props.logoutClient().then(() => {
-            redirectToLogin(this.props.is_logged_in, getLanguage());
+        logoutClient().then(() => {
+            redirectToLogin(false, getLanguage());
         });
     };
 
-    handleSubmit = (values, actions) => {
-        const { verification_code } = this.props;
+    const handleSubmit = (values, actions) => {
         const api_request = {
             reset_password: 1,
             new_password: values.password,
@@ -40,14 +37,14 @@ class ResetPassword extends React.Component {
 
         WS.resetPassword(api_request).then(async response => {
             if (response.error) {
-                this.onResetComplete(response.error.message, actions);
+                onResetComplete(response.error.message, actions);
             } else {
-                this.onResetComplete(null, actions);
+                onResetComplete(null, actions);
             }
         });
     };
 
-    validateReset = values => {
+    const validateReset = values => {
         const errors = {};
 
         if (
@@ -67,109 +64,93 @@ class ResetPassword extends React.Component {
         return errors;
     };
 
-    render() {
-        return (
-            <div className='reset-password'>
-                <Formik
-                    initialValues={resetInitialValues}
-                    initialStatus={{ reset_complete: false, error_msg: '' }}
-                    validate={this.validateReset}
-                    onSubmit={this.handleSubmit}
-                >
-                    {({ handleBlur, errors, values, touched, isSubmitting, handleChange, status }) => (
-                        <Form>
-                            <React.Fragment>
-                                {status.reset_complete ? (
-                                    <div className='reset-password__password-selection'>
-                                        <Text as='p' weight='bold' className='reset-password__heading'>
-                                            <Localize i18n_default_text='Your password has been changed' />
-                                        </Text>
-                                        <Text align='center' as='p' size='xxs' className='reset-password__subtext'>
-                                            <Localize i18n_default_text='We will now redirect you to the login page.' />
-                                        </Text>
-                                    </div>
-                                ) : (
-                                    <div className='reset-password__password-selection'>
-                                        <Text as='p' weight='bold' className='reset-password__heading'>
-                                            <Localize i18n_default_text='Choose a new password' />
-                                        </Text>
-                                        <fieldset className='reset-password__fieldset'>
-                                            <PasswordMeter
-                                                input={values.password}
-                                                has_error={!!(touched.password && errors.password)}
-                                                custom_feedback_messages={getErrorMessages().password_warnings}
-                                            >
-                                                <PasswordInput
-                                                    className='reset-password__password-field'
-                                                    name='password'
-                                                    label={localize('Create a password')}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                    error={touched.password && errors.password}
-                                                    value={values.password}
-                                                    data-lpignore='true'
-                                                    required
-                                                />
-                                            </PasswordMeter>
-                                        </fieldset>
-                                        <Text align='center' as='p' size='xxs' className='reset-password__subtext'>
-                                            {status.error_msg ? (
-                                                <Localize
-                                                    i18n_default_text='{{error_msg}}'
-                                                    values={{ error_msg: status.error_msg }}
-                                                />
-                                            ) : (
-                                                <Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters, numbers, and symbols.' />
-                                            )}
-                                        </Text>
-
-                                        <Button
-                                            className={classNames('reset-password__btn', {
-                                                'reset-password__btn--disabled':
-                                                    !values.password || errors.password || isSubmitting,
-                                            })}
-                                            type='submit'
-                                            is_disabled={!values.password || errors.password || isSubmitting}
-                                            primary
+    const reset_initial_values = { password: '' };
+  
+    return (
+        <div className='reset-password'>
+            <Formik
+                initialValues={reset_initial_values}
+                initialStatus={{ reset_complete: false, error_msg: '' }}
+                validate={validateReset}
+                onSubmit={handleSubmit}
+            >
+                {({ handleBlur, errors, values, touched, isSubmitting, handleChange, status }) => (
+                    <Form>
+                        <React.Fragment>
+                            {status.reset_complete ? (
+                                <div className='reset-password__password-selection'>
+                                    <Text as='p' weight='bold' className='reset-password__heading'>
+                                        <Localize i18n_default_text='Your password has been changed' />
+                                    </Text>
+                                    <Text align='center' as='p' size='xxs' className='reset-password__subtext'>
+                                        <Localize i18n_default_text='We will now redirect you to the login page.' />
+                                    </Text>
+                                </div>
+                            ) : (
+                                <div className='reset-password__password-selection'>
+                                    <Text as='p' weight='bold' className='reset-password__heading'>
+                                        <Localize i18n_default_text='Choose a new password' />
+                                    </Text>
+                                    <fieldset className='reset-password__fieldset'>
+                                        <PasswordMeter
+                                            input={values.password}
+                                            has_error={!!(touched.password && errors.password)}
+                                            custom_feedback_messages={getErrorMessages().password_warnings}
                                         >
-                                            <Localize i18n_default_text='Reset my password' />
-                                        </Button>
-                                    </div>
-                                )}
-                            </React.Fragment>
-                        </Form>
-                    )}
-                </Formik>
-            </div>
-        );
-    }
-}
+                                            <PasswordInput
+                                                className='reset-password__password-field'
+                                                name='password'
+                                                label={localize('Create a password')}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                error={touched.password && errors.password}
+                                                value={values.password}
+                                                data-lpignore='true'
+                                                required
+                                            />
+                                        </PasswordMeter>
+                                    </fieldset>
+                                    <Text align='center' as='p' size='xxs' className='reset-password__subtext'>
+                                        {status.error_msg ? (
+                                            <Localize
+                                                i18n_default_text='{{error_msg}}'
+                                                values={{ error_msg: status.error_msg }}
+                                            />
+                                        ) : (
+                                            <Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters, numbers, and symbols.' />
+                                        )}
+                                    </Text>
+
+                                    <Button
+                                        className={classNames('reset-password__btn', {
+                                            'reset-password__btn--disabled':
+                                                !values.password || errors.password || isSubmitting,
+                                        })}
+                                        type='submit'
+                                        is_disabled={!values.password || !!errors.password || isSubmitting}
+                                        primary
+                                    >
+                                        <Localize i18n_default_text='Reset my password' />
+                                    </Button>
+                                </div>
+                            )}
+                        </React.Fragment>
+                    </Form>
+                )}
+            </Formik>
+        </div>
+    );
+};
 
 ResetPassword.propTypes = {
-    enableApp: PropTypes.func,
-    isModalVisible: PropTypes.func,
+    logoutClient: PropTypes.func,
     verification_code: PropTypes.string,
 };
 
-const ResetPasswordModal = ({
-    enableApp,
-    disableApp,
-    is_loading,
-    is_visible,
-    is_logged_in,
-    logoutClient,
-    verification_code,
-    toggleResetPasswordModal,
-}) => {
+const ResetPasswordModal = ({ disableApp, enableApp, is_loading, is_visible, logoutClient, verification_code }) => {
     return (
         <Dialog is_visible={is_visible} disableApp={disableApp} enableApp={enableApp} is_loading={is_loading}>
-            <ResetPassword
-                is_logged_in={is_logged_in}
-                verification_code={verification_code}
-                isModalVisible={toggleResetPasswordModal}
-                enableApp={enableApp}
-                logoutClient={logoutClient}
-            />
+            <ResetPassword verification_code={verification_code} logoutClient={logoutClient} />
         </Dialog>
     );
 };
@@ -180,17 +161,14 @@ ResetPasswordModal.propTypes = {
     is_loading: PropTypes.bool,
     is_visible: PropTypes.bool,
     logoutClient: PropTypes.func,
-    toggleResetPasswordModal: PropTypes.func,
     verification_code: PropTypes.string,
 };
 
 export default connect(({ ui, client }) => ({
-    is_visible: ui.is_reset_password_modal_visible,
-    enableApp: ui.enableApp,
     disableApp: ui.disableApp,
+    enableApp: ui.enableApp,
     is_loading: ui.is_loading,
-    is_logged_in: client.is_logged_in,
+    is_visible: ui.is_reset_password_modal_visible,
     logoutClient: client.logout,
-    toggleResetPasswordModal: ui.toggleResetPasswordModal,
     verification_code: client.verification_code.reset_password,
 }))(ResetPasswordModal);

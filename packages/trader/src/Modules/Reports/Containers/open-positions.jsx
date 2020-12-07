@@ -2,7 +2,16 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { DesktopWrapper, MobileWrapper, ProgressBar, Tabs, DataList, DataTable, ContractCard } from '@deriv/components';
+import {
+    DesktopWrapper,
+    MobileWrapper,
+    ProgressBar,
+    Tabs,
+    DataList,
+    DataTable,
+    ContractCard,
+    usePrevious,
+} from '@deriv/components';
 import { urlFor, isMobile, isMultiplierContract, getTimePercentage, website_name, getTotalProfit } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
@@ -179,266 +188,262 @@ const OpenPositionsTable = ({
     </React.Fragment>
 );
 
-class OpenPositions extends React.Component {
-    state = {
-        active_index: this.props.is_multiplier ? 1 : 0,
-        // Tabs should be visible only when there is atleast one active multiplier contract
-        has_multiplier_contract: false,
-    };
+const getRowAction = row_obj =>
+    row_obj.is_unsupported
+        ? {
+              component: (
+                  <Localize
+                      i18n_default_text='This trade type is currently not supported on {{website_name}}. Please go to <0>Binary.com</0> for details.'
+                      values={{
+                          website_name,
+                      }}
+                      components={[
+                          <a
+                              key={0}
+                              className='link link--orange'
+                              rel='noopener noreferrer'
+                              target='_blank'
+                              href={urlFor('user/portfoliows', { legacy: true })}
+                          />,
+                      ]}
+                  />
+              ),
+          }
+        : getContractPath(row_obj.id);
 
-    componentDidMount() {
-        // For mobile, we show portfolio stepper in header even for reports pages.
-        // `onMount` in portfolio store will be invoked from portfolio stepper component in `trade-header-extensions.jsx`
-        if (!isMobile()) {
-            this.props.onMount();
-        }
-        this.checkForMultiplierContract();
-    }
+/*
+ * After refactoring transactionHandler for creating positions,
+ * purchase property in contract positions object is somehow NaN or undefined in the first few responses.
+ * So we set it to true in these cases to show a preloader for the data-table-row until the correct value is set.
+ */
+const isPurchaseReceived = item => isNaN(item.purchase) || !item.purchase;
 
-    componentDidUpdate(prev_props) {
-        this.checkForMultiplierContract(prev_props.active_positions);
-    }
+const getOpenPositionsTotals = (active_positions_filtered, is_multiplier_selected) => {
+    let totals;
 
-    componentWillUnmount() {
-        if (!isMobile()) {
-            this.props.onUnmount();
-        }
-    }
+    if (is_multiplier_selected) {
+        let ask_price = 0;
+        let profit = 0;
+        let buy_price = 0;
+        let bid_price = 0;
+        let purchase = 0;
 
-    checkForMultiplierContract(prev_active_positions = []) {
-        if (!this.state.has_multiplier_contract && this.props.active_positions !== prev_active_positions) {
-            const has_multiplier_contract = this.props.active_positions.some(p =>
-                isMultiplierContract(p.contract_info?.contract_type)
-            );
-            this.setState({
-                has_multiplier_contract,
-            });
-        }
-    }
+        active_positions_filtered.forEach(portfolio_pos => {
+            buy_price += +portfolio_pos.contract_info.buy_price;
+            bid_price += +portfolio_pos.contract_info.bid_price;
+            purchase += +portfolio_pos.purchase;
+            if (portfolio_pos.contract_info) {
+                profit += getTotalProfit(portfolio_pos.contract_info);
 
-    getRowAction = row_obj =>
-        row_obj.is_unsupported
-            ? {
-                  component: (
-                      <Localize
-                          i18n_default_text='This trade type is currently not supported on {{website_name}}. Please go to <0>Binary.com</0> for details.'
-                          values={{
-                              website_name,
-                          }}
-                          components={[
-                              <a
-                                  key={0}
-                                  className='link link--orange'
-                                  rel='noopener noreferrer'
-                                  target='_blank'
-                                  href={urlFor('user/portfoliows', { legacy: true })}
-                              />,
-                          ]}
-                      />
-                  ),
-              }
-            : getContractPath(row_obj.id);
-
-    // After refactoring transactionHandler for creating positions,
-    // purchase property in contract positions object is somehow NaN or undefined in the first few responses.
-    // So we set it to true in these cases to show a preloader for the data-table-row until the correct value is set.
-    isPurchaseReceived = item => isNaN(item.purchase) || !item.purchase;
-
-    getTotals = (active_positions_filtered, is_multiplier_selected) => {
-        let totals;
-
-        if (is_multiplier_selected) {
-            let ask_price = 0;
-            let profit = 0;
-            let buy_price = 0;
-            let bid_price = 0;
-            let purchase = 0;
-
-            active_positions_filtered.forEach(portfolio_pos => {
-                buy_price += +portfolio_pos.contract_info.buy_price;
-                bid_price += +portfolio_pos.contract_info.bid_price;
-                purchase += +portfolio_pos.purchase;
-                if (portfolio_pos.contract_info) {
-                    profit += getTotalProfit(portfolio_pos.contract_info);
-
-                    if (portfolio_pos.contract_info.cancellation) {
-                        ask_price += portfolio_pos.contract_info.cancellation.ask_price || 0;
-                    }
+                if (portfolio_pos.contract_info.cancellation) {
+                    ask_price += portfolio_pos.contract_info.cancellation.ask_price || 0;
                 }
-            });
-            totals = {
-                contract_info: {
-                    profit,
-                    buy_price,
-                    bid_price,
-                },
-                purchase,
-            };
-
-            if (ask_price > 0) {
-                totals.contract_info.cancellation = {
-                    ask_price,
-                };
             }
-        } else {
-            let indicative = 0;
-            let purchase = 0;
-            let profit_loss = 0;
-            let payout = 0;
-
-            active_positions_filtered.forEach(portfolio_pos => {
-                indicative += +portfolio_pos.indicative;
-                purchase += +portfolio_pos.purchase;
-                profit_loss += portfolio_pos.profit_loss;
-                payout += portfolio_pos.payout;
-            });
-            totals = {
-                indicative,
-                purchase,
-                profit_loss,
-                payout,
-            };
-        }
-        return totals;
-    };
-
-    setActiveTabIndex = index => {
-        this.setState({ active_index: index });
-    };
-
-    render() {
-        const {
-            active_positions,
-            component_icon,
-            is_loading,
-            error,
-            currency,
-            NotificationMessages,
-            onClickCancel,
-            onClickSell,
-            getPositionById,
-            server_time,
-        } = this.props;
-
-        const { has_multiplier_contract, active_index } = this.state;
-
-        if (error) {
-            return <p>{error}</p>;
-        }
-
-        const is_multiplier_selected = has_multiplier_contract && active_index === 1;
-
-        const active_positions_filtered = active_positions.filter(p => {
-            if (p.contract_info) {
-                return is_multiplier_selected
-                    ? isMultiplierContract(p.contract_info.contract_type)
-                    : !isMultiplierContract(p.contract_info.contract_type);
-            }
-            return true;
         });
-
-        const active_positions_filtered_totals = this.getTotals(active_positions_filtered, is_multiplier_selected);
-
-        const shared_props = {
-            active_positions: active_positions_filtered,
-            component_icon,
-            currency,
-            is_loading,
-            mobileRowRenderer: props => (
-                <MobileRowRenderer
-                    {...props}
-                    columns_map={this.columns_map}
-                    server_time={server_time}
-                    onClickCancel={onClickCancel}
-                    onClickSell={onClickSell}
-                />
-            ),
-            getRowAction: this.getRowAction,
-            preloaderCheck: this.isPurchaseReceived,
-            totals: active_positions_filtered_totals,
+        totals = {
+            contract_info: {
+                profit,
+                buy_price,
+                bid_price,
+            },
+            purchase,
         };
-        this.columns = is_multiplier_selected
-            ? getMultiplierOpenPositionsColumnsTemplate({
-                  currency,
-                  onClickCancel,
-                  onClickSell,
-                  getPositionById,
-                  server_time,
-              })
-            : getOpenPositionsColumnsTemplate(currency);
 
-        this.columns_map = this.columns.reduce((map, item) => {
-            map[item.col_index] = item;
-            return map;
-        }, {});
+        if (ask_price > 0) {
+            totals.contract_info.cancellation = {
+                ask_price,
+            };
+        }
+    } else {
+        let indicative = 0;
+        let purchase = 0;
+        let profit_loss = 0;
+        let payout = 0;
 
-        return (
-            <React.Fragment>
-                <NotificationMessages />
-                {has_multiplier_contract ? (
-                    <Tabs
-                        active_index={active_index}
-                        className='open-positions'
-                        onTabItemClick={this.setActiveTabIndex}
-                        top
-                        header_fit_content={!isMobile()}
-                    >
-                        <div label={localize('Options')}>
-                            <OpenPositionsTable
-                                className='open-positions'
-                                columns={this.columns}
-                                {...shared_props}
-                                row_size={isMobile() ? 5 : 63}
-                            />
-                        </div>
-                        <div label={localize('Multipliers')}>
-                            <OpenPositionsTable
-                                className='open-positions-multiplier open-positions'
-                                is_multiplier_tab
-                                columns={this.columns}
-                                row_size={isMobile() ? 3 : 68}
-                                {...shared_props}
-                            />
-                        </div>
-                    </Tabs>
-                ) : (
-                    <OpenPositionsTable
-                        className='open-positions'
-                        columns={this.columns}
-                        {...shared_props}
-                        row_size={isMobile() ? 5 : 63}
-                    />
-                )}
-            </React.Fragment>
-        );
+        active_positions_filtered.forEach(portfolio_pos => {
+            indicative += +portfolio_pos.indicative;
+            purchase += +portfolio_pos.purchase;
+            profit_loss += portfolio_pos.profit_loss;
+            payout += portfolio_pos.payout;
+        });
+        totals = {
+            indicative,
+            purchase,
+            profit_loss,
+            payout,
+        };
     }
-}
+    return totals;
+};
+
+const OpenPositions = ({
+    active_positions,
+    component_icon,
+    currency,
+    error,
+    getPositionById,
+    is_loading,
+    is_multiplier,
+    NotificationMessages,
+    onClickCancel,
+    onClickSell,
+    onMount,
+    onUnmount,
+    server_time,
+}) => {
+    const [active_index, setActiveIndex] = React.useState(is_multiplier ? 1 : 0);
+    // Tabs should be visible only when there is at least one active multiplier contract
+    const [has_multiplier_contract, setMultiplierContract] = React.useState(false);
+
+    const previous_active_positions = usePrevious(active_positions);
+
+    React.useEffect(() => {
+        /*
+         * For mobile, we show portfolio stepper in header even for reports pages.
+         * `onMount` in portfolio store will be invoked from portfolio stepper component in `trade-header-extensions.jsx`
+         */
+        if (!isMobile()) onMount();
+
+        checkForMultiplierContract();
+
+        return () => {
+            if (!isMobile()) onUnmount();
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    React.useEffect(() => {
+        checkForMultiplierContract(previous_active_positions);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [previous_active_positions]);
+
+    const checkForMultiplierContract = (prev_active_positions = []) => {
+        if (!has_multiplier_contract && active_positions !== prev_active_positions) {
+            setMultiplierContract(active_positions.some(p => isMultiplierContract(p.contract_info?.contract_type)));
+        }
+    };
+
+    const setActiveTabIndex = index => setActiveIndex(index);
+
+    if (error) return <p>{error}</p>;
+
+    const is_multiplier_selected = has_multiplier_contract && active_index === 1;
+
+    const active_positions_filtered = active_positions.filter(p => {
+        if (p.contract_info) {
+            return is_multiplier_selected
+                ? isMultiplierContract(p.contract_info.contract_type)
+                : !isMultiplierContract(p.contract_info.contract_type);
+        }
+        return true;
+    });
+
+    const active_positions_filtered_totals = getOpenPositionsTotals(active_positions_filtered, is_multiplier_selected);
+
+    const columns = is_multiplier_selected
+        ? getMultiplierOpenPositionsColumnsTemplate({
+              currency,
+              onClickCancel,
+              onClickSell,
+              getPositionById,
+              server_time,
+          })
+        : getOpenPositionsColumnsTemplate(currency);
+
+    const columns_map = columns.reduce((map, item) => {
+        map[item.col_index] = item;
+        return map;
+    }, {});
+
+    const mobileRowRenderer = props => (
+        <MobileRowRenderer
+            {...props}
+            columns_map={columns_map}
+            server_time={server_time}
+            onClickCancel={onClickCancel}
+            onClickSell={onClickSell}
+        />
+    );
+
+    const shared_props = {
+        active_positions: active_positions_filtered,
+        component_icon,
+        currency,
+        is_loading,
+        mobileRowRenderer,
+        getRowAction,
+        preloaderCheck: isPurchaseReceived,
+        totals: active_positions_filtered_totals,
+    };
+
+    return (
+        <React.Fragment>
+            <NotificationMessages />
+            {has_multiplier_contract ? (
+                <Tabs
+                    active_index={active_index}
+                    className='open-positions'
+                    onTabItemClick={setActiveTabIndex}
+                    top
+                    header_fit_content={!isMobile()}
+                >
+                    <div label={localize('Options')}>
+                        <OpenPositionsTable
+                            className='open-positions'
+                            columns={columns}
+                            {...shared_props}
+                            row_size={isMobile() ? 5 : 63}
+                        />
+                    </div>
+                    <div label={localize('Multipliers')}>
+                        <OpenPositionsTable
+                            className='open-positions-multiplier open-positions'
+                            is_multiplier_tab
+                            columns={columns}
+                            row_size={isMobile() ? 3 : 68}
+                            {...shared_props}
+                        />
+                    </div>
+                </Tabs>
+            ) : (
+                <OpenPositionsTable
+                    className='open-positions'
+                    columns={columns}
+                    {...shared_props}
+                    row_size={isMobile() ? 5 : 63}
+                />
+            )}
+        </React.Fragment>
+    );
+};
 
 OpenPositions.propTypes = {
     active_positions: MobxPropTypes.arrayOrObservableArray,
     component_icon: PropTypes.string,
     currency: PropTypes.string,
     error: PropTypes.string,
-    history: PropTypes.object,
+    getPositionById: PropTypes.func,
     is_loading: PropTypes.bool,
-    is_tablet: PropTypes.bool,
+    is_multiplier: PropTypes.bool,
+    NotificationMessages: PropTypes.node,
+    onClickCancel: PropTypes.func,
+    onClickSell: PropTypes.func,
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
     server_time: PropTypes.object,
-    totals: PropTypes.object,
 };
 
 export default connect(({ modules, client, common, ui }) => ({
-    currency: client.currency,
     active_positions: modules.portfolio.active_positions,
+    currency: client.currency,
     error: modules.portfolio.error,
     getPositionById: modules.portfolio.getPositionById,
     is_loading: modules.portfolio.is_loading,
+    is_multiplier: modules.trade.is_multiplier,
+    NotificationMessages: ui.notification_messages_ui,
     onClickCancel: modules.portfolio.onClickCancel,
     onClickSell: modules.portfolio.onClickSell,
     onMount: modules.portfolio.onMount,
     onUnmount: modules.portfolio.onUnmount,
-    is_multiplier: modules.trade.is_multiplier,
-    NotificationMessages: ui.notification_messages_ui,
     server_time: common.server_time,
 }))(withRouter(OpenPositions));

@@ -12,13 +12,13 @@ const PasswordMeter = ({ children, has_error, input, custom_feedback_messages })
     const [score, setScore] = React.useState();
     const [feedback, setFeedback] = React.useState();
 
-    const is_mounted = useIsMounted();
+    const isMounted = useIsMounted();
 
     React.useEffect(() => {
         async function loadLibrary() {
             const lib = await import('@contentpass/zxcvbn');
             zxcvbn.current = lib.default;
-            if (is_mounted()) setLoading(false);
+            if (isMounted()) setLoading(false);
         }
 
         loadLibrary();

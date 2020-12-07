@@ -16,7 +16,7 @@ const DerivPassword = ({ email }) => {
                 <ChangePasswordForm
                     onClickSendEmail={() => {
                         WS.verifyEmail(email, 'reset_password');
-                        multi_step_ref?.current.goNextStep();
+                        multi_step_ref.current?.goNextStep();
                     }}
                 />
             ),

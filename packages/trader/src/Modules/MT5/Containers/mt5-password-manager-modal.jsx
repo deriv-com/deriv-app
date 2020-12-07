@@ -15,7 +15,6 @@ import {
     PageOverlay,
     ThemedScrollbars,
     UILoader,
-    usePreviousState,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { isMobile, validLength, validPassword, getErrorMessages } from '@deriv/shared';
@@ -149,14 +148,13 @@ const MT5PasswordManagerModal = ({
     const [is_investor_submit_success, setInvestorSubmitSuccess] = React.useState(false);
     const [password_type, setPasswordType] = React.useState('');
 
-    const prev_is_visible = usePreviousState(is_visible);
     const multi_step_ref = React.useRef();
 
     React.useEffect(() => {
-        if (!prev_is_visible && is_visible) {
+        if (is_visible) {
             reset(0);
         }
-    }, [is_visible, prev_is_visible]);
+    }, [is_visible]);
 
     React.useEffect(() => {
         if (password_type) {

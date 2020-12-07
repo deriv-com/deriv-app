@@ -85,7 +85,9 @@ class NotificationsDialog extends React.Component {
                                                 )}
                                                 onClick={item.action.onClick}
                                             >
-                                                <Text size='xxs'>{item.action.text}</Text>
+                                                <Text weight='bold' size='xxs'>
+                                                    {item.action.text}
+                                                </Text>
                                             </Button>
                                         )}
                                     </>

@@ -169,21 +169,23 @@ class AccountSwitcher extends React.Component {
 
     getMtConfig = (market_type, landing_company, existing_mt5_accounts) => {
         const mt5_config = [];
-        Object.keys(landing_company).forEach(company => {
-            const has_account = existing_mt5_accounts.find(
-                account => account.sub_account_type === company && account.market_type === market_type
-            );
-            if (!has_account) {
-                const type = getMT5AccountKey(market_type, company);
-                if (type) {
-                    mt5_config.push({
-                        icon: getMT5Account(market_type, company),
-                        title: getMT5AccountDisplay(market_type, company),
-                        type,
-                    });
+        if (landing_company) {
+            Object.keys(landing_company).forEach(company => {
+                const has_account = existing_mt5_accounts.find(
+                    account => account.sub_account_type === company && account.market_type === market_type
+                );
+                if (!has_account) {
+                    const type = getMT5AccountKey(market_type, company);
+                    if (type) {
+                        mt5_config.push({
+                            icon: getMT5Account(market_type, company),
+                            title: getMT5AccountDisplay(market_type, company),
+                            type,
+                        });
+                    }
                 }
-            }
-        });
+            });
+        }
         return mt5_config;
     };
 

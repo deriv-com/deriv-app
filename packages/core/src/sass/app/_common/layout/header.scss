@@ -119,6 +119,9 @@
         height: #{$HEADER_HEIGHT - 1px};
         position: relative;
 
+        &--hidden {
+            display: none;
+        }
         @include mobile {
             .acc-info__separator {
                 display: none;

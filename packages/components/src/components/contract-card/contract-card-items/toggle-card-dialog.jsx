@@ -12,43 +12,66 @@ import Popover from '../../popover';
 import Div100vhContainer from '../../div100vh-container';
 import './sass/contract-card-dialog.scss';
 
-class ToggleCardDialog extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            is_visible: false,
-            top: 0,
-            left: 0,
-            is_do_not_show_selected: !this.props.should_show_cancellation_warning,
-        };
-        this.toggle_ref = React.createRef();
-        this.dialog_ref = React.createRef();
-        this.contract = props.getContractById(props.contract_id);
-        this.ContractUpdateFormWrapper = props.connectWithContractUpdate?.(ContractUpdateForm) || ContractUpdateForm;
-    }
+const ToggleCardDialog = ({
+    addToast,
+    contract_id,
+    connectWithContractUpdate,
+    current_focus,
+    getCardLabels,
+    getContractById,
+    is_valid_to_cancel,
+    removeToast,
+    setCurrentFocus,
+    should_show_cancellation_warning,
+    status,
+    toggleCancellationWarning,
+}) => {
+    const [is_visible, setIsVisible] = React.useState(false);
+    const [top, setTop] = React.useState(0);
+    const [left, setLeft] = React.useState(0);
+    const [is_do_not_show_selected, setIsDoNotShowSelected] = React.useState(!should_show_cancellation_warning);
 
-    handleClick = e => {
+    const toggle_ref = React.useRef();
+    const dialog_ref = React.useRef();
+    const contract = getContractById(contract_id);
+    const ContractUpdateFormWrapper = connectWithContractUpdate?.(ContractUpdateForm) || ContractUpdateForm;
+
+    React.useEffect(() => {
+        if (is_visible && toggle_ref && toggle_ref.current && dialog_ref && dialog_ref.current) {
+            const icon_bound = toggle_ref.current.getBoundingClientRect();
+            const portal_ref = dialog_ref.current;
+            const target_bound = portal_ref?.current?.getBoundingClientRect();
+            const body_bound = document.body.getBoundingClientRect();
+
+            let { top: icon_bound_top } = icon_bound;
+            const { right } = icon_bound;
+
+            if (icon_bound_top + target_bound?.height > body_bound.height) {
+                icon_bound_top -= target_bound?.height - icon_bound.height;
+            }
+
+            setTop(icon_bound_top);
+            setLeft(right - 16);
+        }
+    }, [is_visible]);
+
+    const handleClick = e => {
         e.stopPropagation();
     };
 
-    onPopoverClose = () => {
-        if (this.state.is_do_not_show_selected) {
-            this.props.toggleCancellationWarning();
+    const onPopoverClose = () => {
+        if (is_do_not_show_selected) {
+            toggleCancellationWarning();
         }
     };
 
-    onPopoverCheckboxChange = () => {
-        this.setState(prev_state => {
-            return {
-                is_do_not_show_selected: !prev_state.is_do_not_show_selected,
-            };
-        });
+    const onPopoverCheckboxChange = () => {
+        setIsDoNotShowSelected(!is_do_not_show_selected);
     };
 
-    toggleDialog = e => {
+    const toggleDialog = e => {
         e.preventDefault();
         e.stopPropagation();
-        const { addToast, getCardLabels, should_show_cancellation_warning, is_valid_to_cancel } = this.props;
         if (isMobile() && should_show_cancellation_warning && is_valid_to_cancel) {
             addToast({
                 key: 'deal_cancellation_active',
@@ -59,138 +82,96 @@ class ToggleCardDialog extends React.Component {
 
         if (is_valid_to_cancel) return;
 
-        this.setState(
-            state => ({ is_visible: !state.is_visible }),
-            () => {
-                if (
-                    this.state.is_visible &&
-                    this.toggle_ref &&
-                    this.toggle_ref.current &&
-                    this.dialog_ref &&
-                    this.dialog_ref.current
-                ) {
-                    const icon_bound = this.toggle_ref.current.getBoundingClientRect();
-                    const { ref: portalRef } = this.dialog_ref.current;
-                    const target_bound = portalRef.current.getBoundingClientRect();
-                    const body_bound = document.body.getBoundingClientRect();
-
-                    let { top } = icon_bound;
-                    const { right } = icon_bound;
-
-                    if (icon_bound.top + target_bound.height > body_bound.height) {
-                        top -= target_bound.height - icon_bound.height;
-                    }
-
-                    this.setState({
-                        top,
-                        left: right - 16,
-                    });
-                }
-            }
-        );
+        setIsVisible(!is_visible);
     };
 
-    render() {
-        const {
-            addToast,
-            current_focus,
-            getCardLabels,
-            getContractById,
-            is_valid_to_cancel,
-            removeToast,
-            setCurrentFocus,
-            should_show_cancellation_warning,
-            status,
-        } = this.props;
+    const edit_icon = (
+        <Icon
+            className='dc-contract-card-dialog-toggle__icon'
+            icon='IcEdit'
+            color={is_valid_to_cancel && 'disabled'}
+            size={12}
+        />
+    );
 
-        const edit_icon = (
-            <Icon
-                className='dc-contract-card-dialog-toggle__icon'
-                icon='IcEdit'
-                color={is_valid_to_cancel && 'disabled'}
-                size={12}
-            />
+    const toggle_wrapper =
+        should_show_cancellation_warning && isDesktop() ? (
+            <Popover
+                alignment='right'
+                classNameBubble='trade-container__popover'
+                is_bubble_hover_enabled
+                margin={2}
+                zIndex={2}
+                message={
+                    <PopoverMessageCheckbox
+                        defaultChecked={is_do_not_show_selected}
+                        checkboxLabel={getCardLabels().DONT_SHOW_THIS_AGAIN}
+                        message={getCardLabels().TAKE_PROFIT_LOSS_NOT_AVAILABLE}
+                        name='should_show_cancellation_warning'
+                        onChange={onPopoverCheckboxChange}
+                    />
+                }
+                onBubbleClose={onPopoverClose}
+            >
+                <div className='dc-contract-card-dialog-toggle__wrapper'>{edit_icon}</div>
+            </Popover>
+        ) : (
+            <div className='dc-contract-card-dialog-toggle__wrapper'>{edit_icon}</div>
         );
 
-        const toggle_wrapper =
-            should_show_cancellation_warning && isDesktop() ? (
-                <Popover
-                    alignment='right'
-                    classNameBubble='trade-container__popover'
-                    is_bubble_hover_enabled
-                    margin={2}
-                    zIndex={2}
-                    message={
-                        <PopoverMessageCheckbox
-                            defaultChecked={this.state.is_do_not_show_selected}
-                            checkboxLabel={getCardLabels().DONT_SHOW_THIS_AGAIN}
-                            message={getCardLabels().TAKE_PROFIT_LOSS_NOT_AVAILABLE}
-                            name='should_show_cancellation_warning'
-                            onChange={this.onPopoverCheckboxChange}
-                        />
-                    }
-                    onBubbleClose={this.onPopoverClose}
+    return (
+        <div onClick={handleClick}>
+            <div ref={toggle_ref} className='dc-contract-card-dialog-toggle' onClick={toggleDialog}>
+                {is_valid_to_cancel ? toggle_wrapper : edit_icon}
+            </div>
+            <MobileWrapper>
+                <MobileDialog
+                    portal_element_id='modal_root'
+                    visible={is_visible}
+                    onClose={toggleDialog}
+                    wrapper_classname='contract-update'
                 >
-                    <div className='dc-contract-card-dialog-toggle__wrapper'>{edit_icon}</div>
-                </Popover>
-            ) : (
-                <div className='dc-contract-card-dialog-toggle__wrapper'>{edit_icon}</div>
-            );
-
-        const ContractUpdateFormWrapper = this.ContractUpdateFormWrapper;
-
-        return (
-            <div onClick={this.handleClick}>
-                <div ref={this.toggle_ref} className='dc-contract-card-dialog-toggle' onClick={this.toggleDialog}>
-                    {is_valid_to_cancel ? toggle_wrapper : edit_icon}
-                </div>
-                <MobileWrapper>
-                    <MobileDialog
-                        portal_element_id='modal_root'
-                        visible={this.state.is_visible}
-                        onClose={this.toggleDialog}
-                        wrapper_classname='contract-update'
-                    >
-                        <Div100vhContainer className='contract-update__wrapper' height_offset='40px'>
-                            <ContractUpdateFormWrapper
-                                addToast={addToast}
-                                current_focus={current_focus}
-                                getCardLabels={getCardLabels}
-                                getContractById={getContractById}
-                                removeToast={removeToast}
-                                contract={this.contract}
-                                setCurrentFocus={setCurrentFocus}
-                                status={status}
-                                toggleDialog={this.toggleDialog}
-                            />
-                        </Div100vhContainer>
-                    </MobileDialog>
-                </MobileWrapper>
-                <DesktopWrapper>
-                    <ContractCardDialog
-                        ref={this.dialog_ref}
-                        is_visible={this.state.is_visible}
-                        left={this.state.left}
-                        top={this.state.top}
-                        toggle_ref={this.toggle_ref}
-                        toggleDialog={this.toggleDialog}
-                    >
+                    <Div100vhContainer className='contract-update__wrapper' height_offset='40px'>
                         <ContractUpdateFormWrapper
                             addToast={addToast}
                             current_focus={current_focus}
                             getCardLabels={getCardLabels}
                             getContractById={getContractById}
                             removeToast={removeToast}
-                            contract={this.contract}
+                            contract={contract}
                             setCurrentFocus={setCurrentFocus}
-                            toggleDialog={this.toggleDialog}
+                            status={status}
+                            toggleDialog={toggleDialog}
                         />
-                    </ContractCardDialog>
-                </DesktopWrapper>
-            </div>
-        );
-    }
-}
+                    </Div100vhContainer>
+                </MobileDialog>
+            </MobileWrapper>
+            <DesktopWrapper>
+                <ContractCardDialog
+                    ref={dialog_ref}
+                    is_visible={is_visible}
+                    left={left}
+                    top={top}
+                    toggle_ref={toggle_ref}
+                    toggleDialog={toggleDialog}
+                >
+                    <ContractUpdateFormWrapper
+                        addToast={addToast}
+                        current_focus={current_focus}
+                        getCardLabels={getCardLabels}
+                        getContractById={getContractById}
+                        removeToast={removeToast}
+                        contract={contract}
+                        setCurrentFocus={setCurrentFocus}
+                        toggleDialog={toggleDialog}
+                    />
+                </ContractCardDialog>
+            </DesktopWrapper>
+        </div>
+    );
+};
+
+ToggleCardDialog.displayName = 'ToggleCardDialog';
 
 ToggleCardDialog.propTypes = {
     addToast: PropTypes.func,

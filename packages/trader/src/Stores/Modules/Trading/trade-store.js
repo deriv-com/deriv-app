@@ -1,17 +1,16 @@
 import debounce from 'lodash.debounce';
 import { action, computed, observable, reaction, runInAction, toJS, when } from 'mobx';
 import {
-    isDesktop,
-    isMobile,
-    isCryptocurrency,
-    getMinPayout,
     cloneObject,
-    isEmptyObject,
-    getPropertyValue,
     extractInfoFromShortcode,
+    getMinPayout,
+    getPropertyValue,
+    isCryptocurrency,
+    isDesktop,
+    isEmptyObject,
+    isMobile,
     showDigitalOptionsUnavailableError,
 } from '@deriv/shared';
-
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { isDigitContractType, isDigitTradeType } from 'Modules/Trading/Helpers/digits';
@@ -121,6 +120,7 @@ export default class TradeStore extends BaseStore {
     @observable has_cancellation = false;
     @observable commission;
     @observable cancellation_price;
+    @observable stop_out;
     @observable hovered_contract_type;
     @observable cancellation_duration = '60m';
     @observable cancellation_range_list = [];
@@ -131,6 +131,7 @@ export default class TradeStore extends BaseStore {
     addTickByProposal = () => null;
     debouncedProposal = debounce(this.requestProposal, 500);
     proposal_requests = {};
+    is_purchasing_contract = false;
 
     initial_barriers;
     is_initial_barrier_applied = false;
@@ -517,14 +518,9 @@ export default class TradeStore extends BaseStore {
         if (isBarrierSupported(contract_type)) {
             const color = this.root_store.ui.is_dark_mode_on ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY;
             // create barrier only when it's available in response
-            const main_barrier = new ChartBarrierStore(
-                barrier || high_barrier,
-                low_barrier,
-                this.onChartBarrierChange,
-                { color }
-            );
-
-            this.main_barrier = main_barrier;
+            this.main_barrier = new ChartBarrierStore(barrier || high_barrier, low_barrier, this.onChartBarrierChange, {
+                color,
+            });
             // this.main_barrier.updateBarrierShade(true, contract_type);
         } else {
             this.main_barrier = null;
@@ -532,18 +528,32 @@ export default class TradeStore extends BaseStore {
     };
 
     @action.bound
-    onPurchase(proposal_id, price, type) {
+    onPurchase = debounce(this.processPurchase, 300);
+
+    @action.bound
+    processPurchase(proposal_id, price, type) {
         if (!this.is_purchase_enabled) return;
         if (proposal_id) {
             this.is_purchase_enabled = false;
+            this.is_purchasing_contract = true;
             const is_tick_contract = this.duration_unit === 't';
             processPurchase(proposal_id, price).then(
                 action(response => {
                     const last_digit = +this.last_digit;
-                    if (this.proposal_info[type]?.id !== proposal_id) {
-                        throw new Error('Proposal ID does not match.');
-                    }
-                    if (response.buy) {
+                    if (response.error) {
+                        // using javascript to disable purchase-buttons manually to compensate for mobx lag
+                        this.disablePurchaseButtons();
+                        // invalidToken error will handle in socket-general.js
+                        if (response.error.code !== 'InvalidToken') {
+                            this.root_store.common.setServicesError({
+                                type: response.msg_type,
+                                ...response.error,
+                            });
+                        }
+                    } else if (response.buy) {
+                        if (this.proposal_info[type]?.id !== proposal_id) {
+                            throw new Error('Proposal ID does not match.');
+                        }
                         const contract_data = {
                             ...this.proposal_requests[type],
                             ...this.proposal_info[type],
@@ -591,22 +601,14 @@ export default class TradeStore extends BaseStore {
                             this.debouncedProposal();
                             this.clearLimitOrderBarriers();
                             this.pushPurchaseDataToGtm(contract_data);
+                            this.is_purchasing_contract = false;
                             return;
-                        }
-                    } else if (response.error) {
-                        // using javascript to disable purchase-buttons manually to compensate for mobx lag
-                        this.disablePurchaseButtons();
-                        // invalidToken error will handle in socket-general.js
-                        if (response.error.code !== 'InvalidToken') {
-                            this.root_store.common.setServicesError({
-                                type: response.msg_type,
-                                ...response.error,
-                            });
                         }
                     }
                     this.forgetAllProposal();
                     this.purchase_info = response;
                     this.enablePurchase();
+                    this.is_purchasing_contract = false;
                 })
             );
         }
@@ -792,7 +794,6 @@ export default class TradeStore extends BaseStore {
             settings: {
                 theme: this.root_store.ui.is_dark_mode_on ? 'dark' : 'light',
                 positions_drawer: this.root_store.ui.is_positions_drawer_on ? 'open' : 'closed',
-                purchase_confirm: this.root_store.ui.is_purchase_confirm_on ? 'enabled' : 'disabled',
                 chart: {
                     toolbar_position: this.root_store.ui.is_chart_layout_default ? 'bottom' : 'left',
                     chart_asset_info: this.root_store.ui.is_chart_asset_info_visible ? 'visible' : 'hidden',
@@ -856,14 +857,15 @@ export default class TradeStore extends BaseStore {
         };
 
         if (this.is_multiplier && this.proposal_info && this.proposal_info.MULTUP) {
-            const { commission, cancellation } = this.proposal_info.MULTUP;
+            const { commission, cancellation, limit_order } = this.proposal_info.MULTUP;
             // commission and cancellation.ask_price is the same for MULTUP/MULTDOWN
             if (commission) {
                 this.commission = commission;
             }
             if (cancellation) {
-                this.cancellation_price = this.proposal_info.MULTUP.cancellation.ask_price;
+                this.cancellation_price = cancellation.ask_price;
             }
+            this.stop_out = limit_order?.stop_out?.order_amount;
         }
 
         if (!this.main_barrier || !(this.main_barrier.shade !== 'NONE_SINGLE')) {
@@ -899,7 +901,9 @@ export default class TradeStore extends BaseStore {
             this.validateAllProperties();
         }
 
-        this.enablePurchase();
+        if (!this.is_purchasing_contract) {
+            this.enablePurchase();
+        }
     }
 
     @action.bound

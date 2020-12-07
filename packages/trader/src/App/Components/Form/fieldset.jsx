@@ -35,8 +35,8 @@ const Fieldset = ({ children, className, header, header_tooltip, is_center, onMo
 Fieldset.propTypes = {
     children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
     className: PropTypes.string,
-    header: PropTypes.string,
-    header_tooltip: PropTypes.string,
+    header: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    header_tooltip: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     onMouseEnter: PropTypes.func,
     onMouseLeave: PropTypes.func,
 };

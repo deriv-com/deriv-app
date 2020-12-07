@@ -46,7 +46,7 @@ const validateSignup = (values, residence_list) => {
 };
 
 const AccountSignup = ({ enableApp, isModalVisible, is_account_signup_modal_visible, onSignup, residence_list }) => {
-    const contextType = React.useContext(PlatformContext);
+    const context_type = React.useContext(PlatformContext);
 
     const [pw_input, setPWInput] = React.useState('');
     const [has_valid_residence, setHasValidResidence] = React.useState(false);
@@ -80,7 +80,7 @@ const AccountSignup = ({ enableApp, isModalVisible, is_account_signup_modal_visi
         const modded_values = {
             ...values,
             residence: residence_list[index_of_selection].value,
-            is_deriv_crypto: contextType.is_deriv_crypto,
+            is_deriv_crypto: context_type.is_deriv_crypto,
             is_account_signup_modal_visible,
         };
         onSignup(modded_values, onSignupComplete);

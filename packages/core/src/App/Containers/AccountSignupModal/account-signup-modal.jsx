@@ -71,6 +71,7 @@ const AccountSignup = ({ enableApp, isModalVisible, is_account_signup_modal_visi
         }
     };
 
+<<<<<<< HEAD
     const validateSignupPassthrough = values => validateSignup(values, residence_list);
     const onSignupPassthrough = values => {
         const index_of_selection = residence_list.findIndex(

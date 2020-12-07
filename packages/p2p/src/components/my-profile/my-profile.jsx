@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, Form, Formik } from 'formik';
-import { Button, Icon, Input, Loading, Popover, Table, ThemedScrollbars, Text } from '@deriv/components';
+import { Button, Icon, Input, Loading, Popover, Table, Text, ThemedScrollbars, ToggleSwitch } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
-import { localize } from 'Components/i18next';
+import { localize, Localize } from 'Components/i18next';
 import { generateHexColourFromNickname, getShortNickname } from 'Utils/string';
 import { useStores } from 'Stores';
 import FormError from '../form/error.jsx';
@@ -27,6 +27,7 @@ const MyProfile = observer(() => {
     } = my_profile_store.advertiser_info;
 
     React.useEffect(() => {
+        my_profile_store.getSettings();
         my_profile_store.getAdvertiserInfo();
     }, []);
 
@@ -81,7 +82,9 @@ const MyProfile = observer(() => {
                         ) : null}
                         {full_verification ? (
                             <div className='my-profile__header-verification-status'>
-                                {localize('Address verified')}
+                                <Text color='less-prominent' size='xs'>
+                                    {localize('Address verified')}
+                                </Text>
                                 <Icon
                                     className='my-profile__header-verification-icon'
                                     icon='IcCashierVerificationBadge'
@@ -184,6 +187,28 @@ const MyProfile = observer(() => {
                             </Table.Cell>
                         </Table.Row>
                     </Table>
+                    <div className='my-profile__separator'>
+                        <div className='my-profile__separator-text--privacy'>
+                            <Text size='xs' color='prominent' weight='bold'>
+                                {localize('Privacy setting')}
+                            </Text>
+                        </div>
+                        <div className='my-profile__separator-horizontal_line' />
+                    </div>
+                    <div className='my-profile__toggle-container'>
+                        <ToggleSwitch
+                            id='p2p-toggle-name'
+                            classNameLabel='p2p-toggle-name__switch'
+                            is_enabled={general_store.should_show_real_name}
+                            handleToggle={my_profile_store.handleToggle}
+                        />
+                        <Text size='xs' line_height='m' color='prominent' className='my-profile__toggle-name'>
+                            <Localize
+                                i18n_default_text={'Show my real name ({{full_name}})'}
+                                values={{ full_name: my_profile_store.full_name }}
+                            />
+                        </Text>
+                    </div>
                     <div className='my-profile__separator'>
                         <div className='my-profile__separator-text'>
                             <Text size='xs' color='prominent' weight='bold'>

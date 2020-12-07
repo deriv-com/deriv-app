@@ -32,7 +32,7 @@ const Box = ({ title, description, footer_text, icons, cards }) => {
         <div className='account-types__box'>
             <div className='account-types__box-left'>
                 <h2 className='account-types__box-title'>{title}</h2>
-                <Text as='p' size='xs' lineHeight='x' className='account-types__box-description'>
+                <Text as='p' size='xs' line_height='s' className='account-types__box-description'>
                     {description}
                 </Text>
                 {footer_text && (
@@ -165,6 +165,11 @@ const SyntheticBox = ({ derivOnClick, add_account_label, is_deriv_crypto }) => {
                 'IcUnderlyingR_50',
                 'IcUnderlyingR_75',
                 'IcUnderlyingR_100',
+                'IcUnderlyingBOOM1000',
+                'IcUnderlyingBOOM500',
+                'IcUnderlyingCRASH1000',
+                'IcUnderlyingCRASH500',
+                'IcUnderlyingSTPRNG',
             ]}
             cards={[
                 <AccountCard
@@ -253,7 +258,7 @@ class AccountTypesModal extends React.Component {
                         className='account-types__container'
                     >
                         <div className='account-types'>
-                            <Text as='p' size='xs' lineHeight='x' className='account-types__intro'>
+                            <Text as='p' size='xs' line_height='s' className='account-types__intro'>
                                 {localize('Choose an account that suits your needs.')}
                             </Text>
                             <div>

@@ -149,7 +149,7 @@ const TwoFactorAuthentication = ({ email_address, is_switching }) => {
                                             )}
                                         </h4>
                                         <div className='two-factor__qr--code'>
-                                            <span>{secret_key}</span>
+                                            <Text size='xs'>{secret_key}</Text>
                                             <Clipboard
                                                 text_copy={secret_key}
                                                 info_message='Click here to copy key'

@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { getDisplayText, listPropType } from './dropdown';
+import Text from '../text';
 
 const DisplayText = ({ className, has_symbol, list, is_align_text_left, placeholder, name, value }) => {
     const symbol_value_class = value && has_symbol ? `symbols--${value.toLowerCase()}` : null;
@@ -14,9 +15,16 @@ const DisplayText = ({ className, has_symbol, list, is_align_text_left, placehol
                     value={value}
                 />
             ) : (
-                <span className={classNames('dc-dropdown__display-text', className)} name={name} value={value}>
+                <Text
+                    size='xs'
+                    color='prominent'
+                    align='center'
+                    className={classNames('dc-dropdown__display-text', className)}
+                    name={name}
+                    value={value}
+                >
                     {getDisplayText(list, value)}
-                </span>
+                </Text>
             )}
             {placeholder && (
                 <div
@@ -25,7 +33,9 @@ const DisplayText = ({ className, has_symbol, list, is_align_text_left, placehol
                         'dc-dropdown__display-placeholder--is-left-text': is_align_text_left,
                     })}
                 >
-                    <span className='dc-dropdown__display-placeholder-text'>{placeholder}</span>
+                    <Text size='xs' color='grey' className='dc-dropdown__display-placeholder-text'>
+                        {placeholder}
+                    </Text>
                 </div>
             )}
         </React.Fragment>

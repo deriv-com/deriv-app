@@ -36,8 +36,6 @@
         &-text {
             padding-left: 1em;
             padding-right: 2.5em;
-            @include typeface(--paragraph-center-normal-black);
-            color: var(--text-prominent);
             display: flex;
             white-space: nowrap;
 
@@ -82,9 +80,7 @@
             transform-origin: top left;
 
             &-text {
-                font-size: 1.4rem;
                 padding: 0 4px;
-                color: var(--color-grey);
                 background: var(--fill-normal);
             }
             &--is-left-text {

@@ -7,67 +7,62 @@ import { addComma, toMoment } from '@deriv/shared';
 
 import MarkerSpot from './marker-spot.jsx';
 
-class MarkerSpotLabel extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            show_label: !this.props.has_hover_toggle,
-        };
-    }
+const MarkerSpotLabel = ({
+    align_label,
+    has_hover_toggle,
+    spot_className,
+    spot_count,
+    spot_epoch,
+    spot_value,
+    status,
+}) => {
+    const [show_label, setShowLabel] = React.useState(!has_hover_toggle);
 
-    handleHoverToggle = () => {
-        this.setState(state => ({ show_label: !state.show_label }));
+    const handleHoverToggle = () => {
+        setShowLabel(!show_label);
     };
 
-    render() {
-        let marker_spot = <MarkerSpot className={this.props.spot_className} spot_count={this.props.spot_count} />;
+    let marker_spot = <MarkerSpot className={spot_className} spot_count={spot_count} />;
 
-        if (this.props.has_hover_toggle) {
-            marker_spot = (
-                <div
-                    className='marker-hover-container'
-                    onMouseEnter={this.handleHoverToggle}
-                    onMouseLeave={this.handleHoverToggle}
-                >
-                    {marker_spot}
-                </div>
-            );
-        }
-
-        return (
-            <div className={'chart-spot-label'}>
-                {this.state.show_label && (
-                    <div className='chart-spot-label__info-container'>
-                        <div
-                            className={`chart-spot-label__time-value-container chart-spot-label__time-value-container--${this.props.align_label}`}
-                        >
-                            <div className='chart-spot-label__time-container'>
-                                <Icon
-                                    icon='IcClockOutline'
-                                    height={10}
-                                    width={10}
-                                    className='chart-spot-label__time-icon'
-                                />
-                                <p className='chart-spot-label__time'>
-                                    {toMoment(+this.props.spot_epoch).format('HH:mm:ss')}
-                                </p>
-                            </div>
-                            <div
-                                className={classNames('chart-spot-label__value-container', {
-                                    'chart-spot-label__value-container--won': this.props.status === 'won',
-                                    'chart-spot-label__value-container--lost': this.props.status === 'lost',
-                                })}
-                            >
-                                <p>{addComma(this.props.spot_value)}</p>
-                            </div>
-                        </div>
-                    </div>
-                )}
+    if (has_hover_toggle) {
+        marker_spot = (
+            <div className='marker-hover-container' onMouseEnter={handleHoverToggle} onMouseLeave={handleHoverToggle}>
                 {marker_spot}
             </div>
         );
     }
-}
+
+    return (
+        <div className={'chart-spot-label'}>
+            {this.state.show_label && (
+                <div className='chart-spot-label__info-container'>
+                    <div
+                        className={`chart-spot-label__time-value-container chart-spot-label__time-value-container--${align_label}`}
+                    >
+                        <div className='chart-spot-label__time-container'>
+                            <Icon
+                                icon='IcClockOutline'
+                                height={10}
+                                width={10}
+                                className='chart-spot-label__time-icon'
+                            />
+                            <p className='chart-spot-label__time'>{toMoment(+spot_epoch).format('HH:mm:ss')}</p>
+                        </div>
+                        <div
+                            className={classNames('chart-spot-label__value-container', {
+                                'chart-spot-label__value-container--won': status === 'won',
+                                'chart-spot-label__value-container--lost': status === 'lost',
+                            })}
+                        >
+                            <p>{addComma(spot_value)}</p>
+                        </div>
+                    </div>
+                </div>
+            )}
+            {marker_spot}
+        </div>
+    );
+};
 
 MarkerSpotLabel.defaultProps = {
     align_label: 'top',

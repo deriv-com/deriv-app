@@ -51,7 +51,7 @@ const InputGroup = ({ children, className }) => (
     </fieldset>
 );
 
-class PersonalDetailsForm extends React.Component {
+export class PersonalDetailsForm extends React.Component {
     state = { is_loading: true, is_state_loading: false, show_form: true };
 
     onSubmit = async (values, { setStatus, setSubmitting }) => {

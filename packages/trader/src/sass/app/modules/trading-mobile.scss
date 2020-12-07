@@ -289,6 +289,13 @@
                 }
             }
         }
+        &__contract-type-container {
+            display: flex;
+
+            .contract-type-widget {
+                flex: 1;
+            }
+        }
         &__multiplier {
             &-radio-group {
                 flex-direction: column;
@@ -297,6 +304,9 @@
                 margin-top: 0rem;
                 flex: 1;
 
+                &--empty {
+                    display: none;
+                }
                 .dc-radio-group__item {
                     min-height: 4.8rem;
                     max-height: 4.8rem;
@@ -324,6 +334,9 @@
                 display: grid;
                 grid-template-rows: auto auto auto 1fr;
 
+                &--no-cancel {
+                    grid-template-rows: auto auto 1fr;
+                }
                 &-apply-button {
                     display: flex;
                     align-items: flex-end;
@@ -368,6 +381,28 @@
 
                     .dc-checkbox__box {
                         margin-left: 0rem;
+                    }
+                }
+            }
+            &-trade-info {
+                display: flex;
+                flex-direction: column;
+                padding-bottom: 1.6rem;
+                align-items: center;
+
+                div:nth-child(2) {
+                    padding-top: 1.6rem;
+                }
+
+                &-tooltip-text {
+                    text-align: right;
+                    border-bottom: 1px dotted var(--text-general);
+                    display: flex;
+
+                    *:first-child {
+                        &:before {
+                            content: ': ';
+                        }
                     }
                 }
             }

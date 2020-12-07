@@ -7,8 +7,7 @@ const Withdraw = ({ container, iframe_height, iframe_url, is_loading, onMount, s
     React.useEffect(() => {
         setActiveTab(container);
         onMount(verification_code);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [container, onMount, setActiveTab, verification_code]);
 
     return <CashierContainer iframe_height={iframe_height} iframe_url={iframe_url} is_loading={is_loading} />;
 };

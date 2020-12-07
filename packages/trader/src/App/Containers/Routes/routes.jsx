@@ -38,44 +38,38 @@ const Error = Loadable({
     },
 });
 
-class Routes extends React.Component {
-    componentDidMount() {
-        if (this.props.setPromptHandler) {
-            this.props.setPromptHandler(true, (route_to, action) =>
-                tradePageMountingMiddleware(
-                    route_to,
-                    action,
-                    this.props.history.location.pathname,
-                    this.props.setTradeMountingPolicy
-                )
+const Routes = ({ error, has_error, history, is_logged_in, passthrough, setPromptHandler, setTradeMountingPolicy }) => {
+    React.useEffect(() => {
+        if (setPromptHandler) {
+            setPromptHandler(true, (route_to, action) =>
+                tradePageMountingMiddleware(route_to, action, history.location.pathname, setTradeMountingPolicy)
             );
         }
-    }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-    render() {
-        if (this.props.has_error) {
-            return <Error {...this.props.error} />;
-        }
+    if (has_error) return <Error {...error} />;
 
-        return <BinaryRoutes is_logged_in={this.props.is_logged_in} passthrough={this.props.passthrough} />;
-    }
-}
+    return <BinaryRoutes is_logged_in={is_logged_in} passthrough={passthrough} />;
+};
 
 Routes.propTypes = {
     error: MobxPropTypes.objectOrObservableObject,
     has_error: PropTypes.bool,
+    history: PropTypes.object,
     is_logged_in: PropTypes.bool,
-    is_virtual: PropTypes.bool,
+    passthrough: PropTypes.object,
     setPromptHandler: PropTypes.func,
+    setTradeMountingPolicy: PropTypes.func,
 };
 
 // need to wrap withRouter around connect
 // to prevent updates on <BinaryRoutes /> from being blocked
 export default withRouter(
     connect(({ client, common, modules, ui }) => ({
-        is_logged_in: client.is_logged_in,
         error: common.error,
         has_error: common.has_error,
+        is_logged_in: client.is_logged_in,
         setPromptHandler: ui.setPromptHandler,
         setTradeMountingPolicy: modules.trade.setSkipPrePostLifecycle,
     }))(Routes)

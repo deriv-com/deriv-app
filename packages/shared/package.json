@@ -16,7 +16,6 @@
     "serve": "echo \"No serve specified\"",
     "build": "echo \"No build specified\"",
     "build:travis": "echo \"No build:travis specified\"",
-    "test": "jest --all",
     "deploy": "echo \"No deploy specified\"",
     "deploy:clean": "echo \"No deploy:clean specified\"",
     "deploy:folder": "echo \"No deploy:folder specified\"",
@@ -30,17 +29,14 @@
     "moment": "^2.24.0"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.5.5",
-    "babel-jest": "^24.9.0",
+    "babel-jest": "^26.5.2",
     "chai": "^4.2.0",
-    "cross-env": "^5.2.0",
-    "jest": "^24.8.0",
+    "jest": "^26.4.2",
     "jsdom": "^16.2.1",
-    "lint-staged": "^10.0.6",
-    "moment": "^2.24.0",
-    "node-sass": "^4.12.0"
+    "moment": "^2.24.0"
   },
   "dependencies": {
+    "extend": "^3.0.2",
     "js-cookie": "^2.2.1",
     "react": "^16.13.1"
   }

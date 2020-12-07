@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 const AccountsInfoLoader = ({ is_mobile, is_logged_in, speed }) => (
     <ContentLoader
-        height={is_mobile ? 40 : 46}
+        height={is_mobile ? 42 : 46}
         width={is_mobile ? 216 : 350}
         speed={speed}
         primaryColor={'var(--general-section-1)'}

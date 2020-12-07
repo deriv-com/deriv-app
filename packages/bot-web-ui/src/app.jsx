@@ -16,57 +16,55 @@ import RootStore from './stores';
 import GTM from './utils/gtm';
 import './assets/sass/app.scss';
 
-class App extends React.Component {
-    constructor(props) {
-        super(props);
+const App = ({ passthrough }) => {
+    const { root_store, WS } = passthrough;
+    const [is_loading, setIsLoading] = React.useState(true);
+    const root_store_instance = React.useRef(new RootStore(root_store, WS, DBot));
 
-        const { root_store, WS } = props.passthrough;
-        this.root_store = new RootStore(root_store, WS, DBot);
+    const { app, common } = root_store_instance.current;
 
-        GTM.init(this.root_store);
-        ServerTime.init(this.root_store.common);
-        this.root_store.app.setDBotEngineStores(this.root_store);
+    React.useEffect(() => {
+        GTM.init(root_store_instance.current);
+        ServerTime.init(common);
+        app.setDBotEngineStores(root_store_instance.current);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [root_store_instance.current]);
 
-        this.state = {
-            is_loading: true,
-        };
-    }
-
-    componentDidMount() {
-        ApiHelpers.setInstance(this.root_store.app.api_helpers_store);
+    const { onMount, onUnmount } = app;
+    React.useEffect(() => {
+        ApiHelpers.setInstance(app.api_helpers_store);
         const { active_symbols } = ApiHelpers.instance;
 
-        this.setState({ is_loading: true });
+        setIsLoading(true);
         active_symbols.retrieveActiveSymbols(true).then(() => {
-            this.setState({ is_loading: false });
-            this.root_store.app.onMount();
+            setIsLoading(false);
+            onMount();
         });
-    }
 
-    componentWillUnmount() {
-        this.root_store.app.onUnmount();
-    }
+        return () => {
+            onUnmount();
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [onMount, onUnmount]);
 
-    render() {
-        if (this.state.is_loading) {
-            return <Loading />;
-        }
-        return (
-            <MobxContentProvider store={this.root_store}>
-                <div className='bot'>
-                    <BotNotificationMessages />
-                    <Toolbar />
-                    <MainContent />
-                    <RunPanel />
-                    <QuickStrategy />
-                    <BotFooterExtensions />
-                    <Audio />
-                    <RoutePromptDialog />
-                    <BlocklyLoading />
-                </div>
-            </MobxContentProvider>
-        );
+    if (is_loading) {
+        return <Loading />;
     }
-}
+    return (
+        <MobxContentProvider store={root_store_instance.current}>
+            <div className='bot'>
+                <BotNotificationMessages />
+                <Toolbar />
+                <MainContent />
+                <RunPanel />
+                <QuickStrategy />
+                <BotFooterExtensions />
+                <Audio />
+                <RoutePromptDialog />
+                <BlocklyLoading />
+            </div>
+        </MobxContentProvider>
+    );
+};
 
 export default App;

@@ -1,7 +1,7 @@
 /* eslint-disable react/display-name */
 import React from 'react';
 import { toMoment } from '@deriv/shared';
-import { Button } from '@deriv/components';
+import { Button, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
 const GetConnectedAppsColumnsTemplate = handleToggleModal => [
@@ -9,7 +9,11 @@ const GetConnectedAppsColumnsTemplate = handleToggleModal => [
         title: localize('Name'),
         col_index: 'name',
         renderCellContent: ({ cell_value }) => {
-            return <span className='name__content'>{cell_value}</span>;
+            return (
+                <Text size='xs' className='name__content'>
+                    {cell_value}
+                </Text>
+            );
         },
     },
     {

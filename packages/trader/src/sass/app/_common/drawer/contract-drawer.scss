@@ -88,13 +88,13 @@ $header-height: 4em;
         z-index: 1000;
     }
     &__footer {
-        margin-bottom: 0.5em;
-        padding: 0 4px;
+        margin-bottom: 0.5rem;
+        padding: 0 0.4rem;
 
         &-wrapper {
             @include typeface(--small-center-normal-black);
             color: var(--text-prominent);
-            padding: 8px 8px 0;
+            padding: 0.8rem 0.8rem 0;
             display: grid;
             grid-template-columns: 1fr 1fr;
         }

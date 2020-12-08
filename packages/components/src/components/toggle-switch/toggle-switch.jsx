@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-const ToggleSwitch = ({ className, id, is_enabled, handleToggle, classNameLabel, classNameButton }) => (
+const ToggleSwitch = ({ className, classNameButton, classNameLabel, handleToggle, id, is_enabled }) => (
     <>
         <input
             className={classNames('dc-toggle-switch', className)}

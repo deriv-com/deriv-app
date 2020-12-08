@@ -3,7 +3,7 @@ import React from 'react';
 import { cleanup, render, waitForElementToBeRemoved, waitFor } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
-import { PersonalDetailsForm } from './personal-details.jsx';
+import { PersonalDetailsForm } from '../personal-details.jsx';
 
 afterAll(cleanup);
 
@@ -46,7 +46,7 @@ describe('<PersonalDetailsForm />', () => {
                 />
             </Router>
         );
-        await waitForElementToBeRemoved(() => screen.container.querySelector('.account___intial-loader'));
+        await waitForElementToBeRemoved(() => screen.container.querySelector('.account__initial-loader'));
         await waitFor(() =>
             screen.getByText(/Please make sure your information is correct or it may affect your trading experience./i)
         );

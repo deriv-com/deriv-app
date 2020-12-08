@@ -9,6 +9,26 @@ import VerticalTabHeaderTitle from './vertical-tab-header-title.jsx';
 import VerticalTabLayout from './vertical-tab-layout.jsx';
 import VerticalTabWrapper from './vertical-tab-wrapper.jsx';
 
+const setSelectedIndex = ({ current_path, list, is_routed, selected_index, setCurrTabIndex, setVerticalTabIndex }) => {
+    let index;
+    if (typeof selected_index === 'undefined') {
+        index = is_routed
+            ? Math.max(
+                  list.indexOf(list.find(item => item.path === current_path) || list.find(item => item.default)),
+                  0
+              )
+            : 0;
+    } else {
+        index = typeof selected_index === 'object' ? list.indexOf(selected_index) : selected_index;
+    }
+
+    setCurrTabIndex(index);
+
+    if (typeof setVerticalTabIndex === 'function') {
+        setVerticalTabIndex(index);
+    }
+};
+
 const VerticalTab = ({
     action_bar,
     action_bar_classname,
@@ -28,39 +48,22 @@ const VerticalTab = ({
     const [curr_tab_index, setCurrTabIndex] = React.useState(vertical_tab_index || 0);
     const [selected_element, setSelectedElement] = React.useState(list[0]);
 
-    const setSelectedIndex = ({ path_list, selected_index, is_routed_path, curr_path }) => {
-        let index;
-        if (typeof selected_index === 'undefined') {
-            index = is_routed_path
-                ? Math.max(
-                    path_list.indexOf(
-                        path_list.find(item => item.path === curr_path) || path_list.find(item => item.default)
-                    ), 0
-                  )
-                : 0;
-        } else {
-            index = typeof selected_index === 'object' ? path_list.indexOf(selected_index) : selected_index;
-        }
-
-        setCurrTabIndex(index);
-
-        if (typeof setVerticalTabIndex === 'function') {
-            setVerticalTabIndex(index);
-        }
-    };
-
     const changeSelected = e => {
         setSelectedIndex({
-            path_list: list,
+            list,
             selected_index: e,
+            setCurrTabIndex,
+            setVerticalTabIndex,
         });
     };
 
     React.useEffect(() => {
         setSelectedIndex({
-            curr_path: current_path,
-            path_list: list,
-            is_routed_path: is_routed,
+            current_path,
+            list,
+            is_routed,
+            setCurrTabIndex,
+            setVerticalTabIndex,
         });
     }, [vertical_tab_index, list]);
 

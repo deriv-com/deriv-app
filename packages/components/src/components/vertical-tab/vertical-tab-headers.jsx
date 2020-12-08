@@ -5,6 +5,26 @@ import VerticalTabHeader from './vertical-tab-header.jsx';
 import VerticalTabHeaderGroup from './vertical-tab-header-group.jsx';
 import VerticalTabHeaderTitle from './vertical-tab-header-title.jsx';
 
+const offset_top = (is_floating, ref, selected) => {
+    let calculated_offset = 0;
+
+    const headers = ref.current.querySelectorAll('.dc-vertical-tab__header__link');
+    let selected_el = null;
+
+    if (selected.path) {
+        selected_el = [...headers].find(header => header.id === selected.path);
+    } else {
+        selected_el = [...headers].find(header => header.innerText === selected.label);
+    }
+
+    if (selected_el) {
+        const extra_offset = is_floating ? 18 : 10;
+        calculated_offset = selected_el.offsetTop - extra_offset;
+    }
+
+    return calculated_offset;
+};
+
 const VerticalTabHeaders = ({
     className,
     header_title,
@@ -20,28 +40,8 @@ const VerticalTabHeaders = ({
     const [should_skip_animation, setShouldSkipAnimation] = React.useState(false);
 
     React.useEffect(() => {
-        setTop(offset_top(selected));
+        setTop(offset_top(is_floating, ref, selected));
     }, [selected]);
-
-    const offset_top = selected_element => {
-        let calculated_offset = 0;
-
-        const headers = ref.current.querySelectorAll('.dc-vertical-tab__header__link');
-        let selected_el = null;
-
-        if (selected.path) {
-            selected_el = [...headers].find(header => header.id === selected_element.path);
-        } else {
-            selected_el = [...headers].find(header => header.innerText === selected_element.label);
-        }
-
-        if (selected_el) {
-            const extra_offset = is_floating ? 18 : 10;
-            calculated_offset = selected_el.offsetTop - extra_offset;
-        }
-
-        return calculated_offset;
-    };
 
     return (
         <VerticalTabWrapper

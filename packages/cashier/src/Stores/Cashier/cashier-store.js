@@ -1036,7 +1036,7 @@ export default class CashierStore extends BaseStore {
             }
         }
 
-        const mt5_login_list = (await WS.storage.mt5LoginList())?.mt5_login_list;
+        const mt5_login_list = (await this.WS.storage.mt5LoginList())?.mt5_login_list;
         // TODO: remove this temporary mapping when API adds market_type and sub_account_type to transfer_between_accounts
         const accounts = transfer_between_accounts.accounts.map(account => {
             if (account.account_type === 'mt5') {

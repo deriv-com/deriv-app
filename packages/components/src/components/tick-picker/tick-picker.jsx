@@ -4,6 +4,7 @@ import throttle from 'lodash.throttle';
 import { useSwipeable } from 'react-swipeable';
 import Button from '../button/button.jsx';
 import Icon from '../icon';
+import Text from '../text';
 
 const THROTTLE_INTERVAL_TIME = 100;
 
@@ -68,10 +69,10 @@ const TickPicker = ({
                     <Icon icon='IcMinus' custom_color='var(--text-prominent)' />
                 </Button>
                 <div className='dc-tick-picker__holder' {...swipe_handlers}>
-                    <span className='dc-tick-picker__holder--large'>{normalizedTick(tick_value)}</span>
-                    <span className='dc-tick-picker__holder--small'>
+                    <Text styles={{ size: '96px' }}>{normalizedTick(tick_value)}</Text>
+                    <Text size='s' weight='bold'>
                         {tick_value === 1 ? singular_label : plural_label}
-                    </span>
+                    </Text>
                 </div>
                 <Button rounded className='operator' onClick={handleIncrease}>
                     <Icon icon='IcAdd' custom_color='var(--text-prominent)' />

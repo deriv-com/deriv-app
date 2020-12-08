@@ -14,7 +14,6 @@ import {
     Text,
 } from '@deriv/components';
 import { urlFor, routes, isCryptocurrency, formatMoney, getMT5Account } from '@deriv/shared';
-
 import { localize, Localize } from '@deriv/translations';
 import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
 import { connect } from 'Stores/connect';
@@ -48,8 +47,6 @@ const AccountSwitcher = props => {
         }
     };
 
-    const updateAccountTabIndex = index => setActiveTabIndex(index);
-
     const handleClickOutside = event => {
         const accounts_toggle_btn = !event.target.classList.contains('acc-info');
         if (wrapper_ref && !wrapper_ref.current.contains(event.target) && props.is_visible && accounts_toggle_btn) {
@@ -57,14 +54,15 @@ const AccountSwitcher = props => {
         }
     };
 
+    const { updateMt5LoginList, toggleShouldShowRealAccountsList } = props;
     React.useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
-        props.updateMt5LoginList();
+        updateMt5LoginList();
         return () => {
-            props.toggleShouldShowRealAccountsList(false);
+            toggleShouldShowRealAccountsList(false);
             document.removeEventListener('mousedown', handleClickOutside);
         };
-    }, [handleClickOutside]);
+    }, [handleClickOutside, updateMt5LoginList, toggleShouldShowRealAccountsList]);
 
     const handleLogout = () => {
         closeAccountsDialog();
@@ -525,7 +523,7 @@ const AccountSwitcher = props => {
             <Tabs
                 active_index={active_tab_index}
                 className='acc-switcher__list-tabs'
-                onTabItemClick={updateAccountTabIndex}
+                onTabItemClick={index => setActiveTabIndex(index)}
                 top
             >
                 {/* TODO: De-couple and refactor demo and real accounts groups

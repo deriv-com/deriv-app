@@ -69,9 +69,6 @@
 
         &-text,
         &-symbol {
-            @include typeface(--paragraph-left-normal-black);
-            line-height: 1.43;
-            color: var(--text-general);
             display: flex;
             width: 100%;
             justify-content: center;
@@ -107,14 +104,11 @@
             cursor: default;
         }
         &-symbol {
-            @include typeface(--paragraph-left-normal-black);
             width: 100%;
             padding: 0.6rem 0;
             margin: 0;
-            text-align: center;
             justify-content: center;
             display: flex;
-            color: var(--text-general);
         }
     }
     &__separator {

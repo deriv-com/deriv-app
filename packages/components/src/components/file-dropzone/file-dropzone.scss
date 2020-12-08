@@ -59,11 +59,8 @@
             }
         }
         &__filename {
-            font-size: 12px;
             width: 100%;
             max-width: 240px;
-            color: var(--text-general);
-            font-weight: bold;
         }
         &--has-file {
             border-style: solid;

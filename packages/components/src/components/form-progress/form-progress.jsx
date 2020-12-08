@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Text from '../text';
+
 class FormProgress extends React.PureComponent {
     constructor(props) {
         super(props);

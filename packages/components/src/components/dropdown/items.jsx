@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { getCurrencyDisplayCode } from '@deriv/shared';
 import Popover from '../popover';
+import Text from '../text';
 
 const Items = ({ items, ...props }) =>
     items.map((item, idx) => {
@@ -46,16 +47,27 @@ const Item = ({ onKeyPressed, value, item, handleSelect, nodes, has_symbol, is_a
         >
             {!!has_symbol && item.has_tooltip && (
                 <Popover alignment='left' message={getCurrencyDisplayCode(item.text)}>
-                    <span className={classNames('symbols', 'dc-list__item-symbol', symbol_type_class_name)} />
+                    <Text
+                        size='xs'
+                        line_height='s'
+                        align='center'
+                        className={classNames('symbols', 'dc-list__item-symbol', symbol_type_class_name)}
+                    />
                 </Popover>
             )}
 
             {!!has_symbol && !item.has_tooltip && (
-                <span className={classNames('symbols', 'dc-list__item-text', symbol_type_class_name)} />
+                <Text
+                    size='xs'
+                    line_height='s'
+                    className={classNames('symbols', 'dc-list__item-text', symbol_type_class_name)}
+                />
             )}
 
             {!has_symbol && (
-                <span
+                <Text
+                    size='xs'
+                    line_height='s'
                     className={classNames(
                         'dc-list__item-text',
                         { 'dc-list__item-text--left': is_align_text_left },
@@ -63,7 +75,7 @@ const Item = ({ onKeyPressed, value, item, handleSelect, nodes, has_symbol, is_a
                     )}
                 >
                     {item.text}
-                </span>
+                </Text>
             )}
         </div>
     );

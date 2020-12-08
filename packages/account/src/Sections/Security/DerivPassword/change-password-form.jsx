@@ -92,7 +92,7 @@ class ChangePasswordForm extends React.Component {
                         <form className='account-form account__password-wrapper' onSubmit={handleSubmit}>
                             {this.state.is_loading ? (
                                 <FormBody>
-                                    <Loading is_fullscreen={false} className='account___intial-loader' />;
+                                    <Loading is_fullscreen={false} className='account__initial-loader' />;
                                 </FormBody>
                             ) : (
                                 <FormBody scroll_offset={isMobile() ? '200px' : '55px'}>

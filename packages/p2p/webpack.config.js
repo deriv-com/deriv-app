@@ -43,6 +43,9 @@ module.exports = {
                     },
                     {
                         loader: 'babel-loader',
+                        options: {
+                            rootMode: 'upward',
+                        }
                     },
                 ],
             },

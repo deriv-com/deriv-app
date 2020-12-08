@@ -30,6 +30,7 @@ export const getCardLabels = () => ({
     ),
     DONT_SHOW_THIS_AGAIN: localize("Don't show this again"),
     RESALE_NOT_OFFERED: localize('Resale not offered'),
+    NOT_AVAILABLE: localize('N/A'),
 });
 
 export const getSupportedContracts = is_high_low => ({

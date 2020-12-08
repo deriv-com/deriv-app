@@ -46,7 +46,7 @@ describe('<PersonalDetailsForm />', () => {
                 />
             </Router>
         );
-        await waitForElementToBeRemoved(() => screen.container.querySelector('.account___intial-loader'));
+        await waitForElementToBeRemoved(() => screen.container.querySelector('.account__initial-loader'));
         await waitFor(() =>
             screen.getByText(/Please make sure your information is correct or it may affect your trading experience./i)
         );

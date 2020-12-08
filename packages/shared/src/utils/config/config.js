@@ -15,8 +15,8 @@ const DERIV_CRYPTO_APP_ID = 1411;
  *
  */
 
-export const livechat_license_id = 12049137;
-export const livechat_client_id = '66aa088aad5a414484c1fd1fa8a5ace7';
+export const livechat_license_id = 12049137
+export const livechat_client_id = '66aa088aad5a414484c1fd1fa8a5ace7'
 
 export const domain_app_ids = {
     // these domains as supported "production domains"
@@ -120,9 +120,8 @@ export const checkAndSetEndpointFromUrl = () => {
             const params = url_params.toString();
             const hash = location.hash;
 
-            location.href = `${location.protocol}//${location.hostname}${location.pathname}${
-                params ? `?${params}` : ''
-            }${hash || ''}`;
+            location.href = `${location.protocol}//${location.hostname}${location.pathname}${params ? `?${params}` : ''
+                }${hash || ''}`;
         }
     }
 };

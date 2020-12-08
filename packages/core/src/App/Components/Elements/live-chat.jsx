@@ -6,6 +6,7 @@ import { localize } from '@deriv/translations';
 
 const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
     const [is_livechat_interactive, setLiveChatInteractive] = React.useState(false);
+    const [has_client_information, setClientInformation] = React.useState(false);
 
     React.useEffect(() => {
         if (window.LiveChatWidget) {
@@ -16,41 +17,59 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
     }, []);
 
     React.useEffect(() => {
-        let session_variables = { loginid: '', landing_company_shortcode: '', currency: '', residence: '' };
-
-        if (has_cookie_account) {
-            const domain = window.location.hostname.includes('deriv.com') ? 'deriv.com' : 'binary.sx';
-            const client_information = Cookies.get('client_information', {
-                domain,
-            });
-            if (client_information) {
-                const {
-                    loginid,
-                    email,
-                    landing_company_shortcode,
-                    currency,
-                    residence,
-                    first_name,
-                    last_name,
-                } = JSON.parse(client_information);
-                session_variables = {
-                    ...(loginid && { loginid }),
-                    ...(landing_company_shortcode && { landing_company_shortcode }),
-                    ...(currency && { currency }),
-                    ...(residence && { residence }),
+        if (window.LiveChatWidget) {
+            window.LiveChatWidget.on('ready', () => {
+                let session_variables = {
+                    loginid: '',
+                    landing_company_shortcode: '',
+                    currency: '',
+                    residence: '',
+                    email: '',
                 };
 
-                window.LiveChatWidget.call('set_session_variables', session_variables);
+                if (has_cookie_account) {
+                    const domain = window.location.hostname.includes('deriv.com') ? 'deriv.com' : 'binary.sx';
+                    const client_information = Cookies.get('client_information', {
+                        domain,
+                    });
+                    if (client_information) {
+                        setClientInformation(true);
+                        const {
+                            loginid,
+                            email,
+                            landing_company_shortcode,
+                            currency,
+                            residence,
+                            first_name,
+                            last_name,
+                        } = JSON.parse(client_information) || {};
+                        session_variables = {
+                            ...(loginid && { loginid }),
+                            ...(landing_company_shortcode && { landing_company_shortcode }),
+                            ...(currency && { currency }),
+                            ...(residence && { residence }),
+                            ...(email && { email }),
+                        };
 
-                window.LiveChatWidget.call('set_customer_email', email);
-                window.LiveChatWidget.call('set_customer_name', `${first_name} ${last_name}`);
-            }
-        } else {
-            window.LiveChatWidget.call('set_customer_email', ' ');
-            window.LiveChatWidget.call('set_customer_name', ' ');
-            window.LiveChatWidget.call('set_session_variables', session_variables);
+                        window.LiveChatWidget.call('set_session_variables', session_variables);
+                        window.LiveChatWidget.call('set_customer_email', email);
+                        window.LiveChatWidget.call('set_customer_name', `${first_name} ${last_name}`);
+                    } else {
+                        setClientInformation(false);
+                    }
+                }
+            });
         }
     }, [has_cookie_account]);
+
+    React.useEffect(() => {
+        window.LC_API.on_chat_ended = () => {
+            if (!has_client_information) {
+                window.LiveChatWidget.call('set_customer_email', ' ');
+                window.LiveChatWidget.call('set_customer_name', ' ');
+            }
+        };
+    }, [has_client_information]);
 
     return (
         <>

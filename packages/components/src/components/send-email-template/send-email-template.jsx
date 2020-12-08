@@ -1,19 +1,28 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { useEffect } from 'react';
 import Button from '../button/button.jsx';
 import Icon from '../icon/icon.jsx';
 
-const SendEmailTemplate = ({ resend_timeout, onClickSendEmail, txt_resend_in, txt_resend, title, subtitle, lbl_no_receive, className, children, }) => {
-    const [resend_timeout_state, setResendTimeoutState] = useState(resend_timeout || 60);
-    const [is_email_not_received_clicked, setIsEmailNotReceivedClicked] = useState(false);
-    
-    const resend_interval = null;
+const SendEmailTemplate = ({
+    children,
+    className,
+    lbl_no_receive,
+    onClickSendEmail,
+    resend_timeout,
+    subtitle,
+    title,
+    txt_resend,
+    txt_resend_in,
+}) => {
+    const [resend_timeout_state, setResendTimeoutState] = React.useState(resend_timeout || 60);
+    const [is_email_not_received_clicked, setIsEmailNotReceivedClicked] = React.useState(false);
 
-    useEffect(() => {
+    let resend_interval = null;
+
+    React.useEffect(() => {
         return () => {
             clearInterval(resend_interval);
-        }
+        };
     }, []);
 
     const onClickResendEmail = () => {
@@ -24,18 +33,18 @@ const SendEmailTemplate = ({ resend_timeout, onClickSendEmail, txt_resend_in, tx
     const startCountdownTimer = () => {
         setResendTimeoutState(resend_timeout - 1);
         resend_interval = setInterval(() => {
-            if (!!resend_timeout_state) {
+            if (resend_timeout_state === 1) {
                 clearInterval(resend_interval);
+                setResendTimeoutState(60);
+            } else {
+                setResendTimeoutState(resend_timeout_state - 1);
             }
-            setResendTimeoutState(!!resend_timeout_state ? 60 : resend_timeout_state - 1);
         }, 1000);
     };
 
     const is_resend_btn_disabled = resend_timeout_state < 60;
     const resend_email_btn_text =
-        resend_timeout_state < 60
-            ? txt_resend_in.replace('{{seconds}}', resend_timeout_state)
-            : txt_resend;
+        resend_timeout_state < 60 ? txt_resend_in.replace('{{seconds}}', resend_timeout_state) : txt_resend;
 
     return (
         <div className='send-email-template'>
@@ -52,9 +61,7 @@ const SendEmailTemplate = ({ resend_timeout, onClickSendEmail, txt_resend_in, tx
             </div>
             {is_email_not_received_clicked && (
                 <>
-                    <div className={`send-email-template__resend ${className}`}>
-                        {children}
-                    </div>
+                    <div className={`send-email-template__resend ${className}`}>{children}</div>
                     <div className='send-email-template__cta'>
                         <Button
                             className='send-email-template__cta-btn'
@@ -69,7 +76,7 @@ const SendEmailTemplate = ({ resend_timeout, onClickSendEmail, txt_resend_in, tx
             )}
         </div>
     );
-}
+};
 
 SendEmailTemplate.propTypes = {
     is_disabled: PropTypes.bool,

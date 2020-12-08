@@ -5,14 +5,14 @@ import classNames from 'classnames';
 const ToggleSwitch = ({ className, id, is_enabled, handleToggle, classNameLabel, classNameButton }) => (
     <>
         <input
-            className={classNames('dc-toggle-switch', {}, className)}
+            className={classNames('dc-toggle-switch', className)}
             id={id}
             type='checkbox'
             checked={is_enabled}
             onChange={handleToggle}
         />
-        <label className={classNames('dc-toggle-switch__label', {}, classNameLabel)} htmlFor={id}>
-            <span className={classNames('dc-toggle-switch__button', {}, classNameButton)} />
+        <label className={classNames('dc-toggle-switch__label', classNameLabel)} htmlFor={id}>
+            <span className={classNames('dc-toggle-switch__button', classNameButton)} />
         </label>
     </>
 );

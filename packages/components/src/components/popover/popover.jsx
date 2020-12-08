@@ -74,13 +74,13 @@ const Popover = ({ ...props }) => {
                     position={alignment}
                     transitionDuration={0.25}
                     padding={margin + 8}
-                    contentDestination={relative_render ? popover_ref : document.body}
                     containerClassName={classNames({
                         'react-tiny-popover-container--disabled-pointer-event': should_disable_pointer_events,
                     })}
                     windowBorderPadding={window_border}
                     {...(relative_render
                         ? {
+                              contentDestination: popover_ref,
                               contentLocation: ({ targetRect, popoverRect, nudgedLeft }) => {
                                   const screen_width = document.body.clientWidth;
                                   const total_width = targetRect.right + (popoverRect.width - targetRect.width / 2);

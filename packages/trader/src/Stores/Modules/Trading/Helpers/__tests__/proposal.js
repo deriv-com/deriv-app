@@ -33,6 +33,11 @@ describe('Proposal', () => {
                 returns: '0.00%',
                 stake: undefined,
                 payout: undefined,
+                cancellation: undefined,
+                commission: undefined,
+                error_code: undefined,
+                error_field: undefined,
+                limit_order: undefined,
                 id: '',
                 message: 'This is error',
                 has_error: true,
@@ -60,6 +65,11 @@ describe('Proposal', () => {
                 value: 1234,
             };
             expect(Proposal.getProposalInfo(store, response, obj_prev_contract_basis)).to.deep.eql({
+                cancellation: undefined,
+                commission: undefined,
+                error_code: undefined,
+                error_field: undefined,
+                limit_order: undefined,
                 profit: '250.00',
                 returns: '500.00%',
                 stake: 200,

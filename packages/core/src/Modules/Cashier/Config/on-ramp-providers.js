@@ -1,4 +1,3 @@
-import { getCurrencyDisplayCode } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services';
 
@@ -55,7 +54,7 @@ const createBanxaProvider = () => ({
     should_show_deposit_address: false,
 });
 
-const createChangellyProvider = client => ({
+const createChangellyProvider = store => ({
     icon: { dark: 'IcCashierChangellyDark', light: 'IcCashierChangellyLight' },
     name: 'Changelly',
     getDescription: () =>
@@ -67,18 +66,27 @@ const createChangellyProvider = client => ({
         { dark: 'IcCashierVisaDark', light: 'IcCashierVisaLight' },
         { dark: 'IcCashierMastercardDark', light: 'IcCashierMastercardLight' },
     ],
-    getScriptDependencies: () => ['https://widget.changelly.com/affiliate.js'],
+    getScriptDependencies: () => [],
     getDefaultFromCurrency: () => 'usd',
     getFromCurrencies: () => ['usd', 'eur', 'gbp'],
     getToCurrencies: () => ['bch', 'btc', 'etc', 'eth', 'ltc', 'ust'],
     getWidgetHtml() {
         return new Promise(resolve => {
-            const currency = getCurrencyDisplayCode(client.currency).toLowerCase();
-            const from_currencies = this.getFromCurrencies().join(',');
+            const url = new URL('https://widget.changelly.com/?v=3&theme=default');
+            url.searchParams.append('fromDefault', this.getDefaultFromCurrency());
+            if (this.getToCurrencies().includes(store.client.currency.toLowerCase())) {
+                let to_currency = store.client.currency.toLowerCase();
+                if (to_currency === 'ust') {
+                    to_currency = 'usdt';
+                }
+                url.searchParams.append('to', to_currency);
+                url.searchParams.append('toDefault', to_currency);
+            }
 
-            resolve(
-                `<iframe src="https://widget.changelly.com?from=${from_currencies}&to=${currency}&amount=50&address=&fromDefault=${this.default_from_currency}&toDefault=${currency}&theme=danger&merchant_id=iiq3jdt2p44yrfbx&payment_id=&v=2" width="100%" height="475px" class="changelly" scrolling="no" onLoad="function at(t){var e=t.target,i=e.parentNode,n=e.contentWindow,r=function(){return n.postMessage({width:i.offsetWidth},it.url)};window.addEventListener('resize',r),r()};at.apply(this, arguments);" style="min-height: 100%; min-width: 100%; overflow-y: visible; border: none">Can't load widget</iframe>`
-            );
+            url.searchParams.append('amount', 1);
+            url.searchParams.append('merchant_id', 'iiq3jdt2p44yrfbx');
+            window.open(url);
+            resolve();
         });
     },
     onMountWidgetContainer: () => {},
@@ -182,8 +190,51 @@ const createWyreProvider = () => ({
     should_show_deposit_address: false,
 });
 
+const createXanPoolProvider = store => ({
+    icon: { dark: 'IcCashierXanpoolDark', light: 'IcCashierXanpoolLight' },
+    name: 'XanPool',
+    getDescription: () =>
+        localize(
+            'Buy cryptocurrencies in an instant. Enjoy easy, quick, and secure exchanges using your local payment methods.'
+        ),
+    getAllowedResidencies: () => ['*'],
+    getPaymentIcons: () => [
+        { dark: 'IcCashierFpsDark', light: 'IcCashierFpsLight' },
+        { dark: 'IcCashierAliPayDark', light: 'IcCashierAliPayLight' },
+        { dark: 'IcCashierGoPayDark', light: 'IcCashierGoPayLight' },
+        { dark: 'IcCashierMandiriPay', light: 'IcCashierMandiriPay' },
+        { dark: 'IcCashierInstaPayLight', light: 'IcCashierInstaPayDark' },
+        { dark: 'IcCashierCebuanaLhuillierDark', light: 'IcCashierCebuanaLhuillierLight' },
+        { dark: 'IcCashierPayNowDark', light: 'IcCashierPayNowLight' },
+        { dark: 'IcCashierUpiDark', light: 'IcCashierUpiLight' },
+        { dark: 'IcCashierPromptPayDark', light: 'IcCashierPromptPayLight' },
+        { dark: 'IcCashierViettlePay', light: 'IcCashierViettlePay' },
+    ],
+    getScriptDependencies: () => [],
+    getToCurrencies: () => ['btc', 'eth', 'ust', 'zil', 'nem'],
+    getWidgetHtml() {
+        return new Promise(resolve => {
+            const { currency } = store.root_store.client;
+
+            let url = 'https://checkout.xanpool.com/';
+
+            url += `?apiKey=db4ec638dff9a68abda1ef6b7638c220`;
+            url += `&redirectUrl=${window.location.href}`;
+            url += `&wallet=${store.deposit_address}`;
+            url += `&cryptoCurrency=${currency === 'UST' ? 'USDT' : currency}`;
+            url += `&transactionType=buy`;
+
+            window.open(url);
+            resolve();
+        });
+    },
+    onMountWidgetContainer: () => {},
+    should_show_deposit_address: false,
+});
+
 export default {
     createBanxaProvider,
     createChangellyProvider,
     createWyreProvider,
+    createXanPoolProvider,
 };

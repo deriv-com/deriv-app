@@ -36,7 +36,7 @@ const ToggleAds = observer(() => {
         <div
             className={classNames('toggle-ads', {
                 'toggle-ads--on': general_store.is_listed,
-                'toggle-ads--off': !general_store.is_listed,
+                'toggle-ads--off': !general_store.is_listed || general_store.is_barred,
             })}
         >
             <div className='toggle-ads__message'>
@@ -49,7 +49,7 @@ const ToggleAds = observer(() => {
                 id='toggle-my-ads'
                 className='toggle-ads__switch'
                 classNameLabel='toggle-ads__switch'
-                is_enabled={general_store.is_listed}
+                is_enabled={general_store.is_listed && !general_store.is_barred}
                 handleToggle={handleToggle}
             />
         </div>

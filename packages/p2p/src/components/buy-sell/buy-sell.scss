@@ -40,8 +40,11 @@
         }
     }
     &__cell {
-        cursor: pointer;
         display: flex;
+
+        &-hover {
+            cursor: pointer;
+        }
     }
     &__name {
         &:hover {

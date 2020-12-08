@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ContentLoader from 'react-content-loader';
+import classNames from 'classnames';
 import { Table, Button } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
@@ -49,14 +50,19 @@ export const RowComponent = observer(({ data: advert, style }) => {
         <div style={style}>
             <Table.Row className='buy-sell__table-row'>
                 <Table.Cell>
-                    <div className='buy-sell__cell' onClick={() => buy_sell_store.showAdvertiserPage(advert)}>
+                    <div
+                        className={classNames('buy-sell__cell', { 'buy-sell__cell-hover': !general_store.is_barred })}
+                        onClick={() => !general_store.is_barred && buy_sell_store.showAdvertiserPage(advert)}
+                    >
                         <div
                             className='buy-sell__icon'
                             style={{ backgroundColor: generateHexColourFromNickname(advertiser_name) }}
                         >
                             {advertiser_short_name}
                         </div>
-                        <div className='buy-sell__name'>{advertiser_name}</div>
+                        <div className={classNames({ 'buy-sell__name': !general_store.is_barred })}>
+                            {advertiser_name}
+                        </div>
                     </div>
                 </Table.Cell>
                 <Table.Cell>

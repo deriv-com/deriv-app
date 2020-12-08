@@ -105,7 +105,7 @@ const MyAdsTable = observer(() => {
                 </div>
                 <Table
                     className={classNames('p2p-my-ads__table', {
-                        'p2p-my-ads__table--disabled': !general_store.is_listed,
+                        'p2p-my-ads__table--disabled': !general_store.is_listed || general_store.is_barred,
                     })}
                 >
                     <Table.Header>

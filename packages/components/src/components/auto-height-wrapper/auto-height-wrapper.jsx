@@ -3,7 +3,7 @@ import React from 'react';
 
 const AutoHeightWrapper = props => {
     const [height, setHeight] = React.useState(props.default_height);
-    const [ref, setRef] = React.useState(null);
+    const [child_ref, setChildRef] = React.useState(null);
 
     React.useEffect(() => {
         window.addEventListener('resize', updateHeight);
@@ -11,17 +11,17 @@ const AutoHeightWrapper = props => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    React.useEffect(() => {
-        if (ref) updateHeight();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [ref]);
-
     const updateHeight = () =>
         setHeight(
-            ref.clientHeight > props.default_height
-                ? ref.clientHeight - (props.height_offset || 0)
+            child_ref.clientHeight > props.default_height
+                ? child_ref.clientHeight - (props.height_offset || 0)
                 : props.default_height
         );
+
+    const setRef = ref => {
+        setChildRef(ref);
+        setTimeout(updateHeight, 0);
+    };
 
     return props.children({
         ...props,
@@ -31,7 +31,7 @@ const AutoHeightWrapper = props => {
 };
 
 AutoHeightWrapper.propTypes = {
-    default_height: PropTypes.any,
+    default_height: PropTypes.any.isRequired,
     children: PropTypes.any,
     height_offset: PropTypes.number,
 };

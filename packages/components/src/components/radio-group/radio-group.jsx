@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import Text from '../text';
 
 const ItemWrapper = ({ children, should_wrap_items }) => {
     if (should_wrap_items) {
@@ -46,7 +47,7 @@ const RadioGroup = ({ className, items, name, onToggle, required, selected, shou
                                 'dc-radio-group__circle--selected': selected_option === item.value,
                             })}
                         />
-                        <span className='dc-radio-group__label'>{item.label}</span>
+                        <Text size='xs'>{item.label}</Text>
                     </label>
                 </ItemWrapper>
             ))}

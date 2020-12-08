@@ -52,15 +52,15 @@ const PaymentAgentTransferForm = ({
 }) => {
     const validateTransferPassthrough = values =>
         validateTransfer(values, {
-            balance: balance,
-            currency: currency,
-            transfer_limit: transfer_limit,
+            balance,
+            currency,
+            transfer_limit,
         });
 
     const onTransferPassthrough = async (values, actions) => {
         const payment_agent_transfer = await requestTryPaymentAgentTransfer({
             amount: values.amount,
-            currency: currency,
+            currency,
             description: values.description.replace(/\n/g, ' '),
             transfer_to: values.loginid,
         });

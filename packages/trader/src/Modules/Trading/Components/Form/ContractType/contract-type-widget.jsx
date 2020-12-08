@@ -133,7 +133,7 @@ class ContractTypeWidget extends React.PureComponent {
 
             if (search_query) {
                 contract_category.contract_categories = contract_category.contract_categories.filter(category =>
-                    category.contract_types.find(type => type.text.toLowerCase().includes(search_query))
+                    category.contract_types.find(type => type.text.toLowerCase().includes(search_query.toLowerCase()))
                 );
             }
 

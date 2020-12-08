@@ -9,6 +9,7 @@ import {
     hasDurationForCallPutEqual,
     isRiseFallEqual,
 } from 'Stores/Modules/Trading/Helpers/allow-equals';
+import { MultiplierOptionsWidget } from 'Modules/Trading/Components/Form/TradeParams/Multiplier/widgets.jsx';
 import RiskManagementInfo from '../Elements/Multiplier/risk-management-info.jsx';
 import MobileWidget from '../Elements/mobile-widget.jsx';
 import ContractType from '../../Containers/contract-type.jsx';
@@ -44,7 +45,10 @@ const CollapsibleTradeParams = ({
 
     return (
         <Collapsible position='top' is_collapsed={is_collapsed} onClick={onClick}>
-            <ContractType />
+            <div className='trade-params__contract-type-container'>
+                <ContractType />
+                {is_multiplier && <MultiplierOptionsWidget />}
+            </div>
             {isVisible('last_digit') && (
                 <div collapsible='true'>
                     <LastDigitMobile />

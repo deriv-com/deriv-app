@@ -1,7 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Icon, Loading, Table, ProgressIndicator } from '@deriv/components';
+import { Button, Icon, Loading, Table, ProgressIndicator, Text } from '@deriv/components';
+import { isDesktop, isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
 import Empty from 'Components/empty/empty.jsx';
@@ -11,6 +12,7 @@ import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { TableError } from 'Components/table/table-error.jsx';
 import { useStores } from 'Stores';
 import { MyAdsLoader } from './my-ads-loader.jsx';
+import { buy_sell } from '../../constants/buy-sell';
 
 const getHeaders = offered_currency => [
     { text: localize('Ad ID') },
@@ -38,6 +40,55 @@ const RowComponent = observer(({ data: advert, style }) => {
         remaining_amount,
         remaining_amount_display,
     } = advert;
+
+    const is_buy_advert = advert.type === buy_sell.BUY;
+
+    if (isMobile()) {
+        return (
+            <Table.Row className='p2p-my-ads__table p2p-my-ads__table-row'>
+                <div className='p2p-my-ads__table-row-details'>
+                    <Text color='less-prominent' line_height='m' size='xxs'>
+                        <Localize i18n_default_text='Ad ID {{advert_id}} ' values={{ advert_id: advert.id }} />
+                    </Text>
+                    <Text color='less-prominent' line_height='m' size='xxs'>
+                        <Localize i18n_default_text='Rate (1 {{account_currency}})' values={{ account_currency }} />
+                    </Text>
+                </div>
+                <div className='p2p-my-ads__table-row-details'>
+                    <Text line_height='m' size='s' weight='bold'>
+                        {type[advert.type]} {account_currency}
+                    </Text>
+                    <Text color='profit-success' line_height='m' size='s' weight='bold'>
+                        {price_display} {local_currency}
+                    </Text>
+                </div>
+                <ProgressIndicator
+                    className={'p2p-my-ads__table-available-progress'}
+                    value={remaining_amount}
+                    total={amount}
+                />
+                <div className='p2p-my-ads__table-row-details'>
+                    <Text color='profit-success' line_height='m' size='xxs'>
+                        {remaining_amount_display} {account_currency}&nbsp;
+                        {is_buy_advert ? localize('Bought') : localize('Sold')}
+                    </Text>
+                    <Text color='less-prominent' line_height='m' size='xxs'>
+                        {amount_display} {account_currency}
+                    </Text>
+                </div>
+                <Text color='prominent' line_height='m' size='xxs'>
+                    <Localize
+                        i18n_default_text='Limits {{min_order_amount}}-{{max_order_amount}} {{account_currency}}'
+                        values={{
+                            min_order_amount: min_order_amount_display,
+                            max_order_amount: max_order_amount_display,
+                            account_currency,
+                        }}
+                    />
+                </Text>
+            </Table.Row>
+        );
+    }
 
     return (
         <div style={style}>
@@ -98,9 +149,11 @@ const MyAdsTable = observer(() => {
         return (
             <React.Fragment>
                 <div className='p2p-my-ads__header'>
-                    <Button large primary onClick={my_ads_store.onClickCreate}>
-                        {localize('Create new ad')}
-                    </Button>
+                    {isDesktop() && (
+                        <Button large primary onClick={my_ads_store.onClickCreate}>
+                            {localize('Create new ad')}
+                        </Button>
+                    )}
                     <ToggleAds />
                 </div>
                 <Table
@@ -108,13 +161,16 @@ const MyAdsTable = observer(() => {
                         'p2p-my-ads__table--disabled': !general_store.is_listed,
                     })}
                 >
-                    <Table.Header>
-                        <Table.Row className='p2p-my-ads__table-row'>
-                            {getHeaders(general_store.client.currency).map(header => (
-                                <Table.Head key={header.text}>{header.text}</Table.Head>
-                            ))}
-                        </Table.Row>
-                    </Table.Header>
+                    {isDesktop() && (
+                        <Table.Header>
+                            <Table.Row className='p2p-my-ads__table-row'>
+                                {getHeaders(general_store.client.currency).map(header => (
+                                    <Table.Head key={header.text}>{header.text}</Table.Head>
+                                ))}
+                            </Table.Row>
+                        </Table.Header>
+                    )}
+
                     <Table.Body>
                         <InfiniteLoaderList
                             autosizer_height={`calc(${my_ads_store.height_values.join(' - ')})`}
@@ -128,6 +184,11 @@ const MyAdsTable = observer(() => {
                         />
                     </Table.Body>
                 </Table>
+                {isMobile() && (
+                    <Button large primary onClick={my_ads_store.onClickCreate}>
+                        {localize('Create new ad')}
+                    </Button>
+                )}
                 <Popup
                     cancel_text={localize('Cancel')}
                     confirm_text={localize('Delete')}
@@ -144,7 +205,7 @@ const MyAdsTable = observer(() => {
     }
 
     return (
-        <Empty icon='IcCashierNoAds' title={localize('You have no adverts')}>
+        <Empty icon='IcCashierNoAds' title={localize('You have no ads')}>
             <Button primary large className='p2p-empty__button' onClick={() => my_ads_store.onClickCreate()}>
                 {localize('Create new ad')}
             </Button>

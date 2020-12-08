@@ -9,6 +9,11 @@
     &__form {
         margin: 2.4rem 0;
 
+        @include mobile {
+            margin-top: 1.6rem;
+            padding: 0 1.6rem;
+        }
+
         &-summary {
             color: var(--text-less-prominent);
             font-size: 1.4rem;
@@ -18,14 +23,26 @@
             }
         }
         &-scrollbar {
-            position: absolute;
             height: calc(100% - 2.4rem - 92px);
+            position: absolute;
             width: calc(100% - 4.8rem);
+
+            @include mobile {
+                height: calc(100vh - 16rem);
+                position: unset;
+                width: unset;
+            }
         }
         &-container {
             display: flex;
-            width: 67.2rem;
             height: 8rem;
+            width: 67.2rem;
+
+            @include mobile {
+                flex-direction: column;
+                height: unset;
+                width: unset;
+            }
         }
         &-field {
             margin-top: 4.3rem;
@@ -59,13 +76,27 @@
                     right: 0rem;
                 }
             }
+
+            @include mobile {
+                margin-bottom: unset;
+            }
+
             &--trailing {
                 font-size: var(--text-size-xxs);
                 color: var(--text-less-prominent);
+
+                @include mobile {
+                    color: var(--text-prominent);
+                    font-size: var(--text-size-s);
+                }
             }
         }
         &-button {
             margin-left: 0.8rem;
+
+            @include mobile {
+                margin-top: 1.4rem;
+            }
         }
         &-error {
             display: flex;
@@ -82,10 +113,16 @@
             }
         }
         &-footer {
-            display: flex;
             align-items: center;
-            justify-content: flex-end;
             background-color: var(--general-main-1);
+            display: flex;
+            justify-content: flex-end;
+
+            @include mobile {
+                border-top: 2px solid var(--general-section-1);
+                flex-direction: row;
+                margin-top: 4.2rem;
+            }
         }
         .dc-input__hint {
             font-size: var(--text-size-xxs);
@@ -115,9 +152,22 @@
         }
         &-row {
             grid-template-columns: 2fr 2fr 2fr 2fr 1fr;
+
+            @include mobile {
+                grid-template-columns: unset;
+                padding: 1.6rem;
+                width: 100vw;
+            }
+            &-details {
+                display: flex;
+                justify-content: space-between;
+            }
         }
         &--disabled {
             .dc-table__cell {
+                color: var(--text-disabled);
+            }
+            .dc-text {
                 color: var(--text-disabled);
             }
             .dc-progress-indicator {

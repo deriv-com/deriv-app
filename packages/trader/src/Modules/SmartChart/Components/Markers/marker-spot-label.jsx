@@ -34,7 +34,7 @@ const MarkerSpotLabel = ({
 
     return (
         <div className={'chart-spot-label'}>
-            {this.state.show_label && (
+            {show_label && (
                 <div className='chart-spot-label__info-container'>
                     <div
                         className={`chart-spot-label__time-value-container chart-spot-label__time-value-container--${align_label}`}

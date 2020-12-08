@@ -2,12 +2,13 @@ import classNames from 'classnames';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { ButtonToggle, Dropdown, InputField } from '@deriv/components';
+import { ButtonToggle, Dropdown, InputField, Money } from '@deriv/components';
 import { AMOUNT_MAX_LENGTH, getDecimalPlaces, addComma } from '@deriv/shared';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { connect } from 'Stores/connect';
-import { localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import AllowEquals from './allow-equals.jsx';
+import MultipliersInfo from './Multiplier/info.jsx';
 
 const Input = ({
     amount,
@@ -94,12 +95,12 @@ const Amount = ({
             className='trade-container__fieldset center-text'
             header={is_multiplier ? localize('Stake') : undefined}
             header_tooltip={
-                is_multiplier
-                    ? localize(
-                          'To ensure your loss does not exceed your stake, your contract will be closed automatically when your loss equals to {{amount}}.',
-                          { amount }
-                      )
-                    : undefined
+                is_multiplier ? (
+                    <Localize
+                        i18n_default_text='To ensure your loss does not exceed your stake, your contract will be closed automatically when your loss equals to <0/>.'
+                        components={[<Money key={0} amount={amount} currency={currency} show_currency />]}
+                    />
+                ) : undefined
             }
         >
             {basis_list.length > 1 && (
@@ -159,6 +160,13 @@ const Amount = ({
                 onChange={onChange}
                 value={parseInt(is_equal)}
             />
+            {is_multiplier && (
+                <MultipliersInfo
+                    className='trade-container__multipliers-trade-info'
+                    should_show_tooltip
+                    is_tooltip_relative
+                />
+            )}
         </Fieldset>
     );
 };

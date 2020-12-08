@@ -14,7 +14,7 @@ describe('ToggleFullScreen', () => {
         const wrapper = shallow(<ToggleFullScreen />);
         expect(wrapper).to.have.length(1);
     });
-    it('should call componentWillMount', () => {
+    it('should call componentDidMount', () => {
         shallow(<ToggleFullScreen />);
         expect(ToggleFullScreen.prototype.componentDidMount).to.have.property('called', true);
     });

@@ -4,8 +4,10 @@ import { connect } from 'Stores/connect';
 import 'Sass/app/modules/complaints-policy.scss';
 
 const getIntroductionText = (landing_company_shortcode, mt5_login_list) => {
-    const has_vanuatu = mt5_login_list.some(item => /vanuatu/.test(item.group));
-    const has_labuan = mt5_login_list.some(item => /labuan/.test(item.group));
+    // * mt5_login_list returns these:
+    // landing_company_short: "svg" | "malta" | "maltainvest" |  "vanuatu"  | "labuan" | "bvi"
+    const has_vanuatu = mt5_login_list.some(item => item.landing_company_short === 'vanuatu');
+    const has_labuan = mt5_login_list.some(item => item.landing_company_short === 'labuan');
 
     switch (landing_company_shortcode) {
         case 'iom':

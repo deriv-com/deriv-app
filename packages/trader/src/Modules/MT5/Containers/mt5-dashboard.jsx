@@ -189,7 +189,7 @@ class MT5Dashboard extends React.Component {
                                     loading_component={LoadingMT5RealAccountDisplay}
                                     onTabItemClick={this.updateActiveIndex}
                                 >
-                                    <div label={localize('Demo account')} id='demo'>
+                                    <div label={localize('Demo account')} data-hash='demo'>
                                         <MT5DemoAccountDisplay
                                             is_eu={is_eu}
                                             is_logged_in={is_logged_in}
@@ -205,7 +205,7 @@ class MT5Dashboard extends React.Component {
                                             openPasswordManager={this.togglePasswordManagerModal}
                                         />
                                     </div>
-                                    <div label={localize('Real account')} id='real'>
+                                    <div label={localize('Real account')} data-hash='real'>
                                         <React.Fragment>
                                             {should_show_missing_real_account && (
                                                 <MissingRealAccount onClickSignup={beginRealSignupForMt5} />

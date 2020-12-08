@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { toMoment, daysFromTodayTo } from '@deriv/shared';
+import Text from '../text';
 
 const RelativeDatepicker = ({ onChange, min_date, max_date, title }) => {
     const hidden_input_ref = React.useRef();
@@ -18,7 +19,15 @@ const RelativeDatepicker = ({ onChange, min_date, max_date, title }) => {
     const max_date_moment = max_date ? toMoment().add(max_date, 'd').format('YYYY-MM-DD') : null;
     return (
         <div className='dc-relative-datepicker' onClick={clickHandler}>
-            <span className='dc-relative-datepicker__span'>{title}</span>
+            <Text
+                size='xs'
+                line_height='s'
+                weight='bold'
+                styles={{ color: 'var(--purchase-main-2)' }}
+                className='dc-relative-datepicker__span'
+            >
+                {title}
+            </Text>
             <input
                 type='date'
                 ref={hidden_input_ref}

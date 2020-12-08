@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { DesktopWrapper, MobileWrapper, Collapsible, ContractCard } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, Collapsible, ContractCard, useHover } from '@deriv/components';
 import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
 import { getEndTime } from 'Stores/Modules/Contract/Helpers/logic';
 import { connect } from 'Stores/connect';
@@ -37,7 +37,7 @@ const ContractDrawerCard = ({
     toggleCancellationWarning,
     toggleContractAuditDrawer,
 }) => {
-    const [should_show_closed_overlay, setShowClosedOverlay] = React.useState(true);
+    const [hover_ref, should_hide_closed_overlay] = useHover();
 
     const { profit } = contract_info;
     const is_sold = !!getEndTime(contract_info);
@@ -100,9 +100,6 @@ const ContractDrawerCard = ({
         </React.Fragment>
     );
 
-    const handleMouseEnter = () => setShowClosedOverlay(false);
-    const handleMouseLeave = () => setShowClosedOverlay(true);
-
     const contract_card = (
         <ContractCard
             contract_info={contract_info}
@@ -116,10 +113,9 @@ const ContractDrawerCard = ({
                     'dc-contract-card--green': is_mobile && !is_multiplier && profit > 0 && !result,
                     'dc-contract-card--red': is_mobile && !is_multiplier && profit < 0 && !result,
                 })}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
+                ref={hover_ref}
             >
-                {should_show_closed_overlay && is_market_closed && !getEndTime(contract_info) && (
+                {!should_hide_closed_overlay && is_market_closed && !getEndTime(contract_info) && (
                     <MarketClosedContractOverlay />
                 )}
                 {contract_el}

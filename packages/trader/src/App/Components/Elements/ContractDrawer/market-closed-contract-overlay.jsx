@@ -5,8 +5,8 @@ import { Localize } from '@deriv/translations';
 import MarketCountdownTimer from '../market-countdown-timer.jsx';
 
 const MarketClosedContractOverlay = () => (
-    <div className='contract-card--market-closed'>
-        <Text as='p' className='contract-card--market-closed--heading'>
+    <div className='contract-card__market-closed'>
+        <Text align='center' as='p' styles={{ color: 'var(--brand-orange)', marginBottom: '1rem' }} weight='bold'>
             <Localize i18n_default_text='Market is closed' />
         </Text>
         <MarketCountdownTimer />

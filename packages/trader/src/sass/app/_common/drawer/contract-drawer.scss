@@ -73,7 +73,7 @@ $header-height: 4em;
 
 /** @define .contract-card; weak */
 .contract-card {
-    &--market-closed {
+    &__market-closed {
         position: absolute;
         top: 0;
         left: 0;
@@ -86,25 +86,6 @@ $header-height: 4em;
         padding: 0;
         background-image: var(--contract-gradient-danger);
         z-index: 1000;
-
-        p {
-            @include typeface(--paragraph-center-normal-black);
-            font-size: 12px;
-            color: var(--text-prominent);
-            text-transform: none;
-
-            &.market-is-closed-overlay__timer {
-                font-weight: bold;
-                font-size: 1.4rem;
-            }
-        }
-        p.contract-card--market-closed--heading {
-            @include setTypeface(16px, center, bold, $color-orange, none);
-            font-stretch: normal;
-            line-height: 1.5;
-            letter-spacing: normal;
-            margin-bottom: 1rem;
-        }
     }
     &__footer {
         margin-bottom: 0.5em;

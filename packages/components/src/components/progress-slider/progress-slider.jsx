@@ -4,6 +4,7 @@ import React from 'react';
 import { getTimePercentage } from '@deriv/shared';
 import ProgressTicks from './progress-ticks.jsx';
 import RemainingTime from '../remaining-time';
+import Text from '../text';
 
 const ProgressSlider = ({
     className,
@@ -22,9 +23,9 @@ const ProgressSlider = ({
                 <ProgressTicks current_tick={current_tick} getCardLabels={getCardLabels} ticks_count={ticks_count} />
             ) : (
                 <React.Fragment>
-                    <span className='dc-progress-slider__remaining-time'>
+                    <Text size='xxxs' className='dc-progress-slider__remaining-time'>
                         <RemainingTime end_time={expiry_time} getCardLabels={getCardLabels} start_time={server_time} />
-                    </span>
+                    </Text>
                     {is_loading || percentage < 1 ? (
                         <div className='dc-progress-slider__infinite-loader'>
                             <div className='dc-progress-slider__infinite-loader--indeterminate' />

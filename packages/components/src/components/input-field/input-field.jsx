@@ -4,6 +4,7 @@ import React from 'react';
 import { isCryptocurrency, getCurrencyDisplayCode } from '@deriv/shared';
 import IncrementButtons from './increment-buttons.jsx';
 import Input from './input.jsx';
+import Text from '../text';
 import Tooltip from '../tooltip';
 
 class InputField extends React.Component {
@@ -277,7 +278,11 @@ class InputField extends React.Component {
                         {label}
                     </label>
                 )}
-                {!!helper && <span className='dc-input-field__helper'>{helper}</span>}
+                {!!helper && (
+                    <Text size='xxs' weight='lighter' color='less-prominent' className='dc-input-field__helper'>
+                        {helper}
+                    </Text>
+                )}
                 {is_increment_input ? (
                     <div
                         className={classNames('dc-input-wrapper', {

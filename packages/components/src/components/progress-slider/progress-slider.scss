@@ -8,10 +8,6 @@
     margin: 8px 0;
     border-bottom: 1px solid var(--general-section-1);
 
-    &__remaining-time {
-        font-size: 1em;
-        color: var(--text-general);
-    }
     &--completed {
         border-bottom: 1px solid var(--general-section-1);
         margin: 0.4rem 0 0.8rem;

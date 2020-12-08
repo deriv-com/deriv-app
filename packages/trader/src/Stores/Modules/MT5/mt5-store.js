@@ -264,8 +264,6 @@ export default class MT5Store extends BaseStore {
             });
         } else {
             this.setError(true, response.error);
-            // eslint-disable-next-line no-console
-            console.warn('API Error: ', response);
         }
         setSubmitting(false);
     }

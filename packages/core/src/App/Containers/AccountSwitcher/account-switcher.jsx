@@ -620,7 +620,7 @@ class AccountSwitcher extends React.Component {
                         />
                     </Text>
                 </div>
-                <Text color='less-prominent' line_height='s' size='xxxs' className='acc-switcher__total-subtitle'>
+                <Text color='less-prominent' line_height='xs' size='xxxs' className='acc-switcher__total-subtitle'>
                     {total_assets_message}
                 </Text>
                 <div className='acc-switcher__separator' />

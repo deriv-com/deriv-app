@@ -1,0 +1,14 @@
+.tooltip-storybook {
+    &-wrapper {
+        position: relative;
+        padding: 0 10px;
+    }
+    &-icon,
+    &-icon-balloon-icon {
+        position: absolute;
+        right: 100%;
+        left: auto;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+}

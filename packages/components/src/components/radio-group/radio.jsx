@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
+import Text from '../text';
 
 class Radio extends React.Component {
     constructor(props) {
@@ -58,7 +59,9 @@ class Radio extends React.Component {
                         'dc-radio-group__circle--selected': this.state.checked,
                     })}
                 />
-                <span className={classNames('dc-radio-group__label', classNameLabel)}>{children}</span>
+                <Text size='xs' className={classNames('dc-radio-group__label', classNameLabel)}>
+                    {children}
+                </Text>
             </label>
         );
     }

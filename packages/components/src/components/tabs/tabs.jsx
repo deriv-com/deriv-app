@@ -19,9 +19,9 @@ class Tabs extends React.Component {
         // 3. default to first tab
         const index_to_show = has_hash ? hash_index : props.active_index || 0;
 
-        // if no hash is in url but component has passed id, set hash of the tab shown
+        // if no hash is in url but component has passed data-hash prop, set hash of the tab shown
         if (!has_hash) {
-            const current_id = props.children[index_to_show].props.id;
+            const current_id = props.children[index_to_show].props['data-hash'];
             if (current_id) {
                 this.updateUrl(current_id);
             }

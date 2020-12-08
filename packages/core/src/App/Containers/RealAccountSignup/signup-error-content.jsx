@@ -63,7 +63,7 @@ const ErrorCTA = ({ code, onConfirm }) => {
         default:
             return (
                 <StaticUrl href='help-centre' type='button' className='dc-btn dc-btn--primary'>
-                    <Text size='xxs'>
+                    <Text weight='bold' color='white' size='xxs'>
                         <Localize i18n_default_text='OK' />
                     </Text>
                 </StaticUrl>

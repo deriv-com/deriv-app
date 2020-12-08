@@ -190,7 +190,6 @@ class AddOrManageAccounts extends React.Component {
 AddOrManageAccounts.propTypes = {
     onError: PropTypes.func,
     onLoading: PropTypes.func,
-    onSuccessAddCurrency: PropTypes.func,
     onSuccessSetAccountCurrency: PropTypes.func,
 };
 

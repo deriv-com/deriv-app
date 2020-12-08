@@ -124,15 +124,15 @@ RadioButtonGroup.defaultProps = {
 export const Hr = () => <div className='currency-hr' />;
 
 const CurrencySelector = ({
+    bypass_to_personal,
+    getCurrentStep,
+    goToNextStep,
     has_currency,
     has_real_account,
-    bypass_to_personal,
     legal_allowed_currencies,
-    validate,
-    goToNextStep,
     onSubmit,
-    getCurrentStep,
     set_currency,
+    validate,
     ...props
 }) => {
     const { is_deriv_crypto } = React.useContext(PlatformContext);
@@ -145,7 +145,10 @@ const CurrencySelector = ({
     };
 
     // In case of form error bypass to update personal data
-    if (bypass_to_personal) goToNextStep();
+    React.useEffect(() => {
+        if (bypass_to_personal) goToNextStep();
+    }, [bypass_to_personal, goToNextStep]);
+
     return (
         <Formik
             initialValues={props.value}

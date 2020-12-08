@@ -54,7 +54,7 @@ const createBanxaProvider = () => ({
     should_show_deposit_address: false,
 });
 
-const createChangellyProvider = client => ({
+const createChangellyProvider = store => ({
     icon: { dark: 'IcCashierChangellyDark', light: 'IcCashierChangellyLight' },
     name: 'Changelly',
     getDescription: () =>
@@ -74,8 +74,8 @@ const createChangellyProvider = client => ({
         return new Promise(resolve => {
             const url = new URL('https://widget.changelly.com/?v=3&theme=default');
             url.searchParams.append('fromDefault', this.getDefaultFromCurrency());
-            if (this.getToCurrencies().includes(client.currency.toLowerCase())) {
-                let to_currency = client.currency.toLowerCase();
+            if (this.getToCurrencies().includes(store.client.currency.toLowerCase())) {
+                let to_currency = store.client.currency.toLowerCase();
                 if (to_currency === 'ust') {
                     to_currency = 'usdt';
                 }
@@ -190,8 +190,51 @@ const createWyreProvider = () => ({
     should_show_deposit_address: false,
 });
 
+const createXanPoolProvider = store => ({
+    icon: { dark: 'IcCashierXanpoolDark', light: 'IcCashierXanpoolLight' },
+    name: 'XanPool',
+    getDescription: () =>
+        localize(
+            'Buy cryptocurrencies in an instant. Enjoy easy, quick, and secure exchanges using your local payment methods.'
+        ),
+    getAllowedResidencies: () => ['*'],
+    getPaymentIcons: () => [
+        { dark: 'IcCashierFpsDark', light: 'IcCashierFpsLight' },
+        { dark: 'IcCashierAliPayDark', light: 'IcCashierAliPayLight' },
+        { dark: 'IcCashierGoPayDark', light: 'IcCashierGoPayLight' },
+        { dark: 'IcCashierMandiriPay', light: 'IcCashierMandiriPay' },
+        { dark: 'IcCashierInstaPayLight', light: 'IcCashierInstaPayDark' },
+        { dark: 'IcCashierCebuanaLhuillierDark', light: 'IcCashierCebuanaLhuillierLight' },
+        { dark: 'IcCashierPayNowDark', light: 'IcCashierPayNowLight' },
+        { dark: 'IcCashierUpiDark', light: 'IcCashierUpiLight' },
+        { dark: 'IcCashierPromptPayDark', light: 'IcCashierPromptPayLight' },
+        { dark: 'IcCashierViettlePay', light: 'IcCashierViettlePay' },
+    ],
+    getScriptDependencies: () => [],
+    getToCurrencies: () => ['btc', 'eth', 'ust', 'zil', 'nem'],
+    getWidgetHtml() {
+        return new Promise(resolve => {
+            const { currency } = store.root_store.client;
+
+            let url = 'https://checkout.xanpool.com/';
+
+            url += `?apiKey=db4ec638dff9a68abda1ef6b7638c220`;
+            url += `&redirectUrl=${window.location.href}`;
+            url += `&wallet=${store.deposit_address}`;
+            url += `&cryptoCurrency=${currency === 'UST' ? 'USDT' : currency}`;
+            url += `&transactionType=buy`;
+
+            window.open(url);
+            resolve();
+        });
+    },
+    onMountWidgetContainer: () => {},
+    should_show_deposit_address: false,
+});
+
 export default {
     createBanxaProvider,
     createChangellyProvider,
     createWyreProvider,
+    createXanPoolProvider,
 };

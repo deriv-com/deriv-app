@@ -84,7 +84,7 @@ const AddOrManageAccounts = props => {
         manageOrChangeAccount(value, setSubmitting);
     };
 
-    const no_crypto_available = () => {
+    const hasNoAvailableCrypto = () => {
         return available_crypto_currencies.length === 0 && has_fiat;
     };
 
@@ -102,10 +102,10 @@ const AddOrManageAccounts = props => {
                 <div label={localize('Cryptocurrencies')}>
                     <div
                         className={classNames('add-crypto-currency', {
-                            'account-wizard--disabled': no_crypto_available(),
+                            'account-wizard--disabled': hasNoAvailableCrypto(),
                         })}
                     >
-                        {no_crypto_available() && (
+                        {hasNoAvailableCrypto() && (
                             <div className='account-wizard--disabled-message'>
                                 <p>
                                     {localize(

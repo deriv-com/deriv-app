@@ -10,7 +10,7 @@ class Tabs extends React.Component {
 
         // if hash is in url, find which tab index correlates to it
         const hash = this.props.location.hash.slice(1);
-        const hash_index = props.children.findIndex(child => child.props.id === hash);
+        const hash_index = props.children.findIndex(child => child.props && child.props['data-hash'] === hash);
         const has_hash = hash_index > -1;
 
         // set active index to:
@@ -21,7 +21,8 @@ class Tabs extends React.Component {
 
         // if no hash is in url but component has passed data-hash prop, set hash of the tab shown
         if (!has_hash) {
-            const current_id = props.children[index_to_show].props['data-hash'];
+            const child_props = props.children[index_to_show].props;
+            const current_id = child_props && child_props['data-hash'];
             if (current_id) {
                 this.updateUrl(current_id);
             }
@@ -119,7 +120,8 @@ class Tabs extends React.Component {
                 >
                     {React.Children.map(children, (child, index) => {
                         if (!child) return null;
-                        const { count, header_content, label, id } = child.props;
+                        const { count, header_content, label } = child.props;
+                        const data_hash = child.props && child.props['data-hash'];
 
                         return (
                             <Tab
@@ -133,7 +135,7 @@ class Tabs extends React.Component {
                                 header_fit_content={header_fit_content}
                                 active_tab_ref={index === active_index ? this.setActiveTabRef : null}
                                 header_content={header_content}
-                                onClick={() => this.onTabItemClick(index, id)}
+                                onClick={() => this.onTabItemClick(index, data_hash)}
                                 setActiveLineStyle={this.setActiveLineStyle}
                             />
                         );

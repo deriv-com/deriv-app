@@ -3,59 +3,53 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Counter from '../counter';
 
-class Tab extends React.Component {
-    onClick = () => {
-        const { onClick } = this.props;
-        onClick();
-    };
+const Tab = ({
+    active_tab_ref,
+    bottom,
+    count,
+    header_content,
+    header_fit_content,
+    id,
+    is_active,
+    is_label_hidden,
+    label,
+    onClick,
+    setActiveLineStyle,
+    top,
+}) => {
+    React.useEffect(() => {
+        setActiveLineStyle();
+    }, [count, label, header_content]);
 
-    componentDidUpdate(prev_props) {
-        if (
-            prev_props.count !== this.props.count ||
-            prev_props.label !== this.props.label ||
-            prev_props.header_content !== this.props.header_content
-        ) {
-            this.props.setActiveLineStyle();
-        }
-    }
-
-    render() {
-        const {
-            active_tab_ref,
-            count,
-            id,
-            header_content,
-            is_active,
-            is_label_hidden,
-            label,
-            top,
-            bottom,
-            header_fit_content,
-        } = this.props;
-
-        const classes = classNames('dc-tabs__item', {
-            'dc-tabs__active': is_active,
-            'dc-tabs__item--top': top,
-            'dc-tabs__item--bottom': bottom,
-            'dc-tabs__item--header-fit-content': header_fit_content,
-            'dc-tabs__item--is-hidden': is_label_hidden,
-        });
-        return (
-            <li id={id} className={classes} onClick={this.onClick} ref={active_tab_ref}>
-                {header_content || label}
-                {!!count && <Counter className='dc-tabs__item__counter' count={count} />}
-            </li>
-        );
-    }
-}
+    const classes = classNames('dc-tabs__item', {
+        'dc-tabs__active': is_active,
+        'dc-tabs__item--top': top,
+        'dc-tabs__item--bottom': bottom,
+        'dc-tabs__item--header-fit-content': header_fit_content,
+        'dc-tabs__item--is-hidden': is_label_hidden,
+    });
+    return (
+        <li id={id} className={classes} onClick={onClick} ref={active_tab_ref}>
+            {header_content || label}
+            {!!count && <Counter className='dc-tabs__item__counter' count={count} />}
+        </li>
+    );
+};
 
 Tab.propTypes = {
+    active_tab_ref: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+    bottom: PropTypes.bool,
     className: PropTypes.string,
     count: PropTypes.number,
+    header_content: PropTypes.object,
+    header_fit_content: PropTypes.bool,
+    id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     is_active: PropTypes.bool,
     is_label_hidden: PropTypes.bool,
     label: PropTypes.string,
     onClick: PropTypes.func,
+    setActiveLineStyle: PropTypes.func,
+    top: PropTypes.bool,
 };
 
 export default Tab;

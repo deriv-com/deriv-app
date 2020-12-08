@@ -116,7 +116,9 @@ const Toolbox = ({
                                             }}
                                         >
                                             <div className='db-toolbox__category-text'>
-                                                <div className='db-toolbox__label'>{category.getAttribute('name')}</div>
+                                                <div className='db-toolbox__label'>
+                                                    {localize(category.getAttribute('name'))}
+                                                </div>
                                                 {has_sub_category && (
                                                     <div
                                                         className={classNames('db-toolbox__category-arrow', {
@@ -140,7 +142,7 @@ const Toolbox = ({
                                                         }}
                                                     >
                                                         <Text size='xxs' line_height='m'>
-                                                            {subCategory.getAttribute('name')}
+                                                            {localize(subCategory.getAttribute('name'))}
                                                         </Text>
                                                     </div>
                                                 );

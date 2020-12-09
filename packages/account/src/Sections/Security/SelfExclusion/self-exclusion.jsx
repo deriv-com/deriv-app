@@ -55,6 +55,8 @@ class SelfExclusion extends React.Component {
         six_weeks: 60480, // in minutes
     };
 
+    exclusion_limits = {};
+
     exclusion_texts = {
         max_deposit: localize('Max. deposit limit per day'),
         max_turnover: localize('Max. total stake per day'),
@@ -111,7 +113,8 @@ class SelfExclusion extends React.Component {
                 .fill(0)
                 .join('')}1`;
 
-        const only_numbers = ['max_open_bets', 'session_duration_limit'];
+        const custom_validation = ['max_balance', 'max_open_bets', 'session_duration_limit'];
+
         const only_currency = [
             'max_deposit',
             'max_7day_deposit',
@@ -122,16 +125,7 @@ class SelfExclusion extends React.Component {
             'max_7day_losses',
             'max_30day_turnover',
             'max_30day_losses',
-            'max_balance',
         ];
-
-        if (values.session_duration_limit) {
-            if (values.session_duration_limit > six_weeks) {
-                errors.session_duration_limit = localize(
-                    'Enter a value in minutes, up to 60480 minutes (equivalent to 6 weeks).'
-                );
-            }
-        }
 
         if (values.timeout_until) {
             if (values.timeout_until <= toMoment().unix()) {
@@ -151,20 +145,6 @@ class SelfExclusion extends React.Component {
             }
         }
 
-        only_numbers.forEach(item => {
-            if (values[item]) {
-                const { is_ok, message } = validNumber(values[item], {
-                    type: 'integer',
-                    min: is_eu ? 1 : null,
-                    max: this.state.self_exclusions[item] || max_number,
-                });
-                if (!is_ok) errors[item] = message;
-            }
-            if (this.state.self_exclusions[item] && !values[item] && !is_cr) {
-                errors[item] = more_than_zero_message;
-            }
-        });
-
         only_currency.forEach(item => {
             if (values[item]) {
                 const { is_ok, message } = validNumber(values[item], {
@@ -180,6 +160,44 @@ class SelfExclusion extends React.Component {
             }
         });
 
+        if (values.session_duration_limit) {
+            const { is_ok, message } = validNumber(values.session_duration_limit, {
+                type: 'integer',
+                min: is_eu ? 1 : null,
+                max: is_eu ? this.state.self_exclusions.session_duration_limit : six_weeks,
+            });
+            if (!is_ok) errors.session_duration_limit = message;
+            if (values.session_duration_limit > six_weeks) {
+                errors.session_duration_limit = localize(
+                    'Enter a value in minutes, up to 60480 minutes (equivalent to 6 weeks).'
+                );
+            }
+        }
+
+        if (values.max_open_bets) {
+            const { is_ok, message } = validNumber(values.max_open_bets, {
+                type: 'integer',
+                min: is_eu ? 1 : null,
+                max: this.exclusion_limits.get_limits.open_positions,
+            });
+            if (!is_ok) errors.max_open_bets = message;
+        }
+
+        if (values.max_balance) {
+            const { is_ok, message } = validNumber(values.max_balance, {
+                type: 'float',
+                decimals: getDecimalPlaces(currency),
+                min: is_eu ? getSmallestMinValue(getDecimalPlaces(currency)) : null,
+                max: this.exclusion_limits.get_limits.account_balance,
+            });
+            if (!is_ok) errors.max_balance = message;
+        }
+
+        custom_validation.forEach(item => {
+            if (this.state.self_exclusions[item] && !values[item] && !is_cr) {
+                errors[item] = more_than_zero_message;
+            }
+        });
         return errors;
     };
 
@@ -225,6 +243,7 @@ class SelfExclusion extends React.Component {
                 setSubmitting(false);
                 this.setState({ show_confirm: false, is_loading: true, is_confirm_page: false });
                 this.getSelfExclusion();
+                this.getLimits();
             }
         }
     };
@@ -278,12 +297,22 @@ class SelfExclusion extends React.Component {
         this.populateExclusionResponse(get_self_exclusion_response);
     };
 
+    getLimits = async () => {
+        this.exclusion_limits = await WS.authorized.getLimits({ get_limits: 1 });
+    };
+
     getMaxLength = field => {
         const { currency, is_cr } = this.props;
 
         const decimals_length = getDecimalPlaces(currency) + 1; // add 1 to allow typing dot
         const isIntegerField = value => /session_duration_limit|max_open_bets/.test(value);
-        const getLength = value => value.toString().length + (isIntegerField(value) ? 0 : decimals_length);
+        const getLength = value => value.toString().length + (isIntegerField(field) ? 0 : decimals_length);
+
+        if (/max_open_bets/.test(field) && this.exclusion_limits.get_limits?.open_positions)
+            return getLength(this.exclusion_limits.get_limits.open_positions);
+
+        if (/max_balance/.test(field) && this.exclusion_limits.get_limits?.account_balance)
+            return getLength(this.exclusion_limits.get_limits.account_balance);
 
         if (!this.state.self_exclusions[field] || is_cr) {
             if (/max_open_bets/.test(field)) return 9; // TODO: remove when the error is fixed on BE
@@ -299,12 +328,14 @@ class SelfExclusion extends React.Component {
             this.setState({ is_loading: false });
         } else {
             this.getSelfExclusion();
+            this.getLimits();
         }
     }
     componentDidUpdate(prev_props) {
         if (prev_props.is_switching !== this.props.is_switching) {
             this.resetState();
             this.getSelfExclusion();
+            this.getLimits();
         }
     }
 

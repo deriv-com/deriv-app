@@ -84,6 +84,7 @@ module.exports = {
             react: 'react',
             'react-content-loader': 'react-content-loader',
             'react-dom': 'react-dom',
+            'react-dropzone': 'react-dropzone',
             '@deriv/shared': '@deriv/shared',
             'react-router-dom': 'react-router-dom',
             'react-swipeable': 'react-swipeable',

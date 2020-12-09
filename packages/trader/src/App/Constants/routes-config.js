@@ -1,8 +1,8 @@
 import React from 'react';
 import Loadable from 'react-loadable';
 import { Loading } from '@deriv/components';
-import routes from '@deriv/shared/utils/routes';
-import { addRoutesConfig } from '@deriv/shared/utils/route';
+import { routes } from '@deriv/shared';
+
 import { localize } from '@deriv/translations';
 import Trade from 'Modules/Trading';
 
@@ -37,50 +37,57 @@ const makeLazyLoader = importFn => component_name =>
 const lazyLoadReportComponent = makeLazyLoader(() => import(/* webpackChunkName: "reports" */ 'Modules/Reports'));
 
 // Order matters
-const initRoutesConfig = () => [
-    { path: routes.contract, component: ContractDetails, title: localize('Contract Details'), is_authenticated: true },
-    { path: routes.mt5, component: MT5, title: localize('MT5'), is_authenticated: true },
-    {
-        path: routes.reports,
-        component: lazyLoadReportComponent('Reports'),
-        is_authenticated: true,
-        title: localize('Reports'),
-        icon_component: 'IcReports',
-        routes: [
-            {
-                path: routes.positions,
-                component: lazyLoadReportComponent('OpenPositions'),
-                title: localize('Open positions'),
-                icon_component: 'IcOpenPositions',
-                default: true,
-            },
-            {
-                path: routes.profit,
-                component: lazyLoadReportComponent('ProfitTable'),
-                title: localize('Profit table'),
-                icon_component: 'IcProfitTable',
-            },
-            {
-                path: routes.statement,
-                component: lazyLoadReportComponent('Statement'),
-                title: localize('Statement'),
-                icon_component: 'IcStatement',
-            },
-        ],
-    },
-    { path: routes.trade, component: Trade, title: localize('Trade'), exact: true },
-];
+const initRoutesConfig = () => {
+    return [
+        {
+            path: routes.contract,
+            component: ContractDetails,
+            // Don't use `Localize` component since native html tag like `option` cannot render them
+            getTitle: () => localize('Contract Details'),
+            is_authenticated: true,
+        },
+        { path: routes.mt5, component: MT5, getTitle: () => localize('MT5'), is_authenticated: false },
+        {
+            path: routes.reports,
+            component: lazyLoadReportComponent('Reports'),
+            is_authenticated: true,
+            getTitle: () => localize('Reports'),
+            icon_component: 'IcReports',
+            routes: [
+                {
+                    path: routes.positions,
+                    component: lazyLoadReportComponent('OpenPositions'),
+                    getTitle: () => localize('Open positions'),
+                    icon_component: 'IcOpenPositions',
+                    default: true,
+                },
+                {
+                    path: routes.profit,
+                    component: lazyLoadReportComponent('ProfitTable'),
+                    getTitle: () => localize('Profit table'),
+                    icon_component: 'IcProfitTable',
+                },
+                {
+                    path: routes.statement,
+                    component: lazyLoadReportComponent('Statement'),
+                    getTitle: () => localize('Statement'),
+                    icon_component: 'IcStatement',
+                },
+            ],
+        },
+        { path: routes.trade, component: Trade, getTitle: () => localize('Trader'), exact: true },
+    ];
+};
 
 let routesConfig;
 
 // For default page route if page/path is not found, must be kept at the end of routes_config array
-const route_default = { component: Page404, title: localize('Error 404') };
+const route_default = { component: Page404, getTitle: () => localize('Error 404') };
 
 const getRoutesConfig = () => {
     if (!routesConfig) {
         routesConfig = initRoutesConfig();
         routesConfig.push(route_default);
-        addRoutesConfig(routesConfig);
     }
     return routesConfig;
 };

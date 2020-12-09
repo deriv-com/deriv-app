@@ -1,11 +1,10 @@
-import { Button, Modal } from '@deriv/components';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { localize } from '@deriv/translations';
-import { ClientBase } from '_common/base/client_base';
-import { redirectToLogin, redirectToSignUp } from '_common/base/login';
+import { Button, Modal } from '@deriv/components';
+import { getLanguage, localize } from '@deriv/translations';
+import { redirectToLogin, redirectToSignUp } from '@deriv/shared';
 
-const AuthorizationRequiredModal = ({ is_visible, toggleModal }) => (
+const AuthorizationRequiredModal = ({ is_visible, toggleModal, is_deriv_crypto, is_logged_in }) => (
     <Modal
         id='dt_authorization_required_modal'
         is_open={is_visible}
@@ -18,16 +17,23 @@ const AuthorizationRequiredModal = ({ is_visible, toggleModal }) => (
             <Button
                 has_effect
                 text={localize('Log in')}
-                onClick={() => redirectToLogin(ClientBase.isLoggedIn())}
+                onClick={() => redirectToLogin(is_logged_in, getLanguage())}
                 secondary
             />
-            <Button has_effect text={localize('Create free account')} onClick={redirectToSignUp} primary />
+            <Button
+                has_effect
+                text={localize('Create free account')}
+                onClick={() => redirectToSignUp({ is_deriv_crypto })}
+                primary
+            />
         </Modal.Footer>
     </Modal>
 );
 
 AuthorizationRequiredModal.propTypes = {
+    is_deriv_crypto: PropTypes.bool,
     is_visible: PropTypes.bool,
+    is_logged_in: PropTypes.bool,
     toggleModal: PropTypes.func,
 };
 

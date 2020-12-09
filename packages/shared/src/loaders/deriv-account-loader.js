@@ -1,13 +1,12 @@
 const resolve = require('path').resolve;
 const existsSync = require('fs').existsSync;
 /* Using this loader you can import components from @deriv/components without having to manually
-import the corresponding stylesheet. The deriv-components-loader will automatically import
+import the corresponding stylesheet. The deriv-account-loader will automatically import
 stylesheets.
 
-    import { Button } from '@deriv/components';
+    import { PoaExpired } from '@deriv/account';
     ↓ ↓ ↓
-    import Button from '@deriv/components/lib/button';
-    import '@deriv/components/lib/button.css';
+    import PoaExpired from '@deriv/account/dist/js/poa-expired';
 */
 
 function getKebabCase(str) {
@@ -18,10 +17,10 @@ function getKebabCase(str) {
 }
 
 function checkExists(component) {
-    return existsSync(resolve(__dirname, '../../account/src/Components/', component, `${component}.scss`));
+    return existsSync(resolve(__dirname, '../../../account/src/Components/', component, `${component}.scss`));
 }
 
-module.exports = function(source, map) {
+module.exports = function (source, map) {
     const lines = source.split(/\n/);
     const mapped_lines = lines.map(line => {
         const matches = /\s*import\s+\{(.*)\}\s*from\s+\'@deriv\/account/.exec(line); // eslint-disable-line no-useless-escape

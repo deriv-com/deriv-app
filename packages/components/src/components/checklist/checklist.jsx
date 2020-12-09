@@ -2,8 +2,9 @@ import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import Icon from '../icon';
+import Button from '../button';
 
-const checkStatus = (status, onClick) => {
+const ItemStatus = ({ status, onClick, button_text }) => {
     switch (status) {
         case 'done':
             return (
@@ -11,6 +12,8 @@ const checkStatus = (status, onClick) => {
                     <Icon icon='IcCheckmark' color='green' size={16} />
                 </div>
             );
+        case 'button-action':
+            return <Button primary color='active' text={button_text} onClick={onClick} />;
         case 'action':
         default:
             return (
@@ -19,6 +22,12 @@ const checkStatus = (status, onClick) => {
                 </div>
             );
     }
+};
+
+ItemStatus.propTypes = {
+    button_text: PropTypes.string,
+    onClick: PropTypes.func,
+    status: PropTypes.string,
 };
 
 const Checklist = ({ items, className, itemClassName }) => (
@@ -34,9 +43,10 @@ const Checklist = ({ items, className, itemClassName }) => (
                 <div
                     className={classNames('dc-checklist__item-status', {
                         'dc-checklist__item-status--disabled': item.is_disabled,
+                        'dc-checklist__item-status--button': item.status === 'button-action',
                     })}
                 >
-                    {checkStatus(item.status, item.onClick)}
+                    <ItemStatus status={item.status} onClick={item.onClick} button_text={item.button_text} />
                 </div>
             </div>
         ))}
@@ -46,6 +56,7 @@ const Checklist = ({ items, className, itemClassName }) => (
 Checklist.propTypes = {
     items: PropTypes.array,
     className: PropTypes.string,
+    itemClassName: PropTypes.string,
 };
 
 export default Checklist;

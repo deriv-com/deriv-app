@@ -1,0 +1,62 @@
+/** @define dc-toast; */
+.dc-toast {
+    width: 100vw;
+    transition: transform 0.25s ease, opacity 0.25s linear;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+
+    &__message {
+        max-width: calc(100vw - 3.2rem);
+        padding: 0.4rem 0.8rem;
+        @include typeface(--paragraph-center-normal-black);
+        color: var(--text-colored-background);
+        border-radius: $BORDER_RADIUS;
+        min-height: 34px;
+        display: flex;
+        align-items: center;
+        pointer-events: all;
+    }
+    &__error {
+        .dc-toast__message {
+            background-color: var(--status-danger);
+        }
+    }
+    &__info {
+        .dc-toast__message {
+            background: var(--status-info);
+            font-size: 1.2rem;
+            /* iPhone SE screen height fixes due to UI space restrictions */
+            @media only screen and (max-height: 580px) {
+                font-size: 1rem;
+            }
+        }
+    }
+    &--enter,
+    &--exit {
+        transform: scale(1, 0);
+        opacity: 0;
+    }
+    &--enter-done {
+        transform: scale(1, 1);
+        opacity: 1;
+    }
+    &--blinker {
+        .dc-toast__message {
+            animation: toast_blinking 0.4s alternate infinite;
+        }
+    }
+    &:not(:first-child) {
+        margin-top: 1rem;
+    }
+}
+
+@keyframes toast_blinking {
+    40% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}

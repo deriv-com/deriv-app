@@ -1,5 +1,5 @@
-@import '~@deriv/shared/utils/styles/reset.scss';
-@import '~@deriv/shared/utils/styles/themes.scss';
+@import '../../../shared/src/styles/reset.scss';
+@import '../../../shared/src/styles/themes.scss';
 
 .p2p-cashier {
     background: transparent;
@@ -11,52 +11,11 @@
     }
     & .dc-tabs {
         position: static;
+
         &--p2p-cashier {
             & .dc-tabs__list {
                 &--header-fit-content {
-                    border-bottom: none;
                     margin-bottom: 2.4rem;
-                }
-            }
-            & .dc-tabs__item {
-                &--header-fit-content {
-                    border-bottom: 1px solid var(--general-section-1);
-                }
-            }
-            .p2p-cashier__empty {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                height: 50vh;
-                transform: translateX(-15%);
-
-                &-icon {
-                    margin-bottom: 2.4rem;
-                }
-                &-title {
-                    color: var(--text-general);
-                    font-size: var(--text-size-s);
-                    font-weight: bold;
-                    line-height: 1.5;
-                    margin: 0.8rem;
-                }
-                &-text {
-                    font-size: var(--text-size-xs);
-                    margin: 1.2rem 0;
-
-                    p {
-                        line-height: 1.43;
-                    }
-                }
-                &-contact {
-                    color: var(--text-general);
-                    font-size: var(--text-size-xs);
-                    line-height: 1.43;
-                }
-                &-button {
-                    text-decoration: none;
-                    margin-top: 1.6rem;
                 }
             }
         }
@@ -90,12 +49,32 @@
         width: 100%;
         border-top: 1px solid var(--general-section-1);
     }
-    &__button--right-aligned {
-        margin-left: auto;
-        margin-right: 1.6rem;
+    &__verification {
+        padding-top: 3.5rem;
+
+        &--mobile {
+            padding: 3.5rem 2.5rem 0;
+        }
     }
-    &--verification {
-        margin-top: 3.5rem;
+    &__advertiser-tab {
+        @include mobile {
+            .dc-tabs {
+                &__item {
+                    padding: 0 1.6rem;
+                    margin: auto;
+                }
+                &__list {
+                    position: fixed;
+                    margin-bottom: unset !important;
+                    background-color: var(--general-main-1);
+                    z-index: 2;
+                    width: 100%;
+                }
+                &__content {
+                    margin-top: 4rem;
+                }
+            }
+        }
     }
 }
 
@@ -122,24 +101,24 @@
 
 .p2p-nickname {
     &__dialog {
-        position: absolute;
-        height: 100%;
-        width: 100%;
-        top: 0;
-        left: 0;
-        background: var(--shadow-menu);
-
-        & .dc-dialog__dialog {
-            width: auto;
-            height: auto;
-            padding: 0;
-            max-height: initial;
-            min-width: 44rem;
+        @include mobile {
+            height: 100%;
         }
-        & .dc-dialog__content {
-            margin-bottom: 0;
-            width: 100%;
-            max-width: 44rem;
+    }
+}
+
+.dc-modal__container_p2p-nickname {
+    &__dialog {
+        height: auto;
+        margin-bottom: 0;
+        max-height: 50rem !important;
+        max-width: 44rem;
+        min-width: 44rem;
+        padding: 0;
+        width: 100%;
+
+        @include mobile {
+            min-width: 0;
         }
     }
 }

@@ -1,12 +1,12 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Icon, Input } from '@deriv/components';
 import { Field, Formik, Form } from 'formik';
-import CurrencyUtils from '@deriv/shared/utils/currency';
+import { Button, DesktopWrapper, Input } from '@deriv/components';
+import { getDecimalPlaces, validNumber, getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { getPreBuildDVRs, validNumber } from 'Utils/Validator/declarative-validation-rules';
+import FormError from '../Error/form-error.jsx';
 
 const validateTransfer = (values, { balance, currency, transfer_limit }) => {
     const errors = {};
@@ -15,19 +15,19 @@ const validateTransfer = (values, { balance, currency, transfer_limit }) => {
         errors.loginid = localize('Please enter a valid client login ID.');
     }
 
+    const { is_ok, message } = validNumber(values.amount, {
+        type: 'float',
+        decimals: getDecimalPlaces(currency),
+        ...(transfer_limit.min && {
+            min: transfer_limit.min,
+            max: transfer_limit.max,
+        }),
+    });
+
     if (!values.amount) {
         errors.amount = localize('This field is required.');
-    } else if (
-        !validNumber(values.amount, {
-            type: 'float',
-            decimals: CurrencyUtils.getDecimalPlaces(currency),
-            ...(transfer_limit.min && {
-                min: transfer_limit.min,
-                max: transfer_limit.max,
-            }),
-        })
-    ) {
-        errors.amount = getPreBuildDVRs().number.message;
+    } else if (!is_ok) {
+        errors.amount = message;
     } else if (+balance < +values.amount) {
         errors.amount = localize('Insufficient balance.');
     }
@@ -48,7 +48,7 @@ class PaymentAgentTransferForm extends React.Component {
         });
 
     onTransferPassthrough = async (values, actions) => {
-        const payment_agent_transfer = await this.props.requestPaymentAgentTransfer({
+        const payment_agent_transfer = await this.props.requestTryPaymentAgentTransfer({
             amount: values.amount,
             currency: this.props.currency,
             description: values.description.replace(/\n/g, ' '),
@@ -61,67 +61,70 @@ class PaymentAgentTransferForm extends React.Component {
 
     render() {
         return (
-            <div className='cashier__wrapper--align-left payment-agent-transfer__container'>
-                <h2 className='cashier__header payment-agent-transfer__header'>
-                    <Localize i18n_default_text='Transfer to client' />
-                </h2>
+            <div className='cashier__wrapper payment-agent-transfer__container'>
+                <DesktopWrapper>
+                    <h2 className='cashier__header cashier__content-header'>
+                        <Localize i18n_default_text='Transfer to client' />
+                    </h2>
+                </DesktopWrapper>
                 <Formik
                     initialValues={{
-                        loginid: '',
-                        amount: '',
-                        description: '',
+                        // in case coming back from confirmation screen, populate the recent data to be edited
+                        loginid: this.props.transfer_to || '',
+                        amount: this.props.amount || '',
+                        description: this.props.description || '',
                     }}
                     validate={this.validateTransferPassthrough}
                     onSubmit={this.onTransferPassthrough}
                 >
                     {({ errors, isSubmitting, isValid, touched, handleChange }) => (
                         <Form noValidate>
-                            <div className='payment-agent-transfer__input-container'>
-                                <Field name='loginid'>
-                                    {({ field }) => (
-                                        <Input
-                                            {...field}
-                                            onChange={e => {
-                                                this.props.setErrorMessage('');
-                                                handleChange(e);
-                                            }}
-                                            className='payment-agent-transfer__input'
-                                            type='text'
-                                            label={localize('Client login ID')}
-                                            error={touched.loginid && errors.loginid}
-                                            required
-                                            autoComplete='off'
-                                            maxLength='20'
-                                        />
-                                    )}
-                                </Field>
-                                <Field name='amount'>
-                                    {({ field }) => (
-                                        <Input
-                                            {...field}
-                                            onChange={e => {
-                                                this.props.setErrorMessage('');
-                                                handleChange(e);
-                                            }}
-                                            className='payment-agent-transfer__input dc-input--no-placeholder'
-                                            type='text'
-                                            label={localize('Amount')}
-                                            error={touched.amount && errors.amount}
-                                            required
-                                            leading_icon={
-                                                <span
-                                                    className={classNames(
-                                                        'symbols',
-                                                        `symbols--${(this.props.currency || '').toLowerCase()}`
-                                                    )}
-                                                />
-                                            }
-                                            autoComplete='off'
-                                            maxLength='30'
-                                        />
-                                    )}
-                                </Field>
-                            </div>
+                            <Field name='loginid'>
+                                {({ field }) => (
+                                    <Input
+                                        {...field}
+                                        onChange={e => {
+                                            this.props.setErrorMessage('');
+                                            handleChange(e);
+                                        }}
+                                        className='payment-agent-transfer__input'
+                                        type='text'
+                                        label={localize('Client login ID')}
+                                        error={touched.loginid && errors.loginid}
+                                        required
+                                        autoComplete='off'
+                                        maxLength='20'
+                                    />
+                                )}
+                            </Field>
+                            <Field name='amount'>
+                                {({ field }) => (
+                                    <Input
+                                        {...field}
+                                        onChange={e => {
+                                            this.props.setErrorMessage('');
+                                            handleChange(e);
+                                        }}
+                                        className='payment-agent-transfer__input dc-input--no-placeholder'
+                                        type='text'
+                                        label={localize('Amount')}
+                                        error={touched.amount && errors.amount}
+                                        required
+                                        trailing_icon={
+                                            <span
+                                                className={classNames(
+                                                    'symbols',
+                                                    `symbols--${(this.props.currency || '').toLowerCase()}`
+                                                )}
+                                            >
+                                                {getCurrencyDisplayCode(this.props.currency)}
+                                            </span>
+                                        }
+                                        autoComplete='off'
+                                        maxLength='30'
+                                    />
+                                )}
+                            </Field>
                             <Field name='description'>
                                 {({ field }) => (
                                     <Input
@@ -130,23 +133,18 @@ class PaymentAgentTransferForm extends React.Component {
                                             this.props.setErrorMessage('');
                                             handleChange(e);
                                         }}
+                                        className='payment-agent-transfer__input-area'
                                         type='textarea'
                                         label={localize('Description')}
                                         error={touched.description && errors.description}
                                         required
                                         autoComplete='off'
-                                        maxLength='250'
+                                        has_character_counter
+                                        max_characters='250'
                                     />
                                 )}
                             </Field>
                             <div className='cashier__form-submit'>
-                                {this.props.error_message && (
-                                    <React.Fragment>
-                                        <Icon icon='IcAlertDanger' className='cashier__form-error-icon' size={128} />
-                                        <Icon icon='IcAlertDanger' className='cashier__form-error-small-icon' />
-                                        <p className='cashier__form-error'>{this.props.error_message}</p>
-                                    </React.Fragment>
-                                )}
                                 <Button
                                     className='cashier__form-submit-button'
                                     type='submit'
@@ -157,6 +155,7 @@ class PaymentAgentTransferForm extends React.Component {
                                     <Localize i18n_default_text='Transfer' />
                                 </Button>
                             </div>
+                            <FormError error={this.props.error} />
                         </Form>
                     )}
                 </Formik>
@@ -166,19 +165,25 @@ class PaymentAgentTransferForm extends React.Component {
 }
 
 PaymentAgentTransferForm.propTypes = {
+    amount: PropTypes.string,
     balance: PropTypes.string,
     currency: PropTypes.string,
+    description: PropTypes.string,
     error: PropTypes.object,
-    requestPaymentAgentTransfer: PropTypes.func,
+    requestTryPaymentAgentTransfer: PropTypes.func,
     setErrorMessage: PropTypes.func,
     transfer_limit: PropTypes.object,
+    transfer_to: PropTypes.string,
 };
 
 export default connect(({ client, modules }) => ({
     balance: client.balance,
     currency: client.currency,
-    error_message: modules.cashier.config.payment_agent_transfer.error.message,
-    requestPaymentAgentTransfer: modules.cashier.requestPaymentAgentTransfer,
+    amount: modules.cashier.config.payment_agent_transfer.confirm.amount,
+    description: modules.cashier.config.payment_agent_transfer.confirm.description,
+    error: modules.cashier.config.payment_agent_transfer.error,
+    requestTryPaymentAgentTransfer: modules.cashier.requestTryPaymentAgentTransfer,
     setErrorMessage: modules.cashier.setErrorMessage,
     transfer_limit: modules.cashier.config.payment_agent_transfer.transfer_limit,
+    transfer_to: modules.cashier.config.payment_agent_transfer.confirm.client_id,
 }))(PaymentAgentTransferForm);

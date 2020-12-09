@@ -1,9 +1,18 @@
 /** @define data-list; weak */
 .data-list {
     position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 
     &__body {
         flex: 1;
+
+        &-wrapper {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
     }
     &__footer {
         width: 100%;
@@ -11,22 +20,16 @@
         border-top: 2px solid var(--border-disabled);
         display: flex;
         align-items: center;
-        position: absolute;
-        bottom: 0px;
-        left: 0px;
+        position: relative;
     }
     &__item {
-        height: calc(100% - 8px);
-        margin-bottom: 8px;
-        background-color: var(--general-section-1);
-        padding: 4px 0px;
-
         &--wrapper {
             text-decoration: none;
+            -webkit-touch-callout: none;
+            -webkit-tap-highlight-color: transparent;
         }
         @include mobile {
             border-radius: $BORDER_RADIUS;
-            padding: 0.4rem 0;
         }
     }
     &__row {
@@ -61,5 +64,19 @@
                 font-size: 1.2rem;
             }
         }
+        &-divider {
+            margin: 0 1.6rem;
+
+            &:after {
+                content: '';
+                display: block;
+                border-top: 1px solid var(--general-main-1);
+            }
+        }
     }
+}
+
+/* stylelint-disable-next-line plugin/selector-bem-pattern */
+.ReactVirtualized__List {
+    outline: 0;
 }

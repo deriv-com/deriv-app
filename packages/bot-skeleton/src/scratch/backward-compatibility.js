@@ -280,9 +280,8 @@ export default class BlockConversion {
     // eslint-disable-next-line class-methods-use-this
     createWorkspace() {
         const options = new Blockly.Options({ media: `${__webpack_public_path__}media/` });
-        const el_injection_div = document.createElement('div');
-        const svg = Blockly.createDom_(el_injection_div, options);
-        const workspace = Blockly.createMainWorkspace_(svg, options, false, false);
+        const el_injection_div = new DocumentFragment();
+        const workspace = Blockly.createVirtualWorkspace_(el_injection_div, options, false, false);
 
         return workspace;
     }
@@ -348,6 +347,23 @@ export default class BlockConversion {
         return xml;
     }
 
+    naivelyFixLegacyStrategyAfterConversion() {
+        // For old "market" blocks, move everything in "Trade options" except "DURATION"
+        // to "Run once at start". Legacy "market" blocks had no such thing as "Run once at start"
+        // not moving everything would kill Martingale strategies as they'd be reinitialised each run.
+        const trade_definition_block = this.workspace.getTradeDefinitionBlock();
+
+        if (trade_definition_block) {
+            trade_definition_block.getBlocksInStatement('SUBMARKET').forEach(block => {
+                if (block.type !== 'trade_definition_tradeoptions') {
+                    const last_connection = trade_definition_block.getLastConnectionInStatement('INITIALIZATION');
+                    block.unplug(true);
+                    last_connection.connect(block.previousConnection);
+                }
+            });
+        }
+    }
+
     generateUniqueVariable(variable_name) {
         let current_name = variable_name;
         let counter = 0;
@@ -367,9 +383,10 @@ export default class BlockConversion {
         // Disable events (globally) to suppress block onchange listeners from firing.
         Blockly.Events.disable();
 
+        // We only want to update renamed fields for modern strategies.
         const xml = this.updateRenamedFields(strategy_node);
 
-        // We only want to update renamed fields for modern strategies.
+        // Don't convert already compatible strategies.
         if (strategy_node.hasAttribute('is_dbot') && strategy_node.getAttribute('is_dbot') === 'true') {
             Blockly.Events.enable();
             return xml;
@@ -473,6 +490,8 @@ export default class BlockConversion {
             }
         });
 
+        this.naivelyFixLegacyStrategyAfterConversion();
+
         this.workspace.getAllBlocks(true).forEach(block => {
             block.initSvg();
             block.render();
@@ -486,7 +505,8 @@ export default class BlockConversion {
             converted_xml.setAttribute('collection', 'true');
         }
 
-        this.workspace.dispose();
+        converted_xml.setAttribute('is_dbot', 'true');
+
         this.workspace = null;
 
         Blockly.Events.enable();

@@ -51,6 +51,8 @@ $alpha-color-black-2: transparentize($color-black, 0.04);
 $alpha-color-black-3: transparentize($color-black-7, 0.92);
 $alpha-color-black-4: transparentize($color-black-7, 0.84);
 $alpha-color-black-5: transparentize($color-black-7, 0.16);
+$alpha-color-black-6: transparentize($color-black-7, 0.36);
+$alpha-color-blue-1: transparentize($color-blue, 0.84);
 $alpha-color-white-1: transparentize($color-white, 0.04);
 $alpha-color-white-2: transparentize($color-white, 0.84);
 $alpha-color-white-3: transparentize($color-white, 0.92);
@@ -63,6 +65,8 @@ $gradient-color-green-1: linear-gradient(to top, $color-white, transparentize($c
 $gradient-color-green-2: linear-gradient(to top, $color-black, transparentize($color-green-3, 0.84));
 $gradient-color-red-1: linear-gradient(to top, $color-white, transparentize($color-red, 0.84));
 $gradient-color-red-2: linear-gradient(to top, $color-black, transparentize($color-red, 0.84));
+$gradient-color-white: linear-gradient(to right, transparentize($color-white, 1) -5%, $color-white 71%);
+$gradient-color-black: linear-gradient(to right, transparentize($color-black, 1) -5%, $color-black 71%);
 
 /* Preserve legacy variables */
 /* Primary */
@@ -130,5 +134,7 @@ $HEADER_HEIGHT: 48px;
 $FOOTER_HEIGHT: 36px;
 
 $MOBILE_HEADER_HEIGHT: 40px;
+$MOBILE_WRAPPER_HEADER_HEIGHT: 40px;
+$MOBILE_WRAPPER_FOOTER_HEIGHT: 70px;
 
 $SIDEBAR_WIDTH: 240px;

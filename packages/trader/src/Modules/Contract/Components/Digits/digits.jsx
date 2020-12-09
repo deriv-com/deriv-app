@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { toJS } from 'mobx';
 import { DesktopWrapper, MobileWrapper, Popover } from '@deriv/components';
-import { isMobile } from '@deriv/shared/utils/screen';
+import { isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { isContractElapsed } from 'Stores/Modules/Contract/Helpers/logic';
 import { Bounce, SlideIn } from 'App/Components/Animations';
-import { getMarketNamesMap } from 'Constants';
+import { getMarketNamesMap } from '../../../../Constants';
 import { DigitSpot, LastDigitPrediction } from '../LastDigitPrediction';
 import 'Sass/app/modules/contract/digits.scss';
 
@@ -22,6 +22,7 @@ const DigitsWrapper = ({
     onDigitChange,
     selected_digit,
     trade_type,
+    onChangeStatus,
     ...props
 }) => {
     const has_contract = contract_info.date_start;
@@ -49,10 +50,10 @@ const DigitsWrapper = ({
     }
 
     React.useEffect(() => {
-        if (props.onChangeStatus) {
-            props.onChangeStatus({ status, current_tick: tick ? tick.current_tick : null });
+        if (onChangeStatus) {
+            onChangeStatus({ status, current_tick: tick ? tick.current_tick : null });
         }
-    }, [tick, is_trade_page, display_status]);
+    }, [tick, is_trade_page, display_status, onChangeStatus, status]);
 
     return (
         <LastDigitPrediction

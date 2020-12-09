@@ -11,6 +11,18 @@
     --text-size-xl: 4.8rem;
     --text-size-xxl: 6.4rem;
 
+    //Line Height
+    --text-lh-xs: 1.25;
+    --text-lh-s: 1.4;
+    --text-lh-m: 1.5;
+    --text-lh-l: 1.75;
+
+    //Font Weight
+    --text-weight-lighter: lighter;
+    --text-weight-normal: normal;
+    --text-weight-bold: bold;
+    --text-weight-bolder: bolder;
+
     // Brand primary colors
     --brand-dark-grey: #{$color-black};
     --brand-red-coral: #{$color-red};
@@ -55,6 +67,7 @@
         // Shadow
         --shadow-menu: #{$alpha-color-black-4};
         --shadow-menu-2: #{$alpha-color-black-4};
+        --shadow-drop: #{$alpha-color-black-3};
         // States
         --state-normal: #{$color-white};
         --state-hover: #{$color-grey-4};
@@ -72,6 +85,7 @@
         --fill-disabled: #{$color-grey-3};
         // Status
         --status-default: #{$color-grey-3};
+        --status-adjustment: #{$color-grey-1};
         --status-danger: #{$color-red-1};
         --status-success: #{$color-green-1};
         --status-warning: #{$color-yellow};
@@ -79,10 +93,12 @@
         --status-colored-background: #{$color-white};
         // Transparentize
         --transparent-success: #{$alpha-color-green-1};
+        --transparent-info: #{$alpha-color-blue-1};
         /* TODO: change to styleguide later */
         // Gradient
         --gradient-success: #{$gradient-color-green-1};
         --gradient-danger: #{$gradient-color-red-1};
+        --gradient-right-edge: #{$gradient-color-white};
     }
     .theme--dark {
         // General
@@ -120,6 +136,7 @@
         // Shadow
         --shadow-menu: #{$alpha-color-black-5};
         --shadow-menu-2: #{$alpha-color-black-1};
+        --shadow-drop: #{$alpha-color-black-6};
         // States
         --state-normal: #{$color-black};
         --state-hover: #{$color-black-5};
@@ -137,6 +154,7 @@
         --fill-disabled: #{$color-black-4};
         // Status
         --status-default: #{$color-grey-3};
+        --status-adjustment: #{$color-grey-1};
         --status-danger: #{$color-red-2};
         --status-warning: #{$color-yellow};
         --status-success: #{$color-green-3};
@@ -144,9 +162,11 @@
         --status-colored-background: #{$color-white};
         // Transparentize
         --transparent-success: #{$alpha-color-green-2};
+        --transparent-info: #{$alpha-color-blue-1};
         /* TODO: change to styleguide later */
         // Gradient
         --gradient-success: #{$gradient-color-green-2};
         --gradient-danger: #{$gradient-color-red-2};
+        --gradient-right-edge: #{$gradient-color-black};
     }
 }

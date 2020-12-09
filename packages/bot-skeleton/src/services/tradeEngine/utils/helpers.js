@@ -1,35 +1,33 @@
-import { getRoundedNumber } from '@deriv/shared/utils/currency';
+import { getRoundedNumber, formatTime, findValueByKeyRecursively } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { formatTime } from '@deriv/shared/utils/date';
-import { log } from './broadcast';
+import { error as logError } from './broadcast';
+import { observer as globalObserver } from '../../../utils/observer';
 
-export const noop = () => {};
-
-const hasOwnProperty = (obj, prop) => Object.prototype.hasOwnProperty.call(obj, prop);
-
-export const isVirtual = tokenInfo => hasOwnProperty(tokenInfo, 'loginInfo') && tokenInfo.loginInfo.is_virtual;
-
-export const tradeOptionToProposal = tradeOption =>
-    tradeOption.contractTypes.map(type => {
+export const tradeOptionToProposal = (trade_option, purchase_reference) =>
+    trade_option.contractTypes.map(type => {
         const proposal = {
-            duration_unit: tradeOption.duration_unit,
-            basis: tradeOption.basis,
-            currency: tradeOption.currency,
-            symbol: tradeOption.symbol,
-            duration: tradeOption.duration,
-            amount: tradeOption.amount,
+            duration_unit: trade_option.duration_unit,
+            basis: trade_option.basis,
+            currency: trade_option.currency,
+            symbol: trade_option.symbol,
+            duration: trade_option.duration,
+            amount: trade_option.amount,
             contract_type: type,
+            passthrough: {
+                contract_type: type,
+                purchase_reference,
+            },
         };
-        if (tradeOption.prediction !== undefined) {
-            proposal.selected_tick = tradeOption.prediction;
+        if (trade_option.prediction !== undefined) {
+            proposal.selected_tick = trade_option.prediction;
         }
-        if (!['TICKLOW', 'TICKHIGH'].includes(type) && tradeOption.prediction !== undefined) {
-            proposal.barrier = tradeOption.prediction;
-        } else if (tradeOption.barrierOffset !== undefined) {
-            proposal.barrier = tradeOption.barrierOffset;
+        if (!['TICKLOW', 'TICKHIGH'].includes(type) && trade_option.prediction !== undefined) {
+            proposal.barrier = trade_option.prediction;
+        } else if (trade_option.barrierOffset !== undefined) {
+            proposal.barrier = trade_option.barrierOffset;
         }
-        if (tradeOption.secondBarrierOffset !== undefined) {
-            proposal.barrier2 = tradeOption.secondBarrierOffset;
+        if (trade_option.secondBarrierOffset !== undefined) {
+            proposal.barrier2 = trade_option.secondBarrierOffset;
         }
         return proposal;
     });
@@ -49,91 +47,111 @@ export const getDirection = ticks => {
 
 export const getLastDigit = (tick, pipSize) => Number(tick.toFixed(pipSize).slice(-1)[0]);
 
-export const subscribeToStream = (observer, name, respHandler, request, registerOnce, type, unregister) =>
-    new Promise(resolve => {
-        observer.register(
-            name,
-            (...args) => {
-                respHandler(...args);
-                resolve();
-            },
-            registerOnce,
-            type && { type, unregister },
-            true
+const getBackoffDelayInMs = (error, delay_index) => {
+    const base_delay = 2.5;
+    const max_delay = 15;
+    const next_delay_in_seconds = Math.min(base_delay * delay_index, max_delay);
+
+    if (error?.name === 'RateLimit') {
+        logError(
+            localize('You are rate limited for: {{ message_type }}, retrying in {{ delay }}s (ID: {{ request }})', {
+                message_type: error.error.msg_type,
+                delay: next_delay_in_seconds,
+                request: error.error.echo_req.req_id,
+            })
         );
-        request();
-    });
-
-export const registerStream = (observer, name, cb) => {
-    if (observer.isRegistered(name)) {
-        return;
+    } else if (error?.name === 'DisconnectError') {
+        logError(
+            localize('You are disconnected, retrying in {{ delay }}s', {
+                delay: next_delay_in_seconds,
+            })
+        );
+    } else {
+        logError(
+            localize('Request failed for: {{ message_type }}, retrying in {{ delay }}s', {
+                message_type: error.msg_type || localize('unknown'),
+                delay: next_delay_in_seconds,
+            })
+        );
     }
-    observer.register(name, cb);
+
+    return next_delay_in_seconds * 1000;
 };
 
-const maxRetries = 12;
-
-const notifyRetry = (msg, error, delay) => log(`${msg}: ${error.error.msg_type}, ${localize('retrying in')} ${delay}s`);
-
-const getBackoffDelay = (error, delayIndex) => {
-    const offset = 0.5; // 500ms
-
-    const errorCode = error && error.name;
-
-    if (errorCode === 'DisconnectError') {
-        return offset * 1000;
+export const shouldThrowError = (error, errors_to_ignore = []) => {
+    if (!error) {
+        return false;
     }
 
-    const maxExpTries = 4;
-    const exponentialIncrease = 2 ** delayIndex + offset;
+    const default_errors_to_ignore = [
+        'CallError',
+        'WrongResponse',
+        'GetProposalFailure',
+        'RateLimit',
+        'DisconnectError',
+    ];
+    const is_ignorable_error = errors_to_ignore.concat(default_errors_to_ignore).includes(error.name);
 
-    if (errorCode === 'RateLimit' || delayIndex < maxExpTries) {
-        notifyRetry(localize('Rate limit reached for'), error, exponentialIncrease);
-        return exponentialIncrease * 1000;
-    }
-
-    const linearIncrease = exponentialIncrease + (maxExpTries - delayIndex + 1);
-
-    notifyRetry(localize('Request failed for'), error, linearIncrease);
-    return linearIncrease * 1000;
+    return !is_ignorable_error;
 };
 
-export const shouldThrowError = (e, types = [], delayIndex = 0) =>
-    e &&
-    (!types
-        .concat(['CallError', 'WrongResponse', 'GetProposalFailure', 'RateLimit', 'DisconnectError'])
-        .includes(e.name) ||
-        (e.name !== 'DisconnectError' && delayIndex > maxRetries));
+export const recoverFromError = (promiseFn, recoverFn, errors_to_ignore, delay_index) => {
+    return new Promise((resolve, reject) => {
+        const promise = promiseFn();
 
-export const recoverFromError = (f, r, types, delayIndex) =>
-    new Promise((resolve, reject) => {
-        const promise = f();
+        if (promise) {
+            promise.then(resolve).catch(error => {
+                if (shouldThrowError(error, errors_to_ignore)) {
+                    reject(error);
+                    return;
+                }
 
-        if (!promise) {
+                recoverFn(
+                    error.name,
+                    () =>
+                        new Promise(recoverResolve => {
+                            const getGlobalTimeouts = () => globalObserver.getState('global_timeouts') ?? [];
+
+                            const timeout = setTimeout(() => {
+                                const global_timeouts = getGlobalTimeouts();
+                                delete global_timeouts[timeout];
+                                globalObserver.setState(global_timeouts);
+                                recoverResolve();
+                            }, getBackoffDelayInMs(error, delay_index));
+
+                            const global_timeouts = getGlobalTimeouts();
+                            const cancellable_timeouts = ['buy'];
+                            const msg_type = findValueByKeyRecursively(error, 'msg_type');
+
+                            global_timeouts[timeout] = {
+                                is_cancellable: cancellable_timeouts.includes(msg_type),
+                                msg_type,
+                            };
+
+                            globalObserver.setState({ global_timeouts });
+                        })
+                );
+            });
+        } else {
             resolve();
-            return;
         }
-
-        promise.then(resolve).catch(e => {
-            if (shouldThrowError(e, types, delayIndex)) {
-                reject(e);
-                return;
-            }
-
-            r(e.name, () => new Promise(delayPromise => setTimeout(delayPromise, getBackoffDelay(e, delayIndex))));
-        });
     });
+};
 
-export const doUntilDone = (f, types) => {
-    let delayIndex = 0;
+export const doUntilDone = (promiseFn, errors_to_ignore) => {
+    let delay_index = 1;
 
     return new Promise((resolve, reject) => {
-        const repeat = () => {
-            recoverFromError(f, (errorCode, makeDelay) => makeDelay().then(repeat), types, delayIndex++)
-                .then(resolve)
-                .catch(reject);
+        const recoverFn = (error_code, makeDelay) => {
+            delay_index++;
+            makeDelay().then(repeatFn);
         };
-        repeat();
+
+        const repeatFn = () => {
+            recoverFromError(promiseFn, recoverFn, errors_to_ignore, delay_index).then(resolve).catch(reject);
+        };
+
+        repeatFn();
     });
 };
 
@@ -158,48 +176,3 @@ export const createDetails = contract => {
 };
 
 export const getUUID = () => `${new Date().getTime() * Math.random()}`;
-
-export const showDialog = options =>
-    new Promise((resolve, reject) => {
-        const $dialog = $('<div/>', { class: 'draggable-dialog', title: options.title });
-        options.text.forEach(text => $dialog.append(`<p style="margin: 0.7em;">${text}</p>`));
-        const defaultButtons = [
-            {
-                text: localize('No'),
-                class: 'button-secondary',
-                click() {
-                    $(this).dialog('close');
-                    $(this).remove();
-                    reject();
-                },
-            },
-            {
-                text: localize('Yes'),
-                class: 'button-primary',
-                click() {
-                    $(this).dialog('close');
-                    $(this).remove();
-                    resolve();
-                },
-            },
-        ];
-        const dialogOptions = {
-            autoOpen: false,
-            classes: { 'ui-dialog-titlebar-close': 'icon-close' },
-            closeText: '',
-            height: 'auto',
-            width: 600,
-            modal: true,
-            resizable: false,
-            open() {
-                $(this)
-                    .parent()
-                    .find('.ui-dialog-buttonset > button')
-                    .removeClass('ui-button ui-corner-all ui-widget');
-            },
-        };
-        Object.assign(dialogOptions, { buttons: options.buttons || defaultButtons });
-
-        $dialog.dialog(dialogOptions);
-        $dialog.dialog('open');
-    });

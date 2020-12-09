@@ -1,0 +1,181 @@
+/** @define dc-input-field; weak */
+.dc-input-field {
+    margin: 0.8rem 0 0;
+    position: relative;
+
+    &__label {
+        @include typeface(--paragraph-left-normal-black);
+        color: var(--text-general);
+        margin-bottom: 0.2rem;
+        display: inline-block;
+        text-align: center;
+        width: 100%;
+    }
+    & .inline-icon {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        z-index: 1;
+        cursor: pointer;
+    }
+    &__helper {
+        @include typeface(--small-left-light-grey);
+    }
+}
+
+/** @define dc-input-wrapper */
+.dc-input-wrapper {
+    position: relative;
+
+    &__input {
+        &::-ms-clear {
+            // Edge: hide clear icon for incement input
+            display: none;
+        }
+    }
+    &__button {
+        position: absolute;
+        z-index: 1;
+        top: 2px;
+        height: 28px;
+        border: none;
+        padding: 0;
+        margin: initial;
+        min-width: 3.2rem;
+        border-radius: 3px;
+        background-color: initial;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &--increment {
+            right: 2px;
+        }
+        &--decrement {
+            left: 2px;
+        }
+        &:hover {
+            background: var(--state-hover);
+            cursor: pointer;
+
+            & ~ .dc-input-wrapper__input {
+                @extend .input:hover;
+            }
+        }
+        &:disabled:hover {
+            cursor: not-allowed;
+            background: transparent;
+        }
+    }
+    &__icon {
+        @extend %inline-icon;
+    }
+    &--disabled {
+        pointer-events: none;
+        color: var(--text-disabled);
+    }
+    &--inline {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+/** @define input */
+.input {
+    @include typeface(--paragraph-center-normal-black);
+    list-style: none;
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    height: 32px;
+    padding-left: 0.8rem;
+    border-radius: $BORDER_RADIUS;
+    transition: transform 0.3s;
+    background-color: var(--fill-normal);
+    border: 1px solid var(--fill-normal);
+    color: var(--text-prominent);
+
+    &[type='checkbox'] {
+        font-size: 1.2rem;
+        cursor: pointer;
+        display: inline-block;
+        vertical-align: middle;
+        width: 16px;
+        height: 16px;
+        border-radius: 0;
+        padding: 0;
+        background-color: var(--general-section-1);
+        border: 1px solid var(--text-less-prominent);
+
+        &:active {
+            border-radius: 0;
+            box-shadow: none;
+            border-color: var(--brand-red-coral);
+        }
+        &:hover {
+            border-color: var(--border-hover);
+        }
+        &:focus {
+            border-radius: 0;
+            box-shadow: none;
+            border-color: var(--border-active);
+        }
+        &:checked {
+            background: var(--brand-red-coral);
+            border-color: var(--brand-red-coral);
+
+            &:after {
+                display: inline-block;
+            }
+            &:hover {
+                border-color: var(--brand-red-coral);
+            }
+        }
+        &::-ms-check {
+            // IE/EDGE support
+            background: transparent;
+            border-color: transparent;
+            color: $COLOR_WHITE;
+        }
+        &:after {
+            @include typeface(--small-left-normal-active);
+            content: 'L';
+            transform: scaleX(-1) rotate(-40deg);
+            position: absolute;
+            top: -10%;
+            left: 25%;
+            display: none;
+        }
+    }
+    &:not([type='range']) {
+        touch-action: manipulation;
+    }
+    &[readonly] {
+        cursor: pointer;
+    }
+    &::placeholder {
+        border-color: var(--border-normal);
+    }
+    &:hover {
+        border-color: var(--border-hover);
+    }
+    &:active,
+    &:focus {
+        outline: 0;
+        border-radius: $BORDER_RADIUS;
+        border-color: var(--border-active);
+        color: var(--text-prominent);
+    }
+    &--has-inline-prefix {
+        padding-right: 40px !important;
+        border-radius: $BORDER_RADIUS !important;
+    }
+    &--error {
+        color: $COLOR_RED;
+        border: 1px solid $COLOR_RED !important;
+    }
+    &:disabled {
+        color: var(--text-disabled);
+    }
+}

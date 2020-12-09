@@ -1,4 +1,7 @@
+import { deriv_urls } from './constants';
+import { getPlatformFromUrl } from './helpers';
 import { getCurrentProductionDomain } from '../config/config';
+import { routes } from '../routes';
 
 const default_domain = 'binary.com';
 const host_map = {
@@ -9,12 +12,22 @@ const host_map = {
     'tech.binary.com': 'tech.binary.com',
     'blog.binary.com': 'blog.binary.com',
 };
-let location_url = undefined;
-let static_host = undefined;
-let default_language = undefined;
+let location_url, static_host, default_language;
 
-export const urlForLanguage = (target_language, url = window.location.href) =>
+export const legacyUrlForLanguage = (target_language, url = window.location.href) =>
     url.replace(new RegExp(`/${default_language}/`, 'i'), `/${(target_language || 'EN').trim().toLowerCase()}/`);
+
+export const urlForLanguage = (lang, url = window.location.href) => {
+    const current_url = new URL(url);
+
+    if (lang === 'EN') {
+        current_url.searchParams.delete('lang');
+    } else {
+        current_url.searchParams.set('lang', lang);
+    }
+
+    return `${current_url}`;
+};
 
 export const reset = () => {
     location_url = window?.location ?? location_url;
@@ -43,7 +56,7 @@ export const paramsHash = href => {
     return param_hash;
 };
 
-export const normalizePath = path => (path ? path.replace(/(^\/|\/$|[^a-zA-Z0-9-_/])/g, '') : '');
+export const normalizePath = path => (path ? path.replace(/(^\/|\/$|[^a-zA-Z0-9-_./()])/g, '') : '');
 
 export const urlFor = (
     path,
@@ -62,16 +75,27 @@ export const urlFor = (
     const lang = language?.toLowerCase?.() ?? default_language;
     let domain = `https://${window.location.hostname}/`;
     if (legacy) {
-        if (/localhost|binary\.sx/.test(domain)) {
-            domain = `https://binary.com/${lang || 'en'}/`;
+        if (getPlatformFromUrl().is_staging_deriv_app) {
+            domain = domain.replace(/staging-app\.deriv\.com/, `staging.binary.com/${lang || 'en'}`);
+        } else if (getPlatformFromUrl().is_staging_deriv_crypto) {
+            domain = domain.replace(/staging-app\.derivcrypto\.com/, `staging.binary.com/${lang || 'en'}`);
+        } else if (getPlatformFromUrl().is_deriv_app) {
+            domain = domain.replace(/app\.deriv\.com/, `binary.com/${lang || 'en'}`);
+        } else if (getPlatformFromUrl().is_deriv_crypto) {
+            domain = domain.replace(/app\.derivcrypto\.com/, `binary.com/${lang || 'en'}`);
         } else {
-            domain = domain.replace(/deriv\.app/, `binary.com/${lang || 'en'}`);
+            domain = `https://binary.com/${lang || 'en'}/`;
         }
     }
     const new_url = `${domain}${normalizePath(path) || 'home'}.html${query_string ? `?${query_string}` : ''}`;
 
-    // replace old lang with new lang
-    return urlForLanguage(lang, new_url);
+    if (lang && !legacy) {
+        return urlForLanguage(lang, new_url);
+    } else if (legacy) {
+        return legacyUrlForLanguage(lang, new_url);
+    }
+
+    return new_url;
 };
 
 export const urlForCurrentDomain = href => {
@@ -140,10 +164,33 @@ export const setUrlLanguage = lang => {
     default_language = lang;
 };
 
-export const getDerivComLink = (path = '') => {
-    const host = 'https://deriv.com';
-    const lang = default_language?.toLowerCase();
-    const link_lang = lang === 'en' ? '' : `/${lang}`;
+export const getStaticUrl = (
+    path = '',
+    options = {
+        is_deriv_crypto: false,
+    },
+    is_document = false
+) => {
+    const host = options.is_deriv_crypto ? deriv_urls.DERIV_CRYPTO_COM_PRODUCTION : deriv_urls.DERIV_COM_PRODUCTION;
+    let lang = default_language?.toLowerCase();
 
-    return `${host}${link_lang}/${normalizePath(path)}`;
+    if (lang && lang !== 'en') {
+        lang = `/${lang}`;
+    } else {
+        lang = '';
+    }
+
+    if (is_document) return `${host}/${normalizePath(path)}`;
+
+    // Deriv.com supports languages separated by '-' not '_'
+    if (host === deriv_urls.DERIV_COM_PRODUCTION && lang.includes('_')) {
+        lang = lang.replace('_', '-');
+    }
+
+    return `${host}${lang}/${normalizePath(path)}`;
 };
+
+export const getPath = (route_path, parameters = {}) =>
+    Object.keys(parameters).reduce((p, name) => p.replace(`:${name}`, parameters[name]), route_path);
+
+export const getContractPath = contract_id => getPath(routes.contract, { contract_id });

@@ -2,9 +2,8 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
-import { Button, Icon } from '@deriv/components';
-import routes from '@deriv/shared/utils/routes';
-import CurrencyUtils from '@deriv/shared/utils/currency';
+import { Button, Icon, Text } from '@deriv/components';
+import { routes, formatMoney, getCurrencyDisplayCode, getCurrencyName } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
@@ -22,25 +21,33 @@ class PaymentAgentTransferReceipt extends React.Component {
                         <Localize i18n_default_text='Your funds have been transferred' />
                     </h2>
                     <div className='cashier__transferred-amount cashier__text--bold'>
-                        <span className={classNames('symbols', `symbols--${this.props.currency.toLowerCase()}`)} />
-                        {CurrencyUtils.formatMoney(this.props.currency, this.props.receipt.amount_transferred, true)}
+                        {formatMoney(this.props.currency, this.props.receipt.amount_transferred, true)}
+                        <span className={classNames('symbols', `symbols--${this.props.currency.toLowerCase()}`)}>
+                            {getCurrencyDisplayCode(this.props.currency)}
+                        </span>
                     </div>
                     <div className='cashier__transferred-details-wrapper'>
                         <span className='account-transfer__transfer-details-from'>
                             <Icon icon={`IcCurrency-${this.props.currency.toLowerCase()}`} />
                             <span className='cashier__transferred-details'>
-                                <span className='cashier__text--bold'>
-                                    {CurrencyUtils.getCurrencyDisplayCode(this.props.currency)}
-                                </span>
-                                {this.props.loginid}
+                                <Text size='xs' line_height='xs' weight='bold' className='cashier__text--bold'>
+                                    {getCurrencyName(this.props.currency)}
+                                </Text>
+                                <Text size='xs' line_height='xs' color='prominent' className='cashier__text--faint'>
+                                    {this.props.loginid}
+                                </Text>
                             </span>
                         </span>
                         <Icon className='cashier__transferred-icon' icon='IcArrowLeftBold' />
                         <span className='account-transfer__transfer-details-to'>
-                            <Icon icon='IcUserOutline' />
+                            <Icon icon='IcClient' />
                             <span className='cashier__transferred-details'>
-                                <span className='cashier__text--bold'>{this.props.receipt.client_name}</span>
-                                &nbsp;{this.props.receipt.client_id}
+                                <Text size='xs' line_height='xs' weight='bold' className='cashier__text--bold'>
+                                    {this.props.receipt.client_name}
+                                </Text>
+                                <Text size='xs' line_height='xs' color='prominent' className='cashier__text--faint'>
+                                    {this.props.receipt.client_id}
+                                </Text>
                             </span>
                         </span>
                     </div>

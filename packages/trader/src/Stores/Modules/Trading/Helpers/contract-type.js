@@ -1,8 +1,8 @@
-import ObjectUtils from '@deriv/shared/utils/object';
+import { getPropertyValue, cloneObject, isTimeValid, minDate, toMoment, shouldShowCancellation } from '@deriv/shared';
 import ServerTime from '_common/base/server_time';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
-import { isTimeValid, minDate, toMoment } from '@deriv/shared/utils/date';
+
 import { getUnitMap } from 'Stores/Modules/Portfolio/Helpers/details';
 import { buildBarriersConfig } from './barrier';
 import { buildDurationConfig, hasIntradayDurationUnit } from './duration';
@@ -24,15 +24,15 @@ const ContractType = (() => {
 
     const buildContractTypesConfig = symbol =>
         WS.storage.contractsFor(symbol).then(r => {
-            const has_contracts = ObjectUtils.getPropertyValue(r, ['contracts_for']);
+            const has_contracts = getPropertyValue(r, ['contracts_for']);
             has_only_forward_starting_contracts =
                 has_contracts && !r.contracts_for.available.find(contract => contract.start_type !== 'forward');
             if (!has_contracts || has_only_forward_starting_contracts) return;
             const contract_categories = getContractCategoriesConfig();
-            contract_types = getContractTypesConfig();
+            contract_types = getContractTypesConfig(symbol);
 
             available_contract_types = {};
-            available_categories = ObjectUtils.cloneObject(contract_categories); // To preserve the order (will clean the extra items later in this function)
+            available_categories = cloneObject(contract_categories); // To preserve the order (will clean the extra items later in this function)
 
             r.contracts_for.available.forEach(contract => {
                 const type = Object.keys(contract_types).find(
@@ -105,7 +105,7 @@ const ContractType = (() => {
                     sub_cats[sub_cats.indexOf(type)] = { value: type, text: contract_types[type].title };
 
                     // populate available contract types
-                    available_contract_types[type] = ObjectUtils.cloneObject(contract_types[type]);
+                    available_contract_types[type] = cloneObject(contract_types[type]);
                 }
                 const config = available_contract_types[type].config || {};
 
@@ -147,6 +147,8 @@ const ContractType = (() => {
             expiry_type,
             multiplier,
             start_date,
+            cancellation_duration,
+            symbol,
         } = store;
 
         if (!contract_type) return {};
@@ -163,7 +165,7 @@ const ContractType = (() => {
         const obj_duration_units_min_max = getDurationMinMax(contract_type, obj_start_type.contract_start_type);
 
         const obj_multiplier_range_list = getMultiplierRange(contract_type, multiplier);
-        const obj_cancellation_range_list = getCancellationRange(contract_type);
+        const obj_cancellation = getCancellation(contract_type, cancellation_duration, symbol);
         const obj_expiry_type = getExpiryType(obj_duration_units_list, expiry_type);
 
         return {
@@ -178,7 +180,7 @@ const ContractType = (() => {
             ...obj_duration_units_min_max,
             ...obj_expiry_type,
             ...obj_multiplier_range_list,
-            ...obj_cancellation_range_list,
+            ...obj_cancellation,
         };
     };
 
@@ -204,7 +206,7 @@ const ContractType = (() => {
 
     const getDurationUnitsList = (contract_type, contract_start_type) => ({
         duration_units_list:
-            ObjectUtils.getPropertyValue(available_contract_types, [
+            getPropertyValue(available_contract_types, [
                 contract_type,
                 'config',
                 'durations',
@@ -215,7 +217,7 @@ const ContractType = (() => {
 
     const getDurationUnit = (duration_unit, contract_type, contract_start_type) => {
         const duration_units =
-            ObjectUtils.getPropertyValue(available_contract_types, [
+            getPropertyValue(available_contract_types, [
                 contract_type,
                 'config',
                 'durations',
@@ -234,7 +236,7 @@ const ContractType = (() => {
 
     const getDurationMinMax = (contract_type, contract_start_type, contract_expiry_type) => {
         let duration_min_max =
-            ObjectUtils.getPropertyValue(available_contract_types, [
+            getPropertyValue(available_contract_types, [
                 contract_type,
                 'config',
                 'durations',
@@ -257,7 +259,7 @@ const ContractType = (() => {
     });
 
     const getStartDates = (contract_type, current_start_date) => {
-        const config = ObjectUtils.getPropertyValue(available_contract_types, [contract_type, 'config']);
+        const config = getPropertyValue(available_contract_types, [contract_type, 'config']);
         const start_dates_list = [];
 
         if (config.has_spot) {
@@ -276,7 +278,7 @@ const ContractType = (() => {
     };
 
     const getSessions = (contract_type, start_date) => {
-        const config = ObjectUtils.getPropertyValue(available_contract_types, [contract_type, 'config']) || {};
+        const config = getPropertyValue(available_contract_types, [contract_type, 'config']) || {};
         const sessions = ((config.forward_starting_dates || []).find(option => option.value === start_date) || {})
             .sessions;
         return { sessions };
@@ -325,7 +327,7 @@ const ContractType = (() => {
         if (!(date in trading_events)) {
             const trading_times_response = await WS.tradingTimes(date);
 
-            if (ObjectUtils.getPropertyValue(trading_times_response, ['trading_times', 'markets'])) {
+            if (getPropertyValue(trading_times_response, ['trading_times', 'markets'])) {
                 for (let i = 0; i < trading_times_response.trading_times.markets.length; i++) {
                     const submarkets = trading_times_response.trading_times.markets[i].submarkets;
                     if (submarkets) {
@@ -358,7 +360,7 @@ const ContractType = (() => {
         if (!(date in trading_times)) {
             const trading_times_response = await WS.tradingTimes(date);
 
-            if (ObjectUtils.getPropertyValue(trading_times_response, ['trading_times', 'markets'])) {
+            if (getPropertyValue(trading_times_response, ['trading_times', 'markets'])) {
                 for (let i = 0; i < trading_times_response.trading_times.markets.length; i++) {
                     const submarkets = trading_times_response.trading_times.markets[i].submarkets;
                     if (submarkets) {
@@ -481,10 +483,7 @@ const ContractType = (() => {
                 }
                 // Set the expiry_time to 5 minute less than start_time for forwading contracts when the expiry_time is null and the expiry_date is tomorrow.
                 if (end_time === '00:00' && start_moment.isBefore(end_moment, 'day')) {
-                    end_time = start_moment
-                        .clone()
-                        .subtract(5, 'minute')
-                        .format('HH:mm');
+                    end_time = start_moment.clone().subtract(5, 'minute').format('HH:mm');
                 }
             }
         }
@@ -494,12 +493,11 @@ const ContractType = (() => {
     const setMinuteMultipleByFive = moment_obj => moment_obj.minute(Math.ceil(moment_obj.minute() / 5) * 5);
 
     const getTradeTypes = contract_type => ({
-        trade_types: ObjectUtils.getPropertyValue(available_contract_types, [contract_type, 'config', 'trade_types']),
+        trade_types: getPropertyValue(available_contract_types, [contract_type, 'config', 'trade_types']),
     });
 
     const getBarriers = (contract_type, expiry_type) => {
-        const barriers =
-            ObjectUtils.getPropertyValue(available_contract_types, [contract_type, 'config', 'barriers']) || {};
+        const barriers = getPropertyValue(available_contract_types, [contract_type, 'config', 'barriers']) || {};
         const barrier_values = barriers[expiry_type] || {};
         const barrier_1 = barrier_values.barrier || barrier_values.high_barrier || '';
         const barrier_2 = barrier_values.low_barrier || '';
@@ -511,7 +509,7 @@ const ContractType = (() => {
     };
 
     const getBasis = (contract_type, basis) => {
-        const arr_basis = ObjectUtils.getPropertyValue(available_contract_types, [contract_type, 'basis']) || [];
+        const arr_basis = getPropertyValue(available_contract_types, [contract_type, 'basis']) || [];
         const localized_basis = getLocalizedBasis();
         const basis_list = arr_basis.reduce((cur, bas) => [...cur, { text: localized_basis[bas], value: bas }], []);
 
@@ -523,7 +521,7 @@ const ContractType = (() => {
 
     const getMultiplierRange = (contract_type, multiplier) => {
         const arr_multiplier =
-            ObjectUtils.getPropertyValue(available_contract_types, [contract_type, 'config', 'multiplier_range']) || [];
+            getPropertyValue(available_contract_types, [contract_type, 'config', 'multiplier_range']) || [];
 
         return {
             multiplier_range_list: arr_multiplier.map(m => ({ text: `x${m}`, value: m })),
@@ -531,10 +529,9 @@ const ContractType = (() => {
         };
     };
 
-    const getCancellationRange = contract_type => {
+    const getCancellation = (contract_type, cancellation_duration, symbol) => {
         const arr_cancellation_range =
-            ObjectUtils.getPropertyValue(available_contract_types, [contract_type, 'config', 'cancellation_range']) ||
-            [];
+            getPropertyValue(available_contract_types, [contract_type, 'config', 'cancellation_range']) || [];
 
         const regex = new RegExp('^([0-9]+)|([a-zA-Z]+)$', 'g');
         const getText = str => {
@@ -543,8 +540,12 @@ const ContractType = (() => {
             return `${duration} ${unit_map[unit].name_plural}`;
         };
 
+        const should_show_cancellation = shouldShowCancellation(symbol);
+
         return {
+            cancellation_duration: getArrayDefaultValue(arr_cancellation_range, cancellation_duration),
             cancellation_range_list: arr_cancellation_range.map(d => ({ text: `${getText(d)}`, value: d })),
+            ...(should_show_cancellation ? {} : { has_cancellation: false }),
         };
     };
 

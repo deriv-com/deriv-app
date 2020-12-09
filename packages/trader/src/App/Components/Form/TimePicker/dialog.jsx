@@ -2,17 +2,13 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import React from 'react';
 import { localize } from '@deriv/translations';
-import { toMoment } from '@deriv/shared/utils/date';
+import { toMoment } from '@deriv/shared';
 
 const Dialog = ({ preClass, selected_time, end_time, start_time, onChange, className }) => {
     const start_time_moment = start_time ? toMoment(start_time) : toMoment();
     const end_time_moment = end_time
         ? toMoment(end_time)
-        : toMoment()
-              .hour('23')
-              .minute('59')
-              .seconds('59')
-              .milliseconds('999');
+        : toMoment().hour('23').minute('59').seconds('59').milliseconds('999');
     const to_compare_moment = toMoment();
     const [hour, minute] = selected_time.split(':');
     const hours = [...Array(24).keys()].map(a => `0${a}`.slice(-2));

@@ -1,39 +1,18 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Icon, Checklist } from '@deriv/components';
-import Dp2pContext from 'Components/context/dp2p-context';
+import { observer } from 'mobx-react-lite';
+import { useStores } from 'Stores';
 import { Localize } from 'Components/i18next';
 import './verification.scss';
 
-const Verification = () => {
-    const { nickname, toggleNicknamePopup, is_advertiser, poi_status } = React.useContext(Dp2pContext);
+const Verification = observer(() => {
+    const { general_store } = useStores();
 
-    const items = [
-        {
-            content: nickname ? (
-                <Localize i18n_default_text='Nickname: {{nickname}}' values={{ nickname }} />
-            ) : (
-                <Localize i18n_default_text='Choose your nickname' />
-            ),
-            status: nickname ? 'done' : 'action',
-            onClick: nickname ? () => {} : toggleNicknamePopup,
-        },
-        {
-            content: (
-                <Localize
-                    i18n_default_text='We’ll need you to upload your documents to verify 
-            your identity'
-                />
-            ),
-            status: poi_status === 'verified' ? 'done' : 'action',
-            onClick: () => (window.location.href = '/account/proof-of-identity'),
-            is_disabled: !nickname,
-        },
-    ];
-
-    if (!is_advertiser && poi_status === 'verified' && nickname) {
+    if (!general_store.is_advertiser && general_store.poi_status === 'verified' && general_store.nickname) {
         return (
             <div className='p2p-blocked-user'>
-                <Localize i18n_default_text='Your P2P cashier has been blocked. Please contact customer support.' />
+                <Localize i18n_default_text='Your DP2P cashier has been blocked. Please contact customer support.' />
             </div>
         );
     }
@@ -43,20 +22,21 @@ const Verification = () => {
             <Icon icon='IcCashierSendEmail' className='p2p-verification__icon' size={102} />
             <div className='p2p-verification__text'>
                 <div className='p2p-verification__text-title'>
-                    <Localize i18n_default_text='Want to post ads?' />
+                    <Localize i18n_default_text='Please register with us!' />
                 </div>
                 <div className='p2p-verification__text-description'>
-                    <p>
-                        <Localize i18n_default_text='Register with us here' />
-                    </p>
                     <p>
                         <Localize i18n_default_text='To use DP2P, you need to choose a display name (a nickname) and verify your identity.' />
                     </p>
                 </div>
             </div>
-            <Checklist items={items} />
+            <Checklist className='p2p-verification__checklist' items={general_store.getVerificationChecklist()} />
         </div>
     );
+});
+
+Verification.propTypes = {
+    is_advertiser: PropTypes.bool,
 };
 
 export default Verification;

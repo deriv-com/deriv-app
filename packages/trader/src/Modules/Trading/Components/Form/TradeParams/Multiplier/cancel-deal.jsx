@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Checkbox, Popover, Dropdown } from '@deriv/components';
+import { Checkbox, Dropdown, Popover, PopoverMessageCheckbox } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { connect } from 'Stores/connect';
-import PopoverMessageCheckbox from 'Modules/Trading/Components/Elements/popover-message-checkbox.jsx';
+import { onToggleCancellation, onChangeCancellationDuration } from 'Stores/Modules/Contract/Helpers/multiplier';
 
 const CancelDeal = ({
     cancellation_range_list,
@@ -16,40 +16,23 @@ const CancelDeal = ({
     should_show_cancellation_warning,
     toggleCancellationWarning,
 }) => {
-    const changeValue = () => {
-        // e.target.checked is not reliable, we have to toggle its previous value
-        const new_val = !has_cancellation;
-        onChangeMultiple({
-            has_cancellation: new_val,
-            ...(!new_val
-                ? {
-                      // reset deal cancellation price
-                      cancellation_price: 0,
-                  }
-                : {
-                      // unchecked Stop loss
-                      has_stop_loss: false,
-                      has_take_profit: false,
-                  }),
-        });
-    };
-
-    const changeDuration = e => {
-        const { name, value } = e.target;
-        onChangeMultiple({
-            has_cancellation: true,
-            has_take_profit: false,
-            has_stop_loss: false,
-            [name]: value,
-        });
-    };
-
     const should_show_popover = (has_take_profit || has_stop_loss) && should_show_cancellation_warning;
+    const [is_do_not_show_selected, setDoNotShowSelected] = React.useState(!should_show_cancellation_warning);
+
+    const onPopoverClose = () => {
+        if (is_do_not_show_selected) {
+            toggleCancellationWarning();
+        }
+    };
+
+    const onPopoverCheckboxChange = React.useCallback(() => {
+        setDoNotShowSelected(prev_state => !prev_state);
+    }, []);
 
     const input = (
         <Checkbox
             id='dt_cancellation-checkbox_input'
-            onChange={changeValue}
+            onChange={() => onToggleCancellation({ has_cancellation, onChangeMultiple })}
             name='has_cancellation'
             label={localize('Deal cancellation')}
             defaultChecked={has_cancellation}
@@ -58,7 +41,7 @@ const CancelDeal = ({
 
     return (
         <Fieldset className='trade-container__fieldset'>
-            <div className='input-wrapper--inline'>
+            <div className='dc-input-wrapper--inline'>
                 {should_show_popover ? (
                     <Popover
                         alignment='left'
@@ -67,14 +50,16 @@ const CancelDeal = ({
                         margin={2}
                         message={
                             <PopoverMessageCheckbox
-                                defaultChecked={!should_show_cancellation_warning}
+                                defaultChecked={is_do_not_show_selected}
+                                checkboxLabel={localize("Don't show this again")}
                                 message={localize(
                                     'Take profit and/or stop loss are not available while deal cancellation is active.'
                                 )}
                                 name='should_show_cancellation_warning'
-                                onChange={() => toggleCancellationWarning()}
+                                onChange={onPopoverCheckboxChange}
                             />
                         }
+                        onBubbleClose={onPopoverClose}
                         relative_render
                     >
                         {input}
@@ -87,8 +72,9 @@ const CancelDeal = ({
                     icon='info'
                     id='dt_cancellation-checkbox__tooltip'
                     message={localize(
-                        'Allows you to cancel your trade within a chosen time frame should the market move against your favour.'
+                        'Cancel your trade anytime within a chosen time-frame. Triggered automatically if your trade reaches the stop out level within the chosen time-frame.'
                     )}
+                    classNameBubble='trade-container__deal-cancellation-popover'
                     margin={210}
                     relative_render
                 />
@@ -103,7 +89,7 @@ const CancelDeal = ({
                     name='cancellation_duration'
                     no_border={true}
                     value={cancellation_duration}
-                    onChange={changeDuration}
+                    onChange={event => onChangeCancellationDuration({ event, onChangeMultiple })}
                 />
             )}
         </Fieldset>

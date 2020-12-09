@@ -1,33 +1,32 @@
+/* eslint-disable */
 // Copied from github.com/pvorb/clone to fix an inheritance issue.
 // Line 156-158 was added to address https://github.com/pvorb/clone/issues/58
-var clone = (function() {
-    'use strict';
-
+const clone = (function () {
     function _instanceof(obj, type) {
         return type != null && obj instanceof type;
     }
 
-    var nativeMap;
+    let nativeMap;
     try {
         nativeMap = Map;
     } catch (_) {
         // maybe a reference error because no `Map`. Give it a dummy value that no
         // value will ever be an instanceof.
-        nativeMap = function() {};
+        nativeMap = function () {};
     }
 
-    var nativeSet;
+    let nativeSet;
     try {
         nativeSet = Set;
     } catch (_) {
-        nativeSet = function() {};
+        nativeSet = function () {};
     }
 
-    var nativePromise;
+    let nativePromise;
     try {
         nativePromise = Promise;
     } catch (_) {
-        nativePromise = function() {};
+        nativePromise = function () {};
     }
 
     /**
@@ -60,14 +59,14 @@ var clone = (function() {
         }
         // maintain two arrays for circular references, where corresponding parents
         // and children have the same index
-        var allParents = [];
-        var allChildren = [];
+        const allParents = [];
+        const allChildren = [];
 
-        var useBuffer = typeof Buffer != 'undefined';
+        const useBuffer = typeof Buffer !== 'undefined';
 
-        if (typeof circular == 'undefined') circular = true;
+        if (typeof circular === 'undefined') circular = true;
 
-        if (typeof depth == 'undefined') depth = Infinity;
+        if (typeof depth === 'undefined') depth = Infinity;
 
         // recurse this function so we don't reset allParents and allChildren
         function _clone(parent, depth) {
@@ -76,9 +75,8 @@ var clone = (function() {
 
             if (depth === 0) return parent;
 
-            var child;
-            var proto;
-            if (typeof parent != 'object') {
+            let child, proto;
+            if (typeof parent !== 'object') {
                 return parent;
             }
 
@@ -87,12 +85,12 @@ var clone = (function() {
             } else if (_instanceof(parent, nativeSet)) {
                 child = new nativeSet();
             } else if (_instanceof(parent, nativePromise)) {
-                child = new nativePromise(function(resolve, reject) {
+                child = new nativePromise(function (resolve, reject) {
                     parent.then(
-                        function(value) {
+                        function (value) {
                             resolve(_clone(value, depth - 1));
                         },
-                        function(err) {
+                        function (err) {
                             reject(_clone(err, depth - 1));
                         }
                     );
@@ -116,18 +114,16 @@ var clone = (function() {
                 return child;
             } else if (_instanceof(parent, Error)) {
                 child = Object.create(parent);
+            } else if (typeof prototype === 'undefined') {
+                proto = Object.getPrototypeOf(parent);
+                child = Object.create(proto);
             } else {
-                if (typeof prototype == 'undefined') {
-                    proto = Object.getPrototypeOf(parent);
-                    child = Object.create(proto);
-                } else {
-                    child = Object.create(prototype);
-                    proto = prototype;
-                }
+                child = Object.create(prototype);
+                proto = prototype;
             }
 
             if (circular) {
-                var index = allParents.indexOf(parent);
+                const index = allParents.indexOf(parent);
 
                 if (index != -1) {
                     return allChildren[index];
@@ -137,21 +133,21 @@ var clone = (function() {
             }
 
             if (_instanceof(parent, nativeMap)) {
-                parent.forEach(function(value, key) {
-                    var keyChild = _clone(key, depth - 1);
-                    var valueChild = _clone(value, depth - 1);
+                parent.forEach(function (value, key) {
+                    const keyChild = _clone(key, depth - 1);
+                    const valueChild = _clone(value, depth - 1);
                     child.set(keyChild, valueChild);
                 });
             }
             if (_instanceof(parent, nativeSet)) {
-                parent.forEach(function(value) {
-                    var entryChild = _clone(value, depth - 1);
+                parent.forEach(function (value) {
+                    const entryChild = _clone(value, depth - 1);
                     child.add(entryChild);
                 });
             }
 
             for (var i in parent) {
-                var attrs = Object.getOwnPropertyDescriptor(parent, i);
+                const attrs = Object.getOwnPropertyDescriptor(parent, i);
                 if (attrs) {
                     // https://github.com/pvorb/clone/issues/58
                     if (Object.keys(parent).indexOf(i) < 0) {
@@ -162,7 +158,7 @@ var clone = (function() {
                 }
 
                 try {
-                    var objProperty = Object.getOwnPropertyDescriptor(parent, i);
+                    const objProperty = Object.getOwnPropertyDescriptor(parent, i);
                     if (objProperty.set === 'undefined') {
                         // no setter defined. Skip cloning this property
                         continue;
@@ -174,18 +170,18 @@ var clone = (function() {
                         // we can't do anything about this, other than inform the user that this property cannot be set.
                         continue;
                     } else if (e instanceof ReferenceError) {
-                        //this may happen in non strict mode
+                        // this may happen in non strict mode
                         continue;
                     }
                 }
             }
 
             if (Object.getOwnPropertySymbols) {
-                var symbols = Object.getOwnPropertySymbols(parent);
+                const symbols = Object.getOwnPropertySymbols(parent);
                 for (var i = 0; i < symbols.length; i++) {
                     // Don't need to worry about cloning a symbol because it is a primitive,
                     // like a number or string.
-                    var symbol = symbols[i];
+                    const symbol = symbols[i];
                     var descriptor = Object.getOwnPropertyDescriptor(parent, symbol);
                     if (descriptor && !descriptor.enumerable && !includeNonEnumerable) {
                         continue;
@@ -196,9 +192,9 @@ var clone = (function() {
             }
 
             if (includeNonEnumerable) {
-                var allPropertyNames = Object.getOwnPropertyNames(parent);
+                const allPropertyNames = Object.getOwnPropertyNames(parent);
                 for (var i = 0; i < allPropertyNames.length; i++) {
-                    var propertyName = allPropertyNames[i];
+                    const propertyName = allPropertyNames[i];
                     var descriptor = Object.getOwnPropertyDescriptor(parent, propertyName);
                     if (descriptor && descriptor.enumerable) {
                         continue;
@@ -224,7 +220,7 @@ var clone = (function() {
     clone.clonePrototype = function clonePrototype(parent) {
         if (parent === null) return null;
 
-        var c = function() {};
+        const c = function () {};
         c.prototype = parent;
         return new c();
     };
@@ -252,7 +248,7 @@ var clone = (function() {
     clone.__isRegExp = __isRegExp;
 
     function __getRegExpFlags(re) {
-        var flags = '';
+        let flags = '';
         if (re.global) flags += 'g';
         if (re.ignoreCase) flags += 'i';
         if (re.multiline) flags += 'm';
@@ -266,3 +262,4 @@ var clone = (function() {
 if (typeof module === 'object' && module.exports) {
     module.exports = clone;
 }
+/* eslint-enable */

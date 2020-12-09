@@ -6,10 +6,23 @@
     }
     &__items {
         display: flex;
-        justify-content: space-around;
+        flex-wrap: wrap;
+        width: 768px;
+
+        &__center {
+            justify-content: center !important;
+        }
+
+        @include desktop {
+            justify-content: flex-start;
+        }
+
         @include mobile {
             display: grid;
+            margin-bottom: 5rem;
             grid-template-columns: 1fr 1fr;
+            justify-items: center;
+            width: 100%;
         }
     }
     &__item {
@@ -18,9 +31,10 @@
         display: inline-flex;
         flex-direction: column;
         height: 128px;
-        justify-content: space-around;
-        margin: 1.6rem 2rem 0;
         width: 128px;
+        justify-content: space-around;
+        margin: 1.6rem 3.2rem 0;
+        min-width: 128px;
 
         &:hover:not(&--selected) {
             cursor: pointer;
@@ -66,10 +80,16 @@
             color: var(--text-general);
         }
         @include mobile {
-            width: unset;
-            height: unset;
             margin: 1.6rem 2rem 0.8rem;
             padding: 0.8rem 0;
+            width: 85%;
+            min-width: unset;
+
+            @media only screen and (max-width: 340px) {
+                margin: 1.6rem 1rem 0.8rem;
+                width: 136px;
+                height: 136px;
+            }
         }
     }
     &__radio-button {
@@ -82,7 +102,7 @@
         margin-top: -16px;
 
         @include mobile {
-            left: 15vw;
+            right: 0;
             top: -5.8rem;
         }
     }
@@ -90,9 +110,9 @@
 
 .currency-hr {
     height: 2px;
-    margin: 1.6rem 0 0;
-    width: 100%;
-    border-top: 1px solid var(--general-section-2);
+    margin: 1.6rem auto;
+    width: 90%;
+    border-top: 1px solid var(--general-section-1);
 
     @include mobile {
         border-top-width: 2px;
@@ -103,10 +123,23 @@
 }
 
 .currency-selector {
-    &__radio-group {
-        display: flex;
-        flex-direction: column;
-        flex-grow: 1;
-        justify-content: space-around;
+    &__radio-group--with-margin {
+        &--is-header {
+            font-size: 1.6rem;
+            margin: 2rem 0 0;
+            font-weight: bold;
+            color: var(--text-prominent);
+        }
+
+        @include desktop {
+            margin-bottom: 6rem;
+            margin-left: auto;
+            margin-right: auto;
+            width: 768px;
+        }
+
+        @include mobile {
+            margin-bottom: 7rem;
+        }
     }
 }

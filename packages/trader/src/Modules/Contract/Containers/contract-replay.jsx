@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
@@ -9,8 +10,7 @@ import {
     SwipeableWrapper,
     FadeWrapper,
 } from '@deriv/components';
-import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
-import ObjectUtils from '@deriv/shared/utils/object';
+import { isDesktop, isMobile, isMultiplierContract, isEmptyObject, getPlatformRedirect } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
 import ContractDrawer from 'App/Components/Elements/ContractDrawer';
@@ -37,7 +37,7 @@ class ContractReplay extends React.Component {
 
     onClickClose = () => {
         this.setState({ is_visible: false });
-        const is_from_table_row = !ObjectUtils.isEmptyObject(this.props.location.state)
+        const is_from_table_row = !isEmptyObject(this.props.location.state)
             ? this.props.location.state.from_table_row
             : false;
         return is_from_table_row ? this.props.history.goBack() : this.props.routeBackInApp(this.props.history);
@@ -62,6 +62,25 @@ class ContractReplay extends React.Component {
 
         if (!contract_info.underlying) return null;
 
+        const is_multiplier = isMultiplierContract(contract_info.contract_type);
+
+        const contract_drawer_el = (
+            <ContractDrawer
+                contract_info={contract_info}
+                contract_update={contract_update}
+                contract_update_history={contract_update_history}
+                is_chart_loading={is_chart_loading}
+                is_dark_theme={is_dark_theme}
+                is_multiplier={is_multiplier}
+                is_sell_requested={is_sell_requested}
+                is_valid_to_cancel={is_valid_to_cancel}
+                onClickCancel={onClickCancel}
+                onClickSell={onClickSell}
+                status={indicative_status}
+                toggleHistoryTab={toggleHistoryTab}
+            />
+        );
+
         return (
             <FadeWrapper
                 is_visible={this.state.is_visible}
@@ -81,20 +100,22 @@ class ContractReplay extends React.Component {
                         is_disabled={isDesktop()}
                         height_offset='80px' // * 80px = header + contract details header heights in mobile
                     >
-                        <ContractDrawer
-                            contract_info={contract_info}
-                            contract_update={contract_update}
-                            contract_update_history={contract_update_history}
-                            is_dark_theme={is_dark_theme}
-                            is_sell_requested={is_sell_requested}
-                            is_valid_to_cancel={is_valid_to_cancel}
-                            onClickCancel={onClickCancel}
-                            onClickSell={onClickSell}
-                            status={indicative_status}
-                            toggleHistoryTab={toggleHistoryTab}
-                        />
+                        <DesktopWrapper>{contract_drawer_el}</DesktopWrapper>
+                        <MobileWrapper>
+                            <div
+                                className={classNames('contract-drawer__mobile-wrapper', {
+                                    'contract-drawer__mobile-wrapper--is-multiplier': isMobile() && is_multiplier,
+                                })}
+                            >
+                                {contract_drawer_el}
+                            </div>
+                        </MobileWrapper>
                         <React.Suspense fallback={<div />}>
-                            <div className='replay-chart__container'>
+                            <div
+                                className={classNames('replay-chart__container', {
+                                    'replay-chart__container--is-multiplier': isMobile() && is_multiplier,
+                                })}
+                            >
                                 <DesktopWrapper>
                                     <NotificationMessages />
                                 </DesktopWrapper>
@@ -103,12 +124,14 @@ class ContractReplay extends React.Component {
                                     <ReplayChart />
                                 </DesktopWrapper>
                                 <MobileWrapper>
-                                    <InfoBoxWidget />
                                     {is_digit_contract ? (
-                                        <SwipeableWrapper>
-                                            <DigitsWidget />
-                                            <ReplayChart />
-                                        </SwipeableWrapper>
+                                        <React.Fragment>
+                                            <InfoBoxWidget />
+                                            <SwipeableWrapper className='replay-chart__container-swipeable-wrapper'>
+                                                <DigitsWidget />
+                                                <ReplayChart />
+                                            </SwipeableWrapper>
+                                        </React.Fragment>
                                     ) : (
                                         <ReplayChart />
                                     )}
@@ -168,6 +191,19 @@ class Chart extends React.Component {
         return isDesktop() && this.props.is_digit_contract;
     }
 
+    get chart_yAxis_margin() {
+        const margin = {
+            top: isMobile() ? 96 : 148,
+            bottom: this.is_bottom_widget_visible ? 128 : 112,
+        };
+
+        if (isMobile()) {
+            margin.bottom = 48;
+        }
+
+        return margin;
+    }
+
     render() {
         return (
             <SmartChart
@@ -184,22 +220,19 @@ class Chart extends React.Component {
                 requestAPI={this.props.wsSendRequest}
                 requestForget={this.props.wsForget}
                 requestForgetStream={this.props.wsForgetStream}
-                crosshairState={isMobile() ? 0 : undefined}
+                crosshair={isMobile() ? 0 : undefined}
                 maxTick={isMobile() ? 8 : undefined}
                 requestSubscribe={this.props.wsSubscribe}
                 settings={this.props.settings}
                 startEpoch={this.props.start_epoch}
                 scrollToEpoch={this.props.scroll_to_epoch}
-                chartStatusListener={this.props.setIsChartReady}
+                stateChangeListener={this.props.chartStateChange}
                 symbol={this.props.symbol}
                 topWidgets={ChartTopWidgets}
                 isConnectionOpened={this.props.is_socket_opened}
                 isStaticChart={false}
                 shouldFetchTradingTimes={!this.props.end_epoch}
-                yAxisMargin={{
-                    top: isMobile() ? 116 : 136,
-                    bottom: this.is_bottom_widget_visible ? 128 : 112,
-                }}
+                yAxisMargin={this.chart_yAxis_margin}
             >
                 {this.props.markers_array.map(marker => (
                     <ChartMarker
@@ -242,26 +275,37 @@ const ReplayChart = connect(({ modules, ui, common }) => {
     const contract_replay = modules.contract_replay;
     const contract_store = contract_replay.contract_store;
     const contract_config = contract_store.contract_config;
-    const is_chart_ready = contract_replay.is_chart_ready;
+    const allow_scroll_to_epoch =
+        contract_replay.chart_state === 'READY' || contract_replay.chart_state === 'SCROLL_TO_LEFT';
+    /**
+     * TODO: remove forcing light theme once DBot supports dark theme
+     * DBot does not support for dark theme since till now,
+     * as a result, if any user come to report detail pages
+     * from DBot, we should force it to have light theme
+     */
+    const from_platform = getPlatformRedirect(common.app_routing_history);
+    const should_force_light_theme = from_platform.name === 'DBot';
+
     const settings = {
-        lang: common.current_language,
-        theme: ui.is_dark_mode_on ? 'dark' : 'light',
+        language: common.current_language.toLowerCase(),
+        theme: ui.is_dark_mode_on && !should_force_light_theme ? 'dark' : 'light',
         position: ui.is_chart_layout_default ? 'bottom' : 'left',
         countdown: ui.is_chart_countdown_visible,
         assetInformation: false, // ui.is_chart_asset_info_visible,
         isHighestLowestMarkerEnabled: false, // TODO: Pending UI
     };
+
     return {
         end_epoch: contract_config.end_epoch,
         chart_type: contract_config.chart_type,
         start_epoch: contract_config.start_epoch,
         granularity: contract_config.granularity,
-        scroll_to_epoch: is_chart_ready ? contract_config.scroll_to_epoch : undefined,
+        scroll_to_epoch: allow_scroll_to_epoch ? contract_config.scroll_to_epoch : undefined,
         settings,
         is_mobile: ui.is_mobile,
         is_socket_opened: common.is_socket_opened,
         is_digit_contract: contract_store.is_digit_contract,
-        setIsChartReady: contract_replay.setIsChartReady,
+        chartStateChange: contract_replay.chartStateChange,
         margin: contract_replay.margin,
         is_static_chart: contract_replay.is_static_chart,
         barriers_array: contract_store.barriers_array,

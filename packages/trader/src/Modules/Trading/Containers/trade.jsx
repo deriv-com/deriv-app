@@ -1,6 +1,6 @@
 import React from 'react';
 import { DesktopWrapper, Div100vhContainer, MobileWrapper, SwipeableWrapper } from '@deriv/components';
-import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
+import { isDesktop, isMobile } from '@deriv/shared';
 import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
 import { isDigitTradeType } from 'Modules/Trading/Helpers/digits';
 import { connect } from 'Stores/connect';
@@ -14,11 +14,13 @@ import AllMarkers from '../../SmartChart/Components/all-markers.jsx';
 const BottomWidgetsMobile = ({ tick, digits, setTick, setDigits }) => {
     React.useEffect(() => {
         setTick(tick);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [tick]);
 
     React.useEffect(() => {
         setDigits(digits);
-    }, digits);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [digits]);
 
     // render nothing for bottom widgets on chart in mobile
     return null;
@@ -28,6 +30,7 @@ class Trade extends React.Component {
     state = {
         digits: [],
         tick: {},
+        try_synthetic_indices: false,
     };
 
     componentDidMount() {
@@ -41,6 +44,9 @@ class Trade extends React.Component {
     componentDidUpdate(prevProps) {
         if (isMobile() && prevProps.symbol !== this.props.symbol) {
             this.setState({ digits: [] });
+        }
+        if (prevProps.symbol !== this.props.symbol) {
+            this.setState({ try_synthetic_indices: false });
         }
     }
 
@@ -66,6 +72,19 @@ class Trade extends React.Component {
         });
     };
 
+    onTrySyntheticIndicesClick = () => {
+        this.setState(
+            {
+                try_synthetic_indices: true,
+            },
+            () => {
+                this.setState({
+                    try_synthetic_indices: false,
+                });
+            }
+        );
+    };
+
     render() {
         const { NotificationMessages } = this.props;
         const form_wrapper_class = isMobile() ? 'mobile-wrapper' : 'sidebar__container desktop-only';
@@ -82,7 +101,7 @@ class Trade extends React.Component {
                     id='chart_container'
                     className='chart-container'
                     is_disabled={isDesktop()}
-                    height_offset='249px'
+                    height_offset='259px'
                 >
                     <NotificationMessages />
                     <React.Suspense
@@ -96,7 +115,7 @@ class Trade extends React.Component {
                         <DesktopWrapper>
                             <div className='chart-container__wrapper'>
                                 <ChartLoader is_visible={this.props.is_chart_loading} />
-                                <ChartTrade />
+                                <ChartTrade try_synthetic_indices={this.state.try_synthetic_indices} />
                             </div>
                         </DesktopWrapper>
                         <MobileWrapper>
@@ -120,6 +139,7 @@ class Trade extends React.Component {
                                     is_digits_widget_active={
                                         this.props.show_digits_stats ? this.state.is_digits_widget_active : undefined
                                     }
+                                    try_synthetic_indices={this.state.try_synthetic_indices}
                                 />
                             </SwipeableWrapper>
                         </MobileWrapper>
@@ -129,7 +149,7 @@ class Trade extends React.Component {
                     <Test />
                 </Div100vhContainer>
                 <div className={form_wrapper_class}>
-                    {this.props.is_market_closed && <MarketIsClosedOverlay />}
+                    {this.props.is_market_closed && <MarketIsClosedOverlay onClick={this.onTrySyntheticIndicesClick} />}
                     <FormLayout
                         is_market_closed={this.props.is_market_closed}
                         is_trade_enabled={is_trade_enabled && this.props.network_status.class === 'online'}
@@ -187,13 +207,15 @@ const ChartMarkers = connect(({ modules, ui, client }) => ({
 
 class ChartTradeClass extends React.Component {
     state = {
-        active_markets: [],
+        active_category: null,
     };
     bottomWidgets = ({ digits, tick }) => <ChartBottomWidgets digits={digits} tick={tick} />;
     topWidgets = ({ ...props }) => {
-        const { is_digits_widget_active } = this.props;
+        const { is_digits_widget_active, try_synthetic_indices } = this.props;
         return (
             <ChartTopWidgets
+                active_category={try_synthetic_indices ? 'synthetic_index' : null}
+                open={!!try_synthetic_indices}
                 charts_ref={this.charts_ref}
                 is_digits_widget_active={is_digits_widget_active}
                 {...props}
@@ -201,21 +223,16 @@ class ChartTradeClass extends React.Component {
         );
     };
 
-    componentDidMount() {
-        this.setActiveMarkets();
-    }
-
     componentDidUpdate(prevProps) {
         if (prevProps.should_refresh) this.props.resetRefresh();
-        if (this.props.active_symbols !== prevProps.active_symbols) this.setActiveMarkets();
     }
 
-    setActiveMarkets() {
-        const { active_symbols } = this.props;
+    getMarketsOrder(active_symbols) {
         const synthetic_index = 'synthetic_index';
 
         const has_synthetic_index = !!active_symbols.find(s => s.market === synthetic_index);
-        const active_markets = active_symbols
+        return active_symbols
+            .slice()
             .sort((a, b) => (a.display_name < b.display_name ? -1 : 1))
             .map(s => s.market)
             .reduce(
@@ -225,19 +242,24 @@ class ChartTradeClass extends React.Component {
                 },
                 has_synthetic_index ? [synthetic_index] : []
             );
-        this.setState({ active_markets });
     }
 
     render() {
-        const { show_digits_stats, main_barrier, should_refresh, extra_barriers = [], symbol } = this.props;
-        const { active_markets } = this.state;
+        const {
+            show_digits_stats,
+            main_barrier,
+            should_refresh,
+            extra_barriers = [],
+            symbol,
+            active_symbols,
+        } = this.props;
 
         const barriers = main_barrier ? [main_barrier, ...extra_barriers] : extra_barriers;
 
         // max ticks to display for mobile view for tick chart
         const max_ticks = this.props.granularity === 0 ? 8 : 24;
 
-        if (!symbol || active_markets.length === 0) return null;
+        if (!symbol || active_symbols.length === 0) return null;
 
         return (
             <SmartChart
@@ -272,7 +294,7 @@ class ChartTradeClass extends React.Component {
                 refreshActiveSymbols={should_refresh}
                 hasAlternativeSource={this.props.has_alternative_source}
                 refToAddTick={this.props.refToAddTick}
-                activeSymbols={active_markets}
+                getMarketsOrder={this.getMarketsOrder}
                 yAxisMargin={{
                     top: isMobile() ? 76 : 106,
                 }}
@@ -291,7 +313,7 @@ const ChartTrade = connect(({ modules, ui, common }) => ({
         assetInformation: false, // ui.is_chart_asset_info_visible,
         countdown: ui.is_chart_countdown_visible,
         isHighestLowestMarkerEnabled: false, // TODO: Pending UI,
-        lang: common.current_language,
+        language: common.current_language.toLowerCase(),
         position: ui.is_chart_layout_default ? 'bottom' : 'left',
         theme: ui.is_dark_mode_on ? 'dark' : 'light',
     },

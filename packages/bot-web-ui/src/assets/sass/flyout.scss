@@ -35,8 +35,29 @@
     }
     &__content {
         overflow: auto;
-        padding: 5px 25px;
         height: calc(100% - 56px);
+
+        .dc-themed-scrollbars {
+            padding: 5px 25px;
+        }
+        &-disclaimer {
+            display: flex;
+            justify-content: space-around;
+            background: $color-yellow;
+            font-size: var(--text-size-xs);
+            margin-top: 1.6em;
+            line-height: 1.3em;
+            padding: 0.8rem;
+            border-radius: 4px;
+
+            &-text {
+                color: $color-black-1;
+                width: 324px;
+            }
+            &-icon {
+                padding-top: 0.8rem;
+            }
+        }
     }
     &__block-workspace {
         margin-bottom: $default-margin;
@@ -85,7 +106,7 @@
     }
     &__item {
         line-height: 1.3em;
-        font-size: 14px;
+        font-size: var(--text-size-xs);
 
         &:not(:last-of-type) {
             margin-bottom: 30px;
@@ -111,7 +132,7 @@
             color: $COLOR_RED;
         }
         &-description {
-            font-size: 14px;
+            font-size: var(--text-size-xs);
             margin-bottom: 1em;
             line-height: 1.3em;
         }

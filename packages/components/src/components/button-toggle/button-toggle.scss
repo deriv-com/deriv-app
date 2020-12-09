@@ -20,6 +20,10 @@
         width: 50%;
         background-color: var(--state-normal);
 
+        /* postcss-bem-linter: ignore */
+        .dc-btn__text {
+            display: contents;
+        }
         &:hover:not(.dc-button-menu__button--active) {
             background-color: var(--state-hover) !important;
         }
@@ -39,6 +43,9 @@
             }
         }
     }
+    &__counter {
+        margin-left: 0.4rem;
+    }
     &__wrapper {
         position: relative;
         border-radius: $BORDER_RADIUS;
@@ -51,6 +58,12 @@
             &__button--active {
                 background-color: rgba(0, 0, 0, 0) !important;
                 z-index: 1;
+                padding: 0.8rem 0.6rem;
+                white-space: normal;
+
+                .dc-btn__text {
+                    line-height: normal;
+                }
             }
             &__button:nth-last-child(2) {
                 border-top-right-radius: 4px;

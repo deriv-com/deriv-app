@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { FormProgress, DesktopWrapper, MobileWrapper, Div100vhContainer } from '@deriv/components';
-import { getPropertyValue } from '@deriv/shared/utils/object';
-import { isDesktop } from '@deriv/shared/utils/screen';
+import { getPropertyValue, isDesktop } from '@deriv/shared';
+
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';
@@ -18,8 +18,6 @@ const index_lookup = {
 };
 
 class MT5FinancialStpRealAccountSignup extends React.Component {
-    state = {};
-
     constructor(props) {
         super(props);
 
@@ -41,11 +39,11 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
                         tax_identification_number: '',
                         account_opening_reason: '',
                     },
-                    props: ['residence_list', 'is_fully_authenticated', 'is_loading'],
+                    props: ['residence_list', 'is_fully_authenticated', 'landing_company'],
                 },
                 {
                     header: {
-                        active_title: localize('Complete your personal details'),
+                        active_title: localize('Complete your proof of identity'),
                         title: localize('Proof of identity'),
                     },
                     body: MT5POI,
@@ -61,7 +59,7 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
                 },
                 {
                     header: {
-                        active_title: localize('Complete your personal details'),
+                        active_title: localize('Complete your proof of address'),
                         title: localize('Proof of address'),
                     },
                     body: MT5POA,
@@ -93,17 +91,16 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
         });
     };
 
-    nextStep = setSubmitting => {
+    nextStep = () => {
         this.clearError();
         if (this.has_more_steps) {
             this.goNext();
         } else {
-            this.finishWizard(setSubmitting);
+            this.finishWizard();
         }
     };
 
-    finishWizard = setSubmitting => {
-        setSubmitting(false);
+    finishWizard = () => {
         this.props.openPendingDialog();
         this.props.toggleModal();
     };
@@ -217,12 +214,9 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
     render() {
         const BodyComponent = this.getCurrent('body');
         const form_value = this.getCurrent('form_value');
-        const passthrough = (this.getCurrent('props') || []).reduce(
-            (arr, item) => {
-                return Object.assign(arr, { [item]: this.props[item] });
-            },
-            { is_loading: this.state.is_loading }
-        );
+        const passthrough = (this.getCurrent('props') || []).reduce((arr, item) => {
+            return Object.assign(arr, { [item]: this.props[item] });
+        }, {});
         const height = this.getCurrent('height') || 'auto';
         return (
             <Div100vhContainer
@@ -268,6 +262,7 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
                         is_loading={this.state.is_loading}
                         onCancel={this.prevStep}
                         onSave={this.saveFormData}
+                        form_error={this.state.form_error}
                         {...passthrough}
                     />
                 </div>
@@ -285,6 +280,7 @@ export default connect(({ client, modules: { mt5 }, ui }) => ({
     addNotificationByKey: ui.addNotificationMessageByKey,
     get_settings: client.account_settings,
     is_fully_authenticated: client.is_fully_authenticated,
+    landing_company: client.landing_company,
     openPendingDialog: mt5.openPendingDialog,
     refreshNotifications: client.refreshNotifications,
     removeNotificationMessage: ui.removeNotificationMessage,

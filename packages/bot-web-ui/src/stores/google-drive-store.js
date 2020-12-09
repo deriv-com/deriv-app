@@ -193,7 +193,6 @@ export default class GoogleDriveStore {
         if (is_save) {
             docs_view.setSelectFolderEnabled(true);
         }
-
         const picker = new google.picker.PickerBuilder();
         picker
             .setOrigin(`${window.location.protocol}//${window.location.host}`)
@@ -203,6 +202,7 @@ export default class GoogleDriveStore {
             .setOAuthToken(gapi.auth.getToken().access_token)
             .addView(docs_view)
             .setDeveloperKey(this.api_key)
+            .setSize(1051, 650)
             .setCallback(callback)
             .build()
             .setVisible(true);

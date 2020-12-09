@@ -2,12 +2,12 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { Button, DesktopWrapper, Icon, MobileDialog, MobileWrapper, ThemedScrollbars } from '@deriv/components';
+import { Button, DesktopWrapper, Icon, MobileDialog, MobileWrapper, ThemedScrollbars, Text } from '@deriv/components';
 import { BinaryLink } from 'App/Components/Routes';
 import { connect } from 'Stores/connect';
 import { localize } from '@deriv/translations';
-import { toTitleCase } from '@deriv/shared/utils/string';
-import ObjectUtils from '@deriv/shared/utils/object';
+import { toTitleCase, isEmptyObject, isMobile } from '@deriv/shared';
+
 import { EmptyNotification } from 'App/Components/Elements/Notifications/empty-notification.jsx';
 
 class NotificationsDialog extends React.Component {
@@ -59,32 +59,40 @@ class NotificationsDialog extends React.Component {
                                 {item.header}
                             </h2>
                             <div className='notifications-item__message'>{item.message}</div>
-                            {!ObjectUtils.isEmptyObject(item.action) && (
-                                <>
-                                    {item.action.route ? (
-                                        <BinaryLink
-                                            onClick={this.props.toggleDialog}
-                                            className={classNames(
-                                                'dc-btn',
-                                                'dc-btn--secondary',
-                                                'notifications-item__cta-button'
-                                            )}
-                                            to={item.action.route}
-                                        >
-                                            <span className='dc-btn__text'>{item.action.text}</span>
-                                        </BinaryLink>
-                                    ) : (
-                                        <Button
-                                            className={classNames(
-                                                'dc-btn--secondary',
-                                                'notifications-item__cta-button'
-                                            )}
-                                            onClick={item.action.onClick}
-                                            text={item.action.text}
-                                        />
-                                    )}
-                                </>
-                            )}
+                            <div className='notifications-item__action'>
+                                {!isEmptyObject(item.action) && (
+                                    <>
+                                        {item.action.route ? (
+                                            <BinaryLink
+                                                onClick={this.props.toggleDialog}
+                                                active_class='notifications-item'
+                                                className={classNames(
+                                                    'dc-btn',
+                                                    'dc-btn--secondary',
+                                                    'notifications-item__cta-button'
+                                                )}
+                                                to={item.action.route}
+                                            >
+                                                <Text weight='bold' size='xxs'>
+                                                    {item.action.text}
+                                                </Text>
+                                            </BinaryLink>
+                                        ) : (
+                                            <Button
+                                                className={classNames(
+                                                    'dc-btn--secondary',
+                                                    'notifications-item__cta-button'
+                                                )}
+                                                onClick={item.action.onClick}
+                                            >
+                                                <Text weight='bold' size='xxs'>
+                                                    {item.action.text}
+                                                </Text>
+                                            </Button>
+                                        )}
+                                    </>
+                                )}
+                            </div>
                         </div>
                     ))
                 ) : (
@@ -104,14 +112,7 @@ class NotificationsDialog extends React.Component {
                         'notifications-dialog__content--empty': is_empty,
                     })}
                 >
-                    <DesktopWrapper>
-                        {is_empty ? (
-                            notifications_list_el
-                        ) : (
-                            <ThemedScrollbars>{notifications_list_el}</ThemedScrollbars>
-                        )}
-                    </DesktopWrapper>
-                    <MobileWrapper>{notifications_list_el}</MobileWrapper>
+                    <ThemedScrollbars is_bypassed={isMobile() || is_empty}>{notifications_list_el}</ThemedScrollbars>
                 </div>
             </div>
         );
@@ -154,6 +155,9 @@ NotificationsDialog.propTypes = {
     toggleDialog: PropTypes.func,
 };
 
-export default connect(({ ui }) => ({
-    notifications: ui.notifications,
+export default connect(({ ui, common }) => ({
+    notifications: ui.filtered_notifications,
+    app_routing_history: common.app_routing_history,
+    removeNotificationByKey: ui.removeNotificationByKey,
+    removeNotificationMessage: ui.removeNotificationMessage,
 }))(NotificationsDialog);

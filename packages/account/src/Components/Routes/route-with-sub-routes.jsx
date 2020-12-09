@@ -1,14 +1,21 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import ObjectUtils from '@deriv/shared/utils/object';
-import routes from '@deriv/shared/utils/routes';
-import { removeBranchName } from '@deriv/shared/utils/url';
-import { redirectToLogin, redirectToSignUp } from 'Duplicated/_common/base/login';
+import {
+    redirectToLogin,
+    redirectToSignUp,
+    isEmptyObject,
+    routes,
+    removeBranchName,
+    default_title,
+    PlatformContext,
+} from '@deriv/shared';
+import { getLanguage } from '@deriv/translations';
 import LoginPrompt from 'Duplicated/App/Components/Elements/login-prompt.jsx';
-import { default_title } from 'Duplicated/App/Constants/app-config';
 
-const RouteWithSubRoutes = (route) => {
-    const renderFactory = (props) => {
+const RouteWithSubRoutes = route => {
+    const { is_deriv_crypto } = React.useContext(PlatformContext);
+
+    const renderFactory = props => {
         let result = null;
         if (route.component === Redirect) {
             let to = route.to;
@@ -22,14 +29,14 @@ const RouteWithSubRoutes = (route) => {
         } else if (route.is_authenticated && !route.is_logged_in) {
             result = (
                 <LoginPrompt
-                    onLogin={() => redirectToLogin(route.is_logged_in)}
-                    onSignup={redirectToSignUp}
-                    page_title={route.title}
+                    onLogin={() => redirectToLogin(route.is_logged_in, getLanguage())}
+                    onSignup={() => redirectToSignUp({ is_deriv_crypto })}
+                    page_title={route.getTitle()}
                 />
             );
         } else {
-            const default_subroute = route.routes ? route.routes.find((r) => r.default) : {};
-            const has_default_subroute = !ObjectUtils.isEmptyObject(default_subroute);
+            const default_subroute = route.routes ? route.routes.find(r => r.default) : {};
+            const has_default_subroute = !isEmptyObject(default_subroute);
             const pathname = removeBranchName(location.pathname);
             result = (
                 <React.Fragment>
@@ -39,8 +46,8 @@ const RouteWithSubRoutes = (route) => {
             );
         }
 
-        const title = route.title ? `${route.title} | ` : '';
-        document.title = `${title}${default_title}`;
+        const title = route.getTitle?.() || '';
+        document.title = `${title} | ${default_title}`;
         return result;
     };
 

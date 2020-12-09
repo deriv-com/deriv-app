@@ -17,7 +17,7 @@
     &__header {
         display: flex;
         width: 100%;
-        height: 40px;
+        height: 50px;
         z-index: 4;
         line-height: 24px;
         align-items: center;
@@ -31,7 +31,7 @@
             color: var(--text-prominent);
             line-height: 24px;
             padding: 1.2rem 1.6rem;
-            height: inherit;
+            height: 40px;
             width: 100%;
             display: flex;
             align-items: center;
@@ -48,19 +48,33 @@
             display: flex;
             align-items: center;
             cursor: pointer;
-            padding: 0.6rem 0.8rem;
+            padding: 0.6rem 1.2rem;
             @extend %inline-icon.white;
             height: inherit;
-            width: 32px;
+            width: 40px;
+        }
+        &-wrapper {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
         }
     }
     &__subheader {
         display: flex;
         height: 72px;
+        min-height: 72px;
         border-bottom: 1px solid var(--general-section-2);
         justify-content: center;
         align-items: center;
         margin-bottom: 1.8rem;
+        position: absolute;
+        width: 100%;
+        background: var(--general-main-2);
+        z-index: 1;
+
+        &--hidden {
+            visibility: hidden;
+        }
     }
     &__submenu {
         &-back {
@@ -113,8 +127,7 @@
                 pointer-events: auto;
             }
             &--has-subheader {
-                height: calc(100% + 76px);
-                top: -76px;
+                height: 100%;
             }
             &-title {
                 display: flex;
@@ -159,11 +172,13 @@
         }
     }
     &__body {
-        position: relative;
         font-size: 1.4rem;
         height: 100%;
+        padding-top: 8.8rem;
         line-height: 1.5;
         color: var(--text-prominent);
+        overflow-y: auto;
+        overflow-x: hidden;
     }
     &__item {
         padding: 0 0 3.2rem 4.8rem;

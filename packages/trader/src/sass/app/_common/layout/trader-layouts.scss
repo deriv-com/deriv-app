@@ -5,7 +5,7 @@
             .chart-container {
                 width: 100%;
 
-                .ciq-navigation-widget,
+                .sc-navigation-widget,
                 .cq-top-ui-widgets,
                 .sc-toolbar-widget,
                 .stx-panel-control {
@@ -100,31 +100,182 @@ $FLOATING_HEADER_HEIGHT: 41px;
             &-wrapper {
                 z-index: 4;
             }
-            .contract-card__sell-button--exit {
-                display: none;
+
+            .dc-contract-card {
+                margin: 0.8rem 0;
+                &__sell-button {
+                    &--exit {
+                        display: none;
+                    }
+                }
             }
+
             @include mobile {
+                z-index: 4;
                 height: auto;
                 border-bottom-right-radius: $BORDER_RADIUS;
                 border-top-right-radius: $BORDER_RADIUS;
                 width: calc(100% - 1.6rem);
                 margin-left: 0.8rem;
-                margin-bottom: 0.8rem;
+                transition: none;
 
-                .contract-card__grid-underlying-trade,
-                .contract-card__footer-wrapper {
-                    grid-template-columns: 1fr 1fr 0.7fr;
-
-                    @media only screen and (max-height: 480px) {
-                        grid-template-columns: 1fr 1fr;
-                    }
+                &__mobile-wrapper {
+                    position: relative;
                 }
                 &--with-collapsible-btn {
-                    padding-top: 0;
+                    overflow: visible;
+                    position: relative;
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+
+                    & .dc-contract-card {
+                        margin-top: 0;
+                    }
                 }
-                @media only screen and (max-height: 480px) {
-                    .contract-card__body-wrapper {
-                        padding-top: 0.2rem;
+                &__transition {
+                    &-enter,
+                    &-exit {
+                        transition: transform 0.25s linear;
+                    }
+                }
+                & .dc-contract-card {
+                    &__grid-underlying-trade {
+                        grid-template-columns: 2fr 1fr !important;
+                    }
+                    &__underlying-name {
+                        max-width: none;
+                    }
+                }
+                &--is-multiplier {
+                    & .dc-contract-card {
+                        &__body-wrapper {
+                            flex-direction: column;
+                            padding-top: 0.4rem;
+                        }
+                        &-items-wrapper {
+                            grid-template-columns: 1fr 1fr 1fr;
+                            grid-gap: 0.4rem;
+                            padding-bottom: 0.4rem;
+                            border-bottom: 1px solid var(--general-section-1);
+                            min-height: 80px;
+
+                            @media (max-width: 320px) and (max-height: 480px) {
+                                min-height: unset;
+                            }
+                        }
+                        &-item {
+                            &__total-profit-loss {
+                                flex-direction: row;
+                                margin: 0 auto;
+
+                                & .contract-card-item__header {
+                                    font-size: 1.2rem !important;
+
+                                    @media (max-width: 320px) and (max-height: 480px) {
+                                        font-size: 1rem !important;
+                                    }
+                                }
+                            }
+                            &__header,
+                            &__body {
+                                font-size: 1.2rem;
+                            }
+                            &__body--loss {
+                                padding-left: 0.4rem;
+                            }
+                            &:nth-child(1) {
+                                order: 0;
+                            }
+                            &:nth-child(3),
+                            &:nth-child(5) {
+                                order: 2;
+                            }
+                            &:nth-child(6) {
+                                order: 6;
+                            }
+                            @media only screen and (max-width: 320px) {
+                                &__header {
+                                    font-size: 1rem;
+                                }
+                            }
+                            @media (max-width: 320px) and (max-height: 480px) {
+                                &__body {
+                                    font-size: 1rem;
+                                }
+                            }
+                        }
+                        @media (max-width: 320px) and (max-height: 480px) {
+                            &__symbol,
+                            &__type {
+                                font-size: 1rem;
+                            }
+                            &__sell-button {
+                                padding-top: 0.4rem;
+
+                                & .dc-btn {
+                                    height: 2.6rem;
+
+                                    &__text {
+                                        font-size: 1rem;
+                                    }
+                                }
+                            }
+                            &__footer {
+                                margin-bottom: 0;
+                            }
+                        }
+
+                        &__sell-button {
+                            &--has-cancel-btn {
+                                display: grid;
+                                grid-template-columns: 1fr 1fr;
+                            }
+                            @media (max-width: 320px) and (max-height: 480px) {
+                                & .dc-btn--cancel {
+                                    & .dc-btn__text {
+                                        align-items: center;
+                                    }
+                                    & .dc-remaining-time {
+                                        font-size: 1rem;
+                                        padding-top: 0;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    &.contract-drawer--with-collapsible-btn {
+                        & .dc-contract-card {
+                            &__indicative--movement {
+                                margin-top: 2px;
+                            }
+                        }
+                    }
+                    & .dc-contract-card__grid-underlying-trade,
+                    & .dc-contract-card__footer-wrapper {
+                        grid-template-columns: 1fr 1fr 0.7fr;
+
+                        @media only screen and (max-height: 480px) {
+                            grid-template-columns: 1fr 1fr;
+                        }
+                    }
+                    @media only screen and (max-height: 480px) {
+                        & .dc-contract-card__body-wrapper {
+                            padding-top: 0.2rem;
+                        }
+                    }
+
+                    &-sold {
+                        &.contract-drawer--with-collapsible-btn {
+                            & .dc-contract-card-item {
+                                &__total-profit-loss {
+                                    flex-direction: column;
+                                }
+                                &__body--profit {
+                                    font-size: 1.6rem;
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -162,7 +313,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
                     }
                     .sc-toolbar-widget,
                     .stx-panel-control,
-                    .ciq-navigation-widget {
+                    .sc-navigation-widget {
                         transition: transform 0.25s ease;
                     }
                     .ciq-asset-information {
@@ -186,16 +337,36 @@ $FLOATING_HEADER_HEIGHT: 41px;
                         }
                     }
                 }
-            }
-            @include mobile {
-                flex: 1;
-                margin-left: unset;
 
-                .drag-price {
-                    .arrow-icon {
-                        display: none;
+                /* postcss-bem-linter: ignore */
+                &-mobile {
+                    /* TODO: Remove this override once the issue is fixed in smartcharts */
+                    .stx-holder.stx-panel-chart {
+                        z-index: 14;
+
+                        .cq-inchart-holder {
+                            z-index: 107;
+                            position: relative;
+                        }
+                    }
+
+                    .cq-context {
+                        height: 100%;
                     }
                 }
+            }
+
+            &-swipeable-wrapper {
+                .dc-swipeable__item {
+                    margin-left: 0.8rem;
+                    width: calc(100vw - 1.6rem);
+                }
+            }
+
+            @include mobile {
+                height: 100%;
+                width: calc(100% - 1.6rem);
+                margin-left: 0.8rem;
             }
         }
         @include mobile {
@@ -203,6 +374,19 @@ $FLOATING_HEADER_HEIGHT: 41px;
             flex-direction: column-reverse;
             height: 100%;
             padding-bottom: 0;
+            position: relative;
+
+            #dt_contract_drawer_audit {
+                flex: 1;
+                overflow: auto;
+            }
+
+            & .contract-audit-card {
+                height: calc(100% - 1rem);
+                &__container {
+                    height: 100%;
+                }
+            }
         }
     }
     @include mobile {
@@ -217,7 +401,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
     padding: 0 0.8rem;
     display: flex;
     flex-direction: column;
-    height: 202px;
+    height: 212px;
     position: relative;
 
     &__content-loader {
@@ -238,7 +422,6 @@ $FLOATING_HEADER_HEIGHT: 41px;
 .chart-container {
     width: 100%;
     position: relative;
-    z-index: 1;
 
     &__wrapper {
         position: fixed;
@@ -285,7 +468,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
     }
     // smartchart library style fixes
     .smartcharts-mobile {
-        .cq-categorical-display {
+        .sc-categorical-display {
             height: calc(100% - 8px) !important;
         }
     }
@@ -338,7 +521,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
         .cq-chart-controls,
         .sc-toolbar-widget,
         .stx-panel-control,
-        .ciq-navigation-widget {
+        .sc-navigation-widget {
             transform: translate3d(0, 0, 0);
             transition: transform 0.25s ease;
         }
@@ -391,7 +574,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
         .cq-chart-controls {
             transition: max-width 0.25s ease, transform 0.25s ease;
         }
-        .ciq-navigation-widget,
+        .sc-navigation-widget,
         .stx-panel-control {
             transition: transform 0.25s ease;
         }
@@ -431,7 +614,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
         &--screenshot {
             .sc-toolbar-widget,
             .stx-panel-control,
-            .ciq-navigation-widget,
+            .sc-navigation-widget,
             .cq-top-ui-widgets {
                 transform: translate3d(0, 0, 0) !important;
             }
@@ -483,8 +666,39 @@ $FLOATING_HEADER_HEIGHT: 41px;
     }
 }
 
-/** @define contract */
+// TODO: improve handling of rendering markets dropdown via portals from smartcharts library
+/** @define smartcharts-portal; weak */
+.smartcharts-portal {
+    @include mobile {
+        &--open {
+            .smartcharts {
+                z-index: 9999;
+            }
+        }
+    }
+}
+
+/** @define contract; weak */
 .contract {
+    // TODO: Remove below if redundant
+    &-update {
+        /* postcss-bem-linter: ignore */
+        &__wrapper {
+            display: flex;
+            flex-direction: column;
+
+            /* postcss-bem-linter: ignore */
+            & .dc-tooltip:before,
+            & .dc-tooltip:after {
+                display: none;
+            }
+            /* postcss-bem-linter: ignore */
+            & .dc-contract-card-dialog__button {
+                display: flex;
+                align-items: flex-end;
+            }
+        }
+    }
     &--enter {
         transform: translate3d(calc(100% + 1.6em), 0, 0);
         opacity: 0;
@@ -564,6 +778,19 @@ $FLOATING_HEADER_HEIGHT: 41px;
                     }
                 }
             }
+            /** @define cq-top-ui-widgets; weak */
+            .cq-top-ui-widgets {
+                z-index: 15 !important;
+            }
         }
+    }
+    /* TODO: Remove this override once the issue is fixed in smartcharts */
+    /* postcss-bem-linter: ignore */
+    @at-root body.theme--light & .chart-line.horizontal .title-wrapper {
+        background-image: linear-gradient(
+            rgba(255, 255, 255, 0.001) 30%,
+            var(--general-main-1) 50%,
+            rgba(255, 255, 255, 0.001) 75%
+        );
     }
 }

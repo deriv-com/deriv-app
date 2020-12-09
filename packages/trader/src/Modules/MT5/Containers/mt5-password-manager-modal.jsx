@@ -1,3 +1,6 @@
+import { Field, Form, Formik } from 'formik';
+import PropTypes from 'prop-types';
+import React from 'react';
 import {
     Icon,
     Modal,
@@ -6,19 +9,17 @@ import {
     PasswordMeter,
     Button,
     DesktopWrapper,
+    Div100vhContainer,
     MobileWrapper,
     MultiStep,
     PageOverlay,
     ThemedScrollbars,
     UILoader,
 } from '@deriv/components';
-import { Field, Form, Formik } from 'formik';
-import PropTypes from 'prop-types';
-import React from 'react';
 import { localize, Localize } from '@deriv/translations';
+import { isMobile, validLength, validPassword, getErrorMessages } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import MT5Store from 'Stores/Modules/MT5/mt5-store';
-import { validLength, validPassword } from 'Utils/Validator/declarative-validation-rules';
 
 const CountdownComponent = ({ count_from = 60, onTimeout }) => {
     const [count, setCount] = React.useState(count_from);
@@ -35,6 +36,7 @@ const CountdownComponent = ({ count_from = 60, onTimeout }) => {
         onTimeout();
 
         return () => {};
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [count]);
     return <span className='countdown'>{count}</span>;
 };
@@ -47,6 +49,7 @@ const MT5PasswordReset = ({ sendVerifyEmail, password_type, account_type, accoun
         localStorage.setItem('mt5_reset_password_intent', [account_group, account_type].join('.'));
         localStorage.setItem('mt5_reset_password_type', password_type);
         sendVerifyEmail();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const onClickVerification = () => {
@@ -176,6 +179,7 @@ class MT5PasswordManagerModal extends React.Component {
     render() {
         const {
             enableApp,
+            email,
             disableApp,
             is_visible,
             selected_login,
@@ -199,7 +203,9 @@ class MT5PasswordManagerModal extends React.Component {
                     max_number: 25,
                 });
             } else if (!validPassword(values.new_password)) {
-                errors.new_password = localize('You need to include uppercase and lowercase letters, and numbers.');
+                errors.new_password = getErrorMessages().password();
+            } else if (values.new_password.toLowerCase() === email.toLowerCase()) {
+                errors.new_password = localize('Your password cannot be the same as your email address.');
             }
 
             if (!values.old_password && values.old_password !== undefined) {
@@ -234,7 +240,7 @@ class MT5PasswordManagerModal extends React.Component {
 
             return (
                 <Formik initialValues={initial_values} validate={validatePassword} onSubmit={onSubmit}>
-                    {({ isSubmitting, errors, setFieldTouched, touched }) => (
+                    {({ isSubmitting, errors, setFieldTouched, values, touched }) => (
                         <Form className='mt5-password-manager__main-form' noValidate>
                             {this.state.error_message_main && (
                                 <p className='mt5-password-manager--error-message'>{this.state.error_message_main}</p>
@@ -254,6 +260,7 @@ class MT5PasswordManagerModal extends React.Component {
                                     <PasswordMeter
                                         input={field.value}
                                         has_error={!!(touched.new_password && errors.new_password)}
+                                        custom_feedback_messages={getErrorMessages().password_warnings}
                                     >
                                         {({ has_warning }) => (
                                             <PasswordInput
@@ -281,7 +288,12 @@ class MT5PasswordManagerModal extends React.Component {
                             <div className='mt5-password-manager__actions'>
                                 <Button
                                     className='mt5-password-manager--button'
-                                    is_disabled={isSubmitting}
+                                    is_disabled={
+                                        isSubmitting ||
+                                        !values.old_password ||
+                                        !values.new_password ||
+                                        Object.keys(errors).length > 0
+                                    }
                                     is_loading={isSubmitting}
                                     text={localize('Change password')}
                                     primary
@@ -328,7 +340,7 @@ class MT5PasswordManagerModal extends React.Component {
                         <p className='mt5-password-manager--error-message'>{this.state.error_message_investor}</p>
                     )}
                     <Formik initialValues={initial_values} validate={validatePassword} onSubmit={onSubmit}>
-                        {({ isSubmitting, errors, setFieldTouched, touched }) => (
+                        {({ isSubmitting, errors, setFieldTouched, values, touched }) => (
                             <Form className='mt5-password-manager__investor-form' noValidate>
                                 <Field name='old_password'>
                                     {({ field }) => (
@@ -345,6 +357,7 @@ class MT5PasswordManagerModal extends React.Component {
                                         <PasswordMeter
                                             input={field.value}
                                             has_error={!!(touched.new_password && errors.new_password)}
+                                            custom_feedback_messages={getErrorMessages().password_warnings}
                                         >
                                             {({ has_warning }) => (
                                                 <PasswordInput
@@ -372,7 +385,12 @@ class MT5PasswordManagerModal extends React.Component {
                                 <div className='mt5-password-manager__actions'>
                                     <Button
                                         className='mt5-password-manager--button'
-                                        is_disabled={isSubmitting}
+                                        is_disabled={
+                                            isSubmitting ||
+                                            !values.old_password ||
+                                            !values.new_password ||
+                                            Object.keys(errors).length > 0
+                                        }
                                         is_loading={isSubmitting}
                                         text={localize('Change investor password')}
                                         primary
@@ -409,14 +427,18 @@ class MT5PasswordManagerModal extends React.Component {
                 <Tabs active_index={this.state.active_tab_index} onTabItemClick={this.updateAccountTabIndex} top>
                     <div label={localize('Main password')}>
                         <DesktopWrapper>
-                            <ThemedScrollbars height={password_container_height}>
+                            <ThemedScrollbars
+                                height={password_container_height}
+                                is_bypassed={isMobile()}
+                                autohide={false}
+                            >
                                 <MainPasswordManager />
                             </ThemedScrollbars>
                         </DesktopWrapper>
                         <MobileWrapper>
-                            <ThemedScrollbars height='calc(100vh - 120px)'>
+                            <Div100vhContainer className='mt5-password-manager__scroll-wrapper' height_offset='120px'>
                                 <MainPasswordManager />
-                            </ThemedScrollbars>
+                            </Div100vhContainer>
                         </MobileWrapper>
                     </div>
                     <div label={localize('Investor password')}>
@@ -426,9 +448,9 @@ class MT5PasswordManagerModal extends React.Component {
                             </ThemedScrollbars>
                         </DesktopWrapper>
                         <MobileWrapper>
-                            <ThemedScrollbars height='calc(100vh - 120px)'>
+                            <Div100vhContainer className='mt5-password-manager__scroll-wrapper' height_offset='120px'>
                                 <InvestorPasswordManager />
-                            </ThemedScrollbars>
+                            </Div100vhContainer>
                         </MobileWrapper>
                     </div>
                 </Tabs>
@@ -469,7 +491,7 @@ class MT5PasswordManagerModal extends React.Component {
                         enableApp={enableApp}
                         is_open={is_visible}
                         title={
-                            selected_account_type === 'real'
+                            selected_account_group === 'real'
                                 ? localize('Manage DMT5 Real {{account_title}} account password', {
                                       account_title: selected_account,
                                   })
@@ -500,13 +522,15 @@ class MT5PasswordManagerModal extends React.Component {
 }
 
 MT5PasswordManagerModal.propTypes = {
+    email: PropTypes.string,
     is_visible: PropTypes.bool,
     selected_account: PropTypes.string,
     selected_login: PropTypes.string,
     toggleModal: PropTypes.func,
 };
 
-export default connect(({ modules: { mt5 }, ui }) => ({
+export default connect(({ modules: { mt5 }, client, ui }) => ({
+    email: client.email,
     enableApp: ui.enableApp,
     disableApp: ui.disableApp,
     sendVerifyEmail: mt5.sendVerifyEmail,

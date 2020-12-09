@@ -6,7 +6,11 @@ Blockly.Blocks.lists_sort = {
     },
     definition() {
         return {
-            message0: localize('sort %1 %2 %3'),
+            message0: localize('sort {{ sort_type }} {{ sort_direction }} {{ input_list }}', {
+                sort_type: '%1',
+                sort_direction: '%2',
+                input_list: '%3',
+            }),
             args0: [
                 {
                     type: 'field_dropdown',
@@ -76,6 +80,6 @@ Blockly.JavaScript.lists_sort = block => {
         }`,
     ]);
 
-    const code = `${list}.slice(0).sort(${getCompareFunctionName}("${type}", ${direction}))`;
+    const code = `${list}.sort().slice(0).sort(${getCompareFunctionName}("${type}", ${direction}))`;
     return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
 };

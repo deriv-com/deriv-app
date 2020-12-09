@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Div100vhContainer, Icon } from '@deriv/components';
-import routes from '@deriv/shared/utils/routes';
-import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
+import { routes, isDesktop, isMobile, getActivePlatform } from '@deriv/shared';
+
 import { BinaryLink } from 'App/Components/Routes';
 import 'Sass/app/_common/components/platform-dropdown.scss';
 
@@ -25,7 +25,7 @@ class PlatformDropdown extends React.PureComponent {
         }
     };
 
-    componentWillMount() {
+    componentDidMount() {
         window.addEventListener('popstate', this.props.closeDrawer);
         if (isDesktop()) document.addEventListener('click', this.handleClickOutside);
     }
@@ -36,11 +36,11 @@ class PlatformDropdown extends React.PureComponent {
     }
 
     render() {
-        const { platform_config, closeDrawer } = this.props;
+        const { platform_config, closeDrawer, app_routing_history } = this.props;
 
         const platform_dropdown = (
             <div className='platform-dropdown'>
-                <Div100vhContainer className='platform-dropdown__list' height_offset='151px' is_disabled={isDesktop()}>
+                <Div100vhContainer className='platform-dropdown__list' height_offset='148px' is_disabled={isDesktop()}>
                     {platform_config.map((platform, idx) => (
                         <div key={idx} onClick={closeDrawer}>
                             {platform.link_to !== undefined ? (
@@ -49,6 +49,7 @@ class PlatformDropdown extends React.PureComponent {
                                     // This is here because in routes-config it needs to have children, but not in menu
                                     exact={platform.link_to === routes.trade}
                                     className='platform-dropdown__list-platform'
+                                    isActive={() => getActivePlatform(app_routing_history) === platform.name}
                                 >
                                     <PlatformBox platform={platform} />
                                 </BinaryLink>

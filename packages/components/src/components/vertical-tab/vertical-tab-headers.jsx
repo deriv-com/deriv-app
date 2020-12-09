@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import React from 'react';
-import VerticalTabWrapper from 'Components/vertical-tab/vertical-tab-wrapper.jsx';
-import VerticalTabHeader from 'Components/vertical-tab/vertical-tab-header.jsx';
-import VerticalTabHeaderGroup from 'Components/vertical-tab/vertical-tab-header-group.jsx';
-import VerticalTabHeaderTitle from 'Components/vertical-tab/vertical-tab-header-title.jsx';
+import VerticalTabWrapper from './vertical-tab-wrapper.jsx';
+import VerticalTabHeader from './vertical-tab-header.jsx';
+import VerticalTabHeaderGroup from './vertical-tab-header-group.jsx';
+import VerticalTabHeaderTitle from './vertical-tab-header-title.jsx';
 
 class VerticalTabHeaders extends React.PureComponent {
     ref = React.createRef();
@@ -38,8 +38,13 @@ class VerticalTabHeaders extends React.PureComponent {
         let calculated_offset = 0;
 
         this.headers = this.ref.current.querySelectorAll('.dc-vertical-tab__header__link');
+        let selected_el = null;
 
-        const selected_el = [...this.headers].find(header => header.innerText === (selected.label || selected.title));
+        if (selected.path) {
+            selected_el = [...this.headers].find(header => header.id === selected.path);
+        } else {
+            selected_el = [...this.headers].find(header => header.innerText === selected.label);
+        }
 
         if (selected_el) {
             const extra_offset = this.props.is_floating ? 18 : 10;

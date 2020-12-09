@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Div100vhContainer } from '@deriv/components';
-import { isDesktop } from '@deriv/shared/utils/screen';
+import { isDesktop } from '@deriv/shared';
 
 const IconMessageContent = ({ className, children, icon, icon_row, message, text }) => (
     <Div100vhContainer className='account-management__message-wrapper' is_disabled={isDesktop()} height_offset='110px'>

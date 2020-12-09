@@ -1,0 +1,200 @@
+.dc-tabs--account-types__tabs {
+    ul {
+        margin: 0 auto;
+        width: fit-content;
+    }
+}
+/* @define account-types; weak */
+.account-types {
+    &__intro {
+        margin: 2.4rem 6.2rem 2.4rem 4.8rem;
+
+        @include mobile {
+            margin: 0;
+            padding-left: 2.4rem;
+        }
+    }
+    &__text-icon {
+        height: 2.2rem;
+        vertical-align: middle;
+        width: 2.2rem;
+    }
+    &__box {
+        border-radius: 0.4rem;
+        box-shadow: 0 8px 8px 0 var(--shadow-menu), 0 0 8px 0 var(--shadow-menu);
+        display: grid;
+        margin: 0 auto 4rem;
+        padding: 2.4rem;
+        @include tablet-up {
+            grid-auto-columns: 1fr;
+            grid-auto-flow: column;
+            grid-column-gap: 2.4rem;
+            grid-template-columns: auto 1fr;
+            width: 80.8rem;
+        }
+        @include mobile {
+            width: 100%;
+            grid-auto-rows: minmax(23rem, auto);
+            grid-auto-flow: row;
+            grid-gap: 1rem;
+            box-shadow: none;
+        }
+        @include tablet {
+            max-width: 90vw;
+        }
+
+        &:first-of-type {
+            margin-top: 1.6rem;
+        }
+    }
+    &__box-side {
+        width: 25rem;
+    }
+    &__box-title {
+        color: var(--brand-red-coral);
+        font-size: 1.6rem;
+        font-weight: bold;
+        line-height: 1.5;
+        margin-bottom: 0.8rem;
+    }
+    &__box-description {
+        margin-bottom: 0.8rem;
+    }
+    &__box-footer {
+        margin-bottom: 0.8rem;
+    }
+    &__box-icons {
+        display: grid;
+        @include tablet-up {
+            grid-auto-flow: row;
+            grid-gap: 0.8rem 1.6rem;
+            grid-template-columns: repeat(auto-fit, 4.8rem);
+        }
+        @include mobile {
+            grid-template-columns: repeat(4, 1fr);
+        }
+        @include tablet {
+            grid-auto-flow: initial;
+            grid-template-columns: repeat(auto-fit, minmax(48px, 1fr));
+            width: auto;
+        }
+    }
+    &__box-icon {
+        height: 4.8rem;
+        width: 4.8rem;
+    }
+    .account-card {
+        border: 1px solid var(--border-normal);
+        border-radius: 0.6rem;
+        overflow: hidden;
+        position: relative;
+        width: 22.7rem;
+        min-width: 22.7rem;
+        flex-shrink: 0;
+
+        @include mobile {
+            flex-shrink: 0;
+            margin: 0 auto;
+        }
+
+        &__wrapper {
+            display: flex;
+            flex: 1;
+            position: relative;
+        }
+        &__main {
+            height: 35.8rem;
+            min-width: 100%;
+            padding: 1.6rem;
+
+            &-title {
+                color: var(--text-general);
+                font-size: 1.6rem;
+                font-weight: bold;
+                line-height: 1.5;
+                margin-bottom: 0.4rem;
+            }
+            &-subtitle {
+                color: var(--text-general);
+                font-size: 1.2rem;
+                font-weight: bold;
+                line-height: 1.5;
+                margin-bottom: 0.8rem;
+            }
+            &-table-container {
+                height: 14.8rem;
+                border-bottom: 1px solid var(--border-normal);
+                padding-bottom: 1.6rem;
+                margin-bottom: 1.6rem;
+            }
+            &-items {
+                width: 100%;
+                border-collapse: separate;
+                border-spacing: 0 0.8rem;
+            }
+            &-item {
+                margin-bottom: 0.8rem;
+
+                &-label {
+                    color: var(--text-less-prominent);
+                    display: inline-block;
+                    font-size: 1.2rem;
+                    line-height: 1.5;
+                    white-space: nowrap;
+                    width: 10.3rem;
+                }
+                &-value {
+                    color: var(--text-general);
+                    display: inline-block;
+                    font-size: 1.2rem;
+                    line-height: 1.5;
+                    white-space: nowrap;
+                    width: 8rem;
+                }
+            }
+            &-button {
+                width: calc(100% - 32px);
+                box-sizing: border-box;
+                position: absolute;
+                bottom: 1.6rem;
+            }
+        }
+        &__platforms {
+            &-title {
+                margin-bottom: 0.8rem;
+            }
+            &-name {
+                padding-top: 0.2rem;
+            }
+            &-icons {
+                display: grid;
+                grid-auto-flow: column;
+                justify-content: start;
+            }
+            &-icon {
+                cursor: pointer;
+                display: grid;
+                justify-items: center;
+                width: 6.4rem;
+            }
+        }
+    }
+    @include mobile {
+        width: calc(100% - 1.6rem);
+        margin-left: 0.8rem;
+        padding-top: 2.4rem;
+
+        &__container {
+            max-height: 100%;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+    }
+}
+
+.dc-modal-header__title--account-types {
+    @include mobile {
+        width: 100vw;
+        justify-content: center;
+    }
+}

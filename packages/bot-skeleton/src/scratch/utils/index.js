@@ -62,99 +62,105 @@ export const load = ({
     workspace,
     showIncompatibleStrategyDialog,
 }) => {
-    const showInvalidStrategyError = () => {
-        const error_message = localize('XML file contains unsupported elements. Please check or modify file.');
-        globalObserver.emit('ui.log.error', error_message);
-    };
+    const { startLoading, endLoading } = DBotStore.instance;
+    startLoading();
 
-    // Check if XML can be parsed correctly.
-    try {
-        const xmlDoc = new DOMParser().parseFromString(block_string, 'application/xml');
+    setTimeout(async () => {
+        const showInvalidStrategyError = () => {
+            endLoading();
+            const error_message = localize('XML file contains unsupported elements. Please check or modify file.');
+            globalObserver.emit('ui.log.error', error_message);
+        };
 
-        if (xmlDoc.getElementsByTagName('parsererror').length) {
+        // Check if XML can be parsed correctly.
+        try {
+            const xmlDoc = new DOMParser().parseFromString(block_string, 'application/xml');
+
+            if (xmlDoc.getElementsByTagName('parsererror').length) {
+                return showInvalidStrategyError();
+            }
+        } catch (e) {
             return showInvalidStrategyError();
         }
-    } catch (e) {
-        return showInvalidStrategyError();
-    }
 
-    let xml;
+        let xml;
 
-    // Check if XML can be parsed into a strategy.
-    try {
-        xml = Blockly.Xml.textToDom(block_string);
-    } catch (e) {
-        return showInvalidStrategyError();
-    }
-
-    const blockConversion = new BlockConversion();
-    xml = blockConversion.convertStrategy(xml, showIncompatibleStrategyDialog);
-
-    const blockly_xml = xml.querySelectorAll('block');
-
-    // Check if there are any blocks in this strategy.
-    if (!blockly_xml.length) {
-        return showInvalidStrategyError();
-    }
-
-    // Check if all block types in XML are allowed.
-    const has_invalid_blocks = Array.from(blockly_xml).some(block => {
-        const block_type = block.getAttribute('type');
-        return !Object.keys(Blockly.Blocks).includes(block_type);
-    });
-
-    if (has_invalid_blocks) {
-        return showInvalidStrategyError();
-    }
-
-    try {
-        const is_collection = xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true';
-        const event_group = is_collection ? `load_collection${Date.now()}` : `dbot-load${Date.now()}`;
-
-        Blockly.Events.setGroup(event_group);
-        removeLimitedBlocks(
-            workspace,
-            Array.from(blockly_xml).map(xml_block => xml_block.getAttribute('type'))
-        );
-
-        if (is_collection) {
-            loadBlocks(xml, drop_event, event_group, workspace);
-        } else {
-            loadWorkspace(xml, event_group, workspace);
-
-            const is_main_workspace = workspace === Blockly.derivWorkspace;
-            if (is_main_workspace) {
-                const { save_modal } = DBotStore.instance;
-
-                save_modal.updateBotName(file_name);
-                workspace.clearUndo();
-                workspace.current_strategy_id = strategy_id || Blockly.utils.genUid();
-                saveWorkspaceToRecent(from);
-            }
+        // Check if XML can be parsed into a strategy.
+        try {
+            xml = Blockly.Xml.textToDom(block_string);
+        } catch (e) {
+            return showInvalidStrategyError();
         }
 
-        // Set user disabled state on all disabled blocks. This ensures we don't change the disabled
-        // state through code, which was implemented for user experience.
-        workspace.getAllBlocks().forEach(block => {
-            if (block.disabled) {
-                block.is_user_disabled_state = true;
-            }
+        const blockConversion = new BlockConversion();
+        xml = blockConversion.convertStrategy(xml, showIncompatibleStrategyDialog);
+
+        const blockly_xml = xml.querySelectorAll('block');
+
+        // Check if there are any blocks in this strategy.
+        if (!blockly_xml.length) {
+            return showInvalidStrategyError();
+        }
+
+        // Check if all block types in XML are allowed.
+        const has_invalid_blocks = Array.from(blockly_xml).some(block => {
+            const block_type = block.getAttribute('type');
+            return !Object.keys(Blockly.Blocks).includes(block_type);
         });
 
-        // Dispatch resize event for comments.
-        window.dispatchEvent(new Event('resize'));
-        if (workspace === Blockly.derivWorkspace) {
-            globalObserver.emit('ui.log.success', { log_type: log_types.LOAD_BLOCK });
+        if (has_invalid_blocks) {
+            return showInvalidStrategyError();
         }
-    } catch (e) {
-        console.log(e); // eslint-disable-line
-        return showInvalidStrategyError();
-    }
 
-    return true;
+        try {
+            const is_collection = xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true';
+            const event_group = is_collection ? `load_collection${Date.now()}` : `dbot-load${Date.now()}`;
+
+            Blockly.Events.setGroup(event_group);
+            removeLimitedBlocks(
+                workspace,
+                Array.from(blockly_xml).map(xml_block => xml_block.getAttribute('type'))
+            );
+
+            if (is_collection) {
+                loadBlocks(xml, drop_event, event_group, workspace);
+            } else {
+                await loadWorkspace(xml, event_group, workspace);
+
+                const is_main_workspace = workspace === Blockly.derivWorkspace;
+                if (is_main_workspace) {
+                    const { save_modal } = DBotStore.instance;
+
+                    save_modal.updateBotName(file_name);
+                    workspace.clearUndo();
+                    workspace.current_strategy_id = strategy_id || Blockly.utils.genUid();
+                    saveWorkspaceToRecent(xml, from);
+                }
+            }
+
+            // Set user disabled state on all disabled blocks. This ensures we don't change the disabled
+            // state through code, which was implemented for user experience.
+            workspace.getAllBlocks().forEach(block => {
+                if (block.disabled) {
+                    block.is_user_disabled_state = true;
+                }
+            });
+
+            if (workspace === Blockly.derivWorkspace) {
+                globalObserver.emit('ui.log.success', { log_type: log_types.LOAD_BLOCK });
+            }
+        } catch (e) {
+            console.error(e); // eslint-disable-line
+            return showInvalidStrategyError();
+        } finally {
+            endLoading();
+        }
+
+        return true;
+    }, 500);
 };
 
-const loadBlocks = (xml, drop_event, event_group, workspace) => {
+export const loadBlocks = (xml, drop_event, event_group, workspace) => {
     Blockly.Events.setGroup(event_group);
 
     const block_ids = Blockly.Xml.domToWorkspace(xml, workspace);
@@ -167,9 +173,9 @@ const loadBlocks = (xml, drop_event, event_group, workspace) => {
     }
 };
 
-const loadWorkspace = (xml, event_group, workspace) => {
+export const loadWorkspace = async (xml, event_group, workspace) => {
     Blockly.Events.setGroup(event_group);
-    workspace.clear();
+    await workspace.asyncClear();
 
     Blockly.Xml.domToWorkspace(xml, workspace);
 };
@@ -397,3 +403,15 @@ export const updateDisabledBlocks = (workspace, event) => {
 export const emptyTextValidator = input => {
     return !input || input === "''";
 };
+
+/* eslint-disable no-bitwise */
+export const isDarkRgbColour = string_rgb => {
+    const values = string_rgb.substring(1);
+    const rgb = parseInt(values, 16);
+    const red = (rgb >> 16) & 0xff;
+    const green = (rgb >> 8) & 0xff;
+    const blue = (rgb >> 0) & 0xff;
+    const luma = 0.2126 * red + 0.7152 * green + 0.0722 * blue;
+    return luma < 160;
+};
+/* eslint-enable */

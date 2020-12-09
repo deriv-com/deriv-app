@@ -1,9 +1,20 @@
-import { OSDetect } from '@deriv/shared/utils/os';
+import { OSDetect } from '@deriv/shared';
+
+const getServerName = is_demo => (is_demo ? 'Deriv-Demo' : 'Deriv-Server');
+
+const getBrokerName = () => 'Deriv Limited';
+
+const getTopUpConfig = () => {
+    return {
+        currency: 'USD',
+        minimum_amount: 1000,
+        additional_amount: 10000,
+    };
+};
 
 const getPlatformMt5DownloadLink = (platform = undefined) => {
     switch (platform || OSDetect()) {
         case 'windows':
-            // TODO: [deriv-eu] for EU we should return https://download.mql5.com/cdn/web/16177/mt5/binarycom5setup.exe
             return 'https://download.mql5.com/cdn/web/deriv.limited/mt5/deriv5setup.exe';
         case 'linux':
             return 'https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux';
@@ -24,4 +35,4 @@ const getMT5WebTerminalLink = ({ category, loginid }) => {
     return `https://trade.mql5.com/trade?servers=${server}&trade_server=${server}${login && `&login=${login}`}`;
 };
 
-export { getPlatformMt5DownloadLink, getMT5WebTerminalLink };
+export { getServerName, getBrokerName, getPlatformMt5DownloadLink, getMT5WebTerminalLink, getTopUpConfig };

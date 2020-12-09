@@ -1,11 +1,14 @@
 /** @define positions-modal-card; weak */
 
 .positions-modal-card {
+    $positions-modal-card: &;
+
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     text-decoration: none;
     position: relative;
+    padding: 0.8rem;
     color: var(--text-general);
     user-select: none;
     -webkit-touch-callout: none;
@@ -49,8 +52,7 @@
         margin-left: 4px;
     }
     &__wrapper {
-        padding: 0.8rem;
-        margin: 0 1rem 1rem;
+        margin: 0.8rem;
         border-radius: $BORDER_RADIUS;
         transition: transform 0.25s ease, opacity 0.25s linear;
         position: relative;
@@ -63,6 +65,7 @@
             border-bottom: 1px solid var(--general-section-1);
             grid-template-columns: 1fr 1fr 1fr;
             padding-bottom: 1rem;
+            margin-bottom: 0.8rem;
         }
         &-body {
             grid-template-columns: 2fr 1fr;
@@ -234,44 +237,26 @@
         font-weight: bold;
         font-size: 1.2em;
     }
-}
-
-/** @define contract-type */
-.contract-type {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    text-align: center;
-    margin-left: -4px;
-
-    &__type-wrapper {
-        margin: 0;
-        padding: 0.5rem 0.3rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        /* postcss-bem-linter: ignore */
-        .category-type {
-            width: 20px;
-            height: 20px;
+    &--multiplier {
+        .dc-contract-card {
+            &__grid-items {
+                grid-template-columns: 1fr 1fr 1fr;
+                padding: 1.2rem 0rem;
+            }
+            &__deal-cancel-fee,
+            &__buy-price,
+            &__stop-loss {
+                order: 1;
+            }
         }
-    }
-    &__type-label {
-        width: 3.8rem;
-        line-height: 1.5;
-        text-align: left;
-
-        &-multiplier {
-            font-size: 1rem;
-            line-height: 1rem;
-            color: var(--text-less-prominent);
+        .dc-contract-card__sell-button {
+            border-top: 0rem;
         }
     }
 }
 
-/** @define remaining-time; */
-.remaining-time {
+/** @define dc-remaining-time; weak */
+.dc-remaining-time {
     display: inline;
 
     @include mobile {

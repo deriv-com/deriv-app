@@ -9,6 +9,8 @@ import {
     hasDurationForCallPutEqual,
     isRiseFallEqual,
 } from 'Stores/Modules/Trading/Helpers/allow-equals';
+import { MultiplierOptionsWidget } from 'Modules/Trading/Components/Form/TradeParams/Multiplier/widgets.jsx';
+import RiskManagementInfo from '../Elements/Multiplier/risk-management-info.jsx';
 import MobileWidget from '../Elements/mobile-widget.jsx';
 import ContractType from '../../Containers/contract-type.jsx';
 import { BarrierMobile, LastDigitMobile } from '../../Containers/trade-params-mobile.jsx';
@@ -21,10 +23,12 @@ const CollapsibleTradeParams = ({
     previous_symbol,
     is_allow_equal,
     is_trade_params_expanded,
+    is_multiplier,
     setIsTradeParamsExpanded,
 }) => {
     React.useEffect(() => {
         if (previous_symbol && is_allow_equal && has_allow_equals) setIsTradeParamsExpanded(true);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [previous_symbol]);
 
     const is_collapsed = !is_trade_params_expanded;
@@ -41,7 +45,10 @@ const CollapsibleTradeParams = ({
 
     return (
         <Collapsible position='top' is_collapsed={is_collapsed} onClick={onClick}>
-            <ContractType />
+            <div className='trade-params__contract-type-container'>
+                <ContractType />
+                {is_multiplier && <MultiplierOptionsWidget />}
+            </div>
             {isVisible('last_digit') && (
                 <div collapsible='true'>
                     <LastDigitMobile />
@@ -54,6 +61,11 @@ const CollapsibleTradeParams = ({
             )}
             <MobileWidget is_collapsed={is_collapsed} toggleDigitsWidget={toggleDigitsWidget} />
             {has_allow_equals && <AllowEqualsMobile collapsible='true' />}
+            {is_multiplier && (
+                <div collapsible='true'>
+                    <RiskManagementInfo />
+                </div>
+            )}
             <div className='purchase-container'>
                 <Purchase />
             </div>
@@ -95,6 +107,7 @@ ScreenSmall.propTypes = {
 
 export default connect(({ modules }) => ({
     is_allow_equal: !!modules.trade.is_equal,
+    is_multiplier: modules.trade.is_multiplier,
     duration_unit: modules.trade.duration_unit,
     contract_types_list: modules.trade.contract_types_list,
     contract_type: modules.trade.contract_type,

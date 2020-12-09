@@ -15,11 +15,20 @@
         opacity: 1;
         pointer-events: auto;
     }
+    &__menu-mobile-body-wrapper {
+        position: relative;
+        height: calc(100% - 3.6rem);
+    }
     &__menu-mobile-platform-switcher {
         position: absolute;
         height: 100%;
-        top: -48px;
+        top: 24px;
         left: 0;
+    }
+    &__menu-mobile-theme {
+        border-bottom: 1px solid var(--general-section-1);
+        padding-bottom: 1.6rem;
+        margin-bottom: 1.6rem;
     }
     &__menu-mobile-link {
         text-decoration: none;
@@ -40,6 +49,9 @@
             margin-right: 16px;
             width: 16px;
             height: 16px;
+        }
+        &-flag-icon {
+            margin-right: 16px;
         }
         &-suffix-icon {
             width: 16px;
@@ -107,6 +119,9 @@
         height: #{$HEADER_HEIGHT - 1px};
         position: relative;
 
+        &--hidden {
+            display: none;
+        }
         @include mobile {
             .acc-info__separator {
                 display: none;

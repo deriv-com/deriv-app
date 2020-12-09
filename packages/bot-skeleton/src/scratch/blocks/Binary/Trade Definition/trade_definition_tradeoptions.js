@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import CurrencyUtils from '@deriv/shared/utils/currency';
+import { getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
 import DBotStore from '../../../dbot-store';
 import { runIrreversibleEvents } from '../../../utils';
 import { config } from '../../../../constants/config';
@@ -17,7 +17,10 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         const is_stake = this.type === 'trade_definition_tradeoptions';
 
         return {
-            message0: localize('Duration: %1 %2'),
+            message0: localize('Duration: {{ duration_unit }} {{ duration_value }}', {
+                duration_unit: '%1',
+                duration_value: '%2',
+            }),
             message1: `${is_stake ? localize('Stake') : localize('Payout')}: %1 %2`,
             args0: [
                 {
@@ -34,7 +37,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 {
                     type: 'field_label',
                     name: 'CURRENCY_LIST',
-                    text: CurrencyUtils.getCurrencyDisplayCode(config.lists.CURRENCY[0]),
+                    text: getCurrencyDisplayCode(config.lists.CURRENCY[0]),
                 },
                 {
                     type: 'input_value',
@@ -358,7 +361,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
     setCurrency() {
         const currency_field = this.getField('CURRENCY_LIST');
         const { currency } = DBotStore.instance.client;
-        currency_field.setText(CurrencyUtils.getCurrencyDisplayCode(currency));
+        currency_field.setText(getCurrencyDisplayCode(currency));
     },
     restricted_parents: ['trade_definition'],
     getRequiredValueInputs() {
@@ -375,22 +378,28 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                     return false;
                 }
 
-                const { min, max } = this.durations.find(d => d.unit === this.selected_duration);
-                const is_valid_duration = input_number >= min && input_number <= max;
+                const duration = this.durations.find(d => d.unit === this.selected_duration);
 
-                if (min === max) {
-                    this.error_message = localize(
-                        'Duration value is not allowed. To run the bot, please enter {{min}}.',
-                        { min }
-                    );
-                } else {
-                    this.error_message = localize(
-                        'Duration value is not allowed. To run the bot, please enter a value between {{min}} to {{max}}.',
-                        { min, max }
-                    );
+                if (duration) {
+                    const { min, max } = duration;
+                    const is_valid_duration = input_number >= min && input_number <= max;
+
+                    if (min === max) {
+                        this.error_message = localize(
+                            'Duration value is not allowed. To run the bot, please enter {{min}}.',
+                            { min }
+                        );
+                    } else {
+                        this.error_message = localize(
+                            'Duration value is not allowed. To run the bot, please enter a value between {{min}} to {{max}}.',
+                            { min, max }
+                        );
+                    }
+
+                    return !is_valid_duration;
                 }
 
-                return !is_valid_duration;
+                return false;
             },
         };
     },
@@ -406,7 +415,7 @@ Blockly.JavaScript.trade_definition_tradeoptions = block => {
 
     // Determine decimal places for rounding the stake, this is done so Martingale multipliers
     // are not affected by fractional values e.g. USD 12.232323 will become 12.23.
-    const decimal_places = CurrencyUtils.getDecimalPlaces(currency);
+    const decimal_places = getDecimalPlaces(currency);
     const stake_amount = `+(Number(${amount}).toFixed(${decimal_places}))`;
 
     const getBarrierValue = (barrier_offset_type, value) => {
@@ -448,6 +457,7 @@ Blockly.JavaScript.trade_definition_tradeoptions = block => {
             secondBarrierOffset: ${second_barrier_offset_value || 'undefined'},
             basis              : '${block.type === 'trade_definition_tradeoptions' ? 'stake' : 'payout'}',
         });
+        BinaryBotPrivateHasCalledTradeOptions = true;
     `;
 
     return code;

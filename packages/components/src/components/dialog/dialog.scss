@@ -16,7 +16,7 @@
     bottom: 0;
 
     &__wrapper {
-        position: absolute;
+        position: fixed;
         left: 0;
         top: 0;
         width: 100%;
@@ -25,17 +25,28 @@
         align-items: center;
         justify-content: center;
         z-index: 999;
-        transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25), opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
+        transition: opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
         background-color: var(--overlay-outside-dialog);
 
         &--enter,
         &--exit {
-            transform: translate3d(0, 50px, 0);
             opacity: 0;
+
+            .dc-dialog__dialog {
+                transform: translate3d(0, 50px, 0);
+                opacity: 0;
+            }
         }
         &--enter-done {
-            transform: translate3d(0, 0, 0);
             opacity: 1;
+
+            .dc-dialog__dialog {
+                transform: translate3d(0, 0, 0);
+                opacity: 1;
+            }
+        }
+        &--has-portal {
+            background-color: transparent;
         }
     }
     &__dialog {
@@ -53,6 +64,7 @@
         align-items: center;
         box-shadow: 0 2px 8px 0 var(--shadow-menu);
         background-color: var(--general-main-2);
+        transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25), opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
     }
     &__header {
         align-self: flex-start;
@@ -60,6 +72,15 @@
         margin-bottom: 2.4rem;
         line-height: 1.5;
         color: var(--text-prominent);
+
+        &-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+        &--close {
+            cursor: pointer;
+        }
     }
     &__content {
         align-self: flex-start;
@@ -68,6 +89,7 @@
         line-height: 1.43;
         color: var(--text-general);
         max-width: calc(440px - 4.8rem);
+        width: 100%;
 
         /* postcss-bem-linter: ignore */
         .dc-input__label {
@@ -84,10 +106,16 @@
         width: 100%;
         @include mobile {
             flex-wrap: wrap;
+            align-items: flex-start;
         }
     }
     &__button {
         margin-left: 0.8rem;
+        @include mobile {
+            &:not(:last-child) {
+                margin-bottom: 1rem;
+            }
+        }
     }
 }
 

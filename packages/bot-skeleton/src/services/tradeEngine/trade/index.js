@@ -1,4 +1,3 @@
-import { Map } from 'immutable';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { localize } from '@deriv/translations';
@@ -69,19 +68,20 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
         this.observer = $scope.observer;
         this.$scope = $scope;
         this.observe();
-        this.data = new Map();
+        this.data = {
+            contract: {},
+            proposals: [],
+            forget_proposal_ids: [],
+        };
         this.store = createStore(rootReducer, applyMiddleware(thunk));
     }
 
     init(...args) {
         const [token, options] = expectInitArg(args);
-
         const { symbol } = options;
 
         this.initArgs = args;
-
         this.options = options;
-
         this.startPromise = this.loginAndGetBalance(token);
 
         this.watchTicks(symbol);
@@ -97,11 +97,8 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
         this.tradeOptions = expectTradeOptions(tradeOptions);
 
         this.store.dispatch(start());
-
         this.checkLimits(tradeOptions);
-
         this.makeProposals({ ...this.options, ...tradeOptions });
-
         this.checkProposalReady();
     }
 
@@ -126,15 +123,34 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
                 } else {
                     resolve();
                 }
+
+                // Try to recover from a situation where API doesn't give us a correct response on
+                // "proposal_open_contract" which would make the bot run forever. When there's a "sell"
+                // event, wait a couple seconds for the API to give us the correct "proposal_open_contract"
+                // response, if there's none after x seconds. Send an explicit request, which _should_
+                // solve the issue. This is a backup!
+                this.listen('transaction', ({ transaction }) => {
+                    if (transaction.action === 'sell') {
+                        this.transaction_recovery_timeout = setTimeout(() => {
+                            const { contract } = this.data;
+                            const is_same_contract = contract.contract_id === transaction.contract_id;
+                            const is_open_contract = contract.status === 'open';
+
+                            if (is_same_contract && is_open_contract) {
+                                doUntilDone(() => this.api.getContractInfo(contract.contract_id));
+                            }
+                        }, 1000);
+                    }
+                });
+
+                doUntilDone(() => this.api.subscribeToTransactions());
             })
         );
     }
 
     observe() {
         this.observeOpenContract();
-
         this.observeBalance();
-
         this.observeProposals();
     }
 
@@ -143,10 +159,6 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
             return watchBefore(this.store);
         }
         return watchDuring(this.store);
-    }
-
-    getData() {
-        return this.data;
     }
 
     listen(n, f) {

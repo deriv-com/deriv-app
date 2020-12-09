@@ -1,11 +1,12 @@
 import React from 'react';
 import { Tabs, Money, Numpad } from '@deriv/components';
-import ObjectUtils from '@deriv/shared/utils/object';
+import { isEmptyObject, getDecimalPlaces } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import CurrencyUtils from '@deriv/shared/utils/currency';
+
 import { connect } from 'Stores/connect';
 
 const Basis = ({
+    addToast,
     duration_unit,
     duration_value,
     toggleModal,
@@ -20,10 +21,8 @@ const Basis = ({
     trade_duration,
     trade_duration_unit,
     setAmountError,
-    setToastErrorMessage,
-    setToastErrorVisibility,
 }) => {
-    const user_currency_decimal_places = CurrencyUtils.getDecimalPlaces(currency);
+    const user_currency_decimal_places = getDecimalPlaces(currency);
     const onNumberChange = num => {
         setSelectedAmount(basis, num);
         validateAmount(num);
@@ -42,10 +41,10 @@ const Basis = ({
             on_change_obj.amount = amount;
         }
 
-        if (!ObjectUtils.isEmptyObject(on_change_obj)) onChangeMultiple(on_change_obj);
+        if (!isEmptyObject(on_change_obj)) onChangeMultiple(on_change_obj);
         toggleModal();
     };
-    const zero_decimals = Number('0').toFixed(CurrencyUtils.getDecimalPlaces(currency));
+    const zero_decimals = Number('0').toFixed(getDecimalPlaces(currency));
     const min_amount = parseFloat(zero_decimals.toString().replace(/.$/, '1'));
 
     const validateAmount = value => {
@@ -53,17 +52,14 @@ const Basis = ({
         const selected_value = parseFloat(value.toString());
 
         if (value.toString() === '0.' || selected_value === 0) {
-            setToastErrorMessage(localized_message, 2000);
-            setToastErrorVisibility(true);
+            addToast({ key: 'amount_error', content: localized_message, type: 'error', timeout: 2000 });
             setAmountError(true);
             return 'error';
         } else if (isNaN(selected_value) || selected_value < min_amount || value.toString().length < 1) {
-            setToastErrorMessage(localized_message, 2000);
-            setToastErrorVisibility(true);
+            addToast({ key: 'amount_error', content: localized_message, type: 'error', timeout: 2000 });
             setAmountError(true);
             return false;
         }
-        setToastErrorVisibility(false);
         setAmountError(false);
         return true;
     };
@@ -102,8 +98,7 @@ const AmountWrapper = connect(({ modules, client, ui }) => ({
     trade_duration_unit: modules.trade.duration_unit,
     trade_duration: modules.trade.duration,
     currency: client.currency,
-    setToastErrorMessage: ui.setToastErrorMessage,
-    setToastErrorVisibility: ui.setToastErrorVisibility,
+    addToast: ui.addToast,
 }))(Basis);
 
 const Amount = ({
@@ -122,6 +117,21 @@ const Amount = ({
 }) => {
     const has_selected_tab_idx = typeof amount_tab_idx !== 'undefined';
     const active_index = has_selected_tab_idx ? amount_tab_idx : basis_list.findIndex(b => b.value === basis);
+
+    if (basis_list.length === 1) {
+        return (
+            <AmountWrapper
+                toggleModal={toggleModal}
+                duration_value={duration_value}
+                duration_unit={duration_unit}
+                has_duration_error={has_duration_error}
+                basis={basis_list[0].value}
+                setAmountError={setAmountError}
+                selected_basis={basis_list[0].value === 'stake' ? stake_value : payout_value}
+                setSelectedAmount={setSelectedAmount}
+            />
+        );
+    }
 
     return (
         <div>

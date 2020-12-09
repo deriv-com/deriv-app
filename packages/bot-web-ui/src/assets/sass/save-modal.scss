@@ -3,14 +3,14 @@
 
     &__container {
         &_#{$save-modal} {
-            height: 462px !important;
-            min-width: 384px !important;
+            min-width: 320px !important;
 
             .modal__content {
                 padding: 16px 24px;
             }
             .modal__footer {
                 text-align: right;
+                border-top: 2px solid var(--general-section-2);
 
                 &--button {
                     margin: 1.4rem 1.6rem 1.4rem 0;
@@ -22,6 +22,12 @@
                 align-items: center;
                 justify-content: center;
             }
+            & form {
+                height: 445px;
+                display: flex;
+                justify-content: space-between;
+                flex-direction: column;
+            }
         }
     }
 }
@@ -31,19 +37,24 @@ div.radio-group {
     &__save-type {
         display: flex;
         justify-content: center;
-        margin-top: 0;
-        padding: 38px 0 30px;
+        margin: 8% 0px;
 
         .dc-radio {
             &-group {
                 &__item {
                     display: flex;
                     flex-direction: column;
-                    padding: 8px;
-                    width: 104px;
-                    border: solid 1px var(--general-active);
+                    padding: 24px;
+                    width: 128px;
                     border-radius: 4px;
 
+                    &--selected {
+                        border: solid 1px #85acb0;
+
+                        & .save-type__radio-text {
+                            font-weight: 700;
+                        }
+                    }
                     &-disabled {
                         .save-type__text {
                             color: var(--general-disabled) !important;
@@ -54,7 +65,7 @@ div.radio-group {
                     }
                 }
                 &__circle {
-                    align-self: flex-start;
+                    display: none;
                 }
                 &__label {
                     align-self: center;
@@ -78,22 +89,20 @@ div.radio-group {
         line-height: 1.43;
         letter-spacing: normal;
         color: var(--text-prominent);
-        margin: 8px 0 0 20px;
+        margin: 8px 0 0 32px;
     }
     &__container {
         text-align: center;
     }
     &__input {
         // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
-        width: 232px !important;
         margin: 12px 0 0 !important;
     }
     &__radio {
         text-align: center;
     }
     &__radio-text {
-        font-size: 14px;
-        font-weight: bold;
+        font-size: 12px;
         line-height: 1.43;
         letter-spacing: normal;
         color: var(--text-prominent);
@@ -105,10 +114,10 @@ div.radio-group {
     &__drive-status {
         cursor: pointer;
         position: absolute;
-        margin-top: 20px;
+        margin-top: 5px;
         font-weight: bold;
         color: var(--brand-red-coral);
-        width: 80px;
+        width: 71px;
     }
     &__icon {
         &--disabled {
@@ -118,30 +127,18 @@ div.radio-group {
 }
 
 .save-modal__wrapper {
+    position: fixed;
+    top: 40px;
+    z-index: 10;
     @include mobile {
-        position: fixed;
-        z-index: 5;
-        width: 100%;
-        left: 0px;
-        background: var(--general-main-1);
-
-        & form {
-            height: 100%;
+        form {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-        }
-        & .dc-page-overlay__header {
-            position: fixed;
-            top: 4rem;
-            width: 100%;
-            height: 4rem;
-        }
-        & .dc-page-overlay__content {
-            margin-top: 40px;
+            height: 100%;
 
-            & .modal__content {
-                padding: 1.6rem;
+            &--acitve-keyboard {
+                justify-content: flex-start;
             }
         }
         & .dc-input {
@@ -153,19 +150,34 @@ div.radio-group {
         }
         & .save-type__drive-status {
             position: relative;
-            bottom: -30px;
+        }
+        & .modal__content {
+            padding: 0px 1.6rem;
+            height: calc(100% - #{$MOBILE_WRAPPER_FOOTER_HEIGHT});
         }
         & .modal__footer {
+            position: fixed;
+            bottom: 0px;
+            left: 0px;
             display: flex;
             flex-direction: row;
             justify-content: flex-end;
             padding: 1.4rem;
-            height: 72px;
+            height: #{$MOBILE_WRAPPER_FOOTER_HEIGHT};
             border-top: solid 0.1em var(--general-section-1);
+            width: 100%;
 
+            &--active-keyboard {
+                margin-top: 1.6rem;
+                position: relative;
+                display: block;
+                left: unset;
+                bottom: unset;
+            }
             &--button {
                 float: right;
                 margin-left: 0.8rem;
+                height: 4rem;
             }
         }
     }

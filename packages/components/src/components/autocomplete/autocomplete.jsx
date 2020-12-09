@@ -1,9 +1,11 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { getPosition } from '@deriv/shared';
 import Icon from '../icon';
 import Input from '../input';
 import DropdownList from '../dropdown-list';
+import { useBlockScroll } from '../../hooks/use-blockscroll';
 
 const KEY_CODE = {
     ENTER: 13,
@@ -20,264 +22,272 @@ const getFilteredItems = (val, list) => {
         is_string_array ? item.toLowerCase().includes(val) : item.text.toLowerCase().includes(val)
     );
 };
-class Autocomplete extends React.PureComponent {
-    dropdown_ref = React.createRef();
-    list_wrapper_ref = React.createRef();
-    list_item_ref = React.createRef();
-    scroll_timeout = null;
-    scrollTopPos = null;
+const Autocomplete = React.memo(props => {
+    const {
+        className,
+        dropdown_offset,
+        onItemSelection,
+        value,
+        list_items,
+        autoComplete,
+        onHideDropdownList,
+        onScrollStop,
+        list_portal_id,
+        is_alignment_top,
+        ...other_props
+    } = props;
 
-    state = {
-        should_show_list: false,
-        filtered_items: [...this.props.list_items],
-        input_value: '',
-        active_index: null,
-    };
+    const dropdown_ref = React.useRef();
+    const list_wrapper_ref = React.useRef();
+    const list_item_ref = React.useRef();
+    const input_wrapper_ref = React.useRef();
 
-    componentDidUpdate(prev_props) {
-        if (prev_props.list_items !== this.props.list_items) {
-            this.setState({
-                input_value: '',
-                active_index: null,
-                filtered_items: this.props.list_items,
+    const [should_show_list, setShouldShowList] = React.useState(false);
+    const [input_value, setInputValue] = React.useState('');
+    const [active_index, setActiveIndex] = React.useState(null);
+    const [filtered_items, setFilteredItems] = React.useState(list_items);
+    const [style, setStyle] = React.useState({});
+    useBlockScroll(list_portal_id && should_show_list ? input_wrapper_ref : false);
+
+    let scroll_timeout = null;
+    let scroll_top_position = null;
+
+    React.useEffect(() => {
+        setFilteredItems(list_items);
+        setActiveIndex(null);
+        setInputValue('');
+    }, [list_items]);
+
+    React.useEffect(() => {
+        if (should_show_list && list_item_ref.current) {
+            const item = list_item_ref.current.offsetTop;
+            dropdown_ref.current.scrollTo({ top: item, behavior: 'smooth' });
+        }
+    }, [should_show_list, list_item_ref]);
+
+    React.useEffect(() => {
+        if (list_wrapper_ref.current && list_portal_id && should_show_list) {
+            const position_style = getPosition({
+                preferred_alignment: is_alignment_top ? 'top' : 'bottom',
+                parent_el: input_wrapper_ref.current,
+                child_el: list_wrapper_ref.current,
             });
-        }
-    }
 
-    handleScrollStop = e => {
-        // pass onScrollStop func callback when scrolling stops
-        if (typeof this.props.onScrollStop !== 'function') return;
-        const element = e.target;
-        this.scrollTopPos = element.scrollTop;
-        if (this.scrollTopPos === element.scrollTop) {
-            clearTimeout(this.scroll_timeout);
+            setStyle(position_style.style);
         }
-        this.scroll_timeout = setTimeout(() => {
-            this.props.onScrollStop();
+    }, [should_show_list, is_alignment_top, list_portal_id, filtered_items.length]);
+
+    const handleScrollStop = e => {
+        // pass onScrollStop func callback when scrolling stops
+        if (typeof props.onScrollStop !== 'function') return;
+
+        const element = e.target;
+        scroll_top_position = element.scrollTop;
+        if (scroll_top_position === element.scrollTop) {
+            clearTimeout(scroll_timeout);
+        }
+        scroll_timeout = setTimeout(() => {
+            props.onScrollStop();
         }, 150);
     };
 
-    setInputWrapperRef = node => (this.input_wrapper_ref = node);
-
-    onKeyPressed = event => {
-        const { active_index, filtered_items, should_show_list } = this.state;
-
+    const onKeyPressed = event => {
         switch (event.keyCode) {
             case KEY_CODE.ENTER:
                 event.preventDefault();
-                this.hideDropdownList();
-                this.onItemSelection(filtered_items[active_index]);
+                hideDropdownList();
+                onSelectItem(filtered_items[active_index]);
                 break;
             case KEY_CODE.TAB:
                 if (should_show_list) {
-                    this.hideDropdownList();
-                    this.onItemSelection(filtered_items[active_index]);
+                    hideDropdownList();
+                    onSelectItem(filtered_items[active_index]);
                 }
                 break;
             case KEY_CODE.ESCAPE:
                 event.preventDefault();
-                this.hideDropdownList();
+                hideDropdownList();
                 break;
             case KEY_CODE.KEYDOWN:
-                if (!should_show_list) this.showDropdownList();
-                this.setActiveDown();
+                if (!should_show_list) showDropdownList();
+                setActiveDown();
                 break;
             case KEY_CODE.KEYUP:
-                if (!should_show_list) this.showDropdownList();
-                else this.setActiveUp();
+                if (!should_show_list) showDropdownList();
+                else setActiveUp();
                 break;
             default:
-                if (!should_show_list) this.showDropdownList();
+                if (!should_show_list) showDropdownList();
                 break;
         }
     };
 
-    setActiveIndex = index => this.setState({ active_index: index });
-
-    setActiveUp = () => {
-        const { active_index, filtered_items } = this.state;
-
+    const setActiveUp = () => {
         if (typeof active_index === 'number') {
             const up = active_index - 1;
             const should_scroll_to_last = up < 0;
 
             if (should_scroll_to_last) {
-                const list_height = this.dropdown_ref.current.clientHeight;
-                this.setState({ active_index: filtered_items.length - 1 });
-                this.dropdown_ref.current.scrollTo({ top: list_height, behavior: 'smooth' });
+                const list_height = dropdown_ref.current.clientHeight;
+                setActiveIndex(filtered_items.length - 1);
+                dropdown_ref.current.scrollTo({ top: list_height, behavior: 'smooth' });
             } else {
-                const item_height = this.list_item_ref.current.getBoundingClientRect().height;
-                const item_top = Math.floor(this.list_item_ref.current.getBoundingClientRect().top) - item_height;
+                const item_height = list_item_ref.current.getBoundingClientRect().height;
+                const item_top = Math.floor(list_item_ref.current.getBoundingClientRect().top) - item_height;
 
-                if (!this.isListItemWithinView(item_top)) {
-                    const top_of_list = this.list_item_ref.current.offsetTop - item_height;
-                    this.dropdown_ref.current.scrollTo({ top: top_of_list, behavior: 'smooth' });
+                if (!isListItemWithinView(item_top)) {
+                    const top_of_list = list_item_ref.current.offsetTop - item_height;
+                    dropdown_ref.current.scrollTo({ top: top_of_list, behavior: 'smooth' });
                 }
-                this.setState({ active_index: up });
+                setActiveIndex(up);
             }
         }
     };
 
-    isListItemWithinView(item_top) {
-        const list_height = this.dropdown_ref.current.clientHeight;
-        const wrapper_top = Math.floor(this.list_wrapper_ref.current.getBoundingClientRect().top);
-        const wrapper_bottom = Math.floor(this.list_wrapper_ref.current.getBoundingClientRect().top) + list_height;
+    const isListItemWithinView = item_top => {
+        const list_height = dropdown_ref.current.clientHeight;
+        const wrapper_top = Math.floor(list_wrapper_ref.current.getBoundingClientRect().top);
+        const wrapper_bottom = Math.floor(list_wrapper_ref.current.getBoundingClientRect().top) + list_height;
 
         if (item_top >= wrapper_bottom) return false;
         return item_top > wrapper_top;
-    }
+    };
 
-    setActiveDown = () => {
-        const { active_index, filtered_items } = this.state;
-
-        if (active_index === null || !this.list_item_ref.current) {
-            this.setState({ active_index: 0 });
+    const setActiveDown = () => {
+        if (active_index === null || !list_item_ref.current) {
+            setActiveIndex(0);
         } else if (typeof active_index === 'number') {
             const down = active_index + 1;
             const should_scroll_to_first = down >= filtered_items.length;
 
             if (should_scroll_to_first) {
-                this.setState({ active_index: 0 });
-                this.dropdown_ref.current.scrollTo({ top: 0, behavior: 'smooth' });
+                setActiveIndex(0);
+                dropdown_ref.current.scrollTo({ top: 0, behavior: 'smooth' });
             } else {
-                const item_height = this.list_item_ref.current.getBoundingClientRect().height;
+                const item_height = list_item_ref.current.getBoundingClientRect().height;
                 const item_top =
-                    Math.floor(this.list_item_ref.current.getBoundingClientRect().top) + item_height + item_height / 2;
-                const list_height = this.dropdown_ref.current.clientHeight;
+                    Math.floor(list_item_ref.current.getBoundingClientRect().top) + item_height + item_height / 2;
+                const list_height = dropdown_ref.current.clientHeight;
 
-                if (!this.isListItemWithinView(item_top)) {
+                if (!isListItemWithinView(item_top)) {
                     const items_above = list_height / item_height - 2;
-                    const bottom_of_list = this.list_item_ref.current.offsetTop - items_above * item_height;
-                    this.dropdown_ref.current.scrollTo({ top: bottom_of_list, behavior: 'smooth' });
+                    const bottom_of_list = list_item_ref.current.offsetTop - items_above * item_height;
+                    dropdown_ref.current.scrollTo({ top: bottom_of_list, behavior: 'smooth' });
                 }
-                this.setState({ active_index: down });
+                setActiveIndex(down);
             }
         }
     };
 
-    onBlur = e => {
-        event.preventDefault();
-        this.hideDropdownList();
+    const onBlur = e => {
+        e.preventDefault();
+        hideDropdownList();
 
-        this.setState({ filtered_items: this.props.list_items });
+        setFilteredItems(props.list_items);
 
-        if (this.state.input_value === '' && typeof this.props.onItemSelection === 'function') {
-            this.props.onItemSelection({
-                text: this.props.not_found_text,
+        if (input_value === '' && typeof props.onItemSelection === 'function') {
+            props.onItemSelection({
+                text: props.not_found_text,
                 value: '',
             });
         }
-        if (typeof this.props.onBlur === 'function') {
-            this.props.onBlur(e);
+        if (typeof props.onBlur === 'function') {
+            props.onBlur(e);
         }
     };
 
-    onItemSelection = item => {
+    const onSelectItem = item => {
         if (!item) return;
 
-        this.setState({ input_value: item.text ? item.text : item });
+        setInputValue(item.text ? item.text : item);
 
-        if (typeof this.props.onItemSelection === 'function') {
-            this.props.onItemSelection(item);
+        if (typeof props.onItemSelection === 'function') {
+            props.onItemSelection(item);
         }
     };
 
-    showDropdownList = () =>
-        this.setState({ should_show_list: true }, () => {
-            if (this.state.active_index && this.list_item_ref.current) {
-                const item = this.list_item_ref.current.offsetTop;
-                this.dropdown_ref.current.scrollTo({ top: item, behavior: 'smooth' });
-            }
-        });
+    const showDropdownList = () => setShouldShowList(true);
 
-    hideDropdownList = () => {
-        this.setState({ should_show_list: false });
+    const hideDropdownList = () => {
+        setShouldShowList(false);
 
-        if (typeof this.props.onHideDropdownList === 'function') {
-            this.props.onHideDropdownList();
+        if (typeof props.onHideDropdownList === 'function') {
+            props.onHideDropdownList();
         }
     };
 
-    filterList = e => {
+    const filterList = e => {
         const val = e.target.value.toLowerCase();
-        const filtered_items = getFilteredItems(val, this.props.list_items);
+        const new_filtered_items = getFilteredItems(val, props.list_items);
 
-        if (!filtered_items.length) {
-            this.setState({ input_value: '' });
+        if (!new_filtered_items.length) {
+            setInputValue('');
         }
-        this.setState({ filtered_items });
+        setFilteredItems(new_filtered_items);
     };
 
-    render() {
-        const {
-            className,
-            dropdown_offset,
-            onItemSelection,
-            value,
-            list_items,
-            autoComplete,
-            onHideDropdownList,
-            onScrollStop,
-            ...otherProps
-        } = this.props;
-
-        return (
-            <div className={classNames('dc-autocomplete', className)}>
-                <div ref={this.setInputWrapperRef} className='dc-autocomplete__input-field'>
-                    <Input
-                        {...otherProps}
-                        className='dc-autocomplete__field'
-                        autoComplete={autoComplete}
-                        onKeyDown={this.onKeyPressed}
-                        onClick={() => {
-                            if (this.state.should_show_list) this.hideDropdownList();
-                            else this.showDropdownList();
-                        }}
-                        onInput={this.filterList}
-                        // Field's onBlur still needs to run to perform form functions such as validation
-                        onBlur={this.onBlur}
-                        value={
-                            // This allows us to let control of value externally (from <Form/>) or internally if used without form
-                            typeof onItemSelection === 'function' ? value : this.state.input_value
-                        }
-                        trailing_icon={
-                            <Icon
-                                icon='IcChevronDown'
-                                className={{
-                                    'dc-autocomplete__trailing-icon': true,
-                                    'dc-autocomplete__trailing-icon--opened': this.state.should_show_list,
-                                    'dc-autocomplete__trailing-icon--disabled': otherProps.disabled,
-                                }}
-                            />
-                        }
-                    />
-                </div>
-                <DropdownList
-                    ref={{
-                        dropdown_ref: this.dropdown_ref,
-                        list_item_ref: this.list_item_ref,
-                        list_wrapper_ref: this.list_wrapper_ref,
+    return (
+        <div className={classNames('dc-autocomplete', className)}>
+            <div ref={input_wrapper_ref} className='dc-autocomplete__input-field'>
+                <Input
+                    {...other_props}
+                    className='dc-autocomplete__field'
+                    autoComplete={autoComplete}
+                    onKeyDown={onKeyPressed}
+                    onInput={filterList}
+                    onClick={() => {
+                        if (should_show_list) hideDropdownList();
+                        else showDropdownList();
                     }}
-                    active_index={this.state.active_index}
-                    style={{
-                        width: this.input_wrapper_ref ? `${this.input_wrapper_ref.offsetWidth}px` : '100%',
+                    // Field's onBlur still needs to run to perform form functions such as validation
+                    onBlur={onBlur}
+                    value={
+                        // This allows us to let control of value externally (from <Form/>) or internally if used without form
+                        typeof onItemSelection === 'function' ? value : input_value
+                    }
+                    trailing_icon={
+                        <Icon
+                            icon='IcChevronDown'
+                            className={{
+                                'dc-autocomplete__trailing-icon': true,
+                                'dc-autocomplete__trailing-icon--opened': should_show_list,
+                                'dc-autocomplete__trailing-icon--disabled': other_props.disabled,
+                            }}
+                        />
+                    }
+                />
+            </div>
+            <DropdownList
+                ref={{
+                    dropdown_ref,
+                    list_item_ref,
+                    list_wrapper_ref,
+                }}
+                active_index={active_index}
+                style={{
+                    width: input_wrapper_ref.current ? `${input_wrapper_ref.current.offsetWidth}px` : '100%',
+                    ...(style || {
                         marginTop: dropdown_offset ? `calc(-${dropdown_offset} + 8px)` : '8px', // 4px is the standard margin. In case of error, the list should overlap the error
                         // TODO confirm placement of dropdown list and positioning of error
                         // marginTop: form.errors[field.name] ? 'calc(4px - 18px)' : '4px', // 4px is the standard margin. In case of error, the list should overlap the error
-                    }}
-                    is_visible={this.state.should_show_list}
-                    list_items={this.state.filtered_items}
-                    list_height={this.props.list_height}
-                    // Autocomplete must use the `text` property and not the `value`, however DropdownList provides access to both
-                    onItemSelection={this.onItemSelection}
-                    setActiveIndex={this.setActiveIndex}
-                    onScrollStop={this.handleScrollStop}
-                    not_found_text={this.props.not_found_text}
-                />
-            </div>
-        );
-    }
-}
+                    }),
+                }}
+                is_visible={should_show_list}
+                list_items={filtered_items}
+                list_height={props.list_height}
+                // Autocomplete must use the `text` property and not the `value`, however DropdownList provides access to both
+                onItemSelection={onSelectItem}
+                setActiveIndex={setActiveIndex}
+                onScrollStop={handleScrollStop}
+                not_found_text={props.not_found_text}
+                portal_id={list_portal_id}
+            />
+        </div>
+    );
+});
+
+Autocomplete.displayName = 'Autocomplete';
+
 Autocomplete.defaultProps = {
     not_found_text: 'No results found',
 };
@@ -298,4 +308,6 @@ Autocomplete.propTypes = {
     not_found_text: PropTypes.string,
     onHideDropdownList: PropTypes.func,
     onItemSelection: PropTypes.func,
+    list_portal_id: PropTypes.string,
+    is_alignment_top: PropTypes.bool,
 };

@@ -1,9 +1,8 @@
 import * as PropTypes from 'prop-types';
 import React from 'react';
 import { Button, DesktopWrapper, Icon, MobileWrapper, Popover } from '@deriv/components';
-import routes from '@deriv/shared/utils/routes';
-import { localize } from '@deriv/translations';
-import CurrencyUtils from '@deriv/shared/utils/currency';
+import { routes, formatMoney, PlatformContext } from '@deriv/shared';
+import { localize, Localize } from '@deriv/translations';
 import { LoginButton } from './login-button.jsx';
 import { SignupButton } from './signup-button.jsx';
 import ToggleNotifications from './toggle-notifications.jsx';
@@ -15,6 +14,7 @@ const AccountInfo = React.lazy(() =>
 );
 
 export class AccountActions extends React.Component {
+    static contextType = PlatformContext;
     shouldComponentUpdate(nextProps) {
         return (
             nextProps.is_acc_switcher_disabled !== this.props.is_acc_switcher_disabled ||
@@ -60,9 +60,7 @@ export class AccountActions extends React.Component {
                             <AccountInfo
                                 acc_switcher_disabled_message={acc_switcher_disabled_message}
                                 balance={
-                                    typeof balance === 'undefined'
-                                        ? balance
-                                        : CurrencyUtils.formatMoney(currency, balance, true)
+                                    typeof balance === 'undefined' ? balance : formatMoney(currency, balance, true)
                                 }
                                 is_disabled={is_acc_switcher_disabled}
                                 disableApp={disableApp}
@@ -79,12 +77,15 @@ export class AccountActions extends React.Component {
                             count={notifications_count}
                             is_visible={is_notifications_visible}
                             toggleDialog={toggleNotifications}
-                            tooltip_message={localize('View notifications')}
+                            tooltip_message={<Localize i18n_default_text='View notifications' />}
+                            should_disable_pointer_events
                         />
                         <Popover
                             classNameBubble='account-settings-toggle__tooltip'
                             alignment='bottom'
-                            message={localize('Manage account settings')}
+                            message={<Localize i18n_default_text='Manage account settings' />}
+                            should_disable_pointer_events
+                            zIndex={9999}
                         >
                             <BinaryLink className='account-settings-toggle' to={routes.personal_details}>
                                 <Icon icon='IcUserOutline' />
@@ -94,9 +95,7 @@ export class AccountActions extends React.Component {
                             <AccountInfo
                                 acc_switcher_disabled_message={acc_switcher_disabled_message}
                                 balance={
-                                    typeof balance === 'undefined'
-                                        ? balance
-                                        : CurrencyUtils.formatMoney(currency, balance, true)
+                                    typeof balance === 'undefined' ? balance : formatMoney(currency, balance, true)
                                 }
                                 is_disabled={is_acc_switcher_disabled}
                                 is_virtual={is_virtual}
@@ -132,7 +131,7 @@ export class AccountActions extends React.Component {
         return (
             <React.Fragment>
                 <LoginButton className='acc-info__button' />
-                <SignupButton className='acc-info__button' />
+                <SignupButton is_deriv_crypto={this.context.is_deriv_crypto} className='acc-info__button' />
             </React.Fragment>
         );
     }

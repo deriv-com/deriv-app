@@ -1,80 +1,10 @@
-const StyleLintPlugin = require('stylelint-webpack-plugin');
 const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
-const shared_utils = require('@deriv/shared/utils/index.js');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-
-const is_serve = process.env.BUILD_MODE === 'serve';
-const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 
 module.exports = {
     entry: {
-        accordion: 'Components/accordion',
-        autocomplete: 'Components/autocomplete',
-        button: 'Components/button',
-        'button-link': 'Components/button-link',
-        'button-toggle': 'Components/button-toggle',
-        calendar: 'Components/calendar',
-        clipboard: 'Components/clipboard',
-        checkbox: 'Components/checkbox',
-        checklist: 'Components/checklist',
-        'circular-progress': 'Components/circular-progress',
-        collapsible: 'Components/collapsible',
-        counter: 'Components/counter',
-        'composite-checkbox': 'Components/composite-checkbox',
-        'date-picker': 'Components/date-picker',
-        'date-of-birth-picker': 'Components/date-of-birth-picker',
-        'desktop-wrapper': 'Components/desktop-wrapper',
-        'data-list': 'Components/data-list',
-        'data-table': 'Components/data-table',
-        dialog: 'Components/dialog',
-        'div100vh-container': 'Components/div100vh-container',
-        drawer: 'Components/drawer',
-        dropdown: 'Components/dropdown',
-        'expansion-panel': 'Components/expansion-panel',
-        'fade-wrapper': 'Components/fade-wrapper',
-        'field-error': 'Components/field-error',
-        'file-dropzone': 'Components/file-dropzone',
-        'form-progress': path.resolve(__dirname, 'src', 'components/form-progress/index.js'),
-        'form-submit-button': path.resolve(__dirname, 'src', 'components/form-submit-button/index.js'),
-        'auto-height-wrapper': 'Components/auto-height-wrapper',
-        icon: 'Components/icon',
-        'icon-trade-types': 'Components/icon-trade-types',
         'icon/js/icons': 'Components/icon/icons.js',
-        input: 'Components/input',
-        label: 'Components/label',
-        'linear-progress': 'Components/linear-progress',
-        loading: 'Components/loading',
-        'mobile-dialog': 'Components/mobile-dialog',
-        'mobile-drawer': 'Components/mobile-drawer',
-        'mobile-wrapper': 'Components/mobile-wrapper',
-        modal: 'Components/modal',
-        money: 'Components/money',
-        'multi-step': 'Components/multi-step',
-        numpad: 'Components/numpad/',
-        'page-error': 'Components/page-error',
-        'page-overlay': 'Components/page-overlay',
-        'password-input': 'Components/password-input',
-        'password-meter': 'Components/password-meter',
-        popover: 'Components/popover',
-        'progress-bar': 'Components/progress-bar',
-        'progress-indicator': 'Components/progress-indicator',
-        'radio-group': 'Components/radio-group',
-        'select-native': 'Components/select-native',
-        'send-email-template': 'Components/send-email-template',
-        'swipeable-wrapper': 'Components/swipeable-wrapper',
-        'relative-datepicker': 'Components/relative-datepicker',
-        table: 'Components/table',
-        tabs: 'Components/tabs',
-        'toast-error': 'Components/toast-error',
-        'themed-scrollbars': 'Components/themed-scrollbars',
-        'toggle-switch': 'Components/toggle-switch',
-        'tick-picker': 'Components/tick-picker',
-        'tick-progress': 'Components/tick-progress',
-        timeline: 'Components/timeline',
-        'u-i-loader': 'Components/u-i-loader',
-        'vertical-tab': 'Components/vertical-tab',
     },
     output: {
         path: path.resolve(__dirname, 'lib'),
@@ -90,38 +20,12 @@ module.exports = {
     },
     optimization: {
         minimize: true,
-        // TODO enable splitChunks
-        // splitChunks: {
-        //     chunks: 'all'
-        // }
     },
     devServer: {
         publicPath: '/dist/',
     },
-    devtool: is_release ? 'source-map' : 'cheap-module-eval-source-map',
     module: {
         rules: [
-            {
-                test: /\.(s*)css$/,
-                use: [
-                    'css-hot-loader',
-                    MiniCssExtractPlugin.loader,
-                    {
-                        loader: 'css-loader',
-                        options: { sourceMap: true },
-                    },
-                    {
-                        loader: 'sass-loader',
-                        options: { sourceMap: true },
-                    },
-                    {
-                        loader: 'sass-resources-loader',
-                        options: {
-                            resources: shared_utils,
-                        },
-                    },
-                ],
-            },
             {
                 test: /\.svg$/,
                 use: [
@@ -161,28 +65,9 @@ module.exports = {
                     },
                 ],
             },
-            !is_serve
-                ? {
-                      enforce: 'pre',
-                      test: /\.(js|jsx)$/,
-                      exclude: /node_modules|lib|shared\/utils/,
-                      include: /src/,
-                      loader: 'eslint-loader',
-                      options: {
-                          fix: true,
-                      },
-                  }
-                : {},
-            {
-                test: /\.(js|jsx)$/,
-                exclude: /node_modules/,
-                loader: ['@deriv/shared/utils/react-import-loader.js', 'babel-loader'],
-            },
         ],
     },
     plugins: [
-        new MiniCssExtractPlugin({ filename: '[name].css' }),
-        new StyleLintPlugin({ fix: true }),
         new SpriteLoaderPlugin({ plainSprite: true }),
         // ...(!is_release ? [ new BundleAnalyzerPlugin({ analyzerMode: 'static' }) ] : []),
     ],
@@ -190,7 +75,6 @@ module.exports = {
         {
             formik: 'formik',
             classnames: 'classnames',
-            '@contentpass/zxcvbn': '@contentpass/zxcvbn',
             'react-div-100vh': 'react-div-100vh',
             'react-drag-drawer': 'react-drag-drawer',
             'react-pose': 'react-pose',
@@ -198,6 +82,7 @@ module.exports = {
             'prop-types': 'prop-types',
             'react-transition-group': 'react-transition-group',
             react: 'react',
+            'react-content-loader': 'react-content-loader',
             'react-dom': 'react-dom',
             '@deriv/shared': '@deriv/shared',
             'react-router-dom': 'react-router-dom',

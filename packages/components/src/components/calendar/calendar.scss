@@ -1,7 +1,5 @@
 /** @define dc-calendar */
 .dc-calendar {
-    position: absolute;
-    top: 0;
     outline: 0;
     border-radius: 5px;
     z-index: 999;
@@ -88,7 +86,7 @@
     }
     &__btn {
         text-align: center;
-        padding: 0rem 0.2rem;
+        padding: 0 0.2rem;
         font-weight: bold;
         cursor: pointer;
         border: none;

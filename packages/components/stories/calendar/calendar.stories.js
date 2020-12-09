@@ -2,7 +2,7 @@ import { storiesOf } from '@storybook/react';
 import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { withInfo } from '@storybook/addon-info';
 import React from 'react';
-import { toMoment } from '@deriv/shared/utils/date';
+import { toMoment } from '@deriv/shared';
 import Calendar from 'Components/calendar';
 import Theme from '../shared/theme';
 

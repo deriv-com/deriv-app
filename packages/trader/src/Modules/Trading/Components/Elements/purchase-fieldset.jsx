@@ -1,13 +1,14 @@
 import classNames from 'classnames';
-import { DesktopWrapper, MobileWrapper, Popover } from '@deriv/components';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { DesktopWrapper, MobileWrapper, Popover } from '@deriv/components';
 // import { localize }   from '@deriv/translations';
 // import { PopConfirm } from 'App/Components/Elements/PopConfirm';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
 // import PurchaseLock   from 'Modules/Trading/Components/Form/Purchase/PurchaseLock';
 import PurchaseButton from 'Modules/Trading/Components/Elements/purchase-button.jsx';
+import CancelDealInfo from '../Form/Purchase/cancel-deal-info.jsx';
 
 class PurchaseFieldset extends React.PureComponent {
     state = { should_fade: false };
@@ -43,27 +44,39 @@ class PurchaseFieldset extends React.PureComponent {
         } = this.props;
 
         const purchase_button = (
-            <PurchaseButton
-                buy_info={buy_info}
-                currency={currency}
-                info={info}
-                index={index}
-                is_disabled={is_disabled}
-                is_high_low={is_high_low}
-                is_loading={is_loading}
-                is_multiplier={is_multiplier}
-                is_proposal_empty={is_proposal_empty}
-                purchased_states_arr={purchased_states_arr}
-                onClickPurchase={onClickPurchase}
-                setPurchaseState={setPurchaseState}
-                should_fade={this.state.should_fade}
-                type={type}
-                basis={basis} // mobile-only
-            />
+            <React.Fragment>
+                <PurchaseButton
+                    buy_info={buy_info}
+                    currency={currency}
+                    info={info}
+                    index={index}
+                    has_deal_cancellation={is_multiplier && has_cancellation}
+                    is_disabled={is_disabled}
+                    is_high_low={is_high_low}
+                    is_loading={is_loading}
+                    is_multiplier={is_multiplier}
+                    is_proposal_empty={is_proposal_empty}
+                    purchased_states_arr={purchased_states_arr}
+                    onClickPurchase={onClickPurchase}
+                    setPurchaseState={setPurchaseState}
+                    should_fade={this.state.should_fade}
+                    type={type}
+                    basis={basis} // mobile-only
+                />
+                {is_multiplier && has_cancellation && (
+                    <MobileWrapper>
+                        <CancelDealInfo proposal_info={info} />
+                    </MobileWrapper>
+                )}
+            </React.Fragment>
         );
 
         return (
-            <Fieldset className='trade-container__fieldset purchase-container__option'>
+            <Fieldset
+                className={classNames('trade-container__fieldset', 'purchase-container__option', {
+                    'purchase-container__option--has-cancellation': has_cancellation,
+                })}
+            >
                 {/* {(is_purchase_locked && index === 0) && */}
                 {/* <PurchaseLock onClick={togglePurchaseLock} /> */}
                 {/* } */}

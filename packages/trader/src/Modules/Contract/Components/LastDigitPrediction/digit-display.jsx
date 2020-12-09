@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { DesktopWrapper } from '@deriv/components';
-import { isMobile } from '@deriv/shared/utils/screen';
+import { isMobile } from '@deriv/shared';
 import { Bounce } from 'App/Components/Animations';
 import Digit from './digit.jsx';
 import DigitSpot from './digit-spot.jsx';
@@ -35,7 +35,7 @@ const DigitDisplay = ({
         if (onLastDigitSpot) {
             onLastDigitSpot({ spot, is_lost, is_selected_winning, is_latest, is_won });
         }
-    }, [latest_digit, spot, barrier, value]);
+    }, [latest_digit, spot, barrier, value, is_lost, is_selected_winning, is_latest, is_won, onLastDigitSpot]);
 
     const is_digit_selectable = isMobile() && typeof onSelect === 'function' && !status;
     const is_digit_selected = isMobile() && value === selected_digit && !status;

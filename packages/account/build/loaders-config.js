@@ -3,20 +3,9 @@ const path = require('path');
 
 const js_loaders = [
     {
-        loader: '@deriv/shared/utils/deriv-components-loader.js',
-    },
-    {
         loader: 'babel-loader',
         options: {
-            presets: ['@babel/preset-env', '@babel/preset-react'],
-            plugins: [
-                ['@babel/plugin-proposal-decorators', { legacy: true }],
-                ['@babel/plugin-proposal-class-properties', { loose: true }],
-                '@babel/plugin-proposal-export-default-from',
-                '@babel/plugin-proposal-object-rest-spread',
-                '@babel/plugin-proposal-export-namespace-from',
-                '@babel/plugin-syntax-dynamic-import',
-            ],
+            rootMode: 'upward',
         },
     },
 ];
@@ -46,7 +35,12 @@ const svg_file_loaders = [
 ];
 
 const svg_loaders = [
-    'babel-loader',
+    {
+        loader: 'babel-loader',
+        options: {
+            rootMode: 'upward',
+        },
+    },
     {
         loader: 'react-svg-loader',
         options: {
@@ -101,7 +95,7 @@ const css_loaders = [
     {
         loader: 'sass-resources-loader',
         options: {
-            resources: require('@deriv/shared/utils/index.js'),
+            resources: require('@deriv/shared/src/styles/index.js'),
         },
     },
 ];

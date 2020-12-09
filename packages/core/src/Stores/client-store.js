@@ -1,27 +1,35 @@
+import Cookies from 'js-cookie';
+import { action, computed, observable, reaction, runInAction, toJS, when } from 'mobx';
 import moment from 'moment';
-import { action, computed, observable, runInAction, when, reaction, toJS } from 'mobx';
-import CurrencyUtils from '@deriv/shared/utils/currency';
-import ObjectUtils from '@deriv/shared/utils/object';
-import { isDesktop } from '@deriv/shared/utils/os';
-import { getUrlSmartTrader } from '@deriv/shared/utils/storage';
+import {
+    redirectToLogin,
+    getPropertyValue,
+    getUrlSmartTrader,
+    isDesktopOs,
+    isEmptyObject,
+    LocalStore,
+    removeEmptyPropertiesFromObject,
+    setCurrencies,
+    State,
+    toMoment,
+} from '@deriv/shared';
+import { getLanguage, localize } from '@deriv/translations';
 import { requestLogout, WS } from 'Services';
-import ClientBase from '_common/base/client_base';
-import { redirectToLogin } from '_common/base/login';
+import BinarySocketGeneral from 'Services/socket-general';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
-import { localize } from '@deriv/translations';
-import { toMoment } from '@deriv/shared/utils/date';
-import { isEmptyObject } from '@deriv/shared/src/utils/object/object';
-import { LocalStore, State } from '_common/storage';
-import BinarySocketGeneral from 'Services/socket-general';
-import { handleClientNotifications } from './Helpers/client-notifications';
+import { isEuCountry } from '_common/utility';
 import BaseStore from './base-store';
-import { getClientAccountType, getMT5AccountType } from './Helpers/client';
+import { getClientAccountType, getAccountTitle } from './Helpers/client';
+import { createDeviceDataObject, setDeviceDataCookie } from './Helpers/device';
+import { handleClientNotifications, clientNotifications } from './Helpers/client-notifications';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
 
 const storage_key = 'client.accounts';
-
 const store_name = 'client_store';
+const eu_shortcode_regex = new RegExp('^(maltainvest|malta|iom)$');
+const eu_excluded_regex = new RegExp('^mt$');
+
 export default class ClientStore extends BaseStore {
     @observable loginid;
     @observable upgrade_info;
@@ -38,6 +46,10 @@ export default class ClientStore extends BaseStore {
     @observable selected_currency = '';
     @observable is_populating_account_list = false;
     @observable is_populating_mt5_account_list = true;
+    @observable has_reality_check = false;
+    @observable is_reality_check_dismissed;
+    @observable reality_check_dur;
+    @observable reality_check_timeout;
     @observable website_status = {};
     @observable account_settings = {};
     @observable account_status = {};
@@ -51,6 +63,7 @@ export default class ClientStore extends BaseStore {
 
     @observable upgradeable_landing_companies = [];
     @observable mt5_login_list = [];
+    @observable mt5_login_list_error = null;
     @observable statement = [];
     @observable obj_total_balance = {
         amount_real: undefined,
@@ -66,38 +79,93 @@ export default class ClientStore extends BaseStore {
     };
     @observable account_limits = {};
 
+    @observable self_exclusion = {};
+
     @observable local_currency_config = {
         currency: '',
         decimal_places: undefined,
     };
+    @observable has_cookie_account = false;
+
+    @observable financial_assessment = null;
 
     is_mt5_account_list_updated = false;
 
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
         super({ root_store, local_storage_properties, store_name });
+
+        reaction(
+            () => [
+                this.is_logged_in,
+                this.loginid,
+                this.email,
+                this.landing_company,
+                this.currency,
+                this.residence,
+                this.account_settings,
+            ],
+            () => {
+                this.setCookieAccount();
+            }
+        );
+        when(
+            () => this.should_have_real_account,
+            () => {
+                this.root_store.ui.showAccountTypesModalForEuropean();
+                this.onRealAccountSignupEnd(() => {
+                    if (!this.has_any_real_account) {
+                        this.root_store.ui.showAccountTypesModalForEuropean();
+                    }
+
+                    return Promise.resolve();
+                });
+
+                if (!this.root_store.ui.is_real_acc_signup_on) {
+                    this.root_store.ui.toggleAccountTypesModal(true);
+                }
+            }
+        );
+        when(
+            () => !this.is_logged_in && this.root_store.ui && this.root_store.ui.is_real_acc_signup_on,
+            () => this.root_store.ui.closeRealAccountSignup()
+        );
     }
 
     @computed
     get balance() {
-        if (ObjectUtils.isEmptyObject(this.accounts)) return undefined;
+        if (isEmptyObject(this.accounts)) return undefined;
         return this.accounts[this.loginid] && 'balance' in this.accounts[this.loginid]
             ? this.accounts[this.loginid].balance.toString()
             : undefined;
     }
 
-    /**
-     * Temporary property. should be removed once we are fully migrated from the old app.
-     *
-     * @returns {boolean}
-     */
     @computed
-    get is_client_allowed_to_visit() {
-        return !!(
-            !this.is_logged_in ||
-            this.is_virtual ||
-            this.accounts[this.loginid].landing_company_shortcode === 'svg'
-        );
+    get is_reality_check_visible() {
+        if (!this.loginid || !this.landing_company) {
+            return false;
+        }
+        return !!(this.has_reality_check && !this.reality_check_dismissed);
+    }
+
+    @computed
+    get is_svg() {
+        if (!this.landing_company_shortcode) {
+            return false;
+        }
+        return this.landing_company_shortcode === 'svg' || this.landing_company_shortcode === 'costarica';
+    }
+
+    @computed
+    get reality_check_duration() {
+        return this.has_reality_check ? this.reality_check_dur || +LocalStore.get('reality_check_duration') : undefined;
+    }
+
+    @computed
+    get reality_check_dismissed() {
+        return this.has_reality_check
+            ? this.is_reality_check_dismissed || JSON.parse(LocalStore.get('reality_check_dismissed') || false)
+            : undefined;
     }
 
     @computed
@@ -106,8 +174,22 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
-    get has_any_real_account() {
+    get has_maltainvest_account() {
+        return this.active_accounts.some(acc => acc.landing_company_shortcode === 'maltainvest');
+    }
+
+    @computed
+    get has_malta_account() {
+        return this.active_accounts.some(acc => acc.landing_company_shortcode === 'malta');
+    }
+
+    hasAnyRealAccount = () => {
         return this.account_list.some(acc => acc.is_virtual === 0);
+    };
+
+    @computed
+    get has_any_real_account() {
+        return this.hasAnyRealAccount();
     }
 
     @computed
@@ -129,6 +211,12 @@ export default class ClientStore extends BaseStore {
     @computed
     get legal_allowed_currencies() {
         if (!this.landing_companies) return [];
+        if (this.root_store.ui && this.root_store.ui.real_account_signup_target) {
+            const target = this.root_store.ui.real_account_signup_target === 'maltainvest' ? 'financial' : 'gaming';
+            if (this.landing_companies[`${target}_company`]) {
+                return this.landing_companies[`${target}_company`].legal_allowed_currencies;
+            }
+        }
         if (this.landing_companies.gaming_company) {
             return this.landing_companies.gaming_company.legal_allowed_currencies;
         }
@@ -172,6 +260,11 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get has_iom_account() {
+        return this.active_accounts.some(acc => acc.landing_company_shortcode === 'iom');
+    }
+
+    @computed
     get has_fiat() {
         const values = Object.values(this.accounts).reduce((acc, item) => {
             if (!item.is_virtual) {
@@ -197,6 +290,16 @@ export default class ClientStore extends BaseStore {
             : undefined;
     }
 
+    // return the landing company object that belongs to the current client by matching shortcode
+    // note that it will be undefined for logged out and virtual clients
+    @computed
+    get current_landing_company() {
+        const landing_company = Object.keys(this.landing_companies).find(
+            company => this.landing_companies[company]?.shortcode === this.landing_company_shortcode
+        );
+        return landing_company ? this.landing_companies[landing_company] : undefined;
+    }
+
     @computed
     get account_list() {
         return this.all_loginids.map(id => this.getAccountInfo(id)).filter(account => account);
@@ -216,12 +319,12 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get all_loginids() {
-        return !ObjectUtils.isEmptyObject(this.accounts) ? Object.keys(this.accounts) : [];
+        return !isEmptyObject(this.accounts) ? Object.keys(this.accounts) : [];
     }
 
     @computed
     get account_title() {
-        return ClientBase.getAccountTitle(this.loginid);
+        return getAccountTitle(this.loginid);
     }
 
     @computed
@@ -248,15 +351,62 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get should_allow_authentication() {
+        const allow_document_upload = this.account_status?.status?.some(status => status === 'allow_document_upload');
+        return allow_document_upload || !!this.is_authentication_needed;
+    }
+
+    @computed
+    get is_authentication_needed() {
+        return this.account_status?.authentication?.needs_verification?.length;
+    }
+
+    @computed
+    get is_tnc_needed() {
+        if (this.is_virtual) return false;
+
+        const { client_tnc_status } = this.account_settings;
+        const { terms_conditions_version } = this.website_status;
+
+        return typeof client_tnc_status !== 'undefined' && client_tnc_status !== terms_conditions_version;
+    }
+
+    @computed
+    get is_financial_information_incomplete() {
+        return this.account_status?.status?.some(status => status === 'financial_information_not_complete');
+    }
+
+    @computed
+    get is_withdrawal_lock() {
+        return this.account_status?.status?.some(status_name =>
+            /^(withdrawal_locked|no_withdrawal_or_trading)$/.test(status_name)
+        );
+    }
+
+    @computed
+    get is_trading_experience_incomplete() {
+        return this.account_status?.status?.some(status => status === 'trading_experience_not_complete');
+    }
+
+    @computed
     get is_fully_authenticated() {
-        if (!this.account_status.status) return false;
-        return this.account_status.status.some(status => status === 'authenticated');
+        return this.account_status?.status?.some(status => status === 'authenticated');
     }
 
     @computed
     get is_pending_authentication() {
-        if (!this.account_status.status) return false;
-        return this.account_status.status.some(status => status === 'document_under_review');
+        return this.account_status?.status?.some(status => status === 'document_under_review');
+    }
+
+    @computed
+    get is_financial_account() {
+        if (!this.landing_companies) return false;
+        return this.account_type === 'financial';
+    }
+
+    @computed
+    get is_age_verified() {
+        return this.account_status?.status?.some(status => status === 'age_verification');
     }
 
     @computed
@@ -282,7 +432,7 @@ export default class ClientStore extends BaseStore {
     @computed
     get is_logged_in() {
         return !!(
-            !ObjectUtils.isEmptyObject(this.accounts) &&
+            !isEmptyObject(this.accounts) &&
             Object.keys(this.accounts).length > 0 &&
             this.loginid &&
             this.accounts[this.loginid].token
@@ -291,11 +441,58 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_virtual() {
-        return (
-            !ObjectUtils.isEmptyObject(this.accounts) &&
-            this.accounts[this.loginid] &&
-            !!this.accounts[this.loginid].is_virtual
-        );
+        return !isEmptyObject(this.accounts) && this.accounts[this.loginid] && !!this.accounts[this.loginid].is_virtual;
+    }
+
+    @computed
+    get is_eu() {
+        if (!this.landing_companies) return false;
+        const { gaming_company, financial_company } = this.landing_companies;
+        const financial_shortcode = financial_company?.shortcode;
+        const gaming_shortcode = gaming_company?.shortcode;
+        return financial_shortcode || gaming_shortcode
+            ? eu_shortcode_regex.test(financial_shortcode) || eu_shortcode_regex.test(gaming_shortcode)
+            : eu_excluded_regex.test(this.residence);
+    }
+
+    @computed
+    get is_uk() {
+        return this.residence === 'gb';
+    }
+
+    // this is true when a user needs to have a active real account for trading
+    @computed
+    get should_have_real_account() {
+        return this.standpoint.iom && this.is_uk && !this.has_any_real_account;
+    }
+
+    // Shows all possible landing companies of user between all
+    @computed
+    get standpoint() {
+        const result = {
+            iom: false,
+            svg: false,
+            malta: false,
+            maltainvest: false,
+            gaming_company: false,
+            financial_company: false,
+        };
+        if (!this.landing_companies) return result;
+        const { gaming_company, financial_company } = this.landing_companies;
+        if (gaming_company?.shortcode) {
+            Object.assign(result, {
+                [gaming_company.shortcode]: !!gaming_company?.shortcode,
+                gaming_company: gaming_company?.shortcode ?? false,
+            });
+        }
+        if (financial_company?.shortcode) {
+            Object.assign(result, {
+                [financial_company.shortcode]: !!financial_company?.shortcode,
+                financial_company: financial_company?.shortcode ?? false,
+            });
+        }
+
+        return result;
     }
 
     @computed
@@ -329,22 +526,21 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_mt5_allowed() {
-        if (!this.landing_companies || !Object.keys(this.landing_companies).length) return false;
-        // TODO revert this when all landing companies are accepted.
-        // return 'mt_financial_company' in this.landing_companies || 'mt_gaming_company' in this.landing_companies;
-        if ('mt_financial_company' in this.landing_companies || 'mt_gaming_company' in this.landing_companies) {
-            const { gaming_company, financial_company } = this.landing_companies;
-            // eslint-disable-next-line no-nested-ternary
-            return gaming_company
-                ? gaming_company.shortcode === 'svg'
-                : financial_company
-                ? financial_company.shortcode === 'svg'
-                : false;
-        }
-
-        return false;
+        return this.isMT5Allowed(this.landing_companies);
     }
 
+    isMT5Allowed = landing_companies => {
+        if (!landing_companies || !Object.keys(landing_companies).length) return false;
+
+        return 'mt_financial_company' in landing_companies || 'mt_gaming_company' in landing_companies;
+    };
+
+    @computed
+    get is_eu_country() {
+        const country = this.website_status.clients_country;
+        if (country) return isEuCountry(country);
+        return false;
+    }
     /**
      * Store Values relevant to the loginid to local storage.
      *
@@ -361,7 +557,9 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     getBasicUpgradeInfo() {
-        const upgradeable_landing_companies = State.getResponse('authorize.upgradeable_landing_companies');
+        const upgradeable_landing_companies = [
+            ...new Set(State.getResponse('authorize.upgradeable_landing_companies')),
+        ];
         let can_open_multi = false;
         let type, can_upgrade_to;
         if ((upgradeable_landing_companies || []).length) {
@@ -393,13 +591,66 @@ export default class ClientStore extends BaseStore {
             WS.authorized.storage.getLimits().then(data => {
                 runInAction(() => {
                     if (data.error) {
-                        this.account_limits = { api_initial_load_error: data.error.message };
+                        this.account_limits = {
+                            api_initial_load_error: data.error.message,
+                        };
                         resolve(data);
                     } else {
-                        this.account_limits = { ...data.get_limits, is_loading: false };
+                        this.account_limits = {
+                            ...data.get_limits,
+                            is_loading: false,
+                        };
                         resolve(data);
                     }
                 });
+            });
+        });
+    }
+
+    @action.bound
+    setCookieAccount() {
+        const domain = window.location.hostname.includes('deriv.com') ? 'deriv.com' : 'binary.sx';
+        const { loginid, email, landing_company_shortcode, currency, residence, account_settings } = this;
+        const { first_name, last_name } = account_settings;
+        if (loginid && email && first_name) {
+            const client_information = {
+                loginid,
+                email,
+                landing_company_shortcode,
+                currency,
+                residence,
+                first_name,
+                last_name,
+            };
+            Cookies.set('client_information', client_information, { domain });
+            this.has_cookie_account = true;
+        } else {
+            Cookies.remove('client_information', { domain });
+            this.has_cookie_account = false;
+        }
+    }
+    getSelfExclusion() {
+        return new Promise(resolve => {
+            WS.authorized.storage.getSelfExclusion().then(data => {
+                runInAction(() => {
+                    if (data.get_self_exclusion) {
+                        this.self_exclusion = data.get_self_exclusion;
+                    } else {
+                        this.self_exclusion = false;
+                    }
+                    resolve(data);
+                });
+            });
+        });
+    }
+    @action.bound
+    updateSelfExclusion(values) {
+        return new Promise(resolve => {
+            WS.authorized.storage.setSelfExclusion(values).then(data => {
+                if (!data.error) {
+                    this.getSelfExclusion();
+                }
+                resolve(data);
             });
         });
     }
@@ -416,133 +667,176 @@ export default class ClientStore extends BaseStore {
         this.accounts[this.loginid].email = response.authorize.email;
         this.accounts[this.loginid].currency = response.authorize.currency;
         this.accounts[this.loginid].is_virtual = +response.authorize.is_virtual;
-        this.accounts[this.loginid].session_start = parseInt(
-            moment()
-                .utc()
-                .valueOf() / 1000
-        );
+        this.accounts[this.loginid].session_start = parseInt(moment().utc().valueOf() / 1000);
         this.accounts[this.loginid].landing_company_shortcode = response.authorize.landing_company_name;
         this.accounts[this.loginid].country = response.country;
         this.updateAccountList(response.authorize.account_list);
         this.upgrade_info = this.getBasicUpgradeInfo();
         this.user_id = response.authorize.user_id;
-
+        this.upgradeable_landing_companies = [...new Set(response.authorize.upgradeable_landing_companies)];
         this.local_currency_config.currency = Object.keys(response.authorize.local_currencies)[0];
-        this.local_currency_config.decimal_places = +response.authorize.local_currencies[
-            this.local_currency_config.currency
-        ].fractional_digits;
 
-        ClientBase.responseAuthorize(response);
+        // For residences without local currency (e.g. ax)
+        const default_fractional_digits = 2;
+        this.local_currency_config.decimal_places = isEmptyObject(response.authorize.local_currencies)
+            ? default_fractional_digits
+            : +response.authorize.local_currencies[this.local_currency_config.currency].fractional_digits;
     }
 
     @action.bound
     setWebsiteStatus(response) {
         this.website_status = response.website_status;
-        CurrencyUtils.setCurrencies(this.website_status);
+        this.responseWebsiteStatus(response);
+        setCurrencies(this.website_status);
     }
 
     @action.bound
-    accountRealReaction(response) {
-        return new Promise(async resolve => {
+    async accountRealReaction(response) {
+        return new Promise(resolve => {
             runInAction(() => {
                 this.is_populating_account_list = true;
             });
             const client_accounts = JSON.parse(LocalStore.get(storage_key));
-            const { oauth_token, client_id } = response.new_account_real;
-            const authorize_response = await BinarySocket.authorize(oauth_token);
+            const { oauth_token, client_id } = response.new_account_real ?? response.new_account_maltainvest;
+            BinarySocket.authorize(oauth_token).then(authorize_response => {
+                const new_data = {};
+                new_data.token = oauth_token;
+                new_data.residence = authorize_response.authorize.country;
+                new_data.currency = authorize_response.authorize.currency;
+                new_data.is_virtual = authorize_response.authorize.is_virtual;
+                new_data.landing_company_name = authorize_response.authorize.landing_company_fullname;
+                new_data.landing_company_shortcode = authorize_response.authorize.landing_company_name;
 
-            const new_data = {};
-            new_data.token = oauth_token;
-            new_data.residence = authorize_response.authorize.country;
-            new_data.currency = authorize_response.authorize.currency;
-            new_data.is_virtual = authorize_response.authorize.is_virtual;
-            new_data.landing_company_name = authorize_response.authorize.landing_company_fullname;
-            new_data.landing_company_shortcode = authorize_response.authorize.landing_company_name;
-
-            runInAction(() => (client_accounts[client_id] = new_data));
-            this.setLoginInformation(client_accounts, client_id);
-            this.setAccountSettings((await WS.authorized.storage.getSettings()).get_settings);
-            resolve();
+                runInAction(() => (client_accounts[client_id] = new_data));
+                this.setLoginInformation(client_accounts, client_id);
+                WS.authorized.storage.getSettings().then(get_settings_response => {
+                    this.setAccountSettings(get_settings_response.get_settings);
+                    resolve();
+                });
+            });
         });
     }
 
     @action.bound
     setLoginInformation(client_accounts, client_id) {
-        this.accounts = client_accounts;
+        this.setAccounts(client_accounts);
         localStorage.setItem(storage_key, JSON.stringify(client_accounts));
         LocalStore.set(storage_key, JSON.stringify(client_accounts));
         this.is_populating_account_list = false;
         this.upgrade_info = this.getBasicUpgradeInfo();
         this.setSwitched(client_id);
+        this.syncWithSmartTrader(client_id, client_accounts);
     }
 
     @action.bound
-    realAccountSignup(form_values) {
-        return new Promise(async (resolve, reject) => {
-            form_values.residence = this.residence;
-            const response = await WS.newAccountReal(form_values);
-            if (!response.error) {
-                await this.accountRealReaction(response);
-                localStorage.removeItem('real_account_signup_wizard');
-                this.root_store.gtm.pushDataLayer({ event: 'real_signup' });
-                resolve(response);
-            } else {
-                reject(response.error);
+    async realAccountSignup(form_values) {
+        const DEFAULT_CRYPTO_ACCOUNT_CURRENCY = 'BTC';
+        const is_maltainvest_account = this.root_store.ui.real_account_signup_target === 'maltainvest';
+        const is_samoa_account = this.root_store.ui.real_account_signup_target === 'samoa';
+        let currency = '';
+        form_values.residence = this.residence;
+        if (is_maltainvest_account) {
+            currency = form_values.currency;
+            form_values.accept_risk = 1;
+            delete form_values.currency;
+        }
+        const response = is_maltainvest_account
+            ? await WS.newAccountRealMaltaInvest(form_values)
+            : await WS.newAccountReal(form_values);
+        if (!response.error) {
+            await this.accountRealReaction(response);
+            // Set currency after account is created
+            // Maltainvest only
+            if (is_maltainvest_account) {
+                await this.setAccountCurrency(currency);
             }
-        });
-    }
-
-    @action.bound
-    setAccountCurrency(currency) {
-        return new Promise(async (resolve, reject) => {
-            const response = await WS.setAccountCurrency(currency, {
-                previous_currency: this.currency,
+            if (is_samoa_account) {
+                await this.setAccountCurrency(DEFAULT_CRYPTO_ACCOUNT_CURRENCY);
+            }
+            localStorage.removeItem('real_account_signup_wizard');
+            await this.root_store.gtm.pushDataLayer({ event: 'real_signup' });
+            return Promise.resolve({
+                ...response,
+                ...(is_maltainvest_account
+                    ? {
+                          new_account_maltainvest: {
+                              ...response.new_account_maltainvest,
+                              currency,
+                          },
+                      }
+                    : {}),
+                ...(is_samoa_account
+                    ? {
+                          new_account_samoa: {
+                              currency,
+                          },
+                      }
+                    : {}),
             });
-            if (!response.error) {
-                runInAction(() => {
-                    const new_account = Object.assign({}, this.accounts[this.loginid]);
-                    new_account.currency = currency;
-                    this.accounts[this.loginid] = new_account;
-                });
-                localStorage.setItem(storage_key, JSON.stringify(this.accounts));
-                LocalStore.setObject(storage_key, JSON.parse(JSON.stringify(this.accounts)));
-                this.selectCurrency(currency);
-                this.root_store.ui.removeNotificationMessage({ key: 'currency' });
-                this.root_store.ui.removeNotificationByKey({ key: 'currency' });
-                await this.init();
-                resolve(response);
-            } else {
-                reject(response.error.message);
-            }
-        });
+        }
+
+        return Promise.reject(response.error);
     }
 
     @action.bound
-    createCryptoAccount(crr) {
-        const { date_of_birth, first_name, last_name } = this.account_settings;
-        const residence = this.residence;
+    async setAccountCurrency(currency) {
+        const response = await WS.setAccountCurrency(currency, {
+            previous_currency: this.currency,
+        });
+        if (!response.error) {
+            runInAction(() => {
+                const new_account = { ...this.accounts[this.loginid] };
+                new_account.currency = currency;
+                if (!('balance' in new_account)) new_account.balance = 0;
+                this.accounts[this.loginid] = new_account;
+            });
+            localStorage.setItem(storage_key, JSON.stringify(this.accounts));
+            LocalStore.setObject(storage_key, JSON.parse(JSON.stringify(this.accounts)));
+            this.selectCurrency(currency);
+            this.root_store.ui.removeNotificationMessage({
+                key: 'currency',
+            });
+            this.root_store.ui.removeNotificationByKey({
+                key: 'currency',
+            });
+            await this.init();
+            return Promise.resolve(response);
+        }
+        return Promise.reject(response.error);
+    }
 
-        return new Promise(async (resolve, reject) => {
-            const response = await WS.newAccountReal({
+    @action.bound
+    async createCryptoAccount(currency, is_deriv_crypto) {
+        const residence = this.residence;
+        let data = {
+            residence,
+            currency,
+        };
+
+        if (!is_deriv_crypto) {
+            const { date_of_birth, first_name, last_name } = this.account_settings;
+            data = {
+                ...data,
                 first_name,
                 last_name,
-                residence,
-                currency: crr,
                 date_of_birth: toMoment(date_of_birth).format('YYYY-MM-DD'),
-            });
-            if (!response.error) {
-                this.accountRealReaction(response);
-                resolve(response);
-            } else {
-                reject(response.error.message);
-            }
-        });
+            };
+        }
+
+        const response = await WS.newAccountReal(data);
+        if (!response.error) {
+            await this.accountRealReaction(response);
+            return Promise.resolve(response);
+        }
+        return Promise.reject(response.error);
     }
 
     @computed
     get residence() {
-        // TODO Instead of return residence from each individual loginid, set in once in login, this is bound by user.
-        return this.accounts[this.loginid]?.residence ?? '';
+        if (this.is_logged_in) {
+            return this.account_settings.country_code ?? '';
+        }
+        return '';
     }
 
     @computed
@@ -556,8 +850,35 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_website_status_ready() {
-        return this.website_status && this.website_status.site_status === 'up';
+        return this.website_status && !BinarySocket.getAvailability().is_down;
     }
+
+    isAccountOfType = type => {
+        const client_account_type = getClientAccountType(this.loginid);
+
+        return (
+            ((type === 'virtual' && client_account_type === 'virtual') ||
+                (type === 'real' && client_account_type !== 'virtual') ||
+                type === client_account_type) &&
+            !this.isDisabled()
+        );
+    };
+
+    getRiskAssessment = () => {
+        if (!this.account_status) return false;
+
+        const status = this.account_status?.status;
+
+        return this.isAccountOfType('financial')
+            ? /(financial_assessment|trading_experience)_not_complete/.test(status)
+            : /financial_assessment_not_complete/.test(status);
+    };
+
+    shouldCompleteTax = () => {
+        if (!this.isAccountOfType('financial')) return false;
+
+        return !/crs_tin_information/.test((this.account_status || {})?.status);
+    };
 
     @action.bound
     updateAccountList(account_list) {
@@ -584,10 +905,17 @@ export default class ClientStore extends BaseStore {
     async switchAccount(loginid) {
         this.setPreSwitchAccount(true);
         this.setIsLoggingIn(true);
-        this.root_store.ui.removeNotifications();
-        this.root_store.ui.removeAllNotificationMessages();
+        this.root_store.ui.removeNotifications(true);
+        this.root_store.ui.removeAllNotificationMessages(true);
         this.setSwitched(loginid);
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
+    }
+
+    @action.bound
+    async resetVirtualBalance() {
+        this.root_store.ui.removeNotificationByKey({ key: 'reset_virtual_balance' });
+        this.root_store.ui.removeNotificationMessage({ key: 'reset_virtual_balance', should_show_again: true });
+        await WS.authorized.topupVirtual();
     }
 
     @action.bound
@@ -597,23 +925,20 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     refreshNotifications() {
-        this.root_store.ui.removeNotifications();
+        this.root_store.ui.removeNotifications(true);
         this.root_store.ui.removeAllNotificationMessages();
         const client = this.accounts[this.loginid];
         const { has_missing_required_field } = handleClientNotifications(
             client,
-            this.account_settings,
-            this.account_status,
-            this.root_store.ui.addNotificationMessage,
-            this.loginid,
-            this.root_store.ui
+            this,
+            this.root_store.ui,
+            this.root_store.modules.cashier
         );
         this.setHasMissingRequiredField(has_missing_required_field);
     }
 
     /**
      * We initially fetch things from local storage, and then do everything inside the store.
-     * This will probably be the only place we are fetching data from Client_base.
      */
     @action.bound
     async init(login_new_user) {
@@ -630,7 +955,7 @@ export default class ClientStore extends BaseStore {
                 message: localize('Please Log in'),
                 should_show_refresh: false,
                 redirect_label: localize('Log in'),
-                redirectOnClick: redirectToLogin,
+                redirectOnClick: () => redirectToLogin(false, getLanguage()),
             });
             this.setIsLoggingIn(false);
             this.setInitialized(false);
@@ -640,6 +965,7 @@ export default class ClientStore extends BaseStore {
 
         this.setLoginId(LocalStore.get('active_loginid'));
         this.setAccounts(LocalStore.getObject(storage_key));
+
         this.setSwitched('');
         let client = this.accounts[this.loginid];
         // If there is an authorize_response, it means it was the first login
@@ -651,7 +977,9 @@ export default class ClientStore extends BaseStore {
                 // Client comes back from oauth and logs in
                 await this.root_store.segment.identifyEvent();
 
-                this.root_store.gtm.pushDataLayer({ event: 'login' });
+                await this.root_store.gtm.pushDataLayer({
+                    event: 'login',
+                });
             } else {
                 // So it will send an authorize with the accepted token, to be handled by socket-general
                 await BinarySocket.authorize(client.token);
@@ -662,10 +990,10 @@ export default class ClientStore extends BaseStore {
         }
 
         /**
-         * Set up reaction for account_settings, account_status
+         * Set up reaction for account_settings, account_status, is_p2p_visible
          */
         reaction(
-            () => [this.account_settings, this.account_status],
+            () => [this.account_settings, this.account_status, this.root_store.modules.cashier.is_p2p_visible],
             () => {
                 client = this.accounts[this.loginid];
                 BinarySocket.wait('landing_company').then(() => {
@@ -674,16 +1002,11 @@ export default class ClientStore extends BaseStore {
                     if (client && !client.is_virtual) {
                         const { has_missing_required_field } = handleClientNotifications(
                             client,
-                            this.account_settings,
-                            this.account_status,
-                            this.root_store.ui.addNotificationMessage,
-                            this.loginid,
-                            this.root_store.ui
+                            this,
+                            this.root_store.ui,
+                            this.root_store.modules.cashier
                         );
                         this.setHasMissingRequiredField(has_missing_required_field);
-                    } else if (!client || client.is_virtual) {
-                        this.root_store.ui.removeNotifications();
-                        this.root_store.ui.removeAllNotificationMessages();
                     }
                 });
             }
@@ -699,13 +1022,24 @@ export default class ClientStore extends BaseStore {
                     statement: 1,
                 })
             );
-            const account_settings = (await WS.authorized.storage.getSettings()).get_settings;
+            const account_settings = (await WS.authorized.cache.getSettings()).get_settings;
             if (account_settings && !account_settings.residence) {
                 await this.fetchResidenceList();
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
-            WS.authorized.storage.landingCompany(this.residence).then(this.responseLandingCompany);
-            this.getLimits();
+            await WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
+            if (!this.is_virtual) await this.getLimits();
+
+            if (
+                !this.switched &&
+                !this.has_any_real_account &&
+                this.is_mt5_allowed &&
+                !this.root_store.ui.is_real_acc_signup_on
+            ) {
+                this.root_store.ui.toggleWelcomeModal({ is_visible: true });
+            }
+        } else {
+            this.resetMt5AccountListPopulation();
         }
         this.responseWebsiteStatus(await WS.wait('website_status'));
 
@@ -713,6 +1047,11 @@ export default class ClientStore extends BaseStore {
         this.setIsLoggingIn(false);
         this.setInitialized(true);
         return true;
+    }
+
+    @action.bound
+    resetMt5AccountListPopulation() {
+        this.is_populating_mt5_account_list = false;
     }
 
     @action.bound
@@ -727,13 +1066,30 @@ export default class ClientStore extends BaseStore {
                 is_persistent: true,
             });
         } else {
-            this.root_store.ui.removeNotificationMessage({ key: 'maintenance' });
+            this.root_store.ui.removeNotificationMessage({
+                key: 'maintenance',
+            });
         }
     }
 
     @action.bound
     responseLandingCompany(response) {
         this.landing_companies = response.landing_company;
+        this.setRealityCheck();
+    }
+
+    @action.bound
+    setRealityCheck() {
+        this.has_reality_check = this.current_landing_company?.has_reality_check;
+        // if page reloaded after reality check was submitted
+        // use the submitted values to initiate rather than asking again
+        if (
+            this.has_reality_check &&
+            this.reality_check_duration &&
+            typeof this.reality_check_timeout === 'undefined'
+        ) {
+            this.setRealityCheckDuration(this.reality_check_duration);
+        }
     }
 
     @action.bound
@@ -797,7 +1153,7 @@ export default class ClientStore extends BaseStore {
         const currency = account.currency;
         const is_disabled = account.is_disabled;
         const is_virtual = account.is_virtual;
-        const account_type = !is_virtual && currency ? currency : ClientBase.getAccountTitle(loginid);
+        const account_type = !is_virtual && currency ? currency : this.account_title;
 
         return {
             loginid,
@@ -864,7 +1220,6 @@ export default class ClientStore extends BaseStore {
         }
 
         runInAction(() => (this.is_switching = true));
-
         const from_login_id = this.loginid;
         this.resetLocalStorageValues(this.switched);
         SocketCache.clear();
@@ -875,13 +1230,13 @@ export default class ClientStore extends BaseStore {
         const should_switch_socket_connection = this.is_virtual || /VRTC/.test(from_login_id);
 
         if (should_switch_socket_connection) {
-            BinarySocket.closeAndOpenNewConnection(this.getToken());
+            BinarySocket.closeAndOpenNewConnection();
             await BinarySocket.wait('authorize');
         } else {
             await WS.forgetAll('balance');
             await BinarySocket.authorize(this.getToken());
         }
-
+        if (this.root_store.common.has_error) this.root_store.common.setError(false, null);
         sessionStorage.setItem('active_tab', '1');
 
         // set local storage
@@ -892,7 +1247,7 @@ export default class ClientStore extends BaseStore {
         // broadcastAccountChange is already called after new connection is authorized
         if (!should_switch_socket_connection) this.broadcastAccountChange();
 
-        this.getLimits();
+        if (!this.is_virtual) this.getLimits();
 
         runInAction(() => (this.is_switching = false));
     }
@@ -900,13 +1255,55 @@ export default class ClientStore extends BaseStore {
     @action.bound
     registerReactions() {
         // Switch account reactions.
-        when(() => this.switched, this.switchAccountHandler);
+        when(
+            () => this.switched,
+            () => {
+                // Remove real account notifications upon switching to virtual
+                if (this.accounts[this.switched]?.is_virtual) {
+                    this.root_store.ui.removeNotifications(true);
+                    this.root_store.ui.removeAllNotificationMessages();
+                }
+
+                this.switchAccountHandler();
+            }
+        );
+    }
+
+    @action.bound
+    resetVirtualBalanceNotification(loginid) {
+        if (!this.is_logged_in) return;
+        if (!this.accounts[loginid].is_virtual) return;
+        const min_reset_limit = 1000;
+        const max_reset_limit = 999000;
+        const balance = parseInt(this.accounts[loginid].balance);
+
+        // Display notification message to user with virtual account to reset their balance
+        // if the balance is less than equals to 1000 or more than equals to 999000
+        if (balance <= min_reset_limit || balance >= max_reset_limit) {
+            let message = localize(
+                'Your demo account balance is low. Reset your balance to continue trading from your demo account.'
+            );
+            if (balance >= max_reset_limit)
+                message = localize(
+                    'Your demo account balance has reached the maximum limit, and you will not be able to place new trades. Reset your balance to continue trading from your demo account.'
+                );
+            this.root_store.ui.addNotificationMessage(
+                clientNotifications({}, { resetVirtualBalance: this.resetVirtualBalance, message })
+                    .reset_virtual_balance
+            );
+        } else {
+            this.root_store.ui.removeNotificationByKey({ key: 'reset_virtual_balance' });
+            this.root_store.ui.removeNotificationMessage({ key: 'reset_virtual_balance', should_show_again: true });
+        }
     }
 
     @action.bound
     setBalanceActiveAccount(obj_balance) {
         if (this.accounts[obj_balance?.loginid] && obj_balance.loginid === this.loginid) {
             this.accounts[obj_balance.loginid].balance = obj_balance.balance;
+            if (this.accounts[obj_balance.loginid].is_virtual) {
+                this.resetVirtualBalanceNotification(obj_balance.loginid);
+            }
             this.resetLocalStorageValues(this.loginid);
         }
     }
@@ -916,21 +1313,32 @@ export default class ClientStore extends BaseStore {
     // --> so we keep a separate balance subscription for the active account
     @action.bound
     setBalanceOtherAccounts(obj_balance) {
-        if (this.accounts[obj_balance?.loginid]) {
-            if (obj_balance.loginid !== this.loginid) {
-                this.accounts[obj_balance.loginid].balance = obj_balance.balance;
-            }
-            if (obj_balance.total) {
-                const total_real = ObjectUtils.getPropertyValue(obj_balance, ['total', 'real']);
-                const total_mt5 = ObjectUtils.getPropertyValue(obj_balance, ['total', 'mt5']);
-                // in API streaming responses MT5 balance is not re-sent, so we need to reuse the first mt5 total sent
-                const has_mt5 = !ObjectUtils.isEmptyObject(total_mt5);
-                this.obj_total_balance = {
-                    amount_real: +total_real.amount,
-                    amount_mt5: has_mt5 ? +total_mt5.amount : this.obj_total_balance.amount_mt5,
-                    currency: total_real.currency,
-                };
-            }
+        // Only the first response of balance:all will include all accounts
+        // subsequent requests will be single account balance updates
+        if (this.accounts[obj_balance?.loginid] && !obj_balance.accounts && obj_balance.loginid !== this.loginid) {
+            this.accounts[obj_balance.loginid].balance = obj_balance.balance;
+        }
+
+        if (this.accounts[obj_balance?.loginid] && obj_balance.accounts) {
+            Object.keys(obj_balance.accounts).forEach(account_id => {
+                const is_active_account_id = account_id === this.loginid;
+
+                if (!is_active_account_id && this.accounts[account_id]) {
+                    this.accounts[account_id].balance = +obj_balance.accounts[account_id].balance;
+                }
+            });
+        }
+
+        if (obj_balance.total) {
+            const total_real = getPropertyValue(obj_balance, ['total', 'deriv']);
+            const total_mt5 = getPropertyValue(obj_balance, ['total', 'mt5']);
+            // in API streaming responses MT5 balance is not re-sent, so we need to reuse the first mt5 total sent
+            const has_mt5 = !isEmptyObject(total_mt5);
+            this.obj_total_balance = {
+                amount_real: +total_real.amount,
+                amount_mt5: has_mt5 ? +total_mt5.amount : this.obj_total_balance.amount_mt5,
+                currency: total_real.currency,
+            };
         }
     }
 
@@ -967,16 +1375,22 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     cleanUp() {
-        this.root_store.gtm.pushDataLayer({ event: 'log_out' });
+        this.root_store.gtm.pushDataLayer({
+            event: 'log_out',
+        });
         this.loginid = null;
         this.user_id = null;
         this.upgrade_info = undefined;
         this.accounts = {};
+        localStorage.setItem('active_loginid', this.loginid);
+        localStorage.setItem('client.accounts', JSON.stringify(this.accounts));
+
         runInAction(async () => {
             this.responsePayoutCurrencies(await WS.payoutCurrencies());
         });
-        this.root_store.ui.removeAllNotificationMessages();
+        this.root_store.ui.removeAllNotificationMessages(true);
         this.syncWithSmartTrader(this.loginid, this.accounts);
+        this.cleanupRealityCheck();
     }
 
     @action.bound
@@ -999,6 +1413,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setLogout(is_logged_out) {
         this.has_logged_out = is_logged_out;
+        if (this.root_store.common.has_error) this.root_store.common.setError(false, null);
     }
 
     /* eslint-disable */
@@ -1013,19 +1428,11 @@ export default class ClientStore extends BaseStore {
         const client_object = {};
         let active_loginid;
 
-        let is_allowed_real = true;
-        // Performs check to avoid login of landing companies that are currently not supported in app
-        account_list.forEach(function(account) {
-            if (!/^virtual|svg$/.test(account.landing_company_name)) {
-                is_allowed_real = false;
-            }
-        });
-
-        account_list.forEach(function(account) {
-            Object.keys(account).forEach(function(param) {
+        account_list.forEach(function (account) {
+            Object.keys(account).forEach(function (param) {
                 if (param === 'loginid') {
                     if (!active_loginid && !account.is_disabled) {
-                        if (is_allowed_real && !account.is_virtual) {
+                        if (!account.is_virtual) {
                             active_loginid = account[param];
                         } else if (account.is_virtual) {
                             // TODO: [only_virtual] remove this to stop logging non-SVG clients into virtual
@@ -1060,10 +1467,10 @@ export default class ClientStore extends BaseStore {
         }
 
         // TODO: send login flag to GTM if needed
-
         if (active_loginid && Object.keys(client_object).length) {
             localStorage.setItem('active_loginid', active_loginid);
             localStorage.setItem('client.accounts', JSON.stringify(client_object));
+            this.syncWithSmartTrader(active_loginid, this.accounts);
         }
     }
 
@@ -1072,20 +1479,30 @@ export default class ClientStore extends BaseStore {
         // login_new_user is populated only on virtual sign-up
         let obj_params = {};
         const search = window.location.search;
+
         if (search) {
-            const arr_params = window.location.search.substr(1).split('&');
-            arr_params.forEach(function(param) {
-                if (param) {
-                    const param_value = param.split('=');
-                    if (param_value) {
-                        obj_params[param_value[0]] = param_value[1];
-                    }
+            let search_params = new URLSearchParams(window.location.search);
+
+            search_params.forEach((value, key) => {
+                const account_keys = ['acct', 'token', 'cur'];
+                const is_account_param = account_keys.some(
+                    account_key => key?.includes(account_key) && key !== 'affiliate_token'
+                );
+
+                if (is_account_param) {
+                    obj_params[key] = value;
                 }
             });
+
+            // delete account query params - but keep other query params (e.g. utm)
+            Object.keys(obj_params).forEach(key => search_params.delete(key));
+            search_params.delete('state'); // remove unused state= query string
+            search_params = search_params?.toString();
+            const search_param_without_account = search_params ? `?${search_params}` : '/';
+            history.replaceState(null, null, `${search_param_without_account}${window.location.hash}`);
         }
 
         const is_client_logging_in = login_new_user ? login_new_user.token1 : obj_params.token1;
-
         if (is_client_logging_in) {
             window.history.replaceState({}, document.title, sessionStorage.getItem('redirect_url'));
             SocketCache.clear();
@@ -1104,7 +1521,8 @@ export default class ClientStore extends BaseStore {
 
             runInAction(() => {
                 const account_list = (authorize_response.authorize || {}).account_list;
-                this.upgradeable_landing_companies = authorize_response.upgradeable_landing_companies;
+                this.upgradeable_landing_companies = [...new Set(authorize_response.upgradeable_landing_companies)];
+
                 if (this.canStoreClientAccounts(obj_params, account_list)) {
                     this.storeClientAccounts(obj_params, account_list);
                 } else {
@@ -1121,7 +1539,7 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     canStoreClientAccounts(obj_params, account_list) {
-        const is_ready_to_process = account_list && ObjectUtils.isEmptyObject(this.accounts);
+        const is_ready_to_process = account_list && isEmptyObject(this.accounts);
         const accts = Object.keys(obj_params).filter(value => /^acct./.test(value));
 
         const is_cross_checked = accts.every(acct =>
@@ -1148,34 +1566,22 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setDeviceData() {
         // Set client URL params on init
-        const url_params = new URLSearchParams(window.location.search);
-        const device_data = {
-            ...(url_params.get('affiliate_token') && { affiliate_token: url_params.get('affiliate_token') }),
-            ...(url_params.get('gclid_url') && { gclid_url: url_params.get('gclid_url') }),
+        const date_first_contact_cookie = setDeviceDataCookie(
+            'date_first_contact',
+            this.root_store.common.server_time.format('YYYY-MM-DD')
+        );
+        const signup_device_cookie = setDeviceDataCookie('signup_device', isDesktopOs() ? 'desktop' : 'mobile');
+        const device_data = createDeviceDataObject(date_first_contact_cookie, signup_device_cookie);
 
-            // date_first_contact should be preserved to the first client contact
-            ...(!this.device_data.date_first_contact && {
-                date_first_contact:
-                    url_params.get('date_first_contact') || this.root_store.common.server_time.format('YYYY-MM-DD'),
-            }),
-
-            // signup device can be set anytime even if there is no url parameter by using isDesktop function
-            signup_device: url_params.get('signup_device') || isDesktop() ? 'desktop' : 'mobile',
-
-            // url params can be stored only if utm_source is available
-            ...(url_params.get('utm_source') && {
-                utm_campaign: url_params.get('utm_campaign') || '',
-                utm_medium: url_params.get('utm_medium') || '',
-                utm_source: url_params.get('utm_source'), // since the check is done previously
-            }),
-        };
         this.device_data = { ...this.device_data, ...device_data };
     }
 
     @action.bound
     onSetResidence({ residence }, cb) {
         if (!residence) return;
-        WS.setSettings({ residence }).then(async response => {
+        WS.setSettings({
+            residence,
+        }).then(async response => {
             if (response.error) {
                 cb(response.error.message);
             } else {
@@ -1197,7 +1603,8 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    onSignup({ password, residence }, cb) {
+    onSignup({ password, residence, is_deriv_crypto, is_account_signup_modal_visible }, cb) {
+        const is_first_time_signup = is_account_signup_modal_visible;
         if (!this.verification_code.signup || !password || !residence) return;
 
         // Currently the code doesn't reach here and the console log is needed for debugging.
@@ -1206,7 +1613,7 @@ export default class ClientStore extends BaseStore {
             this.verification_code.signup,
             password,
             residence,
-            ObjectUtils.removeEmptyPropertiesFromObject(this.device_data)
+            removeEmptyPropertiesFromObject(this.device_data)
         ).then(async response => {
             if (response.error) {
                 cb(response.error.message);
@@ -1217,7 +1624,19 @@ export default class ClientStore extends BaseStore {
                 await this.switchToNewlyCreatedAccount(client_id, oauth_token, currency);
 
                 // GTM Signup event
-                this.root_store.gtm.pushDataLayer({ event: 'virtual_signup' });
+                this.root_store.gtm.pushDataLayer({
+                    event: 'virtual_signup',
+                });
+
+                this.root_store.ui.showAccountTypesModalForEuropean();
+
+                if (this.is_mt5_allowed) {
+                    this.root_store.ui.toggleWelcomeModal({ is_visible: true, should_persist: true });
+                }
+
+                if (is_deriv_crypto && is_first_time_signup) {
+                    this.root_store.ui.openRealAccountSignup();
+                }
             }
         });
     }
@@ -1259,18 +1678,20 @@ export default class ClientStore extends BaseStore {
     @action.bound
     fetchStatesList() {
         return new Promise((resolve, reject) => {
-            WS.statesList({
-                states_list: this.accounts[this.loginid].residence,
-            }).then(response => {
-                if (response.error) {
-                    reject(response.error);
-                } else {
-                    runInAction(() => {
-                        this.states_list = response.states_list || [];
-                    });
-                }
-                resolve(response);
-            });
+            WS.authorized.storage
+                .statesList({
+                    states_list: this.accounts[this.loginid].residence,
+                })
+                .then(response => {
+                    if (response.error) {
+                        reject(response.error);
+                    } else {
+                        runInAction(() => {
+                            this.states_list = response.states_list || [];
+                        });
+                    }
+                    resolve(response);
+                });
         });
     }
 
@@ -1278,6 +1699,7 @@ export default class ClientStore extends BaseStore {
     resetMt5ListPopulatedState() {
         this.is_mt5_account_list_updated = false;
         this.is_populating_mt5_account_list = true;
+        this.mt5_login_list_error = null;
     }
 
     @action.bound
@@ -1292,6 +1714,7 @@ export default class ClientStore extends BaseStore {
     responseMt5LoginList(response) {
         this.is_populating_mt5_account_list = false;
         this.is_mt5_account_list_updated = true;
+        this.mt5_login_list_error = null;
         /** we need to update mt5_login_list on mount of account switcher
          *  to get the new MT5 balances (balance does not stream for MT5 accounts due to API restriction)
          *  but to avoid spamming this call since the rate limit is strict
@@ -1302,13 +1725,12 @@ export default class ClientStore extends BaseStore {
         }, 60000);
 
         if (!response.error) {
-            this.mt5_login_list = response.mt5_login_list
-                .filter(account => !/inactive/.test(account.group)) // remove disabled mt5 accounts
-                .map(account => ({
-                    ...account,
-                    group: getMT5AccountType(account.group),
-                    display_login: account.login.replace(/^(MT[DR]?)/i, ''),
-                }));
+            this.mt5_login_list = response.mt5_login_list.map(account => ({
+                ...account,
+                display_login: account.login.replace(/^(MT[DR]?)/i, ''),
+            }));
+        } else {
+            this.mt5_login_list_error = response.error;
         }
     }
 
@@ -1321,17 +1743,13 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     getChangeableFields() {
-        const landing_company = State.getResponse('landing_company');
-        const has_changeable_field = this.landing_company_shortcode === 'svg' && !this.is_fully_authenticated;
-        const changeable = ClientBase.getLandingCompanyValue(this.loginid, landing_company, 'changeable_fields');
-        if (has_changeable_field) {
-            let changeable_fields = [];
-            if (changeable && changeable.only_before_auth) {
-                changeable_fields = [...changeable.only_before_auth];
-            }
-            return changeable_fields;
-        }
-        return [];
+        const get_settings =
+            Object.keys(this.account_settings).length === 0
+                ? WS.authorized.storage.getSettings()
+                : this.account_settings;
+
+        const readonly_fields = [...get_settings.immutable_fields, ...['immutable_fields', 'email', 'password']];
+        return Object.keys(get_settings).filter(field => !readonly_fields.includes(field));
     }
 
     @action.bound
@@ -1366,8 +1784,70 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get needs_financial_assessment() {
+        if (this.is_virtual) return false;
+        if (this.is_financial_information_incomplete) return true;
+        if (!this.is_svg) {
+            if (this.is_financial_account || this.is_trading_experience_incomplete) return true;
+        }
+
+        return false;
+    }
+
+    @computed
     get has_residence() {
         return !!this.accounts[this.loginid]?.residence;
+    }
+
+    @action.bound
+    setVisibilityRealityCheck(is_visible) {
+        // if reality check timeout has been set, don't make it visible until it runs out
+        if (is_visible && typeof this.reality_check_timeout === 'number') {
+            return;
+        }
+        this.is_reality_check_dismissed = !is_visible;
+        // store in localstorage to keep track of across tabs/on refresh
+        LocalStore.set('reality_check_dismissed', !is_visible);
+    }
+
+    @action.bound
+    clearRealityCheckTimeout() {
+        clearTimeout(this.reality_check_timeout);
+        this.reality_check_timeout = undefined;
+    }
+
+    @action.bound
+    setRealityCheckDuration(duration) {
+        this.reality_check_dur = +duration;
+        this.clearRealityCheckTimeout();
+        // store in localstorage to keep track of across tabs/on refresh
+        LocalStore.set('reality_check_duration', +duration);
+        this.reality_check_timeout = setTimeout(() => {
+            // set reality_check_timeout to undefined
+            this.clearRealityCheckTimeout();
+            // after this duration passes, show the summary pop up
+            this.setVisibilityRealityCheck(1);
+        }, +duration * 60 * 1000);
+    }
+
+    @action.bound
+    cleanupRealityCheck() {
+        this.has_reality_check = false;
+        this.is_reality_check_dismissed = undefined;
+        this.reality_check_dur = undefined;
+        this.clearRealityCheckTimeout();
+        LocalStore.remove('reality_check_duration');
+        LocalStore.remove('reality_check_dismissed');
+    }
+
+    @action.bound
+    fetchFinancialAssessment() {
+        return new Promise(async resolve => {
+            const { get_financial_assessment } = await WS.getFinancialAssessment();
+
+            runInAction(() => (this.financial_assessment = get_financial_assessment));
+            resolve(get_financial_assessment);
+        });
     }
 }
 /* eslint-enable */

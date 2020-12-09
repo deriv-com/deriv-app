@@ -1,7 +1,7 @@
-import { Autocomplete, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
 import { Field } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Autocomplete, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
 const SetResidenceForm = ({
@@ -25,7 +25,6 @@ const SetResidenceForm = ({
                             {...field}
                             autoComplete='off'
                             className={`${class_prefix}__residence-field`}
-                            dropdown_offset='3.2rem'
                             type='text'
                             label={localize('Choose country')}
                             error={touched.residence && errors.residence}

@@ -36,13 +36,20 @@
     .modal-root {
         height: 100% !important;
     }
-    .deriv-app,
-    .modal-root {
-        .dc-toast-error {
-            top: 4.8rem;
+    .popup-root {
+        > .dc-toast {
+            top: #{$HEADER_HEIGHT};
             z-index: 3;
-            width: fit-content;
             margin: auto;
+            position: absolute;
+        }
+        .dc-toast-popup {
+            max-width: calc(100vw - 1.6rem);
+            left: 1.6rem;
+            width: calc(100vw - 3.2rem);
+            top: #{$HEADER_HEIGHT};
+            position: absolute;
+            right: 1.6rem;
         }
     }
 }
@@ -145,32 +152,14 @@
         .contract-details-wrapper {
             height: inherit;
             position: relative;
+            z-index: 1;
         }
         .contract-audit-card {
-            position: absolute;
-            transform: translate3d(0, 15%, 0);
-            opacity: 0;
-            width: calc(100vw - 16px);
-            height: calc(100vh - #{$MOBILE_HEADER_HEIGHT} - 202px);
             background-color: var(--general-section-1);
-            z-index: 999;
-            margin: 0.8rem;
-            border-radius: 4px;
-            transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.3s;
+            border-radius: $BORDER_RADIUS;
 
             .contract-audit__wrapper {
-                margin: 0.8rem;
                 height: 100%;
-                max-height: calc(100% - 16px);
-            }
-            &--enter,
-            &--exit {
-                transform: translate3d(0, 15%, 0);
-                opacity: 0;
-            }
-            &--enterDone {
-                transform: translate3d(0, 0, 0);
-                opacity: 1;
             }
         }
     }
@@ -215,6 +204,12 @@
             }
         }
     }
+}
+
+/** @define popup-root */
+.popup-root {
+    position: absolute;
+    z-index: 9999;
 }
 
 /** @define contract */

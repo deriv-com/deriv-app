@@ -2,7 +2,7 @@ import moment from 'moment';
 
 // Disables moment's fallback to native Date object
 // moment will return `Invalid Date` if date cannot be parsed
-moment.createFromInputFallback = function(config) {
+moment.createFromInputFallback = function (config) {
     config._d = new Date(NaN); // eslint-disable-line no-underscore-dangle
 };
 
@@ -71,9 +71,7 @@ export const formatTime = (epoch, time_format = 'HH:mm:ss [GMT]') => toMoment(ep
  * @return {Number} an integer of the number of days
  */
 export const daysFromTodayTo = date => {
-    const diff = toMoment(date)
-        .startOf('day')
-        .diff(toMoment().startOf('day'), 'days');
+    const diff = toMoment(date).startOf('day').diff(toMoment().startOf('day'), 'days');
     return !date || diff < 0 ? '' : diff;
 };
 
@@ -142,60 +140,49 @@ export const isDateValid = date => moment(date, 'DD MMM YYYY').isValid();
  * @param {String} date        date
  * @param {Number} num_of_days number of days to add
  */
-export const addDays = (date, num_of_days) =>
-    toMoment(date)
-        .clone()
-        .add(num_of_days, 'day');
+export const addDays = (date, num_of_days) => toMoment(date).clone().add(num_of_days, 'day');
+
+/**
+ * add the specified number of weeks to the given date
+ * @param {String} date        date
+ * @param {Number} num_of_weeks number of days to add
+ */
+export const addWeeks = (date, num_of_weeks) => toMoment(date).clone().add(num_of_weeks, 'week');
 
 /**
  * add the specified number of months to the given date
  * @param {String} date        date
  * @param {Number} num_of_months number of months to add
  */
-export const addMonths = (date, num_of_months) =>
-    toMoment(date)
-        .clone()
-        .add(num_of_months, 'month');
+export const addMonths = (date, num_of_months) => toMoment(date).clone().add(num_of_months, 'month');
 
 /**
  * add the specified number of years to the given date
  * @param {String} date        date
  * @param {Number} num_of_years number of years to add
  */
-export const addYears = (date, num_of_years) =>
-    toMoment(date)
-        .clone()
-        .add(num_of_years, 'year');
+export const addYears = (date, num_of_years) => toMoment(date).clone().add(num_of_years, 'year');
 
 /**
  * subtract the specified number of days from the given date
  * @param {String} date        date
  * @param {Number} num_of_days number of days to subtract
  */
-export const subDays = (date, num_of_days) =>
-    toMoment(date)
-        .clone()
-        .subtract(num_of_days, 'day');
+export const subDays = (date, num_of_days) => toMoment(date).clone().subtract(num_of_days, 'day');
 
 /**
  * subtract the specified number of months from the given date
  * @param {String} date        date
  * @param {Number} num_of_months number of months to subtract
  */
-export const subMonths = (date, num_of_months) =>
-    toMoment(date)
-        .clone()
-        .subtract(num_of_months, 'month');
+export const subMonths = (date, num_of_months) => toMoment(date).clone().subtract(num_of_months, 'month');
 
 /**
  * subtract the specified number of years from the given date
  * @param {String} date        date
  * @param {Number} num_of_years number of years to subtract
  */
-export const subYears = (date, num_of_years) =>
-    toMoment(date)
-        .clone()
-        .subtract(num_of_years, 'year');
+export const subYears = (date, num_of_years) => toMoment(date).clone().subtract(num_of_years, 'year');
 
 /**
  * returns the minimum moment between the two passing parameters
@@ -208,11 +195,7 @@ export const minDate = (date_1, date_2) => moment.min(toMoment(date_1), toMoment
  * returns a new date
  * @param {moment|string|epoch} date date
  */
-export const getStartOfMonth = date =>
-    toMoment(date)
-        .clone()
-        .startOf('month')
-        .format('YYYY-MM-DD');
+export const getStartOfMonth = date => toMoment(date).clone().startOf('month').format('YYYY-MM-DD');
 
 /**
  * returns miliseconds into UTC formatted string

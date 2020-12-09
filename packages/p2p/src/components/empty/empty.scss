@@ -1,0 +1,34 @@
+.p2p-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 50vh;
+    margin-top: 4rem;
+    max-width: 628px;
+
+    &--no-tabs {
+        margin-top: calc(4rem + 4.4rem);
+    }
+    &-icon {
+        margin-bottom: 2.4rem;
+    }
+    &-title {
+        color: var(--text-general);
+        font-size: var(--text-size-s);
+        font-weight: bold;
+        line-height: 1.5;
+        margin: 0.8rem;
+    }
+    &-text {
+        font-size: var(--text-size-xs);
+        margin: 1.2rem 0;
+
+        p {
+            line-height: 1.43;
+        }
+    }
+    &__button {
+        text-decoration: none;
+        margin-top: 1.6rem;
+    }
+}

@@ -25,7 +25,7 @@ export default class ActiveSymbols {
 
         this.is_initialised = true;
 
-        const { active_symbols } = await this.ws.activeSymbols();
+        const { active_symbols } = await this.ws.authorized.activeSymbols();
 
         this.active_symbols = active_symbols;
         this.processed_symbols = this.processActiveSymbols();
@@ -93,10 +93,14 @@ export default class ActiveSymbols {
      * Retrieves all symbols and returns an array of symbol objects consisting of symbol and their linked market + submarket.
      * @returns {Array} Symbols and their submarkets + markets.
      */
-    getAllSymbols() {
+    getAllSymbols(should_be_open = false) {
         const all_symbols = [];
 
         Object.keys(this.processed_symbols).forEach(market_name => {
+            if (should_be_open && this.isMarketClosed(market_name)) {
+                return;
+            }
+
             const market = this.processed_symbols[market_name];
             const { submarkets } = market;
 
@@ -122,8 +126,7 @@ export default class ActiveSymbols {
         return all_symbols;
     }
 
-    async getMarketDropdownOptions() {
-        await this.retrieveActiveSymbols();
+    getMarketDropdownOptions() {
         const market_options = [];
 
         Object.keys(this.processed_symbols).forEach(market_name => {
@@ -153,9 +156,7 @@ export default class ActiveSymbols {
         return market_options;
     }
 
-    async getSubmarketDropdownOptions(market) {
-        await this.retrieveActiveSymbols();
-
+    getSubmarketDropdownOptions(market) {
         const submarket_options = [];
         const market_obj = this.processed_symbols[market];
 
@@ -180,9 +181,7 @@ export default class ActiveSymbols {
         return this.sortDropdownOptions(submarket_options, this.isSubmarketClosed);
     }
 
-    async getSymbolDropdownOptions(submarket) {
-        await this.retrieveActiveSymbols();
-
+    getSymbolDropdownOptions(submarket) {
         const symbol_options = Object.keys(this.processed_symbols).reduce((accumulator, market_name) => {
             const { submarkets } = this.processed_symbols[market_name];
 

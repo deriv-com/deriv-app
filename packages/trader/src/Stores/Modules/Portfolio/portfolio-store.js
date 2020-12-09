@@ -2,13 +2,19 @@ import throttle from 'lodash.throttle';
 import { action, computed, observable, reaction } from 'mobx';
 import { createTransformer } from 'mobx-utils';
 import { WS } from 'Services/ws-methods';
-import { isMobile } from '@deriv/shared/utils/screen';
-import ObjectUtils from '@deriv/shared/utils/object';
+import {
+    isEmptyObject,
+    isEnded,
+    isUserSold,
+    isValidToSell,
+    isMultiplierContract,
+    getCurrentTick,
+    getDisplayStatus,
+} from '@deriv/shared';
 import { formatPortfolioPosition } from './Helpers/format-response';
 import { contractCancelled, contractSold } from './Helpers/portfolio-notifications';
-import { getCurrentTick, getDurationPeriod, getDurationTime, getDurationUnitText } from './Helpers/details';
-import { getDisplayStatus, getEndTime, isEnded, isUserSold, isValidToSell } from '../Contract/Helpers/logic';
-import { isMultiplierContract } from '../Contract/Helpers/multiplier';
+import { getDurationPeriod, getDurationTime, getDurationUnitText } from './Helpers/details';
+import { getEndTime } from '../Contract/Helpers/logic';
 
 import BaseStore from '../../base-store';
 
@@ -20,18 +26,21 @@ export default class PortfolioStore extends BaseStore {
     @observable error = '';
     getPositionById = createTransformer(id => this.positions.find(position => +position.id === +id));
 
-    subscribers = {};
     responseQueue = [];
 
     @observable.shallow active_positions = [];
 
     @action.bound
     initializePortfolio = async () => {
+        if (this.is_subscribed_to_poc) {
+            this.clearTable();
+        }
         this.is_loading = true;
         await WS.wait('authorize');
         WS.portfolio().then(this.portfolioHandler);
         WS.subscribeProposalOpenContract(null, this.proposalOpenContractQueueHandler);
         WS.subscribeTransaction(this.transactionHandler);
+        this.is_subscribed_to_poc = true;
     };
 
     @action.bound
@@ -42,6 +51,7 @@ export default class PortfolioStore extends BaseStore {
         this.error = '';
         this.updatePositions();
         WS.forgetAll('proposal_open_contract', 'transaction');
+        this.is_subscribed_to_poc = false;
     }
 
     @action.bound
@@ -66,19 +76,12 @@ export default class PortfolioStore extends BaseStore {
 
     @action.bound
     onBuyResponse({ contract_id, longcode, contract_type }) {
-        if (this.subscribers[contract_id]) {
-            return /* do nothing */;
-        }
         const new_pos = {
             contract_id,
             longcode,
             contract_type,
         };
         this.pushNewPosition(new_pos);
-        this.subscribers[contract_id] = WS.subscribeProposalOpenContract(
-            contract_id,
-            this.proposalOpenContractQueueHandler
-        );
     }
 
     @action.bound
@@ -104,8 +107,12 @@ export default class PortfolioStore extends BaseStore {
                 return;
             }
             this.positions[i].is_loading = true;
+
+            // Sometimes when we sell a contract, we don't get `proposal_open_contract` message with exit information and status as `sold`.
+            // This is to make sure that we get `proposal_open_contract` message with exit information and status as `sold`.
             const subscriber = WS.subscribeProposalOpenContract(contract_id, poc => {
                 this.updateContractTradeStore(poc);
+                this.updateContractReplayStore(poc);
                 this.populateResultDetails(poc);
                 subscriber.unsubscribe();
             });
@@ -115,12 +122,19 @@ export default class PortfolioStore extends BaseStore {
     deepClone = obj => JSON.parse(JSON.stringify(obj));
     updateContractTradeStore(response) {
         const contract_trade = this.root_store.modules.contract_trade;
-        const has_poc = !ObjectUtils.isEmptyObject(response.proposal_open_contract);
+        const has_poc = !isEmptyObject(response.proposal_open_contract);
         const has_error = !!response.error;
         if (!has_poc && !has_error) return;
         if (has_poc) {
             contract_trade.addContract(this.deepClone(response.proposal_open_contract));
             contract_trade.updateProposal(this.deepClone(response));
+        }
+    }
+
+    updateContractReplayStore(response) {
+        const contract_replay = this.root_store.modules.contract_replay;
+        if (contract_replay.contract_id === response.proposal_open_contract?.contract_id) {
+            contract_replay.populateConfig(response);
         }
     }
 
@@ -141,6 +155,7 @@ export default class PortfolioStore extends BaseStore {
     proposalOpenContractHandler(response) {
         if ('error' in response) {
             this.updateContractTradeStore(response);
+            this.updateContractReplayStore(response);
             return;
         }
 
@@ -149,6 +164,7 @@ export default class PortfolioStore extends BaseStore {
 
         if (!portfolio_position) return;
         this.updateContractTradeStore(response);
+        this.updateContractReplayStore(response);
 
         const formatted_position = formatPortfolioPosition(
             proposal,
@@ -197,11 +213,17 @@ export default class PortfolioStore extends BaseStore {
                 this.updateTradeStore(true, portfolio_position, true);
             }
         }
+
+        if (portfolio_position.contract_info.is_sold === 1) {
+            this.populateResultDetails(response);
+        }
     }
 
     @action.bound
     onClickCancel(contract_id) {
         const i = this.getPositionIndexById(contract_id);
+        if (this.positions[i].is_sell_requested) return;
+
         this.positions[i].is_sell_requested = true;
         if (contract_id) {
             WS.cancelContract(contract_id).then(response => {
@@ -210,7 +232,6 @@ export default class PortfolioStore extends BaseStore {
                         type: response.msg_type,
                         ...response.error,
                     });
-                    this.root_store.ui.toggleServicesErrorModal(true);
                 } else {
                     this.root_store.ui.addNotificationMessage(contractCancelled());
                 }
@@ -221,9 +242,11 @@ export default class PortfolioStore extends BaseStore {
     @action.bound
     onClickSell(contract_id) {
         const i = this.getPositionIndexById(contract_id);
+        if (this.positions[i].is_sell_requested) return;
+
         const { bid_price } = this.positions[i].contract_info;
         this.positions[i].is_sell_requested = true;
-        if (contract_id && bid_price) {
+        if (contract_id && typeof bid_price === 'number') {
             WS.sell(contract_id, bid_price).then(this.handleSell);
         }
     }
@@ -237,15 +260,12 @@ export default class PortfolioStore extends BaseStore {
 
             // invalidToken error will handle in socket-general.js
             if (response.error.code !== 'InvalidToken') {
-                this.root_store.common.services_error = {
+                this.root_store.common.setServicesError({
                     type: response.msg_type,
                     ...response.error,
-                };
-                this.root_store.ui.toggleServicesErrorModal(true);
+                });
             }
         } else if (!response.error && response.sell) {
-            const i = this.getPositionIndexById(response.sell.contract_id);
-            this.positions[i].is_sell_requested = false;
             // update contract store sell info after sell
             this.root_store.modules.contract_trade.sell_info = {
                 sell_price: response.sell.sold_for,
@@ -287,18 +307,6 @@ export default class PortfolioStore extends BaseStore {
         if (isUserSold(contract_response)) this.positions[i].exit_spot = '-';
 
         this.positions[i].is_loading = false;
-
-        if (getEndTime(contract_response)) {
-            // also forget for buy
-            [this.populateResultDetails, this.proposalOpenContractHandler].forEach(() => {
-                if (!(contract_response.contract_id in this.subscribers)) return;
-                this.subscribers[contract_response.contract_id].unsubscribe();
-                delete this.subscribers[contract_response.contract_id];
-            });
-        }
-        if (this.hovered_position_id === this.positions[i].id && this.positions[i].contract_info.is_sold) {
-            this.updateTradeStore(false, this.positions[i]);
-        }
     };
 
     @action.bound
@@ -313,6 +321,8 @@ export default class PortfolioStore extends BaseStore {
     @action.bound
     pushNewPosition(new_pos) {
         const position = formatPortfolioPosition(new_pos, this.root_store.modules.trade.active_symbols);
+        if (this.positions_map[position.id]) return;
+
         this.positions.unshift(position);
         this.positions_map[position.id] = position;
         this.updatePositions();
@@ -328,11 +338,9 @@ export default class PortfolioStore extends BaseStore {
         this.root_store.modules.contract_trade.removeContract({ contract_id });
     }
 
-    @action.bound
-    accountSwitcherListener() {
-        return new Promise(async resolve => {
-            return resolve(this.initializePortfolio());
-        });
+    async accountSwitcherListener() {
+        await this.initializePortfolio();
+        return Promise.resolve();
     }
 
     @action.bound
@@ -440,23 +448,11 @@ export default class PortfolioStore extends BaseStore {
 
     @computed
     get active_positions_count() {
-        return this.active_positions_filtered.length || 0;
+        return this.active_positions.length || 0;
     }
 
     @computed
     get is_empty() {
         return !this.is_loading && this.all_positions.length === 0;
-    }
-
-    @computed
-    get all_positions_filtered() {
-        // TODO: remove this once Multiplier is supported in Mobile
-        return this.all_positions.filter(p => !(isMultiplierContract(p.contract_info.contract_type) && isMobile()));
-    }
-
-    @computed
-    get active_positions_filtered() {
-        // TODO: remove this once Multiplier is supported in Mobile
-        return this.active_positions.filter(p => !(isMultiplierContract(p.contract_info.contract_type) && isMobile()));
     }
 }

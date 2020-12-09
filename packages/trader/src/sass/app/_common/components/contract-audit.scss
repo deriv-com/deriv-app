@@ -3,7 +3,6 @@ $HEIGHT: calc(100vh - 34em);
 
 .contract-audit {
     &__wrapper {
-        margin-top: 1em;
         border-radius: $BORDER_RADIUS;
         opacity: 1;
         flex: 1;
@@ -11,6 +10,7 @@ $HEIGHT: calc(100vh - 34em);
         background-color: var(--general-main-1);
         color: var(--text-prominent);
         display: flex;
+        margin-bottom: 0.8rem;
 
         /* postcss-bem-linter: ignore */
         .dc-tabs {
@@ -22,7 +22,15 @@ $HEIGHT: calc(100vh - 34em);
             &__content {
                 display: flex;
                 height: calc(100% - 4rem);
+                /* postcss-bem-linter: ignore */
+                .dc-themed-scrollbars {
+                    flex: 1;
+                }
             }
+        }
+        /* postcss-bem-linter: ignore */
+        .dc-themed-scrollbars {
+            width: 100%;
         }
     }
     &__grid {
@@ -98,6 +106,10 @@ $HEIGHT: calc(100vh - 34em);
         &-content {
             padding: 0.8rem 1.6rem;
             flex: 1;
+
+            @include mobile {
+                overflow-y: auto;
+            }
         }
     }
 }

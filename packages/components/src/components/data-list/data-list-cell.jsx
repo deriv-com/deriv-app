@@ -7,7 +7,6 @@ class DataListCell extends React.PureComponent {
         if (!column) return null;
         const { col_index, title } = column;
         const cell_value = row[col_index];
-
         return (
             <div className={classNames(className, column.col_index)}>
                 {!is_footer && (

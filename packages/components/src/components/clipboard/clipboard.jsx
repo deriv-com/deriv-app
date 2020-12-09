@@ -31,36 +31,28 @@ const Clipboard = ({ text_copy, info_message, success_message, className, popove
 
     return (
         <>
-            {!is_copied && (
-                <Popover
-                    alignment='bottom'
-                    classNameBubble={classNames('dc-clipboard__popover', popoverClassName)}
-                    is_bubble_hover_enabled
-                    message={info_message}
-                >
+            <Popover
+                alignment='bottom'
+                classNameBubble={classNames('dc-clipboard__popover', popoverClassName)}
+                message={is_copied ? success_message : info_message}
+                relative_render
+            >
+                {is_copied && (
+                    <Icon
+                        icon='IcCheckmarkCircle'
+                        custom_color='var(--status-success)'
+                        className={classNames('dc-clipboard', className)}
+                    />
+                )}
+                {!is_copied && (
                     <Icon
                         icon='IcClipboard'
                         custom_color='var(--text-less-prominent)'
                         className={classNames('dc-clipboard', className)}
                         onClick={onClick}
                     />
-                </Popover>
-            )}
-            {is_copied && (
-                <Popover
-                    alignment='bottom'
-                    classNameBubble={classNames('dc-clipboard__popover', popoverClassName)}
-                    is_bubble_hover_enabled
-                    message={success_message}
-                    relative_render
-                >
-                    <Icon
-                        icon='IcCheckmarkCircle'
-                        custom_color='var(--status-success)'
-                        className={classNames('dc-clipboard', className)}
-                    />
-                </Popover>
-            )}
+                )}
+            </Popover>
         </>
     );
 };

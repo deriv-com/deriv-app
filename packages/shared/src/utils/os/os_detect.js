@@ -23,12 +23,12 @@ export const systems = {
     windows: ['Win16', 'Win32', 'Win64', 'WinCE'],
 };
 
-export const isDesktop = () => {
+export const isDesktopOs = () => {
     const os = OSDetect();
     return !!['windows', 'mac', 'linux'].find(system => system === os);
 };
 
-export const isMobile = () =>
+export const isMobileOs = () =>
     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
 export const OSDetect = () => {

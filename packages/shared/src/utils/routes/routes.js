@@ -1,4 +1,4 @@
-import { getUrlSmartTrader } from '../storage/storage_events';
+import { getUrlSmartTrader } from '../url/helpers';
 
 export const routes = {
     error404: '/404',
@@ -8,10 +8,15 @@ export const routes = {
     proof_of_identity: '/account/proof-of-identity',
     proof_of_address: '/account/proof-of-address',
     deriv_password: '/account/deriv-password',
+    deactivate_account: '/account/deactivate-account',
+    account_deactivated: '/account-deactivated',
     account_limits: '/account/account-limits',
-    two_factor_authentication: '/account/two-factor-authentication',
-    account_password: '/settings/account_password',
+    connected_apps: '/account/connected-apps',
     api_token: '/account/api-token',
+    login_history: '/account/login-history',
+    two_factor_authentication: '/account/two-factor-authentication',
+    self_exclusion: '/account/self-exclusion',
+    account_password: '/settings/account_password',
     apps: '/settings/apps',
     cashier_password: '/settings/cashier_password',
     contract: '/contract/:contract_id',
@@ -37,8 +42,11 @@ export const routes = {
     cashier_withdrawal: '/cashier/withdrawal',
     cashier_pa: '/cashier/payment-agent',
     cashier_acc_transfer: '/cashier/account-transfer',
+    // cashier_offramp: '/cashier/off-ramp',
+    cashier_onramp: '/cashier/on-ramp',
     cashier_p2p: '/cashier/p2p',
     cashier_pa_transfer: '/cashier/payment-agent-transfer',
     smarttrader: getUrlSmartTrader(),
     endpoint: '/endpoint',
+    complaints_policy: '/complaints-policy',
 };

@@ -1,4 +1,4 @@
-import { getFormattedText } from '@deriv/shared/utils/currency';
+import { getFormattedText } from '@deriv/shared';
 import { info } from '../utils/broadcast';
 import DBotStore from '../../../scratch/dbot-store';
 

@@ -5,6 +5,74 @@
     form {
         flex-direction: column;
     }
+    .dc-tabs__list--header-fit-content {
+        margin: 0 auto;
+    }
+    .account-wizard--disabled {
+        .currency-list__items {
+            margin-top: 6rem;
+        }
+        &-message p:first-child {
+            margin-top: 6rem;
+            background-color: var(--general-section-1);
+            font-size: 1.2rem;
+            height: 58px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: $BORDER_RADIUS;
+        }
+    }
+    .currency-selector {
+        &__radio-group--is-header {
+            font-size: 1.6rem;
+            font-weight: bold;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.5;
+            letter-spacing: normal;
+            color: var(--text-general);
+            text-align: center;
+        }
+        &__description {
+            display: none;
+        }
+        &__deposit-warn {
+            width: 70%;
+            margin: 2.8rem auto 0;
+            padding: 10px;
+            background-color: var(--general-section-1);
+            border-radius: $BORDER_RADIUS;
+        }
+    }
+    &__with-margin--is-header {
+        font-size: 1.6rem;
+        font-weight: bold;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.5;
+        letter-spacing: normal;
+        color: var(--text-general);
+        text-align: center;
+    }
+    @include desktop {
+        .currency-selector__radio-group--with-margin {
+            margin-bottom: 6rem;
+            margin-left: auto;
+            margin-right: auto;
+            width: 768px;
+        }
+        .add-crypto-currency {
+            padding-bottom: 2rem;
+        }
+        .dc-form-submit-button--absolute {
+            position: fixed;
+            padding: 1.4rem;
+            width: 100%;
+            right: 0;
+        }
+    }
+
     @include mobile {
         flex-direction: column;
         flex-wrap: unset;
@@ -18,32 +86,66 @@
                 margin: 0 1.6rem;
             }
         }
+        .currency-selector__radio-group--with-margin {
+            margin-bottom: 7rem;
+        }
         & .change-currency {
-            margin-bottom: 1.6rem;
+            .currency-list__items {
+                margin-bottom: 12rem;
+            }
+            .dc-form-submit-button--relative {
+                position: fixed;
+                background-color: unset;
+                right: 0;
+            }
+        }
+        .account-wizard--disabled {
+            &-message p:first-child {
+                width: 100%;
+                height: 75px;
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            .currency-list__items {
+                margin-top: 8rem;
+            }
+        }
+        & .dc-form-submit-button {
+            position: fixed;
+            padding: 15px;
+            height: 72px;
+            bottom: 0;
+            width: 100%;
+            background-color: var(--general-main-1);
+            border: 2px solid var(--general-section-1);
+
+            button {
+                width: 100%;
+            }
         }
     }
 }
 
-.success-change {
+.status-dialog {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     position: relative;
     flex-grow: 1;
+    padding: 2rem 2rem 1rem;
 
     &__icon-area {
         display: flex;
         align-items: center;
-        width: 60%;
-        justify-content: space-between;
+        width: auto;
+        justify-content: center;
         position: relative;
-        margin-top: 3rem;
 
         .bottom-right-overlay {
             position: absolute;
-            bottom: 0;
-            right: 0rem;
+            bottom: 2rem;
+            right: 0;
             width: 3rem;
             height: 3rem;
         }
@@ -53,6 +155,12 @@
         }
         svg {
             display: block;
+
+            &.dc-icon {
+                &--red {
+                    margin: 0 1rem;
+                }
+            }
 
             @include mobile {
                 max-width: 96px;
@@ -66,7 +174,8 @@
             .bottom-right-overlay {
                 width: 48px;
                 height: 48px;
-                right: 0;
+                right: -1rem;
+                bottom: -1rem;
 
                 @include mobile {
                     max-width: 36px;
@@ -86,13 +195,27 @@
                 height: 120px;
             }
         }
+        &--center {
+            justify-content: center;
+            width: auto;
+            margin-top: 3rem;
+        }
+    }
+    &__icon-area.set-currency {
+        svg:first-child {
+            margin: 0 auto;
+        }
+        .bottom-right-overlay {
+            bottom: 2rem;
+        }
     }
     &__body-area {
         flex-grow: 1;
 
         h2 {
             @include typeface(--title-center-bold-black);
-            margin-top: 2rem;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
             color: var(--text-general);
 
             @include mobile {
@@ -102,47 +225,55 @@
         }
         p {
             @include typeface(--paragraph-left-normal-black);
-            padding: 1rem;
+            padding: 0.3rem;
+            line-height: unset;
             text-align: center;
             text-transform: none;
             color: var(--text-general);
 
             @include mobile {
                 padding: 0 1rem;
+                line-height: 2rem;
             }
         }
-        @include mobile {
-            flex-grow: unset;
+        &--no-grow {
+            flex-grow: 0;
+            margin-bottom: 3.2rem;
         }
     }
     &__btn-area {
-        margin: 3rem 0;
+        margin: 2rem 0 1rem;
         width: 100%;
         display: flex;
         justify-content: center;
 
         & .dc-btn {
-            margin: 0 2rem;
+            margin: 0 0.5rem;
             height: 4rem;
+            border-width: 2px;
 
             @include mobile {
-                width: 100%;
                 margin: 0 0.8rem;
+                width: 15.6rem;
             }
         }
         @include mobile {
-            position: absolute;
-            bottom: 0;
-            margin: 0;
-            height: 88px;
+            margin: 0 0 1rem;
             align-items: center;
-            width: calc(100% - 1.6rem);
-            border-top: 1px solid var(--border-disabled);
         }
+    }
+
+    @include desktop {
+        min-width: 440px;
     }
     @include mobile {
         justify-content: flex-start;
-        flex-grow: unset;
-        height: 33rem;
+        width: 100%;
+        height: 100%;
+        padding: 6rem 0 0;
     }
+}
+
+.dc-mobile-dialog--enter-done .dc-mobile-dialog__content {
+    transform: unset;
 }

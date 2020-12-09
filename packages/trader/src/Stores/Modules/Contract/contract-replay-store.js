@@ -1,6 +1,5 @@
 import { action, observable } from 'mobx';
-import routes from '@deriv/shared/utils/routes';
-import ObjectUtils from '@deriv/shared/utils/object';
+import { routes, isEmptyObject } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import ContractStore from './contract-store';
@@ -8,12 +7,13 @@ import { contractCancelled, contractSold } from '../Portfolio/Helpers/portfolio-
 import BaseStore from '../../base-store';
 
 export default class ContractReplayStore extends BaseStore {
-    @observable is_chart_ready = false;
+    @observable chart_state = '';
     @observable contract_store = { contract_info: {} };
     // --- Observable properties ---
     @observable is_sell_requested = false;
     @observable has_error = false;
     @observable error_message = '';
+    @observable error_code = '';
     @observable is_chart_loading = true;
     // ---- chart props
     @observable margin;
@@ -34,23 +34,24 @@ export default class ContractReplayStore extends BaseStore {
     // Forget old proposal_open_contract stream on account switch from ErrorComponent
     should_forget_first = false;
 
-    subscribers = {};
-
     // -------------------
     // ----- Actions -----
     // -------------------
-    handleSubscribeProposalOpenContract = (contract_id, cb) => {
+    handleSubscribeProposalOpenContract = async (contract_id, cb) => {
+        // expired contracts are cached and we can get the poc response from local storage
+        const is_cached = await WS.storage.has({ proposal_open_contract: 1, contract_id });
+        if (is_cached) {
+            WS.storage.proposalOpenContract({ contract_id }).then(cb);
+            return;
+        }
+
         if (this.should_forget_first) {
             // TODO; don't forget all ever
-            WS.forgetAll('proposal_open_contract').then(() => {
-                this.should_forget_first = false;
-                WS.storage.proposalOpenContract({ contract_id }).then(cb);
-                this.subscribers[contract_id] = WS.subscribeProposalOpenContract(contract_id, cb);
-            });
-        } else {
-            WS.storage.proposalOpenContract({ contract_id }).then(cb);
-            this.subscribers[contract_id] = WS.subscribeProposalOpenContract(contract_id, cb);
+            await WS.forgetAll('proposal_open_contract');
+            this.should_forget_first = false;
         }
+
+        this.subscriber = WS.subscribeProposalOpenContract(contract_id, cb);
     };
 
     subscribeProposalOpenContract = () => {
@@ -66,7 +67,11 @@ export default class ContractReplayStore extends BaseStore {
             this.contract_store = new ContractStore(this.root_store, { contract_id });
             this.subscribeProposalOpenContract();
             WS.storage.activeSymbols('brief');
-            WS.setOnReconnect(this.subscribeProposalOpenContract);
+            WS.setOnReconnect(() => {
+                if (!this.root_store.client.is_switching) {
+                    this.subscribeProposalOpenContract();
+                }
+            });
         }
     }
 
@@ -80,21 +85,24 @@ export default class ContractReplayStore extends BaseStore {
         this.contract_info = {};
         this.indicative_status = null;
         this.prev_indicative = 0;
-        // @shayan: for forcing chart to call scale 1:1 each time,
-        // we should let SmartChart notify when its ready
-        this.is_chart_ready = false;
+        this.chart_state = '';
         this.root_store.ui.toggleHistoryTab(false);
         WS.removeOnReconnect();
     }
 
     @action.bound
     populateConfig(response) {
+        if (!this.switch_account_listener) return;
+
         if ('error' in response) {
+            const { code, message } = response.error;
             this.has_error = true;
             this.is_chart_loading = false;
+            this.error_message = message;
+            this.error_code = code;
             return;
         }
-        if (ObjectUtils.isEmptyObject(response.proposal_open_contract)) {
+        if (isEmptyObject(response.proposal_open_contract)) {
             this.has_error = true;
             this.error_message = localize(
                 "Sorry, you can't view this contract because it doesn't belong to this account."
@@ -121,7 +129,7 @@ export default class ContractReplayStore extends BaseStore {
         this.prev_indicative = new_indicative;
 
         // update the contract_store here passing contract_info
-        this.contract_store.populateConfig(this.contract_info, true);
+        this.contract_store.populateConfig(this.contract_info);
 
         const end_time = this.contract_store.end_time;
 
@@ -138,7 +146,9 @@ export default class ContractReplayStore extends BaseStore {
             }
         }
 
-        this.is_chart_loading = false;
+        if (this.contract_info.is_sold) {
+            this.contract_store.cacheProposalOpenContractResponse(response);
+        }
     }
 
     @action.bound
@@ -149,15 +159,15 @@ export default class ContractReplayStore extends BaseStore {
     }
 
     @action.bound
-    setIsChartReady(v) {
-        // SmartChart has a bug with scroll_to_epoch
-        // @morteza: It ignores the scroll_to_epoch if feed is not ready
-        setTimeout(
-            action(() => {
-                this.is_chart_ready = v;
-            }),
-            200
-        );
+    chartStateChange(state) {
+        this.chart_state = state;
+
+        switch (state) {
+            case 'SCROLL_TO_LEFT':
+                this.is_chart_loading = false;
+                break;
+            default:
+        }
     }
 
     @action.bound
@@ -169,7 +179,6 @@ export default class ContractReplayStore extends BaseStore {
                         type: response.msg_type,
                         ...response.error,
                     });
-                    this.root_store.ui.toggleServicesErrorModal(true);
                 } else {
                     this.root_store.ui.addNotificationMessage(contractCancelled());
                 }
@@ -191,11 +200,10 @@ export default class ContractReplayStore extends BaseStore {
         if (response.error) {
             // If unable to sell due to error, give error via pop up if not in contract mode
             this.is_sell_requested = false;
-            this.root_store.common.services_error = {
+            this.root_store.common.setServicesError({
                 type: response.msg_type,
                 ...response.error,
-            };
-            this.root_store.ui.toggleServicesErrorModal(true);
+            });
         } else if (!response.error && response.sell) {
             this.is_sell_requested = false;
             // update contract store sell info after sell
@@ -209,10 +217,11 @@ export default class ContractReplayStore extends BaseStore {
         }
     }
 
-    forgetProposalOpenContract = contract_id => {
-        if (!(contract_id in this.subscribers)) return;
-        this.subscribers[contract_id].unsubscribe();
-        delete this.subscribers[contract_id];
+    forgetProposalOpenContract = () => {
+        if (this.subscriber) {
+            this.subscriber.unsubscribe();
+            delete this.subscriber;
+        }
     };
 
     @action.bound

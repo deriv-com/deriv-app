@@ -1,0 +1,54 @@
+/** @define dc-result */
+.dc-result {
+    &__caption {
+        text-transform: capitalize;
+        font-size: 1.6em;
+        font-weight: bold;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: opacity 0.25s ease;
+
+        &--won {
+            color: var(--text-profit-success);
+        }
+        &--lost {
+            color: var(--text-loss-danger);
+        }
+        &-wrapper {
+            cursor: pointer;
+            width: 100%;
+            height: calc(100% - 24px);
+            text-decoration: none;
+            position: absolute;
+            top: 24px;
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        @include mobile {
+            pointer-events: none;
+        }
+    }
+    &__close-btn {
+        position: absolute;
+        top: 2px;
+        right: 8px;
+        cursor: pointer;
+        visibility: visible;
+
+        &:after {
+            content: '\0000D7';
+            font-size: 24px;
+            font-weight: 300;
+            color: var(--text-general);
+        }
+    }
+    &__icon {
+        margin-left: 10px;
+    }
+    &__positions-overlay {
+        max-width: 218px;
+    }
+}

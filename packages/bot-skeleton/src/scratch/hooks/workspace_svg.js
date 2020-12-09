@@ -1,5 +1,6 @@
 import { config } from '../../constants/config';
 import { removeLimitedBlocks } from '../../utils/workspace';
+import DBotStore from '../dbot-store';
 
 /**
  * Handle a mouse-down on SVG drawing surface.
@@ -7,7 +8,7 @@ import { removeLimitedBlocks } from '../../utils/workspace';
  * @param {!Event} e Mouse down event.
  * @private
  */
-Blockly.WorkspaceSvg.prototype.onMouseDown_ = function(e) {
+Blockly.WorkspaceSvg.prototype.onMouseDown_ = function (e) {
     // Bubble mousedown event up for some Core elements to react correctly.
     if (e instanceof MouseEvent) {
         Blockly.derivWorkspace.cachedParentSvg_.dispatchEvent(new e.constructor(e.type, e));
@@ -23,7 +24,7 @@ Blockly.WorkspaceSvg.prototype.onMouseDown_ = function(e) {
  * @param {?string} id ID of block center on.
  * @public
  */
-Blockly.WorkspaceSvg.prototype.centerOnBlock = function(id, hideChaff = true) {
+Blockly.WorkspaceSvg.prototype.centerOnBlock = function (id, hideChaff = true) {
     if (!this.scrollbar) {
         // eslint-disable-next-line no-console
         console.warn('Tried to scroll a non-scrollable workspace.');
@@ -85,7 +86,7 @@ Blockly.WorkspaceSvg.prototype.centerOnBlock = function(id, hideChaff = true) {
  * @param {Element} block_node
  * @public
  */
-Blockly.WorkspaceSvg.prototype.addBlockNode = function(block_node) {
+Blockly.WorkspaceSvg.prototype.addBlockNode = function (block_node) {
     const toolbox = this.getToolbox();
     const flyout = toolbox.flyout_;
     const block = Blockly.Xml.domToBlock(block_node, flyout.workspace_);
@@ -114,7 +115,7 @@ Blockly.WorkspaceSvg.prototype.addBlockNode = function(block_node) {
  * root-blocks are sorted in columns first, then all other blocks are positioned below
  * the lowest hanging root-block.
  */
-Blockly.WorkspaceSvg.prototype.cleanUp = function(x = 0, y = 0, blocks_to_clean = []) {
+Blockly.WorkspaceSvg.prototype.cleanUp = function (x = 0, y = 0, blocks_to_clean = []) {
     this.setResizesEnabled(false);
     Blockly.Events.setGroup(Blockly.Events.getGroup() || true);
 
@@ -220,7 +221,7 @@ Blockly.WorkspaceSvg.prototype.cleanUp = function(x = 0, y = 0, blocks_to_clean 
  * @private
  * @this Blockly.WorkspaceSvg
  */
-Blockly.WorkspaceSvg.getTopLevelWorkspaceMetrics_ = function() {
+Blockly.WorkspaceSvg.getTopLevelWorkspaceMetrics_ = function () {
     const toolbox_dimensions = Blockly.WorkspaceSvg.getDimensionsPx_(this.toolbox_);
     const flyout_dimensions = Blockly.WorkspaceSvg.getDimensionsPx_(this.flyout_);
 
@@ -279,7 +280,7 @@ Blockly.WorkspaceSvg.getTopLevelWorkspaceMetrics_ = function() {
  * Paste the provided block onto the workspace.
  * @param {!Element} xml_block XML block element.
  */
-Blockly.WorkspaceSvg.prototype.paste = function(xml_block) {
+Blockly.WorkspaceSvg.prototype.paste = function (xml_block) {
     if (!this.rendered) {
         return;
     }
@@ -301,7 +302,7 @@ Blockly.WorkspaceSvg.prototype.paste = function(xml_block) {
  * @param {!Event} e Mouse event.
  * @private
  */
-Blockly.WorkspaceSvg.prototype.showContextMenu_ = function(e) {
+Blockly.WorkspaceSvg.prototype.showContextMenu_ = function (e) {
     if (this.options.readOnly || this.isFlyout) {
         return;
     }
@@ -334,4 +335,97 @@ Blockly.WorkspaceSvg.prototype.showContextMenu_ = function(e) {
     menu_options.push(Blockly.ContextMenu.wsDeleteOption(this, top_blocks));
 
     Blockly.ContextMenu.show(e, menu_options, this.RTL);
+};
+
+/**
+ * Dispose of this workspace.
+ * Unlink from all DOM elements to prevent memory leaks.
+ */
+Blockly.WorkspaceSvg.prototype.dispose = function (should_show_loading = false) {
+    const disposeFn = () => {
+        // Stop rerendering.
+        this.rendered = false;
+        if (this.currentGesture_) {
+            this.currentGesture_.cancel();
+        }
+        Blockly.WorkspaceSvg.superClass_.dispose.call(this);
+        if (this.svgGroup_) {
+            goog.dom.removeNode(this.svgGroup_);
+            this.svgGroup_ = null;
+        }
+        this.svgBlockCanvas_ = null;
+        this.svgBubbleCanvas_ = null;
+        if (this.toolbox_) {
+            this.toolbox_.dispose();
+            this.toolbox_ = null;
+        }
+        if (this.flyout_) {
+            this.flyout_.dispose();
+            this.flyout_ = null;
+        }
+        if (this.trashcan) {
+            this.trashcan.dispose();
+            this.trashcan = null;
+        }
+        if (this.scrollbar) {
+            this.scrollbar.dispose();
+            this.scrollbar = null;
+        }
+        if (this.zoomControls_) {
+            this.zoomControls_.dispose();
+            this.zoomControls_ = null;
+        }
+
+        if (this.audioManager_) {
+            this.audioManager_.dispose();
+            this.audioManager_ = null;
+        }
+
+        if (this.grid_) {
+            this.grid_.dispose();
+            this.grid_ = null;
+        }
+
+        if (this.toolboxCategoryCallbacks_) {
+            this.toolboxCategoryCallbacks_ = null;
+        }
+        if (this.flyoutButtonCallbacks_) {
+            this.flyoutButtonCallbacks_ = null;
+        }
+        if (!this.options.parentWorkspace) {
+            // Top-most workspace.  Dispose of the div that the
+            // SVG is injected into (i.e. injectionDiv).
+            goog.dom.removeNode(this.getParentSvg().parentNode);
+        }
+        if (this.resizeHandlerWrapper_) {
+            Blockly.unbindEvent_(this.resizeHandlerWrapper_);
+            this.resizeHandlerWrapper_ = null;
+        }
+    };
+
+    if (should_show_loading) {
+        const { startLoading, endLoading } = DBotStore.instance;
+        startLoading();
+
+        setTimeout(() => {
+            disposeFn();
+            endLoading();
+        }, 50);
+    } else {
+        disposeFn();
+    }
+};
+
+/**
+ * Dispose of all blocks in workspace, with an optimization to prevent resizes.
+ */
+Blockly.WorkspaceSvg.prototype.asyncClear = function () {
+    const { startLoading, endLoading } = DBotStore.instance;
+    startLoading();
+
+    return new Promise(resolve => {
+        this.clear();
+        endLoading();
+        resolve();
+    });
 };

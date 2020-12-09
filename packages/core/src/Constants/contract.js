@@ -51,8 +51,13 @@ export const getMarketNamesMap = () => ({
     R_50: localize('Volatility 50 Index'),
     R_75: localize('Volatility 75 Index'),
     R_100: localize('Volatility 100 Index'),
+    BOOM500: localize('Boom 500 Index'),
+    BOOM1000: localize('Boom 1000 Index'),
+    CRASH500: localize('Crash 500 Index'),
+    CRASH1000: localize('Crash 1000 Index'),
     RDBEAR: localize('Bear Market Index'),
     RDBULL: localize('Bull Market Index'),
+    STPRNG: localize('Step Index'),
     WLDAUD: localize('AUD Index'),
     WLDEUR: localize('EUR Index'),
     WLDGBP: localize('GBP Index'),
@@ -188,8 +193,10 @@ export const getContractConfig = is_high_low => ({
     ...getUnsupportedContracts(),
 });
 
-export const getContractTypeDisplay = (type, is_high_low = false) =>
-    getContractConfig(is_high_low)[type] ? getContractConfig(is_high_low)[type.toUpperCase()].name : '';
+export const getContractTypeDisplay = (type, is_high_low = false) => {
+    // console.log(getContractConfig(is_high_low)[type]);
+    return getContractConfig(is_high_low)[type] ? getContractConfig(is_high_low)[type.toUpperCase()].name : '';
+};
 
 export const getContractTypePosition = (type, is_high_low = false) =>
     getContractConfig(is_high_low)[type] ? getContractConfig(is_high_low)[type.toUpperCase()].position : 'top';

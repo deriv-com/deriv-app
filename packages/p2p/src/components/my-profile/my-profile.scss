@@ -1,73 +1,215 @@
 .my-profile {
-    padding: 2.4rem;
-
-    &__name {
-        color: var(--text-general);
-        font-size: var(--text-size-s);
-        font-weight: bold;
-        margin-bottom: 2.4rem;
+    &__content {
+        @include mobile {
+            margin-bottom: 10rem;
+        }
     }
-
-    &__data {
-        border: 1px solid var(--border-normal);
+    &__scrollbar {
+        height: calc(100% - 15rem);
+        position: absolute;
+        width: calc(100% - 4.8rem);
+        @include mobile {
+            width: 100%;
+            height: unset;
+        }
+    }
+    &__header {
         display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
+        height: fit-content;
         justify-content: space-between;
-        padding: 1.6rem 0;
+        width: 657px;
+        @include mobile {
+            margin: 1.6rem;
+        }
+
+        &-avatar {
+            align-items: center;
+            border-radius: 50%;
+            display: flex;
+            height: 3.2rem;
+            justify-content: center;
+            margin-right: 0.8rem;
+            width: 3.2rem;
+        }
+        &-details {
+            display: flex;
+        }
+        &-name {
+            align-self: center;
+            height: fit-content;
+            width: fit-content;
+        }
+        &-verification {
+            align-items: center;
+            display: flex;
+            flex: none;
+
+            &-status {
+                margin-left: 1.6rem;
+            }
+            &-icon {
+                margin-left: 0.4rem;
+                vertical-align: text-bottom;
+            }
+        }
+    }
+    &__stats {
+        border-bottom: none;
+        display: flex;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: 46px;
+        height: fit-content;
+        margin: 2.4rem 0;
+        width: 657px;
+
+        @include mobile {
+            width: 100vw;
+            grid-template-columns: unset;
+            justify-content: center;
+        }
+
+        &-cell {
+            display: block;
+            text-align: center;
+            width: 158px;
+            @include mobile {
+                width: unset;
+                margin: auto;
+            }
+            &-separator {
+                border-right: 1px solid var(--general-section-1);
+            }
+        }
+    }
+    &__popover {
+        &-icon {
+            margin: 0 0.8rem;
+        }
+        &-text {
+            margin-right: 2rem;
+            @include mobile {
+                margin-right: 0;
+            }
+        }
+    }
+    &__separator {
+        display: flex;
+
+        &-text {
+            display: flex;
+            @include mobile {
+                margin-left: 1.6rem;
+                width: 10rem;
+            }
+
+            &--privacy {
+                @include mobile {
+                    margin-left: 1.6rem;
+                    width: 12.5rem;
+                }
+            }
+        }
+        &-horizontal_line {
+            align-self: center;
+            border-bottom: 1px solid var(--general-section-1);
+            margin-left: 1.6rem;
+            width: 564px;
+            @include mobile {
+                width: calc(100vw - 9rem);
+            }
+        }
+    }
+    &__toggle {
+        &-container {
+            align-items: center;
+            display: flex;
+            margin: 1rem 0;
+
+            @include mobile {
+                margin: 0.5rem 1.8rem;
+            }
+        }
+        &-name {
+            margin-left: -1rem;
+            max-width: calc(100% - 25rem);
+
+            @include mobile {
+                max-width: calc(100% - 6rem);
+            }
+        }
+    }
+    &__form {
+        @include mobile {
+            margin-bottom: 18rem;
+            &--active-keyboard {
+                margin-bottom: 0;
+            }
+        }
+        &-textarea {
+            margin-top: 2.5rem;
+            width: 657px;
+            @include mobile {
+                width: calc(100vw - 3.2rem);
+                margin: 4rem 1.6rem 0;
+                &:first-child {
+                    margin-top: 2.5rem;
+                }
+            }
+
+            .dc-input__hint {
+                top: 9.7rem;
+            }
+            .dc-input__counter {
+                right: 0rem;
+                top: 9.6rem;
+            }
+        }
+    }
+    &__footer {
+        border-top: 2px solid var(--general-section-1);
+        bottom: 36px;
+        left: unset;
+        position: fixed;
+        width: 657px;
+        @include mobile {
+            background-color: var(--general-main-1);
+            width: 100vw;
+            bottom: 0px;
+        }
+        &--active-keyboard {
+            position: absolute;
+            bottom: unset;
+            margin-top: 2.4rem;
+        }
+
+        &-button {
+            float: right;
+            margin: 1.6rem 2.4rem;
+        }
+    }
+}
+
+.p2p-toggle-name {
+    align-items: center;
+    display: flex;
+    font-size: var(--text-size-s);
+    justify-items: flex-start;
+    margin-right: -50px; // Minus half of &__switch width
+
+    &__switch {
+        height: 35px;
+        transform: scale(0.5) translateX(-50%);
+        width: 65px;
+
+        .dc-toggle-switch__button {
+            top: unset;
+        }
     }
 
-    &__cell {
-        border-left: 1px solid var(--border-normal);
-        display: flex;
-        flex-direction: column;
-        padding: 0 3.2rem;
-
-        &:first-child {
-            border: none;
-        }
-
-        &-title {
-            color: var(--text-less-prominent);
-            // TODO: Change this to css variable when this font-size added:
-            font-size: 1rem;
-            position: relative;
-            transform: translateY(50%);
-        }
-
-        &-data {
-            display: flex;
-
-            &-main {
-                color: var(--text-general);
-                font-size: var(--text-size-l);
-                font-weight: bold;
-                line-height: 1.25;
-                margin-right: 0.8rem;
-            }
-
-            &-dimension {
-                font-size: var(--text-size-s);
-                line-height: 1.5;
-            }
-
-            &-sub {
-                display: flex;
-                flex-direction: column;
-                justify-content: space-evenly;
-
-                &-upper {
-                    color: var(--text-profit-success);
-                    // TODO: Change this to css variable when this font-size added:
-                    font-size: 1rem;
-                }
-
-                &-lower {
-                    color: var(--text-loss-danger);
-                    // TODO: Change this to css variable when this font-size added:
-                    font-size: 1rem;
-                }
-            }
-        }
+    &--on {
+        color: var(--text-profit-success);
+    }
+    &--off {
+        color: var(--text-less-prominent);
     }
 }

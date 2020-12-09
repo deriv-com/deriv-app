@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Formik, Form, Field } from 'formik';
 import { Input, Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import ObjectUtils from '@deriv/shared/utils/object';
+import { getPropertyValue } from '@deriv/shared';
 import { WS } from 'Services/ws-methods';
 
 const DigitForm = ({ is_enabled, setEnabled }) => {
@@ -14,7 +14,7 @@ const DigitForm = ({ is_enabled, setEnabled }) => {
         digit_code: '',
     };
 
-    const validateFields = (values) => {
+    const validateFields = values => {
         const errors = {};
 
         const digit_code = values.digit_code;
@@ -37,6 +37,8 @@ const DigitForm = ({ is_enabled, setEnabled }) => {
             totp_action,
             otp: values.digit_code,
         });
+        setSubmitting(false);
+
         if (enable_response.error) {
             const { code, message } = enable_response.error;
             if (code === 'InvalidOTP') {
@@ -45,18 +47,11 @@ const DigitForm = ({ is_enabled, setEnabled }) => {
                 setFieldError('digit_code', message);
             }
         } else {
-            const is_enabled_response = ObjectUtils.getPropertyValue(enable_response, [
-                'account_security',
-                'totp',
-                'is_enabled',
-            ]);
-            setEnabled(is_enabled_response);
+            const is_enabled_response = !!getPropertyValue(enable_response, ['account_security', 'totp', 'is_enabled']);
             setSuccess(true);
-
             resetForm();
+            setEnabled(is_enabled_response);
         }
-
-        setSubmitting(false);
     };
 
     return (

@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { Button, Icon } from '@deriv/components';
-import routes from '@deriv/shared/utils/routes';
-import CurrencyUtils from '@deriv/shared/utils/currency';
+import { routes, getCurrencyDisplayCode, formatMoney } from '@deriv/shared';
+
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import PaymentAgentDetails from '../payment-agent-details.jsx';
@@ -31,20 +31,20 @@ class PaymentAgentReceipt extends React.Component {
                         <Localize i18n_default_text='Your funds have been transferred' />
                     </h2>
                     <div className='cashier__transferred-amount cashier__text--bold'>
-                        <span className={classNames('symbols', `symbols--${currency_lowercase}`)} />
-                        {receipt.amount_transferred}
+                        {formatMoney(currency, receipt.amount_transferred, true)}
+                        <span className={classNames('symbols', `symbols--${currency_lowercase}`)}>
+                            {getCurrencyDisplayCode(currency)}
+                        </span>
                     </div>
                     <div className='cashier__transferred-details-wrapper'>
                         <Icon icon={`IcCurrency-${currency_lowercase}`} />
                         <span className='cashier__transferred-details'>
-                            <span className='cashier__text--bold'>
-                                {CurrencyUtils.getCurrencyDisplayCode(currency)}
-                            </span>
+                            <span className='cashier__text--bold'>{getCurrencyDisplayCode(currency)}</span>
                             &nbsp;(
                             {loginid})
                         </span>
                         <Icon className='cashier__transferred-icon' icon='IcArrowLeftBold' />
-                        <Icon icon='IcPaymentAgent' />
+                        <Icon icon='IcPA' />
                         <span className='cashier__transferred-details'>
                             {receipt.payment_agent_name && (
                                 <span className='cashier__text--bold'>{receipt.payment_agent_name}&nbsp;</span>

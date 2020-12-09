@@ -2,6 +2,7 @@
     height: 56px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     box-shadow: inset 0 1px 0 0 var(--general-section-1), inset 0 -1px 0 0 var(--general-section-1);
     padding: 5px 6px;
 
@@ -10,8 +11,11 @@
             display: flex;
             justify-content: center;
             margin: 0 4px;
-            height: calc(56px - 17px) !important;
+            height: calc(56px - 16px) !important;
 
+            & .dc-btn__icon {
+                padding-right: 0.4rem;
+            }
             > * {
                 align-self: center;
             }
@@ -56,7 +60,7 @@
         height: 40px;
 
         &-field {
-            margin-bottom: 0;
+            margin-bottom: unset !important;
 
             input {
                 width: 80%;
@@ -67,7 +71,12 @@
         }
     }
     &__animation {
-        width: 354px;
+        margin-right: 0.5rem;
+    }
+    &__dialog {
+        &-text--second {
+            margin-top: 2.4rem;
+        }
     }
 }
 

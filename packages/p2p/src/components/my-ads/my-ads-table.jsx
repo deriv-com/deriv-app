@@ -1,216 +1,175 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Dialog, Icon, Loading, Table, ProgressIndicator } from '@deriv/components';
+import { Button, Icon, Loading, Table, ProgressIndicator } from '@deriv/components';
+import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
-import Dp2pContext from 'Components/context/dp2p-context';
+import Empty from 'Components/empty/empty.jsx';
+import ToggleAds from 'Components/my-ads/toggle-ads.jsx';
+import Popup from 'Components/orders/popup.jsx';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { TableError } from 'Components/table/table-error.jsx';
-import { requestWS } from 'Utils/websocket';
+import { useStores } from 'Stores';
 import { MyAdsLoader } from './my-ads-loader.jsx';
-import ToggleAds from './toggle-ads.jsx';
-import Popup from '../orders/popup.jsx';
 
 const getHeaders = offered_currency => [
     { text: localize('Ad ID') },
     { text: localize('Limits') },
     { text: localize('Rate (1 {{ offered_currency }})', { offered_currency }) },
-    { text: localize('Payment method') },
     { text: localize('Available amount') },
     { text: '' }, // empty header for delete icon
 ];
 
 const type = {
-    buy: localize('Buy'),
-    sell: localize('Sell'),
+    buy: <Localize i18n_default_text='Buy' />,
+    sell: <Localize i18n_default_text='Sell' />,
 };
 
-const RowComponent = React.memo(({ data, row_actions, style }) => (
-    <div style={style}>
-        <Table.Row className='p2p-my-ads__table-row'>
-            <Table.Cell>
-                {type[data.type]} {data.id}
-            </Table.Cell>
-            <Table.Cell>
-                {data.display_min_order_amount}-{data.display_max_order_amount} {data.offer_currency}
-            </Table.Cell>
-            <Table.Cell className='p2p-my-ads__table-price'>
-                {data.display_price_rate} {data.transaction_currency}
-            </Table.Cell>
-            <Table.Cell>{data.display_payment_method}</Table.Cell>
-            <Table.Cell className='p2p-my-ads__table-available'>
-                <ProgressIndicator
-                    className={'p2p-my-ads__table-available-progress'}
-                    value={data.available_amount}
-                    total={data.offer_amount}
-                />
-                <div className='p2p-my-ads__table-available-value'>
-                    {data.display_available_amount}/{data.display_offer_amount} {data.offer_currency}
-                </div>
-            </Table.Cell>
-            <Table.Cell className='p2p-my-ads__table-delete'>
-                <Icon icon='IcDelete' size={16} onClick={() => row_actions.onClickDelete(data.id)} />
-            </Table.Cell>
-        </Table.Row>
-    </div>
-));
+const RowComponent = observer(({ data: advert, style }) => {
+    const { my_ads_store } = useStores();
+    const {
+        account_currency,
+        amount,
+        amount_display,
+        local_currency,
+        max_order_amount_display,
+        min_order_amount_display,
+        price_display,
+        remaining_amount,
+        remaining_amount_display,
+    } = advert;
+
+    return (
+        <div style={style}>
+            <Table.Row className='p2p-my-ads__table-row'>
+                <Table.Cell>
+                    {type[advert.type]} {advert.id}
+                </Table.Cell>
+                <Table.Cell>
+                    {min_order_amount_display}-{max_order_amount_display} {account_currency}
+                </Table.Cell>
+                <Table.Cell className='p2p-my-ads__table-price'>
+                    {price_display} {local_currency}
+                </Table.Cell>
+                <Table.Cell className='p2p-my-ads__table-available'>
+                    <ProgressIndicator
+                        className={'p2p-my-ads__table-available-progress'}
+                        value={remaining_amount}
+                        total={amount}
+                    />
+                    <div className='p2p-my-ads__table-available-value'>
+                        {remaining_amount_display}/{amount_display} {account_currency}
+                    </div>
+                </Table.Cell>
+                <Table.Cell className='p2p-my-ads__table-delete'>
+                    <Icon icon='IcDelete' size={16} onClick={() => my_ads_store.onClickDelete(advert.id)} />
+                </Table.Cell>
+            </Table.Row>
+        </div>
+    );
+});
 
 RowComponent.propTypes = {
-    data: PropTypes.object,
+    advert: PropTypes.object,
+    onClickDelete: PropTypes.func,
     style: PropTypes.object,
 };
+
 RowComponent.displayName = 'RowComponent';
 
-const MyAdsTable = ({ onClickCreate }) => {
-    const { currency, list_item_limit, is_listed } = React.useContext(Dp2pContext);
-    const mounted = React.useRef(false);
-    const item_offset = React.useRef(0);
-    const [is_loading, setIsLoading] = React.useState(true);
-    const [api_error_message, setApiErrorMessage] = React.useState('');
-    const [has_more_items_to_load, setHasMoreItemsToLoad] = React.useState(false);
-    const [selected_ad_id, setSelectedAdId] = React.useState('');
-    const [show_popup, setShowPopup] = React.useState(false);
-    const [ads, setAds] = React.useState([]);
+const MyAdsTable = observer(() => {
+    const { general_store, my_ads_store } = useStores();
 
     React.useEffect(() => {
-        mounted.current = true;
-        loadMoreAds(item_offset.current);
-
-        return () => (mounted.current = false);
+        my_ads_store.setIsTableLoading(true);
+        my_ads_store.setItemOffset(0);
+        my_ads_store.setAdverts([]);
+        my_ads_store.loadMoreAds(my_ads_store.item_offset);
     }, []);
 
-    const loadMoreAds = start_idx => {
-        return new Promise(resolve => {
-            requestWS({
-                p2p_advertiser_adverts: 1,
-                offset: start_idx,
-                limit: list_item_limit,
-            }).then(response => {
-                if (mounted.current) {
-                    if (!response.error) {
-                        setHasMoreItemsToLoad(response.length >= list_item_limit);
-                        setAds(ads.concat(response));
-                        setIsLoading(false);
-                        item_offset.current += response.length;
-                    } else {
-                        setApiErrorMessage(response.api_error_message);
-                    }
-                    resolve();
-                }
-            });
-        });
-    };
-
-    const onClickDelete = id => {
-        setSelectedAdId(id);
-        setShowPopup(true);
-    };
-
-    const onClickCancel = () => {
-        setSelectedAdId('');
-        setShowPopup(false);
-    };
-
-    const onClickConfirm = showError => {
-        requestWS({ p2p_advert_update: 1, id: selected_ad_id, delete: 1 }).then(response => {
-            if (response.error) {
-                showError({ error_message: response.error.message });
-            } else {
-                // remove the deleted ad from the list of items
-                const updated_items = ads.filter(ad => ad.id !== response.p2p_advert_update.id);
-                setAds(updated_items);
-                setShowPopup(false);
-            }
-        });
-    };
-
-    if (is_loading) {
+    if (my_ads_store.is_table_loading) {
         return <Loading is_fullscreen={false} />;
     }
-    if (api_error_message) {
-        return <TableError message={api_error_message} />;
+    if (my_ads_store.api_table_error_message) {
+        return <TableError message={my_ads_store.api_table_error_message} />;
     }
 
-    if (ads.length) {
-        const item_height = 56;
-        const height_values = {
-            screen_size: '100vh',
-            header_size: '48px',
-            page_overlay_header: '53px',
-            page_overlay_content_padding: '2.4rem',
-            tabs_height: '36px',
-            my_ads_header: '50px',
-            my_ads_header_margin: '4rem', // 1.6rem + 2.4rem
-            table_header_height: '50px',
-            footer_size: '37px',
-        };
+    if (my_ads_store.adverts.length) {
         return (
             <React.Fragment>
                 <div className='p2p-my-ads__header'>
-                    <Button large primary onClick={onClickCreate}>
+                    <Button large primary onClick={my_ads_store.onClickCreate}>
                         {localize('Create new ad')}
                     </Button>
                     <ToggleAds />
                 </div>
                 <Table
                     className={classNames('p2p-my-ads__table', {
-                        'p2p-my-ads__table--disabled': !is_listed,
+                        'p2p-my-ads__table--disabled': !general_store.is_listed,
                     })}
                 >
                     <Table.Header>
                         <Table.Row className='p2p-my-ads__table-row'>
-                            {getHeaders(currency).map(header => (
+                            {getHeaders(general_store.client.currency).map(header => (
                                 <Table.Head key={header.text}>{header.text}</Table.Head>
                             ))}
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
                         <InfiniteLoaderList
-                            autosizer_height={`calc(${Object.values(height_values).join(' - ')})`}
-                            items={ads.slice()}
-                            item_size={item_height}
-                            row_actions={{ onClickDelete }}
+                            autosizer_height={`calc(${my_ads_store.height_values.join(' - ')})`}
+                            items={my_ads_store.adverts.slice()}
+                            item_size={my_ads_store.item_height}
+                            row_actions={{ onClickDelete: my_ads_store.onClickDelete }}
                             RenderComponent={RowComponent}
                             RowLoader={MyAdsLoader}
-                            has_more_items_to_load={has_more_items_to_load}
-                            loadMore={loadMoreAds}
+                            has_more_items_to_load={my_ads_store.has_more_items_to_load}
+                            loadMore={my_ads_store.loadMoreAds}
                         />
                     </Table.Body>
                 </Table>
-                {show_popup && (
-                    <div className='orders__dialog'>
-                        <Dialog is_visible={!!show_popup}>
-                            <Popup
-                                has_cancel
-                                title={localize('Delete this ad')}
-                                message={localize("You won't be able to restore it later.")}
-                                cancel_text={localize('Cancel')}
-                                confirm_text={localize('Delete')}
-                                onCancel={onClickCancel}
-                                onClickConfirm={onClickConfirm}
-                            />
-                        </Dialog>
-                    </div>
-                )}
+                <Popup
+                    cancel_text={localize('Cancel')}
+                    confirm_text={localize('Delete')}
+                    has_cancel
+                    message={localize('You will NOT be able to restore it.')}
+                    onCancel={my_ads_store.onClickCancel}
+                    onClickConfirm={my_ads_store.onClickConfirm}
+                    setShouldShowPopup={my_ads_store.setShouldShowPopup}
+                    should_show_popup={my_ads_store.should_show_popup}
+                    title={localize('Do you want to delete this ad?')}
+                />
             </React.Fragment>
         );
     }
 
     return (
-        <div className='p2p-cashier__empty'>
-            <Icon icon='IcCashierNoAds' className='p2p-cashier__empty-icon' size={128} />
-            <div className='p2p-cashier__empty-title'>
-                <Localize i18n_default_text='You have no ads' />
-            </div>
-            <Button primary large className='p2p-cashier__empty-button' onClick={() => onClickCreate()}>
+        <Empty icon='IcCashierNoAds' title={localize('You have no adverts')}>
+            <Button primary large className='p2p-empty__button' onClick={() => my_ads_store.onClickCreate()}>
                 {localize('Create new ad')}
             </Button>
-        </div>
+        </Empty>
     );
-};
+});
 
 MyAdsTable.propTypes = {
-    is_enabled: PropTypes.bool,
+    adverts: PropTypes.array,
+    api_table_error_message: PropTypes.string,
+    client: PropTypes.object,
+    has_more_items_to_load: PropTypes.bool,
+    height_values: PropTypes.array,
+    is_listed: PropTypes.bool,
+    is_table_loading: PropTypes.bool,
+    item_height: PropTypes.number,
+    item_offset: PropTypes.number,
+    loadMoreAds: PropTypes.func,
+    onClickCancel: PropTypes.func,
+    onClickConfirm: PropTypes.func,
+    onClickCreate: PropTypes.func,
+    onClickDelete: PropTypes.func,
+    setIsTableLoading: PropTypes.func,
+    setShouldShowPopup: PropTypes.func,
+    should_show_popup: PropTypes.bool,
 };
 
 export default MyAdsTable;

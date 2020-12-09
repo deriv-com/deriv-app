@@ -22,13 +22,12 @@ class DBotStore extends DBotStoreInterface {
         this.save_modal = store.save_modal;
         this.toggleStrategyModal = store.toggleStrategyModal;
         this.handleFileChange = store.handleFileChange;
+        this.startLoading = store.startLoading;
+        this.endLoading = store.endLoading;
     }
 
     static setInstance(store) {
-        if (!this.singleton) {
-            this.singleton = new DBotStore(store);
-        }
-
+        this.singleton = new DBotStore(store);
         return this.instance;
     }
 

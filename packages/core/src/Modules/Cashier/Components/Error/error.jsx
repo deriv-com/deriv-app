@@ -1,9 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Icon, ButtonLink } from '@deriv/components';
-import { getDerivComLink } from '@deriv/shared/utils/url';
+import { Button, Icon, ButtonLink, StaticUrl } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 
 const ErrorComponent = ({ header, message, button_link, onClickButton, button_text, footer }) => (
@@ -23,8 +21,8 @@ const ErrorComponent = ({ header, message, button_link, onClickButton, button_te
     </div>
 );
 
-class Error extends React.Component {
-    error_fields = {
+const Error = ({ error, setErrorMessage }) => {
+    const error_fields = {
         address_city: localize('Town/City'),
         address_line_1: localize('First line of home address'),
         address_postcode: localize('Postal Code/ZIP'),
@@ -34,123 +32,92 @@ class Error extends React.Component {
         residence: localize('Country of Residence'),
     };
 
-    onClickButton = () => {
-        if (typeof this.props.error.onClickButton === 'function') {
-            this.props.error.onClickButton();
+    const onClickButton = () => {
+        if (typeof error.onClickButton === 'function') {
+            error.onClickButton();
         }
-        this.clearErrorMessage();
+        clearErrorMessage();
     };
 
-    clearErrorMessage = () => {
-        this.props.setErrorMessage('');
+    const clearErrorMessage = () => {
+        setErrorMessage('');
     };
 
-    acceptTNC = async () => {
-        await WS.tncApproval();
-        this.onClickButton();
-    };
-
-    render() {
-        let AccountError;
-        switch (this.props.error.code) {
-            case 'InvalidToken':
-                AccountError = (
-                    <ErrorComponent
-                        header={localize('Identity confirmation failed')}
-                        message={
-                            <Localize i18n_default_text='It looks like your link is incorrect or no longer valid.' />
-                        }
-                        onClickButton={this.onClickButton}
-                        button_text={localize('Request a new link')}
-                    />
-                );
-                break;
-            case 'ASK_TNC_APPROVAL':
-                AccountError = (
-                    <ErrorComponent
-                        header={localize('Our terms and conditions have changed')}
-                        message={
+    let AccountError;
+    switch (error.code) {
+        case 'InvalidToken':
+            AccountError = (
+                <ErrorComponent
+                    header={localize('Email verification failed')}
+                    message={
+                        <Localize i18n_default_text='The verification link you used is invalid or expired. Please request for a new one.' />
+                    }
+                    onClickButton={onClickButton}
+                    button_text={localize('Resend email')}
+                />
+            );
+            break;
+        case 'ASK_FIX_DETAILS':
+            AccountError = (
+                <ErrorComponent
+                    header={localize('Update your personal details')}
+                    message={
+                        <React.Fragment>
                             <Localize
-                                i18n_default_text='Please accept our updated <0>terms and conditions</0> to continue.'
-                                components={[
-                                    <a
-                                        key={0}
-                                        className='link'
-                                        target='_blank'
-                                        rel='noopener noreferrer'
-                                        href={getDerivComLink('terms-and-conditions/#general')}
-                                    />,
-                                ]}
+                                i18n_default_text={
+                                    "We can't validate your personal details because there is some information missing."
+                                }
                             />
-                        }
-                        onClickButton={this.acceptTNC}
-                        button_text={localize('I accept')}
-                    />
-                );
-                break;
-            case 'ASK_FIX_DETAILS':
-                AccountError = (
-                    <ErrorComponent
-                        header={localize('Update your personal details')}
-                        message={
-                            <React.Fragment>
+                            &nbsp;
+                            {error.fields ? (
                                 <Localize
-                                    i18n_default_text={
-                                        "We can't validate your personal details because there is some information missing."
-                                    }
+                                    i18n_default_text={'Please update your {{details}} to continue.'}
+                                    values={{
+                                        details: error.fields.map(field => error_fields[field] || field).join(', '),
+                                        interpolation: { escapeValue: false },
+                                    }}
                                 />
-                                &nbsp;
-                                {this.props.error.fields ? (
-                                    <Localize
-                                        i18n_default_text={'Please update your {{details}} to continue.'}
-                                        values={{
-                                            details: this.props.error.fields
-                                                .map(field => this.error_fields[field] || field)
-                                                .join(', '),
-                                            interpolation: { escapeValue: false },
-                                        }}
-                                    />
-                                ) : (
-                                    <Localize i18n_default_text={'Please update your details to continue.'} />
-                                )}
-                            </React.Fragment>
-                        }
-                        button_link='/account/personal-details'
-                        onClickButton={this.onClickButton}
-                        button_text={localize('Update my details')}
-                        footer={
-                            <Localize
-                                i18n_default_text='Need help? <0>Contact us</0>.'
-                                components={[
-                                    <a
-                                        key={0}
-                                        className='link'
-                                        target='_blank'
-                                        rel='noopener noreferrer'
-                                        href={getDerivComLink('help-centre')}
-                                    />,
-                                ]}
-                            />
-                        }
-                    />
-                );
-                break;
-            case 'WrongResponse':
-                AccountError = (
-                    <ErrorComponent
-                        header={this.props.error.message}
-                        onClickButton={this.onClickButton}
-                        button_text={localize('Try again')}
-                    />
-                );
-                break;
-            default:
-                AccountError = <ErrorComponent header={this.props.error.message} />;
-                break;
-        }
-        return AccountError;
+                            ) : (
+                                <Localize i18n_default_text={'Please update your details to continue.'} />
+                            )}
+                        </React.Fragment>
+                    }
+                    button_link='/account/personal-details'
+                    onClickButton={onClickButton}
+                    button_text={localize('Update my details')}
+                    footer={
+                        <Localize
+                            i18n_default_text='Need help? <0>Contact us</0>.'
+                            components={[<StaticUrl key={0} className='link' href='help-centre' />]}
+                        />
+                    }
+                />
+            );
+            break;
+        case 'WrongResponse':
+            AccountError = (
+                <ErrorComponent
+                    header={error.message}
+                    onClickButton={onClickButton}
+                    button_text={localize('Try again')}
+                />
+            );
+            break;
+        case 'PaymentAgentWithdrawError':
+            AccountError = (
+                <ErrorComponent
+                    header={error.message}
+                    onClickButton={onClickButton}
+                    button_text={localize('Back to payment agents')}
+                />
+            );
+            break;
+        default:
+            AccountError = <ErrorComponent header={error.message} />;
+            break;
     }
-}
+    return AccountError;
+};
 
 Error.propTypes = {
     error: PropTypes.object,

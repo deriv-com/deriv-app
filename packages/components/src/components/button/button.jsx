@@ -4,7 +4,9 @@ import React from 'react';
 import ButtonLoading from './button_loading.jsx';
 import Icon from '../icon';
 
-const ButtonGroup = ({ children }) => <div className='dc-btn__group'>{children}</div>;
+const ButtonGroup = ({ children, className }) => (
+    <div className={classNames('dc-btn__group', className)}>{children}</div>
+);
 
 const Button = ({
     children,

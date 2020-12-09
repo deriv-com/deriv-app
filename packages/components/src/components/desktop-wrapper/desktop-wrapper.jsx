@@ -1,4 +1,4 @@
-import { isDesktop } from '@deriv/shared/utils/screen';
+import { isDesktop } from '@deriv/shared';
 
 const Desktop = ({ children }) => {
     if (!isDesktop()) return null;

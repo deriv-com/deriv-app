@@ -8,7 +8,7 @@
     margin-bottom: 3.2rem;
     line-height: 1.43;
 
-    &:hover:not(.dc-input__disabled) {
+    &:hover:not(.dc-input--disabled) {
         border-color: var(--border-hover);
     }
     &:focus-within {
@@ -18,7 +18,7 @@
             border-color: var(--brand-secondary);
         }
     }
-    &__disabled {
+    &--disabled {
         border-color: var(--general-disabled);
         color: var(--text-disabled);
     }
@@ -100,7 +100,7 @@
             border: none;
             resize: none;
 
-            ~ .dc-field-error {
+            ~ .dc-field--error {
                 top: 10rem;
             }
         }
@@ -114,6 +114,19 @@
             &:focus,
             &:active {
                 -webkit-box-shadow: 0 0 0 30px var(--fill-normal) inset !important;
+            }
+        }
+        // hide default eye icon in Edge browser
+        &::-ms-reveal {
+            display: none;
+        }
+    }
+    &__textarea {
+        &:not(.dc-input--no-placeholder):not(:focus):empty {
+            & ~ label {
+                transform: none;
+                color: var(--text-less-prominent);
+                padding: 0 4px;
             }
         }
     }
@@ -130,42 +143,32 @@
             top: 0.9rem;
 
             + .dc-input__field {
-                // for the default value put the largest padding
-                // in case any new currencies get added
-                padding-left: calc(1.6rem + 15px);
+                // default padding for three letter currency symbols
+                padding-left: calc(1.6rem + 2.4rem);
             }
-            &--usd + .dc-input__field {
-                padding-left: calc(1.6rem + 3px);
-            }
-            &--eur + .dc-input__field,
-            &--gbp + .dc-input__field,
-            &--eth + .dc-input__field,
-            &--etc + .dc-input__field {
-                padding-left: calc(1.6rem + 4px);
-            }
-            &--btc + .dc-input__field,
-            &--ltc + .dc-input__field {
-                padding-left: calc(1.6rem + 5px);
-            }
+            &--usdc + .dc-input__field,
             &--ust + .dc-input__field {
-                padding-left: calc(1.6rem + 7px);
-            }
-            &--bch + .dc-input__field {
-                padding-left: calc(1.6rem + 10px);
-            }
-            &--aud + .dc-input__field {
-                padding-left: calc(1.6rem + 15px);
+                padding-left: calc(1.6rem + 3.2rem);
             }
         }
     }
     &__trailing-icon {
-        margin: 0 1.2rem 0 0 !important;
+        margin-right: 1rem;
+        position: absolute;
+        right: 0;
+        font-size: var(--text-size-xs);
 
-        .color1-fill {
-            fill: var(--text-less-prominent);
-        }
-        .color1-stroke {
-            fill: var(--text-less-prominent);
+        &.symbols {
+            top: 0.9rem;
+
+            + .dc-input__field {
+                // default padding for three letter currency symbols
+                padding-right: calc(1.6rem + 2.4rem);
+            }
+            &--usdc + .dc-input__field,
+            &--ust + .dc-input__field {
+                padding-right: calc(1.6rem + 3.2rem);
+            }
         }
     }
     &__label {

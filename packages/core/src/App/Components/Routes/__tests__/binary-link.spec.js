@@ -1,50 +1,70 @@
 import React from 'react';
 import { expect } from 'chai';
-import { configure, shallow } from 'enzyme';
+import { configure, mount, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { NavLink } from 'react-router-dom';
-import routes from '@deriv/shared/utils/routes';
+import { PlatformContext, routes } from '@deriv/shared';
 import { BinaryLink } from '../index';
+import RootStore from '../../../../Stores';
+import { MobxContentProvider } from '../../../../Stores/connect';
+import { BrowserRouter } from 'react-router-dom';
 
 configure({ adapter: new Adapter() });
 
 describe('<BinaryLink />', () => {
+    const store = new RootStore();
+    const Mock = ({ children }) => (
+        <MobxContentProvider store={store}>
+            <BrowserRouter>
+                <PlatformContext.Provider value={{ is_deriv_crypto: false }}>{children}</PlatformContext.Provider>
+            </BrowserRouter>
+        </MobxContentProvider>
+    );
+
     it('should render one <BinaryLink /> component', () => {
-        const wrapper = shallow(<BinaryLink />);
+        const comp = (
+            <Mock>
+                <BinaryLink />
+            </Mock>
+        );
+        const wrapper = shallow(comp);
         expect(wrapper).to.have.length(1);
     });
     it('should render children when passed in', () => {
         const child_div = <div className='sweet-child-of-mine' />;
-        const wrapper = shallow(<BinaryLink>{child_div}</BinaryLink>);
+        const comp = (
+            <Mock>
+                <BinaryLink>{child_div}</BinaryLink>
+            </Mock>
+        );
+        const wrapper = shallow(comp);
         expect(wrapper.contains(child_div)).to.equal(true);
     });
-    it("should render one <Navlink /> when property 'to' is passed", () => {
-        const wrapper = shallow(<BinaryLink to='/' />);
-        expect(wrapper.find(NavLink)).to.have.length(1);
-    });
-    it("should not render <Navlink /> when property 'to' is not passed", () => {
-        const wrapper = shallow(<BinaryLink />);
-        expect(wrapper.find(NavLink)).to.have.length(0);
-    });
     it("should render <a /> when property 'to' is not passed", () => {
-        const wrapper = shallow(<BinaryLink />);
+        const comp = (
+            <Mock>
+                <BinaryLink />
+            </Mock>
+        );
+        const wrapper = mount(comp);
         expect(wrapper.contains(<a />)).to.equal(true);
     });
     it("should not render <a> when property 'to' is passed", () => {
-        const wrapper = shallow(<BinaryLink to={routes.trade} />);
+        const comp = (
+            <MobxContentProvider store={store}>
+                <BinaryLink to={routes.trade} />
+            </MobxContentProvider>
+        );
+        const wrapper = shallow(comp);
         expect(wrapper.contains(<a />)).to.equal(false);
     });
     it('should render component with props if any given', () => {
-        const wrapper = shallow(<BinaryLink className='a-cool-classname' />);
+        const comp = (
+            <MobxContentProvider store={store}>
+                <BinaryLink className='a-cool-classname' />
+            </MobxContentProvider>
+        );
+        const wrapper = shallow(comp);
         expect(wrapper.find('.a-cool-classname').exists());
-    });
-    it('should throw error if the route given is not a valid route', () => {
-        let error;
-        try {
-            shallow(<BinaryLink to='/wrongRoute' />);
-        } catch (e) {
-            error = e;
-        }
-        expect(error).to.be.instanceOf(Error);
     });
 });

@@ -13,7 +13,11 @@ class SubMenu extends React.PureComponent {
     }
 
     toggleMenu = () => {
-        this.setState({ is_expanded: !this.state.is_expanded });
+        const is_expanded = !this.state.is_expanded;
+        this.setState({ is_expanded });
+        if (this.props.onToggle) {
+            this.props.onToggle(is_expanded);
+        }
     };
 
     render() {
@@ -54,7 +58,7 @@ SubMenu.propTypes = {
     has_subheader: PropTypes.bool,
     submenu_icon: PropTypes.string,
     submenu_suffix_icon: PropTypes.string,
-    submenu_title: PropTypes.string,
+    submenu_title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     submenu_toggle_class: PropTypes.string,
 };
 
@@ -90,7 +94,7 @@ SubMenuList.propTypes = {
     collapse: PropTypes.func,
     has_subheader: PropTypes.bool,
     is_expanded: PropTypes.bool,
-    submenu_title: PropTypes.string,
+    submenu_title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 };
 
 export default SubMenu;

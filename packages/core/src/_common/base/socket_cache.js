@@ -1,7 +1,8 @@
 const moment = require('moment');
-const ObjectUtils = require('@deriv/shared/utils/object');
+const isEmptyObject = require('@deriv/shared').isEmptyObject;
+const getPropertyValue = require('@deriv/shared').getPropertyValue;
 const getStaticHash = require('_common/utility.js').getStaticHash;
-const LocalStore = require('../storage').LocalStore;
+const LocalStore = require('@deriv/shared').LocalStore;
 
 /*
  * Caches WS responses to reduce delay time and number of requests
@@ -47,14 +48,14 @@ const SocketCache = (() => {
 
     const set = (key, response) => {
         const msg_type = msg_type_mapping[response.msg_type] || response.msg_type;
-
         // check if response has subscription, since we only want to cache non-streaming responses
-        if (response.subscription || response.echo_req.end === 'latest') return;
-
-        // TODO: remove once caching is fixed to distinguish non-streaming/expired contracts from poc calls
-        if (msg_type === 'proposal_open_contract') {
-            if (!response.proposal_open_contract.is_sold) return;
+        // sold proposal_open_contract response can be cached
+        if (response.subscription) {
+            const can_cache = msg_type === 'proposal_open_contract' && response.proposal_open_contract.is_sold;
+            if (!can_cache) return;
         }
+
+        if (response.echo_req.end === 'latest') return;
 
         if (!config[msg_type]) return;
         // prevent unwanted page behaviour
@@ -73,9 +74,7 @@ const SocketCache = (() => {
             return;
         }
 
-        const expires = moment()
-            .add(config[msg_type].expire, 'm')
-            .valueOf();
+        const expires = moment().add(config[msg_type].expire, 'm').valueOf();
 
         if (!data_obj.static_hash) {
             data_obj.static_hash = getStaticHash();
@@ -100,9 +99,9 @@ const SocketCache = (() => {
     };
 
     const reloadDataObj = () => {
-        if (ObjectUtils.isEmptyObject(data_obj)) {
+        if (isEmptyObject(data_obj)) {
             data_obj = LocalStore.getObject(storage_key);
-            if (ObjectUtils.isEmptyObject(data_obj)) return;
+            if (isEmptyObject(data_obj)) return;
         }
 
         if (data_obj.static_hash !== getStaticHash()) {
@@ -111,7 +110,7 @@ const SocketCache = (() => {
         }
     };
 
-    const getData = key => ObjectUtils.getPropertyValue(data_obj, key) || {};
+    const getData = key => getPropertyValue(data_obj, key) || {};
 
     const get = key => {
         reloadDataObj();

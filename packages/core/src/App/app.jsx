@@ -5,23 +5,31 @@ import { BrowserRouter as Router } from 'react-router-dom';
 // Initialize i18n by importing it here
 // eslint-disable-next-line no-unused-vars
 import { DesktopWrapper } from '@deriv/components';
-import { checkAndSetEndpointFromUrl } from '@deriv/shared/utils/config';
-import { setUrlLanguage } from '@deriv/shared/utils/url';
-import { isMobile } from '@deriv/shared/utils/screen';
-import { initializeTranslations, getLanguage } from '@deriv/translations';
-import Client from '_common/base/client_base';
+import {
+    checkAndSetEndpointFromUrl,
+    setUrlLanguage,
+    isMobile,
+    initFormErrorMessages,
+    setSharedMT5Text,
+} from '@deriv/shared';
+import { initializeTranslations, getLanguage, useOnLoadTranslation } from '@deriv/translations';
 import WS from 'Services/ws-methods';
 import { MobxContentProvider } from 'Stores/connect';
 import SmartTraderIFrame from 'Modules/SmartTraderIFrame';
+import AppToastMessages from './Containers/app-toast-messages.jsx';
 import ErrorBoundary from './Components/Elements/Errors/error-boundary.jsx';
 import AppContents from './Containers/Layout/app-contents.jsx';
+import PlatformContainer from './Containers/PlatformContainer/PlatformContainer.jsx';
 import Footer from './Containers/Layout/footer.jsx';
 import Header from './Containers/Layout/header.jsx';
 import AppNotificationMessages from './Containers/app-notification-messages.jsx';
 import AppModals from './Containers/Modals';
 import Routes from './Containers/Routes/routes.jsx';
+import initStore from './app';
+import { FORM_ERROR_MESSAGES } from '../Constants/form-error-messages';
+import { MT5_TEXT } from '../Constants/mt5-text';
+
 // eslint-disable-next-line import/extensions
-import initStore from './app.js';
 // eslint-disable-next-line import/no-unresolved
 import 'Sass/app.scss';
 
@@ -30,13 +38,19 @@ const App = ({ root_store }) => {
     const base = l.pathname.split('/')[1];
     const has_base = /^\/(br_)/.test(l.pathname);
     const url_params = new URLSearchParams(l.search);
+    const [is_translation_loaded] = useOnLoadTranslation();
     React.useEffect(() => {
         checkAndSetEndpointFromUrl();
         initializeTranslations();
+
+        // TODO: [translation-to-shared]: add translation implemnentation in shared
         setUrlLanguage(getLanguage());
+        initFormErrorMessages(FORM_ERROR_MESSAGES);
+        setSharedMT5Text(MT5_TEXT);
     }, []);
-    if (isMobile()) {
-        React.useEffect(() => {
+
+    React.useEffect(() => {
+        if (isMobile()) {
             const el_landscape_blocker = document.getElementById('landscape_blocker');
 
             const onFocus = () => {
@@ -71,40 +85,46 @@ const App = ({ root_store }) => {
             document.addEventListener('focusout', onFocusOut, false);
             document.addEventListener('touchstart', onTouchStart, true);
 
-            // componentWillUnmount lifecycle
             return () => {
                 document.removeEventListener('focus', onFocus);
                 document.removeEventListener('focusout', onFocusOut);
                 document.removeEventListener('touchstart', onTouchStart);
             };
-        }, []);
-    }
+        }
+        return () => {};
+    }, [root_store.ui]);
 
     const platform_passthrough = {
         root_store,
         WS,
-        client_base: Client,
     };
 
     return (
-        <Router basename={has_base ? `/${base}` : null}>
-            <MobxContentProvider store={root_store}>
-                <React.Fragment>
-                    <Header />
-                    <ErrorBoundary>
-                        <AppContents>
-                            {/* TODO: [trader-remove-client-base] */}
-                            <Routes passthrough={platform_passthrough} />
-                        </AppContents>
-                    </ErrorBoundary>
-                    <DesktopWrapper>
-                        <Footer />
-                    </DesktopWrapper>
-                    <AppModals url_action_param={url_params.get('action')} />
-                    <SmartTraderIFrame />
-                </React.Fragment>
-            </MobxContentProvider>
-        </Router>
+        <>
+            {is_translation_loaded ? (
+                <Router basename={has_base ? `/${base}` : null}>
+                    <MobxContentProvider store={root_store}>
+                        <PlatformContainer>
+                            <Header />
+                            <ErrorBoundary>
+                                <AppContents>
+                                    {/* TODO: [trader-remove-client-base] */}
+                                    <Routes passthrough={platform_passthrough} />
+                                </AppContents>
+                            </ErrorBoundary>
+                            <DesktopWrapper>
+                                <Footer />
+                            </DesktopWrapper>
+                            <AppModals url_action_param={url_params.get('action')} />
+                            <SmartTraderIFrame />
+                            <AppToastMessages />
+                        </PlatformContainer>
+                    </MobxContentProvider>
+                </Router>
+            ) : (
+                <></>
+            )}
+        </>
     );
 };
 

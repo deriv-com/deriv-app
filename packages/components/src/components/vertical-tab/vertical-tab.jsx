@@ -1,13 +1,13 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import VerticalTabContentContainer from 'Components/vertical-tab/vertical-tab-content-container.jsx';
-import VerticalTabHeader from 'Components/vertical-tab/vertical-tab-header.jsx';
-import VerticalTabHeaderGroup from 'Components/vertical-tab/vertical-tab-header-group.jsx';
-import VerticalTabHeaders from 'Components/vertical-tab/vertical-tab-headers.jsx';
-import VerticalTabHeaderTitle from 'Components/vertical-tab/vertical-tab-header-title.jsx';
-import VerticalTabLayout from 'Components/vertical-tab/vertical-tab-layout.jsx';
-import VerticalTabWrapper from 'Components/vertical-tab/vertical-tab-wrapper.jsx';
+import VerticalTabContentContainer from './vertical-tab-content-container.jsx';
+import VerticalTabHeader from './vertical-tab-header.jsx';
+import VerticalTabHeaderGroup from './vertical-tab-header-group.jsx';
+import VerticalTabHeaders from './vertical-tab-headers.jsx';
+import VerticalTabHeaderTitle from './vertical-tab-header-title.jsx';
+import VerticalTabLayout from './vertical-tab-layout.jsx';
+import VerticalTabWrapper from './vertical-tab-wrapper.jsx';
 
 class VerticalTab extends React.Component {
     constructor(props) {
@@ -130,7 +130,7 @@ VerticalTab.propTypes = {
         PropTypes.shape({
             default: PropTypes.bool,
             icon: PropTypes.string,
-            label: PropTypes.string,
+            label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
             path: PropTypes.string,
             value: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
         })
@@ -138,7 +138,7 @@ VerticalTab.propTypes = {
     list_groups: PropTypes.arrayOf(
         PropTypes.shape({
             icon: PropTypes.string,
-            label: PropTypes.string,
+            label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
             subitems: PropTypes.arrayOf(PropTypes.number),
         })
     ),

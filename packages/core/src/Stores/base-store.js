@@ -1,6 +1,6 @@
 import { action, intercept, observable, reaction, toJS, when } from 'mobx';
-import { isProduction } from '@deriv/shared/utils/config';
-import ObjectUtils from '@deriv/shared/utils/object';
+import { isProduction, isEmptyObject } from '@deriv/shared';
+
 import Validator from 'Utils/Validator';
 
 /**
@@ -114,7 +114,7 @@ export default class BaseStore {
     getSnapshot(properties) {
         let snapshot = toJS(this);
 
-        if (!ObjectUtils.isEmptyObject(this.root_store)) {
+        if (!isEmptyObject(this.root_store)) {
             snapshot.root_store = this.root_store;
         }
 
@@ -285,56 +285,62 @@ export default class BaseStore {
 
     @action.bound
     onSwitchAccount(listener) {
-        this.switchAccountDisposer = when(
-            () => this.root_store.client.switch_broadcast,
-            async () => {
-                try {
-                    const result = this.switch_account_listener();
-                    if (result && result.then && typeof result.then === 'function') {
-                        result.then(() => {
-                            this.root_store.client.switchEndSignal();
-                            this.onSwitchAccount(this.switch_account_listener);
-                        });
-                    } else {
-                        throw new Error('Switching account listeners are required to return a promise.');
-                    }
-                } catch (error) {
-                    // there is no listener currently active. so we can just ignore the error raised from treating
-                    // a null object as a function. Although, in development mode, we throw a console error.
-                    if (!isProduction()) {
-                        console.error(error); // eslint-disable-line
+        if (listener) {
+            this.switch_account_listener = listener;
+
+            this.switchAccountDisposer = when(
+                () => this.root_store.client.switch_broadcast,
+                async () => {
+                    try {
+                        const result = this.switch_account_listener();
+                        if (result && result.then && typeof result.then === 'function') {
+                            result.then(() => {
+                                this.root_store.client.switchEndSignal();
+                                this.onSwitchAccount(this.switch_account_listener);
+                            });
+                        } else {
+                            throw new Error('Switching account listeners are required to return a promise.');
+                        }
+                    } catch (error) {
+                        // there is no listener currently active. so we can just ignore the error raised from treating
+                        // a null object as a function. Although, in development mode, we throw a console error.
+                        if (!isProduction()) {
+                            console.error(error); // eslint-disable-line
+                        }
                     }
                 }
-            }
-        );
-        this.switch_account_listener = listener;
+            );
+        }
     }
 
     @action.bound
     onPreSwitchAccount(listener) {
-        this.preSwitchAccountDisposer = when(
-            () => this.root_store.client.pre_switch_broadcast,
-            async () => {
-                try {
-                    const result = this.pre_switch_account_listener();
-                    if (result && result.then && typeof result.then === 'function') {
-                        result.then(() => {
-                            this.root_store.client.setPreSwitchAccount(false);
-                            this.onPreSwitchAccount(this.pre_switch_account_listener);
-                        });
-                    } else {
-                        throw new Error('Pre-switch account listeners are required to return a promise.');
-                    }
-                } catch (error) {
-                    // there is no listener currently active. so we can just ignore the error raised from treating
-                    // a null object as a function. Although, in development mode, we throw a console error.
-                    if (!isProduction()) {
-                        console.error(error); // eslint-disable-line
+        if (listener) {
+            this.pre_switch_account_listener = listener;
+
+            this.preSwitchAccountDisposer = when(
+                () => this.root_store.client.pre_switch_broadcast,
+                async () => {
+                    try {
+                        const result = this.pre_switch_account_listener();
+                        if (result && result.then && typeof result.then === 'function') {
+                            result.then(() => {
+                                this.root_store.client.setPreSwitchAccount(false);
+                                this.onPreSwitchAccount(this.pre_switch_account_listener);
+                            });
+                        } else {
+                            throw new Error('Pre-switch account listeners are required to return a promise.');
+                        }
+                    } catch (error) {
+                        // there is no listener currently active. so we can just ignore the error raised from treating
+                        // a null object as a function. Although, in development mode, we throw a console error.
+                        if (!isProduction()) {
+                            console.error(error); // eslint-disable-line
+                        }
                     }
                 }
-            }
-        );
-        this.pre_switch_account_listener = listener;
+            );
+        }
     }
 
     @action.bound

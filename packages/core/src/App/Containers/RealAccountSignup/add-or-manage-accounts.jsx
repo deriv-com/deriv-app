@@ -1,20 +1,23 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Div100vhContainer, ThemedScrollbars } from '@deriv/components';
+import { Tabs, ThemedScrollbars } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import CurrencyUtils from '@deriv/shared/utils/currency';
-import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
+import { getCurrencyDisplayCode, isDesktop, isMobile, website_name, PlatformContext } from '@deriv/shared';
+import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 import AddCryptoCurrency from './add-crypto-currency.jsx';
 import ChangeAccountCurrency from './change-account-currency.jsx';
+import LoadingModal from './real-account-signup-loader.jsx';
 import 'Sass/add-or-manage.scss';
 import 'Sass/change-account.scss';
 
 class AddOrManageAccounts extends React.Component {
+    static contextType = PlatformContext;
     constructor(props) {
         super(props);
         this.state = {
+            active_index: this.props.has_fiat && this.props.available_crypto_currencies?.length === 0 ? 1 : 0,
             finished: undefined,
             form_error: '',
             form_value: {
@@ -24,6 +27,19 @@ class AddOrManageAccounts extends React.Component {
         };
     }
 
+    async componentDidMount() {
+        this.props.setLoading(true);
+        await WS.mt5LoginList();
+        this.props.setLoading(false);
+    }
+
+    setActiveTabIndex = index => {
+        this.setState({
+            active_index: index,
+            // form_value: index === 0 ? { currency: '' } : { crypto: '', fiat: ''}
+        });
+    };
+
     clearError = () => {
         this.setState({
             form_error: '',
@@ -31,7 +47,7 @@ class AddOrManageAccounts extends React.Component {
     };
 
     manageOrChangeAccount = (obj, setSubmitting) => {
-        this.props.onLoading();
+        this.props.setLoading(true);
         Object.entries(obj).map(([key, value]) => {
             if (key === 'fiat') {
                 this.props
@@ -43,20 +59,22 @@ class AddOrManageAccounts extends React.Component {
                             response.echo_req.set_account_currency
                         );
                     })
-                    .catch(error_message => {
-                        this.props.onError(error_message);
-                    });
+                    .catch(error => {
+                        this.props.onError(error);
+                    })
+                    .finally(() => this.props.setLoading(false));
             } else {
                 // Add Crypto Account
                 this.props
-                    .createCryptoAccount(value)
+                    .createCryptoAccount(value, this.context.is_deriv_crypto)
                     .then(() => {
-                        this.props.onSuccessAddCurrency(value);
+                        this.props.onSuccessSetAccountCurrency('', value);
                         setSubmitting(false);
                     })
-                    .catch(error_message => {
-                        this.props.onError(error_message);
-                    });
+                    .catch(error => {
+                        this.props.onError(error);
+                    })
+                    .finally(() => this.props.setLoading(false));
             }
         });
     };
@@ -65,73 +83,105 @@ class AddOrManageAccounts extends React.Component {
         this.manageOrChangeAccount(value, setSubmitting);
     };
 
+    get no_crypto_available() {
+        return this.props.available_crypto_currencies.length === 0 && this.props.has_fiat;
+    }
+
+    get should_hide_crypto() {
+        return this.props.is_eu;
+    }
+
     render() {
+        if (this.props.is_loading) return <LoadingModal />;
+
         return (
-            <ThemedScrollbars is_bypassed={isMobile()}>
-                <Div100vhContainer
-                    className='account-wizard add-or-manage'
-                    is_disabled={isDesktop()}
-                    height_offset='40px'
+            <ThemedScrollbars is_bypassed={isMobile()} autohide={false}>
+                <Tabs
+                    active_index={this.state.active_index}
+                    className='account-wizard add-or-manage tabs--desktop'
+                    onTabItemClick={this.setActiveTabIndex}
+                    top
+                    header_fit_content={isDesktop()}
                 >
-                    <div
-                        className={classNames('add-crypto-currency', {
-                            'account-wizard--disabled': this.props.available_crypto_currencies.length === 0,
-                        })}
-                    >
-                        {this.props.available_crypto_currencies.length === 0 && (
-                            <div className='account-wizard--disabled-message'>
-                                <p>
-                                    {localize(
-                                        'You already have an account for each of the cryptocurrencies available on Deriv.'
-                                    )}
-                                </p>
-                            </div>
-                        )}
-                        <AddCryptoCurrency
-                            className='account-wizard__body'
-                            onSubmit={this.updateValue}
-                            value={this.state.form_value}
-                            form_error={this.state.form_error}
-                            {...this.props}
-                        />
-                    </div>
-                    {this.props.has_fiat && (
+                    <div label={localize('Cryptocurrencies')}>
                         <div
-                            className={classNames('change-currency', {
-                                'account-wizard--disabled': !this.props.can_change_fiat_currency,
+                            className={classNames('add-crypto-currency', {
+                                'account-wizard--disabled': this.no_crypto_available,
                             })}
                         >
-                            {!this.props.can_change_fiat_currency && (
+                            {this.no_crypto_available && (
                                 <div className='account-wizard--disabled-message'>
                                     <p>
-                                        {this.props.current_currency_type === 'fiat' ? (
-                                            <Localize
-                                                i18n_default_text='Currency change is not available because either you have deposited money into your {{currency}} account or you have created a real MetaTrader 5 (MT5) account.'
-                                                values={{
-                                                    currency: CurrencyUtils.getCurrencyDisplayCode(this.props.currency),
-                                                }}
-                                            />
-                                        ) : (
-                                            <Localize
-                                                i18n_default_text='Please switch to your {{fiat_currency}} account to change currencies.'
-                                                values={{
-                                                    fiat_currency: this.props.current_fiat_currency.toUpperCase(),
-                                                }}
-                                            />
+                                        {localize(
+                                            'You already have an account for each of the cryptocurrencies available on {{deriv}}.',
+                                            {
+                                                deriv: website_name,
+                                            }
                                         )}
                                     </p>
                                 </div>
                             )}
-                            <ChangeAccountCurrency
+                            <AddCryptoCurrency
                                 className='account-wizard__body'
                                 onSubmit={this.updateValue}
                                 value={this.state.form_value}
                                 form_error={this.state.form_error}
+                                should_show_crypto_only={true}
                                 {...this.props}
                             />
                         </div>
+                    </div>
+                    {!this.context.is_deriv_crypto && (
+                        <div label={localize('Fiat currencies')}>
+                            {this.props.has_fiat ? (
+                                <div
+                                    className={classNames('change-currency', {
+                                        'account-wizard--disabled': !this.props.can_change_fiat_currency,
+                                    })}
+                                >
+                                    {!this.props.can_change_fiat_currency && (
+                                        <div className='account-wizard--disabled-message'>
+                                            <p>
+                                                {this.props.current_currency_type === 'fiat' ? (
+                                                    <Localize
+                                                        i18n_default_text='Currency change is not available because either you have deposited money into your {{currency}} account or you have created a real MetaTrader 5 (MT5) account.'
+                                                        values={{
+                                                            currency: getCurrencyDisplayCode(this.props.currency),
+                                                        }}
+                                                    />
+                                                ) : (
+                                                    <Localize
+                                                        i18n_default_text='Please switch to your {{fiat_currency}} account to change currencies.'
+                                                        values={{
+                                                            // eslint-disable-next-line
+                                                            fiat_currency: this.props.current_fiat_currency.toUpperCase(),
+                                                        }}
+                                                    />
+                                                )}
+                                            </p>
+                                        </div>
+                                    )}
+                                    <ChangeAccountCurrency
+                                        className='account-wizard__body'
+                                        onSubmit={this.updateValue}
+                                        value={this.state.form_value}
+                                        form_error={this.state.form_error}
+                                        {...this.props}
+                                    />
+                                </div>
+                            ) : (
+                                <AddCryptoCurrency
+                                    className='account-wizard__body'
+                                    onSubmit={this.updateValue}
+                                    value={this.state.form_value}
+                                    form_error={this.state.form_error}
+                                    should_show_fiat_only={true}
+                                    {...this.props}
+                                />
+                            )}
+                        </div>
                     )}
-                </Div100vhContainer>
+                </Tabs>
             </ThemedScrollbars>
         );
     }
@@ -150,6 +200,7 @@ export default connect(({ client }) => ({
     currency: client.currency,
     current_currency_type: client.current_currency_type,
     current_fiat_currency: client.current_fiat_currency,
+    is_eu: client.is_eu,
     has_fiat: client.has_fiat,
     setCurrency: client.setAccountCurrency,
     createCryptoAccount: client.createCryptoAccount,

@@ -1,0 +1,84 @@
+/** @define dc-contract-card-dialog; weak */
+.dc-contract-card-dialog {
+    position: fixed;
+    display: grid;
+    background: var(--general-main-2);
+    border-radius: $BORDER_RADIUS;
+    box-shadow: 0 4px 8px 2px var(--shadow-menu);
+    transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.25s linear;
+    padding: 0.8rem;
+    width: 240px;
+    z-index: 99;
+
+    &--enter-done {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+    &--enter,
+    &--exit {
+        opacity: 0;
+        transform: translate3d(-20px, 0, 0);
+    }
+    &__input {
+        .dc-input-wrapper__input {
+            border: 1px solid var(--border-normal);
+        }
+    }
+    &__button {
+        margin-top: 0.8rem;
+
+        .dc-btn {
+            width: 100%;
+        }
+    }
+    &__form {
+        display: grid;
+        flex: 1;
+        @include mobile {
+            grid-template-rows: auto auto 1fr;
+            grid-gap: 1.6rem;
+            margin: 1.6rem;
+        }
+        @include desktop {
+            grid-gap: 0.8rem;
+        }
+
+        .dc-checkbox__box {
+            margin-left: 0;
+        }
+    }
+    &__total-profit {
+        height: 5.2rem;
+        padding: 1.6rem;
+        background: var(--general-section-2);
+        color: var(--text-general);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 1.4rem;
+    }
+}
+
+/** @define dc-contract-card-dialog-toggle; */
+.dc-contract-card-dialog-toggle {
+    position: absolute;
+    width: calc(100% + 0.4rem);
+    height: calc(100% + 0.4rem);
+    right: 0.4rem;
+    top: -0.4rem;
+    border: 1px solid var(--general-section-1);
+    border-radius: 4px;
+
+    @include mobile {
+        width: 100%;
+    }
+
+    &__icon {
+        float: right;
+        margin: 3px;
+    }
+    &:hover {
+        cursor: pointer;
+        border-color: var(--button-secondary-default);
+    }
+}

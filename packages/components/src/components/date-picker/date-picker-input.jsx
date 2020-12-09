@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Icon from 'Components/icon';
-import Input from 'Components/input';
+import Icon from '../icon';
+import Input from '../input';
 
 const DatePickerIcon = ({ icon, ...props }) => <Icon className='dc-datepicker__icon' icon={icon} {...props} />;
 
@@ -37,11 +37,21 @@ const DatePickerInput = ({
         setIsClearBtnVisible(false);
     };
 
+    const OpenIcon = (
+        <DatePickerIcon
+            className={classNames({
+                'dc-datepicker__icon': typeof onClick === 'function',
+            })}
+            icon='IcCalendar'
+            {...(disabled ? { color: 'disabled' } : { onClick })}
+        />
+    );
+
     const trailing_icon =
-        is_clearable && is_clear_btn_visible ? (
+        is_clearable && is_clear_btn_visible && !disabled ? (
             <DatePickerIcon icon='IcCloseCircle' onClick={onClickClear} color='secondary' />
         ) : (
-            <DatePickerIcon icon='IcCalendar' />
+            OpenIcon
         );
 
     return (
@@ -62,7 +72,7 @@ const DatePickerInput = ({
             onClick={onClick}
             placeholder={placeholder}
             readOnly={readOnly}
-            leading_icon={show_leading_icon ? <DatePickerIcon icon='IcCalendar' /> : undefined}
+            leading_icon={show_leading_icon && OpenIcon}
             trailing_icon={show_leading_icon ? undefined : trailing_icon}
             type={readOnly ? 'text' : 'number'}
             value={is_placeholder_visible || !value ? '' : value}

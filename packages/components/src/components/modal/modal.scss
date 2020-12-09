@@ -62,9 +62,26 @@
                 border-bottom: none;
             }
         }
+        &--is-confirmation-modal {
+            .dc-modal {
+                &-header {
+                    border-bottom: none;
+
+                    &__title {
+                        padding: 2.4rem;
+                    }
+                }
+                &-body {
+                    padding: 0 2.4rem;
+                }
+                &-footer {
+                    padding: 2.4rem;
+                }
+            }
+        }
         @include desktop {
-            min-width: 400px;
-            max-height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT});
+            min-width: 400px !important;
+            max-height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT}) !important;
         }
         @include mobile {
             max-width: calc(100vw - 3.2rem) !important;
@@ -88,10 +105,15 @@
             align-items: center;
             height: 100%;
 
+            &:empty {
+                padding: 0;
+                border: none;
+            }
+
             @include mobile {
                 font-size: 1.4rem;
                 padding: 1.6rem;
-                line-height: 1;
+                line-height: 1.2;
             }
         }
         &__section {
@@ -113,6 +135,22 @@
                 margin: 0.8rem;
             }
         }
+        &--is-title-centered {
+            justify-content: flex-end;
+            position: relative;
+
+            .dc-modal-header__title {
+                @include mobile {
+                    position: absolute;
+                }
+                justify-content: center;
+                width: 100%;
+            }
+            .dc-modal-header__close {
+                z-index: 1;
+            }
+        }
+
         // fix for safari bug with header being truncated
         @media not all and (min-resolution: 0.001dpcm) {
             // stylelint-disable-line
@@ -131,7 +169,7 @@
 
         @include mobile {
             font-size: 1.2rem;
-            padding: 0.8rem 1.6rem;
+            padding: 0.8rem 2.4rem;
         }
     }
     /** @define dc-modal-footer; weak */
@@ -139,9 +177,17 @@
         display: flex;
         justify-content: flex-end;
         padding: 1.6rem;
+        margin-top: auto;
 
-        .dc-btn:nth-child(2) {
-            margin-left: 0.8rem;
+        .dc-btn {
+            margin: 0 0.8rem;
+
+            &:last-child {
+                margin: 0;
+            }
+        }
+        &--separator {
+            border-top: 2px solid var(--general-section-1);
         }
     }
 }

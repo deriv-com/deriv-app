@@ -20,7 +20,16 @@ Blockly.Blocks.text_getSubstring = {
     },
     definition() {
         return {
-            message0: localize('in text %1 get substring from %2 %3 to %4 %5'),
+            message0: localize(
+                'in text {{ input_text }} get substring from {{ position1 }} {{ index1 }} to {{ position2 }} {{ index2 }}',
+                {
+                    input_text: '%1',
+                    position1: '%2',
+                    index1: '%3',
+                    position2: '%4',
+                    index2: '%5',
+                }
+            ),
             args0: [
                 {
                     type: 'input_value',
@@ -121,10 +130,11 @@ Blockly.Blocks.text_getSubstring = {
         this.render(false);
     },
     getRequiredValueInputs() {
+        const hasInput = input_name => this.getInput(input_name)?.type === Blockly.INPUT_VALUE;
         return {
             STRING: emptyTextValidator,
-            AT1: emptyTextValidator,
-            AT2: emptyTextValidator,
+            ...(hasInput('AT1') ? { AT1: emptyTextValidator } : {}),
+            ...(hasInput('AT2') ? { AT2: emptyTextValidator } : {}),
         };
     },
 };

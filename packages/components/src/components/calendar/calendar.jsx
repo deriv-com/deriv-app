@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { getStartOfMonth, toMoment } from '@deriv/shared/utils/date';
+import { getStartOfMonth, toMoment } from '@deriv/shared';
 import Body from './calendar-body.jsx';
 import Footer from './calendar-footer.jsx';
 import Header from './calendar-header.jsx';
@@ -181,12 +181,8 @@ class Calendar extends React.PureComponent {
     isPeriodDisabled = (date, unit) => {
         const { max_date, min_date } = this.props;
 
-        const start_of_period = toMoment(date)
-            .clone()
-            .startOf(unit);
-        const end_of_period = toMoment(date)
-            .clone()
-            .endOf(unit);
+        const start_of_period = toMoment(date).clone().startOf(unit);
+        const end_of_period = toMoment(date).clone().endOf(unit);
         return end_of_period.isBefore(toMoment(min_date)) || start_of_period.isAfter(toMoment(max_date));
     };
 
@@ -239,9 +235,7 @@ Calendar.Footer = Footer;
 Calendar.defaultProps = {
     date_format: 'YYYY-MM-DD',
     min_date: '1970-01-01', // by default, min_date is set to Unix Epoch (January 1st 1970)
-    max_date: toMoment()
-        .add(120, 'y')
-        .format('YYYY-MM-DD'), // by default, max_date is set to 120 years after today
+    max_date: toMoment().add(120, 'y').format('YYYY-MM-DD'), // by default, max_date is set to 120 years after today
 };
 
 Calendar.propTypes = {

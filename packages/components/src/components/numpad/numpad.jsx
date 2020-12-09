@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
-import Button from 'Components/button/button.jsx';
 import NumberGrid from './number-grid.jsx';
 import StepInput from './step-input.jsx';
-import { useLongPress } from '../../hooks/use-onlongpress';
+import Button from '../button/button.jsx';
+import { useLongPress } from '../../hooks';
 
 const concatenate = (number, default_value) => default_value.toString().concat(number);
 const Numpad = ({

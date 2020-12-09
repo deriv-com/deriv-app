@@ -1,5 +1,7 @@
-import moment from 'moment';
 import { localize } from '@deriv/translations';
+import { isHighLow } from '@deriv/shared';
+import { getContractTypesConfig } from 'Stores/Modules/Trading/Constants/contract';
+import { isCallPut } from 'Stores/Modules/Contract/Helpers/contract-type';
 
 export const addCommaToNumber = (num, decimal_places) => {
     if (!num || isNaN(num)) {
@@ -8,20 +10,6 @@ export const addCommaToNumber = (num, decimal_places) => {
     const n = String(decimal_places ? (+num).toFixed(decimal_places) : num);
     const p = n.indexOf('.');
     return n.replace(/\d(?=(?:\d{3})+(?:\.|$))/g, (m, i) => (p <= 0 || i < p ? `${m},` : m));
-};
-
-export const getTimePercentage = (server_time, start_time, expiry_time) => {
-    const duration_from_purchase = moment.duration(moment.unix(expiry_time).diff(moment.unix(start_time)));
-    const duration_from_now = moment.duration(moment.unix(expiry_time).diff(server_time));
-    let percentage = (duration_from_now.asMilliseconds() / duration_from_purchase.asMilliseconds()) * 100;
-
-    if (percentage < 0.5) {
-        percentage = 0;
-    } else if (percentage > 100) {
-        percentage = 100;
-    }
-
-    return Math.round(percentage);
 };
 
 export const getBarrierLabel = contract_info => {
@@ -48,3 +36,14 @@ const digitTypeMap = contract_info => ({
     DIGITOVER: localize('Over {{barrier}}', { barrier: contract_info.barrier }),
     DIGITUNDER: localize('Under {{barrier}}', { barrier: contract_info.barrier }),
 });
+
+export const filterByContractType = ({ contract_type, shortcode }, trade_contract_type) => {
+    const is_call_put = isCallPut(trade_contract_type);
+    const is_high_low = isHighLow({ shortcode });
+    const trade_types = is_call_put
+        ? ['CALL', 'CALLE', 'PUT', 'PUTE']
+        : getContractTypesConfig()[trade_contract_type]?.trade_types;
+    const match = trade_types?.includes(contract_type);
+    if (trade_contract_type === 'high_low') return is_high_low;
+    return match && !is_high_low;
+};

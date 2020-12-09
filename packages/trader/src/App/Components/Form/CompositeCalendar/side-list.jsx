@@ -1,15 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { toMoment } from '@deriv/shared/utils/date';
+import { toMoment } from '@deriv/shared';
 import ListItem from './list-item.jsx';
 
 const isActive = (from, to, flag) => {
     if (flag === 0) {
-        return (
-            toMoment()
-                .endOf('day')
-                .unix() === to && from === null
-        );
+        return toMoment().endOf('day').unix() === to && from === null;
     }
     return Math.ceil(to / 86400) - Math.ceil(from / 86400) === flag;
 };

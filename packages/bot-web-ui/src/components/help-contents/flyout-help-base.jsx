@@ -69,7 +69,7 @@ const HelpBase = ({
                         }
                     })}
             </div>
-            {!is_search_flyout && (
+            {!is_search_flyout && !(should_previous_disable && should_next_disable) && (
                 <div className='flyout__help-footer'>
                     <Button
                         className='flyout__button-previous'

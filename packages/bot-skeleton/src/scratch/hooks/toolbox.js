@@ -11,7 +11,7 @@ Blockly.Toolbox.prototype.width = 25;
 /**
  * Initializes the toolbox.
  */
-Blockly.Toolbox.prototype.init = function() {
+Blockly.Toolbox.prototype.init = function () {
     const workspace = this.workspace_;
     const svg = this.workspace_.getParentSvg();
 
@@ -38,7 +38,7 @@ Blockly.Toolbox.prototype.init = function() {
         this.HtmlDiv,
         'mousedown',
         this,
-        function(e) {
+        function (e) {
             // Cancel any gestures in progress.
             this.workspace_.cancelCurrentGesture();
 
@@ -72,7 +72,7 @@ Blockly.Toolbox.prototype.init = function() {
  * @private
  * @deriv/bot: We don't want to `showAll` or `setSelectedItem` here (like in Scratch)
  */
-Blockly.Toolbox.prototype.populate_ = function(newTree) {
+Blockly.Toolbox.prototype.populate_ = function (newTree) {
     const parent = this.categoryMenu_.parentHtml_;
     parent.removeChild(parent.lastChild);
 
@@ -90,13 +90,10 @@ Blockly.Toolbox.prototype.populate_ = function(newTree) {
     }
 };
 
-Blockly.Toolbox.prototype.showSearch = function(search) {
+Blockly.Toolbox.prototype.showSearch = function (search) {
     const flyout_content = [];
     const workspace = Blockly.derivWorkspace;
-    const search_term = search
-        .replace(/\s+/g, ' ')
-        .trim()
-        .toUpperCase();
+    const search_term = search.replace(/\s+/g, ' ').trim().toUpperCase();
     const search_words = search_term.split(' ');
     const all_variables = workspace.getVariablesOfType('');
     const all_procedures = Blockly.Procedures.allProcedures(workspace);
@@ -255,7 +252,7 @@ Blockly.Toolbox.prototype.showSearch = function(search) {
     }
 
     // block_procedure_name matched
-    const searched_procedures = { '0': [], '1': [] };
+    const searched_procedures = { 0: [], 1: [] };
     const procedures_callnoreturn = all_procedures[0];
     const procedures_callreturn = all_procedures[1];
     Object.keys(procedures_callnoreturn).forEach(key => {
@@ -291,7 +288,7 @@ Blockly.Toolbox.prototype.showSearch = function(search) {
  * @deriv/bot: Show blocks for a specific category in flyout
  * @private
  */
-Blockly.Toolbox.prototype.showCategory_ = function(category_id) {
+Blockly.Toolbox.prototype.showCategory_ = function (category_id) {
     const { flyout } = DBotStore.instance;
     const selected_category = this.categoryMenu_.categories_.find(category => category.id_ === category_id);
     let flyout_content = selected_category.getContents();
@@ -303,10 +300,11 @@ Blockly.Toolbox.prototype.showCategory_ = function(category_id) {
     }
 
     flyout.setIsSearchFlyout(false);
+    flyout.setSelectedCategory(category_id);
     flyout.setContents(flyout_content);
 };
 
-Blockly.Toolbox.prototype.getCategoryContents = function(selected_category) {
+Blockly.Toolbox.prototype.getCategoryContents = function (selected_category) {
     let xml_list = selected_category.getContents();
 
     // Dynamic categories
@@ -326,7 +324,7 @@ Blockly.Toolbox.prototype.getCategoryContents = function(selected_category) {
  * @return {string} The css class names to be applied, space-separated.
  * @deriv/bot: Custom class names
  */
-Blockly.Toolbox.Category.prototype.getMenuItemClassName_ = function(selected) {
+Blockly.Toolbox.Category.prototype.getMenuItemClassName_ = function (selected) {
     const classNames = ['toolbox__item', `toolbox__category--${this.id_}`];
 
     if (selected) {
@@ -342,7 +340,7 @@ Blockly.Toolbox.Category.prototype.getMenuItemClassName_ = function(selected) {
  * @param {Blockly.Toolbox.Category} item The category to select.
  * @param {boolean} should_close_on_same_category Close when select the same category
  */
-Blockly.Toolbox.prototype.setSelectedItem = function(item, should_close_on_same_category = true) {
+Blockly.Toolbox.prototype.setSelectedItem = function (item, should_close_on_same_category = true) {
     const {
         instance: { flyout },
     } = DBotStore;
@@ -457,15 +455,19 @@ Blockly.Toolbox.prototype.setSelectedItem = function(item, should_close_on_same_
  * procedures.
  * @deriv/bot: Calls showAll() in Scratch, we don't want that.
  */
-Blockly.Toolbox.prototype.refreshSelection = function() {};
+Blockly.Toolbox.prototype.refreshSelection = function () {};
 
 /**
  * Create the DOM for a category in the toolbox.
  * @deriv/bot: Custom class names + injection of description
  */
-Blockly.Toolbox.Category.prototype.createDom = function() {
+Blockly.Toolbox.Category.prototype.createDom = function () {
     const toolbox = this.parent_.parent_;
     const el_item = goog.dom.createDom('div', this.getMenuItemClassName_());
+
+    // Rename localize function to avoid variables being pushed to Crowdin.
+    // The names + descriptions are extracted using a script in extract-translations.js
+    const toolboxLocalize = localize;
 
     this.item_ = el_item;
 
@@ -477,14 +479,14 @@ Blockly.Toolbox.Category.prototype.createDom = function() {
         el_item.appendChild(el_colour);
     }
 
-    const el_label = goog.dom.createDom('div', 'toolbox__label', this.name_);
+    const el_label = goog.dom.createDom('div', 'toolbox__label', toolboxLocalize(this.name_));
     const el_toolbox_text = goog.dom.createDom('div', 'toolbox__category-text');
 
     this.label_ = el_label;
     el_toolbox_text.appendChild(el_label);
 
     if (this.description_) {
-        const el_description = goog.dom.createDom('div', 'toolbox__description', this.description_);
+        const el_description = goog.dom.createDom('div', 'toolbox__description', toolboxLocalize(this.description_));
         el_toolbox_text.appendChild(el_description);
     }
 
@@ -513,7 +515,7 @@ Blockly.Toolbox.Category.prototype.createDom = function() {
  * if we specify this.custom_, parseContents() is never called (see core/toolbox.js),
  * so we don't get extra props we require. See parseContents_
  */
-Blockly.Toolbox.Category.prototype.getContents = function() {
+Blockly.Toolbox.Category.prototype.getContents = function () {
     return this.custom_ || this.dynamic_ || this.contents_;
 };
 
@@ -523,7 +525,7 @@ Blockly.Toolbox.Category.prototype.getContents = function() {
  * @constructor
  * @deriv/bot: Set some extra properties on the Blockly.Toolbox.Category
  */
-Blockly.Toolbox.Category.prototype.parseContents_ = function(domTree) {
+Blockly.Toolbox.Category.prototype.parseContents_ = function (domTree) {
     this.description_ = domTree.getAttribute('description');
     this.dynamic_ = domTree.getAttribute('dynamic');
     this.is_category_return_ = !!domTree.getAttribute('is_category_return');
@@ -559,7 +561,7 @@ Blockly.Toolbox.Category.prototype.parseContents_ = function(domTree) {
  *     Colours are a hex string or hue on a colour wheel (0-360).
  * @deriv/bot: We don't need secondaryColour
  */
-Blockly.Toolbox.Category.prototype.setColour = function(node) {
+Blockly.Toolbox.Category.prototype.setColour = function (node) {
     const colour = node.getAttribute('colour');
 
     if (goog.isString(colour)) {
@@ -578,7 +580,7 @@ Blockly.Toolbox.Category.prototype.setColour = function(node) {
  * Create the DOM for the category menu.
  * @deriv/bot: Custom class names
  */
-Blockly.Toolbox.CategoryMenu.prototype.createDom = function() {
+Blockly.Toolbox.CategoryMenu.prototype.createDom = function () {
     const className = this.parent_.horizontalLayout_ ? 'toolbox__horizontal-category-menu' : 'toolbox__category-menu';
 
     this.table = goog.dom.createDom('div', className);
@@ -590,7 +592,7 @@ Blockly.Toolbox.CategoryMenu.prototype.createDom = function() {
  * {Blockly.Toolbox.Category} for every category tag in the toolbox xml.
  * @param {Node} domTree DOM tree of blocks, or null.
  */
-Blockly.Toolbox.CategoryMenu.prototype.populate = function(domTree, is_subcategory = false) {
+Blockly.Toolbox.CategoryMenu.prototype.populate = function (domTree, is_subcategory = false) {
     if (!domTree) {
         return;
     }
@@ -644,25 +646,25 @@ Blockly.Toolbox.CategoryMenu.prototype.populate = function(domTree, is_subcatego
     this.height_ = this.table.offsetHeight;
 };
 
-Blockly.Toolbox.prototype.refreshCategory = function() {
+Blockly.Toolbox.prototype.refreshCategory = function () {
     const category = this.getSelectedItem();
 
     this.setSelectedItem(category, false);
 };
 
-Blockly.Toolbox.prototype.toggle = function() {
-    const { toolbar, flyout } = DBotStore.instance;
-    if (!toolbar.is_toolbox_open) {
-        this.addStyle('toolbox--hidden');
+Blockly.Toolbox.prototype.setVisibility = function (is_open) {
+    const { flyout } = DBotStore.instance;
 
-        flyout.setVisibility(false);
+    flyout.setVisibility(false);
+
+    if (is_open) {
+        this.removeStyle('toolbox--hidden');
+    } else {
+        this.addStyle('toolbox--hidden');
 
         if (this.selectedItem_) {
             this.selectedItem_.setSelected(false);
             this.selectedItem_ = null;
         }
-    } else {
-        flyout.setVisibility(false);
-        this.removeStyle('toolbox--hidden');
     }
 };

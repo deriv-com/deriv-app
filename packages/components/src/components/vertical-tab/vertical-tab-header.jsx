@@ -1,8 +1,9 @@
 import classNames from 'classnames';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import Counter from 'Components/counter';
-import Icon from 'Components/icon/icon.jsx';
+import { getKebabCase } from '@deriv/shared';
+import Counter from '../counter';
+import Icon from '../icon/icon.jsx';
 
 const HeaderIcon = ({ icon, is_active }) => (
     <Icon
@@ -13,13 +14,17 @@ const HeaderIcon = ({ icon, is_active }) => (
     />
 );
 
-const Header = ({ text }) => <div className='dc-vertical-tab__header__link'>{text}</div>;
+const Header = ({ text, path }) => (
+    <div className='dc-vertical-tab__header__link' id={path}>
+        {text}
+    </div>
+);
 
 const VerticalTabHeader = ({ children, className, is_floating, is_routed, item, onChange, selected }) => {
-    const label = item.label || item.title; // item.label.charAt(0).toUpperCase() + item.label.slice(1).toLowerCase();
+    const label = item.label || item.title || item.getTitle?.(); // item.label.charAt(0).toUpperCase() + item.label.slice(1).toLowerCase();
     const is_active = selected && selected.label === item.label;
     const handleClick = () => onChange(item);
-    const id = `dt_${label}_link`;
+    const id = `dc_${getKebabCase(label)}_link`;
     const is_disabled = !!item.is_disabled;
     const count = item.count || 0;
 
@@ -37,7 +42,7 @@ const VerticalTabHeader = ({ children, className, is_floating, is_routed, item, 
             })}
         >
             <HeaderIcon icon={item.icon} is_active={is_active} />
-            <Header text={label} />
+            <Header text={label} path={item.path} />
             {!!count && <Counter count={count} className='dc-vertical-tab__header__counter' />}
             {children}
         </NavLink>

@@ -1,9 +1,8 @@
 import debounce from 'lodash.debounce';
-import { action, computed, observable } from 'mobx';
-import { isDesktop } from '@deriv/shared/utils/screen';
-import Shortcode from 'Modules/Reports/Helpers/shortcode';
+import { action, computed, observable, runInAction } from 'mobx';
+import { toMoment } from '@deriv/shared';
 import { WS } from 'Services/ws-methods';
-import { toMoment } from '@deriv/shared/utils/date';
+
 import { formatStatementTransaction } from './Helpers/format-response';
 import getDateBoundaries from '../Profit/Helpers/format-request';
 import BaseStore from '../../base-store';
@@ -16,17 +15,15 @@ export default class StatementStore extends BaseStore {
     @observable is_loading = false;
     @observable has_loaded_all = false;
     @observable date_from = null;
-    @observable date_to = toMoment()
-        .startOf('day')
-        .add(1, 'd')
-        .subtract(1, 's')
-        .unix();
+    @observable date_to = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
     @observable error = '';
     @observable filtered_date_range;
 
     // `client_loginid` is only used to detect if this is in sync with the client-store, don't rely on
     // this for calculations. Use the client.currency instead.
     @observable client_loginid = '';
+
+    @observable account_statistics = {};
 
     @computed
     get is_empty() {
@@ -36,12 +33,6 @@ export default class StatementStore extends BaseStore {
     @computed
     get has_selected_date() {
         return !!(this.date_from || this.date_to);
-    }
-
-    @computed
-    get data_source() {
-        // TODO: remove this getter once Multiplier is supported in mobile
-        return isDesktop() ? this.data : this.data.filter(row => !Shortcode.isMultiplier({ shortcode: row.shortcode }));
     }
 
     @action.bound
@@ -54,21 +45,13 @@ export default class StatementStore extends BaseStore {
     @action.bound
     clearDateFilter() {
         this.date_from = null;
-        this.date_to = toMoment()
-            .startOf('day')
-            .add(1, 'd')
-            .subtract(1, 's')
-            .unix();
+        this.date_to = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
         this.partial_fetch_time = 0;
     }
 
     shouldFetchNextBatch(should_load_partially) {
         if (!should_load_partially && (this.has_loaded_all || this.is_loading)) return false;
-        const today = toMoment()
-            .startOf('day')
-            .add(1, 'd')
-            .subtract(1, 's')
-            .unix();
+        const today = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
         if (this.date_to < today) return !should_load_partially && this.partial_fetch_time;
         return true;
     }
@@ -123,7 +106,7 @@ export default class StatementStore extends BaseStore {
     }
 
     fetchOnScroll = debounce(left => {
-        if (left < 2000) {
+        if (left < 1500) {
             this.fetchNextBatch();
         }
     }, delay_on_scroll_time);
@@ -137,10 +120,29 @@ export default class StatementStore extends BaseStore {
     }
 
     @action.bound
+    async loadAccountStatistics() {
+        this.account_statistics = {};
+        const { client } = this.root_store;
+        const is_mx_mlt = client.standpoint.iom || client.standpoint.malta;
+        if (is_mx_mlt) {
+            const response_account_statistics = await WS.accountStatistics();
+            runInAction(() => {
+                if (response_account_statistics.error) {
+                    this.account_statistics = {};
+                    return;
+                }
+
+                this.account_statistics = response_account_statistics.account_statistics;
+            });
+        }
+    }
+
+    @action.bound
     accountSwitcherListener() {
         return new Promise(resolve => {
             this.clearTable();
             this.clearDateFilter();
+            this.loadAccountStatistics();
             return resolve(this.fetchNextBatch());
         });
     }
@@ -163,12 +165,13 @@ export default class StatementStore extends BaseStore {
         this.onNetworkStatusChange(this.networkStatusChangeListener);
         await WS.wait('authorize');
         this.fetchNextBatch(true);
+        this.loadAccountStatistics();
     }
 
+    /* DO NOT call clearDateFilter() upon unmounting the component, date filters should stay 
+    as we change tab or click on any contract for later references as discussed with UI/UX and QA */
     @action.bound
     onUnmount() {
-        this.clearTable();
-        this.clearDateFilter();
         this.disposeSwitchAccount();
         WS.forgetAll('proposal');
     }

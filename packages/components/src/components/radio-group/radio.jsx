@@ -2,69 +2,56 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-class Radio extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            checked: props.defaultChecked,
-        };
-    }
+const Radio = ({
+    children,
+    className,
+    classNameLabel,
+    defaultChecked,
+    id,
+    onChange, // This needs to be here so it's not included in `otherProps`
+    ...otherProps
+}) => {
+    const [checked, setChecked] = React.useState(defaultChecked);
 
     /*
-     * We use componentDidUpdate here to tell the Radio component to update itself
+     * We use useEffect here to tell the Radio component to update itself
      * when it's no longer selected
      * This is because we're handling the state of what's selected in RadioGroup with the defaultChecked prop
      */
-    componentDidUpdate(prevProps) {
-        if (this.props.defaultChecked === prevProps.defaultChecked) {
-            return;
-        }
+    React.useEffect(() => {
+        setChecked(defaultChecked);
+    }, [defaultChecked]);
 
-        this.setState({ checked: this.props.defaultChecked });
-    }
-
-    onChange = e => {
-        this.setState({ checked: e.target.checked });
-        this.props.onChange(e);
+    const onInputChange = e => {
+        setChecked(e.target.checked);
+        onChange(e);
     };
 
-    render() {
-        const {
-            className,
-            classNameLabel,
-            id,
-            children,
-            onChange, // This needs to be here so it's not included in `otherProps`
-            ...otherProps
-        } = this.props;
-
-        return (
-            <label htmlFor={id} className={classNames('dc-radio-group__item', className)}>
-                <input
-                    className='dc-radio-group__input'
-                    type='radio'
-                    id={id}
-                    onChange={this.onChange}
-                    {...otherProps}
-                />
-                <span
-                    className={classNames('dc-radio-group__circle', {
-                        'dc-radio-group__circle--selected': this.state.checked,
-                    })}
-                />
-                <span className={classNames('dc-radio-group__label', classNameLabel)}>{children}</span>
-            </label>
-        );
-    }
-}
+    return (
+        <label
+            htmlFor={id}
+            className={classNames('dc-radio-group__item', className, {
+                'dc-radio-group__item--active': checked,
+            })}
+        >
+            <input className='dc-radio-group__input' type='radio' id={id} onChange={onInputChange} {...otherProps} />
+            <span
+                className={classNames('dc-radio-group__circle', {
+                    'dc-radio-group__circle--selected': checked,
+                })}
+            />
+            <span className={classNames('dc-radio-group__label', classNameLabel)}>{children}</span>
+        </label>
+    );
+};
 
 Radio.propTypes = {
     children: PropTypes.node,
+    className: PropTypes.string,
+    classNameLabel: PropTypes.string,
+    defaultChecked: PropTypes.bool,
     id: PropTypes.string,
-    onClick: PropTypes.func,
-    selected: PropTypes.bool,
-    value: PropTypes.bool,
+    onChange: PropTypes.func,
 };
 
 export default Radio;

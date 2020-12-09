@@ -1,4 +1,4 @@
-import { getRoundedNumber } from '@deriv/shared/utils/currency';
+import { getRoundedNumber } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { info, log } from '../utils/broadcast';
 import { createError } from '../../../utils/error';
@@ -23,10 +23,10 @@ export default Engine =>
             this.sessionRuns = 0;
             this.sessionProfit = 0;
 
-            globalObserver.register('summary.clear', this.clearSummary.bind(this));
+            globalObserver.register('statistics.clear', this.clearStatistics.bind(this));
         }
 
-        clearSummary() {
+        clearStatistics() {
             this.sessionRuns = 0;
             this.sessionProfit = 0;
             if (!this.accountInfo) return;
@@ -66,7 +66,7 @@ export default Engine =>
                 totalPayout: accountStat.totalPayout,
             });
 
-            log(win ? log_types.PROFIT : log_types.LOST, { profit });
+            log(win ? log_types.PROFIT : log_types.LOST, { currency, profit });
         }
 
         updateAndReturnTotalRuns() {

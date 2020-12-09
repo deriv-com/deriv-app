@@ -1,14 +1,29 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import { removeBranchName } from '@deriv/shared/utils/url';
-import routes from '@deriv/shared/utils/routes';
-import ObjectUtils from '@deriv/shared/utils/object';
-import { redirectToLogin, redirectToSignUp } from '_common/base/login';
+import {
+    redirectToLogin,
+    redirectToSignUp,
+    removeBranchName,
+    routes,
+    isEmptyObject,
+    default_title,
+    PlatformContext,
+} from '@deriv/shared';
+import { getLanguage } from '@deriv/translations';
 import LoginPrompt from 'App/Components/Elements/login-prompt.jsx';
-import { default_title } from 'App/Constants/app-config';
+import Page404 from 'Modules/Page404';
 import { connect } from 'Stores/connect';
 
 const RouteWithSubRoutes = route => {
+    const { is_deriv_crypto } = React.useContext(PlatformContext);
+
+    const validateRoute = pathname => {
+        if (pathname.startsWith('/cashier')) {
+            return route.path === pathname || !!(route.routes && route.routes.find(r => pathname === r.path));
+        }
+        return true;
+    };
+
     const renderFactory = props => {
         let result = null;
         if (route.component === Redirect) {
@@ -21,21 +36,33 @@ const RouteWithSubRoutes = route => {
             }
             result = <Redirect to={to} />;
         } else if (route.is_authenticated && !route.is_logged_in) {
-            result = <LoginPrompt onLogin={redirectToLogin} onSignup={redirectToSignUp} page_title={route.title} />;
+            result = (
+                <LoginPrompt
+                    onLogin={() => redirectToLogin(route.is_logged_in, getLanguage())}
+                    onSignup={() => redirectToSignUp({ is_deriv_crypto })}
+                    page_title={route.getTitle()}
+                />
+            );
         } else {
             const default_subroute = route.routes ? route.routes.find(r => r.default) : {};
-            const has_default_subroute = !ObjectUtils.isEmptyObject(default_subroute);
-            const pathname = removeBranchName(location.pathname);
+            const has_default_subroute = !isEmptyObject(default_subroute);
+            const pathname = removeBranchName(location.pathname).replace(/\/$/, '');
+            const is_valid_route = validateRoute(pathname);
+
             result = (
                 <React.Fragment>
                     {has_default_subroute && pathname === route.path && <Redirect to={default_subroute.path} />}
-                    <route.component {...props} routes={route.routes} passthrough={route.passthrough} />
+                    {is_valid_route ? (
+                        <route.component {...props} routes={route.routes} passthrough={route.passthrough} />
+                    ) : (
+                        <Page404 />
+                    )}
                 </React.Fragment>
             );
         }
 
-        const title = route.title ? `${route.title} | ` : '';
-        document.title = `${title}${default_title}`;
+        const title = route.getTitle?.() || '';
+        document.title = `${title} | ${default_title}`;
         return result;
     };
 

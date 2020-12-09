@@ -1,10 +1,10 @@
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Accordion, Button, DesktopWrapper, Dropdown, MobileWrapper, SelectNative } from '@deriv/components';
+import { Accordion, Button, DesktopWrapper, Dropdown, MobileWrapper, SelectNative, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { website_name } from 'App/Constants/app-config';
+import { website_name } from '@deriv/shared';
 import PaymentAgentDetails from './payment-agent-details.jsx';
 import EmailSent from './Email/email-sent.jsx';
 import Loading from '../../../templates/_common/components/loading.jsx';
@@ -26,22 +26,28 @@ class PaymentAgentList extends React.Component {
                 </div>
             );
         }
+
+        const list_with_default = [
+            { text: <Localize i18n_default_text='All payment agents' />, value: 0 },
+            ...this.props.supported_banks,
+        ];
+
         return (
             <div className='cashier__wrapper--align-left'>
-                <p className='cashier__paragraph'>
+                <Text as='p' size='xs' line_height='s' className='cashier__paragraph'>
                     <Localize
                         i18n_default_text='A payment agent is authorised to process deposits and withdrawals for you if your local payment methods or currencies are not supported on {{website_name}}.'
                         values={{ website_name }}
                     />
-                </p>
+                </Text>
                 <div className='payment-agent__instructions'>
                     <div className='payment-agent__instructions-section'>
                         <h2 className='cashier__header payment-agent__header'>
                             <Localize i18n_default_text='Deposit' />
                         </h2>
-                        <p className='cashier__paragraph'>
+                        <Text as='p' size='xs' line_height='s' className='cashier__paragraph'>
                             <Localize i18n_default_text='Choose a payment agent and contact them for instructions.' />
-                        </p>
+                        </Text>
                     </div>
                     <div className='payment-agent__instructions-section'>
                         <h2 className='cashier__header payment-agent__header'>
@@ -74,7 +80,7 @@ class PaymentAgentList extends React.Component {
                                         classNameDisplay='cashier__drop-down-display payment-agent__filter-display'
                                         classNameDisplaySpan='cashier__drop-down-display-span'
                                         classNameItems='cashier__drop-down-items'
-                                        list={this.props.supported_banks}
+                                        list={list_with_default}
                                         name='payment_methods'
                                         value={this.props.selected_bank}
                                         onChange={this.props.onChangePaymentMethod}
@@ -120,9 +126,9 @@ class PaymentAgentList extends React.Component {
                     </React.Fragment>
                 )}
                 <div className='payment-agent__disclaimer'>
-                    <span className='cashier__text--bold'>
+                    <Text size='xs' line_height='xs' weight='bold' className='cashier__text'>
                         <Localize i18n_default_text='DISCLAIMER' />
-                    </span>
+                    </Text>
                     :&nbsp;
                     <Localize
                         i18n_default_text='{{website_name}} is not affiliated with any Payment Agent. Customers deal with Payment Agents at their sole risk. Customers are advised to check the credentials of Payment Agents, and check the accuracy of any information about Payments Agents (on Deriv or elsewhere) before transferring funds.'

@@ -63,12 +63,16 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
     }, [has_cookie_account]);
 
     React.useEffect(() => {
-        window.LC_API.on_chat_ended = () => {
-            if (!has_client_information) {
-                window.LiveChatWidget.call('set_customer_email', ' ');
-                window.LiveChatWidget.call('set_customer_name', ' ');
-            }
-        };
+        if (window.LiveChatWidget) {
+            window.LiveChatWidget.on('ready', () => {
+                window.LC_API.on_chat_ended = () => {
+                    if (!has_client_information) {
+                        window.LiveChatWidget.call('set_customer_email', ' ');
+                        window.LiveChatWidget.call('set_customer_name', ' ');
+                    }
+                };
+            });
+        }
     }, [has_client_information]);
 
     return (

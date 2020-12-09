@@ -126,13 +126,13 @@
     &__radio-group--with-margin {
         &--is-header {
             font-size: 1.6rem;
-            margin: 2rem 0 0;
+            margin: 1rem 0;
             font-weight: bold;
             color: var(--text-prominent);
         }
 
         @include desktop {
-            margin-bottom: 6rem;
+            margin-bottom: 2rem;
             margin-left: auto;
             margin-right: auto;
             width: 768px;

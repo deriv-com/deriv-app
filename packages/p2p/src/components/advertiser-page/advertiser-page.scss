@@ -32,10 +32,16 @@
         &-name {
             align-self: center;
             color: var(--text-prominent);
+            display: flex;
+            flex-flow: column;
             font-size: var(--text-size-s);
             font-weight: bold;
             height: fit-content;
             width: fit-content;
+        }
+        &-real-name {
+            margin-top: 0.4rem;
+            max-width: 500px;
         }
         &-verification {
             align-items: center;

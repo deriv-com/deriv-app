@@ -279,9 +279,7 @@ class MT5POA extends React.Component {
                                     height_offset='100px'
                                     is_disabled={isDesktop()}
                                 >
-                                    {is_loading && (
-                                        <Loading is_fullscreen={false} className='account___intial-loader' />
-                                    )}
+                                    {is_loading && <Loading is_fullscreen={false} />}
                                     {is_form_visible && (
                                         <ThemedScrollbars
                                             autohide={false}

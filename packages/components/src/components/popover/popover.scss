@@ -59,15 +59,6 @@
         }
         &__text {
             flex-grow: 2;
-            text-align: left;
-            line-height: 1.5;
-
-            .bold {
-                font-weight: bold;
-            }
-            &--error {
-                color: var(--text-colored-background);
-            }
         }
         &--error {
             background-color: var(--status-danger);

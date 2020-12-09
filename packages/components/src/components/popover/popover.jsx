@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import TinyPopover, { ArrowContainer } from 'react-tiny-popover';
 import Icon from '../icon';
+import Text from '../text';
 import { useHover } from '../../hooks/use-hover';
 
 const Popover = ({ ...props }) => {
@@ -158,13 +159,11 @@ const Popover = ({ ...props }) => {
                                             <Icon icon='IcInfoBlue' />
                                         </i>
                                     )}
-                                    <span
-                                        className={classNames('dc-popover__bubble__text', {
-                                            'dc-popover__bubble__text--error': has_error,
-                                        })}
-                                    >
-                                        {message}
-                                    </span>
+                                    {(has_error && <Text color='colored-background'> {message}</Text>) || (
+                                        <Text line_height='m' weight='bold' className='dc-popover__bubble__text'>
+                                            {message}
+                                        </Text>
+                                    )}
                                 </div>
                             </ArrowContainer>
                         );

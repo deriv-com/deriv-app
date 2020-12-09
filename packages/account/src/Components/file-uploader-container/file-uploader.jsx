@@ -46,7 +46,7 @@ const FileUploader = React.forwardRef(({ onFileDrop, getSocket }, ref) => {
     };
 
     const upload = () => {
-        if (!!document_file?.error_message || document_file?.files.length < 1) return 0;
+        if (!!document_file.error_message || document_file.files.length < 1) return 0;
 
         // File uploader instance connected to binary_socket
         const uploader = new DocumentUploader({ connection: getSocket() });
@@ -91,15 +91,15 @@ const FileUploader = React.forwardRef(({ onFileDrop, getSocket }, ref) => {
                 multiple={false}
                 onDropAccepted={handleAcceptedFiles}
                 onDropRejected={handleRejectedFiles}
-                validation_error_message={document_file?.error_message}
-                value={document_file?.files}
+                validation_error_message={document_file.error_message}
+                value={document_file.files}
             />
-            {(document_file?.files.length > 0 || !!document_file?.error_message) && (
+            {(document_file.files.length > 0 || !!document_file.error_message) && (
                 <div className='account-poa__upload-remove-btn-container'>
                     <Icon
                         icon='IcCloseCircle'
                         className={classNames('account-poa__upload-remove-btn', {
-                            'account-poa__upload-remove-btn--error': !!document_file?.error_message,
+                            'account-poa__upload-remove-btn--error': !!document_file.error_message,
                         })}
                         onClick={removeFile}
                         color='secondary'
@@ -111,6 +111,7 @@ const FileUploader = React.forwardRef(({ onFileDrop, getSocket }, ref) => {
 });
 
 FileUploader.propTypes = {
+    onFileDrop: PropTypes.func,
     getSocket: PropTypes.func,
 };
 

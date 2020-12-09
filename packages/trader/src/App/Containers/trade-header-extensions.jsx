@@ -7,26 +7,29 @@ import TogglePositionsMobile from 'App/Components/Elements/TogglePositions/toggl
 import { connect, MobxContentProvider } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';
 
-class TradeHeaderExtensions extends React.Component {
-    populateHeader = () => {
-        const {
-            active_positions_count,
-            disableApp,
-            enableApp,
-            is_logged_in,
-            is_positions_empty,
-            onPositionsRemove,
-            onPositionsSell,
-            onPositionsCancel,
-            positions,
-            positions_currency,
-            positions_error,
-            populateHeaderExtensions,
-        } = this.props;
-
+const TradeHeaderExtensions = ({
+    active_positions_count,
+    disableApp,
+    enableApp,
+    is_logged_in,
+    is_positions_empty,
+    onPositionsRemove,
+    onPositionsSell,
+    onPositionsCancel,
+    positions,
+    positions_currency,
+    positions_error,
+    populateHeaderExtensions,
+    store,
+    onMountPositions,
+    onMountCashier,
+    setAccountSwitchListener,
+    onUnmountPositions,
+}) => {
+    const populateHeader = () => {
         const header_items = is_logged_in && (
             <MobileWrapper>
-                <MobxContentProvider store={this.props.store}>
+                <MobxContentProvider store={store}>
                     <TogglePositionsMobile
                         active_positions_count={active_positions_count}
                         all_positions={positions}
@@ -46,36 +49,37 @@ class TradeHeaderExtensions extends React.Component {
         populateHeaderExtensions(header_items);
     };
 
-    async componentDidMount() {
-        if (isMobile()) {
-            const { client } = this.props.store;
-            // Waits for login to complete
-            await when(() => !client.is_populating_account_list);
-            if (this.props.is_logged_in) {
-                await WS.wait('authorize');
-                this.props.onMountPositions();
-                this.props.onMountCashier(true);
-                this.props.setAccountSwitchListener();
+    React.useEffect(() => {
+        const waitForLogin = async () => {
+            if (isMobile()) {
+                const { client } = store;
+                // Waits for login to complete
+                await when(() => !client.is_populating_account_list);
+                if (is_logged_in) {
+                    await WS.wait('authorize');
+                    onMountPositions();
+                    onMountCashier(true);
+                    setAccountSwitchListener();
+                }
             }
-        }
 
-        this.populateHeader();
-    }
+            populateHeader();
+        };
 
-    componentDidUpdate() {
-        this.populateHeader();
-    }
+        waitForLogin();
+    }, []);
 
-    componentWillUnmount() {
-        if (isMobile()) this.props.onUnmountPositions();
-        this.props.populateHeaderExtensions(null);
-    }
+    React.useEffect(() => {
+        populateHeader();
 
-    // eslint-disable-next-line class-methods-use-this
-    render() {
-        return null;
-    }
-}
+        return () => {
+            if (isMobile()) onUnmountPositions();
+            populateHeaderExtensions(null);
+        };
+    });
+
+    return null;
+};
 
 TradeHeaderExtensions.propTypes = {
     is_logged_in: PropTypes.bool,

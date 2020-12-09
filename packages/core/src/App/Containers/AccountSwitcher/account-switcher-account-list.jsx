@@ -5,30 +5,21 @@ import { formatMoney, getCurrencyName, getMT5AccountDisplay, getCurrencyDisplayC
 import { Localize, localize } from '@deriv/translations';
 
 const AccountList = ({
-    account_type,
     balance,
     currency,
     currency_icon,
     display_type,
     has_balance,
     has_reset_balance,
-    is_eu,
     is_disabled,
     is_virtual,
     loginid,
+    market_type,
     onClickAccount,
     onClickResetVirtualBalance,
     selected_loginid,
+    sub_account_type,
 }) => {
-    const market_type = React.useMemo(() => {
-        if (loginid.startsWith('MX') || loginid.startsWith('MLT')) {
-            return localize('Synthetic');
-        } else if (loginid.startsWith('MF')) {
-            return localize('Financial');
-        }
-        return '';
-    }, [loginid]);
-
     if (is_disabled && !currency) return null;
     const currency_badge = currency ? currency_icon : 'IcCurrencyUnknown';
 
@@ -50,14 +41,9 @@ const AccountList = ({
                     />
                     <span>
                         {display_type === 'currency' ? (
-                            <CurrencyDisplay
-                                is_virtual={is_virtual}
-                                currency={currency}
-                                is_eu={is_eu}
-                                market_type={market_type}
-                            />
+                            <CurrencyDisplay is_virtual={is_virtual} currency={currency} />
                         ) : (
-                            <AccountDisplay account_type={account_type} />
+                            <AccountDisplay market_type={market_type} sub_account_type={sub_account_type} />
                         )}
                         <div className='acc-switcher__loginid-text'>{loginid}</div>
                     </span>
@@ -109,6 +95,8 @@ const CurrencyDisplay = ({ currency, is_virtual }) => {
     return getCurrencyName(currency);
 };
 
-const AccountDisplay = ({ account_type }) => <div>{getMT5AccountDisplay(account_type)}</div>;
+const AccountDisplay = ({ market_type, sub_account_type }) => (
+    <div>{getMT5AccountDisplay(market_type, sub_account_type)}</div>
+);
 
 export default AccountList;

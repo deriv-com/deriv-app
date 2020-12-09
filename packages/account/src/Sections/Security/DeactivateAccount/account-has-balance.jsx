@@ -117,9 +117,9 @@ const AccountHasBalanceOrOpenPositions = ({ details, mt5_login_list, client_acco
                     {mt5_open_positions.map(account => (
                         <Content
                             key={account.login}
-                            currency_icon={`IcMt5-${getMT5Account(account.group)}`}
+                            currency_icon={`IcMt5-${getMT5Account(account.market_type, account.sub_account_type)}`}
                             loginid={account.display_login}
-                            title={getMT5AccountDisplay(account.group)}
+                            title={getMT5AccountDisplay(account.market_type, account.sub_account_type)}
                             value={
                                 <Localize
                                     i18n_default_text='{{number_of_positions}} position(s)'
@@ -135,9 +135,9 @@ const AccountHasBalanceOrOpenPositions = ({ details, mt5_login_list, client_acco
                     {mt5_balance.map(account => (
                         <Content
                             key={account.login}
-                            currency_icon={`IcMt5-${getMT5Account(account.group)}`}
+                            currency_icon={`IcMt5-${getMT5Account(account.market_type, account.sub_account_type)}`}
                             loginid={account.display_login}
-                            title={getMT5AccountDisplay(account.group)}
+                            title={getMT5AccountDisplay(account.market_type, account.sub_account_type)}
                             value={
                                 <Money
                                     currency={account.currency}

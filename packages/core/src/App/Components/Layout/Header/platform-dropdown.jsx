@@ -25,7 +25,7 @@ class PlatformDropdown extends React.PureComponent {
         }
     };
 
-    componentWillMount() {
+    componentDidMount() {
         window.addEventListener('popstate', this.props.closeDrawer);
         if (isDesktop()) document.addEventListener('click', this.handleClickOutside);
     }

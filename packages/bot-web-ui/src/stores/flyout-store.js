@@ -30,7 +30,6 @@ export default class FlyoutStore {
 
     @action.bound
     onMount() {
-        this.workspace = Blockly.derivWorkspace;
         this.initFlyout();
         window.addEventListener('click', this.onClickOutsideFlyout);
     }
@@ -42,8 +41,7 @@ export default class FlyoutStore {
 
     @action.bound
     initFlyout() {
-        const workspace = this.workspace;
-
+        const workspace = Blockly.derivWorkspace;
         const options = {
             parentWorkspace: workspace,
             RTL: workspace.RTL,
@@ -63,7 +61,7 @@ export default class FlyoutStore {
         this.flyout.workspace_.getGesture = this.flyout.targetWorkspace_.getGesture.bind(this.flyout.targetWorkspace_);
 
         // Get variables from the main workspace rather than the target workspace.
-        this.workspace.variableMap_ = this.flyout.targetWorkspace_.getVariableMap();
+        workspace.variableMap_ = this.flyout.targetWorkspace_.getVariableMap();
 
         this.flyout.workspace_.createPotentialVariableMap();
 
@@ -72,6 +70,7 @@ export default class FlyoutStore {
 
     @action.bound
     initFlyoutButton(flyout_button) {
+        const workspace = Blockly.derivWorkspace;
         const callback_key = flyout_button.getAttribute('callbackKey');
 
         const callback = button => {
@@ -80,7 +79,7 @@ export default class FlyoutStore {
         };
 
         flyout_button.setAttribute('callbackKey', callback_key);
-        this.workspace.registerButtonCallback(callback_key, callback);
+        workspace.registerButtonCallback(callback_key, callback);
     }
 
     /**
@@ -94,7 +93,7 @@ export default class FlyoutStore {
         const workspace = Blockly.inject(el_block_workspace, this.options);
 
         workspace.isFlyout = true;
-        workspace.targetWorkspace = this.workspace;
+        workspace.targetWorkspace = Blockly.derivWorkspace;
 
         const block = Blockly.Xml.domToBlock(block_node, workspace);
         // Using block.getHeightWidth() here because getDimentions() also calls Blockly.Xml.domToBlock
@@ -229,7 +228,7 @@ export default class FlyoutStore {
      */
     @action.bound
     onClickOutsideFlyout(event) {
-        if (!this.is_visible || !this.workspace) {
+        if (!this.is_visible || !Blockly.derivWorkspace) {
             return;
         }
 

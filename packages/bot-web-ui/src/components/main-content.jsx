@@ -32,8 +32,12 @@ const MainContent = ({ active_tab, onMount, onUnmount, setContainerSize }) => {
                     height: 'var(--bot-content-height)',
                 }}
             >
-                <Toolbox />
-                <Flyout />
+                {Blockly.derivWorkspace && (
+                    <React.Fragment>
+                        <Toolbox />
+                        <Flyout />
+                    </React.Fragment>
+                )}
             </div>
         );
     }
@@ -62,7 +66,7 @@ MainContent.propTypes = {
     setContainerSize: PropTypes.func,
 };
 
-export default connect(({ main_content }) => ({
+export default connect(({ blockly_store, main_content }) => ({
     active_tab: main_content.active_tab,
     onMount: main_content.onMount,
     onUnmount: main_content.onUnmount,

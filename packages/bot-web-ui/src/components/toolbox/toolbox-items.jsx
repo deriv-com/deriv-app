@@ -38,7 +38,7 @@ const Xml = ({ ...props }) => {
 };
 
 export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
-    <Xml xmlns='http://www.w3.org/1999/xhtml'>
+    <Xml xmlns='http://www.w3.org/1999/xhtml' id='toolbox'>
         <Category id='trade_parameters' name='Set up your trade'>
             <Block type='trade_definition'>
                 <Statement name='TRADE_OPTIONS'>

@@ -17,11 +17,11 @@ export default class ToolboxStore {
     @action.bound
     onMount(toolbox_ref) {
         const { core } = this.root_store;
-        this.workspace = Blockly.derivWorkspace;
         this.adjustWorkspace();
 
         if (!isMobile()) {
             this.toolbox_dom = Blockly.Xml.textToDom(toolbox_ref?.current);
+            this.setWorkspaceOptions();
             this.disposeToolboxToggleReaction = reaction(
                 () => this.is_toolbox_open,
                 is_toolbox_open => {
@@ -44,15 +44,41 @@ export default class ToolboxStore {
     }
 
     @action.bound
+    setWorkspaceOptions() {
+        const workspace = Blockly.derivWorkspace;
+        var readOnly = !!workspace.options['readOnly'];
+        if (readOnly) {
+            var languageTree = null;
+            var hasCategories = false;
+            var hasCollapse = false;
+            var hasComments = false;
+            var hasDisable = false;
+        } else {
+            var languageTree = this.toolbox_dom;
+            var hasCategories = Boolean(languageTree && languageTree.getElementsByTagName('category').length);
+            hasCollapse = hasCategories;
+            hasComments = hasCategories;
+            hasDisable = hasCategories;
+        }
+
+        workspace.options.collapse = hasCollapse;
+        workspace.options.comments = hasComments;
+        workspace.options.disable = hasDisable;
+        workspace.options.hasCategories = hasCategories;
+        workspace.options.languageTree = languageTree;
+    }
+
+    @action.bound
     adjustWorkspace() {
+        const workspace = Blockly.derivWorkspace;
         const toolbox_width = document.getElementById('gtm-toolbox')?.getBoundingClientRect().width || 0;
-        const block_canvas_rect = this.workspace.svgBlockCanvas_.getBoundingClientRect(); // eslint-disable-line
+        const block_canvas_rect = workspace.svgBlockCanvas_.getBoundingClientRect(); // eslint-disable-line
 
         if (Math.round(block_canvas_rect.left) <= toolbox_width) {
             const scroll_distance = isMobile()
                 ? toolbox_width - block_canvas_rect.left + 20
                 : toolbox_width - block_canvas_rect.left + 36;
-            scrollWorkspace(this.workspace, scroll_distance, true, false);
+            scrollWorkspace(workspace, scroll_distance, true, false);
         }
     }
 
@@ -89,13 +115,14 @@ export default class ToolboxStore {
 
     @action.bound
     getCategoryContents(category) {
+        const workspace = Blockly.derivWorkspace;
         const dynamic = category.getAttribute('dynamic');
         let xml_list = Array.from(category.childNodes);
 
         // Dynamic categories
         if (typeof dynamic === 'string') {
-            const fnToApply = this.workspace.getToolboxCategoryCallback(dynamic);
-            xml_list = fnToApply(this.workspace);
+            const fnToApply = workspace.getToolboxCategoryCallback(dynamic);
+            xml_list = fnToApply(workspace);
         }
 
         return xml_list;
@@ -163,11 +190,12 @@ export default class ToolboxStore {
 
     @action.bound
     showSearch(search) {
+        const workspace = Blockly.derivWorkspace;
         const flyout_content = [];
         const search_term = search.replace(/\s+/g, ' ').trim().toUpperCase();
         const search_words = search_term.split(' ');
-        const all_variables = this.workspace.getVariablesOfType('');
-        const all_procedures = Blockly.Procedures.allProcedures(this.workspace);
+        const all_variables = workspace.getVariablesOfType('');
+        const all_procedures = Blockly.Procedures.allProcedures(workspace);
         const { flyout } = this.root_store;
 
         flyout.setVisibility(false);

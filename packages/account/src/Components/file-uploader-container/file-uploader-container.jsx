@@ -4,7 +4,7 @@ import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import FileUploader from './file-uploader.jsx';
 
-const FileUploaderContainer = (props) => {
+const FileUploaderContainer = props => {
     const ref = React.useRef(null);
 
     const getSocketFunc = props.getSocket ?? WS.getSocket;

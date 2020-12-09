@@ -130,162 +130,169 @@ const RadioInput = ({ touched, errors, field, values, ...props }) => (
     </Radio>
 );
 
-class PaymentAgentWithdrawForm extends React.Component {
-    componentDidMount() {
-        this.props.onMount();
-    }
+const PaymentAgentWithdrawForm = ({
+    amount,
+    balance,
+    currency,
+    error,
+    is_loading,
+    is_try_withdraw_successful,
+    is_withdraw_successful,
+    onMount,
+    payment_agent_id,
+    payment_agent_list,
+    payment_agent_name,
+    requestTryPaymentAgentWithdraw,
+    resetPaymentAgent,
+    verification_code,
+}) => {
+    React.useEffect(() => {
+        onMount();
 
-    componentWillUnmount() {
-        this.props.resetPaymentAgent();
-    }
+        return () => {
+            resetPaymentAgent();
+        };
+    }, []);
 
-    validateWithdrawalPassthrough = values =>
+    const validateWithdrawalPassthrough = values => {
         validateWithdrawal(values, {
-            balance: this.props.balance,
-            currency: this.props.currency,
+            balance,
+            currency,
             payment_agent:
                 values.payment_method === 'payment_agent'
                     ? {}
-                    : this.props.payment_agent_list.find(pa => pa.value === values.payment_agents),
+                    : payment_agent_list.find(pa => pa.value === values.payment_agents),
         });
+    };
 
-    onWithdrawalPassthrough = async (values, actions) => {
-        const payment_agent_withdraw = await this.props.requestTryPaymentAgentWithdraw({
+    const onWithdrawalPassthrough = async (values, actions) => {
+        const payment_agent_withdraw = await requestTryPaymentAgentWithdraw({
             loginid: values[values.payment_method],
-            currency: this.props.currency,
+            currency,
             amount: values.amount,
-            verification_code: this.props.verification_code,
+            verification_code,
         });
         if (payment_agent_withdraw.error) {
             actions.setSubmitting(false);
         }
     };
 
-    render() {
-        if (this.props.is_loading || !this.props.payment_agent_list.length) {
-            return <Loading className='cashier__loader' />;
-        }
-        if (this.props.is_try_withdraw_successful) {
-            return <PaymentAgentWithdrawConfirm verification_code={this.props.verification_code} />;
-        }
-        if (this.props.is_withdraw_successful) {
-            return <PaymentAgentReceipt />;
-        }
-        const should_fill_id = !this.props.payment_agent_name && this.props.payment_agent_id;
-        return (
-            <div className='cashier__wrapper--align-left payment-agent__withdrawal'>
-                <h2 className='cashier__header'>
-                    <Localize i18n_default_text='Payment agent withdrawal' />
-                </h2>
-                <Formik
-                    initialValues={{
-                        // in case coming back from confirmation screen, populate the recent data to be edited
-                        amount: this.props.amount || '',
-                        payment_agent: should_fill_id ? this.props.payment_agent_id : '',
-                        payment_agents:
-                            should_fill_id || !this.props.payment_agent_name
-                                ? this.props.payment_agent_list[0]?.value
-                                : this.props.payment_agent_list.find(pa => pa.text === this.props.payment_agent_name)
-                                      ?.value,
-                        payment_method: should_fill_id ? 'payment_agent' : 'payment_agents',
-                    }}
-                    validate={this.validateWithdrawalPassthrough}
-                    onSubmit={this.onWithdrawalPassthrough}
-                >
-                    {({ errors, isSubmitting, isValid, values, touched }) => (
-                        <Form>
-                            <div className='payment-agent__radio-group'>
-                                <Field
-                                    id='payment_agents'
-                                    component={RadioDropDown}
-                                    payment_agent_list={this.props.payment_agent_list}
-                                    className='payment-agent__radio'
-                                    name='payment_method'
-                                    values={values}
-                                />
-                                <Field
-                                    id='payment_agent'
-                                    component={RadioInput}
-                                    touched={touched}
-                                    errors={errors}
-                                    values={values}
-                                    className='payment-agent__radio'
-                                    name='payment_method'
-                                />
-                            </div>
-                            <Field name='amount'>
-                                {({ field }) => (
-                                    <Input
-                                        {...field}
-                                        className='cashier__input cashier__input--short dc-input--no-placeholder'
-                                        type='text'
-                                        label={localize('Amount')}
-                                        error={touched.amount && errors.amount}
-                                        required
-                                        leading_icon={
-                                            <span
-                                                className={classNames(
-                                                    'symbols',
-                                                    `symbols--${this.props.currency.toLowerCase()}`
-                                                )}
-                                            >
-                                                {getCurrencyDisplayCode(this.props.currency)}
-                                            </span>
-                                        }
-                                        autoComplete='off'
-                                        maxLength='30'
-                                        hint={
-                                            values.payment_method === 'payment_agents' &&
-                                            this.props.payment_agent_list.find(
-                                                pa => pa.value === values.payment_agents
-                                            ) && (
-                                                <Localize
-                                                    i18n_default_text='Withdrawal limits: <0 />-<1 />'
-                                                    components={[
-                                                        <Money
-                                                            key={0}
-                                                            amount={
-                                                                this.props.payment_agent_list.find(
-                                                                    pa => pa.value === values.payment_agents
-                                                                ).min_withdrawal
-                                                            }
-                                                            currency={this.props.currency}
-                                                        />,
-                                                        <Money
-                                                            key={1}
-                                                            amount={
-                                                                this.props.payment_agent_list.find(
-                                                                    pa => pa.value === values.payment_agents
-                                                                ).max_withdrawal
-                                                            }
-                                                            currency={this.props.currency}
-                                                        />,
-                                                    ]}
-                                                />
-                                            )
-                                        }
-                                    />
-                                )}
-                            </Field>
-                            <div className='cashier__form-submit'>
-                                <Button
-                                    className='cashier__form-submit-button'
-                                    type='submit'
-                                    is_disabled={!isValid || isSubmitting}
-                                    primary
-                                    large
-                                >
-                                    <Localize i18n_default_text='Withdraw' />
-                                </Button>
-                            </div>
-                            <FormError error={this.props.error} />
-                        </Form>
-                    )}
-                </Formik>
-            </div>
-        );
+    if (is_loading || !payment_agent_list.length) {
+        return <Loading className='cashier__loader' />;
     }
-}
+    if (is_try_withdraw_successful) {
+        return <PaymentAgentWithdrawConfirm verification_code={verification_code} />;
+    }
+    if (is_withdraw_successful) {
+        return <PaymentAgentReceipt />;
+    }
+    const should_fill_id = !payment_agent_name && payment_agent_id;
+
+    return (
+        <div className='cashier__wrapper--align-left payment-agent__withdrawal'>
+            <h2 className='cashier__header'>
+                <Localize i18n_default_text='Payment agent withdrawal' />
+            </h2>
+            <Formik
+                initialValues={{
+                    // in case coming back from confirmation screen, populate the recent data to be edited
+                    amount: amount || '',
+                    payment_agent: should_fill_id ? payment_agent_id : '',
+                    payment_agents:
+                        should_fill_id || !payment_agent_name
+                            ? payment_agent_list[0]?.value
+                            : payment_agent_list.find(pa => pa.text === payment_agent_name)?.value,
+                    payment_method: should_fill_id ? 'payment_agent' : 'payment_agents',
+                }}
+                validate={validateWithdrawalPassthrough}
+                onSubmit={onWithdrawalPassthrough}
+            >
+                {({ errors, isSubmitting, isValid, values, touched }) => (
+                    <Form>
+                        <div className='payment-agent__radio-group'>
+                            <Field
+                                id='payment_agents'
+                                component={RadioDropDown}
+                                payment_agent_list={payment_agent_list}
+                                className='payment-agent__radio'
+                                name='payment_method'
+                                values={values}
+                            />
+                            <Field
+                                id='payment_agent'
+                                component={RadioInput}
+                                touched={touched}
+                                errors={errors}
+                                values={values}
+                                className='payment-agent__radio'
+                                name='payment_method'
+                            />
+                        </div>
+                        <Field name='amount'>
+                            {({ field }) => (
+                                <Input
+                                    {...field}
+                                    className='cashier__input cashier__input--short dc-input--no-placeholder'
+                                    type='text'
+                                    label={localize('Amount')}
+                                    error={touched.amount && errors.amount}
+                                    required
+                                    leading_icon={
+                                        <span className={classNames('symbols', `symbols--${currency.toLowerCase()}`)}>
+                                            {getCurrencyDisplayCode(currency)}
+                                        </span>
+                                    }
+                                    autoComplete='off'
+                                    maxLength='30'
+                                    hint={
+                                        values.payment_method === 'payment_agents' &&
+                                        payment_agent_list.find(pa => pa.value === values.payment_agents) && (
+                                            <Localize
+                                                i18n_default_text='Withdrawal limits: <0 />-<1 />'
+                                                components={[
+                                                    <Money
+                                                        key={0}
+                                                        amount={
+                                                            payment_agent_list.find(
+                                                                pa => pa.value === values.payment_agents
+                                                            ).min_withdrawal
+                                                        }
+                                                        currency={currency}
+                                                    />,
+                                                    <Money
+                                                        key={1}
+                                                        amount={
+                                                            payment_agent_list.find(
+                                                                pa => pa.value === values.payment_agents
+                                                            ).max_withdrawal
+                                                        }
+                                                        currency={currency}
+                                                    />,
+                                                ]}
+                                            />
+                                        )
+                                    }
+                                />
+                            )}
+                        </Field>
+                        <div className='cashier__form-submit'>
+                            <Button
+                                className='cashier__form-submit-button'
+                                type='submit'
+                                is_disabled={!isValid || isSubmitting}
+                                primary
+                                large
+                            >
+                                <Localize i18n_default_text='Withdraw' />
+                            </Button>
+                        </div>
+                        <FormError error={error} />
+                    </Form>
+                )}
+            </Formik>
+        </div>
+    );
+};
 
 PaymentAgentWithdrawForm.propTypes = {
     amount: PropTypes.string,

@@ -154,12 +154,11 @@ class MT5Dashboard extends React.Component {
             toggleShouldShowRealAccountsList,
         } = this.props;
         const should_show_missing_real_account = !is_eu && is_logged_in && !has_real_account;
-
-        if (!country) return <Loading />; // Wait for country name to be loaded before rendering
+        if (!country && is_logged_in) return <Loading />; // Wait for country name to be loaded before rendering
 
         return (
             <React.Fragment>
-                {is_mt5_allowed ? (
+                {is_mt5_allowed || !is_logged_in ? (
                     <div className='mt5-dashboard__container'>
                         <NotificationMessages />
                         <div className='mt5-dashboard'>
@@ -190,7 +189,7 @@ class MT5Dashboard extends React.Component {
                                     loading_component={LoadingMT5RealAccountDisplay}
                                     onTabItemClick={this.updateActiveIndex}
                                 >
-                                    <div label={localize('Demo account')} id='demo'>
+                                    <div label={localize('Demo account')} data-hash='demo'>
                                         <MT5DemoAccountDisplay
                                             is_eu={is_eu}
                                             is_logged_in={is_logged_in}
@@ -206,7 +205,7 @@ class MT5Dashboard extends React.Component {
                                             openPasswordManager={this.togglePasswordManagerModal}
                                         />
                                     </div>
-                                    <div label={localize('Real account')} id='real'>
+                                    <div label={localize('Real account')} data-hash='real'>
                                         <React.Fragment>
                                             {should_show_missing_real_account && (
                                                 <MissingRealAccount onClickSignup={beginRealSignupForMt5} />

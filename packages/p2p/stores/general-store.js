@@ -61,6 +61,11 @@ export default class GeneralStore extends BaseStore {
         return !!this.user_blocked_until;
     }
 
+    @computed
+    get is_my_profile_tab_visible() {
+        return this.is_advertiser && !this.root_store.my_profile_store.should_hide_my_profile_tab;
+    }
+
     @action.bound
     createAdvertiser(name) {
         requestWS({ p2p_advertiser_create: 1, name }).then(response => {

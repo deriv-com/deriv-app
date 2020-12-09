@@ -194,7 +194,7 @@ const App = observer(props => {
                                     {general_store.is_barred && <TemporaryBarredMessage />}
                                     <MyAds navigate={general_store.redirectTo} params={general_store.parameters} />
                                 </div>
-                                {general_store.is_advertiser && (
+                                {general_store.is_my_profile_tab_visible && (
                                     <div label={localize('My profile')}>
                                         <MyProfile
                                             navigate={general_store.redirectTo}

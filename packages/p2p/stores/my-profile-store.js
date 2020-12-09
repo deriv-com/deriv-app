@@ -14,6 +14,7 @@ export default class MyProfileStore extends BaseStore {
     @observable is_loading = true;
     @observable is_submit_success = false;
     @observable payment_info = '';
+    @observable should_hide_my_profile_tab = false;
 
     @action.bound
     getAdvertiserInfo() {
@@ -29,6 +30,10 @@ export default class MyProfileStore extends BaseStore {
                 this.setDefaultAdvertDescription(p2p_advertiser_info.default_advert_description);
                 this.setPaymentInfo(p2p_advertiser_info.payment_info);
             } else {
+                if (response.error.code === 'PermissionDenied') {
+                    this.root_store.general_store.redirectTo('buy_sell');
+                    this.setShouldHideMyProfileTab(true);
+                }
                 this.setErrorMessage(response.error);
             }
             this.setIsLoading(false);
@@ -105,6 +110,11 @@ export default class MyProfileStore extends BaseStore {
     @action.bound
     setPaymentInfo(payment_info) {
         this.payment_info = payment_info;
+    }
+
+    @action.bound
+    setShouldHideMyProfileTab(should_hide_my_profile_tab) {
+        this.should_hide_my_profile_tab = should_hide_my_profile_tab;
     }
 
     @action.bound

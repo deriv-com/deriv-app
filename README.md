@@ -58,8 +58,9 @@ All packages must contain the following scripts to perform the stated actions:
 | ✅            | `start`             | Runs complete test and build suite and starts the dev server.                                 |
 | ✅            | `serve`             | Runs build suite and starts the dev server. When serving `core`, takes optional `open` value as argument to open specific page. (e.g: `npm run serve core --open=bot`)      |
 | ✅            | `build`             | Runs build suite and outputs the result into `dist`. Takes optional `base` value as argument. |
-| ✅            | `test`              | Runs the test suite with eslint, and stylelint.                                               |
+| ✅            | `test`              | Runs the test suite with eslint, stylelint and jest.                                          |
 | ✅            | `test:mocha`        | Runs only the test suite.                                                                     |
+| ✅            | `test:jest`         | Runs only the jest test suite.                                                                |
 
 [comment]: <> (The following scripts are not to be used except for CI/CD environments)
 [comment]: <> (| ❌            | `deploy`            | Runs `build` script, then pushes the output to GH Pages.                                      |)
@@ -74,6 +75,14 @@ Each package is named with the `@deriv/` prefix, however for the scripts above, 
 You can find the names of packages by first navigating to the `packages` folder. Each subfolder is a package, and contains a `package.json` file. The value of the `name` key in `package.json` is the package name.
 
 ### Usage
+#### Configuring Hosts file
+
+In order to run our solution for the first time, you need to configure your `hosts` file:
+1. Open terminal.
+2. Open `hosts` file in your preferred text editor, f.e `sudo vim /etc/hosts`.
+3. Change `127.0.0.1    localhost` entry to `127.0.0.1     localhost.binary.sx`.
+4. Save the file and proceed to the next step.
+
 #### Starting a Development Server
 
 If you wish to work on Core, simply run `npm run serve core`.

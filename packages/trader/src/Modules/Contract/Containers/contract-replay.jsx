@@ -201,7 +201,7 @@ const Chart = props => {
     return (
         <SmartChart
             barriers={props.barriers_array}
-            bottomWidgets={this.is_bottom_widget_visible ? ChartBottomWidgets : null}
+            bottomWidgets={isBottomWidgetVisible() ? ChartBottomWidgets : null}
             chartControlsWidgets={null}
             chartType={props.chart_type}
             endEpoch={props.end_epoch}
@@ -232,7 +232,7 @@ const Chart = props => {
                     key={marker.react_key}
                     marker_config={marker.marker_config}
                     marker_content_props={marker.content_config}
-                    is_bottom_widget_visible={this.is_bottom_widget_visible}
+                    is_bottom_widget_visible={isBottomWidgetVisible()}
                 />
             ))}
         </SmartChart>

@@ -71,7 +71,7 @@ const LastDigitPrediction = ({
         return barrier_map[contract_type](num) ? num : null;
     };
 
-    const getOffset = isMobile() ? digit_offset_mobile : digit_offset;
+    const getOffset = () => (isMobile() ? digit_offset_mobile : digit_offset);
 
     const isSelectableDigitType = () => (isMobile() ? trade_type !== 'even_odd' : false);
 
@@ -101,7 +101,6 @@ const LastDigitPrediction = ({
         : last_contract_digit;
     return (
         <div
-            ref={node => (this.node = node)}
             className={classNames('digits', {
                 'digits--trade': is_trade_page,
             })}

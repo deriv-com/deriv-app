@@ -9,39 +9,37 @@ const MT5AccountOpeningRealFinancialStpModal = ({
     disableMt5FinancialStpModal,
     enableApp,
     is_mt5_financial_stp_modal_open,
-}) => {
-    return (
-        <>
-            <DesktopWrapper>
-                <Modal
-                    id='mt5_financial_stp_signup_modal'
-                    className='mt5-financial-stp-signup-modal'
-                    disableApp={disableApp}
-                    width='904px'
-                    title={localize('Create a DMT5 real Financial STP account')}
-                    enableApp={enableApp}
-                    is_open={is_mt5_financial_stp_modal_open}
-                    has_close_icon={true}
-                    height='740px'
-                    toggleModal={disableMt5FinancialStpModal}
-                >
-                    <MT5FinancialStpRealAccountSignup toggleModal={disableMt5FinancialStpModal} />
-                </Modal>
-            </DesktopWrapper>
-            <MobileWrapper>
-                <MobileDialog
-                    portal_element_id='modal_root'
-                    title={localize('Create a DMT5 real Financial STP account')}
-                    wrapper_classname='mt5-financial-stp-signup-modal'
-                    visible={is_mt5_financial_stp_modal_open}
-                    onClose={disableMt5FinancialStpModal}
-                >
-                    <MT5FinancialStpRealAccountSignup toggleModal={disableMt5FinancialStpModal} />
-                </MobileDialog>
-            </MobileWrapper>
-        </>
-    );
-};
+}) => (
+    <>
+        <DesktopWrapper>
+            <Modal
+                id='mt5_financial_stp_signup_modal'
+                className='mt5-financial-stp-signup-modal'
+                disableApp={disableApp}
+                width='904px'
+                title={localize('Create a DMT5 real Financial STP account')}
+                enableApp={enableApp}
+                is_open={is_mt5_financial_stp_modal_open}
+                has_close_icon={true}
+                height='740px'
+                toggleModal={disableMt5FinancialStpModal}
+            >
+                <MT5FinancialStpRealAccountSignup toggleModal={disableMt5FinancialStpModal} />
+            </Modal>
+        </DesktopWrapper>
+        <MobileWrapper>
+            <MobileDialog
+                portal_element_id='modal_root'
+                title={localize('Create a DMT5 real Financial STP account')}
+                wrapper_classname='mt5-financial-stp-signup-modal'
+                visible={is_mt5_financial_stp_modal_open}
+                onClose={disableMt5FinancialStpModal}
+            >
+                <MT5FinancialStpRealAccountSignup toggleModal={disableMt5FinancialStpModal} />
+            </MobileDialog>
+        </MobileWrapper>
+    </>
+);
 
 export default connect(({ ui, modules }) => ({
     disableApp: ui.disableApp,

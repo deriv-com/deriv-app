@@ -10,7 +10,7 @@ export const Expired = ({ onClick }) => (
         icon={<Icon icon='IcPoaUpload' size={128} />}
     >
         <Button onClick={onClick} has_effect primary>
-            <Text className='dc-btn__text' weight='bold' as='p'>
+            <Text className='dc-btn__text' size='xs' weight='bold' as='p'>
                 {localize('Resubmit')}
             </Text>
         </Button>

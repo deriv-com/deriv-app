@@ -31,6 +31,7 @@ export const getCardLabels = () => ({
     ),
     DONT_SHOW_THIS_AGAIN: localize("Don't show this again"),
     RESALE_NOT_OFFERED: localize('Resale not offered'),
+    NOT_AVAILABLE: localize('N/A'),
 });
 
 export const getMarketNamesMap = () => ({
@@ -84,8 +85,13 @@ export const getMarketNamesMap = () => ({
     R_50: localize('Volatility 50 Index'),
     R_75: localize('Volatility 75 Index'),
     R_100: localize('Volatility 100 Index'),
+    BOOM500: localize('Boom 500 Index'),
+    BOOM1000: localize('Boom 1000 Index'),
+    CRASH500: localize('Crash 500 Index'),
+    CRASH1000: localize('Crash 1000 Index'),
     RDBEAR: localize('Bear Market Index'),
     RDBULL: localize('Bull Market Index'),
+    STPRNG: localize('Step Index'),
     WLDAUD: localize('AUD Index'),
     WLDEUR: localize('EUR Index'),
     WLDGBP: localize('GBP Index'),

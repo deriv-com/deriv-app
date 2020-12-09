@@ -203,15 +203,22 @@ export default class CashierStore extends BaseStore {
     // Initialise P2P attributes on app load without mounting the entire cashier
     @action.bound
     init() {
-        // eslint-disable-next-line no-undef
         reaction(
-            () => [this.root_store.client.is_logged_in, this.root_store.client.residence],
-            () => {
-                if (!this.is_p2p_visible && !this.root_store.client.is_virtual) {
-                    WS.authorized.p2pAdvertiserInfo().then(advertiser_info => {
-                        const advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
-                        this.setIsP2pVisible(advertiser_error !== 'RestrictedCountry');
-                    });
+            () => [
+                this.root_store.client.switched,
+                this.root_store.client.is_logged_in,
+                this.root_store.client.currency,
+            ],
+            async () => {
+                // wait for get_settings so is_virtual gets populated in client-store
+                await BinarySocket.wait('get_settings');
+
+                if (this.root_store.client.is_logged_in && !this.root_store.client.is_virtual) {
+                    const advertiser_info = await WS.authorized.p2pAdvertiserInfo();
+                    const advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
+                    const is_p2p_restricted =
+                        advertiser_error === 'RestrictedCountry' || advertiser_error === 'RestrictedCurrency';
+                    this.setIsP2pVisible(!is_p2p_restricted);
                 }
             }
         );
@@ -1354,7 +1361,6 @@ export default class CashierStore extends BaseStore {
         this.config.account_transfer = new ConfigAccountTransfer();
         this.config.payment_agent_transfer = new ConfigPaymentAgentTransfer();
         this.is_populating_values = false;
-        this.setIsP2pVisible(false);
 
         this.onRemount();
 

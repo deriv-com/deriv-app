@@ -24,8 +24,7 @@ const AccountTransferReceipt = ({
         return () => {
             resetAccountTransfer();
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [resetAccountTransfer]);
 
     const openStatement = () => {
         history.push(routes.statement);
@@ -41,7 +40,7 @@ const AccountTransferReceipt = ({
         setIsSwitchVisible(!is_switch_visible);
     };
 
-    const checkAccount = ({ loginid, selected_from, selected_to }) => {
+    const checkAccount = ({ loginid }) => {
         // we should always show the statement of the account transferred to
         // unless if the account transferred to is your logged in account, or
         // the account transferred to is a DMT5 account that can't be switched to and from account is your logged in account

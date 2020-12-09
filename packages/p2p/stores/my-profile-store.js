@@ -10,6 +10,7 @@ export default class MyProfileStore extends BaseStore {
     @observable default_advert_description = '';
     @observable error_message = '';
     @observable form_error = '';
+    @observable full_name = '';
     @observable is_button_loading = false;
     @observable is_loading = true;
     @observable is_submit_success = false;
@@ -25,6 +26,7 @@ export default class MyProfileStore extends BaseStore {
         }).then(response => {
             if (!response.error) {
                 const { p2p_advertiser_info } = response;
+
                 this.setAdvertiserInfo(p2p_advertiser_info);
                 this.setContactInfo(p2p_advertiser_info.contact_info);
                 this.setDefaultAdvertDescription(p2p_advertiser_info.default_advert_description);
@@ -37,6 +39,18 @@ export default class MyProfileStore extends BaseStore {
                 this.setErrorMessage(response.error);
             }
             this.setIsLoading(false);
+        });
+    }
+
+    getSettings() {
+        requestWS({ get_settings: 1 }).then(response => {
+            const { get_settings } = response;
+
+            if (!response.error) {
+                this.setFullName(`${get_settings.first_name} ${get_settings.last_name}`);
+            } else {
+                this.setFormError(response.error.message);
+            }
         });
     }
 
@@ -67,6 +81,17 @@ export default class MyProfileStore extends BaseStore {
         });
     }
 
+    handleToggle = () => {
+        requestWS({
+            p2p_advertiser_update: 1,
+            show_name: this.root_store?.general_store?.should_show_real_name ? 0 : 1,
+        }).then(response => {
+            if (response.error) {
+                this.setFormError(response.error.message);
+            }
+        });
+    };
+
     @action.bound
     setAdvertiserInfo(advertiser_info) {
         this.advertiser_info = advertiser_info;
@@ -90,6 +115,11 @@ export default class MyProfileStore extends BaseStore {
     @action.bound
     setFormError(form_error) {
         this.form_error = form_error;
+    }
+
+    @action.bound
+    setFullName(full_name) {
+        this.full_name = full_name;
     }
 
     @action.bound

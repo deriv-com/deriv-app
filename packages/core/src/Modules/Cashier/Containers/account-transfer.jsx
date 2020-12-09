@@ -40,6 +40,12 @@ const AccountTransfer = ({
         };
     }, []);
 
+    const hideNotes = () => {
+        if (typeof setSideNotes === 'function') {
+            setSideNotes(null);
+        }
+    };
+
     if (is_virtual) {
         return <Virtual />;
     }
@@ -61,20 +67,18 @@ const AccountTransfer = ({
         return <AccountTransferNoAccount />;
     }
     if (has_no_accounts_balance) {
+        hideNotes();
         return <NoBalance />;
     }
     if (is_transfer_confirm) {
-        if (typeof setSideNotes === 'function') {
-            setSideNotes(null);
-        }
+        hideNotes();
         return <AccountTransferConfirm />;
     }
     if (is_transfer_successful) {
-        if (typeof setSideNotes === 'function') {
-            setSideNotes(null);
-        }
+        hideNotes();
         return <AccountTransferReceipt />;
     }
+
     return <AccountTransferForm error={error} setSideNotes={setSideNotes} />;
 };
 

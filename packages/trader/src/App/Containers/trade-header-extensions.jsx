@@ -13,18 +13,18 @@ const TradeHeaderExtensions = ({
     enableApp,
     is_logged_in,
     is_positions_empty,
+    onMountCashier,
+    onMountPositions,
+    onPositionsCancel,
     onPositionsRemove,
     onPositionsSell,
-    onPositionsCancel,
-    positions,
+    onUnmountPositions,
+    populateHeaderExtensions,
     positions_currency,
     positions_error,
-    populateHeaderExtensions,
-    store,
-    onMountPositions,
-    onMountCashier,
+    positions,
     setAccountSwitchListener,
-    onUnmountPositions,
+    store,
 }) => {
     const populateHeader = () => {
         const header_items = is_logged_in && (
@@ -67,6 +67,7 @@ const TradeHeaderExtensions = ({
         };
 
         waitForLogin();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {

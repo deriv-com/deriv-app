@@ -96,12 +96,6 @@
             color: $COLOR_LIGHT_BLACK_1;
             background-color: var(--general-section-1);
             display: flex;
-
-            &:disabled {
-                .dc-btn__text {
-                    color: var(--text-disabled);
-                }
-            }
         }
     }
     &__item {

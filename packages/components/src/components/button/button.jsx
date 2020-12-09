@@ -62,11 +62,13 @@ const Button = ({
             {...props}
         >
             {icon && <div className='dc-btn__icon'>{icon}</div>}
-            {text && !(is_loading || is_submit_success) && (
-                <Text size='xs' weight='bold' align='center' className={classNames('dc-btn__text', classNameSpan)}>
-                    {text[0].toUpperCase() + text.substr(1)}
-                </Text>
-            )}
+            {text &&
+                !(is_loading || is_submit_success) &&
+                ((typeof props.rendertext === 'function' && props.rendertext(text)) || (
+                    <Text size='xs' weight='bold' align='center' className={classNames('dc-btn__text', classNameSpan)}>
+                        {text[0].toUpperCase() + text.substr(1)}
+                    </Text>
+                ))}
             {is_loading && <ButtonLoading />}
             {is_submit_success && <Icon icon='IcCheckmark' color='active' size={24} />}
             {!text && children && (

@@ -12,56 +12,71 @@ import AccountTransferForm from '../Components/Form/account-transfer-form.jsx';
 import AccountTransferReceipt from '../Components/Receipt/account-transfer-receipt.jsx';
 import AccountTransferConfirm from '../Components/Confirm/account-transfer-confirm.jsx';
 
-class AccountTransfer extends React.Component {
-    componentDidMount() {
-        this.props.setActiveTab(this.props.container);
-        this.props.onMount();
-    }
+const AccountTransfer = ({
+    accounts_list,
+    container,
+    error,
+    has_no_account,
+    has_no_accounts_balance,
+    is_cashier_locked,
+    is_loading,
+    is_switching,
+    is_transfer_confirm,
+    is_transfer_lock,
+    is_transfer_successful,
+    is_virtual,
+    onMount,
+    setAccountTransferAmount,
+    setActiveTab,
+    setIsTransferConfirm,
+    setSideNotes,
+}) => {
+    React.useEffect(() => {
+        setActiveTab(container);
+        onMount();
+        return () => {
+            setAccountTransferAmount('');
+            setIsTransferConfirm(false);
+        };
+    }, []);
 
-    componentWillUnmount() {
-        this.props.setAccountTransferAmount('');
-        this.props.setIsTransferConfirm(false);
+    if (is_virtual) {
+        return <Virtual />;
     }
-
-    render() {
-        if (this.props.is_virtual) {
-            return <Virtual />;
-        }
-        if (this.props.is_loading || this.props.is_switching) {
-            return <Loading className='cashier__loader' />;
-        }
-        if (this.props.is_cashier_locked) {
-            return <CashierLocked />;
-        }
-        if (this.props.is_transfer_lock) {
-            return <TransferLock />;
-        }
-        if (this.props.error.is_show_full_page || (this.props.error.message && !this.props.accounts_list.length)) {
-            // for errors with CTA hide the form and show the error,
-            // for others show them at the bottom of the form next to submit button
-            return <Error error={this.props.error} />;
-        }
-        if (this.props.has_no_account) {
-            return <AccountTransferNoAccount />;
-        }
-        if (this.props.has_no_accounts_balance) {
-            return <NoBalance />;
-        }
-        if (this.props.is_transfer_confirm) {
-            if (typeof this.props.setSideNotes === 'function') {
-                this.props.setSideNotes(null);
-            }
-            return <AccountTransferConfirm />;
-        }
-        if (this.props.is_transfer_successful) {
-            if (typeof this.props.setSideNotes === 'function') {
-                this.props.setSideNotes(null);
-            }
-            return <AccountTransferReceipt />;
-        }
-        return <AccountTransferForm error={this.props.error} setSideNotes={this.props.setSideNotes} />;
+    if (is_loading || is_switching) {
+        return <Loading className='cashier__loader' />;
     }
-}
+    if (is_cashier_locked) {
+        return <CashierLocked />;
+    }
+    if (is_transfer_lock) {
+        return <TransferLock />;
+    }
+    if (error.is_show_full_page || (error.message && !accounts_list.length)) {
+        // for errors with CTA hide the form and show the error,
+        // for others show them at the bottom of the form next to submit button
+        return <Error error={error} />;
+    }
+    if (has_no_account) {
+        return <AccountTransferNoAccount />;
+    }
+    if (has_no_accounts_balance) {
+        return <NoBalance />;
+    }
+    if (is_transfer_confirm) {
+        if (typeof setSideNotes === 'function') {
+            setSideNotes(null);
+        }
+        return <AccountTransferConfirm />;
+    }
+    if (is_transfer_successful) {
+        if (typeof setSideNotes === 'function') {
+            setSideNotes(null);
+        }
+        return <AccountTransferReceipt />;
+    }
+    return <AccountTransferForm error={error} setSideNotes={setSideNotes} />;
+};
 
 AccountTransfer.propTypes = {
     accounts_list: PropTypes.array,
@@ -71,10 +86,15 @@ AccountTransfer.propTypes = {
     has_no_accounts_balance: PropTypes.bool,
     is_cashier_locked: PropTypes.bool,
     is_loading: PropTypes.bool,
+    is_switching: PropTypes.bool,
+    is_transfer_confirm: PropTypes.bool,
     is_transfer_successful: PropTypes.bool,
+    is_transfer_lock: PropTypes.bool,
     is_virtual: PropTypes.bool,
     onMount: PropTypes.func,
+    setAccountTransferAmount: PropTypes.func,
     setActiveTab: PropTypes.func,
+    setIsTransferConfirm: PropTypes.func,
     setSideNotes: PropTypes.func,
 };
 

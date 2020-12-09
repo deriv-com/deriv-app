@@ -9,7 +9,7 @@ Renders a dialog box with title, body and footer for mobile and desktop. This co
 ## Usage
 
 ```jsx
-import MobileDialog from 'Components/mobile-dialog';
+import MobileDialog from 'deriv-components';
 
 const DummyComponent = props => (
    <MobileDialog
@@ -44,7 +44,7 @@ const DummyComponent = props => (
 # Full example:
 
 ```jsx
-import MobileDialog from 'Components/mobile-dialog';
+import MobileDialog from 'deriv-components';
 
 const DummyComponent = props => (
    <MobileDialog

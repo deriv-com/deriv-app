@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
     Autocomplete,
     Loading,
@@ -125,7 +126,7 @@ const ProofOfAddressForm = ({
     };
 
     const showForm = bool => {
-        setFormState({ ...form_state, ...{ should_show_form: bool } }, () => console.warn(form_state));
+        setFormState({ ...form_state, ...{ should_show_form: bool } });
     };
 
     const onFileDrop = ({ file, file_error_message }) => {
@@ -440,7 +441,17 @@ const ProofOfAddressForm = ({
     );
 };
 
-// ProofOfAddressForm.propTypes = {};
+ProofOfAddressForm.propTypes = {
+    account_settings: PropTypes.object,
+    addNotificationByKey: PropTypes.func,
+    is_eu: PropTypes.bool,
+    fetchResidenceList: PropTypes.func,
+    fetchStatesList: PropTypes.func,
+    onSubmit: PropTypes.func,
+    removeNotificationByKey: PropTypes.func,
+    removeNotificationMessage: PropTypes.func,
+    states_list: PropTypes.array,
+};
 
 export default connect(({ client, ui }) => ({
     account_settings: client.account_settings,

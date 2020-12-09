@@ -21,6 +21,10 @@ const UploadMessage = (
     </React.Fragment>
 );
 
+const fileReadErrorMessage = filename => {
+    return localize('Unable to read file {{name}}', { name: filename });
+};
+
 const FileUploader = React.forwardRef(({ onFileDrop, getSocket }, ref) => {
     const [document_file, setDocumentFile] = useStateCallback({ files: [], error_message: null });
 
@@ -55,7 +59,7 @@ const FileUploader = React.forwardRef(({ onFileDrop, getSocket }, ref) => {
 
         return new Promise((resolve, reject) => {
             compressImageFiles(document_file.files).then(files_to_process => {
-                readFiles(files_to_process).then(processed_files => {
+                readFiles(files_to_process, fileReadErrorMessage).then(processed_files => {
                     processed_files.forEach(file => {
                         if (file.message) {
                             is_any_file_error = true;

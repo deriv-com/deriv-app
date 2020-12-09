@@ -22,7 +22,7 @@ export const compressImageFiles = files => {
     return Promise.all(promises);
 };
 
-export const readFiles = files => {
+export const readFiles = (files, getFileReadErrorMessage) => {
     const promises = [];
     files.forEach(f => {
         const fr = new FileReader();
@@ -40,7 +40,10 @@ export const readFiles = files => {
 
             fr.onerror = () => {
                 resolve({
-                    message: `Unable to read file ${f.name}`,
+                    message:
+                        typeof getFileReadErrorMessage === 'function'
+                            ? getFileReadErrorMessage(f.name)
+                            : `Unable to read file ${f.name}`,
                 });
             };
             // Reading file

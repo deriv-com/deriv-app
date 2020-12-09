@@ -359,7 +359,12 @@ export default class CashierStore extends BaseStore {
         const need_financial_assessment =
             is_financial_account && (is_financial_information_incomplete || is_trading_experience_incomplete);
         // CR can deposit without accepting latest tnc except those with Financial STP
-        const need_tnc = (is_eu || mt5_login_list.some(item => item.group.startsWith('real_labuan'))) && is_tnc_needed;
+        const need_tnc =
+            (is_eu ||
+                mt5_login_list.some(
+                    item => item.account_type === 'real' && item.sub_account_type === 'financial_stp'
+                )) &&
+            is_tnc_needed;
 
         return (
             need_authentication ||
@@ -1018,8 +1023,22 @@ export default class CashierStore extends BaseStore {
                 return;
             }
         }
-        // remove disabled mt5 accounts
-        const accounts = transfer_between_accounts.accounts.filter(account => !/inactive/.test(account.mt5_group));
+
+        const mt5_login_list = (await WS.storage.mt5LoginList())?.mt5_login_list;
+        // TODO: remove this temporary mapping when API adds market_type and sub_account_type to transfer_between_accounts
+        const accounts = transfer_between_accounts.accounts.map(account => {
+            if (account.account_type === 'mt5') {
+                // account_type in transfer_between_accounts (mt5|binary)
+                // gets overridden by account_type in mt5_login_list (demo|real)
+                // since in cashier all these are real accounts, the mt5 account type is what we want to keep
+                return {
+                    ...account,
+                    ...mt5_login_list.find(acc => acc.login === account.loginid),
+                    account_type: 'mt5',
+                };
+            }
+            return account;
+        });
         // sort accounts as follows:
         // for MT5, synthetic, financial, financial stp
         // for non-MT5, fiat, crypto (alphabetically by currency)
@@ -1031,12 +1050,11 @@ export default class CashierStore extends BaseStore {
             const a_is_fiat = !a_is_mt && !a_is_crypto;
             const b_is_fiat = !b_is_mt && !b_is_crypto;
             if (a_is_mt && b_is_mt) {
-                if (/svg$/.test(a.mt5_group)) {
+                if (a.market_type === 'gaming') {
                     return -1;
                 }
-                // TODO: [remove-standard-advanced] remove standard when API groups are updated
-                if (/vanuatu|svg_(standard|financial)/.test(a.mt5_group)) {
-                    return /svg$/.test(b.mt5_group) ? 1 : -1;
+                if (a.sub_account_type === 'financial') {
+                    return b.market_type === 'gaming' ? 1 : -1;
                 }
                 return 1;
             } else if ((a_is_crypto && b_is_crypto) || (a_is_fiat && b_is_fiat)) {
@@ -1050,17 +1068,20 @@ export default class CashierStore extends BaseStore {
         this.setSelectedTo({}); // set selected to empty each time so we can redetermine its value on reload
         accounts.forEach(account => {
             const obj_values = {
-                text: account.mt5_group
-                    ? `${localize('DMT5')} ${getMT5AccountDisplay(account.mt5_group)}`
-                    : getCurrencyDisplayCode(
-                          account.currency !== 'eUSDT' ? account.currency.toUpperCase() : account.currency
-                      ),
+                text:
+                    account.account_type === 'mt5'
+                        ? `${localize('DMT5')} ${getMT5AccountDisplay(account.market_type, account.sub_account_type)}`
+                        : getCurrencyDisplayCode(
+                              account.currency !== 'eUSDT' ? account.currency.toUpperCase() : account.currency
+                          ),
                 value: account.loginid,
                 balance: account.balance,
                 currency: account.currency,
                 is_crypto: isCryptocurrency(account.currency),
                 is_mt: account.account_type === 'mt5',
-                ...(account.mt5_group && { mt_icon: getMT5Account(account.mt5_group) }),
+                ...(account.account_type === 'mt5' && {
+                    mt_icon: getMT5Account(account.market_type, account.sub_account_type),
+                }),
             };
             // set current logged in client as the default transfer from account
             if (account.loginid === this.root_store.client.loginid) {
@@ -1207,7 +1228,7 @@ export default class CashierStore extends BaseStore {
                     this.config.account_transfer.setBalanceSelectedTo(account.balance);
                 }
                 // if one of the accounts was mt5
-                if (account.mt5_group) {
+                if (account.account_type === 'mt5') {
                     // update the balance for account switcher by renewing the mt5_login_list response
                     WS.mt5LoginList().then(this.root_store.client.responseMt5LoginList);
                     // update total balance since MT5 total only comes in non-stream balance call

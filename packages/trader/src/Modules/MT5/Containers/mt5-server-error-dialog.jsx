@@ -4,25 +4,28 @@ import { Dialog } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
-class MT5ServerErrorDialog extends React.Component {
-    render() {
-        const should_show_error = this.props.has_mt5_error && !this.props.is_mt5_success_dialog_enabled;
-        return (
-            <Dialog
-                title={localize('Something’s not right')}
-                confirm_button_text={localize('OK')}
-                onConfirm={this.props.clearMt5Error}
-                disableApp={this.props.disableApp}
-                enableApp={this.props.enableApp}
-                is_visible={should_show_error}
-            >
-                {this.props.error_message || (
-                    <Localize i18n_default_text='Sorry, an error occured while processing your request.' />
-                )}
-            </Dialog>
-        );
-    }
-}
+const MT5ServerErrorDialog = ({
+    clearMt5Error,
+    disableApp,
+    enableApp,
+    error_message,
+    has_mt5_error,
+    is_mt5_success_dialog_enabled,
+}) => {
+    const should_show_error = has_mt5_error && !is_mt5_success_dialog_enabled;
+    return (
+        <Dialog
+            title={localize('Something’s not right')}
+            confirm_button_text={localize('OK')}
+            onConfirm={clearMt5Error}
+            disableApp={disableApp}
+            enableApp={enableApp}
+            is_visible={should_show_error}
+        >
+            {error_message || <Localize i18n_default_text='Sorry, an error occured while processing your request.' />}
+        </Dialog>
+    );
+};
 
 MT5ServerErrorDialog.propTypes = {
     clearMt5Error: PropTypes.func,

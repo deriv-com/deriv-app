@@ -155,7 +155,7 @@ const CurrencySelector = ({
             validate={handleValidate}
         >
             {({ handleSubmit, values, errors, touched, isSubmitting }) => (
-                <AutoHeightWrapper default_height={310}>
+                <AutoHeightWrapper default_height={450}>
                     {({ setRef, height }) => (
                         <form ref={setRef} onSubmit={handleSubmit} className='currency-selector'>
                             <Div100vhContainer

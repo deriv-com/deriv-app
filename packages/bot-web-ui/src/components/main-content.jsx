@@ -66,7 +66,7 @@ MainContent.propTypes = {
     setContainerSize: PropTypes.func,
 };
 
-export default connect(({ blockly_store, main_content }) => ({
+export default connect(({ main_content }) => ({
     active_tab: main_content.active_tab,
     onMount: main_content.onMount,
     onUnmount: main_content.onUnmount,

@@ -46,16 +46,18 @@ export default class ToolboxStore {
     @action.bound
     setWorkspaceOptions() {
         const workspace = Blockly.derivWorkspace;
-        var readOnly = !!workspace.options['readOnly'];
+        const readOnly = !!workspace.options.readOnly;
+        let languageTree, hasCategories, hasCollapse, hasComments, hasDisable;
+
         if (readOnly) {
-            var languageTree = null;
-            var hasCategories = false;
-            var hasCollapse = false;
-            var hasComments = false;
-            var hasDisable = false;
+            languageTree = null;
+            hasCategories = false;
+            hasCollapse = false;
+            hasComments = false;
+            hasDisable = false;
         } else {
-            var languageTree = this.toolbox_dom;
-            var hasCategories = Boolean(languageTree && languageTree.getElementsByTagName('category').length);
+            languageTree = this.toolbox_dom;
+            hasCategories = Boolean(languageTree && languageTree.getElementsByTagName('category').length);
             hasCollapse = hasCategories;
             hasComments = hasCategories;
             hasDisable = hasCategories;
@@ -69,6 +71,7 @@ export default class ToolboxStore {
     }
 
     @action.bound
+    // eslint-disable-next-line class-methods-use-this
     adjustWorkspace() {
         const workspace = Blockly.derivWorkspace;
         const toolbox_width = document.getElementById('gtm-toolbox')?.getBoundingClientRect().width || 0;
@@ -114,6 +117,7 @@ export default class ToolboxStore {
     }
 
     @action.bound
+    // eslint-disable-next-line class-methods-use-this
     getCategoryContents(category) {
         const workspace = Blockly.derivWorkspace;
         const dynamic = category.getAttribute('dynamic');

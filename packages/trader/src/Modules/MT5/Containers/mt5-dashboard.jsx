@@ -57,12 +57,9 @@ class MT5Dashboard extends React.Component {
         this.props.onUnmount();
     }
 
-    componentDidUpdate(prev_props) {
+    componentDidUpdate() {
         this.updateActiveIndex();
         this.props.checkShouldOpenAccount();
-        if (prev_props.is_mt5_allowed !== this.props.is_mt5_allowed && !this.props.is_mt5_allowed) {
-            this.props.history.push(routes.trade);
-        }
     }
 
     openResetPassword = () => {

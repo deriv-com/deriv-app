@@ -14,7 +14,7 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
                 setLiveChatInteractive(true);
             });
         }
-    },[]);
+    }, []);
 
     React.useEffect(() => {
         if (window.LiveChatWidget) {
@@ -54,7 +54,7 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
                         window.LiveChatWidget.call('set_session_variables', session_variables);
                         window.LiveChatWidget.call('set_customer_email', email);
                         window.LiveChatWidget.call('set_customer_name', `${first_name} ${last_name}`);
-                    } else{
+                    } else {
                         setClientInformation(false);
                     }
                 }
@@ -63,13 +63,17 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
     }, [has_cookie_account]);
 
     React.useEffect(() => {
-        window.LC_API.on_chat_ended = () => {
-            if (!has_client_information){
-                window.LiveChatWidget.call('set_customer_email', ' ');
-                window.LiveChatWidget.call('set_customer_name', ' ');
-            }
+        if (window.LiveChatWidget) {
+            window.LiveChatWidget.on('ready', () => {
+                window.LC_API.on_chat_ended = () => {
+                    if (!has_client_information) {
+                        window.LiveChatWidget.call('set_customer_email', ' ');
+                        window.LiveChatWidget.call('set_customer_name', ' ');
+                    }
+                };
+            });
         }
-    }, [has_client_information])
+    }, [has_client_information]);
 
     return (
         <>
@@ -88,21 +92,21 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
                             <p className='livechat__title'>{localize('Live chat')}</p>
                         </div>
                     ) : (
-                            <Popover
-                                className='footer__link'
-                                classNameBubble='help-centre__tooltip'
-                                alignment='top'
-                                message={localize('Live chat')}
-                            >
-                                <Icon
-                                    icon='IcLiveChat'
-                                    className='footer__icon gtm-deriv-livechat'
-                                    onClick={() => {
-                                        window.LiveChatWidget.call('maximize');
-                                    }}
-                                />
-                            </Popover>
-                        )}
+                        <Popover
+                            className='footer__link'
+                            classNameBubble='help-centre__tooltip'
+                            alignment='top'
+                            message={localize('Live chat')}
+                        >
+                            <Icon
+                                icon='IcLiveChat'
+                                className='footer__icon gtm-deriv-livechat'
+                                onClick={() => {
+                                    window.LiveChatWidget.call('maximize');
+                                }}
+                            />
+                        </Popover>
+                    )}
                 </>
             )}
         </>

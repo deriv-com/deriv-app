@@ -152,6 +152,7 @@ const PaymentAgentWithdrawForm = ({
         return () => {
             resetPaymentAgent();
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const validateWithdrawalPassthrough = values => {

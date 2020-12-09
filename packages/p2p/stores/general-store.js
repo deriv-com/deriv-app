@@ -416,6 +416,9 @@ export default class GeneralStore extends BaseStore {
 
     @action.bound
     updateAdvertiserInfo(response) {
+        // Temporary fix for My ads tab to show only the error
+        this.root_store.my_ads_store.setErrorMessage('');
+
         const { p2p_advertiser_info } = response;
 
         if (!response.error) {
@@ -432,6 +435,8 @@ export default class GeneralStore extends BaseStore {
                 this.setIsRestricted(true);
             } else if (response.error.code === 'AdvertiserNotFound') {
                 this.setIsAdvertiser(false);
+            } else if (response.error.code === 'PermissionDenied') {
+                this.root_store.my_ads_store.setErrorMessage(response.error.message);
             }
         }
 

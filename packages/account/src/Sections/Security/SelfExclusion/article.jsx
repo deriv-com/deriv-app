@@ -26,7 +26,9 @@ const SEArticle = ({ toggleArticle, is_eu }) => {
                 {article_text}
             </Text>
             <div onClick={toggleArticle} className='link link--orange account__article-link'>
-                <span>{localize('Learn more')}</span>
+                <Text size='xxs' color='loss-danger' line_height='s'>
+                    {localize('Learn more')}
+                </Text>
                 <Icon icon='IcChevronRight' className='account__article-link--icon' color='red' />
             </div>
         </article>

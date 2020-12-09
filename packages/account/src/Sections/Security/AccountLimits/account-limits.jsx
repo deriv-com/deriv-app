@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Popover, DesktopWrapper, Loading, MobileWrapper, Text, ThemedScrollbars } from '@deriv/components';
+import { Popover, DesktopWrapper, Loading, MobileWrapper, ThemedScrollbars, Text } from '@deriv/components';
 import { formatMoney, isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import LoadErrorMessage from 'Components/load-error-message';
@@ -120,7 +120,7 @@ const AccountLimits = ({ account_limits, currency, getLimits, is_fully_authentic
                                     <Row>
                                         <Td>
                                             <div className='account-management-flex-wrapper'>
-                                                <span>{localize('Maximum number of open positions*')}</span>
+                                                {localize('Maximum number of open positions*')}
                                                 <ExtraInfo
                                                     message={localize(
                                                         'Represents the maximum number of outstanding contracts in your portfolio. Each line in your portfolio counts for one open position. Once the maximum is reached, you will not be able to open new positions without closing an existing position first.'
@@ -170,9 +170,13 @@ const AccountLimits = ({ account_limits, currency, getLimits, is_fully_authentic
                                     <Row>
                                         <TableHeader>
                                             <div className='account-management-flex-wrapper'>
-                                                <span className='account-limit-container-title'>
+                                                <Text
+                                                    size={isMobile() ? 'xxs' : 'x'}
+                                                    weight='bold'
+                                                    className='account-limit-container-title'
+                                                >
                                                     {localize('Trading limits - Maximum daily turnover')}
-                                                </span>
+                                                </Text>
                                                 <ExtraInfo
                                                     message={localize(
                                                         'Represents the maximum volume of contracts that you may purchase in any given trading day.'

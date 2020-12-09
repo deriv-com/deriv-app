@@ -128,7 +128,6 @@ $MIN_HEIGHT_FLOATING: calc(
         }
         &-link {
             display: flex;
-            @include typeface(--small-left-normal-red, none);
 
             &--icon {
                 margin-left: 4px;
@@ -273,11 +272,8 @@ $MIN_HEIGHT_FLOATING: calc(
                 }
             }
             &-all-fields-required {
-                color: var(--text-general);
-                text-align: center;
                 padding-bottom: 2.4rem;
                 padding-top: 0.8rem;
-                font-size: 1.2rem;
             }
             @include mobile {
                 padding: 16px 0px;
@@ -345,7 +341,7 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
     }
-    &__intial-loader {
+    &__initial-loader {
         height: calc(100vh - 240px);
     }
     &__password-wrapper {
@@ -865,13 +861,6 @@ $MIN_HEIGHT_FLOATING: calc(
                 }
             }
         }
-        &__text-highlight {
-            @include typeface(--paragraph-left-bold-red);
-
-            &--small {
-                font-size: 1.2rem;
-            }
-        }
         &__warning {
             background-color: rgba(255, 173, 58, 0.3);
             border-radius: $BORDER_RADIUS;
@@ -1109,10 +1098,7 @@ $MIN_HEIGHT_FLOATING: calc(
         padding: 2.4rem 1.6rem 0;
 
         &-title {
-            color: var(--brand-red-coral);
             height: 20px;
-            font-size: 1.4rem;
-            font-weight: bold;
             margin-bottom: 0.8rem;
         }
         &-content {
@@ -1231,15 +1217,6 @@ $MIN_HEIGHT_FLOATING: calc(
 
             @include mobile {
                 margin-bottom: 2.4rem;
-            }
-        }
-        &-text {
-            font-size: var(--text-size-xs);
-            line-height: 1.5;
-            color: var(--text-general);
-
-            @include mobile {
-                font-size: 1.2rem;
             }
         }
         &-fields {
@@ -1810,16 +1787,6 @@ $MIN_HEIGHT_FLOATING: calc(
         &__account-details {
             display: flex;
             align-items: center;
-        }
-        &__accounts-loginid {
-            color: var(--text-prominent);
-            font-size: var(--text-size-xxxs);
-            line-height: 1.4;
-        }
-        &__accounts-currency {
-            color: var(--text-prominent);
-            font-size: var(--text-size-xs);
-            line-height: 1.43;
         }
         &__account {
             margin-left: 8px;

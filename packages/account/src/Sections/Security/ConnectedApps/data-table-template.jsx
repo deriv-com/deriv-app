@@ -9,7 +9,11 @@ const GetConnectedAppsColumnsTemplate = handleToggleModal => [
         title: localize('Name'),
         col_index: 'name',
         renderCellContent: ({ cell_value }) => {
-            return <span className='name__content'>{cell_value}</span>;
+            return (
+                <Text size='xs' className='name__content'>
+                    {cell_value}
+                </Text>
+            );
         },
     },
     {

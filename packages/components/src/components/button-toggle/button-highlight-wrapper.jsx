@@ -3,77 +3,66 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Highlight } from './button-highlight.jsx';
 
-class HighlightWrapper extends React.PureComponent {
-    state = {
-        left: 0,
-        width: 0,
-    };
+const class_selector = 'dc-button-menu__button--active';
 
-    componentDidMount() {
-        const active_button_el = [...this.node.getElementsByClassName('dc-button-menu__button--active')][0];
-        if (!this.node) return;
-        this.updateHighlightPosition(active_button_el);
-    }
+const HighlightWrapper = ({ children, className, has_rounded_button, ...other_props }) => {
+    const [left, setLeft] = React.useState(0);
 
-    componentDidUpdate() {
-        const active_button_el = [...this.node.getElementsByClassName('dc-button-menu__button--active')][0];
-        if (active_button_el) {
-            this.updateHighlightPosition(active_button_el);
-        } else if (this.state.left !== 0) {
-            this.resetHighlight(); // clear highlight when active element doesn't exist
+    const wrapper_ref = React.useRef();
+
+    React.useEffect(() => {
+        if (wrapper_ref.current) {
+            const active_button_el = [...wrapper_ref.current.getElementsByClassName(class_selector)][0];
+            updateHighlightPosition(active_button_el);
         }
-    }
+        return () => resetHighlight();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-    componentWillUnMount() {
-        this.resetHighlight();
-    }
+    React.useEffect(() => {
+        const active_button_el = [...wrapper_ref.current?.getElementsByClassName(class_selector)][0];
+        if (active_button_el) updateHighlightPosition(active_button_el);
+        else if (left !== 0) resetHighlight(); // clear highlight when active element doesn't exist
+    });
 
-    onClick = (e, buttonClick) => {
+    const onClick = (e, buttonClick) => {
         if (!e.target) return;
-        this.updateHighlightPosition(e.target.closest('button'));
+        updateHighlightPosition(e.target.closest('button'));
         if (typeof buttonClick === 'function') {
             buttonClick();
         }
     };
 
-    resetHighlight = () => {
-        this.setState({ left: 0 });
-    };
+    const resetHighlight = () => setLeft(0);
 
-    updateHighlightPosition = el => {
+    const updateHighlightPosition = el => {
         if (!el) return;
-        const { offsetLeft: left } = el;
-        if (this.state.left !== left) {
-            this.setState({ left });
-        }
+        const { offsetLeft } = el;
+        if (left !== offsetLeft) setLeft(offsetLeft);
     };
 
-    render() {
-        const { children, className, has_rounded_button, ...other_props } = this.props;
-        const props = {
-            className: classnames('dc-button-menu__wrapper', className),
-            ...other_props,
-        };
-        const button_width = (100 / children.length).toFixed(2);
+    const props = {
+        className: classnames('dc-button-menu__wrapper', className),
+        ...other_props,
+    };
+    const button_width = (100 / children.length).toFixed(2);
 
-        return (
-            <div ref={node => (this.node = node)} {...props}>
-                {React.Children.map(children, child =>
-                    React.cloneElement(child, {
-                        onClick: e => this.onClick(e, child.props.onClick),
-                    })
-                )}
-                <Highlight left={this.state.left} width={`${button_width}%`} has_rounded_button={has_rounded_button} />
-            </div>
-        );
-    }
-}
+    return (
+        <div ref={wrapper_ref} {...props}>
+            {React.Children.map(children, child =>
+                React.cloneElement(child, {
+                    onClick: e => onClick(e, child.props.onClick),
+                })
+            )}
+            <Highlight left={left} width={`${button_width}%`} has_rounded_button={has_rounded_button} />
+        </div>
+    );
+};
 
 HighlightWrapper.propTypes = {
     children: PropTypes.array,
     className: PropTypes.string,
     has_rounded_button: PropTypes.bool,
-    timeout: PropTypes.number,
 };
 
-export default HighlightWrapper;
+export default React.memo(HighlightWrapper);

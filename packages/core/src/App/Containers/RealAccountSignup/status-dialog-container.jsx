@@ -80,8 +80,6 @@ const StatusDialogContainer = ({
                     status={getStatus()}
                     landing_company_shortcode={landing_company_shortcode}
                     currency={currency}
-                    is_isle_of_man_residence={is_isle_of_man_residence}
-                    is_belgium_residence={is_belgium_residence}
                 />
             </div>
             <DialogButtons

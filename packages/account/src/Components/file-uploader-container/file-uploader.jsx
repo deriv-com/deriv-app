@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
 import DocumentUploader from '@binary-com/binary-document-uploader';
-import { FileDropzone, Icon } from '@deriv/components';
+import { FileDropzone, Icon, useStateCallback } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import {
     compressImageFiles,
@@ -10,80 +10,51 @@ import {
     getSupportedFiles,
     max_document_size,
     supported_filetypes,
-} from './file-uploader-utils';
+} from '@deriv/shared';
 
 const UploadMessage = (
-    <>
+    <React.Fragment>
         <Icon icon='IcCloudUpload' className='dc-file-dropzone__message-icon' size={50} />
         <div className='dc-file-dropzone__message-subtitle'>
             {localize('Drop file (JPEG  JPG  PNG  PDF  GIF) or click here to upload')}
         </div>
-    </>
+    </React.Fragment>
 );
 
-class FileUploader extends React.PureComponent {
-    state = {
-        document_file: [],
-        file_error_message: null,
-    };
+const FileUploader = React.forwardRef(({ onFileDrop, getSocket }, ref) => {
+    const [document_file, setDocumentFile] = useStateCallback({ files: [], error_message: null });
 
-    handleAcceptedFiles = files => {
+    const handleAcceptedFiles = files => {
         if (files.length > 0) {
-            this.setState(
-                {
-                    document_file: files,
-                    file_error_message: null,
-                },
-                () => {
-                    this.props.onFileDrop(this.state);
-                }
-            );
+            setDocumentFile({ files, error_message: null }, onFileDrop(document_file));
         }
     };
 
-    handleRejectedFiles = files => {
+    const handleRejectedFiles = files => {
         const is_file_too_large = files.length > 0 && files[0].size > max_document_size;
         const supported_files = files.filter(file => getSupportedFiles(file.name));
-        const file_error_message =
+        const error_message =
             is_file_too_large && supported_files.length > 0
                 ? localize('File size should be 8MB or less')
                 : localize('File uploaded is not supported');
 
-        this.setState(
-            {
-                document_file: files,
-                file_error_message,
-            },
-            () => {
-                this.props.onFileDrop(this.state);
-            }
-        );
+        setDocumentFile({ files, error_message }, onFileDrop(document_file));
     };
 
-    removeFile = () => {
-        this.setState(
-            {
-                document_file: [],
-                file_error_message: null,
-            },
-            () => {
-                this.props.onFileDrop(this.state);
-            }
-        );
+    const removeFile = () => {
+        setDocumentFile({ files: [], error_message: null }, onFileDrop(document_file));
     };
 
-    upload = () => {
-        const { document_file, file_error_message } = this.state;
-
-        if (!!file_error_message || document_file.length < 1) return 0;
+    const upload = () => {
+        if (!!document_file?.error_message || document_file?.files.length < 1) return 0;
 
         // File uploader instance connected to binary_socket
-        const uploader = new DocumentUploader({ connection: this.props.getSocket() });
+        const uploader = new DocumentUploader({ connection: getSocket() });
 
         let is_any_file_error = false;
 
         return new Promise((resolve, reject) => {
-            compressImageFiles(this.state.document_file).then(files_to_process => {
+            compressImageFiles(document_file.files).then(files_to_process => {
                 readFiles(files_to_process).then(processed_files => {
                     processed_files.forEach(file => {
                         if (file.message) {
@@ -93,7 +64,7 @@ class FileUploader extends React.PureComponent {
                     });
                     const total_to_upload = processed_files.length;
                     if (is_any_file_error || !total_to_upload) {
-                        this.props.onFileDrop(undefined);
+                        onFileDrop(undefined);
                         return; // don't start submitting files until all front-end validation checks pass
                     }
 
@@ -105,40 +76,42 @@ class FileUploader extends React.PureComponent {
         });
     };
 
-    render() {
-        const { document_file, file_error_message } = this.state;
+    React.useImperativeHandle(ref, () => ({
+        upload,
+    }));
 
-        return (
-            <>
-                <FileDropzone
-                    accept={supported_filetypes}
-                    error_message={localize('Please upload supported file type.')}
-                    hover_message={localize('Drop files here..')}
-                    max_size={max_document_size}
-                    message={UploadMessage}
-                    multiple={false}
-                    onDropAccepted={this.handleAcceptedFiles.bind(this)}
-                    onDropRejected={this.handleRejectedFiles.bind(this)}
-                    validation_error_message={file_error_message}
-                    value={document_file}
-                />
-                {(document_file.length > 0 || !!file_error_message) && (
-                    <div className='account-poa__upload-remove-btn-container'>
-                        <Icon
-                            icon='IcCloseCircle'
-                            className={classNames('account-poa__upload-remove-btn', {
-                                'account-poa__upload-remove-btn--error': !!file_error_message,
-                            })}
-                            onClick={this.removeFile}
-                            color='secondary'
-                        />
-                    </div>
-                )}
-            </>
-        );
-    }
-}
+    return (
+        <React.Fragment>
+            <FileDropzone
+                accept={supported_filetypes}
+                error_message={localize('Please upload supported file type.')}
+                hover_message={localize('Drop files here..')}
+                max_size={max_document_size}
+                message={UploadMessage}
+                multiple={false}
+                onDropAccepted={handleAcceptedFiles}
+                onDropRejected={handleRejectedFiles}
+                validation_error_message={document_file?.error_message}
+                value={document_file?.files}
+            />
+            {(document_file?.files.length > 0 || !!document_file?.error_message) && (
+                <div className='account-poa__upload-remove-btn-container'>
+                    <Icon
+                        icon='IcCloseCircle'
+                        className={classNames('account-poa__upload-remove-btn', {
+                            'account-poa__upload-remove-btn--error': !!document_file?.error_message,
+                        })}
+                        onClick={removeFile}
+                        color='secondary'
+                    />
+                </div>
+            )}
+        </React.Fragment>
+    );
+});
+
 FileUploader.propTypes = {
     getSocket: PropTypes.func,
 };
+
 export default FileUploader;

@@ -4,6 +4,7 @@ export * from './utils/currency';
 export * from './utils/dom';
 export * from './utils/date';
 export * from './utils/digital-options';
+export * from './utils/files';
 export * from './utils/hooks';
 export * from './utils/location';
 export * from './utils/login';

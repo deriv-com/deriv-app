@@ -1,5 +1,4 @@
-import { localize } from '@deriv/translations';
-import { compressImg, convertToBase64, isImageType, getFormatFromMIME } from 'Helpers/image_utility';
+import { compressImg, convertToBase64, isImageType, getFormatFromMIME } from './image/image_utility';
 
 export const compressImageFiles = files => {
     const promises = [];
@@ -41,7 +40,7 @@ export const readFiles = files => {
 
             fr.onerror = () => {
                 resolve({
-                    message: localize('Unable to read file {{name}}', { name: f.name }),
+                    message: `Unable to read file ${f.name}`,
                 });
             };
             // Reading file

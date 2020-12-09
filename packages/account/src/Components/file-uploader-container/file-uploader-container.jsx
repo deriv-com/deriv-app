@@ -1,59 +1,64 @@
 import React from 'react';
 import { Icon } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import FileUploader from './file-uploader.jsx';
 
-const FileUploaderContainer = props => {
-    const ref = React.useRef(null);
+const FileUploaderContainer = ({ is_description_disabled, getSocket, onFileDrop, onRef }) => {
+    const ref = React.useRef();
 
-    const getSocketFunc = props.getSocket ?? WS.getSocket;
+    const getSocketFunc = getSocket ?? WS.getSocket;
 
     React.useEffect(() => {
         if (ref) {
-            if (typeof props.onRef === 'function') props.onRef(ref);
+            if (typeof onRef === 'function') onRef(ref);
         }
-    }, [ref]);
+        return () => onRef(undefined);
+    }, [onRef, ref]);
     return (
         <div className='account-poa__upload-section'>
-            {!props.is_description_disabled && (
+            {!is_description_disabled && (
                 <ul className='account-poa__upload-list'>
                     <li className='account-poa__upload-box'>
                         <Icon icon='IcUtility' className='account-poa__upload-icon' size={20} />
                         <div className='account-poa__upload-item'>
-                            {localize('A recent utility bill (e.g. electricity, water, gas, phone or internet)')}
+                            <Localize i18n_default_text='A recent utility bill (e.g. electricity, water, gas, phone or internet)' />
                         </div>
                     </li>
                     <li className='account-poa__upload-box'>
                         <Icon icon='IcBank' className='account-poa__upload-icon' size={20} />
                         <div className='account-poa__upload-item'>
-                            {localize('A recent bank statement or government-issued letter with your name and address')}
+                            <Localize i18n_default_text='A recent bank statement or government-issued letter with your name and address' />
                         </div>
                     </li>
                     <li className='account-poa__upload-box'>
                         <Icon icon='IcUser' className='account-poa__upload-icon' size={20} />
                         <div className='account-poa__upload-item'>
-                            {localize('Issued under your name with your current address')}
+                            <Localize i18n_default_text='Issued under your name with your current address' />
                         </div>
                     </li>
                     <li className='account-poa__upload-box'>
                         <Icon icon='IcLessThanEight' className='account-poa__upload-icon' size={20} />
-                        <div className='account-poa__upload-item'>{localize('Less than 8MB')}</div>
+                        <div className='account-poa__upload-item'>
+                            <Localize i18n_default_text='Less than 8MB' />
+                        </div>
                     </li>
                     <li className='account-poa__upload-box'>
                         <Icon icon='IcClock' className='account-poa__upload-icon' size={20} />
-                        <div className='account-poa__upload-item'>{localize('1 - 6 months old')}</div>
+                        <div className='account-poa__upload-item'>
+                            <Localize i18n_default_text='1 - 6 months old' />
+                        </div>
                     </li>
                     <li className='account-poa__upload-box'>
                         <Icon icon='IcEye' className='account-poa__upload-icon' size={20} />
                         <div className='account-poa__upload-item'>
-                            {localize('A clear colour photo or scanned image')}
+                            <Localize i18n_default_text='A clear colour photo or scanned image' />
                         </div>
                     </li>
                 </ul>
             )}
             <div className='account-poa__upload-file'>
-                <FileUploader getSocket={getSocketFunc} ref={ref} onFileDrop={props.onFileDrop} />
+                <FileUploader getSocket={getSocketFunc} ref={ref} onFileDrop={onFileDrop} />
             </div>
         </div>
     );

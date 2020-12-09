@@ -424,7 +424,6 @@ export default withRouter(
         openAccountNeededModal: ui.openAccountNeededModal,
         is_loading: client.is_populating_mt5_account_list,
         residence: client.residence,
-        isMT5Allowed: client.isMT5Allowed,
         has_mt5_account: modules.mt5.has_mt5_account,
         has_real_account: client.has_active_real_account,
         setAccountType: modules.mt5.setAccountType,

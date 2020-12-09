@@ -66,8 +66,10 @@ const Header = ({
     const onClickDeposit = () => history.push(routes.cashier_deposit);
     const filterPlatformsForClients = payload =>
         payload.filter(config => {
-            // non-CR clients cannot open MT5 account
-            return !(is_logged_in && config.link_to === routes.mt5 && !is_mt5_allowed);
+            if (config.link_to === routes.mt5) {
+                return !is_logged_in || is_mt5_allowed;
+            }
+            return true;
         });
 
     return (

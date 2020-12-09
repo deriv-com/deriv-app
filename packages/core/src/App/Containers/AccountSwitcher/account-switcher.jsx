@@ -14,7 +14,6 @@ import {
     Text,
 } from '@deriv/components';
 import {
-    urlFor,
     routes,
     isCryptocurrency,
     formatMoney,
@@ -107,11 +106,7 @@ class AccountSwitcher extends React.Component {
     };
 
     redirectToMt5Real = () => {
-        if (!this.props.is_logged_in || this.props.is_mt5_allowed) {
-            this.redirectToMt5('real');
-        } else {
-            window.open(urlFor('user/metatrader', { legacy: true }));
-        }
+        this.redirectToMt5('real');
     };
 
     onListEnter = () => this.setState({ has_autohide: false });

@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 import Icon from '../icon/icon.jsx';
 
 const FormSubmitErrorMessage = ({ className, message }) => (
@@ -8,5 +9,10 @@ const FormSubmitErrorMessage = ({ className, message }) => (
         <p>{message}</p>
     </div>
 );
+
+FormSubmitErrorMessage.propTypes = {
+    className: PropTypes.string,
+    message: PropTypes.string,
+};
 
 export default FormSubmitErrorMessage;

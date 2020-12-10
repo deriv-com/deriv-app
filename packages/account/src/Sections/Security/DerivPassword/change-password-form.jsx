@@ -133,7 +133,7 @@ class ChangePasswordForm extends React.Component {
                                 </FormBody>
                             )}
                             <FormFooter>
-                                {status && status.msg && (
+                                {status?.msg && (
                                     <FormSubmitErrorMessage
                                         className={classNames({ 'account-form__error-message': isMobile() })}
                                         message={status.msg}

@@ -22,6 +22,8 @@ export const createDeviceDataObject = (date_first_contact_cookie, signup_device_
         ...(url_params.get('utm_source') && {
             utm_campaign: url_params.get('utm_campaign') || '',
             utm_medium: url_params.get('utm_medium') || '',
+            utm_content: url_params.get('utm_content') || '',
+            utm_term: url_params.get('utm_term') || '',
             utm_source: url_params.get('utm_source'), // since the check is done previously
         }),
     };

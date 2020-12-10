@@ -12,6 +12,7 @@ import {
     Button,
     DatePicker,
     StaticUrl,
+    Text,
 } from '@deriv/components';
 import {
     getPropertyValue,
@@ -340,7 +341,7 @@ class SelfExclusion extends React.Component {
 
         if (is_virtual) return <DemoMessage />;
 
-        if (is_loading || is_switching) return <Loading is_fullscreen={false} className='account___intial-loader' />;
+        if (is_loading || is_switching) return <Loading is_fullscreen={false} className='account__initial-loader' />;
 
         if (error_message) return <LoadErrorMessage error_message={error_message} />;
 
@@ -482,9 +483,11 @@ class SelfExclusion extends React.Component {
                                                         <Localize
                                                             i18n_default_text='You’ll be able to adjust these limits at any time. You can reduce your limits from the <0>self-exclusion page</0>. To increase or remove your limits, please contact our <1>Customer Support team</1>.'
                                                             components={[
-                                                                <span
+                                                                <Text
                                                                     key={0}
-                                                                    className='self-exclusion__text-highlight'
+                                                                    size='xs'
+                                                                    color='loss-danger'
+                                                                    weight='bold'
                                                                 />,
                                                                 <StaticUrl
                                                                     key={1}

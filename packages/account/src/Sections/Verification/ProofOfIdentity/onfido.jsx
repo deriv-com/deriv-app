@@ -38,6 +38,7 @@ export default class Onfido extends React.Component {
                 language: {
                     locale: getLanguage().toLowerCase() || 'en',
                     phrases: getOnfidoPhrases(),
+                    mobilePhrases: getOnfidoPhrases(),
                 },
                 token: this.props.onfido_service_token,
                 useModal: false,
@@ -70,8 +71,18 @@ export default class Onfido extends React.Component {
     };
 
     componentDidMount() {
-        if (this.props.status === onfido_status_codes.onfido) {
+        // Token is available on mount if we have it in cookie store
+        if (this.props.status === onfido_status_codes.onfido && this.props.onfido_service_token) {
             this.initOnfido();
+        }
+    }
+
+    componentDidUpdate(prevProps) {
+        // Ensure that we initialize onfido only if onfido_service_token is available
+        if (prevProps.onfido_service_token !== this.props.onfido_service_token) {
+            if (this.props.status === onfido_status_codes.onfido && this.props.onfido_service_token) {
+                this.initOnfido();
+            }
         }
     }
 

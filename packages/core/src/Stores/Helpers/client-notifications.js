@@ -361,7 +361,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
 };
 
 const hasMissingRequiredField = (account_settings, client, isAccountOfType) => {
-    if (!account_settings) return false;
+    if (!account_settings || isEmptyObject(account_settings)) return false;
 
     const { is_svg, landing_company_shortcode } = client;
 
@@ -516,7 +516,7 @@ export const handleClientNotifications = (client, client_store, ui_store, cashie
         isAccountOfType,
         shouldCompleteTax,
     } = client_store;
-    const { addNotificationMessage } = ui_store;
+    const { addNotificationMessage, removeNotificationMessageByKey } = ui_store;
     const { is_p2p_visible } = cashier_store;
 
     if (loginid !== LocalStore.get('active_loginid')) return {};
@@ -533,9 +533,10 @@ export const handleClientNotifications = (client, client_store, ui_store, cashie
         getRiskAssessment,
         shouldCompleteTax
     );
-
     if (is_p2p_visible) {
         addNotificationMessage(clientNotifications().dp2p);
+    } else {
+        removeNotificationMessageByKey({ key: clientNotifications().dp2p.key });
     }
 
     if (is_tnc_needed) addNotificationMessage(clientNotifications(ui_store).tnc);

@@ -42,13 +42,14 @@
         &-verification {
             align-items: center;
             display: flex;
+            flex: none;
 
             &-status {
                 margin-left: 1.6rem;
             }
             &-icon {
                 margin-left: 0.4rem;
-                vertical-align: bottom;
+                vertical-align: text-bottom;
             }
         }
     }
@@ -103,6 +104,13 @@
                 margin-left: 1.6rem;
                 width: 10rem;
             }
+
+            &--privacy {
+                @include mobile {
+                    margin-left: 1.6rem;
+                    width: 12.5rem;
+                }
+            }
         }
         &-horizontal_line {
             align-self: center;
@@ -111,6 +119,25 @@
             width: 564px;
             @include mobile {
                 width: calc(100vw - 9rem);
+            }
+        }
+    }
+    &__toggle {
+        &-container {
+            align-items: center;
+            display: flex;
+            margin: 1rem 0;
+
+            @include mobile {
+                margin: 0.5rem 1.8rem;
+            }
+        }
+        &-name {
+            margin-left: -1rem;
+            max-width: calc(100% - 25rem);
+
+            @include mobile {
+                max-width: calc(100% - 6rem);
             }
         }
     }
@@ -162,5 +189,30 @@
             float: right;
             margin: 1.6rem 2.4rem;
         }
+    }
+}
+
+.p2p-toggle-name {
+    align-items: center;
+    display: flex;
+    font-size: var(--text-size-s);
+    justify-items: flex-start;
+    margin-right: -50px; // Minus half of &__switch width
+
+    &__switch {
+        height: 35px;
+        transform: scale(0.5) translateX(-50%);
+        width: 65px;
+
+        .dc-toggle-switch__button {
+            top: unset;
+        }
+    }
+
+    &--on {
+        color: var(--text-profit-success);
+    }
+    &--off {
+        color: var(--text-less-prominent);
     }
 }

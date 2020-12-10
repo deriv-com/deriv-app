@@ -6,7 +6,7 @@
     flex-direction: row;
     height: 100%;
     justify-content: center;
-    padding: 0 1.6em 0 1.7em;
+    padding: 0 1.6rem 0 1.7rem;
 
     &__preloader {
         position: absolute;
@@ -32,7 +32,7 @@
         }
         @include mobile {
             width: 216px;
-            height: 40px;
+            height: 42px;
             top: -3px;
 
             &:before {
@@ -100,6 +100,12 @@
         }
     }
     @include mobile {
+        padding: 0 1rem;
+        margin-right: -0.8rem;
+
+        &__id {
+            margin-right: -0.8rem;
+        }
         &__balance {
             font-size: 1.4rem;
 

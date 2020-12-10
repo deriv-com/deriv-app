@@ -110,7 +110,7 @@ const MultiplierCardBody = ({
                             removeToast={removeToast}
                             setCurrentFocus={setCurrentFocus}
                             should_show_cancellation_warning={should_show_cancellation_warning}
-                            status={status}
+                            status={is_mobile ? status : null}
                             toggleCancellationWarning={toggleCancellationWarning}
                         />
                     )}

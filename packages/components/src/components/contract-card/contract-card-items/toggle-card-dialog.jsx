@@ -69,21 +69,24 @@ const ToggleCardDialog = ({
         setIsDoNotShowSelected(!is_do_not_show_selected);
     };
 
-    const toggleDialog = e => {
-        e.preventDefault();
-        e.stopPropagation();
-        if (isMobile() && should_show_cancellation_warning && is_valid_to_cancel) {
-            addToast({
-                key: 'deal_cancellation_active',
-                content: getCardLabels().TAKE_PROFIT_LOSS_NOT_AVAILABLE,
-                type: 'error',
-            });
-        }
+    const toggleDialog = React.useCallback(
+        e => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (isMobile() && should_show_cancellation_warning && is_valid_to_cancel) {
+                addToast({
+                    key: 'deal_cancellation_active',
+                    content: getCardLabels().TAKE_PROFIT_LOSS_NOT_AVAILABLE,
+                    type: 'error',
+                });
+            }
 
-        if (is_valid_to_cancel) return;
+            if (is_valid_to_cancel) return;
 
-        setIsVisible(!is_visible);
-    };
+            setIsVisible(!is_visible);
+        },
+        [is_visible]
+    );
 
     const edit_icon = (
         <Icon
@@ -188,4 +191,4 @@ ToggleCardDialog.propTypes = {
     connectWithContractUpdate: PropTypes.func,
 };
 
-export default ToggleCardDialog;
+export default React.memo(ToggleCardDialog);

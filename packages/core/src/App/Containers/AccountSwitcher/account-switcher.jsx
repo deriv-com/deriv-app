@@ -13,7 +13,15 @@ import {
     ThemedScrollbars,
     Text,
 } from '@deriv/components';
-import { urlFor, routes, isCryptocurrency, formatMoney, getMT5Account } from '@deriv/shared';
+import {
+    urlFor,
+    routes,
+    isCryptocurrency,
+    formatMoney,
+    getMT5Account,
+    getMT5AccountDisplay,
+    getMT5AccountKey,
+} from '@deriv/shared';
 
 import { localize, Localize } from '@deriv/translations';
 import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
@@ -129,48 +137,56 @@ class AccountSwitcher extends React.Component {
         this.props.toggleAccountTypesModal(true);
     };
 
-    isDemo = account => /^demo/.test(account.group);
+    isDemo = account => account.account_type === 'demo';
 
     isReal = account => !this.isDemo(account);
 
-    getRemainingAccounts = existing_mt5_groups => {
-        const byAvailableCompanies = config_item => {
-            const [company, type] = config_item.api_key.split('.');
-            return !!this.props.landing_companies?.[company]?.[type];
-        };
+    // * mt5_login_list returns these:
+    // landing_company_short: "svg" | "malta" | "maltainvest" |  "vanuatu"  | "labuan" | "bvi"
+    // account_type: "real" | "demo"
+    // market_type: "financial" | "gaming"
+    // sub_account_type: "financial" | "financial_stp" | "swap_free"
+    //
+    // (all market type gaming are synthetic accounts and can only have financial or swap_free sub account)
+    //
+    // * we should map them to landing_company:
+    // mt_financial_company: { financial: {}, financial_stp: {}, swap_free: {} }
+    // mt_gaming_company: { financial: {}, swap_free: {} }
+    getRemainingAccounts = existing_mt5_accounts => {
+        const gaming_config = this.getMtConfig(
+            'gaming',
+            this.props.landing_companies?.mt_gaming_company,
+            existing_mt5_accounts
+        );
+        const financial_config = this.getMtConfig(
+            'financial',
+            this.props.landing_companies?.mt_financial_company,
+            existing_mt5_accounts
+        );
 
-        const mt5_config = [
-            {
-                account_types: ['svg', 'malta'],
-                icon: 'Synthetic',
-                title: localize('Synthetic'),
-                type: 'synthetic',
-                api_key: 'mt_gaming_company.financial',
-            },
-            {
-                // TODO: [remove-standard-advanced] remove standard when API groups are updated
-                account_types: ['vanuatu', 'svg_standard', 'svg_financial', 'maltainvest_financial'],
-                icon: 'Financial',
-                title: localize('Financial'),
-                type: 'financial',
-                api_key: 'mt_financial_company.financial',
-            },
-            {
-                account_types: ['labuan'],
-                icon: 'Financial STP',
-                title: localize('Financial STP'),
-                type: 'financial_stp',
-                api_key: 'mt_financial_company.financial_stp',
-            },
-        ];
+        return [...gaming_config, ...financial_config];
+    };
 
-        existing_mt5_groups.forEach(group => {
-            const type = group.split(/[demo|real]_/)[1];
-            const index_to_remove = mt5_config.findIndex(account => account.account_types.indexOf(type) > -1);
-            mt5_config.splice(index_to_remove, 1);
-        });
-
-        return mt5_config.filter(byAvailableCompanies);
+    getMtConfig = (market_type, landing_company, existing_mt5_accounts) => {
+        const mt5_config = [];
+        if (landing_company) {
+            Object.keys(landing_company).forEach(company => {
+                const has_account = existing_mt5_accounts.find(
+                    account => account.sub_account_type === company && account.market_type === market_type
+                );
+                if (!has_account) {
+                    const type = getMT5AccountKey(market_type, company);
+                    if (type) {
+                        mt5_config.push({
+                            icon: getMT5Account(market_type, company),
+                            title: getMT5AccountDisplay(market_type, company),
+                            type,
+                        });
+                    }
+                }
+            });
+        }
+        return mt5_config;
     };
 
     componentDidMount() {
@@ -218,18 +234,20 @@ class AccountSwitcher extends React.Component {
     get sorted_mt5_list() {
         // for MT5, synthetic, financial, financial stp
         return this.props.mt5_login_list.slice().sort((a, b) => {
-            if (/demo/.test(a.group) && !/demo/.test(b.group)) {
+            const a_is_demo = this.isDemo(a);
+            const b_is_demo = this.isDemo(b);
+
+            if (a_is_demo && !b_is_demo) {
                 return 1;
             }
-            if (/demo/.test(b.group) && !/demo/.test(a.group)) {
+            if (b_is_demo && !a_is_demo) {
                 return -1;
             }
-            if (/svg$/.test(a.group)) {
+            if (a.market_type === 'gaming') {
                 return -1;
             }
-            // TODO: [remove-standard-advanced] remove standard when API groups are updated
-            if (/vanuatu|svg_(standard|financial)/.test(a.group)) {
-                return /svg$/.test(b.group) ? 1 : -1;
+            if (a.sub_account_type === 'financial') {
+                return b.market_type === 'gaming' ? 1 : -1;
             }
             return 1;
         });
@@ -240,8 +258,7 @@ class AccountSwitcher extends React.Component {
     }
 
     get remaining_demo_mt5() {
-        const existing_demo_mt5_groups = Object.keys(this.demo_mt5).map(account => this.demo_mt5[account].group);
-        return this.getRemainingAccounts(existing_demo_mt5_groups);
+        return this.getRemainingAccounts(this.demo_mt5);
     }
 
     get real_mt5() {
@@ -249,8 +266,7 @@ class AccountSwitcher extends React.Component {
     }
 
     get remaining_real_mt5() {
-        const existing_real_mt5_groups = Object.keys(this.real_mt5).map(account => this.real_mt5[account].group);
-        return this.getRemainingAccounts(existing_real_mt5_groups);
+        return this.getRemainingAccounts(this.real_mt5);
     }
 
     // SVG clients can't upgrade.
@@ -276,7 +292,7 @@ class AccountSwitcher extends React.Component {
         const vrtc_loginid = this.props.account_list.find(account => account.is_virtual).loginid;
         const vrtc_balance = this.props.accounts[vrtc_loginid] ? this.props.accounts[vrtc_loginid].balance : 0;
         const mt5_demo_total = this.props.mt5_login_list
-            .filter(account => /^demo/.test(account.group))
+            .filter(account => this.isDemo(account.group))
             .reduce(
                 (total, account) => {
                     total.balance += account.balance;
@@ -356,10 +372,14 @@ class AccountSwitcher extends React.Component {
                                             {this.demo_mt5.map(account => (
                                                 <AccountList
                                                     key={account.login}
-                                                    account_type={account.group}
+                                                    market_type={account.market_type}
+                                                    sub_account_type={account.sub_account_type}
                                                     balance={account.balance}
                                                     currency={account.currency}
-                                                    currency_icon={`IcMt5-${getMT5Account(account.group)}`}
+                                                    currency_icon={`IcMt5-${getMT5Account(
+                                                        account.market_type,
+                                                        account.sub_account_type
+                                                    )}`}
                                                     has_balance={'balance' in account}
                                                     loginid={account.display_login}
                                                     onClickAccount={this.redirectToMt5Demo}
@@ -415,7 +435,6 @@ class AccountSwitcher extends React.Component {
                                             has_balance={'balance' in this.props.accounts[account.loginid]}
                                             is_disabled={account.is_disabled}
                                             is_virtual={account.is_virtual}
-                                            is_eu={this.props.is_eu}
                                             loginid={account.loginid}
                                             onClickAccount={
                                                 account.is_disabled
@@ -483,10 +502,14 @@ class AccountSwitcher extends React.Component {
                                             {this.real_mt5.map(account => (
                                                 <AccountList
                                                     key={account.login}
-                                                    account_type={account.group}
+                                                    market_type={account.market_type}
+                                                    sub_account_type={account.sub_account_type}
                                                     balance={account.balance}
                                                     currency={account.currency}
-                                                    currency_icon={`IcMt5-${getMT5Account(account.group)}`}
+                                                    currency_icon={`IcMt5-${getMT5Account(
+                                                        account.market_type,
+                                                        account.sub_account_type
+                                                    )}`}
                                                     has_balance={'balance' in account}
                                                     loginid={account.display_login}
                                                     onClickAccount={this.redirectToMt5Real}

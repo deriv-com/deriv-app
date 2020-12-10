@@ -87,7 +87,6 @@ const MyProfile = observer(() => {
                         </Text>
                     </div>
                 </div>
-                g
             </div>
             <Table>
                 <Table.Row className='my-profile__stats'>

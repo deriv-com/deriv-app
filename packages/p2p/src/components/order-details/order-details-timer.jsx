@@ -7,20 +7,27 @@ import ServerTime from 'Utils/server-time';
 import { useStores } from 'Stores';
 
 const OrderDetailsTimer = observer(() => {
+    const getTimeLeft = time => {
+        const distance = ServerTime.getDistanceToServerTime(time);
+        return {
+            distance,
+            label: distance < 0 ? localize('expired') : secondsToTimer(distance),
+        };
+    };
+
     const { order_store } = useStores();
-    const [remaining_time, setRemainingTime] = React.useState();
-    const { should_show_order_timer } = order_store.order_information;
+    const { order_expiry_milliseconds, should_show_order_timer } = order_store.order_information;
+    const [remaining_time, setRemainingTime] = React.useState(getTimeLeft(order_expiry_milliseconds).label);
     const interval = React.useRef(null);
 
     const countDownTimer = () => {
-        const distance = ServerTime.getDistanceToServerTime(order_store.order_information.order_expiry_milliseconds);
-        const timer = secondsToTimer(distance);
-        if (distance < 0) {
-            setRemainingTime(localize('expired'));
+        const time_left = getTimeLeft(order_expiry_milliseconds);
+
+        if (time_left.distance < 0) {
             clearInterval(interval.current);
-        } else {
-            setRemainingTime(timer);
         }
+
+        setRemainingTime(time_left.label);
     };
 
     React.useEffect(() => {

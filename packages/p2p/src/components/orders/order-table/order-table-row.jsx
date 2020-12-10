@@ -10,11 +10,16 @@ import ServerTime from 'Utils/server-time';
 import { useStores } from 'Stores';
 
 const OrderRow = observer(({ row: order }) => {
+    const getTimeLeft = time => {
+        const distance = ServerTime.getDistanceToServerTime(time);
+        return {
+            distance,
+            label: distance < 0 ? localize('expired') : secondsToTimer(distance),
+        };
+    };
+
     const { general_store, order_store } = useStores();
     const [order_state, setOrderState] = React.useState(order); // Use separate state to force refresh when (FE-)expired.
-    const [remaining_time, setRemainingTime] = React.useState();
-    const interval = React.useRef(null);
-
     const {
         account_currency,
         amount_display,
@@ -34,6 +39,10 @@ const OrderRow = observer(({ row: order }) => {
         status_string,
     } = order_state;
 
+    const [remaining_time, setRemainingTime] = React.useState(getTimeLeft(order_expiry_milliseconds).label);
+
+    const interval = React.useRef(null);
+
     const isOrderSeen = order_id => {
         const { notifications } = general_store.getLocalStorageSettingsForLoginId();
         return notifications.some(notification => notification.order_id === order_id && notification.is_seen === true);
@@ -41,16 +50,15 @@ const OrderRow = observer(({ row: order }) => {
 
     React.useEffect(() => {
         const countDownTimer = () => {
-            const distance = ServerTime.getDistanceToServerTime(order_expiry_milliseconds);
-            const timer = secondsToTimer(distance);
+            const { distance, label } = getTimeLeft(order_expiry_milliseconds);
 
-            if (distance < 1) {
+            if (distance < 0) {
                 const { client, props } = general_store;
-                setRemainingTime(localize('expired'));
+                setRemainingTime(label);
                 setOrderState(createExtendedOrderDetails(order.order_details, client.loginid, props.server_time));
                 clearInterval(interval.current);
             } else {
-                setRemainingTime(timer);
+                setRemainingTime(label);
             }
         };
 

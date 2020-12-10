@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { ThemedScrollbars } from '@deriv/components';
+import { ThemedScrollbars, usePrevious } from '@deriv/components';
 import { init } from 'onfido-sdk-ui';
 import { isMobile } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
@@ -24,15 +24,31 @@ const OnfidoContainer = ({ height }) => {
     );
 };
 
-export default class Onfido extends React.Component {
-    state = {
-        onfido: null,
-        onfido_init_error: false,
-    };
+const Onfido = ({ documents_supported, handleComplete, height, onfido_service_token, status, ...props }) => {
+    const [onfido_init, setOnfido] = React.useState(null);
+    const [onfido_init_error, setOnfidoInitError] = React.useState(false);
 
-    initOnfido = async () => {
+    // didMount hook
+    React.useEffect(() => {
+        if (status === onfido_status_codes.onfido && onfido_service_token) {
+            initOnfido().then();
+        }
+        return () => {
+            if (onfido_init) {
+                onfido_init.tearDown();
+            }
+        };
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+    const previous_onfido_service_token = usePrevious(onfido_service_token);
+
+    const onComplete = React.useCallback(() => {
+        onfido_init.tearDown();
+        handleComplete();
+    }, [handleComplete, onfido_init]);
+
+    const initOnfido = React.useCallback(async () => {
         try {
-            const { documents_supported } = this.props;
             const onfido = await init({
                 containerId: onfido_container_id,
                 language: {
@@ -40,9 +56,9 @@ export default class Onfido extends React.Component {
                     phrases: onfido_phrases,
                     mobilePhrases: onfido_phrases,
                 },
-                token: this.props.onfido_service_token,
+                token: onfido_service_token,
                 useModal: false,
-                onComplete: this.handleComplete,
+                onComplete,
                 steps: [
                     {
                         type: 'document',
@@ -59,62 +75,41 @@ export default class Onfido extends React.Component {
                     'face',
                 ],
             });
-            this.setState({ onfido });
+            setOnfido(onfido);
         } catch (err) {
-            this.setState({ onfido_init_error: true });
+            setOnfidoInitError(true);
         }
-    };
+    }, [documents_supported, onComplete, onfido_service_token]);
 
-    handleComplete = () => {
-        this.state.onfido.tearDown();
-        this.props.handleComplete();
-    };
-
-    componentDidMount() {
-        // Token is available on mount if we have it in cookie store
-        if (this.props.status === onfido_status_codes.onfido && this.props.onfido_service_token) {
-            this.initOnfido();
-        }
-    }
-
-    componentDidUpdate(prevProps) {
-        // Ensure that we initialize onfido only if onfido_service_token is available
-        if (prevProps.onfido_service_token !== this.props.onfido_service_token) {
-            if (this.props.status === onfido_status_codes.onfido && this.props.onfido_service_token) {
-                this.initOnfido();
+    React.useEffect(() => {
+        if (previous_onfido_service_token !== onfido_service_token) {
+            if (status === onfido_status_codes.onfido && onfido_service_token) {
+                initOnfido();
             }
         }
+    }, [initOnfido, previous_onfido_service_token, onfido_service_token, status]);
+
+    if (onfido_init_error || onfido_service_token?.error) return <OnfidoFailed {...props} />;
+
+    if (status === onfido_status_codes.onfido) return <OnfidoContainer height={height} />;
+
+    switch (status) {
+        case onfido_status_codes.unsupported:
+            return <Unsupported {...props} />;
+        case onfido_status_codes.pending:
+            return <UploadComplete {...props} />;
+        case onfido_status_codes.rejected:
+            return <OnfidoFailed {...props} />;
+        case onfido_status_codes.verified:
+            return <Verified {...props} />;
+        case onfido_status_codes.expired:
+            return <Expired {...props} />;
+        case onfido_status_codes.suspected:
+            return <OnfidoFailed {...props} />;
+        default:
+            return null;
     }
-
-    componentWillUnmount() {
-        if (this.state.onfido) {
-            this.state.onfido.tearDown();
-        }
-    }
-
-    render() {
-        const { status, height } = this.props;
-
-        if (status === onfido_status_codes.onfido) return <OnfidoContainer height={height} />;
-
-        switch (status) {
-            case onfido_status_codes.unsupported:
-                return <Unsupported {...this.props} />;
-            case onfido_status_codes.pending:
-                return <UploadComplete {...this.props} />;
-            case onfido_status_codes.rejected:
-                return <OnfidoFailed {...this.props} />;
-            case onfido_status_codes.verified:
-                return <Verified {...this.props} />;
-            case onfido_status_codes.expired:
-                return <Expired {...this.props} />;
-            case onfido_status_codes.suspected:
-                return <OnfidoFailed {...this.props} />;
-            default:
-                return null;
-        }
-    }
-}
+};
 
 Onfido.propTypes = {
     documents_supported: PropTypes.array,
@@ -123,3 +118,5 @@ Onfido.propTypes = {
     onfido_service_token: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
     status: PropTypes.oneOf(Object.keys(onfido_status_codes)),
 };
+
+export default Onfido;

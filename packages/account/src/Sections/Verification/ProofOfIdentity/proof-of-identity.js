@@ -10,8 +10,9 @@ export const onfido_status_codes = {
     suspected: 'suspected',
 };
 
-export const getIdentityStatus = (identity, needs_verification, onfido_unsupported, is_mlt_mx) => {
+export const getIdentityStatus = (identity, needs_verification, is_mlt_mx) => {
     const { status } = identity;
+    const onfido_unsupported = !identity.services.onfido.is_country_supported;
     const submissions_allowed = needs_verification?.includes('identity');
 
     if (onfido_unsupported) return onfido_status_codes.unsupported;

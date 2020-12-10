@@ -139,7 +139,7 @@ const SummaryModal = ({
                                                 }
                                             />
                                             <Row
-                                                label={localize('Profit/loss')}
+                                                label={localize('Profit / Loss')}
                                                 value={
                                                     <React.Fragment>
                                                         {!!computed_values.profit &&

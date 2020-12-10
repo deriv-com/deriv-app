@@ -16,8 +16,7 @@ const TradeModals = Loadable({
 });
 
 const App = ({ passthrough }) => {
-    const root_store = initStore(passthrough.root_store, passthrough.WS);
-
+    const [root_store] = React.useState(initStore(passthrough.root_store, passthrough.WS));
     React.useEffect(() => {
         return () => root_store.ui.setPromptHandler(false);
     }, []);

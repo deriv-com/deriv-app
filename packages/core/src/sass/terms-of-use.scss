@@ -10,7 +10,19 @@
         color: var(--text-general);
     }
     &__checkbox {
-        margin-top: 2rem;
+        margin-top: 1.6rem;
+    }
+    &__hr {
+        height: 2px;
+        margin: 1.6rem 0 0;
+        width: 100%;
+        border-top: 1px solid var(--general-section-1);
+
+        @include mobile {
+            border-top-width: 2px;
+            border-color: var(--border-disabled);
+            width: 100%;
+        }
     }
     h4 {
         @include typeface(--paragraph-left-bold-black);
@@ -29,7 +41,7 @@
     @include mobile {
         overflow-x: hidden;
         margin: 0;
-        padding: 0 2.4rem 4rem;
+        padding: 0 2.4rem 10rem;
         overflow-y: auto;
 
         & .dc-checkbox__box {

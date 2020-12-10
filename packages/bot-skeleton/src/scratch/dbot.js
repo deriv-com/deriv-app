@@ -4,11 +4,12 @@ import { hasAllRequiredBlocks, updateDisabledBlocks } from './utils';
 import main_xml from './xml/main.xml';
 import toolbox_xml from './xml/toolbox.xml';
 import DBotStore from './dbot-store';
-import { getSavedWorkspaces } from '../utils/local-storage';
+import { save_types } from '../constants';
 import { config } from '../constants/config';
+import { getSavedWorkspaces, saveWorkspaceToRecent } from '../utils/local-storage';
+import { observer as globalObserver } from '../utils/observer';
 import ApiHelpers from '../services/api/api-helpers';
 import Interpreter from '../services/tradeEngine/utils/interpreter';
-import { observer as globalObserver } from '../utils/observer';
 
 class DBot {
     constructor() {
@@ -49,11 +50,16 @@ class DBot {
                 });
 
                 this.workspace.cached_xml = { main: main_xml, toolbox: toolbox_xml };
-                Blockly.derivWorkspace = this.workspace;
+                this.workspace.save_workspace_interval = setInterval(() => {
+                    // Periodically save the workspace.
+                    saveWorkspaceToRecent(Blockly.Xml.workspaceToDom(this.workspace), save_types.UNSAVED);
+                }, 10000);
 
                 this.workspace.addChangeListener(this.valueInputLimitationsListener.bind(this));
                 this.workspace.addChangeListener(event => updateDisabledBlocks(this.workspace, event));
                 this.workspace.addChangeListener(event => this.workspace.dispatchBlockEventEffects(event));
+
+                Blockly.derivWorkspace = this.workspace;
 
                 this.addBeforeRunFunction(this.unselectBlocks.bind(this));
                 this.addBeforeRunFunction(this.disableStrayBlocks.bind(this));
@@ -65,7 +71,7 @@ class DBot {
                 this.workspace.current_strategy_id = Blockly.utils.genUid();
                 let strategy_to_load = main_xml;
                 let file_name = config.default_file_name;
-                if (recent_files) {
+                if (recent_files && recent_files.length) {
                     const latest_file = recent_files[0];
                     strategy_to_load = latest_file.xml;
                     file_name = latest_file.name;
@@ -148,6 +154,7 @@ class DBot {
             var BinaryBotPrivateAfterPurchase;
             var BinaryBotPrivateLastTickTime;
             var BinaryBotPrivateTickAnalysisList = [];
+            var BinaryBotPrivateHasCalledTradeOptions = false;
             function BinaryBotPrivateRun(f, arg) {
                 if (f) return f(arg);
                 return false;
@@ -166,13 +173,17 @@ class DBot {
                 for (var BinaryBotPrivateI = 0; BinaryBotPrivateI < BinaryBotPrivateTickAnalysisList.length; BinaryBotPrivateI++) {
                     BinaryBotPrivateRun(BinaryBotPrivateTickAnalysisList[BinaryBotPrivateI]);
                 }
-            }   
+            }
             var BinaryBotPrivateLimitations = ${JSON.stringify(limitations)};
             ${Blockly.JavaScript.workspaceToCode(this.workspace)}
             BinaryBotPrivateRun(BinaryBotPrivateInit);
             while (true) {
                 BinaryBotPrivateTickAnalysis();
                 BinaryBotPrivateRun(BinaryBotPrivateStart);
+                if (!BinaryBotPrivateHasCalledTradeOptions) {
+                    sleep(1);
+                    continue;
+                }
                 while (watch('before')) {
                     BinaryBotPrivateTickAnalysis();
                     BinaryBotPrivateRun(BinaryBotPrivateBeforePurchase);

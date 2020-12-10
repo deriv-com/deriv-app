@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik, Form } from 'formik';
 import { Button, DesktopWrapper, Input } from '@deriv/components';
-import { getDecimalPlaces } from '@deriv/shared';
+import { getDecimalPlaces, validNumber, getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { getPreBuildDVRs, validNumber } from 'Utils/Validator/declarative-validation-rules';
 import FormError from '../Error/form-error.jsx';
 
 const validateTransfer = (values, { balance, currency, transfer_limit }) => {
@@ -16,19 +15,19 @@ const validateTransfer = (values, { balance, currency, transfer_limit }) => {
         errors.loginid = localize('Please enter a valid client login ID.');
     }
 
+    const { is_ok, message } = validNumber(values.amount, {
+        type: 'float',
+        decimals: getDecimalPlaces(currency),
+        ...(transfer_limit.min && {
+            min: transfer_limit.min,
+            max: transfer_limit.max,
+        }),
+    });
+
     if (!values.amount) {
         errors.amount = localize('This field is required.');
-    } else if (
-        !validNumber(values.amount, {
-            type: 'float',
-            decimals: getDecimalPlaces(currency),
-            ...(transfer_limit.min && {
-                min: transfer_limit.min,
-                max: transfer_limit.max,
-            }),
-        })
-    ) {
-        errors.amount = getPreBuildDVRs().number.message;
+    } else if (!is_ok) {
+        errors.amount = message;
     } else if (+balance < +values.amount) {
         errors.amount = localize('Insufficient balance.');
     }
@@ -111,13 +110,15 @@ class PaymentAgentTransferForm extends React.Component {
                                         label={localize('Amount')}
                                         error={touched.amount && errors.amount}
                                         required
-                                        leading_icon={
+                                        trailing_icon={
                                             <span
                                                 className={classNames(
                                                     'symbols',
                                                     `symbols--${(this.props.currency || '').toLowerCase()}`
                                                 )}
-                                            />
+                                            >
+                                                {getCurrencyDisplayCode(this.props.currency)}
+                                            </span>
                                         }
                                         autoComplete='off'
                                         maxLength='30'
@@ -144,7 +145,6 @@ class PaymentAgentTransferForm extends React.Component {
                                 )}
                             </Field>
                             <div className='cashier__form-submit'>
-                                {this.props.error_message && <FormError error_message={this.props.error_message} />}
                                 <Button
                                     className='cashier__form-submit-button'
                                     type='submit'
@@ -155,6 +155,7 @@ class PaymentAgentTransferForm extends React.Component {
                                     <Localize i18n_default_text='Transfer' />
                                 </Button>
                             </div>
+                            <FormError error={this.props.error} />
                         </Form>
                     )}
                 </Formik>
@@ -180,7 +181,7 @@ export default connect(({ client, modules }) => ({
     currency: client.currency,
     amount: modules.cashier.config.payment_agent_transfer.confirm.amount,
     description: modules.cashier.config.payment_agent_transfer.confirm.description,
-    error_message: modules.cashier.config.payment_agent_transfer.error.message,
+    error: modules.cashier.config.payment_agent_transfer.error,
     requestTryPaymentAgentTransfer: modules.cashier.requestTryPaymentAgentTransfer,
     setErrorMessage: modules.cashier.setErrorMessage,
     transfer_limit: modules.cashier.config.payment_agent_transfer.transfer_limit,

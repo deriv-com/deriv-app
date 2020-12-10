@@ -52,6 +52,9 @@
             background-color: var(--general-main-1) !important;
         }
     }
+    .dc-select-native__placeholder:not(.dc-select-native__placeholder--has-value) {
+        background: initial;
+    }
 }
 
 /** @define trade-container; weak */
@@ -60,8 +63,8 @@
 
     &__fieldset {
         border-radius: $BORDER_RADIUS;
-        padding: 0.8em;
-        margin-bottom: 0.4em;
+        padding: 0.8rem;
+        margin-bottom: 0.4rem;
         background-color: var(--general-section-1);
         border-color: var(--general-section-1);
         color: var(--text-general);
@@ -98,18 +101,6 @@
                     opacity: 0;
                 }
             }
-        }
-        &-tooltip-text,
-        &-text {
-            margin-top: 0.8rem;
-            font-size: 1.2rem;
-            text-align: right;
-        }
-        &-tooltip-text {
-            border-bottom: 1px dotted var(--text-general);
-            text-decoration: none;
-            width: fit-content;
-            margin-left: auto;
         }
         .dc-datepicker {
             .dc-input {
@@ -158,13 +149,10 @@
     }
     &__currency {
         position: absolute;
-        float: left;
-        font-size: 10px;
-        height: 32px;
-        left: 48px;
+        height: 3.2rem;
+        right: 4rem;
         align-items: center;
         justify-content: center;
-        width: 20px;
         display: flex;
         background: transparent;
         border-color: transparent;
@@ -172,8 +160,9 @@
         color: inherit;
 
         &--symbol {
-            font-size: 1.4em;
+            font-size: 1.4rem;
             line-height: 1.5;
+            padding-bottom: 0.2rem;
         }
         &:before {
             @include typeface(--paragraph-center-normal-black);
@@ -211,7 +200,7 @@
                 }
             }
             @include desktop {
-                height: 2.1rem;
+                min-height: 2.1rem;
             }
 
             &--disabled {
@@ -236,11 +225,11 @@
                 }
             }
             &-value {
-                font-size: 1.4em;
+                font-size: 1.4rem;
                 font-weight: 700;
                 text-align: left;
                 line-height: 1.25;
-                margin-left: 0.1em;
+                margin-left: 0.1rem;
                 color: var(--text-prominent);
                 opacity: 1;
                 transition: 0.3s;
@@ -273,6 +262,11 @@
                 bottom: 1px;
                 position: relative;
             }
+        }
+    }
+    &__price-info-currency {
+        @include mobile {
+            font-size: 0.9rem;
         }
     }
     &__barriers {
@@ -320,8 +314,8 @@
         // fix for Safari:
         // display: inline-block causes input cursor to seemingly appears duplicated
         display: grid;
-        grid-template-columns: 1fr 3fr;
-        grid-gap: 0.2em;
+        grid-template-columns: 3fr 1.5fr;
+        grid-gap: 0.4rem;
 
         .dc-dropdown-container {
             /* postcss-bem-linter: ignore */
@@ -335,7 +329,7 @@
                 }
                 /* postcss-bem-linter: ignore */
                 .dc-dropdown__display {
-                    border-radius: $BORDER_RADIUS 0 0 $BORDER_RADIUS;
+                    border-radius: $BORDER_RADIUS;
 
                     /* postcss-bem-linter: ignore */
                     .symbols {
@@ -345,9 +339,58 @@
             }
         }
     }
-    &__amount .trade-container__input {
-        padding: 0 30px;
-        border-radius: 0 $BORDER_RADIUS $BORDER_RADIUS 0;
+    &__amount {
+        &--multipliers {
+            & .trade-container__input {
+                left: 3.6rem;
+            }
+        }
+        & .dc-tooltip--error {
+            & .dc-input-wrapper {
+                border: 1px solid var(--status-danger);
+
+                &:hover {
+                    border-color: var(--status-danger);
+                }
+            }
+        }
+        & .dc-input-wrapper {
+            border-radius: $BORDER_RADIUS;
+            background: var(--fill-normal);
+            border: 1px solid var(--fill-normal);
+            height: 3.2rem;
+            box-sizing: border-box;
+
+            &__button {
+                top: 1px;
+
+                &--increment {
+                    right: 1px;
+                }
+                &--decrement {
+                    left: 1px;
+                }
+            }
+            &:hover {
+                border-color: var(--border-hover);
+            }
+            &:active,
+            &:focus {
+                border-color: var(--border-active);
+            }
+        }
+        & .trade-container__input {
+            font-size: 1.4rem;
+            max-width: calc(100% - 7.2rem);
+            border-radius: 0 $BORDER_RADIUS $BORDER_RADIUS 0;
+            background: none;
+            border: none;
+            padding: 0 0 0.2rem;
+
+            &.input--error {
+                border: none !important;
+            }
+        }
     }
     &__multiplier {
         display: flex;
@@ -370,22 +413,67 @@
             align-self: flex-end;
         }
     }
+    &__deal-cancellation-popover {
+        width: 28rem;
+    }
     &__cancel-deal-info {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
 
+        &--row-layout {
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+
+            .trade-container__price-info-currency {
+                margin-left: -0.1rem;
+            }
+            @include mobile {
+                padding: 0.4rem 0 0 !important;
+                margin-bottom: -0.5rem;
+
+                .trade-container__price-info-currency {
+                    font-size: 0.9rem !important;
+                }
+                .trade-container__price-info-basis {
+                    font-size: 0.8rem;
+                }
+            }
+        }
+        .trade-container__price-info-currency {
+            font-size: 1.2rem;
+        }
         @include mobile {
-            padding: 0rem 0.4rem;
+            padding: 0 0.4rem;
             min-height: 1.4rem;
 
             .trade-container__price-info-basis {
-                color: var(--text-less-prominent);
+                color: var(--text-general);
             }
             .trade-container__price-info-value {
                 color: var(--text-prominent);
                 font-size: 1rem;
+            }
+            .trade-container__price-info-currency {
+                font-size: 0.9rem;
+            }
+        }
+    }
+    &__multipliers-trade-info {
+        display: flex;
+        justify-content: space-evenly;
+
+        &-tooltip-text {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 0.8rem;
+            text-align: right;
+
+            span {
+                border-bottom: 1px dotted var(--text-general);
             }
         }
     }
@@ -404,11 +492,20 @@
     .symbols.disabled {
         color: var(--text-disabled);
     }
+    .dc-dropdown--left {
+        .dc-dropdown__display-text {
+            padding-left: 15px;
+            padding-right: unset;
+        }
+        .dc-dropdown__select-arrow {
+            left: 0.3rem;
+        }
+    }
 }
 
-/** @define input-field; weak */
-.input-field {
-    .input-wrapper__icon {
+/** @define dc-input-field; weak */
+.dc-input-field {
+    .dc-input-wrapper__icon {
         top: 6px;
     }
     &--has-error {

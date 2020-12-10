@@ -1,4 +1,38 @@
-import { localize } from '@deriv/translations';
+import React from 'react';
+import { localize, Localize } from '@deriv/translations';
+
+export const getCardLabels = () => ({
+    APPLY: localize('Apply'),
+    STAKE: localize('Stake:'),
+    CLOSE: localize('Close'),
+    CANCEL: localize('Cancel'),
+    CURRENT_STAKE: localize('Current stake:'),
+    DEAL_CANCEL_FEE: localize('Deal cancel. fee:'),
+    TAKE_PROFIT: localize('Take profit:'),
+    BUY_PRICE: localize('Buy price:'),
+    STOP_LOSS: localize('Stop loss:'),
+    TOTAL_PROFIT_LOSS: localize('Total profit/loss:'),
+    PROFIT_LOSS: localize('Profit/Loss:'),
+    POTENTIAL_PROFIT_LOSS: localize('Potential profit/loss:'),
+    INDICATIVE_PRICE: localize('Indicative price:'),
+    PAYOUT: localize('Sell price:'),
+    PURCHASE_PRICE: localize('Buy price:'),
+    POTENTIAL_PAYOUT: localize('Payout limit:'),
+    TICK: localize('Tick '),
+    WON: localize('Won'),
+    LOST: localize('Lost'),
+    DAYS: localize('Days'),
+    DAY: localize('Day'),
+    SELL: localize('Sell'),
+    INCREMENT_VALUE: localize('Increment value'),
+    DECREMENT_VALUE: localize('Decrement value'),
+    TAKE_PROFIT_LOSS_NOT_AVAILABLE: localize(
+        'Take profit and/or stop loss are not available while deal cancellation is active.'
+    ),
+    DONT_SHOW_THIS_AGAIN: localize("Don't show this again"),
+    RESALE_NOT_OFFERED: localize('Resale not offered'),
+    NOT_AVAILABLE: localize('N/A'),
+});
 
 export const getMarketNamesMap = () => ({
     FRXAUDCAD: localize('AUD/CAD'),
@@ -51,8 +85,13 @@ export const getMarketNamesMap = () => ({
     R_50: localize('Volatility 50 Index'),
     R_75: localize('Volatility 75 Index'),
     R_100: localize('Volatility 100 Index'),
+    BOOM500: localize('Boom 500 Index'),
+    BOOM1000: localize('Boom 1000 Index'),
+    CRASH500: localize('Crash 500 Index'),
+    CRASH1000: localize('Crash 1000 Index'),
     RDBEAR: localize('Bear Market Index'),
     RDBULL: localize('Bull Market Index'),
+    STPRNG: localize('Step Index'),
     WLDAUD: localize('AUD Index'),
     WLDEUR: localize('EUR Index'),
     WLDGBP: localize('GBP Index'),
@@ -63,130 +102,130 @@ export const getMarketNamesMap = () => ({
 
 export const getUnsupportedContracts = () => ({
     EXPIRYMISS: {
-        name: localize('Ends Outside'),
+        name: <Localize i18n_default_text='Ends Outside' />,
         position: 'top',
     },
     EXPIRYRANGE: {
-        name: localize('Ends Between'),
+        name: <Localize i18n_default_text='Ends Between' />,
         position: 'bottom',
     },
     RANGE: {
-        name: localize('Stays Between'),
+        name: <Localize i18n_default_text='Stays Between' />,
         position: 'top',
     },
     UPORDOWN: {
-        name: localize('Goes Outside'),
+        name: <Localize i18n_default_text='Goes Outside' />,
         position: 'bottom',
     },
     RESETCALL: {
-        name: localize('Reset Call'),
+        name: <Localize i18n_default_text='Reset Call' />,
         position: 'top',
     },
     RESETPUT: {
-        name: localize('Reset Put'),
+        name: <Localize i18n_default_text='Reset Put' />,
         position: 'bottom',
     },
     TICKHIGH: {
-        name: localize('High Tick'),
+        name: <Localize i18n_default_text='High Tick' />,
         position: 'top',
     },
     TICKLOW: {
-        name: localize('Low Tick'),
+        name: <Localize i18n_default_text='Low Tick' />,
         position: 'bottom',
     },
     ASIANU: {
-        name: localize('Asian Up'),
+        name: <Localize i18n_default_text='Asian Up' />,
         position: 'top',
     },
     ASIAND: {
-        name: localize('Asian Down'),
+        name: <Localize i18n_default_text='Asian Down' />,
         position: 'bottom',
     },
     LBFLOATCALL: {
-        name: localize('Close-to-Low'),
+        name: <Localize i18n_default_text='Close-to-Low' />,
         position: 'top',
     },
     LBFLOATPUT: {
-        name: localize('High-to-Close'),
+        name: <Localize i18n_default_text='High-to-Close' />,
         position: 'top',
     },
     LBHIGHLOW: {
-        name: localize('High-to-Low'),
+        name: <Localize i18n_default_text='High-to-Low' />,
         position: 'top',
     },
     CALLSPREAD: {
-        name: localize('Spread Up'),
+        name: <Localize i18n_default_text='Spread Up' />,
         position: 'top',
     },
     PUTSPREAD: {
-        name: localize('Spread Down'),
+        name: <Localize i18n_default_text='Spread Down' />,
         position: 'bottom',
     },
     RUNHIGH: {
-        name: localize('Only Ups'),
+        name: <Localize i18n_default_text='Only Ups' />,
         position: 'top',
     },
     RUNLOW: {
-        name: localize('Only Downs'),
+        name: <Localize i18n_default_text='Only Downs' />,
         position: 'bottom',
     },
 });
 
 export const getSupportedContracts = is_high_low => ({
     CALL: {
-        name: is_high_low ? localize('Higher') : localize('Rise'),
+        name: is_high_low ? <Localize i18n_default_text='Higher' /> : <Localize i18n_default_text='Rise' />,
         position: 'top',
     },
     PUT: {
-        name: is_high_low ? localize('Lower') : localize('Fall'),
+        name: is_high_low ? <Localize i18n_default_text='Lower' /> : <Localize i18n_default_text='Fall' />,
         position: 'bottom',
     },
     CALLE: {
-        name: localize('Rise'),
+        name: <Localize i18n_default_text='Rise' />,
         position: 'top',
     },
     PUTE: {
-        name: localize('Fall'),
+        name: <Localize i18n_default_text='Fall' />,
         position: 'bottom',
     },
     DIGITMATCH: {
-        name: localize('Matches'),
+        name: <Localize i18n_default_text='Matches' />,
         position: 'top',
     },
     DIGITDIFF: {
-        name: localize('Differs'),
+        name: <Localize i18n_default_text='Differs' />,
         position: 'bottom',
     },
     DIGITEVEN: {
-        name: localize('Even'),
+        name: <Localize i18n_default_text='Even' />,
         position: 'top',
     },
     DIGITODD: {
-        name: localize('Odd'),
+        name: <Localize i18n_default_text='Odd' />,
         position: 'bottom',
     },
     DIGITOVER: {
-        name: localize('Over'),
+        name: <Localize i18n_default_text='Over' />,
         position: 'top',
     },
     DIGITUNDER: {
-        name: localize('Under'),
+        name: <Localize i18n_default_text='Under' />,
         position: 'bottom',
     },
     ONETOUCH: {
-        name: localize('Touch'),
+        name: <Localize i18n_default_text='Touch' />,
         position: 'top',
     },
     NOTOUCH: {
-        name: localize('No Touch'),
+        name: <Localize i18n_default_text='No Touch' />,
         position: 'bottom',
     },
     MULTUP: {
-        name: localize('Up'),
+        name: <Localize i18n_default_text='Up' />,
         position: 'top',
     },
     MULTDOWN: {
-        name: localize('Down'),
+        name: <Localize i18n_default_text='Down' />,
         position: 'bottom',
     },
 });
@@ -196,8 +235,9 @@ export const getContractConfig = is_high_low => ({
     ...getUnsupportedContracts(),
 });
 
-export const getContractTypeDisplay = (type, is_high_low = false) =>
-    getContractConfig(is_high_low)[type] ? getContractConfig(is_high_low)[type.toUpperCase()].name : '';
+export const getContractTypeDisplay = (type, is_high_low = false) => {
+    return getContractConfig(is_high_low)[type] ? getContractConfig(is_high_low)[type.toUpperCase()].name : '';
+};
 
 export const getContractTypePosition = (type, is_high_low = false) =>
     getContractConfig(is_high_low)[type] ? getContractConfig(is_high_low)[type.toUpperCase()].position : 'top';

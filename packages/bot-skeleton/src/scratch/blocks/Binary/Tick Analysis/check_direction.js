@@ -7,7 +7,7 @@ Blockly.Blocks.check_direction = {
     },
     definition() {
         return {
-            message0: localize('Direction is %1'),
+            message0: localize('Direction is {{ direction_type }}', { direction_type: '%1' }),
             args0: [
                 {
                     type: 'field_dropdown',

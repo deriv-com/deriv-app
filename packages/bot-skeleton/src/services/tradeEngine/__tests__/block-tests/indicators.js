@@ -1,11 +1,15 @@
 import { expect } from 'chai';
-
-import bb, { bollingerBandsArray as bba } from '@binary-com/binary-indicators/lib/bollingerBands';
-import rsi, { relativeStrengthIndexArray as rsia } from '@binary-com/binary-indicators/lib/relativeStrengthIndex';
-import ema, { exponentialMovingAverageArray as emaa } from '@binary-com/binary-indicators/lib/exponentialMovingAverage';
-import sma, { simpleMovingAverageArray as smaa } from '@binary-com/binary-indicators/lib/simpleMovingAverage';
-import macda from '@binary-com/binary-indicators/lib/macd';
-
+import {
+    simpleMovingAverage as sma,
+    simpleMovingAverageArray as smaa,
+    bollingerBands as bb,
+    bollingerBandsArray as bba,
+    exponentialMovingAverage as ema,
+    exponentialMovingAverageArray as emaa,
+    relativeStrengthIndex as rsi,
+    relativeStrengthIndexArray as rsia,
+    macdArray as macda,
+} from '@deriv/indicators';
 import { runAndGetResult } from '../tools';
 
 const periods = 12;

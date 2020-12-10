@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
-import { routes, getDerivComLink } from '@deriv/shared';
-import { Icon, Checklist } from '@deriv/components';
+import { routes } from '@deriv/shared';
+import { Icon, Checklist, StaticUrl, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services';
@@ -70,15 +70,7 @@ const DepositsLocked = ({
                       content: (
                           <Localize
                               i18n_default_text='Accept our updated <0>terms and conditions</0>'
-                              components={[
-                                  <a
-                                      key={0}
-                                      className='link'
-                                      rel='noopener noreferrer'
-                                      target='_blank'
-                                      href={getDerivComLink('terms-and-conditions')}
-                                  />,
-                              ]}
+                              components={[<StaticUrl key={0} className='link' href='terms-and-conditions' />]}
                           />
                       ),
                       status: 'button-action',
@@ -105,7 +97,9 @@ const DepositsLocked = ({
                     <Icon icon='IcCashierDepositLock' className='cashier-locked__icon' />
                     <h2 className='cashier-locked__title'>{localize('Deposits are locked')}</h2>
 
-                    <p className='cashier-locked__desc'>{deposit_desc}</p>
+                    <Text as='p' align='center' size='xs' className='cashier-locked__desc'>
+                        {deposit_desc}
+                    </Text>
                     <Checklist className='cashier-locked__checklist' items={items} />
                 </div>
             ) : (

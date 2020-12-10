@@ -9,7 +9,6 @@
 @import '~@deriv/shared/src/styles/themes.scss';
 
 // General
-@import '~@deriv/shared/src/styles/symbols.scss';
 
 // Layout
 @import 'app/_common/layout/app-layouts';
@@ -43,6 +42,7 @@
 //@import 'app/_common/components/select';
 //@import 'app/_common/components/switch-button';
 @import 'app/_common/components/cookie-banner';
+@import 'app/_common/components/notification-banner';
 // Modules
 @import 'app/modules/page-404';
 @import 'app/modules/account-deactivated';
@@ -51,3 +51,4 @@
 //@import 'app/modules/contract';
 //@import 'app/modules/contract/bottom-widgets';
 @import 'app/modules/external-link';
+@import 'app/modules/welcome';

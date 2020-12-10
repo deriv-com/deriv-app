@@ -41,6 +41,11 @@ You will need to perform the following on your development machine:
 4. If you have a custom domain that you use for GH Pages, add a file named `CNAME` in `packages/core/scripts/` to be used for your GH Pages deployments
 5. Run `npm run build` and then you're good to go
 
+> **Note:** Internal behavior of bootstrap has changed to hoist "common" packages to root node_modules instead of individual
+>packages. This behavior benefits us from having issues with multiple instances of the same library across dependencies, but 
+>it throws error if the package versions are out of date. This was a trade-off we decided to So when you are adding a dependency which already exists in other packages, their version should be matched. 
+>In case of wanting a new version for a dependency, please update all packages.
+
 [comment]: <> (3. If you wish to install and work with only a single, or multiple but specific packages, then follow `3i` for each package. However, if you wish to install and work with all packages, follow `3ii`.)
 [comment]: <> (i. Run `npm run bootstrap {package name}`. Replace `{package name}` with the name of the package you want to work with. eg.: `trader`, `bot`)
 [comment]: <> (ii. Install all packages with a hoisting strategy \(lift all common packages to a root `node_modules` and not package specific\), run `npm run hoist`)
@@ -53,10 +58,7 @@ All packages must contain the following scripts to perform the stated actions:
 | ✅            | `start`             | Runs complete test and build suite and starts the dev server.                                 |
 | ✅            | `serve`             | Runs build suite and starts the dev server. When serving `core`, takes optional `open` value as argument to open specific page. (e.g: `npm run serve core --open=bot`)      |
 | ✅            | `build`             | Runs build suite and outputs the result into `dist`. Takes optional `base` value as argument. |
-| ✅            | `prettify`          | Runs `prettify` script packages(s) to format code as per the specs of the package.            |
 | ✅            | `test`              | Runs the test suite with eslint, and stylelint.                                               |
-| ✅            | `test:eslint`       | Runs only eslint.                                                                             |
-| ✅            | `test:stylelint`    | Runs only stylelint.                                                                          |
 | ✅            | `test:mocha`        | Runs only the test suite.                                                                     |
 
 [comment]: <> (The following scripts are not to be used except for CI/CD environments)

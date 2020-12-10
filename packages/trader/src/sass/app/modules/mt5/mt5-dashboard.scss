@@ -150,8 +150,6 @@
                     &:not(:last-child) {
                         margin-right: 0.8rem;
                     }
-                    &--top {
-                    }
                 }
             }
             &--mobile {
@@ -364,6 +362,37 @@
     }
 }
 
+// TODO: [mt5-redesign] replace tabs with radiogroup once card component is ready
+//.mt5-dashboard__accounts-display {
+//    div.radio-group__save-type {
+//        .dc-radio-group__item {
+//            padding: 0.6rem 1.1rem 0.6rem 0.8rem;
+//            flex-direction: row;
+//            width: auto;
+//            min-width: 8.3rem;
+//
+//            &--selected {
+//                .dc-radio-group__label {
+//                    font-weight: bold;
+//                }
+//            }
+//            &:not(.dc-radio-group__item--selected) {
+//                border: solid 1px var(--border-normal);
+//            }
+//            &:not(:last-child) {
+//                margin-right: 0.8rem;
+//            }
+//        }
+//        .dc-radio-group__circle {
+//            display: flex;
+//
+//            &:not(.dc-radio-group__circle--selected) {
+//                border-color: var(--border-hover);
+//            }
+//        }
+//    }
+//}
+
 .mt5-real-accounts-display,
 .mt5-demo-accounts-display {
     display: flex;
@@ -477,30 +506,32 @@
             height: 64px; // don't leave space for the demo text that is moved to the top right
         }
     }
-    &__clipboard {
-        margin: 0 1em;
-    }
     &__cta {
         align-items: center;
         display: flex;
         flex-direction: column;
         margin-top: auto;
     }
-    &__specs-table {
-        width: 100%;
+    &__specs {
+        margin-top: 1.6rem;
 
-        &-attribute .mt5-account-card--paragraph {
-            color: var(--text-general);
-            margin-right: 2.4rem;
-        }
-        &-data {
-            .mt5-account-card--paragraph {
-                @include typeface(--paragraph-left-bold-black, none);
-                color: var(--text-prominent);
-                line-height: 1.45;
+        &-table {
+            width: 100%;
+
+            &-attribute .mt5-account-card--paragraph {
+                color: var(--text-general);
+                margin-right: 2.4rem;
+            }
+            &-data {
+                .mt5-account-card--paragraph {
+                    @include typeface(--paragraph-left-bold-black, none);
+                    color: var(--text-prominent);
+                    line-height: 1.45;
+                }
             }
         }
     }
+
     &__commission {
         text-align: center;
         margin-top: 1.6rem;
@@ -547,13 +578,17 @@
         border-radius: 4px;
         color: var(--text-general);
         display: flex;
-        height: 40px;
+        padding: 0.8rem;
         justify-content: center;
         margin: 2.4rem 0 1.6rem;
         width: 272px;
 
         strong {
             font-weight: bold;
+        }
+        span,
+        strong {
+            margin-right: 0.8rem;
         }
     }
     &__manage {
@@ -566,6 +601,21 @@
 
             &:not(:last-child) {
                 margin-right: 1.6rem;
+            }
+        }
+    }
+    &__action-wrapper {
+        height: 4rem;
+        margin: 0 auto 1.3rem;
+        padding-top: 1rem;
+        width: 75%;
+        text-align: center;
+
+        &__link {
+            font-size: var(--text-size-xxs);
+
+            &--disabled {
+                pointer-events: none;
             }
         }
     }
@@ -626,6 +676,9 @@
     }
     &__new-password {
         margin-bottom: 8.6rem;
+        .dc-input__hint {
+            text-align: left;
+        }
     }
     &__actions {
         align-items: center;
@@ -639,6 +692,7 @@
             width: 100%;
             margin-top: 0.8rem;
             max-width: 30rem;
+            white-space: normal;
         }
     }
     &__success {
@@ -745,29 +799,28 @@
     .dc-autocomplete {
         margin-bottom: 2.4rem;
     }
-}
-
-.account-management {
-    &__message-icon {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    &__message-content {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-        align-items: center;
-        height: 24em;
-        padding: 0 3em;
-    }
-    &__message {
-        @include typeface(--title-center-bold-black);
-        color: var(--text-prominent);
-    }
-    &__text {
-        @include typeface(--paragraph-center-normal-black);
-        color: var(--text-prominent);
+    .account-management {
+        &__message-icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        &__message-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            height: 24rem;
+            padding: 0 3rem;
+        }
+        &__message {
+            @include typeface(--title-center-bold-black);
+            color: var(--text-prominent);
+        }
+        &__text {
+            @include typeface(--paragraph-center-normal-black);
+            color: var(--text-prominent);
+        }
     }
 }
 
@@ -919,15 +972,22 @@
         height: 100%;
     }
     &__file-upload {
+        padding-top: 0.8rem;
         position: relative;
 
         li {
-            margin: 0 0 1.5rem 0;
+            margin: 0 0 0.8rem 0;
         }
     }
     &__field-area {
         max-width: 556px;
         margin: 0 auto;
+
+        & .dc-dropdown__display-placeholder-text,
+        & .dc-input__label,
+        & .dc-dropdown__display {
+            background: var(--general-main-2);
+        }
         @include mobile {
             overflow: auto;
         }
@@ -1104,6 +1164,14 @@
         @include mobile {
             min-width: calc(100vw - 3.2rem);
         }
+    }
+}
+.mt5-personal-details-form-error {
+    @include typeface(--paragraph-left-normal-red);
+    @include desktop {
+        white-space: nowrap;
+        display: flex;
+        align-items: flex-end;
     }
 }
 

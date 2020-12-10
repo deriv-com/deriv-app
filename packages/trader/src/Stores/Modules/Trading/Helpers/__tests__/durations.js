@@ -33,7 +33,7 @@ describe('buildDurationConfig', () => {
         units_display: {
             spot: [
                 {
-                    text: 'days',
+                    text: 'Days',
                     value: 'd',
                 },
             ],
@@ -109,9 +109,7 @@ describe('getExpiryType', () => {
     });
 
     it('Return daily if expiry date is tomorrow', () => {
-        store.expiry_date = moment()
-            .utc()
-            .add(1, 'days');
+        store.expiry_date = moment().utc().add(1, 'days');
         store.expiry_type = 'endtime';
         expect(Duration.getExpiryType(store)).to.eql('daily');
     });

@@ -25,11 +25,11 @@
         &--fill {
             width: 100%;
 
-            & > .input-field {
+            & > .dc-input-field {
                 width: 100%;
             }
         }
-        & > .input-field {
+        & > .dc-input-field {
             margin: 0;
             width: 100%;
 
@@ -37,13 +37,25 @@
                 max-width: 17.6rem;
             }
 
+            @include mobile {
+                .inline-icon {
+                    top: 1.2rem;
+                }
+            }
+
             @include colorIcon(var(--text-prominent));
 
             & .input {
-                height: 32px;
+                height: 3.2rem;
                 background-color: var(--fill-normal);
                 border: 1px solid var(--border-normal);
                 appearance: none;
+
+                @include mobile {
+                    height: 4rem;
+                    text-align: left;
+                    padding-left: 3rem;
+                }
 
                 &:hover {
                     border-color: var(--border-hover);
@@ -57,7 +69,7 @@
                 }
             }
         }
-        & > .input-field:not(:first-child) {
+        & > .dc-input-field:not(:first-child) {
             margin-left: 8px;
         }
     }

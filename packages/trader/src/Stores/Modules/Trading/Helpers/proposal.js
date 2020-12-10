@@ -1,6 +1,6 @@
 import { getDecimalPlaces, getPropertyValue, convertToUnix, toMoment } from '@deriv/shared';
 
-import { isVisible } from '_common/common_functions';
+const isVisible = elem => !(!elem || (elem.offsetWidth === 0 && elem.offsetHeight === 0));
 
 const map_error_field = {
     barrier: 'barrier_1',
@@ -96,7 +96,7 @@ const createProposalRequestForContract = (store, type_of_contract) => {
         obj_expiry.date_expiry = convertToUnix(expiry_date.unix(), store.expiry_time);
     }
 
-    if (store.is_multiplier) {
+    if (store.contract_type === 'multiplier') {
         setProposalMultiplier(store, obj_multiplier);
     }
 

@@ -1,18 +1,19 @@
-import { expect, setURL } from '../../../test_utils/common';
+import { deriv_urls } from '../constants';
 import {
     reset,
     urlFor,
     websiteUrl,
     paramsHash,
-    urlForCurrentDomain,
-    getHostMap,
     param,
     urlForStatic,
     resetStaticHost,
+    getPath,
+    getContractPath,
 } from '../url';
+import { expect } from '../../../test_utils/test_common';
 
 // Testable URLs
-const urls = ['https://app.deriv.com'];
+const urls = [deriv_urls.DERIV_APP_PRODUCTION, deriv_urls.DERIV_APP_CRYPTO_PRODUCTION];
 
 function mockLocation(url) {
     // Mocking global location
@@ -40,8 +41,9 @@ describe('Url', () => {
                 url_with_qs = `${url_no_qs}?${query_string}`;
             });
             it('assert mocking globals is working', () => {
-                expect(window.location.hostname).to.be.eq('app.deriv.com');
-                expect(location.hostname).to.be.eq('app.deriv.com');
+                const fqdn = url.replace('https://', '');
+                expect(window.location.hostname).to.be.eq(fqdn);
+                expect(location.hostname).to.be.eq(fqdn);
                 expect(window.location.href).to.be.eq(websiteUrl());
             });
             describe('.urlFor()', () => {
@@ -58,10 +60,10 @@ describe('Url', () => {
                     ).to.eq(url_with_qs);
                 });
                 it('returns the correct language', () => {
-                    expect(urlFor('home', { language: 'es' })).to.eq(`${website_url}home.html`);
+                    expect(urlFor('home', { language: 'es' })).to.eq(`${website_url}home.html?lang=es`);
                 });
                 it('ignores invalid characters', () => {
-                    expect(urlFor('`~!@#$%^&*)(=+[}{]\\"\';:?><,|')).to.eq(home_url);
+                    expect(urlFor('`~!@#$%^&*=+[}{]\\"\';:?><,|')).to.eq(home_url);
                 });
                 it('handles all valid characters', () => {
                     expect(urlFor('metatrader/comparison-4_vs_5')).to.eq(
@@ -77,9 +79,7 @@ describe('Url', () => {
                         .and.to.deep.equal(params_obj);
                 });
                 it('returns empty object when there is no query string', () => {
-                    expect(paramsHash(url_no_qs))
-                        .to.be.an('Object')
-                        .and.to.deep.equal({});
+                    expect(paramsHash(url_no_qs)).to.be.an('Object').and.to.deep.equal({});
                     expect(paramsHash(`${url_no_qs}?`))
                         .to.be.an('Object')
                         .and.to.deep.equal({});
@@ -87,58 +87,6 @@ describe('Url', () => {
                     expect(paramsHash()).to.deep.eq({});
                 });
             });
-
-            if (!/app\.deriv\.com/.test(url)) {
-                describe('.urlForCurrentDomain()', () => {
-                    const path_query_hash = 'path/to/file.html?q=value&n=1#hash';
-
-                    it('updates domain correctly', () => {
-                        expect(urlForCurrentDomain('https://www.app.deriv.com/')).to.eq(`${url}/`);
-                        expect(urlForCurrentDomain(`https://www.app.deriv.com/${path_query_hash}`)).to.eq(
-                            `${url}/${path_query_hash}`
-                        );
-                    });
-                    it('updates host maps correctly', () => {
-                        const host_map = getHostMap();
-                        Object.keys(host_map).forEach(host => {
-                            expect(urlForCurrentDomain(`https://${host}/`)).to.eq(`https://${host_map[host]}/`);
-                            expect(urlForCurrentDomain(`https://${host}/${path_query_hash}`)).to.eq(
-                                `https://${host_map[host]}/${path_query_hash}`
-                            );
-                        });
-                    });
-                    it("doesn't update email links", () => {
-                        ['mailto:affiliates@binary.com', 'mailto:email@otherdomain.com'].forEach(email_link => {
-                            expect(urlForCurrentDomain(email_link)).to.eq(email_link);
-                        });
-                    });
-                    it("doesn't update the third party domains", () => {
-                        expect(urlForCurrentDomain('https://www.otherdomain.com')).to.eq('https://www.otherdomain.com');
-                        expect(urlForCurrentDomain('https://www.otherdomain.com/')).to.eq(
-                            'https://www.otherdomain.com/'
-                        );
-                        expect(urlForCurrentDomain('https://subdomain.otherdomain.com/')).to.eq(
-                            'https://subdomain.otherdomain.com/'
-                        );
-                        expect(urlForCurrentDomain('mailto:email@otherdomain.com')).to.eq(
-                            'mailto:email@otherdomain.com'
-                        );
-                    });
-                    it("doesn't update when current domain is not supported", () => {
-                        setURL('https://user.github.io/');
-                        [
-                            'https://app.deriv.com',
-                            'https://www.app.deriv.com/',
-                            'https://bot.binary.com',
-                            'mailto:affiliates@binary.com',
-                        ].forEach(u => {
-                            expect(urlForCurrentDomain(u)).to.eq(u);
-                        });
-                        setURL(url); // reset for the next test
-                    });
-                });
-            }
-
             describe('.urlForStatic()', () => {
                 beforeEach(() => {
                     resetStaticHost();
@@ -160,18 +108,37 @@ describe('Url', () => {
                     expect(param()).to.eq(undefined);
                 });
                 it('returns expected parameter', () => {
-                    expect(param('duration_amount'))
-                        .to.be.a('string')
-                        .and.eq('5');
-                    expect(param('no_value'))
-                        .to.be.a('string')
-                        .and.eq('');
+                    expect(param('duration_amount')).to.be.a('string').and.eq('5');
+                    expect(param('no_value')).to.be.a('string').and.eq('');
                 });
             });
 
             describe('.websiteUrl()', () => {
                 it('returns expected value', () => {
                     expect(website_url).to.eq(`${url}/`);
+                });
+            });
+
+            describe('getPath', () => {
+                it('should return param values in params as a part of path', () => {
+                    expect(getPath('/contract/:contract_id', { contract_id: 37511105068 })).to.equal(
+                        '/contract/37511105068'
+                    );
+                    expect(
+                        getPath('/something_made_up/:something_made_up_param1/:something_made_up_param2', {
+                            something_made_up_param1: '789',
+                            something_made_up_param2: '123456',
+                        })
+                    ).to.equal('/something_made_up/789/123456');
+                });
+                it('should return path as before if there is no params', () => {
+                    expect(getPath('/contract')).to.equal('/contract');
+                });
+            });
+
+            describe('getContractPath', () => {
+                it('should return the path of contract with contract_id passed', () => {
+                    expect(getContractPath(1234)).to.equal('/contract/1234');
                 });
             });
         });

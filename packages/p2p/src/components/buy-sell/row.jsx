@@ -2,9 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ContentLoader from 'react-content-loader';
 import { Table, Button } from '@deriv/components';
-import Dp2pContext from 'Components/context/dp2p-context';
+import { observer } from 'mobx-react-lite';
+import { useStores } from 'Stores';
 import { localize } from 'Components/i18next';
 import { generateHexColourFromNickname, getShortNickname } from 'Utils/string';
+import { buy_sell } from '../../constants/buy-sell';
 
 export const BuySellRowLoader = () => (
     <ContentLoader
@@ -27,36 +29,50 @@ BuySellRowLoader.propTypes = {
     width: PropTypes.number,
 };
 
-export const RowComponent = React.memo(({ data, is_buy, setSelectedAd, style }) => {
-    const { advertiser_id } = React.useContext(Dp2pContext);
-    const is_own_ad = data.advertiser_id === advertiser_id;
-    const short_name = getShortNickname(data.advertiser_name);
+export const RowComponent = observer(({ data: advert, style }) => {
+    const {
+        account_currency,
+        counterparty_type,
+        local_currency,
+        max_order_amount_limit_display,
+        min_order_amount_limit_display,
+        price_display,
+    } = advert;
+
+    const { buy_sell_store, general_store } = useStores();
+    const is_my_advert = advert.advertiser_details.id === general_store.advertiser_id;
+    const is_buy_advert = counterparty_type === buy_sell.BUY;
+    const { name: advertiser_name } = advert.advertiser_details;
+    const advertiser_short_name = getShortNickname(advertiser_name);
 
     return (
         <div style={style}>
             <Table.Row className='buy-sell__table-row'>
                 <Table.Cell>
-                    <div
-                        className='buy-sell__icon'
-                        style={{ backgroundColor: generateHexColourFromNickname(data.advertiser_name) }}
-                    >
-                        {short_name}
+                    <div className='buy-sell__cell' onClick={() => buy_sell_store.showAdvertiserPage(advert)}>
+                        <div
+                            className='buy-sell__icon'
+                            style={{ backgroundColor: generateHexColourFromNickname(advertiser_name) }}
+                        >
+                            {advertiser_short_name}
+                        </div>
+                        <div className='buy-sell__name'>{advertiser_name}</div>
                     </div>
-                    {data.advertiser_name}
                 </Table.Cell>
                 <Table.Cell>
-                    {data.display_min_available}&ndash;{data.display_max_available} {data.offer_currency}
+                    {min_order_amount_limit_display}&ndash;{max_order_amount_limit_display} {account_currency}
                 </Table.Cell>
-                <Table.Cell className='buy-sell__price' flex='2fr'>
-                    {data.display_price_rate} {data.transaction_currency}
+                <Table.Cell className='buy-sell__price'>
+                    {price_display} {local_currency}
                 </Table.Cell>
-                <Table.Cell>{data.display_payment_method}</Table.Cell>
-                {is_own_ad ? (
+                {is_my_advert ? (
                     <Table.Cell />
                 ) : (
                     <Table.Cell className='buy-sell__button'>
-                        <Button primary small onClick={() => setSelectedAd(data)}>
-                            {is_buy ? localize('Buy') : localize('Sell')} {data.offer_currency}
+                        <Button primary small onClick={() => buy_sell_store.setSelectedAdvert(advert)}>
+                            {is_buy_advert
+                                ? localize('Buy {{account_currency}}', { account_currency })
+                                : localize('Sell {{account_currency}}', { account_currency })}
                         </Button>
                     </Table.Cell>
                 )}
@@ -66,9 +82,11 @@ export const RowComponent = React.memo(({ data, is_buy, setSelectedAd, style }) 
 });
 
 RowComponent.propTypes = {
-    data: PropTypes.object,
+    advert: PropTypes.object,
+    advertiser_id: PropTypes.string,
     is_buy: PropTypes.bool,
-    setSelectedAd: PropTypes.func,
+    setSelectedAdvert: PropTypes.func,
+    showAdvertiserPage: PropTypes.func,
     style: PropTypes.object,
 };
 

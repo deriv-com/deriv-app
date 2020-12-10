@@ -1,8 +1,9 @@
+import { getErrorMessages } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import AddressDetails from 'App/Containers/RealAccountSignup/address-details.jsx';
 import { generateValidationFunction, getDefaultFields } from './form-validations';
 
-const address_details_config = ({ account_settings }) => {
+const address_details_config = ({ account_settings, is_svg }) => {
     if (!account_settings) {
         return {};
     }
@@ -14,12 +15,17 @@ const address_details_config = ({ account_settings }) => {
             rules: [
                 ['req', localize('Address line 1 is required')],
                 ['address', localize('Address is not in a proper format')],
-            ],
+                ['length', localize('This should not exceed {{max}} characters.', { max: 70 }), { max: 70 }],
+                ['po_box', getErrorMessages().po_box()],
+            ].filter(x => (is_svg ? x.indexOf('po_box') !== 0 : x)),
         },
         address_line_2: {
             supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
             default_value: account_settings.address_line_2 ?? '',
-            rules: [['length', localize('Address line 2 is not in a proper format'), { min: 0, max: 30 }]],
+            rules: [
+                ['length', localize('This should not exceed {{max}} characters.', { max: 70 }), { max: 70 }],
+                ['po_box', getErrorMessages().po_box()],
+            ].filter(x => (is_svg ? x.indexOf('po_box') !== 0 : x)),
         },
         address_city: {
             supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
@@ -62,14 +68,15 @@ const address_details_config = ({ account_settings }) => {
                     }),
                     { min: 0, max: 20 },
                 ],
-                ['postcode', localize('Only letters, numbers, space, and hyphen are allowed.')],
+                ['postcode', getErrorMessages().postcode()],
             ],
         },
     };
 };
 
 export const addressDetailsConfig = ({ upgrade_info, real_account_signup_target, residence, account_settings }) => {
-    const config = address_details_config({ account_settings });
+    const is_svg = upgrade_info?.can_upgrade_to === 'svg';
+    const config = address_details_config({ account_settings, is_svg });
     return {
         header: {
             active_title: localize('Complete your address details'),
@@ -82,7 +89,7 @@ export const addressDetailsConfig = ({ upgrade_info, real_account_signup_target,
                 real_account_signup_target,
                 transformConfig(transformForResidence(config, residence), real_account_signup_target)
             ),
-            is_svg: upgrade_info?.can_upgrade_to === 'svg',
+            is_svg,
         },
         passthrough: ['residence_list', 'is_fully_authenticated'],
     };

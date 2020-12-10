@@ -73,7 +73,7 @@ const CancelDeal = ({
                 }}
             />
             <Fieldset className='trade-container__fieldset'>
-                <div className='input-wrapper--inline'>
+                <div className='dc-input-wrapper--inline'>
                     <Checkbox
                         id='dt_cancellation-checkbox_input'
                         onChange={() => {
@@ -89,9 +89,10 @@ const CancelDeal = ({
                         alignment='left'
                         icon='info'
                         id='dt_multiplier-stake__tooltip'
+                        classNameBubble='trade-container__deal-cancellation-popover'
                         zIndex={9999}
                         message={localize(
-                            'Allows you to cancel your trade within a chosen time frame should the market move against your favour.'
+                            'Cancel your trade anytime within a chosen time-frame. Triggered automatically if your trade reaches the stop out level within the chosen time-frame.'
                         )}
                     />
                 </div>

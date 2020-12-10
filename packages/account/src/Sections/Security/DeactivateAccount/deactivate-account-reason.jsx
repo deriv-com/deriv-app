@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 import { routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { Formik, Field } from 'formik';
-import { Checkbox, Input, FormSubmitButton, Modal, Icon, Loading } from '@deriv/components';
+import { Checkbox, Input, FormSubmitButton, Modal, Icon, Loading, Text } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';
 import AccountHasBalanceOrOpenPositions from './account-has-balance.jsx';
@@ -22,9 +22,9 @@ const initial_form = {
     doToImprove: '',
 };
 
-const preparingReason = (values) => {
+const preparingReason = values => {
     let selected_reasons = selectedReasons(values)
-        .map((val) => val[0])
+        .map(val => val[0])
         .toString();
     const is_other_trading_platform__has_value = !!values.otherTradingPlatforms.length;
     const is_to_do_improve_has_value = !!values.doToImprove.length;
@@ -37,30 +37,34 @@ const preparingReason = (values) => {
     return selected_reasons;
 };
 
-const selectedReasons = (values) => {
+const selectedReasons = values => {
     return Object.entries(values).filter(
         ([key, value]) => !['otherTradingPlatforms', 'doToImprove'].includes(key) && value
     );
 };
 
-const WarningModal = (props) => {
+const WarningModal = props => {
     return (
         <div className='account-closure-warning-modal'>
             <Icon icon='IcRedWarning' size={96} />
-            <p className='account-closure-warning-modal__warning-message'>{localize('Warning!')}</p>
-            <span className='account-closure-warning-modal__content'>{localize('if you deactivate:')}</span>
+            <Text as='p' weight='bold' color='loss-danger' className='account-closure-warning-modal__warning-message'>
+                {localize('Warning!')}
+            </Text>
+            <Text size='xs' line_height='x'>
+                {localize('If you deactivate:')}
+            </Text>
             <div className='account-closure-warning-modal__content-wrapper'>
-                <p className='account-closure-warning-modal__content'>
+                <Text as='p' className='account-closure-warning-modal__content'>
                     {localize('You’ll be logged out automatically.')}
-                </p>
+                </Text>
             </div>
             <div className='account-closure-warning-modal__content-wrapper'>
-                <p className='account-closure-warning-modal__content'>
+                <Text as='p' size='xs' color='prominent'>
                     <Localize
                         i18n_default_text='You will <0>NOT</0> be able to log in again.'
-                        components={[<span key={0} style={{ color: 'var(--text-loss-danger)', fontWeight: 'bold' }} />]}
+                        components={[<Text size='xs' line_height='s' key={0} color='loss-danger' weight='bold' />]}
                     />
-                </p>
+                </Text>
             </div>
             <FormSubmitButton
                 is_disabled={false}
@@ -86,17 +90,17 @@ class DeactivateAccountReason extends React.Component {
         total_checkbox_checked: 0,
         remaining_characters: undefined,
     };
-    validateFields = (values) => {
+    validateFields = values => {
         const error = {};
         const selected_reason_count = selectedReasons(values).length;
         if (!selected_reason_count) {
-            error.empty_reason = 'please select at least one reason';
+            error.empty_reason = localize('please select at least one reason');
         }
         if ((values.otherTradingPlatforms + values.doToImprove).length > 0) {
             const max_characters = 250;
             const final_value = preparingReason(values);
             const selected_reasons = selectedReasons(values)
-                .map((val) => val[0])
+                .map(val => val[0])
                 .toString();
             const is_other_trading_platform__has_value = !!values.otherTradingPlatforms.length;
             const is_to_do_improve_has_value = !!values.doToImprove.length;
@@ -121,7 +125,7 @@ class DeactivateAccountReason extends React.Component {
         }
         return error;
     };
-    handleSubmitForm = (values) => {
+    handleSubmitForm = values => {
         const final_reason = preparingReason(values);
         this.setState({
             is_modal_open: true,
@@ -172,9 +176,9 @@ class DeactivateAccountReason extends React.Component {
             <Loading is_fullscreen={false} />
         ) : (
             <div className='deactivate-account-reasons'>
-                <p className='deactivate-account-reasons__title'>
+                <Text weight='bold' size='xs' className='deactivate-account-reasons__title' as='p'>
                     {localize('Please tell us why you’re leaving. (Select up to 3 reasons.)')}
-                </p>
+                </Text>
                 <Formik initialValues={initial_form} validate={this.validateFields} onSubmit={this.handleSubmitForm}>
                     {({ values, setFieldValue, errors, handleChange, handleSubmit }) => (
                         <form onSubmit={handleSubmit}>
@@ -303,7 +307,9 @@ class DeactivateAccountReason extends React.Component {
                                         data-lpignore='true'
                                         autoComplete='off' // prevent chrome autocomplete
                                         type='textarea'
-                                        placeholder='If you don’t mind sharing, which other trading platforms do you use?'
+                                        placeholder={localize(
+                                            'If you don’t mind sharing, which other trading platforms do you use?'
+                                        )}
                                         name='otherTradingPlatforms'
                                         value={values.otherTradingPlatforms}
                                         onChange={handleChange}
@@ -318,7 +324,7 @@ class DeactivateAccountReason extends React.Component {
                                         data-lpignore='true'
                                         autoComplete='off' // prevent chrome autocomplete
                                         type='textarea'
-                                        placeholder='What could we do to improve?'
+                                        placeholder={localize('What could we do to improve?')}
                                         name='doToImprove'
                                         value={values.doToImprove}
                                         onChange={handleChange}
@@ -326,18 +332,29 @@ class DeactivateAccountReason extends React.Component {
                                 )}
                             </Field>
                             {this.state.remaining_characters >= 0 && (
-                                <p>{`Remaining characters: ${this.state.remaining_characters}`}</p>
+                                <Text weight='bold' size='xs' as='p'>
+                                    {localize('Remaining characters: {{remaining_characters}}', {
+                                        remaining_characters: this.state.remaining_characters,
+                                    })}
+                                </Text>
                             )}
                             {Object.keys(errors).length > 0 &&
                                 Object.entries(errors).map(([key, value]) => (
-                                    <p className='deactivate-account-reasons__error' key={key}>
+                                    <Text
+                                        as='p'
+                                        weight='bold'
+                                        size='xs'
+                                        color='loss-danger'
+                                        className='deactivate-account-reasons__error'
+                                        key={key}
+                                    >
                                         {value}
-                                    </p>
+                                    </Text>
                                 ))}
                             {errors.characters_limits && (
-                                <p className='deactivate-account-reasons__error'>
+                                <Text as='p' weight='bold' size='xs' color='loss-danger'>
                                     {localize("Must be numbers, letters, and special characters . , ' -")}
-                                </p>
+                                </Text>
                             )}
                             <FormSubmitButton
                                 is_disabled={

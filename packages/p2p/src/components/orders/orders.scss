@@ -21,7 +21,8 @@
             .dc-button-menu__wrapper {
                 button.dc-btn {
                     height: 36px;
-                    width: 120px;
+                    min-width: 120px !important;
+                    white-space: nowrap;
                 }
             }
         }
@@ -51,67 +52,6 @@
             max-width: 100%;
         }
     }
-    &__popup {
-        &-header {
-            &_wrapper {
-                padding: 2.4rem;
-                display: flex;
-                align-items: center;
-                width: 100%;
-                justify-content: space-between;
-                box-sizing: border-box;
-            }
-            &--title {
-                font-size: var(--text-size-s);
-                font-weight: bold;
-                color: var(--text-prominent);
-
-                &:first-letter {
-                    text-transform: uppercase;
-                }
-            }
-        }
-        &-content {
-            padding: 0 2.4rem;
-        }
-        &-field {
-            margin-bottom: 0 !important;
-            margin-top: 1.6rem;
-
-            &_wrapper {
-                display: flex;
-                margin-bottom: 2.4rem;
-                align-items: center;
-            }
-        }
-        &-info {
-            margin-bottom: 1.6rem;
-
-            &--title {
-                color: var(--text-less-prominent);
-                font-size: var(--text-size-xxs);
-            }
-            &--text {
-                color: var(--text-general);
-                font-size: var(--text-size-xs);
-            }
-        }
-        &-footer {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            padding: 2.4rem;
-
-            & > button:first-of-type {
-                margin-right: 0.8rem;
-                border-width: 2px;
-            }
-        }
-        &-close_icon {
-            cursor: pointer;
-            fill: var(--text-general);
-        }
-    }
     &__table {
         &-row {
             cursor: pointer;
@@ -122,7 +62,6 @@
             &--attention {
                 background: var(--button-tertiary-hover);
             }
-
             &:not(.orders__table-row--header) {
                 cursor: pointer;
 
@@ -142,23 +81,24 @@
             letter-spacing: 1px;
         }
         &-grid {
-            grid-template-columns: 1fr 1fr 160px 1.2fr 1.2fr 2fr;
-            grid-column-gap: 12px;
+            // Sizes are different for inactive due to timeout being full time string.
+            grid-template-columns: 1fr 1.5fr 2fr 2.5fr 1.5fr 1.5fr 2fr;
 
             &--active {
-                grid-template-columns: 1fr 1fr 160px 1.2fr 1.2fr 1fr;
+                grid-template-columns: 1fr 1.5fr 2fr 2.5fr 1.5fr 1.5fr 1.5fr;
             }
         }
         &-status {
             font-weight: bold;
             border-radius: 16px;
             padding: 2px 16px;
+            white-space: nowrap;
 
-            &--primary {
+            &--danger {
                 color: var(--brand-red-coral);
                 background-color: rgba(236, 63, 63, 0.16);
             }
-            &--secondary {
+            &--alert {
                 color: var(--status-warning);
                 background-color: rgba(255, 173, 58, 0.16);
             }
@@ -176,7 +116,7 @@
             }
         }
         & .dc-table__head:first-child {
-            padding-left: 17px;
+            padding-left: 1.7rem;
         }
     }
 }

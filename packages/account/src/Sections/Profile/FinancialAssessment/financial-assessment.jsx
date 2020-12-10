@@ -2,7 +2,18 @@ import classNames from 'classnames';
 import React from 'react';
 import { Formik } from 'formik';
 import { withRouter } from 'react-router';
-import { Loading, Button, Dropdown, Modal, Icon, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
+import {
+    FormSubmitErrorMessage,
+    Loading,
+    Button,
+    Dropdown,
+    Modal,
+    Icon,
+    DesktopWrapper,
+    MobileWrapper,
+    SelectNative,
+    Text,
+} from '@deriv/components';
 import { routes, isMobile, isDesktop } from '@deriv/shared';
 
 import { localize, Localize } from '@deriv/translations';
@@ -12,7 +23,6 @@ import LeaveConfirm from 'Components/leave-confirm';
 import IconMessageContent from 'Components/icon-message-content';
 import DemoMessage from 'Components/demo-message';
 import LoadErrorMessage from 'Components/load-error-message';
-import FormSubmitErrorMessage from 'Components/form-submit-error-message';
 import FormBody from 'Components/form-body';
 import FormSubHeader from 'Components/form-sub-header';
 import FormFooter from 'Components/form-footer';
@@ -39,7 +49,7 @@ import {
 const ConfirmationContent = ({ className }) => {
     return (
         <React.Fragment>
-            <p className={className}>
+            <Text as='p' className={className}>
                 <Localize
                     i18n_default_text='In providing our services to you, we are required to obtain information from you in order to assess whether a given product or service is appropriate for you (that is, whether you possess the experience and knowledge to understand the risks involved).<0/><1/>'
                     components={[<br key={0} />, <br key={1} />]}
@@ -49,7 +59,7 @@ const ConfirmationContent = ({ className }) => {
                     components={[<br key={0} />, <br key={1} />]}
                 />
                 <Localize i18n_default_text='By clicking Accept below and proceeding with the Account Opening you should note that you may be exposing yourself to risks (which may be significant, including the risk of loss of the entire sum invested) that you may not have the knowledge and experience to properly assess or mitigate.' />
-            </p>
+            </Text>
         </React.Fragment>
     );
 };
@@ -82,7 +92,14 @@ const ConfirmationModal = ({ is_visible, toggleModal, onSubmit }) => (
 
 const ConfirmationPage = ({ toggleModal, onSubmit }) => (
     <div className='account__confirmation-page'>
-        <span className='account__confirmation-page-title'>{localize('Notice')}</span>
+        <Text
+            size='xs'
+            weight='bold'
+            styles={{ color: 'var(--brand-red-coral)' }}
+            className='account__confirmation-page-title'
+        >
+            {localize('Notice')}
+        </Text>
         <ConfirmationContent className='account__confirmation-page-content' />
         <div className='account__confirmation-page-footer'>
             <Button large text={localize('Back')} onClick={() => toggleModal(false)} secondary />
@@ -155,7 +172,7 @@ class FinancialAssessment extends React.Component {
         if (this.props.is_virtual) {
             this.setState({ is_loading: false });
         } else {
-            WS.authorized.storage.getFinancialAssessment().then((data) => {
+            WS.authorized.storage.getFinancialAssessment().then(data => {
                 // TODO: Find a better solution for handling no-op instead of using is_mounted flags
                 if (this.is_mounted) {
                     WS.wait('get_account_status').then(() => {
@@ -201,25 +218,30 @@ class FinancialAssessment extends React.Component {
     onSubmit = (values, { setSubmitting, setStatus }) => {
         setStatus({ msg: '' });
         this.setState({ is_btn_loading: true });
-        WS.setFinancialAssessment(values).then((data) => {
+        WS.setFinancialAssessment(values).then(data => {
             this.setState({ is_btn_loading: false });
             if (data.error) {
                 setStatus({ msg: data.error.message });
             } else {
-                this.setState({ is_submit_success: true });
-                setTimeout(() => this.setState({ is_submit_success: false }), 3000);
+                WS.authorized.storage.getFinancialAssessment().then(res_data => {
+                    this.setState({
+                        ...res_data.get_financial_assessment,
+                        is_submit_success: true,
+                    });
+                    setTimeout(() => this.setState({ is_submit_success: false }), 3000);
 
-                this.props.removeNotificationMessage({ key: 'risk' });
-                this.props.removeNotificationByKey({ key: 'risk' });
+                    this.props.removeNotificationMessage({ key: 'risk' });
+                    this.props.removeNotificationByKey({ key: 'risk' });
+                });
             }
             setSubmitting(false);
         });
     };
 
-    validateFields = (values) => {
+    validateFields = values => {
         this.setState({ is_submit_success: false });
         const errors = {};
-        Object.keys(values).forEach((field) => {
+        Object.keys(values).forEach(field => {
             if (values[field] !== undefined && !values[field]) {
                 errors[field] = localize('This field is required');
             }
@@ -227,15 +249,25 @@ class FinancialAssessment extends React.Component {
         return errors;
     };
 
-    showForm = (show_form) => this.setState({ show_form, is_confirmation_visible: false });
+    showForm = show_form => this.setState({ show_form, is_confirmation_visible: false });
 
-    toggleConfirmationModal = (value) => {
+    toggleConfirmationModal = value => {
         const new_state = { is_confirmation_visible: value };
         if (isMobile()) {
             new_state.show_form = !value;
         }
 
         this.setState(new_state);
+    };
+
+    onClickSubmit = handleSubmit => {
+        const is_confirmation_needed = this.state.has_trading_experience && this.props.is_trading_experience_incomplete;
+
+        if (is_confirmation_needed) {
+            this.toggleConfirmationModal(true);
+        } else {
+            handleSubmit();
+        }
     };
 
     render() {
@@ -266,7 +298,7 @@ class FinancialAssessment extends React.Component {
             has_trading_experience,
         } = this.state;
 
-        if (is_loading) return <Loading is_fullscreen={false} className='account___intial-loader' />;
+        if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
         if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
         if (this.props.is_virtual) return <DemoMessage />;
         if (isMobile() && is_submit_success) return <SubmittedPage />;
@@ -295,6 +327,7 @@ class FinancialAssessment extends React.Component {
                             other_instruments_trading_frequency,
                         }),
                     }}
+                    enableReinitialize={true}
                     validate={this.validateFields}
                     onSubmit={this.onSubmit}
                 >
@@ -352,7 +385,6 @@ class FinancialAssessment extends React.Component {
                                                     label={localize('Source of income')}
                                                     list_items={getIncomeSourceList()}
                                                     value={values.income_source}
-                                                    use_text={true}
                                                     error={touched.income_source && errors.income_source}
                                                     onChange={handleChange}
                                                 />
@@ -378,7 +410,6 @@ class FinancialAssessment extends React.Component {
                                                     label={localize('Employment status')}
                                                     list_items={getEmploymentStatusList()}
                                                     value={values.employment_status}
-                                                    use_text={true}
                                                     error={touched.employment_status && errors.employment_status}
                                                     onChange={handleChange}
                                                 />
@@ -404,7 +435,6 @@ class FinancialAssessment extends React.Component {
                                                     label={localize('Industry of employment')}
                                                     list_items={getEmploymentIndustryList()}
                                                     value={values.employment_industry}
-                                                    use_text={true}
                                                     error={touched.employment_industry && errors.employment_industry}
                                                     onChange={handleChange}
                                                 />
@@ -431,7 +461,6 @@ class FinancialAssessment extends React.Component {
                                                     label={localize('Occupation')}
                                                     list_items={getOccupationList()}
                                                     value={values.occupation}
-                                                    use_text={true}
                                                     error={touched.occupation && errors.occupation}
                                                     onChange={handleChange}
                                                 />
@@ -457,7 +486,6 @@ class FinancialAssessment extends React.Component {
                                                     label={localize('Source of wealth')}
                                                     list_items={getSourceOfWealthList()}
                                                     value={values.source_of_wealth}
-                                                    use_text={true}
                                                     error={touched.source_of_wealth && errors.source_of_wealth}
                                                     onChange={handleChange}
                                                 />
@@ -483,7 +511,6 @@ class FinancialAssessment extends React.Component {
                                                     label={localize('Level of education')}
                                                     list_items={getEducationLevelList()}
                                                     value={values.education_level}
-                                                    use_text={true}
                                                     error={touched.education_level && errors.education_level}
                                                     onChange={handleChange}
                                                 />
@@ -509,7 +536,6 @@ class FinancialAssessment extends React.Component {
                                                     label={localize('Net annual income')}
                                                     list_items={getNetIncomeList()}
                                                     value={values.net_income}
-                                                    use_text={true}
                                                     error={touched.net_income && errors.net_income}
                                                     onChange={handleChange}
                                                 />
@@ -536,7 +562,6 @@ class FinancialAssessment extends React.Component {
                                                     label={localize('Estimated net worth')}
                                                     list_items={getEstimatedWorthList()}
                                                     value={values.estimated_worth}
-                                                    use_text={true}
                                                     error={touched.estimated_worth && errors.estimated_worth}
                                                     onChange={handleChange}
                                                 />
@@ -563,7 +588,6 @@ class FinancialAssessment extends React.Component {
                                                     label={localize('Anticipated account turnover')}
                                                     list_items={getAccountTurnoverList()}
                                                     value={values.account_turnover}
-                                                    use_text={true}
                                                     error={touched.account_turnover && errors.account_turnover}
                                                     onChange={handleChange}
                                                 />
@@ -599,7 +623,6 @@ class FinancialAssessment extends React.Component {
                                                             label={localize('Forex trading experience')}
                                                             list_items={getForexTradingExperienceList()}
                                                             value={values.forex_trading_experience}
-                                                            use_text={true}
                                                             error={
                                                                 touched.forex_trading_experience &&
                                                                 errors.forex_trading_experience
@@ -631,7 +654,6 @@ class FinancialAssessment extends React.Component {
                                                             label={localize('Forex trading frequency')}
                                                             list_items={getForexTradingFrequencyList()}
                                                             value={values.forex_trading_frequency}
-                                                            use_text={true}
                                                             error={
                                                                 touched.forex_trading_frequency &&
                                                                 errors.forex_trading_frequency
@@ -663,7 +685,6 @@ class FinancialAssessment extends React.Component {
                                                             label={localize('Binary options trading experience')}
                                                             list_items={getBinaryOptionsTradingExperienceList()}
                                                             value={values.binary_options_trading_experience}
-                                                            use_text={true}
                                                             error={
                                                                 touched.binary_options_trading_experience &&
                                                                 errors.binary_options_trading_experience
@@ -695,7 +716,6 @@ class FinancialAssessment extends React.Component {
                                                             label={localize('Binary options trading frequency')}
                                                             list_items={getBinaryOptionsTradingFrequencyList()}
                                                             value={values.binary_options_trading_frequency}
-                                                            use_text={true}
                                                             error={
                                                                 touched.binary_options_trading_frequency &&
                                                                 errors.binary_options_trading_frequency
@@ -727,7 +747,6 @@ class FinancialAssessment extends React.Component {
                                                             label={localize('CFD trading experience')}
                                                             list_items={getCfdTradingExperienceList()}
                                                             value={values.cfd_trading_experience}
-                                                            use_text={true}
                                                             error={
                                                                 touched.cfd_trading_experience &&
                                                                 errors.cfd_trading_experience
@@ -759,7 +778,6 @@ class FinancialAssessment extends React.Component {
                                                             label={localize('CFD trading frequency')}
                                                             list_items={getCfdTradingFrequencyList()}
                                                             value={values.cfd_trading_frequency}
-                                                            use_text={true}
                                                             error={
                                                                 touched.cfd_trading_frequency &&
                                                                 errors.cfd_trading_frequency
@@ -793,7 +811,6 @@ class FinancialAssessment extends React.Component {
                                                             label={localize('Other trading instruments experience')}
                                                             list_items={getOtherInstrumentsTradingExperienceList()}
                                                             value={values.other_instruments_trading_experience}
-                                                            use_text={true}
                                                             error={
                                                                 touched.other_instruments_trading_experience &&
                                                                 errors.other_instruments_trading_experience
@@ -828,7 +845,6 @@ class FinancialAssessment extends React.Component {
                                                             label={localize('Other trading instruments frequency')}
                                                             list_items={getOtherInstrumentsTradingFrequencyList()}
                                                             value={values.other_instruments_trading_frequency}
-                                                            use_text={true}
                                                             error={
                                                                 touched.other_instruments_trading_frequency &&
                                                                 errors.other_instruments_trading_frequency
@@ -843,40 +859,21 @@ class FinancialAssessment extends React.Component {
                                     <FormFooter>
                                         {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
                                         {isMobile() && (
-                                            <span className='account-form__footer-all-fields-required'>
+                                            <Text
+                                                align='center'
+                                                size='xxs'
+                                                className='account-form__footer-all-fields-required'
+                                            >
                                                 {localize('All fields are required')}
-                                            </span>
+                                            </Text>
                                         )}
                                         <Button
                                             type='button'
                                             className={classNames('account-form__footer-btn', {
                                                 'dc-btn--green': is_submit_success,
                                             })}
-                                            onClick={() => this.toggleConfirmationModal(true)}
-                                            is_disabled={
-                                                isSubmitting ||
-                                                !dirty ||
-                                                !!(
-                                                    errors.income_source ||
-                                                    !values.income_source ||
-                                                    errors.employment_status ||
-                                                    !values.employment_status ||
-                                                    errors.employment_industry ||
-                                                    !values.employment_industry ||
-                                                    errors.occupation ||
-                                                    !values.occupation ||
-                                                    errors.source_of_wealth ||
-                                                    !values.source_of_wealth ||
-                                                    errors.education_level ||
-                                                    !values.education_level ||
-                                                    errors.net_income ||
-                                                    !values.net_income ||
-                                                    errors.estimated_worth ||
-                                                    !values.estimated_worth ||
-                                                    errors.account_turnover ||
-                                                    !values.account_turnover
-                                                )
-                                            }
+                                            onClick={() => this.onClickSubmit(handleSubmit)}
+                                            is_disabled={isSubmitting || !dirty || Object.keys(errors).length > 0}
                                             has_effect
                                             is_loading={is_btn_loading}
                                             is_submit_success={is_submit_success}

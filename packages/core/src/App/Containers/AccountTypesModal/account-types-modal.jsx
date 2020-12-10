@@ -9,8 +9,9 @@ import {
     Icon,
     Modal,
     ThemedScrollbars,
+    Text,
 } from '@deriv/components';
-import { isDesktop, isMobile, routes, getDerivComLink, urlFor } from '@deriv/shared';
+import { isDesktop, isMobile, routes, getStaticUrl, urlFor, PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import AccountCard from './account-card.jsx';
@@ -31,8 +32,14 @@ const Box = ({ title, description, footer_text, icons, cards }) => {
         <div className='account-types__box'>
             <div className='account-types__box-left'>
                 <h2 className='account-types__box-title'>{title}</h2>
-                <p className='account-types__box-description'>{description}</p>
-                {footer_text && <p className='account-types__box-footer'>{footer_text}</p>}
+                <Text as='p' size='xs' line_height='s' className='account-types__box-description'>
+                    {description}
+                </Text>
+                {footer_text && (
+                    <Text as='p' size='xxs' weight='bold' className='account-types__box-footer'>
+                        {footer_text}
+                    </Text>
+                )}
                 <div className='account-types__box-icons'>
                     {icons.map((icon, index) => {
                         return <Icon className='account-types__box-icon' icon={icon} key={index} />;
@@ -55,7 +62,7 @@ Box.propTypes = {
     cards: PropTypes.array,
 };
 
-const FinancialBox = ({ derivOnClick, mt5OnClick, has_maltainvest_account, add_account_label }) => {
+const FinancialBox = ({ derivOnClick, is_deriv_crypto, mt5OnClick, has_maltainvest_account, add_account_label }) => {
     return (
         <Box
             title={localize('Financial')}
@@ -82,12 +89,12 @@ const FinancialBox = ({ derivOnClick, mt5OnClick, has_maltainvest_account, add_a
                         {
                             icon: 'IcBrandDtrader',
                             name: 'DTrader',
-                            path: getDerivComLink('/dtrader'),
+                            path: getStaticUrl('/dtrader', { is_deriv_crypto }),
                         },
                         {
                             icon: 'IcBrandDbot',
                             name: 'DBot',
-                            path: getDerivComLink('/dbot'),
+                            path: getStaticUrl('/dbot', { is_deriv_crypto }),
                         },
                         {
                             icon: 'IcBrandSmarttrader',
@@ -121,7 +128,7 @@ const FinancialBox = ({ derivOnClick, mt5OnClick, has_maltainvest_account, add_a
                         {
                             icon: 'IcBrandDMT5',
                             name: 'MetaTrader 5',
-                            path: getDerivComLink('/dmt5'),
+                            path: getStaticUrl('/dmt5', { is_deriv_crypto }),
                         },
                     ]}
                 >
@@ -140,7 +147,7 @@ const FinancialBox = ({ derivOnClick, mt5OnClick, has_maltainvest_account, add_a
     );
 };
 
-const SyntheticBox = ({ derivOnClick, add_account_label }) => {
+const SyntheticBox = ({ derivOnClick, add_account_label, is_deriv_crypto }) => {
     return (
         <Box
             title={localize('Synthetic')}
@@ -158,6 +165,11 @@ const SyntheticBox = ({ derivOnClick, add_account_label }) => {
                 'IcUnderlyingR_50',
                 'IcUnderlyingR_75',
                 'IcUnderlyingR_100',
+                'IcUnderlyingBOOM1000',
+                'IcUnderlyingBOOM500',
+                'IcUnderlyingCRASH1000',
+                'IcUnderlyingCRASH500',
+                'IcUnderlyingSTPRNG',
             ]}
             cards={[
                 <AccountCard
@@ -177,12 +189,12 @@ const SyntheticBox = ({ derivOnClick, add_account_label }) => {
                         {
                             icon: 'IcBrandDtrader',
                             name: 'DTrader',
-                            path: getDerivComLink('dtrader'),
+                            path: getStaticUrl('dtrader', { is_deriv_crypto }),
                         },
                         {
                             icon: 'IcBrandDbot',
                             name: 'DBot',
-                            path: getDerivComLink('dbot'),
+                            path: getStaticUrl('dbot', { is_deriv_crypto }),
                         },
                         {
                             icon: 'IcBrandSmarttrader',
@@ -204,126 +216,136 @@ const SyntheticBox = ({ derivOnClick, add_account_label }) => {
     );
 };
 
-class AccountTypesModal extends React.Component {
-    closeModal = () => {
-        this.props.toggleAccountTypesModal(false);
+const AccountTypesModal = ({
+    accounts,
+    has_iom_account,
+    has_maltainvest_account,
+    history,
+    is_account_types_modal_visible,
+    is_dismissible,
+    is_logged_in,
+    is_mt5_allowed,
+    landing_company_shortcode,
+    openRealAccountSignup,
+    standpoint,
+    switchAccount,
+    toggleAccountTypesModal,
+}) => {
+    const context_type = React.useContext(PlatformContext);
+
+    const closeModal = () => {
+        toggleAccountTypesModal(false);
     };
 
-    redirectToMt5 = account_type => {
-        this.closeModal();
-        this.props.history.push(`${routes.mt5}#${account_type}`);
+    const redirectToMt5 = account_type => {
+        closeModal();
+        history.push(`${routes.mt5}#${account_type}`);
     };
 
-    redirectToMt5Real = () => {
-        this.closeModal();
-        if (!this.props.is_logged_in || this.props.is_mt5_allowed) {
-            this.redirectToMt5('real');
+    const redirectToMt5Real = () => {
+        closeModal();
+        if (!is_logged_in || is_mt5_allowed) {
+            redirectToMt5('real');
         } else {
             window.open(urlFor('user/metatrader', { legacy: true }));
         }
     };
 
-    createRealAccount = target => {
-        this.closeModal();
-        this.props.openRealAccountSignup(target);
+    const createRealAccount = target => {
+        closeModal();
+        openRealAccountSignup(target);
     };
 
-    render() {
-        return (
-            <Modal
-                title={localize('Account types')}
-                width='904px'
-                className='account-types'
-                is_open={this.props.is_account_types_modal_visible}
-                toggleModal={this.closeModal}
-                has_close_icon={this.props.is_dismissible}
-            >
-                <ThemedScrollbars is_bypassed={isMobile()} autohide={false} height={'calc(100vh - 84px'}>
-                    <Div100vhContainer
-                        height_offset='120px'
-                        is_disabled={isDesktop()}
-                        className='account-types__container'
-                    >
-                        <div className='account-types'>
-                            <p className='account-types__intro'>
-                                {localize('Choose an account that suits your needs.')}
-                            </p>
-                            <div>
-                                <SyntheticBox
-                                    derivOnClick={() => {
-                                        if (this.props.has_iom_account) {
-                                            if (this.props.landing_company_shortcode !== 'iom') {
-                                                this.props.switchAccount(getTargetLoginid(this.props.accounts, 'iom'));
-                                            }
-                                            this.closeModal();
-                                        } else {
-                                            this.createRealAccount(this.props.standpoint.gaming_company);
+    return (
+        <Modal
+            title={localize('Account types')}
+            width='904px'
+            className='account-types'
+            is_open={is_account_types_modal_visible}
+            toggleModal={closeModal}
+            has_close_icon={is_dismissible}
+        >
+            <ThemedScrollbars is_bypassed={isMobile()} autohide={false} height={'calc(100vh - 84px'}>
+                <Div100vhContainer height_offset='120px' is_disabled={isDesktop()} className='account-types__container'>
+                    <div className='account-types'>
+                        <Text as='p' size='xs' line_height='s' className='account-types__intro'>
+                            {localize('Choose an account that suits your needs.')}
+                        </Text>
+                        <div>
+                            <SyntheticBox
+                                derivOnClick={() => {
+                                    if (has_iom_account) {
+                                        if (landing_company_shortcode !== 'iom') {
+                                            switchAccount(getTargetLoginid(accounts, 'iom'));
                                         }
-                                    }}
-                                    add_account_label={
-                                        this.props.has_iom_account
-                                            ? localize('Trade with this account')
-                                            : localize('Add this real account')
+                                        closeModal();
+                                    } else {
+                                        createRealAccount(standpoint.gaming_company);
                                     }
-                                />
-                                <FinancialBox
-                                    derivOnClick={() => {
-                                        if (this.props.has_maltainvest_account) {
-                                            if (this.props.landing_company_shortcode !== 'maltainvest') {
-                                                this.props.switchAccount(
-                                                    getTargetLoginid(this.props.accounts, 'maltainvest')
-                                                );
-                                            }
-                                            this.closeModal();
-                                        } else {
-                                            this.createRealAccount(this.props.standpoint.financial_company);
+                                }}
+                                add_account_label={
+                                    has_iom_account
+                                        ? localize('Trade with this account')
+                                        : localize('Add this real account')
+                                }
+                                is_deriv_crypto={context_type.is_deriv_crypto}
+                            />
+                            <FinancialBox
+                                derivOnClick={() => {
+                                    if (has_maltainvest_account) {
+                                        if (landing_company_shortcode !== 'maltainvest') {
+                                            switchAccount(getTargetLoginid(accounts, 'maltainvest'));
                                         }
-                                    }}
-                                    mt5OnClick={this.redirectToMt5Real}
-                                    has_maltainvest_account={this.props.has_maltainvest_account}
-                                    add_account_label={[
-                                        localize('Trade with this account'),
-                                        localize('Add this real account'),
-                                        localize('Deriv Financial required'),
-                                    ]}
-                                />
-                            </div>
+                                        closeModal();
+                                    } else {
+                                        createRealAccount(standpoint.financial_company);
+                                    }
+                                }}
+                                mt5OnClick={redirectToMt5Real}
+                                has_maltainvest_account={has_maltainvest_account}
+                                add_account_label={[
+                                    localize('Trade with this account'),
+                                    localize('Add this real account'),
+                                    localize('Deriv Financial required'),
+                                ]}
+                                is_deriv_crypto={context_type.is_deriv_crypto}
+                            />
                         </div>
-                    </Div100vhContainer>
-                </ThemedScrollbars>
-            </Modal>
-        );
-    }
-}
+                    </div>
+                </Div100vhContainer>
+            </ThemedScrollbars>
+        </Modal>
+    );
+};
 
 AccountTypesModal.propTypes = {
-    has_any_real_account: PropTypes.bool,
+    accounts: PropTypes.object,
+    has_iom_account: PropTypes.bool,
+    has_maltainvest_account: PropTypes.bool,
+    history: PropTypes.any,
     is_account_types_modal_visible: PropTypes.bool,
     is_dismissible: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_mt5_allowed: PropTypes.bool,
-    is_virtual: PropTypes.bool,
-    residence: PropTypes.string,
+    landing_company_shortcode: PropTypes.string,
     standpoint: PropTypes.object,
+    switchAccount: PropTypes.func,
     toggleAccountTypesModal: PropTypes.func,
 };
 
 export default withRouter(
     connect(({ ui, client }) => ({
+        accounts: client.accounts,
         can_upgrade: client.can_upgrade,
         can_upgrade_to: client.can_upgrade_to,
-        has_any_real_account: client.has_any_real_account,
-        is_account_types_modal_visible: ui.is_account_types_modal_visible,
-        accounts: client.accounts,
-        landing_company_shortcode: client.landing_company_shortcode,
         has_iom_account: client.has_iom_account,
         has_maltainvest_account: client.has_maltainvest_account,
+        is_account_types_modal_visible: ui.is_account_types_modal_visible,
         is_dismissible: !client.should_have_real_account,
         is_logged_in: client.is_logged_in,
         is_mt5_allowed: client.is_mt5_allowed,
-        is_virtual: client.is_virtual,
+        landing_company_shortcode: client.landing_company_shortcode,
         openRealAccountSignup: ui.openRealAccountSignup,
-        residence: client.residence,
         standpoint: client.standpoint,
         switchAccount: client.switchAccount,
         toggleAccountTypesModal: ui.toggleAccountTypesModal,

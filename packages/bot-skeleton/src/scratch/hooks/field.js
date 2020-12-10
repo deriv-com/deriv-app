@@ -6,7 +6,10 @@ import { localize } from '@deriv/translations';
  */
 const FieldCheckbox = () => {
     const getAltText = is_checked => (is_checked ? localize('Y') : localize('N'));
-    const onCheckboxClick = function() {
+    const onCheckboxClick = function () {
+        if (this.sourceBlock_.workspace.options.readOnly || this.sourceBlock_.isInFlyout) {
+            return;
+        }
         this.is_checked = !this.is_checked;
         this.setValue(this.is_checked);
         this.setText(getAltText(this.is_checked));
@@ -21,7 +24,7 @@ const FieldCheckbox = () => {
 
     // Custom setValue to support imported values, this allows us to bypass
     // adding domToMutation and mutationToDom logic to each block consuming this checkbox.
-    icon.setValue = function(value) {
+    icon.setValue = function (value) {
         const is_checked = value === true || value === 'TRUE';
         const old_value = this.getValue();
         this.src_ = is_checked ? 'TRUE' : 'FALSE';
@@ -39,7 +42,7 @@ const FieldCheckbox = () => {
                     height: this.height_, // eslint-disable-line
                     width: this.width_, // eslint-disable-line
                     rx: 2,
-                    stroke: '#FFF',
+                    stroke: this.sourceBlock_.getColourTertiary(),
                 },
                 el_field_group
             );

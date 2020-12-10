@@ -7,7 +7,7 @@
  * @param {!Blockly.Workspace} ws The workspace to search for variables.
  * @return {!Array.<!Blockly.VariableModel>} Array of variable models.
  */
-Blockly.Variables.allUsedVarModels = function(ws) {
+Blockly.Variables.allUsedVarModels = function (ws) {
     const blocks = ws.getAllBlocks(false);
     const variableHash = Object.create(null);
 
@@ -40,17 +40,17 @@ Blockly.Variables.allUsedVarModels = function(ws) {
  * @return {Element} The generated DOM.
  * @public
  */
-Blockly.Variables.generateVariableFieldDom = function(variableModel) {
+Blockly.Variables.generateVariableFieldDom = function (variableModel) {
     /* Generates the following XML:
      * <field name="VAR" id="goKTKmYJ8DhVHpruv" variabletype="int">foo</field>
      */
-    const field = Blockly.utils.xml.createElement('field');
+    const field = document.createElement('field');
 
     field.setAttribute('name', 'VAR');
     field.setAttribute('id', variableModel.getId());
     field.setAttribute('variabletype', variableModel.type);
 
-    const name = Blockly.utils.xml.createTextNode(variableModel.name);
+    const name = document.createTextNode(variableModel.name);
     field.appendChild(name);
     return field;
 };

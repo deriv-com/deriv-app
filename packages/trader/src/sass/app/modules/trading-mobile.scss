@@ -82,7 +82,7 @@
             & .dc-tooltip {
                 width: 100%;
             }
-            & .input-wrapper {
+            & .dc-input-wrapper {
                 &__input {
                     outline: 0;
                     border: none;
@@ -116,6 +116,7 @@
         &__container_trade-params {
             border-radius: 2px;
             box-shadow: 0 16px 16px 0 var(--shadow-menu-2), 0 0 16px 0 var(--shadow-menu-2);
+            overflow-y: scroll;
 
             /* postcss-bem-linter: ignore */
             .dc-relative-datepicker {
@@ -288,6 +289,13 @@
                 }
             }
         }
+        &__contract-type-container {
+            display: flex;
+
+            .contract-type-widget {
+                flex: 1;
+            }
+        }
         &__multiplier {
             &-radio-group {
                 flex-direction: column;
@@ -296,6 +304,9 @@
                 margin-top: 0rem;
                 flex: 1;
 
+                &--empty {
+                    display: none;
+                }
                 .dc-radio-group__item {
                     min-height: 4.8rem;
                     max-height: 4.8rem;
@@ -323,6 +334,9 @@
                 display: grid;
                 grid-template-rows: auto auto auto 1fr;
 
+                &--no-cancel {
+                    grid-template-rows: auto auto 1fr;
+                }
                 &-apply-button {
                     display: flex;
                     align-items: flex-end;
@@ -338,7 +352,7 @@
                     border-bottom: 1px solid var(--general-main-1);
                     border-radius: 0;
 
-                    .input-field {
+                    .dc-input-field {
                         z-index: 0;
                     }
                     .dc-popover {
@@ -367,6 +381,28 @@
 
                     .dc-checkbox__box {
                         margin-left: 0rem;
+                    }
+                }
+            }
+            &-trade-info {
+                display: flex;
+                flex-direction: column;
+                padding-bottom: 1.6rem;
+                align-items: center;
+
+                div:nth-child(2) {
+                    padding-top: 1.6rem;
+                }
+
+                &-tooltip-text {
+                    text-align: right;
+                    border-bottom: 1px dotted var(--text-general);
+                    display: flex;
+
+                    *:first-child {
+                        &:before {
+                            content: ': ';
+                        }
                     }
                 }
             }

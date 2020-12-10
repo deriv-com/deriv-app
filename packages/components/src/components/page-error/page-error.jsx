@@ -3,29 +3,31 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ButtonLink from '../button-link/button-link.jsx';
 import DesktopWrapper from '../desktop-wrapper/desktop-wrapper.jsx';
+import Text from '../text/text.jsx';
 
 const PageError = ({
     buttonOnClick,
+    buttonSize,
     classNameImage,
     header,
     image_url,
     messages,
-    redirect_label,
-    redirect_url,
+    redirect_labels,
+    redirect_urls,
     should_clear_error_on_click,
     setError,
 }) => {
     const onClickHandler = () => {
         if (should_clear_error_on_click) {
             setError(false, null);
-        } else {
+        } else if (typeof buttonOnClick === 'function') {
             buttonOnClick();
         }
     };
 
     return (
         // if image_url is passed we should split the page to two columns and left-align messages
-        <div className={classNames('dc-page-error__container', { 'dc-page-error__container--left': !!image_url })}>
+        <div className='dc-page-error__container'>
             {!!image_url && (
                 <DesktopWrapper>
                     <img
@@ -33,8 +35,8 @@ const PageError = ({
                         src={image_url}
                         alt={'404'}
                         loading='lazy'
-                        width='771px' // width and height should be specified so it doesn't jump to the right after image loads
-                        height='448px'
+                        width='607px' // width and height should be specified so it doesn't jump to the right after image loads
+                        height='366px'
                     />
                 </DesktopWrapper>
             )}
@@ -49,31 +51,53 @@ const PageError = ({
                         'dc-page-error__message-wrapper--left': !!image_url,
                     })}
                 >
-                    <span
+                    <Text
+                        color='prominent'
                         className={classNames('dc-page-error__message', {
                             'dc-page-error__message--left': !!image_url,
                         })}
                     >
                         {messages.map((message, index) =>
                             message.has_html ? (
-                                <p
+                                <Text
+                                    as='p'
+                                    size='s'
+                                    line_height='x'
                                     key={index}
                                     className='dc-page-error__message-paragraph'
                                     dangerouslySetInnerHTML={{ __html: message.message }}
                                 />
                             ) : (
-                                <p key={index} className='dc-page-error__message-paragraph'>
+                                <Text
+                                    as='p'
+                                    size='s'
+                                    line_height='x'
+                                    key={index}
+                                    className='dc-page-error__message-paragraph'
+                                >
                                     {message}
-                                </p>
+                                </Text>
                             )
                         )}
-                    </span>
+                    </Text>
                 </div>
-                {redirect_label && (
-                    <ButtonLink className='dc-page-error__btn' to={redirect_url} onClick={onClickHandler} size='large'>
-                        <span className='dc-page-error__btn-text dc-btn__text'>{redirect_label}</span>
-                    </ButtonLink>
-                )}
+                <div className='dc-page-error__btn-wrapper'>
+                    {redirect_urls.map((url, index) => {
+                        return (
+                            <ButtonLink
+                                className='dc-page-error__btn'
+                                to={url}
+                                onClick={onClickHandler}
+                                size={buttonSize || 'large'}
+                                key={index}
+                            >
+                                <Text weight='bold' className='dc-page-error__btn-text dc-btn__text'>
+                                    {redirect_labels[index]}
+                                </Text>
+                            </ButtonLink>
+                        );
+                    })}
+                </div>
             </div>
         </div>
     );
@@ -81,12 +105,13 @@ const PageError = ({
 
 PageError.propTypes = {
     buttonOnClick: PropTypes.func,
+    buttonSize: PropTypes.string,
     classNameImage: PropTypes.string,
     header: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     image_url: PropTypes.string,
     messages: PropTypes.array,
-    redirect_label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-    redirect_url: PropTypes.string,
+    redirect_labels: PropTypes.array,
+    redirect_urls: PropTypes.array,
     setError: PropTypes.func,
     should_clear_error_on_click: PropTypes.bool,
 };

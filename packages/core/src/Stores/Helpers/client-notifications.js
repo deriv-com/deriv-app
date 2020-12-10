@@ -1,18 +1,34 @@
 import React from 'react';
-import { getDerivComLink, routes, isMobile, formatDate, isEmptyObject } from '@deriv/shared';
-
+import {
+    formatDate,
+    getStaticUrl,
+    isEmptyObject,
+    isMobile,
+    LocalStore,
+    routes,
+    State,
+    website_name,
+    platform_name,
+} from '@deriv/shared';
+import { StaticUrl } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { WS } from 'Services';
-
-import { getRiskAssessment, isAccountOfType, shouldAcceptTnc, shouldCompleteTax } from '_common/base/client_base';
 import { BinaryLink } from 'App/Components/Routes';
-import { website_name } from 'App/Constants/app-config';
-import { LocalStore, State } from '_common/storage';
+import { WS } from 'Services';
 
 // TODO: Update links to app_2 links when components are done.
 /* eslint-disable react/jsx-no-target-blank */
 export const clientNotifications = (ui = {}, client = {}) => {
     const notifications = {
+        dp2p: {
+            key: 'dp2p',
+            header: localize('Payment problems?'),
+            message: localize('There’s an app for that'),
+            button_text: localize('Learn more'),
+            img_src: '/public/images/common/dp2p_banner.png',
+            img_alt: 'DP2P',
+            redirect_link: '/p2p/v1',
+            type: 'news',
+        },
         currency: {
             action: {
                 text: localize('Set currency'),
@@ -26,22 +42,56 @@ export const clientNotifications = (ui = {}, client = {}) => {
             message: localize('Please set the currency of your account to enable trading.'),
             type: 'danger',
         },
-        self_exclusion: excluded_until => ({
-            key: 'self_exclusion',
-            header: localize('Self-exclusion detected'),
-            message: (
-                <Localize
-                    i18n_default_text='You have opted to be excluded from {{website_domain}} until {{exclusion_end}}. Please <0>contact us</0> for assistance.'
-                    values={{
-                        website_domain: website_name,
-                        exclusion_end: formatDate(excluded_until, 'DD/MM/YYYY'),
-                        interpolation: { escapeValue: false },
-                    }}
-                    components={[<a key={0} className='link' target='_blank' href={getDerivComLink('contact-us')} />]}
-                />
-            ),
-            type: 'danger',
-        }),
+        self_exclusion: excluded_until => {
+            let message, header, action;
+            if (client.is_uk) {
+                header = localize('You’re taking a break from trading');
+                message = (
+                    <Localize
+                        i18n_default_text='You chose to exclude yourself from trading until {{exclusion_end}}. If you want to remove this self-exclusion, you can do so after {{exclusion_end}} by contacting Customer Support at +447723580049.'
+                        values={{
+                            exclusion_end: formatDate(excluded_until, 'DD/MM/YYYY'),
+                            interpolation: { escapeValue: false },
+                        }}
+                    />
+                );
+            } else if (client.is_eu) {
+                action = {
+                    onClick: () => window.LC_API.open_chat_window(),
+                    text: localize('Chat now'),
+                };
+                header = localize('You’re taking a break from trading');
+                message = (
+                    <Localize
+                        i18n_default_text='You chose to exclude yourself from trading until {{exclusion_end}}. If you want to remove this self-exclusion, you can do so at any time by contacting Customer Support via chat.'
+                        values={{
+                            exclusion_end: formatDate(excluded_until, 'DD/MM/YYYY'),
+                            interpolation: { escapeValue: false },
+                        }}
+                    />
+                );
+            } else {
+                header = localize('Self-exclusion detected');
+                message = (
+                    <Localize
+                        i18n_default_text='You have opted to be excluded from {{website_domain}} until {{exclusion_end}}. Please <0>contact us</0> for assistance.'
+                        values={{
+                            website_domain: website_name,
+                            exclusion_end: formatDate(excluded_until, 'DD/MM/YYYY'),
+                            interpolation: { escapeValue: false },
+                        }}
+                        components={[<StaticUrl key={0} className='link' href='contact-us' />]}
+                    />
+                );
+            }
+            return {
+                key: 'self_exclusion',
+                header,
+                message,
+                action,
+                type: 'danger',
+            };
+        },
         authenticate: {
             action: {
                 route: routes.proof_of_identity,
@@ -99,8 +149,8 @@ export const clientNotifications = (ui = {}, client = {}) => {
             ...(isMobile() && {
                 action: {
                     text: localize('Contact us'),
-                    onClick: () => {
-                        window.open(getDerivComLink('contact-us'));
+                    onClick: ({ is_deriv_crypto }) => {
+                        window.open(getStaticUrl('contact-us', { is_deriv_crypto }));
                     },
                 },
             }),
@@ -111,7 +161,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
             ) : (
                 <Localize
                     i18n_default_text='Trading and deposits have been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
-                    components={[<a key={0} className='link' target='_blank' href={getDerivComLink('contact-us')} />]}
+                    components={[<StaticUrl key={0} className='link' href='contact-us' />]}
                 />
             ),
             type: 'danger',
@@ -123,27 +173,6 @@ export const clientNotifications = (ui = {}, client = {}) => {
                 <Localize
                     i18n_default_text='Please set your <0>30-day turnover limit</0> to remove deposit limits.'
                     components={[<BinaryLink key={0} className='link' to={routes.cashier_deposit} />]}
-                />
-            ),
-            type: 'danger',
-        },
-        mf_retail: {
-            ...(isMobile() && {
-                action: {
-                    text: localize('Contact us'),
-                    onClick: () => {
-                        window.open(getDerivComLink('contact-us'));
-                    },
-                },
-            }),
-            key: 'mf_retail',
-            header: localize('Digital options trading disabled'),
-            message: isMobile() ? (
-                <Localize i18n_default_text='Digital Options Trading has been disabled on your account. Kindly contact customer support for assistance.' />
-            ) : (
-                <Localize
-                    i18n_default_text='Digital Options Trading has been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
-                    components={[<a key={0} className='link' target='_blank' href={getDerivComLink('contact-us')} />]}
                 />
             ),
             type: 'danger',
@@ -183,15 +212,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
             message: (
                 <Localize
                     i18n_default_text='Please accept our <0>updated Terms and Conditions</0> to proceed.'
-                    components={[
-                        <a
-                            key={0}
-                            className='link'
-                            rel='noopener'
-                            target='_blank'
-                            href={getDerivComLink('terms-and-conditions')}
-                        />,
-                    ]}
+                    components={[<StaticUrl key={0} className='link' href='terms-and-conditions' />]}
                 />
             ),
             type: 'warning',
@@ -217,6 +238,23 @@ export const clientNotifications = (ui = {}, client = {}) => {
             header: localize('Password updated.'),
             message: <Localize i18n_default_text='Please log in with your updated password.' />,
             type: 'info',
+        },
+        reset_virtual_balance: {
+            key: 'reset_virtual_balance',
+            header: localize('Reset your balance'),
+            message: client.message,
+            type: 'info',
+            is_persistent: true,
+            should_hide_close_btn: true,
+            should_show_again: true,
+            platform: [platform_name.DTrader],
+            is_disposable: true,
+            action: {
+                text: localize('Reset balance'),
+                onClick: async () => {
+                    await client.resetVirtualBalance();
+                },
+            },
         },
         needs_poi: {
             action: {
@@ -307,12 +345,23 @@ export const clientNotifications = (ui = {}, client = {}) => {
             timeout: 300000,
             timeoutMessage: remaining => localize('Auto update in {{ remaining }} seconds', { remaining }),
         },
+        install_pwa: {
+            key: 'install_pwa',
+            action: {
+                onClick: () => ui.installWithDeferredPrompt(),
+                text: localize('Install'),
+            },
+            header: localize('Install the DTrader web app'),
+            message: localize('Launch DTrader in seconds the next time you want to trade.'),
+            type: 'announce',
+            should_hide_close_btn: false,
+        },
     };
     return notifications;
 };
 
-const hasMissingRequiredField = (account_settings, client) => {
-    if (!account_settings) return false;
+const hasMissingRequiredField = (account_settings, client, isAccountOfType) => {
+    if (!account_settings || isEmptyObject(account_settings)) return false;
 
     const { is_svg, landing_company_shortcode } = client;
 
@@ -340,8 +389,8 @@ const hasMissingRequiredField = (account_settings, client) => {
 
     function getRequiredFields() {
         if (!isAccountOfType('financial')) return [];
-        const { residence } = client;
 
+        const { residence } = client;
         const required_settings_fields = [
             'account_opening_reason',
             'address_line_1',
@@ -350,6 +399,7 @@ const hasMissingRequiredField = (account_settings, client) => {
             'tax_identification_number',
             'tax_residence',
         ];
+
         const address_postcode_is_required = residence === 'gb' || landing_company_shortcode === 'iom';
         if (address_postcode_is_required) required_settings_fields.push('address_postcode');
 
@@ -369,7 +419,14 @@ const addVerificationNotifications = (identity, document, addNotificationMessage
     if (document.status === 'expired') addNotificationMessage(clientNotifications().poa_expired);
 };
 
-const checkAccountStatus = (account_status, client, addNotificationMessage, loginid) => {
+const checkAccountStatus = (
+    account_status,
+    client,
+    addNotificationMessage,
+    loginid,
+    getRiskAssessment,
+    shouldCompleteTax
+) => {
     if (isEmptyObject(account_status)) return {};
     if (loginid !== LocalStore.get('active_loginid')) return {};
 
@@ -387,23 +444,27 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
         mt5_withdrawal_locked,
         document_needs_action,
         unwelcome,
-        professional,
         max_turnover_limit_not_set,
         allow_document_upload,
     } = getStatusValidations(status);
 
     addVerificationNotifications(identity, document, addNotificationMessage);
 
-    const is_mf_retail = client.landing_company_shortcode === 'maltainvest' && !professional;
     const should_show_max_turnover = client.landing_company_shortcode === 'iom' && max_turnover_limit_not_set;
 
     const needs_authentication = needs_verification.length || allow_document_upload;
     const has_risk_assessment = getRiskAssessment(account_status);
-    const needs_poa = needs_authentication && needs_verification.includes('document');
-    const needs_poi = needs_authentication && needs_verification.includes('identity');
+    const needs_poa =
+        needs_authentication &&
+        needs_verification.includes('document') &&
+        (document?.status !== 'expired' || document?.status !== 'pending');
+    const needs_poi =
+        needs_authentication &&
+        needs_verification.includes('identity') &&
+        (identity?.status !== 'expired' || identity?.status !== 'pending');
 
-    if (needs_poa) addNotificationMessage(clientNotifications().needs_poa);
-    if (needs_poi) addNotificationMessage(clientNotifications().needs_poi);
+    if (needs_poa && !(document.status === 'expired')) addNotificationMessage(clientNotifications().needs_poa);
+    if (needs_poi && !(identity.status === 'expired')) addNotificationMessage(clientNotifications().needs_poi);
     if (cashier_locked) addNotificationMessage(clientNotifications().cashier_locked);
     if (withdrawal_locked) {
         // if client is withdrawal locked but it's because they need to authenticate
@@ -421,12 +482,12 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
     if (mt5_withdrawal_locked) addNotificationMessage(clientNotifications().mt5_withdrawal_locked);
     if (document_needs_action) addNotificationMessage(clientNotifications().document_needs_action);
     if (unwelcome && !should_show_max_turnover) addNotificationMessage(clientNotifications().unwelcome);
-    if (is_mf_retail) addNotificationMessage(clientNotifications().mf_retail);
 
     if (has_risk_assessment) addNotificationMessage(clientNotifications().risk);
     if (shouldCompleteTax(account_status)) addNotificationMessage(clientNotifications().tax);
 
     if (should_show_max_turnover) addNotificationMessage(clientNotifications().max_turnover_limit_not_set);
+
     return {
         has_risk_assessment,
     };
@@ -444,28 +505,45 @@ export const excluded_notifications = isMobile()
           'new_version_available',
       ];
 
-export const handleClientNotifications = (
-    client,
-    account_settings,
-    account_status,
-    addNotificationMessage,
-    loginid,
-    ui
-) => {
+export const handleClientNotifications = (client, client_store, ui_store, cashier_store) => {
     const { currency, excluded_until } = client;
+    const {
+        loginid,
+        account_status,
+        account_settings,
+        getRiskAssessment,
+        is_tnc_needed,
+        isAccountOfType,
+        shouldCompleteTax,
+    } = client_store;
+    const { addNotificationMessage, removeNotificationMessageByKey } = ui_store;
+    const { is_p2p_visible } = cashier_store;
+
     if (loginid !== LocalStore.get('active_loginid')) return {};
-    if (!currency) addNotificationMessage(clientNotifications(ui).currency);
+    if (!currency) addNotificationMessage(clientNotifications(ui_store).currency);
     if (excluded_until) {
-        addNotificationMessage(clientNotifications(ui).self_exclusion(excluded_until));
+        addNotificationMessage(clientNotifications(ui_store, client_store).self_exclusion(excluded_until));
     }
 
-    const { has_risk_assessment } = checkAccountStatus(account_status, client, addNotificationMessage, loginid);
+    const { has_risk_assessment } = checkAccountStatus(
+        account_status,
+        client,
+        addNotificationMessage,
+        loginid,
+        getRiskAssessment,
+        shouldCompleteTax
+    );
+    if (is_p2p_visible) {
+        addNotificationMessage(clientNotifications().dp2p);
+    } else {
+        removeNotificationMessageByKey({ key: clientNotifications().dp2p.key });
+    }
 
-    if (shouldAcceptTnc(account_settings)) addNotificationMessage(clientNotifications(ui).tnc);
+    if (is_tnc_needed) addNotificationMessage(clientNotifications(ui_store).tnc);
 
-    const has_missing_required_field = hasMissingRequiredField(account_settings, client);
+    const has_missing_required_field = hasMissingRequiredField(account_settings, client, isAccountOfType);
     if (has_missing_required_field) {
-        addNotificationMessage(clientNotifications(ui).required_fields);
+        addNotificationMessage(clientNotifications(ui_store).required_fields);
     }
 
     return {

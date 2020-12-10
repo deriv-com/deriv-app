@@ -11,6 +11,8 @@ import {
     Icon,
     Button,
     DatePicker,
+    StaticUrl,
+    Text,
 } from '@deriv/components';
 import {
     getPropertyValue,
@@ -18,10 +20,10 @@ import {
     epochToMoment,
     isDesktop,
     isMobile,
-    getDerivComLink,
     formatMoney,
     hasCorrectDecimalPlaces,
     getDecimalPlaces,
+    getCurrencyDisplayCode,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -29,13 +31,17 @@ import { WS } from 'Services/ws-methods';
 import DemoMessage from 'Components/demo-message';
 import LoadErrorMessage from 'Components/load-error-message';
 import Article from './article.jsx';
+import ArticleContent from './article-content.jsx';
 
 class SelfExclusion extends React.Component {
     exclusion_data = {
+        max_deposit: '',
         max_turnover: '',
         max_losses: '',
+        max_7day_deposit: '',
         max_7day_turnover: '',
         max_7day_losses: '',
+        max_30day_deposit: '',
         max_30day_turnover: '',
         max_30day_losses: '',
         session_duration_limit: '',
@@ -46,10 +52,13 @@ class SelfExclusion extends React.Component {
     };
 
     exclusion_texts = {
+        max_deposit: localize('Max. deposit limit per day'),
         max_turnover: localize('Max. total stake per day'),
         max_losses: localize('Max. total loss per day'),
+        max_7day_deposit: localize('Max. deposit limit over 7 days'),
         max_7day_turnover: localize('Max. total stake over 7 days'),
         max_7day_losses: localize('Max. total loss over 7 days'),
+        max_30day_deposit: localize('Max. deposit limit over 30 days'),
         max_30day_turnover: localize('Max. total stake over 30 days'),
         max_30day_losses: localize('Max. total loss over 30 days'),
         session_duration_limit: localize('Time limit per session'),
@@ -67,6 +76,7 @@ class SelfExclusion extends React.Component {
         error_message: '',
         self_exclusions: this.exclusion_data,
         show_confirm: false,
+        show_article: false,
         submit_error_message: '',
     };
 
@@ -83,8 +93,8 @@ class SelfExclusion extends React.Component {
         });
     };
 
-    validateFields = (values) => {
-        const { currency } = this.props;
+    validateFields = values => {
+        const { currency, is_eu, is_cr } = this.props;
         const errors = {};
         // Regex
         const is_number = /^\d+(\.\d+)?$/;
@@ -94,6 +104,8 @@ class SelfExclusion extends React.Component {
 
         // Messages
         const valid_number_message = localize('Should be a valid number');
+        const more_than_equal_zero_message = localize('Please input number greater than or equal to 0');
+        const more_than_zero_message = localize('Please input number greater than 0');
         const max_number_message = localize('Reached maximum number of digits');
         const max_decimal_message = (
             <Localize
@@ -102,7 +114,7 @@ class SelfExclusion extends React.Component {
             />
         );
 
-        const getLimitNumberMessage = (current_value) => (
+        const getLimitNumberMessage = current_value => (
             <Localize
                 i18n_default_text='Please enter a number between 0 and {{current_value}}'
                 values={{ current_value }}
@@ -110,6 +122,9 @@ class SelfExclusion extends React.Component {
         );
 
         const only_numbers = [
+            'max_deposit',
+            'max_7day_deposit',
+            'max_30day_deposit',
             'max_turnover',
             'max_losses',
             'max_7day_turnover',
@@ -121,6 +136,9 @@ class SelfExclusion extends React.Component {
             'session_duration_limit',
         ];
         const only_currency = [
+            'max_deposit',
+            'max_7day_deposit',
+            'max_30day_deposit',
             'max_turnover',
             'max_losses',
             'max_7day_turnover',
@@ -157,19 +175,30 @@ class SelfExclusion extends React.Component {
             }
         }
 
-        only_numbers.forEach((item) => {
+        only_numbers.forEach(item => {
             if (values[item]) {
                 if (!is_number.test(values[item])) {
                     errors[item] = valid_number_message;
-                } else if (this.state.self_exclusions[item] && +values[item] > +this.state.self_exclusions[item]) {
+                } else if (
+                    this.state.self_exclusions[item] &&
+                    +values[item] > +this.state.self_exclusions[item] &&
+                    is_eu
+                ) {
                     errors[item] = getLimitNumberMessage(this.state.self_exclusions[item]);
+                } else if (this.state.self_exclusions[item] && +values[item] < 0 && !is_eu) {
+                    errors[item] = more_than_equal_zero_message;
+                } else if (+values[item] <= 0 && is_eu) {
+                    errors[item] = more_than_zero_message;
                 } else if (+values[item] > max_number) {
                     errors[item] = max_number_message;
                 }
             }
+            if (+this.state.self_exclusions[item] && !values[item] && !is_cr) {
+                errors[item] = more_than_zero_message;
+            }
         });
 
-        only_integers.forEach((item) => {
+        only_integers.forEach(item => {
             if (values[item]) {
                 if (!is_integer.test(values[item])) {
                     errors[item] = valid_number_message;
@@ -177,7 +206,7 @@ class SelfExclusion extends React.Component {
             }
         });
 
-        only_currency.forEach((item) => {
+        only_currency.forEach(item => {
             if (values[item]) {
                 if (!hasCorrectDecimalPlaces(currency, values[item])) {
                     errors[item] = max_decimal_message;
@@ -190,19 +219,20 @@ class SelfExclusion extends React.Component {
 
     handleSubmit = async (values, { setSubmitting }) => {
         const need_logout_exclusions = ['exclude_until', 'timeout_until'];
-        const has_need_logout = this.state.changed_attributes.some((attr) => need_logout_exclusions.includes(attr));
+        const string_exclusions = ['exclude_until'];
+        const has_need_logout = this.state.changed_attributes.some(attr => need_logout_exclusions.includes(attr));
 
         const makeRequest = () =>
-            new Promise((resolve) => {
+            new Promise(resolve => {
                 const request = {
                     set_self_exclusion: 1,
                 };
 
-                this.state.changed_attributes.forEach((attr) => {
-                    request[attr] = values[attr];
+                this.state.changed_attributes.forEach(attr => {
+                    request[attr] = string_exclusions.includes(attr) ? values[attr] : +values[attr];
                 });
 
-                WS.authorized.setSelfExclusion(request).then((response) => resolve(response));
+                WS.authorized.setSelfExclusion(request).then(response => resolve(response));
             });
 
         if (has_need_logout) {
@@ -233,8 +263,8 @@ class SelfExclusion extends React.Component {
         }
     };
 
-    goToConfirm = (values) => {
-        const changed_attributes = Object.keys(values).filter((key) => values[key] !== this.state.self_exclusions[key]);
+    goToConfirm = values => {
+        const changed_attributes = Object.keys(values).filter(key => values[key] !== this.state.self_exclusions[key]);
         this.setState({ changed_attributes, is_confirm_page: true });
     };
 
@@ -242,19 +272,23 @@ class SelfExclusion extends React.Component {
         this.setState({ show_confirm: false });
     };
 
-    objectValuesToString = (object) => {
-        Object.keys(object).forEach((item) => {
+    objectValuesToString = object => {
+        Object.keys(object).forEach(item => {
             object[item] = `${object[item]}`;
         });
 
         return object;
     };
 
+    toggleArticle = () => {
+        this.setState({ show_article: !this.state.show_article });
+    };
+
     componentWillUnmount() {
         this.setState({ changed_attributes: [] });
     }
 
-    populateExclusionResponse = (response) => {
+    populateExclusionResponse = response => {
         if (response.error) {
             this.setState({
                 is_loading: false,
@@ -267,7 +301,7 @@ class SelfExclusion extends React.Component {
             }
             this.setState({
                 is_loading: false,
-                self_exclusions: { ...this.state.self_exclusions, ...response_to_string },
+                self_exclusions: { ...this.exclusion_data, ...response_to_string },
             });
         }
     };
@@ -300,22 +334,25 @@ class SelfExclusion extends React.Component {
             is_confirm_page,
             changed_attributes,
             show_confirm,
+            show_article,
             submit_error_message,
         } = this.state;
-        const { is_virtual, is_switching, currency } = this.props;
+        const { is_virtual, is_switching, currency, is_eu, is_tablet } = this.props;
 
         if (is_virtual) return <DemoMessage />;
 
-        if (is_loading || is_switching) return <Loading is_fullscreen={false} className='account___intial-loader' />;
+        if (is_loading || is_switching) return <Loading is_fullscreen={false} className='account__initial-loader' />;
 
         if (error_message) return <LoadErrorMessage error_message={error_message} />;
+
+        const currency_display = getCurrencyDisplayCode(currency);
 
         return (
             <section className='self-exclusion'>
                 <Div100vhContainer className='self-exclusion__wrapper' is_disabled={isDesktop()} height_offset='80px'>
                     <ThemedScrollbars className='self-exclusion__scrollbars' is_bypassed={isMobile()}>
                         <MobileWrapper>
-                            <Article />
+                            <Article toggleArticle={this.toggleArticle} />
                         </MobileWrapper>
 
                         <Formik
@@ -336,8 +373,17 @@ class SelfExclusion extends React.Component {
                                 setFieldValue,
                             }) => (
                                 <Form className='self-exclusion__form' noValidate>
+                                    <Modal
+                                        className='self_exclusion__article-modal'
+                                        is_open={show_article}
+                                        toggleModal={this.toggleArticle}
+                                    >
+                                        <ThemedScrollbars>
+                                            <ArticleContent toggleModal={this.toggleArticle} />
+                                        </ThemedScrollbars>
+                                    </Modal>
                                     {is_confirm_page ? (
-                                        <>
+                                        <React.Fragment>
                                             <Modal
                                                 className='self_exclusion__modal'
                                                 is_open={show_confirm}
@@ -348,11 +394,11 @@ class SelfExclusion extends React.Component {
                                                     <h4 className='self-exclusion__popup-header'>
                                                         {localize('Save new limits?')}
                                                     </h4>
-                                                    <p className='self-exclusion__popup-desc'>
+                                                    <Text as='p' className='self-exclusion__popup-desc'>
                                                         {localize(
                                                             'Remember: You cannot log in to your account until the selected date.'
                                                         )}
-                                                    </p>
+                                                    </Text>
                                                     <div className='self-exclusion__popup-buttons'>
                                                         <Button
                                                             type='button'
@@ -381,7 +427,9 @@ class SelfExclusion extends React.Component {
                                                 className='self-exclusion__back'
                                             >
                                                 <Icon icon='IcArrowLeftBold' />
-                                                <p>{localize('Back')}</p>
+                                                <Text as='p' size='xs' weight='bold'>
+                                                    {localize('Back')}
+                                                </Text>
                                             </div>
                                             <div className='self-exclusion__confirm'>
                                                 <h2 className='self-exclusion__confirm-header'>
@@ -390,6 +438,9 @@ class SelfExclusion extends React.Component {
                                                 {changed_attributes.map((key, idx) => {
                                                     const need_date_format = ['exclude_until', 'timeout_until'];
                                                     const need_money_format = [
+                                                        'max_deposit',
+                                                        'max_7day_deposit',
+                                                        'max_30day_deposit',
                                                         'max_total_stake',
                                                         'max_turnover',
                                                         'max_losses',
@@ -404,72 +455,116 @@ class SelfExclusion extends React.Component {
                                                     let value = '';
 
                                                     if (need_date_format.includes(key)) {
-                                                        value = toMoment(values[key]).format('DD MMM YYYY');
+                                                        value = toMoment(values[key]).format('DD/MM/YYYY');
                                                     } else if (need_money_format.includes(key)) {
                                                         value = `${formatMoney(
                                                             currency,
                                                             +values[key],
                                                             true
-                                                        )} ${currency}`;
+                                                        )} ${currency_display}`;
                                                     } else if (need_minutes.includes(key)) {
-                                                        value = `${values[key]} Minutes`;
+                                                        value = localize('{{value}} mins', { value: values[key] });
                                                     } else if (need_amount.includes(key)) {
                                                         value = `${values[key]}`;
                                                     }
+                                                    const checked_value = +values[key] === 0 ? 'Removed' : value;
 
                                                     return (
                                                         <div key={idx} className='self-exclusion__confirm-item'>
-                                                            <p className='self-exclusion__confirm-label'>
+                                                            <Text as='p' size='xs'>
                                                                 {this.exclusion_texts[key]}
-                                                            </p>
-                                                            <p className='self-exclusion__confirm-value'>{value}</p>
+                                                            </Text>
+                                                            <Text as='p' size='xs' align='right' weight='bold'>
+                                                                {checked_value}
+                                                            </Text>
                                                         </div>
                                                     );
                                                 })}
-                                                <p className='self-exclusion__confirm-note'>
-                                                    <Localize
-                                                        i18n_default_text='You’ll be able to adjust these limits at any time. You can reduce your limits from the <0>self-exclusion page</0>. To increase or remove your limits, please contact our <1>Customer Support team</1>.'
-                                                        components={[
-                                                            <span key={0} className='self-exclusion__text-highlight' />,
-                                                            <a
-                                                                key={1}
-                                                                className='link link--orange'
-                                                                rel='noopener noreferrer'
-                                                                target='_blank'
-                                                                href={getDerivComLink('/contact-us')}
-                                                            />,
-                                                        ]}
+                                                <Text
+                                                    as='p'
+                                                    size='xs'
+                                                    align='center'
+                                                    className='self-exclusion__confirm-note'
+                                                >
+                                                    {is_eu ? (
+                                                        <Localize
+                                                            i18n_default_text='You’ll be able to adjust these limits at any time. You can reduce your limits from the <0>self-exclusion page</0>. To increase or remove your limits, please contact our <1>Customer Support team</1>.'
+                                                            components={[
+                                                                <Text
+                                                                    key={0}
+                                                                    size='xs'
+                                                                    color='loss-danger'
+                                                                    weight='bold'
+                                                                />,
+                                                                <StaticUrl
+                                                                    key={1}
+                                                                    className='link link--orange'
+                                                                    href='/contact-us'
+                                                                />,
+                                                            ]}
+                                                        />
+                                                    ) : (
+                                                        <Localize
+                                                            i18n_default_text='We’ll update your limits. Click <0>Agree and accept</0> to acknowledge that you are fully responsible for your actions, and we are not liable for any addiction or loss.'
+                                                            components={[
+                                                                <strong
+                                                                    key={0}
+                                                                    className='self-exclusion__confirm-bold'
+                                                                />,
+                                                            ]}
+                                                        />
+                                                    )}
+                                                </Text>
+                                                <Text
+                                                    as='p'
+                                                    size='xs'
+                                                    align='center'
+                                                    color='loss-danger'
+                                                    className='self-exclusion__error'
+                                                >
+                                                    {submit_error_message}
+                                                </Text>
+                                                {is_eu ? (
+                                                    <Button
+                                                        is_loading={isSubmitting}
+                                                        is_disabled={isSubmitting}
+                                                        primary
+                                                        large
+                                                        type='submit'
+                                                        text={localize('Confirm my limits')}
                                                     />
-                                                </p>
-                                                <p className='self-exclusion__error'>{submit_error_message}</p>
-                                                <Button
-                                                    is_loading={isSubmitting}
-                                                    is_disabled={isSubmitting}
-                                                    primary
-                                                    large
-                                                    type='submit'
-                                                    text={localize('Confirm my limits')}
-                                                />
+                                                ) : (
+                                                    <Button
+                                                        is_loading={isSubmitting}
+                                                        is_disabled={isSubmitting}
+                                                        primary
+                                                        large
+                                                        type='submit'
+                                                        text={localize('Agree and accept')}
+                                                    />
+                                                )}
                                             </div>
-                                        </>
+                                        </React.Fragment>
                                     ) : (
-                                        <>
+                                        <React.Fragment>
                                             <h2 className='self-exclusion__header'>
                                                 {localize('Your stake and loss limits')}
                                             </h2>
                                             <div className='self-exclusion__item-wrapper'>
                                                 <div className='self-exclusion__item'>
-                                                    <h3 className='self-exclusion__item-title'>{localize('Daily')}</h3>
-                                                    <p className='self-exclusion__item-field'>
+                                                    <h3 className='self-exclusion__item-title'>
+                                                        {localize('24 hours')}
+                                                    </h3>
+                                                    <Text as='p' size='xs' className='self-exclusion__item-field'>
                                                         {localize('Max. total stake')}
-                                                    </p>
+                                                    </Text>
                                                     <Field name='max_turnover'>
                                                         {({ field }) => (
                                                             <Input
                                                                 {...field}
                                                                 data-lpignore='true'
                                                                 className='self-exclusion__input'
-                                                                label={currency}
+                                                                label={currency_display}
                                                                 value={values.max_turnover}
                                                                 onChange={handleChange}
                                                                 onBlur={handleBlur}
@@ -478,16 +573,16 @@ class SelfExclusion extends React.Component {
                                                             />
                                                         )}
                                                     </Field>
-                                                    <p className='self-exclusion__item-field'>
+                                                    <Text as='p' size='xs' className='self-exclusion__item-field'>
                                                         {localize('Max. total loss')}
-                                                    </p>
+                                                    </Text>
                                                     <Field name='max_losses'>
                                                         {({ field }) => (
                                                             <Input
                                                                 {...field}
                                                                 data-lpignore='true'
                                                                 className='self-exclusion__input'
-                                                                label={currency}
+                                                                label={currency_display}
                                                                 value={values.max_losses}
                                                                 onChange={handleChange}
                                                                 onBlur={handleBlur}
@@ -499,16 +594,16 @@ class SelfExclusion extends React.Component {
                                                 </div>
                                                 <div className='self-exclusion__item'>
                                                     <h3 className='self-exclusion__item-title'>{localize('7 days')}</h3>
-                                                    <p className='self-exclusion__item-field'>
+                                                    <Text as='p' size='xs' className='self-exclusion__item-field'>
                                                         {localize('Max. total stake')}
-                                                    </p>
+                                                    </Text>
                                                     <Field name='max_7day_turnover'>
                                                         {({ field }) => (
                                                             <Input
                                                                 {...field}
                                                                 data-lpignore='true'
                                                                 className='self-exclusion__input'
-                                                                label={currency}
+                                                                label={currency_display}
                                                                 value={values.max_7day_turnover}
                                                                 onChange={handleChange}
                                                                 onBlur={handleBlur}
@@ -520,16 +615,16 @@ class SelfExclusion extends React.Component {
                                                             />
                                                         )}
                                                     </Field>
-                                                    <p className='self-exclusion__item-field'>
+                                                    <Text as='p' size='xs' className='self-exclusion__item-field'>
                                                         {localize('Max. total loss')}
-                                                    </p>
+                                                    </Text>
                                                     <Field name='max_7day_losses'>
                                                         {({ field }) => (
                                                             <Input
                                                                 {...field}
                                                                 data-lpignore='true'
                                                                 className='self-exclusion__input'
-                                                                label={currency}
+                                                                label={currency_display}
                                                                 value={values.max_7day_losses}
                                                                 onChange={handleChange}
                                                                 onBlur={handleBlur}
@@ -545,37 +640,37 @@ class SelfExclusion extends React.Component {
                                                     <h3 className='self-exclusion__item-title'>
                                                         {localize('30 days')}
                                                     </h3>
-                                                    <p className='self-exclusion__item-field'>
+                                                    <Text as='p' size='xs' className='self-exclusion__item-field'>
                                                         {localize('Max. total stake')}
-                                                    </p>
+                                                    </Text>
                                                     <Field name='max_30day_turnover'>
                                                         {({ field }) => (
                                                             <Input
                                                                 {...field}
                                                                 data-lpignore='true'
                                                                 className='self-exclusion__input'
-                                                                label={currency}
+                                                                label={currency_display}
                                                                 value={values.max_30day_turnover}
                                                                 onChange={handleChange}
                                                                 onBlur={handleBlur}
                                                                 required
                                                                 error={
                                                                     touched.max_30day_turnover &&
-                                                                    errors.max_7day_turnover
+                                                                    errors.max_30day_turnover
                                                                 }
                                                             />
                                                         )}
                                                     </Field>
-                                                    <p className='self-exclusion__item-field'>
+                                                    <Text as='p' size='xs' className='self-exclusion__item-field'>
                                                         {localize('Max. total loss')}
-                                                    </p>
+                                                    </Text>
                                                     <Field name='max_30day_losses'>
                                                         {({ field }) => (
                                                             <Input
                                                                 {...field}
                                                                 data-lpignore='true'
                                                                 className='self-exclusion__input'
-                                                                label={currency}
+                                                                label={currency_display}
                                                                 value={values.max_30day_losses}
                                                                 onChange={handleChange}
                                                                 onBlur={handleBlur}
@@ -593,11 +688,11 @@ class SelfExclusion extends React.Component {
                                             </h2>
                                             <div className='self-exclusion__item-wrapper'>
                                                 <div className='self-exclusion__item'>
-                                                    <p className='self-exclusion__item-field'>
+                                                    <Text as='p' size='xs' className='self-exclusion__item-field'>
                                                         {localize(
                                                             'You will be automatically logged out from each session after this time limit.'
                                                         )}
-                                                    </p>
+                                                    </Text>
                                                     <Field name='session_duration_limit'>
                                                         {({ field }) => (
                                                             <Input
@@ -618,11 +713,11 @@ class SelfExclusion extends React.Component {
                                                     </Field>
                                                 </div>
                                                 <div className='self-exclusion__item'>
-                                                    <p className='self-exclusion__item-field'>
+                                                    <Text as='p' size='xs' className='self-exclusion__item-field'>
                                                         {localize(
                                                             'You will not be able to log in to your account until this date (up to 6 weeks from today).'
                                                         )}
-                                                    </p>
+                                                    </Text>
                                                     <Field name='timeout_until'>
                                                         {({ field }) => (
                                                             <DatePicker
@@ -648,16 +743,16 @@ class SelfExclusion extends React.Component {
                                                     </Field>
                                                 </div>
                                                 <div className='self-exclusion__item'>
-                                                    <p className='self-exclusion__item-field'>
+                                                    <Text as='p' size='xs' className='self-exclusion__item-field'>
                                                         {localize(
                                                             'Your account will be excluded from the website until this date (at least 6 months, up to 5 years).'
                                                         )}
-                                                    </p>
+                                                    </Text>
                                                     <Field name='exclude_until'>
                                                         {({ field }) => (
                                                             <DatePicker
                                                                 {...field}
-                                                                alignment='left'
+                                                                alignment={is_tablet ? 'bottom' : 'left'}
                                                                 className='self-exclusion__input'
                                                                 label={localize('Date')}
                                                                 value={values.exclude_until}
@@ -688,12 +783,12 @@ class SelfExclusion extends React.Component {
                                                         className='self-exclusion__warning-icon'
                                                     />
                                                     <div className='self-exclusion__warning-textbox'>
-                                                        <p className='self-exclusion__warning-text'>
+                                                        <Text as='p' size='xxxs'>
                                                             {localize(
                                                                 'Self-exclusion on the website only applies to your Deriv.com account and does not include other companies or websites.'
                                                             )}
-                                                        </p>
-                                                        <p className='self-exclusion__warning-text'>
+                                                        </Text>
+                                                        <Text as='p' size='xxxs'>
                                                             {this.props.is_mlt ? (
                                                                 <Localize
                                                                     i18n_default_text='If you are a UK resident, to self-exclude from all online gambling companies licensed in Great Britain, go to <0>www.gamstop.co.uk</0>.'
@@ -721,8 +816,8 @@ class SelfExclusion extends React.Component {
                                                                     ]}
                                                                 />
                                                             )}
-                                                        </p>
-                                                        <p className='self-exclusion__warning-text'>
+                                                        </Text>
+                                                        <Text as='p' size='xxxs'>
                                                             <Localize
                                                                 i18n_default_text='For more information and assistance to counselling and support services, please visit <0>begambleaware.org</0>.'
                                                                 components={[
@@ -735,27 +830,125 @@ class SelfExclusion extends React.Component {
                                                                     />,
                                                                 ]}
                                                             />
-                                                        </p>
+                                                        </Text>
                                                     </div>
                                                 </div>
+                                            )}
+                                            {(this.props.is_mlt || this.props.is_mf || this.props.is_mx) && (
+                                                <React.Fragment>
+                                                    <h2 className='self-exclusion__header'>
+                                                        {localize('Your maximum deposit limit')}
+                                                    </h2>
+                                                    <div className='self-exclusion__item-wrapper'>
+                                                        <div className='self-exclusion__item'>
+                                                            <h3 className='self-exclusion__item-title'>
+                                                                {localize('24 hours')}
+                                                            </h3>
+                                                            <Text
+                                                                as='p'
+                                                                size='xs'
+                                                                className='self-exclusion__item-field'
+                                                            >
+                                                                {localize('Max. deposit limit')}
+                                                            </Text>
+                                                            <Field name='max_deposit'>
+                                                                {({ field }) => (
+                                                                    <Input
+                                                                        {...field}
+                                                                        data-lpignore='true'
+                                                                        className='self-exclusion__input'
+                                                                        label={currency}
+                                                                        value={values.max_deposit}
+                                                                        onChange={handleChange}
+                                                                        onBlur={handleBlur}
+                                                                        required
+                                                                        error={
+                                                                            touched.max_deposit && errors.max_deposit
+                                                                        }
+                                                                    />
+                                                                )}
+                                                            </Field>
+                                                        </div>
+                                                        <div className='self-exclusion__item'>
+                                                            <h3 className='self-exclusion__item-title'>
+                                                                {localize('7 days')}
+                                                            </h3>
+                                                            <Text
+                                                                as='p'
+                                                                size='xs'
+                                                                className='self-exclusion__item-field'
+                                                            >
+                                                                {localize('Max. deposit limit')}
+                                                            </Text>
+                                                            <Field name='max_7day_deposit'>
+                                                                {({ field }) => (
+                                                                    <Input
+                                                                        {...field}
+                                                                        data-lpignore='true'
+                                                                        className='self-exclusion__input'
+                                                                        label={currency}
+                                                                        value={values.max_7day_deposit}
+                                                                        onChange={handleChange}
+                                                                        onBlur={handleBlur}
+                                                                        required
+                                                                        error={
+                                                                            touched.max_7day_deposit &&
+                                                                            errors.max_7day_deposit
+                                                                        }
+                                                                    />
+                                                                )}
+                                                            </Field>
+                                                        </div>
+                                                        <div className='self-exclusion__item'>
+                                                            <h3 className='self-exclusion__item-title'>
+                                                                {localize('30 days')}
+                                                            </h3>
+                                                            <Text
+                                                                as='p'
+                                                                size='xs'
+                                                                className='self-exclusion__item-field'
+                                                            >
+                                                                {localize('Max. deposit limit')}
+                                                            </Text>
+                                                            <Field name='max_30day_deposit'>
+                                                                {({ field }) => (
+                                                                    <Input
+                                                                        {...field}
+                                                                        data-lpignore='true'
+                                                                        className='self-exclusion__input'
+                                                                        label={currency}
+                                                                        value={values.max_30day_deposit}
+                                                                        onChange={handleChange}
+                                                                        onBlur={handleBlur}
+                                                                        required
+                                                                        error={
+                                                                            touched.max_30day_deposit &&
+                                                                            errors.max_30day_deposit
+                                                                        }
+                                                                    />
+                                                                )}
+                                                            </Field>
+                                                        </div>
+                                                    </div>
+                                                </React.Fragment>
                                             )}
                                             <h2 className='self-exclusion__header'>
                                                 {localize('Your maximum account balance and open positions')}
                                             </h2>
                                             <div className='self-exclusion__item-wrapper'>
                                                 <div className='self-exclusion__item'>
-                                                    <p className='self-exclusion__item-field'>
+                                                    <Text as='p' size='xs' className='self-exclusion__item-field'>
                                                         {localize(
                                                             'Once your account balance reaches this amount, you will not be able to deposit funds into your account.'
                                                         )}
-                                                    </p>
+                                                    </Text>
                                                     <Field name='max_balance'>
                                                         {({ field }) => (
                                                             <Input
                                                                 {...field}
                                                                 data-lpignore='true'
                                                                 className='self-exclusion__input'
-                                                                label={currency}
+                                                                label={currency_display}
                                                                 value={values.max_balance}
                                                                 onChange={handleChange}
                                                                 onBlur={handleBlur}
@@ -766,9 +959,9 @@ class SelfExclusion extends React.Component {
                                                     </Field>
                                                 </div>
                                                 <div className='self-exclusion__item'>
-                                                    <p className='self-exclusion__item-field'>
+                                                    <Text as='p' size='xs' className='self-exclusion__item-field'>
                                                         {localize('You can only open positions up to this amount.')}
-                                                    </p>
+                                                    </Text>
                                                     <Field name='max_open_bets'>
                                                         {({ field }) => (
                                                             <Input
@@ -798,14 +991,14 @@ class SelfExclusion extends React.Component {
                                                     {localize('Save')}
                                                 </Button>
                                             </div>
-                                        </>
+                                        </React.Fragment>
                                     )}
                                 </Form>
                             )}
                         </Formik>
                     </ThemedScrollbars>
                     <DesktopWrapper>
-                        <Article />
+                        <Article toggleArticle={this.toggleArticle} />
                     </DesktopWrapper>
                 </Div100vhContainer>
             </section>
@@ -813,11 +1006,15 @@ class SelfExclusion extends React.Component {
     }
 }
 
-export default connect(({ client }) => ({
+export default connect(({ client, ui }) => ({
+    is_tablet: ui.is_tablet,
     currency: client.currency,
     is_virtual: client.is_virtual,
     is_switching: client.is_switching,
+    is_cr: client.standpoint.svg,
+    is_eu: client.is_eu,
     is_mlt: client.landing_company_shortcode === 'malta',
+    is_mf: client.landing_company_shortcode === 'maltainvest',
     is_mx: client.landing_company_shortcode === 'iom',
     logout: client.logout,
 }))(SelfExclusion);

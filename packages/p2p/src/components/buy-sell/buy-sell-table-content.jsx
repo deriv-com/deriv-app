@@ -1,104 +1,70 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Loading } from '@deriv/components';
+import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
-import Dp2pContext from 'Components/context/dp2p-context';
 import Empty from 'Components/empty/empty.jsx';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { TableError } from 'Components/table/table-error.jsx';
-import { height_constants } from 'Utils/height_constants';
-import { requestWS } from 'Utils/websocket';
+import { useStores } from 'Stores';
 import { RowComponent, BuySellRowLoader } from './row.jsx';
 import { BuySellTable } from './buy-sell-table.jsx';
 
-const BuySellTableContent = ({ is_buy, setSelectedAd }) => {
-    const { list_item_limit } = React.useContext(Dp2pContext);
-    const is_mounted = React.useRef(false);
-    const item_offset = React.useRef(0);
-    const [has_more_items_to_load, setHasMoreItemsToLoad] = React.useState(false);
-    const [api_error_message, setApiErrorMessage] = React.useState('');
-    const [is_loading, setIsLoading] = React.useState(true);
-    const [items, setItems] = React.useState([]);
+const BuySellTableContent = observer(() => {
+    const { buy_sell_store } = useStores();
 
     React.useEffect(() => {
-        is_mounted.current = true;
-        loadMoreItems(item_offset.current, list_item_limit);
-        return () => (is_mounted.current = false);
-    }, []);
+        buy_sell_store.setIsLoading(true);
+        buy_sell_store.loadMoreItems();
+    }, [buy_sell_store.is_buy]);
 
-    React.useEffect(() => {
-        setIsLoading(true);
-        if (is_mounted.current) {
-            loadMoreItems(item_offset.current, list_item_limit);
-        }
-    }, [is_buy]);
-
-    const loadMoreItems = start_idx => {
-        return new Promise(resolve => {
-            requestWS({
-                p2p_advert_list: 1,
-                counterparty_type: is_buy ? 'buy' : 'sell',
-                offset: start_idx,
-                limit: list_item_limit,
-            }).then(response => {
-                if (is_mounted.current) {
-                    if (!response.error) {
-                        setHasMoreItemsToLoad(response.length >= list_item_limit);
-                        setItems(items.concat(response));
-                        item_offset.current += response.length;
-                    } else {
-                        setApiErrorMessage(response.error.message);
-                    }
-                    setIsLoading(false);
-                    resolve();
-                }
-            });
-        });
-    };
-
-    if (is_loading) {
+    if (buy_sell_store.is_loading) {
         return <Loading is_fullscreen={false} />;
     }
-    if (api_error_message) {
-        return <TableError message={api_error_message} />;
+    if (buy_sell_store.api_error_message) {
+        return <TableError message={buy_sell_store.api_error_message} />;
     }
 
-    const Row = props => <RowComponent {...props} is_buy={is_buy} setSelectedAd={setSelectedAd} />;
+    const Row = props => (
+        <RowComponent
+            {...props}
+            is_buy={buy_sell_store.is_buy}
+            setSelectedAdvert={buy_sell_store.setSelectedAdvert}
+            showAdvertiserPage={buy_sell_store.showAdvertiserPage}
+        />
+    );
 
-    if (items.length) {
-        const item_height = 56;
-        const height_values = [
-            height_constants.screen,
-            height_constants.core_header,
-            height_constants.page_overlay_header,
-            height_constants.page_overlay_content_padding,
-            height_constants.tabs,
-            height_constants.filters,
-            height_constants.filters_margin,
-            height_constants.table_header,
-            height_constants.core_footer,
-        ];
+    if (buy_sell_store.items.length) {
         return (
             <BuySellTable>
                 <InfiniteLoaderList
-                    autosizer_height={`calc(${height_values.join(' - ')})`}
-                    items={items}
-                    item_size={item_height}
+                    autosizer_height={`calc(${buy_sell_store.height_values.join(' - ')})`}
+                    items={buy_sell_store.items}
+                    item_size={buy_sell_store.item_height}
                     RenderComponent={Row}
                     RowLoader={BuySellRowLoader}
-                    has_more_items_to_load={has_more_items_to_load}
-                    loadMore={loadMoreItems}
+                    has_more_items_to_load={buy_sell_store.has_more_items_to_load}
+                    loadMore={buy_sell_store.loadMoreItems}
                 />
             </BuySellTable>
         );
     }
 
     return <Empty has_tabs icon='IcCashierNoAds' title={localize('No ads found')} />;
-};
+});
 
 BuySellTableContent.propTypes = {
+    api_error_message: PropTypes.string,
+    has_more_items_to_load: PropTypes.bool,
+    height_values: PropTypes.array,
     is_buy: PropTypes.bool,
-    setSelectedAd: PropTypes.func,
+    is_loading: PropTypes.bool,
+    item_height: PropTypes.number,
+    items: PropTypes.array,
+    loadMoreItems: PropTypes.func,
+    setIsLoading: PropTypes.func,
+    setSelectedAdvert: PropTypes.func,
+    showAdvertiserPage: PropTypes.func,
 };
 
 export default BuySellTableContent;

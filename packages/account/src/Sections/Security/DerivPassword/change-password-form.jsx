@@ -1,17 +1,15 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Formik } from 'formik';
-import { Button, Loading, PasswordInput, PasswordMeter } from '@deriv/components';
+import { FormSubmitErrorMessage, Button, Loading, PasswordInput, PasswordMeter } from '@deriv/components';
 import { withRouter } from 'react-router-dom';
-import { routes, isMobile } from '@deriv/shared';
+import { routes, isMobile, validPassword, validLength, getErrorMessages } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 import FormSubHeader from 'Components/form-sub-header';
 import FormBody from 'Components/form-body';
 import FormFooter from 'Components/form-footer';
-import FormSubmitErrorMessage from 'Components/form-submit-error-message';
-import { validPassword, validLength, getPreBuildDVRs } from 'Duplicated/Utils/Validator/declarative-validation-rules';
 
 class ChangePasswordForm extends React.Component {
     state = {
@@ -19,7 +17,7 @@ class ChangePasswordForm extends React.Component {
         new_pw_input: '',
     };
 
-    updateNewPassword = (string) => {
+    updateNewPassword = string => {
         this.setState({ new_pw_input: string });
     };
 
@@ -30,7 +28,7 @@ class ChangePasswordForm extends React.Component {
     onSubmit = (values, { setSubmitting, setStatus }) => {
         setStatus({ msg: '' });
         this.setState({ is_btn_loading: true });
-        WS.authorized.storage.changePassword(values).then((data) => {
+        WS.authorized.storage.changePassword(values).then(data => {
             this.setState({ is_btn_loading: false });
             if (data.error) {
                 setStatus({ msg: data.error.message });
@@ -42,12 +40,12 @@ class ChangePasswordForm extends React.Component {
         });
     };
 
-    validateFields = (values) => {
+    validateFields = values => {
         this.setState({ is_submit_success: false });
         const errors = {};
 
         const required_fields = ['old_password', 'new_password'];
-        required_fields.forEach((required) => {
+        required_fields.forEach(required => {
             if (!values[required]) errors[required] = localize('This field is required');
         });
 
@@ -62,7 +60,7 @@ class ChangePasswordForm extends React.Component {
                 errors.new_password = localize('Your password cannot be the same as your email address.');
             }
             if (!validPassword(values.new_password)) {
-                errors.new_password = getPreBuildDVRs().password.message;
+                errors.new_password = getErrorMessages().password();
             }
         }
 
@@ -94,7 +92,7 @@ class ChangePasswordForm extends React.Component {
                         <form className='account-form account__password-wrapper' onSubmit={handleSubmit}>
                             {this.state.is_loading ? (
                                 <FormBody>
-                                    <Loading is_fullscreen={false} className='account___intial-loader' />;
+                                    <Loading is_fullscreen={false} className='account__initial-loader' />;
                                 </FormBody>
                             ) : (
                                 <FormBody scroll_offset={isMobile() ? '200px' : '55px'}>
@@ -114,6 +112,7 @@ class ChangePasswordForm extends React.Component {
                                         <PasswordMeter
                                             input={this.state.new_pw_input}
                                             has_error={!!(touched.new_password && errors.new_password)}
+                                            custom_feedback_messages={getErrorMessages().password_warnings}
                                         >
                                             <PasswordInput
                                                 autoComplete='new-password'
@@ -122,7 +121,7 @@ class ChangePasswordForm extends React.Component {
                                                 name='new_password'
                                                 value={values.new_password}
                                                 onBlur={handleBlur}
-                                                onChange={(e) => {
+                                                onChange={e => {
                                                     const input = e.target;
                                                     setFieldTouched('new_password', true);
                                                     if (input) this.updateNewPassword(input.value);

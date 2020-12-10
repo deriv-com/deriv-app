@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Form, Field } from 'formik';
-import { getDecimalPlaces, routes } from '@deriv/shared';
+import { getDecimalPlaces, routes, validNumber } from '@deriv/shared';
 import { Button, Input } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
 import { connect } from 'Stores/connect';
-import { getPreBuildDVRs, validNumber } from 'Utils/Validator/declarative-validation-rules';
 import { WS } from 'Services';
 
 const MaxTurnoverForm = ({ onMount, setErrorConfig, currency }) => {
@@ -17,20 +16,17 @@ const MaxTurnoverForm = ({ onMount, setErrorConfig, currency }) => {
     const validateFields = values => {
         // TODO: [self-exclusion] handle shared self exclusion validation
         const errors = {};
-        const min_number = 0;
-        const max_number = 9999999999999;
+        const min_number = 1;
 
         if (!values.max_30day_turnover) {
             errors.max_30day_turnover = localize('This field is required.');
-        } else if (
-            !validNumber(values.max_30day_turnover, {
+        } else {
+            const { is_ok, message } = validNumber(values.max_30day_turnover, {
                 type: 'float',
                 decimals: getDecimalPlaces(currency),
                 min: min_number,
-                max: max_number,
-            })
-        ) {
-            errors.max_30day_turnover = getPreBuildDVRs().number.message;
+            });
+            if (!is_ok) errors.max_30day_turnover = message;
         }
 
         return errors;
@@ -54,7 +50,7 @@ const MaxTurnoverForm = ({ onMount, setErrorConfig, currency }) => {
             <h2 className='max-turnover__title'>{localize('30 days max total stake')}</h2>
 
             <Formik initialValues={initial_values} onSubmit={handleSubmit} validate={validateFields}>
-                {({ values, errors, isValid, touched, handleChange, handleBlur, isSubmitting, dirty, status }) => (
+                {({ values, errors, isValid, handleChange, handleBlur, isSubmitting, dirty, status }) => (
                     <Form className='max-turnover__form'>
                         <Field name='max_30day_turnover'>
                             {({ field }) => (
@@ -73,8 +69,9 @@ const MaxTurnoverForm = ({ onMount, setErrorConfig, currency }) => {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     hint={localize('Limits your total stake for 30 days across all Deriv platforms.')}
+                                    maxLength='13'
                                     required
-                                    error={touched.max_30day_turnover && errors.max_30day_turnover}
+                                    error={errors.max_30day_turnover}
                                 />
                             )}
                         </Field>

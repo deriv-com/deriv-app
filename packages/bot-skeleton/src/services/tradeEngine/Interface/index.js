@@ -1,7 +1,7 @@
 import TicksInterface from './TicksInterface';
 import ToolsInterface from './ToolsInterface';
 import TradeEngine from '../trade';
-import { noop, createDetails } from '../utils/helpers';
+import { createDetails } from '../utils/helpers';
 import { observer as globalObserver } from '../../../utils/observer';
 
 /**
@@ -66,12 +66,12 @@ export default class Interface extends ToolsInterface(TicksInterface(class {})) 
                     r();
                     setTimeout(() => this.observer.emit('CONTINUE'), 0);
                 }, arg * 1000),
-            noop
+            () => {}
         );
     }
 
     getProposal(contract_type) {
-        return this.data.proposals.find(
+        return this.tradeEngine.data.proposals.find(
             proposal =>
                 proposal.contract_type === contract_type &&
                 proposal.purchase_reference === this.tradeEngine.getPurchaseReference()

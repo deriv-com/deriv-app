@@ -1,6 +1,37 @@
-import { getPropertyValue } from '../object';
+import { getPropertyValue, deepFreeze } from '../object';
 
 let currencies_config = {};
+
+const fiat_currencies_display_order = ['USD', 'EUR', 'GBP', 'AUD'];
+const crypto_currencies_display_order = [
+    'BTC',
+    'ETH',
+    'LTC',
+    'UST',
+    'eUSDT',
+    'BUSD',
+    'DAI',
+    'EURS',
+    'IDK',
+    'PAX',
+    'TUSD',
+    'USDC',
+    'USDK',
+];
+
+export const reorderCurrencies = (list, type = 'fiat') => {
+    const new_order = type === 'fiat' ? fiat_currencies_display_order : crypto_currencies_display_order;
+
+    return list.sort((a, b) => {
+        if (new_order.indexOf(a.value) < new_order.indexOf(b.value)) {
+            return -1;
+        }
+        if (new_order.indexOf(a.value) > new_order.indexOf(b.value)) {
+            return 1;
+        }
+        return 0;
+    });
+};
 
 export const AMOUNT_MAX_LENGTH = 10;
 
@@ -82,64 +113,137 @@ export const CryptoConfig = (() => {
     let crypto_config;
 
     // TODO: [use-shared-i18n] - Use translate function shared among apps or pass in translated names externally.
-    const initCryptoConfig = () => ({
-        BTC: {
-            display_code: 'BTC',
-            name: 'Bitcoin',
-            min_withdrawal: 0.002,
-            pa_max_withdrawal: 5,
-            pa_min_withdrawal: 0.002,
-            fractional_digits: 8,
-        },
-        BCH: {
-            display_code: 'BCH',
-            name: 'Bitcoin Cash',
-            min_withdrawal: 0.002,
-            pa_max_withdrawal: 5,
-            pa_min_withdrawal: 0.002,
-            fractional_digits: 8,
-        },
-        ETH: {
-            display_code: 'ETH',
-            name: 'Ether',
-            min_withdrawal: 0.002,
-            pa_max_withdrawal: 5,
-            pa_min_withdrawal: 0.002,
-            fractional_digits: 8,
-        },
-        ETC: {
-            display_code: 'ETC',
-            name: 'Ether Classic',
-            min_withdrawal: 0.002,
-            pa_max_withdrawal: 5,
-            pa_min_withdrawal: 0.002,
-            fractional_digits: 8,
-        },
-        LTC: {
-            display_code: 'LTC',
-            name: 'Litecoin',
-            min_withdrawal: 0.002,
-            pa_max_withdrawal: 5,
-            pa_min_withdrawal: 0.002,
-            fractional_digits: 8,
-        },
-        UST: {
-            display_code: 'USDT',
-            name: 'Tether',
-            min_withdrawal: 0.02,
-            pa_max_withdrawal: 2000,
-            pa_min_withdrawal: 10,
-            fractional_digits: 2,
-        },
-        USB: {
-            display_code: 'USB',
-            name: 'Binary Coin',
-            min_withdrawal: 0.02,
-            pa_max_withdrawal: 2000,
-            pa_min_withdrawal: 10,
-            fractional_digits: 2,
-        },
-    });
+    const initCryptoConfig = () =>
+        deepFreeze({
+            BTC: {
+                display_code: 'BTC',
+                name: 'Bitcoin',
+                min_withdrawal: 0.002,
+                pa_max_withdrawal: 5,
+                pa_min_withdrawal: 0.002,
+                fractional_digits: 8,
+            },
+            BUSD: {
+                display_code: 'BUSD',
+                name: 'Binance USD',
+                min_withdrawal: 0.002,
+                pa_max_withdrawal: 5,
+                pa_min_withdrawal: 0.002,
+                fractional_digits: 2,
+            },
+            DAI: {
+                display_code: 'DAI',
+                name: 'Multi-Collateral DAI',
+                min_withdrawal: 0.002,
+                pa_max_withdrawal: 5,
+                pa_min_withdrawal: 0.002,
+                fractional_digits: 2,
+            },
+            EURS: {
+                display_code: 'EURS',
+                name: 'STATIS Euro',
+                min_withdrawal: 0.002,
+                pa_max_withdrawal: 5,
+                pa_min_withdrawal: 0.002,
+                fractional_digits: 2,
+            },
+            IDK: {
+                display_code: 'IDK',
+                name: 'IDK',
+                min_withdrawal: 0.002,
+                pa_max_withdrawal: 5,
+                pa_min_withdrawal: 0.002,
+                fractional_digits: 0,
+            },
+            PAX: {
+                display_code: 'PAX',
+                name: 'Paxos Standard',
+                min_withdrawal: 0.002,
+                pa_max_withdrawal: 5,
+                pa_min_withdrawal: 0.002,
+                fractional_digits: 2,
+            },
+            TUSD: {
+                display_code: 'TUSD',
+                name: 'True USD',
+                min_withdrawal: 0.002,
+                pa_max_withdrawal: 5,
+                pa_min_withdrawal: 0.002,
+                fractional_digits: 2,
+            },
+            USDC: {
+                display_code: 'USDC',
+                name: 'USD Coin',
+                min_withdrawal: 0.002,
+                pa_max_withdrawal: 5,
+                pa_min_withdrawal: 0.002,
+                fractional_digits: 2,
+            },
+            USDK: {
+                display_code: 'USDK',
+                name: 'USDK',
+                min_withdrawal: 0.002,
+                pa_max_withdrawal: 5,
+                pa_min_withdrawal: 0.002,
+                fractional_digits: 2,
+            },
+            eUSDT: {
+                display_code: 'eUSDT',
+                name: 'Tether ERC20',
+                min_withdrawal: 0.002,
+                pa_max_withdrawal: 5,
+                pa_min_withdrawal: 0.002,
+                fractional_digits: 2,
+            },
+            BCH: {
+                display_code: 'BCH',
+                name: 'Bitcoin Cash',
+                min_withdrawal: 0.002,
+                pa_max_withdrawal: 5,
+                pa_min_withdrawal: 0.002,
+                fractional_digits: 8,
+            },
+            ETH: {
+                display_code: 'ETH',
+                name: 'Ether',
+                min_withdrawal: 0.002,
+                pa_max_withdrawal: 5,
+                pa_min_withdrawal: 0.002,
+                fractional_digits: 8,
+            },
+            ETC: {
+                display_code: 'ETC',
+                name: 'Ether Classic',
+                min_withdrawal: 0.002,
+                pa_max_withdrawal: 5,
+                pa_min_withdrawal: 0.002,
+                fractional_digits: 8,
+            },
+            LTC: {
+                display_code: 'LTC',
+                name: 'Litecoin',
+                min_withdrawal: 0.002,
+                pa_max_withdrawal: 5,
+                pa_min_withdrawal: 0.002,
+                fractional_digits: 8,
+            },
+            UST: {
+                display_code: 'USDT',
+                name: 'Tether Omni',
+                min_withdrawal: 0.02,
+                pa_max_withdrawal: 2000,
+                pa_min_withdrawal: 10,
+                fractional_digits: 2,
+            },
+            // USB: {
+            //     display_code: 'USB',
+            //     name: 'Binary Coin',
+            //     min_withdrawal: 0.02,
+            //     pa_max_withdrawal: 2000,
+            //     pa_min_withdrawal: 10,
+            //     fractional_digits: 2,
+            // },
+        });
 
     return {
         get: () => {
@@ -198,12 +302,13 @@ export const getPaWithdrawalLimit = (currency, limit) => {
 };
 
 export const getCurrencyDisplayCode = (currency = '') => {
-    return getPropertyValue(CryptoConfig.get(), [currency.toUpperCase(), 'display_code']) || currency.toUpperCase();
+    // eslint-disable-next-line
+    if (currency !== 'eUSDT') currency = currency.toUpperCase();
+    return getPropertyValue(CryptoConfig.get(), [currency, 'display_code']) || currency;
 };
 
-export const getCurrencyName = currency => {
-    return getPropertyValue(CryptoConfig.get(), [currency, 'name']) || '';
-};
+export const getCurrencyName = (currency = '') =>
+    currency === 'USDT' ? 'Tether Omni' : getPropertyValue(currencies_config, [currency, 'name']) || '';
 
 export const getMinPayout = currency => {
     return getPropertyValue(currencies_config, [currency, 'stake_default']);

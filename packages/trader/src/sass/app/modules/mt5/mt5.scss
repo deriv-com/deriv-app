@@ -1,4 +1,5 @@
-.dc-modal__container_mt5-password-modal {
+.dc-modal__container_mt5-password-modal,
+.dc-mobile-dialog__mt5-password-modal {
     max-width: 424px;
     min-height: 300px;
     display: flex;
@@ -18,13 +19,17 @@
         flex-direction: column;
         align-items: center;
         justify-content: space-between;
-        padding: 2em;
+        padding: 2rem;
+
+        @include mobile {
+            padding: 0;
+        }
     }
     &__description {
         @include typeface(--small-center-normal-black);
         color: var(--text-prominent);
         text-transform: none;
-        margin-top: 1em;
+        margin-top: 1rem;
     }
     &__body {
         flex-grow: 1;
@@ -40,11 +45,19 @@
         &__label {
             top: 1.2rem;
             background-color: var(--general-main-2);
+
+            @include mobile {
+                top: 0.9rem;
+                background-color: var(--general-section-1);
+            }
         }
     }
     .dc-password-meter {
         &__bg {
             background: var(--general-section-2);
+            @include mobile {
+                background: var(--fill-disabled);
+            }
         }
     }
     .status-dialog {
@@ -69,6 +82,15 @@
     }
     .input-element {
         width: 100%;
+    }
+    @include mobile {
+        .mt5-password-modal__content {
+            overflow-y: auto;
+            overflow-x: hidden;
+            height: 100%;
+            max-height: calc(100% - 6.4rem);
+            padding: 2rem;
+        }
     }
 }
 
@@ -188,7 +210,7 @@
         }
     }
     &__heading {
-        @include typeface(--title-center-bold-black);
+        @include typeface(--paragraph-center-bold-black);
         margin: 1.6rem 0 0;
     }
     &__hint {
@@ -286,6 +308,11 @@
             & .dc-icon {
                 width: 8.8rem;
                 height: auto;
+
+                /* iPhone SE screen width fixes due to UI space restrictions */
+                @media only screen and (max-width: 340px) {
+                    width: 7rem;
+                }
             }
             p {
                 line-height: 20px;

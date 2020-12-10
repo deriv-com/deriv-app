@@ -46,7 +46,12 @@ const LocalComponent = ({ handleFileChange, is_mobile, loaded_local_file, setLoa
                     style={{ display: 'none' }}
                     onChange={e => handleFileChange(e, false)}
                 />
-                <div className='load-strategy__local-dropzone-area'>
+                <div
+                    className='load-strategy__local-dropzone-area'
+                    onDrop={e => {
+                        handleFileChange(e, false);
+                    }}
+                >
                     {is_mobile ? (
                         <Icon icon={'IcMobile'} className='load-strategy__local-icon' size={is_mobile ? 96 : 128} />
                     ) : (

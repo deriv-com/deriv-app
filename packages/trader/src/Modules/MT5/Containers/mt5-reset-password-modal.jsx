@@ -3,9 +3,8 @@ import * as PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Button, Icon, PasswordMeter, PasswordInput, FormSubmitButton, Loading, Modal } from '@deriv/components';
-import { routes } from '@deriv/shared';
+import { routes, validLength, validPassword, getErrorMessages } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { validLength, validPassword, getPreBuildDVRs } from 'Utils/Validator/declarative-validation-rules';
 import { connect } from 'Stores/connect';
 import { getMtCompanies } from 'Stores/Modules/MT5/Helpers/mt5-config';
 import { WS } from 'Services/ws-methods';
@@ -22,9 +21,7 @@ const ResetPasswordIntent = ({ current_list, children, ...props }) => {
         login = current_list[`${group}.${type}`].login;
         title = getMtCompanies()[group][type].title;
     } else if (current_list) {
-        [group, type] = Object.keys(current_list)
-            .pop()
-            .split('.');
+        [group, type] = Object.keys(current_list).pop().split('.');
         login = current_list[`${group}.${type}`].login;
         title = getMtCompanies()[group][type].title;
     } else {
@@ -74,7 +71,7 @@ class MT5ResetPasswordModal extends React.Component {
                 max_number: 25,
             });
         } else if (!validPassword(values.new_password)) {
-            errors.new_password = getPreBuildDVRs().password.message;
+            errors.new_password = getErrorMessages().password();
         }
         if (values.new_password.toLowerCase() === this.props.email.toLowerCase()) {
             errors.new_password = localize('Your password cannot be the same as your email address.');
@@ -153,6 +150,7 @@ class MT5ResetPasswordModal extends React.Component {
                                                     <PasswordMeter
                                                         input={values.new_password}
                                                         has_error={!!(touched.new_password && errors.new_password)}
+                                                        custom_feedback_messages={getErrorMessages().password_warnings}
                                                     >
                                                         {({ has_warning }) => (
                                                             <PasswordInput
@@ -168,7 +166,7 @@ class MT5ResetPasswordModal extends React.Component {
                                                                 hint={
                                                                     !has_warning &&
                                                                     localize(
-                                                                        'Minimum of eight lower and uppercase English letters with numbers'
+                                                                        'Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers.'
                                                                     )
                                                                 }
                                                             />

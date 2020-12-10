@@ -1,8 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from '@deriv/components';
-import { getDerivComLink } from '@deriv/shared';
+import { Button, StaticUrl } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 
 const CookieBanner = ({ onAccept, onDecline, is_open, is_dark_mode }) => (
@@ -17,23 +16,15 @@ const CookieBanner = ({ onAccept, onDecline, is_open, is_dark_mode }) => (
             <br />
             <Localize
                 i18n_default_text='If you agree to our use of cookies, click on Accept. For more information, <0>see our policy</0>.'
-                components={[
-                    <a
-                        key={0}
-                        className='link link--red'
-                        rel='noopener noreferrer'
-                        target='_blank'
-                        href={getDerivComLink('/terms-and-conditions')}
-                    />,
-                ]}
+                components={[<StaticUrl key={0} className='link link--red' href='/terms-and-conditions' />]}
             />
-            <Button className='cookie-banner__btn-dont-accept' secondary onClick={onDecline}>
-                {localize('Don’t accept')}
-            </Button>
-            <Button className='cookie-banner__btn-accept' secondary onClick={onAccept}>
-                {localize('Accept')}
-            </Button>
         </div>
+        <Button className='cookie-banner__btn-dont-accept' secondary onClick={onDecline}>
+            {localize('Don’t accept')}
+        </Button>
+        <Button className='cookie-banner__btn-accept' secondary onClick={onAccept}>
+            {localize('Accept')}
+        </Button>
     </div>
 );
 

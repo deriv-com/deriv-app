@@ -17,7 +17,7 @@ const output = {
 };
 
 module.exports = function(env, argv) {
-    const base = env && env.base && env.base != true ? '/' + env.base + '/' : '/';
+    const base = env && env.base && !env.base ? `/${env.base}/` : '/';
 
     return {
         entry: [path.join(__dirname, 'src', 'app.js')],
@@ -74,21 +74,19 @@ module.exports = function(env, argv) {
                     ],
                 },
                 {
-                    enforce: 'pre',
-                    test: /\.(js|jsx)$/,
-                    exclude: [/node_modules/, /lib/, /utils/, /dist/, /webpack.config.js/],
-                    loader: 'eslint-loader',
-                    options: {
-                        fix: true,
-                    },
-                },
-                {
                     test: /\.(js|jsx)$/,
                     exclude: /node_modules/,
                     loader: [
                       '@deriv/shared/src/loaders/react-import-loader.js',
-                      'babel-loader',
                     ],
+                },
+                {
+                    test: /\.(js|jsx)$/,
+                    exclude: /node_modules/,
+                    loader: 'babel-loader',
+                    options: {
+                        rootMode: 'upward',
+                    },
                 },
                 { // @deriv/bot-skeleton also requires `.xml` import statements to be parsed by raw-loader
                     test: /\.xml$/,
@@ -101,7 +99,7 @@ module.exports = function(env, argv) {
             new CleanWebpackPlugin(),
             new MiniCssExtractPlugin({ filename: 'bot-web-ui.main.css' }),
             new StyleLintPlugin({ fix: true }),
-            new CopyWebpackPlugin([{ from: 'node_modules/@deriv/bot-skeleton/dist/media', to: 'media' }]),
+            new CopyWebpackPlugin({patterns: [{ from: 'node_modules/@deriv/bot-skeleton/dist/media', to: 'media' }]}),
             new SpriteLoaderPlugin(),
         ],
         externals: [

@@ -68,6 +68,9 @@
         }
         .dc-select-native {
             margin-bottom: 3.2rem;
+            &__placeholder {
+                background-color: var(--general-section-2);
+            }
         }
         .dc-dropdown__display {
             background-color: var(--general-main-2);
@@ -82,8 +85,14 @@
         @include mobile {
             width: 100%;
             margin: 0;
-            padding: 1rem 1.6rem 0;
-            overflow-y: scroll;
+            padding: 1rem 1.6rem 6rem;
+            overflow-y: auto;
+        }
+    }
+    &__loader {
+        .barspinner {
+            margin-top: 0.4rem;
+            margin-bottom: 3.2rem;
         }
     }
     &__tax {
@@ -105,9 +114,9 @@
         }
     }
     &__tin-warn-divider {
-        height: 3rem;
+        height: 5rem;
         @include mobile {
-            height: 4.5rem;
+            height: 6rem;
         }
     }
     &__tin-confirm {
@@ -124,12 +133,8 @@
         height: 100%;
     }
     &__description {
-        text-align: left;
-        font-size: var(--text-size-xxs);
-        line-height: 1.8rem;
         margin: 1.6rem auto;
-        width: 40%;
-        color: var(--text-general);
+        width: 45%;
         @include desktop {
             display: flex;
             flex-direction: column;

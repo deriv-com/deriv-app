@@ -1,0 +1,83 @@
+.set-currency-modal {
+    text-align: center;
+
+    &__heading-container {
+        margin: 2rem auto;
+        color: var(--text-general);
+
+        &__main-heading {
+            @include mobile {
+                padding: 0 3rem;
+            }
+        }
+        &__sub-heading {
+            font-stretch: normal;
+            font-style: normal;
+            letter-spacing: normal;
+            margin-top: 2rem;
+        }
+    }
+    .currency-selector {
+        min-height: 390px;
+
+        &__radio-group--is-header {
+            font-size: 1.6rem;
+            font-weight: bold;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.5;
+            letter-spacing: normal;
+            color: var(--text-general);
+        }
+        &__description {
+            display: none;
+        }
+
+        @include desktop {
+            &__crypto .currency-list__items {
+                margin-bottom: 9rem;
+            }
+            .dc-form-submit-button {
+                position: fixed;
+                right: 0;
+                bottom: 0;
+                padding: 1.3rem;
+                background-color: var(--general-main-1);
+
+                &--center {
+                    justify-content: flex-end;
+                    height: unset;
+                }
+            }
+            .dc-modal-footer {
+                background-color: var(--general-main-1);
+                position: fixed;
+                right: 0;
+                width: 100%;
+                bottom: 3.5rem;
+            }
+        }
+
+        @include mobile {
+            overflow-y: auto;
+
+            &__container--no-top-margin {
+                height: unset;
+            }
+            .dc-form-submit-button {
+                position: fixed;
+
+                button {
+                    width: 100%;
+                }
+            }
+            .dc-modal-footer {
+                background-color: var(--general-main-1);
+                position: fixed;
+                right: 0;
+                bottom: 0;
+                width: 100%;
+            }
+        }
+    }
+}

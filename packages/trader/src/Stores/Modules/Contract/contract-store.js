@@ -1,11 +1,16 @@
 import { action, extendObservable, observable, toJS } from 'mobx';
-import { isEqualObject } from '@deriv/shared';
+import {
+    isEnded,
+    isEqualObject,
+    isMultiplierContract,
+    isDigitContract,
+    getDigitInfo,
+    getDisplayStatus,
+} from '@deriv/shared';
 import { WS } from 'Services/ws-methods';
 import { createChartMarkers } from './Helpers/chart-markers';
-import { getDigitInfo, isDigitContract } from './Helpers/digits';
 import { setLimitOrderBarriers, getLimitOrder } from './Helpers/limit-orders';
-import { getChartConfig, getContractUpdateConfig, getDisplayStatus, getEndTime, isEnded } from './Helpers/logic';
-import { isMultiplierContract } from './Helpers/multiplier';
+import { getChartConfig, getContractUpdateConfig, getEndTime } from './Helpers/logic';
 import getValidationRules from './Constants/validation-rules';
 import BaseStore from '../../base-store';
 import { BARRIER_COLORS, BARRIER_LINE_STYLES } from '../SmartChart/Constants/barriers';
@@ -99,6 +104,11 @@ export default class ContractStore extends BaseStore {
         if (!isEqualObject(this.contract_update_config, contract_update_config)) {
             Object.assign(this, contract_update_config);
             this.contract_update_config = contract_update_config;
+
+            const { contract_update, error } = response;
+            if (contract_update && !error) {
+                this.contract_info.limit_order = Object.assign(this.contract_info.limit_order || {}, contract_update);
+            }
         }
     }
 

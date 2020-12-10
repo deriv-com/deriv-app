@@ -46,6 +46,10 @@ export default class TicksService {
         this.tickListeners = new Map();
         this.ohlcListeners = new Map();
         this.subscriptions = new Map();
+        this.ticks_history_promise = null;
+        this.active_symbols_promise = null;
+        this.candles_promise = null;
+
         this.observe();
     }
 
@@ -54,15 +58,18 @@ export default class TicksService {
             return Promise.resolve(this.pipSizes);
         }
 
-        return new Promise(resolve => {
-            this.api.getActiveSymbolsBrief().then(r => {
-                const { active_symbols: symbols } = r;
-                this.pipSizes = symbols
-                    .reduce((s, i) => s.set(i.symbol, +(+i.pip).toExponential().substring(3)), new Map())
-                    .toObject();
-                resolve(this.pipSizes);
+        if (!this.active_symbols_promise) {
+            this.active_symbols_promise = new Promise(resolve => {
+                this.api.getActiveSymbolsBrief().then(r => {
+                    const { active_symbols: symbols } = r;
+                    this.pipSizes = symbols
+                        .reduce((s, i) => s.set(i.symbol, +(+i.pip).toExponential().substring(3)), new Map())
+                        .toObject();
+                    resolve(this.pipSizes);
+                });
             });
-        });
+        }
+        return this.active_symbols_promise;
     }
 
     request(options) {
@@ -211,7 +218,32 @@ export default class TicksService {
     }
 
     requestStream(options) {
-        return this.requestPipSizes().then(() => this.requestTicks(options));
+        const { style } = options;
+        const stringified_options = JSON.stringify(options);
+
+        if (style === 'ticks') {
+            if (!this.ticks_history_promise || this.ticks_history_promise.stringified_options !== stringified_options) {
+                this.ticks_history_promise = {
+                    promise: this.requestPipSizes().then(() => this.requestTicks(options)),
+                    stringified_options,
+                };
+            }
+
+            return this.ticks_history_promise.promise;
+        }
+
+        if (style === 'candles') {
+            if (!this.candles_promise || this.candles_promise.stringified_options !== stringified_options) {
+                this.candles_promise = {
+                    promise: this.requestPipSizes().then(() => this.requestTicks(options)),
+                    stringified_options,
+                };
+            }
+
+            return this.candles_promise.promise;
+        }
+
+        return [];
     }
 
     requestTicks(options) {

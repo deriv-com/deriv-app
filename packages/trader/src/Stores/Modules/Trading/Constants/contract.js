@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { shouldShowCancellation } from '@deriv/shared';
 
 export const getLocalizedBasis = () => ({
     payout: localize('Payout'),
@@ -10,7 +11,7 @@ export const getLocalizedBasis = () => ({
  * components can be undef or an array containing any of: 'start_date', 'barrier', 'last_digit'
  *     ['duration', 'amount'] are omitted, as they're available in all contract types
  */
-export const getContractTypesConfig = () => ({
+export const getContractTypesConfig = symbol => ({
     rise_fall: {
         title: localize('Rise/Fall'),
         trade_types: ['CALL', 'PUT'],
@@ -106,18 +107,23 @@ export const getContractTypesConfig = () => ({
         title: localize('Multipliers'),
         trade_types: ['MULTUP', 'MULTDOWN'],
         basis: ['stake'],
-        components: ['multiplier', 'take_profit', 'stop_loss', 'cancellation'],
+        components: [
+            'multiplier',
+            'take_profit',
+            'stop_loss',
+            ...(shouldShowCancellation(symbol) ? ['cancellation'] : []),
+        ],
         config: { hide_duration: true },
     }, // hide Duration for Multiplier contracts for now
 });
 
 export const getContractCategoriesConfig = () => ({
+    [localize('Multipliers')]: ['multiplier'],
     [localize('Ups & Downs')]: ['rise_fall', 'rise_fall_equal', 'run_high_low', 'reset', 'asian', 'callputspread'],
     [localize('Highs & Lows')]: ['high_low', 'touch', 'tick_high_low'],
     [localize('Ins & Outs')]: ['end', 'stay'],
     [localize('Look Backs')]: ['lb_high_low', 'lb_put', 'lb_call'],
     [localize('Digits')]: ['match_diff', 'even_odd', 'over_under'],
-    [localize('Multipliers')]: ['multiplier'],
 });
 
 export const unsupported_contract_types_list = [

@@ -1,5 +1,15 @@
 import React from 'react';
-import { DesktopWrapper, MobileWrapper, Button, Modal, Icon, DataTable, DataList, Loading } from '@deriv/components';
+import {
+    DesktopWrapper,
+    MobileWrapper,
+    Button,
+    Modal,
+    Icon,
+    DataTable,
+    DataList,
+    Loading,
+    Text,
+} from '@deriv/components';
 import { localize } from '@deriv/translations';
 import ErrorComponent from 'Components/error-component';
 import { WS } from 'Services/ws-methods';
@@ -13,7 +23,7 @@ class ConnectedApps extends React.Component {
         is_error: false,
         connected_apps: [],
     };
-    columns_map = GetConnectedAppsColumnsTemplate((app_id) => this.handleToggleModal(app_id)).reduce((map, item) => {
+    columns_map = GetConnectedAppsColumnsTemplate(app_id => this.handleToggleModal(app_id)).reduce((map, item) => {
         map[item.col_index] = item;
         return map;
     }, {});
@@ -36,20 +46,19 @@ class ConnectedApps extends React.Component {
     };
 
     fetchConnectedApps = async () => {
-        const response_connected_apps = await WS.send({ oauth_apps: 1 });
+        const response_connected_apps = await WS.authorized.send({ oauth_apps: 1 });
+
         if (!response_connected_apps.error) {
             this.setState({
                 is_loading: false,
                 connected_apps: response_connected_apps.oauth_apps,
             });
-        } else {
-            this.setState({ is_error: true });
         }
     };
 
-    revokeConnectedApp = async (app_id) => {
+    revokeConnectedApp = async app_id => {
         this.setState({ is_loading: true });
-        const response = await WS.send({ revoke_oauth_app: app_id });
+        const response = await WS.authorized.send({ revoke_oauth_app: app_id });
         if (!response.error) {
             this.fetchConnectedApps();
         } else {
@@ -73,8 +82,10 @@ class ConnectedApps extends React.Component {
     };
     render() {
         return (
-            <section className='connected-apps'>
-                <p className='connected-apps__title'>{localize('Authorised applications')}</p>
+            <section className='connected-apps__wrapper'>
+                <Text color='prominent' weight='bold' as='p' className='connected-apps__title'>
+                    {localize('Authorised applications')}
+                </Text>
                 {this.state.is_error && <ErrorComponent />}
                 {this.state.is_loading ? (
                     <Loading is_fullscreen={false} />
@@ -85,18 +96,14 @@ class ConnectedApps extends React.Component {
                                 className='connected-apps'
                                 data_source={this.state.connected_apps}
                                 columns={GetConnectedAppsColumnsTemplate(this.handleToggleModal)}
-                                custom_width='100%'
                                 getRowSize={() => 56}
-                                is_empty={false}
                             />
                         </DesktopWrapper>
                         <MobileWrapper>
                             <DataList
                                 className='connected-apps'
                                 data_source={this.state.connected_apps}
-                                custom_width='100%'
-                                getRowSize={() => 128}
-                                is_empty={false}
+                                row_gap={10}
                                 rowRenderer={this.mobileRowRenderer}
                             />
                         </MobileWrapper>
@@ -110,7 +117,9 @@ class ConnectedApps extends React.Component {
                     <Modal.Body>
                         <div className='connected-app-modal'>
                             <Icon icon='IcAccountTrashCan' size={128} className='connected-app-modal__icon' />
-                            <p className='connected-app-modal__message'>{localize('Confirm revoke access?')}</p>
+                            <Text as='p' color='prominent' weight='bold'>
+                                {localize('Confirm revoke access?')}
+                            </Text>
                             <div className='connected-app-modal__confirmation'>
                                 <Button secondary onClick={this.handleToggleModal}>
                                     {localize('Back')}

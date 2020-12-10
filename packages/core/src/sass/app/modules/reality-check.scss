@@ -1,10 +1,6 @@
 /* @define reality-check */
 .reality-check {
     &__text {
-        font-size: 1.4rem;
-        line-height: 1.5;
-        color: var(--text-general);
-
         &:not(:last-child) {
             margin-bottom: 1.2rem;
         }
@@ -86,7 +82,8 @@
             border-radius: 0 0 8px 8px;
         }
         :first-child {
-            width: 11.8rem;
+            width: 12.8rem;
+            padding-right: 0.8rem;
 
             @include mobile {
                 width: 16.8rem;

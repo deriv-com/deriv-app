@@ -2,9 +2,10 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ContentLoader from 'react-content-loader';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { Checkbox, Icon, ThemedScrollbars, useOnClickOutside } from '@deriv/components';
+import { CSSTransition } from 'react-transition-group';
+import { Checkbox, Icon, useOnClickOutside, DesktopWrapper, DataList } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
+import { formatMoney, getCurrencyDisplayCode, useNewRowTransition } from '@deriv/shared';
 import { message_types } from '@deriv/bot-skeleton';
 import { log_types } from '@deriv/bot-skeleton/src/constants/messages';
 import Download from './download.jsx';
@@ -51,21 +52,25 @@ const FormatMessage = ({ logType, className, extra }) => {
                 );
             }
             case log_types.PROFIT: {
-                const { profit } = extra;
+                const { currency, profit } = extra;
                 return (
                     <Localize
                         i18n_default_text='Profit amount: <0>{{profit}}</0>'
-                        values={{ profit }}
+                        values={{
+                            profit: `${formatMoney(currency, profit, true)} ${getCurrencyDisplayCode(currency)}`,
+                        }}
                         components={[<span key={0} className='journal__text--success' />]}
                     />
                 );
             }
             case log_types.LOST: {
-                const { profit } = extra;
+                const { currency, profit } = extra;
                 return (
                     <Localize
                         i18n_default_text='Loss amount: <0>{{profit}}</0>'
-                        values={{ profit }}
+                        values={{
+                            profit: `${formatMoney(currency, profit, true)} ${getCurrencyDisplayCode(currency)}`,
+                        }}
                         components={[<span key={0} className='journal__text--error' />]}
                     />
                 );
@@ -128,7 +133,9 @@ const Tools = ({ checked_filters, filters, filterMessage, is_filter_dialog_visib
     return (
         <>
             <div className='journal-tools__container'>
-                <Download tab='journal' />
+                <DesktopWrapper>
+                    <Download tab='journal' />
+                </DesktopWrapper>
                 <div ref={toggle_ref} className='journal-tools__container-filter' onClick={toggleFilterDialog}>
                     <span className='journal-tools__container-filter--label'>
                         <Localize i18n_default_text='Filters' />
@@ -189,6 +196,24 @@ const JournalLoader = ({ is_mobile }) => (
     </ContentLoader>
 );
 
+const JournalItem = ({ row, is_new_row }) => {
+    const { in_prop } = useNewRowTransition(is_new_row);
+
+    const { date, time, message, message_type, className, extra } = row;
+    const date_el = DateItem({ date, time });
+
+    return (
+        <CSSTransition in={in_prop} timeout={500} classNames='list__animation'>
+            <div className='journal__item'>
+                <div className='journal__item-content'>
+                    {getJournalItemContent(message, message_type, className, extra)}
+                </div>
+                <div className='journal__text-datetime'>{date_el}</div>
+            </div>
+        </CSSTransition>
+    );
+};
+
 const Journal = ({
     contract_stage,
     filtered_messages,
@@ -205,52 +230,39 @@ const Journal = ({
             })}
         >
             <Tools {...props} />
-            <ThemedScrollbars className='journal__scrollbars' height={'calc(100% - 9.2rem)'}>
-                <div className='journal__item-list'>
-                    {filtered_messages.length ? (
-                        <TransitionGroup>
-                            {filtered_messages.map(item => {
-                                const { date, time, message, message_type, className, unique_id, extra } = item;
-                                const date_el = DateItem({ date, time });
-
-                                return (
-                                    <CSSTransition key={unique_id} timeout={500} classNames='list__animation'>
-                                        <div className='journal__item'>
-                                            <div className='journal__item-content'>
-                                                {getJournalItemContent(message, message_type, className, extra)}
-                                            </div>
-                                            <div className='journal__text-datetime'>{date_el}</div>
-                                        </div>
-                                    </CSSTransition>
-                                );
-                            })}
-                        </TransitionGroup>
-                    ) : (
-                        <>
-                            {contract_stage >= contract_stages.STARTING &&
-                            !!props.checked_filters.length &&
-                            is_stop_button_visible ? (
-                                <JournalLoader is_mobile={is_mobile} />
-                            ) : (
-                                <div className='journal-empty'>
-                                    <Icon icon='IcBox' className='journal-empty__icon' size={64} color='secondary' />
-                                    <h4 className='journal-empty__header'>
-                                        {localize('There are no messages to display')}
-                                    </h4>
-                                    <div className='journal-empty__message'>
-                                        <span>{localize('Here are the possible reasons:')}</span>
-                                        <ul className='journal-empty__list'>
-                                            <li>{localize('The bot is not running')}</li>
-                                            <li>{localize('The stats are cleared')}</li>
-                                            <li>{localize('All messages are filtered out')}</li>
-                                        </ul>
-                                    </div>
+            <div className='journal__item-list'>
+                {filtered_messages.length ? (
+                    <DataList
+                        className='journal'
+                        data_source={filtered_messages}
+                        rowRenderer={args => <JournalItem {...args} />}
+                        keyMapper={row => row.unique_id}
+                    />
+                ) : (
+                    <>
+                        {contract_stage >= contract_stages.STARTING &&
+                        !!props.checked_filters.length &&
+                        is_stop_button_visible ? (
+                            <JournalLoader is_mobile={is_mobile} />
+                        ) : (
+                            <div className='journal-empty'>
+                                <Icon icon='IcBox' className='journal-empty__icon' size={64} color='secondary' />
+                                <h4 className='journal-empty__header'>
+                                    {localize('There are no messages to display')}
+                                </h4>
+                                <div className='journal-empty__message'>
+                                    <span>{localize('Here are the possible reasons:')}</span>
+                                    <ul className='journal-empty__list'>
+                                        <li>{localize('The bot is not running')}</li>
+                                        <li>{localize('The stats are cleared')}</li>
+                                        <li>{localize('All messages are filtered out')}</li>
+                                    </ul>
                                 </div>
-                            )}
-                        </>
-                    )}
-                </div>
-            </ThemedScrollbars>
+                            </div>
+                        )}
+                    </>
+                )}
+            </div>
         </div>
     );
 };

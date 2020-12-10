@@ -1,6 +1,39 @@
 .load-strategy {
+    &__wrapper {
+        position: fixed;
+        top: 40px;
+        z-index: 10;
+        width: 100%;
+
+        .dc-mobile-full-page-modal {
+            @include mobile {
+                width: 100%;
+            }
+        }
+        & .dc-tabs {
+            @include mobile {
+                height: 100%;
+                display: unset;
+
+                &__content {
+                    height: calc(100% - 40px);
+                }
+            }
+        }
+    }
     &__container {
         @include desktop {
+            height: calc(80vh - 0.8rem - 4rem - 4.8rem - 5.8rem);
+
+            &--has-footer {
+                height: calc(80vh - 0.8rem - 4rem - 4.8rem - 5.8rem - 7.4rem);
+            }
+            > * {
+                height: 100%;
+                margin-top: 0.8rem;
+            }
+        }
+        @include tablet {
             height: calc(80vh - 0.8rem - 4rem - 4.8rem - 5.8rem);
 
             &--has-footer {
@@ -248,33 +281,6 @@
             text-align: center;
         }
     }
-
-    @include mobile {
-        &__wrapper {
-            position: absolute;
-            z-index: 6;
-            width: 100%;
-            left: 0;
-            top: 0;
-            background: var(--general-main-1);
-        }
-        &--is-mobile {
-            width: 100%;
-
-            & .dc-tabs {
-                display: flex;
-                flex-direction: column;
-                height: 100%;
-
-                &__list {
-                    height: 4rem;
-                }
-                &__content {
-                    height: calc(100% - 4rem);
-                }
-            }
-        }
-    }
 }
 
 .picker {
@@ -290,5 +296,10 @@
         height: 100%;
         width: 100%;
         top: 0px;
+    }
+}
+.dc-modal__container_load-strategy {
+    @include tablet {
+        width: calc(100vw - 4.8rem) !important;
     }
 }

@@ -3,12 +3,11 @@ const getAppId = require('@deriv/shared').getAppId;
 const getSocketURL = require('@deriv/shared').getSocketURL;
 const cloneObject = require('@deriv/shared').cloneObject;
 const getPropertyValue = require('@deriv/shared').getPropertyValue;
+const State = require('@deriv/shared').State;
 const { getLanguage } = require('@deriv/translations');
-const website_name = require('App/Constants/app-config').website_name;
-const ClientBase = require('./client_base');
+const website_name = require('@deriv/shared').website_name;
 const SocketCache = require('./socket_cache');
 const APIMiddleware = require('./api_middleware');
-const { State } = require('../storage');
 
 /*
  * An abstraction layer over native javascript WebSocket,
@@ -16,25 +15,21 @@ const { State } = require('../storage');
  * reopen the closed connection and process the buffered requests
  */
 const BinarySocketBase = (() => {
-    let deriv_api, binary_socket;
+    let deriv_api, binary_socket, client_store;
 
     let config = {};
     let wrong_app_id = 0;
-    let is_available = true;
     let is_disconnect_called = false;
     let is_connected_before = false;
 
+    const availability = {
+        is_up: true,
+        is_updating: false,
+        is_down: false,
+    };
+
     const getSocketUrl = () =>
         `wss://${getSocketURL()}/websockets/v3?app_id=${getAppId()}&l=${getLanguage()}&brand=${website_name.toLowerCase()}`;
-
-    const timeouts = {};
-
-    const clearTimeouts = () => {
-        Object.keys(timeouts).forEach(key => {
-            clearTimeout(timeouts[key]);
-            delete timeouts[key];
-        });
-    };
 
     const isReady = () => hasReadyState(1);
 
@@ -44,25 +39,24 @@ const BinarySocketBase = (() => {
         binary_socket.close();
     };
 
-    const closeAndOpenNewConnection = token => {
+    const closeAndOpenNewConnection = () => {
         close();
-        init({ config, is_switching_socket: true, token });
+        openNewConnection(true);
     };
 
     const hasReadyState = (...states) => binary_socket && states.some(s => binary_socket.readyState === s);
 
-    const init = ({ options, is_switching_socket, token }) => {
-        if (wrong_app_id === getAppId()) {
-            return;
-        }
+    const init = ({ options, client }) => {
         if (typeof options === 'object' && config !== options) {
             config = options;
         }
-        clearTimeouts();
+        client_store = client;
+    };
 
-        if (!is_switching_socket) {
-            config.wsEvent('init');
-        }
+    const openNewConnection = is_switching_socket => {
+        if (wrong_app_id === getAppId()) return;
+
+        if (!is_switching_socket) config.wsEvent('init');
 
         if (isClose()) {
             is_disconnect_called = false;
@@ -79,10 +73,8 @@ const BinarySocketBase = (() => {
 
             wait('website_status');
 
-            if (ClientBase.isLoggedIn()) {
-                // ClientBase is not up to date after first load
-                // TODO: remove this once ClientBase has been migrated to client-store
-                const authorize_token = token || ClientBase.get('token');
+            if (client_store.is_logged_in) {
+                const authorize_token = client_store.getToken();
                 deriv_api.authorize(authorize_token);
             }
 
@@ -115,8 +107,6 @@ const BinarySocketBase = (() => {
         });
 
         deriv_api.onClose().subscribe(() => {
-            clearTimeouts();
-
             if (!is_switching_socket) {
                 config.wsEvent('close');
             }
@@ -128,14 +118,21 @@ const BinarySocketBase = (() => {
         });
     };
 
-    const availability = status => {
-        if (typeof status !== 'undefined') {
-            is_available = !!status;
-        }
-        return is_available;
+    const isSiteUp = status => /^up$/i.test(status);
+
+    const isSiteUpdating = status => /^updating$/i.test(status);
+
+    const isSiteDown = status => /^down$/i.test(status);
+
+    // if status is up or updating, consider site available
+    // if status is down, consider site unavailable
+    const setAvailability = status => {
+        availability.is_up = isSiteUp(status);
+        availability.is_updating = isSiteUpdating(status);
+        availability.is_down = isSiteDown(status);
     };
 
-    const excludeAuthorize = type => !(type === 'authorize' && !ClientBase.isLoggedIn());
+    const excludeAuthorize = type => !(type === 'authorize' && !client_store.is_logged_in);
 
     const wait = (...responses) => deriv_api.expectResponse(...responses.filter(excludeAuthorize));
 
@@ -223,6 +220,11 @@ const BinarySocketBase = (() => {
             mt5_password_reset: 1,
         });
 
+    const getFinancialAssessment = () =>
+        deriv_api.send({
+            get_financial_assessment: 1,
+        });
+
     const profitTable = (limit, offset, date_boundaries) =>
         deriv_api.send({ profit_table: 1, description: 1, limit, offset, ...date_boundaries });
 
@@ -289,7 +291,7 @@ const BinarySocketBase = (() => {
 
     const p2pAdvertiserInfo = () => deriv_api.send({ p2p_advertiser_info: 1 });
 
-    const loginHistory = limit =>
+    const fetchLoginHistory = limit =>
         deriv_api.send({
             login_history: 1,
             limit,
@@ -304,15 +306,18 @@ const BinarySocketBase = (() => {
 
     return {
         init,
+        openNewConnection,
         forgetStream,
         wait,
-        clearTimeouts,
         availability,
         hasReadyState,
+        isSiteDown,
+        isSiteUpdating,
         clear: () => {},
         sendBuffered: () => {},
         getSocket: () => binary_socket,
         get: () => deriv_api,
+        getAvailability: () => availability,
         setOnDisconnect: onDisconnect => {
             config.onDisconnect = onDisconnect;
         },
@@ -335,6 +340,7 @@ const BinarySocketBase = (() => {
         close,
         contractUpdate,
         contractUpdateHistory,
+        getFinancialAssessment,
         mt5NewAccount,
         mt5PasswordChange,
         mt5PasswordReset,
@@ -352,6 +358,7 @@ const BinarySocketBase = (() => {
         paymentAgentTransfer,
         setAccountCurrency,
         balanceAll,
+        setAvailability,
         subscribeBalanceAll,
         subscribeBalanceActiveAccount,
         subscribeProposal,
@@ -362,7 +369,7 @@ const BinarySocketBase = (() => {
         subscribeWebsiteStatus,
         tncApproval,
         transferBetweenAccounts,
-        loginHistory,
+        fetchLoginHistory,
         closeAndOpenNewConnection,
         accountStatistics,
         realityCheck,

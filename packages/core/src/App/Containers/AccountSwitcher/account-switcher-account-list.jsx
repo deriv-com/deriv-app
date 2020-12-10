@@ -1,34 +1,27 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Icon, Money } from '@deriv/components';
-import { formatMoney, getCurrencyDisplayCode } from '@deriv/shared';
+import { Icon, Money, Button, Text } from '@deriv/components';
+import { formatMoney, getCurrencyName, getMT5AccountDisplay, getCurrencyDisplayCode } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { getMT5AccountDisplay } from 'Stores/Helpers/client';
 
 const AccountList = ({
-    account_type,
     balance,
     currency,
     currency_icon,
     display_type,
     has_balance,
-    is_eu,
+    has_reset_balance,
     is_disabled,
     is_virtual,
     loginid,
+    market_type,
     onClickAccount,
+    onClickResetVirtualBalance,
     selected_loginid,
+    sub_account_type,
 }) => {
-    const market_type = React.useMemo(() => {
-        if (loginid.startsWith('MX') || loginid.startsWith('MLT')) {
-            return localize('Synthetic');
-        } else if (loginid.startsWith('MF')) {
-            return localize('Financial');
-        }
-        return '';
-    }, [loginid]);
-
     if (is_disabled && !currency) return null;
+    const currency_badge = currency ? currency_icon : 'IcCurrencyUnknown';
 
     return (
         <>
@@ -42,33 +35,44 @@ const AccountList = ({
             >
                 <span className='acc-switcher__id'>
                     <Icon
-                        icon={currency ? currency_icon : 'IcCurrencyUnknown'}
+                        icon={is_virtual ? 'IcCurrencyVirtual' : currency_badge}
                         className={'acc-switcher__id-icon'}
                         size={24}
                     />
                     <span>
                         {display_type === 'currency' ? (
-                            <CurrencyDisplay
-                                is_virtual={is_virtual}
-                                currency={currency}
-                                is_eu={is_eu}
-                                market_type={market_type}
-                            />
+                            <CurrencyDisplay is_virtual={is_virtual} currency={currency} />
                         ) : (
-                            <AccountDisplay account_type={account_type} />
+                            <AccountDisplay market_type={market_type} sub_account_type={sub_account_type} />
                         )}
                         <div className='acc-switcher__loginid-text'>{loginid}</div>
                     </span>
-                    {has_balance && (
-                        <span className='acc-switcher__balance'>
-                            {currency && (
-                                <Money
-                                    currency={currency}
-                                    amount={formatMoney(currency, balance, true)}
-                                    should_format={false}
-                                />
-                            )}
-                        </span>
+                    {has_reset_balance ? (
+                        <Button
+                            is_disabled={is_disabled}
+                            onClick={e => {
+                                e.stopPropagation();
+                                onClickResetVirtualBalance();
+                            }}
+                            className='acc-switcher__reset-account-btn'
+                            secondary
+                            small
+                        >
+                            {localize('Reset balance')}
+                        </Button>
+                    ) : (
+                        has_balance && (
+                            <Text size='xs' color='prominent' className='acc-switcher__balance'>
+                                {currency && (
+                                    <Money
+                                        currency={getCurrencyDisplayCode(currency)}
+                                        amount={formatMoney(currency, balance, true)}
+                                        should_format={false}
+                                        show_currency
+                                    />
+                                )}
+                            </Text>
+                        )
                     )}
                 </span>
             </div>
@@ -76,19 +80,18 @@ const AccountList = ({
     );
 };
 
-const CurrencyDisplay = ({ currency, is_eu, is_virtual, market_type }) => {
+const CurrencyDisplay = ({ currency, is_virtual }) => {
     if (is_virtual) {
         return <Localize i18n_default_text='Demo' />;
     }
     if (!currency) {
         return <Localize i18n_default_text='No currency assigned' />;
     }
-    if (is_eu) {
-        return `${getCurrencyDisplayCode(currency)} ${market_type}`;
-    }
-    return getCurrencyDisplayCode(currency);
+    return getCurrencyName(currency);
 };
 
-const AccountDisplay = ({ account_type }) => <div>{getMT5AccountDisplay(account_type)}</div>;
+const AccountDisplay = ({ market_type, sub_account_type }) => (
+    <div>{getMT5AccountDisplay(market_type, sub_account_type)}</div>
+);
 
 export default AccountList;

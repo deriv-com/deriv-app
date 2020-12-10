@@ -2,10 +2,10 @@ import classNames from 'classnames';
 import { Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Dialog } from '@deriv/components';
+import { Button, Dialog, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { website_name } from 'App/Constants/app-config';
+import { website_name } from '@deriv/shared';
 import ResidenceForm from './set-residence-form.jsx';
 import 'Sass/app/modules/set-residence.scss';
 
@@ -64,11 +64,11 @@ class SetResidence extends React.Component {
                                     setFieldValue={setFieldValue}
                                     residence_list={residence_list}
                                 >
-                                    <p className='set-residence__subtext'>
+                                    <Text as='p' size='xxs' weight='bold' className='set-residence__subtext'>
                                         {localize(
                                             'We need this to make sure our service complies with laws and regulations in your country.'
                                         )}
-                                    </p>
+                                    </Text>
                                     <Button
                                         className={classNames('set-residence__btn', {
                                             'set-residence__btn--disabled':

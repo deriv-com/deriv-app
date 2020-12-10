@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const available_modes = [
+    'adjustment',
     'default',
     'success',
     'warn',
@@ -22,8 +23,8 @@ const Label = ({ mode, children, size = 'regular', className }) => {
     return (
         <span
             className={classNames('dc-label', className, {
-                [`dc-label--${scale}`]: scale,
-                [`dc-label--${type}`]: type,
+                [`dc-label--general--${scale}`]: scale,
+                [`dc-label--general--${type}`]: type,
             })}
         >
             {children}

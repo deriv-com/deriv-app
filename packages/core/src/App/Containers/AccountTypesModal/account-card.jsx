@@ -1,7 +1,8 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Icon } from '@deriv/components';
+import { Button, Icon, Text } from '@deriv/components';
+import { localize } from '@deriv/translations';
 import 'Sass/app/modules/account-types.scss';
 
 const MainCard = ({ button_text, buttonOnClick, platforms, is_button_disabled, items, subtitle, title }) => {
@@ -27,7 +28,9 @@ const MainCard = ({ button_text, buttonOnClick, platforms, is_button_disabled, i
             )}
             {platforms && (
                 <div className='account-card__platforms'>
-                    <p className='account-card__platforms-title'>Available on</p>
+                    <Text as='p' color='less-prominent' size='xxs' className='account-card__platforms-title'>
+                        {localize('Available on')}
+                    </Text>
                     <div className='account-card__platforms-icons'>
                         {platforms.map((platform, index) => {
                             return (
@@ -36,7 +39,9 @@ const MainCard = ({ button_text, buttonOnClick, platforms, is_button_disabled, i
                                         <Icon icon={platform.icon} size={24} />
                                     </a>
 
-                                    <p className='account-card__platforms-name'>{platform.name}</p>
+                                    <Text as='p' size='xxxs' className='account-card__platforms-name'>
+                                        {platform.name}
+                                    </Text>
                                 </div>
                             );
                         })}

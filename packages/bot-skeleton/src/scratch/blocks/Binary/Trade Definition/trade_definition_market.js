@@ -1,3 +1,4 @@
+import { localize } from '@deriv/translations';
 import { runIrreversibleEvents } from '../../../utils';
 import ApiHelpers from '../../../../services/api/api-helpers';
 
@@ -5,7 +6,11 @@ import ApiHelpers from '../../../../services/api/api-helpers';
 Blockly.Blocks.trade_definition_market = {
     init() {
         this.jsonInit({
-            message0: 'Market: %1 > %2 > %3',
+            message0: localize('Market: {{ input_market }} > {{ input_submarket }} > {{ input_symbol }}', {
+                input_market: '%1',
+                input_submarket: '%2',
+                input_symbol: '%3',
+            }),
             args0: [
                 {
                     type: 'field_dropdown',
@@ -53,12 +58,10 @@ Blockly.Blocks.trade_definition_market = {
         const symbol = symbol_dropdown.getValue();
 
         const populateMarketDropdown = () => {
-            active_symbols.getMarketDropdownOptions().then(market_options => {
-                market_dropdown.updateOptions(market_options, {
-                    default_value: market,
-                    should_pretend_empty: true,
-                    event_group: event.group,
-                });
+            market_dropdown.updateOptions(active_symbols.getMarketDropdownOptions(), {
+                default_value: market,
+                should_pretend_empty: true,
+                event_group: event.group,
             });
         };
 
@@ -66,20 +69,16 @@ Blockly.Blocks.trade_definition_market = {
             populateMarketDropdown();
         } else if (event.type === Blockly.Events.BLOCK_CHANGE && event.blockId === this.id) {
             if (event.name === 'MARKET_LIST') {
-                active_symbols.getSubmarketDropdownOptions(market).then(submarket_options => {
-                    submarket_dropdown.updateOptions(submarket_options, {
-                        default_value: submarket,
-                        should_pretend_empty: true,
-                        event_group: event.group,
-                    });
+                submarket_dropdown.updateOptions(active_symbols.getSubmarketDropdownOptions(market), {
+                    default_value: submarket,
+                    should_pretend_empty: true,
+                    event_group: event.group,
                 });
             } else if (event.name === 'SUBMARKET_LIST') {
-                active_symbols.getSymbolDropdownOptions(submarket).then(symbol_options => {
-                    symbol_dropdown.updateOptions(symbol_options, {
-                        default_value: symbol,
-                        should_pretend_empty: true,
-                        event_group: event.group,
-                    });
+                symbol_dropdown.updateOptions(active_symbols.getSymbolDropdownOptions(submarket), {
+                    default_value: symbol,
+                    should_pretend_empty: true,
+                    event_group: event.group,
                 });
             }
         } else if (event.type === Blockly.Events.END_DRAG && event.blockId === this.getRootBlock().id) {

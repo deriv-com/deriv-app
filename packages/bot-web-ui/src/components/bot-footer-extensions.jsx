@@ -1,23 +1,17 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Icon, Popover } from '@deriv/components';
+import { Icon, Popover, StaticUrl } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { getDerivComLink } from '@deriv/shared';
 import { tabs_title } from '../constants/bot-contents';
 import { connect } from '../stores/connect';
 import '../assets/sass/bot-footer-extensions.scss';
 
 const SecurityAndPrivacy = () => (
     <Popover alignment='top' message={localize('Security and privacy')}>
-        <a
-            className='footer__link'
-            href={getDerivComLink('tnc/security-and-privacy.pdf')}
-            rel='noopener noreferrer'
-            target='_blank'
-        >
+        <StaticUrl className='footer__link' href='tnc/security-and-privacy.pdf' is_document>
             <Icon icon='IcSecurityAndPrivacy' />
-        </a>
+        </StaticUrl>
     </Popover>
 );
 

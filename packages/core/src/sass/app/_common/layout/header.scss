@@ -50,6 +50,9 @@
             width: 16px;
             height: 16px;
         }
+        &-flag-icon {
+            margin-right: 16px;
+        }
         &-suffix-icon {
             width: 16px;
             height: 16px;
@@ -116,6 +119,9 @@
         height: #{$HEADER_HEIGHT - 1px};
         position: relative;
 
+        &--hidden {
+            display: none;
+        }
         @include mobile {
             .acc-info__separator {
                 display: none;

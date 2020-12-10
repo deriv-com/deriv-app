@@ -2,7 +2,7 @@ const moment = require('moment');
 const isEmptyObject = require('@deriv/shared').isEmptyObject;
 const getPropertyValue = require('@deriv/shared').getPropertyValue;
 const getStaticHash = require('_common/utility.js').getStaticHash;
-const LocalStore = require('../storage').LocalStore;
+const LocalStore = require('@deriv/shared').LocalStore;
 
 /*
  * Caches WS responses to reduce delay time and number of requests
@@ -74,9 +74,7 @@ const SocketCache = (() => {
             return;
         }
 
-        const expires = moment()
-            .add(config[msg_type].expire, 'm')
-            .valueOf();
+        const expires = moment().add(config[msg_type].expire, 'm').valueOf();
 
         if (!data_obj.static_hash) {
             data_obj.static_hash = getStaticHash();

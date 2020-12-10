@@ -152,6 +152,7 @@
         .contract-details-wrapper {
             height: inherit;
             position: relative;
+            z-index: 1;
         }
         .contract-audit-card {
             background-color: var(--general-section-1);
@@ -159,7 +160,6 @@
 
             .contract-audit__wrapper {
                 height: 100%;
-                max-height: calc(100% - 16px);
             }
         }
     }

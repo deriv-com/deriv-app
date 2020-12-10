@@ -21,7 +21,7 @@ function loadCSS(href, before, media) {
     // inject link
     ref.parentNode.insertBefore(ss, ref);
     // set media back to `all` so that the styleshet applies once it loads
-    setTimeout(function() {
+    setTimeout(function () {
         ss.media = media || 'all';
     });
     return ss;

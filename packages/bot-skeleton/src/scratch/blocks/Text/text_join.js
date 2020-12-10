@@ -13,7 +13,7 @@ Blockly.Blocks.text_join = {
     },
     definition() {
         return {
-            message0: localize('set %1 to create text with'),
+            message0: localize('set {{ variable }} to create text with', { variable: '%1' }),
             message1: '%1',
             args0: [
                 {
@@ -46,7 +46,7 @@ Blockly.Blocks.text_join = {
         };
     },
     onIconClick() {
-        if (!this.workspace || this.isInFlyout) {
+        if (this.workspace.options.readOnly || this.isInFlyout) {
             return;
         }
 

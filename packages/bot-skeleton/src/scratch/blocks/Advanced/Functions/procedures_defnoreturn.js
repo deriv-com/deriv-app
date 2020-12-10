@@ -20,7 +20,10 @@ Blockly.Blocks.procedures_defnoreturn = {
     },
     definition() {
         return {
-            message0: localize('function %1 %2'),
+            message0: localize('function {{ function_name }} {{ function_params }}', {
+                function_name: '%1',
+                function_params: '%2',
+            }),
             args0: [
                 {
                     type: 'field_input',
@@ -74,7 +77,7 @@ Blockly.Blocks.procedures_defnoreturn = {
      * @this Blockly.Block
      */
     onAddClick() {
-        if (this.isInFlyout) {
+        if (this.workspace.options.readOnly || this.isInFlyout) {
             return;
         }
 

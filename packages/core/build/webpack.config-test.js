@@ -2,7 +2,7 @@ const { ALIASES, IS_RELEASE, MINIMIZERS, plugins, rules } = require('./constants
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 
-module.exports = function(env, argv) {
+module.exports = function (env, argv) {
     const base = env && env.base && env.base != true ? '/' + env.base + '/' : '/';
 
     return {
@@ -23,7 +23,11 @@ module.exports = function(env, argv) {
             filename: 'js/[name].[hash].js',
             publicPath: '/',
         },
-        plugins: plugins(base, true, env && env.mocha_only),
+        plugins: plugins({
+            base,
+            is_test_env: true,
+            env: {},
+        }),
         resolve: {
             alias: ALIASES,
             extensions: ['.js', '.jsx'],

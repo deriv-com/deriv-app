@@ -35,17 +35,21 @@ const Footer = ({
     footer_extensions,
     is_app_disabled,
     is_eu,
-    is_eu_enabled, // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
     is_logged_in,
     is_route_modal_on,
     is_settings_modal_on,
+    is_virtual,
     disableApp,
     toggleSettingsModal,
     settings_extension,
-    standpoint,
+    landing_company_shortcode,
 }) => {
-    const footer_extensions_left = footer_extensions.filter(footer_extension => footer_extension.position === 'left');
-    const footer_extensions_right = footer_extensions.filter(footer_extension => footer_extension.position === 'right');
+    let footer_extensions_left = [];
+    let footer_extensions_right = [];
+    if (footer_extensions.filter) {
+        footer_extensions_left = footer_extensions.filter(footer_extension => footer_extension.position === 'left');
+        footer_extensions_right = footer_extensions.filter(footer_extension => footer_extension.position === 'right');
+    }
 
     return (
         <footer
@@ -68,14 +72,7 @@ const Footer = ({
                 <GoToDeriv />
                 <ResponsibleTrading />
                 {is_logged_in && <AccountLimits />}
-                {is_eu_enabled && (
-                    <RegulatoryInformation
-                        standpoint={
-                            standpoint // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
-                        }
-                        is_eu={is_eu}
-                    />
-                )}
+                {!is_virtual && <RegulatoryInformation landing_company={landing_company_shortcode} is_eu={is_eu} />}
                 <FooterIconSeparator />
                 <HelpCentre />
                 <ToggleSettings
@@ -96,6 +93,7 @@ Footer.propTypes = {
     is_logged_in: PropTypes.bool,
     is_route_modal_on: PropTypes.bool,
     is_settings_modal_on: PropTypes.bool,
+    landing_company_shortcode: PropTypes.string,
     location: PropTypes.object,
     toggleSettingsModal: PropTypes.func,
 };
@@ -108,11 +106,11 @@ export default withRouter(
         is_app_disabled: ui.is_app_disabled,
         is_route_modal_on: ui.is_route_modal_on,
         is_logged_in: client.is_logged_in,
-        is_eu_enabled: ui.is_eu_enabled, // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
         is_eu: client.is_eu,
-        standpoint: client.standpoint,
         is_loading: ui.is_loading,
         is_settings_modal_on: ui.is_settings_modal_on,
+        is_virtual: client.is_virtual,
+        landing_company_shortcode: client.landing_company_shortcode,
         disableApp: ui.disableApp,
         toggleSettingsModal: ui.toggleSettingsModal,
     }))(Footer)

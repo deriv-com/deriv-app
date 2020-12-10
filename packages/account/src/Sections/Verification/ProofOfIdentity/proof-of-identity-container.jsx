@@ -2,7 +2,9 @@ import * as Cookies from 'js-cookie';
 import React from 'react';
 import { Loading } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { isEmptyObject } from '@deriv/shared';
 import Unverified from 'Components/poi-unverified';
+import NotRequired from 'Components/poi-not-required';
 import ErrorMessage from 'Components/error-component';
 import Onfido from './onfido.jsx';
 import { getIdentityStatus } from './proof-of-identity';
@@ -16,7 +18,7 @@ class ProofOfIdentityContainer extends React.Component {
     };
 
     getOnfidoServiceToken = () =>
-        new Promise((resolve) => {
+        new Promise(resolve => {
             const onfido_cookie_name = 'onfido_token';
             const onfido_cookie = Cookies.get(onfido_cookie_name);
 
@@ -26,7 +28,7 @@ class ProofOfIdentityContainer extends React.Component {
                         service_token: 1,
                         service: 'onfido',
                     })
-                    .then((response) => {
+                    .then(response => {
                         if (response.error) {
                             resolve({ error: response.error });
                             return;
@@ -53,7 +55,7 @@ class ProofOfIdentityContainer extends React.Component {
                 category: 'authentication',
                 event: 'poi_documents_uploaded',
             })
-            .then((response) => {
+            .then(response => {
                 if (response.error) {
                     this.setState({ api_error: true });
                     return;
@@ -74,19 +76,24 @@ class ProofOfIdentityContainer extends React.Component {
     componentDidMount() {
         // TODO: Find a better solution for handling no-op instead of using is_mounted flags
         this.is_mounted = true;
-        this.props.getAccountStatus().then((response) => {
+        this.props.getAccountStatus().then(response => {
             const { get_account_status } = response;
-            this.getOnfidoServiceToken().then((onfido_service_token) => {
+            this.getOnfidoServiceToken().then(onfido_service_token => {
                 // TODO: handle error for onfido_service_token.error.code === 'MissingPersonalDetails'
 
                 const { document, identity, needs_verification } = get_account_status.authentication;
                 const has_poa = !(document && document.status === 'none');
                 const needs_poa = needs_verification.length && needs_verification.includes('document');
                 const onfido_unsupported = !identity.services.onfido.is_country_supported;
-                const status = getIdentityStatus(identity, onfido_unsupported);
-                const unwelcome = get_account_status.status.some((account_status) => account_status === 'unwelcome');
+                const status = getIdentityStatus(
+                    identity,
+                    needs_verification,
+                    onfido_unsupported,
+                    this.props.is_mx_mlt
+                );
+                const unwelcome = get_account_status.status.some(account_status => account_status === 'unwelcome');
                 const allow_document_upload = get_account_status.status.some(
-                    (account_status) => account_status === 'allow_document_upload'
+                    account_status => account_status === 'allow_document_upload'
                 );
                 const documents_supported = identity.services.onfido.documents_supported;
                 if (this.is_mounted) {
@@ -105,6 +112,42 @@ class ProofOfIdentityContainer extends React.Component {
                 }
             });
         });
+    }
+
+    componentDidUpdate(prevProps) {
+        // TODO: Refactor to functional component with hooks to remove duplicated code and handle prop updates
+        if (!isEmptyObject(this.props.account_status)) {
+            if (prevProps.account_status !== this.props.account_status) {
+                const { document, identity, needs_verification, status } = this.props.account_status.authentication;
+                const has_poa = !(document && document?.status === 'none');
+                const needs_poa = needs_verification?.length && needs_verification?.includes('document');
+                const onfido_unsupported = !identity?.services.onfido.is_country_supported;
+                const identity_status = getIdentityStatus(
+                    identity,
+                    needs_verification,
+                    onfido_unsupported,
+                    this.props.is_mx_mlt
+                );
+                const unwelcome = status?.some(account_status => account_status === 'unwelcome');
+                const allow_document_upload = status?.some(
+                    account_status => account_status === 'allow_document_upload'
+                );
+                const documents_supported = identity?.services.onfido.documents_supported;
+                if (this.is_mounted) {
+                    this.setState({
+                        is_loading: false,
+                        has_poa,
+                        needs_poa,
+                        status: identity_status,
+                        unwelcome,
+                        documents_supported,
+                        allow_document_upload,
+                    });
+                    this.props.refreshNotifications();
+                    if (this.props.onStateChange) this.props.onStateChange({ status });
+                }
+            }
+        }
     }
 
     componentWillUnmount() {
@@ -129,8 +172,9 @@ class ProofOfIdentityContainer extends React.Component {
                     error_message={localize('Sorry, there was a connection error. Please try again later.')}
                 />
             );
-        if (is_loading) return <Loading is_fullscreen={false} className='account___intial-loader' />;
-        if (unwelcome && !allow_document_upload) return <Unverified />; // CS manually mark the account as unwelcome / suspends the account
+        if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
+        if (unwelcome && !allow_document_upload) return <Unverified />;
+        if (status === 'not_required') return <NotRequired />;
 
         return (
             <Onfido

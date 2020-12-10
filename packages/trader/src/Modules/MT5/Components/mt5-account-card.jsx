@@ -1,28 +1,65 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Money, Button } from '@deriv/components';
+import { Icon, Money, Button, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { Mt5AccountCopy } from './mt5-account-copy.jsx';
 import { getMT5WebTerminalLink } from '../Helpers/constants';
 
-const MT5AccountCard = ({
+const account_icons = {
+    synthetic: 'IcMt5SyntheticPlatform',
+    financial: 'IcMt5FinancialPlatform',
+    financial_stp: 'IcMt5FinancialStpPlatform',
+};
+
+const LoginBadge = ({ display_login }) => (
+    <div className='mt5-account-card__login'>
+        <Localize
+            i18n_default_text='<0>Account login no.</0><1>{{display_login}}</1>'
+            values={{
+                display_login,
+            }}
+            components={[<span key={0} />, <strong key={1} />]}
+        />
+        <Mt5AccountCopy text={display_login} />
+    </div>
+);
+
+const MT5AccountCardAction = ({
     button_label,
-    commission_message,
-    descriptor,
-    existing_data,
-    has_mt5_account,
-    icon,
+    handleClickSwitchAccount,
+    has_real_account,
+    is_accounts_switcher_on,
     is_button_primary,
     is_disabled,
-    is_logged_in,
-    specs,
-    title,
-    type,
+    is_virtual,
     onSelectAccount,
-    onClickFund,
-    onPasswordManager,
+    type,
 }) => {
-    const IconComponent = icon || (() => null);
+    if (
+        is_virtual &&
+        has_real_account &&
+        type.category === 'real' &&
+        type.type === 'financial_stp' &&
+        typeof handleClickSwitchAccount === 'function'
+    ) {
+        return (
+            <div className='mt5-account-card__action-wrapper'>
+                <Localize
+                    i18n_default_text='<0>Switch to your real account</0><1> to create a DMT5 Financial STP account.</1>'
+                    components={[
+                        <a
+                            className={classNames('mt5-account-card__action-wrapper__link link link--orange', {
+                                'mt5-account-card__action-wrapper__link--disabled': is_accounts_switcher_on,
+                            })}
+                            key={0}
+                            onClick={handleClickSwitchAccount}
+                        />,
+                        <Text key={1} line_height='s' size='xxs' />,
+                    ]}
+                />
+            </div>
+        );
+    }
     const lbl_add_account =
         type.category === 'real' ? (
             <Localize i18n_default_text='Add real account' />
@@ -30,9 +67,50 @@ const MT5AccountCard = ({
             <Localize i18n_default_text='Add demo account' />
         );
     const cta_label = button_label || lbl_add_account;
+    return (
+        <Button
+            className='mt5-account-card__account-selection'
+            onClick={onSelectAccount}
+            type='button'
+            is_disabled={is_disabled}
+            primary={is_button_primary}
+            secondary={!is_button_primary}
+            large
+        >
+            {cta_label}
+        </Button>
+    );
+};
 
+const MT5AccountCard = ({
+    button_label,
+    commission_message,
+    descriptor,
+    existing_data,
+    has_mt5_account,
+    has_real_account,
+    is_accounts_switcher_on,
+    is_button_primary,
+    is_disabled,
+    is_logged_in,
+    is_virtual,
+    specs,
+    title,
+    type,
+    onSelectAccount,
+    onClickFund,
+    onPasswordManager,
+    toggleAccountsDialog,
+    toggleShouldShowRealAccountsList,
+}) => {
+    const icon = type.type ? <Icon icon={account_icons[type.type]} size={64} /> : null;
     const has_popular_banner = type.type === 'synthetic' && type.category === 'real';
     const has_demo_banner = type.category === 'demo';
+
+    const handleClickSwitchAccount = () => {
+        toggleShouldShowRealAccountsList(true);
+        toggleAccountsDialog(true);
+    };
 
     return (
         <div className={classNames('mt5-account-card', { 'mt5-account-card__logged-out': !is_logged_in })}>
@@ -52,13 +130,17 @@ const MT5AccountCard = ({
                 })}
                 id={`mt5_${type.category}_${type.type}`}
             >
-                {icon && <IconComponent />}
+                {icon}
                 <div className='mt5-account-card__type--description'>
                     <h1 className='mt5-account-card--heading'>{title}</h1>
                     {(!existing_data || !is_logged_in) && <p className='mt5-account-card--paragraph'>{descriptor}</p>}
                     {existing_data && existing_data.display_balance && is_logged_in && (
                         <p className='mt5-account-card--balance'>
-                            <Money amount={existing_data.display_balance} currency={existing_data.currency} />
+                            <Money
+                                amount={existing_data.display_balance}
+                                currency={existing_data.currency}
+                                show_currency
+                            />
                         </p>
                     )}
                 </div>
@@ -81,18 +163,7 @@ const MT5AccountCard = ({
                         </tbody>
                     </table>
                 </div>
-                {existing_data?.login && is_logged_in && (
-                    <div className='mt5-account-card__login'>
-                        <Localize
-                            i18n_default_text='Account login no.&nbsp;<0>{{login}}</0>'
-                            values={{
-                                login: existing_data.display_login,
-                            }}
-                            components={[<strong key='0' />]}
-                        />
-                        <Mt5AccountCopy text={existing_data.display_login} />
-                    </div>
-                )}
+                {existing_data?.login && is_logged_in && <LoginBadge display_login={existing_data.display_login} />}
 
                 {((!existing_data && commission_message) || !is_logged_in) && (
                     <p className='mt5-account-card__commission mt5-account-card--paragraph'>{commission_message}</p>
@@ -132,17 +203,17 @@ const MT5AccountCard = ({
                     </a>
                 )}
                 {!existing_data && !has_mt5_account && is_logged_in && (
-                    <Button
-                        className='mt5-account-card__account-selection'
-                        onClick={onSelectAccount}
-                        type='button'
+                    <MT5AccountCardAction
+                        button_label={button_label}
+                        handleClickSwitchAccount={handleClickSwitchAccount}
+                        has_real_account={has_real_account}
+                        is_accounts_switcher_on={is_accounts_switcher_on}
+                        is_button_primary={is_button_primary}
                         is_disabled={is_disabled}
-                        primary={is_button_primary}
-                        secondary={!is_button_primary}
-                        large
-                    >
-                        {cta_label}
-                    </Button>
+                        is_virtual={is_virtual}
+                        onSelectAccount={onSelectAccount}
+                        type={type}
+                    />
                 )}
             </div>
         </div>

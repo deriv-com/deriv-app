@@ -31,6 +31,7 @@ export const InfiniteLoaderList = ({
 
         return <RenderComponent data={items[index]} num={index} style={style} row_actions={row_actions} />;
     };
+
     RowRenderer.propTypes = {
         index: PropTypes.number,
         style: PropTypes.object,

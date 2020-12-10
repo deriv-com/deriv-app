@@ -1,15 +1,42 @@
-import { action, observable } from 'mobx';
-import { formatDate } from '@deriv/shared';
-import { isEnded } from '@deriv/bot-skeleton';
+import { action, observable, reaction } from 'mobx';
+import LZString from 'lz-string';
+import { formatDate, isEnded } from '@deriv/shared';
 import { transaction_elements } from '../constants/transactions';
 
 export default class TransactionsStore {
     constructor(root_store) {
         this.root_store = root_store;
+        this.transaction_storage_key = 'transaction_cache';
+
+        this.disposeTransactionsListener = reaction(
+            () => this.elements,
+            elements => {
+                const { client } = this.root_store.core;
+                const stored_transactions = this.getTransactionSessionStorage();
+
+                const new_elements = { transaction_elements: elements.slice(0, 5000) };
+                stored_transactions[client.loginid] = new_elements;
+
+                sessionStorage.setItem(
+                    this.transaction_storage_key,
+                    LZString.compress(JSON.stringify(stored_transactions))
+                );
+            }
+        );
     }
 
-    @observable elements = [];
+    @observable elements =
+        this.getTransactionSessionStorage()?.[this.root_store.core.client.loginid]?.transaction_elements ?? [];
+
     @observable active_transaction_id = null;
+
+    getTransactionSessionStorage = () => {
+        try {
+            return JSON.parse(LZString.decompress(sessionStorage.getItem(this.transaction_storage_key))) ?? {};
+        } catch (e) {
+            return {};
+        }
+    };
 
     @action.bound
     onBotContractEvent(data) {
@@ -113,5 +140,12 @@ export default class TransactionsStore {
     @action.bound
     clear() {
         this.elements = this.elements.slice(0, 0); // force array update
+    }
+
+    @action.bound
+    disposeListeners() {
+        if (typeof this.disposeTransactionsListener === 'function') {
+            this.disposeTransactionsListener();
+        }
     }
 }

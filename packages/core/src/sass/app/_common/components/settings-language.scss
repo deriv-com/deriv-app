@@ -1,15 +1,12 @@
 /** @define settings-language */
 .settings-language {
     &__language-header {
-        font-size: 14px;
-        font-weight: bold;
         margin-bottom: 16px;
-        color: var(--text-prominent);
     }
     &__language-container {
         display: grid;
-        grid-template-columns: repeat(5, 80px);
-        grid-template-rows: repeat(5, 84px);
+        grid-template-columns: repeat(4, minmax(90px, 1fr));
+        grid-template-rows: repeat(5, auto);
         grid-gap: 16px;
     }
     &__language {
@@ -23,6 +20,7 @@
             padding: 16px;
             text-decoration: none;
             background-color: var(--state-normal);
+            cursor: pointer;
 
             &--active {
                 border: 1px solid var(--border-active);
@@ -36,6 +34,7 @@
         &-name {
             @include typeface(--paragraph-left-normal-black);
             color: var(--text-prominent);
+            margin-top: 0.8rem;
 
             &--active {
                 font-weight: bold;

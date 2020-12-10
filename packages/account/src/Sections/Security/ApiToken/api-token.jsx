@@ -13,15 +13,19 @@ import {
     MobileWrapper,
     Clipboard,
     Loading,
+    Text,
 } from '@deriv/components';
 import { getPropertyValue, formatDate } from '@deriv/shared';
 
-import { localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 import LoadErrorMessage from 'Components/load-error-message';
-import Article from 'Components/article';
+import Article from './article.jsx';
 import Card from './card.jsx';
+
+const MIN_TOKEN = 2;
+const MAX_TOKEN = 32;
 
 class ApiToken extends React.Component {
     state = {
@@ -44,32 +48,40 @@ class ApiToken extends React.Component {
         trading_information: false,
     };
 
-    validateFields = (values) => {
+    validateFields = values => {
         const errors = {};
 
         const token_name = values.token_name && values.token_name.trim();
 
         if (!token_name) {
             errors.token_name = localize('Please enter a token name.');
-        } else if (token_name.length < 2 || token_name.length > 32) {
-            errors.token_name = localize('Length of token name must be between 2 and 32 characters.');
         } else if (!/^[A-Za-z0-9\s_]+$/g.test(token_name)) {
             errors.token_name = localize('Only letters, numbers, and underscores are allowed.');
+        } else if (token_name.length < MIN_TOKEN) {
+            errors.token_name = localize(
+                'Length of token name must be between {{MIN_TOKEN}} and {{MAX_TOKEN}} characters.',
+                {
+                    MIN_TOKEN,
+                    MAX_TOKEN,
+                }
+            );
+        } else if (token_name.length > MAX_TOKEN) {
+            errors.token_name = localize('Maximum {{MAX_TOKEN}} characters.', { MAX_TOKEN });
         }
 
         return errors;
     };
 
-    formatTokenScopes = (str) => {
+    formatTokenScopes = str => {
         const string = str || '';
         const replace_filter = string.replace(/-|_/g, ' ');
         const sentenced_case = replace_filter[0].toUpperCase() + replace_filter.slice(1).toLowerCase();
 
-        return sentenced_case;
+        return localize(sentenced_case);
     };
 
-    getScopeValue = (token) => {
-        const titled_scopes = token.scopes.map((scope) => this.formatTokenScopes(scope));
+    getScopeValue = token => {
+        const titled_scopes = token.scopes.map(scope => this.formatTokenScopes(scope));
         const mapped_scopes = titled_scopes.length === 5 ? localize('All') : titled_scopes.join(', ');
         const date_format = token.last_used ? formatDate(token.last_used, 'DD/MM/YYYY') : localize('Never');
 
@@ -81,36 +93,33 @@ class ApiToken extends React.Component {
         };
     };
 
-    handleSubmit = async (values, { setSubmitting, setFieldError, resetForm }) => {
-        const new_token_scopes = Object.keys(values).filter((item) => item !== 'token_name' && values[item]);
-        if (new_token_scopes.length) {
-            const request = {
-                api_token: 1,
-                new_token: values.token_name,
-                new_token_scopes,
-            };
+    selectedTokenScope = values => Object.keys(values).filter(item => item !== 'token_name' && values[item]);
 
-            const token_response = await WS.apiToken(request);
-            if (token_response.error) {
-                setFieldError('token_name', token_response.error.message);
-            } else {
-                this.setState({
-                    is_success: true,
-                    api_tokens: getPropertyValue(token_response, ['api_token', 'tokens']),
-                });
-                setTimeout(() => {
-                    this.setState({ is_success: false });
-                }, 500);
-            }
-            resetForm();
+    handleSubmit = async (values, { setSubmitting, setFieldError, resetForm }) => {
+        const request = {
+            api_token: 1,
+            new_token: values.token_name,
+            new_token_scopes: this.selectedTokenScope(values),
+        };
+
+        const token_response = await WS.apiToken(request);
+        if (token_response.error) {
+            setFieldError('token_name', token_response.error.message);
         } else {
-            setFieldError('token_name', localize('Must choose at least one scope'));
+            this.setState({
+                is_success: true,
+                api_tokens: getPropertyValue(token_response, ['api_token', 'tokens']),
+            });
+            setTimeout(() => {
+                this.setState({ is_success: false });
+            }, 500);
         }
+        resetForm();
 
         setSubmitting(false);
     };
 
-    populateTokenResponse = (response) => {
+    populateTokenResponse = response => {
         if (response.error) {
             this.setState({
                 is_loading: false,
@@ -130,7 +139,7 @@ class ApiToken extends React.Component {
         this.populateTokenResponse(token_response);
     };
 
-    deleteToken = async (token) => {
+    deleteToken = async token => {
         this.setState({ is_delete_loading: true });
         const token_response = await WS.authorized.apiToken({ api_token: 1, delete_token: token });
         this.populateTokenResponse(token_response);
@@ -141,7 +150,7 @@ class ApiToken extends React.Component {
         }, 500);
     };
 
-    showDialog = (token) => {
+    showDialog = token => {
         this.setState({ dispose_token: token, show_delete: true });
     };
 
@@ -176,7 +185,7 @@ class ApiToken extends React.Component {
         } = this.state;
         const { is_switching } = this.props;
 
-        if (is_loading || is_switching) return <Loading is_fullscreen={false} className='account___intial-loader' />;
+        if (is_loading || is_switching) return <Loading is_fullscreen={false} className='account__initial-loader' />;
 
         if (error_message) return <LoadErrorMessage error_message={error_message} />;
 
@@ -204,6 +213,9 @@ class ApiToken extends React.Component {
                 </Modal>
                 <div className='api-token__wrapper'>
                     <ThemedScrollbars className='api-token__scrollbars'>
+                        <MobileWrapper>
+                            <Article />
+                        </MobileWrapper>
                         <Formik
                             initialValues={this.initial_form}
                             onSubmit={this.handleSubmit}
@@ -213,6 +225,7 @@ class ApiToken extends React.Component {
                                 values,
                                 errors,
                                 isValid,
+                                dirty,
                                 touched,
                                 handleChange,
                                 handleBlur,
@@ -221,7 +234,9 @@ class ApiToken extends React.Component {
                             }) => (
                                 <Form noValidate>
                                     <Timeline className='api-token__timeline'>
-                                        <Timeline.Item title={localize('Select scopes based on the access you need.')}>
+                                        <Timeline.Item
+                                            item_title={localize('Select scopes based on the access you need.')}
+                                        >
                                             <div className='api-token__checkbox-wrapper'>
                                                 <Card
                                                     name='read'
@@ -247,7 +262,7 @@ class ApiToken extends React.Component {
                                                     display_name={localize('Payments')}
                                                     setFieldValue={setFieldValue}
                                                     description={localize(
-                                                        'Withdraw to payment agents, transfer funds between accounts, and set/clear cashier passwords.'
+                                                        'Withdraw to payment agents, and transfer funds between accounts.'
                                                     )}
                                                 />
                                                 <Card
@@ -269,7 +284,7 @@ class ApiToken extends React.Component {
                                             </div>
                                         </Timeline.Item>
                                         <Timeline.Item
-                                            title={localize(
+                                            item_title={localize(
                                                 "Name your token and click on 'Create' to generate your token."
                                             )}
                                         >
@@ -298,7 +313,12 @@ class ApiToken extends React.Component {
                                                         'api-token__button--success': is_success,
                                                     })}
                                                     type='submit'
-                                                    is_disabled={isSubmitting || !isValid}
+                                                    is_disabled={
+                                                        !dirty ||
+                                                        isSubmitting ||
+                                                        !isValid ||
+                                                        !this.selectedTokenScope(values).length
+                                                    }
                                                     has_effect
                                                     is_loading={isSubmitting}
                                                     is_submit_success={is_success}
@@ -308,8 +328,7 @@ class ApiToken extends React.Component {
                                                 />
                                             </div>
                                         </Timeline.Item>
-
-                                        <Timeline.Item title={localize('Copy and paste the token into the app.')}>
+                                        <Timeline.Item item_title={localize('Copy and paste the token into the app.')}>
                                             <DesktopWrapper>
                                                 <Table>
                                                     <Table.Header>
@@ -329,7 +348,7 @@ class ApiToken extends React.Component {
                                                                     <Table.Cell>{token.display_name}</Table.Cell>
                                                                     <Table.Cell>
                                                                         <div className='api-token__clipboard-wrapper'>
-                                                                            <span>{token.token}</span>
+                                                                            <Text size='xs'>{token.token}</Text>
                                                                             <Clipboard
                                                                                 text_copy={token.token}
                                                                                 info_message={localize(
@@ -370,9 +389,7 @@ class ApiToken extends React.Component {
                                                                     <h5 className='api-token__scope--title'>
                                                                         {localize('Name')}
                                                                     </h5>
-                                                                    <p className='api-token__scope--text'>
-                                                                        {token.display_name}
-                                                                    </p>
+                                                                    <Text as='p'>{token.display_name}</Text>
                                                                 </div>
                                                             </div>
                                                             <div className='api-token__scope-item'>
@@ -380,20 +397,18 @@ class ApiToken extends React.Component {
                                                                     <h5 className='api-token__scope--title'>
                                                                         {localize('Token')}
                                                                     </h5>
-                                                                    <p className='api-token__scope--text'>
+                                                                    <Text as='p'>
                                                                         <div className='api-token__clipboard-wrapper'>
-                                                                            <span>{token.token}</span>
+                                                                            <Text size='xs'>{token.token}</Text>
                                                                             <Clipboard token={token.token} />
                                                                         </div>
-                                                                    </p>
+                                                                    </Text>
                                                                 </div>
                                                                 <div>
                                                                     <h5 className='api-token__scope--title'>
                                                                         {localize('Last Used')}
                                                                     </h5>
-                                                                    <p className='api-token__scope--text'>
-                                                                        {token.last_used}
-                                                                    </p>
+                                                                    <Text as='p'>{token.last_used}</Text>
                                                                 </div>
                                                             </div>
                                                             <div className='api-token__scope-item'>
@@ -401,9 +416,7 @@ class ApiToken extends React.Component {
                                                                     <h5 className='api-token__scope--title'>
                                                                         {localize('Scope')}
                                                                     </h5>
-                                                                    <p className='api-token__scope--text'>
-                                                                        {token.scopes}
-                                                                    </p>
+                                                                    <Text as='p'>{token.scopes}</Text>
                                                                 </div>
                                                                 <div>
                                                                     <Button
@@ -427,7 +440,15 @@ class ApiToken extends React.Component {
                         </Formik>
                     </ThemedScrollbars>
                     <DesktopWrapper>
-                        <Article />
+                        <Article
+                            title={localize('API token')}
+                            descriptions={[
+                                <Localize
+                                    key={0}
+                                    i18n_default_text="To access our mobile apps and other third-party apps, you'll first need to generate an API token."
+                                />,
+                            ]}
+                        />
                     </DesktopWrapper>
                 </div>
             </section>

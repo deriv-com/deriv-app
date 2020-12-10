@@ -37,10 +37,7 @@ $MIN_HEIGHT_FLOATING: calc(
         box-shadow: inset 0 -1px 0 0 var(--general-section-1);
 
         &-subheading {
-            font-size: var(--text-size-xs);
-            line-height: 1.5;
             margin-right: 8px;
-            color: var(--text-less-prominent);
         }
     }
     &__inset_header-icon {
@@ -124,9 +121,19 @@ $MIN_HEIGHT_FLOATING: calc(
         &-title {
             @include typeface(--paragraph-left-bold-prominent, none);
             margin-bottom: 0.8rem;
+            max-width: 18.8rem;
         }
-        &-text {
-            @include typeface(--small-left-normal-black, none);
+        &-description {
+            margin-bottom: 1.6rem;
+        }
+        &-link {
+            display: flex;
+
+            &--icon {
+                margin-left: 4px;
+                width: 16px;
+                height: 16px;
+            }
         }
         @include mobile {
             width: auto;
@@ -265,11 +272,8 @@ $MIN_HEIGHT_FLOATING: calc(
                 }
             }
             &-all-fields-required {
-                color: var(--text-general);
-                text-align: center;
                 padding-bottom: 2.4rem;
                 padding-top: 0.8rem;
-                font-size: 1.2rem;
             }
             @include mobile {
                 padding: 16px 0px;
@@ -337,7 +341,7 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
     }
-    &__intial-loader {
+    &__initial-loader {
         height: calc(100vh - 240px);
     }
     &__password-wrapper {
@@ -351,16 +355,6 @@ $MIN_HEIGHT_FLOATING: calc(
     &__text {
         @include typeface(--paragraph-left-normal-black, none);
         color: var(--text-general);
-
-        &--small {
-            @include typeface(--small-left-normal-black, none);
-        }
-        &--xsmall {
-            @include typeface(--xsmall-left-normal-black, none);
-        }
-        &--grey {
-            color: var(--text-less-prominent);
-        }
     }
     .account-management__message {
         margin-top: 1em;
@@ -427,15 +421,9 @@ $MIN_HEIGHT_FLOATING: calc(
             text-align: center;
         }
     }
-    .account-management__text {
-        text-align: center;
-        color: var(--text-general);
-        font-size: var(--text-size-xs);
-        line-height: 1.5;
-    }
     .account-management__text-container {
         margin-top: 10px;
-        max-width: 467px;
+        max-width: 672px;
         margin-bottom: 2em;
     }
     .account-management-flex-wrapper {
@@ -602,9 +590,6 @@ $MIN_HEIGHT_FLOATING: calc(
             &--title {
                 @include typeface(--small-left-bold-black, none);
             }
-            &--text {
-                @include typeface(--paragraph-left-normal-black, none);
-            }
         }
         &__scrollbars {
             height: 100%;
@@ -638,6 +623,11 @@ $MIN_HEIGHT_FLOATING: calc(
                 justify-content: flex-start;
                 height: 100%;
             }
+            @include mobile {
+                flex-direction: column;
+                overflow-y: auto;
+                overflow-x: hidden;
+            }
         }
         &__title {
             @include typeface(--title-left-bold-prominent, none);
@@ -646,6 +636,7 @@ $MIN_HEIGHT_FLOATING: calc(
 
             @include mobile {
                 padding-top: 2.4rem;
+                margin-right: 1.2rem;
             }
         }
         &__input-group {
@@ -732,7 +723,7 @@ $MIN_HEIGHT_FLOATING: calc(
             height: 100%;
         }
         & .dc-input__label {
-            background: var(--general-section-1);
+            background: var(--general-main-1);
         }
         & .dc-field--error {
             padding-left: 0;
@@ -742,6 +733,12 @@ $MIN_HEIGHT_FLOATING: calc(
             width: 100%;
             height: 100%;
 
+            @media (min-width: 1025px) and (max-width: 1199px) {
+                .account__article {
+                    width: 19rem; // Need to decrease width for better user experience and wider Fields
+                }
+            }
+
             @include mobile {
                 flex-direction: column;
                 overflow-y: auto;
@@ -749,7 +746,6 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &__error {
-            @include typeface(--paragraph-center-normal-red);
             margin-top: 1.6rem;
             margin-bottom: 1.6rem;
         }
@@ -773,16 +769,12 @@ $MIN_HEIGHT_FLOATING: calc(
                 max-width: 40rem;
                 width: 100%;
             }
-            &-label {
-                @include typeface(--paragraph-left-normal-black);
-            }
-            &-value {
-                @include typeface(--paragraph-right-bold-black);
-            }
             &-note {
-                @include typeface(--paragraph-center-normal-black);
                 margin: 2.4rem 0;
                 max-width: 67.2rem;
+            }
+            &-bold {
+                @include typeface(--paragraph-left-bold-red);
             }
         }
         &__back {
@@ -816,7 +808,8 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &__item {
-            background: var(--general-section-1);
+            background: var(--general-main-1);
+            border: 1px solid var(--border-normal);
             padding: 1.6rem;
             border-radius: 4px;
 
@@ -825,8 +818,8 @@ $MIN_HEIGHT_FLOATING: calc(
                 grid-template-columns: 1fr 1fr 1fr;
                 grid-gap: 1.6rem;
 
-                @media (max-width: 1200px) {
-                    grid-template-columns: 1fr 1fr;
+                @media (max-width: 1024px) {
+                    grid-template-columns: 1fr;
                 }
                 @include mobile {
                     grid-template-columns: 1fr;
@@ -837,7 +830,6 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin-bottom: 0.8rem;
             }
             &-field {
-                @include typeface(--paragraph-left-normal-black);
                 margin-bottom: 1.4rem;
             }
         }
@@ -869,13 +861,6 @@ $MIN_HEIGHT_FLOATING: calc(
                 }
             }
         }
-        &__text-highlight {
-            @include typeface(--paragraph-left-bold-red);
-
-            &--small {
-                font-size: 1.2rem;
-            }
-        }
         &__warning {
             background-color: rgba(255, 173, 58, 0.3);
             border-radius: $BORDER_RADIUS;
@@ -890,11 +875,6 @@ $MIN_HEIGHT_FLOATING: calc(
             &-textbox {
                 padding: 0.9rem 3.2rem;
             }
-            &-text {
-                color: var(--text-general);
-                font-size: var(--text-size-xxxs);
-                line-height: 1.4;
-            }
             &-link {
                 color: var(--text-general);
                 cursor: pointer;
@@ -907,6 +887,27 @@ $MIN_HEIGHT_FLOATING: calc(
         height: 100%;
         width: 100%;
 
+        &__wrapper {
+            display: flex;
+            width: 100%;
+            height: 100%;
+
+            @include mobile {
+                flex-direction: column;
+
+                .account__scrollbars_container--grid-layout {
+                    overflow: unset;
+                }
+                &:last-child {
+                    padding-bottom: 1.6rem;
+                }
+            }
+        }
+        &__scrollbars {
+            height: 100%;
+            width: 100%;
+            flex: 1;
+        }
         &-title {
             @include mobile {
                 padding-bottom: 0.8rem;
@@ -979,90 +980,69 @@ $MIN_HEIGHT_FLOATING: calc(
             padding-left: 8px;
         }
     }
-    .login-history-container {
+    .login-history {
         height: 100%;
         width: 100%;
 
-        .login-history-table {
-            @include desktop {
-                height: 100%;
-            }
+        &__table {
+            height: calc(100% - 42px);
+            flex: 1;
 
-            @include mobile {
-                width: 90%;
-                margin: 10px auto;
-                padding: 10px;
-                color: var(--text-general);
-                background-color: var(--general-main-2);
-
-                .dc-table__cell {
-                    display: block;
-                }
-                .dc-table__row {
-                    grid-template-columns: 3fr 1fr;
-                    border: none;
-                }
-                .dc-table__row.with-margin {
-                    margin-bottom: 10px;
-                }
-                .cell-title {
-                    font-size: 12px;
-                    font-weight: bold;
-                    font-stretch: normal;
-                    font-style: normal;
-                    line-height: 1.5;
-                    letter-spacing: normal;
-                    color: var(--text-prominent);
-                }
-                .cell-value {
-                    font-size: 14px;
-                    font-weight: normal;
-                    font-stretch: normal;
-                    font-style: normal;
-                    line-height: 1.43;
-                    letter-spacing: normal;
-                }
-                .action {
-                    text-transform: capitalize;
-                }
-                .browser {
-                    padding-right: 1.5rem;
-                }
-            }
-
-            &__table {
-                height: calc(100% - 42px);
-                flex: 1;
+            &__row,
+            &__header {
+                /* Date-Action-Browser-IP-Status */
+                grid-template-columns: 190px 65px 248px minmax(133px, 308px) 120px;
+                padding: 1rem;
+                padding-left: 0;
             }
             &__row {
-                /* Date-Action-Browser-IP-Status */
-                grid-template-columns: 184px 65px 248px 133px 70px;
-                padding: 0px;
-            }
-            .table__cell {
                 border-bottom: 1px solid var(--border-disabled);
-            }
-            .table__head {
-                border-bottom: none;
 
-                .table__cell {
-                    font-weight: bold;
+                &__cell {
+                    &--action {
+                        text-transform: capitalize;
+                    }
                 }
             }
-            .table__body {
-                .date,
-                .action,
-                .browser,
-                .ip,
-                .status {
-                    @include typeface(--paragraph-left-normal-black);
-                    font-stretch: normal;
-                    font-style: normal;
-                    line-height: 1.43;
-                    letter-spacing: normal;
+        }
+
+        @include mobile {
+            &__list {
+                width: 90%;
+                margin: 1rem auto;
+
+                &__wrapper {
+                    background-color: var(--general-main-2);
+                    margin-bottom: 1rem;
+                    padding: 1rem;
                 }
-                .action {
-                    text-transform: capitalize;
+                &__row {
+                    grid-template-columns: 3fr 1fr;
+                    border: none;
+
+                    &__cell {
+                        display: block;
+
+                        &--title {
+                            font-size: var(--text-size-xxs);
+                            font-weight: var(--text-weight-bold);
+                            font-stretch: normal;
+                            font-style: normal;
+                            line-height: var(--text-lh-m);
+                            letter-spacing: normal;
+                            color: var(--text-prominent);
+                        }
+                        &--action {
+                            text-transform: capitalize;
+                        }
+                        &--browser,
+                        &--ip-value {
+                            padding-right: 1.5rem;
+                        }
+                    }
+                    &--with-margin {
+                        margin-bottom: 1rem;
+                    }
                 }
             }
         }
@@ -1104,7 +1084,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin-top: 0.5em;
 
                 .account-form__fieldset {
-                    margin-bottom: 3em;
+                    margin-bottom: 4em; // The gap for the error message is dependent on the font-size, better to be `em` instead of `rem`
                 }
             }
         }
@@ -1118,10 +1098,7 @@ $MIN_HEIGHT_FLOATING: calc(
         padding: 2.4rem 1.6rem 0;
 
         &-title {
-            color: var(--brand-red-coral);
             height: 20px;
-            font-size: 1.4rem;
-            font-weight: bold;
             margin-bottom: 0.8rem;
         }
         &-content {
@@ -1242,22 +1219,13 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin-bottom: 2.4rem;
             }
         }
-        &-text {
-            font-size: var(--text-size-xs);
-            line-height: 1.5;
-            color: var(--text-general);
-
-            @include mobile {
-                font-size: 1.2rem;
-            }
-        }
         &-fields {
             width: 100%;
             min-width: 400px;
             flex: 1;
 
             .account-form__fieldset {
-                margin-bottom: 3em;
+                margin-bottom: 4em; // The gap for the error message is dependent on the font-size, better to be `em` instead of `rem`
             }
             @include mobile {
                 min-width: 100%;
@@ -1292,22 +1260,22 @@ $MIN_HEIGHT_FLOATING: calc(
 /** @define connected-apps; weak */
 .connected-apps {
     width: 100%;
-    max-width: 682px;
-    max-height: 560px;
     height: 100%;
 
     .revoke_access {
         padding-left: 8px;
         padding-right: 8px;
     }
+    &__wrapper {
+        max-width: 682px;
+        max-height: 560px;
+        height: 100%;
+        width: 100%;
+    }
     &__loading {
         height: calc(100vh - 240px);
     }
     &__title {
-        color: var(--text-prominent);
-        font-size: var(--text-size-s);
-        font-weight: bold;
-        line-height: 1.5;
         margin-bottom: 1.6rem;
     }
     &__table {
@@ -1317,13 +1285,21 @@ $MIN_HEIGHT_FLOATING: calc(
         max-height: 502px;
     }
     &__row {
-        grid-template-columns: 169px 198px 80px 99px;
+        grid-template-columns: 169px 198px 80px 109px;
         padding: 0;
         column-gap: 42px;
         text-align: left;
 
         .table__cell {
             height: 56px;
+
+            .name {
+                &__content {
+                    text-overflow: ellipsis;
+                    width: 100%;
+                    overflow: hidden;
+                }
+            }
         }
     }
     @include desktop {
@@ -1345,7 +1321,12 @@ $MIN_HEIGHT_FLOATING: calc(
     }
     @include mobile {
         overflow: hidden;
-        padding: 2.4rem 1.6rem 0;
+        padding: 0 1.6rem;
+
+        &__title {
+            margin: 2.4rem 0;
+            padding: 0 1.6rem;
+        }
 
         &__data-list {
             padding: 0;
@@ -1358,14 +1339,20 @@ $MIN_HEIGHT_FLOATING: calc(
             }
             .data-list__item {
                 padding: 8px;
+                background: var(--general-section-1);
             }
             .data-list__row {
                 display: flex;
                 justify-content: space-between;
                 padding: 0;
 
+                &-content {
+                    word-break: break-word;
+                }
+
                 .data-list__col {
-                    width: 100%;
+                    width: 50%;
+                    margin-right: 1.8rem;
 
                     > :first-child {
                         margin-bottom: 8px;
@@ -1383,37 +1370,20 @@ $MIN_HEIGHT_FLOATING: calc(
                 }
             }
         }
+        .name {
+            &__content {
+                text-overflow: ellipsis;
+                width: 100%;
+                display: inline-block;
+                overflow: hidden;
+            }
+        }
         .last_used {
             .last_used_content {
-                font-size: var(--text-size-xxs);
-                line-height: 1.5;
                 margin-bottom: 4px;
                 margin-top: 2px;
             }
         }
-    }
-}
-
-/** @define form-submit-error-message; weak */
-.form-submit-error-message {
-    display: flex;
-    align-items: center;
-    margin-right: auto;
-    font-size: var(--text-size-xxs);
-    font-weight: bold;
-    flex: 1;
-    color: var(--text-prominent);
-
-    p {
-        padding-left: 16px;
-
-        @include mobile {
-            line-height: 20px;
-        }
-    }
-
-    @include mobile {
-        padding: 0 1.6rem 1rem;
     }
 }
 
@@ -1511,11 +1481,6 @@ $MIN_HEIGHT_FLOATING: calc(
                     &__icon {
                         margin: 24px 0;
                     }
-                    &__message {
-                        color: var(--text-prominent);
-                        font-weight: bold;
-                        font-size: var(--text-size-s);
-                    }
                     &__confirmation {
                         margin-top: 24px;
                         margin-bottom: 32px;
@@ -1596,6 +1561,33 @@ $MIN_HEIGHT_FLOATING: calc(
     }
 }
 
+.dc-modal__container_self_exclusion__article-modal {
+    .self-exclusion {
+        &__article {
+            max-width: 440px;
+            max-height: 480px;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+
+            &-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 1.6rem 2.4rem;
+                @include typeface(--title-center-bold-prominent, none);
+                border-bottom: 1px solid var(--border-normal);
+            }
+            &-icon {
+                cursor: pointer;
+            }
+            &-content {
+                padding: 2.4rem;
+            }
+        }
+    }
+}
+
 .dc-modal__container_self_exclusion__modal {
     .self-exclusion {
         &__popup {
@@ -1645,6 +1637,7 @@ $MIN_HEIGHT_FLOATING: calc(
 /** @define proof-of-identity */
 .proof-of-identity {
     height: 100%;
+    width: 100%;
 
     &__redirect {
         width: auto !important;
@@ -1661,7 +1654,6 @@ $MIN_HEIGHT_FLOATING: calc(
         margin-bottom: 0.8rem;
 
         &--bold {
-            font-weight: bold;
             margin: 0.5rem 0 0.8rem;
         }
         @include mobile {
@@ -1678,11 +1670,7 @@ $MIN_HEIGHT_FLOATING: calc(
         line-height: 1.43;
     }
     &__title {
-        font-weight: bold;
         margin-bottom: 0.8rem;
-    }
-    &__content {
-        color: var(--text-general);
     }
     &__link {
         color: var(--text-loss-danger);
@@ -1723,9 +1711,6 @@ $MIN_HEIGHT_FLOATING: calc(
             > input {
                 min-height: 96px;
             }
-        }
-        &__error {
-            color: var(--text-loss-danger);
         }
     }
     @include mobile {
@@ -1779,10 +1764,7 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &__warning-message {
-            color: var(--text-loss-danger);
             padding: 16px 0;
-            font-size: var(--text-size-s);
-            font-weight: bold;
             line-height: 1.43;
         }
         &__content {
@@ -1800,24 +1782,11 @@ $MIN_HEIGHT_FLOATING: calc(
     .deactivate-account-error {
         padding: 0 24px 24px 24px;
         &__title {
-            color: var(--text-prominent);
-            font-size: var(--text-size-xs);
-            font-weight: bold;
             margin-bottom: 5px;
         }
         &__account-details {
             display: flex;
             align-items: center;
-        }
-        &__accounts-loginid {
-            color: var(--text-prominent);
-            font-size: var(--text-size-xxxs);
-            line-height: 1.4;
-        }
-        &__accounts-currency {
-            color: var(--text-prominent);
-            font-size: var(--text-size-xs);
-            line-height: 1.43;
         }
         &__account {
             margin-left: 8px;

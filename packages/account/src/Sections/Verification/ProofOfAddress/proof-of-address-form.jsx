@@ -1,26 +1,37 @@
 import React from 'react';
-import { Autocomplete, Loading, Button, Input, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
+import {
+    Autocomplete,
+    Loading,
+    Button,
+    Input,
+    DesktopWrapper,
+    MobileWrapper,
+    SelectNative,
+    FormSubmitErrorMessage,
+    Text,
+} from '@deriv/components';
 import { Formik, Field } from 'formik';
 import { localize } from '@deriv/translations';
-import { isMobile, getLocation } from '@deriv/shared';
-import { WS } from 'Services/ws-methods';
-import { connect } from 'Stores/connect';
 import {
+    isMobile,
+    removeEmptyPropertiesFromObject,
     validAddress,
     validPostCode,
     validLetterSymbol,
     validLength,
-} from 'Duplicated/Utils/Validator/declarative-validation-rules';
+    getLocation,
+} from '@deriv/shared';
+import { WS } from 'Services/ws-methods';
+import { connect } from 'Stores/connect';
 import FormFooter from 'Components/form-footer';
 import FormBody from 'Components/form-body';
 import FormSubHeader from 'Components/form-sub-header';
-import FormSubmitErrorMessage from 'Components/form-submit-error-message';
 import LoadErrorMessage from 'Components/load-error-message';
 import LeaveConfirm from 'Components/leave-confirm';
 import FileUploaderContainer from 'Components/file-uploader-container';
 
 const validate = (errors, values) => (fn, arr, err_msg) => {
-    arr.forEach((field) => {
+    arr.forEach(field => {
         const value = values[field];
         if (!fn(value) && !errors[field] && err_msg !== true) errors[field] = err_msg;
     });
@@ -48,7 +59,19 @@ class ProofOfAddressForm extends React.Component {
                     address_city,
                     address_state,
                     address_postcode,
+                    citizen,
+                    tax_identification_number,
+                    tax_residence,
                 } = this.props.account_settings;
+
+                if (this.props.is_eu) {
+                    this.setState({
+                        citizen,
+                        tax_identification_number,
+                        tax_residence,
+                    });
+                }
+
                 this.setState({
                     address_line_1,
                     address_line_2,
@@ -62,18 +85,21 @@ class ProofOfAddressForm extends React.Component {
     }
 
     // TODO: standardize validations and refactor this
-    validateFields = (values) => {
+    validateFields = values => {
         this.setState({ is_submit_success: false });
         const errors = {};
         const validateValues = validate(errors, values);
 
         const required_fields = ['address_line_1', 'address_city'];
-        validateValues((val) => val, required_fields, localize('This field is required'));
+        validateValues(val => val, required_fields, localize('This field is required'));
 
         const permitted_characters = "- . ' # ; : ( ) , @ /";
         const address_validation_message = localize(
             'Only letters, numbers, space, and these special characters are allowed: {{ permitted_characters }}',
-            { permitted_characters }
+            {
+                permitted_characters,
+                interpolation: { escapeValue: false },
+            }
         );
 
         if (values.address_line_1 && !validAddress(values.address_line_1)) {
@@ -91,7 +117,8 @@ class ProofOfAddressForm extends React.Component {
             errors.address_city = validation_letter_symbol_message;
         }
 
-        if (values.address_state && !validLetterSymbol(values.address_state)) {
+        // only add state/province validation for countries that don't have states list fetched from API
+        if (values.address_state && !validLetterSymbol(values.address_state) && this.props.states_list?.length < 1) {
             errors.address_state = validation_letter_symbol_message;
         }
 
@@ -110,7 +137,7 @@ class ProofOfAddressForm extends React.Component {
         return errors;
     };
 
-    showForm = (show_form) => this.setState({ show_form });
+    showForm = show_form => this.setState({ show_form });
 
     onFileDrop = ({ document_file, file_error_message }) => {
         this.setState({ document_file, file_error_message });
@@ -120,8 +147,19 @@ class ProofOfAddressForm extends React.Component {
     onSubmit = (values, { setStatus, setSubmitting }) => {
         setStatus({ msg: '' });
         this.setState({ is_btn_loading: true });
+        let form_values = values;
 
-        WS.setSettings(values).then((data) => {
+        if (this.props.is_eu) {
+            const { citizen, tax_residence, tax_identification_number } = this.state;
+            form_values = removeEmptyPropertiesFromObject({
+                ...values,
+                citizen,
+                tax_identification_number,
+                tax_residence,
+            });
+        }
+
+        WS.setSettings(form_values).then(data => {
             if (data.error) {
                 setStatus({ msg: data.error.message });
                 this.setState({ is_btn_loading: false });
@@ -155,7 +193,7 @@ class ProofOfAddressForm extends React.Component {
                         // upload files
                         this.file_uploader_ref.current
                             .upload()
-                            .then((api_response) => {
+                            .then(api_response => {
                                 if (api_response.warning) {
                                     setStatus({ msg: api_response.message });
                                     this.setState({ is_btn_loading: false });
@@ -195,7 +233,7 @@ class ProofOfAddressForm extends React.Component {
                                     });
                                 }
                             })
-                            .catch((error) => {
+                            .catch(error => {
                                 setStatus({ msg: error.message });
                                 this.setState({ is_btn_loading: false });
                             })
@@ -235,7 +273,7 @@ class ProofOfAddressForm extends React.Component {
         if (api_initial_load_error) {
             return <LoadErrorMessage error_message={api_initial_load_error} />;
         }
-        if (is_loading) return <Loading is_fullscreen={false} className='account___intial-loader' />;
+        if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
         const mobile_scroll_offset = status && status.msg ? '200px' : '154px';
 
         if (form_initial_values.address_state) {
@@ -267,11 +305,11 @@ class ProofOfAddressForm extends React.Component {
                                     <FormSubHeader title={localize('Details')} />
                                     <div className='account-poa__details-section'>
                                         <div className='account-poa__details-description'>
-                                            <span className='account-poa__details-text'>
+                                            <Text size={isMobile() ? 'xxs' : 'xs'}>
                                                 {localize(
                                                     'Please ensure that this address is the same as in your proof of address'
                                                 )}
-                                            </span>
+                                            </Text>
                                         </div>
                                         <div className='account-poa__details-fields'>
                                             <fieldset className='account-form__fieldset'>
@@ -353,7 +391,7 @@ class ProofOfAddressForm extends React.Component {
                                                                 list_items={this.props.states_list}
                                                                 error={touched.address_state && errors.address_state}
                                                                 use_text={true}
-                                                                onChange={(e) =>
+                                                                onChange={e =>
                                                                     setFieldValue('address_state', e.target.value, true)
                                                                 }
                                                             />
@@ -391,7 +429,7 @@ class ProofOfAddressForm extends React.Component {
                                     </div>
                                     <FormSubHeader title={localize('Please upload one of the following:')} />
                                     <FileUploaderContainer
-                                        onRef={(ref) => (this.file_uploader_ref = ref)}
+                                        onRef={ref => (this.file_uploader_ref = ref)}
                                         onFileDrop={this.onFileDrop}
                                         getSocket={WS.getSocket}
                                     />
@@ -434,6 +472,7 @@ class ProofOfAddressForm extends React.Component {
 
 export default connect(({ client, ui }) => ({
     account_settings: client.account_settings,
+    is_eu: client.is_eu,
     addNotificationByKey: ui.addNotificationMessageByKey,
     removeNotificationMessage: ui.removeNotificationMessage,
     removeNotificationByKey: ui.removeNotificationByKey,

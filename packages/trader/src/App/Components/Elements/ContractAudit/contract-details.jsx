@@ -2,15 +2,21 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Money, Icon, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { isMobile, epochToMoment, toGMTFormat } from '@deriv/shared';
-import { getBarrierLabel, getBarrierValue, isDigitType } from 'App/Components/Elements/PositionsDrawer/helpers';
 import {
+    epochToMoment,
+    toGMTFormat,
     getCancellationPrice,
-    isCancellationExpired,
-    isUserCancelled,
     isEnded,
-} from 'Stores/Modules/Contract/Helpers/logic';
-import { isMultiplierContract } from 'Stores/Modules/Contract/Helpers/multiplier';
+    isMobile,
+    isMultiplierContract,
+} from '@deriv/shared';
+import {
+    addCommaToNumber,
+    getBarrierLabel,
+    getBarrierValue,
+    isDigitType,
+} from 'App/Components/Elements/PositionsDrawer/helpers';
+import { isCancellationExpired, isUserCancelled } from 'Stores/Modules/Contract/Helpers/logic';
 import ContractAuditItem from './contract-audit-item.jsx';
 
 const ContractDetails = ({ contract_end_time, contract_info, duration, duration_unit, exit_spot }) => {
@@ -54,7 +60,7 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
                             id='dt_commission_label'
                             icon={<Icon icon='IcContractCommission' size={24} />}
                             label={localize('Commission')}
-                            value={<Money amount={commission} currency={currency} />}
+                            value={<Money amount={commission} currency={currency} show_currency />}
                         />
                         {!!cancellation_price && (
                             <ContractAuditItem
@@ -102,7 +108,7 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
                         id='dt_entry_spot_label'
                         icon={<Icon icon='IcContractEntrySpot' size={24} />}
                         label={localize('Entry spot')}
-                        value={entry_spot_display_value || ' - '}
+                        value={addCommaToNumber(entry_spot_display_value) || ' - '}
                         value2={toGMTFormat(epochToMoment(entry_tick_time)) || ' - '}
                     />
                 )}
@@ -111,7 +117,7 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
                         id='dt_exit_spot_label'
                         icon={<Icon icon='IcContractExitSpot' size={24} />}
                         label={localize('Exit spot')}
-                        value={exit_spot || ' - '}
+                        value={addCommaToNumber(exit_spot) || ' - '}
                         value2={toGMTFormat(epochToMoment(exit_tick_time)) || ' - '}
                     />
                 )}

@@ -1,10 +1,8 @@
 import { flow } from 'mobx';
-import { getPropertyValue } from '@deriv/shared';
-import Login from '_common/base/login';
+import { State, getActivePlatform, getPropertyValue, routes } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import ServerTime from '_common/base/server_time';
 import BinarySocket from '_common/base/socket_base';
-import { State } from '_common/storage';
-import { localize } from '@deriv/translations';
 import WS from './ws-methods';
 
 let client_store, common_store, gtm_store;
@@ -16,15 +14,12 @@ const BinarySocketGeneral = (() => {
     };
 
     const onOpen = is_ready => {
-        // Header.hideNotification();
         if (is_ready) {
-            if (!Login.isLoginPages()) {
-                if (!client_store.is_valid_login) {
-                    client_store.logout();
-                    return;
-                }
-                WS.subscribeWebsiteStatus(ResponseHandlers.websiteStatus);
+            if (!client_store.is_valid_login) {
+                client_store.logout();
+                return;
             }
+            WS.subscribeWebsiteStatus(ResponseHandlers.websiteStatus);
             ServerTime.init(() => common_store.setServerTime(ServerTime.get()));
             common_store.setIsSocketOpened(true);
         }
@@ -42,7 +37,7 @@ const BinarySocketGeneral = (() => {
                         // Dialog.alert({ id: 'authorize_error_alert', message: response.error.message });
                     }
                     client_store.logout();
-                } else if (!Login.isLoginPages() && !/authorize/.test(State.get('skip_response'))) {
+                } else if (!/authorize/.test(State.get('skip_response'))) {
                     // is_populating_account_list is a check to avoid logout on the first logged-in session
                     // In any other case, if the response loginid does not match the store's loginid, user must be logged out
                     if (
@@ -91,7 +86,7 @@ const BinarySocketGeneral = (() => {
         }
     };
 
-    const setBalanceActiveAccount = flow(function*(obj_balance) {
+    const setBalanceActiveAccount = flow(function* (obj_balance) {
         yield BinarySocket.wait('website_status');
         client_store.setBalanceActiveAccount(obj_balance);
     });
@@ -163,14 +158,18 @@ const BinarySocketGeneral = (() => {
                 if (!['reset_password', 'new_account_virtual'].includes(msg_type)) {
                     if (window.TrackJS) window.TrackJS.track('Custom InvalidToken error');
                 }
+                // eslint-disable-next-line no-case-declarations
+                const active_platform = getActivePlatform(common_store.app_routing_history);
+
+                // DBot handles this internally. Special case: 'client.invalid_token'
+                if (active_platform === 'DBot') return;
+
                 client_store.logout().then(() => {
-                    common_store.setError(true, {
-                        header: response.error.message,
-                        message: localize('Please Log in'),
-                        should_show_refresh: false,
-                        redirect_label: localize('Log in'),
-                        redirectOnClick: Login.redirectToLogin,
-                    });
+                    let redirect_to = routes.trade;
+                    if (active_platform === 'DMT5') {
+                        redirect_to = routes.mt5;
+                    }
+                    common_store.routeTo(redirect_to);
                 });
                 break;
             case 'AuthorizationRequired':
@@ -234,20 +233,24 @@ const BinarySocketGeneral = (() => {
 export default BinarySocketGeneral;
 
 const ResponseHandlers = (() => {
-    let is_available = false;
     const websiteStatus = response => {
         if (response.website_status) {
-            is_available = /^up$/i.test(response.website_status.site_status);
-            if (is_available && !BinarySocket.availability()) {
+            const is_available = !BinarySocket.isSiteDown(response.website_status.site_status);
+            if (is_available && BinarySocket.getAvailability().is_down) {
                 window.location.reload();
                 return;
             }
-            if (response.website_status.message) {
-                // Footer.displayNotification(response.website_status.message);
-            } else {
-                // Footer.clearNotification();
+            const is_updating = BinarySocket.isSiteUpdating(response.website_status.site_status);
+            if (is_updating && !BinarySocket.getAvailability().is_updating) {
+                // the existing connection is alive for one minute while status is updating
+                // switch to the new connection somewhere between 1-30 seconds from now
+                // to avoid everyone switching to the new connection at the same time
+                const rand_timeout = Math.floor(Math.random() * 30) + 1;
+                window.setTimeout(() => {
+                    BinarySocket.closeAndOpenNewConnection();
+                }, rand_timeout * 1000);
             }
-            BinarySocket.availability(is_available);
+            BinarySocket.setAvailability(response.website_status.site_status);
             client_store.setWebsiteStatus(response);
         }
     };

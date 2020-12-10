@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -124,13 +125,14 @@ RadioButtonGroup.defaultProps = {
 export const Hr = () => <div className='currency-hr' />;
 
 const CurrencySelector = ({
-    bypass_to_personal,
     getCurrentStep,
     goToNextStep,
     has_currency,
     has_real_account,
     legal_allowed_currencies,
     onSubmit,
+    real_account_signup,
+    resetRealAccountSignupParams,
     set_currency,
     validate,
     ...props
@@ -138,6 +140,7 @@ const CurrencySelector = ({
     const { is_deriv_crypto } = React.useContext(PlatformContext);
     const crypto = legal_allowed_currencies.filter(currency => currency.type === 'crypto');
     const fiat = legal_allowed_currencies.filter(currency => currency.type === 'fiat');
+    const [is_bypass_step, setIsBypassStep] = React.useState(false);
 
     const handleValidate = values => {
         const { errors } = splitValidationResultTypes(validate(values));
@@ -146,8 +149,18 @@ const CurrencySelector = ({
 
     // In case of form error bypass to update personal data
     React.useEffect(() => {
-        if (bypass_to_personal) goToNextStep();
-    }, [bypass_to_personal, goToNextStep]);
+        if (real_account_signup?.error_code) {
+            setIsBypassStep(true);
+        }
+    }, []);
+
+    React.useEffect(() => {
+        if (is_bypass_step) {
+            goToNextStep();
+            resetRealAccountSignupParams();
+            setIsBypassStep(false);
+        }
+    }, [is_bypass_step]);
 
     return (
         <Formik
@@ -249,10 +262,12 @@ CurrencySelector.propTypes = {
     value: PropTypes.any,
 };
 
-export default connect(({ client }) => ({
+export default connect(({ client, ui }) => ({
     currencies: client.currencies_list,
     has_currency: !!client.currency,
     has_real_account: client.has_active_real_account,
     legal_allowed_currencies: client.upgradeable_currencies,
+    real_account_signup: ui.real_account_signup,
+    resetRealAccountSignupParams: ui.resetRealAccountSignupParams,
     selectable_currencies: client.selectable_currencies,
 }))(CurrencySelector);

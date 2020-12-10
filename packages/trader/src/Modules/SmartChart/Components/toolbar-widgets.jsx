@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { isMobile, isDesktop } from '@deriv/shared';
+import { isDesktop } from '@deriv/shared';
 import { ChartMode, DrawTools, Share, StudyLegend, Views, ToolbarWidget } from 'Modules/SmartChart';
 
 const ToolbarWidgets = ({ position, updateChartType, updateGranularity }) => (

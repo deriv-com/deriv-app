@@ -44,17 +44,16 @@ const Cashier = ({
         // we still need to populate the tabs shown on cashier
         (async () => {
             await WS.wait('authorize');
+            onMount();
+            setAccountSwitchListener();
+
+            // TODO: Remove L21, L31, and L38 code blocks once landscape design is ready
+            // doughflow iframe inconjunction with android's virtual keyboard causes issues with css screen height calculation (thus falsely triggering landscape blocker in Android)
+            // this is due to the onscreen virtual keyboard resizing the innerHeight of the window and ignoring the actual height of content within the iframe
+            if (isMobile() && isTouchDevice()) {
+                window.addEventListener('resize', handleOnScreenKeyboard);
+            }
         })();
-
-        onMount();
-        setAccountSwitchListener();
-
-        // TODO: Remove L21, L31, and L38 code blocks once landscape design is ready
-        // doughflow iframe inconjunction with android's virtual keyboard causes issues with css screen height calculation (thus falsely triggering landscape blocker in Android)
-        // this is due to the onscreen virtual keyboard resizing the innerHeight of the window and ignoring the actual height of content within the iframe
-        if (isMobile() && isTouchDevice()) {
-            window.addEventListener('resize', handleOnScreenKeyboard);
-        }
 
         return () => {
             toggleCashier();

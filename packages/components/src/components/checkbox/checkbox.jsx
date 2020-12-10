@@ -30,7 +30,7 @@ const Checkbox = ({
 
     const handleKeyDown = e => {
         // Enter or space
-        if (e.key === 'Enter' || e.keyCode === 32) {
+        if (!disabled && (e.key === 'Enter' || e.keyCode === 32)) {
             onChange({ target: { name: input_ref.current.name, checked: !checked } });
             setChecked(!checked);
         }
@@ -49,6 +49,7 @@ const Checkbox = ({
                 type='checkbox'
                 id={id}
                 ref={input_ref}
+                disabled={disabled}
                 onChange={onInputChange}
                 defaultChecked={checked}
                 {...otherProps}

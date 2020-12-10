@@ -87,7 +87,7 @@ const SendEmailTemplate = ({
 };
 
 SendEmailTemplate.propTypes = {
-    children: PropTypes.array,
+    children: PropTypes.any,
     className: PropTypes.string,
     is_disabled: PropTypes.bool,
     lbl_no_receive: PropTypes.string,

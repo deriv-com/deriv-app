@@ -6,11 +6,6 @@ import { storeSetting, getSetting } from '../utils/settings';
 export default class MainContentStore {
     constructor(root_store) {
         this.root_store = root_store;
-
-        when(
-            () => Blockly.derivWorkspace,
-            () => this.setContainerSize
-        );
     }
 
     @observable active_tab = tabs_title.WORKSPACE;

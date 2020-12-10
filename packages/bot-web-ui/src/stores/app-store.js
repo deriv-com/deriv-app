@@ -19,6 +19,7 @@ export default class AppStore {
 
         blockly_store.startLoading();
         DBot.initWorkspace(__webpack_public_path__, this.dbot_store, this.api_helpers_store, ui.is_mobile).then(() => {
+            main_content.setContainerSize();
             blockly_store.endLoading();
         });
 

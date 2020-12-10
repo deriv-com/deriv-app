@@ -25,6 +25,7 @@ const SendEmailTemplate = ({
         return () => {
             clearInterval(resend_interval);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const onClickEmailNotReceived = () => {

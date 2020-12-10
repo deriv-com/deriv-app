@@ -62,7 +62,7 @@ const AccountWizard = props => {
     const [mounted, setMounted] = React.useState(false);
     const [form_error, setFormError] = React.useState('');
     const [previous_data, setPreviousData] = React.useState([]);
-    const [stateItems, setStateItems] = React.useState([]);
+    const [state_items, setStateItems] = React.useState([]);
     const [has_previous_data, setHasPreviousData] = React.useState(false);
 
     React.useEffect(() => {
@@ -91,7 +91,7 @@ const AccountWizard = props => {
 
     React.useEffect(() => {
         if (previous_data.length > 0) {
-            const items = [...stateItems];
+            const items = [...state_items];
             previous_data.forEach((item, index) => {
                 if (item instanceof Object) {
                     items[index].form_value = item;
@@ -107,8 +107,8 @@ const AccountWizard = props => {
         if (props.residence_list.length) {
             const setDefaultPhone = country_code => {
                 let items;
-                if (stateItems.length) {
-                    items = stateItems;
+                if (state_items.length) {
+                    items = state_items;
                 } else {
                     items = getItems(props);
                 }
@@ -141,7 +141,7 @@ const AccountWizard = props => {
     };
 
     const form_values = () => {
-        return stateItems
+        return state_items
             .map(item => item.form_value)
             .reduce((obj, item) => {
                 const values = fromEntries(new Map(Object.entries(item)));
@@ -201,7 +201,7 @@ const AccountWizard = props => {
         saveFormData(index, value);
         clearError();
         // Check if account wizard is not finished
-        if ((!props.has_currency && props.has_real_account) || index + 1 >= stateItems.length) {
+        if ((!props.has_currency && props.has_real_account) || index + 1 >= state_items.length) {
             createRealAccount(setSubmitting);
         } else {
             goToNextStep();
@@ -209,13 +209,13 @@ const AccountWizard = props => {
     };
 
     const saveFormData = (index, value) => {
-        const cloned_items = Object.assign([], stateItems);
+        const cloned_items = Object.assign([], state_items);
         cloned_items[index].form_value = value;
         setStateItems(cloned_items);
     };
 
     const getCurrent = (key, step_index) => {
-        return key ? stateItems[step_index][key] : stateItems[step_index];
+        return key ? state_items[step_index][key] : state_items[step_index];
     };
 
     const getPropsForChild = step_index => {
@@ -255,7 +255,7 @@ const AccountWizard = props => {
                     }
                 })
                 .catch(error => {
-                    props.onError(error, stateItems);
+                    props.onError(error, state_items);
                 })
                 .finally(() => props.setLoading(false));
         }
@@ -264,7 +264,7 @@ const AccountWizard = props => {
     if (props.is_loading) return <LoadingModal />;
     if (!mounted) return null;
     if (!finished) {
-        const wizard_steps = stateItems.map((step, step_index) => {
+        const wizard_steps = state_items.map((step, step_index) => {
             const passthrough = getPropsForChild(step_index);
             const BodyComponent = step.body;
             return (
@@ -287,7 +287,7 @@ const AccountWizard = props => {
             navHeader = (
                 <StepperHeader
                     has_real_account={props.has_real_account}
-                    items={stateItems}
+                    items={state_items}
                     has_currency={props.has_currency}
                     has_target={props.real_account_signup_target !== 'manage'}
                 />

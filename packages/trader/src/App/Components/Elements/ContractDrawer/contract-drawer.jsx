@@ -42,7 +42,7 @@ const ContractDrawer = ({
                 contract_end_time={getEndTime(contract_info)}
                 is_dark_theme={is_dark_theme}
                 is_multiplier={is_multiplier}
-                is_open={true}
+                is_open
                 duration={getDurationTime(contract_info)}
                 duration_unit={getDurationUnitText(getDurationPeriod(contract_info))}
                 exit_spot={exit_spot}
@@ -88,7 +88,7 @@ const ContractDrawer = ({
             contract_end_time={getEndTime(contract_info)}
             is_dark_theme={is_dark_theme}
             is_multiplier={is_multiplier}
-            is_open={true}
+            is_open
             duration={getDurationTime(contract_info)}
             duration_unit={getDurationUnitText(getDurationPeriod(contract_info))}
             exit_spot={exit_spot}

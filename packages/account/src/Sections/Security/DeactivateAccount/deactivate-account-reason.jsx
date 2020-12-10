@@ -47,22 +47,24 @@ const WarningModal = props => {
     return (
         <div className='account-closure-warning-modal'>
             <Icon icon='IcRedWarning' size={96} />
-            <p className='account-closure-warning-modal__warning-message'>{localize('Warning!')}</p>
+            <Text as='p' weight='bold' color='loss-danger' className='account-closure-warning-modal__warning-message'>
+                {localize('Warning!')}
+            </Text>
             <Text size='xs' line_height='x'>
                 {localize('If you deactivate:')}
             </Text>
             <div className='account-closure-warning-modal__content-wrapper'>
-                <p className='account-closure-warning-modal__content'>
+                <Text as='p' className='account-closure-warning-modal__content'>
                     {localize('You’ll be logged out automatically.')}
-                </p>
+                </Text>
             </div>
             <div className='account-closure-warning-modal__content-wrapper'>
-                <p className='account-closure-warning-modal__content'>
+                <Text as='p' size='xs' color='prominent'>
                     <Localize
                         i18n_default_text='You will <0>NOT</0> be able to log in again.'
                         components={[<Text size='xs' line_height='s' key={0} color='loss-danger' weight='bold' />]}
                     />
-                </p>
+                </Text>
             </div>
             <FormSubmitButton
                 is_disabled={false}
@@ -174,9 +176,9 @@ class DeactivateAccountReason extends React.Component {
             <Loading is_fullscreen={false} />
         ) : (
             <div className='deactivate-account-reasons'>
-                <p className='deactivate-account-reasons__title'>
+                <Text weight='bold' size='xs' className='deactivate-account-reasons__title' as='p'>
                     {localize('Please tell us why you’re leaving. (Select up to 3 reasons.)')}
-                </p>
+                </Text>
                 <Formik initialValues={initial_form} validate={this.validateFields} onSubmit={this.handleSubmitForm}>
                     {({ values, setFieldValue, errors, handleChange, handleSubmit }) => (
                         <form onSubmit={handleSubmit}>
@@ -330,22 +332,29 @@ class DeactivateAccountReason extends React.Component {
                                 )}
                             </Field>
                             {this.state.remaining_characters >= 0 && (
-                                <p>
+                                <Text weight='bold' size='xs' as='p'>
                                     {localize('Remaining characters: {{remaining_characters}}', {
                                         remaining_characters: this.state.remaining_characters,
                                     })}
-                                </p>
+                                </Text>
                             )}
                             {Object.keys(errors).length > 0 &&
                                 Object.entries(errors).map(([key, value]) => (
-                                    <p className='deactivate-account-reasons__error' key={key}>
+                                    <Text
+                                        as='p'
+                                        weight='bold'
+                                        size='xs'
+                                        color='loss-danger'
+                                        className='deactivate-account-reasons__error'
+                                        key={key}
+                                    >
                                         {value}
-                                    </p>
+                                    </Text>
                                 ))}
                             {errors.characters_limits && (
-                                <p className='deactivate-account-reasons__error'>
+                                <Text as='p' weight='bold' size='xs' color='loss-danger'>
                                     {localize("Must be numbers, letters, and special characters . , ' -")}
-                                </p>
+                                </Text>
                             )}
                             <FormSubmitButton
                                 is_disabled={

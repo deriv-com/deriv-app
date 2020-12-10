@@ -9,7 +9,7 @@ import Unsupported from 'Components/poi-unsupported';
 import Expired from 'Components/poi-expired';
 import OnfidoFailed from 'Components/poi-onfido-failed';
 import Verified from 'Components/poi-verified';
-import onfido_phrases from 'Constants/onfido-phrases';
+import getOnfidoPhrases from 'Constants/onfido-phrases';
 import { onfido_status_codes } from './proof-of-identity';
 
 const onfido_container_id = 'onfido';
@@ -53,8 +53,8 @@ const Onfido = ({ documents_supported, handleComplete, height, onfido_service_to
                 containerId: onfido_container_id,
                 language: {
                     locale: getLanguage().toLowerCase() || 'en',
-                    phrases: onfido_phrases,
-                    mobilePhrases: onfido_phrases,
+                    phrases: getOnfidoPhrases(),
+                    mobilePhrases: getOnfidoPhrases(),
                 },
                 token: onfido_service_token,
                 useModal: false,

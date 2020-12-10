@@ -12,6 +12,7 @@ import {
     DesktopWrapper,
     MobileWrapper,
     SelectNative,
+    Text,
 } from '@deriv/components';
 import { routes, isMobile, isDesktop } from '@deriv/shared';
 
@@ -48,7 +49,7 @@ import {
 const ConfirmationContent = ({ className }) => {
     return (
         <React.Fragment>
-            <p className={className}>
+            <Text as='p' className={className}>
                 <Localize
                     i18n_default_text='In providing our services to you, we are required to obtain information from you in order to assess whether a given product or service is appropriate for you (that is, whether you possess the experience and knowledge to understand the risks involved).<0/><1/>'
                     components={[<br key={0} />, <br key={1} />]}
@@ -58,7 +59,7 @@ const ConfirmationContent = ({ className }) => {
                     components={[<br key={0} />, <br key={1} />]}
                 />
                 <Localize i18n_default_text='By clicking Accept below and proceeding with the Account Opening you should note that you may be exposing yourself to risks (which may be significant, including the risk of loss of the entire sum invested) that you may not have the knowledge and experience to properly assess or mitigate.' />
-            </p>
+            </Text>
         </React.Fragment>
     );
 };
@@ -91,7 +92,14 @@ const ConfirmationModal = ({ is_visible, toggleModal, onSubmit }) => (
 
 const ConfirmationPage = ({ toggleModal, onSubmit }) => (
     <div className='account__confirmation-page'>
-        <span className='account__confirmation-page-title'>{localize('Notice')}</span>
+        <Text
+            size='xs'
+            weight='bold'
+            styles={{ color: 'var(--brand-red-coral)' }}
+            className='account__confirmation-page-title'
+        >
+            {localize('Notice')}
+        </Text>
         <ConfirmationContent className='account__confirmation-page-content' />
         <div className='account__confirmation-page-footer'>
             <Button large text={localize('Back')} onClick={() => toggleModal(false)} secondary />
@@ -290,7 +298,7 @@ class FinancialAssessment extends React.Component {
             has_trading_experience,
         } = this.state;
 
-        if (is_loading) return <Loading is_fullscreen={false} className='account___intial-loader' />;
+        if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
         if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
         if (this.props.is_virtual) return <DemoMessage />;
         if (isMobile() && is_submit_success) return <SubmittedPage />;
@@ -851,9 +859,13 @@ class FinancialAssessment extends React.Component {
                                     <FormFooter>
                                         {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
                                         {isMobile() && (
-                                            <span className='account-form__footer-all-fields-required'>
+                                            <Text
+                                                align='center'
+                                                size='xxs'
+                                                className='account-form__footer-all-fields-required'
+                                            >
                                                 {localize('All fields are required')}
-                                            </span>
+                                            </Text>
                                         )}
                                         <Button
                                             type='button'

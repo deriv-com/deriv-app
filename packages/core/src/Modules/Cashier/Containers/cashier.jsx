@@ -147,7 +147,11 @@ class Cashier extends React.Component {
                         <MobileWrapper>
                             <Div100vhContainer className='cashier__wrapper--is-mobile' height_offset='80px'>
                                 {selected_route && (
-                                    <selected_route.component component_icon={selected_route.icon_component} />
+                                    <selected_route.component
+                                        component_icon={selected_route.icon_component}
+                                        history={this.props.history}
+                                        menu_options={menu_options()}
+                                    />
                                 )}
                             </Div100vhContainer>
                         </MobileWrapper>

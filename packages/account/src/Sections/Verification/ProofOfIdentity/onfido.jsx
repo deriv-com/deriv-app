@@ -9,7 +9,7 @@ import Unsupported from 'Components/poi-unsupported';
 import Expired from 'Components/poi-expired';
 import OnfidoFailed from 'Components/poi-onfido-failed';
 import Verified from 'Components/poi-verified';
-import onfido_phrases from 'Constants/onfido-phrases';
+import getOnfidoPhrases from 'Constants/onfido-phrases';
 import { onfido_status_codes } from './proof-of-identity';
 
 const onfido_container_id = 'onfido';
@@ -37,7 +37,8 @@ export default class Onfido extends React.Component {
                 containerId: onfido_container_id,
                 language: {
                     locale: getLanguage().toLowerCase() || 'en',
-                    phrases: onfido_phrases,
+                    phrases: getOnfidoPhrases(),
+                    mobilePhrases: getOnfidoPhrases(),
                 },
                 token: this.props.onfido_service_token,
                 useModal: false,
@@ -70,8 +71,18 @@ export default class Onfido extends React.Component {
     };
 
     componentDidMount() {
-        if (this.props.status === onfido_status_codes.onfido) {
+        // Token is available on mount if we have it in cookie store
+        if (this.props.status === onfido_status_codes.onfido && this.props.onfido_service_token) {
             this.initOnfido();
+        }
+    }
+
+    componentDidUpdate(prevProps) {
+        // Ensure that we initialize onfido only if onfido_service_token is available
+        if (prevProps.onfido_service_token !== this.props.onfido_service_token) {
+            if (this.props.status === onfido_status_codes.onfido && this.props.onfido_service_token) {
+                this.initOnfido();
+            }
         }
     }
 

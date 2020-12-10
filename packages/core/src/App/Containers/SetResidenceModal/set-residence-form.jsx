@@ -31,7 +31,6 @@ const SetResidenceForm = ({
                             required
                             list_items={residence_list}
                             onItemSelection={({ value, text }) => setFieldValue('residence', value ? text : '', true)}
-                            list_portal_id='modal_root'
                         />
                     </DesktopWrapper>
                     <MobileWrapper>

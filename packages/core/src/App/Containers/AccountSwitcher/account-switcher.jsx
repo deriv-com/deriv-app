@@ -23,7 +23,6 @@ import {
     getMT5AccountDisplay,
     getMT5AccountKey,
 } from '@deriv/shared';
-
 import { localize, Localize } from '@deriv/translations';
 import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
 import { connect } from 'Stores/connect';
@@ -35,23 +34,23 @@ const AccountSwitcher = props => {
     const [active_tab_index, setActiveTabIndex] = React.useState(
         !props.is_virtual || props.should_show_real_accounts_list ? 0 : 1
     );
-    const [is_demo_deriv_visible, setDemoDerivVisible] = React.useState(true);
-    const [is_demo_dmt5_visible, setDemoDmt5Visible] = React.useState(true);
-    const [is_real_deriv_visible, setRealDerivVisible] = React.useState(true);
-    const [is_real_dmt5_visible, setRealDmt5Visible] = React.useState(true);
+    const [is_deriv_demo_visible, setDerivDemoVisible] = React.useState(true);
+    const [is_deriv_real_visible, setDerivRealVisible] = React.useState(true);
+    const [is_dmt5_demo_visible, setDmt5DemoVisible] = React.useState(true);
+    const [is_dmt5_real_visible, setDmt5RealVisible] = React.useState(true);
 
     const wrapper_ref = React.useRef();
 
     const toggleVisibility = section => {
         switch (section) {
             case 'demo_deriv':
-                return setDemoDerivVisible(!is_demo_deriv_visible);
+                return setDerivDemoVisible(!is_deriv_demo_visible);
             case 'demo_dmt5':
-                return setDemoDmt5Visible(!is_demo_dmt5_visible);
+                return setDmt5DemoVisible(!is_dmt5_demo_visible);
             case 'real_deriv':
-                return setRealDerivVisible(!is_real_deriv_visible);
+                return setDerivRealVisible(!is_deriv_real_visible);
             case 'real_dmt5':
-                return setRealDmt5Visible(!is_real_dmt5_visible);
+                return setDmt5RealVisible(!is_dmt5_real_visible);
             default:
                 return false;
         }
@@ -126,8 +125,6 @@ const AccountSwitcher = props => {
 
     const isDemo = account => account.account_type === 'demo';
 
-    const isReal = account => !isDemo(account);
-
     // * mt5_login_list returns these:
     // landing_company_short: "svg" | "malta" | "maltainvest" |  "vanuatu"  | "labuan" | "bvi"
     // account_type: "real" | "demo"
@@ -183,10 +180,8 @@ const AccountSwitcher = props => {
         props.resetVirtualBalance();
     };
 
-    const isRealAccountTab = () => {
-        // Real accounts is always the first tab index based on design
-        return active_tab_index === 0;
-    };
+    // Real accounts is always the first tab index based on design
+    const isRealAccountTab = active_tab_index === 0;
 
     const hasRequiredCredentials = () => {
         // for MT5 Real Financial STP, if true, users can instantly create a new account by setting password
@@ -195,7 +190,7 @@ const AccountSwitcher = props => {
         return !!(citizen && tax_identification_number && tax_residence);
     };
 
-    const sortedAccountList = () => {
+    const getSortedAccountList = () => {
         // sort accounts as follows:
         // top is fiat, then crypto (each alphabetically by currency), then demo
         return props.account_list.slice().sort((a, b) => {
@@ -216,7 +211,7 @@ const AccountSwitcher = props => {
         });
     };
 
-    const sortedMT5List = () => {
+    const getSortedMT5List = () => {
         // for MT5, synthetic, financial, financial stp
         return props.mt5_login_list.slice().sort((a, b) => {
             const a_is_demo = isDemo(a);
@@ -238,24 +233,24 @@ const AccountSwitcher = props => {
         });
     };
 
-    const demoMT5 = () => {
-        return sortedMT5List().filter(isDemo);
+    const getDemoMT5 = () => {
+        return getSortedMT5List().filter(isDemo);
     };
 
-    const remainingDemoMT5 = () => {
-        return getRemainingAccounts(demoMT5());
+    const getRemainingDemoMT5 = () => {
+        return getRemainingAccounts(getDemoMT5());
     };
 
-    const realMT5 = () => {
-        return sortedMT5List().filter(isReal);
+    const getRealMT5 = () => {
+        return getSortedMT5List().filter(account => !isDemo(account));
     };
 
-    const remainingRealMT5 = () => {
-        return getRemainingAccounts(realMT5());
+    const getRemainingRealMT5 = () => {
+        return getRemainingAccounts(getRealMT5());
     };
 
     // SVG clients can't upgrade.
-    const remainingRealAccounts = () => {
+    const getRemainingRealAccounts = () => {
         return canOpenMulti() ? [] : props.upgradeable_landing_companies;
     };
 
@@ -273,7 +268,7 @@ const AccountSwitcher = props => {
         return !props.is_virtual;
     };
 
-    const totalDemoAssets = () => {
+    const getTotalDemoAssets = () => {
         const vrtc_loginid = props.account_list.find(account => account.is_virtual).loginid;
         const vrtc_balance = props.accounts[vrtc_loginid] ? props.accounts[vrtc_loginid].balance : 0;
         const mt5_demo_total = props.mt5_login_list
@@ -288,7 +283,7 @@ const AccountSwitcher = props => {
         return Array.isArray(props.mt5_login_list) ? mt5_demo_total.balance + vrtc_balance : vrtc_balance;
     };
 
-    const totalRealAssets = () => {
+    const getTotalRealAssets = () => {
         return props.obj_total_balance.amount_real + props.obj_total_balance.amount_mt5;
     };
 
@@ -302,19 +297,19 @@ const AccountSwitcher = props => {
         ? localize('Total assets in your Deriv and DMT5 real accounts.')
         : localize('Total assets in your Deriv real accounts.');
 
-    const total_assets_message = isRealAccountTab() ? total_assets_message_real : total_assets_message_demo;
+    const total_assets_message = isRealAccountTab ? total_assets_message_real : total_assets_message_demo;
 
     const demo_accounts = (
         <div className='acc-switcher__list-wrapper'>
             <AccountWrapper
                 header={localize('Deriv Accounts')}
-                is_visible={is_demo_deriv_visible}
+                is_visible={is_deriv_demo_visible}
                 toggleVisibility={() => {
                     toggleVisibility('demo_deriv');
                 }}
             >
                 <div className='acc-switcher__accounts'>
-                    {sortedAccountList()
+                    {getSortedAccountList()
                         .filter(account => account.is_virtual)
                         .map(account => (
                             <AccountList
@@ -340,7 +335,7 @@ const AccountSwitcher = props => {
                     <div className='acc-switcher__separator acc-switcher__separator--no-padding' />
                     <AccountWrapper
                         header={localize('DMT5 Accounts')}
-                        is_visible={is_demo_dmt5_visible}
+                        is_visible={is_dmt5_demo_visible}
                         toggleVisibility={() => {
                             toggleVisibility('demo_dmt5');
                         }}
@@ -351,9 +346,9 @@ const AccountSwitcher = props => {
                             </div>
                         ) : (
                             <React.Fragment>
-                                {!!demoMT5().length && (
+                                {!!getDemoMT5().length && (
                                     <div className='acc-switcher__accounts'>
-                                        {demoMT5().map(account => (
+                                        {getDemoMT5().map(account => (
                                             <AccountList
                                                 key={account.login}
                                                 account_type={account.group}
@@ -367,7 +362,7 @@ const AccountSwitcher = props => {
                                         ))}
                                     </div>
                                 )}
-                                {remainingDemoMT5().map(account => (
+                                {getRemainingDemoMT5().map(account => (
                                     <div key={account.title} className='acc-switcher__new-account'>
                                         <Icon icon={`IcMt5-${account.icon}`} size={24} />
                                         <Text size='xs' color='general' className='acc-switcher__new-account-text'>
@@ -396,13 +391,13 @@ const AccountSwitcher = props => {
             <React.Fragment>
                 <AccountWrapper
                     header={localize('Deriv Accounts')}
-                    is_visible={is_real_deriv_visible}
+                    is_visible={is_deriv_real_visible}
                     toggleVisibility={() => {
                         toggleVisibility('real_deriv');
                     }}
                 >
                     <div className='acc-switcher__accounts'>
-                        {sortedAccountList()
+                        {getSortedAccountList()
                             .filter(account => !account.is_virtual)
                             .map(account => {
                                 return (
@@ -425,7 +420,7 @@ const AccountSwitcher = props => {
                                 );
                             })}
                     </div>
-                    {remainingRealAccounts().map((account, index) => (
+                    {getRemainingRealAccounts().map((account, index) => (
                         <div key={index} className='acc-switcher__new-account'>
                             <Icon icon='IcDeriv' size={24} />
                             <Text size='xs' color='general' className='acc-switcher__new-account-text'>
@@ -465,7 +460,7 @@ const AccountSwitcher = props => {
                     <div className='acc-switcher__separator acc-switcher__separator--no-padding' />
                     <AccountWrapper
                         header={localize('DMT5 Accounts')}
-                        is_visible={is_real_dmt5_visible}
+                        is_visible={is_dmt5_real_visible}
                         toggleVisibility={() => {
                             toggleVisibility('real_dmt5');
                         }}
@@ -476,9 +471,9 @@ const AccountSwitcher = props => {
                             </div>
                         ) : (
                             <React.Fragment>
-                                {!!realMT5().length && (
+                                {!!getRealMT5().length && (
                                     <div className='acc-switcher__accounts'>
-                                        {realMT5().map(account => (
+                                        {getRealMT5().map(account => (
                                             <AccountList
                                                 key={account.login}
                                                 market_type={account.market_type}
@@ -496,7 +491,7 @@ const AccountSwitcher = props => {
                                         ))}
                                     </div>
                                 )}
-                                {remainingRealMT5().map(account => (
+                                {getRemainingRealMT5().map(account => (
                                     <div
                                         key={account.title}
                                         className={classNames('acc-switcher__new-account', {
@@ -573,10 +568,10 @@ const AccountSwitcher = props => {
                 </Text>
                 <Text size='xs' color='prominent' className='acc-switcher__balance'>
                     <Money
-                        currency={isRealAccountTab() ? props.obj_total_balance.currency : 'USD'}
+                        currency={isRealAccountTab ? props.obj_total_balance.currency : 'USD'}
                         amount={formatMoney(
-                            isRealAccountTab() ? props.obj_total_balance.currency : 'USD',
-                            isRealAccountTab() ? totalRealAssets() : totalDemoAssets(),
+                            isRealAccountTab ? props.obj_total_balance.currency : 'USD',
+                            isRealAccountTab ? getTotalRealAssets() : getTotalDemoAssets(),
                             true
                         )}
                         show_currency

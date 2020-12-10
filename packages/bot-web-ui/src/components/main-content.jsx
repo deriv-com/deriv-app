@@ -8,20 +8,11 @@ import { connect } from '../stores/connect';
 import '../assets/sass/workspace.scss';
 import '../assets/sass/toolbox.scss';
 
-const MainContent = ({ active_tab, is_loading, onMount, onUnmount, setContainerSize }) => {
-    const current_active_tab = React.useRef(active_tab);
-
+const MainContent = ({ active_tab, is_loading, onMount, onUnmount }) => {
     React.useEffect(() => {
         onMount();
         return () => onUnmount();
     }, [onMount, onUnmount]);
-
-    React.useEffect(() => {
-        if (active_tab !== current_active_tab) {
-            current_active_tab.current = active_tab;
-            setContainerSize();
-        }
-    }, [active_tab, setContainerSize]);
 
     if (active_tab === tabs_title.WORKSPACE) {
         return (

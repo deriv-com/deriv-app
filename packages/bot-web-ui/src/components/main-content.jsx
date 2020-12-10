@@ -8,7 +8,7 @@ import { connect } from '../stores/connect';
 import '../assets/sass/workspace.scss';
 import '../assets/sass/toolbox.scss';
 
-const MainContent = ({ active_tab, onMount, onUnmount, setContainerSize }) => {
+const MainContent = ({ active_tab, is_loading, onMount, onUnmount, setContainerSize }) => {
     const current_active_tab = React.useRef(active_tab);
 
     React.useEffect(() => {
@@ -32,7 +32,7 @@ const MainContent = ({ active_tab, onMount, onUnmount, setContainerSize }) => {
                     height: 'var(--bot-content-height)',
                 }}
             >
-                {Blockly.derivWorkspace && (
+                {Blockly.derivWorkspace && !is_loading && (
                     <React.Fragment>
                         <Toolbox />
                         <Flyout />
@@ -61,13 +61,15 @@ const MainContent = ({ active_tab, onMount, onUnmount, setContainerSize }) => {
 
 MainContent.propTypes = {
     active_tab: PropTypes.string,
+    is_loading: PropTypes.bool,
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
     setContainerSize: PropTypes.func,
 };
 
-export default connect(({ main_content }) => ({
+export default connect(({ blockly_store, main_content }) => ({
     active_tab: main_content.active_tab,
+    is_loading: blockly_store.is_loading,
     onMount: main_content.onMount,
     onUnmount: main_content.onUnmount,
     setContainerSize: main_content.setContainerSize,

@@ -7,21 +7,29 @@ import { getLocalizedBasis } from 'Stores/Modules/Trading/Constants/contract';
 import { MultiplierAmountWidget } from 'Modules/Trading/Components/Form/TradeParams/Multiplier/widgets.jsx';
 import TradeParamsModal from '../../Containers/trade-params-mobile.jsx';
 
-class MobileWidget extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            is_open: false,
-        };
-    }
+const MobileWidget = ({
+    amount,
+    basis,
+    currency,
+    duration,
+    duration_min_max,
+    duration_unit,
+    form_components,
+    is_collapsed,
+    is_multiplier,
+    last_digit,
+    onChange,
+    onChangeUiStore,
+    toggleDigitsWidget,
+    trade_store,
+}) => {
+    const [is_open, setIsOpen] = React.useState(false);
 
-    componentDidUpdate() {
-        this.assertDurationIsWithinBoundary();
-    }
+    React.useEffect(() => {
+        assertDurationIsWithinBoundary();
+    });
 
-    assertDurationIsWithinBoundary() {
-        const { duration_min_max, duration, duration_unit, trade_store, onChange, onChangeUiStore } = this.props;
-
+    const assertDurationIsWithinBoundary = () => {
         const contract_expiry_type = getExpiryType(trade_store);
         const [min_value, max_value] = getDurationMinMaxValues(duration_min_max, contract_expiry_type, duration_unit);
 
@@ -33,16 +41,11 @@ class MobileWidget extends React.Component {
             onChangeUiStore({ name: `duration_${duration_unit}`, value: max_value });
             onChange({ target: { name: 'duration', value: max_value } });
         }
-    }
-
-    toggleWidget = () => {
-        this.setState({
-            is_open: !this.state.is_open,
-        });
     };
 
-    getHumanReadableDuration() {
-        const { duration, duration_unit } = this.props;
+    const toggleWidget = () => setIsOpen(!is_open);
+
+    const getHumanReadableDuration = () => {
         const lookup = {
             t: [localize('tick'), localize('ticks')],
             s: [localize('second'), localize('seconds')],
@@ -53,65 +56,61 @@ class MobileWidget extends React.Component {
         const formatted_duration_unit = +duration === 1 ? lookup[duration_unit][0] : lookup[duration_unit][1];
 
         return `${duration} ${formatted_duration_unit}`;
-    }
-
-    isVisible = component => {
-        return this.props.form_components.includes(component);
     };
 
-    render() {
-        const { amount, basis, currency, last_digit, is_multiplier } = this.props;
+    const isVisible = component => {
+        return form_components.includes(component);
+    };
 
-        const localized_basis = getLocalizedBasis();
+    const localized_basis = getLocalizedBasis();
 
-        const stakeOrPayout = () => {
-            switch (basis) {
-                case 'stake':
-                    return localized_basis.stake;
-                case 'payout':
-                    return localized_basis.payout;
-                default:
-                    return basis;
-            }
-        };
+    const stakeOrPayout = () => {
+        switch (basis) {
+            case 'stake':
+                return localized_basis.stake;
+            case 'payout':
+                return localized_basis.payout;
+            default:
+                return basis;
+        }
+    };
 
-        return (
-            <div className='mobile-widget__wrapper'>
-                {is_multiplier ? (
-                    <MultiplierAmountWidget />
-                ) : (
-                    <div className='mobile-widget' onClick={this.toggleWidget}>
-                        <div className='mobile-widget__duration'>{this.getHumanReadableDuration()}</div>
-                        <div className='mobile-widget__amount'>
-                            <Money amount={amount} currency={currency} show_currency />
-                        </div>
-                        <div className='mobile-widget__type'>{stakeOrPayout()}</div>
+    return (
+        <div className='mobile-widget__wrapper'>
+            {is_multiplier ? (
+                <MultiplierAmountWidget />
+            ) : (
+                <div className='mobile-widget' onClick={toggleWidget}>
+                    <div className='mobile-widget__duration'>{getHumanReadableDuration()}</div>
+                    <div className='mobile-widget__amount'>
+                        <Money amount={amount} currency={currency} show_currency />
                     </div>
-                )}
-                <TradeParamsModal is_open={this.state.is_open} toggleModal={this.toggleWidget} />
-                {this.isVisible('last_digit') && this.props.is_collapsed && (
-                    <div className='mobile-widget' onClick={this.props.toggleDigitsWidget}>
-                        <div className='mobile-widget__amount'>
-                            <Localize i18n_default_text='Digit: {{last_digit}} ' values={{ last_digit }} />
-                        </div>
+                    <div className='mobile-widget__type'>{stakeOrPayout()}</div>
+                </div>
+            )}
+            <TradeParamsModal is_open={is_open} toggleModal={toggleWidget} />
+            {isVisible('last_digit') && is_collapsed && (
+                <div className='mobile-widget' onClick={toggleDigitsWidget}>
+                    <div className='mobile-widget__amount'>
+                        <Localize i18n_default_text='Digit: {{last_digit}} ' values={{ last_digit }} />
                     </div>
-                )}
-            </div>
-        );
-    }
-}
+                </div>
+            )}
+        </div>
+    );
+};
 
 export default connect(({ modules, ui }) => ({
     amount: modules.trade.amount,
     basis: modules.trade.basis,
     currency: modules.trade.currency,
     duration: modules.trade.duration,
+    duration_min_max: modules.trade.duration_min_max,
     duration_unit: modules.trade.duration_unit,
+    form_components: modules.trade.form_components,
+    is_multiplier: modules.trade.is_multiplier,
+    last_digit: modules.trade.last_digit,
     onChange: modules.trade.onChange,
     onChangeUiStore: ui.onChangeUiStore,
-    duration_min_max: modules.trade.duration_min_max,
     trade_store: modules.trade,
-    form_components: modules.trade.form_components,
-    last_digit: modules.trade.last_digit,
-    is_multiplier: modules.trade.is_multiplier,
 }))(MobileWidget);

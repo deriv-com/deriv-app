@@ -61,69 +61,6 @@ export const getMtCompanies = () => {
     };
 };
 
-export const getMt5GroupConfig = (group = undefined) => {
-    const map_mode = {
-        real_svg: {
-            type: 'synthetic',
-            category: 'real',
-        },
-        real_svg_financial: {
-            type: 'financial',
-            category: 'real',
-        },
-        real_vanuatu_financial: {
-            type: 'financial',
-            category: 'real',
-        },
-        real_labuan_financial_stp: {
-            type: 'financial_stp',
-            category: 'real',
-        },
-        demo_svg: {
-            type: 'synthetic',
-            category: 'demo',
-        },
-        demo_svg_financial: {
-            type: 'financial',
-            category: 'demo',
-        },
-        demo_vanuatu_financial: {
-            type: 'financial',
-            category: 'demo',
-        },
-        demo_labuan_financial_stp: {
-            type: 'financial_stp',
-            category: 'demo',
-        },
-        demo_maltainvest_financial: {
-            type: 'financial',
-            category: 'demo',
-        },
-        real_maltainvest_financial: {
-            type: 'financial',
-            category: 'real',
-        },
-        demo_malta: {
-            type: 'synthetic',
-            category: 'demo',
-        },
-        real_malta: {
-            type: 'synthetic',
-            category: 'real',
-        },
-    };
-
-    if (group !== undefined) {
-        if (map_mode[group] && map_mode[group].type) {
-            return map_mode[group];
-        }
-
-        return { type: '', category: '' };
-    }
-
-    return map_mode;
-};
-
 /**
  * Generate the enum for API request.
  *

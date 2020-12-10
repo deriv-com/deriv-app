@@ -6,7 +6,8 @@ Can also be used dynamically in situations where there might be no collapsible i
 - DragUp
 - DragDown
 - SwipeUp
-- SwipeDown 
+- SwipeDown
+ 
 ## Usage
  
 ```jsx

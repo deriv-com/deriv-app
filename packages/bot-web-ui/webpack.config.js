@@ -78,8 +78,15 @@ module.exports = function(env, argv) {
                     exclude: /node_modules/,
                     loader: [
                       '@deriv/shared/src/loaders/react-import-loader.js',
-                      'babel-loader',
                     ],
+                },
+                {
+                    test: /\.(js|jsx)$/,
+                    exclude: /node_modules/,
+                    loader: 'babel-loader',
+                    options: {
+                        rootMode: 'upward',
+                    },
                 },
                 { // @deriv/bot-skeleton also requires `.xml` import statements to be parsed by raw-loader
                     test: /\.xml$/,
@@ -92,7 +99,7 @@ module.exports = function(env, argv) {
             new CleanWebpackPlugin(),
             new MiniCssExtractPlugin({ filename: 'bot-web-ui.main.css' }),
             new StyleLintPlugin({ fix: true }),
-            new CopyWebpackPlugin([{ from: 'node_modules/@deriv/bot-skeleton/dist/media', to: 'media' }]),
+            new CopyWebpackPlugin({patterns: [{ from: 'node_modules/@deriv/bot-skeleton/dist/media', to: 'media' }]}),
             new SpriteLoaderPlugin(),
         ],
         externals: [

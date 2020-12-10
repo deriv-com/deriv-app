@@ -209,7 +209,7 @@ const AccountTransferForm = ({
             </h2>
             <Formik
                 initialValues={{
-                    amount: account_transfer_amount,
+                    amount: account_transfer_amount || '',
                 }}
                 onSubmit={() => {
                     setIsTransferConfirm(true);
@@ -326,7 +326,7 @@ const AccountTransferForm = ({
                                             className='cashier__input dc-input--no-placeholder account-transfer__input'
                                             type='text'
                                             label={localize('Amount')}
-                                            error={touched.amount && errors.amount}
+                                            error={(touched.amount && errors.amount) || ''}
                                             required
                                             trailing_icon={
                                                 selected_from.currency ? (
@@ -343,7 +343,7 @@ const AccountTransferForm = ({
                                             autoComplete='off'
                                             maxLength='30'
                                             hint={
-                                                transfer_limit.max && (
+                                                transfer_limit.max ? (
                                                     <Localize
                                                         i18n_default_text='Transfer limits: <0 /> - <1 />'
                                                         components={[
@@ -361,6 +361,8 @@ const AccountTransferForm = ({
                                                             />,
                                                         ]}
                                                     />
+                                                ) : (
+                                                    ''
                                                 )
                                             }
                                         />

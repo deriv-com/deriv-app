@@ -140,7 +140,7 @@ class PaymentAgentTransferForm extends React.Component {
                                         required
                                         autoComplete='off'
                                         has_character_counter
-                                        max_characters='250'
+                                        max_characters={250}
                                     />
                                 )}
                             </Field>

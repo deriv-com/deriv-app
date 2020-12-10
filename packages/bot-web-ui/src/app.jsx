@@ -23,15 +23,12 @@ const App = ({ passthrough }) => {
 
     const { app, common } = root_store_instance.current;
 
+    const { onMount, onUnmount } = app;
     React.useEffect(() => {
         GTM.init(root_store_instance.current);
         ServerTime.init(common);
         app.setDBotEngineStores(root_store_instance.current);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [root_store_instance.current]);
 
-    const { onMount, onUnmount } = app;
-    React.useEffect(() => {
         ApiHelpers.setInstance(app.api_helpers_store);
         const { active_symbols } = ApiHelpers.instance;
 

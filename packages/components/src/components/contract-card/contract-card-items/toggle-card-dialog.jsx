@@ -12,6 +12,8 @@ import Popover from '../../popover';
 import Div100vhContainer from '../../div100vh-container';
 import './sass/contract-card-dialog.scss';
 
+let ContractUpdateFormWrapper;
+
 const ToggleCardDialog = ({
     addToast,
     contract_id,
@@ -34,7 +36,8 @@ const ToggleCardDialog = ({
     const toggle_ref = React.useRef();
     const dialog_ref = React.useRef();
     const contract = getContractById(contract_id);
-    const ContractUpdateFormWrapper = connectWithContractUpdate?.(ContractUpdateForm) || ContractUpdateForm;
+    ContractUpdateFormWrapper =
+        ContractUpdateFormWrapper || connectWithContractUpdate?.(ContractUpdateForm) || ContractUpdateForm;
 
     React.useEffect(() => {
         if (is_visible && toggle_ref && toggle_ref.current && dialog_ref && dialog_ref.current) {
@@ -69,24 +72,23 @@ const ToggleCardDialog = ({
         setIsDoNotShowSelected(!is_do_not_show_selected);
     };
 
-    const toggleDialog = React.useCallback(
-        e => {
-            e.preventDefault();
-            e.stopPropagation();
-            if (isMobile() && should_show_cancellation_warning && is_valid_to_cancel) {
-                addToast({
-                    key: 'deal_cancellation_active',
-                    content: getCardLabels().TAKE_PROFIT_LOSS_NOT_AVAILABLE,
-                    type: 'error',
-                });
-            }
+    const toggleDialog = e => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (isMobile() && should_show_cancellation_warning && is_valid_to_cancel) {
+            addToast({
+                key: 'deal_cancellation_active',
+                content: getCardLabels().TAKE_PROFIT_LOSS_NOT_AVAILABLE,
+                type: 'error',
+            });
+        }
 
-            if (is_valid_to_cancel) return;
+        if (is_valid_to_cancel) return;
 
-            setIsVisible(!is_visible);
-        },
-        [is_visible]
-    );
+        setIsVisible(!is_visible);
+    };
+
+    const toggleDialogWrapper = React.useCallback(toggleDialog, [toggleDialog]);
 
     const edit_icon = (
         <Icon
@@ -124,14 +126,14 @@ const ToggleCardDialog = ({
 
     return (
         <div onClick={handleClick}>
-            <div ref={toggle_ref} className='dc-contract-card-dialog-toggle' onClick={toggleDialog}>
+            <div ref={toggle_ref} className='dc-contract-card-dialog-toggle' onClick={toggleDialogWrapper}>
                 {is_valid_to_cancel ? toggle_wrapper : edit_icon}
             </div>
             <MobileWrapper>
                 <MobileDialog
                     portal_element_id='modal_root'
                     visible={is_visible}
-                    onClose={toggleDialog}
+                    onClose={toggleDialogWrapper}
                     wrapper_classname='contract-update'
                 >
                     <Div100vhContainer className='contract-update__wrapper' height_offset='40px'>
@@ -144,7 +146,7 @@ const ToggleCardDialog = ({
                             contract={contract}
                             setCurrentFocus={setCurrentFocus}
                             status={status}
-                            toggleDialog={toggleDialog}
+                            toggleDialog={toggleDialogWrapper}
                         />
                     </Div100vhContainer>
                 </MobileDialog>
@@ -156,7 +158,7 @@ const ToggleCardDialog = ({
                     left={left}
                     top={top}
                     toggle_ref={toggle_ref}
-                    toggleDialog={toggleDialog}
+                    toggleDialog={toggleDialogWrapper}
                 >
                     <ContractUpdateFormWrapper
                         addToast={addToast}
@@ -166,7 +168,7 @@ const ToggleCardDialog = ({
                         removeToast={removeToast}
                         contract={contract}
                         setCurrentFocus={setCurrentFocus}
-                        toggleDialog={toggleDialog}
+                        toggleDialog={toggleDialogWrapper}
                     />
                 </ContractCardDialog>
             </DesktopWrapper>

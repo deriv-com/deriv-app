@@ -8,7 +8,7 @@ const ContractCardDialog = React.forwardRef(({ children, is_visible, left, toggl
     React.useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside, true);
         return () => document.removeEventListener('mousedown', handleClickOutside, true);
-    }, [toggleDialog]);
+    });
 
     const handleClickOutside = event => {
         if (ref && ref.current && is_visible) {
@@ -61,4 +61,4 @@ ContractCardDialog.propTypes = {
     top: PropTypes.number,
 };
 
-export default React.memo(ContractCardDialog);
+export default ContractCardDialog;

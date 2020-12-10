@@ -29,6 +29,7 @@ const Onfido = ({ documents_supported, handleComplete, height, onfido_service_to
     const [onfido_init_error, setOnfidoInitError] = React.useState(false);
 
     // didMount hook
+    // added eslint-disable-line below as the init func needs to be wrapped in a useCallback but its an external sdk
     React.useEffect(() => {
         if (status === onfido_status_codes.onfido && onfido_service_token) {
             initOnfido().then();
@@ -43,7 +44,9 @@ const Onfido = ({ documents_supported, handleComplete, height, onfido_service_to
     const previous_onfido_service_token = usePrevious(onfido_service_token);
 
     const onComplete = React.useCallback(() => {
-        onfido_init.tearDown();
+        if (onfido_init) {
+            onfido_init.tearDown();
+        }
         handleComplete();
     }, [handleComplete, onfido_init]);
 
@@ -81,10 +84,13 @@ const Onfido = ({ documents_supported, handleComplete, height, onfido_service_to
         }
     }, [documents_supported, onComplete, onfido_service_token]);
 
+    // didUpdate hook
     React.useEffect(() => {
-        if (previous_onfido_service_token !== onfido_service_token) {
-            if (status === onfido_status_codes.onfido && onfido_service_token) {
-                initOnfido();
+        if (previous_onfido_service_token && onfido_service_token) {
+            if (previous_onfido_service_token !== onfido_service_token) {
+                if (status === onfido_status_codes.onfido && onfido_service_token) {
+                    initOnfido();
+                }
             }
         }
     }, [initOnfido, previous_onfido_service_token, onfido_service_token, status]);

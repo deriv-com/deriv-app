@@ -42,10 +42,10 @@ const SendEmailTemplate = ({
         let timeout = timeout_limit;
         resend_interval = setInterval(() => {
             if (--timeout) {
-                setIsResendBtnDisabled(timeout < timeout_limit);
-                setResendEmailBtnText(
-                    timeout < timeout_limit ? txt_resend_in.replace('{{seconds}}', timeout) : txt_resend
-                );
+                if (!is_resend_btn_disabled) {
+                    setIsResendBtnDisabled(true);
+                }
+                setResendEmailBtnText(txt_resend_in.replace('{{seconds}}', timeout));
             } else {
                 setIsResendBtnDisabled(false);
                 setResendEmailBtnText(txt_resend);

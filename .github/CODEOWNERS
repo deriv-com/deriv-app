@@ -36,7 +36,11 @@
 # ================================================
 
 #  aaron-binary
+#  akmal-binary
+#  ali-fs
+#  amirghadimi-fs
 #  ashkanx
+#  bahar-fs
 #  balakrishna-binary
 #  carol-binary
 #  mahdiaryayi-fs
@@ -45,8 +49,9 @@
 #  negar-binary
 #  negarn
 #  nijil-binary
-#  oskar-binary
 #  reza-fs
+#  salar-fs
+#  sara-fs
 #  zaki-binary
 
 
@@ -77,6 +82,7 @@
 #  Used for approving all relevant changes to Bot
 #
 #   - aaron-binary
+#   - bahar-fs
 #   - carol-binary
 #   - mehrzad-fs
 #   - nijil-binary
@@ -99,7 +105,6 @@
 #   - aaron-binary
 #   - mustofa-binary
 #   - negarn
-#   - oskar-binary
 
 
 # ==============================================================
@@ -107,9 +112,13 @@
 # ==============================================================
 #  Used for approving all relevant changes to Shared/Components
 #
+#   - akmal-binary
+#   - ali-fs
+#   - amirghadimi-fs
 #   - balakrishna-binary
-#   - oskar-binary
 #   - reza-fs
+#   - salar-fs
+#   - sara-fs
 #   - zaki-binary
 
 
@@ -118,12 +127,23 @@
 # ==============================================================
 #  Used for approving all relevant changes to Trader
 #
+#   - akmal-binary
+#   - ali-fs
+#   - amirghadimi-fs
 #   - balakrishna-binary
 #   - mahdiaryayi-fs
 #   - negarn
-#   - oskar-binary
 #   - reza-fs
+#   - salar-fs
 #   - zaki-binary
+
+# ==============================================================
+#  binary-com/deriv-publisher
+# ==============================================================
+#  Used for approving all relevant changes to Publisher
+#
+#   - reza-fs
+#   - aaron-binary
 
 
 ######################################################################################################
@@ -144,7 +164,7 @@
 # (in case no pattern matches a path in a PR - this should be treated as a bug and result in adding the path to CODEOWNERS)
 # ==============================================================
 
-*                                                               @ashkanx @negarn @oskar-binary
+*                                                               @ashkanx @negarn
 
 
 
@@ -195,3 +215,11 @@
 # ==============================================================
 
 /packages/trader/**/*                                           @binary-com/deriv-trader
+
+
+
+# ==============================================================
+#  deriv-app/publisher
+# ==============================================================
+
+/packages/publisher/**/*                                        @binary-com/deriv-publisher

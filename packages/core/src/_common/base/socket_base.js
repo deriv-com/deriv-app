@@ -19,9 +19,14 @@ const BinarySocketBase = (() => {
 
     let config = {};
     let wrong_app_id = 0;
-    let is_available = true;
     let is_disconnect_called = false;
     let is_connected_before = false;
+
+    const availability = {
+        is_up: true,
+        is_updating: false,
+        is_down: false,
+    };
 
     const getSocketUrl = () =>
         `wss://${getSocketURL()}/websockets/v3?app_id=${getAppId()}&l=${getLanguage()}&brand=${website_name.toLowerCase()}`;
@@ -113,11 +118,18 @@ const BinarySocketBase = (() => {
         });
     };
 
-    const availability = status => {
-        if (typeof status !== 'undefined') {
-            is_available = !!status;
-        }
-        return is_available;
+    const isSiteUp = status => /^up$/i.test(status);
+
+    const isSiteUpdating = status => /^updating$/i.test(status);
+
+    const isSiteDown = status => /^down$/i.test(status);
+
+    // if status is up or updating, consider site available
+    // if status is down, consider site unavailable
+    const setAvailability = status => {
+        availability.is_up = isSiteUp(status);
+        availability.is_updating = isSiteUpdating(status);
+        availability.is_down = isSiteDown(status);
     };
 
     const excludeAuthorize = type => !(type === 'authorize' && !client_store.is_logged_in);
@@ -299,10 +311,13 @@ const BinarySocketBase = (() => {
         wait,
         availability,
         hasReadyState,
+        isSiteDown,
+        isSiteUpdating,
         clear: () => {},
         sendBuffered: () => {},
         getSocket: () => binary_socket,
         get: () => deriv_api,
+        getAvailability: () => availability,
         setOnDisconnect: onDisconnect => {
             config.onDisconnect = onDisconnect;
         },
@@ -343,6 +358,7 @@ const BinarySocketBase = (() => {
         paymentAgentTransfer,
         setAccountCurrency,
         balanceAll,
+        setAvailability,
         subscribeBalanceAll,
         subscribeBalanceActiveAccount,
         subscribeProposal,

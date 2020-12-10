@@ -3,22 +3,14 @@ import React from 'react';
 import { connect } from 'Stores/connect';
 import CashierContainer from './cashier-container.jsx';
 
-class Withdraw extends React.Component {
-    componentDidMount() {
-        this.props.setActiveTab(this.props.container);
-        this.props.onMount(this.props.verification_code);
-    }
+const Withdraw = ({ container, iframe_height, iframe_url, is_loading, onMount, setActiveTab, verification_code }) => {
+    React.useEffect(() => {
+        setActiveTab(container);
+        if (verification_code) onMount(verification_code);
+    }, [container, onMount, setActiveTab, verification_code]);
 
-    render() {
-        return (
-            <CashierContainer
-                iframe_height={this.props.iframe_height}
-                iframe_url={this.props.iframe_url}
-                is_loading={this.props.is_loading}
-            />
-        );
-    }
-}
+    return <CashierContainer iframe_height={iframe_height} iframe_url={iframe_url} is_loading={is_loading} />;
+};
 
 Withdraw.propTypes = {
     container: PropTypes.string,
@@ -31,11 +23,11 @@ Withdraw.propTypes = {
 };
 
 export default connect(({ client, modules }) => ({
-    verification_code: client.verification_code.payment_withdraw,
     container: modules.cashier.config.withdraw.container,
     iframe_height: modules.cashier.config.withdraw.iframe_height,
     iframe_url: modules.cashier.config.withdraw.iframe_url,
     is_loading: modules.cashier.is_loading,
-    setActiveTab: modules.cashier.setActiveTab,
     onMount: modules.cashier.onMount,
+    setActiveTab: modules.cashier.setActiveTab,
+    verification_code: client.verification_code.payment_withdraw,
 }))(Withdraw);

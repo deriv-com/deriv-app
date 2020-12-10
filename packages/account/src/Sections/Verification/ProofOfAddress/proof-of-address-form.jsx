@@ -8,6 +8,7 @@ import {
     MobileWrapper,
     SelectNative,
     FormSubmitErrorMessage,
+    Text,
 } from '@deriv/components';
 import { Formik, Field } from 'formik';
 import { localize } from '@deriv/translations';
@@ -272,7 +273,7 @@ class ProofOfAddressForm extends React.Component {
         if (api_initial_load_error) {
             return <LoadErrorMessage error_message={api_initial_load_error} />;
         }
-        if (is_loading) return <Loading is_fullscreen={false} className='account___intial-loader' />;
+        if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
         const mobile_scroll_offset = status && status.msg ? '200px' : '154px';
 
         if (form_initial_values.address_state) {
@@ -304,11 +305,11 @@ class ProofOfAddressForm extends React.Component {
                                     <FormSubHeader title={localize('Details')} />
                                     <div className='account-poa__details-section'>
                                         <div className='account-poa__details-description'>
-                                            <span className='account-poa__details-text'>
+                                            <Text size={isMobile() ? 'xxs' : 'xs'}>
                                                 {localize(
                                                     'Please ensure that this address is the same as in your proof of address'
                                                 )}
-                                            </span>
+                                            </Text>
                                         </div>
                                         <div className='account-poa__details-fields'>
                                             <fieldset className='account-form__fieldset'>

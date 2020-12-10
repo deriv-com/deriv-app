@@ -41,6 +41,11 @@ export default class AdvertiserPageStore extends BaseStore {
     }
 
     @computed
+    get advert() {
+        return this.root_store.buy_sell_store.selected_ad_state;
+    }
+
+    @computed
     get advertiser_details() {
         return this.advert?.advertiser_details || {};
     }

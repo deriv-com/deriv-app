@@ -14,7 +14,7 @@ const render = require('./src/_utils/test_template');
         if (err) throw err;
 
         const project_root = stdout.trim();
-        const file_name = `tests/src/${args[0]}/${args[1]}.test.js`;
+        const file_name = `e2e_tests/src/${args[0]}/${args[1]}.test.js`;
         const content = render(test_name);
         const target_dir = path.dirname(path.resolve(project_root, file_name));
 

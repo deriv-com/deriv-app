@@ -133,7 +133,12 @@ class ChangePasswordForm extends React.Component {
                                 </FormBody>
                             )}
                             <FormFooter>
-                                {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
+                                {status && status.msg && (
+                                    <FormSubmitErrorMessage
+                                        className={classNames({ 'account-form__error-message': isMobile() })}
+                                        message={status.msg}
+                                    />
+                                )}
                                 <Button
                                     className={classNames('account-form__footer-btn', {
                                         'account-form__footer-btn--has-bottom-margin': isMobile(),

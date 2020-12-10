@@ -9,7 +9,7 @@
     color: var(--text-prominent);
 
     p {
-        padding-left: 16px;
+        padding-left: 0.8rem;
 
         @include mobile {
             line-height: 20px;

@@ -283,6 +283,9 @@ $MIN_HEIGHT_FLOATING: calc(
                 border-top: 2px solid var(--general-section-1);
             }
         }
+        &__error-message {
+            position: unset;
+        }
         &__personal-details {
             @include desktop {
                 .account__scrollbars_container {

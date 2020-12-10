@@ -1,4 +1,4 @@
-import { action, observable, when } from 'mobx';
+import { action, observable } from 'mobx';
 import { onWorkspaceResize } from '@deriv/bot-skeleton';
 import { tabs_title } from '../constants/bot-contents';
 import { storeSetting, getSetting } from '../utils/settings';

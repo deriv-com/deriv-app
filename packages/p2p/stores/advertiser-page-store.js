@@ -7,6 +7,9 @@ import BaseStore from 'Stores/base_store';
 
 export default class AdvertiserPageStore extends BaseStore {
     @observable active_index = 0;
+    @observable ad = null;
+    @observable advertiser_first_name = '';
+    @observable advertiser_last_name = '';
     @observable advertiser_info = {};
     @observable adverts = [];
     @observable counterparty_type = buy_sell.BUY;
@@ -18,11 +21,6 @@ export default class AdvertiserPageStore extends BaseStore {
     @observable is_submit_disabled = true;
     @observable show_ad_popup = false;
     @observable submitForm = () => {};
-
-    @computed
-    get advert() {
-        return this.root_store.buy_sell_store.selected_ad_state;
-    }
 
     @computed
     get account_currency() {
@@ -42,6 +40,11 @@ export default class AdvertiserPageStore extends BaseStore {
     @computed
     get advertiser_details_name() {
         return this.advert?.advertiser_details?.name;
+    }
+
+    @computed
+    get advertiser_full_name() {
+        return `${this.advertiser_first_name} ${this.advertiser_last_name}`;
     }
 
     @computed
@@ -94,7 +97,10 @@ export default class AdvertiserPageStore extends BaseStore {
         }).then(response => {
             if (!response.error) {
                 const { p2p_advertiser_info } = response;
+
                 this.setAdvertiserInfo(p2p_advertiser_info);
+                this.setAdvertiserFirstName(p2p_advertiser_info.first_name);
+                this.setAdvertiserLastName(p2p_advertiser_info.last_name);
             } else {
                 this.setErrorMessage(response.error);
             }
@@ -136,6 +142,21 @@ export default class AdvertiserPageStore extends BaseStore {
     @action.bound
     setActiveIndex(active_index) {
         this.active_index = active_index;
+    }
+
+    @action.bound
+    setAd(ad) {
+        this.ad = ad;
+    }
+
+    @action.bound
+    setAdvertiserFirstName(advertiser_first_name) {
+        this.advertiser_first_name = advertiser_first_name;
+    }
+
+    @action.bound
+    setAdvertiserLastName(advertiser_last_name) {
+        this.advertiser_last_name = advertiser_last_name;
     }
 
     @action.bound

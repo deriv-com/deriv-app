@@ -24,9 +24,14 @@
 
         &-name {
             align-self: center;
+            flex-flow: column;
             height: fit-content;
             width: fit-content;
             margin-left: 0.8rem;
+        }
+        &-real-name {
+            margin-top: 0.4rem;
+            max-width: 500px;
         }
         &-verification {
             align-items: center;

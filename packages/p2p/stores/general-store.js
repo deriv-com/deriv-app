@@ -24,6 +24,7 @@ export default class GeneralStore extends BaseStore {
     @observable orders = [];
     @observable parameters = null;
     @observable poi_status = null;
+    @observable should_show_real_name = false;
     @observable show_popup = false;
 
     custom_string = this.props?.custom_string;
@@ -332,6 +333,11 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
+    setShouldShowRealName(should_show_real_name) {
+        this.should_show_real_name = should_show_real_name;
+    }
+
+    @action.bound
     setShowPopup(show_popup) {
         this.show_popup = show_popup;
     }
@@ -356,6 +362,7 @@ export default class GeneralStore extends BaseStore {
             this.setIsAdvertiser(!!p2p_advertiser_info.is_approved);
             this.setIsListed(!!p2p_advertiser_info.is_listed);
             this.setNickname(p2p_advertiser_info.name);
+            this.setShouldShowRealName(!!p2p_advertiser_info.show_name);
         } else {
             this.ws_subscriptions.advertiser_subscription.unsubscribe();
 

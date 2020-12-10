@@ -55,7 +55,6 @@ MainContent.propTypes = {
     is_loading: PropTypes.bool,
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
-    setContainerSize: PropTypes.func,
 };
 
 export default connect(({ blockly_store, main_content }) => ({
@@ -63,5 +62,4 @@ export default connect(({ blockly_store, main_content }) => ({
     is_loading: blockly_store.is_loading,
     onMount: main_content.onMount,
     onUnmount: main_content.onUnmount,
-    setContainerSize: main_content.setContainerSize,
 }))(MainContent);

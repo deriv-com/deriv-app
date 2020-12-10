@@ -41,7 +41,7 @@ const SendEmailTemplate = ({
     const startCountdownTimer = () => {
         let timeout = timeout_limit;
         resend_interval = setInterval(() => {
-            if (timeout-- !== 1) {
+            if (--timeout) {
                 setIsResendBtnDisabled(timeout < timeout_limit);
                 setResendEmailBtnText(
                     timeout < timeout_limit ? txt_resend_in.replace('{{seconds}}', timeout) : txt_resend

@@ -18,7 +18,6 @@ export default class GeneralStore extends BaseStore {
     @observable nickname = null;
     @observable nickname_error = '';
     @observable notification_count = 0;
-    @observable order_id = null;
     @observable order_offset = 0;
     @observable order_table_type = order_list.ACTIVE;
     @observable orders = [];
@@ -84,13 +83,14 @@ export default class GeneralStore extends BaseStore {
 
     @action.bound
     handleNotifications(old_orders, new_orders) {
+        const { order_store } = this.root_store;
         const { client, props } = this;
         const { is_cached, notifications } = this.getLocalStorageSettingsForLoginId();
         new_orders.forEach(new_order => {
             const order_info = createExtendedOrderDetails(new_order, client.loginid, props.server_time);
             const notification = notifications.find(n => n.order_id === new_order.id);
             const old_order = old_orders.find(o => o.id === new_order.id);
-            const is_current_order = new_order.id === this.props?.order_id;
+            const is_current_order = new_order.id === order_store.order_id;
             const notification_obj = {
                 order_id: new_order.id,
                 is_seen: is_current_order,

@@ -7,17 +7,25 @@ import OrderTable from './order-table/order-table.jsx';
 import './orders.scss';
 
 const Orders = observer(() => {
-    const { general_store, order_store } = useStores();
+    const { order_store } = useStores();
+
+    // This is a bit hacky, but it allows us to force re-render this
+    // component when the timer expired. This is created due to BE
+    // not expiring orders on time. Remove this when they do.
+    const [, forceRerender] = React.useState();
+    order_store.setForceRerenderOrders(forceRerender);
 
     React.useEffect(() => {
         const disposeOrderIdReaction = reaction(
-            () => general_store.props.order_id,
-            () => order_store.onOrderUpdate()
+            () => order_store.order_id,
+            () => order_store.onOrderIdUpdate(),
+            { fireImmediately: true }
         );
 
         const disposeOrdersUpdateReaction = reaction(
             () => order_store.orders,
-            () => order_store.onOrdersUpdate()
+            () => order_store.onOrdersUpdate(),
+            { fireImmediately: true }
         );
 
         return () => {

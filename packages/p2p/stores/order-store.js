@@ -75,17 +75,17 @@ export default class OrderStore {
     onOrderIdUpdate() {
         this.unsubscribeFromCurrentOrder();
 
-        if (this.root_store.general_store.props.order_id) {
+        if (this.order_id) {
             this.subscribeToCurrentOrder();
         }
     }
 
     @action.bound
     onOrdersUpdate() {
-        if (this.root_store.general_store.props.order_id) {
+        if (this.order_id) {
             // If orders was updated, find current viewed order (if any)
             // and trigger a re-render (in case status was updated).
-            const order = this.orders.find(o => o.id === this.root_store.general_store.props.order_id);
+            const order = this.orders.find(o => o.id === this.order_id);
 
             if (order) {
                 this.setQueryDetails(order);
@@ -150,13 +150,19 @@ export default class OrderStore {
 
     @action.bound
     setQueryDetails(input_order) {
-        this.setOrderId(input_order.id); // Sets the id in URL
+        const { general_store } = this.root_store;
+        const order_information = createExtendedOrderDetails(
+            input_order,
+            general_store.client.loginid,
+            general_store.props.server_time
+        );
+        this.setOrderId(order_information.id); // Sets the id in URL
 
         // When viewing specific order, update its read state in localStorage.
         const { notifications } = this.root_store.general_store.getLocalStorageSettingsForLoginId();
 
         if (notifications.length) {
-            const notification = notifications.find(n => n.order_id === input_order.id);
+            const notification = notifications.find(n => n.order_id === order_information.id);
 
             if (notification) {
                 notification.is_seen = true;
@@ -167,13 +173,17 @@ export default class OrderStore {
         // Force a refresh of this order when it's expired to correctly
         // reflect the status of the order. This is to work around a BE issue
         // where they only expire contracts once a minute rather than on expiry time.
-        const { remaining_seconds } = input_order;
+        const { remaining_seconds } = order_information;
 
         if (remaining_seconds > 0) {
             clearTimeout(this.order_rerender_timeout);
 
             this.setOrderRendererTimeout(
-                setTimeout(() => this.setQueryDetails(input_order), (remaining_seconds + 1) * 1000)
+                setTimeout(() => {
+                    if (typeof this.forceRerenderFn === 'function') {
+                        this.forceRerenderFn(order_information.id);
+                    }
+                }, (remaining_seconds + 1) * 1000)
             );
         }
     }
@@ -188,7 +198,7 @@ export default class OrderStore {
         this.order_info_subscription = subscribeWS(
             {
                 p2p_order_info: 1,
-                id: this.root_store.general_store.props.order_id,
+                id: this.order_id,
                 subscribe: 1,
             },
             [this.setOrderDetails]
@@ -230,5 +240,9 @@ export default class OrderStore {
         if (this.order_info_subscription.unsubscribe) {
             this.order_info_subscription.unsubscribe();
         }
+    }
+
+    setForceRerenderOrders(forceRerenderFn) {
+        this.forceRerenderFn = forceRerenderFn;
     }
 }

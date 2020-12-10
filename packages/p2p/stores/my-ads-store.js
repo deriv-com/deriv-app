@@ -20,13 +20,13 @@ export default class MyAdsStore {
     @observable default_advert_description = '';
     @observable error_message = '';
     @observable has_more_items_to_load = false;
+    @observable is_delete_modal_open = false;
     @observable is_form_loading = false;
     @observable is_table_loading = false;
     @observable is_loading = false;
     @observable item_offset = 0;
     @observable payment_info = '';
     @observable selected_ad_id = '';
-    @observable should_show_popup = false;
     @observable show_ad_form = false;
 
     height_values = [
@@ -133,26 +133,6 @@ export default class MyAdsStore {
     }
 
     @action.bound
-    onClickCancel = () => {
-        this.setSelectedAdId('');
-        this.setShouldShowPopup(false);
-    };
-
-    @action.bound
-    onClickConfirm = showError => {
-        requestWS({ p2p_advert_update: 1, id: this.selected_ad_id, delete: 1 }).then(response => {
-            if (response.error) {
-                showError({ error_message: response.error.message });
-            } else {
-                // remove the deleted ad from the list of items
-                const updated_items = this.adverts.filter(ad => ad.id !== response.p2p_advert_update.id);
-                this.setAdverts(updated_items);
-                this.setShouldShowPopup(false);
-            }
-        });
-    };
-
-    @action.bound
     onClickCreate() {
         this.setShowAdForm(true);
     }
@@ -160,7 +140,7 @@ export default class MyAdsStore {
     @action.bound
     onClickDelete = id => {
         this.setSelectedAdId(id);
-        this.setShouldShowPopup(true);
+        this.setIsDeleteModalOpen(true);
     };
 
     @action.bound
@@ -235,6 +215,11 @@ export default class MyAdsStore {
     }
 
     @action.bound
+    setIsDeleteModalOpen(is_delete_modal_open) {
+        this.is_delete_modal_open = is_delete_modal_open;
+    }
+
+    @action.bound
     setIsFormLoading(is_form_loading) {
         this.is_form_loading = is_form_loading;
     }
@@ -262,11 +247,6 @@ export default class MyAdsStore {
     @action.bound
     setSelectedAdId(selected_ad_id) {
         this.selected_ad_id = selected_ad_id;
-    }
-
-    @action.bound
-    setShouldShowPopup(should_show_popup) {
-        this.should_show_popup = should_show_popup;
     }
 
     @action.bound

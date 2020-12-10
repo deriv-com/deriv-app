@@ -7,11 +7,11 @@ import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
 import Empty from 'Components/empty/empty.jsx';
 import ToggleAds from 'Components/my-ads/toggle-ads.jsx';
-import Popup from 'Components/orders/popup.jsx';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { TableError } from 'Components/table/table-error.jsx';
 import { useStores } from 'Stores';
 import { MyAdsLoader } from './my-ads-loader.jsx';
+import MyAdsDeleteModal from './my-ads-delete-modal.jsx';
 import { buy_sell } from '../../constants/buy-sell';
 
 const getHeaders = offered_currency => [
@@ -189,17 +189,7 @@ const MyAdsTable = observer(() => {
                         {localize('Create new ad')}
                     </Button>
                 )}
-                <Popup
-                    cancel_text={localize('Cancel')}
-                    confirm_text={localize('Delete')}
-                    has_cancel
-                    message={localize('You will NOT be able to restore it.')}
-                    onCancel={my_ads_store.onClickCancel}
-                    onClickConfirm={my_ads_store.onClickConfirm}
-                    setShouldShowPopup={my_ads_store.setShouldShowPopup}
-                    should_show_popup={my_ads_store.should_show_popup}
-                    title={localize('Do you want to delete this ad?')}
-                />
+                <MyAdsDeleteModal />
             </React.Fragment>
         );
     }
@@ -229,8 +219,6 @@ MyAdsTable.propTypes = {
     onClickCreate: PropTypes.func,
     onClickDelete: PropTypes.func,
     setIsTableLoading: PropTypes.func,
-    setShouldShowPopup: PropTypes.func,
-    should_show_popup: PropTypes.bool,
 };
 
 export default MyAdsTable;

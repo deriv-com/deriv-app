@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import BinarySocket from '_common/base/socket_base';
 import { connect } from 'Stores/connect';
 import AccountTransferNoAccount from '../Components/Error/account-transfer-no-account.jsx';
 import Error from '../Components/Error/error.jsx';
@@ -31,6 +32,7 @@ const AccountTransfer = ({
     setIsTransferConfirm,
     setSideNotes,
 }) => {
+    const [is_loading_status, setIsLoadingStatus] = React.useState(true);
     React.useEffect(() => {
         setActiveTab(container);
         onMount();
@@ -46,10 +48,14 @@ const AccountTransfer = ({
         }
     };
 
+    BinarySocket.wait('authorize', 'website_status', 'get_settings', 'paymentagent_list').then(() => {
+        setIsLoadingStatus(false);
+    });
+
     if (is_virtual) {
         return <Virtual />;
     }
-    if (is_loading || is_switching) {
+    if (is_loading || is_switching || is_loading_status) {
         return <Loading className='cashier__loader' />;
     }
     if (is_cashier_locked) {

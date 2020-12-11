@@ -1,5 +1,5 @@
 export const populateVerificationStatus = account_status => {
-    const { document, identity, needs_verification } = account_status.authentication;
+    const { document, ideny, needs_verification } = account_status.authentication;
     const has_poa = !(document && document.status === 'none');
     const has_poi = !(identity && identity.status === 'none');
     const needs_poa = needs_verification.length && needs_verification.includes('document');

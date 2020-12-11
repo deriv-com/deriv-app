@@ -114,7 +114,6 @@ const MT5POA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
     };
 
     const onFileDrop = (files, error_message, setFieldTouched, setFieldValue, values) => {
-        console.log(files, error_message);
         setFieldTouched('document_file', true);
         setFieldValue('document_file', files);
         setDocumentUpload({ files, error_message }, () => {

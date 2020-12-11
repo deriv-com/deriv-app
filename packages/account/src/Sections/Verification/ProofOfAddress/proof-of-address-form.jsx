@@ -129,10 +129,6 @@ const ProofOfAddressForm = ({
         setFormState({ ...form_state, ...{ should_show_form: bool } });
     };
 
-    const onFileDrop = ({ file, file_error_message }) => {
-        setDocumentFile({ files: file, error_message: file_error_message });
-    };
-
     // Settings update is handled here
     const onSubmitValues = (values, { setStatus, setSubmitting }) => {
         setStatus({ msg: '' });
@@ -404,7 +400,9 @@ const ProofOfAddressForm = ({
                                 <FormSubHeader title={localize('Please upload one of the following:')} />
                                 <FileUploaderContainer
                                     onRef={ref => (file_uploader_ref = ref)}
-                                    onFileDrop={onFileDrop}
+                                    onFileDrop={df =>
+                                        setDocumentFile({ files: df.files, error_message: df.error_message })
+                                    }
                                     getSocket={WS.getSocket}
                                 />
                             </FormBody>

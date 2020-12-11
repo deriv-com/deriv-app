@@ -141,7 +141,7 @@ const ProofOfIdentityContainer = ({
         return (
             <ErrorMessage error_message={localize('Sorry, there was a connection error. Please try again later.')} />
         );
-    if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
+    if (is_loading || status.length === 0) return <Loading is_fullscreen={false} className='account__initial-loader' />;
     if (is_unwelcome && !allow_document_upload) return <Unverified />;
     if (status === 'not_required') return <NotRequired />;
 

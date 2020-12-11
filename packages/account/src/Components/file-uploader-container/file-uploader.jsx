@@ -30,7 +30,9 @@ const FileUploader = React.forwardRef(({ onFileDrop, getSocket }, ref) => {
 
     const handleAcceptedFiles = files => {
         if (files.length > 0) {
-            setDocumentFile({ files, error_message: null }, () => onFileDrop(document_file));
+            setDocumentFile({ files, error_message: null }, file => {
+                onFileDrop(file);
+            });
         }
     };
 
@@ -42,11 +44,11 @@ const FileUploader = React.forwardRef(({ onFileDrop, getSocket }, ref) => {
                 ? localize('File size should be 8MB or less')
                 : localize('File uploaded is not supported');
 
-        setDocumentFile({ files, error_message }, () => onFileDrop(document_file));
+        setDocumentFile({ files, error_message }, file => onFileDrop(file));
     };
 
     const removeFile = () => {
-        setDocumentFile({ files: [], error_message: null }, () => onFileDrop(document_file));
+        setDocumentFile({ files: [], error_message: null }, file => onFileDrop(file));
     };
 
     const upload = () => {

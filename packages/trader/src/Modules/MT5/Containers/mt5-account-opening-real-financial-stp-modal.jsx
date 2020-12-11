@@ -6,9 +6,9 @@ import MT5FinancialStpRealAccountSignup from 'Modules/MT5/Containers/mt5-financi
 
 const MT5AccountOpeningRealFinancialStpModal = ({
     disableApp,
+    disableMt5FinancialStpModal,
     enableApp,
     is_mt5_financial_stp_modal_open,
-    disableMt5FinancialStpModal,
 }) => (
     <React.Fragment>
         <DesktopWrapper>
@@ -43,7 +43,7 @@ const MT5AccountOpeningRealFinancialStpModal = ({
 
 export default connect(({ ui, modules }) => ({
     disableApp: ui.disableApp,
-    enableApp: ui.enableApp,
     disableMt5FinancialStpModal: modules.mt5.disableMt5FinancialStpModal,
+    enableApp: ui.enableApp,
     is_mt5_financial_stp_modal_open: modules.mt5.is_mt5_financial_stp_modal_open,
 }))(MT5AccountOpeningRealFinancialStpModal);

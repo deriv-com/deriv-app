@@ -9,5 +9,5 @@ export const populateVerificationStatus = account_status => {
     const allow_document_upload = account_status.status.some(acc_status => acc_status === 'allow_document_upload');
     const onfido_supported_docs = identity.services.onfido.documents_supported;
 
-    return { allow_document_upload, has_poa, has_poi, needs_poa, needs_poi, is_unwelcome, onfido_supported_docs };
+    return { allow_document_upload, has_poa, has_poi, is_unwelcome, needs_poa, needs_poi, onfido_supported_docs };
 };

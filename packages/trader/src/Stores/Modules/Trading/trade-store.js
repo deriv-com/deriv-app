@@ -11,7 +11,6 @@ import {
     isMobile,
     showDigitalOptionsUnavailableError,
 } from '@deriv/shared';
-
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { isDigitContractType, isDigitTradeType } from 'Modules/Trading/Helpers/digits';
@@ -127,6 +126,7 @@ export default class TradeStore extends BaseStore {
     addTickByProposal = () => null;
     debouncedProposal = debounce(this.requestProposal, 500);
     proposal_requests = {};
+    is_purchasing_contract = false;
 
     initial_barriers;
     is_initial_barrier_applied = false;
@@ -215,6 +215,21 @@ export default class TradeStore extends BaseStore {
                 }
                 if (!this.has_take_profit) {
                     this.validation_errors.take_profit = [];
+                }
+            }
+        );
+
+        reaction(
+            () => [this.contract_type],
+            () => {
+                if (this.contract_type === 'multiplier') {
+                    // when switching back to Multiplier contract, re-apply Stop loss / Take profit validation rules
+                    Object.assign(this.validation_rules, getMultiplierValidationRules());
+                } else {
+                    // we need to remove these two validation rules on contract_type change
+                    // to be able to remove any existing Stop loss / Take profit validation errors
+                    delete this.validation_rules.stop_loss;
+                    delete this.validation_rules.take_profit;
                 }
             }
         );
@@ -523,18 +538,32 @@ export default class TradeStore extends BaseStore {
     };
 
     @action.bound
-    onPurchase(proposal_id, price, type) {
+    onPurchase = debounce(this.processPurchase, 300);
+
+    @action.bound
+    processPurchase(proposal_id, price, type) {
         if (!this.is_purchase_enabled) return;
         if (proposal_id) {
             this.is_purchase_enabled = false;
+            this.is_purchasing_contract = true;
             const is_tick_contract = this.duration_unit === 't';
             processPurchase(proposal_id, price).then(
                 action(response => {
                     const last_digit = +this.last_digit;
-                    if (this.proposal_info[type]?.id !== proposal_id) {
-                        throw new Error('Proposal ID does not match.');
-                    }
-                    if (response.buy) {
+                    if (response.error) {
+                        // using javascript to disable purchase-buttons manually to compensate for mobx lag
+                        this.disablePurchaseButtons();
+                        // invalidToken error will handle in socket-general.js
+                        if (response.error.code !== 'InvalidToken') {
+                            this.root_store.common.setServicesError({
+                                type: response.msg_type,
+                                ...response.error,
+                            });
+                        }
+                    } else if (response.buy) {
+                        if (this.proposal_info[type]?.id !== proposal_id) {
+                            throw new Error('Proposal ID does not match.');
+                        }
                         const contract_data = {
                             ...this.proposal_requests[type],
                             ...this.proposal_info[type],
@@ -582,22 +611,14 @@ export default class TradeStore extends BaseStore {
                             this.debouncedProposal();
                             this.clearLimitOrderBarriers();
                             this.pushPurchaseDataToGtm(contract_data);
+                            this.is_purchasing_contract = false;
                             return;
-                        }
-                    } else if (response.error) {
-                        // using javascript to disable purchase-buttons manually to compensate for mobx lag
-                        this.disablePurchaseButtons();
-                        // invalidToken error will handle in socket-general.js
-                        if (response.error.code !== 'InvalidToken') {
-                            this.root_store.common.setServicesError({
-                                type: response.msg_type,
-                                ...response.error,
-                            });
                         }
                     }
                     this.forgetAllProposal();
                     this.purchase_info = response;
                     this.enablePurchase();
+                    this.is_purchasing_contract = false;
                 })
             );
         }
@@ -718,18 +739,6 @@ export default class TradeStore extends BaseStore {
                     this.expiry_type = 'duration';
                     this.root_store.ui.is_advanced_duration = false;
                 }
-            }
-
-            // [Multiplier validation rules]
-            if (obj_new_values?.contract_type !== 'multiplier' && obj_old_values?.contract_type === 'multiplier') {
-                // we need to remove these two validation rules on contract_type change
-                // to be able to remove any existing Stop loss / Take profit validation errors
-                delete this.validation_rules.stop_loss;
-                delete this.validation_rules.take_profit;
-            }
-            if (obj_new_values?.contract_type === 'multiplier' && obj_old_values?.contract_type !== 'multiplier') {
-                // when switching back to Multiplier contract, re-apply Stop loss / Take profit validation rules
-                Object.assign(this.validation_rules, getMultiplierValidationRules());
             }
 
             // TODO: handle barrier updates on proposal api
@@ -890,7 +899,9 @@ export default class TradeStore extends BaseStore {
             this.validateAllProperties();
         }
 
-        this.enablePurchase();
+        if (!this.is_purchasing_contract) {
+            this.enablePurchase();
+        }
     }
 
     @action.bound

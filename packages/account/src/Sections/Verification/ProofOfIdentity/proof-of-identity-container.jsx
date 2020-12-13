@@ -172,7 +172,7 @@ class ProofOfIdentityContainer extends React.Component {
                     error_message={localize('Sorry, there was a connection error. Please try again later.')}
                 />
             );
-        if (is_loading) return <Loading is_fullscreen={false} className='account___intial-loader' />;
+        if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
         if (unwelcome && !allow_document_upload) return <Unverified />;
         if (status === 'not_required') return <NotRequired />;
 

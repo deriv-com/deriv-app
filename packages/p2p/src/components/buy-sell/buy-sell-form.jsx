@@ -38,7 +38,11 @@ const BuySellForm = observer(props => {
                 contact_info: buy_sell_store.contact_info,
                 payment_info: buy_sell_store.payment_info,
             }}
-            initialErrors={buy_sell_store.is_sell_advert ? { contact_info: true, payment_info: true } : {}}
+            initialErrors={
+                buy_sell_store.is_sell_advert && !buy_sell_store.has_payment_info
+                    ? { contact_info: true, payment_info: true }
+                    : {}
+            }
             onSubmit={buy_sell_store.handleSubmit}
         >
             {({ errors, isSubmitting, isValid, setFieldValue, submitForm, touched, values }) => {
@@ -194,6 +198,7 @@ BuySellForm.propTypes = {
     getAdvertiserInfo: PropTypes.func,
     handleClose: PropTypes.func,
     handleConfirm: PropTypes.func,
+    has_payment_info: PropTypes.bool,
     is_buy_advert: PropTypes.bool,
     is_sell_advert: PropTypes.bool,
     payment_info: PropTypes.string,

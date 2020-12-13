@@ -18,65 +18,66 @@ const Error = Loadable({
     },
 });
 
-class Routes extends React.Component {
-    unlisten_to_change = null;
-    initial_route = null;
+const Routes = ({ error, has_error, history, is_logged_in, location, passthrough, ...props }) => {
+    let initial_route,
+        unlisten_to_change = null;
 
-    componentDidMount() {
-        if (!this.unlisten_to_change && !this.initial_route) {
-            this.initial_route = this.props.location.pathname;
+    React.useEffect(() => {
+        if (!unlisten_to_change && !initial_route) {
+            initial_route = location.pathname;
         }
 
-        this.props.setInitialRouteHistoryItem(this.props.history.location);
+        props.setInitialRouteHistoryItem(history.location);
 
-        this.unlisten_to_change = this.props.history.listen((route_to, action) => {
-            if (['PUSH', 'POP'].includes(action)) this.props.addRouteHistoryItem({ ...route_to, action });
+        unlisten_to_change = history.listen((route_to, action) => {
+            if (['PUSH', 'POP'].includes(action)) props.addRouteHistoryItem({ ...route_to, action });
         });
 
-        this.props.setAppRouterHistory(this.props.history);
+        props.setAppRouterHistory(history);
+
+        return () => {
+            if (typeof unlisten_to_change === 'function') {
+                unlisten_to_change();
+                unlisten_to_change = null;
+                initial_route = null;
+            }
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const lang = getLanguage();
+    const lang_regex = /[?&]lang=/;
+
+    if (has_error) {
+        return <Error {...error} />;
     }
 
-    componentWillUnmount() {
-        if (typeof this.unlisten_to_change === 'function') {
-            this.unlisten_to_change();
-            this.unlisten_to_change = null;
-            this.initial_route = null;
-        }
+    // we need to replace state of history object on every route
+    // to prevent language query parameter from disappering for non-english languages
+    if (!lang_regex.test(location.search) && lang !== 'EN') {
+        window.history.replaceState({}, document.title, urlForLanguage(lang));
     }
 
-    render() {
-        const { error, has_error, is_logged_in, passthrough } = this.props;
-        const lang = getLanguage();
-        const lang_regex = /[?&]lang=/;
-
-        if (has_error) {
-            return <Error {...error} />;
-        }
-
-        // we need to replace state of history object on every route
-        // to prevent language query parameter from disappering for non-english languages
-        if (!lang_regex.test(location.search) && lang !== 'EN') {
-            window.history.replaceState({}, document.title, urlForLanguage(lang));
-        }
-
-        return <BinaryRoutes is_logged_in={is_logged_in} passthrough={passthrough} />;
-    }
-}
+    return <BinaryRoutes is_logged_in={is_logged_in} passthrough={passthrough} />;
+};
 
 Routes.propTypes = {
     error: MobxPropTypes.objectOrObservableObject,
     has_error: PropTypes.bool,
+    history: PropTypes.object,
     is_logged_in: PropTypes.bool,
-    is_virtual: PropTypes.bool,
+    setAppRouterHistory: PropTypes.func,
+    addRouteHistoryItem: PropTypes.func,
+    setInitialRouteHistoryItem: PropTypes.func,
 };
 
 // need to wrap withRouter around connect
 // to prevent updates on <BinaryRoutes /> from being blocked
 export default withRouter(
     connect(({ client, common }) => ({
-        is_logged_in: client.is_logged_in,
         error: common.error,
         has_error: common.has_error,
+        is_logged_in: client.is_logged_in,
         setAppRouterHistory: common.setAppRouterHistory,
         addRouteHistoryItem: common.addRouteHistoryItem,
         setInitialRouteHistoryItem: common.setInitialRouteHistoryItem,

@@ -36,6 +36,11 @@ const AccountTransfer = ({
     React.useEffect(() => {
         setActiveTab(container);
         onMount();
+
+        BinarySocket.wait('authorize', 'website_status', 'get_settings', 'paymentagent_list').then(() => {
+            setIsLoadingStatus(false);
+        });
+
         return () => {
             setAccountTransferAmount('');
             setIsTransferConfirm(false);
@@ -47,10 +52,6 @@ const AccountTransfer = ({
             setSideNotes(null);
         }
     };
-
-    BinarySocket.wait('authorize', 'website_status', 'get_settings', 'paymentagent_list').then(() => {
-        setIsLoadingStatus(false);
-    });
 
     if (is_virtual) {
         return <Virtual />;

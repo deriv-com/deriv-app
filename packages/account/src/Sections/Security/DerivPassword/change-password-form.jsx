@@ -3,8 +3,8 @@ import React from 'react';
 import { Formik } from 'formik';
 import { FormSubmitErrorMessage, Button, Loading, PasswordInput, PasswordMeter } from '@deriv/components';
 import { withRouter } from 'react-router-dom';
-import { routes, isMobile, validPassword, validLength, getErrorMessages } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { redirectToLogin, isMobile, validPassword, validLength, getErrorMessages } from '@deriv/shared';
+import { localize, getLanguage } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 import FormSubHeader from 'Components/form-sub-header';
@@ -22,7 +22,7 @@ class ChangePasswordForm extends React.Component {
     };
 
     handlePasswordChange = () => {
-        this.props.history.push(routes.trade);
+        redirectToLogin(false, getLanguage());
     };
 
     onSubmit = (values, { setSubmitting, setStatus }) => {

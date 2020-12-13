@@ -3,6 +3,7 @@ import React from 'react';
 import classNames from 'classnames';
 import NumberGrid from './number-grid.jsx';
 import StepInput from './step-input.jsx';
+import Text from '../text';
 import Button from '../button/button.jsx';
 import { useLongPress } from '../../hooks';
 
@@ -123,6 +124,9 @@ const Numpad = ({
     };
     const backspaceLongPress = useLongPress(clearValue, reset_press_interval);
 
+    const is_button_disabled =
+        is_submit_disabled || !default_value.toString().length || (min && formatNumber(default_value) < min);
+
     return (
         <div
             className={classNames('dc-numpad', className, {
@@ -161,10 +165,18 @@ const Numpad = ({
                         onSelect(-1);
                     }}
                     is_disabled={is_backspace_disabled}
+                    rendertext={() =>
+                        is_backspace_disabled && (
+                            <Text styles={{ fontSize: '1.8rem' }} weight='bold' align='center' color='disabled'>
+                                ⌫
+                            </Text>
+                        )
+                    }
                 >
                     ⌫
                 </Button>
             </div>
+
             <div className='dc-numpad__ok'>
                 <Button
                     type='secondary'
@@ -180,10 +192,13 @@ const Numpad = ({
                         if (min && formatNumber(default_value) < min) return;
                         onSubmit(formatNumber(default_value));
                     }}
-                    is_disabled={
-                        is_submit_disabled ||
-                        !default_value.toString().length ||
-                        (min && formatNumber(default_value) < min)
+                    is_disabled={is_button_disabled}
+                    rendertext={() =>
+                        is_button_disabled && (
+                            <Text styles={{ fontSize: '1.8rem' }} weight='bold' align='center' color='disabled'>
+                                {submit_label}
+                            </Text>
+                        )
                     }
                 >
                     {submit_label}

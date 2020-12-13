@@ -64,18 +64,22 @@ const Button = ({
             {icon && <div className='dc-btn__icon'>{icon}</div>}
             {text &&
                 !(is_loading || is_submit_success) &&
-                ((typeof props.rendertext === 'function' && props.rendertext(text)) || (
+                ((typeof props.rendertext === 'function' &&
+                    props.rendertext(text[0].toUpperCase() + text.substr(1))) || (
                     <Text size='xs' weight='bold' align='center' className={classNames('dc-btn__text', classNameSpan)}>
                         {text[0].toUpperCase() + text.substr(1)}
                     </Text>
                 ))}
             {is_loading && <ButtonLoading />}
             {is_submit_success && <Icon icon='IcCheckmark' color='active' size={24} />}
-            {!text && children && (
-                <Text size='xs' weight='bold' align='center' className={classNames('dc-btn__text', classNameSpan)}>
-                    {children}
-                </Text>
-            )}
+
+            {!text &&
+                children &&
+                ((typeof props.rendertext === 'function' && props.rendertext(children)) || (
+                    <Text size='xs' weight='bold' align='center' className={classNames('dc-btn__text', classNameSpan)}>
+                        {children}
+                    </Text>
+                ))}
         </button>
     );
     const wrapper = <div className={wrapperClassName}>{button}</div>;

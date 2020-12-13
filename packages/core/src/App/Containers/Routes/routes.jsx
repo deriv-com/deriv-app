@@ -18,28 +18,38 @@ const Error = Loadable({
     },
 });
 
-const Routes = ({ error, has_error, history, is_logged_in, location, passthrough, ...props }) => {
-    let unlisten_to_change = null;
-    let initial_route = null;
+const Routes = ({
+    addRouteHistoryItem,
+    error,
+    has_error,
+    history,
+    is_logged_in,
+    location,
+    passthrough,
+    setAppRouterHistory,
+    setInitialRouteHistoryItem,
+}) => {
+    const initial_route = React.useRef(null);
+    const unlisten_to_change = React.useRef(null);
 
     React.useEffect(() => {
-        if (!unlisten_to_change && !initial_route) {
-            initial_route = location.pathname;
+        if (!unlisten_to_change.current && !initial_route.current) {
+            initial_route.current = location.pathname;
         }
 
-        props.setInitialRouteHistoryItem(history.location);
+        setInitialRouteHistoryItem(history.location);
 
-        unlisten_to_change = history.listen((route_to, action) => {
-            if (['PUSH', 'POP'].includes(action)) props.addRouteHistoryItem({ ...route_to, action });
+        unlisten_to_change.current = history.listen((route_to, action) => {
+            if (['PUSH', 'POP'].includes(action)) addRouteHistoryItem({ ...route_to, action });
         });
 
-        props.setAppRouterHistory(history);
+        setAppRouterHistory(history);
 
         return () => {
-            if (typeof unlisten_to_change === 'function') {
-                unlisten_to_change();
-                unlisten_to_change = null;
-                initial_route = null;
+            if (typeof unlisten_to_change.current === 'function') {
+                unlisten_to_change.current();
+                unlisten_to_change.current = null;
+                initial_route.current = null;
             }
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps

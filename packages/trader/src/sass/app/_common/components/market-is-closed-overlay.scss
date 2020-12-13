@@ -13,6 +13,9 @@
     background-color: var(--overlay-inside-dialog);
     z-index: 1000;
 
+    &--loading {
+        display: none;
+    }
     &__main-heading {
         margin-bottom: 2rem;
     }

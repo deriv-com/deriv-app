@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Text } from '@deriv/components';
+import { useIsMounted } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
@@ -69,19 +70,24 @@ const calculateTimeLeft = remaining_time_to_open => {
         : {};
 };
 
-const MarketCountdownTimer = ({ is_main_page, setActiveSymbols, symbol }) => {
+const MarketCountdownTimer = ({
+    is_main_page,
+    is_market_close_overlay_loading,
+    setActiveSymbols,
+    setMarketCloseOverlayLoading,
+    symbol,
+}) => {
+    const isMounted = useIsMounted();
     const [when_market_opens, setWhenMarketOpens] = React.useState({});
     const [time_left, setTimeLeft] = React.useState(calculateTimeLeft(when_market_opens?.remaining_time_to_open));
 
     React.useEffect(() => {
-        let is_subscribed = true;
         async function fetchTradingTimes() {
             const result = await whenMarketOpens(0, symbol);
-            if (is_subscribed) setWhenMarketOpens(result);
+            if (isMounted()) setWhenMarketOpens(result);
         }
-        fetchTradingTimes();
 
-        return () => (is_subscribed = false);
+        fetchTradingTimes();
     }, [symbol]);
 
     React.useEffect(() => {
@@ -153,6 +159,8 @@ const MarketCountdownTimer = ({ is_main_page, setActiveSymbols, symbol }) => {
 
     if (!(when_market_opens && timer_components)) return null;
 
+    if (is_main_page && is_market_close_overlay_loading) setMarketCloseOverlayLoading(false);
+
     return (
         <React.Fragment>
             <Text
@@ -199,6 +207,8 @@ MarketCountdownTimer.propTypes = {
 };
 
 export default connect(({ modules }) => ({
+    is_market_close_overlay_loading: modules.trade.is_market_close_overlay_loading,
     setActiveSymbols: modules.trade.setActiveSymbols,
+    setMarketCloseOverlayLoading: modules.trade.setMarketCloseOverlayLoading,
     symbol: modules.trade.symbol,
 }))(MarketCountdownTimer);

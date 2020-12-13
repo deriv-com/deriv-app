@@ -183,6 +183,7 @@ class Trade extends React.Component {
                             is_eu={this.props.is_eu}
                             {...(this.props.is_eu && this.state.category && { is_market_available: true })}
                             onClick={this.onTryOtherMarkets}
+                            is_market_close_overlay_loading={this.props.is_market_close_overlay_loading}
                         />
                     )}
                     <FormLayout
@@ -203,6 +204,7 @@ export default connect(({ client, common, modules, ui }) => ({
     form_components: modules.trade.form_components,
     is_chart_loading: modules.trade.is_chart_loading,
     is_market_closed: modules.trade.is_market_closed,
+    is_market_close_overlay_loading: modules.trade.is_market_close_overlay_loading,
     show_digits_stats: modules.trade.show_digits_stats,
     is_trade_enabled: modules.trade.is_trade_enabled,
     setMobileDigitView: modules.trade.setMobileDigitView,

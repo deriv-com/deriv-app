@@ -88,6 +88,8 @@ const Amount = ({
 
     const error_messages = validation_errors.amount;
 
+    const getBasisList = () => basis_list.map(item => ({ text: item.text, value: item.value }));
+
     return (
         <Fieldset
             className='trade-container__fieldset center-text'
@@ -104,9 +106,9 @@ const Amount = ({
             {basis_list.length > 1 && (
                 <ButtonToggle
                     id='dt_amount_toggle'
-                    buttons_arr={basis_list}
+                    buttons_arr={getBasisList()}
                     className='dropdown--no-margin'
-                    is_animated={true}
+                    is_animated
                     name='basis'
                     onChange={onChange}
                     value={basis}

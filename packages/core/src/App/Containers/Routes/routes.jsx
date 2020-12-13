@@ -19,8 +19,8 @@ const Error = Loadable({
 });
 
 const Routes = ({ error, has_error, history, is_logged_in, location, passthrough, ...props }) => {
-    let initial_route,
-        unlisten_to_change = null;
+    let unlisten_to_change = null;
+    let initial_route = null;
 
     React.useEffect(() => {
         if (!unlisten_to_change && !initial_route) {

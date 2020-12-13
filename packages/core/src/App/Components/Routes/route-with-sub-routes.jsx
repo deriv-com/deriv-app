@@ -35,7 +35,7 @@ const RouteWithSubRoutes = route => {
                 to = location.pathname.toLowerCase().replace(route.path, '');
             }
             result = <Redirect to={to} />;
-        } else if (route.is_authenticated && !route.is_logged_in) {
+        } else if (route.is_authenticated && !route.is_logged_in && !route.is_logging_in) {
             result = (
                 <LoginPrompt
                     onLogin={() => redirectToLogin(route.is_logged_in, getLanguage())}

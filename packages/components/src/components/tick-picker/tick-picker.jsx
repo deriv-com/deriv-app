@@ -83,7 +83,17 @@ const TickPicker = ({
                     'dc-tick-picker__submit-wrapper--is-disabled': is_submit_disabled,
                 })}
             >
-                <Button rounded onClick={handleClick}>
+                <Button
+                    rounded
+                    onClick={handleClick}
+                    rendertext={() =>
+                        is_submit_disabled && (
+                            <Text size='s' weight='bold' align='center' color='disabled'>
+                                {submit_label}
+                            </Text>
+                        )
+                    }
+                >
                     {submit_label}
                 </Button>
             </div>

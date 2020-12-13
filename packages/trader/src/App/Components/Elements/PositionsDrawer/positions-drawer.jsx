@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
-import { Icon, DataList } from '@deriv/components';
+import { Icon, DataList, Text } from '@deriv/components';
 import { routes, isHighLow, useNewRowTransition } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import EmptyPortfolioMessage from 'Modules/Reports/Components/empty-portfolio-message.jsx';
@@ -150,7 +150,9 @@ class PositionsDrawer extends React.Component {
                             className='dc-btn dc-btn--secondary dc-btn__large'
                             to={routes.reports}
                         >
-                            <span className='dc-btn__text'>{localize('Go to Reports')}</span>
+                            <Text size='xs' weight='bold'>
+                                {localize('Go to Reports')}
+                            </Text>
                         </NavLink>
                     </div>
                 </div>

@@ -6,13 +6,9 @@ import './sass/contract-card-dialog.scss';
 import { useOnClickOutside } from '../../../hooks/use-onclickoutside';
 
 const ContractCardDialog = React.forwardRef(({ children, is_visible, left, toggleDialog, toggle_ref, top }, ref) => {
-    const handleClickOutside = event => {
-        if (!toggle_ref.current.contains(event.target)) {
-            toggleDialog(event);
-        }
-    };
+    const validateClickOutside = event => is_visible && !toggle_ref.current.contains(event.target);
 
-    useOnClickOutside(ref, handleClickOutside, () => is_visible);
+    useOnClickOutside(ref, toggleDialog, validateClickOutside);
 
     const dialog = (
         <CSSTransition

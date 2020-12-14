@@ -1,7 +1,7 @@
 import React from 'react';
 import { ChartTitle, SmartChart } from '@deriv/deriv-charts';
-import ToolbarWidgets from './toolbar-widgets.jsx';
 import { connect } from 'Stores/connect';
+import ToolbarWidgets from './toolbar-widgets.jsx';
 import 'Assets/sass/chart.scss';
 
 // import ChartLoader           from 'App/Components/Elements/chart-loader.jsx';

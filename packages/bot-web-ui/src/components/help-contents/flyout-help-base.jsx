@@ -3,12 +3,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { localize } from '@deriv/translations';
 import { help_content_types, help_content_config } from '@deriv/bot-skeleton';
+import { connect } from 'Stores/connect';
 
 import FlyoutVideo from './flyout-video.jsx';
 import FlyoutText from './flyout-text.jsx';
 import FlyoutImage from './flyout-img.jsx';
 import FlyoutBlock from '../flyout-block.jsx';
-import { connect } from 'Stores/connect';
 
 const HelpBase = ({
     block_node,

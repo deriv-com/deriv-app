@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import React from 'react';
 import { localize, Localize } from '@deriv/translations';
+import { popover_zindex } from 'Constants/z-indexes';
+import { connect } from 'Stores/connect';
 import Journal from './journal.jsx';
 import Summary from './summary.jsx';
 import Transactions from './transactions.jsx';
 import TradeAnimation from './trade-animation.jsx';
 import SelfExclusion from './self-exclusion.jsx';
-import { popover_zindex } from 'Constants/z-indexes';
-import { connect } from 'Stores/connect';
 import 'Assets/sass/run-panel.scss';
 
 const drawerContent = ({ active_index, is_drawer_open, setActiveTabIndex, ...props }) => {

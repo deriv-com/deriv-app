@@ -2,11 +2,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Modal, Tabs, MobileFullPageModal } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
+import { tabs_title } from 'Constants/load-modal';
 import GoogleDrive from './load-modal/google-drive.jsx';
 import Local from './load-modal/local.jsx';
 import Recent from './load-modal/recent.jsx';
-import { connect } from 'Stores/connect';
-import { tabs_title } from 'Constants/load-modal';
 import 'Assets/sass/load-modal.scss';
 
 const LoadModal = ({

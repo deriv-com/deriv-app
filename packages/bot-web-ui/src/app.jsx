@@ -2,16 +2,16 @@ import './public-path'; // Leave this here (at the top)! OK boss!
 import React from 'react'; // eslint-disable-line import/first
 import { Loading } from '@deriv/components';
 import { DBot, ServerTime, ApiHelpers } from '@deriv/bot-skeleton'; // eslint-disable-line import/first
-import Audio from 'Components/audio';
-import BotFooterExtensions from 'Components/bot-footer-extensions';
-import MainContent from 'Components/main-content';
-import BotNotificationMessages from 'Components/bot-notification-messages';
-import QuickStrategy from 'Components/quick-strategy';
-import RunPanel from 'Components/run-panel';
-import Toolbar from 'Components/toolbar';
+import Audio from 'Components/audio.jsx';
+import BotFooterExtensions from 'Components/bot-footer-extensions.jsx';
+import MainContent from 'Components/main-content.jsx';
+import BotNotificationMessages from 'Components/bot-notification-messages.jsx';
+import QuickStrategy from 'Components/quick-strategy.jsx';
+import RunPanel from 'Components/run-panel.jsx';
+import Toolbar from 'Components/toolbar.jsx';
 import { MobxContentProvider } from 'Stores/connect';
-import RoutePromptDialog from 'Components/route-prompt-dialog';
-import BlocklyLoading from 'Components/blockly-loading';
+import RoutePromptDialog from 'Components/route-prompt-dialog.jsx';
+import BlocklyLoading from 'Components/blockly-loading.jsx';
 import RootStore from 'Stores';
 import GTM from 'Utils/gtm';
 import 'Assets/sass/app.scss';

@@ -5,11 +5,11 @@ import { useNewRowTransition } from '@deriv/shared';
 import { PropTypes } from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import Transaction from './transaction.jsx';
-import Download from './download.jsx';
 import { transaction_elements } from 'Constants/transactions';
 import { connect } from 'Stores/connect';
 import { contract_stages } from 'Constants/contract-stage';
+import Transaction from './transaction.jsx';
+import Download from './download.jsx';
 import 'Assets/sass/download.scss';
 import 'Assets/sass/transactions.scss';
 

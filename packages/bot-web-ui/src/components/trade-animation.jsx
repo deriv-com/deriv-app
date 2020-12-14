@@ -3,9 +3,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Icon, Modal } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import ContractResultOverlay from './contract-result-overlay.jsx';
 import { connect } from 'Stores/connect';
 import { contract_stages } from 'Constants/contract-stage';
+import ContractResultOverlay from './contract-result-overlay.jsx';
 import 'Assets/sass/trade-animation.scss';
 
 const CircularWrapper = ({ className }) => (

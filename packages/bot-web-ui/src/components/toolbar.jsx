@@ -3,12 +3,12 @@ import { Localize, localize } from '@deriv/translations';
 import { Field, Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import LoadModal from './load-modal.jsx';
-import SaveModal from './save-modal.jsx';
-import TradeAnimation from './trade-animation.jsx';
 import { tabs_title } from 'Constants/bot-contents';
 import { popover_zindex } from 'Constants/z-indexes';
 import { connect } from 'Stores/connect';
+import LoadModal from './load-modal.jsx';
+import SaveModal from './save-modal.jsx';
+import TradeAnimation from './trade-animation.jsx';
 import 'Assets/sass/toolbar.scss';
 
 const SearchBox = ({ is_search_loading, onSearch, onSearchBlur, onSearchClear, onSearchKeyUp }) => (

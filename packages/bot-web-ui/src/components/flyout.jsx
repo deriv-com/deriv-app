@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 import { localize } from '@deriv/translations';
 import { Icon, ThemedScrollbars } from '@deriv/components';
 import { help_content_config } from '@deriv/bot-skeleton';
+import { connect } from 'Stores/connect';
 import FlyoutBlockGroup from './flyout-block-group.jsx';
 import HelpBase from './help-contents/flyout-help-base.jsx';
-import { connect } from 'Stores/connect';
 import 'Assets/sass/flyout.scss';
 
 const SearchResult = ({ search_term, total_result }) => (

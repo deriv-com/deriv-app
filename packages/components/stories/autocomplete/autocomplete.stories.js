@@ -8,7 +8,7 @@ import Autocomplete from 'Components/autocomplete';
 import React from 'react';
 import notes from './README.md';
 
-storiesOf('AutoComplete', module)
+storiesOf('Form|Input.AutoComplete', module)
     .addDecorator(withKnobs)
     .addDecorator(withInfo)
     .add(

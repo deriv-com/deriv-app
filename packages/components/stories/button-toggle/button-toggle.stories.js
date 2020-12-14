@@ -7,7 +7,7 @@ import ButtonToggle from 'Components/button-toggle';
 import React from 'react';
 import notes from './README.md';
 
-storiesOf('ButtonToggle', module)
+storiesOf('Design System|Controllers/ButtonToggle', module)
     .addDecorator(withKnobs)
     .addDecorator(withInfo)
     .add(

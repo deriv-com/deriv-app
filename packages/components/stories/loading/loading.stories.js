@@ -7,7 +7,7 @@ import Loading from 'Components/loading';
 import React from 'react';
 import notes from './README.md';
 
-storiesOf('Loading', module)
+storiesOf('Loaders|Loading', module)
     .addDecorator(withKnobs)
     .addDecorator(withInfo)
     .add(

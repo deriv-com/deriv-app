@@ -7,7 +7,7 @@ import LinearProgress from 'Components/linear-progress';
 import React from 'react';
 import notes from './README.md';
 
-storiesOf('LinearProgress', module)
+storiesOf('Components|Status Indicators/Linear Progress', module)
     .addDecorator(withKnobs)
     .addDecorator(withInfo)
     .add(

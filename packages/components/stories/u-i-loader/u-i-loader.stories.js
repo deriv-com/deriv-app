@@ -4,7 +4,7 @@ import { withInfo } from '@storybook/addon-info';
 import Basic from './stories/basic';
 import notes from './README.md';
 
-const stories = storiesOf('UILoader', module);
+const stories = storiesOf('Loaders|UILoader', module);
 
 stories.addDecorator(withKnobs).addDecorator(withInfo);
 

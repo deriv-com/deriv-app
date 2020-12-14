@@ -6,7 +6,7 @@ import HasError from './stories/has-error';
 import notes from './README.md';
 import './styles.scss';
 
-const stories = storiesOf('PasswordMeter', module);
+const stories = storiesOf('Form|Input/Password.PasswordMeter', module);
 
 stories.addDecorator(withKnobs).addDecorator(withInfo);
 

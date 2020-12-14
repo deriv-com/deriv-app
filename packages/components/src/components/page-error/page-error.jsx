@@ -82,7 +82,7 @@ const PageError = ({
                     </Text>
                 </div>
                 <div className='dc-page-error__btn-wrapper'>
-                    {redirect_urls.map((url, index) => {
+                    {redirect_urls?.map((url, index) => {
                         return (
                             <ButtonLink
                                 className='dc-page-error__btn'

@@ -3,22 +3,16 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import './sass/contract-card-dialog.scss';
+import { useOnClickOutside } from '../../../hooks/use-onclickoutside';
 
 const ContractCardDialog = React.forwardRef(({ children, is_visible, left, toggleDialog, toggle_ref, top }, ref) => {
-    React.useEffect(() => {
-        document.addEventListener('mousedown', handleClickOutside, true);
-        return () => document.removeEventListener('mousedown', handleClickOutside, true);
-    });
-
     const handleClickOutside = event => {
-        if (ref && ref.current && is_visible) {
-            if (ref.current.contains(event.target)) {
-                event.stopPropagation();
-            } else if (!toggle_ref.current.contains(event.target)) {
-                toggleDialog(event);
-            }
+        if (!toggle_ref.current.contains(event.target)) {
+            toggleDialog(event);
         }
     };
+
+    useOnClickOutside(ref, handleClickOutside, () => is_visible);
 
     const dialog = (
         <CSSTransition

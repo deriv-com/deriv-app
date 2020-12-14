@@ -40,10 +40,9 @@ const ToggleCardDialog = ({
         ContractUpdateFormWrapper || connectWithContractUpdate?.(ContractUpdateForm) || ContractUpdateForm;
 
     React.useEffect(() => {
-        if (is_visible && toggle_ref && toggle_ref.current && dialog_ref && dialog_ref.current) {
+        if (is_visible && toggle_ref?.current && dialog_ref?.current) {
             const icon_bound = toggle_ref.current.getBoundingClientRect();
-            const portal_ref = dialog_ref.current;
-            const target_bound = portal_ref?.current?.getBoundingClientRect();
+            const target_bound = dialog_ref.current.getBoundingClientRect();
             const body_bound = document.body.getBoundingClientRect();
 
             let { top: icon_bound_top } = icon_bound;

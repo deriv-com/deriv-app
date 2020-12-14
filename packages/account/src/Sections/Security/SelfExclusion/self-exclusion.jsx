@@ -110,9 +110,11 @@ class SelfExclusion extends React.Component {
         const more_than_zero_message = localize('Please input number greater than 0');
 
         const getSmallestMinValue = decimals =>
-            `0.${Array(decimals - 1)
-                .fill(0)
-                .join('')}1`;
+            decimals === 0
+                ? 1
+                : `0.${Array(decimals - 1)
+                      .fill(0)
+                      .join('')}1`;
 
         const custom_validation = ['max_balance', 'max_open_bets', 'session_duration_limit'];
 
@@ -305,9 +307,10 @@ class SelfExclusion extends React.Component {
     getMaxLength = field => {
         const { currency, is_cr } = this.props;
 
-        const decimals_length = getDecimalPlaces(currency) + 1; // add 1 to allow typing dot
+        const decimals_length = getDecimalPlaces(currency);
         const isIntegerField = value => /session_duration_limit|max_open_bets/.test(value);
-        const getLength = value => value.toString().length + (isIntegerField(field) ? 0 : decimals_length);
+        const getLength = value =>
+            value.toString().length + (isIntegerField(field) || decimals_length === 0 ? 0 : decimals_length + 1); // add 1 to allow typing dot
 
         if (/max_open_bets/.test(field) && this.exclusion_limits.get_limits?.open_positions)
             return getLength(this.exclusion_limits.get_limits.open_positions);

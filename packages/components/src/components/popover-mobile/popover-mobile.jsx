@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { isMobile } from '@deriv/shared';
 import Modal from '../modal/modal.jsx';
+import Button from '../button/button.jsx';
 import Popover from '../popover/popover.jsx';
 import Text from '../text/text.jsx';
 import './popover-mobile.scss';
@@ -17,6 +18,7 @@ const PopoverMobile = ({
     title,
     popover_props,
     modal_props,
+    button_text,
 }) => {
     if (isMobile()) {
         return (
@@ -26,8 +28,10 @@ const PopoverMobile = ({
                     className={classNames('dc-popover-mobile__modal', {
                         [`dc-popover-mobile__modal--${className}`]: className,
                     })}
-                    title={title}
+                    has_close_icon={false}
+                    is_confirmation_modal
                     is_open={is_open}
+                    title={title}
                     toggleModal={() => setIsOpen(!is_open)}
                     {...modal_props}
                 >
@@ -40,6 +44,9 @@ const PopoverMobile = ({
                             </Text>
                         )}
                     </Modal.Body>
+                    <Modal.Footer>
+                        <Button large onClick={() => setIsOpen(false)} primary text={button_text} />
+                    </Modal.Footer>
                 </Modal>
             </div>
         );

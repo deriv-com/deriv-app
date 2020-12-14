@@ -49,7 +49,8 @@ module.exports = {
     // 'no-multiple-empty-lines'           : ['error', { 'max': 1, 'maxEOF': 1 }],
 
     // import rules
-    'import/no-extraneous-dependencies': [0, { extensions: ['.jsx'] }],
+    'import/no-extraneous-dependencies': ['error', { 'devDependencies': ['**/__tests__/**/*.js', '**/test*.js', '**/*.test.js*', '**/*.spec.js', '**/*.spec.jsx'] }],
+
     'import/no-useless-path-segments': 'error',
     'import/order': [
       'error',

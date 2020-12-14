@@ -7,7 +7,7 @@ import { isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { isContractElapsed } from 'Stores/Modules/Contract/Helpers/logic';
 import { Bounce, SlideIn } from 'App/Components/Animations';
-import { getMarketNamesMap } from 'Constants';
+import { getMarketNamesMap } from '../../../../Constants';
 import { DigitSpot, LastDigitPrediction } from '../LastDigitPrediction';
 import 'Sass/app/modules/contract/digits.scss';
 

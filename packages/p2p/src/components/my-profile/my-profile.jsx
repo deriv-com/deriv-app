@@ -7,11 +7,11 @@ import {
     Input,
     LineSeparatedComponents,
     Loading,
-    Popover,
     PopoverMobile,
     Table,
     ThemedScrollbars,
     Text,
+    ToggleSwitch,
     Money,
 } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
@@ -30,10 +30,6 @@ const MyProfile = observer(() => {
     const [is_balance_tooltip_open, setIsBalanceTooltipOpen] = React.useState(false);
     const [is_statistics_tooltip_open, setIsStatisticsTooltipOpen] = React.useState(false);
 
-    React.useEffect(() => {
-        my_profile_store.getAdvertiserInfo();
-    }, []);
-
     const setCurrentFocus = target => setHasOnScreenKeyboard(isMobile() && target);
 
     const {
@@ -45,9 +41,15 @@ const MyProfile = observer(() => {
         total_orders_count,
     } = my_profile_store.advertiser_info;
 
+    React.useEffect(() => {
+        my_profile_store.getSettings();
+        my_profile_store.getAdvertiserInfo();
+    }, []);
+
     if (my_profile_store.is_loading) {
         return <Loading is_fullscreen={false} />;
     }
+
     if (my_profile_store.error_message) {
         return (
             <div className='my-profile__error'>
@@ -93,6 +95,7 @@ const MyProfile = observer(() => {
                             <Money amount={balance_available} currency={currency} show_currency />
                         </Text>
                         <PopoverMobile
+                            button_text={localize('Got it')}
                             is_open={is_balance_tooltip_open}
                             message={localize(
                                 'DP2P balance is a sum of non-reversible deposits into your account (via bank wire, etc.) and a percentage of reversible deposits (via credit cards, etc.).'
@@ -106,7 +109,6 @@ const MyProfile = observer(() => {
                 </LineSeparatedComponents>
                 <Table>
                     <Table.Row className='my-profile__stats'>
-                        <div className='my-profile__stats-cell-separator' />
                         <Table.Cell className='my-profile__stats-cell'>
                             <Text size={isMobile() ? 'xxxs' : 'xs'} color='less-prominent' line_height='m' as='p'>
                                 {localize('Total orders')}
@@ -179,6 +181,7 @@ const MyProfile = observer(() => {
                         <Table.Cell>
                             <div className='my-profile__popover-container'>
                                 <PopoverMobile
+                                    button_text={localize('Got it')}
                                     is_open={is_statistics_tooltip_open}
                                     message={localize(
                                         "These fields are based on the last 24 hours' activity: Buy, Sell, and Limit."
@@ -191,6 +194,27 @@ const MyProfile = observer(() => {
                         </Table.Cell>
                     </Table.Row>
                 </Table>
+                <LineSeparatedComponents className='my-profile__privacy-setting-wrapper'>
+                    <div className='my-profile__separator-text--privacy'>
+                        <Text size='xs' color='prominent' weight='bold'>
+                            <Localize i18n_default_text={'Privacy setting'} />
+                        </Text>
+                    </div>
+                </LineSeparatedComponents>
+                <div className='my-profile__toggle-container'>
+                    <ToggleSwitch
+                        id='p2p-toggle-name'
+                        classNameLabel='p2p-toggle-name__switch'
+                        is_enabled={general_store.should_show_real_name}
+                        handleToggle={my_profile_store.handleToggle}
+                    />
+                    <Text size='xs' line_height='m' color='prominent' className='my-profile__toggle-name'>
+                        <Localize
+                            i18n_default_text={'Show my real name ({{full_name}})'}
+                            values={{ full_name: my_profile_store.full_name }}
+                        />
+                    </Text>
+                </div>
                 <LineSeparatedComponents className='my-profile__ad-template-wrapper'>
                     <Text size='xs' color='prominent' weight='bold'>
                         <Localize i18n_default_text='Ad template' />

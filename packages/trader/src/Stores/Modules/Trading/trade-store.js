@@ -218,6 +218,21 @@ export default class TradeStore extends BaseStore {
                 }
             }
         );
+
+        reaction(
+            () => [this.contract_type],
+            () => {
+                if (this.contract_type === 'multiplier') {
+                    // when switching back to Multiplier contract, re-apply Stop loss / Take profit validation rules
+                    Object.assign(this.validation_rules, getMultiplierValidationRules());
+                } else {
+                    // we need to remove these two validation rules on contract_type change
+                    // to be able to remove any existing Stop loss / Take profit validation errors
+                    delete this.validation_rules.stop_loss;
+                    delete this.validation_rules.take_profit;
+                }
+            }
+        );
     }
 
     @computed
@@ -724,18 +739,6 @@ export default class TradeStore extends BaseStore {
                     this.expiry_type = 'duration';
                     this.root_store.ui.is_advanced_duration = false;
                 }
-            }
-
-            // [Multiplier validation rules]
-            if (obj_new_values?.contract_type !== 'multiplier' && obj_old_values?.contract_type === 'multiplier') {
-                // we need to remove these two validation rules on contract_type change
-                // to be able to remove any existing Stop loss / Take profit validation errors
-                delete this.validation_rules.stop_loss;
-                delete this.validation_rules.take_profit;
-            }
-            if (obj_new_values?.contract_type === 'multiplier' && obj_old_values?.contract_type !== 'multiplier') {
-                // when switching back to Multiplier contract, re-apply Stop loss / Take profit validation rules
-                Object.assign(this.validation_rules, getMultiplierValidationRules());
             }
 
             // TODO: handle barrier updates on proposal api

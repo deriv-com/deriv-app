@@ -5,7 +5,7 @@ import Basic from './stories/basic';
 import notes from './README.md';
 import './styles.scss';
 
-const stories = storiesOf('Components|Messages/Popover.PopoverMessageCheckbox', module);
+const stories = storiesOf('Data Display|Popover/PopoverMessageCheckbox', module);
 
 stories.addDecorator(withKnobs).addDecorator(withInfo);
 

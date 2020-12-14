@@ -38,7 +38,7 @@ const progresses = [
     },
 ];
 
-storiesOf('Components|Status Indicators.Circular Progress', module)
+storiesOf('Feedback|Progress/Circular Progress', module)
     .add('Basic usage', () => (
         <div
             style={{

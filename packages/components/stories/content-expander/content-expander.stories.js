@@ -35,7 +35,7 @@ const dummy_text = (
     </React.Fragment>
 );
 
-storiesOf('Design System|Controllers/ContentExpander', module)
+storiesOf('Data Display|ContentExpander', module)
     .add(
         'Title is string',
         () => (

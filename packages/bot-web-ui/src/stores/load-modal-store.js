@@ -1,7 +1,7 @@
 import { observable, action, computed, reaction } from 'mobx';
 import { localize } from '@deriv/translations';
 import { load, config, save_types, getSavedWorkspaces, removeExistingWorkspace } from '@deriv/bot-skeleton';
-import { tabs_title } from '../constants/load-modal';
+import { tabs_title } from 'Constants/load-modal';
 
 export default class LoadModalStore {
     constructor(root_store) {

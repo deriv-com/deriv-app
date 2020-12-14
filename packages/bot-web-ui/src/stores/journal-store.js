@@ -4,8 +4,8 @@ import { localize } from '@deriv/translations';
 import { formatDate } from '@deriv/shared';
 import { message_types } from '@deriv/bot-skeleton';
 import { config } from '@deriv/bot-skeleton/src/constants/config';
-import { storeSetting, getSetting } from '../utils/settings';
-import { isCustomJournalMessage } from '../utils/journal-notifications';
+import { storeSetting, getSetting } from 'Utils/settings';
+import { isCustomJournalMessage } from 'Utils/journal-notifications';
 
 export default class JournalStore {
     constructor(root_store) {

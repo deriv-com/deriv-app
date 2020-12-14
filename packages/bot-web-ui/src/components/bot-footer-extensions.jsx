@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon, Popover, StaticUrl } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { tabs_title } from '../constants/bot-contents';
-import { connect } from '../stores/connect';
-import '../assets/sass/bot-footer-extensions.scss';
+import { tabs_title } from 'Constants/bot-contents';
+import { connect } from 'Stores/connect';
+import 'Assets/sass/bot-footer-extensions.scss';
 
 const SecurityAndPrivacy = () => (
     <Popover alignment='top' message={localize('Security and privacy')}>

@@ -7,11 +7,11 @@ import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import Transaction from './transaction.jsx';
 import Download from './download.jsx';
-import { transaction_elements } from '../constants/transactions';
-import { connect } from '../stores/connect';
-import { contract_stages } from '../constants/contract-stage';
-import '../assets/sass/download.scss';
-import '../assets/sass/transactions.scss';
+import { transaction_elements } from 'Constants/transactions';
+import { connect } from 'Stores/connect';
+import { contract_stages } from 'Constants/contract-stage';
+import 'Assets/sass/download.scss';
+import 'Assets/sass/transactions.scss';
 
 const TransactionItem = ({ row, is_new_row }) => {
     const { in_prop } = useNewRowTransition(is_new_row);

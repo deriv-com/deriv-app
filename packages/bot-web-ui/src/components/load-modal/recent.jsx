@@ -6,7 +6,7 @@ import { Localize } from '@deriv/translations';
 import RecentFooter from './recent-footer.jsx';
 import RecentWorkspace from './recent-workspace.jsx';
 import WorkspaceControl from './workspace-control.jsx';
-import { connect } from '../../stores/connect';
+import { connect } from 'Stores/connect';
 
 const RecentComponent = ({ is_explanation_expand, recent_strategies, toggleExplanationExpand }) => {
     if (recent_strategies.length) {

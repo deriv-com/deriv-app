@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import { connect } from '../stores/connect';
-import '../assets/sass/bot-notification-messages.scss';
+import { connect } from 'Stores/connect';
+import 'Assets/sass/bot-notification-messages.scss';
 
 const BotNotificationMessages = ({ is_drawer_open, Notifications }) => (
     <div

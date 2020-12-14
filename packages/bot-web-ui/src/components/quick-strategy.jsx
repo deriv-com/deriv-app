@@ -18,9 +18,9 @@ import classNames from 'classnames';
 import { localize } from '@deriv/translations';
 import { Formik, Form, Field } from 'formik';
 import { config } from '@deriv/bot-skeleton';
-import { popover_zindex } from '../constants/z-indexes';
-import { connect } from '../stores/connect';
-import '../assets/sass/quick-strategy.scss';
+import { popover_zindex } from 'Constants/z-indexes';
+import { connect } from 'Stores/connect';
+import 'Assets/sass/quick-strategy.scss';
 
 const QuickStrategyForm = ({
     active_index,

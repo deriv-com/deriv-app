@@ -4,9 +4,9 @@ import classNames from 'classnames';
 import { localize } from '@deriv/translations';
 import { ContractCard } from '@deriv/components';
 import ContractCardLoader from './contract-card-loading.jsx';
-import { connect } from '../stores/connect';
-import '../assets/sass/summary-card.scss';
-import { getCardLabels, getContractTypeDisplay } from '../constants/contract';
+import { connect } from 'Stores/connect';
+import 'Assets/sass/summary-card.scss';
+import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
 
 const SummaryCard = ({
     contract,

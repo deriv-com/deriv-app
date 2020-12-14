@@ -9,9 +9,9 @@ import { formatMoney, getCurrencyDisplayCode, useNewRowTransition } from '@deriv
 import { message_types } from '@deriv/bot-skeleton';
 import { log_types } from '@deriv/bot-skeleton/src/constants/messages';
 import Download from './download.jsx';
-import { contract_stages } from '../constants/contract-stage';
-import { connect } from '../stores/connect';
-import '../assets/sass/journal.scss';
+import { contract_stages } from 'Constants/contract-stage';
+import { connect } from 'Stores/connect';
+import 'Assets/sass/journal.scss';
 
 const DateItem = ({ date, time }) => {
     return (

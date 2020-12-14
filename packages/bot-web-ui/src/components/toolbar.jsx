@@ -6,10 +6,10 @@ import React from 'react';
 import LoadModal from './load-modal.jsx';
 import SaveModal from './save-modal.jsx';
 import TradeAnimation from './trade-animation.jsx';
-import { tabs_title } from '../constants/bot-contents';
-import { popover_zindex } from '../constants/z-indexes';
-import { connect } from '../stores/connect';
-import '../assets/sass/toolbar.scss';
+import { tabs_title } from 'Constants/bot-contents';
+import { popover_zindex } from 'Constants/z-indexes';
+import { connect } from 'Stores/connect';
+import 'Assets/sass/toolbar.scss';
 
 const SearchBox = ({ is_search_loading, onSearch, onSearchBlur, onSearchClear, onSearchKeyUp }) => (
     <div className='toolbar__form'>

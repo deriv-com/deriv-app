@@ -14,9 +14,9 @@ import {
 import { Formik, Form, Field } from 'formik';
 import { localize } from '@deriv/translations';
 import { config, save_types } from '@deriv/bot-skeleton';
-import { connect } from '../stores/connect';
-import '../assets/sass/google-drive.scss';
-import '../assets/sass/save-modal.scss';
+import { connect } from 'Stores/connect';
+import 'Assets/sass/google-drive.scss';
+import 'Assets/sass/save-modal.scss';
 
 const SaveModalForm = ({
     bot_name,

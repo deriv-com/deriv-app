@@ -4,7 +4,7 @@ import { Input, Button, Modal, MobileWrapper, Div100vhContainer, FadeWrapper, Pa
 import { localize } from '@deriv/translations';
 import { Formik, Form, Field } from 'formik';
 import classNames from 'classnames';
-import { connect } from '../stores/connect';
+import { connect } from 'Stores/connect';
 
 const SelfExclusionForm = props => {
     const [max_losses_error, setMaxLossesError] = React.useState('');

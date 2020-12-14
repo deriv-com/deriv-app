@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from '../stores/connect';
+import { connect } from 'Stores/connect';
 
 class FlyoutBlock extends React.PureComponent {
     render() {

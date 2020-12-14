@@ -6,8 +6,8 @@ import React from 'react';
 import ContentLoader from 'react-content-loader';
 import PropTypes from 'prop-types';
 import { getContractTypeName } from '@deriv/bot-skeleton';
-import { connect } from '../stores/connect';
-import { popover_zindex } from '../constants/z-indexes';
+import { connect } from 'Stores/connect';
+import { popover_zindex } from 'Constants/z-indexes';
 
 const TransactionIconWithText = ({ icon, title, message, className }) => (
     <React.Fragment>

@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Loading } from '@deriv/components';
-import { connect } from '../stores/connect';
-import '../assets/sass/blockly-loading.scss';
+import { connect } from 'Stores/connect';
+import 'Assets/sass/blockly-loading.scss';
 
 const BlocklyLoading = ({ is_loading }) => (
     <>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { localize, Localize } from '@deriv/translations';
 import { Dialog } from '@deriv/components';
-import { connect } from '../stores/connect';
+import { connect } from 'Stores/connect';
 
 const RoutePromptDialog = ({ continueRoute, is_confirmed, last_location, should_show, onCancel, onConfirm }) => {
     React.useEffect(continueRoute, [is_confirmed, last_location]);

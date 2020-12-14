@@ -8,7 +8,7 @@ import FlyoutVideo from './flyout-video.jsx';
 import FlyoutText from './flyout-text.jsx';
 import FlyoutImage from './flyout-img.jsx';
 import FlyoutBlock from '../flyout-block.jsx';
-import { connect } from '../../stores/connect';
+import { connect } from 'Stores/connect';
 
 const HelpBase = ({
     block_node,

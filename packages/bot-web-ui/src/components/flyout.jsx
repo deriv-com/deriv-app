@@ -6,8 +6,8 @@ import { Icon, ThemedScrollbars } from '@deriv/components';
 import { help_content_config } from '@deriv/bot-skeleton';
 import FlyoutBlockGroup from './flyout-block-group.jsx';
 import HelpBase from './help-contents/flyout-help-base.jsx';
-import { connect } from '../stores/connect';
-import '../assets/sass/flyout.scss';
+import { connect } from 'Stores/connect';
+import 'Assets/sass/flyout.scss';
 
 const SearchResult = ({ search_term, total_result }) => (
     <div className='flyout__search-header'>

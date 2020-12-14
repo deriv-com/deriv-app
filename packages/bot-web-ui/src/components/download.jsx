@@ -2,8 +2,8 @@ import React from 'react';
 import { Button, Icon, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import PropTypes from 'prop-types';
-import { connect } from '../stores/connect';
-import '../assets/sass/download.scss';
+import { connect } from 'Stores/connect';
+import 'Assets/sass/download.scss';
 
 const Download = ({ tab, onClickDownloadTransaction, onClickDownloadJournal, is_clear_stat_disabled }) => {
     let clickFunction, popover_message;

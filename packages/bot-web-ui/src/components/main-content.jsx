@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Flyout from './flyout.jsx';
 import Chart from './chart/chart.jsx';
-import { tabs_title } from '../constants/bot-contents';
-import { connect } from '../stores/connect';
-import '../assets/sass/workspace.scss';
-import '../assets/sass/toolbox.scss';
+import { tabs_title } from 'Constants/bot-contents';
+import { connect } from 'Stores/connect';
+import 'Assets/sass/workspace.scss';
+import 'Assets/sass/toolbox.scss';
 
 const MainContent = ({ active_tab, onMount, onUnmount }) => {
     React.useEffect(() => {

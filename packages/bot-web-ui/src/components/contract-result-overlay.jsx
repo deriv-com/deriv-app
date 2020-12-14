@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import '../assets/sass/contract-result-overlay.scss';
+import 'Assets/sass/contract-result-overlay.scss';
 
 const ContractResultOverlay = props => {
     const has_won_contract = props.profit >= 0;

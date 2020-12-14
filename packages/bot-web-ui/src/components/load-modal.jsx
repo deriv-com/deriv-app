@@ -5,9 +5,9 @@ import { localize } from '@deriv/translations';
 import GoogleDrive from './load-modal/google-drive.jsx';
 import Local from './load-modal/local.jsx';
 import Recent from './load-modal/recent.jsx';
-import { connect } from '../stores/connect';
-import { tabs_title } from '../constants/load-modal';
-import '../assets/sass/load-modal.scss';
+import { connect } from 'Stores/connect';
+import { tabs_title } from 'Constants/load-modal';
+import 'Assets/sass/load-modal.scss';
 
 const LoadModal = ({
     active_index,

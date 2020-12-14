@@ -19,11 +19,11 @@ const StatusDialogContainer = ({
     closeModal,
     currency,
     history,
-    icon_size = 'large',
-    is_fully_authenticated,
+    icon_size,
     is_age_verified,
-    is_isle_of_man_residence,
     is_belgium_residence,
+    is_fully_authenticated,
+    is_isle_of_man_residence,
     landing_company_shortcode,
     switchToVirtual,
 }) => {
@@ -86,13 +86,17 @@ const StatusDialogContainer = ({
                 landing_company_shortcode={landing_company_shortcode}
                 status={getStatus()}
                 closeModal={closeModal}
-                closeModalAndOpenPOI={closeModalAndOpenPOI()}
-                closeModalAndOpenPOA={closeModalAndOpenPOA()}
-                closeModalAndOpenCashier={closeModalAndOpenCashier()}
+                closeModalAndOpenPOI={closeModalAndOpenPOI}
+                closeModalAndOpenPOA={closeModalAndOpenPOA}
+                closeModalAndOpenCashier={closeModalAndOpenCashier}
                 switchToVirtual={switchToVirtual}
             />
         </Div100vhContainer>
     );
+};
+
+StatusDialogContainer.defaultProps = {
+    icon_size: 'large',
 };
 
 StatusDialogContainer.propTypes = {

@@ -5,13 +5,15 @@ import { Icon } from '@deriv/components';
 
 class Detail extends React.Component {
     render() {
-        const { action, icon, is_last_child, value, ...rest } = this.props;
+        const { action, icon, is_last_child, value, is_bold, ...rest } = this.props;
 
         return (
             <div className='payment-agent__accordion-content-line'>
                 <Icon icon={`Ic${icon}`} className='payment-agent__accordion-content-icon' color='secondary' />
                 <a
-                    className='payment-agent__contact cashier__paragraph'
+                    className={classNames('payment-agent__contact cashier__paragraph', {
+                        'payment-agent__contact--bold': is_bold,
+                    })}
                     href={`${action ? `${action}:` : ''}${value}`}
                     {...rest}
                 >
@@ -44,6 +46,7 @@ class PaymentAgentDetails extends React.Component {
                         icon='Website'
                         target='_blank'
                         rel='noopener noreferrer'
+                        is_bold
                     />
                 )}
                 {this.props.payment_agent_email && (
@@ -54,6 +57,7 @@ class PaymentAgentDetails extends React.Component {
                         is_last_child
                         target='_blank'
                         rel='noopener noreferrer'
+                        is_bold
                     />
                 )}
             </div>

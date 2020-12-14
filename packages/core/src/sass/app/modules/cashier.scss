@@ -255,6 +255,7 @@
     }
     &__paragraph {
         align-self: center;
+        font-size: var(--text-size-xs);
 
         @include mobile {
             padding-left: 1.6rem;
@@ -852,13 +853,17 @@
     &__contact {
         text-decoration: none;
         color: var(--brand-red-coral);
-        font-weight: bold;
+        font-size: var(--text-size-xs);
 
         @include mobile {
             padding-left: 0;
         }
+        &--bold {
+            font-weight: var(--text-weight-bold);
+        }
     }
     &__explanation {
+        font-size: var(--text-size-xs);
         margin-top: 0.8rem;
     }
     &__input {
@@ -878,6 +883,8 @@
         }
     }
     &__paragraph {
+        font-size: var(--text-size-s);
+        font-weight: var(--text-weight-bold);
         align-self: flex-start;
     }
     @include mobile {

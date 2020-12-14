@@ -351,10 +351,14 @@ const AccountSwitcher = props => {
                                         {getDemoMT5().map(account => (
                                             <AccountList
                                                 key={account.login}
-                                                account_type={account.group}
+                                                market_type={account.market_type}
+                                                sub_account_type={account.sub_account_type}
                                                 balance={account.balance}
                                                 currency={account.currency}
-                                                currency_icon={`IcMt5-${getMT5Account(account.group)}`}
+                                                currency_icon={`IcMt5-${getMT5Account(
+                                                    account.market_type,
+                                                    account.sub_account_type
+                                                )}`}
                                                 has_balance={'balance' in account}
                                                 loginid={account.display_login}
                                                 onClickAccount={redirectToMt5Demo}

@@ -26,11 +26,13 @@ const PaymentAgentTransfer = ({
         if (!is_virtual) {
             onMount();
         }
+    }, [container, is_virtual, onMount, setActiveTab]);
 
+    React.useEffect(() => {
         return () => {
             onUnMount();
         };
-    }, [container, is_virtual, onMount, onUnMount, setActiveTab]);
+    }, [onUnMount]);
 
     if (is_virtual) {
         return <Virtual />;

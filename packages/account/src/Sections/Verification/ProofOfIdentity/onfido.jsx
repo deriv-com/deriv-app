@@ -32,7 +32,7 @@ const Onfido = ({ documents_supported, handleComplete, height, onfido_service_to
     // added eslint-disable-line below as the init func needs to be wrapped in a useCallback but its an external sdk
     React.useEffect(() => {
         if (status === onfido_status_codes.onfido && onfido_service_token) {
-            initOnfido().then();
+            initOnfido();
         }
         return () => {
             if (onfido_init) {

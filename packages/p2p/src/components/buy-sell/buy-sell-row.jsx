@@ -65,13 +65,15 @@ const BuySellRow = observer(({ row: advert }) => {
                             />
                         </Text>
                     </div>
-                    <Button primary large onClick={() => buy_sell_store.setSelectedAdvert(advert)}>
-                        {is_buy_advert ? (
-                            <Localize i18n_default_text='Buy {{account_currency}}' values={{ account_currency }} />
-                        ) : (
-                            <Localize i18n_default_text='Sell {{account_currency}}' values={{ account_currency }} />
-                        )}
-                    </Button>
+                    {!is_my_advert && (
+                        <Button primary large onClick={() => buy_sell_store.setSelectedAdvert(advert)}>
+                            {is_buy_advert ? (
+                                <Localize i18n_default_text='Buy {{account_currency}}' values={{ account_currency }} />
+                            ) : (
+                                <Localize i18n_default_text='Sell {{account_currency}}' values={{ account_currency }} />
+                            )}
+                        </Button>
+                    )}
                 </div>
             </div>
         );

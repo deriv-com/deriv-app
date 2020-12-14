@@ -98,7 +98,7 @@ const MyProfile = observer(() => {
                             button_text={localize('Got it')}
                             is_open={is_balance_tooltip_open}
                             message={localize(
-                                'DP2P balance is a sum of non-reversible deposits into your account (via bank wire, etc.) and a percentage of reversible deposits (via credit cards, etc.).'
+                                'DP2P balance = deposits that can’t be reversed (bank transfers, etc.) + a portion of deposits that might be reversed (credit card payments, etc.)'
                             )}
                             setIsOpen={setIsBalanceTooltipOpen}
                             title={localize('Available DP2P balance')}

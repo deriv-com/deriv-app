@@ -30,7 +30,7 @@ const PaymentAgentTransfer = ({
         return () => {
             onUnMount();
         };
-    }, []);
+    }, [container, is_virtual, onMount, onUnMount, setActiveTab]);
 
     if (is_virtual) {
         return <Virtual />;

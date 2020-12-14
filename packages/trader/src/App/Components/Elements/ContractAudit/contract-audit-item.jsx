@@ -7,7 +7,7 @@ const ContractAuditItem = ({ icon, id, label, timestamp, value, value2 }) => (
     <div id={id} className='contract-audit__grid'>
         {icon && <div className='contract-audit__icon'>{icon}</div>}
         <div className='contract-audit__item'>
-            <Text size='xxxs' line_height='s' className='contract-audit__label'>
+            <Text size='xxxs' styles={{ lineHeight: 'unset' }} className='contract-audit__label'>
                 {label}
             </Text>
             <div className='contract-audit__value-wrapper'>
@@ -15,7 +15,7 @@ const ContractAuditItem = ({ icon, id, label, timestamp, value, value2 }) => (
                     {value}
                 </Text>
                 {value2 && (
-                    <Text weight='bold' size='xxs' line_height='m' color='prominent' className='contract-audit__value2'>
+                    <Text weight='bold' size='xxs' line_height='s' color='prominent' className='contract-audit__value2'>
                         {value2}
                     </Text>
                 )}

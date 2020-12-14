@@ -28,8 +28,8 @@ const ContractDrawer = ({
     toggleHistoryTab,
 }) => {
     const { currency, exit_tick_display_value, is_sold } = contract_info;
-    const contract_drawer_ref = React.createRef();
-    const contract_drawer_card_ref = React.createRef();
+    const contract_drawer_ref = React.useRef();
+    const contract_drawer_card_ref = React.useRef();
     const [should_show_contract_audit, setShouldShowContractAudit] = React.useState(false);
 
     const getBodyContent = () => {

@@ -299,16 +299,18 @@ export default class GeneralStore extends BaseStore {
             this.ws_subscriptions.order_list_subscription.unsubscribe();
             return;
         }
+
         const { p2p_order_list, p2p_order_info } = order_response;
+        const { order_store } = this.root_store;
 
         if (p2p_order_list) {
             const { list } = p2p_order_list;
             // it's an array of orders from p2p_order_list
-            this.handleNotifications(this.orders, list);
+            this.handleNotifications(order_store.orders, list);
         } else if (p2p_order_info) {
             // it's a single order from p2p_order_info
-            const idx_order_to_update = this.orders.findIndex(order => order.id === p2p_order_info.id);
-            const updated_orders = [...this.orders];
+            const idx_order_to_update = order_store.orders.findIndex(order => order.id === p2p_order_info.id);
+            const updated_orders = [...order_store.orders];
             // if it's a new order, add it to the top of the list
             if (idx_order_to_update < 0) {
                 updated_orders.unshift(p2p_order_info);
@@ -317,8 +319,8 @@ export default class GeneralStore extends BaseStore {
                 updated_orders[idx_order_to_update] = p2p_order_info;
             }
 
-            this.handleNotifications(this.orders, updated_orders);
-            this.root_store.order_store.syncOrder(p2p_order_info);
+            this.handleNotifications(order_store.orders, updated_orders);
+            order_store.syncOrder(p2p_order_info);
         }
     }
 

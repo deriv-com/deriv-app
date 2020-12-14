@@ -71,21 +71,19 @@
         width: 100%;
         border-bottom: 1px solid var(--general-section-1);
     }
-    &__expander {
+    &__mobile {
+        display: grid;
+        grid-template-areas: ('header header-right' 'title title');
         padding: 1.6rem;
         border-bottom: 1px solid var(--general-section-1);
+
         &-highlight-danger {
             background-color: #fff8f8;
         }
         & .dc-table__row {
             border-bottom: unset;
         }
-        & .dc-content-expander__select-arrow {
-            align-self: start;
-        }
-        & .dc-content-expander {
-            height: unset;
-        }
+
         &-separator {
             width: 100vw;
             height: 1px;
@@ -95,32 +93,33 @@
             margin: 1.6rem 0rem;
         }
         &-header {
+            grid-area: header;
             display: flex;
             justify-content: space-between;
-            margin-bottom: 0.4rem;
             align-items: center;
+            height: 2.4rem;
 
             &-right {
+                grid-area: header-right;
                 display: flex;
+                justify-self: end;
             }
         }
-        &-content {
-            display: grid;
-            margin-top: 1.6rem;
-            grid-template-columns: repeat(2, 1fr);
-            align-items: center;
-
-            & > div {
-                padding: 1.6rem 0.8rem 0rem;
-                align-self: start;
-            }
-            &__title {
-                margin-bottom: 0.8rem;
-            }
+        &-title {
+            margin-top: 0.4rem;
+            grid-area: title;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: start;
+            justify-self: start;
+            height: 4.9rem;
         }
 
         &-chat {
-            margin: 0rem 0.9rem;
+            margin-left: 0.9rem;
+            display: flex;
+            align-self: center;
         }
         &-time {
             border: solid 1px var(--border-normal);

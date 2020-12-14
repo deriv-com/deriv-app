@@ -2,6 +2,7 @@ import { action, computed, observable } from 'mobx';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import { requestWS, subscribeWS } from 'Utils/websocket';
 import { height_constants } from 'Utils/height_constants';
+import { isMobile } from '@deriv/shared';
 
 export default class OrderStore {
     constructor(root_store) {
@@ -25,7 +26,7 @@ export default class OrderStore {
         height_constants.core_footer,
     ];
     interval;
-    item_height = 72;
+    item_height = isMobile() ? 115 : 72;
     order_info_subscription = {};
 
     @computed

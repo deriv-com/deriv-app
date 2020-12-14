@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Loading, Button, Div100vhContainer, DataList } from '@deriv/components';
+import { Loading, Button, Div100vhContainer } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
@@ -46,7 +46,13 @@ const OrderTableContent = observer(() => {
                     {isMobile() ? (
                         <Div100vhContainer height_offset='21rem'>
                             <div className='orders__separator' />
-                            <DataList data_source={modified_list} rowRenderer={Row} keyMapper={row => row.id} />
+                            <InfiniteLoaderList
+                                items={modified_list}
+                                item_size={order_store.item_height}
+                                RenderComponent={Row}
+                                has_more_items_to_load={order_store.has_more_items_to_load}
+                                loadMore={order_store.loadMoreOrders}
+                            />
                         </Div100vhContainer>
                     ) : (
                         <OrderTableHeader>

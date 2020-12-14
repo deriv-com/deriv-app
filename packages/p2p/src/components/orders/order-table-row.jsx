@@ -1,18 +1,36 @@
-import { Table, ContentExpander, Text, Icon } from '@deriv/components';
+import { Table, Text, Icon } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { localize, Localize } from 'Components/i18next';
+import { localize } from 'Components/i18next';
 import { secondsToTimer } from 'Utils/date-time';
 import ServerTime from 'Utils/server-time';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import { useStores } from 'Stores';
 
-const OrderRowComponent = observer(component_props => {
-    const { style, is_active, measure } = component_props;
-    const order = isMobile() ? component_props.row : component_props.data;
+const Title = ({
+    is_buy_order_type_for_user,
+    transaction_amount,
+    offer_amount,
+    order_purchase_datetime,
+    order_type,
+}) => {
+    const send_amount = is_buy_order_type_for_user ? transaction_amount : offer_amount;
+    return (
+        <React.Fragment>
+            <Text size='sm' line_height='xxs' weight='bold' as='p'>
+                {order_type} {send_amount}
+            </Text>
+            <Text color='less-prominent' as='p' line_height='xxs' size='xxs' align='left'>
+                {order_purchase_datetime}
+            </Text>
+        </React.Fragment>
+    );
+};
+
+const OrderRowComponent = observer(({ style, data: order }) => {
     const { general_store, order_store, sendbird_store } = useStores();
     const [order_state, setOrderState] = React.useState(order); // Use separate state to force refresh when (FE-)expired.
     const [remaining_time, setRemainingTime] = React.useState();
@@ -72,97 +90,53 @@ const OrderRowComponent = observer(component_props => {
     const is_buy_order_type_for_user = (is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad);
     const order_type = is_buy_order_type_for_user ? localize('Buy') : localize('Sell');
 
-    const Title = () => {
-        const send_amount = is_buy_order_type_for_user ? transaction_amount : offer_amount;
-        return (
-            <React.Fragment>
-                <Text size='sm' line_height='xxs' weight='bold' as='p' className='orders__expander-content__title'>
-                    {order_type} {send_amount}
-                </Text>
-                <Text color='less-prominent' as='p' line_height='xxs' size='xxs'>
-                    {order_purchase_datetime}
-                </Text>
-            </React.Fragment>
-        );
-    };
-
     return (
         <React.Fragment>
             {isMobile() ? (
-                <div
-                    style={style}
-                    className={classNames('orders__expander', {
-                        'orders__expander-highlight-danger': should_highlight_danger,
-                    })}
-                >
-                    <div className='orders__expander-top' onClick={() => order_store.setQueryDetails(order)}>
-                        <Table.Row className='orders__expander-header'>
-                            <Table.Cell
-                                className={classNames('orders__table-row orders__expander-header', {
-                                    'orders__table-grid--active': is_active,
+                <div onClick={() => order_store.setQueryDetails(order)}>
+                    <Table.Row
+                        style={style}
+                        className={classNames('orders__mobile', {
+                            'orders__table-row--attention': !isOrderSeen(id),
+                        })}
+                    >
+                        <Table.Cell
+                            className={classNames('orders__mobile-header', {
+                                'orders__table-grid--active': general_store.is_active_tab,
+                            })}
+                        >
+                            <div
+                                className={classNames('orders__mobile-status', {
+                                    'orders__table-status--danger': should_highlight_danger,
+                                    'orders__table-status--alert': should_highlight_alert,
+                                    'orders__table-status--success': should_highlight_success,
+                                    'orders__table-status--disabled': should_highlight_disabled,
                                 })}
                             >
-                                <div
-                                    className={classNames('orders__expander-status', {
-                                        'orders__table-status--danger': should_highlight_danger,
-                                        'orders__table-status--alert': should_highlight_alert,
-                                        'orders__table-status--success': should_highlight_success,
-                                        'orders__table-status--disabled': should_highlight_disabled,
-                                    })}
-                                >
-                                    {status_string}
-                                </div>
-                            </Table.Cell>
-                            <Table.Cell className='orders__expander-header-right'>
-                                {is_timer_visible && <div className='orders__expander-time'>{remaining_time}</div>}
-                                <div className='orders__expander-chat'>
-                                    <Icon
-                                        icon='IcChat'
-                                        height={15}
-                                        width={16}
-                                        onClick={() => sendbird_store.setShouldShowChatModal(true)}
-                                    />
-                                </div>
-                            </Table.Cell>
-                        </Table.Row>
-                    </div>
-                    <ContentExpander measure={measure} title={<Title />} is_expanded={false} is_title_spaced>
-                        <div className='orders__expander-separator' />
-                        <div className='orders__expander-content'>
-                            <div>
-                                <Text color='less-prominent' as='p' size='xxs' line_height='m'>
-                                    <Localize i18n_default_text='Counterparty' />
-                                </Text>
-                                <Text color='prominent' as='p' size='xs' line_height='m'>
-                                    {other_user_details.name}
-                                </Text>
+                                {status_string}
                             </div>
-                            <div>
-                                <Text color='less-prominent' as='p' size='xxs' line_height='m'>
-                                    <Localize i18n_default_text='Order ID' />
-                                </Text>
-                                <Text color='prominent' as='p' size='xs' line_height='m'>
-                                    {id}
-                                </Text>
+                        </Table.Cell>
+                        <Table.Cell className='orders__mobile-header-right'>
+                            {is_timer_visible && <div className='orders__mobile-time'>{remaining_time}</div>}
+                            <div className='orders__mobile-chat'>
+                                <Icon
+                                    icon='IcChat'
+                                    height={15}
+                                    width={16}
+                                    onClick={() => sendbird_store.setShouldShowChatModal(true)}
+                                />
                             </div>
-                            <div>
-                                <Text color='less-prominent' as='p' size='xxs' line_height='m'>
-                                    <Localize i18n_default_text='Send' />
-                                </Text>
-                                <Text color='prominent' as='p' size='xs' line_height='m'>
-                                    {is_buy_order_type_for_user ? transaction_amount : offer_amount}
-                                </Text>
-                            </div>
-                            <div>
-                                <Text color='less-prominent' as='p' size='xxs' line_height='m'>
-                                    <Localize i18n_default_text='Receive' />
-                                </Text>
-                                <Text color='prominent' as='p' size='xs' line_height='m'>
-                                    {is_buy_order_type_for_user ? offer_amount : transaction_amount}
-                                </Text>
-                            </div>
-                        </div>
-                    </ContentExpander>
+                        </Table.Cell>
+                        <Table.Cell className='orders__mobile-title'>
+                            <Title
+                                is_buy_order_type_for_user={is_buy_order_type_for_user}
+                                offer_amount={offer_amount}
+                                order_purchase_datetime={order_purchase_datetime}
+                                order_type={order_type}
+                                transaction_amount={transaction_amount}
+                            />
+                        </Table.Cell>
+                    </Table.Row>
                 </div>
             ) : (
                 <div onClick={() => order_store.setQueryDetails(order)} style={style}>

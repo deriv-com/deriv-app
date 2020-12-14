@@ -35,7 +35,6 @@ module.exports = function (env, argv) {
             'proof-of-identity-container': 'Sections/Verification/ProofOfIdentity/proof-of-identity-container.jsx',
             'proof-of-address-container': 'Sections/Verification/ProofOfAddress/proof-of-address-container.jsx',
             'scrollbars-container': 'Components/scrollbars-container',
-            text: 'Components/text',
             'text-container': 'Components/text-container',
         },
         mode: IS_RELEASE ? 'production' : 'development',

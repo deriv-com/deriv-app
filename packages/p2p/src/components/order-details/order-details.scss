@@ -129,6 +129,8 @@ $card-width: 456px;
                 color: var(--text-less-prominent);
             }
             &-value {
+                display: flex;
+                flex-direction: column;
                 font-size: 1.4rem;
                 line-height: 1.43;
                 color: var(--text-general);

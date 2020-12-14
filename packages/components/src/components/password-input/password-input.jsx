@@ -18,6 +18,7 @@ const PasswordInput = ({
         <div className='dc-password-input'>
             <Input
                 {...otherProps}
+                autoComplete='off'
                 type={should_show_password ? 'text' : 'password'}
                 className={classNames('dc-password-input__field', className)}
                 trailing_icon={

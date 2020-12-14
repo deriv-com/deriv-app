@@ -1,10 +1,10 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Formik } from 'formik';
-import { FormSubmitErrorMessage, Button, Loading, PasswordInput, PasswordMeter } from '@deriv/components';
+import { FormSubmitErrorMessage, Button, Loading, PasswordInput, PasswordMeter, Dialog, Text } from '@deriv/components';
 import { withRouter } from 'react-router-dom';
 import { redirectToLogin, isMobile, validPassword, validLength, getErrorMessages } from '@deriv/shared';
-import { localize, getLanguage } from '@deriv/translations';
+import { localize, Localize, getLanguage } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 import FormSubHeader from 'Components/form-sub-header';
@@ -68,6 +68,9 @@ class ChangePasswordForm extends React.Component {
     };
 
     render() {
+        const { disableApp, enableApp, is_loading_app, onClickSendEmail } = this.props;
+        const { is_loading, new_pw_input, is_btn_loading, is_submit_success } = this.state;
+
         return (
             <React.Fragment>
                 <Formik
@@ -90,7 +93,7 @@ class ChangePasswordForm extends React.Component {
                         isSubmitting,
                     }) => (
                         <form className='account-form account__password-wrapper' onSubmit={handleSubmit}>
-                            {this.state.is_loading ? (
+                            {is_loading ? (
                                 <FormBody>
                                     <Loading is_fullscreen={false} className='account__initial-loader' />;
                                 </FormBody>
@@ -110,7 +113,7 @@ class ChangePasswordForm extends React.Component {
                                     </fieldset>
                                     <fieldset className='account-form__fieldset'>
                                         <PasswordMeter
-                                            input={this.state.new_pw_input}
+                                            input={new_pw_input}
                                             has_error={!!(touched.new_password && errors.new_password)}
                                             custom_feedback_messages={getErrorMessages().password_warnings}
                                         >
@@ -139,7 +142,7 @@ class ChangePasswordForm extends React.Component {
                                         'account-form__footer-btn--has-bottom-margin': isMobile(),
                                     })}
                                     type='button'
-                                    onClick={this.props.onClickSendEmail}
+                                    onClick={onClickSendEmail}
                                     text={localize('Forgot your password?')}
                                     tertiary
                                     large
@@ -156,8 +159,8 @@ class ChangePasswordForm extends React.Component {
                                             !values.old_password
                                         )
                                     }
-                                    is_loading={this.state.is_btn_loading}
-                                    is_submit_success={this.state.is_submit_success}
+                                    is_loading={is_btn_loading}
+                                    is_submit_success={is_submit_success}
                                     has_effect
                                     text={localize('Change password')}
                                     primary
@@ -167,13 +170,31 @@ class ChangePasswordForm extends React.Component {
                         </form>
                     )}
                 </Formik>
+                <Dialog
+                    is_visible={is_submit_success}
+                    disableApp={disableApp}
+                    enableApp={enableApp}
+                    is_loading={is_loading_app}
+                >
+                    <div className='reset-password__password-selection'>
+                        <Text as='p' weight='bold' className='reset-password__heading'>
+                            <Localize i18n_default_text='Your password has been changed' />
+                        </Text>
+                        <Text align='center' as='p' size='xxs' className='reset-password__subtext'>
+                            <Localize i18n_default_text='We will now redirect you to the login page.' />
+                        </Text>
+                    </div>
+                </Dialog>
             </React.Fragment>
         );
     }
 }
 
 // ChangePasswordForm.propTypes = {};
-export default connect(({ client }) => ({
+export default connect(({ client, ui }) => ({
     logout: client.logout,
     email: client.email,
+    disableApp: ui.disableApp,
+    enableApp: ui.enableApp,
+    is_loading_app: ui.is_loading,
 }))(withRouter(ChangePasswordForm));

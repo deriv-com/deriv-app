@@ -5,6 +5,7 @@
     color: var(--text-prominent);
     border-radius: $BORDER_RADIUS;
     box-shadow: 0 4px 6px 0 var(--shadow-menu), 0 4px 6px 0 var(--shadow-menu);
+    width: 100%;
     max-width: 348px;
     height: 124px;
     transition: transform 0.25s ease, opacity 0.25s linear;
@@ -75,5 +76,11 @@
         right: 16px;
         top: 16px;
         cursor: pointer;
+    }
+
+    @include mobile {
+        max-width: 328px;
+        width: calc(100% - 0.8rem);
+        margin-right: 0.4rem;
     }
 }

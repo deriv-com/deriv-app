@@ -60,6 +60,11 @@ export default class BuySellStore {
     }
 
     @computed
+    get has_payment_info() {
+        return this.contact_info.length && this.payment_info.length       
+    }
+
+    @computed
     get is_buy_advert() {
         return this.advert?.counterparty_type === buy_sell.BUY;
     }

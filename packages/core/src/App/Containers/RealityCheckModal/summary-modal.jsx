@@ -139,7 +139,7 @@ const SummaryModal = ({
                                                 }
                                             />
                                             <Row
-                                                label={localize('Profit/loss')}
+                                                label={localize('Profit / Loss')}
                                                 value={
                                                     <React.Fragment>
                                                         {!!computed_values.profit &&
@@ -204,7 +204,7 @@ const SummaryModal = ({
                                         <Text
                                             as='p'
                                             size='xs'
-                                            lineHeight='m'
+                                            line_height='m'
                                             align='center'
                                             className='reality-check__text reality-check__text--center'
                                         >

@@ -6,13 +6,15 @@ import { localize } from '@deriv/translations';
  * @param shortcode: string
  * @returns {{underlying: string, category: string}}
  */
+
+// TODO: Combine with  extractInfoFromShortcode function in shared, both are currently used
 export const getMarketInformation = shortcode => {
     const market_info = {
         category: '',
         underlying: '',
     };
 
-    const pattern = new RegExp('^([A-Z]+)_((OTC_[A-Z0-9]+)|R_[\\d]{2,3}||[A-Z\\d]+)_'); // Used to get market name from shortcode
+    const pattern = new RegExp('^([A-Z]+)_((1HZ[0-9-V]+)|((CRASH|BOOM)[0-9\\d]+)|(OTC_[A-Z0-9]+)|R_[\\d]{2,3}|[A-Z]+)');
     const extracted = pattern.exec(shortcode);
     if (extracted !== null) {
         market_info.category = extracted[1].toLowerCase();

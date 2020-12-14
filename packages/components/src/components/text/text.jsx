@@ -16,7 +16,7 @@ const Text = ({ children, size, color, align, weight, line_height, as, className
             setStyle(...class_styles, ...styles);
         }
         setStyle(class_styles);
-    }, [size, color, align, weight, line_height]);
+    }, [size, color, line_height, weight]);
 
     const text_align = align || 'start';
     const class_names = classNames(

@@ -43,30 +43,39 @@ export default Engine =>
 
                 const sellContractAndGetContractInfo = () => {
                     return this.api
-                        .sellContract(contract_id, 0)
-                        .then(sell_response => this.api.getContractInfo(contract_id).then(() => sell_response))
-                        .catch(error => {
-                            if (error.name === 'InvalidOfferings') {
+                        .sell(contract_id, 0)
+                        .then(sell_response => {
+                            doUntilDone(() => this.api.send({ proposal_open_contract: 1, contract_id })).then(
+                                () => sell_response
+                            );
+                        })
+                        .catch(e => {
+                            const error = e.error;
+                            if (error.code === 'InvalidOfferings') {
                                 // "InvalidOfferings" may occur when user tries to sell the contract too close
                                 // to the expiry time. We shouldn't interrupt the bot but instead let the contract
                                 // finish.
-                                log(error.message);
                                 return Promise.resolve();
                             }
 
                             const sell_error = {
-                                name: error.name,
+                                name: error.code,
                                 message: error.message,
-                                msg_type: error.msg_type || error.error?.msg_type,
+                                msg_type: e.msg_type,
                                 error: { ...error.error },
                             };
 
-                            if (error.name === 'RateLimit') {
+                            if (error.code === 'RateLimit') {
                                 return Promise.reject(sell_error);
                             }
 
                             // For every other error, check whether the contract is not actually already sold.
-                            return this.api.getContractInfo(contract_id).then(proposal_open_contract_response => {
+                            return doUntilDone(() =>
+                                this.api.send({
+                                    proposal_open_contract: 1,
+                                    contract_id,
+                                })
+                            ).then(proposal_open_contract_response => {
                                 const { proposal_open_contract } = proposal_open_contract_response;
 
                                 if (proposal_open_contract.status !== 'sold') {
@@ -98,7 +107,6 @@ export default Engine =>
                 const recoverFn = (error_code, makeDelay) => {
                     return makeDelay().then(() => this.observer.emit('REVERT', 'during'));
                 };
-
                 return recoverFromError(
                     sellContractAndGetContractInfo,
                     recoverFn,

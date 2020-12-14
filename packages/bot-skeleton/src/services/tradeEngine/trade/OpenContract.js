@@ -6,37 +6,38 @@ import { doUntilDone } from '../utils/helpers';
 export default Engine =>
     class OpenContract extends Engine {
         observeOpenContract() {
-            this.listen('proposal_open_contract', r => {
-                const contract = r.proposal_open_contract;
+            this.api.onMessage().subscribe(({ data }) => {
+                if (data.msg_type === 'proposal_open_contract') {
+                    const contract = data.proposal_open_contract;
 
-                if (!this.expectedContractId(contract.contract_id)) {
-                    return;
-                }
-
-                this.setContractFlags(contract);
-
-                this.data.contract = contract;
-
-                broadcastContract({ accountID: this.accountInfo.loginid, ...contract });
-
-                if (this.isSold) {
-                    this.contractId = '';
-
-                    clearTimeout(this.transaction_recovery_timeout);
-                    this.updateTotals(contract);
-                    contractStatus({
-                        id: 'contract.sold',
-                        data: contract.transaction_ids.sell,
-                        contract,
-                    });
-
-                    if (this.afterPromise) {
-                        this.afterPromise();
+                    if (!contract && !this.expectedContractId(contract.contract_id)) {
+                        return;
                     }
 
-                    this.store.dispatch(sell());
-                } else {
-                    this.store.dispatch(openContractReceived());
+                    this.setContractFlags(contract);
+
+                    this.data.contract = contract;
+
+                    broadcastContract({ accountID: this.accountInfo.loginid, ...contract });
+
+                    if (this.isSold) {
+                        this.contractId = '';
+                        clearTimeout(this.transaction_recovery_timeout);
+                        this.updateTotals(contract);
+                        contractStatus({
+                            id: 'contract.sold',
+                            data: contract.transaction_ids.sell,
+                            contract,
+                        });
+
+                        if (this.afterPromise) {
+                            this.afterPromise();
+                        }
+
+                        this.store.dispatch(sell());
+                    } else {
+                        this.store.dispatch(openContractReceived());
+                    }
                 }
             });
         }
@@ -47,20 +48,16 @@ export default Engine =>
             });
         }
 
-        subscribeToOpenContract(contractId = this.contractId) {
-            this.contractId = contractId;
-
-            this.api
-                .subscribeToOpenContract(contractId)
-                .then(response => {
-                    this.openContractId = response.proposal_open_contract.id;
+        subscribeToOpenContract(contract_id = this.contractId) {
+            this.contractId = contract_id;
+            doUntilDone(() => this.api.send({ proposal_open_contract: 1, contract_id, subscribe: 1 }))
+                .then(data => {
+                    this.openContractId = data.proposal_open_contract.id;
                 })
                 .catch(error => {
-                    if (error.name !== 'AlreadySubscribed') {
-                        doUntilDone(() =>
-                            this.api.subscribeToOpenContract(contractId).then(response => {
-                                this.openContractId = response.proposal_open_contract.id;
-                            })
+                    if (error.error.code !== 'AlreadySubscribed') {
+                        doUntilDone(() => this.api.send({ proposal_open_contract: 1, contract_id, subscribe: 1 })).then(
+                            response => (this.openContractId = response.proposal_open_contract.id)
                         );
                     }
                 });

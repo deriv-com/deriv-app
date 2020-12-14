@@ -65,14 +65,13 @@ const ProofOfIdentityContainer = ({
 
     const createVerificationConfig = React.useCallback(
         (account_status_obj, onfido_token) => {
-            const client_verification_status = populateVerificationStatus(account_status_obj);
             const {
                 allow_document_upload,
                 has_poa,
                 needs_poa,
                 is_unwelcome,
                 onfido_supported_docs,
-            } = client_verification_status;
+            } = populateVerificationStatus(account_status_obj);
 
             const { identity, needs_verification } = account_status_obj.authentication;
 

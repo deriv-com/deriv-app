@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
@@ -7,10 +6,14 @@ import { formatMoney, getCurrencyDisplayCode, getCurrencyName, routes } from '@d
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
+const openStatement = ({ history, resetAccountTransfer }) => {
+    history.push(routes.statement);
+    resetAccountTransfer();
+};
+
 const AccountTransferReceipt = ({
     disableApp,
     enableApp,
-    history,
     receipt,
     resetAccountTransfer,
     selected_from,
@@ -18,18 +21,13 @@ const AccountTransferReceipt = ({
     switchAccount,
 }) => {
     const [is_switch_visible, setIsSwitchVisible] = React.useState(false);
-    const [switch_to, setIsSwitchTo] = React.useState({});
+    const [switch_to, setSwitchTo] = React.useState({});
 
     React.useEffect(() => {
         return () => {
             resetAccountTransfer();
         };
     }, [resetAccountTransfer]);
-
-    const openStatement = () => {
-        history.push(routes.statement);
-        resetAccountTransfer();
-    };
 
     const switchAndRedirect = async () => {
         await switchAccount(switch_to.value);
@@ -49,7 +47,7 @@ const AccountTransferReceipt = ({
         } else {
             // if the account transferred to is a DMT5 account that can't be switched to, switch to from account instead
             // otherwise switch to the account transferred to
-            setIsSwitchTo(selected_to.is_mt ? selected_from : selected_to);
+            setSwitchTo(selected_to.is_mt ? selected_from : selected_to);
             toggleSwitchAlert();
         }
     };
@@ -61,9 +59,7 @@ const AccountTransferReceipt = ({
             </h2>
             <div className='cashier__transferred-amount cashier__text--bold'>
                 {formatMoney(selected_from.currency, receipt.amount_transferred, true)}
-                <span className={classNames('symbols', `symbols--${selected_from.currency?.toLowerCase()}`)}>
-                    {getCurrencyDisplayCode(selected_from.currency)}
-                </span>
+                <span className='symbols'>{getCurrencyDisplayCode(selected_from.currency)}</span>
             </div>
             <div className='cashier__transferred-details-wrapper'>
                 <span className='account-transfer__transfer-details-from'>

@@ -35,18 +35,14 @@ const Onfido = ({ documents_supported, handleComplete, height, onfido_service_to
             initOnfido();
         }
         return () => {
-            if (onfido_init) {
-                onfido_init.tearDown();
-            }
+            onfido_init?.tearDown();
         };
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const previous_onfido_service_token = usePrevious(onfido_service_token);
 
     const onComplete = React.useCallback(() => {
-        if (onfido_init) {
-            onfido_init.tearDown();
-        }
+        onfido_init?.tearDown();
         handleComplete();
     }, [handleComplete, onfido_init]);
 

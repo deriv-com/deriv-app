@@ -161,6 +161,8 @@ export default class TransactionsStore {
     }
 
     recoverPendingContracts() {
+        const reported_transactions = [];
+
         this.transactions.forEach(({ data: trx }) => {
             if (trx.is_completed) return;
 
@@ -172,7 +174,9 @@ export default class TransactionsStore {
 
                     this.onBotContractEvent(proposal_open_contract);
 
-                    if (isEnded(proposal_open_contract)) {
+                    if (!reported_transactions.includes(trx.contract_id) && isEnded(proposal_open_contract)) {
+                        reported_transactions.push(trx.contract_id);
+
                         const { currency, profit } = proposal_open_contract;
 
                         this.root_store.journal.onLogSuccess({

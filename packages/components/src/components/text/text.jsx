@@ -13,7 +13,8 @@ const Text = ({ children, size, color, align, weight, line_height, as, className
             '--text-weight': `var(--text-weight-${weight || 'normal'})`,
         };
         if (!isEmptyObject(styles)) {
-            setStyle(...class_styles, ...styles);
+            const combined_style = { ...class_styles, ...styles };
+            setStyle(combined_style);
         }
         setStyle(class_styles);
     }, [size, color, line_height, weight]);

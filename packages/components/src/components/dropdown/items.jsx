@@ -51,17 +51,13 @@ const Item = ({ onKeyPressed, value, item, handleSelect, nodes, has_symbol, is_a
                         size='xs'
                         line_height='s'
                         align='center'
-                        className={classNames('symbols', 'dc-list__item-symbol', symbol_type_class_name)}
+                        className={classNames('dc-list__item-symbol', symbol_type_class_name)}
                     />
                 </Popover>
             )}
 
             {!!has_symbol && !item.has_tooltip && (
-                <Text
-                    size='xs'
-                    line_height='s'
-                    className={classNames('symbols', 'dc-list__item-text', symbol_type_class_name)}
-                />
+                <Text size='xs' line_height='s' className={classNames('dc-list__item-text', symbol_type_class_name)} />
             )}
 
             {!has_symbol && (

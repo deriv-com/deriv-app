@@ -23,7 +23,6 @@
         justify-content: center;
         background: var(--fill-normal);
         border: 1px solid var(--border-normal);
-
         &:hover {
             outline: 0;
             border-color: var(--border-hover);
@@ -33,6 +32,11 @@
             outline: 0;
             border-color: var(--border-active);
         }
+        &-filter {
+            @include mobile {
+                height: 40px;
+            }
+        }
         &-text {
             padding-left: 1em;
             padding-right: 2.5em;
@@ -40,6 +44,9 @@
             color: var(--text-prominent);
             display: flex;
             white-space: nowrap;
+            &-filter {
+                padding-right: 0;
+            }
 
             &--placeholder:after {
                 content: attr(placeholder);
@@ -300,4 +307,18 @@
             right: 16px;
         }
     }
+    &--filter {
+        margin-left: 10px;
+        margin-top: 0;
+        width: 100px;
+        min-width: 15rem;
+
+        @include mobile {
+            height: 40px;
+        }
+    }
+}
+.icon_filter {
+    position: absolute;
+    left: 15px;
 }

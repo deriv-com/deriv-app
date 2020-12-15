@@ -174,21 +174,21 @@ const Dropdown = ({
     handleBlur,
     has_symbol,
     hint,
-    label,
-    list,
-    name,
-    no_border,
+    initial_offset = 0,
     is_alignment_top,
     is_alignment_left,
     is_align_text_left,
     is_large,
     is_nativepicker,
     is_nativepicker_visible,
+    label,
+    list,
+    list_portal_id,
+    name,
+    no_border,
     placeholder,
     onChange,
     value,
-    initial_offset = 0,
-    list_portal_id,
 }) => {
     const dropdown_ref = React.useRef();
     const native_select_ref = React.useRef();
@@ -224,6 +224,7 @@ const Dropdown = ({
             'dc-dropdown--show': is_list_visible,
             'dc-dropdown--disabled': isSingleOption() || disabled,
             'dc-dropdown--error': error,
+            'dc-dropdown--filter': className === 'dropdown-statement-filter',
         });
     };
 
@@ -370,6 +371,9 @@ const Dropdown = ({
                         id='dropdown-display'
                         ref={dropdown_ref}
                     >
+                        {className === 'dropdown-statement-filter' && (
+                            <Icon className='icon_filter' icon='IcFilter' size={16} />
+                        )}
                         <DisplayText
                             has_symbol={has_symbol}
                             name={name}
@@ -378,6 +382,7 @@ const Dropdown = ({
                             value={value || 0}
                             list={list}
                             is_align_text_left={is_align_text_left}
+                            className='dc-dropdown__display-text-filter'
                         />
                     </div>
                     {!isSingleOption() && (

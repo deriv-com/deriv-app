@@ -2,7 +2,7 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { DesktopWrapper, MobileWrapper, DataList, DataTable, Money } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, DataList, DataTable, Money, Dropdown } from '@deriv/components';
 import { extractInfoFromShortcode, urlFor, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
@@ -14,6 +14,64 @@ import { getStatementTableColumnsTemplate } from '../Constants/data-table-consta
 import PlaceholderComponent from '../Components/placeholder-component.jsx';
 import { ReportsMeta } from '../Components/reports-meta.jsx';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message.jsx';
+
+const TransactionFilter = props => {
+    const [default_value, setDefaultValue] = React.useState('all');
+
+    const filter_list = [
+        {
+            text: 'All',
+            value: 'all',
+            has_tooltip: false,
+            tooltip: '',
+            disabled: false,
+        },
+        {
+            text: 'Buy',
+            value: 'buy',
+            has_tooltip: false,
+            tooltip: '',
+            disabled: false,
+        },
+        {
+            text: 'Sell',
+            value: 'sell',
+            has_tooltip: false,
+            tooltip: '',
+            disabled: false,
+        },
+        {
+            text: 'Deposit',
+            value: 'deposit',
+            has_tooltip: false,
+            tooltip: '',
+            disabled: false,
+        },
+        {
+            text: 'Withdraw',
+            value: 'withdrawal',
+            has_tooltip: false,
+            tooltip: '',
+            disabled: false,
+        },
+    ];
+
+    return (
+        <Dropdown
+            list={filter_list}
+            value={default_value}
+            name='dropdown'
+            className='dropdown-statement-filter'
+            classNameDisplay='dc-dropdown__display-filter'
+            has_symbol={false}
+            is_alignment_left={props.is_alignment_left}
+            onChange={e => {
+                setDefaultValue(e.target.value);
+                props.handleFilterChange(e.target.value);
+            }}
+        />
+    );
+};
 
 const getRowAction = row_obj => {
     let action;
@@ -62,6 +120,7 @@ const Statement = ({
     error,
     filtered_date_range,
     handleDateChange,
+    handleFilterChange,
     handleScroll,
     has_selected_date,
     is_empty,
@@ -122,12 +181,15 @@ const Statement = ({
     if (error) return <p>{error}</p>;
 
     const filter_component = (
-        <CompositeCalendar
-            input_date_range={filtered_date_range}
-            onChange={handleDateChange}
-            from={date_from}
-            to={date_to}
-        />
+        <>
+            <CompositeCalendar
+                input_date_range={filtered_date_range}
+                onChange={handleDateChange}
+                from={date_from}
+                to={date_to}
+            />
+            <TransactionFilter handleFilterChange={handleFilterChange} />
+        </>
     );
 
     const columns = getStatementTableColumnsTemplate(currency);
@@ -222,6 +284,7 @@ Statement.propTypes = {
     error: PropTypes.string,
     filtered_date_range: PropTypes.object,
     handleDateChange: PropTypes.func,
+    handleFilterChange: PropTypes.func,
     handleScroll: PropTypes.func,
     has_selected_date: PropTypes.bool,
     is_empty: PropTypes.bool,
@@ -241,6 +304,7 @@ export default connect(({ modules, client }) => ({
     error: modules.statement.error,
     filtered_date_range: modules.statement.filtered_date_range,
     handleDateChange: modules.statement.handleDateChange,
+    handleFilterChange: modules.statement.handleFilterChange,
     handleScroll: modules.statement.handleScroll,
     has_selected_date: modules.statement.has_selected_date,
     is_empty: modules.statement.is_empty,

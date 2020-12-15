@@ -853,6 +853,7 @@
         text-decoration: none;
         color: var(--brand-red-coral);
         font-weight: bold;
+        font-size: var(--text-size-xs);
 
         @include mobile {
             padding-left: 0;

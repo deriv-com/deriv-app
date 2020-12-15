@@ -98,6 +98,7 @@ const ResetPassword = ({ logoutClient, verification_code }) => {
                                             custom_feedback_messages={getErrorMessages().password_warnings}
                                         >
                                             <PasswordInput
+                                                autoComplete='new-password'
                                                 className='reset-password__password-field'
                                                 name='password'
                                                 label={localize('Create a password')}

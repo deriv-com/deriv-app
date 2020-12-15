@@ -16,16 +16,18 @@ import MobileWrapper from '../../mobile-wrapper';
 import Money from '../../money';
 import InputWithCheckbox from '../../input-wth-checkbox';
 
-const ContractUpdateForm = ({
-    contract,
-    addToast,
-    current_focus,
-    getCardLabels,
-    removeToast,
-    setCurrentFocus,
-    status,
-    toggleDialog,
-}) => {
+const ContractUpdateForm = props => {
+    const {
+        contract,
+        addToast,
+        current_focus,
+        getCardLabels,
+        removeToast,
+        setCurrentFocus,
+        status,
+        toggleDialog,
+    } = props;
+
     React.useEffect(() => {
         return () => contract.clearContractUpdateConfigValues();
     }, []);
@@ -39,9 +41,9 @@ const ContractUpdateForm = ({
         updateLimitOrder,
         validation_errors,
     } = contract;
+
     const { buy_price, currency, is_valid_to_cancel, is_sold } = contract_info;
     const { stop_loss, take_profit } = getLimitOrderAmount(contract_info.limit_order);
-
     const {
         contract_update_stop_loss: stop_loss_error,
         contract_update_take_profit: take_profit_error,
@@ -70,7 +72,7 @@ const ContractUpdateForm = ({
     };
 
     const isStateUnchanged = () => {
-        return isDeepEqual(getStateToCompare(getContractUpdateConfig(contract_info)), getStateToCompare(contract));
+        return isDeepEqual(getStateToCompare(getContractUpdateConfig(contract_info)), getStateToCompare(props));
     };
 
     const onChange = e => {

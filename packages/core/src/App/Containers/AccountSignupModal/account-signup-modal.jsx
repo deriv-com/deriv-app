@@ -104,75 +104,73 @@ const AccountSignup = ({ enableApp, isModalVisible, is_account_signup_modal_visi
                     touched,
                 }) => (
                     <Form>
-                        <React.Fragment>
-                            {!has_valid_residence ? (
-                                <ResidenceForm
-                                    header_text={localize('Thanks for verifying your email')}
-                                    class_prefix='account-signup'
-                                    errors={errors}
-                                    touched={touched}
-                                    setFieldTouched={setFieldTouched}
-                                    setFieldValue={setFieldValue}
-                                    residence_list={residence_list}
-                                >
-                                    <Button
-                                        className={classNames('account-signup__btn', {
-                                            'account-signup__btn--disabled': !values.residence || errors.residence,
-                                        })}
-                                        type='button'
-                                        is_disabled={!values.residence || !!errors.residence}
-                                        onClick={onResidenceSelection}
-                                        primary
-                                        text={localize('Next')}
-                                    />
-                                </ResidenceForm>
-                            ) : (
-                                <div className='account-signup__password-selection'>
-                                    <Text as='p' weight='bold' className='account-signup__heading'>
-                                        <Localize i18n_default_text='Keep your account secure with a password' />
-                                    </Text>
-                                    <Field name='password'>
-                                        {({ field }) => (
-                                            <PasswordMeter
-                                                input={pw_input}
-                                                has_error={!!(touched.password && errors.password)}
-                                                custom_feedback_messages={getErrorMessages().password_warnings}
-                                            >
-                                                <PasswordInput
-                                                    {...field}
-                                                    className='account-signup__password-field'
-                                                    label={localize('Create a password')}
-                                                    error={touched.password && errors.password}
-                                                    required
-                                                    value={values.password}
-                                                    onBlur={handleBlur}
-                                                    onChange={e => {
-                                                        const input = e.target;
-                                                        setFieldTouched('password', true);
-                                                        if (input) updatePassword(input.value);
-                                                        handleChange(e);
-                                                    }}
-                                                />
-                                            </PasswordMeter>
-                                        )}
-                                    </Field>
-                                    <Text as='p' size='xxs' className='account-signup__subtext'>
-                                        <Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters, numbers, and symbols.' />
-                                    </Text>
+                        {!has_valid_residence ? (
+                            <ResidenceForm
+                                header_text={localize('Thanks for verifying your email')}
+                                class_prefix='account-signup'
+                                errors={errors}
+                                touched={touched}
+                                setFieldTouched={setFieldTouched}
+                                setFieldValue={setFieldValue}
+                                residence_list={residence_list}
+                            >
+                                <Button
+                                    className={classNames('account-signup__btn', {
+                                        'account-signup__btn--disabled': !values.residence || errors.residence,
+                                    })}
+                                    type='button'
+                                    is_disabled={!values.residence || !!errors.residence}
+                                    onClick={onResidenceSelection}
+                                    primary
+                                    text={localize('Next')}
+                                />
+                            </ResidenceForm>
+                        ) : (
+                            <div className='account-signup__password-selection'>
+                                <Text as='p' weight='bold' className='account-signup__heading'>
+                                    <Localize i18n_default_text='Keep your account secure with a password' />
+                                </Text>
+                                <Field name='password'>
+                                    {({ field }) => (
+                                        <PasswordMeter
+                                            input={pw_input}
+                                            has_error={!!(touched.password && errors.password)}
+                                            custom_feedback_messages={getErrorMessages().password_warnings}
+                                        >
+                                            <PasswordInput
+                                                {...field}
+                                                className='account-signup__password-field'
+                                                label={localize('Create a password')}
+                                                error={touched.password && errors.password}
+                                                required
+                                                value={values.password}
+                                                onBlur={handleBlur}
+                                                onChange={e => {
+                                                    const input = e.target;
+                                                    setFieldTouched('password', true);
+                                                    if (input) updatePassword(input.value);
+                                                    handleChange(e);
+                                                }}
+                                            />
+                                        </PasswordMeter>
+                                    )}
+                                </Field>
+                                <Text as='p' size='xxs' className='account-signup__subtext'>
+                                    <Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters, numbers, and symbols.' />
+                                </Text>
 
-                                    <Button
-                                        className={classNames('account-signup__btn', {
-                                            'account-signup__btn--disabled':
-                                                !values.password || errors.password || isSubmitting,
-                                        })}
-                                        type='submit'
-                                        is_disabled={!values.password || !!errors.password || isSubmitting}
-                                        text={localize('Start trading')}
-                                        primary
-                                    />
-                                </div>
-                            )}
-                        </React.Fragment>
+                                <Button
+                                    className={classNames('account-signup__btn', {
+                                        'account-signup__btn--disabled':
+                                            !values.password || errors.password || isSubmitting,
+                                    })}
+                                    type='submit'
+                                    is_disabled={!values.password || !!errors.password || isSubmitting}
+                                    text={localize('Start trading')}
+                                    primary
+                                />
+                            </div>
+                        )}
                     </Form>
                 )}
             </Formik>

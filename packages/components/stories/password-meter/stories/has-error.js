@@ -12,6 +12,7 @@ const HasError = () => {
         <Wrapper is_dark={boolean('Dark Theme', false)}>
             <PasswordMeter has_error={has_error} input={new_password}>
                 <PasswordInput
+                    autoComplete='new-password'
                     className='password-meter-storybook'
                     label='New password'
                     error={has_error}

@@ -852,14 +852,9 @@
     }
     &__contact {
         text-decoration: none;
-        color: var(--brand-red-coral);
-        font-size: var(--text-size-xs);
 
         @include mobile {
             padding-left: 0;
-        }
-        &--bold {
-            font-weight: var(--text-weight-bold);
         }
     }
     &__explanation {

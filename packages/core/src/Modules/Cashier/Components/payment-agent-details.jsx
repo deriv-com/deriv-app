@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Icon } from '@deriv/components';
+import { Icon, Text } from '@deriv/components';
 
 class Detail extends React.Component {
     render() {
@@ -11,13 +11,13 @@ class Detail extends React.Component {
             <div className='payment-agent__accordion-content-line'>
                 <Icon icon={`Ic${icon}`} className='payment-agent__accordion-content-icon' color='secondary' />
                 <a
-                    className={classNames('payment-agent__contact cashier__paragraph', {
-                        'payment-agent__contact--bold': is_bold,
-                    })}
+                    className='payment-agent__contact cashier__paragraph'
                     href={`${action ? `${action}:` : ''}${value}`}
                     {...rest}
                 >
-                    {value}
+                    <Text styles={is_bold && { color: 'var(--brand-red-coral)' }} weight={is_bold && 'bold'} size='xs'>
+                        {value}
+                    </Text>
                 </a>
             </div>
         );

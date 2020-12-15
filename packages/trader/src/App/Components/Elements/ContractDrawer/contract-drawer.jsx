@@ -77,7 +77,7 @@ const ContractDrawer = ({
     if (!contract_info) return null;
 
     // For non-binary contract, the status is always null, so we check for is_expired in contract_info
-    const fallback_result = contract_info.is_expired;
+    const fallback_result = contract_info.status || contract_info.is_expired;
 
     const exit_spot = isUserSold(contract_info) && !is_multiplier ? '-' : exit_tick_display_value;
 
@@ -99,7 +99,7 @@ const ContractDrawer = ({
 
     const body_content = (
         <React.Fragment>
-            {contract_info.status || fallback_result ? (
+            {fallback_result ? (
                 getBodyContent()
             ) : (
                 <div className='contract-card'>

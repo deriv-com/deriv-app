@@ -1,9 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { usePrevious } from '../../hooks';
 
 const AutoHeightWrapper = props => {
     const [height, setHeight] = React.useState(props.default_height);
-    const [child_ref, setChildRef] = React.useState(null);
+    const [child_client_height, setChildClientHeight] = React.useState(0);
+
+    const prev_child_client_height = usePrevious(child_client_height);
 
     React.useEffect(() => {
         window.addEventListener('resize', updateHeight);
@@ -13,14 +16,16 @@ const AutoHeightWrapper = props => {
 
     const updateHeight = () =>
         setHeight(
-            child_ref?.clientHeight > props.default_height
-                ? child_ref.clientHeight - (props.height_offset || 0)
+            child_client_height > props.default_height
+                ? child_client_height - (props.height_offset || 0)
                 : props.default_height
         );
 
     const setRef = ref => {
-        setChildRef(ref);
-        setTimeout(updateHeight, 0);
+        if (Number.isInteger(ref?.clientHeight) && ref.clientHeight !== prev_child_client_height) {
+            setChildClientHeight(ref.clientHeight);
+            setTimeout(updateHeight, 0);
+        }
     };
 
     return props.children({

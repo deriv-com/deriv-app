@@ -551,8 +551,7 @@ class AccountSwitcher extends React.Component {
                                                     (!this.props.is_eu && !this.props.has_any_real_account) ||
                                                     (account.type === 'financial_stp' &&
                                                         (this.props.is_pending_authentication ||
-                                                            (this.props.is_fully_authenticated &&
-                                                                this.has_required_credentials))) ||
+                                                            this.has_required_credentials)) ||
                                                     !!this.props.mt5_login_list_error
                                                 }
                                             >
@@ -661,7 +660,6 @@ AccountSwitcher.propTypes = {
     can_upgrade_to: PropTypes.string,
     has_fiat: PropTypes.bool,
     has_any_real_account: PropTypes.bool,
-    is_fully_authenticated: PropTypes.bool,
     is_eu: PropTypes.bool,
     is_loading_mt5: PropTypes.bool,
     is_logged_in: PropTypes.bool,
@@ -694,7 +692,6 @@ const account_switcher = withRouter(
         account_list: client.account_list,
         can_upgrade_to: client.can_upgrade_to,
         client_residence: client.residence,
-        is_fully_authenticated: client.is_fully_authenticated,
         is_eu: client.is_eu,
         is_loading_mt5: client.is_populating_mt5_account_list,
         is_logged_in: client.is_logged_in,

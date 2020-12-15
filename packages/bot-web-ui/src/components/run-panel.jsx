@@ -31,23 +31,23 @@ const drawerContent = ({ active_index, is_drawer_open, setActiveTabIndex, ...pro
     );
 };
 
-const StatisticsTile = props => (
+const StatisticsTile = ({ content, contentClassName, title }) => (
     <div className='run-panel__tile'>
-        <div className='run-panel__tile-title'>{props.title}</div>
-        <div className={classNames('run-panel__tile-content', props.contentClassName)}>{props.content}</div>
+        <div className='run-panel__tile-title'>{title}</div>
+        <div className={classNames('run-panel__tile-content', contentClassName)}>{content}</div>
     </div>
 );
 
 const StatisticsSummary = ({
-    is_mobile,
-    total_stake,
     currency,
-    total_payout,
-    number_of_runs,
+    is_mobile,
     lost_contracts,
-    won_contracts,
+    number_of_runs,
+    total_stake,
+    total_payout,
     toggleStatisticsInfoModal,
     total_profit,
+    won_contracts,
 }) => (
     <div
         className={classNames('run-panel__stat', {
@@ -165,89 +165,108 @@ const StatisticsInfoModal = ({ is_mobile, is_statistics_info_modal_open, toggleS
     );
 };
 
-class RunPanel extends React.PureComponent {
-    componentDidMount() {
-        this.props.onMount();
-    }
+const RunPanel = props => {
+    const {
+        active_index,
+        currency,
+        dialog_options,
+        is_clear_stat_disabled,
+        is_dialog_open,
+        is_drawer_open,
+        is_mobile,
+        is_statistics_info_modal_open,
+        lost_contracts,
+        number_of_runs,
+        onCancelButtonClick,
+        onClearStatClick,
+        onCloseDialog,
+        onMount,
+        onOkButtonClick,
+        onRunButtonClick,
+        onUnmount,
+        setActiveTabIndex,
+        toggleDrawer,
+        toggleStatisticsInfoModal,
+        total_payout,
+        total_profit,
+        total_stake,
+        won_contracts,
+    } = props;
 
-    componentWillUnmount() {
-        this.props.onUnmount();
-    }
-    render() {
-        const {
-            active_index,
-            dialog_options,
-            is_clear_stat_disabled,
-            is_drawer_open,
-            is_mobile,
-            is_statistics_info_modal_open,
-            onClearStatClick,
-            setActiveTabIndex,
-            toggleDrawer,
-            is_dialog_open,
-            onOkButtonClick,
-            onRunButtonClick,
-            onCancelButtonClick,
-            toggleStatisticsInfoModal,
-            onCloseDialog,
-        } = this.props;
-        const content = drawerContent({ active_index, is_drawer_open, setActiveTabIndex, ...this.props });
-        const footer = drawerFooter({ is_clear_stat_disabled, onClearStatClick });
+    React.useEffect(() => {
+        onMount();
+        return () => onUnmount();
+    }, [onMount, onUnmount]);
 
-        return (
-            <>
-                <div className={is_mobile && is_drawer_open ? 'run-panel__container--mobile' : undefined}>
-                    <Drawer
-                        className={!is_mobile ? 'run-panel__container' : undefined}
-                        contentClassName='run-panel__content'
-                        clear_stat_button_text={localize('Reset')}
-                        footer={!is_mobile && footer}
-                        is_clear_stat_disabled={is_clear_stat_disabled}
-                        is_mobile={is_mobile}
-                        is_open={is_drawer_open}
-                        onClearStatClick={onClearStatClick}
-                        toggleDrawer={toggleDrawer}
-                        zIndex={popover_zindex.RUN_PANEL}
-                    >
-                        {content}
-                    </Drawer>
-                    {is_mobile && <MobileDrawerFooter />}
-                </div>
-                <Dialog
-                    title={dialog_options.title}
-                    is_visible={is_dialog_open}
-                    cancel_button_text={dialog_options.cancel_button_text || localize('Cancel')}
-                    onCancel={onCancelButtonClick}
-                    confirm_button_text={dialog_options.ok_button_text || localize('OK')}
-                    onConfirm={onOkButtonClick || onCloseDialog}
-                    is_mobile_full_width={false}
-                    className={'dc-dialog__wrapper--fixed'}
-                    has_close_icon
-                >
-                    {dialog_options.message}
-                </Dialog>
-                <SelfExclusion
-                    onRunButtonClick={onRunButtonClick}
-                    onCancelButtonClick={this.props.resetSelfExclusion}
-                />
-                <StatisticsInfoModal
+    const content = drawerContent({
+        active_index,
+        currency,
+        is_drawer_open,
+        is_mobile,
+        lost_contracts,
+        number_of_runs,
+        setActiveTabIndex,
+        toggleStatisticsInfoModal,
+        total_payout,
+        total_profit,
+        total_stake,
+        won_contracts,
+    });
+    const footer = drawerFooter({ is_clear_stat_disabled, onClearStatClick });
+
+    return (
+        <>
+            <div className={is_mobile && is_drawer_open ? 'run-panel__container--mobile' : undefined}>
+                <Drawer
+                    className={!is_mobile ? 'run-panel__container' : undefined}
+                    contentClassName='run-panel__content'
+                    clear_stat_button_text={localize('Reset')}
+                    footer={!is_mobile && footer}
+                    is_clear_stat_disabled={is_clear_stat_disabled}
                     is_mobile={is_mobile}
-                    is_statistics_info_modal_open={is_statistics_info_modal_open}
-                    toggleStatisticsInfoModal={toggleStatisticsInfoModal}
-                />
-            </>
-        );
-    }
-}
+                    is_open={is_drawer_open}
+                    onClearStatClick={onClearStatClick}
+                    toggleDrawer={toggleDrawer}
+                    zIndex={popover_zindex.RUN_PANEL}
+                >
+                    {content}
+                </Drawer>
+                {is_mobile && <MobileDrawerFooter />}
+            </div>
+            <Dialog
+                title={dialog_options.title}
+                is_visible={is_dialog_open}
+                cancel_button_text={dialog_options.cancel_button_text || localize('Cancel')}
+                onCancel={onCancelButtonClick}
+                confirm_button_text={dialog_options.ok_button_text || localize('OK')}
+                onConfirm={onOkButtonClick || onCloseDialog}
+                is_mobile_full_width={false}
+                className={'dc-dialog__wrapper--fixed'}
+                has_close_icon
+            >
+                {dialog_options.message}
+            </Dialog>
+            <SelfExclusion onRunButtonClick={onRunButtonClick} />
+            <StatisticsInfoModal
+                is_mobile={is_mobile}
+                is_statistics_info_modal_open={is_statistics_info_modal_open}
+                toggleStatisticsInfoModal={toggleStatisticsInfoModal}
+            />
+        </>
+    );
+};
 
 RunPanel.propTypes = {
     active_index: PropTypes.number,
+    currency: PropTypes.string,
     dialog_options: PropTypes.object,
     is_clear_stat_disabled: PropTypes.bool,
     is_dialog_open: PropTypes.bool,
     is_drawer_open: PropTypes.bool,
     is_mobile: PropTypes.bool,
     is_statistics_info_modal_open: PropTypes.bool,
+    lost_contracts: PropTypes.number,
+    number_of_runs: PropTypes.number,
     onCancelButtonClick: PropTypes.func,
     onClearStatClick: PropTypes.func,
     onCloseDialog: PropTypes.func,
@@ -257,9 +276,6 @@ RunPanel.propTypes = {
     onUnmount: PropTypes.func,
     setActiveTabIndex: PropTypes.func,
     toggleDrawer: PropTypes.func,
-    currency: PropTypes.string,
-    lost_contracts: PropTypes.number,
-    number_of_runs: PropTypes.number,
     toggleStatisticsInfoModal: PropTypes.func,
     total_payout: PropTypes.number,
     total_profit: PropTypes.number,
@@ -269,12 +285,15 @@ RunPanel.propTypes = {
 
 export default connect(({ run_panel, core, ui }) => ({
     active_index: run_panel.active_index,
+    currency: core.client.currency,
     dialog_options: run_panel.dialog_options,
     is_clear_stat_disabled: run_panel.is_clear_stat_disabled,
     is_dialog_open: run_panel.is_dialog_open,
     is_drawer_open: run_panel.is_drawer_open,
     is_mobile: ui.is_mobile,
     is_statistics_info_modal_open: run_panel.is_statistics_info_modal_open,
+    lost_contracts: run_panel.statistics.lost_contracts,
+    number_of_runs: run_panel.statistics.number_of_runs,
     onCancelButtonClick: run_panel.onCancelButtonClick,
     onClearStatClick: run_panel.onClearStatClick,
     onCloseDialog: run_panel.onCloseDialog,
@@ -284,9 +303,6 @@ export default connect(({ run_panel, core, ui }) => ({
     onUnmount: run_panel.onUnmount,
     setActiveTabIndex: run_panel.setActiveTabIndex,
     toggleDrawer: run_panel.toggleDrawer,
-    currency: core.client.currency,
-    lost_contracts: run_panel.statistics.lost_contracts,
-    number_of_runs: run_panel.statistics.number_of_runs,
     toggleStatisticsInfoModal: run_panel.toggleStatisticsInfoModal,
     total_payout: run_panel.statistics.total_payout,
     total_profit: run_panel.statistics.total_profit,

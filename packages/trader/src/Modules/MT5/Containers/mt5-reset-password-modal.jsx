@@ -154,6 +154,7 @@ class MT5ResetPasswordModal extends React.Component {
                                                     >
                                                         {({ has_warning }) => (
                                                             <PasswordInput
+                                                                autoComplete='new-password'
                                                                 className='mt5-reset-password__password-field'
                                                                 name='new_password'
                                                                 label={localize('New {{type}} password', { type })}

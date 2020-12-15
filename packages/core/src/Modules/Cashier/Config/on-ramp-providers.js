@@ -74,11 +74,9 @@ const createChangellyProvider = store => ({
         return new Promise(resolve => {
             const url = new URL('https://widget.changelly.com/?v=3&theme=default');
             url.searchParams.append('fromDefault', this.getDefaultFromCurrency());
-            if (this.getToCurrencies().includes(store.client.currency.toLowerCase())) {
-                let to_currency = store.client.currency.toLowerCase();
-                if (to_currency === 'ust') {
-                    to_currency = 'usdt';
-                }
+            const currency = store.root_store.client.currency.toLowerCase();
+            if (this.getToCurrencies().includes(currency)) {
+                const to_currency = currency === 'ust' ? 'usdt' : currency;
                 url.searchParams.append('to', to_currency);
                 url.searchParams.append('toDefault', to_currency);
             }

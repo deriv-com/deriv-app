@@ -139,6 +139,7 @@ class MT5Dashboard extends React.Component {
             is_fully_authenticated,
             is_loading,
             is_logged_in,
+            is_logging_in,
             is_mt5_allowed,
             is_pending_authentication,
             is_virtual,
@@ -154,7 +155,7 @@ class MT5Dashboard extends React.Component {
             toggleShouldShowRealAccountsList,
         } = this.props;
         const should_show_missing_real_account = !is_eu && is_logged_in && !has_real_account;
-        if (!country && is_logged_in) return <Loading />; // Wait for country name to be loaded before rendering
+        if ((!country && is_logged_in) || is_logging_in) return <Loading />; // Wait for country name to be loaded before rendering
 
         return (
             <React.Fragment>
@@ -408,6 +409,7 @@ export default withRouter(
         current_list: modules.mt5.current_list,
         landing_companies: client.landing_companies,
         is_logged_in: client.is_logged_in,
+        is_logging_in: client.is_logging_in,
         is_eu: client.is_eu,
         is_eu_country: client.is_eu_country,
         is_virtual: client.is_virtual,

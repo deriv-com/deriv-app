@@ -6,7 +6,12 @@ import Wrapper from '../../shared/wrapper';
 
 const Basic = () => (
     <Wrapper is_dark={boolean('Dark Theme', false)}>
-        <PasswordInput label='New password' name='new_password' onChange={action('onChange')} />
+        <PasswordInput
+            autoComplete='new-password'
+            label='New password'
+            name='new_password'
+            onChange={action('onChange')}
+        />
     </Wrapper>
 );
 

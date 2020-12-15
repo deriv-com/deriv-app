@@ -319,7 +319,6 @@ const AccountTransferForm = ({
                                             {...field}
                                             onChange={e => {
                                                 setErrorMessage('');
-                                                setFieldTouched('amount', true);
                                                 handleChange(e);
                                                 setAccountTransferAmount(e.target.value);
                                             }}

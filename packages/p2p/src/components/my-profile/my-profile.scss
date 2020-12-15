@@ -69,9 +69,12 @@
         }
 
         &-cell {
-            display: block;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
             text-align: center;
             width: 158px;
+
             @include mobile {
                 width: unset;
                 margin: auto;

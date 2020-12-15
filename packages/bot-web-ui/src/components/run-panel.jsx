@@ -12,7 +12,7 @@ import { popover_zindex } from '../constants/z-indexes';
 import { connect } from '../stores/connect';
 import '../assets/sass/run-panel.scss';
 
-const drawerContent = ({ active_index, is_drawer_open, setActiveTabIndex, ...props }) => {
+const DrawerContent = ({ active_index, is_drawer_open, setActiveTabIndex, ...props }) => {
     return (
         <>
             <Tabs active_index={active_index} onTabItemClick={setActiveTabIndex} top>
@@ -86,7 +86,7 @@ const StatisticsSummary = ({
     </div>
 );
 
-const drawerFooter = ({ is_clear_stat_disabled, onClearStatClick }) => (
+const DrawerFooter = ({ is_clear_stat_disabled, onClearStatClick }) => (
     <div className='run-panel__footer'>
         <Button
             id='db-run-panel__clear-button'
@@ -165,54 +165,55 @@ const StatisticsInfoModal = ({ is_mobile, is_statistics_info_modal_open, toggleS
     );
 };
 
-const RunPanel = props => {
-    const {
-        active_index,
-        currency,
-        dialog_options,
-        is_clear_stat_disabled,
-        is_dialog_open,
-        is_drawer_open,
-        is_mobile,
-        is_statistics_info_modal_open,
-        lost_contracts,
-        number_of_runs,
-        onCancelButtonClick,
-        onClearStatClick,
-        onCloseDialog,
-        onMount,
-        onOkButtonClick,
-        onRunButtonClick,
-        onUnmount,
-        setActiveTabIndex,
-        toggleDrawer,
-        toggleStatisticsInfoModal,
-        total_payout,
-        total_profit,
-        total_stake,
-        won_contracts,
-    } = props;
-
+const RunPanel = ({
+    active_index,
+    currency,
+    dialog_options,
+    is_clear_stat_disabled,
+    is_dialog_open,
+    is_drawer_open,
+    is_mobile,
+    is_statistics_info_modal_open,
+    lost_contracts,
+    number_of_runs,
+    onCancelButtonClick,
+    onClearStatClick,
+    onCloseDialog,
+    onMount,
+    onOkButtonClick,
+    onRunButtonClick,
+    onUnmount,
+    setActiveTabIndex,
+    toggleDrawer,
+    toggleStatisticsInfoModal,
+    total_payout,
+    total_profit,
+    total_stake,
+    won_contracts,
+}) => {
     React.useEffect(() => {
         onMount();
         return () => onUnmount();
     }, [onMount, onUnmount]);
 
-    const content = drawerContent({
-        active_index,
-        currency,
-        is_drawer_open,
-        is_mobile,
-        lost_contracts,
-        number_of_runs,
-        setActiveTabIndex,
-        toggleStatisticsInfoModal,
-        total_payout,
-        total_profit,
-        total_stake,
-        won_contracts,
-    });
-    const footer = drawerFooter({ is_clear_stat_disabled, onClearStatClick });
+    const content = (
+        <DrawerContent
+            active_index={active_index}
+            currency={currency}
+            is_drawer_open={is_drawer_open}
+            is_mobile={is_mobile}
+            lost_contracts={lost_contracts}
+            number_of_runs={number_of_runs}
+            setActiveTabIndex={setActiveTabIndex}
+            toggleStatisticsInfoModal={toggleStatisticsInfoModal}
+            total_payout={total_payout}
+            total_profit={total_profit}
+            total_stake={total_stake}
+            won_contracts={won_contracts}
+        />
+    );
+
+    const footer = <DrawerFooter is_clear_stat_disabled={is_clear_stat_disabled} onClearStatClick={onClearStatClick} />;
 
     return (
         <>

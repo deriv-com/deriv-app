@@ -3,7 +3,7 @@ import { Button } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
-const MarketIsClosedOverlay = ({ onClick, is_financial_account }) => (
+const MarketIsClosedOverlay = ({ is_financial_account, onClick }) => (
     <div className='market-is-closed-overlay'>
         <p>
             <Localize i18n_default_text='Market is closed.' />

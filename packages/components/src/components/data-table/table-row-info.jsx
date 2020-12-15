@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ThemedScrollbars from '../themed-scrollbars';
+import Text from '../text';
 
 const TableRowInfo = ({ replace, is_footer, cells, className }) => {
     const [show_details, setShowDetails] = React.useState(false);
@@ -19,7 +20,13 @@ const TableRowInfo = ({ replace, is_footer, cells, className }) => {
         >
             {show_details ? (
                 <ThemedScrollbars height='80px'>
-                    <div>{replace?.component ?? <p className='statement__row--detail-text'>{replace.message}</p>}</div>
+                    <div>
+                        {replace?.component ?? (
+                            <Text as='p' size='xs' className='statement__row--detail-text'>
+                                {replace.message}
+                            </Text>
+                        )}
+                    </div>
                 </ThemedScrollbars>
             ) : (
                 cells

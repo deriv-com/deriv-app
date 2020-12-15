@@ -514,7 +514,8 @@ const AccountSwitcher = props => {
                                             is_disabled={
                                                 (!props.is_eu && !props.has_any_real_account) ||
                                                 (account.type === 'financial_stp' &&
-                                                    (props.is_pending_authentication || hasRequiredCredentials())) ||
+                                                    (props.is_pending_authentication ||
+                                                        (props.is_fully_authenticated && hasRequiredCredentials()))) ||
                                                 !!props.mt5_login_list_error
                                             }
                                         >
@@ -619,6 +620,7 @@ AccountSwitcher.propTypes = {
     has_fiat: PropTypes.bool,
     has_any_real_account: PropTypes.bool,
     is_eu: PropTypes.bool,
+    is_fully_authenticated: PropTypes.bool,
     is_loading_mt5: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_mt5_allowed: PropTypes.bool,
@@ -651,6 +653,7 @@ const account_switcher = withRouter(
         can_upgrade_to: client.can_upgrade_to,
         client_residence: client.residence,
         is_eu: client.is_eu,
+        is_fully_authenticated: client.is_fully_authenticated,
         is_loading_mt5: client.is_populating_mt5_account_list,
         is_logged_in: client.is_logged_in,
         is_mt5_allowed: client.is_mt5_allowed,

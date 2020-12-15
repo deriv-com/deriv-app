@@ -167,7 +167,7 @@ class AddOrManageAccounts extends React.Component {
                                     onSubmit={this.updateValue}
                                     value={this.state.form_value}
                                     form_error={this.state.form_error}
-                                    should_show_crypto_only={true}
+                                    should_show_crypto_only
                                     {...this.props}
                                 />
                             </div>
@@ -182,7 +182,7 @@ class AddOrManageAccounts extends React.Component {
                                         onSubmit={this.updateValue}
                                         value={this.state.form_value}
                                         form_error={this.state.form_error}
-                                        should_show_fiat_only={true}
+                                        should_show_fiat_only
                                         {...this.props}
                                     />
                                 )}

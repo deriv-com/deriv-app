@@ -13,7 +13,7 @@ const AutoHeightWrapper = props => {
 
     const updateHeight = () =>
         setHeight(
-            child_ref.clientHeight > props.default_height
+            child_ref?.clientHeight > props.default_height
                 ? child_ref.clientHeight - (props.height_offset || 0)
                 : props.default_height
         );

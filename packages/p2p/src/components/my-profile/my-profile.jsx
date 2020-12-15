@@ -82,7 +82,7 @@ const MyProfile = observer(() => {
                 </div>
                 <LineSeparatedComponents className='my-profile__balance-wrapper' is_invisible_line={isMobile()}>
                     <Text size='xs' line_height='m' color='less-prominent'>
-                        <Localize i18n_default_text='Available DP2P balance' />
+                        <Localize i18n_default_text='Available balance' />
                     </Text>
                     <div className='my-profile__balance'>
                         <Text

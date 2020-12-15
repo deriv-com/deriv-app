@@ -6,6 +6,7 @@ import Input from '../input';
 
 const PasswordInput = ({
     className, // Must not be passed to Input as the only trailing icon should be the visibility icon
+    autoComplete, // Must be passed to Input, if not will get console warning
     ...otherProps
 }) => {
     const [should_show_password, setShouldShowPassword] = React.useState(false);
@@ -18,6 +19,7 @@ const PasswordInput = ({
         <div className='dc-password-input'>
             <Input
                 {...otherProps}
+                autoComplete={autoComplete}
                 type={should_show_password ? 'text' : 'password'}
                 className={classNames('dc-password-input__field', className)}
                 trailing_icon={
@@ -36,6 +38,7 @@ const PasswordInput = ({
 
 PasswordInput.propTypes = {
     className: PropTypes.string,
+    autoComplete: PropTypes.string.isRequired,
 };
 
 export default PasswordInput;

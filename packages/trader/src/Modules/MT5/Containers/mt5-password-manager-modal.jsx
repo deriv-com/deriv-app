@@ -330,6 +330,7 @@ const MT5PasswordManagerModal = ({
                                 {({ field }) => (
                                     <PasswordInput
                                         {...field}
+                                        autoComplete='current-password'
                                         label={localize('Current investor password')}
                                         error={touched.old_password && errors.old_password}
                                         required
@@ -346,15 +347,14 @@ const MT5PasswordManagerModal = ({
                                         {({ has_warning }) => (
                                             <PasswordInput
                                                 {...field}
-                                                autoComplete='password'
+                                                autoComplete='new-password'
                                                 label={localize('New investor password')}
-                                                {...(!has_warning
-                                                    ? {
-                                                          hint: localize(
-                                                              'Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers.'
-                                                          ),
-                                                      }
-                                                    : {})}
+                                                hint={
+                                                    !has_warning &&
+                                                    localize(
+                                                        'Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers.'
+                                                    )
+                                                }
                                                 error={touched.new_password && errors.new_password}
                                                 onChange={e => {
                                                     setFieldTouched('new_password', true, true);

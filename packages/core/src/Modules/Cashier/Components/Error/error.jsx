@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Icon, ButtonLink, StaticUrl } from '@deriv/components';
+import { Button, Icon, ButtonLink, StaticUrl, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
@@ -8,7 +8,11 @@ const ErrorComponent = ({ header, message, button_link, onClickButton, button_te
     <div className='cashier__wrapper cashier__wrapper-error'>
         <Icon icon='IcCashierError' className='cashier-error__icon' />
         {header && <h2 className='cashier-error__header'>{header}</h2>}
-        {message && <p className='cashier__paragraph'>{message}</p>}
+        {message && (
+            <Text as='p' size='xs' line_height='s' className='cashier__paragraph'>
+                {message}
+            </Text>
+        )}
         {button_link && (
             <ButtonLink className='cashier-error__button' to={button_link} onClick={onClickButton} primary large>
                 <span className='dc-btn__text'>{button_text}</span>

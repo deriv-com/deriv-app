@@ -171,6 +171,9 @@ export default class ContractReplayStore extends BaseStore {
         switch (state) {
             case 'INITIAL':
                 this.is_chart_scaling = false;
+                // this is for deriv resizing from desktop to mobile,
+                // that show the loading till the chart reflect complete
+                if (!this.is_chart_loading) this.is_chart_loading = true;
                 break;
             case 'READY':
                 setTimeout(

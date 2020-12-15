@@ -261,8 +261,8 @@ class Trader extends Common {
             );
         } else {
             await this.page.waitForSelector('.trade-container__input range-slider__track');
-            await this.page.waitForSelector(`[data-qa=${target}]`);
-            await this.page.click(`[data-qa=${target}]`);
+            await this.page.waitForSelector(`[data-value=${target}]`);
+            await this.page.click(`[data-value=${target}]`);
         }
     }
 

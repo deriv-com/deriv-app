@@ -6,7 +6,7 @@ const render = require('./src/_utils/test_template');
 (async () => {
     const args = process.argv.slice(2);
     if (args.length !== 2) {
-        throw new Error('Insufficient args. Please use node tests/create_test.js mobile|desktop test_name');
+        throw new Error('Insufficient args. Please use node e2e_tests/create_test.js mobile|desktop test_name');
     }
     const test_name = `[${args[0]}]-${args[1]}`;
 
@@ -14,7 +14,7 @@ const render = require('./src/_utils/test_template');
         if (err) throw err;
 
         const project_root = stdout.trim();
-        const file_name = `e2e_tests/src/${args[0]}/${args[1]}.test.js`;
+        const file_name = `e2e_tests/src/root/${args[0]}/${args[1]}.test.js`;
         const content = render(test_name);
         const target_dir = path.dirname(path.resolve(project_root, file_name));
 

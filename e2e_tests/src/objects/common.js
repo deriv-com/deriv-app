@@ -3,9 +3,9 @@ const path = require('path');
 const fs = require('fs');
 const { waitForWSSubset } = require('@root/_utils/websocket');
 
-const LOGIN_STATE_PATH = './tests/states/login.json';
-const VIRTUAL_SIGNUP_STATE = './tests/states/vrtc.json';
-const REAL_SIGNUP_STATE = './tests/states/real.json';
+const LOGIN_STATE_PATH = './e2e_tests/tests/states/login.json';
+const VIRTUAL_SIGNUP_STATE = './e2e_tests/tests/states/vrtc.json';
+const REAL_SIGNUP_STATE = './e2e_tests/tests/states/real.json';
 
 class Common {
     constructor(page) {

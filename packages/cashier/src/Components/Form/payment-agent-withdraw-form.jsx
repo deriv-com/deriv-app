@@ -11,6 +11,7 @@ import {
     MobileWrapper,
     Money,
     SelectNative,
+    Text,
 } from '@deriv/components';
 import { getDecimalPlaces, getCurrencyDisplayCode, validNumber } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
@@ -74,9 +75,9 @@ const Radio = ({ children, field, props }) => (
 
 const RadioDropDown = ({ field, values, ...props }) => (
     <Radio field={field} props={props}>
-        <span className='payment-agent__radio-label cashier__paragraph'>
+        <Text as='p' size='xs' line_height='s' className='payment-agent__radio-label cashier__paragraph'>
             <Localize i18n_default_text='By name' />
-        </span>
+        </Text>
         <Field name='payment_agents'>
             {params => (
                 <React.Fragment>
@@ -112,9 +113,9 @@ const RadioDropDown = ({ field, values, ...props }) => (
 
 const RadioInput = ({ touched, errors, field, values, ...props }) => (
     <Radio field={field} props={props}>
-        <span className='payment-agent__radio-label cashier__paragraph'>
+        <Text as='p' size='xs' line_height='s' className='payment-agent__radio-label cashier__paragraph'>
             <Localize i18n_default_text='By payment agent ID' />
-        </span>
+        </Text>
         <Field>
             {params => (
                 <Input

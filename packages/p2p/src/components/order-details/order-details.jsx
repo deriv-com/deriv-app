@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ThemedScrollbars } from '@deriv/components';
+import { Text, ThemedScrollbars } from '@deriv/components';
 import { getFormattedText } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
@@ -44,6 +44,8 @@ const OrderDetails = observer(({ onPageReturn }) => {
     } = general_store.order_information;
 
     const { chat_channel_url, setChatChannelUrl } = sendbird_store;
+
+    const has_full_name = other_user_details.first_name && other_user_details.last_name;
 
     React.useEffect(() => {
         order_details_store.setChatChannelUrl(chat_channel_url);
@@ -118,7 +120,27 @@ const OrderDetails = observer(({ onPageReturn }) => {
                     <ThemedScrollbars height='unset' className='order-details-card__info'>
                         <div className='order-details-card__info-columns'>
                             <div className='order-details-card__info--left'>
-                                <OrderInfoBlock label={labels.other_party_role} value={other_user_details.name} />
+                                <OrderInfoBlock
+                                    label={labels.other_party_role}
+                                    value={
+                                        <React.Fragment>
+                                            <Text
+                                                size={has_full_name ? 's' : 'xs'}
+                                                color='prominent'
+                                                line_height='m'
+                                                weight={has_full_name && 'bold'}
+                                            >
+                                                {other_user_details.name}
+                                            </Text>
+
+                                            {has_full_name && (
+                                                <Text size='xs' line_height='xs'>
+                                                    {` ${other_user_details.first_name} ${other_user_details.last_name}`}
+                                                </Text>
+                                            )}
+                                        </React.Fragment>
+                                    }
+                                />
                             </div>
                             <div className='order-details-card__info--right'>
                                 <OrderInfoBlock

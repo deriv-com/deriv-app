@@ -1,7 +1,7 @@
 import React from 'react';
 import { expect } from 'chai';
 import * as Helpers from '../helpers';
-import routes from '../../../../Constants/routes';
+import { routes } from '@deriv/shared';
 import getRoutesConfig from '../../../Constants/routes-config';
 import Trade from 'Modules/Trading';
 
@@ -23,12 +23,10 @@ describe('Helpers', () => {
             expect(Helpers.findRouteByPath('invalidRoute', getRoutesConfig())).to.be.undefined;
         });
         it('should return route_info when path is in routes_config and is not nested', () => {
-            expect(Helpers.findRouteByPath(routes.trade, getRoutesConfig())).to.eql({
-                path: routes.trade,
-                component: Trade,
-                title: 'Trade',
-                exact: true,
-            });
+            const result = Helpers.findRouteByPath(routes.trade, getRoutesConfig());
+            expect(result.path).to.equal(routes.trade);
+            expect(result.exact).to.equal(true);
+            expect(result.component).to.equal(Trade);
         });
         it('should return route_info of parent route when path is in routes_config child level and is nested', () => {
             const reports_routes_length = getRoutesConfig().find(r => r.path === routes.reports).routes.length;
@@ -37,7 +35,8 @@ describe('Helpers', () => {
                 'component',
                 'is_authenticated',
                 'routes',
-                'title'
+                'icon_component',
+                'getTitle'
             );
             expect(Helpers.findRouteByPath(routes.profit, getRoutesConfig()).routes).to.be.instanceof(Array);
             expect(Helpers.findRouteByPath(routes.profit, getRoutesConfig()).routes).to.have.length(

@@ -1,0 +1,14 @@
+.container {
+    display: flex;
+    margin: 3rem 5rem;
+    width: 70%;
+    justify-content: center;
+    align-items: center;
+}
+.title {
+    font-size: small;
+    color: var(--text-general);
+    text-align: right;
+    padding-right: 1rem;
+    width: 50%;
+}

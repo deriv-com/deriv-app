@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import React from 'react';
-import { action, computed, observable, toJS, reaction } from 'mobx';
+import { action, computed, observable, toJS, reaction, when } from 'mobx';
 import {
     routes,
     isCryptocurrency,
@@ -145,6 +145,7 @@ export default class CashierStore extends BaseStore {
             link_to: routes.cashier,
             login_only: true,
         });
+        this.init();
     }
 
     @observable is_loading = false;
@@ -214,7 +215,12 @@ export default class CashierStore extends BaseStore {
     // Initialise P2P attributes on app load without mounting the entire cashier
     @action.bound
     init() {
-        // eslint-disable-next-line no-undef
+        when(
+            () => this.root_store.client.is_logged_in && !this.root_store.client.is_virtual,
+            async () => {
+                await this.checkP2pStatus();
+            }
+        );
         reaction(
             () => [
                 this.root_store.client.switched,
@@ -226,14 +232,18 @@ export default class CashierStore extends BaseStore {
                 await this.WS.wait('get_settings');
 
                 if (this.root_store.client.is_logged_in && !this.root_store.client.is_virtual) {
-                    const advertiser_info = await this.WS.authorized.p2pAdvertiserInfo();
-                    const advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
-                    const is_p2p_restricted =
-                        advertiser_error === 'RestrictedCountry' || advertiser_error === 'RestrictedCurrency';
-                    this.setIsP2pVisible(!is_p2p_restricted);
+                    await this.checkP2pStatus();
                 }
             }
         );
+    }
+
+    @action.bound
+    async checkP2pStatus() {
+        const advertiser_info = await this.WS.authorized.p2pAdvertiserInfo();
+        const advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
+        const is_p2p_restricted = advertiser_error === 'RestrictedCountry' || advertiser_error === 'RestrictedCurrency';
+        this.setIsP2pVisible(!is_p2p_restricted);
     }
 
     @action.bound

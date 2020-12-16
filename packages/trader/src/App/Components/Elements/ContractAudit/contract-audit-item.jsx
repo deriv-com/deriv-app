@@ -23,10 +23,10 @@ const ContractAuditItem = ({ icon, id, label, timestamp, value, value2 }) => (
         </div>
         {timestamp && (
             <div className='contract-audit__timestamp'>
-                <Text size='xxxs' align='right' line_height='s' className='contract-audit__timestamp-value'>
+                <Text size='xxxs' align='right' line_height='xs' className='contract-audit__timestamp-value'>
                     {formatDate(timestamp)}
                 </Text>
-                <Text size='xxxs' align='right' line_height='s' className='contract-audit__timestamp-value'>
+                <Text size='xxxs' align='right' line_height='xs' className='contract-audit__timestamp-value'>
                     {formatTime(timestamp)}
                 </Text>
             </div>

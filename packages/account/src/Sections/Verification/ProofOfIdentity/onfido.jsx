@@ -37,7 +37,7 @@ const Onfido = ({ documents_supported, handleComplete, height, onfido_service_to
         return () => {
             onfido_init?.tearDown();
         };
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [onfido_service_token]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const previous_onfido_service_token = usePrevious(onfido_service_token);
 

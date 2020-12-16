@@ -43,11 +43,9 @@ const DropdownList = React.forwardRef((props, list_ref) => {
                 parent_el: parent_ref.current,
                 child_el: list_ref.current,
             });
-            setStyle(position_style);
+            setStyle(position_style.style);
         }
     }, [is_list_visible, is_alignment_top, portal_id, list.length, parent_ref, list_ref]);
-
-    useBlockScroll(portal_id ? list_ref : false);
 
     /**
      * Calculate the offset for the dropdown list based on its width
@@ -201,6 +199,7 @@ const Dropdown = ({
 
     const [is_list_visible, setIsListVisible] = React.useState(!!is_nativepicker_visible);
     const initial_render = React.useRef(true);
+    useBlockScroll(list_portal_id && is_list_visible ? dropdown_ref : false);
 
     const onClickOutSide = event => {
         if (is_portal && list_ref.current?.contains(event.target)) return;

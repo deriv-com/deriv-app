@@ -10,8 +10,8 @@
 
     &__button {
         display: flex;
-        padding-right: 2.4rem;
         cursor: pointer;
-        border-radius: 4px;
+        border-radius: $BORDER_RADIUS;
+        padding-right: 0.8rem;
     }
 }

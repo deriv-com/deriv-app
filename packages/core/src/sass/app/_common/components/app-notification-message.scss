@@ -1,10 +1,18 @@
 /** @define notification-messages; */
 .notification-messages {
+    width: 40rem;
     z-index: 4;
     position: absolute;
     right: 0;
 
+    > div {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
     @include mobile {
+        max-width: calc(100% - 3.2rem);
         left: 1.6rem;
         right: 1.6rem;
     }
@@ -15,8 +23,9 @@
     position: relative;
     display: flex;
     border-radius: $BORDER_RADIUS;
-    max-width: 400px;
-    padding: 30px 16px;
+    width: 100%;
+    max-width: 40rem;
+    padding: 1.6rem;
     color: var(--text-prominent);
     background-color: var(--general-main-2);
     box-shadow: 0 4px 6px 0 var(--shadow-menu), 0 4px 6px 0 var(--shadow-menu);
@@ -33,12 +42,13 @@
         transform: translateY(-16px);
     }
     &--small {
-        max-width: 240px;
+        max-width: 28rem;
     }
     &__cta-button {
-        margin-top: 0.8rem;
-        flex-grow: 1;
+        padding: 0 0.8rem;
+        margin-top: 1.6rem;
         height: 24px;
+        width: fit-content;
         max-width: 150px;
         align-self: flex-end;
 
@@ -64,7 +74,7 @@
         font-size: 1.6rem;
         font-weight: bold;
         line-height: 1.5;
-        margin-bottom: 8px;
+        margin-bottom: 1.2rem;
     }
     &__close-button {
         position: absolute;
@@ -90,20 +100,20 @@
     }
     &__icon {
         &-type {
-            margin-right: 15px;
-            margin-top: 0.5rem;
-            width: 1.4rem;
-            height: 1.4rem;
+            margin-right: 1.6rem;
+            margin-top: 0.4rem;
+            width: 1.6rem;
+            height: 1.6rem;
 
             &--is-background {
-                width: 160px;
-                height: 160px;
+                width: 21rem;
+                height: 21rem;
             }
         }
         &-background {
             position: absolute;
-            left: -20px;
-            bottom: -20px;
+            left: -25px;
+            bottom: -5px;
             pointer-events: none;
             opacity: 0.07;
             z-index: 0;
@@ -113,10 +123,8 @@
         margin-bottom: 16px;
     }
     @include mobile {
-        max-width: unset;
-
-        &--small {
-            max-width: unset;
-        }
+        max-width: 328px;
+        width: calc(100% - 0.8rem);
+        margin-right: 0.4rem;
     }
 }

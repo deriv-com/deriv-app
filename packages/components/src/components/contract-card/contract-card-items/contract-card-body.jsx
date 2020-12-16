@@ -11,6 +11,7 @@ import {
     getTotalProfit,
     isValidToCancel,
     isValidToSell,
+    shouldShowCancellation,
 } from '@deriv/shared';
 import ContractCardItem from './contract-card-item.jsx';
 import ToggleCardDialog from './toggle-card-dialog.jsx';
@@ -39,7 +40,7 @@ const MultiplierCardBody = ({
     status,
     toggleCancellationWarning,
 }) => {
-    const { buy_price, bid_price, profit, limit_order } = contract_info;
+    const { buy_price, bid_price, profit, limit_order, underlying } = contract_info;
 
     const total_profit = getTotalProfit(contract_info);
     const { take_profit, stop_loss } = getLimitOrderAmount(contract_update || limit_order);
@@ -75,7 +76,9 @@ const MultiplierCardBody = ({
                     {cancellation_price ? (
                         <Money amount={cancellation_price} currency={currency} />
                     ) : (
-                        <strong>-</strong>
+                        <React.Fragment>
+                            {shouldShowCancellation(underlying) ? <strong>-</strong> : getCardLabels().NOT_AVAILABLE}
+                        </React.Fragment>
                     )}
                 </ContractCardItem>
                 <ContractCardItem header={getCardLabels().BUY_PRICE} className='dc-contract-card__buy-price'>

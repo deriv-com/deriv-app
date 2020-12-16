@@ -506,9 +506,6 @@
             height: 64px; // don't leave space for the demo text that is moved to the top right
         }
     }
-    &__clipboard {
-        margin: 0 1em;
-    }
     &__cta {
         align-items: center;
         display: flex;
@@ -589,7 +586,8 @@
         strong {
             font-weight: bold;
         }
-        span {
+        span,
+        strong {
             margin-right: 0.8rem;
         }
     }
@@ -974,10 +972,11 @@
         height: 100%;
     }
     &__file-upload {
+        padding-top: 0.8rem;
         position: relative;
 
         li {
-            margin: 0 0 1.5rem 0;
+            margin: 0 0 0.8rem 0;
         }
     }
     &__field-area {

@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import React from 'react';
-import { action, computed, observable, toJS } from 'mobx';
+import { action, computed, observable, toJS, reaction } from 'mobx';
 import {
     routes,
     isCryptocurrency,
@@ -139,7 +139,6 @@ export default class CashierStore extends BaseStore {
     @observable is_loading = false;
     @observable is_p2p_visible = false;
     @observable p2p_notification_count = 0;
-    @observable is_p2p_advertiser = false;
     @observable cashier_route_tab_index = 0;
 
     @observable config = {
@@ -201,6 +200,30 @@ export default class CashierStore extends BaseStore {
         this.onSwitchAccount(this.accountSwitcherListener);
     }
 
+    // Initialise P2P attributes on app load without mounting the entire cashier
+    @action.bound
+    init() {
+        reaction(
+            () => [
+                this.root_store.client.switched,
+                this.root_store.client.is_logged_in,
+                this.root_store.client.currency,
+            ],
+            async () => {
+                // wait for get_settings so is_virtual gets populated in client-store
+                await BinarySocket.wait('get_settings');
+
+                if (this.root_store.client.is_logged_in && !this.root_store.client.is_virtual) {
+                    const advertiser_info = await WS.authorized.p2pAdvertiserInfo();
+                    const advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
+                    const is_p2p_restricted =
+                        advertiser_error === 'RestrictedCountry' || advertiser_error === 'RestrictedCurrency';
+                    this.setIsP2pVisible(!is_p2p_restricted);
+                }
+            }
+        );
+    }
+
     @action.bound
     async onMountCommon(should_remount) {
         if (this.root_store.client.is_logged_in) {
@@ -230,21 +253,6 @@ export default class CashierStore extends BaseStore {
 
             if (!this.onramp.is_onramp_tab_visible && window.location.pathname.endsWith(routes.cashier_onramp)) {
                 this.root_store.common.routeTo(routes.cashier_deposit);
-            }
-
-            // show p2p if:
-            // 1. we have not already checked this before, and
-            // 2. client is not virtual
-            if (!this.is_p2p_visible && !this.root_store.client.is_virtual) {
-                const advertiser_info = await WS.authorized.p2pAdvertiserInfo();
-                const advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
-                if (advertiser_error === 'RestrictedCountry') {
-                    this.setIsP2pVisible(false);
-                } else {
-                    this.setIsP2pVisible(true);
-                }
-
-                this.is_p2p_advertiser = !advertiser_error;
             }
         }
     }
@@ -342,6 +350,7 @@ export default class CashierStore extends BaseStore {
             is_trading_experience_incomplete,
             account_status,
             is_eu,
+            mt5_login_list,
         } = this.root_store.client;
         if (!account_status.status) return false;
 
@@ -349,10 +358,17 @@ export default class CashierStore extends BaseStore {
             this.config.deposit.error.is_ask_authentication || (is_authentication_needed && is_eu);
         const need_financial_assessment =
             is_financial_account && (is_financial_information_incomplete || is_trading_experience_incomplete);
+        // CR can deposit without accepting latest tnc except those with Financial STP
+        const need_tnc =
+            (is_eu ||
+                mt5_login_list.some(
+                    item => item.account_type === 'real' && item.sub_account_type === 'financial_stp'
+                )) &&
+            is_tnc_needed;
 
         return (
             need_authentication ||
-            is_tnc_needed ||
+            need_tnc ||
             need_financial_assessment ||
             this.config.deposit.error.is_ask_financial_risk_approval
         );
@@ -570,7 +586,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async sendVerificationEmail() {
-        if (this.config[this.active_container].verification.is_button_clicked) {
+        if (this.config[this.active_container].verification.is_button_clicked || !this.root_store.client.email) {
             return;
         }
 
@@ -1007,8 +1023,22 @@ export default class CashierStore extends BaseStore {
                 return;
             }
         }
-        // remove disabled mt5 accounts
-        const accounts = transfer_between_accounts.accounts.filter(account => !/inactive/.test(account.mt5_group));
+
+        const mt5_login_list = (await WS.storage.mt5LoginList())?.mt5_login_list;
+        // TODO: remove this temporary mapping when API adds market_type and sub_account_type to transfer_between_accounts
+        const accounts = transfer_between_accounts.accounts.map(account => {
+            if (account.account_type === 'mt5') {
+                // account_type in transfer_between_accounts (mt5|binary)
+                // gets overridden by account_type in mt5_login_list (demo|real)
+                // since in cashier all these are real accounts, the mt5 account type is what we want to keep
+                return {
+                    ...account,
+                    ...mt5_login_list.find(acc => acc.login === account.loginid),
+                    account_type: 'mt5',
+                };
+            }
+            return account;
+        });
         // sort accounts as follows:
         // for MT5, synthetic, financial, financial stp
         // for non-MT5, fiat, crypto (alphabetically by currency)
@@ -1020,12 +1050,11 @@ export default class CashierStore extends BaseStore {
             const a_is_fiat = !a_is_mt && !a_is_crypto;
             const b_is_fiat = !b_is_mt && !b_is_crypto;
             if (a_is_mt && b_is_mt) {
-                if (/svg$/.test(a.mt5_group)) {
+                if (a.market_type === 'gaming') {
                     return -1;
                 }
-                // TODO: [remove-standard-advanced] remove standard when API groups are updated
-                if (/vanuatu|svg_(standard|financial)/.test(a.mt5_group)) {
-                    return /svg$/.test(b.mt5_group) ? 1 : -1;
+                if (a.sub_account_type === 'financial') {
+                    return b.market_type === 'gaming' ? 1 : -1;
                 }
                 return 1;
             } else if ((a_is_crypto && b_is_crypto) || (a_is_fiat && b_is_fiat)) {
@@ -1039,17 +1068,20 @@ export default class CashierStore extends BaseStore {
         this.setSelectedTo({}); // set selected to empty each time so we can redetermine its value on reload
         accounts.forEach(account => {
             const obj_values = {
-                text: account.mt5_group
-                    ? `${localize('DMT5')} ${getMT5AccountDisplay(account.mt5_group)}`
-                    : getCurrencyDisplayCode(
-                          account.currency !== 'eUSDT' ? account.currency.toUpperCase() : account.currency
-                      ),
+                text:
+                    account.account_type === 'mt5'
+                        ? `${localize('DMT5')} ${getMT5AccountDisplay(account.market_type, account.sub_account_type)}`
+                        : getCurrencyDisplayCode(
+                              account.currency !== 'eUSDT' ? account.currency.toUpperCase() : account.currency
+                          ),
                 value: account.loginid,
                 balance: account.balance,
                 currency: account.currency,
                 is_crypto: isCryptocurrency(account.currency),
                 is_mt: account.account_type === 'mt5',
-                ...(account.mt5_group && { mt_icon: getMT5Account(account.mt5_group) }),
+                ...(account.account_type === 'mt5' && {
+                    mt_icon: getMT5Account(account.market_type, account.sub_account_type),
+                }),
             };
             // set current logged in client as the default transfer from account
             if (account.loginid === this.root_store.client.loginid) {
@@ -1196,7 +1228,7 @@ export default class CashierStore extends BaseStore {
                     this.config.account_transfer.setBalanceSelectedTo(account.balance);
                 }
                 // if one of the accounts was mt5
-                if (account.mt5_group) {
+                if (account.account_type === 'mt5') {
                     // update the balance for account switcher by renewing the mt5_login_list response
                     WS.mt5LoginList().then(this.root_store.client.responseMt5LoginList);
                     // update total balance since MT5 total only comes in non-stream balance call
@@ -1350,7 +1382,6 @@ export default class CashierStore extends BaseStore {
         this.config.account_transfer = new ConfigAccountTransfer();
         this.config.payment_agent_transfer = new ConfigPaymentAgentTransfer();
         this.is_populating_values = false;
-        this.setIsP2pVisible(false);
 
         this.onRemount();
 

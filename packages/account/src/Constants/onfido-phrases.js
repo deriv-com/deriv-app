@@ -1,7 +1,7 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
 
-const onfido_phrases = {
+const getOnfidoPhrases = () => ({
     country_select: {
         alert_dropdown: {
             country_not_found: <Localize i18n_default_text='Country not found' />,
@@ -339,12 +339,6 @@ const onfido_phrases = {
         subtitle: <Localize i18n_default_text='Scans and photocopies are not accepted' />,
         title: <Localize i18n_default_text='Upload passport photo page' />,
     },
-    welcome: {
-        description_p_1: <Localize i18n_default_text='To open a bank account, we will need to verify your identity.' />,
-        description_p_2: <Localize i18n_default_text='It will only take a couple of minutes.' />,
-        next_button: <Localize i18n_default_text='Verify Identity' />,
-        title: <Localize i18n_default_text='Open your new bank account' />,
-    },
-};
+});
 
-export default onfido_phrases;
+export default getOnfidoPhrases;

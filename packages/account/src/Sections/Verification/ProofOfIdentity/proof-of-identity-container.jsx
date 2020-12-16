@@ -96,6 +96,7 @@ class ProofOfIdentityContainer extends React.Component {
                     account_status => account_status === 'allow_document_upload'
                 );
                 const documents_supported = identity.services.onfido.documents_supported;
+                const country_code = identity.services.onfido.country_code;
                 if (this.is_mounted) {
                     this.setState({
                         is_loading: false,
@@ -105,6 +106,7 @@ class ProofOfIdentityContainer extends React.Component {
                         onfido_service_token,
                         unwelcome,
                         documents_supported,
+                        country_code,
                         allow_document_upload,
                     });
                     this.props.refreshNotifications();
@@ -133,6 +135,7 @@ class ProofOfIdentityContainer extends React.Component {
                     account_status => account_status === 'allow_document_upload'
                 );
                 const documents_supported = identity?.services.onfido.documents_supported;
+                const country_code = identity?.services.onfido.country_code;
                 if (this.is_mounted) {
                     this.setState({
                         is_loading: false,
@@ -141,6 +144,7 @@ class ProofOfIdentityContainer extends React.Component {
                         status: identity_status,
                         unwelcome,
                         documents_supported,
+                        country_code,
                         allow_document_upload,
                     });
                     this.props.refreshNotifications();
@@ -157,6 +161,7 @@ class ProofOfIdentityContainer extends React.Component {
     render() {
         const {
             documents_supported,
+            country_code,
             is_loading,
             status,
             onfido_service_token,
@@ -172,13 +177,14 @@ class ProofOfIdentityContainer extends React.Component {
                     error_message={localize('Sorry, there was a connection error. Please try again later.')}
                 />
             );
-        if (is_loading) return <Loading is_fullscreen={false} className='account___intial-loader' />;
+        if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
         if (unwelcome && !allow_document_upload) return <Unverified />;
         if (status === 'not_required') return <NotRequired />;
 
         return (
             <Onfido
                 documents_supported={documents_supported}
+                country_code={country_code}
                 status={status}
                 onfido_service_token={onfido_service_token}
                 has_poa={has_poa}

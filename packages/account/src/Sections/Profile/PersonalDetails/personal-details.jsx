@@ -51,7 +51,7 @@ const InputGroup = ({ children, className }) => (
     </fieldset>
 );
 
-class PersonalDetailsForm extends React.Component {
+export class PersonalDetailsForm extends React.Component {
     state = { is_loading: true, is_state_loading: false, show_form: true };
 
     onSubmit = async (values, { setStatus, setSubmitting }) => {
@@ -251,7 +251,10 @@ class PersonalDetailsForm extends React.Component {
         return this.state.changeable_fields.some(field => field === name);
     }
 
-    componentDidMount() {
+    async componentDidMount() {
+        // waits for residence to be populated
+        await WS.wait('get_settings');
+
         const { fetchResidenceList, fetchStatesList, has_residence } = this.props;
 
         fetchResidenceList();
@@ -321,7 +324,7 @@ class PersonalDetailsForm extends React.Component {
         if (api_error) return <LoadErrorMessage error_message={api_error} />;
 
         if (is_loading || is_state_loading || !residence_list.length) {
-            return <Loading is_fullscreen={false} className='account___intial-loader' />;
+            return <Loading is_fullscreen={false} className='account__initial-loader' />;
         }
 
         form_initial_values.citizen = form_initial_values.citizen

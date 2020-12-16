@@ -37,10 +37,7 @@ $MIN_HEIGHT_FLOATING: calc(
         box-shadow: inset 0 -1px 0 0 var(--general-section-1);
 
         &-subheading {
-            font-size: var(--text-size-xs);
-            line-height: 1.5;
             margin-right: 8px;
-            color: var(--text-less-prominent);
         }
     }
     &__inset_header-icon {
@@ -127,22 +124,16 @@ $MIN_HEIGHT_FLOATING: calc(
             max-width: 18.8rem;
         }
         &-description {
-            @include typeface(--small-left-normal-black, none);
-            line-height: 1.5;
             margin-bottom: 1.6rem;
         }
         &-link {
             display: flex;
-            @include typeface(--small-left-normal-red, none);
 
             &--icon {
                 margin-left: 4px;
                 width: 16px;
                 height: 16px;
             }
-        }
-        &-text {
-            @include typeface(--small-left-normal-black, none);
         }
         @include mobile {
             width: auto;
@@ -281,11 +272,8 @@ $MIN_HEIGHT_FLOATING: calc(
                 }
             }
             &-all-fields-required {
-                color: var(--text-general);
-                text-align: center;
                 padding-bottom: 2.4rem;
                 padding-top: 0.8rem;
-                font-size: 1.2rem;
             }
             @include mobile {
                 padding: 16px 0px;
@@ -353,7 +341,7 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
     }
-    &__intial-loader {
+    &__initial-loader {
         height: calc(100vh - 240px);
     }
     &__password-wrapper {
@@ -367,16 +355,6 @@ $MIN_HEIGHT_FLOATING: calc(
     &__text {
         @include typeface(--paragraph-left-normal-black, none);
         color: var(--text-general);
-
-        &--small {
-            @include typeface(--small-left-normal-black, none);
-        }
-        &--xsmall {
-            @include typeface(--xsmall-left-normal-black, none);
-        }
-        &--grey {
-            color: var(--text-less-prominent);
-        }
     }
     .account-management__message {
         margin-top: 1em;
@@ -442,12 +420,6 @@ $MIN_HEIGHT_FLOATING: calc(
             line-height: 20px;
             text-align: center;
         }
-    }
-    .account-management__text {
-        text-align: center;
-        color: var(--text-general);
-        font-size: var(--text-size-xs);
-        line-height: 1.5;
     }
     .account-management__text-container {
         margin-top: 10px;
@@ -618,9 +590,6 @@ $MIN_HEIGHT_FLOATING: calc(
             &--title {
                 @include typeface(--small-left-bold-black, none);
             }
-            &--text {
-                @include typeface(--paragraph-left-normal-black, none);
-            }
         }
         &__scrollbars {
             height: 100%;
@@ -777,7 +746,6 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &__error {
-            @include typeface(--paragraph-center-normal-red);
             margin-top: 1.6rem;
             margin-bottom: 1.6rem;
         }
@@ -801,14 +769,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 max-width: 40rem;
                 width: 100%;
             }
-            &-label {
-                @include typeface(--paragraph-left-normal-black);
-            }
-            &-value {
-                @include typeface(--paragraph-right-bold-black);
-            }
             &-note {
-                @include typeface(--paragraph-center-normal-black);
                 margin: 2.4rem 0;
                 max-width: 67.2rem;
             }
@@ -869,7 +830,6 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin-bottom: 0.8rem;
             }
             &-field {
-                @include typeface(--paragraph-left-normal-black);
                 margin-bottom: 1.4rem;
             }
         }
@@ -901,13 +861,6 @@ $MIN_HEIGHT_FLOATING: calc(
                 }
             }
         }
-        &__text-highlight {
-            @include typeface(--paragraph-left-bold-red);
-
-            &--small {
-                font-size: 1.2rem;
-            }
-        }
         &__warning {
             background-color: rgba(255, 173, 58, 0.3);
             border-radius: $BORDER_RADIUS;
@@ -921,11 +874,6 @@ $MIN_HEIGHT_FLOATING: calc(
             }
             &-textbox {
                 padding: 0.9rem 3.2rem;
-            }
-            &-text {
-                color: var(--text-general);
-                font-size: var(--text-size-xxxs);
-                line-height: 1.4;
             }
             &-link {
                 color: var(--text-general);
@@ -1032,91 +980,69 @@ $MIN_HEIGHT_FLOATING: calc(
             padding-left: 8px;
         }
     }
-    .login-history-container {
+    .login-history {
         height: 100%;
         width: 100%;
 
-        .login-history-table {
-            @include desktop {
-                height: 100%;
-            }
+        &__table {
+            height: calc(100% - 42px);
+            flex: 1;
 
-            @include mobile {
-                width: 90%;
-                margin: 10px auto;
-                padding: 10px;
-                color: var(--text-general);
-                background-color: var(--general-main-2);
-
-                .dc-table__cell {
-                    display: block;
-                }
-                .dc-table__row {
-                    grid-template-columns: 3fr 1fr;
-                    border: none;
-                }
-                .dc-table__row.with-margin {
-                    margin-bottom: 10px;
-                }
-                .cell-title {
-                    font-size: 12px;
-                    font-weight: bold;
-                    font-stretch: normal;
-                    font-style: normal;
-                    line-height: 1.5;
-                    letter-spacing: normal;
-                    color: var(--text-prominent);
-                }
-                .cell-value {
-                    font-size: 14px;
-                    font-weight: normal;
-                    font-stretch: normal;
-                    font-style: normal;
-                    line-height: 1.43;
-                    letter-spacing: normal;
-                }
-                .action {
-                    text-transform: capitalize;
-                }
-                .browser,
-                .ip-value {
-                    padding-right: 1.5rem;
-                }
-            }
-
-            &__table {
-                height: calc(100% - 42px);
-                flex: 1;
+            &__row,
+            &__header {
+                /* Date-Action-Browser-IP-Status */
+                grid-template-columns: 190px 65px 248px minmax(133px, 308px) 120px;
+                padding: 1rem;
+                padding-left: 0;
             }
             &__row {
-                /* Date-Action-Browser-IP-Status */
-                grid-template-columns: 184px 65px 248px minmax(133px, 308px) 120px;
-                padding: 0px;
-            }
-            .table__cell {
                 border-bottom: 1px solid var(--border-disabled);
-            }
-            .table__head {
-                border-bottom: none;
 
-                .table__cell {
-                    font-weight: bold;
+                &__cell {
+                    &--action {
+                        text-transform: capitalize;
+                    }
                 }
             }
-            .table__body {
-                .date,
-                .action,
-                .browser,
-                .ip,
-                .status {
-                    @include typeface(--paragraph-left-normal-black);
-                    font-stretch: normal;
-                    font-style: normal;
-                    line-height: 1.43;
-                    letter-spacing: normal;
+        }
+
+        @include mobile {
+            &__list {
+                width: 90%;
+                margin: 1rem auto;
+
+                &__wrapper {
+                    background-color: var(--general-main-2);
+                    margin-bottom: 1rem;
+                    padding: 1rem;
                 }
-                .action {
-                    text-transform: capitalize;
+                &__row {
+                    grid-template-columns: 3fr 1fr;
+                    border: none;
+
+                    &__cell {
+                        display: block;
+
+                        &--title {
+                            font-size: var(--text-size-xxs);
+                            font-weight: var(--text-weight-bold);
+                            font-stretch: normal;
+                            font-style: normal;
+                            line-height: var(--text-lh-m);
+                            letter-spacing: normal;
+                            color: var(--text-prominent);
+                        }
+                        &--action {
+                            text-transform: capitalize;
+                        }
+                        &--browser,
+                        &--ip-value {
+                            padding-right: 1.5rem;
+                        }
+                    }
+                    &--with-margin {
+                        margin-bottom: 1rem;
+                    }
                 }
             }
         }
@@ -1172,10 +1098,7 @@ $MIN_HEIGHT_FLOATING: calc(
         padding: 2.4rem 1.6rem 0;
 
         &-title {
-            color: var(--brand-red-coral);
             height: 20px;
-            font-size: 1.4rem;
-            font-weight: bold;
             margin-bottom: 0.8rem;
         }
         &-content {
@@ -1296,15 +1219,6 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin-bottom: 2.4rem;
             }
         }
-        &-text {
-            font-size: var(--text-size-xs);
-            line-height: 1.5;
-            color: var(--text-general);
-
-            @include mobile {
-                font-size: 1.2rem;
-            }
-        }
         &-fields {
             width: 100%;
             min-width: 400px;
@@ -1362,10 +1276,6 @@ $MIN_HEIGHT_FLOATING: calc(
         height: calc(100vh - 240px);
     }
     &__title {
-        color: var(--text-prominent);
-        font-size: var(--text-size-s);
-        font-weight: bold;
-        line-height: 1.5;
         margin-bottom: 1.6rem;
     }
     &__table {
@@ -1470,8 +1380,6 @@ $MIN_HEIGHT_FLOATING: calc(
         }
         .last_used {
             .last_used_content {
-                font-size: var(--text-size-xxs);
-                line-height: 1.5;
                 margin-bottom: 4px;
                 margin-top: 2px;
             }
@@ -1573,11 +1481,6 @@ $MIN_HEIGHT_FLOATING: calc(
                     &__icon {
                         margin: 24px 0;
                     }
-                    &__message {
-                        color: var(--text-prominent);
-                        font-weight: bold;
-                        font-size: var(--text-size-s);
-                    }
                     &__confirmation {
                         margin-top: 24px;
                         margin-bottom: 32px;
@@ -1678,9 +1581,6 @@ $MIN_HEIGHT_FLOATING: calc(
             &-icon {
                 cursor: pointer;
             }
-            &-text {
-                @include typeface(--paragraph-left-normal-black, none);
-            }
             &-content {
                 padding: 2.4rem;
             }
@@ -1754,7 +1654,6 @@ $MIN_HEIGHT_FLOATING: calc(
         margin-bottom: 0.8rem;
 
         &--bold {
-            font-weight: bold;
             margin: 0.5rem 0 0.8rem;
         }
         @include mobile {
@@ -1771,11 +1670,7 @@ $MIN_HEIGHT_FLOATING: calc(
         line-height: 1.43;
     }
     &__title {
-        font-weight: bold;
         margin-bottom: 0.8rem;
-    }
-    &__content {
-        color: var(--text-general);
     }
     &__link {
         color: var(--text-loss-danger);
@@ -1816,9 +1711,6 @@ $MIN_HEIGHT_FLOATING: calc(
             > input {
                 min-height: 96px;
             }
-        }
-        &__error {
-            color: var(--text-loss-danger);
         }
     }
     @include mobile {
@@ -1872,10 +1764,7 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &__warning-message {
-            color: var(--text-loss-danger);
             padding: 16px 0;
-            font-size: var(--text-size-s);
-            font-weight: bold;
             line-height: 1.43;
         }
         &__content {
@@ -1893,24 +1782,11 @@ $MIN_HEIGHT_FLOATING: calc(
     .deactivate-account-error {
         padding: 0 24px 24px 24px;
         &__title {
-            color: var(--text-prominent);
-            font-size: var(--text-size-xs);
-            font-weight: bold;
             margin-bottom: 5px;
         }
         &__account-details {
             display: flex;
             align-items: center;
-        }
-        &__accounts-loginid {
-            color: var(--text-prominent);
-            font-size: var(--text-size-xxxs);
-            line-height: 1.4;
-        }
-        &__accounts-currency {
-            color: var(--text-prominent);
-            font-size: var(--text-size-xs);
-            line-height: 1.43;
         }
         &__account {
             margin-left: 8px;

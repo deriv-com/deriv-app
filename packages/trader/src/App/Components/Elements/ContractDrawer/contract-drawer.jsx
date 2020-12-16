@@ -2,7 +2,8 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
-import { DesktopWrapper, MobileWrapper } from '@deriv/components';
+import { CSSTransition } from 'react-transition-group';
+import { DesktopWrapper, MobileWrapper, Div100vhContainer } from '@deriv/components';
 import { routes, isUserSold, isMobile } from '@deriv/shared';
 import ContractAudit from 'App/Components/Elements/ContractAudit';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
@@ -13,6 +14,9 @@ import ContractDrawerCard from './contract-drawer-card.jsx';
 import { SwipeableContractAudit } from './swipeable-components.jsx';
 
 class ContractDrawer extends React.Component {
+    contract_drawer_ref = React.createRef();
+    contract_drawer_card_ref = React.createRef();
+
     state = {
         is_shade_on: false,
         should_show_contract_audit: false,
@@ -143,25 +147,61 @@ class ContractDrawer extends React.Component {
             </React.Fragment>
         );
 
-        return (
-            <div
-                id='dt_contract_drawer'
-                className={classNames('contract-drawer', {
-                    'contract-drawer--with-collapsible-btn':
-                        !!getEndTime(this.props.contract_info) || (is_multiplier && isMobile()),
-                    'contract-drawer--is-expanded': this.state.should_show_contract_audit,
-                    'contract-drawer--is-multiplier': is_multiplier && isMobile(),
-                    'contract-drawer--is-multiplier-sold':
-                        is_multiplier && isMobile() && getEndTime(this.props.contract_info),
-                })}
+        const contract_drawer = (
+            <CSSTransition
+                in={this.state.should_show_contract_audit}
+                timeout={250}
+                classNames='contract-drawer__transition'
             >
-                <div className='contract-drawer__body'>{body_content}</div>
+                <div
+                    id='dt_contract_drawer'
+                    className={classNames('contract-drawer', {
+                        'contract-drawer--with-collapsible-btn':
+                            !!getEndTime(this.props.contract_info) || (is_multiplier && isMobile()),
+                        'contract-drawer--is-multiplier': is_multiplier && isMobile(),
+                        'contract-drawer--is-multiplier-sold':
+                            is_multiplier && isMobile() && getEndTime(this.props.contract_info),
+                    })}
+                    style={{
+                        transform:
+                            this.state.should_show_contract_audit &&
+                            this.contract_drawer_ref.current &&
+                            this.contract_drawer_card_ref.current &&
+                            `translateY(calc(${this.contract_drawer_card_ref.current.clientHeight}px - ${this.contract_drawer_ref.current.clientHeight}px))`,
+                    }}
+                    ref={this.contract_drawer_ref}
+                >
+                    <div className='contract-drawer__body' ref={this.contract_drawer_card_ref}>
+                        {body_content}
+                    </div>
+                    {this.state.should_show_contract_audit && (
+                        <MobileWrapper>
+                            <div id='dt_contract_drawer_audit'>
+                                <SwipeableContractAudit is_multiplier={is_multiplier}>
+                                    {contract_audit}
+                                </SwipeableContractAudit>
+                            </div>
+                        </MobileWrapper>
+                    )}
+                </div>
+            </CSSTransition>
+        );
+
+        return (
+            <React.Fragment>
+                <DesktopWrapper>{contract_drawer}</DesktopWrapper>
                 <MobileWrapper>
-                    <div id='dt_contract_drawer_audit'>
-                        <SwipeableContractAudit is_multiplier={is_multiplier}>{contract_audit}</SwipeableContractAudit>
+                    <div
+                        style={{
+                            height: this.contract_drawer_card_ref.current?.clientHeight,
+                        }}
+                    >
+                        <Div100vhContainer height_offset='40px' is_bypassed={!this.contract_drawer_card_ref.current}>
+                            {contract_drawer}
+                        </Div100vhContainer>
                     </div>
                 </MobileWrapper>
-            </div>
+            </React.Fragment>
         );
     }
 }

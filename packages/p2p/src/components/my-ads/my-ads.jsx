@@ -1,10 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Loading } from '@deriv/components';
-import { useIsMounted } from '@deriv/shared';
+import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
-import Dp2pContext from 'Components/context/dp2p-context';
+import { useStores } from 'Stores';
 import { TableError } from 'Components/table/table-error.jsx';
-import { requestWS } from 'Utils/websocket';
 import FormAds from './form-ads.jsx';
 import MyAdsTable from './my-ads-table.jsx';
 import Verification from '../verification/verification.jsx';
@@ -16,67 +16,41 @@ const MyAdsState = ({ message }) => (
     </div>
 );
 
-const MyAds = () => {
-    const { is_advertiser, is_restricted, setPoiStatus } = React.useContext(Dp2pContext);
-    const [error_message, setErrorMessage] = React.useState('');
-    const [is_loading, setIsLoading] = React.useState(true);
-    const [show_ad_form, setShowAdForm] = React.useState(false);
-    const isMounted = useIsMounted();
+const MyAds = observer(() => {
+    const { general_store, my_ads_store } = useStores();
 
     React.useEffect(() => {
-        if (isMounted()) {
-            if (!is_advertiser) {
-                requestWS({ get_account_status: 1 }).then(response => {
-                    if (isMounted()) {
-                        if (!response.error) {
-                            const { get_account_status } = response;
-                            const { status } = get_account_status.authentication.identity;
-                            setPoiStatus(status);
-                        } else {
-                            setErrorMessage(response.error);
-                        }
-                        setIsLoading(false);
-                    }
-                });
-            } else {
-                setIsLoading(false);
-            }
-        }
+        my_ads_store.setIsLoading(true);
+        my_ads_store.getAccountStatus();
     }, []);
 
-    const handleShowForm = show_form => {
-        setShowAdForm(show_form);
-    };
-
-    const onClickCreate = () => {
-        setShowAdForm(true);
-    };
-
-    if (is_loading) {
+    if (my_ads_store.is_loading) {
         return <Loading is_fullscreen={false} />;
     }
 
-    if (is_restricted) {
+    if (general_store.is_restricted) {
         return <MyAdsState message={localize('DP2P cashier is unavailable in your country.')} />;
     }
 
-    if (error_message) {
-        return <MyAdsState message={error_message} />;
+    if (my_ads_store.error_message) {
+        return <MyAdsState message={my_ads_store.error_message} />;
     }
 
-    if (is_advertiser) {
-        return (
-            <div className='p2p-my-ads'>
-                {show_ad_form ? (
-                    <FormAds handleShowForm={handleShowForm} />
-                ) : (
-                    <MyAdsTable onClickCreate={onClickCreate} />
-                )}
-            </div>
-        );
+    if (general_store.is_advertiser) {
+        return <div className='p2p-my-ads'>{my_ads_store.show_ad_form ? <FormAds /> : <MyAdsTable />}</div>;
     }
 
     return <Verification />;
+});
+
+MyAds.propTypes = {
+    error_message: PropTypes.string,
+    getAccountStatus: PropTypes.func,
+    is_advertiser: PropTypes.bool,
+    is_loading: PropTypes.bool,
+    is_restricted: PropTypes.bool,
+    setIsLoading: PropTypes.func,
+    show_ad_form: PropTypes.bool,
 };
 
 export default MyAds;

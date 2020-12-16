@@ -54,7 +54,7 @@ const MT5AccountCardAction = ({
                             key={0}
                             onClick={handleClickSwitchAccount}
                         />,
-                        <Text key={1} line_height='xs' size='xxs' />,
+                        <Text key={1} line_height='s' size='xxs' />,
                     ]}
                 />
             </div>

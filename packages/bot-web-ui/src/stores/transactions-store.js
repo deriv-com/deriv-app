@@ -1,7 +1,7 @@
 import { action, observable, reaction } from 'mobx';
 import LZString from 'lz-string';
 import { formatDate, isEnded } from '@deriv/shared';
-import { transaction_elements } from '../constants/transactions';
+import { transaction_elements } from 'Constants/transactions';
 
 export default class TransactionsStore {
     constructor(root_store) {

@@ -1,7 +1,7 @@
 import { action } from 'mobx';
 import { localize } from '@deriv/translations';
 import { log_types } from '@deriv/bot-skeleton/src/constants/messages';
-import { transaction_elements } from '../constants/transactions';
+import { transaction_elements } from 'Constants/transactions';
 
 export default class DownloadStore {
     constructor(root_store) {

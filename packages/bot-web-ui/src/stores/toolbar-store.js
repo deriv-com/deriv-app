@@ -1,6 +1,6 @@
 import { action, observable, reaction } from 'mobx';
 import { scrollWorkspace, runGroupedEvents, load, config } from '@deriv/bot-skeleton';
-import { tabs_title } from '../constants/bot-contents';
+import { tabs_title } from 'Constants/bot-contents';
 
 export default class ToolbarStore {
     constructor(root_store) {

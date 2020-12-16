@@ -2,7 +2,7 @@ import { reaction } from 'mobx';
 import crc32 from 'crc-32/crc32';
 import { isProduction, cloneObject } from '@deriv/shared';
 import { DBot } from '@deriv/bot-skeleton';
-import { transaction_elements } from '../constants/transactions';
+import { transaction_elements } from 'Constants/transactions';
 
 export default class DataCollectionStore {
     constructor(root_store) {

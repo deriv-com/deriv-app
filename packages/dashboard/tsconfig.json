@@ -1,0 +1,44 @@
+{
+    "compilerOptions": {
+        /* Visit https://aka.ms/tsconfig.json to read more about this file */
+        "target": "es2020",
+        "module": "es2020",
+        "jsx": "react",
+        "sourceMap": true,
+        "outDir": "$$ts-jest$$",
+        "removeComments": true,
+
+        /* Checks */
+        "strict": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "strictFunctionTypes": true,
+        "strictBindCallApply": true,
+        "strictPropertyInitialization": true,
+        "noImplicitThis": true,
+        "alwaysStrict": true,
+
+        /* Additional Checks */
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+
+        /* Module Resolution Options */
+        "moduleResolution": "node",
+        "baseUrl": "./",
+        "paths": {
+            "Components/*": ["src/components/*"],
+            "Constants/*": ["src/constants/*"],
+            "Stores": ["src/stores"],
+            "Types": ["src/types"],
+            "Utils": ["src/utils"]
+        },
+        "esModuleInterop": true,
+        "experimentalDecorators": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true
+    },
+    "include": ["./src/**/*.ts", "./src/**/*.tsx"],
+    "exclude": ["**/*.js", "**/*.jsx"]
+}

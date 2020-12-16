@@ -6,7 +6,7 @@ class CashierContainer extends React.Component {
     render() {
         return (
             <div className='cashier__wrapper'>
-                {this.props.is_loading && <Loading />}
+                {this.props.is_loading && <Loading is_fullscreen={false} />}
                 {this.props.iframe_url && (
                     <iframe
                         className='cashier__content'

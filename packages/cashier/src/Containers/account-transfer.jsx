@@ -44,7 +44,7 @@ const AccountTransfer = ({
         return <Virtual />;
     }
     if (is_loading || is_switching) {
-        return <Loading className='cashier__loader' />;
+        return <Loading className='cashier__loader' is_fullscreen={false} />;
     }
     if (is_cashier_locked) {
         return <CashierLocked />;

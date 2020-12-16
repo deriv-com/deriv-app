@@ -1,7 +1,6 @@
 import { localize } from '@deriv/translations';
-import { WS } from 'Services';
 
-const createBanxaProvider = () => ({
+const createBanxaProvider = store => ({
     icon: { dark: 'IcCashierBanxaDark', light: 'IcCashierBanxaLight' },
     name: 'Banxa',
     getDescription: () =>
@@ -30,7 +29,7 @@ const createBanxaProvider = () => ({
     getToCurrencies: () => ['*'],
     getWidgetHtml: () => {
         return new Promise((resolve, reject) => {
-            WS.serviceToken({
+            store.WS.serviceToken({
                 service_token: 1,
                 service: 'banxa',
                 referrer: window.location.href,
@@ -91,7 +90,7 @@ const createChangellyProvider = store => ({
     should_show_deposit_address: true,
 });
 
-const createWyreProvider = () => ({
+const createWyreProvider = store => ({
     icon: { dark: 'IcCashierWyreDark', light: 'IcCashierWyreLight' },
     name: 'Wyre',
     getDescription: () =>
@@ -168,7 +167,7 @@ const createWyreProvider = () => ({
     getToCurrencies: () => ['btc', 'eth', 'husd', 'weth', 'usdt', 'usdc', 'busd', 'dai', 'gusd', 'pax'],
     getWidgetHtml: () => {
         return new Promise((resolve, reject) => {
-            WS.serviceToken({ service_token: 1, service: 'wyre' }).then(response => {
+            store.WS.serviceToken({ service_token: 1, service: 'wyre' }).then(response => {
                 if (response.error) {
                     reject(response.error.message);
                 } else {

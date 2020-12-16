@@ -145,6 +145,11 @@ export default class CashierStore extends BaseStore {
             link_to: routes.cashier,
             login_only: true,
         });
+
+        this.onramp = new OnRampStore({
+            root_store: this.root_store,
+            WS: this.WS,
+        });
         this.init();
     }
 
@@ -178,8 +183,6 @@ export default class CashierStore extends BaseStore {
         [this.config.withdraw.container]: 'payment_withdraw',
         [this.config.payment_agent.container]: 'payment_agent_withdraw',
     };
-
-    onramp = new OnRampStore(this.root_store);
 
     @computed
     get is_payment_agent_visible() {

@@ -171,7 +171,7 @@ class PaymentAgentWithdrawForm extends React.Component {
 
     render() {
         if (this.props.is_loading || !this.props.payment_agent_list.length) {
-            return <Loading className='cashier__loader' />;
+            return <Loading className='cashier__loader' is_fullscreen={false} />;
         }
         if (this.props.is_try_withdraw_successful) {
             return <PaymentAgentWithdrawConfirm verification_code={this.props.verification_code} />;

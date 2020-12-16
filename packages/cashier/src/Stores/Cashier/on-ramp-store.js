@@ -19,8 +19,9 @@ export default class OnRampStore extends BaseStore {
 
     deposit_address_ref = null;
 
-    constructor(root_store) {
+    constructor({ WS, root_store }) {
         super({ root_store });
+        this.WS = WS;
 
         this.onClientInit(async () => {
             this.setOnrampProviders([

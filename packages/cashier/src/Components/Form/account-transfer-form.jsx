@@ -229,7 +229,7 @@ const AccountTransferForm = ({
                     <React.Fragment>
                         {isSubmitting ? (
                             <div className='cashier__loader-wrapper'>
-                                <Loading className='cashier__loader' />
+                                <Loading className='cashier__loader' is_fullscreen={false} />
                             </div>
                         ) : (
                             <Form>

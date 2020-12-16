@@ -26,7 +26,7 @@ class PaymentAgentTransfer extends React.Component {
             return <Virtual />;
         }
         if (this.props.is_loading) {
-            return <Loading className='cashier__loader' />;
+            return <Loading className='cashier__loader' is_fullscreen={false} />;
         }
         if (this.props.error.is_show_full_page) {
             // for errors with CTA hide the form and show the error,

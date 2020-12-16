@@ -76,7 +76,7 @@ class PaymentAgentList extends React.Component {
                 </h2>
                 <div className='payment-agent__list-line' />
                 {this.props.is_loading ? (
-                    <Loading className='payment-agent__loader' />
+                    <Loading className='payment-agent__loader' is_fullscreen={false} />
                 ) : (
                     <React.Fragment>
                         {this.props.supported_banks.length > 1 && (

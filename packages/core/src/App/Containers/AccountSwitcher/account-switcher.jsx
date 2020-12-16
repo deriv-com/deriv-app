@@ -79,6 +79,8 @@ const AccountSwitcher = props => {
         props.history.push(`${routes.mt5}#${account_type}`);
     };
 
+    const should_redirect_fstp_password = props.is_fully_authenticated && hasRequiredCredentials();
+
     const openMt5RealAccount = account_type => {
         const has_required_account =
             account_type === 'synthetic' ? props.has_malta_account : props.has_maltainvest_account;
@@ -91,7 +93,9 @@ const AccountSwitcher = props => {
                 account_type === 'synthetic' ? localize('DMT5 Synthetic') : localize('DMT5 Financial')
             );
         } else {
-            sessionStorage.setItem('open_mt5_account_type', `real.${account_type}`);
+            if (should_redirect_fstp_password)
+                sessionStorage.setItem('open_mt5_account_type', `real.${account_type}.set_password`);
+            else sessionStorage.setItem('open_mt5_account_type', `real.${account_type}`);
             redirectToMt5Real();
         }
     };
@@ -514,9 +518,7 @@ const AccountSwitcher = props => {
                                             is_disabled={
                                                 (!props.is_eu && !props.has_any_real_account) ||
                                                 (account.type === 'financial_stp' &&
-                                                    (props.is_pending_authentication ||
-                                                        (props.is_fully_authenticated && hasRequiredCredentials()))) ||
-                                                !!props.mt5_login_list_error
+                                                    (props.is_pending_authentication || !!props.mt5_login_list_error))
                                             }
                                         >
                                             {localize('Add')}

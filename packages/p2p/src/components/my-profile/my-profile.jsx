@@ -82,7 +82,7 @@ const MyProfile = observer(() => {
                 </div>
                 <LineSeparatedComponents className='my-profile__balance-wrapper' is_invisible_line={isMobile()}>
                     <Text size='xs' line_height='m' color='less-prominent'>
-                        <Localize i18n_default_text='Available balance' />
+                        <Localize i18n_default_text='Available DP2P balance' />
                     </Text>
                     <div className='my-profile__balance'>
                         <Text
@@ -101,7 +101,7 @@ const MyProfile = observer(() => {
                                 'DP2P balance = deposits that can’t be reversed (bank transfers, etc.) + a portion of deposits that might be reversed (credit card payments, etc.)'
                             )}
                             setIsOpen={setIsBalanceTooltipOpen}
-                            title={localize('Available DP2P balance')}
+                            title={localize('Available balance')}
                         >
                             <Icon icon='IcInfoOutline' size={16} />
                         </PopoverMobile>

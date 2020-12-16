@@ -62,7 +62,7 @@ const renderTable = (fields, login_history) => (
             {login_history.map(item => (
                 <Table.Row className='login-history__table__row' key={item.id}>
                     <Table.Cell>
-                        <Text line_height='s' size='xs'>
+                        <Text line_height='xs' size='xs'>
                             {item.date}
                         </Text>
                     </Table.Cell>
@@ -125,7 +125,7 @@ const renderList = (fields, login_history) => (
 const ListCell = ({ title, text, className }) => (
     <React.Fragment>
         <h3 className='login-history__list__row__cell--title'>{title}</h3>
-        <Text className={className} line_height='s' size='xs'>
+        <Text className={className} line_height='xs' size='xs'>
             {text}
         </Text>
     </React.Fragment>

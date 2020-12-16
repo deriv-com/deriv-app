@@ -33,12 +33,24 @@
         }
         &-name {
             align-self: center;
+            display: flex;
+            flex-flow: column;
             height: fit-content;
             width: fit-content;
+        }
+        &-real-name {
+            margin-top: 0.4rem;
+            max-width: 500px;
         }
         &-verification {
             align-items: center;
             display: flex;
+
+            @include mobile {
+                display: grid;
+                position: absolute;
+                right: 1.6rem;
+            }
 
             &-id {
                 justify-self: flex-end;
@@ -51,12 +63,10 @@
             &-icon {
                 margin-left: 0.4rem;
                 vertical-align: bottom;
-            }
 
-            @include mobile {
-                display: grid;
-                position: absolute;
-                right: 1.6rem;
+                @include mobile {
+                    vertical-align: text-top;
+                }
             }
         }
     }
@@ -70,10 +80,15 @@
         display: flex;
         grid-template-columns: repeat(3, 1fr) 2fr 1fr;
         grid-template-rows: 46px;
-        height: 50px;
+        height: 5rem;
         justify-content: space-between;
         margin: 2.4rem 0 2.4rem 2.9rem;
-        width: 588px;
+        width: 58.8rem;
+
+        @include mobile {
+            margin: 2.4rem 0;
+            max-width: 100vw;
+        }
 
         &-cell {
             display: grid;
@@ -81,14 +96,15 @@
             text-align: center;
 
             @include mobile {
-                min-width: 11rem;
+                min-width: 12rem;
             }
 
             &-completion {
                 display: flex;
 
                 @include mobile {
-                    flex-flow: column;
+                    flex-flow: row;
+                    padding-left: 0.5rem;
                 }
             }
 
@@ -100,10 +116,6 @@
             &-separator {
                 border-right: 1px solid #ededed;
             }
-        }
-
-        @include mobile {
-            max-width: 100vw;
         }
 
         &--wrapper {
@@ -205,6 +217,10 @@
         @include mobile {
             position: fixed;
             top: 140px;
+
+            .page-return {
+                margin: 1.2rem !important;
+            }
         }
     }
 }

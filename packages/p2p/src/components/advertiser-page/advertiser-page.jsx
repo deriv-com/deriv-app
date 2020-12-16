@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Icon, Loading, Modal, Popover, Table, Tabs, Text, ThemedScrollbars } from '@deriv/components';
-import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
+import { observer } from 'mobx-react-lite';
 import { isMobile } from '@deriv/shared';
 import { generateHexColourFromNickname } from 'Utils/string';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
@@ -110,7 +110,9 @@ const AdvertiserPage = observer(() => {
         basic_verification,
         buy_completion_rate,
         buy_orders_count,
+        first_name,
         full_verification,
+        last_name,
         release_time_avg,
         sell_orders_count,
         total_completion_rate,
@@ -203,6 +205,13 @@ const AdvertiserPage = observer(() => {
                             <Text color='prominent' size='s' weight='bold' line_height='m'>
                                 {advertiser_page_store.advertiser_details_name}
                             </Text>
+                            {first_name && last_name && (
+                                <div className='advertiser-page__header-real-name'>
+                                    <Text color='less-prominent' line_height='xs' size='xs'>
+                                        {`${first_name} ${last_name}`}
+                                    </Text>
+                                </div>
+                            )}
                         </div>
                     </div>
                     <div className='advertiser-page__header-verification'>

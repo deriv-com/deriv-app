@@ -59,6 +59,11 @@
                     padding-top: 0.4rem;
                     padding-left: 0.4rem;
                 }
+                .dc-input__trailing-icon {
+                    margin: 1.1rem;
+                    position: unset;
+                    height: 1.6rem;
+                }
             }
             &--multiple {
                 > *:first-child {

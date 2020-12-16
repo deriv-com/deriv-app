@@ -62,8 +62,7 @@ export default class StatementStore extends BaseStore {
         if (!this.shouldFetchNextBatch(should_load_partially)) return;
         this.is_loading = true;
 
-        // eslint-disable-next-line max-len, prefer-const
-        let optional_argument = getDateBoundaries(
+        const optional_arguments = getDateBoundaries(
             this.date_from,
             this.date_to,
             this.partial_fetch_time,
@@ -71,13 +70,13 @@ export default class StatementStore extends BaseStore {
         );
 
         if (this.action_type !== 'all') {
-            optional_argument.action_type = this.action_type;
+            optional_arguments.action_type = this.action_type;
         }
 
         const response = await WS.statement(
             batch_size,
             !should_load_partially ? this.data.length : undefined,
-            optional_argument
+            optional_arguments
         );
         this.statementHandler(response, should_load_partially);
     }

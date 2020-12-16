@@ -181,6 +181,7 @@ const Dropdown = ({
     is_large,
     is_nativepicker,
     is_nativepicker_visible,
+    is_statement_filter,
     label,
     list,
     list_portal_id,
@@ -224,7 +225,7 @@ const Dropdown = ({
             'dc-dropdown--show': is_list_visible,
             'dc-dropdown--disabled': isSingleOption() || disabled,
             'dc-dropdown--error': error,
-            'dc-dropdown--filter': className === 'dropdown-statement-filter',
+            'dc-dropdown--filter': is_statement_filter,
         });
     };
 
@@ -371,10 +372,11 @@ const Dropdown = ({
                         id='dropdown-display'
                         ref={dropdown_ref}
                     >
-                        {className === 'dropdown-statement-filter' && (
-                            <Icon className='icon_filter' icon='IcFilter' size={16} />
-                        )}
+                        {is_statement_filter && <Icon className='icon_filter' icon='IcFilter' size={16} />}
                         <DisplayText
+                            className={classNames('dc-dropdown__display-text', {
+                                'dc-dropdown__display-filter-text': is_statement_filter,
+                            })}
                             has_symbol={has_symbol}
                             name={name}
                             is_title={is_list_visible}
@@ -382,7 +384,6 @@ const Dropdown = ({
                             value={value || 0}
                             list={list}
                             is_align_text_left={is_align_text_left}
-                            className='dc-dropdown__display-text-filter'
                         />
                     </div>
                     {!isSingleOption() && (
@@ -445,6 +446,7 @@ Dropdown.propTypes = {
     is_large: PropTypes.bool,
     is_nativepicker: PropTypes.bool,
     is_nativepicker_visible: PropTypes.bool,
+    is_statement_filter: PropTypes.bool,
     label: PropTypes.string,
     list: listPropType(),
     list_height: PropTypes.string,

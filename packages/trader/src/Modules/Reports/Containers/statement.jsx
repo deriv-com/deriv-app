@@ -16,57 +16,43 @@ import { ReportsMeta } from '../Components/reports-meta.jsx';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message.jsx';
 
 const TransactionFilter = props => {
-    const [default_value, setDefaultValue] = React.useState('all');
+    const [default_filter, setDefaultFilter] = React.useState('all');
 
     const filter_list = [
         {
             text: 'All',
             value: 'all',
-            has_tooltip: false,
-            tooltip: '',
-            disabled: false,
         },
         {
             text: 'Buy',
             value: 'buy',
-            has_tooltip: false,
-            tooltip: '',
-            disabled: false,
         },
         {
             text: 'Sell',
             value: 'sell',
-            has_tooltip: false,
-            tooltip: '',
-            disabled: false,
         },
         {
             text: 'Deposit',
             value: 'deposit',
-            has_tooltip: false,
-            tooltip: '',
-            disabled: false,
         },
         {
             text: 'Withdraw',
             value: 'withdrawal',
-            has_tooltip: false,
-            tooltip: '',
-            disabled: false,
         },
     ];
 
     return (
         <Dropdown
             list={filter_list}
-            value={default_value}
-            name='dropdown'
+            value={default_filter}
+            name='transaction-filter-dropdown'
             className='dropdown-statement-filter'
             classNameDisplay='dc-dropdown__display-filter'
             has_symbol={false}
             is_alignment_left={props.is_alignment_left}
+            is_statement_filter={true}
             onChange={e => {
-                setDefaultValue(e.target.value);
+                setDefaultFilter(e.target.value);
                 props.handleFilterChange(e.target.value);
             }}
         />

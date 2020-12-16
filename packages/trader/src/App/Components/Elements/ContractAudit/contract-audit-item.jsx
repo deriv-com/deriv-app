@@ -15,7 +15,7 @@ const ContractAuditItem = ({ icon, id, label, timestamp, value, value2 }) => (
                     {value}
                 </Text>
                 {value2 && (
-                    <Text weight='bold' size='xxs' line_height='s' color='prominent' className='contract-audit__value2'>
+                    <Text weight='bold' size='xxs' line_height='m' color='prominent' className='contract-audit__value2'>
                         {value2}
                     </Text>
                 )}

@@ -30,8 +30,8 @@ const Routes: React.FC = () => {
                     }).map((route: TRoute, idx: number) => (
                         <RouteWithSubroutes
                             key={idx}
-                            Component404={ui_store.components?.Page404}
-                            LoginPrompt={ui_store.components?.LoginPrompt}
+                            Component404={ui_store.components.Page404}
+                            LoginPrompt={ui_store.components.LoginPrompt}
                             {...route}
                         />
                     ))}

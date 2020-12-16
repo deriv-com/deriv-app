@@ -11,7 +11,7 @@ const is_publishing = process.env.NPM_PUBLISHING_MODE === '1';
 
 module.exports = {
     entry: {
-        index: path.resolve(__dirname, 'index.js'),
+        index: path.resolve(__dirname, 'src', 'components', 'app.tsx'),
     },
     mode: is_release ? 'production' : 'development',
     output: {

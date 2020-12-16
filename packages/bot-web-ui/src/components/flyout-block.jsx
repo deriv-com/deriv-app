@@ -2,16 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from '../stores/connect';
 
-class FlyoutBlock extends React.PureComponent {
-    render() {
-        return <div ref={el => (this.el_block_workspace = el)} className='flyout__block-workspace' />;
-    }
+const FlyoutBlock = ({ initBlockWorkspace, block_node, should_center_block }) => {
+    let el_block_workspace = React.useRef();
 
-    componentDidMount() {
-        const { initBlockWorkspace, block_node, should_center_block } = this.props;
-        initBlockWorkspace(this.el_block_workspace, block_node, should_center_block);
-    }
-}
+    React.useEffect(() => {
+        initBlockWorkspace(el_block_workspace, block_node, should_center_block);
+    }, []);
+
+    return <div ref={el => (el_block_workspace = el)} className='flyout__block-workspace' />;
+};
 
 FlyoutBlock.propTypes = {
     block_node: PropTypes.any,

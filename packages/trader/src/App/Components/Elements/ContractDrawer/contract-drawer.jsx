@@ -97,16 +97,12 @@ const ContractDrawer = ({
         />
     );
 
-    const body_content = (
-        <React.Fragment>
-            {fallback_result ? (
-                getBodyContent()
-            ) : (
-                <div className='contract-card'>
-                    <PositionsCardLoader is_dark_theme={is_dark_theme} speed={2} />
-                </div>
-            )}
-        </React.Fragment>
+    const body_content = fallback_result ? (
+        getBodyContent()
+    ) : (
+        <div className='contract-card'>
+            <PositionsCardLoader is_dark_theme={is_dark_theme} speed={2} />
+        </div>
     );
 
     const contract_drawer = (

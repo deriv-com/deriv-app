@@ -56,7 +56,11 @@ export default class Onfido extends React.Component {
                                     : false,
                                 national_identity_card: documents_supported.some(doc =>
                                     /National Identity Card/g.test(doc)
-                                ),
+                                )
+                                    ? {
+                                          country: country_code,
+                                      }
+                                    : false,
                             },
                         },
                     },

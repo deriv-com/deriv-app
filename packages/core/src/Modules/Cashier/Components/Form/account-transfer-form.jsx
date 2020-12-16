@@ -215,7 +215,16 @@ const AccountTransferForm = ({
                     setIsTransferConfirm(true);
                 }}
             >
-                {({ errors, isSubmitting, isValid, setFieldValue, setFieldError, handleChange }) => (
+                {({
+                    errors,
+                    isSubmitting,
+                    isValid,
+                    touched,
+                    setFieldValue,
+                    setFieldTouched,
+                    setFieldError,
+                    handleChange,
+                }) => (
                     <React.Fragment>
                         {isSubmitting ? (
                             <div className='cashier__loader-wrapper'>
@@ -243,6 +252,7 @@ const AccountTransferForm = ({
                                                 handleChange(e);
                                                 setFieldValue('amount', '');
                                                 setFieldError('amount', '');
+                                                setFieldTouched('amount', false);
                                             }}
                                             error={selected_from.error}
                                         />
@@ -261,6 +271,7 @@ const AccountTransferForm = ({
                                                 handleChange(e);
                                                 setFieldValue('amount', '');
                                                 setFieldError('amount', '');
+                                                setFieldTouched('amount', false);
                                             }}
                                             error={selected_from.error}
                                         />
@@ -307,11 +318,12 @@ const AccountTransferForm = ({
                                                 setErrorMessage('');
                                                 handleChange(e);
                                                 setAccountTransferAmount(e.target.value);
+                                                setFieldTouched('amount', true, false);
                                             }}
                                             className='cashier__input dc-input--no-placeholder account-transfer__input'
                                             type='text'
                                             label={localize('Amount')}
-                                            error={errors.amount}
+                                            error={touched.amount && errors.amount}
                                             required
                                             trailing_icon={
                                                 selected_from.currency ? (

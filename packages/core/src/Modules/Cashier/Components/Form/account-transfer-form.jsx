@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -92,7 +93,6 @@ let accounts_to = [];
 let mt_accounts_to = [];
 
 const AccountTransferForm = ({
-    account_transfer_amount,
     onMount,
     transfer_limit,
     account_limits,
@@ -209,7 +209,7 @@ const AccountTransferForm = ({
             </h2>
             <Formik
                 initialValues={{
-                    amount: account_transfer_amount,
+                    amount: '',
                 }}
                 onSubmit={() => {
                     setIsTransferConfirm(true);
@@ -420,7 +420,6 @@ AccountTransferForm.propTypes = {
 export default connect(({ client, modules }) => ({
     account_limits: client.account_limits,
     onMount: client.getLimits,
-    account_transfer_amount: modules.cashier.config.account_transfer.account_transfer_amount,
     accounts_list: modules.cashier.config.account_transfer.accounts_list,
     minimum_fee: modules.cashier.config.account_transfer.minimum_fee,
     onChangeTransferFrom: modules.cashier.onChangeTransferFrom,

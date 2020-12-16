@@ -38,121 +38,116 @@ const TransactionItem = ({ row, is_new_row }) => {
     }
 };
 
-class Transactions extends React.PureComponent {
-    componentDidMount() {
-        this.props.onMount();
-    }
+const Transactions = ({ contract_stage, elements, is_drawer_open, is_mobile, onMount, onUnmount }) => {
+    React.useEffect(() => {
+        onMount();
+        return () => onUnmount();
+    }, [onMount, onUnmount]);
 
-    componentWillUnmount() {
-        this.props.onUnmount();
-    }
-
-    render() {
-        const { elements, is_drawer_open, is_mobile, contract_stage } = this.props;
-        return (
+    return (
+        <div
+            className={classnames('transactions', {
+                'run-panel-tab__content': !is_mobile,
+                'run-panel-tab__content--mobile': is_mobile && is_drawer_open,
+            })}
+        >
+            <DesktopWrapper>
+                <div className='download__container'>
+                    <Download tab='transactions' />
+                </div>
+            </DesktopWrapper>
+            <div className='transactions__header'>
+                <span className='transactions__header-column transactions__header-type'>{localize('Type')}</span>
+                <span className='transactions__header-column transactions__header-spot'>
+                    {localize('Entry/Exit spot')}
+                </span>
+                <span className='transactions__header-column transactions__header-profit'>
+                    {localize('Buy price and P/L')}
+                </span>
+            </div>
             <div
-                className={classnames('transactions', {
-                    'run-panel-tab__content': !is_mobile,
-                    'run-panel-tab__content--mobile': is_mobile && is_drawer_open,
+                className={classnames({
+                    transactions__content: !is_mobile,
+                    'transactions__content--mobile': is_mobile,
                 })}
             >
-                <DesktopWrapper>
-                    <div className='download__container'>
-                        <Download tab='transactions' />
-                    </div>
-                </DesktopWrapper>
-                <div className='transactions__header'>
-                    <span className='transactions__header-column transactions__header-type'>{localize('Type')}</span>
-                    <span className='transactions__header-column transactions__header-spot'>
-                        {localize('Entry/Exit spot')}
-                    </span>
-                    <span className='transactions__header-column transactions__header-profit'>
-                        {localize('Buy price and P/L')}
-                    </span>
-                </div>
-                <div
-                    className={classnames({
-                        transactions__content: !is_mobile,
-                        'transactions__content--mobile': is_mobile,
-                    })}
-                >
-                    <div className='transactions__scrollbar'>
-                        {elements.length ? (
-                            <DataList
-                                className='transactions'
-                                data_source={elements}
-                                rowRenderer={props => <TransactionItem {...props} />}
-                                keyMapper={row => {
-                                    switch (row.type) {
-                                        case transaction_elements.CONTRACT: {
-                                            return row.data.transaction_ids.buy;
-                                        }
-                                        case transaction_elements.DIVIDER: {
-                                            return row.data;
-                                        }
-                                        default: {
-                                            return null;
-                                        }
+                <div className='transactions__scrollbar'>
+                    {elements.length ? (
+                        <DataList
+                            className='transactions'
+                            data_source={elements}
+                            rowRenderer={props => <TransactionItem {...props} />}
+                            keyMapper={row => {
+                                switch (row.type) {
+                                    case transaction_elements.CONTRACT: {
+                                        return row.data.transaction_ids.buy;
                                     }
-                                }}
-                                getRowSize={({ index }) => {
-                                    const row = elements[index];
-                                    switch (row.type) {
-                                        case transaction_elements.CONTRACT: {
-                                            return 50;
-                                        }
-                                        case transaction_elements.DIVIDER: {
-                                            return 21;
-                                        }
-                                        default: {
-                                            return 0;
-                                        }
+                                    case transaction_elements.DIVIDER: {
+                                        return row.data;
                                     }
-                                }}
-                            />
-                        ) : (
-                            <>
-                                {contract_stage >= contract_stages.STARTING ? (
-                                    <Transaction contract={null} />
-                                ) : (
-                                    <ThemedScrollbars>
-                                        <div className='transactions-empty-box'>
-                                            <div className='transactions-empty'>
-                                                <div className='transactions-empty__icon-box'>
-                                                    <Icon
-                                                        icon='IcBox'
-                                                        className='transactions-empty__icon'
-                                                        size={64}
-                                                        color='secondary'
-                                                    />
-                                                </div>
+                                    default: {
+                                        return null;
+                                    }
+                                }
+                            }}
+                            getRowSize={({ index }) => {
+                                const row = elements[index];
+                                switch (row.type) {
+                                    case transaction_elements.CONTRACT: {
+                                        return 50;
+                                    }
+                                    case transaction_elements.DIVIDER: {
+                                        return 21;
+                                    }
+                                    default: {
+                                        return 0;
+                                    }
+                                }
+                            }}
+                        />
+                    ) : (
+                        <>
+                            {contract_stage >= contract_stages.STARTING ? (
+                                <Transaction contract={null} />
+                            ) : (
+                                <ThemedScrollbars>
+                                    <div className='transactions-empty-box'>
+                                        <div className='transactions-empty'>
+                                            <div className='transactions-empty__icon-box'>
+                                                <Icon
+                                                    icon='IcBox'
+                                                    className='transactions-empty__icon'
+                                                    size={64}
+                                                    color='secondary'
+                                                />
+                                            </div>
 
-                                                <h4 className='transactions-empty__header'>
-                                                    {localize('There are no transactions to display')}
-                                                </h4>
-                                                <div className='transactions-empty__message'>
-                                                    <span>{localize('Here are the possible reasons:')}</span>
-                                                    <ul className='transactions-empty__list'>
-                                                        <li>{localize('The bot is not running')}</li>
-                                                        <li>{localize('The stats are cleared')}</li>
-                                                    </ul>
-                                                </div>
+                                            <h4 className='transactions-empty__header'>
+                                                {localize('There are no transactions to display')}
+                                            </h4>
+                                            <div className='transactions-empty__message'>
+                                                <span>{localize('Here are the possible reasons:')}</span>
+                                                <ul className='transactions-empty__list'>
+                                                    <li>{localize('The bot is not running')}</li>
+                                                    <li>{localize('The stats are cleared')}</li>
+                                                </ul>
                                             </div>
                                         </div>
-                                    </ThemedScrollbars>
-                                )}
-                            </>
-                        )}
-                    </div>
+                                    </div>
+                                </ThemedScrollbars>
+                            )}
+                        </>
+                    )}
                 </div>
             </div>
-        );
-    }
-}
+        </div>
+    );
+};
 
 Transactions.propTypes = {
     contract_stage: PropTypes.number,
     elements: PropTypes.array,
+    is_drawer_open: PropTypes.bool,
     is_mobile: PropTypes.bool,
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,

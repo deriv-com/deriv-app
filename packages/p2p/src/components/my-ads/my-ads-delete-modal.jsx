@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Modal, Text } from '@deriv/components';
-import { useIsMounted } from '@deriv/shared';
+import { isDesktop, useIsMounted } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
@@ -41,7 +41,7 @@ const MyAdsDeleteModal = observer(() => {
             toggleModal={() => my_ads_store.setIsDeleteModalOpen(false)}
             has_close_icon
             renderTitle={() => (
-                <Text color='prominent' line-height='m' size='s' weight='bold'>
+                <Text color='prominent' line-height='m' size={isDesktop() ? 's' : 'xs'} weight='bold'>
                     <Localize i18n_default_text='Do you want to delete this ad?' />
                 </Text>
             )}

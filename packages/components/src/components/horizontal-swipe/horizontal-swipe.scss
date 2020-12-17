@@ -1,0 +1,15 @@
+.dc-horizontal-swipe {
+    display: flex;
+
+    &--left {
+        left: 0;
+        position: absolute;
+        transition: 3s ease-in-out;
+    }
+
+    &--right {
+        position: absolute;
+        right: 0;
+        transition: 3s ease-in-out;
+    }
+}

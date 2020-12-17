@@ -67,16 +67,16 @@ const TradeHeaderExtensions = ({
         };
 
         waitForLogin();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    React.useEffect(() => {
-        populateHeader();
 
         return () => {
             if (isMobile()) onUnmountPositions();
             populateHeaderExtensions(null);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    React.useEffect(() => {
+        populateHeader();
     });
 
     return null;

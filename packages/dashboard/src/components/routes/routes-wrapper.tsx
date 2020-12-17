@@ -11,7 +11,7 @@ const RoutesWrapper: React.FC<TRoutesWrapperProps> = ({ has_router, children }) 
 
 type TRoutesWrapperProps = {
     has_router: boolean;
-    children: React.ReactElement;
+    children: React.ComponentType | React.ElementType;
 };
 
 export default RoutesWrapper;

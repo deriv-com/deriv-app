@@ -34,7 +34,7 @@
 
 3.  **Libary usage:**
 
-        ```jsx
+        ```JS
         import React from 'react'
         import Dashboard from '@deriv/dashboard';
 
@@ -67,7 +67,7 @@
                     LoginPrompt: any,
                     Page404: any,
                 }).isRequired,
-        }).isRequired,
+            }).isRequired,
 
     };
 
@@ -94,4 +94,116 @@ src
 index.js // publish file
 webpack.config.js
 package.json
+```
+
+---
+
+# Differences
+
+Defining components in TypeScript is not very different from doing so in JavaScript, but the first thing you'll notice is that we now no longer have any PropTypes and there are a bunch of new keywords added. Take the example below on how to define a component:
+
+### JavaScript
+
+```JS
+const App ({ counter, name }) => {
+    return (
+        <div>{ name } clicked { counter } times.</div>
+    )
+}
+
+App.propTypes = {
+    counter: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+}
+```
+
+### TypeScript
+
+```TS
+const App: React.FC<TAppProps> ({ counter, name }) => {
+    return (
+        <div>{ name } clicked { counter } times.</div>
+    )
+}
+
+type TAppProps = {
+    counter: number;
+    name: string;
+}
+```
+
+As you can see, TypeScript is a lot more explicit and we have to state the type of variable that `App` is (`React.FC` with its contents being in the shape of `TAppProps`). You can compare it to PropTypes, but it's a lot stricter and will throw compilation errors if the shapes don't match.
+
+---
+
+# Types
+
+In most cases types will be defined within the same component, however, when a type should be shared across multiple files, you may put it in the `src/types` folder. In this folder we have 3 named folders:
+
+-   `params.types.ts`: Contains shared types for function parameters
+-   `props.types.ts`: Contains shared types for component props
+-   `stores.types.ts`: Contains types for the app's stores
+
+In general try to append any new types to these files before creating a new `*.types.ts` file here.
+
+---
+
+# Gotchas
+
+In @deriv/dashboard we no longer use a `connect` function to inject props into our components, instead we use hooks for everything (`useStores`). In addition, if you're rendering observables you will have to wrap your component in an `observer` call imported from `mobx-react-lite` to ensure the stores and UI are synchronised (i.e. it will re-render when an observable changes).
+
+A couple things to remember:
+
+Wrap at the export level, not at the component definition level:
+
+### Do
+
+```TS
+const MyComponent: React.FC = () => {
+    const { my_store } = useStores();
+    return <div>{ my_store.my_observable_value }</div>
+}
+
+export default observer(MyComponent);
+```
+
+### Do not
+
+```TS
+const MyComponent: React.FC = observer(() => {
+    const { my_store } = useStores();
+    return <div>{ my_store.my_observable_value }</div>
+});
+
+export default MyComponent;
+```
+
+Also make sure to keep the `observer` wrapper as close to the component as possible. For example, if you're using `withRouter` wrapper from `react-router-dom`:
+
+### Do
+
+```TS
+import { withRouter } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
+
+const MyComponent: React.FC = () => {
+    const { my_store } = useStores();
+    return <div>{ my_store.my_observable_value }</div>
+};
+
+export default withRouter(observer(MyComponent));
+```
+
+### Do not
+
+```TS
+import { withRouter } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
+
+const MyComponent: React.FC = () => {
+    const { my_store } = useStores();
+    return <div>{ my_store.my_observable_value }</div>
+};
+
+export default observer(withRouter(MyComponent));
 ```

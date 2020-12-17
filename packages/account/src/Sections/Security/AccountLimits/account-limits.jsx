@@ -1,12 +1,11 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Popover, DesktopWrapper, Loading, MobileWrapper, ThemedScrollbars, Text as TextComp } from '@deriv/components';
+import { Popover, DesktopWrapper, Loading, MobileWrapper, ThemedScrollbars, Text } from '@deriv/components';
 import { formatMoney, isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import LoadErrorMessage from 'Components/load-error-message';
 import FormBody from 'Components/form-body';
-import Text from 'Components/text';
 import TextContainer from 'Components/text-container';
 import DemoMessage from 'Components/demo-message';
 import { connect } from 'Stores/connect';
@@ -160,7 +159,7 @@ const AccountLimits = ({ account_limits, currency, getLimits, is_fully_authentic
                                 </tbody>
                             </table>
                             <TextContainer>
-                                <Text size='small' color='grey'>
+                                <Text as='p' size='xxs' color='less-prominent' line_height='xs'>
                                     {localize(
                                         '*Any limits in your Self-exclusion settings will override these default limits.'
                                     )}
@@ -171,13 +170,13 @@ const AccountLimits = ({ account_limits, currency, getLimits, is_fully_authentic
                                     <Row>
                                         <TableHeader>
                                             <div className='account-management-flex-wrapper'>
-                                                <TextComp
+                                                <Text
                                                     size={isMobile() ? 'xxs' : 'x'}
                                                     weight='bold'
                                                     className='account-limit-container-title'
                                                 >
                                                     {localize('Trading limits - Maximum daily turnover')}
-                                                </TextComp>
+                                                </Text>
                                                 <ExtraInfo
                                                     message={localize(
                                                         'Represents the maximum volume of contracts that you may purchase in any given trading day.'
@@ -222,13 +221,13 @@ const AccountLimits = ({ account_limits, currency, getLimits, is_fully_authentic
                             </table>
                             <TextContainer>
                                 {is_fully_authenticated ? (
-                                    <Text>
+                                    <Text as='p' size='xxs' color='less-prominent' line_height='xs'>
                                         {localize(
                                             'Your account is fully authenticated and your withdrawal limits have been lifted.'
                                         )}
                                     </Text>
                                 ) : (
-                                    <Text size='small' color='grey'>
+                                    <Text as='p' size='xxs' color='less-prominent' line_height='xs'>
                                         {localize('Stated limits are subject to change without prior notice.')}
                                     </Text>
                                 )}

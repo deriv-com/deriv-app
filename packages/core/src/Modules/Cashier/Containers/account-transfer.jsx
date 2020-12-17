@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import BinarySocket from '_common/base/socket_base';
+import WS from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 import AccountTransferNoAccount from '../Components/Error/account-transfer-no-account.jsx';
 import Error from '../Components/Error/error.jsx';
@@ -37,7 +37,7 @@ const AccountTransfer = ({
         setActiveTab(container);
         onMount();
 
-        BinarySocket.wait('authorize', 'website_status', 'get_settings', 'paymentagent_list').then(() => {
+        WS.wait('authorize', 'website_status', 'get_settings', 'paymentagent_list').then(() => {
             setIsLoadingStatus(false);
         });
 

@@ -14,30 +14,24 @@ import '../../assets/sass/chart.scss';
 // import { symbolChange }      from '../../SmartChart/Helpers/symbol';
 // import AllMarkers            from '../../SmartChart/Components/all-markers.jsx';
 
-const ChartTopWidgets = ({ onChange }) => <ChartTitle onChange={onChange} />;
-
-const ChartToolbarWidget = ({ updateChartType, updateGranularity }) => (
-    <ToolbarWidgets updateChartType={updateChartType} updateGranularity={updateGranularity} />
-);
-
 const Chart = ({
-    granularity,
     chart_type,
+    granularity,
     is_mobile,
     is_socket_opened,
     onSymbolChange,
-    updateChartType,
-    updateGranularity,
+    // resetRefresh,
+    setChartStatus,
+    settings,
     show_digits_stats,
     // should_refresh,
-    // resetRefresh,
+    symbol,
+    updateChartType,
+    updateGranularity,
     wsForget,
     wsForgetStream,
     wsSendRequest,
     wsSubscribe,
-    setChartStatus,
-    settings,
-    symbol,
 }) => {
     // bottomWidgets = ({ digits, tick }) => (
     //     <ChartBottomWidgets digits={digits} tick={tick} />
@@ -64,7 +58,7 @@ const Chart = ({
             enabledChartFooter={false}
             chartStatusListener={v => setChartStatus(!v)}
             toolbarWidget={() => (
-                <ChartToolbarWidget updateChartType={updateChartType} updateGranularity={updateGranularity} />
+                <ToolbarWidgets updateChartType={updateChartType} updateGranularity={updateGranularity} />
             )}
             chartType={chart_type}
             isMobile={is_mobile}
@@ -75,7 +69,7 @@ const Chart = ({
             requestSubscribe={wsSubscribe}
             settings={settings}
             symbol={symbol}
-            topWidgets={() => <ChartTopWidgets onChange={onSymbolChange} />}
+            topWidgets={() => <ChartTitle onChange={onSymbolChange} />}
             isConnectionOpened={is_socket_opened}
             // clearChart={false}
             // importedLayout={chart_layout}
@@ -88,21 +82,21 @@ const Chart = ({
 };
 
 Chart.PropTypes = {
-    granularity: PropTypes.number,
     chart_type: PropTypes.string,
+    granularity: PropTypes.number,
     is_mobile: PropTypes.bool,
     is_socket_opened: PropTypes.bool,
     onSymbolChange: PropTypes.func,
+    setChartStatus: PropTypes.func,
+    settings: PropTypes.object,
+    show_digits_stats: PropTypes.bool,
+    symbol: PropTypes.object,
     updateChartType: PropTypes.func,
     updateGranularity: PropTypes.func,
-    show_digits_stats: PropTypes.bool,
     wsForget: PropTypes.func,
     wsForgetStream: PropTypes.func,
     wsSendRequest: PropTypes.func,
     wsSubscribe: PropTypes.func,
-    setChartStatus: PropTypes.func,
-    settings: PropTypes.object,
-    symbol: PropTypes.object,
 };
 
 export default connect(({ chart_store, common, ui }) => ({

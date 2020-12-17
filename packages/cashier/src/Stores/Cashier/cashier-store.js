@@ -129,6 +129,7 @@ class ConfigVerification {
     is_button_clicked = false;
     timeout_button = '';
 
+    @observable error = new ConfigError();
     @observable is_email_sent = false;
     @observable is_resend_clicked = false;
     @observable resend_timeout = 60;
@@ -483,6 +484,7 @@ export default class CashierStore extends BaseStore {
             }),
         };
     }
+
     @action.bound
     handleCashierError(error) {
         switch (error.code) {
@@ -568,6 +570,15 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
+    setVerificationError(error, onClickButton) {
+        this.config[this.active_container].verification.error = {
+            onClickButton,
+            code: error.code,
+            message: error.message,
+        };
+    }
+
+    @action.bound
     setVerificationResendClicked(is_resend_clicked, container = this.active_container) {
         this.config[container].verification.is_resend_clicked = is_resend_clicked;
     }
@@ -624,7 +635,13 @@ export default class CashierStore extends BaseStore {
 
         if (response_verify_email.error) {
             this.clearVerification();
-            this.setErrorMessage(response_verify_email.error);
+            if (response_verify_email.msg_type === 'verify_email') {
+                this.setVerificationError(response_verify_email.error, () => {
+                    this.clearVerification();
+                });
+            } else {
+                this.setErrorMessage(response_verify_email.error);
+            }
         } else {
             this.setVerificationEmailSent(true);
             this.setTimeoutVerification();
@@ -665,6 +682,7 @@ export default class CashierStore extends BaseStore {
         this.setVerificationEmailSent(false, container);
         this.setVerificationResendClicked(false, container);
         this.setVerificationResendTimeout(60, container);
+        this.setVerificationError({});
         this.root_store.client.setVerificationCode('', this.map_action[container]);
     }
 

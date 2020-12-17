@@ -21,8 +21,14 @@ $side-padding: 1.2em;
             display: flex;
             width: 100%;
             @include desktop {
-                max-width: 50rem;
+                max-width: 36rem;
                 margin-left: auto;
+            }
+
+            &-statement {
+                @include desktop {
+                    max-width: 50rem;
+                }
             }
         }
 

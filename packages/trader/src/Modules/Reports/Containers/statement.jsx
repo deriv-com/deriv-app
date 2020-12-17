@@ -20,23 +20,23 @@ const TransactionFilter = props => {
 
     const filter_list = [
         {
-            text: <Localize i18n_default_text='All' />,
+            text: localize('All'),
             value: 'all',
         },
         {
-            text: <Localize i18n_default_text='Buy' />,
+            text: localize('Buy'),
             value: 'buy',
         },
         {
-            text: <Localize i18n_default_text='Sell' />,
+            text: localize('Sell'),
             value: 'sell',
         },
         {
-            text: <Localize i18n_default_text='Deposit' />,
+            text: localize('Deposit'),
             value: 'deposit',
         },
         {
-            text: <Localize i18n_default_text='Withdrawal' />,
+            text: localize('Withdrawal'),
             value: 'withdrawal',
         },
     ];
@@ -209,6 +209,7 @@ const Statement = ({
             <ReportsMeta
                 className={is_mx_mlt ? undefined : 'reports__meta--statement'}
                 filter_component={filter_component}
+                is_statement={true}
                 optional_component={!is_switching && is_mx_mlt && getAccountStatistics()}
             />
             {is_switching ? (

@@ -50,7 +50,7 @@ const TransactionFilter = props => {
             classNameDisplay='dc-dropdown__display-filter'
             has_symbol={false}
             is_alignment_left={props.is_alignment_left}
-            is_statement_filter={true}
+            is_filter={true}
             onChange={e => {
                 setDefaultFilter(e.target.value);
                 props.handleFilterChange(e.target.value);
@@ -167,7 +167,7 @@ const Statement = ({
     if (error) return <p>{error}</p>;
 
     const filter_component = (
-        <>
+        <React.Fragment>
             <CompositeCalendar
                 input_date_range={filtered_date_range}
                 onChange={handleDateChange}
@@ -175,7 +175,7 @@ const Statement = ({
                 to={date_to}
             />
             <TransactionFilter handleFilterChange={handleFilterChange} />
-        </>
+        </React.Fragment>
     );
 
     const columns = getStatementTableColumnsTemplate(currency);

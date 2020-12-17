@@ -181,7 +181,7 @@ const Dropdown = ({
     is_large,
     is_nativepicker,
     is_nativepicker_visible,
-    is_statement_filter,
+    is_filter,
     label,
     list,
     list_portal_id,
@@ -225,7 +225,7 @@ const Dropdown = ({
             'dc-dropdown--show': is_list_visible,
             'dc-dropdown--disabled': isSingleOption() || disabled,
             'dc-dropdown--error': error,
-            'dc-dropdown--filter': is_statement_filter,
+            'dc-dropdown--filter': is_filter,
         });
     };
 
@@ -372,10 +372,10 @@ const Dropdown = ({
                         id='dropdown-display'
                         ref={dropdown_ref}
                     >
-                        {is_statement_filter && <Icon className='icon_filter' icon='IcFilter' size={16} />}
+                        {is_filter && <Icon className='icon_filter' icon='IcFilter' size={16} />}
                         <DisplayText
                             className={classNames('dc-dropdown__display-text', {
-                                'dc-dropdown__display-filter-text': is_statement_filter,
+                                'dc-dropdown__display-filter-text': is_filter,
                             })}
                             has_symbol={has_symbol}
                             name={name}
@@ -446,7 +446,7 @@ Dropdown.propTypes = {
     is_large: PropTypes.bool,
     is_nativepicker: PropTypes.bool,
     is_nativepicker_visible: PropTypes.bool,
-    is_statement_filter: PropTypes.bool,
+    is_filter: PropTypes.bool,
     label: PropTypes.string,
     list: listPropType(),
     list_height: PropTypes.string,

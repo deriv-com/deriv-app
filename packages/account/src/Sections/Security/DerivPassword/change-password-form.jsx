@@ -184,10 +184,7 @@ class ChangePasswordForm extends React.Component {
 }
 
 // ChangePasswordForm.propTypes = {};
-export default connect(({ client, ui }) => ({
+export default connect(({ client }) => ({
     logout: client.logout,
     email: client.email,
-    disableApp: ui.disableApp,
-    enableApp: ui.enableApp,
-    is_loading_app: ui.is_loading,
 }))(withRouter(ChangePasswordForm));

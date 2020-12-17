@@ -4,10 +4,10 @@ import { isMobileOs } from '../os/os_detect';
 import { getAppId, domain_app_ids } from '../config/config';
 import { getStaticUrl, urlForCurrentDomain } from '../url';
 
-export const redirectToLogin = (is_logged_in, language, no_params) => {
+export const redirectToLogin = (is_logged_in, language, has_params = true) => {
     if (!is_logged_in && isStorageSupported(sessionStorage)) {
         const l = window.location;
-        const redirect_url = no_params ? `${l.protocol}//${l.host}${l.pathname}` : window.location.href;
+        const redirect_url = has_params ? window.location.href : `${l.protocol}//${l.host}${l.pathname}`;
         sessionStorage.setItem('redirect_url', redirect_url);
         window.location.href = loginUrl({
             language,

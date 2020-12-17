@@ -34,7 +34,7 @@
 
 3.  **Libary usage:**
 
-        ```JS
+    ```JS
         import React from 'react'
         import Dashboard from '@deriv/dashboard';
 
@@ -70,8 +70,6 @@
             }).isRequired,
 
     };
-
-    ```
 
     ```
 

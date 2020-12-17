@@ -4,15 +4,18 @@ import { useHistory } from 'react-router-dom';
 import { connect } from 'Stores/connect';
 import { Popover, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { livechat_license_id } from '@deriv/shared';
 
 const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
+    // Initialization code provided by Livechat
     const liveChatInitialization = () =>
         new Promise(resolve => {
-            window.__lc = window.__lc || {}; // eslint-disable-line
-            window.__lc.license = 12049137; // eslint-disable-line
+            window.__lc = window.__lc || {}; // eslint-disable-line no-underscore-dangle
+            window.__lc.license = livechat_license_id; // eslint-disable-line no-underscore-dangle
             (function (n, t, c) {
                 // eslint-disable-next-line no-shadow
                 function i(n) {
+                    // eslint-disable-next-line no-underscore-dangle
                     return e._h ? e._h.apply(null, n) : e._q.push(n);
                 }
                 // eslint-disable-next-line
@@ -33,7 +36,7 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
                         i(['off', c.call(arguments)]);
                     },
                     get() {
-                        if (!e._h) throw new Error("[LiveChatWidget] You can't use getters before load.");
+                        if (!e._h) throw new Error("[LiveChatWidget] You can't use getters before load."); // eslint-disable-line no-underscore-dangle
                         // eslint-disable-next-line prefer-rest-params
                         return i(['get', c.call(arguments)]);
                     },
@@ -45,14 +48,14 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
                         // eslint-disable-next-line
                         var n = t.createElement('script');
                         // eslint-disable-next-line no-unused-expressions
-                        (n.async = !0),
+                        (n.async = !0), // eslint-disable-line no-sequences
                             (n.type = 'text/javascript'),
                             (n.src = 'https://cdn.livechatinc.com/tracking.js'),
                             t.head.appendChild(n);
                     },
                 };
                 // eslint-disable-next-line no-unused-expressions
-                !n.__lc.asyncInit && e.init();
+                !n.__lc.asyncInit && e.init(); // eslint-disable-line no-underscore-dangle
                 n.LiveChatWidget = n.LiveChatWidget || e;
             })(window, document, [].slice); //eslint-disable-line
             resolve();
@@ -69,6 +72,7 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
                 setLiveChatInteractive(true);
             });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {
@@ -77,7 +81,19 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
         } else {
             liveChatSetup(false);
         }
-    }, [has_cookie_account, reload]);
+    }, [has_cookie_account]);
+
+    React.useEffect(() => {
+        if (reload === true) {
+            if (has_cookie_account) {
+                liveChatSetup(true);
+            } else {
+                liveChatSetup(false);
+            }
+            setReload(false);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [reload]);
 
     const liveChatSetup = is_logged_in => {
         if (window.LiveChatWidget) {
@@ -90,12 +106,12 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
                     email: '',
                 };
                 if (is_logged_in) {
+                    // client logged in
                     const domain = window.location.hostname.includes('deriv.com') ? 'deriv.com' : 'binary.sx';
                     const client_information = Cookies.get('client_information', {
                         domain,
                     });
                     if (client_information) {
-                        // setClientInformation(true);
                         const {
                             loginid,
                             email,
@@ -112,20 +128,22 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
                             ...(residence && { residence }),
                             ...(email && { email }),
                         };
-
+                        // prefill name and email fields
                         window.LiveChatWidget.call('set_session_variables', session_variables);
                         window.LiveChatWidget.call('set_customer_email', email);
                         window.LiveChatWidget.call('set_customer_name', `${first_name} ${last_name}`);
-
+                        // prefill name and email fields after chat has ended
                         window.LC_API.on_chat_ended = () => {
                             window.LiveChatWidget.call('set_customer_email', email);
                             window.LiveChatWidget.call('set_customer_name', `${first_name} ${last_name}`);
                         };
                     }
                 } else {
+                    // client not logged in
+                    // clear name and email fields
                     window.LiveChatWidget.call('set_customer_email', ' ');
                     window.LiveChatWidget.call('set_customer_name', ' ');
-
+                    // clear name and email fields after chat has ended
                     window.LC_API.on_chat_ended = () => {
                         window.LiveChatWidget.call('set_customer_email', ' ');
                         window.LiveChatWidget.call('set_customer_name', ' ');

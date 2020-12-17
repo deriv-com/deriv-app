@@ -44,10 +44,10 @@ const TradeSettingsExtensions = ({ populateSettingsExtensions, store }) => {
     };
 
     React.useEffect(() => {
-        populateSettings();
-
         return () => populateSettingsExtensions(null);
-    });
+    }, [populateSettingsExtensions]);
+
+    React.useEffect(() => populateSettings());
 
     return null;
 };

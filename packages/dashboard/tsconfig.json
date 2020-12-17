@@ -5,7 +5,6 @@
         "module": "es2020",
         "jsx": "react",
         "sourceMap": true,
-        "outDir": "$$ts-jest$$",
         "removeComments": true,
 
         /* Checks */

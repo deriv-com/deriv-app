@@ -310,8 +310,7 @@
     &--filter {
         margin-left: 1em;
         margin-top: 0;
-        width: 10em;
-        min-width: 15rem;
+        max-width: 17.6rem;
 
         @include mobile {
             height: 4em;

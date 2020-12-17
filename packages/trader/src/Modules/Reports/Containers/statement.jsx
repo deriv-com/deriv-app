@@ -20,23 +20,23 @@ const TransactionFilter = props => {
 
     const filter_list = [
         {
-            text: 'All',
+            text: <Localize i18n_default_text='All' />,
             value: 'all',
         },
         {
-            text: 'Buy',
+            text: <Localize i18n_default_text='Buy' />,
             value: 'buy',
         },
         {
-            text: 'Sell',
+            text: <Localize i18n_default_text='Sell' />,
             value: 'sell',
         },
         {
-            text: 'Deposit',
+            text: <Localize i18n_default_text='Deposit' />,
             value: 'deposit',
         },
         {
-            text: 'Withdraw',
+            text: <Localize i18n_default_text='Withdrawal' />,
             value: 'withdrawal',
         },
     ];

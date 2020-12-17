@@ -143,6 +143,7 @@ class AccountSignup extends React.Component {
                                                 >
                                                     <PasswordInput
                                                         {...field}
+                                                        autoComplete='new-password'
                                                         className='account-signup__password-field'
                                                         label={localize('Create a password')}
                                                         error={touched.password && errors.password}

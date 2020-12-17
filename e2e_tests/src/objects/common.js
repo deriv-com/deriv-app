@@ -3,9 +3,9 @@ const path = require('path');
 const fs = require('fs');
 const { waitForWSSubset } = require('@root/_utils/websocket');
 
-const LOGIN_STATE_PATH = './e2e_tests/tests/states/login.json';
-const VIRTUAL_SIGNUP_STATE = './e2e_tests/tests/states/vrtc.json';
-const REAL_SIGNUP_STATE = './e2e_tests/tests/states/real.json';
+const LOGIN_STATE_PATH = './e2e_tests/states/login.json';
+const VIRTUAL_SIGNUP_STATE = './e2e_tests/states/vrtc.json';
+const REAL_SIGNUP_STATE = './e2e_tests/states/real.json';
 
 class Common {
     constructor(page) {
@@ -57,9 +57,10 @@ class Common {
     }
 
     async waitForAccountInfoDropdown() {
+        await this.page.waitForSelector('.acc-info__preloader', { state: 'hidden' });
         await this.page.waitForSelector(
-            '.acc-info__preloader'
-        , { state: 'hidden' });
+            '.header__menu-items > .header__menu-right > .acc-info__container > .acc-info__wrapper > .acc-info'
+        );
     }
 
     async clickOnAccountInfoDropdown() {

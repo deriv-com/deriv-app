@@ -1,6 +1,6 @@
-const {setUp, tearDown, mobile_viewport, desktop_viewport} = require('@root/bootstrap');
+const { setUp, tearDown, mobile_viewport, desktop_viewport } = require('@root/bootstrap');
 const Trader = require('@root/objects/trader');
-const {replaceWebsocket} = require("@root/_utils/websocket");
+const { replaceWebsocket } = require('@root/_utils/websocket');
 
 let browser, context, page;
 
@@ -31,21 +31,21 @@ describe('Contract purchases in desktop', () => {
         await page.assertPurchase(5, 10, 'CALL');
     });
 
-    test("[desktop] trader/buy-contract fall", async () => {
+    test('[desktop] trader/buy-contract fall', async () => {
         await page.buyContract('Ups & Downs', 'rise_fall', 'Ticks', 5, 'put', false);
         await page.assertPurchase(5, 10, 'PUT');
     });
 
-    test("[desktop] trader/buy-contract rise equal", async () => {
+    test('[desktop] trader/buy-contract rise equal', async () => {
         await page.buyContract('Ups & Downs', 'rise_fall', 'Ticks', 5, 'call', true);
         await page.assertPurchase(5, 10, 'CALLE');
     });
 
-    test("[desktop] trader/buy-contract fall equal", async () => {
+    test('[desktop] trader/buy-contract fall equal', async () => {
         await page.buyContract('Ups & Downs', 'rise_fall', 'Ticks', 5, 'put', true);
         await page.assertPurchase(5, 10, 'PUTE');
     });
-})
+});
 
 describe('Contract purchases in mobile', () => {
     beforeAll(async () => {
@@ -69,7 +69,6 @@ describe('Contract purchases in mobile', () => {
      */
     afterEach(async () => {
         await page.clearTradeUIArtifacts();
-
     });
 
     test('[mobile] trader/buy-fall-contract-default-duration', async () => {
@@ -156,6 +155,4 @@ describe('Contract purchases in mobile', () => {
         await page.buyContract('Digits', 'match_diff', 'Ticks', 5, 'digitdiff', false);
         await page.assertPurchase(5, 10, 'digitdiff');
     });
-
-
 });

@@ -51,10 +51,14 @@ class MobileWidget extends React.Component {
             d: [localize('day'), localize('days')],
         };
 
-        if (!duration_unit) return '';
-        const formatted_duration_unit = +duration === 1 ? lookup[duration_unit][0] : lookup[duration_unit][1];
+        try {
+            if (!duration_unit) return '';
+            const formatted_duration_unit = +duration === 1 ? lookup[duration_unit][0] : lookup[duration_unit][1];
 
-        return `${duration} ${formatted_duration_unit}`;
+            return `${duration} ${formatted_duration_unit}`;
+        } catch (e) {
+            return '';
+        }
     }
 
     isVisible = component => {

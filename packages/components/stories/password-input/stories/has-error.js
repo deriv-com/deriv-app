@@ -7,6 +7,7 @@ import Wrapper from '../../shared/wrapper';
 const HasError = () => (
     <Wrapper is_dark={boolean('Dark Theme', false)}>
         <PasswordInput
+            autoComplete='new-password'
             label='New password'
             name='new_password'
             error='Input has an error'

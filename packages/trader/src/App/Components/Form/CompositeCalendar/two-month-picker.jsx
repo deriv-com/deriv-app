@@ -88,7 +88,7 @@ const TwoMonthPicker = React.memo(({ onChange, isPeriodDisabled, value }) => {
                     calendar_view='date'
                     isPeriodDisabled={validateToArrows}
                     navigateTo={navigateTo}
-                    hide_disabled_periods={true}
+                    hide_disabled_periods
                     switchView={() => ({})}
                 />
                 <Calendar.Body
@@ -97,7 +97,7 @@ const TwoMonthPicker = React.memo(({ onChange, isPeriodDisabled, value }) => {
                     selected_date={value}
                     date_format='YYYY-MM-DD'
                     isPeriodDisabled={shouldDisableDate}
-                    hide_others={true}
+                    hide_others
                     updateSelected={updateSelectedDate}
                 />
                 <Calendar.Footer use_icon='IcCalendarForwardToday' has_today_btn={true} onClick={jumpToCurrentMonth} />

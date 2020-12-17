@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button, Icon, ExpansionPanel } from '@deriv/components';
-import './notify-item.scss';
 
 const getIcon = type => {
     switch (type) {

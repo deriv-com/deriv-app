@@ -1,1 +1,4 @@
-export default from './toolbar.jsx';
+import Toolbar from './toolbar.jsx';
+import './toolbar.scss';
+
+export default Toolbar;

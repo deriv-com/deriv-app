@@ -1,1 +1,3 @@
-export default from './contract-card-loading.jsx';
+import ContractCardLoader from './contract-card-loading.jsx';
+
+export default ContractCardLoader;

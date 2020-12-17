@@ -1,9 +1,8 @@
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { SummaryCard } from 'Components';
 import { connect } from 'Stores/connect';
-import './summary.scss';
+import SummaryCard from './summary-card.jsx';
 
 const Summary = ({ is_mobile, is_drawer_open }) => (
     <div

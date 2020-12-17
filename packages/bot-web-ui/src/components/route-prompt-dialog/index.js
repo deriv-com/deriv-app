@@ -1,1 +1,3 @@
-export default from './route-prompt-dialog.jsx';
+import RoutePromptDialog from './route-prompt-dialog.jsx';
+
+export default RoutePromptDialog;

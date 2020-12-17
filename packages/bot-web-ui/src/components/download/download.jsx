@@ -3,7 +3,6 @@ import { Button, Icon, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import PropTypes from 'prop-types';
 import { connect } from 'Stores/connect';
-import './download.scss';
 
 const Download = ({ tab, onClickDownloadTransaction, onClickDownloadJournal, is_clear_stat_disabled }) => {
     let clickFunction, popover_message;

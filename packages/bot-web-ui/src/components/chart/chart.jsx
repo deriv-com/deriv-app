@@ -3,8 +3,6 @@ import { ChartTitle, SmartChart } from '@deriv/deriv-charts';
 import { connect } from 'Stores/connect';
 import ToolbarWidgets from './toolbar-widgets.jsx';
 
-import './chart.scss';
-
 // import ChartLoader           from 'App/Components/Elements/chart-loader.jsx';
 // import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';
 // import Lazy                  from 'App/Containers/Lazy';

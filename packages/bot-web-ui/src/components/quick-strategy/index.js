@@ -1,1 +1,4 @@
-export default from './quick-strategy.jsx';
+import QuickStrategy from './quick-strategy.jsx';
+import './quick-strategy.scss';
+
+export default QuickStrategy;

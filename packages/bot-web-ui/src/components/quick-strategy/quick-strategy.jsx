@@ -20,7 +20,6 @@ import { Formik, Form, Field } from 'formik';
 import { config } from '@deriv/bot-skeleton';
 import { popover_zindex } from 'Constants/z-indexes';
 import { connect } from 'Stores/connect';
-import './quick-strategy.scss';
 
 const QuickStrategyForm = ({
     active_index,

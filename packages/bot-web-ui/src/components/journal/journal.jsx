@@ -8,10 +8,9 @@ import { localize, Localize } from '@deriv/translations';
 import { formatMoney, getCurrencyDisplayCode, useNewRowTransition } from '@deriv/shared';
 import { message_types } from '@deriv/bot-skeleton';
 import { log_types } from '@deriv/bot-skeleton/src/constants/messages';
-import { Download } from 'Components';
+import Download from 'Components/download';
 import { contract_stages } from 'Constants/contract-stage';
 import { connect } from 'Stores/connect';
-import './journal.scss';
 
 const DateItem = ({ date, time }) => {
     return (

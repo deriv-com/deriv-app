@@ -7,7 +7,6 @@ import { tabs_title } from 'Constants/load-modal';
 import GoogleDrive from './google-drive.jsx';
 import Local from './local.jsx';
 import Recent from './recent.jsx';
-import './load-modal.scss';
 
 const LoadModal = ({
     active_index,

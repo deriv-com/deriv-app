@@ -16,7 +16,6 @@ import {
 import { MobxContentProvider } from 'Stores/connect';
 import RootStore from 'Stores';
 import GTM from 'Utils/gtm';
-import './app.scss';
 
 class App extends React.Component {
     constructor(props) {

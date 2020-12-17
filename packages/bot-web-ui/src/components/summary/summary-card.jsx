@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { localize } from '@deriv/translations';
 import { ContractCard } from '@deriv/components';
-import { ContractCardLoader } from 'Components';
+import ContractCardLoader from 'Components/contract-card-loading';
 import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
 import { connect } from 'Stores/connect';
-import './summary-card.scss';
 
 const SummaryCard = ({
     contract,

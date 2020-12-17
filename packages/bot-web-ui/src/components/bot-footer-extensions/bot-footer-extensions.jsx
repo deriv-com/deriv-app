@@ -5,7 +5,6 @@ import { Icon, Popover, StaticUrl } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { tabs_title } from 'Constants/bot-contents';
 import { connect } from 'Stores/connect';
-import './bot-footer-extensions.scss';
 
 const SecurityAndPrivacy = () => (
     <Popover alignment='top' message={localize('Security and privacy')}>

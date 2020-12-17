@@ -7,7 +7,6 @@ import { help_content_config } from '@deriv/bot-skeleton';
 import { connect } from 'Stores/connect';
 import FlyoutBlockGroup from './flyout-block-group.jsx';
 import HelpBase from './help-contents';
-import './flyout.scss';
 
 const SearchResult = ({ search_term, total_result }) => (
     <div className='flyout__search-header'>

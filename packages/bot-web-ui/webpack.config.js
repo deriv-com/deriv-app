@@ -96,8 +96,7 @@ module.exports = function (env, argv) {
         },
         resolve: {
             alias: {
-                Assets: path.resolve(__dirname, './src/assets'),
-                Components: path.resolve(__dirname, './src/components'),
+                Components: path.resolve(__dirname, 'src', 'components'),
                 Constants: path.resolve(__dirname, './src/constants'),
                 Stores: path.resolve(__dirname, './src/stores'),
                 Utils: path.resolve(__dirname, './src/utils'),

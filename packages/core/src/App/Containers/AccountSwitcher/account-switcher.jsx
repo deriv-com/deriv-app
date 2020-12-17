@@ -79,6 +79,13 @@ const AccountSwitcher = props => {
         props.history.push(`${routes.mt5}#${account_type}`);
     };
 
+    const hasRequiredCredentials = () => {
+        // for MT5 Real Financial STP, if true, users can instantly create a new account by setting password
+        if (!props.account_settings) return false;
+        const { citizen, tax_identification_number, tax_residence } = props.account_settings;
+        return !!(citizen && tax_identification_number && tax_residence);
+    };
+
     const should_redirect_fstp_password = props.is_fully_authenticated && hasRequiredCredentials();
 
     const openMt5RealAccount = account_type => {
@@ -186,13 +193,6 @@ const AccountSwitcher = props => {
 
     // Real accounts is always the first tab index based on design
     const isRealAccountTab = active_tab_index === 0;
-
-    const hasRequiredCredentials = () => {
-        // for MT5 Real Financial STP, if true, users can instantly create a new account by setting password
-        if (!props.account_settings) return false;
-        const { citizen, tax_identification_number, tax_residence } = props.account_settings;
-        return !!(citizen && tax_identification_number && tax_residence);
-    };
 
     const getSortedAccountList = () => {
         // sort accounts as follows:

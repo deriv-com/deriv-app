@@ -136,7 +136,7 @@ const CompositeCalendar = props => {
                     <InputField
                         id='dt_calendar_input_from'
                         current_focus={current_focus}
-                        is_read_only={true}
+                        is_read_only
                         placeholder={localize('Date from')}
                         icon={CalendarIcon}
                         onClick={() => showCalendar('from')}
@@ -146,7 +146,7 @@ const CompositeCalendar = props => {
                     <InputField
                         id='dt_calendar_input_to'
                         current_focus={current_focus}
-                        is_read_only={true}
+                        is_read_only
                         placeholder={localize('Date to')}
                         icon={CalendarIcon}
                         onClick={() => showCalendar('to')}

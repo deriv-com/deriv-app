@@ -1,4 +1,5 @@
 import React from 'react';
+import { init } from '_common/server_time';
 import Routes from './Containers/routes.jsx';
 import { setWebsocket } from './Services/ws-methods';
 import { MobxContentProvider } from './Stores/connect';
@@ -11,6 +12,7 @@ class App extends React.Component {
         } = props;
         setWebsocket(WS);
         this.root_store = root_store;
+        init();
     }
 
     render() {

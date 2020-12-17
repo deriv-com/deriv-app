@@ -7,7 +7,7 @@ import { Loading } from '@deriv/components';
 import P2P from '@deriv/p2p';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
-import ServerTime from '_common/server_time';
+import { get, init, timePromise } from '_common/server_time';
 
 /* P2P will use the same websocket connection as Deriv/Binary, we need to pass it as a prop */
 const P2PCashier = ({
@@ -24,6 +24,11 @@ const P2PCashier = ({
     setNotificationCount,
 }) => {
     const [order_id, setOrderId] = React.useState(null);
+    const server_time = {
+        get,
+        init,
+        timePromise,
+    };
 
     React.useEffect(() => {
         const url_params = new URLSearchParams(location.search);
@@ -75,7 +80,7 @@ const P2PCashier = ({
             modal_root_id='modal_root'
             order_id={order_id}
             poi_url={routes.proof_of_identity}
-            server_time={ServerTime}
+            server_time={server_time}
             setNotificationCount={setNotificationCount}
             setOrderId={setQueryOrder}
             should_show_verification={/verification/.test(location.hash)}

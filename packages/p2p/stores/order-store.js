@@ -1,3 +1,4 @@
+import { cloneObject } from '@deriv/shared';
 import { action, computed, observable, reaction } from 'mobx';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import { requestWS, subscribeWS } from 'Utils/websocket';
@@ -8,8 +9,8 @@ export default class OrderStore {
 
         reaction(
             () => this.orders,
-            (orders, previous_orders) => {
-                this.root_store.general_store.handleNotifications(previous_orders, orders);
+            orders => {
+                this.root_store.general_store.handleNotifications(this.previous_orders, orders);
             }
         );
     }
@@ -23,6 +24,7 @@ export default class OrderStore {
 
     interval;
     order_info_subscription = {};
+    previous_orders = [];
 
     @computed
     get order_information() {
@@ -147,6 +149,7 @@ export default class OrderStore {
 
     @action.bound
     setOrders(orders) {
+        this.previous_orders = cloneObject(this.orders);
         this.orders = orders;
     }
 

@@ -93,6 +93,7 @@ let accounts_to = [];
 let mt_accounts_to = [];
 
 const AccountTransferForm = ({
+    account_transfer_amount,
     onMount,
     transfer_limit,
     account_limits,
@@ -209,7 +210,7 @@ const AccountTransferForm = ({
             </h2>
             <Formik
                 initialValues={{
-                    amount: '',
+                    amount: account_transfer_amount || '',
                 }}
                 onSubmit={() => {
                     setIsTransferConfirm(true);
@@ -419,6 +420,7 @@ AccountTransferForm.propTypes = {
 
 export default connect(({ client, modules }) => ({
     account_limits: client.account_limits,
+    account_transfer_amount: modules.cashier.config.account_transfer.account_transfer_amount,
     onMount: client.getLimits,
     accounts_list: modules.cashier.config.account_transfer.accounts_list,
     minimum_fee: modules.cashier.config.account_transfer.minimum_fee,

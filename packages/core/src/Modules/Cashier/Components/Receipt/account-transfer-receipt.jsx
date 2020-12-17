@@ -6,14 +6,10 @@ import { formatMoney, getCurrencyDisplayCode, getCurrencyName, routes } from '@d
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
-const openStatement = ({ history, resetAccountTransfer }) => {
-    history.push(routes.statement);
-    resetAccountTransfer();
-};
-
 const AccountTransferReceipt = ({
     disableApp,
     enableApp,
+    history,
     receipt,
     resetAccountTransfer,
     selected_from,
@@ -28,6 +24,11 @@ const AccountTransferReceipt = ({
             resetAccountTransfer();
         };
     }, [resetAccountTransfer]);
+
+    const openStatement = () => {
+        history.push(routes.statement);
+        resetAccountTransfer();
+    };
 
     const switchAndRedirect = async () => {
         await switchAccount(switch_to.value);

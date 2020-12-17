@@ -57,7 +57,6 @@ const QuickStrategyForm = ({
             const validation_errors = validateQuickStrategy(values);
             const is_valid = Object.keys(validation_errors).length === 0;
             const is_submit_enabled = !isSubmitting && is_valid;
-            const form_margin = '430px';
 
             return (
                 <Form
@@ -65,7 +64,7 @@ const QuickStrategyForm = ({
                         'quick-strategy__form--active-keyboard': is_onscreen_keyboard_active,
                     })}
                 >
-                    <ThemedScrollbars height={form_margin} autohide is_bypassed={is_mobile}>
+                    <ThemedScrollbars height='430px' autohide is_bypassed={is_mobile}>
                         <div
                             className={classNames('quick-strategy__form-content', {
                                 'quick-strategy__form-content--active-keyboard': is_onscreen_keyboard_active,

@@ -15,7 +15,6 @@ import {
     useOnClickOutside,
 } from '@deriv/components';
 import {
-    urlFor,
     routes,
     isCryptocurrency,
     formatMoney,
@@ -108,11 +107,7 @@ const AccountSwitcher = props => {
     };
 
     const redirectToMt5Real = () => {
-        if (!props.is_logged_in || props.is_mt5_allowed) {
-            redirectToMt5('real');
-        } else {
-            window.open(urlFor('user/metatrader', { legacy: true }));
-        }
+        redirectToMt5('real');
     };
 
     const openMt5DemoAccount = account_type => {

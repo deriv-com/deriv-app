@@ -633,9 +633,14 @@ export default class CashierStore extends BaseStore {
         if (response_verify_email.error) {
             this.clearVerification();
             if (response_verify_email.msg_type === 'verify_email') {
-                this.setErrorMessage(response_verify_email.error, () => {
-                    this.setErrorMessage('', null, null, true);
-                }, null, true);
+                this.setErrorMessage(
+                    response_verify_email.error,
+                    () => {
+                        this.setErrorMessage('', null, null, true);
+                    },
+                    null,
+                    true
+                );
             } else {
                 this.setErrorMessage(response_verify_email.error);
             }

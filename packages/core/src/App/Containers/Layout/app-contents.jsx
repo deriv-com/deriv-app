@@ -8,7 +8,6 @@ import { CookieStorage, isMobile, TRACKING_STATUS_KEY } from '@deriv/shared';
 import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
 import { connect } from 'Stores/connect';
 import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';
-// import InstallPWA    from './install-pwa.jsx';
 
 const tracking_status_cookie = new CookieStorage(TRACKING_STATUS_KEY);
 
@@ -25,6 +24,7 @@ const AppContents = ({
     is_mt5_page,
     is_positions_drawer_on,
     is_route_modal_on,
+    notifyAppInstall,
     pageView,
     pushDataLayer,
 }) => {
@@ -52,21 +52,19 @@ const AppContents = ({
     // Segment page view trigger
     identifyEvent();
     pageView();
-    /*
-    if (is_logged_in) {
-    TODO: uncomment these after the issues with showing the prompt too often and in the app are fixed
-    window.addEventListener('beforeinstallprompt', e => {
-        console.log('Going to show the installation prompt'); // eslint-disable-line no-console
-        e.preventDefault();
-        this.props.setPWAPromptEvent(e);
-        this.props.addNotificationBar({
-            content : <InstallPWA />,
-            autoShow: 10000, // show after 10 secs
-            msg_type: 'pwa',
-        });
-    });
-    }
-    */
+
+    React.useEffect(() => {
+        const handleInstallPrompt = e => {
+            // Prevent the mini-infobar from appearing on mobile
+            e.preventDefault();
+            // Stash the event so it can be triggered later.
+            // Update UI notify the user they can install the PWA
+            notifyAppInstall(e);
+        };
+        window.addEventListener('beforeinstallprompt', handleInstallPrompt);
+
+        return () => window.removeEventListener('beforeinstallprompt', handleInstallPrompt);
+    }, [notifyAppInstall]);
 
     // handle accept/decline cookies
     const onAccept = () => {
@@ -120,7 +118,6 @@ AppContents.propTypes = {
     is_mt5_page: PropTypes.bool,
     is_positions_drawer_on: PropTypes.bool,
     is_route_modal_on: PropTypes.bool,
-    pwa_prompt_event: PropTypes.object,
 };
 
 export default withRouter(
@@ -138,8 +135,6 @@ export default withRouter(
         is_mt5_page: ui.is_mt5_page,
         is_positions_drawer_on: ui.is_positions_drawer_on,
         is_route_modal_on: ui.is_route_modal_on,
-        pwa_prompt_event: ui.pwa_prompt_event,
-        // setPWAPromptEvent     : ui.setPWAPromptEvent,
-        // addNotificationBar    : ui.addNotificationBar,
+        notifyAppInstall: ui.notifyAppInstall,
     }))(AppContents)
 );

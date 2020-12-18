@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Div100vhContainer, SwipeableWrapper } from '@deriv/components';
+import { SwipeableWrapper } from '@deriv/components';
 
 /**
  * Swipeable components
@@ -17,7 +17,7 @@ export const SwipeableContractAudit = ({ is_multiplier, children, onSwipedDown }
     if (!target_el) return null;
 
     return ReactDOM.createPortal(
-        <Div100vhContainer className='contract-audit-card' height_offset='220px'>
+        <div className='contract-audit-card'>
             <div
                 {...swipe_handlers}
                 className={classNames('contract-audit-card__container', {
@@ -26,7 +26,7 @@ export const SwipeableContractAudit = ({ is_multiplier, children, onSwipedDown }
             >
                 {children}
             </div>
-        </Div100vhContainer>,
+        </div>,
         target_el
     );
 };

@@ -41,6 +41,7 @@ const FinancialInformation = ({
     <React.Fragment>
         <FormSubHeader
             title={localize('Financial information')}
+            subtitle={localize('(All fields are required)')}
             description={localize("We're legally obliged to ask for your financial information.")}
         />
         <IncomeSource {...shared_props} income_source_enum={income_source_enum} />
@@ -132,14 +133,10 @@ const FinancialDetails = props => {
                             <form ref={setRef} onSubmit={handleSubmit}>
                                 <Div100vhContainer
                                     className='details-form'
-                                    height_offset='179px'
+                                    height_offset='110px'
                                     is_disabled={isDesktop()}
                                 >
-                                    <ThemedScrollbars
-                                        is_bypassed={isMobile()}
-                                        autoHide={!(window.innerHeight < 890)}
-                                        height={height - 77}
-                                    >
+                                    <ThemedScrollbars autoHide={!(window.innerHeight < 890)} height={height - 77}>
                                         <div className='details-form__elements  details-form__elements--wide'>
                                             <FinancialInformation
                                                 shared_props={shared_props}

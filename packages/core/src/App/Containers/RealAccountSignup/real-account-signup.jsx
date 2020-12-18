@@ -97,7 +97,12 @@ class RealAccountSignup extends React.Component {
                     title: () => localize('Add or manage account'),
                 },
                 {
-                    body: () => <StatusDialogContainer currency={this.props.state_value.currency} />,
+                    body: () => (
+                        <StatusDialogContainer
+                            currency={this.props.state_value.currency}
+                            closeModal={this.closeModal}
+                        />
+                    ),
                 },
                 {
                     body: () => (
@@ -206,7 +211,7 @@ class RealAccountSignup extends React.Component {
 
     closeModal = e => {
         // Do not close modal on external link click event
-        if (!e || e.target.getAttribute('rel') === 'noopener noreferrer' || e.target.closest('.redirect-notice')) {
+        if (e?.target.getAttribute('rel') === 'noopener noreferrer' || e?.target.closest('.redirect-notice')) {
             return;
         }
         if (this.active_modal_index !== modal_pages_indices.status_dialog) {
@@ -341,7 +346,6 @@ export default connect(({ ui, client, common }) => ({
     is_logged_in: client.is_logged_in,
     closeRealAccountSignup: ui.closeRealAccountSignup,
     toggleWelcomeModal: ui.toggleWelcomeModal,
-    closeSignupAndOpenCashier: ui.closeSignupAndOpenCashier,
     setParams: ui.setRealAccountSignupParams,
     residence: client.residence,
     is_isle_of_man_residence: client.residence === 'im', // TODO: [deriv-eu] refactor this once more residence checks are required

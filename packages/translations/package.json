@@ -32,16 +32,13 @@
     "glob": "^7.1.5",
     "i18next": "^18.0.0",
     "prop-types": "^15.7.2",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
+    "react": "^16.13.1",
     "react-i18next": "^11.0.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
     "cross-env": "^5.2.0",
-    "lint-staged": "^10.0.6",
     "mocha": "^7.1.1",
-    "prettier": "^1.19.1",
     "xmldom": "^0.3.0"
   }
 }

@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { TransitionGroup } from 'react-transition-group';
 import { CellMeasurer, CellMeasurerCache } from 'react-virtualized/dist/es/CellMeasurer';
 import { AutoSizer } from 'react-virtualized/dist/es/AutoSizer';
 import { List } from 'react-virtualized/dist/es/List';
@@ -125,7 +126,8 @@ class DataList extends React.PureComponent {
                     <div className={classNames('data-list__body', { [`${className}__data-list-body`]: className })}>
                         <AutoSizer>
                             {({ width, height }) => (
-                                <div style={{ height, width }}>
+                                // Don't remove `TransitionGroup`. When `TransitionGroup` is removed, transition life cycle events like `onEntered` won't be fired sometimes on it's `CSSTransition` children
+                                <TransitionGroup style={{ height, width }}>
                                     <ThemedScrollbars onScroll={this.handleScroll} autoHide is_bypassed={isMobile()}>
                                         <List
                                             ref={ref => (this.list_ref = ref)}
@@ -143,7 +145,7 @@ class DataList extends React.PureComponent {
                                                 : { onScroll: target => this.handleScroll({ target }) })}
                                         />
                                     </ThemedScrollbars>
-                                </div>
+                                </TransitionGroup>
                             )}
                         </AutoSizer>
                     </div>

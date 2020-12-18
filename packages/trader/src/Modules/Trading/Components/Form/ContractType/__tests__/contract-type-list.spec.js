@@ -15,7 +15,7 @@ describe('ContractTypeList', () => {
         'Touch/No Touch': [{ value: 'touch', text: 'Touch/No Touch' }],
     };
     it('should render one <ContractTypeList /> component', () => {
-        const wrapper = shallow(<ContractTypeList list={list} />);
+        const wrapper = shallow(<ContractTypeList list={list['Up/Down']} />);
         expect(wrapper).to.have.length(2);
     });
 });

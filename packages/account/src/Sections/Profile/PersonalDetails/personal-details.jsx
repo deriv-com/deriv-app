@@ -850,7 +850,9 @@ export class PersonalDetailsForm extends React.Component {
                                             }}
                                             label={localize('Get updates about Deriv products, services and events.')}
                                             defaultChecked={!!values.email_consent}
-                                            disabled={!this.isChangeableField('email_consent')}
+                                            disabled={
+                                                !this.isChangeableField('email_consent') && !this.props.is_virtual
+                                            }
                                         />
                                     </fieldset>
                                 </FormBody>

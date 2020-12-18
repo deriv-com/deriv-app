@@ -11,7 +11,7 @@ import {
     ThemedScrollbars,
     Text,
 } from '@deriv/components';
-import { isDesktop, isMobile, routes, getStaticUrl, urlFor, PlatformContext } from '@deriv/shared';
+import { isDesktop, isMobile, routes, getStaticUrl, PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import AccountCard from './account-card.jsx';
@@ -223,8 +223,6 @@ const AccountTypesModal = ({
     history,
     is_account_types_modal_visible,
     is_dismissible,
-    is_logged_in,
-    is_mt5_allowed,
     landing_company_shortcode,
     openRealAccountSignup,
     standpoint,
@@ -244,11 +242,7 @@ const AccountTypesModal = ({
 
     const redirectToMt5Real = () => {
         closeModal();
-        if (!is_logged_in || is_mt5_allowed) {
-            redirectToMt5('real');
-        } else {
-            window.open(urlFor('user/metatrader', { legacy: true }));
-        }
+        redirectToMt5('real');
     };
 
     const createRealAccount = target => {
@@ -325,8 +319,6 @@ AccountTypesModal.propTypes = {
     history: PropTypes.any,
     is_account_types_modal_visible: PropTypes.bool,
     is_dismissible: PropTypes.bool,
-    is_logged_in: PropTypes.bool,
-    is_mt5_allowed: PropTypes.bool,
     landing_company_shortcode: PropTypes.string,
     standpoint: PropTypes.object,
     switchAccount: PropTypes.func,
@@ -342,8 +334,6 @@ export default withRouter(
         has_maltainvest_account: client.has_maltainvest_account,
         is_account_types_modal_visible: ui.is_account_types_modal_visible,
         is_dismissible: !client.should_have_real_account,
-        is_logged_in: client.is_logged_in,
-        is_mt5_allowed: client.is_mt5_allowed,
         landing_company_shortcode: client.landing_company_shortcode,
         openRealAccountSignup: ui.openRealAccountSignup,
         standpoint: client.standpoint,

@@ -11,7 +11,7 @@ import { useStores } from 'Stores';
 import FormError from '../form/error.jsx';
 import './my-profile.scss';
 
-const MyProfile = observer(() => {
+const MyProfile = () => {
     const { general_store, my_profile_store } = useStores();
     const { currency } = general_store.client;
     const [has_on_screen_keyboard, setHasOnScreenKeyboard] = React.useState(false);
@@ -104,7 +104,7 @@ const MyProfile = observer(() => {
                                     {localize('Total orders')}
                                 </Text>
                                 <Text color='prominent' weight='bold' line_height='l' as='p'>
-                                    {total_orders_count || '-'}
+                                    {total_orders_count || '0'}
                                 </Text>
                             </Table.Cell>
                             <div className='my-profile__stats-cell-separator' />
@@ -316,7 +316,7 @@ const MyProfile = observer(() => {
             </ThemedScrollbars>
         </div>
     );
-});
+};
 
 MyProfile.propTypes = {
     advertiser_info: PropTypes.object,
@@ -333,4 +333,4 @@ MyProfile.propTypes = {
     validateForm: PropTypes.func,
 };
 
-export default MyProfile;
+export default observer(MyProfile);

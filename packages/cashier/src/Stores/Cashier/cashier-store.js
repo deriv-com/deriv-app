@@ -472,9 +472,9 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    setErrorMessage(error, onClickButton, is_show_full_page) {
+    setErrorMessage(error, onClickButton, is_show_full_page, is_verification_error) {
         // for errors that need to show a button, reset the form
-        this.config[this.active_container].error = {
+        const error_object = {
             onClickButton,
             code: error.code,
             message: error.message,
@@ -483,6 +483,12 @@ export default class CashierStore extends BaseStore {
                 fields: error.details.fields,
             }),
         };
+
+        if (is_verification_error) {
+            this.config[this.active_container].verification.error = error_object;
+        } else {
+            this.config[this.active_container].error = error_object;
+        }
     }
 
     @action.bound
@@ -570,15 +576,6 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    setVerificationError(error, onClickButton) {
-        this.config[this.active_container].verification.error = {
-            onClickButton,
-            code: error.code,
-            message: error.message,
-        };
-    }
-
-    @action.bound
     setVerificationResendClicked(is_resend_clicked, container = this.active_container) {
         this.config[container].verification.is_resend_clicked = is_resend_clicked;
     }
@@ -636,9 +633,9 @@ export default class CashierStore extends BaseStore {
         if (response_verify_email.error) {
             this.clearVerification();
             if (response_verify_email.msg_type === 'verify_email') {
-                this.setVerificationError(response_verify_email.error, () => {
-                    this.clearVerification();
-                });
+                this.setErrorMessage(response_verify_email.error, () => {
+                    this.setErrorMessage('', null, null, true);
+                }, null, true);
             } else {
                 this.setErrorMessage(response_verify_email.error);
             }
@@ -682,7 +679,7 @@ export default class CashierStore extends BaseStore {
         this.setVerificationEmailSent(false, container);
         this.setVerificationResendClicked(false, container);
         this.setVerificationResendTimeout(60, container);
-        this.setVerificationError({});
+        this.setErrorMessage('', null, null, true);
         this.root_store.client.setVerificationCode('', this.map_action[container]);
     }
 

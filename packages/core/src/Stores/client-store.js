@@ -56,10 +56,12 @@ export default class ClientStore extends BaseStore {
     @observable device_data = {};
     @observable is_logging_in = false;
     @observable has_logged_out = false;
-    @observable landing_companies = {
-        financial_company: {},
-        gaming_company: {},
-    };
+    // this will store the landing_company API response, including
+    // financial_company: {}
+    // gaming_company: {}
+    // mt_financial_company: {}
+    // mt_gaming_company: {}
+    @observable landing_companies = {};
 
     @observable upgradeable_landing_companies = [];
     @observable mt5_login_list = [];
@@ -530,7 +532,9 @@ export default class ClientStore extends BaseStore {
     }
 
     isMT5Allowed = landing_companies => {
-        if (!landing_companies || !Object.keys(landing_companies).length) return false;
+        // default allowing mt5 to true before landing_companies gets populated
+        // since most clients are allowed to use mt5
+        if (!landing_companies || !Object.keys(landing_companies).length) return true;
 
         return 'mt_financial_company' in landing_companies || 'mt_gaming_company' in landing_companies;
     };

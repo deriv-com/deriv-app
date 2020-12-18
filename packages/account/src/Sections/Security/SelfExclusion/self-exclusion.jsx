@@ -56,6 +56,8 @@ class SelfExclusion extends React.Component {
         six_weeks: 60480, // in minutes
     };
 
+    exclusion_limits = {};
+
     exclusion_texts = {
         max_deposit: localize('Max. deposit limit per day'),
         max_turnover: localize('Max. total stake per day'),
@@ -99,7 +101,7 @@ class SelfExclusion extends React.Component {
     };
 
     validateFields = values => {
-        const { account_limits, currency, is_eu, is_cr } = this.props;
+        const { currency, is_eu, is_cr } = this.props;
         const errors = {};
         // Regex
         const max_number = this.exclusion_fields_settings.max_number;
@@ -179,7 +181,7 @@ class SelfExclusion extends React.Component {
             const { is_ok, message } = validNumber(values.max_open_bets, {
                 type: 'integer',
                 min: is_eu ? 1 : null,
-                max: account_limits.open_positions,
+                max: this.exclusion_limits.get_limits.open_positions,
             });
             if (!is_ok) errors.max_open_bets = message;
         }
@@ -189,7 +191,7 @@ class SelfExclusion extends React.Component {
                 type: 'float',
                 decimals: getDecimalPlaces(currency),
                 min: is_eu ? getSmallestMinValue(getDecimalPlaces(currency)) : null,
-                max: account_limits.account_balance,
+                max: this.exclusion_limits.get_limits.account_balance,
             });
             if (!is_ok) errors.max_balance = message;
         }
@@ -243,8 +245,8 @@ class SelfExclusion extends React.Component {
             } else {
                 setSubmitting(false);
                 this.setState({ show_confirm: false, is_loading: true, is_confirm_page: false });
-                this.getSelfExclusion();
                 this.getLimits();
+                this.getSelfExclusion();
             }
         }
     };
@@ -299,22 +301,23 @@ class SelfExclusion extends React.Component {
     };
 
     getLimits = async () => {
-        await WS.wait('get_account_status');
+        this.setState({ is_loading: true });
+        this.exclusion_limits = await WS.authorized.getLimits({ get_limits: 1 });
     };
 
     getMaxLength = field => {
-        const { account_limits, currency, is_cr } = this.props;
+        const { currency, is_cr } = this.props;
 
         const decimals_length = getDecimalPlaces(currency);
         const isIntegerField = value => /session_duration_limit|max_open_bets/.test(value);
         const getLength = value =>
             value.toString().length + (isIntegerField(field) || decimals_length === 0 ? 0 : decimals_length + 1); // add 1 to allow typing dot
 
-        if (/max_open_bets/.test(field) && account_limits.open_positions)
-            return getLength(account_limits.open_positions);
+        if (/max_open_bets/.test(field) && this.exclusion_limits.get_limits?.open_positions)
+            return getLength(this.exclusion_limits.get_limits.open_positions);
 
-        if (/max_balance/.test(field) && account_limits.account_balance)
-            return getLength(account_limits.account_balance);
+        if (/max_balance/.test(field) && this.exclusion_limits.get_limits?.account_balance)
+            return getLength(this.exclusion_limits.get_limits.account_balance);
 
         if (!this.state.self_exclusions[field] || is_cr) {
             if (/max_open_bets/.test(field)) return 9; // TODO: remove when the error is fixed on BE
@@ -329,15 +332,15 @@ class SelfExclusion extends React.Component {
         if (is_virtual) {
             this.setState({ is_loading: false });
         } else {
-            this.getSelfExclusion();
             this.getLimits();
+            this.getSelfExclusion();
         }
     }
     componentDidUpdate(prev_props) {
         if (prev_props.is_switching !== this.props.is_switching) {
             this.resetState();
-            this.getSelfExclusion();
             this.getLimits();
+            this.getSelfExclusion();
         }
     }
 
@@ -988,7 +991,6 @@ class SelfExclusion extends React.Component {
 }
 
 export default connect(({ client, ui }) => ({
-    account_limits: client.account_limits,
     is_tablet: ui.is_tablet,
     currency: client.currency,
     is_virtual: client.is_virtual,

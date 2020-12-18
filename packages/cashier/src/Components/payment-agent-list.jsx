@@ -43,7 +43,7 @@ class PaymentAgentList extends React.Component {
 
         return (
             <div className='cashier__wrapper--align-left'>
-                {this.props.error.code ? (
+                {this.props.error?.code ? (
                     <Error error={this.props.error} />
                 ) : (
                     <React.Fragment>

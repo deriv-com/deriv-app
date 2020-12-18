@@ -83,9 +83,6 @@ const AccountTransferNote = ({ currency, transfer_fee, minimum_fee }) => (
 
 let remaining_transfers, transfer_to_hint;
 
-let from_accounts = {};
-let to_accounts = {};
-
 let accounts_from = [];
 let mt_accounts_from = [];
 let accounts_to = [];
@@ -109,6 +106,9 @@ const AccountTransferForm = ({
     setIsTransferConfirm,
     error,
 }) => {
+    const [from_accounts, setFromAccounts] = React.useState({});
+    const [to_accounts, setToAccounts] = React.useState({});
+
     const validateAmount = amount => {
         if (!amount) return localize('This field is required.');
 
@@ -127,7 +127,7 @@ const AccountTransferForm = ({
 
     React.useEffect(() => {
         onMount();
-    }, []);
+    }, [onMount]);
 
     React.useEffect(() => {
         accounts_from = [];
@@ -164,15 +164,15 @@ const AccountTransferForm = ({
             }
         });
 
-        from_accounts = {
+        setFromAccounts({
             ...(mt_accounts_from.length && { [localize('DMT5 accounts')]: mt_accounts_from }),
             ...(accounts_from.length && { [localize('Deriv accounts')]: accounts_from }),
-        };
+        });
 
-        to_accounts = {
+        setToAccounts({
             ...(mt_accounts_to.length && { [localize('DMT5 accounts')]: mt_accounts_to }),
             ...(accounts_to.length && { [localize('Deriv accounts')]: accounts_to }),
-        };
+        });
     }, [accounts_list, selected_to, selected_from]);
 
     React.useEffect(() => {
@@ -186,7 +186,7 @@ const AccountTransferForm = ({
                 />,
             ]);
         }
-    }, [transfer_fee, selected_from, minimum_fee]);
+    }, [transfer_fee, selected_from, minimum_fee, from_accounts]);
 
     React.useEffect(() => {
         const { daily_transfers } = account_limits;
@@ -226,7 +226,7 @@ const AccountTransferForm = ({
                     handleChange,
                 }) => (
                     <React.Fragment>
-                        {isSubmitting ? (
+                        {isSubmitting || accounts_list.length === 0 ? (
                             <div className='cashier__loader-wrapper'>
                                 <Loading className='cashier__loader' />
                             </div>

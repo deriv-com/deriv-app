@@ -220,7 +220,6 @@ const AccountTransferForm = ({
                     isSubmitting,
                     isValid,
                     touched,
-                    validateField,
                     setFieldValue,
                     setFieldTouched,
                     setFieldError,
@@ -251,7 +250,6 @@ const AccountTransferForm = ({
                                             onChange={e => {
                                                 onChangeTransferFrom(e);
                                                 handleChange(e);
-                                                validateField('amount');
                                                 setFieldValue('amount', '');
                                                 setFieldError('amount', '');
                                                 setFieldTouched('amount', false);
@@ -271,7 +269,6 @@ const AccountTransferForm = ({
                                             onChange={e => {
                                                 onChangeTransferFrom(e);
                                                 handleChange(e);
-                                                validateField('amount');
                                                 setFieldValue('amount', '');
                                                 setFieldError('amount', '');
                                                 setFieldTouched('amount', false);
@@ -319,9 +316,9 @@ const AccountTransferForm = ({
                                             {...field}
                                             onChange={e => {
                                                 setErrorMessage('');
-                                                setFieldTouched('amount', true);
                                                 handleChange(e);
                                                 setAccountTransferAmount(e.target.value);
+                                                setFieldTouched('amount', true, false);
                                             }}
                                             className='cashier__input dc-input--no-placeholder account-transfer__input'
                                             type='text'

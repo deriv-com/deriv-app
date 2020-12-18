@@ -1566,7 +1566,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setDeviceData() {
         // Set client URL params on init
-        const affiliate_tracking = Cookies.getJSON('affiliate_tracking')
+        const affiliate_token = Cookies.getJSON('affiliate_tracking')
         const date_first_contact_cookie = setDeviceDataCookie(
             'date_first_contact',
             this.root_store.common.server_time.format('YYYY-MM-DD')
@@ -1597,7 +1597,7 @@ export default class ClientStore extends BaseStore {
         });
 
         const device_data = createDeviceDataObject(cookies);
-        this.device_data = { ...this.device_data, ...device_data, affiliate_tracking: affiliate_tracking};
+        this.device_data = { ...this.device_data, ...device_data, affiliate_token};
     }
 
     @action.bound

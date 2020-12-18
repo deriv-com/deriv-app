@@ -47,7 +47,15 @@ const Native = ({
             })}
         >
             <div className='dc-datepicker__display'>
-                {value && <span className='dc-datepicker__display-text'>{toMoment(value).format(display_format)}</span>}
+                {value && (
+                    <span
+                        className={classNames('dc-datepicker__display-text', {
+                            'dc-datepicker__display-text--disabled': disabled,
+                        })}
+                    >
+                        {toMoment(value).format(display_format)}
+                    </span>
+                )}
             </div>
             <label
                 className={classNames('dc-datepicker__placeholder', {

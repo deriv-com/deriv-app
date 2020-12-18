@@ -215,9 +215,14 @@ export default class ClientStore extends BaseStore {
         if (!this.landing_companies) return [];
         if (this.root_store.ui && this.root_store.ui.real_account_signup_target) {
             const target = this.root_store.ui.real_account_signup_target === 'maltainvest' ? 'financial' : 'gaming';
-            if (this.landing_companies[`${target}_company`]) {
-                return this.landing_companies[`${target}_company`].legal_allowed_currencies;
+            if (this.landing_companies[`${target}_company`] && this.current_landing_company && this.accounts) {
+                if (this.accounts[this.loginid] && !this.accounts[this.loginid].currency) {
+                    return this.landing_companies[`${target}_company`].legal_allowed_currencies.filter(currency =>
+                        this.current_landing_company.legal_allowed_currencies.includes(currency)
+                    );
+                }
             }
+            return this.landing_companies[`${target}_company`].legal_allowed_currencies;
         }
         if (this.landing_companies.gaming_company) {
             return this.landing_companies.gaming_company.legal_allowed_currencies;

@@ -935,7 +935,7 @@ export default class CashierStore extends BaseStore {
                 return;
             }
 
-            this.sortAccountsTransfer(transfer_between_accounts);
+            await this.sortAccountsTransfer(transfer_between_accounts);
             this.setTransferFee();
             this.setMinimumFee();
             this.setTransferLimit();

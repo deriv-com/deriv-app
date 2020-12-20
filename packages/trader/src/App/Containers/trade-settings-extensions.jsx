@@ -19,19 +19,19 @@ const ChartSettingContainer = Loadable({
 //     loading: UILoader,
 // });
 
+const renderItemValue = (props, store) => (
+    <MobxContentProvider store={store}>
+        <ChartSettingContainer {...props} />
+    </MobxContentProvider>
+);
+
 const TradeSettingsExtensions = ({ populateSettingsExtensions, store }) => {
     const populateSettings = () => {
-        const value = ({ ...props }) => (
-            <MobxContentProvider store={store}>
-                <ChartSettingContainer {...props} />
-            </MobxContentProvider>
-        );
-
         const menu_items = [
             {
                 icon: 'IcChart',
                 label: localize('Charts'),
-                value,
+                value: props => renderItemValue(props, store),
                 // uncomment below lines to bring back purchase lock and purchase confirmation}
                 // }, {
                 //     icon : IconPurchase,
@@ -45,7 +45,7 @@ const TradeSettingsExtensions = ({ populateSettingsExtensions, store }) => {
 
     React.useEffect(() => {
         return () => populateSettingsExtensions(null);
-    }, [populateSettingsExtensions]);
+    }, []);
 
     React.useEffect(() => populateSettings());
 
@@ -54,6 +54,7 @@ const TradeSettingsExtensions = ({ populateSettingsExtensions, store }) => {
 
 TradeSettingsExtensions.propTypes = {
     populateSettingsExtensions: PropTypes.func,
+    store: PropTypes.object,
 };
 
 export default connect(({ ui }) => ({

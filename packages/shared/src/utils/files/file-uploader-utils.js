@@ -1,5 +1,4 @@
-import { localize } from '@deriv/translations';
-import { compressImg, convertToBase64, isImageType, getFormatFromMIME } from 'Helpers/image_utility';
+import { compressImg, convertToBase64, isImageType, getFormatFromMIME } from './image/image_utility';
 
 export const compressImageFiles = files => {
     const promises = [];
@@ -23,7 +22,7 @@ export const compressImageFiles = files => {
     return Promise.all(promises);
 };
 
-export const readFiles = files => {
+export const readFiles = (files, getFileReadErrorMessage) => {
     const promises = [];
     files.forEach(f => {
         const fr = new FileReader();
@@ -41,7 +40,10 @@ export const readFiles = files => {
 
             fr.onerror = () => {
                 resolve({
-                    message: localize('Unable to read file {{name}}', { name: f.name }),
+                    message:
+                        typeof getFileReadErrorMessage === 'function'
+                            ? getFileReadErrorMessage(f.name)
+                            : `Unable to read file ${f.name}`,
                 });
             };
             // Reading file

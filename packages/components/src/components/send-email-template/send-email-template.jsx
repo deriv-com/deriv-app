@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Button from '../button/button.jsx';
 import Icon from '../icon/icon.jsx';
+import Text from '../text';
 
 class SendEmailTemplate extends React.Component {
     resend_interval = null;
@@ -54,7 +55,9 @@ class SendEmailTemplate extends React.Component {
                 <div className='send-email-template__sent'>
                     <Icon icon='IcEmailSent' className='send-email-template__icon' size={128} />
                     <h1 className='send-email-template__title'>{this.props.title}</h1>
-                    <p className='send-email-template__subtitle'>{this.props.subtitle}</p>
+                    <Text as='p' size='xs' styles={{ lineHeight: '20px' }} className='send-email-template__subtitle'>
+                        {this.props.subtitle}
+                    </Text>
                     <Button
                         className='send-email-template__btn'
                         onClick={this.onClickEmailNotReceived}

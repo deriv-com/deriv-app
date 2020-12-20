@@ -1,6 +1,6 @@
 # ReadMore component
 
-Renders a `ReadMore` component which use to collapse and expand long text.
+Renders a `ReadMore` component which is used to collapse and expand long text.
 
 #### Supported Gestures:
 

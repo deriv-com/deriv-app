@@ -9,7 +9,7 @@ import FormError from 'Components/form/error.jsx';
 import { useStores } from 'Stores';
 import 'Components/my-ads/my-ads-delete-modal.scss';
 
-const MyAdsDeleteModal = observer(() => {
+const MyAdsDeleteModal = () => {
     const { my_ads_store } = useStores();
     const isMounted = useIsMounted();
     const [error_message, setErrorMessage] = React.useState('');
@@ -63,11 +63,11 @@ const MyAdsDeleteModal = observer(() => {
             </Modal.Footer>
         </Modal>
     );
-});
+};
 
 MyAdsDeleteModal.propTypes = {
     is_delete_modal_open: PropTypes.bool,
     setIsDeleteModalOpen: PropTypes.func,
 };
 
-export default MyAdsDeleteModal;
+export default observer(MyAdsDeleteModal);

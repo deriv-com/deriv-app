@@ -1,43 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, Form, Formik } from 'formik';
-import { Button, Dropdown, Icon, Input, Loading, MobileFullPageModal, ThemedScrollbars } from '@deriv/components';
+import { Button, Dropdown, Icon, Input, Loading, Text, ThemedScrollbars } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import { useStores } from 'Stores';
 import AdSummary from './my-ads-summary.jsx';
+import FormAdsWrapper from './form-ads-wrapper.jsx';
 import { buy_sell } from '../../constants/buy-sell';
 
-const FormAdsWrapper = ({ children }) => {
-    const { my_ads_store } = useStores();
-
-    return isMobile() ? (
-        <MobileFullPageModal
-            className='p2p-my-ads__form'
-            is_modal_open={my_ads_store.show_ad_form}
-            page_header_text={localize('Create new ad')}
-            pageHeaderReturnFn={() => my_ads_store.setShowAdForm(false)}
-            is_flex
-        >
-            {children}
-        </MobileFullPageModal>
-    ) : (
-        <React.Fragment>{children}</React.Fragment>
-    );
-};
-
-FormAdsWrapper.propTypes = {
-    children: PropTypes.any,
-    is_modal_open: PropTypes.bool,
-};
-
-const FormAds = observer(() => {
+const FormAds = () => {
     const { general_store, my_ads_store } = useStores();
     const { currency, local_currency_config } = general_store.client;
 
     React.useEffect(() => {
+        my_ads_store.setApiErrorMessage('');
         my_ads_store.getAdvertiserInfo();
     }, []);
 
@@ -256,12 +235,27 @@ const FormAds = observer(() => {
                                                 />
                                             )}
                                         </Field>
-
+                                        {isMobile() && my_ads_store.api_error_message && (
+                                            <div className='p2p-my-ads__form-error'>
+                                                <Icon icon='IcAlertDanger' size={16} />
+                                                <Text
+                                                    color='prominent'
+                                                    weight='bold'
+                                                    line_height='m'
+                                                    size='xxxs'
+                                                    className='p2p-my-ads__form-error--message'
+                                                >
+                                                    {my_ads_store.api_error_message}
+                                                </Text>
+                                            </div>
+                                        )}
                                         <div className='p2p-my-ads__form-container p2p-my-ads__form-footer'>
-                                            {my_ads_store.api_error_message && (
+                                            {isDesktop() && my_ads_store.api_error_message && (
                                                 <div className='p2p-my-ads__form-error'>
                                                     <Icon icon='IcAlertDanger' />
-                                                    <div>{my_ads_store.api_error_message}</div>
+                                                    <Text color='prominent' weight='bold' line_height='m' size='xxs'>
+                                                        {my_ads_store.api_error_message}
+                                                    </Text>
                                                 </div>
                                             )}
                                             <Button
@@ -290,7 +284,7 @@ const FormAds = observer(() => {
             </FormAdsWrapper>
         </React.Fragment>
     );
-});
+};
 
 FormAds.propTypes = {
     api_error_message: PropTypes.string,
@@ -306,4 +300,4 @@ FormAds.propTypes = {
     validateFormAds: PropTypes.func,
 };
 
-export default FormAds;
+export default observer(FormAds);

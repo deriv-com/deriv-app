@@ -73,6 +73,10 @@
                 width: 67.2rem;
                 height: 9.6rem;
 
+                @include mobile {
+                    width: 100%;
+                }
+
                 .dc-input__hint {
                     top: 9.7rem;
                 }
@@ -104,17 +108,25 @@
             }
         }
         &-error {
-            display: flex;
             align-items: center;
-            margin-right: auto;
-            font-size: var(--text-size-xxs);
-            font-weight: bold;
-            flex: 1;
             color: var(--text-prominent);
+            display: flex;
+            flex: 1;
+            margin-right: auto;
             padding-left: 2.4rem;
 
             p {
                 padding-left: 1.6rem;
+            }
+
+            @include mobile {
+                margin-top: 3rem;
+                padding: unset;
+            }
+
+            &--message {
+                padding-left: 1rem;
+                width: calc(100vw - 3.6rem);
             }
         }
         &-footer {

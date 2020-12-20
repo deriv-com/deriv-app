@@ -155,7 +155,7 @@ RowComponent.propTypes = {
 
 RowComponent.displayName = 'RowComponent';
 
-const MyAdsTable = observer(() => {
+const MyAdsTable = () => {
     const { general_store, my_ads_store } = useStores();
 
     React.useEffect(() => {
@@ -245,7 +245,7 @@ const MyAdsTable = observer(() => {
             </Button>
         </Empty>
     );
-});
+};
 
 MyAdsTable.propTypes = {
     adverts: PropTypes.array,
@@ -265,4 +265,4 @@ MyAdsTable.propTypes = {
     setIsTableLoading: PropTypes.func,
 };
 
-export default MyAdsTable;
+export default observer(MyAdsTable);
